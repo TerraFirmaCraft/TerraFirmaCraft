@@ -1,0 +1,15 @@
+# ITEMS
+item.tfc.wand.name=TFC Debug Wand
+
+# Blocks
+tile.tfc.debug.name=TFC Debug Block
+
+# Command
+
+# Misc
+itemGroup.tfc.misc=TFC Misc
+
+# Config
+config.tfc.title=TerraFirmaCraft
+config.tfc.general.title=General Settings
+config.tfc.general.debug=Enable debug

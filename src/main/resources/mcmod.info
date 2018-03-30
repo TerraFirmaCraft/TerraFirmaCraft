@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "tfc",
+    "name": "TerraFirmaCraft",
+    "description": "TerraFirmaCraft",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://ftc.dries007.net",
+    "updateUrl": "https://mc.dries007.net/tfc.json",
+    "authorList": [
+      "Dries007"
+    ],
+    "credits": "Bioxx, Dunkleosteus, Kittychanley for the original TerraFirmaCraft for 1.7.10 and before.",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
