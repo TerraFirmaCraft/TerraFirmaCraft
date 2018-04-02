@@ -1,0 +1,1 @@
+{"parent": "tfc:block/grass", "textures": {"all": "tfc:blocks/stonetypes/dirt_slate", "particle": "tfc:blocks/stonetypes/dirt_slate", "overlay": "tfc:blocks/grass_side", "top": "tfc:blocks/grass_top"}}
