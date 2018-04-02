@@ -15,6 +15,7 @@ public final class CreativeTab
     private static final List<CT> LIST = new ArrayList<>();
 
     public static final CreativeTabs CT_MISC = new CT("misc", "tfc:wand");
+    public static final CreativeTabs CT_ROCK_SOIL = new CT("rock_soil", "tfc:smooth_granite");
 
     public static void init()
     {
