@@ -1,0 +1,10 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:dirt_rock salt"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}
