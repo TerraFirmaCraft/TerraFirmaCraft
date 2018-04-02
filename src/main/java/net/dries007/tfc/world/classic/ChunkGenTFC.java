@@ -1,5 +1,6 @@
 package net.dries007.tfc.world.classic;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.objects.biomes.BiomesTFC;
 import net.dries007.tfc.objects.blocks.BlockTFCVariant.Type;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -11,9 +12,11 @@ import net.dries007.tfc.world.classic.genlayers.datalayers.rain.GenRainLayerTFC;
 import net.dries007.tfc.world.classic.genlayers.datalayers.rock.GenRockLayer;
 import net.dries007.tfc.world.classic.genlayers.datalayers.stability.GenStabilityLayer;
 import net.dries007.tfc.world.classic.genlayers.datalayers.tree.GenTreeLayer;
+import net.dries007.tfc.world.classic.mapgen.MapGenCavesTFC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -21,30 +24,41 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.layer.IntCache;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import static net.dries007.tfc.world.classic.DataLayer.*;
 
+/**
+ * Todo: make caves in top stone layer under ocean water? (maybe 2 layers under deep ocean?)
+ */
 public class ChunkGenTFC implements IChunkGenerator
 {
     private static final IBlockState STONE = Blocks.STONE.getDefaultState();
     private static final IBlockState AIR = Blocks.AIR.getDefaultState();
-    private static final IBlockState WATER = Blocks.WATER.getDefaultState();
+    @SuppressWarnings("deprecation")
+    private static final IBlockState SALT_WATER = Blocks.STAINED_GLASS.getStateFromMeta(EnumDyeColor.BLUE.getMetadata());
+    @SuppressWarnings("deprecation")
+    private static final IBlockState FRESH_WATER = Blocks.STAINED_GLASS.getStateFromMeta(EnumDyeColor.LIGHT_BLUE.getMetadata());
+    private static final IBlockState LAVA = Blocks.LAVA.getDefaultState();
+    private static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
 
     private final World world;
     private final long seed;
     private final Random rand;
-    public final WorldGenSettings settings;
+    private final WorldGenSettings settings;
 
     private final NoiseGeneratorOctaves noiseGen1;
     private final NoiseGeneratorOctaves noiseGen2;
     private final NoiseGeneratorOctaves noiseGen3;
     private final NoiseGeneratorOctaves noiseGen4;
+    private final NoiseGeneratorOctaves noiseGen5;
     private final NoiseGeneratorOctaves noiseGen6;
     private final NoiseGeneratorOctaves mobSpawnerNoise;
 
@@ -65,6 +79,7 @@ public class ChunkGenTFC implements IChunkGenerator
     private final double[] noise2 = new double[425];
     private final double[] noise3 = new double[425];
     private final double[] noise4 = new double[425];
+    private final double[] noise5 = new double[425];
     private final double[] noise6 = new double[425];
 
     private final double[] heightMap = new double[425];
@@ -95,8 +110,9 @@ public class ChunkGenTFC implements IChunkGenerator
     private final int[] seaLevelOffsetMap = new int[256];
     private final int[] chunkHeightMap = new int[256];
 
+    private final MapGenBase caveGen = new MapGenCavesTFC();
+
     /* todo
-    private MapGenCavesTFC caveGen = new MapGenCavesTFC();
     private MapGenRavineTFC surfaceRavineGen = new MapGenRavineTFC(125, 30);//surface
     private MapGenRavineTFC ravineGen = new MapGenRavineTFC(20, 50);//deep
     private MapGenRiverRavine riverRavineGen = new MapGenRiverRavine();
@@ -113,6 +129,7 @@ public class ChunkGenTFC implements IChunkGenerator
         noiseGen2 = new NoiseGeneratorOctaves(rand, 16);
         noiseGen3 = new NoiseGeneratorOctaves(rand, 8);
         noiseGen4 = new NoiseGeneratorOctaves(rand, 4);
+        noiseGen5 = new NoiseGeneratorOctaves(rand, 2);
         noiseGen6 = new NoiseGeneratorOctaves(rand, 1);
         mobSpawnerNoise = new NoiseGeneratorOctaves(rand, 8);
 
@@ -134,9 +151,19 @@ public class ChunkGenTFC implements IChunkGenerator
     @Override
     public Chunk generateChunk(int chunkX, int chunkZ)
     {
+        Arrays.fill(noise1, 0);
+        Arrays.fill(noise2, 0);
+        Arrays.fill(noise3, 0);
+        Arrays.fill(noise4, 0);
+        Arrays.fill(noise5, 0);
+        Arrays.fill(noise6, 0);
+        Arrays.fill(seaLevelOffsetMap, 0);
+        Arrays.fill(chunkHeightMap, 0);
+        Arrays.fill(heightMap, 0);
+
         rand.setSeed(chunkX * 341873128712L + chunkZ * 132897987541L);
         ChunkPrimer chunkPrimerIn = new ChunkPrimer();
-        setBlocksInChunk(chunkX, chunkZ, chunkPrimerIn);
+        generateRoughTerrain(chunkX, chunkZ, chunkPrimerIn);
 
         world.getBiomeProvider().getBiomes(biomes, chunkX * 16 - 1, chunkZ * 16 - 1, 18, 18);
 
@@ -150,17 +177,27 @@ public class ChunkGenTFC implements IChunkGenerator
 
         CustomChunkPrimer chunkPrimerOut = new CustomChunkPrimer();
         replaceBlocksForBiomeHigh(chunkX, chunkZ, chunkPrimerIn, chunkPrimerOut);
-        // replaceBlocksForBiomeLow(chunkX, chunkZ, rand, idsBig, metaBig);
+
+        caveGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
 
         /* todo
-        caveGen.generate(this, world, chunkX, chunkZ, idsBig, metaBig);
         surfaceRavineGen.generate(this, world, chunkX, chunkZ, idsBig, metaBig);//surface
         ravineGen.generate(this, world, chunkX, chunkZ, idsBig, metaBig);//deep
         riverRavineGen.generate(this, world, chunkX, chunkZ, idsBig, metaBig);
         */
 
+        if (ConfigTFC.GENERAL.debugWorldGen)
+        {
+            for (int x = 0; x < 16; ++x)
+            {
+                for (int z = 0; z < 16; ++z)
+                {
+                    chunkPrimerOut.setBlockState(x, 250, z, Blocks.STAINED_GLASS.getStateFromMeta(Biome.getIdForBiome(getBiomeOffset(x, z)) & 15));
+                }
+            }
+        }
+
         Chunk chunk = new Chunk(world, chunkPrimerOut, chunkX, chunkZ);
-//        Chunk chunk = new Chunk(world, chunkPrimerIn, chunkX, chunkZ);
 
         byte[] biomeIds = chunk.getBiomeArray();
         for (int x = 0; x < 16; ++x)
@@ -168,7 +205,6 @@ public class ChunkGenTFC implements IChunkGenerator
             for (int z = 0; z < 16; ++z)
             {
                 biomeIds[z << 4 | x] = (byte) Biome.getIdForBiome(getBiomeOffset(x, z));
-//                chunk.setBlockState(new BlockPos(x, 255, z), Blocks.STAINED_GLASS.getStateFromMeta(biomeIds[z << 4 | x] & 15)); // todo: remove
             }
         }
         /*
@@ -230,7 +266,7 @@ public class ChunkGenTFC implements IChunkGenerator
         }
     }
 
-    private void setBlocksInChunk(int chunkX, int chunkZ, ChunkPrimer primer)
+    private void generateRoughTerrain(int chunkX, int chunkZ, ChunkPrimer primer)
     {
         world.getBiomeProvider().getBiomesForGeneration(biomes, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
         generateHeightMap(chunkX * 4, chunkZ * 4);
@@ -270,7 +306,11 @@ public class ChunkGenTFC implements IChunkGenerator
                                 }
                                 else if (y * 8 + yy < 16)
                                 {
-                                    primer.setBlockState(x * 4 + xx, y * 8 + yy, z * 4 + zz, WATER);
+                                    primer.setBlockState(x * 4 + xx, y * 8 + yy, z * 4 + zz, SALT_WATER);
+                                }
+                                else
+                                {
+                                    primer.setBlockState(x * 4 + xx, y * 8 + yy, z * 4 + zz, AIR);
                                 }
                             }
                             var34 += var38;
@@ -315,7 +355,7 @@ public class ChunkGenTFC implements IChunkGenerator
                             blendedHeight *= 0.5F;
 
                         variationBlended += blendBiome.getHeightVariation() * blendedHeight;
-                        rootBlended += blendBiome.getHeightVariation() * blendedHeight;
+                        rootBlended += blendBiome.getBaseHeight() * blendedHeight;
                         totalBlendedHeight += blendedHeight;
                     }
                 }
@@ -384,7 +424,7 @@ public class ChunkGenTFC implements IChunkGenerator
 
     private Biome getBiomeOffset(int x, int z)
     {
-        return biomes[z + 1 + (x + 1) * 18];
+        return biomes[(z + 1) * 18 + (x + 1)]; //todo: check, was (z + 1) + (x + 1) * 18
     }
 
     private void replaceBlocksForBiomeHigh(int chunkX, int chunkZ, ChunkPrimer inp, CustomChunkPrimer outp)
@@ -398,8 +438,8 @@ public class ChunkGenTFC implements IChunkGenerator
         {
             for (int z = 0; z < 16; ++z)
             {
-                int colIndex = x + z * 16;
-                int colIndexDL = z + x * 16;
+                int colIndex = z << 4 | x; // because that's how the Mojang classes do it, was: x + z * 16;
+                int colIndexDL = x << 4 | z; // yes, this is reversed, was: z + x * 16;
                 Biome biome = getBiomeOffset(x, z);
                 DataLayer rock1 = rockLayer1[colIndexDL];
                 DataLayer rock2 = rockLayer2[colIndexDL];
@@ -407,6 +447,7 @@ public class ChunkGenTFC implements IChunkGenerator
 //                DataLayer evt = evtLayer[colIndexDL];
                 DataLayer rain = rainfallLayer[colIndexDL];
                 DataLayer drainage = drainageLayer[colIndexDL];
+                DataLayer stability = stabilityLayer[colIndexDL];
                 int noise = (int)(noise4[x + 1 + (z + 1) * 16] / 3.0D + 6.0D);//todo WTF? check what this fixes: it was x + 1 + z + 1 * 16
                 int smooth = -1;
 
@@ -421,8 +462,12 @@ public class ChunkGenTFC implements IChunkGenerator
                 }
 
                 int h = 0;
-                for (int y = 127; y >= 0; --y)
+                for (int y = 127; y >= 0; y--)
                 {
+                    /*
+                     * HIGH PART (yOffset is used)
+                     */
+
                     float temp = Climate.adjustHeightToTemp(y, bioTemp);
                     if (BiomesTFC.isBeachBiome(biome) && y > seaLevel + h && inp.getBlockState(x, y, z) == STONE)
                     {
@@ -514,7 +559,7 @@ public class ChunkGenTFC implements IChunkGenerator
                                 {
                                     outp.setBlockState(x, yOffset + y + c, z, AIR);
                                     if (yOffset + y + c + 1 > 256) continue;
-                                    if (outp.getBlockState(x, yOffset + y + c + 1, z) == WATER) // todo: TFCBlocks.saltWaterStationary
+                                    if (outp.getBlockState(x, yOffset + y + c + 1, z) == SALT_WATER)
                                     {
                                         outp.setBlockState(x, yOffset + y + c, z, subSurfaceBlock);
                                     }
@@ -526,7 +571,7 @@ public class ChunkGenTFC implements IChunkGenerator
 
                             if (smooth > 0)
                             {
-                                if (y >= seaLevel - 1 && y+1 < yOffset && inp.getBlockState(x, y + 1, z) != WATER && dirtH > 0)// todo: TFCBlocks.saltWaterStationary
+                                if (y >= seaLevel - 1 && y+1 < yOffset && inp.getBlockState(x, y + 1, z) != SALT_WATER && dirtH > 0)
                                 {
                                     outp.setBlockState(x, y + yOffset, z, surfaceBlock);
 
@@ -543,9 +588,8 @@ public class ChunkGenTFC implements IChunkGenerator
                             }
                         }
 
-//                        if (y > seaLevel - 2 && y < seaLevel && primer[index + 1] == TFCBlocks.saltWaterStationary || y < seaLevel && primer[index + 1] == TFCBlocks.saltWaterStationary)
-                        if (y > seaLevel - 2 && y < seaLevel && inp.getBlockState(x, y+1, z) == WATER ||
-                                y < seaLevel && inp.getBlockState(x, y+1, z) == WATER)
+                        if (y > seaLevel - 2 && y < seaLevel && inp.getBlockState(x, y+1, z) == SALT_WATER ||
+                                y < seaLevel && inp.getBlockState(x, y+1, z) == SALT_WATER)
                         {
                             if (biome != BiomesTFC.SWAMPLAND) // Most areas have gravel and sand bottoms
                             {
@@ -563,68 +607,53 @@ public class ChunkGenTFC implements IChunkGenerator
                             }
                         }
                     }
-                    else if (inp.getBlockState(x, y, z) == WATER && !(BiomesTFC.isOceanicBiome(biome) || BiomesTFC.isBeachBiome(biome))) //  && biome != BiomesTFC.OCEAN && biome != BiomesTFC.DEEP_OCEAN && biome != BiomesTFC.BEACH && biome != BiomesTFC.GRAVEL_BEACH
+                    //  && biome != BiomesTFC.OCEAN && biome != BiomesTFC.DEEP_OCEAN && biome != BiomesTFC.BEACH && biome != BiomesTFC.GRAVEL_BEACH
+                    else if (inp.getBlockState(x, y, z) == SALT_WATER && !(BiomesTFC.isOceanicBiome(biome) || BiomesTFC.isBeachBiome(biome)))
                     {
-                        outp.setBlockState(x, y + yOffset, z, WATER); // todo fresh water
+                        outp.setBlockState(x, y + yOffset, z, FRESH_WATER);
                     }
-                }
-            }
-        }
-    }
-/*
-    private void replaceBlocksForBiomeLow(int par1, int par2, Random rand, Block[] idsBig, byte[] metaBig)
-    {
-        for (int xCoord = 0; xCoord < 16; ++xCoord)
-        {
-            for (int zCoord = 0; zCoord < 16; ++zCoord)
-            {
-                int arrayIndex = xCoord + zCoord * 16;
-                int arrayIndexDL = zCoord + xCoord * 16;
-                DataLayer rock1 = rockLayer1[arrayIndexDL];
-                DataLayer rock2 = rockLayer2[arrayIndexDL];
-                DataLayer rock3 = rockLayer3[arrayIndexDL];
-                DataLayer stability = stabilityLayer[arrayIndexDL];
-                BiomesTFC biome = (BiomesTFC) getBiomeOffset(xCoord, zCoord);
 
-                for (int height = 127; height >= 0; --height)
-                {
-                    //int index = ((arrayIndex) * 128 + height);
-                    int indexBig = (arrayIndex) * 256 + height;
-                    metaBig[indexBig] = 0;
+                    /*
+                     * LOW PART (yOffset is NOT used)
+                     */
 
-                    if (height <= 1 + (seaLevelOffsetMap[arrayIndex] / 3) + this.rand.nextInt(3))
+                    if (y < 1 + /*(seaLevelOffsetMap[colIndex] / 3)*/ + (settings.flatBedrock ? 0 : rand.nextInt(3)))
                     {
-                        idsBig[indexBig] = Blocks.bedrock;
+                        outp.setBlockState(x, y, z, BEDROCK);
                     }
-                    else if(idsBig[indexBig] == null)
+                    else if (outp.isEmpty(x, y, z))
                     {
-                        convertStone(height, arrayIndex, indexBig, idsBig, metaBig, rock1, rock2, rock3);
-                        if(TFC_Core.isBeachBiome(biome) || TFC_Core.isOceanicBiome(biome))
+                        if (y <= 110 + seaLevelOffsetMap[colIndex])
                         {
-                            if(idsBig[indexBig+1] == TFCBlocks.saltWaterStationary)
+                            outp.setBlockState(x, y, z, rock3.block.getDefaultState());
+                        }
+                        else if(y <= 110 + seaLevelOffsetMap[colIndex] && y > 55 + seaLevelOffsetMap[colIndex])
+                        {
+                            outp.setBlockState(x, y, z, rock2.block.getDefaultState());
+                        }
+                        else
+                        {
+                            outp.setBlockState(x, y, z, rock1.block.getDefaultState());
+                        }
+                        if (BiomesTFC.isBeachBiome(biome) || BiomesTFC.isOceanicBiome(biome))
+                        {
+                            if (outp.getBlockState(x, y + 1, z) == SALT_WATER)
                             {
-                                idsBig[indexBig] = TFC_Core.getTypeForSand(rock1.data1);
-                                metaBig[indexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
-                                idsBig[indexBig-1] = TFC_Core.getTypeForSand(rock1.data1);
-                                metaBig[indexBig-1] = (byte)TFC_Core.getSoilMeta(rock1.data1);
+                                outp.setBlockState(x, y, z, rock1.block.getVariant(Type.SAND).getDefaultState());
+                                outp.setBlockState(x, y-1, z, rock1.block.getVariant(Type.SAND).getDefaultState());
                             }
                         }
                     }
-
-                    if (height <= 6 && stability.data1 == 1 && idsBig[indexBig] == Blocks.air)
+                    if (y <= 6 && stability.valueInt == 1 && outp.getBlockState(x, y, z) == AIR)
                     {
-                        idsBig[indexBig] = TFCBlocks.lava;
-                        metaBig[indexBig] = 0;
-                        if(idsBig[indexBig+1] != TFCBlocks.lava && rand.nextBoolean())
+                        outp.setBlockState(x, y, z, LAVA);
+                        if (outp.getBlockState(x, y + 1, z) != LAVA && rand.nextBoolean())
                         {
-                            idsBig[indexBig+1] = TFCBlocks.lava;
-                            metaBig[indexBig+1] = 0;
+                            outp.setBlockState(x, y + 1, z, LAVA);
                         }
                     }
                 }
             }
         }
     }
-    */
-
 }

@@ -14,4 +14,6 @@ public class BiomeTFC extends Biome
     {
         return getBiomeName();
     }
+
+    // todo : temp, climate, etc
 }

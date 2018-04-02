@@ -20,6 +20,7 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     private static final int ID_DEFAULTS = 2;
 
     private static final int ID_SPAWN_FUZZ = 100;
+    private static final int ID_FLAT_BEDROCK = 101;
 
     private final WorldGenSettings defaults = new WorldGenSettings();
     private final GuiCreateWorld parent;
@@ -75,6 +76,7 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
 
         GuiPageButtonList.GuiListEntry[] page1 = new GuiPageButtonList.GuiListEntry[] {
                 new GuiPageButtonList.GuiSlideEntry(ID_SPAWN_FUZZ, I18n.format("createWorld.customize.custom.spawnfuzz"), true, this, 0, 2500, settings.spawnFuzz),
+                new GuiPageButtonList.GuiButtonEntry(ID_FLAT_BEDROCK, I18n.format("createWorld.customize.custom.flatbedrock"), true, settings.flatBedrock),
         };
         list = new GuiPageButtonList(mc, width, height, 32, height - 32, 25, this, new GuiPageButtonList.GuiListEntry[][] {
                 page1
@@ -146,6 +148,12 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     @Override
     public void setEntryValue(int id, boolean value)
     {
+        switch (id)
+        {
+            case ID_FLAT_BEDROCK:
+                settings.flatBedrock = value;
+                break;
+        }
         update();
     }
 

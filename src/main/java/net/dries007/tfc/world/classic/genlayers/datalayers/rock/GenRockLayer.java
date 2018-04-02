@@ -13,31 +13,31 @@ public abstract class GenRockLayer extends GenLayerTFC
     public static GenLayerTFC initialize(long seed, DataLayer[] rocks)
     {
         GenLayerTFC layer = new GenLayerRockInit(1L, rocks);
-        drawImage(512, layer, "Rock 0");
+//        drawImage(512, layer, "Rock 0");
         layer = new GenLayerFuzzyZoomTFC(2000L, layer);
-        drawImage(512, layer, "Rock 1");
+//        drawImage(512, layer, "Rock 1");
         //layer = new GenLayerAddRock(1L, layer);
-        drawImage(512, layer, "Rock 2");
+//        drawImage(512, layer, "Rock 2");
         layer = new GenLayerZoomTFC(2001L, layer);
         //layer = new GenLayerAddRock(2L, layer);
-        drawImage(512, layer, "Rock 3");
+//        drawImage(512, layer, "Rock 3");
         layer = new GenLayerZoomTFC(2002L, layer);
         //layer = new GenLayerAddRock(3L, layer);
-        drawImage(512, layer, "Rock 4");
+//        drawImage(512, layer, "Rock 4");
         layer = new GenLayerZoomTFC(2003L, layer);
         //layer = new GenLayerAddRock(4L, layer);
-        drawImage(512, layer, "Rock 5");
+//        drawImage(512, layer, "Rock 5");
         layer = new GenLayerSmoothTFC(1000L, layer);
-        drawImage(512, layer, "Rock 6");
+//        drawImage(512, layer, "Rock 6");
         for (int zoomLevel = 0; zoomLevel < 5; ++zoomLevel)
         {
             layer = new GenLayerZoomTFC(1000 + zoomLevel, layer);
-            drawImage(512, layer, "Rock " + (7 + zoomLevel));
+//            drawImage(512, layer, "Rock " + (7 + zoomLevel));
         }
 
         GenLayerSmoothTFC smoothedLayer = new GenLayerSmoothTFC(1000L, layer);
         GenLayerVoronoiZoomTFC voronoiLayer = new GenLayerVoronoiZoomTFC(10L, smoothedLayer);
-        drawImage(512, layer, "Rock Final");
+//        drawImage(512, layer, "Rock Final");
         smoothedLayer.initWorldGenSeed(seed);
         voronoiLayer.initWorldGenSeed(seed);
         return voronoiLayer;

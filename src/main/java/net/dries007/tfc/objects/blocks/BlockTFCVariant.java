@@ -2,9 +2,16 @@ package net.dries007.tfc.objects.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+
+import java.util.Random;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
@@ -20,14 +27,27 @@ public class BlockTFCVariant extends Block
         this.type = type;
         if (type == Type.GRASS || type == Type.DRY_GRASS || type.isAffectedByGravity)
         {
-            this.setTickRandomly(true); //todo: everyone for caveins? For dirt rolling down?
+//            this.setTickRandomly(true); //todo: everyone for caveins? For dirt rolling down?
         }
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Items.AIR; //todo
+    }
+
+    @Override
+    public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune)
+    {
+        //todo
+//        super.dropBlockAsItemWithChance(worldIn, pos, state, chance, fortune);
     }
 
     @Override
     public BlockRenderLayer getBlockLayer()
     {
-        return type.isColorIndexed ? BlockRenderLayer.CUTOUT_MIPPED : BlockRenderLayer.SOLID;
+        return type.isColorIndexed ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
     }
 
     public enum Type
@@ -41,6 +61,8 @@ public class BlockTFCVariant extends Block
         DIRT(false, false),
         GRASS(false, true),
         DRY_GRASS(false, true);
+        // todo: add peat
+        // todo: add clay
 
         public final boolean isAffectedByGravity, isColorIndexed;
 

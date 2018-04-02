@@ -27,15 +27,21 @@ public class ConfigTFC
 
     public static class GeneralCFG
     {
-        @Config.Comment("Various debug options. Use the wand item to activate them individually.")
+        @Config.Comment("Various debug options. Activates some extra wand features.")
         @Config.LangKey("config." + MOD_ID + ".general.debug")
         public boolean debug = Launch.blackboard.get("fml.deobfuscatedEnvironment") != null;
+
+        @Config.Comment("Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!")
+        @Config.LangKey("config." + MOD_ID + ".general.debugWorldGen")
+        @Config.RequiresWorldRestart
+        public boolean debugWorldGen = false;
     }
 
     public static class ClientCFG
     {
         @Config.Comment({"Only works client side!", "Servers require the world type to be set to 'tfc_classic'"})
         @Config.LangKey("config." + MOD_ID + ".client.makeWorldTypeClassicDefault")
+        @Config.RequiresMcRestart
         public boolean makeWorldTypeClassicDefault = true;
     }
 

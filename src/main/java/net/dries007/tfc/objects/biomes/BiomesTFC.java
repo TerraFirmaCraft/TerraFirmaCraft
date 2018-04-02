@@ -8,7 +8,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.Constants.MOD_NAME;
 
+@SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = MOD_ID)
 @GameRegistry.ObjectHolder(MOD_ID)
 public final class BiomesTFC
@@ -36,26 +38,29 @@ public final class BiomesTFC
     {
         IForgeRegistry<Biome> r = event.getRegistry();
 
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_ocean")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_river")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_hell")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_beach")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_gravel_beach").setBaseBiome(MOD_ID + ":beach")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_high_hills")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_plains")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_swampland")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_high_hills_edge").setBaseBiome(MOD_ID + ":high_hills")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_rolling_hills")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_mountains")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_mountains_edge").setBaseBiome(MOD_ID + ":mountains")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_high_plains")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_deep_ocean").setBaseBiome(MOD_ID + ":ocean")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_lake").setBaseBiome(MOD_ID + ":ocean")));
+        // todo lilypads & waterplants?
+
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Ocean").setBaseHeight(-3.6f).setHeightVariation(-2.69999f)));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " River").setBaseHeight(-3.2f).setHeightVariation(-3.0f)));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Beach").setBaseHeight(-2.69f).setHeightVariation(-2.68f)));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Gravel beach").setBaseHeight(-2.69f).setHeightVariation(-2.68f).setBaseBiome("tfc:beach")));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High hills").setBaseHeight(-1.9000001f).setHeightVariation(-1.1f)));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Plains").setBaseHeight(-2.6000001f).setHeightVariation(-2.54f)));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Swampland").setBaseHeight(-2.8f).setHeightVariation(-2.6000001f)));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High hills edge").setBaseHeight(-2.5f).setHeightVariation(-2.3f).setBaseBiome("tfc:high_hills")));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Rolling hills").setBaseHeight(-2.6000001f).setHeightVariation(-2.3f)));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains").setBaseHeight(-1.9000001f).setHeightVariation(-1.1f)));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains edge").setBaseHeight(-2.3f).setHeightVariation(-1.9000001f).setBaseBiome("tfc:mountains")));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High plains").setBaseHeight(-2.3f).setHeightVariation(-2.27f)));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Deep ocean").setBaseHeight(-4.2f).setHeightVariation(-2.69999f).setBaseBiome("tfc:ocean")));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-3.2f).setHeightVariation(-2.6990001f).setBaseBiome("tfc:ocean")));
+
+//        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_hell").setRainDisabled().setTemperature(2.0F).setRainfall(0.0F)));
     }
 
     private static void register(IForgeRegistry<Biome> r, Biome item)
     {
-        r.register(item.setRegistryName(MOD_ID, item.getBiomeName().toLowerCase().replace("tfc_", "")));
+        r.register(item.setRegistryName(MOD_ID, item.getBiomeName().replace(MOD_NAME + " ", "").replace(' ', '_').toLowerCase()));
     }
 
     public static boolean isOceanicBiome(int id)

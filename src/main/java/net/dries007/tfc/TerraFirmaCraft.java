@@ -50,7 +50,6 @@ public class TerraFirmaCraft
     public void postInit(FMLPostInitializationEvent event)
     {
         worldTypeTFC = new WorldTypeTFC();
-//        for (BlockTFCVariant b : BlocksTFC.getAllBlockTFCVariants()) b.getVariant(BlockTFCVariant.Type.RAW);
     }
 
     public static Logger getLog()

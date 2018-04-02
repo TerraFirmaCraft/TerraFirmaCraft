@@ -5,6 +5,7 @@ import net.dries007.tfc.Constants;
 public class WorldGenSettings
 {
     public int spawnFuzz = 250;
+    public boolean flatBedrock = false;
 
     public static WorldGenSettings fromString(String options)
     {
@@ -17,15 +18,18 @@ public class WorldGenSettings
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        WorldGenSettings settings = (WorldGenSettings) o;
+        WorldGenSettings that = (WorldGenSettings) o;
 
-        return spawnFuzz == settings.spawnFuzz;
+        if (spawnFuzz != that.spawnFuzz) return false;
+        return flatBedrock == that.flatBedrock;
     }
 
     @Override
     public int hashCode()
     {
-        return spawnFuzz;
+        int result = spawnFuzz;
+        result = 31 * result + (flatBedrock ? 1 : 0);
+        return result;
     }
 
     @Override
