@@ -7,9 +7,10 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
  * Todo: Rewrite to make typesafe
  * Todo: Store with chunk data to disk so it doesn't need to be regenerated ever (might not be required)
  */
-public class DataLayer
+@SuppressWarnings("WeakerAccess")
+public final class DataLayer
 {
-    public static final DataLayer[] LAYERS = new DataLayer[256];
+    private static final DataLayer[] LAYERS = new DataLayer[256];
 
     public static final DataLayer GRANITE = newBlockDataLayer(0, BlocksTFC.RAW_GRANITE, "Granite");
     public static final DataLayer DIORITE = newBlockDataLayer(1, BlocksTFC.RAW_DIORITE, "Diorite");
@@ -126,16 +127,25 @@ public class DataLayer
 
     private static DataLayer newBlockDataLayer(int i, BlockTFCVariant block, String name)
     {
+        if (LAYERS[i] != null) throw new IllegalArgumentException("Layer " + i + " already in use.");
         return LAYERS[i] = new DataLayer(i, block, name, Integer.MIN_VALUE, Float.NaN);
     }
 
     private static DataLayer newIntDataLayer(int i, String name, int value)
     {
+        if (LAYERS[i] != null) throw new IllegalArgumentException("Layer " + i + " already in use.");
         return LAYERS[i] = new DataLayer(i, null, name, value, Float.NaN);
     }
 
     private static DataLayer newFloatDataLayer(int i, String name, float value)
     {
+        if (LAYERS[i] != null) throw new IllegalArgumentException("Layer " + i + " already in use.");
         return LAYERS[i] = new DataLayer(i, null, name, Integer.MIN_VALUE, value);
+    }
+
+    public static DataLayer get(int i)
+    {
+        if (LAYERS[i] == null) throw new IllegalArgumentException("Layer " + i + " not used.");
+        return LAYERS[i];
     }
 }

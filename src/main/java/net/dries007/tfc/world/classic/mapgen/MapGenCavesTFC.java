@@ -85,23 +85,14 @@ public class MapGenCavesTFC extends MapGenBase
         }
         */
 
-        if (yCoord < 32)
-            width *= 0.5;
-        else if (yCoord < 64)
-            width *= 0.65;
-        else if (yCoord < 96)
-            width *= 0.80;
-        else if (yCoord < 120)
-            width *= 0.90;
-        else
-            width *= 0.5;
+        if (yCoord < 32) width *= 0.5;
+        else if (yCoord < 64) width *= 0.65;
+        else if (yCoord < 96) width *= 0.80;
+        else if (yCoord < 120) width *= 0.90;
+        else width *= 0.5;
 
-        if (this.rand.nextInt(8) == 0)
-            width += 1;
-
-        if (this.rand.nextInt(caveChance) != 0)
-            return;
-            /* var7 = 0; */
+        if (this.rand.nextInt(8) == 0) width += 1;
+        if (this.rand.nextInt(caveChance) != 0) return;
 
         for (int i = 0; i < runs; i++)
         {
@@ -152,7 +143,8 @@ public class MapGenCavesTFC extends MapGenBase
         }
 
         final int rndRange2 = rng.nextInt(rndRange / 2) + rndRange / 4;
-        for (boolean smallRnd = rng.nextInt(6) == 0; i1 < rndRange; ++i1)
+        boolean smallRnd = rng.nextInt(6) == 0;
+        for (; i1 < rndRange; ++i1)
         {
             float var33 = MathHelper.cos(f3);
             float var34 = MathHelper.sin(f3);
@@ -160,11 +152,7 @@ public class MapGenCavesTFC extends MapGenBase
             yOffset += var34;
             zOffset += MathHelper.sin(f2) * var33;
 
-            if (smallRnd)
-                f3 *= 0.92F;
-            else
-                f3 *= 0.7F;
-
+            f3 *= smallRnd ? 0.92F : 0.7F;
             f3 += lf2 * 0.1F;
             f2 += lf1 * 0.1F;
             lf2 *= 0.9F;
@@ -191,108 +179,86 @@ public class MapGenCavesTFC extends MapGenBase
                 if (localXOffset * localXOffset + localZOffset * localZOffset - var39 * var39 > var41 * var41)
                     return;
 
-                if (xOffset >= worldX - 16.0D - radius * 2.0D && zOffset >= worldZ - 16.0D - radius * 2.0D && xOffset <= worldX + 16.0D + radius * 2.0D && zOffset <= worldZ + 16.0D + radius * 2.0D)
+                if (!(xOffset >= worldX - 16.0D - radius * 2.0D) || !(zOffset >= worldZ - 16.0D - radius * 2.0D) || !(xOffset <= worldX + 16.0D + radius * 2.0D) || !(zOffset <= worldZ + 16.0D + radius * 2.0D))
+                    continue;
+
+                int initialX = MathHelper.floor(xOffset - radius) - chunkX * 16 - 1;
+                int maxX = MathHelper.floor(xOffset + radius) - chunkX * 16 + 1;
+
+                int minY = MathHelper.floor(yOffset - yRadius) - 1;
+                int initialY = MathHelper.floor(yOffset + yRadius) + 1;
+
+                int initialZ = MathHelper.floor(zOffset - radius) - chunkZ * 16 - 1;
+                int maxZ = MathHelper.floor(zOffset + radius) - chunkZ * 16 + 1;
+
+                if (initialX < 0) initialX = 0;
+                if (maxX > 16) maxX = 16;
+                if (minY < 1) minY = 1;
+                if (initialY > 250) initialY = 250;
+                if (initialZ < 0) initialZ = 0;
+                if (maxZ > 16) maxZ = 16;
+
+                boolean water = false; // todo: labeled break?
+                for (int xCoord = initialX; !water && xCoord < maxX; ++xCoord)
                 {
-                    int initialX = MathHelper.floor(xOffset - radius) - chunkX * 16 - 1;
-                    int maxX = MathHelper.floor(xOffset + radius) - chunkX * 16 + 1;
-
-                    int minY = MathHelper.floor(yOffset - yRadius) - 1;
-                    int initialY = MathHelper.floor(yOffset + yRadius) + 1;
-
-                    int initialZ = MathHelper.floor(zOffset - radius) - chunkZ * 16 - 1;
-                    int maxZ = MathHelper.floor(zOffset + radius) - chunkZ * 16 + 1;
-
-                    if (initialX < 0)
-                        initialX = 0;
-
-                    if (maxX > 16)
-                        maxX = 16;
-
-                    if (minY < 1)
-                        minY = 1;
-
-                    if (initialY > 250)
-                        initialY = 250;
-
-                    if (initialZ < 0)
-                        initialZ = 0;
-
-                    if (maxZ > 16)
-                        maxZ = 16;
-
-                    boolean water = false;
-                    int xCoord;
-                    int zCoord;
-
-                    // todo: this can be done better
-                    for (xCoord = initialX; !water && xCoord < maxX; ++xCoord)
+                    for (int zCoord = initialZ; !water && zCoord < maxZ; ++zCoord)
                     {
-                        for (zCoord = initialZ; !water && zCoord < maxZ; ++zCoord)
+                        for (int yCoord = Math.max(initialY + 1, 255); !water && yCoord >= minY - 1; --yCoord)
                         {
-                            for (int yCoord = initialY + 1; !water && yCoord >= minY - 1; --yCoord)
-                            {
-                                if (yCoord >= 0 && yCoord < 256)
-                                {
-                                    if (BlocksTFC.isWater(primer.getBlockState(xCoord, zCoord, yCoord)))
-                                        water = true;
-                                    if (yCoord != minY - 1 && xCoord != initialX && xCoord != maxX - 1 && zCoord != initialZ && zCoord != maxZ - 1)
-                                        yCoord = minY;
-                                }
-                            }
+                            if (BlocksTFC.isWater(primer.getBlockState(xCoord, zCoord, yCoord)))
+                                water = true;
+                            if (yCoord != minY - 1 && xCoord != initialX && xCoord != maxX - 1 && zCoord != initialZ && zCoord != maxZ - 1)
+                                yCoord = minY;
                         }
                     }
+                }
+                if (water) continue;
 
-                    if (water) continue;
-
-                    for (xCoord = initialX; xCoord < maxX; ++xCoord)
+                for (int xCoord = initialX; xCoord < maxX; ++xCoord)
+                {
+                    final double xDistNorm = (xCoord + chunkX * 16 + 0.5D - xOffset) / radius;
+                    for (int zCoord = initialZ; zCoord < maxZ; ++zCoord)
                     {
-                        final double xDistNorm = (xCoord + chunkX * 16 + 0.5D - xOffset) / radius;
-                        for (zCoord = initialZ; zCoord < maxZ; ++zCoord)
-                        {
-                            final double zDistNorm = (zCoord + chunkZ * 16 + 0.5D - zOffset) / radius;
+                        final double zDistNorm = (zCoord + chunkZ * 16 + 0.5D - zOffset) / radius;
 //                            int index = (xCoord * 16 + zCoord) * 256 + initialY;
 
-                            if (xDistNorm * xDistNorm + zDistNorm * zDistNorm >= 1.0D)
+                        if (xDistNorm * xDistNorm + zDistNorm * zDistNorm >= 1.0D)
+                            continue;
+
+                        IBlockState grass = null;
+
+                        for (int y = initialY - 1; y >= minY; y--)
+                        {
+                            double yNorm = (y + 0.5D - yOffset) / yRadius;
+                            if (!(yNorm > -0.7D) || !(xDistNorm * xDistNorm + yNorm * yNorm + zDistNorm * zDistNorm < 1.0D))
                                 continue;
 
-                            IBlockState grass = null;
+                            final IBlockState current = primer.getBlockState(xCoord, y, zCoord);
 
-                            for (int y = initialY - 1; y >= minY; y--)
+                            if (!BlocksTFC.isSoil(current) && !BlocksTFC.isRawStone(current)) continue;
+
+                            if (BlocksTFC.isGrass(current)) grass = primer.getBlockState(xCoord, y, zCoord);
+
+                            for(int upCount = 1; BlocksTFC.isSoilOrGravel(primer.getBlockState(xCoord, y + upCount, zCoord)); upCount++)
+                                primer.setBlockState(xCoord, y + upCount, zCoord, AIR);
+
+
+                            if (y < 20 /* todo make option? was 10*/ /*todo && TFC_Climate.getStability(this.worldObj, (int)worldX, (int)worldZ) == 1*/)
                             {
-                                double yNorm = (y + 0.5D - yOffset) / yRadius;
-                                if (yNorm > -0.7D && xDistNorm * xDistNorm + yNorm * yNorm + zDistNorm * zDistNorm < 1.0D)
+                                primer.setBlockState(xCoord, y, zCoord, LAVA);
+                            }
+                            else
+                            {
+                                primer.setBlockState(xCoord, y, zCoord, AIR);
+                                if (grass != null && BlocksTFC.isDirt(primer.getBlockState(xCoord, y - 1, zCoord)))
                                 {
-                                    final IBlockState current = primer.getBlockState(xCoord, y, zCoord);
-                                    if (BlocksTFC.isGrass(current))
-                                    {
-                                        grass = primer.getBlockState(xCoord, y, zCoord);
-                                    }
-                                    if (BlocksTFC.isSoil(current) || BlocksTFC.isRawStone(current))
-                                    {
-                                        for(int upCount = 1; BlocksTFC.isSoilOrGravel(primer.getBlockState(xCoord, y + upCount, zCoord)); upCount++)
-                                        {
-                                            primer.setBlockState(xCoord, y + upCount, zCoord, AIR);
-                                        }
-
-                                        if (y < 10 /*todo && TFC_Climate.getStability(this.worldObj, (int)worldX, (int)worldZ) == 1*/)
-                                        {
-                                            primer.setBlockState(xCoord, y, zCoord, LAVA);
-                                        }
-                                        else
-                                        {
-                                            primer.setBlockState(xCoord, y, zCoord, AIR);
-                                            if (grass != null && BlocksTFC.isDirt(primer.getBlockState(xCoord, y - 1, zCoord)))
-                                            {
-                                                primer.setBlockState(xCoord, y - 1, zCoord, grass);
-                                            }
-                                        }
-                                    }
+                                    primer.setBlockState(xCoord, y - 1, zCoord, grass);
                                 }
                             }
                         }
                     }
-                    if (onlyOne) break;
                 }
+                if (onlyOne) break;
             }
         }
     }

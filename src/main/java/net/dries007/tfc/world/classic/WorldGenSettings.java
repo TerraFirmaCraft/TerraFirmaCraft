@@ -1,7 +1,9 @@
 package net.dries007.tfc.world.classic;
 
+import com.google.common.base.Strings;
 import net.dries007.tfc.Constants;
 
+@SuppressWarnings("WeakerAccess")
 public class WorldGenSettings
 {
     public final int spawnFuzz;
@@ -69,6 +71,7 @@ public class WorldGenSettings
 
     public static WorldGenSettingsBuilder fromString(String options)
     {
+        if (Strings.isNullOrEmpty(options)) return new WorldGenSettingsBuilder();
         return Constants.GSON.fromJson(options, WorldGenSettingsBuilder.class);
     }
 

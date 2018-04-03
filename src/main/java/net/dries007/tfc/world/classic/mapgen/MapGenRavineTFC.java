@@ -92,79 +92,61 @@ public class MapGenRavineTFC extends MapGenBase
                 if (xOffset * xOffset + zOffset * zOffset - roundsLeft * roundsLeft > radius * radius) return;
             }
 
-            if (xCoord >= chunkMidX - 16.0D - min * 2.0D && zCoord >= chunkMidZ - 16.0D - min * 2.0D && xCoord <= chunkMidX + 16.0D + min * 2.0D && zCoord <= chunkMidZ + 16.0D + min * 2.0D)
+            if (!(xCoord >= chunkMidX - 16.0D - min * 2.0D &&
+                    zCoord >= chunkMidZ - 16.0D - min * 2.0D &&
+                    xCoord <= chunkMidX + 16.0D + min * 2.0D &&
+                    zCoord <= chunkMidZ + 16.0D + min * 2.0D))
+                continue;
+
+            int xMin = MathHelper.floor(xCoord - min) - chunkX * 16 - 1;
+            int xMax = MathHelper.floor(xCoord + min) - chunkX * 16 + 1;
+            int yMin = MathHelper.floor(yCoord - max) - 1;
+            int yMax = MathHelper.floor(yCoord + max) + 1;
+            int zMin = MathHelper.floor(zCoord - min) - chunkZ * 16 - 1;
+            int zMax = MathHelper.floor(zCoord + min) - chunkZ * 16 + 1;
+
+            if (xMin < 0) xMin = 0;
+            if (xMax > 16) xMax = 16;
+            if (yMin < 1) yMin = 1;
+            if (yMax > 250) yMax = 250;
+            if (zMin < 0) zMin = 0;
+            if (zMax > 16) zMax = 16;
+
+            boolean isBlocked = false; // todo convert to label continue?
+            for (int x = xMin; !isBlocked && x < xMax; ++x)
             {
-                int xMin = MathHelper.floor(xCoord - min) - chunkX * 16 - 1;
-                int xMax = MathHelper.floor(xCoord + min) - chunkX * 16 + 1;
-                int yMin = MathHelper.floor(yCoord - max) - 1;
-                int yMax = MathHelper.floor(yCoord + max) + 1;
-                int zMin = MathHelper.floor(zCoord - min) - chunkZ * 16 - 1;
-                int zMax = MathHelper.floor(zCoord + min) - chunkZ * 16 + 1;
-
-                if (xMin < 0)
-                    xMin = 0;
-
-                if (xMax > 16)
-                    xMax = 16;
-
-                if (yMin < 1)
-                    yMin = 1;
-
-                if (yMax > 250)
-                    yMax = 250;
-
-                if (zMin < 0)
-                    zMin = 0;
-
-                if (zMax > 16)
-                    zMax = 16;
-
-                boolean isBlocked = false;
-                for (int x = xMin; !isBlocked && x < xMax; ++x)
+                for (int z = zMin; !isBlocked && z < zMax; ++z)
                 {
-                    for (int z = zMin; !isBlocked && z < zMax; ++z)
+                    for (int y = Math.max(yMax + 1, 255); !isBlocked && y >= yMin - 1; --y)
                     {
-                        for (int y = yMax + 1; !isBlocked && y >= yMin - 1 && y < 256; --y)
-                        {
-                            if (BlocksTFC.isWater(primer.getBlockState(x, y, z)))
-                                isBlocked = true;
-                            if (y != yMin - 1 && x != xMin && x != xMax - 1 && z != zMin && z != zMax - 1)
-                                y = yMin;
-                        }
+                        if (BlocksTFC.isWater(primer.getBlockState(x, y, z))) isBlocked = true;
+                        if (y != yMin - 1 && x != xMin && x != xMax - 1 && z != zMin && z != zMax - 1) y = yMin;
                     }
                 }
-                if (isBlocked) continue;
+            }
+            if (isBlocked) continue;
 
-                for (int x = xMin; x < xMax; ++x)
+            for (int x = xMin; x < xMax; ++x)
+            {
+                final double xNormalized = (x + chunkX * 16 + 0.5D - xCoord) / min;
+
+                for (int z = zMin; z < zMax; ++z)
                 {
-                    double xNormalized = (x + chunkX * 16 + 0.5D - xCoord) / min;
+                    final double zNormalized = (z + chunkZ * 16 + 0.5D - zCoord) / min;
 
-                    for (int z = zMin; z < zMax; ++z)
+                    if (xNormalized * xNormalized + zNormalized * zNormalized >= 1.0D) continue;
+
+                    for (int y = yMax - 1; y >= yMin; --y)
                     {
-                        double zNormalized = (z + chunkZ * 16 + 0.5D - zCoord) / min;
+                        final double yNormalized = (y + 0.5D - yCoord) / max;
 
-                        if (xNormalized * xNormalized + zNormalized * zNormalized >= 1.0D) continue;
+                        if (!((xNormalized * xNormalized + zNormalized * zNormalized) * multipliers[y] + yNormalized * yNormalized / 6.0D < 1.0D)) continue;
+                        if (!BlocksTFC.isGround(primer.getBlockState(x, y, z))) continue;
 
-                        for (int y = yMax - 1; y >= yMin; --y)
-                        {
-                            double yNormalized = (y + 0.5D - yCoord) / max;
+                        for(int upCount = 1; BlocksTFC.isSoilOrGravel(primer.getBlockState(x, y + upCount, z)); upCount++)
+                            primer.setBlockState(x, y + upCount, z, AIR);
 
-                            if ((xNormalized * xNormalized + zNormalized * zNormalized) * multipliers[y] + yNormalized * yNormalized / 6.0D < 1.0D)
-                            {
-                                if (!BlocksTFC.isGround(primer.getBlockState(x, y, z))) continue;
-
-                                for(int upCount = 1; BlocksTFC.isSoilOrGravel(primer.getBlockState(x, y + upCount, z)); upCount++)
-                                {
-                                    primer.setBlockState(x, y + upCount, z, AIR);
-                                }
-
-                                if (y < 10)
-                                    primer.setBlockState(x, y, z, LAVA);
-                                else
-                                    primer.setBlockState(x, y, z, AIR);
-
-                            }
-                        }
+                        primer.setBlockState(x, y, z, y < 20 /*todo: make option, was 10*/ ? LAVA : AIR); // todo: check stability?
                     }
                 }
             }

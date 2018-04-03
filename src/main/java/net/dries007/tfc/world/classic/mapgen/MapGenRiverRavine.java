@@ -96,60 +96,40 @@ public class MapGenRiverRavine extends MapGenBase
                     return;
             }
 
-            if (startX >= worldX - 16.0D - min * 2.0D && startZ >= worldZ - 16.0D - min * 2.0D && startX <= worldX + 16.0D + min * 2.0D && startZ <= worldZ + 16.0D + min * 2.0D)
+            if (!(startX >= worldX - 16.0D - min * 2.0D) || !(startZ >= worldZ - 16.0D - min * 2.0D) || !(startX <= worldX + 16.0D + min * 2.0D) || !(startZ <= worldZ + 16.0D + min * 2.0D))
+                continue;
+
+            int xMin = MathHelper.floor(startX - min) - chunkX * 16 - 1;
+            int xMax = MathHelper.floor(startX + min) - chunkX * 16 + 1;
+            int yMin = MathHelper.floor(startY - max) - 1;
+            int yMax = MathHelper.floor(startY + max) + 1;
+            int zMin = MathHelper.floor(startZ - min) - chunkZ * 16 - 1;
+            int zMax = MathHelper.floor(startZ + min) - chunkZ * 16 + 1;
+
+            if (xMin < 0) xMin = 0;
+            if (xMax > 16) xMax = 16;
+            if (yMin < 1) yMin = 1;
+            if (yMax > 250) yMax = 250;
+            if (zMin < 0) zMin = 0;
+            if (zMax > 16) zMax = 16;
+
+            for (int x = xMin; x < xMax; x++)
             {
-                int xMin = MathHelper.floor(startX - min) - chunkX * 16 - 1;
-                int xMax = MathHelper.floor(startX + min) - chunkX * 16 + 1;
-                int yMin = MathHelper.floor(startY - max) - 1;
-                int yMax = MathHelper.floor(startY + max) + 1;
-                int zMin = MathHelper.floor(startZ - min) - chunkZ * 16 - 1;
-                int zMax = MathHelper.floor(startZ + min) - chunkZ * 16 + 1;
-
-                if (xMin < 0)
-                    xMin = 0;
-
-                if (xMax > 16)
-                    xMax = 16;
-
-                if (yMin < 1)
-                    yMin = 1;
-
-                if (yMax > 250)
-                    yMax = 250;
-
-                if (zMin < 0)
-                    zMin = 0;
-
-                if (zMax > 16)
-                    zMax = 16;
-
-                for (int x = xMin; x < xMax; x++)
+                final double xNormalized = (x + chunkX * 16 + 0.5D - startX) / min;
+                for (int z = zMin; z < zMax; z++)
                 {
-                    double xNormalized = (x + chunkX * 16 + 0.5D - startX) / min;
-                    for (int z = zMin; z < zMax; z++)
+                    final double zNormalized = (z + chunkZ * 16 + 0.5D - startZ) / min;
+                    if (xNormalized * xNormalized + zNormalized * zNormalized >= 1.0D) continue;
+
+                    for (int y = yMax - 1; y >= yMin; y--)
                     {
-                        double zNormalized = (z + chunkZ * 16 + 0.5D - startZ) / min;
-                        if (xNormalized * xNormalized + zNormalized * zNormalized >= 1.0D) continue;
+                        final double yNormalized = (y + 0.5D - startY) / max;
+                        if ((xNormalized * xNormalized + zNormalized * zNormalized) * multipliers[y] + yNormalized * yNormalized / 6.0D >= 1.0D) continue;
+                        if (!BlocksTFC.isRawStone(primer.getBlockState(x, y, z)) && !BlocksTFC.isSoil(primer.getBlockState(x, y, z))) continue;
 
-                        for (int y = yMax - 1; y >= yMin; y--)
-                        {
-                            double yNormalized = (y + 0.5D - startY) / max;
-                            if ((xNormalized * xNormalized + zNormalized * zNormalized) * multipliers[y] + yNormalized * yNormalized / 6.0D >= 1.0D) continue;
-                            if (!BlocksTFC.isRawStone(primer.getBlockState(x, y, z)) && !BlocksTFC.isSoil(primer.getBlockState(x, y, z))) continue;
-
-                            if (y < 10)
-                            {
-                                primer.setBlockState(x, y, z, LAVA);
-                            }
-                            else if (y < waterHeight)
-                            {
-                                primer.setBlockState(x, y, z, FRESH_WATER);
-                            }
-                            else
-                            {
-                                primer.setBlockState(x, y, z, AIR);
-                            }
-                        }
+                        if (y < 20/* todo make option, was 10*/) primer.setBlockState(x, y, z, LAVA); // todo: check stability?
+                        else if (y < waterHeight) primer.setBlockState(x, y, z, FRESH_WATER);
+                        else primer.setBlockState(x, y, z, AIR);
                     }
                 }
             }
