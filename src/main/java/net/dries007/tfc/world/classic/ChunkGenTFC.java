@@ -13,6 +13,8 @@ import net.dries007.tfc.world.classic.genlayers.datalayers.rock.GenRockLayer;
 import net.dries007.tfc.world.classic.genlayers.datalayers.stability.GenStabilityLayer;
 import net.dries007.tfc.world.classic.genlayers.datalayers.tree.GenTreeLayer;
 import net.dries007.tfc.world.classic.mapgen.MapGenCavesTFC;
+import net.dries007.tfc.world.classic.mapgen.MapGenRavineTFC;
+import net.dries007.tfc.world.classic.mapgen.MapGenRiverRavine;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
@@ -37,22 +39,24 @@ import static net.dries007.tfc.world.classic.DataLayer.*;
 
 /**
  * Todo: make caves in top stone layer under ocean water? (maybe 2 layers under deep ocean?)
+ * todo: *important* Store generated layerdata on chunk with capabilities?
  */
 public class ChunkGenTFC implements IChunkGenerator
 {
-    private static final IBlockState STONE = Blocks.STONE.getDefaultState();
-    private static final IBlockState AIR = Blocks.AIR.getDefaultState();
+    public static final IBlockState STONE = Blocks.STONE.getDefaultState();
+    public static final IBlockState AIR = Blocks.AIR.getDefaultState();
     @SuppressWarnings("deprecation")
-    private static final IBlockState SALT_WATER = Blocks.STAINED_GLASS.getStateFromMeta(EnumDyeColor.BLUE.getMetadata());
+    public static final IBlockState SALT_WATER = Blocks.STAINED_GLASS.getStateFromMeta(EnumDyeColor.BLUE.getMetadata()); // todo: replace
     @SuppressWarnings("deprecation")
-    private static final IBlockState FRESH_WATER = Blocks.STAINED_GLASS.getStateFromMeta(EnumDyeColor.LIGHT_BLUE.getMetadata());
-    private static final IBlockState LAVA = Blocks.LAVA.getDefaultState();
-    private static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
+    public static final IBlockState FRESH_WATER = Blocks.STAINED_GLASS.getStateFromMeta(EnumDyeColor.LIGHT_BLUE.getMetadata()); // todo: replace
+    public static final IBlockState LAVA = Blocks.LAVA.getDefaultState(); // todo: replace
+    public static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
+
+    public final WorldGenSettings s;
 
     private final World world;
     private final long seed;
     private final Random rand;
-    private final WorldGenSettings settings;
 
     private final NoiseGeneratorOctaves noiseGen1;
     private final NoiseGeneratorOctaves noiseGen2;
@@ -73,7 +77,6 @@ public class ChunkGenTFC implements IChunkGenerator
     private final GenLayerTFC stabilityGenLayer;
     private final GenLayerTFC phGenLayer;
     private final GenLayerTFC drainageGenLayer;
-
 
     private final double[] noise1 = new double[425];
     private final double[] noise2 = new double[425];
@@ -110,20 +113,17 @@ public class ChunkGenTFC implements IChunkGenerator
     private final int[] seaLevelOffsetMap = new int[256];
     private final int[] chunkHeightMap = new int[256];
 
-    private final MapGenBase caveGen = new MapGenCavesTFC();
-
-    /* todo
-    private MapGenRavineTFC surfaceRavineGen = new MapGenRavineTFC(125, 30);//surface
-    private MapGenRavineTFC ravineGen = new MapGenRavineTFC(20, 50);//deep
-    private MapGenRiverRavine riverRavineGen = new MapGenRiverRavine();
-    */
+    private final MapGenBase caveGen;
+    private final MapGenBase surfaceRavineGen;
+    private final MapGenBase ravineGen;
+    private final MapGenBase riverRavineGen;
 
     public ChunkGenTFC(World w, String settingsString)
     {
         this.world = w;
         seed = world.getSeed();
         rand = new Random(seed);
-        settings = WorldGenSettings.fromString(settingsString);
+        s = WorldGenSettings.fromString(settingsString).build();
 
         noiseGen1 = new NoiseGeneratorOctaves(rand, 4);
         noiseGen2 = new NoiseGeneratorOctaves(rand, 16);
@@ -146,6 +146,11 @@ public class ChunkGenTFC implements IChunkGenerator
         stabilityGenLayer = GenStabilityLayer.initialize(seed+9);
         phGenLayer = GenPHLayer.initialize(seed+10);
         drainageGenLayer = GenDrainageLayer.initialize(seed+11);
+
+        caveGen = new MapGenCavesTFC();
+        surfaceRavineGen = new MapGenRavineTFC(s.surfaceRavineRarity, s.surfaceRavineHeight, s.surfaceRavineVariability);
+        ravineGen = new MapGenRavineTFC(s.ravineRarity, s.ravineHeight, s.ravineVariability);
+        riverRavineGen = new MapGenRiverRavine(s.riverRavineRarity);
     }
 
     @Override
@@ -179,12 +184,9 @@ public class ChunkGenTFC implements IChunkGenerator
         replaceBlocksForBiomeHigh(chunkX, chunkZ, chunkPrimerIn, chunkPrimerOut);
 
         caveGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
-
-        /* todo
-        surfaceRavineGen.generate(this, world, chunkX, chunkZ, idsBig, metaBig);//surface
-        ravineGen.generate(this, world, chunkX, chunkZ, idsBig, metaBig);//deep
-        riverRavineGen.generate(this, world, chunkX, chunkZ, idsBig, metaBig);
-        */
+        surfaceRavineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
+        ravineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
+        riverRavineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
 
         if (ConfigTFC.GENERAL.debugWorldGen)
         {
@@ -617,7 +619,7 @@ public class ChunkGenTFC implements IChunkGenerator
                      * LOW PART (yOffset is NOT used)
                      */
 
-                    if (y < 1 + /*(seaLevelOffsetMap[colIndex] / 3)*/ + (settings.flatBedrock ? 0 : rand.nextInt(3)))
+                    if (y < 1 + /*(seaLevelOffsetMap[colIndex] / 3)*/ + (s.flatBedrock ? 0 : rand.nextInt(3)))
                     {
                         outp.setBlockState(x, y, z, BEDROCK);
                     }

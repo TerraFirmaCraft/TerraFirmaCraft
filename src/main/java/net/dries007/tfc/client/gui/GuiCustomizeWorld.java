@@ -4,13 +4,13 @@ import com.google.common.base.Strings;
 import com.google.gson.JsonParseException;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.world.classic.WorldGenSettings;
+import net.dries007.tfc.world.classic.WorldGenSettings.WorldGenSettingsBuilder;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
-
 
 @SideOnly(Side.CLIENT)
 public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelper, GuiPageButtonList.GuiResponder
@@ -22,7 +22,16 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     private static final int ID_SPAWN_FUZZ = 100;
     private static final int ID_FLAT_BEDROCK = 101;
 
-    private final WorldGenSettings defaults = new WorldGenSettings();
+    private static final int ID_RAVINE_RARITY = 102;
+    private static final int ID_RAVINE_HEIGHT = 103;
+    private static final int ID_RAVINE_VARIABILITY = 104;
+
+    private static final int ID_SURFACE_RAVINE_RARITY = 105;
+    private static final int ID_SURFACE_RAVINE_HEIGHT = 106;
+    private static final int ID_SURFACE_RAVINE_VARIABILITY = 107;
+    
+    private static final int ID_RIVER_RAVINE_RARITY = 108;
+
     private final GuiCreateWorld parent;
 
     // Final by all but modifier
@@ -33,7 +42,7 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
 
     private GuiPageButtonList list;
 
-    private WorldGenSettings settings;
+    private WorldGenSettingsBuilder settings;
 
     public GuiCustomizeWorld(GuiCreateWorld guiCreateWorld, String prevSettings)
     {
@@ -43,10 +52,10 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
 
     private void update()
     {
-        defaultsBtn.enabled = !settings.equals(defaults);
+        defaultsBtn.enabled = !settings.isDefault();
     }
 
-    private WorldGenSettings loadSettings(String str)
+    private WorldGenSettingsBuilder loadSettings(String str)
     {
         if (!Strings.isNullOrEmpty(str))
         {
@@ -56,11 +65,11 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
             }
             catch (JsonParseException e)
             {
-                TerraFirmaCraft.getLog().error("Error parsing settings: {}", str);
+                TerraFirmaCraft.getLog().error("Error parsing s: {}", str);
                 TerraFirmaCraft.getLog().catching(e);
             }
         }
-        return new WorldGenSettings();
+        return new WorldGenSettingsBuilder();
     }
 
     @Override
@@ -77,6 +86,16 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
         GuiPageButtonList.GuiListEntry[] page1 = new GuiPageButtonList.GuiListEntry[] {
                 new GuiPageButtonList.GuiSlideEntry(ID_SPAWN_FUZZ, I18n.format("createWorld.customize.custom.spawnfuzz"), true, this, 0, 2500, settings.spawnFuzz),
                 new GuiPageButtonList.GuiButtonEntry(ID_FLAT_BEDROCK, I18n.format("createWorld.customize.custom.flatbedrock"), true, settings.flatBedrock),
+
+                new GuiPageButtonList.GuiSlideEntry(ID_RAVINE_RARITY, I18n.format("createWorld.customize.custom.ravineRarity"), true, this, 0, 250, settings.ravineRarity),
+                new GuiPageButtonList.GuiSlideEntry(ID_RAVINE_HEIGHT, I18n.format("createWorld.customize.custom.ravineHeight"), true, this, 0, 50, settings.ravineHeight),
+                new GuiPageButtonList.GuiSlideEntry(ID_RAVINE_VARIABILITY, I18n.format("createWorld.customize.custom.ravineVariability"), true, this, 0, 100, settings.ravineVariability),
+
+                new GuiPageButtonList.GuiSlideEntry(ID_SURFACE_RAVINE_RARITY, I18n.format("createWorld.customize.custom.surfaceRavineRarity"), true, this, 0, 250, settings.surfaceRavineRarity),
+                new GuiPageButtonList.GuiSlideEntry(ID_SURFACE_RAVINE_HEIGHT, I18n.format("createWorld.customize.custom.surfaceRavineHeight"), true, this, 0, 250, settings.surfaceRavineHeight),
+                new GuiPageButtonList.GuiSlideEntry(ID_SURFACE_RAVINE_VARIABILITY, I18n.format("createWorld.customize.custom.surfaceRavineVariability"), true, this, 0, 100, settings.surfaceRavineVariability),
+
+                new GuiPageButtonList.GuiSlideEntry(ID_RIVER_RAVINE_RARITY, I18n.format("createWorld.customize.custom.riverRavineRarity"), true, this, 0, 500, settings.riverRavineRarity),
         };
         list = new GuiPageButtonList(mc, width, height, 32, height - 32, 25, this, new GuiPageButtonList.GuiListEntry[][] {
                 page1
@@ -102,7 +121,7 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
         switch (button.id)
         {
             case ID_DONE:
-                parent.chunkProviderSettingsJson = settings.toString();
+                parent.chunkProviderSettingsJson = settings.build().toString();
                 mc.displayGuiScreen(parent);
                 break;
 
@@ -150,9 +169,7 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     {
         switch (id)
         {
-            case ID_FLAT_BEDROCK:
-                settings.flatBedrock = value;
-                break;
+            case ID_FLAT_BEDROCK: settings.flatBedrock = value; break;
         }
         update();
     }
@@ -162,9 +179,17 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     {
         switch (id)
         {
-            case ID_SPAWN_FUZZ:
-                settings.spawnFuzz = Math.round(value);
-                break;
+            case ID_SPAWN_FUZZ: settings.spawnFuzz = Math.round(value); break;
+
+            case ID_RAVINE_RARITY: settings.ravineRarity = Math.round(value); break;
+            case ID_RAVINE_HEIGHT: settings.ravineHeight = Math.round(value); break;
+            case ID_RAVINE_VARIABILITY: settings.ravineVariability = Math.round(value); break;
+
+            case ID_SURFACE_RAVINE_RARITY: settings.surfaceRavineRarity = Math.round(value); break;
+            case ID_SURFACE_RAVINE_HEIGHT: settings.surfaceRavineHeight = Math.round(value); break;
+            case ID_SURFACE_RAVINE_VARIABILITY: settings.surfaceRavineVariability = Math.round(value); break;
+
+            case ID_RIVER_RAVINE_RARITY: settings.riverRavineRarity = Math.round(value); break;
         }
         update();
     }
@@ -185,7 +210,15 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     {
         switch (id)
         {
-            case ID_SPAWN_FUZZ: return String.valueOf(Math.round(value));
+            case ID_SPAWN_FUZZ:
+            case ID_RAVINE_RARITY:
+            case ID_RAVINE_HEIGHT:
+            case ID_RAVINE_VARIABILITY:
+            case ID_SURFACE_RAVINE_RARITY:
+            case ID_SURFACE_RAVINE_HEIGHT:
+            case ID_SURFACE_RAVINE_VARIABILITY:
+            case ID_RIVER_RAVINE_RARITY:
+                return String.valueOf(Math.round(value));
         }
         return String.valueOf(value);
     }

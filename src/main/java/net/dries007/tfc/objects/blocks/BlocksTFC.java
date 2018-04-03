@@ -1,12 +1,11 @@
 package net.dries007.tfc.objects.blocks;
 
 import com.google.common.collect.ImmutableList;
+import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -442,16 +441,15 @@ public final class BlocksTFC
         return item;
     }
 
+    // todo replace
+
     public static boolean isWater(IBlockState current)
     {
-        // todo: check for other water types
-        // todo: replace
-        //noinspection deprecation
-        return current == Blocks.STAINED_GLASS.getStateFromMeta(EnumDyeColor.BLUE.getMetadata()) ||
-                current == Blocks.STAINED_GLASS.getStateFromMeta(EnumDyeColor.LIGHT_BLUE.getMetadata());
+        return current == ChunkGenTFC.SALT_WATER || current == ChunkGenTFC.FRESH_WATER;
     }
 
     // todo: change to property of type? (soil & stone maybe?)
+    // todo: peat grass, clay grass
 
     public static boolean isRawStone(IBlockState current)
     {
@@ -486,5 +484,12 @@ public final class BlocksTFC
         if (!(current.getBlock() instanceof BlockTFCVariant)) return false;
         BlockTFCVariant.Type type = ((BlockTFCVariant) current.getBlock()).type;
         return type == GRASS || type == DRY_GRASS;
+    }
+
+    public static boolean isGround(IBlockState current)
+    {
+        if (!(current.getBlock() instanceof BlockTFCVariant)) return false;
+        BlockTFCVariant.Type type = ((BlockTFCVariant) current.getBlock()).type;
+        return type == GRASS || type == DRY_GRASS || type == DIRT || type == GRAVEL || type == RAW || type == SAND;
     }
 }

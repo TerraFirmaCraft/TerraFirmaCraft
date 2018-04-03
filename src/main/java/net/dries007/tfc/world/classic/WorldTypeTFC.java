@@ -61,9 +61,8 @@ public class WorldTypeTFC extends WorldType
     @Override
     public int getSpawnFuzz(WorldServer world, MinecraftServer server)
     {
-        return 0; //todo
-//        if (world.getGameRules().hasRule("spawnRadius")) return world.getGameRules().getInt("spawnRadius");
-//        return ((ChunkGenTFC) world.getChunkProvider().chunkGenerator).settings.spawnFuzz;
+        if (world.getGameRules().hasRule("spawnRadius")) return world.getGameRules().getInt("spawnRadius");
+        return ((ChunkGenTFC) world.getChunkProvider().chunkGenerator).s.spawnFuzz;
     }
 
     @Override

@@ -2,7 +2,6 @@ package net.dries007.tfc.world.classic.mapgen;
 
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -10,11 +9,19 @@ import net.minecraft.world.gen.MapGenBase;
 
 import java.util.Random;
 
+import static net.dries007.tfc.world.classic.ChunkGenTFC.AIR;
+import static net.dries007.tfc.world.classic.ChunkGenTFC.LAVA;
+
 /**
  * todo: clean up. This needs to be simplified a lot, or split up in functions with sensible variable names.
  */
 public class MapGenCavesTFC extends MapGenBase
 {
+    public MapGenCavesTFC()
+    {
+        // todo: add settings?
+    }
+
     @Override
     protected void recursiveGenerate(World worldIn, int chunkX, int chunkZ, int originalX, int originalZ, ChunkPrimer primer)
     {
@@ -264,16 +271,16 @@ public class MapGenCavesTFC extends MapGenBase
                                     {
                                         for(int upCount = 1; BlocksTFC.isSoilOrGravel(primer.getBlockState(xCoord, y + upCount, zCoord)); upCount++)
                                         {
-                                            primer.setBlockState(xCoord, y + upCount, zCoord, Blocks.AIR.getDefaultState());
+                                            primer.setBlockState(xCoord, y + upCount, zCoord, AIR);
                                         }
 
                                         if (y < 10 /*todo && TFC_Climate.getStability(this.worldObj, (int)worldX, (int)worldZ) == 1*/)
                                         {
-                                            primer.setBlockState(xCoord, y, zCoord, Blocks.LAVA.getDefaultState());
+                                            primer.setBlockState(xCoord, y, zCoord, LAVA);
                                         }
                                         else
                                         {
-                                            primer.setBlockState(xCoord, y, zCoord, Blocks.AIR.getDefaultState());
+                                            primer.setBlockState(xCoord, y, zCoord, AIR);
                                             if (grass != null && BlocksTFC.isDirt(primer.getBlockState(xCoord, y - 1, zCoord)))
                                             {
                                                 primer.setBlockState(xCoord, y - 1, zCoord, grass);
