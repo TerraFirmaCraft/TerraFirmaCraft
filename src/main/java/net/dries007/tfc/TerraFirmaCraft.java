@@ -1,6 +1,7 @@
 package net.dries007.tfc;
 
 import net.dries007.tfc.objects.CreativeTab;
+import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.capabilities.ChunkCapabilityHandler;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataMessage;
@@ -50,6 +51,7 @@ public class TerraFirmaCraft
         network.registerMessage(ChunkDataMessage.Handler.class, ChunkDataMessage.class, ++id, Side.CLIENT);
 
         ChunkCapabilityHandler.preInit();
+        CalenderTFC.init();
     }
 
     @Mod.EventHandler

@@ -1,5 +1,6 @@
 package net.dries007.tfc;
 
+import net.dries007.tfc.world.classic.CalenderTFC;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
@@ -35,6 +36,11 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.debugWorldGen")
         @Config.RequiresWorldRestart
         public boolean debugWorldGen = false;
+
+        @Config.Comment("Lengths of a year in in game days. MUST BE MULTIPLE OF 12!")
+        @Config.LangKey("config." + MOD_ID + ".general.yearLength")
+        @Config.RangeInt(min = 12, max = 12000)
+        public int yearLength = 96;
     }
 
     public static class ClientCFG
@@ -51,6 +57,15 @@ public class ConfigTFC
         if (event.getModID().equals(MOD_ID))
         {
             TerraFirmaCraft.getLog().warn("Config changed");
+
+            if (GENERAL.yearLength % 12 != 0)
+            {
+                TerraFirmaCraft.getLog().warn("Year lengths must be a multiple of 12! Changed from {} to {}!", GENERAL.yearLength, 12 * (GENERAL.yearLength / 12));
+                GENERAL.yearLength = 12 * (GENERAL.yearLength / 12);
+            }
+
+            CalenderTFC.init();
+
             ConfigManager.sync(MOD_ID, Config.Type.INSTANCE);
         }
     }

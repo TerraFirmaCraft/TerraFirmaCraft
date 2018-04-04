@@ -27,6 +27,9 @@ config.tfc.general.debug.tooltip=Various debug options. Use the wand item to act
 config.tfc.general.debugWorldGen=Debug worldgen. [DANGER]
 config.tfc.general.debugWorldGen.tooltip=Your world will be affected! Do not use on your proper world files!
 
+config.tfc.general.yearLength=Year length (in days)
+config.tfc.general.yearLength.tooltip=Must be set as multiple of 12.
+
 ## Config.Client
 config.tfc.client=Client Settings
 config.tfc.client.toolip=Client side only.

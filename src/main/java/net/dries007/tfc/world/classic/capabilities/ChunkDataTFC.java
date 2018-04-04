@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
@@ -17,6 +18,9 @@ import java.util.stream.Collectors;
 @SuppressWarnings("WeakerAccess")
 public final class ChunkDataTFC
 {
+    public static final int FISH_POP_MAX = 60;
+
+    private boolean initialized = false;
     private final DataLayer[] rockLayer2 = new DataLayer[256];
     private final DataLayer[] rockLayer3 = new DataLayer[256];
     private final DataLayer[] evtLayer = new DataLayer[256];
@@ -24,10 +28,14 @@ public final class ChunkDataTFC
     private final DataLayer[] rainfallLayer = new DataLayer[256];
     private final DataLayer[] drainageLayer = new DataLayer[256];
     private final DataLayer[] stabilityLayer = new DataLayer[256];
-
     private final int[] seaLevelOffset = new int[256];
 
-    private boolean initialized = false;
+    private int fishPopulation = FISH_POP_MAX;
+
+    public static ChunkDataTFC get(World world, BlockPos pos)
+    {
+        return world.getChunkFromBlockCoords(pos).getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
+    }
 
     /**
      * No need to mark as dirty, since this will only ever be called on worldgen, before the first chunk save.
@@ -50,26 +58,17 @@ public final class ChunkDataTFC
         return initialized;
     }
 
-    public BlockTFCVariant getRock1(BlockPos pos) { return getRockLayer1(pos).block; }
-    public BlockTFCVariant getRock2(BlockPos pos) { return getRockLayer2(pos).block; }
-    public BlockTFCVariant getRock3(BlockPos pos) { return getRockLayer3(pos).block; }
-    public float getEvt(BlockPos pos) { return getEvtLayer(pos).valueFloat; }
-    public float getRainfall(BlockPos pos) { return getRainfallLayer(pos).valueFloat; }
-    public boolean isStable(BlockPos pos) { return getStabilityLayer(pos).valueInt == 0; }
-    public int getDrainage(BlockPos pos) { return getDrainageLayer(pos).valueInt; }
+    public BlockTFCVariant getRock1(int x, int z) { return getRockLayer1(x, z).block; }
+    public BlockTFCVariant getRock2(int x, int z) { return getRockLayer2(x, z).block; }
+    public BlockTFCVariant getRock3(int x, int z) { return getRockLayer3(x, z).block; }
+    public float getEvt(int x, int z) { return getEvtLayer(x, z).valueFloat; }
+    public float getRainfall(int x, int z) { return getRainfallLayer(x, z).valueFloat; }
+    public boolean isStable(int x, int z) { return getStabilityLayer(x, z).valueInt == 0; }
+    public int getDrainage(int x, int z) { return getDrainageLayer(x, z).valueInt; }
 
-    public int getSeaLevelOffset(BlockPos pos) { return getSeaLevelOffset(pos.getX(), pos.getZ()); }
     public int getSeaLevelOffset(int x, int z) { return seaLevelOffset[z << 4 | x]; }
 
     // Directly accessing the DataLayer is discouraged (except for getting the name). It's easy to use the wrong value.
-
-    public DataLayer getRockLayer1(BlockPos pos) { return getRockLayer1(pos.getX(), pos.getZ()); }
-    public DataLayer getRockLayer2(BlockPos pos) { return getRockLayer2(pos.getX(), pos.getZ()); }
-    public DataLayer getRockLayer3(BlockPos pos) { return getRockLayer3(pos.getX(), pos.getZ()); }
-    public DataLayer getEvtLayer(BlockPos pos) { return getEvtLayer(pos.getX(), pos.getZ()); }
-    public DataLayer getRainfallLayer(BlockPos pos) { return getRainfallLayer(pos.getX(), pos.getZ()); }
-    public DataLayer getStabilityLayer(BlockPos pos) { return getStabilityLayer(pos.getX(), pos.getZ()); }
-    public DataLayer getDrainageLayer(BlockPos pos) { return getDrainageLayer(pos.getX(), pos.getZ()); }
 
     public DataLayer getRockLayer1(int x, int z) {      return rockLayer1   [z << 4 | x]; }
     public DataLayer getRockLayer2(int x, int z) {      return rockLayer2   [z << 4 | x]; }
@@ -78,6 +77,8 @@ public final class ChunkDataTFC
     public DataLayer getRainfallLayer(int x, int z) {   return rainfallLayer[z << 4 | x]; }
     public DataLayer getStabilityLayer(int x, int z) { return stabilityLayer[z << 4 | x]; }
     public DataLayer getDrainageLayer(int x, int z) {   return drainageLayer[z << 4 | x]; }
+
+    public int getFishPopulation() { return fishPopulation; }
 
     public static final class ChunkDataStorage implements Capability.IStorage<ChunkDataTFC>
     {
@@ -109,6 +110,7 @@ public final class ChunkDataTFC
             root.setTag("drainageLayer", write(instance.drainageLayer));
 
             root.setTag("seaLevelOffset", new NBTTagIntArray(instance.seaLevelOffset));
+            root.setInteger("fishPopulation", instance.fishPopulation);
             return root;
         }
 
@@ -125,6 +127,8 @@ public final class ChunkDataTFC
             read(instance.drainageLayer, root.getByteArray("drainageLayer"));
 
             System.arraycopy(root.getIntArray("seaLevelOffset"), 0, instance.seaLevelOffset, 0, 256);
+            instance.fishPopulation = root.getInteger("fishPopulation");
+
             instance.initialized = true;
         }
     }

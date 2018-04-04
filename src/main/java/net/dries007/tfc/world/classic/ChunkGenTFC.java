@@ -1,5 +1,6 @@
 package net.dries007.tfc.world.classic;
 
+import com.google.common.collect.ImmutableList;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.objects.biomes.BiomesTFC;
 import net.dries007.tfc.objects.blocks.BlockTFCVariant.Type;
@@ -17,12 +18,16 @@ import net.dries007.tfc.world.classic.genlayers.datalayers.tree.GenTreeLayer;
 import net.dries007.tfc.world.classic.mapgen.MapGenCavesTFC;
 import net.dries007.tfc.world.classic.mapgen.MapGenRavineTFC;
 import net.dries007.tfc.world.classic.mapgen.MapGenRiverRavine;
+import net.minecraft.block.BlockFalling;
+import net.minecraft.block.BlockSnow;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
@@ -42,7 +47,8 @@ import static net.dries007.tfc.world.classic.DataLayer.*;
 /**
  * Todo: make caves in top stone layer under ocean water? (maybe 2 layers under deep ocean?)
  * todo: *important* Store generated layerdata on chunk with capabilities?
- * todo: ravine gen is not on point, the ravines are smaller than the 1.7.10 ones.
+ * todo: ravine gen is not on point, the ravines are smaller (less wide) than the 1.7.10 ones.
+ * todo: lava has not yet been seen
  */
 public class ChunkGenTFC implements IChunkGenerator
 {
@@ -52,6 +58,7 @@ public class ChunkGenTFC implements IChunkGenerator
     @SuppressWarnings("deprecation") public static final IBlockState FRESH_WATER = Blocks.STAINED_GLASS.getStateFromMeta(EnumDyeColor.LIGHT_BLUE.getMetadata()); // todo: replace
     public static final IBlockState LAVA = Blocks.LAVA.getDefaultState(); // todo: replace
     public static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
+    public static final IBlockState SNOW = Blocks.SNOW_LAYER.getDefaultState().withProperty(BlockSnow.LAYERS, 2);
 
     public final WorldGenSettings s;
 
@@ -233,9 +240,63 @@ public class ChunkGenTFC implements IChunkGenerator
     }
 
     @Override
-    public void populate(int x, int z)
+    public void populate(int chunkX, int chunkZ)
     {
-        //todo
+        BlockFalling.fallInstantly = true;
+        final int worldX = chunkX << 4;
+        final int worldZ = chunkZ << 4;
+        BlockPos blockpos = new BlockPos(worldX, 0, worldZ);
+        final Biome biome = world.getBiome(blockpos.add(16, 0, 16));
+        rand.setSeed(world.getSeed());
+        rand.setSeed((long)chunkX * (rand.nextLong() / 2L * 2L + 1L) + (long)chunkZ * (rand.nextLong() / 2L * 2L + 1L) ^ world.getSeed());
+        ChunkPos chunkpos = new ChunkPos(chunkX, chunkZ);
+//        net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(true, this, world, rand, chunkX, chunkZ, false);
+
+//        Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
+//        ChunkDataTFC chunkData = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
+//        if (chunkData == null) throw new IllegalStateException("ChunkData capability is missing.");
+
+        /* fissue gen, is commented out in 1.7.10
+        if (this.rand.nextInt(chunkData.isStable(0, 0) ? 4 : 6) == 0)
+        {
+            x = xCoord + this.rand.nextInt(16) + 8;
+            z = zCoord + this.rand.nextInt(16) + 8;
+            y = Global.SEALEVEL - rand.nextInt(45);
+        } */
+
+        biome.decorate(world, rand, blockpos);
+
+        /*
+        if (TerrainGen.populate(this, world, rand, chunkX, chunkZ, false, ANIMALS))
+            WorldEntitySpawner.performWorldGenSpawning(world, biome, worldX + 8, worldZ + 8, 16, 16, rand);
+        */
+
+        blockpos = blockpos.add(8, 0, 8);
+        for (int x = 0; x < 16; x++)
+        {
+            for (int z = 0; z < 16; z++)
+            {
+                final int y = world.getPrecipitationHeight(blockpos.add(x, 0, z)).getY();
+
+                world.canBlockFreeze(blockpos.add(x, y - 1, z), false); // todo: maybe actually freeze the water? Now nothing is done here.
+
+                if (canSnowAt(blockpos.add(x, y, z))) world.setBlockState(blockpos.add(x, y, z), SNOW); // todo: Vary depth based on rainfall?
+            }
+        }
+
+//        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(chunkProvider, worldObj, rand, chunkX, chunkZ, var11));
+
+//        net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, world, rand, chunkX, chunkZ, false);
+
+        BlockFalling.fallInstantly = false;
+    }
+
+    private boolean canSnowAt(BlockPos pos)
+    {
+        if (!world.isAirBlock(pos) && !world.isAirBlock(pos.add(0, -1, 0)) && !SNOW.getBlock().canPlaceBlockAt(world, pos)) return false;
+        if (ClimateTFC.getHeightAdjustedTemp(world, pos) >= 0F) return false;
+        if (world.getLightFor(EnumSkyBlock.BLOCK, pos) < 10 /* todo: why? && CalenderTFC.getTotalMonths() < 1*/) return false;
+        return world.getBlockState(pos.add(0, -1, 0)).getMaterial().blocksMovement();
     }
 
     @Override
@@ -247,7 +308,7 @@ public class ChunkGenTFC implements IChunkGenerator
     @Override
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        return null; //todo
+        return ImmutableList.of(); //todo
     }
 
     @Nullable
@@ -480,7 +541,7 @@ public class ChunkGenTFC implements IChunkGenerator
                      * HIGH PART (yOffset is used)
                      */
 
-                    float temp = Climate.adjustHeightToTemp(y, bioTemp);
+                    float temp = ClimateTFC.adjustHeightToTemp(y, bioTemp);
                     if (BiomesTFC.isBeachBiome(biome) && y > seaLevel + h && inp.getBlockState(x, y, z) == STONE)
                     {
                         inp.setBlockState(x, y, z, AIR);

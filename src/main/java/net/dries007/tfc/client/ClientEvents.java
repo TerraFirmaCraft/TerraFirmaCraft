@@ -2,6 +2,7 @@ package net.dries007.tfc.client;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataProvider;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
 import net.minecraft.client.Minecraft;
@@ -45,6 +46,11 @@ public class ClientEvents
         {
             list.add("");
             list.add("TerraFirmaCraft World Data:");
+            list.add("");
+            list.add("Day: " + CalenderTFC.getDayOfMonth() +
+                    " Month: " + CalenderTFC.getMonthOfYear() +
+                    " Year: " + CalenderTFC.getTotalYears());
+            list.add("");
 
             BlockPos blockpos = new BlockPos(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().getEntityBoundingBox().minY, mc.getRenderViewEntity().posZ);
             Chunk chunk = mc.world.getChunkFromBlockCoords(blockpos);
@@ -66,6 +72,7 @@ public class ClientEvents
                     list.add("Stability: " + data.getStabilityLayer(x, z).name);
                     list.add("Drainage: " + data.getDrainageLayer(x, z).name);
                     list.add("Sea level offset: " + data.getSeaLevelOffset(x, z));
+                    list.add("Fish population: " + data.getFishPopulation());
                 }
             }
         }

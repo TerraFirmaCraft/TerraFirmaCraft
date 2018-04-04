@@ -1,12 +1,82 @@
 package net.dries007.tfc.world.classic;
 
-public final class Climate
-{
-    private Climate() {}
+import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
+import java.util.Random;
+
+public final class ClimateTFC
+{
+    private ClimateTFC() {}
+
+    public static final float MAX_TEMP = 52;
+
+    private static final int MAX_Z = 30000;
     private static final float[] Y_FACTOR_CACHE = new float[441];
-    private static final float[] Z_FACTOR_CACHE = new float[30001];
-    private static final float[][] MONTH_TEMP_CACHE = new float[12][30001];
+    private static final float[] Z_FACTOR_CACHE = new float[MAX_Z + 1];
+    private static final float[][] MONTH_TEMP_CACHE = new float[12][MAX_Z + 1];
+
+    private static final Random rng = new Random();
+
+    public static float getHeightAdjustedTemp(World world, BlockPos pos)
+    {
+        float temp = getTemp(world, pos);
+        temp += getTemp(world, pos.add(1, 0, 0));
+        temp += getTemp(world, pos.add(-1, 0, 0));
+        temp += getTemp(world, pos.add(0, 0, 1));
+        temp += getTemp(world, pos.add(0, 0, -1));
+        temp /= 5;
+        temp = adjustHeightToTemp(pos.getY(), temp);
+        if (temp <= 0 || !world.canBlockSeeSky(pos)) return temp;
+        return temp - (temp * (0.25f*(1-(world.getLight(pos)/15f))));
+    }
+
+    private static float getTemp(World world, BlockPos pos)
+    {
+        return getTemp(world, pos, CalenderTFC.getTotalDays(), CalenderTFC.getTotalHours(), false);
+    }
+
+    private static float getTemp(World world, BlockPos pos, long day, long hour, boolean bio)
+    {
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+
+        if (z < 0) z = -z;
+        if (z > MAX_Z) z = MAX_Z;
+
+        final float zMod = Z_FACTOR_CACHE[z];
+        final float zTemp = zMod * MAX_TEMP - 20 + ((zMod - 0.5f) * 10);
+
+        float hourMod = 0.2f;
+        float dailyTemp = 0;
+        if (!bio)
+        {
+            int h = (int) ((hour - 6) % CalenderTFC.HOURS_IN_DAY);
+            if (h < 0) h += CalenderTFC.HOURS_IN_DAY;
+
+            if (h < 12) hourMod = ((float)h / 11) * 0.3F;
+            else hourMod = 0.3F - ((((float)h-12) / 11) * 0.3F);
+
+            rng.setSeed(world.getSeed() + day);
+            dailyTemp = (rng.nextInt(200)-100) / 20F;
+        }
+
+        final float rainMod = (1f - (ChunkDataTFC.get(world, pos).getRainfall(x & 15, z & 15) / 4000f))*zMod;
+
+        final float monthTemp = MONTH_TEMP_CACHE[CalenderTFC.getSeasonFromDayOfYear(day, z > 0)][z];
+        final float lastMonthTemp = MONTH_TEMP_CACHE[CalenderTFC.getSeasonFromDayOfYear(day - CalenderTFC.getDaysInMonth(), z > 0)][z];
+
+        final float monthDelta = ((monthTemp - lastMonthTemp) * CalenderTFC.getDayOfMonthFromDayOfYear(day)) / CalenderTFC.getDaysInMonth();
+
+        float temp = lastMonthTemp + monthDelta + dailyTemp + (hourMod*(zTemp + dailyTemp));
+
+        if(temp >= 12) temp += (8*rainMod)*zMod;
+        else temp -= (8*rainMod)*zMod;
+
+        return temp;
+    }
 
     public static float adjustHeightToTemp(int y, float temp)
     {
@@ -42,7 +112,8 @@ public final class Climate
         // http://www.wolframalpha.com/input/?i=%28%28%28x%5E2+%2F+677.966%29+*+%280.5%29*%28%28%28110+-+x%29+%2B+%7C110+-+x%7C%29%2F%28110+-
         // +x%29%29%29+%2B+%28%280.5%29*%28%28%28x+-+110%29+%2B+%7Cx+-+110%7C%29%2F%28x+-+110%29%29+*+x+*+0.16225%29%29+0+to+440
 
-        for (int y = 0; y < Y_FACTOR_CACHE.length; y += 1) {
+        for (int y = 0; y < Y_FACTOR_CACHE.length; y += 1)
+        {
             // temp = temp - (ySq / 677.966f) * (((110.01f - y) + Math.abs(110.01f - y)) / (2 * (110.01f - y)));
             // temp -= (0.16225 * y * (((y - 110.01f) + Math.abs(y - 110.01f)) / (2 * (y - 110.01f))));
 
@@ -53,22 +124,25 @@ public final class Climate
 
             //more optimization: using an if should be more efficient (and simpler)
             float factor;
-            if (y < 110) {
+            if (y < 110)
+            {
                 // diff > 0
                 factor = y * y / 677.966f;  // 17.85 for y=110
-            } else {
+            }
+            else
+            {
                 // diff <= 0
                 factor = 0.16225f * y;  // 17.85 for y=110
             }
             Y_FACTOR_CACHE[y] = factor;
         }
 
-        for(int zCoord = 0; zCoord < 30000 + 1; ++zCoord)
+        for (int zCoord = 0; zCoord < MAX_Z + 1; ++zCoord)
         {
-            float factor = (30000- (float) zCoord) / 30000;
+            float factor = (MAX_Z- (float) zCoord) / MAX_Z;
             Z_FACTOR_CACHE[zCoord] = factor;
 
-            for(int month = 0; month < 12; ++month)
+            for (int month = 0; month < 12; ++month)
             {
                 final float MAXTEMP = 35F;
 
@@ -78,45 +152,24 @@ public final class Climate
                 switch(month)
                 {
                     case 10:
-                    {
-                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP-13.5*latitudeFactor - (latitudeFactor*55));
-                        break;
-                    }
+                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP-13.5*latitudeFactor - (latitudeFactor*55)); break;
                     case 9:
                     case 11:
-                    {
-                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP -12.5*latitudeFactor- (latitudeFactor*53));
-                        break;
-                    }
+                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP -12.5*latitudeFactor- (latitudeFactor*53)); break;
                     case 0:
                     case 8:
-                    {
-                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP -10*latitudeFactor- (latitudeFactor*46));
-                        break;
-                    }
+                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP -10*latitudeFactor- (latitudeFactor*46)); break;
                     case 1:
                     case 7:
-                    {
-                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP -7.5*latitudeFactor- (latitudeFactor*40));
-                        break;
-                    }
+                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP -7.5*latitudeFactor- (latitudeFactor*40)); break;
                     case 2:
                     case 6:
-                    {
-                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP - 5*latitudeFactor- (latitudeFactor*33));
-                        break;
-                    }
+                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP - 5*latitudeFactor- (latitudeFactor*33)); break;
                     case 3:
                     case 5:
-                    {
-                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP -2.5*latitudeFactor- (latitudeFactor*27));
-                        break;
-                    }
+                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP -2.5*latitudeFactor- (latitudeFactor*27)); break;
                     case 4:
-                    {
-                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP -1.5*latitudeFactor- (latitudeFactor*27));
-                        break;
-                    }
+                        MONTH_TEMP_CACHE[month][zCoord] = (float)(MAXTEMP -1.5*latitudeFactor- (latitudeFactor*27)); break;
                 }
             }
         }
