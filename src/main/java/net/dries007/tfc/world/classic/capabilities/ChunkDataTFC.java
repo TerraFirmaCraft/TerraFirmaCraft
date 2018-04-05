@@ -37,6 +37,16 @@ public final class ChunkDataTFC
         return world.getChunkFromBlockCoords(pos).getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
     }
 
+    public static BlockTFCVariant getRock1(World world, BlockPos pos) { return get(world, pos).getRockLayer1(pos.getX() & 15, pos.getZ() & 15).block; }
+    public static BlockTFCVariant getRock2(World world, BlockPos pos) { return get(world, pos).getRockLayer2(pos.getX() & 15, pos.getZ() & 15).block; }
+    public static BlockTFCVariant getRock3(World world, BlockPos pos) { return get(world, pos).getRockLayer3(pos.getX() & 15, pos.getZ() & 15).block; }
+    public static float getEvt(World world, BlockPos pos) { return get(world, pos).getEvtLayer(pos.getX() & 15, pos.getZ() & 15).valueFloat; }
+    public static float getRainfall(World world, BlockPos pos) { return get(world, pos).getRainfallLayer(pos.getX() & 15, pos.getZ() & 15).valueFloat; }
+    public static boolean isStable(World world, BlockPos pos) { return get(world, pos).getStabilityLayer(pos.getX() & 15, pos.getZ() & 15).valueInt == 0; }
+    public static int getDrainage(World world, BlockPos pos) { return get(world, pos).getDrainageLayer(pos.getX() & 15, pos.getZ() & 15).valueInt; }
+    public static int getSeaLevelOffset(World world, BlockPos pos) { return get(world, pos).getSeaLevelOffset(pos.getX() & 15, pos.getZ() & 15); }
+    public static int getFishPopulation(World world, BlockPos pos) { return get(world, pos).getFishPopulation(); }
+
     /**
      * No need to mark as dirty, since this will only ever be called on worldgen, before the first chunk save.
      */
@@ -68,8 +78,10 @@ public final class ChunkDataTFC
 
     public int getSeaLevelOffset(int x, int z) { return seaLevelOffset[z << 4 | x]; }
 
-    // Directly accessing the DataLayer is discouraged (except for getting the name). It's easy to use the wrong value.
+    public int getFishPopulation() { return fishPopulation; }
 
+
+    // Directly accessing the DataLayer is discouraged (except for getting the name). It's easy to use the wrong value.
     public DataLayer getRockLayer1(int x, int z) {      return rockLayer1   [z << 4 | x]; }
     public DataLayer getRockLayer2(int x, int z) {      return rockLayer2   [z << 4 | x]; }
     public DataLayer getRockLayer3(int x, int z) {      return rockLayer3   [z << 4 | x]; }
@@ -77,8 +89,6 @@ public final class ChunkDataTFC
     public DataLayer getRainfallLayer(int x, int z) {   return rainfallLayer[z << 4 | x]; }
     public DataLayer getStabilityLayer(int x, int z) { return stabilityLayer[z << 4 | x]; }
     public DataLayer getDrainageLayer(int x, int z) {   return drainageLayer[z << 4 | x]; }
-
-    public int getFishPopulation() { return fishPopulation; }
 
     public static final class ChunkDataStorage implements Capability.IStorage<ChunkDataTFC>
     {

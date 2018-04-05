@@ -32,15 +32,26 @@ public final class ClimateTFC
         return temp - (temp * (0.25f*(1-(world.getLight(pos)/15f))));
     }
 
-    private static float getTemp(World world, BlockPos pos)
+    public static float getTemp(World world, BlockPos pos)
     {
         return getTemp(world, pos, CalenderTFC.getTotalDays(), CalenderTFC.getTotalHours(), false);
     }
 
+    public static float getBioTemperatureHeight(World world, BlockPos pos)
+    {
+        float temp = 0;
+        for (int i = 0; i < 12; i++)
+        {
+            float t = adjustHeightToTemp(pos.getY(), getTemp(world, pos, i * CalenderTFC.getDaysInMonth(), 0, true));
+            temp += t;
+        }
+        return temp / 12;
+    }
+
     private static float getTemp(World world, BlockPos pos, long day, long hour, boolean bio)
     {
-        int x = pos.getX();
-        int y = pos.getY();
+//        int x = pos.getX();
+//        int y = pos.getY();
         int z = pos.getZ();
 
         if (z < 0) z = -z;
@@ -63,7 +74,7 @@ public final class ClimateTFC
             dailyTemp = (rng.nextInt(200)-100) / 20F;
         }
 
-        final float rainMod = (1f - (ChunkDataTFC.get(world, pos).getRainfall(x & 15, z & 15) / 4000f))*zMod;
+        final float rainMod = (1f - (ChunkDataTFC.getRainfall(world, pos) / 4000f))*zMod;
 
         final float monthTemp = MONTH_TEMP_CACHE[CalenderTFC.getSeasonFromDayOfYear(day, z > 0)][z];
         final float lastMonthTemp = MONTH_TEMP_CACHE[CalenderTFC.getSeasonFromDayOfYear(day - CalenderTFC.getDaysInMonth(), z > 0)][z];

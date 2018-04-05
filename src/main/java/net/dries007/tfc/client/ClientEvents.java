@@ -3,6 +3,7 @@ package net.dries007.tfc.client;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataProvider;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
 import net.minecraft.client.Minecraft;
@@ -44,18 +45,27 @@ public class ClientEvents
         List<String> list = event.getRight();
         if (ConfigTFC.GENERAL.debug && mc.gameSettings.showDebugInfo)
         {
-            list.add("");
-            list.add("TerraFirmaCraft World Data:");
-            list.add("");
-            list.add("Day: " + CalenderTFC.getDayOfMonth() +
-                    " Month: " + CalenderTFC.getMonthOfYear() +
-                    " Year: " + CalenderTFC.getTotalYears());
-            list.add("");
-
             BlockPos blockpos = new BlockPos(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().getEntityBoundingBox().minY, mc.getRenderViewEntity().posZ);
             Chunk chunk = mc.world.getChunkFromBlockCoords(blockpos);
             if (mc.world.isBlockLoaded(blockpos) && !chunk.isEmpty())
             {
+                list.add("");
+                list.add("TerraFirmaCraft Data:");
+                list.add(String.format("Temps: Base: %f Bio: %f Height adjusted: %f",
+                        ClimateTFC.getTemp(mc.world, blockpos),
+                        ClimateTFC.getBioTemperatureHeight(mc.world, blockpos),
+                        ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)
+                ));
+                list.add(String.format("TFC Time: %02d:%02d %04d/%02d/%02d",
+                        CalenderTFC.getHourOfDay(),
+                        CalenderTFC.getMinuteOfHour(),
+                        CalenderTFC.getTotalYears(),
+                        CalenderTFC.getMonthOfYear(),
+                        CalenderTFC.getDayOfMonth()
+                        )
+                );
+                list.add("");
+
                 list.add(mc.world.getBiome(blockpos).getBiomeName());
 
                 final int x = blockpos.getX() & 15, z = blockpos.getZ() & 15;

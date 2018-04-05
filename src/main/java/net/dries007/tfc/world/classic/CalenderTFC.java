@@ -1,10 +1,17 @@
 package net.dries007.tfc.world.classic;
 
 import net.dries007.tfc.ConfigTFC;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import static net.dries007.tfc.Constants.MOD_ID;
+
+@Mod.EventBusSubscriber(modid = MOD_ID)
 public class CalenderTFC
 {
-    public static final long TICKS_IN_HOUR = 1000;
+    public static final int TICKS_IN_HOUR = 1000;
+    public static final int TICKS_IN_MINUTE = TICKS_IN_HOUR / 60;
     public static final int TICKS_IN_DAY = 24000;
     public static final int HOURS_IN_DAY = (int) (TICKS_IN_DAY / TICKS_IN_HOUR);
 
@@ -48,6 +55,16 @@ public class CalenderTFC
         return time / ticksInYear;
     }
 
+    public static int getMinuteOfHour()
+    {
+        return (int) ((time / TICKS_IN_MINUTE) % 60);
+    }
+
+    public static int getHourOfDay()
+    {
+        return (int) ((time / TICKS_IN_HOUR) % HOURS_IN_DAY);
+    }
+
     public static int getDayOfMonth()
     {
         return (int) ((time / TICKS_IN_DAY) % daysInMonth);
@@ -75,5 +92,13 @@ public class CalenderTFC
     public static int getDaysInYear()
     {
         return daysInYear;
+    }
+
+    @SubscribeEvent
+    public static void onTickWorldTick(TickEvent.WorldTickEvent event)
+    {
+        if (event.phase == TickEvent.Phase.END) return;
+
+        time = event.world.getTotalWorldTime();
     }
 }

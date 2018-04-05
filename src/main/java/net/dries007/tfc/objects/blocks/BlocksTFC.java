@@ -465,6 +465,13 @@ public final class BlocksTFC
         return type == DIRT;
     }
 
+    public static boolean isSand(IBlockState current)
+    {
+        if (!(current.getBlock() instanceof BlockTFCVariant)) return false;
+        BlockTFCVariant.Type type = ((BlockTFCVariant) current.getBlock()).type;
+        return type == SAND;
+    }
+
     public static boolean isSoil(IBlockState current)
     {
         if (!(current.getBlock() instanceof BlockTFCVariant)) return false;

@@ -37,23 +37,20 @@ public final class BiomesTFC
     public static void addBlocks(RegistryEvent.Register<Biome> event)
     {
         IForgeRegistry<Biome> r = event.getRegistry();
-
-        // todo lilypads & waterplants?
-
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Ocean").setBaseHeight(-3.6f).setHeightVariation(-2.69999f)));
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " River").setBaseHeight(-3.2f).setHeightVariation(-3.0f)));
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Beach").setBaseHeight(-2.69f).setHeightVariation(-2.68f)));
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Gravel beach").setBaseHeight(-2.69f).setHeightVariation(-2.68f).setBaseBiome("tfc:beach")));
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High hills").setBaseHeight(-1.9000001f).setHeightVariation(-1.1f)));
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Plains").setBaseHeight(-2.6000001f).setHeightVariation(-2.54f)));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Swampland").setBaseHeight(-2.8f).setHeightVariation(-2.6000001f)));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Swampland").setBaseHeight(-2.8f).setHeightVariation(-2.6000001f), 8, 45));
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High hills edge").setBaseHeight(-2.5f).setHeightVariation(-2.3f).setBaseBiome("tfc:high_hills")));
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Rolling hills").setBaseHeight(-2.6000001f).setHeightVariation(-2.3f)));
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains").setBaseHeight(-1.9000001f).setHeightVariation(-1.1f)));
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains edge").setBaseHeight(-2.3f).setHeightVariation(-1.9000001f).setBaseBiome("tfc:mountains")));
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High plains").setBaseHeight(-2.3f).setHeightVariation(-2.27f)));
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Deep ocean").setBaseHeight(-4.2f).setHeightVariation(-2.69999f).setBaseBiome("tfc:ocean")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-3.2f).setHeightVariation(-2.6990001f).setBaseBiome("tfc:ocean")));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-3.2f).setHeightVariation(-2.6990001f).setBaseBiome("tfc:ocean"), 2, 0));
 
 //        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_hell").setRainDisabled().setTemperature(2.0F).setRainfall(0.0F)));
     }
