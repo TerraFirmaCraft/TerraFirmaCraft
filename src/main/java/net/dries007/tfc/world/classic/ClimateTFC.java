@@ -6,6 +6,9 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
+/**
+ * TODO: *important* store some of this (perhaps bio/non height adjusted temp?) to chunkdata
+ */
 public final class ClimateTFC
 {
     private ClimateTFC() {}

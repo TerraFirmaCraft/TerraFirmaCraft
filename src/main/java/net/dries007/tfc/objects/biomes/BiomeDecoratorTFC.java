@@ -1,5 +1,6 @@
-package net.dries007.tfc.world.classic;
+package net.dries007.tfc.objects.biomes;
 
+import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
 import net.dries007.tfc.world.classic.worldgen.WorldGenSandTFC;
 import net.dries007.tfc.world.classic.worldgen.WorldGenWaterPlants;

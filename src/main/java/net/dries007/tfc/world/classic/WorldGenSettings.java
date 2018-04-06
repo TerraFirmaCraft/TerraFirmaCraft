@@ -16,6 +16,11 @@ public class WorldGenSettings
     public final int surfaceRavineVariability;
     public final int riverRavineRarity;
 
+    public final int lavaFissureRarity = 25; //todo
+    public final int waterFissureRarity = 90; //todo
+    public final int lavaFissureClusterRarity = 400; //todo
+    public final int waterFissureClusterRarity = 225; //todo
+
     public WorldGenSettings(WorldGenSettingsBuilder b)
     {
         spawnFuzz = b.spawnFuzz;

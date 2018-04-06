@@ -41,15 +41,15 @@ public final class ModelRegistry
     {
         event.getBlockColors().registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
                         worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D),
-                BlocksTFC.getAllBlockTFCVariants().stream().filter(x -> x.type.isColorIndexed).toArray(BlockTFCVariant[]::new));
+                BlocksTFC.getAllBlockTFCVariants().stream().filter(x -> x.material.isColorIndexed).toArray(BlockTFCVariant[]::new));
     }
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public static void registerColorHandlerItems(ColorHandlerEvent.Item event)
     {
-        //noinspection deprecation
         event.getItemColors().registerItemColorHandler((stack, tintIndex) ->
                         event.getBlockColors().colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
-                BlocksTFC.getAllBlockTFCVariants().stream().filter(x -> x.type.isColorIndexed).toArray(BlockTFCVariant[]::new));
+                BlocksTFC.getAllBlockTFCVariants().stream().filter(x -> x.material.isColorIndexed).toArray(BlockTFCVariant[]::new));
     }
 }

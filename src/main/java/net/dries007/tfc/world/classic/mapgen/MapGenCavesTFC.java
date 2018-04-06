@@ -1,6 +1,7 @@
 package net.dries007.tfc.world.classic.mapgen;
 
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.world.classic.DataLayer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -17,19 +18,25 @@ import static net.dries007.tfc.world.classic.ChunkGenTFC.LAVA;
  */
 public class MapGenCavesTFC extends MapGenBase
 {
-    public MapGenCavesTFC()
+    private final DataLayer[] rockLayer1;
+    private final DataLayer[] rainfallLayer;
+
+    public MapGenCavesTFC(DataLayer[] rockLayer1, DataLayer[] rainfallLayer)
     {
         // todo: add settings?
+        this.rockLayer1 = rockLayer1;
+        this.rainfallLayer = rainfallLayer;
     }
 
     @Override
     protected void recursiveGenerate(World worldIn, int chunkX, int chunkZ, int originalX, int originalZ, ChunkPrimer primer)
     {
-        final int runs = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
-        final double xCoord = chunkX * 16 + this.rand.nextInt(16);
-        final double yCoord = this.rand.nextInt(1 + this.rand.nextInt(140)) + 60;
-        final double zCoord = chunkZ * 16 + this.rand.nextInt(16);
-        final float rain = 500; //todo: TFC_Climate.getRainfall(world, (int) xCoord, 144, (int) zCoord);
+        int runs = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
+        final int xCoord = chunkX * 16 + this.rand.nextInt(16);
+        final int yCoord = this.rand.nextInt(1 + this.rand.nextInt(140)) + 60;
+        final int zCoord = chunkZ * 16 + this.rand.nextInt(16);
+        final int dlIndex = (zCoord & 15) << 4 | (xCoord & 15);
+        final float rain = rainfallLayer[dlIndex].valueFloat;
 
         double width = 2;
         int caveChance = 35;
@@ -60,30 +67,22 @@ public class MapGenCavesTFC extends MapGenBase
             caveChance += 15;
         }
 
-        /* todo
-        if (TFC_Climate.getCacheManager(world) != null)
+        switch (rockLayer1[dlIndex].block.rock.category)
         {
-            DataLayer rockLayer1 = TFC_Climate.getCacheManager(world).getRockLayerAt((int)xCoord, (int)zCoord, 0);
-            Block layerID = rockLayer1.block;
-            if(layerID == TFCBlocks.stoneIgEx)
-            {
-                width -= 0.4;
-            }
-            else if(layerID == TFCBlocks.stoneIgIn)
-            {
-                width -= 0.5;
-            }
-            else if(layerID == TFCBlocks.stoneSed)
-            {
+            case SEDIMENTARY:
                 width += 0.2;
-                var7 += 5;
-            }
-            else if(layerID == TFCBlocks.stoneMM)
-            {
+                runs += 5;
+                break;
+            case METAMORPHIC:
                 width += 0.3;
-            }
+                break;
+            case IGNEOUS_INTRUSIVE:
+                width -= 0.5;
+                break;
+            case IGNEOUS_EXTRUSIVE:
+                width -= 0.4;
+                break;
         }
-        */
 
         if (yCoord < 32) width *= 0.5;
         else if (yCoord < 64) width *= 0.65;

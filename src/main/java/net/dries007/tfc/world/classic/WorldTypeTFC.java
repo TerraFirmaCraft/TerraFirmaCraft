@@ -12,9 +12,14 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * todo: spawn stuff, see worldevent.createspawn & worldProvider
+ */
 public class WorldTypeTFC extends WorldType
 {
     public static final int SEALEVEL = 144;
+    public static final int ROCKLAYER2 = 110;
+    public static final int ROCKLAYER3 = 55;
 
     public WorldTypeTFC()
     {

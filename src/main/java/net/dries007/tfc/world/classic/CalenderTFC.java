@@ -75,7 +75,7 @@ public class CalenderTFC
         return (int) ((time / ticksInMonth) % 12);
     }
 
-    public static void init()
+    public static void reload()
     {
         daysInYear = ConfigTFC.GENERAL.yearLength;
         daysInMonth = daysInYear / 12;

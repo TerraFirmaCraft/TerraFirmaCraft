@@ -64,7 +64,7 @@ public class ConfigTFC
                 GENERAL.yearLength = 12 * (GENERAL.yearLength / 12);
             }
 
-            CalenderTFC.init();
+            CalenderTFC.reload();
 
             ConfigManager.sync(MOD_ID, Config.Type.INSTANCE);
         }

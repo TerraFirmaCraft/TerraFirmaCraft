@@ -1,6 +1,5 @@
 package net.dries007.tfc.objects.biomes;
 
-import net.dries007.tfc.world.classic.BiomeDecoratorTFC;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 

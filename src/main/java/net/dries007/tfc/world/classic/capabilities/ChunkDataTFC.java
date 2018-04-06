@@ -15,6 +15,9 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER2;
+import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER3;
+
 @SuppressWarnings("WeakerAccess")
 public final class ChunkDataTFC
 {
@@ -46,6 +49,7 @@ public final class ChunkDataTFC
     public static int getDrainage(World world, BlockPos pos) { return get(world, pos).getDrainageLayer(pos.getX() & 15, pos.getZ() & 15).valueInt; }
     public static int getSeaLevelOffset(World world, BlockPos pos) { return get(world, pos).getSeaLevelOffset(pos.getX() & 15, pos.getZ() & 15); }
     public static int getFishPopulation(World world, BlockPos pos) { return get(world, pos).getFishPopulation(); }
+    public static BlockTFCVariant getRockHeight(World world, BlockPos pos) { return get(world, pos).getRockLayerHeight(pos.getX() & 15, pos.getY(), pos.getZ() & 15); }
 
     /**
      * No need to mark as dirty, since this will only ever be called on worldgen, before the first chunk save.
@@ -79,6 +83,14 @@ public final class ChunkDataTFC
     public int getSeaLevelOffset(int x, int z) { return seaLevelOffset[z << 4 | x]; }
 
     public int getFishPopulation() { return fishPopulation; }
+
+    private BlockTFCVariant getRockLayerHeight(int x, int y, int z)
+    {
+        int offset = getSeaLevelOffset(x, z);
+        if (y <= ROCKLAYER3 + offset) return getRock3(x, z);
+        if (y <= ROCKLAYER2 + offset) return getRock3(x, z);
+        return getRock1(x, z);
+    }
 
 
     // Directly accessing the DataLayer is discouraged (except for getting the name). It's easy to use the wrong value.

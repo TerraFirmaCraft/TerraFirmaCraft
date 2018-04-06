@@ -34,7 +34,7 @@ public final class BiomesTFC
     public static final BiomeTFC LAKE = null;
 
     @SubscribeEvent
-    public static void addBlocks(RegistryEvent.Register<Biome> event)
+    public static void registerBiomes(RegistryEvent.Register<Biome> event)
     {
         IForgeRegistry<Biome> r = event.getRegistry();
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Ocean").setBaseHeight(-3.6f).setHeightVariation(-2.69999f)));
@@ -50,7 +50,7 @@ public final class BiomesTFC
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains edge").setBaseHeight(-2.3f).setHeightVariation(-1.9000001f).setBaseBiome("tfc:mountains")));
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High plains").setBaseHeight(-2.3f).setHeightVariation(-2.27f)));
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Deep ocean").setBaseHeight(-4.2f).setHeightVariation(-2.69999f).setBaseBiome("tfc:ocean")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-3.2f).setHeightVariation(-2.6990001f).setBaseBiome("tfc:ocean"), 2, 0));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-3.2f).setHeightVariation(-2.6990001f).setBaseBiome("tfc:ocean"), 2, 5/*todo: was 0*/));
 
 //        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_hell").setRainDisabled().setTemperature(2.0F).setRainfall(0.0F)));
     }

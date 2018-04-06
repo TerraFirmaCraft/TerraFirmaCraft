@@ -5,6 +5,9 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.capabilities.ChunkCapabilityHandler;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataMessage;
+import net.dries007.tfc.world.classic.worldgen.RarityBasedWorldGen;
+import net.dries007.tfc.world.classic.worldgen.WorldGenFissure;
+import net.dries007.tfc.world.classic.worldgen.WorldGenSurfaceFissureCluster;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModMetadata;
@@ -14,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 
@@ -51,7 +55,7 @@ public class TerraFirmaCraft
         network.registerMessage(ChunkDataMessage.Handler.class, ChunkDataMessage.class, ++id, Side.CLIENT);
 
         ChunkCapabilityHandler.preInit();
-        CalenderTFC.init();
+        CalenderTFC.reload();
     }
 
     @Mod.EventHandler
@@ -64,6 +68,15 @@ public class TerraFirmaCraft
     public void postInit(FMLPostInitializationEvent event)
     {
         worldTypeTFC = new WorldTypeTFC();
+
+        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true, 20)), 0);
+        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureRarity, new WorldGenFissure(false, -1)), 0);
+        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureClusterRarity, new WorldGenSurfaceFissureCluster(true)), 1);
+        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureClusterRarity, new WorldGenSurfaceFissureCluster(false)), 1);
+
+        /**
+         *                              todo: MARKER
+         */
     }
 
     public static Logger getLog()
