@@ -10,8 +10,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
-import net.minecraftforge.fluids.BlockFluidClassic;
-import net.minecraftforge.fluids.BlockFluidFinite;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -88,10 +86,10 @@ public final class BlocksTFC
 
     private static void registerFluid(ImmutableList.Builder<BlockFluidBase> b, IForgeRegistry<Block> r, Fluid fluid, Material material)
     {
-        BlockFluidBase block = new BlockFluidClassic(fluid, material);
+        BlockFluidBase block = new BlockFluidClassicTFC(fluid, material);
         register(r, fluid.getName(), block);
         b.add(block);
-        block = new BlockFluidFinite(fluid, material);
+        block = new BlockFluidFiniteTFC(fluid, material);
         register(r, "finite_" + fluid.getName(), block);
         b.add(block);
     }

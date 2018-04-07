@@ -5,22 +5,30 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
+
+import static net.dries007.tfc.Constants.MOD_ID;
 
 public class BlockTFCOre extends Block
 {
     public final Ore ore;
     public final BlockTFCVariant.Rock rock;
 
+    private BlockTFCOre[] rocks;
+
     public BlockTFCOre(Ore ore, BlockTFCVariant.Rock rock)
     {
         super(BlockTFCVariant.Type.RAW.material);
         this.ore = ore;
+        if (rock == BlockTFCVariant.Rock.GRANITE)
+            ore.ref = this;
         this.rock = rock;
     }
 
@@ -42,6 +50,28 @@ public class BlockTFCOre extends Block
     public BlockRenderLayer getBlockLayer()
     {
         return BlockRenderLayer.CUTOUT;
+    }
+
+    public static BlockTFCOre get(BlockTFCVariant.Rock rock, Ore ore)
+    {
+        return ore.ref.getForRock(rock);
+    }
+
+    public BlockTFCOre getForRock(BlockTFCVariant.Rock r)
+    {
+        if (rock == r) return this;
+        if (rocks == null)
+        {
+            BlockTFCVariant.Rock[] types = BlockTFCVariant.Rock.values();
+            rocks = new BlockTFCOre[types.length];
+            for (int i = 0; i < types.length; i++)
+            {
+                //noinspection ConstantConditions
+                String name = getRegistryName().getResourcePath().replace(rock.name().toLowerCase(), types[i].name().toLowerCase());
+                rocks[i] = (BlockTFCOre) ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID, name));
+            }
+        }
+        return rocks[r.ordinal()];
     }
 
     public enum Ore
@@ -80,6 +110,8 @@ public class BlockTFCOre extends Block
         SYLVITE,
         BORAX,
         OLIVINE,
-        LAPIS_LAZULI
+        LAPIS_LAZULI;
+
+        private BlockTFCOre ref;
     }
 }

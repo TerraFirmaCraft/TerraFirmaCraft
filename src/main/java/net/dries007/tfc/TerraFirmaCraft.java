@@ -10,6 +10,7 @@ import net.dries007.tfc.world.classic.capabilities.ChunkCapabilityHandler;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataMessage;
 import net.dries007.tfc.world.classic.worldgen.RarityBasedWorldGen;
 import net.dries007.tfc.world.classic.worldgen.WorldGenFissure;
+import net.dries007.tfc.world.classic.worldgen.WorldGenOre;
 import net.dries007.tfc.world.classic.worldgen.WorldGenSurfaceFissureCluster;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -81,6 +82,7 @@ public class TerraFirmaCraft
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureRarity, new WorldGenFissure(false, -1)), 0);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureClusterRarity, new WorldGenSurfaceFissureCluster(true)), 1);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureClusterRarity, new WorldGenSurfaceFissureCluster(false)), 1);
+        GameRegistry.registerWorldGenerator(new WorldGenOre(), 2);
 
 
     }
