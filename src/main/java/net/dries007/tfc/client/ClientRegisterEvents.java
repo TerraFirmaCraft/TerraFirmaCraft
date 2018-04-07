@@ -3,6 +3,7 @@ package net.dries007.tfc.client;
 import net.dries007.tfc.objects.blocks.BlockTFCVariant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -35,10 +36,13 @@ public final class ClientRegisterEvents
 
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(BlocksTFC.DEBUG), 0, new ModelResourceLocation(BlocksTFC.DEBUG.getRegistryName(), "inventory"));
 
-        for (BlockFluidBase base : BlocksTFC.getAllFluidBlocks())
+        for (Block base : BlocksTFC.getAllFluidBlocks())
             ModelLoader.setCustomStateMapper(base, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());
 
-        for (BlockTFCVariant variant : BlocksTFC.getAllBlockTFCVariants())
+        for (Block variant : BlocksTFC.getAllBlockTFCVariants())
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(variant), 0, new ModelResourceLocation(variant.getRegistryName(), "inventory"));
+
+        for (Block variant : BlocksTFC.getAllOreBlocks())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(variant), 0, new ModelResourceLocation(variant.getRegistryName(), "inventory"));
     }
 

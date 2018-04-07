@@ -2,6 +2,7 @@ package net.dries007.tfc.objects.blocks;
 
 import com.google.common.collect.ImmutableList;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.objects.CreativeTabsTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -18,8 +19,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import static net.dries007.tfc.Constants.MOD_ID;
-import static net.dries007.tfc.objects.CreativeTab.CT_MISC;
-import static net.dries007.tfc.objects.CreativeTab.CT_ROCK_SOIL;
 import static net.dries007.tfc.objects.blocks.BlockTFCVariant.Type.*;
 
 @SuppressWarnings("unused")
@@ -38,206 +37,21 @@ public final class BlocksTFC
     public static final BlockFluidBase FINITE_FRESH_WATER = null;
     public static final BlockFluidBase FINITE_HOT_WATER = null;
 
-    public static final BlockTFCVariant RAW_GRANITE = null;
-    public static final BlockTFCVariant RAW_DIORITE = null;
-    public static final BlockTFCVariant RAW_GABBRO = null;
-    public static final BlockTFCVariant RAW_SHALE = null;
-    public static final BlockTFCVariant RAW_CLAYSTONE = null;
-    public static final BlockTFCVariant RAW_ROCKSALT = null;
-    public static final BlockTFCVariant RAW_LIMESTONE = null;
-    public static final BlockTFCVariant RAW_CONGLOMERATE = null;
-    public static final BlockTFCVariant RAW_DOLOMITE = null;
-    public static final BlockTFCVariant RAW_CHERT = null;
-    public static final BlockTFCVariant RAW_CHALK = null;
-    public static final BlockTFCVariant RAW_RHYOLITE = null;
-    public static final BlockTFCVariant RAW_BASALT = null;
-    public static final BlockTFCVariant RAW_ANDESITE = null;
-    public static final BlockTFCVariant RAW_DACITE = null;
-    public static final BlockTFCVariant RAW_QUARTZITE = null;
-    public static final BlockTFCVariant RAW_SLATE = null;
-    public static final BlockTFCVariant RAW_PHYLLITE = null;
-    public static final BlockTFCVariant RAW_SCHIST = null;
-    public static final BlockTFCVariant RAW_GNEISS = null;
-    public static final BlockTFCVariant RAW_MARBLE = null;
-    public static final BlockTFCVariant SMOOTH_GRANITE = null;
-    public static final BlockTFCVariant SMOOTH_DIORITE = null;
-    public static final BlockTFCVariant SMOOTH_GABBRO = null;
-    public static final BlockTFCVariant SMOOTH_SHALE = null;
-    public static final BlockTFCVariant SMOOTH_CLAYSTONE = null;
-    public static final BlockTFCVariant SMOOTH_ROCKSALT = null;
-    public static final BlockTFCVariant SMOOTH_LIMESTONE = null;
-    public static final BlockTFCVariant SMOOTH_CONGLOMERATE = null;
-    public static final BlockTFCVariant SMOOTH_DOLOMITE = null;
-    public static final BlockTFCVariant SMOOTH_CHERT = null;
-    public static final BlockTFCVariant SMOOTH_CHALK = null;
-    public static final BlockTFCVariant SMOOTH_RHYOLITE = null;
-    public static final BlockTFCVariant SMOOTH_BASALT = null;
-    public static final BlockTFCVariant SMOOTH_ANDESITE = null;
-    public static final BlockTFCVariant SMOOTH_DACITE = null;
-    public static final BlockTFCVariant SMOOTH_QUARTZITE = null;
-    public static final BlockTFCVariant SMOOTH_SLATE = null;
-    public static final BlockTFCVariant SMOOTH_PHYLLITE = null;
-    public static final BlockTFCVariant SMOOTH_SCHIST = null;
-    public static final BlockTFCVariant SMOOTH_GNEISS = null;
-    public static final BlockTFCVariant SMOOTH_MARBLE = null;
-    public static final BlockTFCVariant COBBLE_GRANITE = null;
-    public static final BlockTFCVariant COBBLE_DIORITE = null;
-    public static final BlockTFCVariant COBBLE_GABBRO = null;
-    public static final BlockTFCVariant COBBLE_SHALE = null;
-    public static final BlockTFCVariant COBBLE_CLAYSTONE = null;
-    public static final BlockTFCVariant COBBLE_ROCKSALT = null;
-    public static final BlockTFCVariant COBBLE_LIMESTONE = null;
-    public static final BlockTFCVariant COBBLE_CONGLOMERATE = null;
-    public static final BlockTFCVariant COBBLE_DOLOMITE = null;
-    public static final BlockTFCVariant COBBLE_CHERT = null;
-    public static final BlockTFCVariant COBBLE_CHALK = null;
-    public static final BlockTFCVariant COBBLE_RHYOLITE = null;
-    public static final BlockTFCVariant COBBLE_BASALT = null;
-    public static final BlockTFCVariant COBBLE_ANDESITE = null;
-    public static final BlockTFCVariant COBBLE_DACITE = null;
-    public static final BlockTFCVariant COBBLE_QUARTZITE = null;
-    public static final BlockTFCVariant COBBLE_SLATE = null;
-    public static final BlockTFCVariant COBBLE_PHYLLITE = null;
-    public static final BlockTFCVariant COBBLE_SCHIST = null;
-    public static final BlockTFCVariant COBBLE_GNEISS = null;
-    public static final BlockTFCVariant COBBLE_MARBLE = null;
-    public static final BlockTFCVariant BRICK_GRANITE = null;
-    public static final BlockTFCVariant BRICK_DIORITE = null;
-    public static final BlockTFCVariant BRICK_GABBRO = null;
-    public static final BlockTFCVariant BRICK_SHALE = null;
-    public static final BlockTFCVariant BRICK_CLAYSTONE = null;
-    public static final BlockTFCVariant BRICK_ROCKSALT = null;
-    public static final BlockTFCVariant BRICK_LIMESTONE = null;
-    public static final BlockTFCVariant BRICK_CONGLOMERATE = null;
-    public static final BlockTFCVariant BRICK_DOLOMITE = null;
-    public static final BlockTFCVariant BRICK_CHERT = null;
-    public static final BlockTFCVariant BRICK_CHALK = null;
-    public static final BlockTFCVariant BRICK_RHYOLITE = null;
-    public static final BlockTFCVariant BRICK_BASALT = null;
-    public static final BlockTFCVariant BRICK_ANDESITE = null;
-    public static final BlockTFCVariant BRICK_DACITE = null;
-    public static final BlockTFCVariant BRICK_QUARTZITE = null;
-    public static final BlockTFCVariant BRICK_SLATE = null;
-    public static final BlockTFCVariant BRICK_PHYLLITE = null;
-    public static final BlockTFCVariant BRICK_SCHIST = null;
-    public static final BlockTFCVariant BRICK_GNEISS = null;
-    public static final BlockTFCVariant BRICK_MARBLE = null;
-    public static final BlockTFCVariant SAND_GRANITE = null;
-    public static final BlockTFCVariant SAND_DIORITE = null;
-    public static final BlockTFCVariant SAND_GABBRO = null;
-    public static final BlockTFCVariant SAND_SHALE = null;
-    public static final BlockTFCVariant SAND_CLAYSTONE = null;
-    public static final BlockTFCVariant SAND_ROCKSALT = null;
-    public static final BlockTFCVariant SAND_LIMESTONE = null;
-    public static final BlockTFCVariant SAND_CONGLOMERATE = null;
-    public static final BlockTFCVariant SAND_DOLOMITE = null;
-    public static final BlockTFCVariant SAND_CHERT = null;
-    public static final BlockTFCVariant SAND_CHALK = null;
-    public static final BlockTFCVariant SAND_RHYOLITE = null;
-    public static final BlockTFCVariant SAND_BASALT = null;
-    public static final BlockTFCVariant SAND_ANDESITE = null;
-    public static final BlockTFCVariant SAND_DACITE = null;
-    public static final BlockTFCVariant SAND_QUARTZITE = null;
-    public static final BlockTFCVariant SAND_SLATE = null;
-    public static final BlockTFCVariant SAND_PHYLLITE = null;
-    public static final BlockTFCVariant SAND_SCHIST = null;
-    public static final BlockTFCVariant SAND_GNEISS = null;
-    public static final BlockTFCVariant SAND_MARBLE = null;
-    public static final BlockTFCVariant GRAVEL_GRANITE = null;
-    public static final BlockTFCVariant GRAVEL_DIORITE = null;
-    public static final BlockTFCVariant GRAVEL_GABBRO = null;
-    public static final BlockTFCVariant GRAVEL_SHALE = null;
-    public static final BlockTFCVariant GRAVEL_CLAYSTONE = null;
-    public static final BlockTFCVariant GRAVEL_ROCKSALT = null;
-    public static final BlockTFCVariant GRAVEL_LIMESTONE = null;
-    public static final BlockTFCVariant GRAVEL_CONGLOMERATE = null;
-    public static final BlockTFCVariant GRAVEL_DOLOMITE = null;
-    public static final BlockTFCVariant GRAVEL_CHERT = null;
-    public static final BlockTFCVariant GRAVEL_CHALK = null;
-    public static final BlockTFCVariant GRAVEL_RHYOLITE = null;
-    public static final BlockTFCVariant GRAVEL_BASALT = null;
-    public static final BlockTFCVariant GRAVEL_ANDESITE = null;
-    public static final BlockTFCVariant GRAVEL_DACITE = null;
-    public static final BlockTFCVariant GRAVEL_QUARTZITE = null;
-    public static final BlockTFCVariant GRAVEL_SLATE = null;
-    public static final BlockTFCVariant GRAVEL_PHYLLITE = null;
-    public static final BlockTFCVariant GRAVEL_SCHIST = null;
-    public static final BlockTFCVariant GRAVEL_GNEISS = null;
-    public static final BlockTFCVariant GRAVEL_MARBLE = null;
-    public static final BlockTFCVariant DIRT_GRANITE = null;
-    public static final BlockTFCVariant DIRT_DIORITE = null;
-    public static final BlockTFCVariant DIRT_GABBRO = null;
-    public static final BlockTFCVariant DIRT_SHALE = null;
-    public static final BlockTFCVariant DIRT_CLAYSTONE = null;
-    public static final BlockTFCVariant DIRT_ROCKSALT = null;
-    public static final BlockTFCVariant DIRT_LIMESTONE = null;
-    public static final BlockTFCVariant DIRT_CONGLOMERATE = null;
-    public static final BlockTFCVariant DIRT_DOLOMITE = null;
-    public static final BlockTFCVariant DIRT_CHERT = null;
-    public static final BlockTFCVariant DIRT_CHALK = null;
-    public static final BlockTFCVariant DIRT_RHYOLITE = null;
-    public static final BlockTFCVariant DIRT_BASALT = null;
-    public static final BlockTFCVariant DIRT_ANDESITE = null;
-    public static final BlockTFCVariant DIRT_DACITE = null;
-    public static final BlockTFCVariant DIRT_QUARTZITE = null;
-    public static final BlockTFCVariant DIRT_SLATE = null;
-    public static final BlockTFCVariant DIRT_PHYLLITE = null;
-    public static final BlockTFCVariant DIRT_SCHIST = null;
-    public static final BlockTFCVariant DIRT_GNEISS = null;
-    public static final BlockTFCVariant DIRT_MARBLE = null;
-    public static final BlockTFCVariant GRASS_GRANITE = null;
-    public static final BlockTFCVariant GRASS_DIORITE = null;
-    public static final BlockTFCVariant GRASS_GABBRO = null;
-    public static final BlockTFCVariant GRASS_SHALE = null;
-    public static final BlockTFCVariant GRASS_CLAYSTONE = null;
-    public static final BlockTFCVariant GRASS_ROCKSALT = null;
-    public static final BlockTFCVariant GRASS_LIMESTONE = null;
-    public static final BlockTFCVariant GRASS_CONGLOMERATE = null;
-    public static final BlockTFCVariant GRASS_DOLOMITE = null;
-    public static final BlockTFCVariant GRASS_CHERT = null;
-    public static final BlockTFCVariant GRASS_CHALK = null;
-    public static final BlockTFCVariant GRASS_RHYOLITE = null;
-    public static final BlockTFCVariant GRASS_BASALT = null;
-    public static final BlockTFCVariant GRASS_ANDESITE = null;
-    public static final BlockTFCVariant GRASS_DACITE = null;
-    public static final BlockTFCVariant GRASS_QUARTZITE = null;
-    public static final BlockTFCVariant GRASS_SLATE = null;
-    public static final BlockTFCVariant GRASS_PHYLLITE = null;
-    public static final BlockTFCVariant GRASS_SCHIST = null;
-    public static final BlockTFCVariant GRASS_GNEISS = null;
-    public static final BlockTFCVariant GRASS_MARBLE = null;
-    public static final BlockTFCVariant DRY_GRASS_GRANITE = null;
-    public static final BlockTFCVariant DRY_GRASS_DIORITE = null;
-    public static final BlockTFCVariant DRY_GRASS_GABBRO = null;
-    public static final BlockTFCVariant DRY_GRASS_SHALE = null;
-    public static final BlockTFCVariant DRY_GRASS_CLAYSTONE = null;
-    public static final BlockTFCVariant DRY_GRASS_ROCKSALT = null;
-    public static final BlockTFCVariant DRY_GRASS_LIMESTONE = null;
-    public static final BlockTFCVariant DRY_GRASS_CONGLOMERATE = null;
-    public static final BlockTFCVariant DRY_GRASS_DOLOMITE = null;
-    public static final BlockTFCVariant DRY_GRASS_CHERT = null;
-    public static final BlockTFCVariant DRY_GRASS_CHALK = null;
-    public static final BlockTFCVariant DRY_GRASS_RHYOLITE = null;
-    public static final BlockTFCVariant DRY_GRASS_BASALT = null;
-    public static final BlockTFCVariant DRY_GRASS_ANDESITE = null;
-    public static final BlockTFCVariant DRY_GRASS_DACITE = null;
-    public static final BlockTFCVariant DRY_GRASS_QUARTZITE = null;
-    public static final BlockTFCVariant DRY_GRASS_SLATE = null;
-    public static final BlockTFCVariant DRY_GRASS_PHYLLITE = null;
-    public static final BlockTFCVariant DRY_GRASS_SCHIST = null;
-    public static final BlockTFCVariant DRY_GRASS_GNEISS = null;
-    public static final BlockTFCVariant DRY_GRASS_MARBLE = null;
-
-    private static ImmutableList<BlockTFCVariant> allBlockTFCVariants;
     private static ImmutableList<BlockFluidBase> allFluidBlocks;
+    private static ImmutableList<BlockTFCVariant> allBlockTFCVariants;
+    private static ImmutableList<BlockTFCOre> allOreBlocks;
 
+    public static ImmutableList<BlockFluidBase> getAllFluidBlocks()
+    {
+        return allFluidBlocks;
+    }
     public static ImmutableList<BlockTFCVariant> getAllBlockTFCVariants()
     {
         return allBlockTFCVariants;
     }
-    public static ImmutableList<BlockFluidBase> getAllFluidBlocks()
+    public static ImmutableList<BlockTFCOre> getAllOreBlocks()
     {
-        return allFluidBlocks;
+        return allOreBlocks;
     }
 
     @SubscribeEvent
@@ -245,7 +59,7 @@ public final class BlocksTFC
     {
         IForgeRegistry<Block> r = event.getRegistry();
 
-        register(r, "debug", new BlockDebug(), CT_MISC);
+        register(r, "debug", new BlockDebug(), CreativeTabsTFC.CT_MISC);
 
         {
             TerraFirmaCraft.getLog().info("The 3 warnings ('A mod has attempted to assign Block...') below this line are normal.");
@@ -261,6 +75,14 @@ public final class BlocksTFC
                 for (BlockTFCVariant.Rock rock : BlockTFCVariant.Rock.values())
                     registerSoil(b, r, type, rock);
             allBlockTFCVariants = b.build();
+        }
+
+        {
+            ImmutableList.Builder<BlockTFCOre> b = ImmutableList.builder();
+            for (BlockTFCOre.Ore ore : BlockTFCOre.Ore.values())
+                for (BlockTFCVariant.Rock rock : BlockTFCVariant.Rock.values())
+                    registerOre(b, r, ore, rock);
+            allOreBlocks = b.build();
         }
     }
 
@@ -279,7 +101,15 @@ public final class BlocksTFC
         BlockTFCVariant block = new BlockTFCVariant(type, rock);
         block.setResistance(0).setHardness(0); //todo: remove
         b.add(block);
-        register(r, (type.name() + "_" +  rock.name()).toLowerCase(), block, CT_ROCK_SOIL);
+        register(r, (type.name() + "_" +  rock.name()).toLowerCase(), block, CreativeTabsTFC.CT_ROCK_SOIL);
+    }
+
+    private static void registerOre(ImmutableList.Builder<BlockTFCOre> b, IForgeRegistry<Block> r, BlockTFCOre.Ore ore, BlockTFCVariant.Rock rock)
+    {
+        BlockTFCOre block = new BlockTFCOre(ore, rock);
+        block.setResistance(0).setHardness(0); //todo: remove
+        b.add(block);
+        register(r, (ore.name() + "_" +  rock.name()).toLowerCase(), block, CreativeTabsTFC.CT_ORES);
     }
 
     private static void register(IForgeRegistry<Block> r, String name, Block block, CreativeTabs ct)

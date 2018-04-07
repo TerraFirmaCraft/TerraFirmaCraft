@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import static net.dries007.tfc.Constants.MOD_ID;
-import static net.dries007.tfc.objects.CreativeTab.CT_MISC;
+import static net.dries007.tfc.objects.CreativeTabsTFC.CT_MISC;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 @GameRegistry.ObjectHolder(MOD_ID)
@@ -31,6 +31,7 @@ public final class ItemsTFC
         register_item_block(r, BlocksTFC.DEBUG);
 
         BlocksTFC.getAllBlockTFCVariants().forEach(x -> register_item_block(r, x));
+        BlocksTFC.getAllOreBlocks().forEach(x -> register_item_block(r, x));
     }
 
     private static void register_item_block(IForgeRegistry<Item> r, Block block)

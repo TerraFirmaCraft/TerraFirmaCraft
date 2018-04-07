@@ -1,7 +1,7 @@
 package net.dries007.tfc;
 
 import net.dries007.tfc.client.ClientEvents;
-import net.dries007.tfc.objects.CreativeTab;
+import net.dries007.tfc.objects.CreativeTabsTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.world.classic.CalenderTFC;
@@ -69,7 +69,7 @@ public class TerraFirmaCraft
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-        CreativeTab.init();
+        CreativeTabsTFC.init();
     }
 
     @Mod.EventHandler
@@ -82,9 +82,7 @@ public class TerraFirmaCraft
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureClusterRarity, new WorldGenSurfaceFissureCluster(true)), 1);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureClusterRarity, new WorldGenSurfaceFissureCluster(false)), 1);
 
-        /**
-         *                              todo: MARKER
-         */
+
     }
 
     public static Logger getLog()

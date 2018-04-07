@@ -37,6 +37,10 @@ public class BlockTFCVariant extends Block implements IBlockFalling
         super(type.material);
         this.type = type;
         this.rock = rock;
+        if (type == Type.RAW)
+        {
+            rock.ref = this;
+        }
         if (type == Type.GRASS || type == Type.DRY_GRASS || type.isAffectedByGravity)
         {
 //            this.setTickRandomly(true); //todo: everyone for caveins? For dirt rolling down?
@@ -57,6 +61,7 @@ public class BlockTFCVariant extends Block implements IBlockFalling
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer()
     {
         return type.isColorIndexed ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
@@ -203,6 +208,9 @@ public class BlockTFCVariant extends Block implements IBlockFalling
         GNEISS(Category.METAMORPHIC),
         MARBLE(Category.METAMORPHIC);
 
+        public final Category category;
+        private BlockTFCVariant ref;
+
         Rock(Category category)
         {
             this.category = category;
@@ -212,8 +220,11 @@ public class BlockTFCVariant extends Block implements IBlockFalling
         {
             SEDIMENTARY, METAMORPHIC, IGNEOUS_INTRUSIVE, IGNEOUS_EXTRUSIVE
         }
+    }
 
-        public final Category category;
+    public static BlockTFCVariant get(Rock rock, Type type)
+    {
+        return rock.ref.getVariant(type);
     }
 
     public BlockTFCVariant getVariant(Type t)
