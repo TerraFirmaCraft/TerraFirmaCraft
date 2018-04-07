@@ -23,21 +23,36 @@ public final class ChunkDataTFC
 {
     public static final int FISH_POP_MAX = 60;
 
+    private static final ChunkDataTFC EMPTY = new ChunkDataTFC();
+
     private boolean initialized = false;
+    private final DataLayer[] rockLayer1 = new DataLayer[256];
     private final DataLayer[] rockLayer2 = new DataLayer[256];
     private final DataLayer[] rockLayer3 = new DataLayer[256];
     private final DataLayer[] evtLayer = new DataLayer[256];
-    private final DataLayer[] rockLayer1 = new DataLayer[256];
     private final DataLayer[] rainfallLayer = new DataLayer[256];
     private final DataLayer[] drainageLayer = new DataLayer[256];
     private final DataLayer[] stabilityLayer = new DataLayer[256];
     private final int[] seaLevelOffset = new int[256];
 
-    private int fishPopulation = FISH_POP_MAX;
+    private int fishPopulation = FISH_POP_MAX; // todo: Set this based on biome? temp? rng?
+
+    static
+    {
+        Arrays.fill(EMPTY.rockLayer1, DataLayer.ERROR);
+        Arrays.fill(EMPTY.rockLayer2, DataLayer.ERROR);
+        Arrays.fill(EMPTY.rockLayer3, DataLayer.ERROR);
+        Arrays.fill(EMPTY.evtLayer, DataLayer.ERROR);
+        Arrays.fill(EMPTY.rainfallLayer, DataLayer.ERROR);
+        Arrays.fill(EMPTY.drainageLayer, DataLayer.ERROR);
+        Arrays.fill(EMPTY.stabilityLayer, DataLayer.ERROR);
+        Arrays.fill(EMPTY.seaLevelOffset, -1);
+    }
 
     public static ChunkDataTFC get(World world, BlockPos pos)
     {
-        return world.getChunkFromBlockCoords(pos).getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
+        ChunkDataTFC data = world.getChunkFromBlockCoords(pos).getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
+        return data == null ? EMPTY : data;
     }
 
     public static BlockTFCVariant getRock1(World world, BlockPos pos) { return get(world, pos).getRockLayer1(pos.getX() & 15, pos.getZ() & 15).block; }

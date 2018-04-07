@@ -24,7 +24,10 @@ public final class RarityBasedWorldGen implements IWorldGenerator
     @Override
     public final void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
-        int rarity = getRarityFunction.applyAsInt(((ChunkGenTFC) chunkGenerator).s);
-        if (rarity != 0 && random.nextInt(rarity) == 0) worldGenerator.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+        if (chunkGenerator instanceof ChunkGenTFC)
+        {
+            int rarity = getRarityFunction.applyAsInt(((ChunkGenTFC) chunkGenerator).s);
+            if (rarity != 0 && random.nextInt(rarity) == 0) worldGenerator.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+        }
     }
 }

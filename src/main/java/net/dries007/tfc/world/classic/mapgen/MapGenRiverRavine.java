@@ -12,6 +12,7 @@ import static net.dries007.tfc.world.classic.ChunkGenTFC.*;
 
 /**
  * todo: this is even more of a mess than the other two mapgen classes, cause the generate method is weird.
+ * todo: fill with water?
  */
 public class MapGenRiverRavine extends MapGenBase
 {

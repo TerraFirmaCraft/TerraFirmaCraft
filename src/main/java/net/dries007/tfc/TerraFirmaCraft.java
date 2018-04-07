@@ -1,6 +1,9 @@
 package net.dries007.tfc;
 
+import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.objects.CreativeTab;
+import net.dries007.tfc.objects.entity.EntitiesTFC;
+import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.capabilities.ChunkCapabilityHandler;
@@ -56,6 +59,11 @@ public class TerraFirmaCraft
 
         ChunkCapabilityHandler.preInit();
         CalenderTFC.reload();
+
+        EntitiesTFC.preInit();
+        FluidsTFC.preInit();
+
+        if (event.getSide().isClient()) ClientEvents.preInit();
     }
 
     @Mod.EventHandler
@@ -97,5 +105,10 @@ public class TerraFirmaCraft
     public static SimpleNetworkWrapper getNetwork()
     {
         return instance.network;
+    }
+
+    public static TerraFirmaCraft getInstance()
+    {
+        return instance;
     }
 }

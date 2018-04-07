@@ -1,3 +1,15 @@
 # TerraFirmaCraft
 
 Work in progress.
+
+## Goal
+
+The goal of this project is to be **the** TerraFirmaCraft for 1.12.2, not a mire partial imitation.
+
+## License / Copyright / Credit
+
+todo : Choose a license
+
+Parts of this project are mostly edited source code from the original TerraFirmaCraft for 1.7.10 mod.
+
+Based on original work by Robert "Bioxx" Anthony, Amanda "Kittychanley" Halek and others.

@@ -61,8 +61,6 @@ public class WorldGenFissure implements IWorldGenerator
         if (depth > 0)
             start = start.add(0, -depth - random.nextInt(60 /* todo: setting? */), 0);
 
-        // todo: debug, check if it works.
-
         generate(world, random, start);
     }
 

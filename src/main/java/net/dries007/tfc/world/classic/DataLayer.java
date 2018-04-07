@@ -4,8 +4,7 @@ import net.dries007.tfc.objects.blocks.BlockTFCVariant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 
 /**
- * Todo: Rewrite to make typesafe
- * Todo: Store with chunk data to disk so it doesn't need to be regenerated ever (might not be required)
+ * Todo: Rewrite to make typesafe ?
  */
 @SuppressWarnings("WeakerAccess")
 public final class DataLayer
@@ -86,6 +85,8 @@ public final class DataLayer
     public static final DataLayer PH_NEUTRAL = newIntDataLayer(132, "Neutral", 2);
     public static final DataLayer PH_ALKALINE_LOW = newIntDataLayer(133, "Low Alkalinity", 3);
     public static final DataLayer PH_ALKALINE_HIGH = newIntDataLayer(134, "High Alkalinity", 4);
+
+    public static final DataLayer ERROR = new DataLayer(-1, null, "ERROR", Integer.MIN_VALUE, Float.NaN);
 
     public static final DataLayer[] ROCK_LAYER_1 = new DataLayer[] {
             DataLayer.SHALE, DataLayer.CLAYSTONE, DataLayer.ROCKSALT, DataLayer.LIMESTONE,

@@ -2,6 +2,8 @@ package net.dries007.tfc.client;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.client.render.RenderFallingBlockTFC;
+import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataProvider;
@@ -13,6 +15,7 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -21,6 +24,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.List;
 
 import static net.dries007.tfc.Constants.MOD_ID;
+import static net.minecraft.util.text.TextFormatting.*;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)
 public class ClientEvents
@@ -39,8 +43,7 @@ public class ClientEvents
     @SubscribeEvent
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
     {
-        // todo: sync data
-        // todo: check if this is allowed to be displayed, debug only maybe?
+        // todo: check if this is allowed to be displayed, debug/op only maybe?
         Minecraft mc = Minecraft.getMinecraft();
         List<String> list = event.getRight();
         if (ConfigTFC.GENERAL.debug && mc.gameSettings.showDebugInfo)
@@ -49,42 +52,46 @@ public class ClientEvents
             Chunk chunk = mc.world.getChunkFromBlockCoords(blockpos);
             if (mc.world.isBlockLoaded(blockpos) && !chunk.isEmpty())
             {
-                list.add("");
-                list.add("TerraFirmaCraft Data:");
-                list.add(String.format("Temps: Base: %f Bio: %f Height adjusted: %f",
-                        ClimateTFC.getTemp(mc.world, blockpos),
-                        ClimateTFC.getBioTemperatureHeight(mc.world, blockpos),
-                        ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)
-                ));
-                list.add(String.format("TFC Time: %02d:%02d %04d/%02d/%02d",
-                        CalenderTFC.getHourOfDay(),
-                        CalenderTFC.getMinuteOfHour(),
-                        CalenderTFC.getTotalYears(),
-                        CalenderTFC.getMonthOfYear(),
-                        CalenderTFC.getDayOfMonth()
-                        )
-                );
-                list.add("");
-
-                list.add(mc.world.getBiome(blockpos).getBiomeName());
-
                 final int x = blockpos.getX() & 15, z = blockpos.getZ() & 15;
                 ChunkDataTFC data = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
+
+                list.add("");
+                list.add(AQUA + "TerraFirmaCraft");
 
                 if (data == null || !data.isInitialized()) list.add("No data ?!");
                 else
                 {
-                    list.add("Rock 1: " + data.getRockLayer1(x, z).name);
-                    list.add("Rock 2: " + data.getRockLayer2(x, z).name);
-                    list.add("Rock 3: " + data.getRockLayer3(x, z).name);
-                    list.add("EVT: " + data.getEvtLayer(x, z).name);
-                    list.add("Rainfall: " + data.getRainfallLayer(x, z).name);
-                    list.add("Stability: " + data.getStabilityLayer(x, z).name);
-                    list.add("Drainage: " + data.getDrainageLayer(x, z).name);
-                    list.add("Sea level offset: " + data.getSeaLevelOffset(x, z));
-                    list.add("Fish population: " + data.getFishPopulation());
+                    list.add(String.format("%sTemps: Base: %s%.0f°%s Bio: %s%.0f°%s Height adjusted: %s%.0f°",
+                            GRAY, WHITE, ClimateTFC.getTemp(mc.world, blockpos), GRAY,
+                            WHITE, ClimateTFC.getBioTemperatureHeight(mc.world, blockpos), GRAY,
+                            WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)
+                    ));
+                    list.add(String.format("%sTime: %s%02d:%02d %04d/%02d/%02d",
+                            GRAY, WHITE,
+                            CalenderTFC.getHourOfDay(),
+                            CalenderTFC.getMinuteOfHour(),
+                            CalenderTFC.getTotalYears(),
+                            CalenderTFC.getMonthOfYear(),
+                            CalenderTFC.getDayOfMonth()
+                            )
+                    );
+
+                    list.add(GRAY + "Biome: " + WHITE + mc.world.getBiome(blockpos).getBiomeName());
+
+                    list.add(GRAY + "Rocks: " + WHITE + data.getRockLayer1(x, z).name + ", " + data.getRockLayer2(x, z).name + ", " + data.getRockLayer3(x, z).name);
+                    list.add(GRAY + "EVT: " + WHITE + data.getEvtLayer(x, z).name);
+                    list.add(GRAY + "Rainfall: " + WHITE + data.getRainfallLayer(x, z).name);
+                    list.add(GRAY + "Stability: " + WHITE + data.getStabilityLayer(x, z).name);
+                    list.add(GRAY + "Drainage: " + WHITE + data.getDrainageLayer(x, z).name);
+                    list.add(GRAY + "Sea level offset: " + WHITE + data.getSeaLevelOffset(x, z));
+                    list.add(GRAY + "Fish population: " + WHITE + data.getFishPopulation());
                 }
             }
         }
+    }
+
+    public static void preInit()
+    {
+        RenderingRegistry.registerEntityRenderingHandler(EntityFallingBlockTFC.class, RenderFallingBlockTFC::new);
     }
 }

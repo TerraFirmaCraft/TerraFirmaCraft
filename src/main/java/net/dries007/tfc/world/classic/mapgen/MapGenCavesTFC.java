@@ -20,12 +20,14 @@ public class MapGenCavesTFC extends MapGenBase
 {
     private final DataLayer[] rockLayer1;
     private final DataLayer[] rainfallLayer;
+    private final DataLayer[] stabilityLayer;
 
-    public MapGenCavesTFC(DataLayer[] rockLayer1, DataLayer[] rainfallLayer)
+    public MapGenCavesTFC(DataLayer[] rockLayer1, DataLayer[] rainfallLayer, DataLayer[] stabilityLayer)
     {
         // todo: add settings?
         this.rockLayer1 = rockLayer1;
         this.rainfallLayer = rainfallLayer;
+        this.stabilityLayer = stabilityLayer;
     }
 
     @Override
@@ -127,8 +129,8 @@ public class MapGenCavesTFC extends MapGenBase
     protected void generateCaveNode(long seed, int chunkX, int chunkZ, ChunkPrimer primer, double xOffset, double yOffset, double zOffset, float f1, float f2, float f3, int i1, double yRadiusMult, double width)
     {
         final Random rng = new Random(seed);
-        final double worldX = chunkX * 16 + 8;
-        final double worldZ = chunkZ * 16 + 8;
+        final int worldX = chunkX * 16 + 8;
+        final int worldZ = chunkZ * 16 + 8;
         float lf1 = 0.0F;
         float lf2 = 0.0F;
 
@@ -143,7 +145,7 @@ public class MapGenCavesTFC extends MapGenBase
 
         final int rndRange2 = rng.nextInt(rndRange / 2) + rndRange / 4;
         boolean smallRnd = rng.nextInt(6) == 0;
-        for (; i1 < rndRange; ++i1)
+outer:  for (; i1 < rndRange; ++i1)
         {
             float var33 = MathHelper.cos(f3);
             float var34 = MathHelper.sin(f3);
@@ -197,7 +199,8 @@ public class MapGenCavesTFC extends MapGenBase
                 if (initialZ < 0) initialZ = 0;
                 if (maxZ > 16) maxZ = 16;
 
-                boolean water = false; // todo: labeled break?
+                /*
+                boolean water = false;
                 for (int xCoord = initialX; !water && xCoord < maxX; ++xCoord)
                 {
                     for (int zCoord = initialZ; !water && zCoord < maxZ; ++zCoord)
@@ -212,6 +215,19 @@ public class MapGenCavesTFC extends MapGenBase
                     }
                 }
                 if (water) continue;
+                */
+
+                for (int xCoord = initialX; xCoord < maxX; ++xCoord)
+                {
+                    for (int zCoord = initialZ; zCoord < maxZ; ++zCoord)
+                    {
+                        for (int yCoord = initialY; yCoord >= minY - 1; --yCoord)
+                        {
+                            if (BlocksTFC.isWater(primer.getBlockState(xCoord, zCoord, yCoord)))
+                                continue outer;
+                        }
+                    }
+                }
 
                 for (int xCoord = initialX; xCoord < maxX; ++xCoord)
                 {
@@ -242,7 +258,7 @@ public class MapGenCavesTFC extends MapGenBase
                                 primer.setBlockState(xCoord, y + upCount, zCoord, AIR);
 
 
-                            if (y < 20 /* todo make option? was 10*/ /*todo && TFC_Climate.getStability(this.worldObj, (int)worldX, (int)worldZ) == 1*/)
+                            if (y < 20 /* todo make option? was 10*/ && stabilityLayer[(worldZ & 15) << 4 | (worldX & 15)].valueInt == 1)
                             {
                                 primer.setBlockState(xCoord, y, zCoord, LAVA);
                             }

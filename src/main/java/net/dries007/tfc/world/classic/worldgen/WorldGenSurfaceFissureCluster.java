@@ -1,6 +1,5 @@
 package net.dries007.tfc.world.classic.worldgen;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
 import net.minecraft.util.math.BlockPos;
@@ -31,12 +30,9 @@ public class WorldGenSurfaceFissureCluster implements IWorldGenerator
     {
         final BlockPos start = new ChunkPos(chunkX, chunkZ).getBlock(random.nextInt(16) + 8, 0, random.nextInt(16) + 8);
         if (ChunkDataTFC.isStable(world, start)) return; // todo: this short-circuits a BUNCH of stuff, idk if it's a good idea.
-
-        TerraFirmaCraft.getLog().info("Cluster at {}", start);
         for (int i = 3 + random.nextInt(10); i > 0; i--)
         {
             BlockPos pos = world.getTopSolidOrLiquidBlock(start.add(-30 + random.nextInt(60), 0, -30 + random.nextInt(60))).add(0, -1, 0);
-            TerraFirmaCraft.getLog().info("Cluster node at {}", pos);
             if (random.nextInt(10) == 0) fissureGenAir.generate(world, random, pos);
             else fissureGenFluid.generate(world, random, pos);
         }

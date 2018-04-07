@@ -13,6 +13,7 @@ import static net.dries007.tfc.world.classic.ChunkGenTFC.LAVA;
 
 /**
  * todo: clean up. This needs to be simplified a lot, or split up in functions with sensible variable names.
+ * todo: fill with water?
  */
 public class MapGenRavineTFC extends MapGenBase
 {
@@ -64,7 +65,7 @@ public class MapGenRavineTFC extends MapGenBase
             }
         }
 
-        for (int round = 0; round < rounds; ++round)
+outer:  for (int round = 0; round < rounds; ++round)
         {
             final double min = (1.5D + MathHelper.sin(round * (float)Math.PI / rounds) * angleX * 1.0F) * rng.nextFloat() * 0.25D + 0.75D;
             final double max = (min * yScale) * rng.nextFloat() * 0.25D + 0.75D;
@@ -112,7 +113,8 @@ public class MapGenRavineTFC extends MapGenBase
             if (zMin < 0) zMin = 0;
             if (zMax > 16) zMax = 16;
 
-            boolean isBlocked = false; // todo convert to label continue?
+            /*
+            boolean isBlocked = false;
             for (int x = xMin; !isBlocked && x < xMax; ++x)
             {
                 for (int z = zMin; !isBlocked && z < zMax; ++z)
@@ -125,6 +127,18 @@ public class MapGenRavineTFC extends MapGenBase
                 }
             }
             if (isBlocked) continue;
+            */
+            for (int x = xMin; x < xMax; ++x)
+            {
+                for (int z = zMin; z < zMax; ++z)
+                {
+                    for (int y = yMax; y >= yMin - 1; --y)
+                    {
+                        if (BlocksTFC.isWater(primer.getBlockState(x, z, y)))
+                            continue outer;
+                    }
+                }
+            }
 
             for (int x = xMin; x < xMax; ++x)
             {

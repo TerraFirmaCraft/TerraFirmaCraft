@@ -21,7 +21,7 @@ public class CalenderTFC
     private static int ticksInMonth;
     private static int startTime;
 
-    private static long time; // todo: update
+    private static long time; // todo: handle better
 
     public static int getSeasonFromDayOfYear(long day, boolean south)
     {
