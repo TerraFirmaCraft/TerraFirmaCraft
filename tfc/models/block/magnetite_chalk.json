@@ -1,0 +1,1 @@
+{"parent": "tfc:block/ore", "textures": {"all": "tfc:blocks/stonetypes/raw_chalk", "particle": "tfc:blocks/stonetypes/raw_chalk", "overlay": "tfc:blocks/ores/magnetite"}}

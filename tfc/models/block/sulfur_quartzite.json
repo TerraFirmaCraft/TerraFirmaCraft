@@ -1,0 +1,1 @@
+{"parent": "tfc:block/ore", "textures": {"all": "tfc:blocks/stonetypes/raw_quartzite", "particle": "tfc:blocks/stonetypes/raw_quartzite", "overlay": "tfc:blocks/ores/sulfur"}}
