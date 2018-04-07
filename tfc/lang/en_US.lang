@@ -46,6 +46,11 @@ generator.tfc_classic=TFC Classic
 item.tfc.wand.name=TFC Debug Wand
 #todo: add all items
 
+# Fluids
+fluid.salt_water=Salt water
+fluid.fresh_water=Fresh water
+fluid.hot_water=Hot water
+
 # Blocks
 tile.tfc.debug.name=TFC Debug Block
 
