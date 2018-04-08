@@ -52,9 +52,10 @@ public class BlockTFCOre extends Block
         return BlockRenderLayer.CUTOUT;
     }
 
-    public static BlockTFCOre get(BlockTFCVariant.Rock rock, Ore ore)
+    public static IBlockState get(BlockTFCVariant.Rock rock, Ore ore, Grade grade)
     {
-        return ore.ref.getForRock(rock);
+        //todo grade
+        return ore.ref.getForRock(rock).getDefaultState();
     }
 
     public BlockTFCOre getForRock(BlockTFCVariant.Rock r)
@@ -72,6 +73,11 @@ public class BlockTFCOre extends Block
             }
         }
         return rocks[r.ordinal()];
+    }
+
+    public enum Grade
+    {
+        POOR, NORMAL, RICH
     }
 
     public enum Ore
