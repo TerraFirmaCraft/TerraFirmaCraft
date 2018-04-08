@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import static net.dries007.tfc.Constants.MOD_ID;
-import static net.dries007.tfc.objects.blocks.BlockTFCVariant.Type.*;
+import static net.dries007.tfc.objects.blocks.BlockRockVariant.Type.*;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -36,16 +36,16 @@ public final class BlocksTFC
     public static final BlockFluidBase FINITE_HOT_WATER = null;
 
     private static ImmutableList<BlockFluidBase> allFluidBlocks;
-    private static ImmutableList<BlockTFCVariant> allBlockTFCVariants;
+    private static ImmutableList<BlockRockVariant> allBlockRockVariants;
     private static ImmutableList<BlockTFCOre> allOreBlocks;
 
     public static ImmutableList<BlockFluidBase> getAllFluidBlocks()
     {
         return allFluidBlocks;
     }
-    public static ImmutableList<BlockTFCVariant> getAllBlockTFCVariants()
+    public static ImmutableList<BlockRockVariant> getAllBlockRockVariants()
     {
-        return allBlockTFCVariants;
+        return allBlockRockVariants;
     }
     public static ImmutableList<BlockTFCOre> getAllOreBlocks()
     {
@@ -68,17 +68,17 @@ public final class BlocksTFC
         }
 
         {
-            ImmutableList.Builder<BlockTFCVariant> b = ImmutableList.builder();
-            for (BlockTFCVariant.Type type : BlockTFCVariant.Type.values())
-                for (BlockTFCVariant.Rock rock : BlockTFCVariant.Rock.values())
+            ImmutableList.Builder<BlockRockVariant> b = ImmutableList.builder();
+            for (BlockRockVariant.Type type : BlockRockVariant.Type.values())
+                for (BlockRockVariant.Rock rock : BlockRockVariant.Rock.values())
                     registerSoil(b, r, type, rock);
-            allBlockTFCVariants = b.build();
+            allBlockRockVariants = b.build();
         }
 
         {
             ImmutableList.Builder<BlockTFCOre> b = ImmutableList.builder();
             for (BlockTFCOre.Ore ore : BlockTFCOre.Ore.values())
-                for (BlockTFCVariant.Rock rock : BlockTFCVariant.Rock.values())
+                for (BlockRockVariant.Rock rock : BlockRockVariant.Rock.values())
                     registerOre(b, r, ore, rock);
             allOreBlocks = b.build();
         }
@@ -94,15 +94,15 @@ public final class BlocksTFC
         b.add(block);
     }
 
-    private static void registerSoil(ImmutableList.Builder<BlockTFCVariant> b, IForgeRegistry<Block> r, BlockTFCVariant.Type type, BlockTFCVariant.Rock rock)
+    private static void registerSoil(ImmutableList.Builder<BlockRockVariant> b, IForgeRegistry<Block> r, BlockRockVariant.Type type, BlockRockVariant.Rock rock)
     {
-        BlockTFCVariant block = new BlockTFCVariant(type, rock);
+        BlockRockVariant block = new BlockRockVariant(type, rock);
         block.setResistance(0).setHardness(0); //todo: remove
         b.add(block);
         register(r, (type.name() + "_" +  rock.name()).toLowerCase(), block, CreativeTabsTFC.CT_ROCK_SOIL);
     }
 
-    private static void registerOre(ImmutableList.Builder<BlockTFCOre> b, IForgeRegistry<Block> r, BlockTFCOre.Ore ore, BlockTFCVariant.Rock rock)
+    private static void registerOre(ImmutableList.Builder<BlockTFCOre> b, IForgeRegistry<Block> r, BlockTFCOre.Ore ore, BlockRockVariant.Rock rock)
     {
         BlockTFCOre block = new BlockTFCOre(ore, rock);
         block.setResistance(0).setHardness(0); //todo: remove
@@ -134,50 +134,50 @@ public final class BlocksTFC
 
     public static boolean isRawStone(IBlockState current)
     {
-        if (!(current.getBlock() instanceof BlockTFCVariant)) return false;
-        BlockTFCVariant.Type type = ((BlockTFCVariant) current.getBlock()).type;
+        if (!(current.getBlock() instanceof BlockRockVariant)) return false;
+        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == RAW;
     }
 
     public static boolean isDirt(IBlockState current)
     {
-        if (!(current.getBlock() instanceof BlockTFCVariant)) return false;
-        BlockTFCVariant.Type type = ((BlockTFCVariant) current.getBlock()).type;
+        if (!(current.getBlock() instanceof BlockRockVariant)) return false;
+        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == DIRT;
     }
 
     public static boolean isSand(IBlockState current)
     {
-        if (!(current.getBlock() instanceof BlockTFCVariant)) return false;
-        BlockTFCVariant.Type type = ((BlockTFCVariant) current.getBlock()).type;
+        if (!(current.getBlock() instanceof BlockRockVariant)) return false;
+        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == SAND;
     }
 
     public static boolean isSoil(IBlockState current)
     {
-        if (!(current.getBlock() instanceof BlockTFCVariant)) return false;
-        BlockTFCVariant.Type type = ((BlockTFCVariant) current.getBlock()).type;
+        if (!(current.getBlock() instanceof BlockRockVariant)) return false;
+        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == GRASS || type == DRY_GRASS || type == DIRT;
     }
 
     public static boolean isSoilOrGravel(IBlockState current)
     {
-        if (!(current.getBlock() instanceof BlockTFCVariant)) return false;
-        BlockTFCVariant.Type type = ((BlockTFCVariant) current.getBlock()).type;
+        if (!(current.getBlock() instanceof BlockRockVariant)) return false;
+        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == GRASS || type == DRY_GRASS || type == DIRT || type == GRAVEL;
     }
 
     public static boolean isGrass(IBlockState current)
     {
-        if (!(current.getBlock() instanceof BlockTFCVariant)) return false;
-        BlockTFCVariant.Type type = ((BlockTFCVariant) current.getBlock()).type;
+        if (!(current.getBlock() instanceof BlockRockVariant)) return false;
+        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == GRASS || type == DRY_GRASS;
     }
 
     public static boolean isGround(IBlockState current)
     {
-        if (!(current.getBlock() instanceof BlockTFCVariant)) return false;
-        BlockTFCVariant.Type type = ((BlockTFCVariant) current.getBlock()).type;
+        if (!(current.getBlock() instanceof BlockRockVariant)) return false;
+        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == GRASS || type == DRY_GRASS || type == DIRT || type == GRAVEL || type == RAW || type == SAND;
     }
 }

@@ -1,10 +1,13 @@
 package net.dries007.tfc.objects.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,18 +21,39 @@ import static net.dries007.tfc.Constants.MOD_ID;
 
 public class BlockTFCOre extends Block
 {
+    public static final PropertyEnum<Grade> GRADE = PropertyEnum.create("grade", Grade.class);
+
     public final Ore ore;
-    public final BlockTFCVariant.Rock rock;
+    public final BlockRockVariant.Rock rock;
 
     private BlockTFCOre[] rocks;
 
-    public BlockTFCOre(Ore ore, BlockTFCVariant.Rock rock)
+    public BlockTFCOre(Ore ore, BlockRockVariant.Rock rock)
     {
-        super(BlockTFCVariant.Type.RAW.material);
+        super(BlockRockVariant.Type.RAW.material);
         this.ore = ore;
-        if (rock == BlockTFCVariant.Rock.GRANITE)
+        if (rock == BlockRockVariant.Rock.GRANITE)
             ore.ref = this;
         this.rock = rock;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(GRADE, Grade.byMetadata(meta));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(GRADE).getMeta();
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, GRADE);
     }
 
     @Override
@@ -52,18 +76,19 @@ public class BlockTFCOre extends Block
         return BlockRenderLayer.CUTOUT;
     }
 
-    public static IBlockState get(BlockTFCVariant.Rock rock, Ore ore, Grade grade)
+    public static IBlockState get(BlockRockVariant.Rock rock, Ore ore, Grade grade)
     {
-        //todo grade
-        return ore.ref.getForRock(rock).getDefaultState();
+        BlockTFCOre block = ore.ref.getForRock(rock);
+        if (!ore.graded) return block.getDefaultState();
+        return block.getDefaultState().withProperty(GRADE, grade);
     }
 
-    public BlockTFCOre getForRock(BlockTFCVariant.Rock r)
+    public BlockTFCOre getForRock(BlockRockVariant.Rock r)
     {
         if (rock == r) return this;
         if (rocks == null)
         {
-            BlockTFCVariant.Rock[] types = BlockTFCVariant.Rock.values();
+            BlockRockVariant.Rock[] types = BlockRockVariant.Rock.values();
             rocks = new BlockTFCOre[types.length];
             for (int i = 0; i < types.length; i++)
             {
@@ -75,49 +100,72 @@ public class BlockTFCOre extends Block
         return rocks[r.ordinal()];
     }
 
-    public enum Grade
+    public enum Grade implements IStringSerializable
     {
-        POOR, NORMAL, RICH
+        NORMAL, POOR, RICH;
+
+        public static Grade byMetadata(int meta)
+        {
+            return values()[meta % 3];
+        }
+
+        @Override
+        public String getName()
+        {
+            return this.name().toLowerCase();
+        }
+
+        public int getMeta()
+        {
+            return this.ordinal();
+        }
     }
 
     public enum Ore
     {
-        NATIVE_COPPER,
-        NATIVE_GOLD,
-        NATIVE_PLATINUM,
-        HEMATITE,
-        NATIVE_SILVER,
-        CASSITERITE,
-        GALENA,
-        BISMUTHINITE,
-        GARNIERITE,
-        MALACHITE,
-        MAGNETITE,
-        LIMONITE,
-        SPHALERITE,
-        TETRAHEDRITE,
-        BITUMINOUS_COAL,
-        LIGNITE,
-        KAOLINITE, 
-        GYPSUM,
-        SATINSPAR,
-        SELENITE,
-        GRAPHITE,
-        KIMBERLITE,
-        PETRIFIED_WOOD,
-        SULFUR,
-        JET,
-        MICROCLINE,
-        PITCHBLENDE,
-        CINNABAR,
-        CRYOLITE,
-        SALTPETER,
-        SERPENTINE,
-        SYLVITE,
-        BORAX,
-        OLIVINE,
-        LAPIS_LAZULI;
+        NATIVE_COPPER(true),
+        NATIVE_GOLD(true),
+        NATIVE_PLATINUM(true),
+        HEMATITE(true),
+        NATIVE_SILVER(true),
+        CASSITERITE(true),
+        GALENA(true),
+        BISMUTHINITE(true),
+        GARNIERITE(true),
+        MALACHITE(true),
+        MAGNETITE(true),
+        LIMONITE(true),
+        SPHALERITE(true),
+        TETRAHEDRITE(true),
+        BITUMINOUS_COAL(false),
+        LIGNITE(false),
+        KAOLINITE(false),
+        GYPSUM(false),
+        SATINSPAR(false),
+        SELENITE(false),
+        GRAPHITE(false),
+        KIMBERLITE(false),
+        PETRIFIED_WOOD(false),
+        SULFUR(false),
+        JET(false),
+        MICROCLINE(false),
+        PITCHBLENDE(false),
+        CINNABAR(false),
+        CRYOLITE(false),
+        SALTPETER(false),
+        SERPENTINE(false),
+        SYLVITE(false),
+        BORAX(false),
+        OLIVINE(false),
+        LAPIS_LAZULI(false);
 
+        public final boolean graded;
         private BlockTFCOre ref;
+
+        Ore(boolean graded)
+        {
+
+            this.graded = graded;
+        }
     }
 }

@@ -30,7 +30,7 @@ public final class ItemsTFC
 
         register_item_block(r, BlocksTFC.DEBUG);
 
-        BlocksTFC.getAllBlockTFCVariants().forEach(x -> register_item_block(r, x));
+        BlocksTFC.getAllBlockRockVariants().forEach(x -> register_item_block(r, x));
         BlocksTFC.getAllOreBlocks().forEach(x -> register_item_block(r, x));
     }
 

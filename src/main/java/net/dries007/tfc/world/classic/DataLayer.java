@@ -1,8 +1,8 @@
 package net.dries007.tfc.world.classic;
 
-import net.dries007.tfc.objects.blocks.BlockTFCVariant;
-import net.dries007.tfc.objects.blocks.BlockTFCVariant.Rock;
-import net.dries007.tfc.objects.blocks.BlockTFCVariant.Type;
+import net.dries007.tfc.objects.blocks.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.BlockRockVariant.Rock;
+import net.dries007.tfc.objects.blocks.BlockRockVariant.Type;
 
 /**
  * Todo: Rewrite to make typesafe ?
@@ -12,27 +12,27 @@ public final class DataLayer
 {
     private static final DataLayer[] LAYERS = new DataLayer[256];
 
-    public static final DataLayer GRANITE = newBlockDataLayer(0, BlockTFCVariant.get(Rock.GRANITE, Type.RAW), "Granite");
-    public static final DataLayer DIORITE = newBlockDataLayer(1, BlockTFCVariant.get(Rock.DIORITE, Type.RAW), "Diorite");
-    public static final DataLayer GABBRO = newBlockDataLayer(2, BlockTFCVariant.get(Rock.GABBRO, Type.RAW), "Gabbro");
-    public static final DataLayer SHALE = newBlockDataLayer(5, BlockTFCVariant.get(Rock.SHALE, Type.RAW), "Shale");
-    public static final DataLayer CLAYSTONE = newBlockDataLayer(6, BlockTFCVariant.get(Rock.CLAYSTONE, Type.RAW), "Claystone");
-    public static final DataLayer ROCKSALT = newBlockDataLayer(7, BlockTFCVariant.get(Rock.ROCKSALT, Type.RAW), "Rock Salt");
-    public static final DataLayer LIMESTONE = newBlockDataLayer(8, BlockTFCVariant.get(Rock.LIMESTONE, Type.RAW), "Limestone");
-    public static final DataLayer CONGLOMERATE = newBlockDataLayer(9, BlockTFCVariant.get(Rock.CONGLOMERATE, Type.RAW), "Conglomerate");
-    public static final DataLayer DOLOMITE = newBlockDataLayer(10, BlockTFCVariant.get(Rock.DOLOMITE, Type.RAW), "Dolomite");
-    public static final DataLayer CHERT = newBlockDataLayer(11, BlockTFCVariant.get(Rock.CHERT, Type.RAW), "Chert");
-    public static final DataLayer CHALK = newBlockDataLayer(12, BlockTFCVariant.get(Rock.CHALK, Type.RAW), "Chalk");
-    public static final DataLayer RHYOLITE = newBlockDataLayer(13, BlockTFCVariant.get(Rock.RHYOLITE, Type.RAW), "Rhyolite");
-    public static final DataLayer BASALT = newBlockDataLayer(14, BlockTFCVariant.get(Rock.BASALT, Type.RAW), "Basalt");
-    public static final DataLayer ANDESITE = newBlockDataLayer(15, BlockTFCVariant.get(Rock.ANDESITE, Type.RAW), "Andesite");
-    public static final DataLayer DACITE = newBlockDataLayer(16, BlockTFCVariant.get(Rock.DACITE, Type.RAW), "Dacite");
-    public static final DataLayer QUARTZITE = newBlockDataLayer(17, BlockTFCVariant.get(Rock.QUARTZITE, Type.RAW), "Quartzite");
-    public static final DataLayer SLATE = newBlockDataLayer(18, BlockTFCVariant.get(Rock.SLATE, Type.RAW), "Slate");
-    public static final DataLayer PHYLLITE = newBlockDataLayer(19, BlockTFCVariant.get(Rock.PHYLLITE, Type.RAW), "Phyllite");
-    public static final DataLayer SCHIST = newBlockDataLayer(20, BlockTFCVariant.get(Rock.SCHIST, Type.RAW), "Schist");
-    public static final DataLayer GNEISS = newBlockDataLayer(21, BlockTFCVariant.get(Rock.GNEISS, Type.RAW), "Gneiss");
-    public static final DataLayer MARBLE = newBlockDataLayer(22, BlockTFCVariant.get(Rock.MARBLE, Type.RAW), "Marble");
+    public static final DataLayer GRANITE = newBlockDataLayer(0, BlockRockVariant.get(Rock.GRANITE, Type.RAW), "Granite");
+    public static final DataLayer DIORITE = newBlockDataLayer(1, BlockRockVariant.get(Rock.DIORITE, Type.RAW), "Diorite");
+    public static final DataLayer GABBRO = newBlockDataLayer(2, BlockRockVariant.get(Rock.GABBRO, Type.RAW), "Gabbro");
+    public static final DataLayer SHALE = newBlockDataLayer(5, BlockRockVariant.get(Rock.SHALE, Type.RAW), "Shale");
+    public static final DataLayer CLAYSTONE = newBlockDataLayer(6, BlockRockVariant.get(Rock.CLAYSTONE, Type.RAW), "Claystone");
+    public static final DataLayer ROCKSALT = newBlockDataLayer(7, BlockRockVariant.get(Rock.ROCKSALT, Type.RAW), "Rock Salt");
+    public static final DataLayer LIMESTONE = newBlockDataLayer(8, BlockRockVariant.get(Rock.LIMESTONE, Type.RAW), "Limestone");
+    public static final DataLayer CONGLOMERATE = newBlockDataLayer(9, BlockRockVariant.get(Rock.CONGLOMERATE, Type.RAW), "Conglomerate");
+    public static final DataLayer DOLOMITE = newBlockDataLayer(10, BlockRockVariant.get(Rock.DOLOMITE, Type.RAW), "Dolomite");
+    public static final DataLayer CHERT = newBlockDataLayer(11, BlockRockVariant.get(Rock.CHERT, Type.RAW), "Chert");
+    public static final DataLayer CHALK = newBlockDataLayer(12, BlockRockVariant.get(Rock.CHALK, Type.RAW), "Chalk");
+    public static final DataLayer RHYOLITE = newBlockDataLayer(13, BlockRockVariant.get(Rock.RHYOLITE, Type.RAW), "Rhyolite");
+    public static final DataLayer BASALT = newBlockDataLayer(14, BlockRockVariant.get(Rock.BASALT, Type.RAW), "Basalt");
+    public static final DataLayer ANDESITE = newBlockDataLayer(15, BlockRockVariant.get(Rock.ANDESITE, Type.RAW), "Andesite");
+    public static final DataLayer DACITE = newBlockDataLayer(16, BlockRockVariant.get(Rock.DACITE, Type.RAW), "Dacite");
+    public static final DataLayer QUARTZITE = newBlockDataLayer(17, BlockRockVariant.get(Rock.QUARTZITE, Type.RAW), "Quartzite");
+    public static final DataLayer SLATE = newBlockDataLayer(18, BlockRockVariant.get(Rock.SLATE, Type.RAW), "Slate");
+    public static final DataLayer PHYLLITE = newBlockDataLayer(19, BlockRockVariant.get(Rock.PHYLLITE, Type.RAW), "Phyllite");
+    public static final DataLayer SCHIST = newBlockDataLayer(20, BlockRockVariant.get(Rock.SCHIST, Type.RAW), "Schist");
+    public static final DataLayer GNEISS = newBlockDataLayer(21, BlockRockVariant.get(Rock.GNEISS, Type.RAW), "Gneiss");
+    public static final DataLayer MARBLE = newBlockDataLayer(22, BlockRockVariant.get(Rock.MARBLE, Type.RAW), "Marble");
 
     public static final DataLayer NO_TREE = newIntDataLayer(29, "No Tree", -1);
     public static final DataLayer ASH = newIntDataLayer(30, "Ash", 7);
@@ -113,12 +113,12 @@ public final class DataLayer
     };
 
     public final int layerID;
-    public final BlockTFCVariant block;
+    public final BlockRockVariant block;
     public final String name;
     public final int valueInt;
     public final float valueFloat;
 
-    private DataLayer(int i, BlockTFCVariant block, String name, int valueInt, float valueFloat)
+    private DataLayer(int i, BlockRockVariant block, String name, int valueInt, float valueFloat)
     {
         this.layerID = i;
         this.block = block;
@@ -127,7 +127,7 @@ public final class DataLayer
         this.valueFloat = valueFloat;
     }
 
-    private static DataLayer newBlockDataLayer(int i, BlockTFCVariant block, String name)
+    private static DataLayer newBlockDataLayer(int i, BlockRockVariant block, String name)
     {
         if (LAYERS[i] != null) throw new IllegalArgumentException("Layer " + i + " already in use.");
         return LAYERS[i] = new DataLayer(i, block, name, Integer.MIN_VALUE, Float.NaN);

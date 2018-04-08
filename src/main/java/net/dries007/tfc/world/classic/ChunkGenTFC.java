@@ -3,8 +3,8 @@ package net.dries007.tfc.world.classic;
 import com.google.common.collect.ImmutableList;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.objects.biomes.BiomesTFC;
-import net.dries007.tfc.objects.blocks.BlockTFCVariant;
-import net.dries007.tfc.objects.blocks.BlockTFCVariant.Type;
+import net.dries007.tfc.objects.blocks.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.BlockRockVariant.Type;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataProvider;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
@@ -522,8 +522,8 @@ public class ChunkGenTFC implements IChunkGenerator
                 int noise = (int)(noise4[colIndex] / 3.0D + 6.0D);
                 int smooth = -1;
 
-                IBlockState surfaceBlock = rock1.block.getVariant(rain.valueFloat >= 500 ? Type.GRASS : BlockTFCVariant.Type.DRY_GRASS).getDefaultState();
-                IBlockState subSurfaceBlock = rock1.block.getVariant(BlockTFCVariant.Type.DIRT).getDefaultState();
+                IBlockState surfaceBlock = rock1.block.getVariant(rain.valueFloat >= 500 ? Type.GRASS : BlockRockVariant.Type.DRY_GRASS).getDefaultState();
+                IBlockState subSurfaceBlock = rock1.block.getVariant(BlockRockVariant.Type.DIRT).getDefaultState();
 
                 float bioTemp = 25;//todo: TFC_Climate.getBioTemperature(worldObj, chunkX * 16 + x, chunkZ * 16 + z);
 
@@ -582,21 +582,21 @@ public class ChunkGenTFC implements IChunkGenerator
                         //First we check to see if its a cold desert
                         if (rain.valueFloat < 125 && temp < 1.5f)
                         {
-                            subSurfaceBlock = surfaceBlock = rock1.block.getVariant(BlockTFCVariant.Type.SAND).getDefaultState();
+                            subSurfaceBlock = surfaceBlock = rock1.block.getVariant(BlockRockVariant.Type.SAND).getDefaultState();
                         }
                         //Next we check for all other warm deserts
                         else if(rain.valueFloat < 125 && biome.getHeightVariation() < 0.5f && temp > 20f)
                         {
-                            subSurfaceBlock = surfaceBlock = rock1.block.getVariant(BlockTFCVariant.Type.SAND).getDefaultState();
+                            subSurfaceBlock = surfaceBlock = rock1.block.getVariant(BlockRockVariant.Type.SAND).getDefaultState();
                         }
 
                         if (biome == BiomesTFC.BEACH || biome == BiomesTFC.OCEAN || biome == BiomesTFC.DEEP_OCEAN)
                         {
-                            subSurfaceBlock = surfaceBlock = rock1.block.getVariant(BlockTFCVariant.Type.SAND).getDefaultState();
+                            subSurfaceBlock = surfaceBlock = rock1.block.getVariant(BlockRockVariant.Type.SAND).getDefaultState();
                         }
                         else if(biome == BiomesTFC.GRAVEL_BEACH)
                         {
-                            subSurfaceBlock = surfaceBlock = rock1.block.getVariant(BlockTFCVariant.Type.GRAVEL).getDefaultState();
+                            subSurfaceBlock = surfaceBlock = rock1.block.getVariant(BlockRockVariant.Type.GRAVEL).getDefaultState();
                         }
 
                         if (smooth == -1)
@@ -652,7 +652,7 @@ public class ChunkGenTFC implements IChunkGenerator
                                         outp.setBlockState(x, y - c + yOffset, z, subSurfaceBlock);
                                         if (c > 1 + (5-drainage.valueInt))
                                         {
-                                            outp.setBlockState(x, y - c + yOffset, z, rock1.block.getVariant(BlockTFCVariant.Type.GRAVEL).getDefaultState());
+                                            outp.setBlockState(x, y - c + yOffset, z, rock1.block.getVariant(BlockRockVariant.Type.GRAVEL).getDefaultState());
                                         }
                                     }
                                 }
@@ -664,16 +664,16 @@ public class ChunkGenTFC implements IChunkGenerator
                         {
                             if (biome != BiomesTFC.SWAMPLAND) // Most areas have gravel and sand bottoms
                             {
-                                if (outp.getBlockState(x, y + yOffset, z) != rock1.block.getVariant(BlockTFCVariant.Type.SAND).getDefaultState() && rand.nextInt(5) != 0)
+                                if (outp.getBlockState(x, y + yOffset, z) != rock1.block.getVariant(BlockRockVariant.Type.SAND).getDefaultState() && rand.nextInt(5) != 0)
                                 {
-                                    outp.setBlockState(x, y + yOffset, z, rock1.block.getVariant(BlockTFCVariant.Type.GRAVEL).getDefaultState());
+                                    outp.setBlockState(x, y + yOffset, z, rock1.block.getVariant(BlockRockVariant.Type.GRAVEL).getDefaultState());
                                 }
                             }
                             else // Swamp biomes have bottoms that are mostly dirt
                             {
-                                if (outp.getBlockState(x, y + yOffset, z) != rock1.block.getVariant(BlockTFCVariant.Type.SAND).getDefaultState())
+                                if (outp.getBlockState(x, y + yOffset, z) != rock1.block.getVariant(BlockRockVariant.Type.SAND).getDefaultState())
                                 {
-                                    outp.setBlockState(x, y + yOffset, z, rock1.block.getVariant(BlockTFCVariant.Type.DIRT).getDefaultState());
+                                    outp.setBlockState(x, y + yOffset, z, rock1.block.getVariant(BlockRockVariant.Type.DIRT).getDefaultState());
                                 }
                             }
                         }
@@ -710,8 +710,8 @@ public class ChunkGenTFC implements IChunkGenerator
                         {
                             if (outp.getBlockState(x, y + 1, z) == SALT_WATER)
                             {
-                                outp.setBlockState(x, y, z, rock1.block.getVariant(BlockTFCVariant.Type.SAND).getDefaultState());
-                                outp.setBlockState(x, y-1, z, rock1.block.getVariant(BlockTFCVariant.Type.SAND).getDefaultState());
+                                outp.setBlockState(x, y, z, rock1.block.getVariant(BlockRockVariant.Type.SAND).getDefaultState());
+                                outp.setBlockState(x, y-1, z, rock1.block.getVariant(BlockRockVariant.Type.SAND).getDefaultState());
                             }
                         }
                     }

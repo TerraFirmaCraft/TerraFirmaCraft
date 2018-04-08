@@ -1,6 +1,7 @@
 package net.dries007.tfc.client;
 
-import net.dries007.tfc.objects.blocks.BlockTFCVariant;
+import net.dries007.tfc.objects.blocks.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.BlockTFCOre;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.minecraft.block.Block;
@@ -36,14 +37,17 @@ public final class ClientRegisterEvents
 
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(BlocksTFC.DEBUG), 0, new ModelResourceLocation(BlocksTFC.DEBUG.getRegistryName(), "inventory"));
 
-        for (Block base : BlocksTFC.getAllFluidBlocks())
-            ModelLoader.setCustomStateMapper(base, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());
+        for (Block block : BlocksTFC.getAllFluidBlocks())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());
 
-        for (Block variant : BlocksTFC.getAllBlockTFCVariants())
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(variant), 0, new ModelResourceLocation(variant.getRegistryName(), "inventory"));
+        for (Block block : BlocksTFC.getAllBlockRockVariants())
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
 
-        for (Block variant : BlocksTFC.getAllOreBlocks())
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(variant), 0, new ModelResourceLocation(variant.getRegistryName(), "inventory"));
+        for (Block block : BlocksTFC.getAllOreBlocks())
+        {
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockTFCOre.GRADE).build());
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
+        }
     }
 
     @SubscribeEvent
@@ -53,7 +57,7 @@ public final class ClientRegisterEvents
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
                         worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D),
-                BlocksTFC.getAllBlockTFCVariants().stream().filter(x -> x.type.isColorIndexed).toArray(BlockTFCVariant[]::new));
+                BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isColorIndexed).toArray(BlockRockVariant[]::new));
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
                         worldIn != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(worldIn, pos) : 0,
@@ -68,6 +72,6 @@ public final class ClientRegisterEvents
 
         itemColors.registerItemColorHandler((stack, tintIndex) ->
                         event.getBlockColors().colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
-                BlocksTFC.getAllBlockTFCVariants().stream().filter(x -> x.type.isColorIndexed).toArray(BlockTFCVariant[]::new));
+                BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isColorIndexed).toArray(BlockRockVariant[]::new));
     }
 }

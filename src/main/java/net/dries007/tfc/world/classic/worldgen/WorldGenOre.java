@@ -2,8 +2,8 @@ package net.dries007.tfc.world.classic.worldgen;
 
 import com.google.common.collect.ImmutableList;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.objects.blocks.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.BlockTFCOre;
-import net.dries007.tfc.objects.blocks.BlockTFCVariant;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
@@ -74,24 +74,33 @@ public class WorldGenOre implements IWorldGenerator
             if (rng.nextInt(spawnData.rarity) != 0) continue;
             final int mineHeight = spawnData.minY + rng.nextInt(spawnData.maxY - spawnData.minY);
 
+            int blocksSpawned = 0;
+
             for (int i = 0; i < veinAmount; i++)
             {
                 final BlockPos pos = start.add(mPCalculateDensity(rng, diameter, spawnData.densityHorizontal), mineHeight + mPCalculateDensity(rng, height, spawnData.densityVertical), mPCalculateDensity(rng, diameter, spawnData.densityHorizontal));
                 switch (spawnData.type)
                 {
                     case DEFAULT:
-                        generateDefault(spawnData.ore, grade, world, rng, pos, veinSize, chunkData, spawnData.baseRocks);
+                        blocksSpawned += generateDefault(spawnData.ore, grade, world, rng, pos, veinSize, chunkData, spawnData.baseRocks);
                         break;
                     case VEINS:
-                        generateVein(spawnData.ore, grade, world, rng, pos, veinSize, chunkData, spawnData.baseRocks);
+                        blocksSpawned += generateVein(spawnData.ore, grade, world, rng, pos, veinSize, chunkData, spawnData.baseRocks);
                         break;
                 }
+            }
+
+            if (blocksSpawned != 0)
+            {
+                TerraFirmaCraft.getLog().debug("[OreGen] {} blocks of grade {} {} ore", blocksSpawned, grade, spawnData.ore);
+                // todo: save this info in chunkdata? I think it might be usefull to have when doing surface gen/prospecting/sieving?
             }
         }
     }
 
-    private void generateDefault(BlockTFCOre.Ore ore, BlockTFCOre.Grade grade, World world, Random rng, BlockPos start, int size, ChunkDataTFC chunkData, ImmutableList<BlockTFCVariant.Rock> baseRocks)
+    private int generateDefault(BlockTFCOre.Ore ore, BlockTFCOre.Grade grade, World world, Random rng, BlockPos start, int size, ChunkDataTFC chunkData, ImmutableList<BlockRockVariant.Rock> baseRocks)
     {
+        int blocksSpawned = 0;
         final float angle = rng.nextFloat() * (float) Math.PI;
         final double minX = start.getX() + 8 + MathHelper.sin(angle) * size / 8.0F;
         final double maxX = start.getX() + 8 - MathHelper.sin(angle) * size / 8.0F;
@@ -132,22 +141,25 @@ public class WorldGenOre implements IWorldGenerator
                         final BlockPos pos = new BlockPos(posX, posY + chunkData.getSeaLevelOffset(posX & 15, posZ & 15), posZ);
                         final IBlockState current = world.getBlockState(pos);
 
-                        if (!(current.getBlock() instanceof BlockTFCVariant)) continue;
+                        if (!(current.getBlock() instanceof BlockRockVariant)) continue;
 
-                        final BlockTFCVariant currentBlock = (BlockTFCVariant) current.getBlock();
+                        final BlockRockVariant currentBlock = (BlockRockVariant) current.getBlock();
 
-                        if (currentBlock.type != BlockTFCVariant.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
+                        if (currentBlock.type != BlockRockVariant.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
 
                         world.setBlockState(pos, BlockTFCOre.get(currentBlock.rock, ore, grade));
+                        blocksSpawned ++;
                     }
                 }
             }
         }
-        TerraFirmaCraft.getLog().info("Normal of {} was placed at {}", ore, start);
+        return blocksSpawned;
     }
 
-    private void generateVein(BlockTFCOre.Ore ore, BlockTFCOre.Grade grade, World world, Random rng, BlockPos start, int size, ChunkDataTFC chunkData, ImmutableList<BlockTFCVariant.Rock> baseRocks)
+    private int generateVein(BlockTFCOre.Ore ore, BlockTFCOre.Grade grade, World world, Random rng, BlockPos start, int size, ChunkDataTFC chunkData, ImmutableList<BlockRockVariant.Rock> baseRocks)
     {
+        int blocksSpawned = 0;
+
         int posX2 = 0;
         int posY2 = 0;
         int posZ2 = 0;
@@ -240,13 +252,15 @@ public class WorldGenOre implements IWorldGenerator
                         final BlockPos pos = new BlockPos(posX2, posY2 + chunkData.getSeaLevelOffset(posX2 & 15, posZ2 & 15), posZ2);
                         final IBlockState current = world.getBlockState(pos);
 
-                        if (!(current.getBlock() instanceof BlockTFCVariant)) continue;
+                        if (!(current.getBlock() instanceof BlockRockVariant)) continue;
 
-                        final BlockTFCVariant currentBlock = (BlockTFCVariant) current.getBlock();
+                        final BlockRockVariant currentBlock = (BlockRockVariant) current.getBlock();
 
-                        if (currentBlock.type != BlockTFCVariant.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
+                        if (currentBlock.type != BlockRockVariant.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
 
                         world.setBlockState(pos, BlockTFCOre.get(currentBlock.rock, ore, grade));
+
+                        blocksSpawned ++;
                     }
                 }
 
@@ -256,18 +270,21 @@ public class WorldGenOre implements IWorldGenerator
                 final BlockPos pos = new BlockPos(posX, posY + chunkData.getSeaLevelOffset(posX & 15, posZ & 15), posZ);
                 final IBlockState current = world.getBlockState(pos);
 
-                if (!(current.getBlock() instanceof BlockTFCVariant)) continue;
+                if (!(current.getBlock() instanceof BlockRockVariant)) continue;
 
-                final BlockTFCVariant currentBlock = (BlockTFCVariant) current.getBlock();
+                final BlockRockVariant currentBlock = (BlockRockVariant) current.getBlock();
 
-                if (currentBlock.type != BlockTFCVariant.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
+                if (currentBlock.type != BlockRockVariant.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
 
                 world.setBlockState(pos, BlockTFCOre.get(currentBlock.rock, ore, grade));
+
+                blocksSpawned ++;
             }
 
             start = start.add(rng.nextInt(3) - 1, rng.nextInt(3) - 1, rng.nextInt(3) - 1);
         }
-        TerraFirmaCraft.getLog().info("Vein of {} was placed at {}", ore, start);
+
+        return blocksSpawned;
     }
 
     private int mPCalculateDensity(Random rand, int oreDistance, float oreDensity) // returns the density value

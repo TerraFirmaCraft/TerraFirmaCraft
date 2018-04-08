@@ -1,6 +1,6 @@
 package net.dries007.tfc.world.classic.worldgen;
 
-import net.dries007.tfc.objects.blocks.BlockTFCVariant;
+import net.dries007.tfc.objects.blocks.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
 import net.minecraft.block.state.IBlockState;
@@ -10,7 +10,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
-import static net.dries007.tfc.objects.blocks.BlockTFCVariant.Type.SAND;
+import static net.dries007.tfc.objects.blocks.BlockRockVariant.Type.SAND;
 
 public class WorldGenSandTFC extends WorldGenerator
 {
@@ -26,7 +26,7 @@ public class WorldGenSandTFC extends WorldGenerator
     {
         if (BlocksTFC.isWater(world.getBlockState(pos))) return false;
 
-        final BlockTFCVariant sand = ChunkDataTFC.getRock1(world, pos).getVariant(SAND);
+        final BlockRockVariant sand = ChunkDataTFC.getRock1(world, pos).getVariant(SAND);
         final int rnd = rng.nextInt(this.radius - 2) + 2;
 
         for (int x = -rnd; x <= rnd; x++)

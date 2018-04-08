@@ -1,6 +1,6 @@
 package net.dries007.tfc.world.classic.capabilities;
 
-import net.dries007.tfc.objects.blocks.BlockTFCVariant;
+import net.dries007.tfc.objects.blocks.BlockRockVariant;
 import net.dries007.tfc.world.classic.DataLayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByteArray;
@@ -55,16 +55,16 @@ public final class ChunkDataTFC
         return data == null ? EMPTY : data;
     }
 
-    public static BlockTFCVariant getRock1(World world, BlockPos pos) { return get(world, pos).getRockLayer1(pos.getX() & 15, pos.getZ() & 15).block; }
-    public static BlockTFCVariant getRock2(World world, BlockPos pos) { return get(world, pos).getRockLayer2(pos.getX() & 15, pos.getZ() & 15).block; }
-    public static BlockTFCVariant getRock3(World world, BlockPos pos) { return get(world, pos).getRockLayer3(pos.getX() & 15, pos.getZ() & 15).block; }
+    public static BlockRockVariant getRock1(World world, BlockPos pos) { return get(world, pos).getRockLayer1(pos.getX() & 15, pos.getZ() & 15).block; }
+    public static BlockRockVariant getRock2(World world, BlockPos pos) { return get(world, pos).getRockLayer2(pos.getX() & 15, pos.getZ() & 15).block; }
+    public static BlockRockVariant getRock3(World world, BlockPos pos) { return get(world, pos).getRockLayer3(pos.getX() & 15, pos.getZ() & 15).block; }
     public static float getEvt(World world, BlockPos pos) { return get(world, pos).getEvtLayer(pos.getX() & 15, pos.getZ() & 15).valueFloat; }
     public static float getRainfall(World world, BlockPos pos) { return get(world, pos).getRainfallLayer(pos.getX() & 15, pos.getZ() & 15).valueFloat; }
     public static boolean isStable(World world, BlockPos pos) { return get(world, pos).getStabilityLayer(pos.getX() & 15, pos.getZ() & 15).valueInt == 0; }
     public static int getDrainage(World world, BlockPos pos) { return get(world, pos).getDrainageLayer(pos.getX() & 15, pos.getZ() & 15).valueInt; }
     public static int getSeaLevelOffset(World world, BlockPos pos) { return get(world, pos).getSeaLevelOffset(pos.getX() & 15, pos.getZ() & 15); }
     public static int getFishPopulation(World world, BlockPos pos) { return get(world, pos).getFishPopulation(); }
-    public static BlockTFCVariant getRockHeight(World world, BlockPos pos) { return get(world, pos).getRockLayerHeight(pos.getX() & 15, pos.getY(), pos.getZ() & 15); }
+    public static BlockRockVariant getRockHeight(World world, BlockPos pos) { return get(world, pos).getRockLayerHeight(pos.getX() & 15, pos.getY(), pos.getZ() & 15); }
 
     /**
      * No need to mark as dirty, since this will only ever be called on worldgen, before the first chunk save.
@@ -87,9 +87,9 @@ public final class ChunkDataTFC
         return initialized;
     }
 
-    public BlockTFCVariant getRock1(int x, int z) { return getRockLayer1(x, z).block; }
-    public BlockTFCVariant getRock2(int x, int z) { return getRockLayer2(x, z).block; }
-    public BlockTFCVariant getRock3(int x, int z) { return getRockLayer3(x, z).block; }
+    public BlockRockVariant getRock1(int x, int z) { return getRockLayer1(x, z).block; }
+    public BlockRockVariant getRock2(int x, int z) { return getRockLayer2(x, z).block; }
+    public BlockRockVariant getRock3(int x, int z) { return getRockLayer3(x, z).block; }
     public float getEvt(int x, int z) { return getEvtLayer(x, z).valueFloat; }
     public float getRainfall(int x, int z) { return getRainfallLayer(x, z).valueFloat; }
     public boolean isStable(int x, int z) { return getStabilityLayer(x, z).valueInt == 0; }
@@ -99,7 +99,7 @@ public final class ChunkDataTFC
 
     public int getFishPopulation() { return fishPopulation; }
 
-    private BlockTFCVariant getRockLayerHeight(int x, int y, int z)
+    private BlockRockVariant getRockLayerHeight(int x, int y, int z)
     {
         int offset = getSeaLevelOffset(x, z);
         if (y <= ROCKLAYER3 + offset) return getRock3(x, z);

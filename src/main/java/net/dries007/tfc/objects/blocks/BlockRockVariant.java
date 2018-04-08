@@ -25,14 +25,14 @@ import java.util.Random;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
-public class BlockTFCVariant extends Block implements IBlockFalling
+public class BlockRockVariant extends Block implements IBlockFalling
 {
     public final Type type;
     public final Rock rock;
 
-    private BlockTFCVariant[] variants;
+    private BlockRockVariant[] variants;
 
-    public BlockTFCVariant(Type type, Rock rock)
+    public BlockRockVariant(Type type, Rock rock)
     {
         super(type.material);
         this.type = type;
@@ -209,7 +209,7 @@ public class BlockTFCVariant extends Block implements IBlockFalling
         MARBLE(Category.METAMORPHIC);
 
         public final Category category;
-        private BlockTFCVariant ref;
+        private BlockRockVariant ref;
 
         Rock(Category category)
         {
@@ -222,23 +222,23 @@ public class BlockTFCVariant extends Block implements IBlockFalling
         }
     }
 
-    public static BlockTFCVariant get(Rock rock, Type type)
+    public static BlockRockVariant get(Rock rock, Type type)
     {
         return rock.ref.getVariant(type);
     }
 
-    public BlockTFCVariant getVariant(Type t)
+    public BlockRockVariant getVariant(Type t)
     {
         if (this.type == t) return this;
         if (variants == null)
         {
             Type[] types = Type.values();
-            variants = new BlockTFCVariant[types.length];
+            variants = new BlockRockVariant[types.length];
             for (int i = 0; i < types.length; i++)
             {
                 //noinspection ConstantConditions
                 String name = getRegistryName().getResourcePath().replace(type.name().toLowerCase(), types[i].name().toLowerCase());
-                variants[i] = (BlockTFCVariant) ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID, name));
+                variants[i] = (BlockRockVariant) ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID, name));
             }
         }
         return variants[t.ordinal()];
