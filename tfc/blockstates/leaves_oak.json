@@ -1,0 +1,13 @@
+{
+	"forge_marker" : 1,
+	"defaults": {
+		"model": "leaves",
+		"textures": {
+			"all": "tfc:blocks/wood/trees/oak leaves",
+			"particle": "tfc:blocks/wood/trees/oak leaves"
+		}
+	},
+	"variants": {
+		"normal":  [{}]
+	}
+}
