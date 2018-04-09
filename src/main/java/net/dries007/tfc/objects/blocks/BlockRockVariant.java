@@ -162,10 +162,13 @@ public class BlockRockVariant extends Block implements IFallingBlock
         GRAVEL(Material.SAND, true, false),
         DIRT(Material.GROUND, false, false),
         GRASS(Material.GRASS, false, true),
-        DRY_GRASS(Material.GRASS, false, true);
-        // todo: add peat
-        // todo: add clay
+        DRY_GRASS(Material.GRASS, false, true),
+        CLAY(Material.GRASS, false, false),
+        CLAY_GRASS(Material.GRASS, false, true),
 
+        // todo: add peat
+
+        ;
         public final Material material;
         public final boolean isAffectedByGravity;
         public final boolean isColorIndexed;

@@ -9,10 +9,7 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkCapabilityHandler;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataMessage;
-import net.dries007.tfc.world.classic.worldgen.RarityBasedWorldGen;
-import net.dries007.tfc.world.classic.worldgen.WorldGenFissure;
-import net.dries007.tfc.world.classic.worldgen.WorldGenOre;
-import net.dries007.tfc.world.classic.worldgen.WorldGenSurfaceFissureCluster;
+import net.dries007.tfc.world.classic.worldgen.*;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModMetadata;
@@ -84,9 +81,12 @@ public class TerraFirmaCraft
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureClusterRarity, new WorldGenSurfaceFissureCluster(true)), 1);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureClusterRarity, new WorldGenSurfaceFissureCluster(false)), 1);
         GameRegistry.registerWorldGenerator(new WorldGenOre(), 2);
-        /*
-                            todo: marker
-         */
+        //todo: add cave decorator
+        //todo: add forests
+        //todo: add loose rocks
+        GameRegistry.registerWorldGenerator(new WorldGenSoilPits(), 6);
+        //todo: add large rocks
+        //todo: add plants
     }
 
     @Mod.EventHandler

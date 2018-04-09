@@ -59,6 +59,7 @@ fullblock_types = [
     'sand',
     'gravel',
     'dirt',
+    'clay',
 ]
 grass_types = [
     'grass',
@@ -168,3 +169,30 @@ for rock_type in types:
                     } for side in ['north', 'south', 'east', 'west', 'normal']
                 }
             }, f)
+    with open('blockstates/clay_grass_%s.json' % rock_type, 'w') as f:
+        json.dump({
+            'forge_marker': 1,
+            'defaults': {
+                # 'transform': 'forge:default-item',
+                'model': 'tfc:grass',
+                'textures': {
+                    'all': 'tfc:blocks/stonetypes/clay_%s' % rock_type,
+                    'particle': 'tfc:blocks/stonetypes/clay_%s' % rock_type,
+                    'top': 'tfc:blocks/grass_top',
+                    'north': 'tfc:blocks/grass_side',
+                    'south': 'tfc:blocks/grass_side',
+                    'east': 'tfc:blocks/grass_side',
+                    'west': 'tfc:blocks/grass_side',
+                }
+            },
+            'variants': {
+                side: [{}] if side is 'normal' else {
+                    'true': {
+                        'textures': {
+                            side: 'tfc:blocks/grass_top',
+                        }
+                    },
+                    'false': {}
+                } for side in ['north', 'south', 'east', 'west', 'normal']
+            }
+        }, f)

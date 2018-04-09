@@ -16,6 +16,9 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
 
+/**
+ * todo: maybe fix cascading worldgen issues? idk if it's worth it though.
+ */
 public class WorldGenOre implements IWorldGenerator
 {
     @Override
@@ -34,7 +37,7 @@ public class WorldGenOre implements IWorldGenerator
             int diameter;
             switch (spawnData.size)
             {
-                //todo: these numbers really need tweaking
+                /* Bioxx numbers, unajusted for changes in worldgen
                 case SMALL:
                     veinSize = 20;
                     veinAmount = 30;
@@ -52,6 +55,25 @@ public class WorldGenOre implements IWorldGenerator
                     veinAmount = 45;
                     height = 20;
                     diameter = 80;
+                    break;
+                */
+                case SMALL:
+                    veinSize = 20;
+                    veinAmount = 30;
+                    height = 5;
+                    diameter = 20;
+                    break;
+                case MEDIUM:
+                    veinSize = 30;
+                    veinAmount = 80;
+                    height = 10;
+                    diameter = 30;
+                    break;
+                case LARGE:
+                    veinSize = 60;
+                    veinAmount = 80;
+                    height = 20;
+                    diameter = 40;
                     break;
                 default:
                     throw new RuntimeException("Enum constants not constant");
@@ -82,10 +104,10 @@ public class WorldGenOre implements IWorldGenerator
                 switch (spawnData.type)
                 {
                     case DEFAULT:
-                        blocksSpawned += generateDefault(spawnData.ore, grade, world, rng, pos, veinSize, chunkData, spawnData.baseRocks, avgDensity);
+                        blocksSpawned += generateDefault(spawnData.ore, grade, world, rng, pos, veinSize, spawnData.baseRocks, avgDensity);
                         break;
                     case VEINS:
-                        blocksSpawned += generateVein(spawnData.ore, grade, world, rng, pos, veinSize, chunkData, spawnData.baseRocks);
+                        blocksSpawned += generateVein(spawnData.ore, grade, world, rng, pos, veinSize, spawnData.baseRocks);
                         break;
                 }
             }
@@ -93,7 +115,7 @@ public class WorldGenOre implements IWorldGenerator
         }
     }
 
-    private int generateDefault(BlockTFCOre.Ore ore, BlockTFCOre.Grade grade, World world, Random rng, BlockPos start, int size, ChunkDataTFC chunkData, ImmutableList<BlockRockVariant.Rock> baseRocks, float density)
+    private int generateDefault(BlockTFCOre.Ore ore, BlockTFCOre.Grade grade, World world, Random rng, BlockPos start, int size, ImmutableList<BlockRockVariant.Rock> baseRocks, float density)
     {
         int blocksSpawned = 0;
         final float angle = rng.nextFloat() * (float) Math.PI;
@@ -135,7 +157,8 @@ public class WorldGenOre implements IWorldGenerator
 
                         if (density < rng.nextFloat()) continue;
 
-                        final BlockPos pos = new BlockPos(posX, posY + chunkData.getSeaLevelOffset(posX & 15, posZ & 15), posZ);
+                        BlockPos pos = new BlockPos(posX, posY, posZ);
+                        pos = pos.add(0, ChunkDataTFC.getSeaLevelOffset(world, pos), 0);
                         final IBlockState current = world.getBlockState(pos);
 
                         if (!(current.getBlock() instanceof BlockRockVariant)) continue;
@@ -153,7 +176,7 @@ public class WorldGenOre implements IWorldGenerator
         return blocksSpawned;
     }
 
-    private int generateVein(BlockTFCOre.Ore ore, BlockTFCOre.Grade grade, World world, Random rng, BlockPos start, int size, ChunkDataTFC chunkData, ImmutableList<BlockRockVariant.Rock> baseRocks)
+    private int generateVein(BlockTFCOre.Ore ore, BlockTFCOre.Grade grade, World world, Random rng, BlockPos start, int size, ImmutableList<BlockRockVariant.Rock> baseRocks)
     {
         int blocksSpawned = 0;
 
@@ -246,7 +269,8 @@ public class WorldGenOre implements IWorldGenerator
                         blocksMade1++;
                         blocksMade2++;
 
-                        final BlockPos pos = new BlockPos(posX2, posY2 + chunkData.getSeaLevelOffset(posX2 & 15, posZ2 & 15), posZ2);
+                        BlockPos pos = new BlockPos(posX, posY, posZ);
+                        pos = pos.add(0, ChunkDataTFC.getSeaLevelOffset(world, pos), 0);
                         final IBlockState current = world.getBlockState(pos);
 
                         if (!(current.getBlock() instanceof BlockRockVariant)) continue;
@@ -264,7 +288,8 @@ public class WorldGenOre implements IWorldGenerator
                 blocksMade++;
                 blocksMade1++;
 
-                final BlockPos pos = new BlockPos(posX, posY + chunkData.getSeaLevelOffset(posX & 15, posZ & 15), posZ);
+                BlockPos pos = new BlockPos(posX, posY, posZ);
+                pos = pos.add(0, ChunkDataTFC.getSeaLevelOffset(world, pos), 0);
                 final IBlockState current = world.getBlockState(pos);
 
                 if (!(current.getBlock() instanceof BlockRockVariant)) continue;
