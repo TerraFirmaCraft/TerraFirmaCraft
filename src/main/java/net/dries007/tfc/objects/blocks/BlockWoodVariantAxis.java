@@ -1,6 +1,5 @@
 package net.dries007.tfc.objects.blocks;
 
-import net.dries007.tfc.util.EnumAxis;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -14,12 +13,12 @@ import net.minecraft.world.World;
 
 public class BlockWoodVariantAxis extends BlockWoodVariant
 {
-    public static final PropertyEnum<EnumAxis> LOG_AXIS = PropertyEnum.<EnumAxis>create("axis", EnumAxis.class);
+    public static final PropertyEnum<EnumFacing.Axis> LOG_AXIS = PropertyEnum.<EnumFacing.Axis>create("axis", EnumFacing.Axis.class);
 
     public BlockWoodVariantAxis(Type type, Wood wood)
     {
         super(type, wood);
-        setDefaultState(this.getDefaultState().withProperty(LOG_AXIS, EnumAxis.Y));
+        setDefaultState(this.getDefaultState().withProperty(LOG_AXIS, EnumFacing.Axis.Y));
     }
 
     @Override public boolean canSustainLeaves(IBlockState state, IBlockAccess world, BlockPos pos){ return true; }
@@ -35,16 +34,41 @@ public class BlockWoodVariantAxis extends BlockWoodVariant
         return new BlockStateContainer(this, new IProperty[]{LOG_AXIS});
     }
 
-    @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(LOG_AXIS, EnumAxis.getFacingfromMeta(meta));
+        EnumFacing.Axis enumfacing$axis = EnumFacing.Axis.Y;
+        int i = meta & 12;
+
+        if (i == 4)
+        {
+            enumfacing$axis = EnumFacing.Axis.X;
+        }
+        else if (i == 8)
+        {
+            enumfacing$axis = EnumFacing.Axis.Z;
+        }
+
+        return this.getDefaultState().withProperty(LOG_AXIS, enumfacing$axis);
     }
 
-    @Override
+    /**
+     * Convert the BlockState into the correct metadata value
+     */
     public int getMetaFromState(IBlockState state)
     {
-        return EnumAxis.getMetafromAxis((EnumAxis)state.getValue(LOG_AXIS));
+        int i = 0;
+        EnumFacing.Axis enumfacing$axis = (EnumFacing.Axis)state.getValue(LOG_AXIS);
+
+        if (enumfacing$axis == EnumFacing.Axis.X)
+        {
+            i |= 4;
+        }
+        else if (enumfacing$axis == EnumFacing.Axis.Z)
+        {
+            i |= 8;
+        }
+
+        return i;
     }
     /**
      * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
@@ -53,7 +77,7 @@ public class BlockWoodVariantAxis extends BlockWoodVariant
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getStateFromMeta(meta).withProperty(LOG_AXIS, EnumAxis.fromFacingAxis(facing.getAxis()));
+        return this.getStateFromMeta(meta).withProperty(LOG_AXIS, facing.getAxis());
     }
 
     /**
@@ -68,12 +92,12 @@ public class BlockWoodVariantAxis extends BlockWoodVariant
             case COUNTERCLOCKWISE_90:
             case CLOCKWISE_90:
 
-                switch ((EnumAxis)state.getValue(LOG_AXIS))
+                switch (state.getValue(LOG_AXIS))
                 {
                     case X:
-                        return state.withProperty(LOG_AXIS, EnumAxis.Z);
+                        return state.withProperty(LOG_AXIS, EnumFacing.Axis.Z);
                     case Z:
-                        return state.withProperty(LOG_AXIS, EnumAxis.X);
+                        return state.withProperty(LOG_AXIS, EnumFacing.Axis.X);
                     default:
                         return state;
                 }
