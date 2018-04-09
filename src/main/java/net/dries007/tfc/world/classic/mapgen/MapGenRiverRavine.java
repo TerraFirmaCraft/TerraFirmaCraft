@@ -12,7 +12,6 @@ import static net.dries007.tfc.world.classic.ChunkGenTFC.*;
 
 /**
  * todo: this is even more of a mess than the other two mapgen classes, cause the generate method is weird.
- * todo: fill with water?
  */
 public class MapGenRiverRavine extends MapGenBase
 {
@@ -66,7 +65,7 @@ public class MapGenRiverRavine extends MapGenBase
             }
         }
 
-        for (int round = 0; round < rounds; round++)
+outer:  for (int round = 0; round < rounds; round++)
         {
             double min = 3.5D + MathHelper.sin(round * (float)Math.PI / rounds) * angleX * 1.0F;
             double max = min * 0.8;
@@ -113,6 +112,18 @@ public class MapGenRiverRavine extends MapGenBase
             if (yMax > 250) yMax = 250;
             if (zMin < 0) zMin = 0;
             if (zMax > 16) zMax = 16;
+
+            for (int x = Math.max(xMin-1, 0); x < Math.min(xMax+1, 16); ++x)
+            {
+                for (int z = Math.max(zMin-1, 0); z < Math.min(zMax+1, 16); ++z)
+                {
+                    for (int y = Math.min(yMax+1, 250); y >= Math.max(yMin-2, 1); --y)
+                    {
+                        if (BlocksTFC.isWater(primer.getBlockState(x, y, z)))
+                            continue outer;
+                    }
+                }
+            }
 
             for (int x = xMin; x < xMax; x++)
             {

@@ -13,7 +13,6 @@ import static net.dries007.tfc.world.classic.ChunkGenTFC.LAVA;
 
 /**
  * todo: clean up. This needs to be simplified a lot, or split up in functions with sensible variable names.
- * todo: fill with water?
  */
 public class MapGenRavineTFC extends MapGenBase
 {
@@ -113,28 +112,13 @@ outer:  for (int round = 0; round < rounds; ++round)
             if (zMin < 0) zMin = 0;
             if (zMax > 16) zMax = 16;
 
-            /*
-            boolean isBlocked = false;
-            for (int x = xMin; !isBlocked && x < xMax; ++x)
+            for (int x = Math.max(xMin-1, 0); x < Math.min(xMax+1, 16); ++x)
             {
-                for (int z = zMin; !isBlocked && z < zMax; ++z)
+                for (int z = Math.max(zMin-1, 0); z < Math.min(zMax+1, 16); ++z)
                 {
-                    for (int y = Math.max(yMax + 1, 255); !isBlocked && y >= yMin - 1; --y)
+                    for (int y = Math.min(yMax+1, 250); y >= Math.max(yMin-2, 1); --y)
                     {
-                        if (BlocksTFC.isWater(primer.getBlockState(x, y, z))) isBlocked = true;
-                        if (y != yMin - 1 && x != xMin && x != xMax - 1 && z != zMin && z != zMax - 1) y = yMin;
-                    }
-                }
-            }
-            if (isBlocked) continue;
-            */
-            for (int x = xMin; x < xMax; ++x)
-            {
-                for (int z = zMin; z < zMax; ++z)
-                {
-                    for (int y = yMax; y >= yMin - 1; --y)
-                    {
-                        if (BlocksTFC.isWater(primer.getBlockState(x, z, y)))
+                        if (BlocksTFC.isWater(primer.getBlockState(x, y, z)))
                             continue outer;
                     }
                 }

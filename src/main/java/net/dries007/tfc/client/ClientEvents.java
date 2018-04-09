@@ -87,7 +87,7 @@ public class ClientEvents
                     list.add(GRAY + "Fish population: " + WHITE + data.getFishPopulation());
 
                     list.add("");
-                    list.add(GRAY + "Rock at feet: " + WHITE + data.getRockHeight(x, blockpos.getY(), z));
+                    list.add(GRAY + "Rock at feet: " + WHITE + data.getRockLayerHeight(x, blockpos.getY(), z).name);
 
                     list.add("");
                     data.getOresSpawned().stream().map(String::valueOf).forEach(list::add);

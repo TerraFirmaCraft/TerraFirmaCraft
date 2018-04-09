@@ -2,16 +2,12 @@ package net.dries007.tfc.objects.biomes;
 
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
-import net.dries007.tfc.world.classic.worldgen.WorldGenSandTFC;
-import net.dries007.tfc.world.classic.worldgen.WorldGenTallPlant;
-import net.dries007.tfc.world.classic.worldgen.WorldGenWaterPlants;
-import net.dries007.tfc.world.classic.worldgen.WorldGenWaterlilyTFC;
+import net.dries007.tfc.world.classic.worldgen.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.gen.feature.WorldGenPumpkin;
 
 import java.util.Random;
 
@@ -19,7 +15,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
 {
     private final int lilyPadPerChunk;
     private final int waterPlantsPerChunk;
-    private final WorldGenPumpkin pumpkinGen;
+    private final WorldGenPumpkinTFC pumpkinGen;
     private final WorldGenWaterPlants waterplantGen;
 
     public BiomeDecoratorTFC(int lilyPadPerChunk, int waterPlantsPerChunk)
@@ -38,21 +34,21 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         this.cactusGen = null;
         this.waterlilyGen = null;
 
-        reedGen = new WorldGenTallPlant(Blocks.REEDS); // todo: replace block
+        reedGen = new WorldGenTallPlant(Blocks.REEDS); // todo: replace block?
         sandGen = new WorldGenSandTFC(7);
-        waterlilyGen = new WorldGenWaterlilyTFC();
-        pumpkinGen = new WorldGenPumpkin(); // todo: customize
-        cactusGen = new WorldGenTallPlant(Blocks.CACTUS); // todo: replace block
-        waterplantGen = new WorldGenWaterPlants(); // todo: customize
+        waterlilyGen = new WorldGenWaterlilyTFC(); // todo: replace block?
+        pumpkinGen = new WorldGenPumpkinTFC(Blocks.PUMPKIN); // todo: replace block?
+        cactusGen = new WorldGenTallPlant(Blocks.CACTUS); // todo: replace block?
+        waterplantGen = new WorldGenWaterPlants(); // todo: replace block
     }
 
     @Override
-    public void decorate(final World world, final Random worldRng, final Biome biome, final BlockPos chunkPos)
+    public void decorate(final World world, final Random rng, final Biome biome, final BlockPos chunkPos)
     {
         this.chunkPos = chunkPos;
         // todo: settings for all the rarities?
 
-        final Random rng = new Random(world.getSeed() + ((this.chunkPos.getX() >> 7) - (this.chunkPos.getZ() >> 7)) * (this.chunkPos.getZ() >> 7));
+//        final Random rng = new Random(world.getSeed() + ((this.chunkPos.getX() >> 7) - (this.chunkPos.getZ() >> 7)) * (this.chunkPos.getZ() >> 7));
 
 //        TerraFirmaCraft.getLog().info("decorate {} ({}) {} {}", chunkPos, biome.getBiomeName(), lilyPadPerChunk, waterPlantsPerChunk);
         // todo: crops

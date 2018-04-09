@@ -199,31 +199,13 @@ outer:  for (; i1 < rndRange; ++i1)
                 if (initialZ < 0) initialZ = 0;
                 if (maxZ > 16) maxZ = 16;
 
-                /*
-                boolean water = false;
-                for (int xCoord = initialX; !water && xCoord < maxX; ++xCoord)
+                for (int xCoord = Math.max(initialX-1, 0); xCoord < Math.min(maxX+1, 16); ++xCoord)
                 {
-                    for (int zCoord = initialZ; !water && zCoord < maxZ; ++zCoord)
+                    for (int zCoord = Math.max(initialZ-1, 0); zCoord < Math.min(maxZ+1, 16); ++zCoord)
                     {
-                        for (int yCoord = Math.max(initialY + 1, 255); !water && yCoord >= minY - 1; --yCoord)
+                        for (int yCoord = Math.min(initialY+1, 250); yCoord > Math.max(minY-1, 0); --yCoord)
                         {
-                            if (BlocksTFC.isWater(primer.getBlockState(xCoord, zCoord, yCoord)))
-                                water = true;
-                            if (yCoord != minY - 1 && xCoord != initialX && xCoord != maxX - 1 && zCoord != initialZ && zCoord != maxZ - 1)
-                                yCoord = minY;
-                        }
-                    }
-                }
-                if (water) continue;
-                */
-
-                for (int xCoord = initialX; xCoord < maxX; ++xCoord)
-                {
-                    for (int zCoord = initialZ; zCoord < maxZ; ++zCoord)
-                    {
-                        for (int yCoord = initialY; yCoord >= minY - 1; --yCoord)
-                        {
-                            if (BlocksTFC.isWater(primer.getBlockState(xCoord, zCoord, yCoord)))
+                            if (BlocksTFC.isWater(primer.getBlockState(xCoord, yCoord, zCoord)))
                                 continue outer;
                         }
                     }

@@ -70,7 +70,7 @@ public final class ChunkDataTFC
     public static int getDrainage(World world, BlockPos pos) { return get(world, pos).getDrainageLayer(pos.getX() & 15, pos.getZ() & 15).valueInt; }
     public static int getSeaLevelOffset(World world, BlockPos pos) { return get(world, pos).getSeaLevelOffset(pos.getX() & 15, pos.getZ() & 15); }
     public static int getFishPopulation(World world, BlockPos pos) { return get(world, pos).getFishPopulation(); }
-    public static BlockRockVariant getRockHeight(World world, BlockPos pos) { return get(world, pos).getRockLayerHeight(pos.getX() & 15, pos.getY(), pos.getZ() & 15); }
+    public static BlockRockVariant getRockHeight(World world, BlockPos pos) { return get(world, pos).getRockLayerHeight(pos.getX() & 15, pos.getY(), pos.getZ() & 15).block; }
 
     /**
      * INTERNAL USE ONLY.
@@ -109,20 +109,12 @@ public final class ChunkDataTFC
     public float getRainfall(int x, int z) { return getRainfallLayer(x, z).valueFloat; }
     public boolean isStable(int x, int z) { return getStabilityLayer(x, z).valueInt == 0; }
     public int getDrainage(int x, int z) { return getDrainageLayer(x, z).valueInt; }
-    public BlockRockVariant getRockHeight(int x, int y, int z) { return this.getRockLayerHeight(x & 15, y, z & 15); }
+    public BlockRockVariant getRockHeight(int x, int y, int z) { return getRockLayerHeight(x & 15, y, z & 15).block; }
 
     public int getSeaLevelOffset(int x, int z) { return seaLevelOffset[z << 4 | x]; }
 
     public int getFishPopulation() { return fishPopulation; }
     public List<ChunkDataOreSpawned> getOresSpawned() { return oresSpawnedView; }
-
-    private BlockRockVariant getRockLayerHeight(int x, int y, int z)
-    {
-        int offset = getSeaLevelOffset(x, z);
-        if (y <= ROCKLAYER3 + offset) return getRock3(x, z);
-        if (y <= ROCKLAYER2 + offset) return getRock2(x, z);
-        return getRock1(x, z);
-    }
 
     // Directly accessing the DataLayer is discouraged (except for getting the name). It's easy to use the wrong value.
     public DataLayer getRockLayer1(int x, int z) {      return rockLayer1   [z << 4 | x]; }
@@ -132,6 +124,14 @@ public final class ChunkDataTFC
     public DataLayer getRainfallLayer(int x, int z) {   return rainfallLayer[z << 4 | x]; }
     public DataLayer getStabilityLayer(int x, int z) { return stabilityLayer[z << 4 | x]; }
     public DataLayer getDrainageLayer(int x, int z) {   return drainageLayer[z << 4 | x]; }
+
+    public DataLayer getRockLayerHeight(int x, int y, int z)
+    {
+        int offset = getSeaLevelOffset(x, z);
+        if (y <= ROCKLAYER3 + offset) return getRockLayer3(x, z);
+        if (y <= ROCKLAYER2 + offset) return getRockLayer2(x, z);
+        return getRockLayer1(x, z);
+    }
 
     public static final class ChunkDataStorage implements Capability.IStorage<ChunkDataTFC>
     {
