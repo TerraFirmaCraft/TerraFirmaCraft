@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:garnierite_limestone"}}}
+{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw_limestone", "particle": "tfc:blocks/stonetypes/raw_limestone", "overlay": "tfc:blocks/ores/garnierite"}}, "variants": {"normal": [{}]}}

@@ -1,7 +1,7 @@
 package net.dries007.tfc.objects.entity;
 
 import com.google.common.base.Optional;
-import net.dries007.tfc.util.IBlockFalling;
+import net.dries007.tfc.util.IFallingBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.crash.CrashReportCategory;
@@ -28,7 +28,7 @@ public class EntityFallingBlockTFC extends Entity
     private static final DataParameter<BlockPos> ORIGIN = EntityDataManager.createKey(EntityFallingBlockTFC.class, DataSerializers.BLOCK_POS);
     private static final DataParameter<Optional<IBlockState>> BLOCK = EntityDataManager.createKey(EntityFallingBlockTFC.class, DataSerializers.OPTIONAL_BLOCK_STATE);
 
-    private IBlockFalling falling;
+    private IFallingBlock falling;
     private int fallTime;
     private NBTTagCompound teData;
 
@@ -38,7 +38,7 @@ public class EntityFallingBlockTFC extends Entity
         super(worldIn);
     }
 
-    public EntityFallingBlockTFC(World world, BlockPos start, IBlockFalling falling, IBlockState state)
+    public EntityFallingBlockTFC(World world, BlockPos start, IFallingBlock falling, IBlockState state)
     {
         this(world);
         this.falling = falling;

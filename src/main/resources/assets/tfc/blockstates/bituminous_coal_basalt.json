@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:bituminous_coal_basalt"}}}
+{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw_basalt", "particle": "tfc:blocks/stonetypes/raw_basalt", "overlay": "tfc:blocks/ores/bituminous_coal"}}, "variants": {"normal": [{}]}}

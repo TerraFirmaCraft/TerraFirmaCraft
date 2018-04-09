@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:dirt_basalt"}}}
+{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/dirt_basalt"}}, "variants": {"normal": [{}]}}

@@ -96,7 +96,7 @@ public final class BlocksTFC
 
     private static void registerSoil(ImmutableList.Builder<BlockRockVariant> b, IForgeRegistry<Block> r, BlockRockVariant.Type type, BlockRockVariant.Rock rock)
     {
-        BlockRockVariant block = new BlockRockVariant(type, rock);
+        BlockRockVariant block = type.isColorIndexed ? new BlockRockVariantConnected(type, rock) : new BlockRockVariant(type, rock);
         block.setResistance(0).setHardness(0); //todo: remove
         b.add(block);
         register(r, (type.name() + "_" +  rock.name()).toLowerCase(), block, CreativeTabsTFC.CT_ROCK_SOIL);

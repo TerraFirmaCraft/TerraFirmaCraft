@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:brick_phyllite"}}}
+{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/brick_phyllite"}}, "variants": {"normal": [{}]}}

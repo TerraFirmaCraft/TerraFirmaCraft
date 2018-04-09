@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:gravel_conglomerate"}}}
+{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/gravel_conglomerate"}}, "variants": {"normal": [{}]}}

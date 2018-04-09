@@ -46,7 +46,7 @@ import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER2;
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER3;
 
 /**
- * Todo: make caves in top stone layer under ocean filled with water? (maybe 2 layers under deep ocean?)
+ * todo: Find out how to make ocean bottoms not so super flat.
  */
 @SuppressWarnings("ConstantConditions")
 public class ChunkGenTFC implements IChunkGenerator
@@ -494,7 +494,6 @@ public class ChunkGenTFC implements IChunkGenerator
     {
         final int seaLevel = 16;
         final int yOffset = 128;
-//        final int yOffset = 0;
         double var6 = 0.03125D;
         noiseGen4.generateNoiseOctaves(noise4, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, var6 * 4.0D, var6, var6 * 4.0D);
         boolean[] cliffMap = new boolean[256];
@@ -526,7 +525,6 @@ public class ChunkGenTFC implements IChunkGenerator
 
                 int h = 0;
                 for (int y = 127; y >= 0; y--)
-//                for (int y = 255; y >= 0; y--)
                 {
                     /*
                      * HIGH PART (yOffset is used)
@@ -553,8 +551,8 @@ public class ChunkGenTFC implements IChunkGenerator
 
                     if (outp.getBlockState(x, y + yOffset, z) == STONE)
                     {
-                        if (seaLevelOffsetMap[colIndex] == 0 && y - 16 >= 0)
-                            seaLevelOffsetMap[colIndex] = y - 16;
+                        if (seaLevelOffsetMap[colIndex] == 0 && y - seaLevel >= 0)
+                            seaLevelOffsetMap[colIndex] = y - seaLevel;
 
                         if (chunkHeightMap[colIndex] == 0)
                             chunkHeightMap[colIndex] = y + yOffset;

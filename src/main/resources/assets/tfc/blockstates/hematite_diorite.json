@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:hematite_diorite"}}}
+{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw_diorite", "particle": "tfc:blocks/stonetypes/raw_diorite", "overlay": "tfc:blocks/ores/hematite"}}, "variants": {"normal": [{}]}}

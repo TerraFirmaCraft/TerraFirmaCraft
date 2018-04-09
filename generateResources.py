@@ -1,8 +1,12 @@
 #!/bin/env python3
 
+# noinspection PyUnresolvedReferences
 import json
+# noinspection PyUnresolvedReferences
 import os
+# noinspection PyUnresolvedReferences
 import time
+# noinspection PyUnresolvedReferences
 import zipfile
 
 
@@ -99,52 +103,68 @@ ores = [
 ]
 
 for rock_type in types:
-    for block_type in fullblock_types + grass_types + ores:
-        t = '{}_{}'.format(block_type, rock_type)
-        with open('blockstates/%s.json' % t, 'w') as f:
-            json.dump({'variants': {'normal': {'model': 'tfc:%s' % t}}}, f)
-
     for block_type in fullblock_types:
         t = '{}_{}'.format(block_type, rock_type)
-        with open('models/item/%s.json' % t, 'w') as f:
-            json.dump({'parent': 'tfc:block/%s' % t}, f)
-        with open('models/block/%s.json' % t, 'w') as f:
-            json.dump({'parent': 'block/cube_all', 'textures': {'all': 'tfc:blocks/stonetypes/%s' % t}}, f)
-
-    with open('models/item/grass_%s.json' % rock_type, 'w') as f:
-        json.dump({'parent': 'tfc:block/grass_%s' % rock_type}, f)
-    with open('models/block/grass_{}.json'.format(rock_type), 'w') as f:
-        json.dump({
-            'parent': 'tfc:block/grass',
-            'textures': {
-                'all': 'tfc:blocks/stonetypes/dirt_%s' % rock_type,
-                'particle': 'tfc:blocks/stonetypes/dirt_%s' % rock_type,
-                'overlay': 'tfc:blocks/grass_side',
-                'top': 'tfc:blocks/grass_top',
-            }
-        }, f)
-    with open('models/item/dry_grass_%s.json' % rock_type, 'w') as f:
-        json.dump({'parent': 'tfc:block/dry_grass_%s' % rock_type}, f)
-    with open('models/block/dry_grass_{}.json'.format(rock_type), 'w') as f:
-        json.dump({
-            'parent': 'tfc:block/grass',
-            'textures': {
-                'all': 'tfc:blocks/stonetypes/dirt_%s' % rock_type,
-                'particle': 'tfc:blocks/stonetypes/dirt_%s' % rock_type,
-                'overlay': 'tfc:blocks/grass_dry_side',
-                'top': 'tfc:blocks/grass_dry_top',
-            }
-        }, f)
-    for ore in ores:
-        t = '{}_{}'.format(ore, rock_type)
-        with open('models/item/{}.json'.format(t), 'w') as f:
-            json.dump({'parent': 'tfc:block/%s' % t}, f)
-        with open('models/block/{}.json'.format(t), 'w') as f:
+        with open('blockstates/%s.json' % t, 'w') as f:
             json.dump({
-                'parent': 'tfc:block/ore',
-                'textures': {
-                    'all': 'tfc:blocks/stonetypes/raw_%s' % rock_type,
-                    'particle': 'tfc:blocks/stonetypes/raw_%s' % rock_type,
-                    'overlay': 'tfc:blocks/ores/%s' % ore,
+                'forge_marker': 1,
+                'defaults': {
+                    # 'transform': 'forge:default-item',
+                    'model': 'cube_all',
+                    'textures': {
+                        'all': 'tfc:blocks/stonetypes/%s' % t
+                    }
+                },
+                'variants': {
+                    'normal': [{}]
+                }
+            }, f)
+
+    for block_type in ores:
+        t = '{}_{}'.format(block_type, rock_type)
+        with open('blockstates/%s.json' % t, 'w') as f:
+            json.dump({
+                'forge_marker': 1,
+                'defaults': {
+                    # 'transform': 'forge:default-item',
+                    'model': 'tfc:ore',
+                    'textures': {
+                        'all': 'tfc:blocks/stonetypes/raw_%s' % rock_type,
+                        'particle': 'tfc:blocks/stonetypes/raw_%s' % rock_type,
+                        'overlay': 'tfc:blocks/ores/%s' % block_type,
+                    }
+                },
+                'variants': {
+                    'normal': [{}]
+                }
+            }, f)
+
+    for block_type in grass_types:
+        t = '{}_{}'.format(block_type, rock_type)
+        with open('blockstates/%s.json' % t, 'w') as f:
+            json.dump({
+                'forge_marker': 1,
+                'defaults': {
+                    # 'transform': 'forge:default-item',
+                    'model': 'tfc:grass',
+                    'textures': {
+                        'all': 'tfc:blocks/stonetypes/dirt_%s' % rock_type,
+                        'particle': 'tfc:blocks/stonetypes/dirt_%s' % rock_type,
+                        'top': 'tfc:blocks/%s_top' % block_type,
+                        'north': 'tfc:blocks/%s_side' % block_type,
+                        'south': 'tfc:blocks/%s_side' % block_type,
+                        'east': 'tfc:blocks/%s_side' % block_type,
+                        'west': 'tfc:blocks/%s_side' % block_type,
+                    }
+                },
+                'variants': {
+                    side: [{}] if side is 'normal' else {
+                        'true': {
+                            'textures': {
+                                side: 'tfc:blocks/%s_top' % block_type,
+                            }
+                        },
+                        'false': {}
+                    } for side in ['north', 'south', 'east', 'west', 'normal']
                 }
             }, f)

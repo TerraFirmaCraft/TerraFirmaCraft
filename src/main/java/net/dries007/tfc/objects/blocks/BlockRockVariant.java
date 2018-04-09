@@ -1,7 +1,7 @@
 package net.dries007.tfc.objects.blocks;
 
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
-import net.dries007.tfc.util.IBlockFalling;
+import net.dries007.tfc.util.IFallingBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
@@ -25,7 +25,7 @@ import java.util.Random;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
-public class BlockRockVariant extends Block implements IBlockFalling
+public class BlockRockVariant extends Block implements IFallingBlock
 {
     public final Type type;
     public final Rock rock;
@@ -37,10 +37,7 @@ public class BlockRockVariant extends Block implements IBlockFalling
         super(type.material);
         this.type = type;
         this.rock = rock;
-        if (type == Type.RAW)
-        {
-            rock.ref = this;
-        }
+        if (type == Type.RAW) rock.ref = this;
         if (type == Type.GRASS || type == Type.DRY_GRASS || type.isAffectedByGravity)
         {
 //            this.setTickRandomly(true); //todo: everyone for caveins? For dirt rolling down?
@@ -70,7 +67,7 @@ public class BlockRockVariant extends Block implements IBlockFalling
     @Override
     public boolean shouldFall(IBlockState state, World world, BlockPos pos)
     {
-        return type.isAffectedByGravity && IBlockFalling.super.shouldFall(state, world, pos);
+        return type.isAffectedByGravity && IFallingBlock.super.shouldFall(state, world, pos);
     }
 
     @Override

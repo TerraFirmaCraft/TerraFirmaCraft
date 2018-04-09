@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:dirt_andesite"}}}
+{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/dirt_andesite"}}, "variants": {"normal": [{}]}}

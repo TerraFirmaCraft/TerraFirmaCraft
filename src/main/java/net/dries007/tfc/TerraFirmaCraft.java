@@ -16,7 +16,10 @@ import net.dries007.tfc.world.classic.worldgen.WorldGenSurfaceFissureCluster;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModMetadata;
-import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -40,8 +43,7 @@ public class TerraFirmaCraft
     private WorldTypeTFC worldTypeTFC;
     private SimpleNetworkWrapper network;
 
-    @Mod.EventHandler
-    public void construction(FMLConstructionEvent event)
+    static
     {
         FluidRegistry.enableUniversalBucket();
     }

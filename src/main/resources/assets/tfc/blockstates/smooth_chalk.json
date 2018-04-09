@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:smooth_chalk"}}}
+{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/smooth_chalk"}}, "variants": {"normal": [{}]}}

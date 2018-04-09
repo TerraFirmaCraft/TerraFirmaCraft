@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:petrified_wood_quartzite"}}}
+{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw_quartzite", "particle": "tfc:blocks/stonetypes/raw_quartzite", "overlay": "tfc:blocks/ores/petrified_wood"}}, "variants": {"normal": [{}]}}
