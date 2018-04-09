@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:lapis_lazuli_phyllite"}}}
+{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw_phyllite", "particle": "tfc:blocks/stonetypes/raw_phyllite", "overlay": "tfc:blocks/ores/lapis_lazuli"}}, "variants": {"normal": [{}]}}

@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:native_platinum_gabbro"}}}
+{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw_gabbro", "particle": "tfc:blocks/stonetypes/raw_gabbro", "overlay": "tfc:blocks/ores/native_platinum"}}, "variants": {"normal": [{}]}}

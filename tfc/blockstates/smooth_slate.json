@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:smooth_slate"}}}
+{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/smooth_slate"}}, "variants": {"normal": [{}]}}

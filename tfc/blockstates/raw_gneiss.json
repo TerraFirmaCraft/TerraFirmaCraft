@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:raw_gneiss"}}}
+{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/raw_gneiss"}}, "variants": {"normal": [{}]}}

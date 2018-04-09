@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:native_platinum_andesite"}}}
+{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw_andesite", "particle": "tfc:blocks/stonetypes/raw_andesite", "overlay": "tfc:blocks/ores/native_platinum"}}, "variants": {"normal": [{}]}}

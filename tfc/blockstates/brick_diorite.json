@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:brick_diorite"}}}
+{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/brick_diorite"}}, "variants": {"normal": [{}]}}

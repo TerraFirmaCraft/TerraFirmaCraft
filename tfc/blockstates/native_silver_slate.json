@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:native_silver_slate"}}}
+{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw_slate", "particle": "tfc:blocks/stonetypes/raw_slate", "overlay": "tfc:blocks/ores/native_silver"}}, "variants": {"normal": [{}]}}

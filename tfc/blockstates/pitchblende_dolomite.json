@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:pitchblende_dolomite"}}}
+{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw_dolomite", "particle": "tfc:blocks/stonetypes/raw_dolomite", "overlay": "tfc:blocks/ores/pitchblende"}}, "variants": {"normal": [{}]}}

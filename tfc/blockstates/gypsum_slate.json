@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:gypsum_slate"}}}
+{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw_slate", "particle": "tfc:blocks/stonetypes/raw_slate", "overlay": "tfc:blocks/ores/gypsum"}}, "variants": {"normal": [{}]}}

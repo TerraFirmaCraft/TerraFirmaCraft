@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:cobble_marble"}}}
+{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/cobble_marble"}}, "variants": {"normal": [{}]}}

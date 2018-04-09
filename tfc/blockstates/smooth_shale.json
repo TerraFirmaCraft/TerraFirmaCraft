@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:smooth_shale"}}}
+{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/smooth_shale"}}, "variants": {"normal": [{}]}}

@@ -1,1 +1,1 @@
-{"variants": {"normal": {"model": "tfc:dirt_marble"}}}
+{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/dirt_marble"}}, "variants": {"normal": [{}]}}
