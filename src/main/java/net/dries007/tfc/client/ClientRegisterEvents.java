@@ -45,6 +45,9 @@ public final class ClientRegisterEvents
         for (Block block : BlocksTFC.getAllBlockRockVariants())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
 
+        for (Block block : BlocksTFC.getAllBlockWoodVariants())
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
+
         for (Block block : BlocksTFC.getAllOreBlocks())
         {
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockTFCOre.GRADE).build());

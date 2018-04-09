@@ -33,6 +33,7 @@ public final class ItemsTFC
         register_item_block(r, BlocksTFC.PEAT_GRASS);
 
         BlocksTFC.getAllBlockRockVariants().forEach(x -> register_item_block(r, x));
+        BlocksTFC.getAllBlockWoodVariants().forEach(x -> register_item_block(r, x));
         BlocksTFC.getAllOreBlocks().forEach(x -> register_item_block(r, x));
     }
 
