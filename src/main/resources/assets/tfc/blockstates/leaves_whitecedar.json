@@ -1,0 +1,13 @@
+{
+	"forge_marker" : 1,
+	"defaults": {
+		"model": "leaves",
+		"textures": {
+			"all": "tfc:blocks/wood/trees/white cedar leaves",
+			"particle": "tfc:blocks/wood/trees/white cedar leaves"
+		}
+	},
+	"variants": {
+		"normal":  [{}]
+	}
+}

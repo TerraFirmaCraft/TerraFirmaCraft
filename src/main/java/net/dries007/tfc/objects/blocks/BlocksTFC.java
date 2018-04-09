@@ -40,6 +40,7 @@ public final class BlocksTFC
 
     private static ImmutableList<BlockFluidBase> allFluidBlocks;
     private static ImmutableList<BlockRockVariant> allBlockRockVariants;
+    private static ImmutableList<BlockWoodVariant> allBlockWoodVariants;
     private static ImmutableList<BlockTFCOre> allOreBlocks;
 
     public static ImmutableList<BlockFluidBase> getAllFluidBlocks()
@@ -50,6 +51,7 @@ public final class BlocksTFC
     {
         return allBlockRockVariants;
     }
+    public static ImmutableList<BlockWoodVariant> getAllBlockWoodVariants() { return allBlockWoodVariants; }
     public static ImmutableList<BlockTFCOre> getAllOreBlocks()
     {
         return allOreBlocks;
@@ -82,6 +84,14 @@ public final class BlocksTFC
         }
 
         {
+            ImmutableList.Builder<BlockWoodVariant> b = ImmutableList.builder();
+            for (BlockWoodVariant.Type type : BlockWoodVariant.Type.values())
+                for (BlockWoodVariant.Wood wood : BlockWoodVariant.Wood.values())
+                    registerWood(b, r, type, wood);
+            allBlockWoodVariants = b.build();
+        }
+
+        {
             ImmutableList.Builder<BlockTFCOre> b = ImmutableList.builder();
             for (BlockTFCOre.Ore ore : BlockTFCOre.Ore.values())
                 for (BlockRockVariant.Rock rock : BlockRockVariant.Rock.values())
@@ -105,6 +115,14 @@ public final class BlocksTFC
         BlockRockVariant block = type.isGrass ? new BlockRockVariantConnected(type, rock) : new BlockRockVariant(type, rock);
         b.add(block);
         register(r, (type.name() + "_" +  rock.name()).toLowerCase(), block, CreativeTabsTFC.CT_ROCK_SOIL);
+    }
+
+    private static void registerWood(ImmutableList.Builder<BlockWoodVariant> b, IForgeRegistry<Block> r, BlockWoodVariant.Type type, BlockWoodVariant.Wood wood)
+    {
+        BlockWoodVariant block = type.isAxisIndexed ? new BlockWoodVariantAxis(type, wood) : new BlockWoodVariant(type, wood);
+        block.setResistance(0).setHardness(0); //todo: remove
+        b.add(block);
+        register(r, (type.name() + "_" +  wood.name()).toLowerCase(), block, CreativeTabsTFC.CT_WOOD);
     }
 
     private static void registerOre(ImmutableList.Builder<BlockTFCOre> b, IForgeRegistry<Block> r, BlockTFCOre.Ore ore, BlockRockVariant.Rock rock)
