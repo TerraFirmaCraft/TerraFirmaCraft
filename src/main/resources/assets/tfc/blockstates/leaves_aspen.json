@@ -1,13 +1,1 @@
-{
-	"forge_marker" : 1,
-	"defaults": {
-		"model": "leaves",
-		"textures": {
-			"all": "tfc:blocks/wood/trees/aspen leaves",
-			"particle": "tfc:blocks/wood/trees/aspen leaves"
-		}
-	},
-	"variants": {
-		"normal":  [{}]
-	}
-}
+{"forge_marker": 1, "defaults": {"model": "leaves", "textures": {"all": "tfc:blocks/wood/leaves_aspen"}}, "variants": {"normal": [{}]}}

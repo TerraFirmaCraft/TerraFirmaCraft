@@ -24,6 +24,8 @@ import static net.dries007.tfc.objects.blocks.BlockRockVariant.Type.*;
 @GameRegistry.ObjectHolder(MOD_ID)
 public final class BlocksTFC
 {
+
+
     private BlocksTFC() {}
 
     public static final BlockDebug DEBUG = null;
@@ -40,7 +42,9 @@ public final class BlocksTFC
 
     private static ImmutableList<BlockFluidBase> allFluidBlocks;
     private static ImmutableList<BlockRockVariant> allBlockRockVariants;
-    private static ImmutableList<BlockWoodVariant> allBlockWoodVariants;
+    private static ImmutableList<BlockLogTFC> allLogBlocks;
+    private static ImmutableList<BlockLeavesTFC> allLeafBlocks;
+    private static ImmutableList<BlockPlanksTFC> allPlankBlocks;
     private static ImmutableList<BlockTFCOre> allOreBlocks;
 
     public static ImmutableList<BlockFluidBase> getAllFluidBlocks()
@@ -51,7 +55,9 @@ public final class BlocksTFC
     {
         return allBlockRockVariants;
     }
-    public static ImmutableList<BlockWoodVariant> getAllBlockWoodVariants() { return allBlockWoodVariants; }
+    public static ImmutableList<BlockLogTFC> getAllLogBlocks() { return allLogBlocks; }
+    public static ImmutableList<BlockLeavesTFC> getAllLeafBlocks() { return allLeafBlocks; }
+    public static ImmutableList<BlockPlanksTFC> getAllPlankBlocks() { return allPlankBlocks; }
     public static ImmutableList<BlockTFCOre> getAllOreBlocks()
     {
         return allOreBlocks;
@@ -84,11 +90,14 @@ public final class BlocksTFC
         }
 
         {
-            ImmutableList.Builder<BlockWoodVariant> b = ImmutableList.builder();
-            for (BlockWoodVariant.Type type : BlockWoodVariant.Type.values())
-                for (BlockWoodVariant.Wood wood : BlockWoodVariant.Wood.values())
-                    registerWood(b, r, type, wood);
-            allBlockWoodVariants = b.build();
+            ImmutableList.Builder<BlockLogTFC> b1 = ImmutableList.builder();
+            ImmutableList.Builder<BlockLeavesTFC> b2 = ImmutableList.builder();
+            ImmutableList.Builder<BlockPlanksTFC> b3 = ImmutableList.builder();
+            for (BlockLogTFC.Wood wood : BlockLogTFC.Wood.values())
+                registerWood(b1, b2, b3, r, wood);
+            allLogBlocks = b1.build();
+            allLeafBlocks = b2.build();
+            allPlankBlocks = b3.build();
         }
 
         {
@@ -112,38 +121,34 @@ public final class BlocksTFC
 
     private static void registerSoil(ImmutableList.Builder<BlockRockVariant> b, IForgeRegistry<Block> r, BlockRockVariant.Type type, BlockRockVariant.Rock rock)
     {
-        BlockRockVariant block = type.isGrass ? new BlockRockVariantConnected(type, rock) : new BlockRockVariant(type, rock);
-        b.add(block);
-        register(r, (type.name() + "_" +  rock.name()).toLowerCase(), block, CreativeTabsTFC.CT_ROCK_SOIL);
+        b.add(register(r, (type.name() + "_" +  rock.name()).toLowerCase(), type.isGrass ? new BlockRockVariantConnected(type, rock) : new BlockRockVariant(type, rock), CreativeTabsTFC.CT_ROCK_SOIL));
     }
 
-    private static void registerWood(ImmutableList.Builder<BlockWoodVariant> b, IForgeRegistry<Block> r, BlockWoodVariant.Type type, BlockWoodVariant.Wood wood)
+    private static void registerWood(ImmutableList.Builder<BlockLogTFC> b1, ImmutableList.Builder<BlockLeavesTFC> b2, ImmutableList.Builder<BlockPlanksTFC> b3, IForgeRegistry<Block> r, BlockLogTFC.Wood wood)
     {
-        BlockWoodVariant block = type.isAxisIndexed ? new BlockWoodVariantAxis(type, wood) : new BlockWoodVariant(type, wood);
-        block.setResistance(0).setHardness(0); //todo: remove
-        b.add(block);
-        register(r, (type.name() + "_" +  wood.name()).toLowerCase(), block, CreativeTabsTFC.CT_WOOD);
+        b1.add(register(r, "log_" + wood.name().toLowerCase(), new BlockLogTFC(wood), CreativeTabsTFC.CT_WOOD));
+        b2.add(register(r, "leaves_" + wood.name().toLowerCase(), new BlockLeavesTFC(wood), CreativeTabsTFC.CT_WOOD));
+        b3.add(register(r, "planks_" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CreativeTabsTFC.CT_WOOD));
     }
 
     private static void registerOre(ImmutableList.Builder<BlockTFCOre> b, IForgeRegistry<Block> r, BlockTFCOre.Ore ore, BlockRockVariant.Rock rock)
     {
-        BlockTFCOre block = new BlockTFCOre(ore, rock);
-        b.add(block);
-        register(r, (ore.name() + "_" +  rock.name()).toLowerCase(), block, CreativeTabsTFC.CT_ORES);
+        b.add(register(r, (ore.name() + "_" +  rock.name()).toLowerCase(), new BlockTFCOre(ore, rock), CreativeTabsTFC.CT_ORES));
     }
 
-    private static void register(IForgeRegistry<Block> r, String name, Block block, CreativeTabs ct)
+    private static <T extends Block> T register(IForgeRegistry<Block> r, String name, T block, CreativeTabs ct)
     {
         block.setCreativeTab(ct);
         block.setResistance(0).setHardness(0); // todo: remove
-        register(r, name, block);
+        return register(r, name, block);
     }
 
-    private static void register(IForgeRegistry<Block> r, String name, Block block)
+    private static <T extends Block> T register(IForgeRegistry<Block> r, String name, T block)
     {
         block.setRegistryName(MOD_ID, name);
         block.setUnlocalizedName(MOD_ID + "." + name.replace('_', '.'));
         r.register(block);
+        return block;
     }
 
     public static boolean isWater(IBlockState current)

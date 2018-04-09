@@ -1,13 +1,1 @@
-{
-	"forge_marker" : 1,
-	"defaults": {
-		"model": "leaves",
-		"textures": {
-			"all": "tfc:blocks/wood/trees/maple leaves",
-			"particle": "tfc:blocks/wood/trees/maple leaves"
-		}
-	},
-	"variants": {
-		"normal":  [{}]
-	}
-}
+{"forge_marker": 1, "defaults": {"model": "leaves", "textures": {"all": "tfc:blocks/wood/leaves_maple"}}, "variants": {"normal": [{}]}}

@@ -102,6 +102,27 @@ ores = [
     'olivine',
     'lapis_lazuli'
 ]
+woods = [
+    'ash',
+    'aspen',
+    'birch',
+    'chestnut',
+    'douglas_fir',
+    'hickory',
+    'maple',
+    'oak',
+    'pine',
+    'sequoia',
+    'spruce',
+    'sycamore',
+    'white_cedar',
+    'willow',
+    'kapok',
+    'acacia',
+    'rosewood',
+    'blackwood',
+    'palm'
+]
 
 for rock_type in types:
     for block_type in fullblock_types:
@@ -194,5 +215,64 @@ for rock_type in types:
                     },
                     'false': {}
                 } for side in ['north', 'south', 'east', 'west', 'normal']
+            }
+        }, f)
+
+for wood_type in woods:
+    with open('blockstates/log_%s.json' % wood_type, 'w') as f:
+        json.dump({
+            'forge_marker': 1,
+            'defaults': {
+                # 'transform': 'forge:default-item',
+                'model': 'cube_column',
+                'textures': {
+                    'particle': 'tfc:blocks/wood/log_%s' % wood_type,
+                    'end': 'tfc:blocks/wood/top_%s' % wood_type,
+                    'side': 'tfc:blocks/wood/log_%s' % wood_type,
+                }
+            },
+            'variants': {
+                'normal': [{}],
+                'axis': {
+                    'y': {},
+                    'z': {'x': 90},
+                    'x': {'x': 90, 'y': 90},
+                    'none': {
+                        'model': 'cube_all',
+                        'textures': {
+                            'all': 'tfc:blocks/wood/log_%s' % wood_type,
+                        }
+                    }
+                }
+            }
+        }, f)
+
+    with open('blockstates/planks_%s.json' % wood_type, 'w') as f:
+        json.dump({
+            'forge_marker': 1,
+            'defaults': {
+                # 'transform': 'forge:default-item',
+                'model': 'cube_all',
+                'textures': {
+                    'all': 'tfc:blocks/wood/planks_%s' % wood_type
+                }
+            },
+            'variants': {
+                'normal': [{}]
+            }
+        }, f)
+
+    with open('blockstates/leaves_%s.json' % wood_type, 'w') as f:
+        json.dump({
+            'forge_marker': 1,
+            'defaults': {
+                # 'transform': 'forge:default-item',
+                'model': 'leaves',
+                'textures': {
+                    'all': 'tfc:blocks/wood/leaves_%s' % wood_type
+                }
+            },
+            'variants': {
+                'normal': [{}]
             }
         }, f)

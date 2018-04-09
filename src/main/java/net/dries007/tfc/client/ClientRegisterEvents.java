@@ -5,6 +5,7 @@ import net.dries007.tfc.objects.blocks.BlockTFCOre;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -12,6 +13,7 @@ import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -45,7 +47,16 @@ public final class ClientRegisterEvents
         for (Block block : BlocksTFC.getAllBlockRockVariants())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
 
-        for (Block block : BlocksTFC.getAllBlockWoodVariants())
+        for (Block block : BlocksTFC.getAllLogBlocks())
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
+
+        for (Block block : BlocksTFC.getAllLeafBlocks())
+        {
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY).ignore(BlockLeaves.DECAYABLE).build());
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
+        }
+
+        for (Block block : BlocksTFC.getAllPlankBlocks())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
 
         for (Block block : BlocksTFC.getAllOreBlocks())
@@ -71,6 +82,10 @@ public final class ClientRegisterEvents
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
                         worldIn != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(worldIn, pos) : 0,
                 BlocksTFC.getAllFluidBlocks().stream().filter(x -> x.getDefaultState().getMaterial() == Material.WATER).toArray(BlockFluidBase[]::new));
+
+        blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
+                        worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic(),
+                BlocksTFC.getAllLeafBlocks().toArray(new Block[0]));
     }
 
     @SuppressWarnings("deprecation")
