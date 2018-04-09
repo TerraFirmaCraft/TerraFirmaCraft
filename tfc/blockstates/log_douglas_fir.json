@@ -1,0 +1,1 @@
+{"forge_marker": 1, "defaults": {"model": "cube_column", "textures": {"particle": "tfc:blocks/wood/log_douglas_fir", "end": "tfc:blocks/wood/top_douglas_fir", "side": "tfc:blocks/wood/log_douglas_fir"}}, "variants": {"normal": [{}], "axis": {"y": {}, "z": {"x": 90}, "x": {"x": 90, "y": 90}, "none": {"model": "cube_all", "textures": {"all": "tfc:blocks/wood/log_douglas_fir"}}}}}
