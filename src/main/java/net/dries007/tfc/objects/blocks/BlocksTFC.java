@@ -166,6 +166,7 @@ public final class BlocksTFC
 
     public static boolean isSoil(IBlockState current)
     {
+        if (current.getBlock() instanceof BlockPeat) return true;
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
         BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == GRASS || type == DRY_GRASS || type == DIRT || type == CLAY || type == CLAY_GRASS;
@@ -173,6 +174,7 @@ public final class BlocksTFC
 
     public static boolean isSoilOrGravel(IBlockState current)
     {
+        if (current.getBlock() instanceof BlockPeat) return true;
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
         BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == GRASS || type == DRY_GRASS || type == DIRT || type == GRAVEL;
