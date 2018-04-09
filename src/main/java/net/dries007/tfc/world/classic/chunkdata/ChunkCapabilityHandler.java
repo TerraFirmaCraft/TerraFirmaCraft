@@ -1,4 +1,4 @@
-package net.dries007.tfc.world.classic.capabilities;
+package net.dries007.tfc.world.classic.chunkdata;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.minecraft.nbt.NBTTagCompound;

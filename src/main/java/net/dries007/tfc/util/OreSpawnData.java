@@ -79,8 +79,8 @@ public final class OreSpawnData
     public final ImmutableList<Rock> baseRocks;
     public final int minY;
     public final int maxY;
-    public final int densityVertical;
-    public final int densityHorizontal;
+    public final float densityVertical;
+    public final float densityHorizontal;
 
     private OreSpawnData(Ore ore, SpawnType type, SpawnSize size, int rarity, Category[] baseRocksCategories, int minY, int maxY, int densityVertical, int densityHorizontal)
     {
@@ -120,8 +120,8 @@ public final class OreSpawnData
 
         this.minY = minY;
         this.maxY = maxY;
-        this.densityVertical = densityVertical;
-        this.densityHorizontal = densityHorizontal;
+        this.densityVertical = densityVertical * 0.01f;
+        this.densityHorizontal = densityHorizontal * 0.01f;
     }
 
     public enum SpawnType
@@ -132,5 +132,21 @@ public final class OreSpawnData
     public enum SpawnSize
     {
         SMALL, MEDIUM, LARGE
+    }
+
+    @Override
+    public String toString()
+    {
+        return "OreSpawnData{" +
+                "ore=" + ore +
+                ", type=" + type +
+                ", size=" + size +
+                ", rarity=" + rarity +
+                ", baseRocks=" + baseRocks +
+                ", minY=" + minY +
+                ", maxY=" + maxY +
+                ", densityVertical=" + densityVertical +
+                ", densityHorizontal=" + densityHorizontal +
+                '}';
     }
 }

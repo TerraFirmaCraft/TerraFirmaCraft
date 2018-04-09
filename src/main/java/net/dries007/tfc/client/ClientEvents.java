@@ -6,8 +6,8 @@ import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
-import net.dries007.tfc.world.classic.capabilities.ChunkDataProvider;
-import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiCreateWorld;
 import net.minecraft.util.math.BlockPos;
@@ -85,6 +85,12 @@ public class ClientEvents
                     list.add(GRAY + "Drainage: " + WHITE + data.getDrainageLayer(x, z).name);
                     list.add(GRAY + "Sea level offset: " + WHITE + data.getSeaLevelOffset(x, z));
                     list.add(GRAY + "Fish population: " + WHITE + data.getFishPopulation());
+
+                    list.add("");
+                    list.add(GRAY + "Rock at feet: " + WHITE + data.getRockHeight(x, blockpos.getY(), z));
+
+                    list.add("");
+                    data.getOresSpawned().stream().map(String::valueOf).forEach(list::add);
                 }
             }
         }

@@ -6,7 +6,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.CollapseData;
 import net.dries007.tfc.util.CollapseList;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
-import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;

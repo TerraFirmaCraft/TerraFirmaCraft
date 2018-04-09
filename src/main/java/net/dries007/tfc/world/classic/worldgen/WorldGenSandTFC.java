@@ -2,7 +2,7 @@ package net.dries007.tfc.world.classic.worldgen;
 
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

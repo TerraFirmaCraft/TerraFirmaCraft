@@ -1,18 +1,21 @@
-package net.dries007.tfc.world.classic.capabilities;
+package net.dries007.tfc.world.classic.chunkdata;
 
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.BlockTFCOre;
+import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.DataLayer;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagByteArray;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.*;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER2;
@@ -34,6 +37,9 @@ public final class ChunkDataTFC
     private final DataLayer[] drainageLayer = new DataLayer[256];
     private final DataLayer[] stabilityLayer = new DataLayer[256];
     private final int[] seaLevelOffset = new int[256];
+
+    private final List<ChunkDataOreSpawned> oresSpawned = new ArrayList<>();
+    private final List<ChunkDataOreSpawned> oresSpawnedView = Collections.unmodifiableList(oresSpawned);
 
     private int fishPopulation = FISH_POP_MAX; // todo: Set this based on biome? temp? rng?
 
@@ -67,6 +73,7 @@ public final class ChunkDataTFC
     public static BlockRockVariant getRockHeight(World world, BlockPos pos) { return get(world, pos).getRockLayerHeight(pos.getX() & 15, pos.getY(), pos.getZ() & 15); }
 
     /**
+     * INTERNAL USE ONLY.
      * No need to mark as dirty, since this will only ever be called on worldgen, before the first chunk save.
      */
     public void setGenerationData(DataLayer[] rockLayer1, DataLayer[] rockLayer2, DataLayer[] rockLayer3, DataLayer[] evtLayer, DataLayer[] rainfallLayer, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset)
@@ -82,6 +89,14 @@ public final class ChunkDataTFC
         System.arraycopy(seaLevelOffset, 0, this.seaLevelOffset, 0, 256);
     }
 
+    /**
+     * INTERNAL USE ONLY.
+     */
+    public void addSpawnedOre(BlockTFCOre.Ore ore, OreSpawnData.SpawnSize size, BlockTFCOre.Grade grade, BlockPos pos, int count)
+    {
+        oresSpawned.add(new ChunkDataOreSpawned(ore, size, grade, pos, count));
+    }
+
     public boolean isInitialized()
     {
         return initialized;
@@ -94,19 +109,20 @@ public final class ChunkDataTFC
     public float getRainfall(int x, int z) { return getRainfallLayer(x, z).valueFloat; }
     public boolean isStable(int x, int z) { return getStabilityLayer(x, z).valueInt == 0; }
     public int getDrainage(int x, int z) { return getDrainageLayer(x, z).valueInt; }
+    public BlockRockVariant getRockHeight(int x, int y, int z) { return this.getRockLayerHeight(x & 15, y, z & 15); }
 
     public int getSeaLevelOffset(int x, int z) { return seaLevelOffset[z << 4 | x]; }
 
     public int getFishPopulation() { return fishPopulation; }
+    public List<ChunkDataOreSpawned> getOresSpawned() { return oresSpawnedView; }
 
     private BlockRockVariant getRockLayerHeight(int x, int y, int z)
     {
         int offset = getSeaLevelOffset(x, z);
         if (y <= ROCKLAYER3 + offset) return getRock3(x, z);
-        if (y <= ROCKLAYER2 + offset) return getRock3(x, z);
+        if (y <= ROCKLAYER2 + offset) return getRock2(x, z);
         return getRock1(x, z);
     }
-
 
     // Directly accessing the DataLayer is discouraged (except for getting the name). It's easy to use the wrong value.
     public DataLayer getRockLayer1(int x, int z) {      return rockLayer1   [z << 4 | x]; }
@@ -148,6 +164,11 @@ public final class ChunkDataTFC
 
             root.setTag("seaLevelOffset", new NBTTagIntArray(instance.seaLevelOffset));
             root.setInteger("fishPopulation", instance.fishPopulation);
+
+            NBTTagList chunkDataOreSpawnedNBT = new NBTTagList();
+            instance.oresSpawned.stream().map(ChunkDataOreSpawned::serialize).forEach(chunkDataOreSpawnedNBT::appendTag);
+            root.setTag("oresSpawned", chunkDataOreSpawnedNBT);
+
             return root;
         }
 
@@ -165,6 +186,9 @@ public final class ChunkDataTFC
 
             System.arraycopy(root.getIntArray("seaLevelOffset"), 0, instance.seaLevelOffset, 0, 256);
             instance.fishPopulation = root.getInteger("fishPopulation");
+
+            instance.oresSpawned.clear();
+            root.getTagList("oresSpawned", Constants.NBT.TAG_COMPOUND).forEach(x -> instance.oresSpawned.add(new ChunkDataOreSpawned(((NBTTagCompound) x))));
 
             instance.initialized = true;
         }

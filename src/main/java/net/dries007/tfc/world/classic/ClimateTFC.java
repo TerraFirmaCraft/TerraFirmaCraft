@@ -1,6 +1,6 @@
 package net.dries007.tfc.world.classic;
 
-import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -37,26 +37,33 @@ public final class ClimateTFC
 
     public static float getTemp(World world, BlockPos pos)
     {
-        return getTemp(world, pos, CalenderTFC.getTotalDays(), CalenderTFC.getTotalHours(), false);
+        ChunkDataTFC data = ChunkDataTFC.get(world, pos);
+        if (data == null || !data.isInitialized()) return Float.NaN;
+        return getTemp(world.getSeed(), pos.getZ(), CalenderTFC.getTotalDays(), CalenderTFC.getTotalHours(), false, data.getRainfall(pos.getX() & 15, pos.getZ() & 15));
     }
 
     public static float getBioTemperatureHeight(World world, BlockPos pos)
     {
+        ChunkDataTFC data = ChunkDataTFC.get(world, pos);
+        if (data == null || !data.isInitialized()) return Float.NaN;
+        float rain = data.getRainfall(pos.getX() & 15, pos.getZ() & 15);
         float temp = 0;
         for (int i = 0; i < 12; i++)
-        {
-            float t = adjustHeightToTemp(pos.getY(), getTemp(world, pos, i * CalenderTFC.getDaysInMonth(), 0, true));
-            temp += t;
-        }
+            temp += adjustHeightToTemp(pos.getY(), getTemp(world.getSeed(), pos.getZ(), i * CalenderTFC.getDaysInMonth(), 0, true, rain));
         return temp / 12;
     }
 
-    private static float getTemp(World world, BlockPos pos, long day, long hour, boolean bio)
+    // only for worldgen use
+    static float getBioTemperature(long seed, int z, float rain)
     {
-//        int x = pos.getX();
-//        int y = pos.getY();
-        int z = pos.getZ();
+        float temp = 0;
+        for(int i = 0; i < 24; i++)
+            temp += getTemp(seed, z, i * CalenderTFC.getDaysInMonth() / 2, 0, true, rain);
+        return temp / 24;
+    }
 
+    private static float getTemp(long seed, int z, long day, long hour, boolean bio, float rain)
+    {
         if (z < 0) z = -z;
         if (z > MAX_Z) z = MAX_Z;
 
@@ -73,11 +80,11 @@ public final class ClimateTFC
             if (h < 12) hourMod = ((float)h / 11) * 0.3F;
             else hourMod = 0.3F - ((((float)h-12) / 11) * 0.3F);
 
-            rng.setSeed(world.getSeed() + day);
+            rng.setSeed(seed + day);
             dailyTemp = (rng.nextInt(200)-100) / 20F;
         }
 
-        final float rainMod = (1f - (ChunkDataTFC.getRainfall(world, pos) / 4000f))*zMod;
+        final float rainMod = (1f - (rain / 4000f))*zMod;
 
         final float monthTemp = MONTH_TEMP_CACHE[CalenderTFC.getSeasonFromDayOfYear(day, z > 0)][z];
         final float lastMonthTemp = MONTH_TEMP_CACHE[CalenderTFC.getSeasonFromDayOfYear(day - CalenderTFC.getDaysInMonth(), z > 0)][z];

@@ -1,4 +1,4 @@
-package net.dries007.tfc.world.classic.capabilities;
+package net.dries007.tfc.world.classic.chunkdata;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;

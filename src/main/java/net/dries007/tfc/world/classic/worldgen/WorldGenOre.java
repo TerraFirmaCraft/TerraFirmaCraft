@@ -1,12 +1,11 @@
 package net.dries007.tfc.world.classic.worldgen;
 
 import com.google.common.collect.ImmutableList;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.BlockTFCOre;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
-import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -23,8 +22,8 @@ public class WorldGenOre implements IWorldGenerator
     public void generate(Random rng, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
         if (!(chunkGenerator instanceof ChunkGenTFC)) return;
-        final BlockPos start = new BlockPos(chunkX << 4, 0, chunkZ << 4);
-        ChunkDataTFC chunkData = ChunkDataTFC.get(world, start);
+        final BlockPos chunkBlockPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
+        ChunkDataTFC chunkData = ChunkDataTFC.get(world, chunkBlockPos);
         if (!chunkData.isInitialized()) return;
 
         for (OreSpawnData spawnData : OreSpawnData.ORE_SPAWN_DATA)
@@ -35,6 +34,7 @@ public class WorldGenOre implements IWorldGenerator
             int diameter;
             switch (spawnData.size)
             {
+                //todo: these numbers really need tweaking
                 case SMALL:
                     veinSize = 20;
                     veinAmount = 30;
@@ -62,43 +62,38 @@ public class WorldGenOre implements IWorldGenerator
                     !spawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock))
                 continue;
 
-            int gradeInt = rng.nextInt(100);
-            BlockTFCOre.Grade grade;
-            if (gradeInt < 20)
-                grade = BlockTFCOre.Grade.RICH;
-            else if (gradeInt < 50)
-                grade = BlockTFCOre.Grade.POOR;
-            else
-                grade = BlockTFCOre.Grade.NORMAL;
+            BlockTFCOre.Grade grade = BlockTFCOre.Grade.NORMAL;
+            if (spawnData.ore.graded)
+            {
+                int gradeInt = rng.nextInt(100);
+                if (gradeInt < 20) grade = BlockTFCOre.Grade.RICH;
+                else if (gradeInt < 50) grade = BlockTFCOre.Grade.POOR;
+            }
 
             if (rng.nextInt(spawnData.rarity) != 0) continue;
-            final int mineHeight = spawnData.minY + rng.nextInt(spawnData.maxY - spawnData.minY);
-
+            final BlockPos start = chunkBlockPos.add(0, spawnData.minY + rng.nextInt(spawnData.maxY - spawnData.minY), 0);
             int blocksSpawned = 0;
-
+            float avgDensity = (spawnData.densityHorizontal + spawnData.densityVertical) / 2f;
             for (int i = 0; i < veinAmount; i++)
             {
-                final BlockPos pos = start.add(mPCalculateDensity(rng, diameter, spawnData.densityHorizontal), mineHeight + mPCalculateDensity(rng, height, spawnData.densityVertical), mPCalculateDensity(rng, diameter, spawnData.densityHorizontal));
+                final BlockPos pos = start.add((1f-spawnData.densityHorizontal) * (rng.nextInt(diameter) - diameter/2), (1f-spawnData.densityVertical) * (rng.nextInt(height) - height/2), (1f-spawnData.densityHorizontal) * (rng.nextInt(diameter) - diameter/2));
+//                final BlockPos pos = start.add(calculateDensity(rng, diameter, spawnData.densityHorizontal), calculateDensity(rng, height, spawnData.densityVertical), calculateDensity(rng, diameter, spawnData.densityHorizontal));
+                // todo: use density
                 switch (spawnData.type)
                 {
                     case DEFAULT:
-                        blocksSpawned += generateDefault(spawnData.ore, grade, world, rng, pos, veinSize, chunkData, spawnData.baseRocks);
+                        blocksSpawned += generateDefault(spawnData.ore, grade, world, rng, pos, veinSize, chunkData, spawnData.baseRocks, avgDensity);
                         break;
                     case VEINS:
                         blocksSpawned += generateVein(spawnData.ore, grade, world, rng, pos, veinSize, chunkData, spawnData.baseRocks);
                         break;
                 }
             }
-
-            if (blocksSpawned != 0)
-            {
-                TerraFirmaCraft.getLog().debug("[OreGen] {} blocks of grade {} {} ore", blocksSpawned, grade, spawnData.ore);
-                // todo: save this info in chunkdata? I think it might be usefull to have when doing surface gen/prospecting/sieving?
-            }
+            if (blocksSpawned != 0) chunkData.addSpawnedOre(spawnData.ore, spawnData.size, grade, start, blocksSpawned);
         }
     }
 
-    private int generateDefault(BlockTFCOre.Ore ore, BlockTFCOre.Grade grade, World world, Random rng, BlockPos start, int size, ChunkDataTFC chunkData, ImmutableList<BlockRockVariant.Rock> baseRocks)
+    private int generateDefault(BlockTFCOre.Ore ore, BlockTFCOre.Grade grade, World world, Random rng, BlockPos start, int size, ChunkDataTFC chunkData, ImmutableList<BlockRockVariant.Rock> baseRocks, float density)
     {
         int blocksSpawned = 0;
         final float angle = rng.nextFloat() * (float) Math.PI;
@@ -138,6 +133,8 @@ public class WorldGenOre implements IWorldGenerator
                         double rz = (posZ + 0.5D - centerZ) / (radius / 2.0D);
                         if (rx * rx + ry * ry + rz * rz >= 1.0D) continue;
 
+                        if (density < rng.nextFloat()) continue;
+
                         final BlockPos pos = new BlockPos(posX, posY + chunkData.getSeaLevelOffset(posX & 15, posZ & 15), posZ);
                         final IBlockState current = world.getBlockState(pos);
 
@@ -147,7 +144,7 @@ public class WorldGenOre implements IWorldGenerator
 
                         if (currentBlock.type != BlockRockVariant.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
 
-                        world.setBlockState(pos, BlockTFCOre.get(currentBlock.rock, ore, grade));
+                        world.setBlockState(pos, BlockTFCOre.get(currentBlock.rock, ore, grade), 2);
                         blocksSpawned ++;
                     }
                 }
@@ -258,7 +255,7 @@ public class WorldGenOre implements IWorldGenerator
 
                         if (currentBlock.type != BlockRockVariant.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
 
-                        world.setBlockState(pos, BlockTFCOre.get(currentBlock.rock, ore, grade));
+                        world.setBlockState(pos, BlockTFCOre.get(currentBlock.rock, ore, grade), 2);
 
                         blocksSpawned ++;
                     }
@@ -276,7 +273,7 @@ public class WorldGenOre implements IWorldGenerator
 
                 if (currentBlock.type != BlockRockVariant.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
 
-                world.setBlockState(pos, BlockTFCOre.get(currentBlock.rock, ore, grade));
+                world.setBlockState(pos, BlockTFCOre.get(currentBlock.rock, ore, grade), 2);
 
                 blocksSpawned ++;
             }
@@ -285,24 +282,5 @@ public class WorldGenOre implements IWorldGenerator
         }
 
         return blocksSpawned;
-    }
-
-    private int mPCalculateDensity(Random rand, int oreDistance, float oreDensity) // returns the density value
-    {
-        int loopCount;
-        int densityValuePassInner;
-        int densityValuePass;
-        oreDensity = oreDensity * .01F;
-        oreDensity = oreDensity * (oreDistance >> 1) + 1F;// establishes number of times to loop
-        loopCount = (int) (oreDensity); //stores number of times to loop
-        densityValuePassInner = oreDistance / loopCount; // distance devided by number of times it will loop, establishes the number for randomization
-        densityValuePassInner += (oreDistance - (densityValuePassInner * loopCount)) / loopCount;
-        densityValuePass = 0;
-        while (loopCount > 0) // loops to acumulate random values
-        {
-            densityValuePass = densityValuePass + rand.nextInt(densityValuePassInner); // acumulate randoms
-            loopCount = loopCount - 1; // decriment loop
-        }
-        return densityValuePass; // return proccesed random value
     }
 }

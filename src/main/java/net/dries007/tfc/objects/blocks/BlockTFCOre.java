@@ -32,9 +32,10 @@ public class BlockTFCOre extends Block
     {
         super(BlockRockVariant.Type.RAW.material);
         this.ore = ore;
+        this.rock = rock;
         if (rock == BlockRockVariant.Rock.GRANITE)
             ore.ref = this;
-        this.rock = rock;
+        this.setDefaultState(blockState.getBaseState().withProperty(GRADE, Grade.NORMAL));
     }
 
     @SuppressWarnings("deprecation")
@@ -78,9 +79,9 @@ public class BlockTFCOre extends Block
 
     public static IBlockState get(BlockRockVariant.Rock rock, Ore ore, Grade grade)
     {
-        BlockTFCOre block = ore.ref.getForRock(rock);
-        if (!ore.graded) return block.getDefaultState();
-        return block.getDefaultState().withProperty(GRADE, grade);
+        IBlockState state = ore.ref.getForRock(rock).getDefaultState();
+        if (!ore.graded) return state;
+        return state.withProperty(GRADE, grade);
     }
 
     public BlockTFCOre getForRock(BlockRockVariant.Rock r)
@@ -164,7 +165,6 @@ public class BlockTFCOre extends Block
 
         Ore(boolean graded)
         {
-
             this.graded = graded;
         }
     }

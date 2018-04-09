@@ -1,7 +1,7 @@
 package net.dries007.tfc.world.classic.worldgen;
 
 import net.dries007.tfc.world.classic.ChunkGenTFC;
-import net.dries007.tfc.world.classic.capabilities.ChunkDataTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
