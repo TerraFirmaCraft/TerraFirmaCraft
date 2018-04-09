@@ -3,6 +3,8 @@ package net.dries007.tfc.world.classic.worldgen;
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
@@ -32,7 +34,7 @@ public class WorldGenSoilPits implements IWorldGenerator
         {
             if (random.nextInt(5) == 0)
             {
-//                if (!cloudberryGen.generate(world, random, pos))
+//                if (!cloudberryGen.generate(world, random, pos)) //todo add berry gen
 //                    cranberryGen.generate(world, random, pos);
             }
         }
@@ -42,7 +44,7 @@ public class WorldGenSoilPits implements IWorldGenerator
     {
         int radius = rng.nextInt(14) + 2;
         int depth = rng.nextInt(3) + 1;
-        if (rng.nextInt(30) != 0 || start.getY() > 150) return;
+        if (rng.nextInt(30) != 0 || start.getY() > WorldTypeTFC.SEALEVEL + 6) return;
 
         for (int x = -radius; x <= radius; x++)
         {
@@ -78,9 +80,39 @@ public class WorldGenSoilPits implements IWorldGenerator
         }
     }
 
-    private boolean generatePeat(World world, Random rng, BlockPos pos)
+    private boolean generatePeat(World world, Random rng, BlockPos start)
     {
-        //todo: marker
-        return false;
+        int radius = rng.nextInt(16) + 8;
+        byte depth = 2;
+        boolean flag = false;
+
+        if (rng.nextInt(30) != 0 || start.getY() > WorldTypeTFC.SEALEVEL) return false;
+
+        for (int x = -radius; x <= radius; ++x)
+        {
+            for (int z = -radius; z <= radius; ++z)
+            {
+                if (x * x + z * z > radius * radius) continue;
+
+                for (int y = -depth; y <= depth; ++y)
+                {
+                    final BlockPos pos = start.add(x, y, z);
+                    if (!ClimateTFC.isSwamp(world, pos)) continue;
+                    final IBlockState current = world.getBlockState(pos);
+
+                    if (BlocksTFC.isGrass(current))
+                    {
+                        world.setBlockState(pos, BlocksTFC.PEAT_GRASS.getDefaultState(), 2);
+                        flag = true;
+                    }
+                    else if (BlocksTFC.isDirt(current) || BlocksTFC.isClay(current))
+                    {
+                        world.setBlockState(pos, BlocksTFC.PEAT.getDefaultState(), 2);
+                        flag = true;
+                    }
+                }
+            }
+        }
+        return flag;
     }
 }

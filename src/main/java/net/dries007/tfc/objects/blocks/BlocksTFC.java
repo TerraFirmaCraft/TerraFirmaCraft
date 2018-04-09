@@ -35,6 +35,9 @@ public final class BlocksTFC
     public static final BlockFluidBase FINITE_FRESH_WATER = null;
     public static final BlockFluidBase FINITE_HOT_WATER = null;
 
+    public static final BlockPeat PEAT = null;
+    public static final BlockPeat PEAT_GRASS = null;
+
     private static ImmutableList<BlockFluidBase> allFluidBlocks;
     private static ImmutableList<BlockRockVariant> allBlockRockVariants;
     private static ImmutableList<BlockTFCOre> allOreBlocks;
@@ -58,6 +61,9 @@ public final class BlocksTFC
         IForgeRegistry<Block> r = event.getRegistry();
 
         register(r, "debug", new BlockDebug(), CreativeTabsTFC.CT_MISC);
+
+        register(r, "peat", new BlockPeat(Material.GROUND), CreativeTabsTFC.CT_MISC);
+        register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CreativeTabsTFC.CT_MISC);
 
         {
             TerraFirmaCraft.getLog().info("The 3 warnings ('A mod has attempted to assign Block...') below this line are normal.");
@@ -96,8 +102,7 @@ public final class BlocksTFC
 
     private static void registerSoil(ImmutableList.Builder<BlockRockVariant> b, IForgeRegistry<Block> r, BlockRockVariant.Type type, BlockRockVariant.Rock rock)
     {
-        BlockRockVariant block = type.isColorIndexed ? new BlockRockVariantConnected(type, rock) : new BlockRockVariant(type, rock);
-        block.setResistance(0).setHardness(0); //todo: remove
+        BlockRockVariant block = type.isGrass ? new BlockRockVariantConnected(type, rock) : new BlockRockVariant(type, rock);
         b.add(block);
         register(r, (type.name() + "_" +  rock.name()).toLowerCase(), block, CreativeTabsTFC.CT_ROCK_SOIL);
     }
@@ -105,7 +110,6 @@ public final class BlocksTFC
     private static void registerOre(ImmutableList.Builder<BlockTFCOre> b, IForgeRegistry<Block> r, BlockTFCOre.Ore ore, BlockRockVariant.Rock rock)
     {
         BlockTFCOre block = new BlockTFCOre(ore, rock);
-        block.setResistance(0).setHardness(0); //todo: remove
         b.add(block);
         register(r, (ore.name() + "_" +  rock.name()).toLowerCase(), block, CreativeTabsTFC.CT_ORES);
     }
@@ -113,6 +117,7 @@ public final class BlocksTFC
     private static void register(IForgeRegistry<Block> r, String name, Block block, CreativeTabs ct)
     {
         block.setCreativeTab(ct);
+        block.setResistance(0).setHardness(0); // todo: remove
         register(r, name, block);
     }
 
@@ -120,7 +125,6 @@ public final class BlocksTFC
     {
         block.setRegistryName(MOD_ID, name);
         block.setUnlocalizedName(MOD_ID + "." + name.replace('_', '.'));
-
         r.register(block);
     }
 
@@ -176,9 +180,10 @@ public final class BlocksTFC
 
     public static boolean isGrass(IBlockState current)
     {
+        if (current.getBlock() instanceof BlockPeatGrass) return true;
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
         BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
-        return type == GRASS || type == DRY_GRASS;
+        return type.isGrass;
     }
 
     public static boolean isGround(IBlockState current)

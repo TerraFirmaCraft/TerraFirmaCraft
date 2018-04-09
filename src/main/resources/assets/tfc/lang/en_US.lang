@@ -54,6 +54,8 @@ fluid.hot_water=Hot water
 
 # Blocks
 tile.tfc.debug.name=TFC Debug Block
+tile.tfc.peat.name=Peat
+tile.tfc.peat.grass.name=Peat Grass
 
 ## Stone types & variaties
 tile.tfc.raw.granite.name=Raw Granite

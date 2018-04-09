@@ -8,7 +8,5 @@ public class BlockDebug extends Block
     public BlockDebug()
     {
         super(Material.SPONGE);
-        setHardness(0);
-        setResistance(0);
     }
 }

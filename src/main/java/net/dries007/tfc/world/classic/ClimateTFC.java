@@ -195,4 +195,12 @@ public final class ClimateTFC
             }
         }
     }
+
+    public static boolean isSwamp(World world, BlockPos pos)
+    {
+        ChunkDataTFC data = ChunkDataTFC.get(world, pos);
+        return data.getRainfall(pos.getX() & 15, pos.getZ() & 15) >= 1000 &&
+                data.getEvt(pos.getX() & 15, pos.getZ() & 15) <= 0.25 &&
+                world.getBiome(pos).getHeightVariation() < 0.15;
+    }
 }

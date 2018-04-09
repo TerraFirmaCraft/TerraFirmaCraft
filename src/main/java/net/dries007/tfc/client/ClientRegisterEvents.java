@@ -36,6 +36,8 @@ public final class ClientRegisterEvents
         ModelLoader.setCustomModelResourceLocation(ItemsTFC.WAND, 0, new ModelResourceLocation(ItemsTFC.WAND.getRegistryName().toString()));
 
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(BlocksTFC.DEBUG), 0, new ModelResourceLocation(BlocksTFC.DEBUG.getRegistryName(), "normal"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(BlocksTFC.PEAT), 0, new ModelResourceLocation(BlocksTFC.PEAT.getRegistryName(), "normal"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(BlocksTFC.PEAT_GRASS), 0, new ModelResourceLocation(BlocksTFC.PEAT_GRASS.getRegistryName(), "normal"));
 
         for (Block block : BlocksTFC.getAllFluidBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());
@@ -57,7 +59,11 @@ public final class ClientRegisterEvents
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
                         worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D),
-                BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isColorIndexed).toArray(BlockRockVariant[]::new));
+                BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isGrass).toArray(BlockRockVariant[]::new));
+
+        blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
+                        worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D),
+                BlocksTFC.PEAT_GRASS);
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
                         worldIn != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(worldIn, pos) : 0,
@@ -72,6 +78,10 @@ public final class ClientRegisterEvents
 
         itemColors.registerItemColorHandler((stack, tintIndex) ->
                         event.getBlockColors().colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
-                BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isColorIndexed).toArray(BlockRockVariant[]::new));
+                BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isGrass).toArray(BlockRockVariant[]::new));
+
+        itemColors.registerItemColorHandler((stack, tintIndex) ->
+                        event.getBlockColors().colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
+                BlocksTFC.PEAT_GRASS);
     }
 }

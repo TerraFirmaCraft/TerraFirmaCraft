@@ -29,6 +29,8 @@ public final class ItemsTFC
         register(r, "wand", new ItemDebug());
 
         register_item_block(r, BlocksTFC.DEBUG);
+        register_item_block(r, BlocksTFC.PEAT);
+        register_item_block(r, BlocksTFC.PEAT_GRASS);
 
         BlocksTFC.getAllBlockRockVariants().forEach(x -> register_item_block(r, x));
         BlocksTFC.getAllOreBlocks().forEach(x -> register_item_block(r, x));
