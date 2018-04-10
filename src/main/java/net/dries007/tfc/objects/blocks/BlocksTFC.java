@@ -1,8 +1,8 @@
 package net.dries007.tfc.objects.blocks;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.objects.CreativeTabsTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.objects.CreativeTabsTFC.*;
 import static net.dries007.tfc.objects.blocks.BlockRockVariant.Type.*;
 
 @SuppressWarnings("unused")
@@ -24,8 +25,6 @@ import static net.dries007.tfc.objects.blocks.BlockRockVariant.Type.*;
 @GameRegistry.ObjectHolder(MOD_ID)
 public final class BlocksTFC
 {
-
-
     private BlocksTFC() {}
 
     public static final BlockDebug DEBUG = null;
@@ -40,13 +39,26 @@ public final class BlocksTFC
     public static final BlockPeat PEAT = null;
     public static final BlockPeat PEAT_GRASS = null;
 
+    private static ImmutableList<Block> allNormalItemBlocks;
+    private static ImmutableList<Block> allInventoryItemBlocks;
     private static ImmutableList<BlockFluidBase> allFluidBlocks;
     private static ImmutableList<BlockRockVariant> allBlockRockVariants;
     private static ImmutableList<BlockLogTFC> allLogBlocks;
     private static ImmutableList<BlockLeavesTFC> allLeafBlocks;
     private static ImmutableList<BlockPlanksTFC> allPlankBlocks;
-    private static ImmutableList<BlockTFCOre> allOreBlocks;
+    private static ImmutableList<BlockOreTFC> allOreBlocks;
+    private static ImmutableList<BlockFenceTFC> allFenceBlocks;
+    private static ImmutableList<BlockFenceGateTFC> allFenceGateBlocks;
+    private static ImmutableList<BlockWallTFC> allWallBlocks;
 
+    public static ImmutableList<Block> getAllNormalItemBlocks()
+    {
+        return allNormalItemBlocks;
+    }
+    public static ImmutableList<Block> getAllInventoryItemBlocks()
+    {
+        return allInventoryItemBlocks;
+    }
     public static ImmutableList<BlockFluidBase> getAllFluidBlocks()
     {
         return allFluidBlocks;
@@ -55,12 +67,33 @@ public final class BlocksTFC
     {
         return allBlockRockVariants;
     }
-    public static ImmutableList<BlockLogTFC> getAllLogBlocks() { return allLogBlocks; }
-    public static ImmutableList<BlockLeavesTFC> getAllLeafBlocks() { return allLeafBlocks; }
-    public static ImmutableList<BlockPlanksTFC> getAllPlankBlocks() { return allPlankBlocks; }
-    public static ImmutableList<BlockTFCOre> getAllOreBlocks()
+    public static ImmutableList<BlockLeavesTFC> getAllLeafBlocks()
+    {
+        return allLeafBlocks;
+    }
+    public static ImmutableList<BlockOreTFC> getAllOreBlocks()
     {
         return allOreBlocks;
+    }
+    public static ImmutableList<BlockLogTFC> getAllLogBlocks()
+    {
+        return allLogBlocks;
+    }
+    public static ImmutableList<BlockPlanksTFC> getAllPlankBlocks()
+    {
+        return allPlankBlocks;
+    }
+    public static ImmutableList<BlockFenceTFC> getAllFenceBlocks()
+    {
+        return allFenceBlocks;
+    }
+    public static ImmutableList<BlockFenceGateTFC> getAllFenceGateBlocks()
+    {
+        return allFenceGateBlocks;
+    }
+    public static ImmutableList<BlockWallTFC> getAllWallBlocks()
+    {
+        return allWallBlocks;
     }
 
     @SubscribeEvent
@@ -68,48 +101,80 @@ public final class BlocksTFC
     {
         IForgeRegistry<Block> r = event.getRegistry();
 
-        register(r, "debug", new BlockDebug(), CreativeTabsTFC.CT_MISC);
+        Builder<Block> normalItemBlocks = ImmutableList.builder();
+        Builder<Block> inventoryItemBlocks = ImmutableList.builder();
 
-        register(r, "peat", new BlockPeat(Material.GROUND), CreativeTabsTFC.CT_MISC);
-        register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CreativeTabsTFC.CT_MISC);
+        normalItemBlocks.add(register(r, "debug", new BlockDebug(), CT_MISC));
+
+        normalItemBlocks.add(register(r, "peat", new BlockPeat(Material.GROUND), CT_ROCK_SOIL));
+        normalItemBlocks.add(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_SOIL));
 
         {
             TerraFirmaCraft.getLog().info("The 3 warnings ('A mod has attempted to assign Block...') below this line are normal.");
-            ImmutableList.Builder<BlockFluidBase> b = ImmutableList.builder();
+            Builder<BlockFluidBase> b = ImmutableList.builder();
             for (Fluid f : FluidsTFC.getAllFluids())
                 registerFluid(b, r, f, Material.WATER);
             allFluidBlocks = b.build();
         }
 
         {
-            ImmutableList.Builder<BlockRockVariant> b = ImmutableList.builder();
+            Builder<BlockRockVariant> b = ImmutableList.builder();
             for (BlockRockVariant.Type type : BlockRockVariant.Type.values())
                 for (BlockRockVariant.Rock rock : BlockRockVariant.Rock.values())
-                    registerSoil(b, r, type, rock);
+                    b.add(register(r, (type.name() + "_" +  rock.name()).toLowerCase(), type.isGrass ? new BlockRockVariantConnected(type, rock) : new BlockRockVariant(type, rock), CT_ROCK_SOIL));
             allBlockRockVariants = b.build();
+            normalItemBlocks.addAll(allBlockRockVariants);
         }
 
         {
-            ImmutableList.Builder<BlockLogTFC> b1 = ImmutableList.builder();
-            ImmutableList.Builder<BlockLeavesTFC> b2 = ImmutableList.builder();
-            ImmutableList.Builder<BlockPlanksTFC> b3 = ImmutableList.builder();
+            Builder<BlockOreTFC> b = ImmutableList.builder();
+            for (BlockOreTFC.Ore ore : BlockOreTFC.Ore.values())
+                for (BlockRockVariant.Rock rock : BlockRockVariant.Rock.values())
+                    b.add(register(r, (ore.name() + "_" +  rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ORES));
+            allOreBlocks = b.build();
+            normalItemBlocks.addAll(allOreBlocks);
+        }
+
+        {
+            Builder<BlockWallTFC> b = ImmutableList.builder();
+            for (BlockRockVariant.Type type : new BlockRockVariant.Type[]{BlockRockVariant.Type.COBBLE, BlockRockVariant.Type.BRICK})
+                for (BlockRockVariant.Rock rock : BlockRockVariant.Rock.values())
+                    b.add(register(r, ("wall_" + type.name() + "_" + rock.name()).toLowerCase(), new BlockWallTFC(BlockRockVariant.get(rock, type)), CT_DECORATIONS));
+            allWallBlocks = b.build();
+            inventoryItemBlocks.addAll(allWallBlocks);
+        }
+
+        {
+            Builder<BlockLogTFC> b1 = ImmutableList.builder();
+            Builder<BlockLeavesTFC> b2 = ImmutableList.builder();
+            Builder<BlockPlanksTFC> b3 = ImmutableList.builder();
+            Builder<BlockFenceTFC> b4 = ImmutableList.builder();
+            Builder<BlockFenceGateTFC> b5 = ImmutableList.builder();
             for (BlockLogTFC.Wood wood : BlockLogTFC.Wood.values())
-                registerWood(b1, b2, b3, r, wood);
+            {
+                b1.add(register(r, "log_" + wood.name().toLowerCase(), new BlockLogTFC(wood), CT_WOOD));
+                b2.add(register(r, "leaves_" + wood.name().toLowerCase(), new BlockLeavesTFC(wood), CT_WOOD));
+                b3.add(register(r, "planks_" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CT_WOOD));
+                b4.add(register(r, "fence_" + wood.name().toLowerCase(), new BlockFenceTFC(wood), CT_WOOD));
+                b5.add(register(r, "fence_gate_" + wood.name().toLowerCase(), new BlockFenceGateTFC(wood), CT_WOOD));
+            }
             allLogBlocks = b1.build();
             allLeafBlocks = b2.build();
             allPlankBlocks = b3.build();
+            allFenceBlocks = b4.build();
+            allFenceGateBlocks = b5.build();
+            normalItemBlocks.addAll(allLogBlocks);
+            normalItemBlocks.addAll(allLeafBlocks);
+            normalItemBlocks.addAll(allPlankBlocks);
+            inventoryItemBlocks.addAll(allFenceBlocks);
+            inventoryItemBlocks.addAll(allFenceGateBlocks);
         }
 
-        {
-            ImmutableList.Builder<BlockTFCOre> b = ImmutableList.builder();
-            for (BlockTFCOre.Ore ore : BlockTFCOre.Ore.values())
-                for (BlockRockVariant.Rock rock : BlockRockVariant.Rock.values())
-                    registerOre(b, r, ore, rock);
-            allOreBlocks = b.build();
-        }
+        allNormalItemBlocks = normalItemBlocks.build();
+        allInventoryItemBlocks = inventoryItemBlocks.build();
     }
 
-    private static void registerFluid(ImmutableList.Builder<BlockFluidBase> b, IForgeRegistry<Block> r, Fluid fluid, Material material)
+    private static void registerFluid(Builder<BlockFluidBase> b, IForgeRegistry<Block> r, Fluid fluid, Material material)
     {
         BlockFluidBase block = new BlockFluidClassicTFC(fluid, material);
         register(r, fluid.getName(), block);
@@ -117,23 +182,6 @@ public final class BlocksTFC
         block = new BlockFluidFiniteTFC(fluid, material);
         register(r, "finite_" + fluid.getName(), block);
         b.add(block);
-    }
-
-    private static void registerSoil(ImmutableList.Builder<BlockRockVariant> b, IForgeRegistry<Block> r, BlockRockVariant.Type type, BlockRockVariant.Rock rock)
-    {
-        b.add(register(r, (type.name() + "_" +  rock.name()).toLowerCase(), type.isGrass ? new BlockRockVariantConnected(type, rock) : new BlockRockVariant(type, rock), CreativeTabsTFC.CT_ROCK_SOIL));
-    }
-
-    private static void registerWood(ImmutableList.Builder<BlockLogTFC> b1, ImmutableList.Builder<BlockLeavesTFC> b2, ImmutableList.Builder<BlockPlanksTFC> b3, IForgeRegistry<Block> r, BlockLogTFC.Wood wood)
-    {
-        b1.add(register(r, "log_" + wood.name().toLowerCase(), new BlockLogTFC(wood), CreativeTabsTFC.CT_WOOD));
-        b2.add(register(r, "leaves_" + wood.name().toLowerCase(), new BlockLeavesTFC(wood), CreativeTabsTFC.CT_WOOD));
-        b3.add(register(r, "planks_" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CreativeTabsTFC.CT_WOOD));
-    }
-
-    private static void registerOre(ImmutableList.Builder<BlockTFCOre> b, IForgeRegistry<Block> r, BlockTFCOre.Ore ore, BlockRockVariant.Rock rock)
-    {
-        b.add(register(r, (ore.name() + "_" +  rock.name()).toLowerCase(), new BlockTFCOre(ore, rock), CreativeTabsTFC.CT_ORES));
     }
 
     private static <T extends Block> T register(IForgeRegistry<Block> r, String name, T block, CreativeTabs ct)

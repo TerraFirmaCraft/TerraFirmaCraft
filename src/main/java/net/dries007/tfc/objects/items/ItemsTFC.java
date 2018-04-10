@@ -28,15 +28,8 @@ public final class ItemsTFC
 
         register(r, "wand", new ItemDebug());
 
-        register_item_block(r, BlocksTFC.DEBUG);
-        register_item_block(r, BlocksTFC.PEAT);
-        register_item_block(r, BlocksTFC.PEAT_GRASS);
-
-        BlocksTFC.getAllBlockRockVariants().forEach(x -> register_item_block(r, x));
-        BlocksTFC.getAllLogBlocks().forEach(x -> register_item_block(r, x));
-        BlocksTFC.getAllLeafBlocks().forEach(x -> register_item_block(r, x));
-        BlocksTFC.getAllPlankBlocks().forEach(x -> register_item_block(r, x));
-        BlocksTFC.getAllOreBlocks().forEach(x -> register_item_block(r, x));
+        BlocksTFC.getAllNormalItemBlocks().forEach(x -> register_item_block(r, x));
+        BlocksTFC.getAllInventoryItemBlocks().forEach(x -> register_item_block(r, x));
     }
 
     private static void register_item_block(IForgeRegistry<Item> r, Block block)

@@ -19,16 +19,16 @@ import java.util.Random;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
-public class BlockTFCOre extends Block
+public class BlockOreTFC extends Block
 {
     public static final PropertyEnum<Grade> GRADE = PropertyEnum.create("grade", Grade.class);
 
     public final Ore ore;
     public final BlockRockVariant.Rock rock;
 
-    private BlockTFCOre[] rocks;
+    private BlockOreTFC[] rocks;
 
-    public BlockTFCOre(Ore ore, BlockRockVariant.Rock rock)
+    public BlockOreTFC(Ore ore, BlockRockVariant.Rock rock)
     {
         super(BlockRockVariant.Type.RAW.material);
         this.ore = ore;
@@ -84,18 +84,18 @@ public class BlockTFCOre extends Block
         return state.withProperty(GRADE, grade);
     }
 
-    public BlockTFCOre getForRock(BlockRockVariant.Rock r)
+    public BlockOreTFC getForRock(BlockRockVariant.Rock r)
     {
         if (rock == r) return this;
         if (rocks == null)
         {
             BlockRockVariant.Rock[] types = BlockRockVariant.Rock.values();
-            rocks = new BlockTFCOre[types.length];
+            rocks = new BlockOreTFC[types.length];
             for (int i = 0; i < types.length; i++)
             {
                 //noinspection ConstantConditions
                 String name = getRegistryName().getResourcePath().replace(rock.name().toLowerCase(), types[i].name().toLowerCase());
-                rocks[i] = (BlockTFCOre) ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID, name));
+                rocks[i] = (BlockOreTFC) ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID, name));
             }
         }
         return rocks[r.ordinal()];
@@ -161,7 +161,7 @@ public class BlockTFCOre extends Block
         LAPIS_LAZULI(false);
 
         public final boolean graded;
-        private BlockTFCOre ref;
+        private BlockOreTFC ref;
 
         Ore(boolean graded)
         {

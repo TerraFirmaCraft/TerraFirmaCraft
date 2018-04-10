@@ -1,6 +1,6 @@
 package net.dries007.tfc.world.classic.chunkdata;
 
-import net.dries007.tfc.objects.blocks.BlockTFCOre;
+import net.dries007.tfc.objects.blocks.BlockOreTFC;
 import net.dries007.tfc.util.OreSpawnData;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
@@ -8,13 +8,13 @@ import net.minecraft.util.math.BlockPos;
 
 public class ChunkDataOreSpawned
 {
-    public final BlockTFCOre.Ore ore;
+    public final BlockOreTFC.Ore ore;
     public final OreSpawnData.SpawnSize size;
-    public final BlockTFCOre.Grade grade;
+    public final BlockOreTFC.Grade grade;
     public final BlockPos pos;
     public final int count;
 
-    public ChunkDataOreSpawned(BlockTFCOre.Ore ore, OreSpawnData.SpawnSize size, BlockTFCOre.Grade grade, BlockPos pos, int count)
+    public ChunkDataOreSpawned(BlockOreTFC.Ore ore, OreSpawnData.SpawnSize size, BlockOreTFC.Grade grade, BlockPos pos, int count)
     {
         this.ore = ore;
         this.size = size;
@@ -25,8 +25,8 @@ public class ChunkDataOreSpawned
 
     public ChunkDataOreSpawned(NBTTagCompound tag)
     {
-        ore = BlockTFCOre.Ore.valueOf(tag.getString("ore").toUpperCase());
-        grade = BlockTFCOre.Grade.valueOf(tag.getString("grade").toUpperCase());
+        ore = BlockOreTFC.Ore.valueOf(tag.getString("ore").toUpperCase());
+        grade = BlockOreTFC.Grade.valueOf(tag.getString("grade").toUpperCase());
         size = OreSpawnData.SpawnSize.valueOf(tag.getString("size").toUpperCase());
         pos = NBTUtil.getPosFromTag(tag.getCompoundTag("pos"));
         count = tag.getInteger("count");

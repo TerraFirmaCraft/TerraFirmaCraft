@@ -1,11 +1,13 @@
 package net.dries007.tfc.client;
 
+import net.dries007.tfc.objects.blocks.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
-import net.dries007.tfc.objects.blocks.BlockTFCOre;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -37,33 +39,26 @@ public final class ClientRegisterEvents
     {
         ModelLoader.setCustomModelResourceLocation(ItemsTFC.WAND, 0, new ModelResourceLocation(ItemsTFC.WAND.getRegistryName().toString()));
 
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(BlocksTFC.DEBUG), 0, new ModelResourceLocation(BlocksTFC.DEBUG.getRegistryName(), "normal"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(BlocksTFC.PEAT), 0, new ModelResourceLocation(BlocksTFC.PEAT.getRegistryName(), "normal"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(BlocksTFC.PEAT_GRASS), 0, new ModelResourceLocation(BlocksTFC.PEAT_GRASS.getRegistryName(), "normal"));
-
         for (Block block : BlocksTFC.getAllFluidBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());
 
-        for (Block block : BlocksTFC.getAllBlockRockVariants())
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
-
-        for (Block block : BlocksTFC.getAllLogBlocks())
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
+        for (Block block : BlocksTFC.getAllFenceGateBlocks())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockFenceGate.POWERED).build());
 
         for (Block block : BlocksTFC.getAllLeafBlocks())
-        {
-            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY).ignore(BlockLeaves.DECAYABLE).build());
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
-        }
-
-        for (Block block : BlocksTFC.getAllPlankBlocks())
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build());
 
         for (Block block : BlocksTFC.getAllOreBlocks())
-        {
-            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockTFCOre.GRADE).build());
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockOreTFC.GRADE).build());
+
+        for (Block block : BlocksTFC.getAllWallBlocks())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockWall.VARIANT).build());
+
+        for (Block block : BlocksTFC.getAllNormalItemBlocks())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
-        }
+
+        for (Block block : BlocksTFC.getAllInventoryItemBlocks())
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
     }
 
     @SubscribeEvent

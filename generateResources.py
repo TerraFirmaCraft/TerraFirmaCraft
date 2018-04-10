@@ -218,6 +218,60 @@ for rock_type in types:
             }
         }, f)
 
+    for block_type in ['cobble', 'brick']:
+        t = '{}_{}'.format(block_type, rock_type)
+        with open('blockstates/wall_%s.json' % t, 'w') as f:
+            json.dump({
+                'forge_marker': 1,
+                'defaults': {
+                    # 'transform': 'forge:default-item',
+                    'model': 'tfc:empty',
+                    'textures': {
+                        'particle': 'tfc:blocks/stonetypes/%s' % t,
+                        'wall': 'tfc:blocks/stonetypes/%s' % t,
+                    },
+                },
+                'variants': {
+                    'normal': [{}],
+                    'inventory': {'model': 'wall_inventory'},
+                    # 'variant': {'cobblestone': {}, 'mossy_cobblestone': {}},  # unused
+                    'north': {
+                        'true': {
+                            'submodel': 'wall_side',
+                        },
+                        'false': {}
+                    },
+                    'east': {
+                        'true': {
+                            'submodel': 'wall_side',
+                            'y': 90,
+                        },
+                        'false': {}
+                    },
+                    'south': {
+                        'true': {
+                            'submodel': 'wall_side',
+                            'y': 180,
+                        },
+                        'false': {}
+                    },
+                    'west': {
+                        'true': {
+                            'submodel': 'wall_side',
+                            'y': 270,
+                        },
+                        'false': {}
+                    },
+                    'up': {
+                        'true': {
+                            'submodel': 'wall_post',
+                            'y': 270,
+                        },
+                        'false': {}
+                    },
+                },
+            }, f)
+
 for wood_type in woods:
     with open('blockstates/log_%s.json' % wood_type, 'w') as f:
         json.dump({
@@ -274,5 +328,84 @@ for wood_type in woods:
             },
             'variants': {
                 'normal': [{}]
+            }
+        }, f)
+
+    with open('blockstates/fence_%s.json' % wood_type, 'w') as f:
+        json.dump({
+            'forge_marker': 1,
+            'defaults': {
+                # 'transform': 'forge:default-item',
+                'model': 'fence_post',
+                'textures': {
+                    'texture': 'tfc:blocks/wood/planks_%s' % wood_type
+                }
+            },
+            'variants': {
+                'normal': [{}],
+                'inventory': {'model': 'fence_inventory'},
+                'north': {
+                    'true': {
+                        'submodel': 'fence_side',
+                    },
+                    'false': {}
+                },
+                'east': {
+                    'true': {
+                        'submodel': 'fence_side',
+                        'y': 90,
+                    },
+                    'false': {}
+                },
+                'south': {
+                    'true': {
+                        'submodel': 'fence_side',
+                        'y': 180,
+                    },
+                    'false': {}
+                },
+                'west': {
+                    'true': {
+                        'submodel': 'fence_side',
+                        'y': 270,
+                    },
+                    'false': {}
+                },
+            }
+        }, f)
+
+    with open('blockstates/fence_gate_%s.json' % wood_type, 'w') as f:
+        json.dump({
+            'forge_marker': 1,
+            'defaults': {
+                # 'transform': 'forge:default-item',
+                'model': 'fence_gate_closed',
+                'textures': {
+                    'texture': 'tfc:blocks/wood/planks_%s' % wood_type
+                }
+            },
+            'variants': {
+                'normal': [{}],
+                'inventory': [{}],
+                'facing': {
+                    'south': {},
+                    'west': {'y': 90},
+                    'north': {'y': 180},
+                    'east': {'y': 270},
+                },
+                'open': {
+                    'true': {
+                        'model': 'fence_gate_open',
+                    },
+                    'false': {}
+                },
+                'in_wall': {
+                    'true': {
+                        'transform': {
+                            'translation': [0, -3/16, 0]
+                        }
+                    },
+                    'false': {},
+                },
             }
         }, f)

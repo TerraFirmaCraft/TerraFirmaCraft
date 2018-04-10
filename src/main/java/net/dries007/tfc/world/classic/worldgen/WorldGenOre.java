@@ -1,8 +1,8 @@
 package net.dries007.tfc.world.classic.worldgen;
 
 import com.google.common.collect.ImmutableList;
+import net.dries007.tfc.objects.blocks.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
-import net.dries007.tfc.objects.blocks.BlockTFCOre;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -84,12 +84,12 @@ public class WorldGenOre implements IWorldGenerator
                     !spawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock))
                 continue;
 
-            BlockTFCOre.Grade grade = BlockTFCOre.Grade.NORMAL;
+            BlockOreTFC.Grade grade = BlockOreTFC.Grade.NORMAL;
             if (spawnData.ore.graded)
             {
                 int gradeInt = rng.nextInt(100);
-                if (gradeInt < 20) grade = BlockTFCOre.Grade.RICH;
-                else if (gradeInt < 50) grade = BlockTFCOre.Grade.POOR;
+                if (gradeInt < 20) grade = BlockOreTFC.Grade.RICH;
+                else if (gradeInt < 50) grade = BlockOreTFC.Grade.POOR;
             }
 
             if (rng.nextInt(spawnData.rarity) != 0) continue;
@@ -115,7 +115,7 @@ public class WorldGenOre implements IWorldGenerator
         }
     }
 
-    private int generateDefault(BlockTFCOre.Ore ore, BlockTFCOre.Grade grade, World world, Random rng, BlockPos start, int size, ImmutableList<BlockRockVariant.Rock> baseRocks, float density)
+    private int generateDefault(BlockOreTFC.Ore ore, BlockOreTFC.Grade grade, World world, Random rng, BlockPos start, int size, ImmutableList<BlockRockVariant.Rock> baseRocks, float density)
     {
         int blocksSpawned = 0;
         final float angle = rng.nextFloat() * (float) Math.PI;
@@ -167,7 +167,7 @@ public class WorldGenOre implements IWorldGenerator
 
                         if (currentBlock.type != BlockRockVariant.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
 
-                        world.setBlockState(pos, BlockTFCOre.get(currentBlock.rock, ore, grade), 2);
+                        world.setBlockState(pos, BlockOreTFC.get(currentBlock.rock, ore, grade), 2);
                         blocksSpawned ++;
                     }
                 }
@@ -176,7 +176,7 @@ public class WorldGenOre implements IWorldGenerator
         return blocksSpawned;
     }
 
-    private int generateVein(BlockTFCOre.Ore ore, BlockTFCOre.Grade grade, World world, Random rng, BlockPos start, int size, ImmutableList<BlockRockVariant.Rock> baseRocks)
+    private int generateVein(BlockOreTFC.Ore ore, BlockOreTFC.Grade grade, World world, Random rng, BlockPos start, int size, ImmutableList<BlockRockVariant.Rock> baseRocks)
     {
         int blocksSpawned = 0;
 
@@ -279,7 +279,7 @@ public class WorldGenOre implements IWorldGenerator
 
                         if (currentBlock.type != BlockRockVariant.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
 
-                        world.setBlockState(pos, BlockTFCOre.get(currentBlock.rock, ore, grade), 2);
+                        world.setBlockState(pos, BlockOreTFC.get(currentBlock.rock, ore, grade), 2);
 
                         blocksSpawned ++;
                     }
@@ -298,7 +298,7 @@ public class WorldGenOre implements IWorldGenerator
 
                 if (currentBlock.type != BlockRockVariant.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
 
-                world.setBlockState(pos, BlockTFCOre.get(currentBlock.rock, ore, grade), 2);
+                world.setBlockState(pos, BlockOreTFC.get(currentBlock.rock, ore, grade), 2);
 
                 blocksSpawned ++;
             }

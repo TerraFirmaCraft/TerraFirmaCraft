@@ -17,6 +17,7 @@ public final class CreativeTabsTFC
     public static final CreativeTabs CT_MISC = new CT("misc", "tfc:wand");
     public static final CreativeTabs CT_ROCK_SOIL = new CT("rock_soil", "tfc:smooth_granite");
     public static final CreativeTabs CT_ORES = new CT("ores", "tfc:native_copper_granite");
+    public static final CreativeTabs CT_DECORATIONS = new CT("decorations", "tfc:wall_cobble_granite");
     public static final CreativeTabs CT_WOOD = new CT("wood", "tfc:log_pine");
 
     public static void init()
