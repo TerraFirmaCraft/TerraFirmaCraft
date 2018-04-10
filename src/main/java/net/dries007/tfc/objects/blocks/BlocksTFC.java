@@ -53,6 +53,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockOreTFC> allOreBlocks;
     private static ImmutableList<BlockFenceTFC> allFenceBlocks;
     private static ImmutableList<BlockFenceGateTFC> allFenceGateBlocks;
+    private static ImmutableList<BlockSaplingTFC> allSaplingBlocks;
     private static ImmutableList<BlockWallTFC> allWallBlocks;
 
     public static ImmutableList<Block> getAllNormalItemBlocks()
@@ -94,6 +95,10 @@ public final class BlocksTFC
     public static ImmutableList<BlockFenceGateTFC> getAllFenceGateBlocks()
     {
         return allFenceGateBlocks;
+    }
+    public static ImmutableList<BlockSaplingTFC> getAllSaplingBlocksBlocks()
+    {
+        return allSaplingBlocks;
     }
     public static ImmutableList<BlockWallTFC> getAllWallBlocks()
     {
@@ -154,6 +159,8 @@ public final class BlocksTFC
             Builder<BlockPlanksTFC> b3 = ImmutableList.builder();
             Builder<BlockFenceTFC> b4 = ImmutableList.builder();
             Builder<BlockFenceGateTFC> b5 = ImmutableList.builder();
+            Builder<BlockSaplingTFC> b6 = ImmutableList.builder();
+
             for (Wood wood : Wood.values())
             {
                 b1.add(register(r, "log_" + wood.name().toLowerCase(), new BlockLogTFC(wood), CT_WOOD));
@@ -161,15 +168,18 @@ public final class BlocksTFC
                 b3.add(register(r, "planks_" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CT_WOOD));
                 b4.add(register(r, "fence_" + wood.name().toLowerCase(), new BlockFenceTFC(wood), CT_WOOD));
                 b5.add(register(r, "fence_gate_" + wood.name().toLowerCase(), new BlockFenceGateTFC(wood), CT_WOOD));
+                b6.add(register(r, "sapling_" + wood.name().toLowerCase(), new BlockSaplingTFC(wood), CT_WOOD));
             }
             allLogBlocks = b1.build();
             allLeafBlocks = b2.build();
             allPlankBlocks = b3.build();
             allFenceBlocks = b4.build();
             allFenceGateBlocks = b5.build();
+            allSaplingBlocks = b6.build();
             normalItemBlocks.addAll(allLogBlocks);
             normalItemBlocks.addAll(allLeafBlocks);
             normalItemBlocks.addAll(allPlankBlocks);
+            normalItemBlocks.addAll(allSaplingBlocks);
             inventoryItemBlocks.addAll(allFenceBlocks);
             inventoryItemBlocks.addAll(allFenceGateBlocks);
         }
