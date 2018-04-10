@@ -4,20 +4,14 @@ import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Type;
 import net.dries007.tfc.objects.items.ItemOreTFC;
-import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -73,12 +67,21 @@ public class BlockOreTFC extends Block
     }
 
     @Override
-    public int damageDropped(IBlockState state){return getMetaFromState(state);}
-
-    @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return ItemsTFC.getAllOreItems().get(this.ore.ordinal());
+        return ItemOreTFC.get(this.ore);
+    }
+
+    @Override
+    public int damageDropped(IBlockState state)
+    {
+        return getMetaFromState(state);
+    }
+
+    @Override
+    public int quantityDropped(IBlockState state, int fortune, Random random)
+    {
+        return super.quantityDropped(state, fortune, random);
     }
 
     @Override

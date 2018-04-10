@@ -412,14 +412,20 @@ for wood_type in woods:
     with open('blockstates/sapling_%s.json' % wood_type, 'w') as f:
         json.dump({
             'forge_marker': 1,
-            'defaults': {
-                'model': 'cross',
-                'textures': {
-                    'cross': 'tfc:blocks/saplings/%s' % wood_type
-                }
-            },
             'variants': {
-                'normal': [{}],
+                'normal': {
+                    'model': 'cross',
+                    'textures': {
+                        'cross': 'tfc:blocks/saplings/%s' % wood_type
+                    }
+                },
+                'inventory': {
+                    'model': 'builtin/generated',
+                    'textures': {
+                        'layer0': 'tfc:blocks/saplings/%s' % wood_type
+                    },
+                    'transform': 'forge:default-item',
+                },
             },
         }, f)
 

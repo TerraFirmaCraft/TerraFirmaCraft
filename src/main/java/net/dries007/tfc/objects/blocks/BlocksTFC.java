@@ -179,9 +179,9 @@ public final class BlocksTFC
             normalItemBlocks.addAll(allLogBlocks);
             normalItemBlocks.addAll(allLeafBlocks);
             normalItemBlocks.addAll(allPlankBlocks);
-            normalItemBlocks.addAll(allSaplingBlocks);
             inventoryItemBlocks.addAll(allFenceBlocks);
             inventoryItemBlocks.addAll(allFenceGateBlocks);
+            inventoryItemBlocks.addAll(allSaplingBlocks);
         }
 
         allNormalItemBlocks = normalItemBlocks.build();

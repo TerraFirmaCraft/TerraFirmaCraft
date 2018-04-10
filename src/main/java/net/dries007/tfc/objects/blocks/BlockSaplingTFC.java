@@ -1,15 +1,15 @@
 package net.dries007.tfc.objects.blocks;
 
 import net.dries007.tfc.objects.Wood;
-import net.minecraft.block.*;
-import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.BlockBush;
+import net.minecraft.block.IGrowable;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.*;
-import net.minecraftforge.event.terraingen.TerrainGen;
 
 import java.util.EnumMap;
 import java.util.Random;
@@ -17,44 +17,76 @@ import java.util.Random;
 public class BlockSaplingTFC extends BlockBush implements IGrowable
 {
     private static final EnumMap<Wood, BlockSaplingTFC> MAP = new EnumMap<>(Wood.class);
-    public final Wood wood;
+
     public static BlockSaplingTFC get(Wood wood)
     {
         return MAP.get(wood);
     }
 
+    protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
+    public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 4);
+
+    public final Wood wood;
+
     public BlockSaplingTFC(Wood wood)
     {
         super();
-        this.wood = wood;
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+        this.wood = wood;
+        this.setDefaultState(this.blockState.getBaseState().withProperty(STAGE, 0));
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[]{});
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, STAGE);
     }
 
-    public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
-        if (!world.isRemote) {
-            super.updateTick(world, pos, state, random);
-            if (world.getLightFromNeighbors(pos.up()) >= 9 && random.nextInt(7) == 0) {
-                this.grow(world, pos, state, random);
-            }
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(STAGE, meta);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(STAGE);
+    }
+
+    @Override
+    public int damageDropped(IBlockState state)
+    {
+        return 0; // explicit override on default, because saplings should be reset when they are broken.
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return SAPLING_AABB;
+    }
+
+    @Override
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
+    {
+        if (world.isRemote) return;
+
+        super.updateTick(world, pos, state, random);
+
+        //todo: move conditions to canGrow
+        if (world.getLightFromNeighbors(pos.up()) >= 9 && random.nextInt(7) == 0)
+        {
+            // todo: see what 1710 checks
+            grow(world, random, pos, state);
         }
-
     }
 
-    public void grow(World world, BlockPos blockPos, IBlockState blockState, Random random) {
-        /*if ((Integer)state.getValue(STAGE) == 0) {
-            world.setBlockState(pos, state.cycleProperty(STAGE), 4);
-        } else {*/
-            this.generateTree(world, blockPos, blockState, random);
-        //}
+    public void generateTree(World world, BlockPos blockPos, IBlockState blockState, Random random)
+    {
+        // todo: forge event
 
-    }
+        //todo: actually generate
 
-    public void generateTree(World world, BlockPos blockPos, IBlockState blockState, Random random) {
         /*if (TerrainGen.saplingGrowTree(world, random, blockPos)) {
             WorldGenerator worldgenerator = random.nextInt(10) == 0 ? new WorldGenBigTree(true) : new WorldGenTrees(true);
             int i = 0;
@@ -150,17 +182,25 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     }
 
     @Override
-    public boolean canGrow(World world, BlockPos blockPos, IBlockState iBlockState, boolean b) {
+    public boolean canGrow(World world, BlockPos blockPos, IBlockState iBlockState, boolean b)
+    {
         return true;
     }
 
     @Override
-    public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, IBlockState iBlockState) {
+    public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, IBlockState iBlockState)
+    {
         return true;
     }
 
     @Override
-    public void grow(World world, Random random, BlockPos blockPos, IBlockState iBlockState) {
-
+    public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
+    {
+        // todo: see what 1710 checks
+        /*if ((Integer)state.getValue(STAGE) == 0) {
+            world.setBlockState(pos, state.cycleProperty(STAGE), 4);
+        } else {*/
+        this.generateTree(world, blockPos, blockState, random);
+        //}
     }
 }

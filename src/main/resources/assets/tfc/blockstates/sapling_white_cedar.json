@@ -1,1 +1,1 @@
-{"forge_marker": 1, "defaults": {"model": "cross", "textures": {"cross": "tfc:blocks/saplings/white_cedar"}}, "variants": {"normal": [{}]}}
+{"forge_marker": 1, "variants": {"normal": {"model": "cross", "textures": {"cross": "tfc:blocks/saplings/white_cedar"}}, "inventory": {"model": "builtin/generated", "textures": {"layer0": "tfc:blocks/saplings/white_cedar"}, "transform": "forge:default-item"}}}

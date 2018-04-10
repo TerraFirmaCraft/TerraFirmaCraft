@@ -2,6 +2,7 @@ package net.dries007.tfc.client;
 
 import net.dries007.tfc.objects.blocks.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.BlockSaplingTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemOreTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -63,6 +64,9 @@ public final class ClientRegisterEvents
 
         for (Block block : BlocksTFC.getAllWallBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockWall.VARIANT).build());
+
+        for (Block block : BlocksTFC.getAllSaplingBlocksBlocks())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockSaplingTFC.STAGE).build());
 
         for (Block block : BlocksTFC.getAllNormalItemBlocks())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
