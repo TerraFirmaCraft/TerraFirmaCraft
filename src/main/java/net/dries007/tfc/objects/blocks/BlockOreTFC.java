@@ -1,5 +1,9 @@
 package net.dries007.tfc.objects.blocks;
 
+import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.Type;
+import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -8,33 +12,40 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-import static net.dries007.tfc.Constants.MOD_ID;
-
 public class BlockOreTFC extends Block
 {
+    private static final InsertOnlyEnumTable<Ore, Rock, BlockOreTFC> TABLE = new InsertOnlyEnumTable<>(Ore.class, Rock.class);
+
+    public static BlockOreTFC get(Ore ore, Rock rock)
+    {
+        return TABLE.get(ore, rock);
+    }
+
+    public static IBlockState get(Ore ore, Rock rock, Grade grade)
+    {
+        IBlockState state = TABLE.get(ore, rock).getDefaultState();
+        if (!ore.graded) return state;
+        return state.withProperty(GRADE, grade);
+    }
+
     public static final PropertyEnum<Grade> GRADE = PropertyEnum.create("grade", Grade.class);
 
     public final Ore ore;
-    public final BlockRockVariant.Rock rock;
+    public final Rock rock;
 
-    private BlockOreTFC[] rocks;
-
-    public BlockOreTFC(Ore ore, BlockRockVariant.Rock rock)
+    public BlockOreTFC(Ore ore, Rock rock)
     {
-        super(BlockRockVariant.Type.RAW.material);
+        super(Type.RAW.material);
+        TABLE.put(ore, rock, this);
         this.ore = ore;
         this.rock = rock;
-        if (rock == BlockRockVariant.Rock.GRANITE)
-            ore.ref = this;
         this.setDefaultState(blockState.getBaseState().withProperty(GRADE, Grade.NORMAL));
     }
 
@@ -77,37 +88,13 @@ public class BlockOreTFC extends Block
         return BlockRenderLayer.CUTOUT;
     }
 
-    public static IBlockState get(BlockRockVariant.Rock rock, Ore ore, Grade grade)
-    {
-        IBlockState state = ore.ref.getForRock(rock).getDefaultState();
-        if (!ore.graded) return state;
-        return state.withProperty(GRADE, grade);
-    }
-
-    public BlockOreTFC getForRock(BlockRockVariant.Rock r)
-    {
-        if (rock == r) return this;
-        if (rocks == null)
-        {
-            BlockRockVariant.Rock[] types = BlockRockVariant.Rock.values();
-            rocks = new BlockOreTFC[types.length];
-            for (int i = 0; i < types.length; i++)
-            {
-                //noinspection ConstantConditions
-                String name = getRegistryName().getResourcePath().replace(rock.name().toLowerCase(), types[i].name().toLowerCase());
-                rocks[i] = (BlockOreTFC) ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID, name));
-            }
-        }
-        return rocks[r.ordinal()];
-    }
-
     public enum Grade implements IStringSerializable
     {
         NORMAL, POOR, RICH;
 
         public static Grade byMetadata(int meta)
         {
-            return values()[meta % 3];
+            return Grade.values()[meta];
         }
 
         @Override
@@ -119,53 +106,6 @@ public class BlockOreTFC extends Block
         public int getMeta()
         {
             return this.ordinal();
-        }
-    }
-
-    public enum Ore
-    {
-        NATIVE_COPPER(true),
-        NATIVE_GOLD(true),
-        NATIVE_PLATINUM(true),
-        HEMATITE(true),
-        NATIVE_SILVER(true),
-        CASSITERITE(true),
-        GALENA(true),
-        BISMUTHINITE(true),
-        GARNIERITE(true),
-        MALACHITE(true),
-        MAGNETITE(true),
-        LIMONITE(true),
-        SPHALERITE(true),
-        TETRAHEDRITE(true),
-        BITUMINOUS_COAL(false),
-        LIGNITE(false),
-        KAOLINITE(false),
-        GYPSUM(false),
-        SATINSPAR(false),
-        SELENITE(false),
-        GRAPHITE(false),
-        KIMBERLITE(false),
-        PETRIFIED_WOOD(false),
-        SULFUR(false),
-        JET(false),
-        MICROCLINE(false),
-        PITCHBLENDE(false),
-        CINNABAR(false),
-        CRYOLITE(false),
-        SALTPETER(false),
-        SERPENTINE(false),
-        SYLVITE(false),
-        BORAX(false),
-        OLIVINE(false),
-        LAPIS_LAZULI(false);
-
-        public final boolean graded;
-        private BlockOreTFC ref;
-
-        Ore(boolean graded)
-        {
-            this.graded = graded;
         }
     }
 }

@@ -3,6 +3,10 @@ package net.dries007.tfc.objects.blocks;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.Type;
+import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -18,7 +22,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 import static net.dries007.tfc.objects.CreativeTabsTFC.*;
-import static net.dries007.tfc.objects.blocks.BlockRockVariant.Type.*;
+import static net.dries007.tfc.objects.Type.*;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -119,8 +123,8 @@ public final class BlocksTFC
 
         {
             Builder<BlockRockVariant> b = ImmutableList.builder();
-            for (BlockRockVariant.Type type : BlockRockVariant.Type.values())
-                for (BlockRockVariant.Rock rock : BlockRockVariant.Rock.values())
+            for (Type type : Type.values())
+                for (Rock rock : Rock.values())
                     b.add(register(r, (type.name() + "_" +  rock.name()).toLowerCase(), type.isGrass ? new BlockRockVariantConnected(type, rock) : new BlockRockVariant(type, rock), CT_ROCK_SOIL));
             allBlockRockVariants = b.build();
             normalItemBlocks.addAll(allBlockRockVariants);
@@ -128,8 +132,8 @@ public final class BlocksTFC
 
         {
             Builder<BlockOreTFC> b = ImmutableList.builder();
-            for (BlockOreTFC.Ore ore : BlockOreTFC.Ore.values())
-                for (BlockRockVariant.Rock rock : BlockRockVariant.Rock.values())
+            for (Ore ore : Ore.values())
+                for (Rock rock : Rock.values())
                     b.add(register(r, (ore.name() + "_" +  rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ORES));
             allOreBlocks = b.build();
             normalItemBlocks.addAll(allOreBlocks);
@@ -137,8 +141,8 @@ public final class BlocksTFC
 
         {
             Builder<BlockWallTFC> b = ImmutableList.builder();
-            for (BlockRockVariant.Type type : new BlockRockVariant.Type[]{BlockRockVariant.Type.COBBLE, BlockRockVariant.Type.BRICK})
-                for (BlockRockVariant.Rock rock : BlockRockVariant.Rock.values())
+            for (Type type : new Type[]{Type.COBBLE, Type.BRICK})
+                for (Rock rock : Rock.values())
                     b.add(register(r, ("wall_" + type.name() + "_" + rock.name()).toLowerCase(), new BlockWallTFC(BlockRockVariant.get(rock, type)), CT_DECORATIONS));
             allWallBlocks = b.build();
             inventoryItemBlocks.addAll(allWallBlocks);
@@ -150,7 +154,7 @@ public final class BlocksTFC
             Builder<BlockPlanksTFC> b3 = ImmutableList.builder();
             Builder<BlockFenceTFC> b4 = ImmutableList.builder();
             Builder<BlockFenceGateTFC> b5 = ImmutableList.builder();
-            for (BlockLogTFC.Wood wood : BlockLogTFC.Wood.values())
+            for (Wood wood : Wood.values())
             {
                 b1.add(register(r, "log_" + wood.name().toLowerCase(), new BlockLogTFC(wood), CT_WOOD));
                 b2.add(register(r, "leaves_" + wood.name().toLowerCase(), new BlockLeavesTFC(wood), CT_WOOD));
@@ -210,28 +214,28 @@ public final class BlocksTFC
     public static boolean isRawStone(IBlockState current)
     {
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
+        Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == RAW;
     }
 
     public static boolean isClay(IBlockState current)
     {
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
+        Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == CLAY || type == CLAY_GRASS;
     }
 
     public static boolean isDirt(IBlockState current)
     {
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
+        Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == DIRT;
     }
 
     public static boolean isSand(IBlockState current)
     {
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
+        Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == SAND;
     }
 
@@ -239,7 +243,7 @@ public final class BlocksTFC
     {
         if (current.getBlock() instanceof BlockPeat) return true;
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
+        Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == GRASS || type == DRY_GRASS || type == DIRT || type == CLAY || type == CLAY_GRASS;
     }
 
@@ -247,7 +251,7 @@ public final class BlocksTFC
     {
         if (current.getBlock() instanceof BlockPeat) return true;
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
+        Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == GRASS || type == DRY_GRASS || type == DIRT || type == GRAVEL;
     }
 
@@ -255,14 +259,14 @@ public final class BlocksTFC
     {
         if (current.getBlock() instanceof BlockPeatGrass) return true;
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
+        Type type = ((BlockRockVariant) current.getBlock()).type;
         return type.isGrass;
     }
 
     public static boolean isGround(IBlockState current)
     {
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        BlockRockVariant.Type type = ((BlockRockVariant) current.getBlock()).type;
+        Type type = ((BlockRockVariant) current.getBlock()).type;
         return type == GRASS || type == DRY_GRASS || type == DIRT || type == GRAVEL || type == RAW || type == SAND;
     }
 }

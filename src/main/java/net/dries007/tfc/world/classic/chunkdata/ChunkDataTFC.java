@@ -1,5 +1,6 @@
 package net.dries007.tfc.world.classic.chunkdata;
 
+import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.blocks.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
 import net.dries007.tfc.util.OreSpawnData;
@@ -92,7 +93,7 @@ public final class ChunkDataTFC
     /**
      * INTERNAL USE ONLY.
      */
-    public void addSpawnedOre(BlockOreTFC.Ore ore, OreSpawnData.SpawnSize size, BlockOreTFC.Grade grade, BlockPos pos, int count)
+    public void addSpawnedOre(Ore ore, OreSpawnData.SpawnSize size, BlockOreTFC.Grade grade, BlockPos pos, int count)
     {
         oresSpawned.add(new ChunkDataOreSpawned(ore, size, grade, pos, count));
     }

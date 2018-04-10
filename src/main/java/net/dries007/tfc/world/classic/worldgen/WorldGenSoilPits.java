@@ -1,6 +1,6 @@
 package net.dries007.tfc.world.classic.worldgen;
 
-import net.dries007.tfc.objects.blocks.BlockRockVariant;
+import net.dries007.tfc.objects.Type;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
@@ -61,12 +61,12 @@ public class WorldGenSoilPits implements IWorldGenerator
                     final IBlockState current = world.getBlockState(pos);
                     if (BlocksTFC.isDirt(current))
                     {
-                        world.setBlockState(pos, ChunkDataTFC.getRockHeight(world, pos).getVariant(BlockRockVariant.Type.CLAY).getDefaultState(), 2);
+                        world.setBlockState(pos, ChunkDataTFC.getRockHeight(world, pos).getVariant(Type.CLAY).getDefaultState(), 2);
                         flag = true;
                     }
                     else if (BlocksTFC.isGrass(current))
                     {
-                        world.setBlockState(pos, ChunkDataTFC.getRockHeight(world, pos).getVariant(BlockRockVariant.Type.CLAY_GRASS).getDefaultState(), 2);
+                        world.setBlockState(pos, ChunkDataTFC.getRockHeight(world, pos).getVariant(Type.CLAY_GRASS).getDefaultState(), 2);
                         flag = true;
                     }
                 }

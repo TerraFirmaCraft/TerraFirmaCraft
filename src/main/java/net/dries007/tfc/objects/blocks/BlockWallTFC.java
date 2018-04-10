@@ -1,5 +1,8 @@
 package net.dries007.tfc.objects.blocks;
 
+import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.Type;
+import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -9,11 +12,19 @@ import net.minecraft.util.NonNullList;
 //todo: actually by-pass the variant? or would it be worth adding a mossy texture for nice looking walls
 public class BlockWallTFC extends BlockWall
 {
+    private static final InsertOnlyEnumTable<Rock, Type, BlockWallTFC> TABLE = new InsertOnlyEnumTable<>(Rock.class, Type.class);
+
+    public static BlockWallTFC get(Rock rock, Type type)
+    {
+        return TABLE.get(rock, type);
+    }
+
     public final BlockRockVariant parent;
 
     public BlockWallTFC(BlockRockVariant modelBlock)
     {
         super(modelBlock);
+        TABLE.put(modelBlock.rock, modelBlock.type, this);
         parent = modelBlock;
     }
 

@@ -1,6 +1,7 @@
 package net.dries007.tfc.objects.blocks;
 
 import com.google.common.collect.ImmutableList;
+import net.dries007.tfc.objects.Wood;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.BlockStateContainer;
@@ -11,15 +12,24 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 import javax.annotation.Nonnull;
+import java.util.EnumMap;
 import java.util.List;
 
 public class BlockLeavesTFC extends BlockLeaves
 {
-    public final BlockLogTFC.Wood wood;
+    private static final EnumMap<Wood, BlockLeavesTFC> MAP = new EnumMap<>(Wood.class);
 
-    public BlockLeavesTFC(BlockLogTFC.Wood wood)
+    public static BlockLeavesTFC get(Wood wood)
+    {
+        return MAP.get(wood);
+    }
+
+    public final Wood wood;
+
+    public BlockLeavesTFC(Wood wood)
     {
         this.wood = wood;
+        if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         this.setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true));
         this.leavesFancy = true; // there doesn't seem to be an even for catching changing this, so lets not bother
     }

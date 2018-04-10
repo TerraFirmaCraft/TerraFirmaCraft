@@ -1,15 +1,26 @@
 package net.dries007.tfc.objects.blocks;
 
+import net.dries007.tfc.objects.Wood;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockPlanks;
 
+import java.util.EnumMap;
+
 public class BlockFenceGateTFC extends BlockFenceGate
 {
-    public final BlockLogTFC.Wood wood;
+    private static final EnumMap<Wood, BlockFenceGateTFC> MAP = new EnumMap<>(Wood.class);
 
-    public BlockFenceGateTFC(BlockLogTFC.Wood wood)
+    public static BlockFenceGateTFC get(Wood wood)
+    {
+        return MAP.get(wood);
+    }
+
+    public final Wood wood;
+
+    public BlockFenceGateTFC(Wood wood)
     {
         super(BlockPlanks.EnumType.OAK);
+        if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         this.wood = wood;
     }
 }

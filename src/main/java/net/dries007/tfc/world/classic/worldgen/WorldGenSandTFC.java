@@ -10,7 +10,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
-import static net.dries007.tfc.objects.blocks.BlockRockVariant.Type.SAND;
+import static net.dries007.tfc.objects.Type.SAND;
 
 public class WorldGenSandTFC extends WorldGenerator
 {

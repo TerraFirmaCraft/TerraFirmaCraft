@@ -1,13 +1,13 @@
 package net.dries007.tfc.util;
 
 import com.google.common.collect.ImmutableList;
-import net.dries007.tfc.objects.blocks.BlockOreTFC.Ore;
-import net.dries007.tfc.objects.blocks.BlockRockVariant.Rock;
-import net.dries007.tfc.objects.blocks.BlockRockVariant.Rock.*;
+import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.Rock.*;
 
-import static net.dries007.tfc.objects.blocks.BlockOreTFC.Ore.*;
-import static net.dries007.tfc.objects.blocks.BlockRockVariant.Rock.Category.*;
-import static net.dries007.tfc.objects.blocks.BlockRockVariant.Rock.*;
+import static net.dries007.tfc.objects.Ore.*;
+import static net.dries007.tfc.objects.Rock.Category.*;
+import static net.dries007.tfc.objects.Rock.*;
 import static net.dries007.tfc.util.OreSpawnData.SpawnSize.*;
 import static net.dries007.tfc.util.OreSpawnData.SpawnType.DEFAULT;
 import static net.dries007.tfc.util.OreSpawnData.SpawnType.VEINS;

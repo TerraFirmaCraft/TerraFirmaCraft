@@ -232,7 +232,7 @@ for rock_type in types:
                     },
                 },
                 'variants': {
-                    'normal': [{}],
+                    # 'normal': [{}],
                     'inventory': {'model': 'wall_inventory'},
                     # 'variant': {'cobblestone': {}, 'mossy_cobblestone': {}},  # unused
                     'north': {

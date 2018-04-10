@@ -1,8 +1,8 @@
 package net.dries007.tfc.world.classic;
 
+import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.Type;
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
-import net.dries007.tfc.objects.blocks.BlockRockVariant.Rock;
-import net.dries007.tfc.objects.blocks.BlockRockVariant.Type;
 
 /**
  * Todo: Rewrite to make typesafe ?
