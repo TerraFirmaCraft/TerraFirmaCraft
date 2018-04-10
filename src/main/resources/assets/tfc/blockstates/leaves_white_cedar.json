@@ -1,1 +1,1 @@
-{"forge_marker": 1, "defaults": {"model": "leaves", "textures": {"all": "tfc:blocks/wood/leaves_white_cedar"}}, "variants": {"normal": [{}]}}
+{"forge_marker": 1, "defaults": {"model": "leaves", "textures": {"all": "tfc:blocks/wood/leaves/white_cedar"}}, "variants": {"normal": [{}]}}

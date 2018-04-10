@@ -115,8 +115,8 @@ public final class BlocksTFC
 
         normalItemBlocks.add(register(r, "debug", new BlockDebug(), CT_MISC));
 
-        normalItemBlocks.add(register(r, "peat", new BlockPeat(Material.GROUND), CT_ROCK_SOIL));
-        normalItemBlocks.add(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_SOIL));
+        normalItemBlocks.add(register(r, "peat", new BlockPeat(Material.GROUND), CT_ROCK_BLOCKS));
+        normalItemBlocks.add(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_BLOCKS));
 
         {
             TerraFirmaCraft.getLog().info("The 3 warnings ('A mod has attempted to assign Block...') below this line are normal.");
@@ -130,7 +130,7 @@ public final class BlocksTFC
             Builder<BlockRockVariant> b = ImmutableList.builder();
             for (Type type : Type.values())
                 for (Rock rock : Rock.values())
-                    b.add(register(r, (type.name() + "_" +  rock.name()).toLowerCase(), type.isGrass ? new BlockRockVariantConnected(type, rock) : new BlockRockVariant(type, rock), CT_ROCK_SOIL));
+                    b.add(register(r, (type.name() + "_" +  rock.name()).toLowerCase(), type.isGrass ? new BlockRockVariantConnected(type, rock) : new BlockRockVariant(type, rock), CT_ROCK_BLOCKS));
             allBlockRockVariants = b.build();
             normalItemBlocks.addAll(allBlockRockVariants);
         }
@@ -146,7 +146,7 @@ public final class BlocksTFC
 
         {
             Builder<BlockWallTFC> b = ImmutableList.builder();
-            for (Type type : new Type[]{Type.COBBLE, Type.BRICK})
+            for (Type type : new Type[]{Type.COBBLE, Type.BRICKS})
                 for (Rock rock : Rock.values())
                     b.add(register(r, ("wall_" + type.name() + "_" + rock.name()).toLowerCase(), new BlockWallTFC(BlockRockVariant.get(rock, type)), CT_DECORATIONS));
             allWallBlocks = b.build();

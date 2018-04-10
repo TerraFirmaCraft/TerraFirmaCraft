@@ -7,7 +7,7 @@ public enum Type
     RAW(Material.ROCK, false, false),
     SMOOTH(Material.ROCK, false, false),
     COBBLE(Material.ROCK, true, false),
-    BRICK(Material.ROCK, false, false),
+    BRICKS(Material.ROCK, false, false),
     SAND(Material.SAND, true, false),
     GRAVEL(Material.SAND, true, false),
     DIRT(Material.GROUND, false, false),

@@ -1,1 +1,1 @@
-{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw_gabbro", "particle": "tfc:blocks/stonetypes/raw_gabbro", "overlay": "tfc:blocks/ores/jet"}}, "variants": {"normal": [{}]}}
+{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw/gabbro", "particle": "tfc:blocks/stonetypes/raw/gabbro", "overlay": "tfc:blocks/ores/jet"}}, "variants": {"normal": [{}]}}

@@ -39,7 +39,8 @@ public final class ClientRegisterEvents
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event)
     {
-        ModelLoader.setCustomModelResourceLocation(ItemsTFC.WAND, 0, new ModelResourceLocation(ItemsTFC.WAND.getRegistryName().toString()));
+        for (Item item : ItemsTFC.getAllSimpleItems())
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName().toString()));
 
         for (ItemOreTFC item : ItemsTFC.getAllOreItems())
         {
