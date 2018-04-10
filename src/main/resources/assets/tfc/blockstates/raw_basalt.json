@@ -1,1 +1,1 @@
-{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/raw_basalt"}}, "variants": {"normal": [{}]}}
+{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/raw/basalt"}}, "variants": {"normal": [{}]}}

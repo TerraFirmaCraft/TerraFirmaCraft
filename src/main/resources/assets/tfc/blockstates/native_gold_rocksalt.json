@@ -1,1 +1,1 @@
-{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw_rocksalt", "particle": "tfc:blocks/stonetypes/raw_rocksalt", "overlay": "tfc:blocks/ores/native_gold"}}, "variants": {"normal": [{}]}}
+{"forge_marker": 1, "defaults": {"model": "tfc:ore", "textures": {"all": "tfc:blocks/stonetypes/raw/rocksalt", "particle": "tfc:blocks/stonetypes/raw/rocksalt", "overlay": "tfc:blocks/ores/native_gold"}}, "variants": {"normal": [{}]}}

@@ -1,1 +1,1 @@
-{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/raw_granite"}}, "variants": {"normal": [{}]}}
+{"forge_marker": 1, "defaults": {"model": "cube_all", "textures": {"all": "tfc:blocks/stonetypes/raw/granite"}}, "variants": {"normal": [{}]}}

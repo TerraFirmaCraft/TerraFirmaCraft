@@ -15,7 +15,8 @@ public final class CreativeTabsTFC
     private static final List<CT> LIST = new ArrayList<>();
 
     public static final CreativeTabs CT_MISC = new CT("misc", "tfc:wand");
-    public static final CreativeTabs CT_ROCK_SOIL = new CT("rock_soil", "tfc:smooth_granite");
+    public static final CreativeTabs CT_ROCK_BLOCKS = new CT("rock.blocks", "tfc:smooth_granite");
+    public static final CreativeTabs CT_ROCK_ITEMS = new CT("rock.items", "tfc:rock_granite");
     public static final CreativeTabs CT_ORE_ITEMS = new CT("ores.items", "tfc:ore_tetrahedrite");
     public static final CreativeTabs CT_ORE_BLOCKS = new CT("ores.blocks", "tfc:native_copper_granite");
     public static final CreativeTabs CT_DECORATIONS = new CT("decorations", "tfc:wall_cobble_granite");

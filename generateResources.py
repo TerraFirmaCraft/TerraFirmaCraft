@@ -28,7 +28,7 @@ zipfolder('assets_backups/{}.zip'.format(int(time.time())), 'src/main/resources/
 
 os.chdir('src/main/resources/assets/tfc/')
 
-types = [
+rock_types = [
     'granite',
     'diorite',
     'gabbro',
@@ -55,7 +55,7 @@ fullblock_types = [
     'raw',
     'smooth',
     'cobble',
-    'brick',
+    'bricks',
     'sand',
     'gravel',
     'dirt',
@@ -124,17 +124,16 @@ woods = [
     'palm',
 ]
 
-for rock_type in types:
+for rock_type in rock_types:
     for block_type in fullblock_types:
-        t = '{}_{}'.format(block_type, rock_type)
-        with open('blockstates/%s.json' % t, 'w') as f:
+        with open('blockstates/%s_%s.json' % (block_type, rock_type), 'w') as f:
             json.dump({
                 'forge_marker': 1,
                 'defaults': {
                     # 'transform': 'forge:default-item',
                     'model': 'cube_all',
                     'textures': {
-                        'all': 'tfc:blocks/stonetypes/%s' % t
+                        'all': 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type)
                     }
                 },
                 'variants': {
@@ -143,16 +142,15 @@ for rock_type in types:
             }, f)
 
     for block_type in ores:
-        t = '{}_{}'.format(block_type, rock_type)
-        with open('blockstates/%s.json' % t, 'w') as f:
+        with open('blockstates/%s_%s.json' % (block_type, rock_type), 'w') as f:
             json.dump({
                 'forge_marker': 1,
                 'defaults': {
                     # 'transform': 'forge:default-item',
                     'model': 'tfc:ore',
                     'textures': {
-                        'all': 'tfc:blocks/stonetypes/raw_%s' % rock_type,
-                        'particle': 'tfc:blocks/stonetypes/raw_%s' % rock_type,
+                        'all': 'tfc:blocks/stonetypes/raw/%s' % rock_type,
+                        'particle': 'tfc:blocks/stonetypes/raw/%s' % rock_type,
                         'overlay': 'tfc:blocks/ores/%s' % block_type,
                     }
                 },
@@ -162,16 +160,15 @@ for rock_type in types:
             }, f)
 
     for block_type in grass_types:
-        t = '{}_{}'.format(block_type, rock_type)
-        with open('blockstates/%s.json' % t, 'w') as f:
+        with open('blockstates/%s_%s.json' % (block_type, rock_type), 'w') as f:
             json.dump({
                 'forge_marker': 1,
                 'defaults': {
                     # 'transform': 'forge:default-item',
                     'model': 'tfc:grass',
                     'textures': {
-                        'all': 'tfc:blocks/stonetypes/dirt_%s' % rock_type,
-                        'particle': 'tfc:blocks/stonetypes/dirt_%s' % rock_type,
+                        'all': 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
+                        'particle': 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
                         'top': 'tfc:blocks/%s_top' % block_type,
                         'north': 'tfc:blocks/%s_side' % block_type,
                         'south': 'tfc:blocks/%s_side' % block_type,
@@ -197,8 +194,8 @@ for rock_type in types:
                 # 'transform': 'forge:default-item',
                 'model': 'tfc:grass',
                 'textures': {
-                    'all': 'tfc:blocks/stonetypes/clay_%s' % rock_type,
-                    'particle': 'tfc:blocks/stonetypes/clay_%s' % rock_type,
+                    'all': 'tfc:blocks/stonetypes/clay/%s' % rock_type,
+                    'particle': 'tfc:blocks/stonetypes/clay/%s' % rock_type,
                     'top': 'tfc:blocks/grass_top',
                     'north': 'tfc:blocks/grass_side',
                     'south': 'tfc:blocks/grass_side',
@@ -218,17 +215,16 @@ for rock_type in types:
             }
         }, f)
 
-    for block_type in ['cobble', 'brick']:
-        t = '{}_{}'.format(block_type, rock_type)
-        with open('blockstates/wall_%s.json' % t, 'w') as f:
+    for block_type in ['cobble', 'bricks']:
+        with open('blockstates/wall_%s_%s.json' % (block_type, rock_type), 'w') as f:
             json.dump({
                 'forge_marker': 1,
                 'defaults': {
                     # 'transform': 'forge:default-item',
                     'model': 'tfc:empty',
                     'textures': {
-                        'particle': 'tfc:blocks/stonetypes/%s' % t,
-                        'wall': 'tfc:blocks/stonetypes/%s' % t,
+                        'particle': 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type),
+                        'wall': 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type),
                     },
                 },
                 'variants': {
@@ -280,9 +276,9 @@ for wood_type in woods:
                 # 'transform': 'forge:default-item',
                 'model': 'cube_column',
                 'textures': {
-                    'particle': 'tfc:blocks/wood/log_%s' % wood_type,
-                    'end': 'tfc:blocks/wood/top_%s' % wood_type,
-                    'side': 'tfc:blocks/wood/log_%s' % wood_type,
+                    'particle': 'tfc:blocks/wood/log/%s' % wood_type,
+                    'end': 'tfc:blocks/wood/top/%s' % wood_type,
+                    'side': 'tfc:blocks/wood/log/%s' % wood_type,
                 }
             },
             'variants': {
@@ -294,7 +290,7 @@ for wood_type in woods:
                     'none': {
                         'model': 'cube_all',
                         'textures': {
-                            'all': 'tfc:blocks/wood/log_%s' % wood_type,
+                            'all': 'tfc:blocks/wood/log/%s' % wood_type,
                         }
                     }
                 }
@@ -308,7 +304,7 @@ for wood_type in woods:
                 # 'transform': 'forge:default-item',
                 'model': 'cube_all',
                 'textures': {
-                    'all': 'tfc:blocks/wood/planks_%s' % wood_type
+                    'all': 'tfc:blocks/wood/planks/%s' % wood_type
                 }
             },
             'variants': {
@@ -323,7 +319,7 @@ for wood_type in woods:
                 # 'transform': 'forge:default-item',
                 'model': 'leaves',
                 'textures': {
-                    'all': 'tfc:blocks/wood/leaves_%s' % wood_type
+                    'all': 'tfc:blocks/wood/leaves/%s' % wood_type
                 }
             },
             'variants': {
@@ -338,7 +334,7 @@ for wood_type in woods:
                 # 'transform': 'forge:default-item',
                 'model': 'fence_post',
                 'textures': {
-                    'texture': 'tfc:blocks/wood/planks_%s' % wood_type
+                    'texture': 'tfc:blocks/wood/planks/%s' % wood_type
                 }
             },
             'variants': {
@@ -381,7 +377,7 @@ for wood_type in woods:
                 # 'transform': 'forge:default-item',
                 'model': 'fence_gate_closed',
                 'textures': {
-                    'texture': 'tfc:blocks/wood/planks_%s' % wood_type
+                    'texture': 'tfc:blocks/wood/planks/%s' % wood_type
                 }
             },
             'variants': {
@@ -446,3 +442,13 @@ for ore_type in ores:
                 'layer0': 'tfc:items/ore/%s' % ore_type
             },
         }, f)
+
+for rock_type in rock_types:
+    for item_type in ['rock', 'brick']:
+        with open('models/item/%s_%s.json' % (item_type, rock_type), 'w') as f:
+            json.dump({
+                'parent': 'item/generated',
+                'textures': {
+                    'layer0': 'tfc:items/stonetypes/%s/%s' % (item_type, rock_type)
+                },
+            }, f)
