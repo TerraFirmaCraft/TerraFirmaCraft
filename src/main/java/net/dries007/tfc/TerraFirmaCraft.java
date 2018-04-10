@@ -69,11 +69,7 @@ public class TerraFirmaCraft
     public void init(FMLInitializationEvent event)
     {
         CreativeTabsTFC.init();
-    }
 
-    @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
         worldTypeTFC = new WorldTypeTFC();
 
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true, 20)), 0);
@@ -88,6 +84,12 @@ public class TerraFirmaCraft
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 7);
         //todo: add large rocks
         //todo: add plants
+    }
+
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event)
+    {
+
     }
 
     @Mod.EventHandler
