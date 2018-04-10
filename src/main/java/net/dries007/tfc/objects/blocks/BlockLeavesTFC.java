@@ -77,6 +77,6 @@ public class BlockLeavesTFC extends BlockLeaves
     @Override
     public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
-        return ImmutableList.of();
+        return ImmutableList.of(new ItemStack(this));
     }
 }

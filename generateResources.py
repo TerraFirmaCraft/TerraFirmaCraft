@@ -65,43 +65,43 @@ grass_types = [
     'grass',
     'dry_grass',
 ]
-ores = [
-    'native_copper',
-    'native_gold',
-    'native_platinum',
-    'hematite',
-    'native_silver',
-    'cassiterite',
-    'galena',
-    'bismuthinite',
-    'garnierite',
-    'malachite',
-    'magnetite',
-    'limonite',
-    'sphalerite',
-    'tetrahedrite',
-    'bituminous_coal',
-    'lignite',
-    'kaolinite',
-    'gypsum',
-    'satinspar',
-    'selenite',
-    'graphite',
-    'kimberlite',
-    'petrified_wood',
-    'sulfur',
-    'jet',
-    'microcline',
-    'pitchblende',
-    'cinnabar',
-    'cryolite',
-    'saltpeter',
-    'serpentine',
-    'sylvite',
-    'borax',
-    'olivine',
-    'lapis_lazuli'
-]
+ores = {
+    'native_copper': True,
+    'native_gold': True,
+    'native_platinum': True,
+    'hematite': True,
+    'native_silver': True,
+    'cassiterite': True,
+    'galena': True,
+    'bismuthinite': True,
+    'garnierite': True,
+    'malachite': True,
+    'magnetite': True,
+    'limonite': True,
+    'sphalerite': True,
+    'tetrahedrite': True,
+    'bituminous_coal': False,
+    'lignite': False,
+    'kaolinite': False,
+    'gypsum': False,
+    'satinspar': False,
+    'selenite': False,
+    'graphite': False,
+    'kimberlite': False,
+    'petrified_wood': False,
+    'sulfur': False,
+    'jet': False,
+    'microcline': False,
+    'pitchblende': False,
+    'cinnabar': False,
+    'cryolite': False,
+    'saltpeter': False,
+    'serpentine': False,
+    'sylvite': False,
+    'borax': False,
+    'olivine': False,
+    'lapis_lazuli': False,
+}
 woods = [
     'ash',
     'aspen',
@@ -121,7 +121,7 @@ woods = [
     'acacia',
     'rosewood',
     'blackwood',
-    'palm'
+    'palm',
 ]
 
 for rock_type in types:
@@ -408,4 +408,35 @@ for wood_type in woods:
                     'false': {},
                 },
             }
+        }, f)
+    with open('blockstates/sapling_%s.json' % wood_type, 'w') as f:
+        json.dump({
+            'forge_marker': 1,
+            'defaults': {
+                'model': 'cross',
+                'textures': {
+                    'cross': 'tfc:blocks/saplings/%s' % wood_type
+                }
+            },
+            'variants': {
+                'normal': [{}],
+            },
+        }, f)
+
+for ore_type in ores:
+    if ores[ore_type]:
+        for grade in ['poor', 'rich']:
+            with open('models/item/%s_ore_%s.json' % (grade, ore_type), 'w') as f:
+                json.dump({
+                    'parent': 'item/generated',
+                    'textures': {
+                        'layer0': 'tfc:items/ore/%s/%s' % (grade, ore_type)
+                    },
+                }, f)
+    with open('models/item/ore_%s.json' % ore_type, 'w') as f:
+        json.dump({
+            'parent': 'item/generated',
+            'textures': {
+                'layer0': 'tfc:items/ore/%s' % ore_type
+            },
         }, f)

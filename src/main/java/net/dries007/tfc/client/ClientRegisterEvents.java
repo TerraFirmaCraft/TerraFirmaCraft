@@ -3,6 +3,7 @@ package net.dries007.tfc.client;
 import net.dries007.tfc.objects.blocks.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.items.ItemOreTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
@@ -38,6 +39,15 @@ public final class ClientRegisterEvents
     public static void registerModels(ModelRegistryEvent event)
     {
         ModelLoader.setCustomModelResourceLocation(ItemsTFC.WAND, 0, new ModelResourceLocation(ItemsTFC.WAND.getRegistryName().toString()));
+
+        for (ItemOreTFC item : ItemsTFC.getAllOreItems())
+        {
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(MOD_ID + ':' + item.getRegistryName().getResourcePath()));
+            if (item.ore.graded)
+                for (BlockOreTFC.Grade grade : BlockOreTFC.Grade.values())
+                    if (grade != BlockOreTFC.Grade.NORMAL)
+                        ModelLoader.setCustomModelResourceLocation(item, grade.getMeta(), new ModelResourceLocation(MOD_ID + ':' + grade.getName() + '_' + item.getRegistryName().getResourcePath()));
+        }
 
         for (Block block : BlocksTFC.getAllFluidBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());

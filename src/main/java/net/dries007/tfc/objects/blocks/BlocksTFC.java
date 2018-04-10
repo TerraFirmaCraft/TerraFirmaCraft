@@ -134,7 +134,7 @@ public final class BlocksTFC
             Builder<BlockOreTFC> b = ImmutableList.builder();
             for (Ore ore : Ore.values())
                 for (Rock rock : Rock.values())
-                    b.add(register(r, (ore.name() + "_" +  rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ORES));
+                    b.add(register(r, (ore.name() + "_" +  rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ORE_BLOCKS));
             allOreBlocks = b.build();
             normalItemBlocks.addAll(allOreBlocks);
         }
