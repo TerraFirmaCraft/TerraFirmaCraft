@@ -1,1 +1,1 @@
-{"forge_marker": 1, "variants": {"normal": {"model": "cross", "textures": {"cross": "tfc:blocks/saplings/birch"}}, "inventory": {"model": "builtin/generated", "textures": {"layer0": "tfc:blocks/saplings/birch"}, "transform": "forge:default-item"}}}
+{"forge_marker": 1, "defaults": {"model": "cross", "textures": {"cross": "tfc:blocks/saplings/birch", "layer0": "tfc:blocks/saplings/birch"}}, "variants": {"normal": [{}], "inventory": {"model": "builtin/generated", "transform": "forge:default-item"}}}
