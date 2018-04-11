@@ -22,5 +22,6 @@ public class BlockFenceGateTFC extends BlockFenceGate
         super(BlockPlanks.EnumType.OAK);
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         this.wood = wood;
+        setHarvestLevel("axe", 0);
     }
 }

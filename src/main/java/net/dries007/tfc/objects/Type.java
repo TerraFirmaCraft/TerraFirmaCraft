@@ -26,4 +26,27 @@ public enum Type
         this.isAffectedByGravity = isAffectedByGravity;
         this.isGrass = isGrass;
     }
+
+    public Type getNonGrassVersion()
+    {
+        if (!isGrass) return this;
+        switch (this)
+        {
+            case GRASS: return DIRT;
+            case DRY_GRASS: return DIRT;
+            case CLAY_GRASS: return CLAY;
+        }
+        throw new IllegalStateException("Someone forgot to add enum constants to this switch case...");
+    }
+
+    public Type getGrassVersion(Type spreader)
+    {
+        if (!spreader.isGrass) throw new IllegalArgumentException("Non-grass can't spread.");
+        switch (this)
+        {
+            case DIRT: return spreader == DRY_GRASS ? DRY_GRASS : GRASS;
+            case CLAY: return CLAY_GRASS;
+        }
+        throw new IllegalArgumentException("You cannot get grass from rock types.");
+    }
 }

@@ -1,10 +1,11 @@
 package net.dries007.tfc.objects.blocks;
 
+import net.dries007.tfc.util.Helpers;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -27,12 +28,20 @@ public class BlockPeatGrass extends BlockPeat
     public BlockPeatGrass(Material material)
     {
         super(material);
+        setSoundType(SoundType.GROUND);
+        setTickRandomly(true);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
         return 0;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
     }
 
     @SuppressWarnings("deprecation")
@@ -49,14 +58,8 @@ public class BlockPeatGrass extends BlockPeat
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Items.AIR; //todo
-    }
-
-    @Override
-    public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune)
-    {
-        //todo
-//        super.dropBlockAsItemWithChance(worldIn, pos, state, chance, fortune);
+        //noinspection ConstantConditions
+        return Item.getItemFromBlock(BlocksTFC.PEAT);
     }
 
     @Override
@@ -67,8 +70,9 @@ public class BlockPeatGrass extends BlockPeat
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
+    public void randomTick(World world, BlockPos pos, IBlockState state, Random rand)
     {
-        return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
+        if (world.isRemote) return;
+        Helpers.spreadGrass(world, pos, state, rand);
     }
 }

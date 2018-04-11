@@ -33,7 +33,8 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
         super();
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         this.wood = wood;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(STAGE, 0));
+        setDefaultState(blockState.getBaseState().withProperty(STAGE, 0));
+        setHardness(0.0F);
     }
 
     @Override
