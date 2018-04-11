@@ -43,18 +43,19 @@ public final class BlocksTFC
     public static final BlockPeat PEAT = null;
     public static final BlockPeat PEAT_GRASS = null;
 
+    // All these are for use in model registration. Do not use for block lookups.
+    // Use the static get methods in the classes instead.
     private static ImmutableList<Block> allNormalItemBlocks;
     private static ImmutableList<Block> allInventoryItemBlocks;
     private static ImmutableList<BlockFluidBase> allFluidBlocks;
     private static ImmutableList<BlockRockVariant> allBlockRockVariants;
+    private static ImmutableList<BlockOreTFC> allOreBlocks;
+    private static ImmutableList<BlockWallTFC> allWallBlocks;
     private static ImmutableList<BlockLogTFC> allLogBlocks;
     private static ImmutableList<BlockLeavesTFC> allLeafBlocks;
-    private static ImmutableList<BlockPlanksTFC> allPlankBlocks;
-    private static ImmutableList<BlockOreTFC> allOreBlocks;
-    private static ImmutableList<BlockFenceTFC> allFenceBlocks;
     private static ImmutableList<BlockFenceGateTFC> allFenceGateBlocks;
     private static ImmutableList<BlockSaplingTFC> allSaplingBlocks;
-    private static ImmutableList<BlockWallTFC> allWallBlocks;
+    private static ImmutableList<BlockDoorTFC> allDoorBlocks;
 
     public static ImmutableList<Block> getAllNormalItemBlocks()
     {
@@ -72,6 +73,10 @@ public final class BlocksTFC
     {
         return allBlockRockVariants;
     }
+    public static ImmutableList<BlockLogTFC> getAllLogBlocks()
+    {
+        return allLogBlocks;
+    }
     public static ImmutableList<BlockLeavesTFC> getAllLeafBlocks()
     {
         return allLeafBlocks;
@@ -80,29 +85,21 @@ public final class BlocksTFC
     {
         return allOreBlocks;
     }
-    public static ImmutableList<BlockLogTFC> getAllLogBlocks()
-    {
-        return allLogBlocks;
-    }
-    public static ImmutableList<BlockPlanksTFC> getAllPlankBlocks()
-    {
-        return allPlankBlocks;
-    }
-    public static ImmutableList<BlockFenceTFC> getAllFenceBlocks()
-    {
-        return allFenceBlocks;
-    }
     public static ImmutableList<BlockFenceGateTFC> getAllFenceGateBlocks()
     {
         return allFenceGateBlocks;
     }
-    public static ImmutableList<BlockSaplingTFC> getAllSaplingBlocksBlocks()
-    {
-        return allSaplingBlocks;
-    }
     public static ImmutableList<BlockWallTFC> getAllWallBlocks()
     {
         return allWallBlocks;
+    }
+    public static ImmutableList<BlockSaplingTFC> getAllSaplingBlocks()
+    {
+        return allSaplingBlocks;
+    }
+    public static ImmutableList<BlockDoorTFC> getAllDoorBlocks()
+    {
+        return allDoorBlocks;
     }
 
     @SubscribeEvent
@@ -154,34 +151,33 @@ public final class BlocksTFC
         }
 
         {
-            Builder<BlockLogTFC> b1 = ImmutableList.builder();
-            Builder<BlockLeavesTFC> b2 = ImmutableList.builder();
-            Builder<BlockPlanksTFC> b3 = ImmutableList.builder();
-            Builder<BlockFenceTFC> b4 = ImmutableList.builder();
-            Builder<BlockFenceGateTFC> b5 = ImmutableList.builder();
-            Builder<BlockSaplingTFC> b6 = ImmutableList.builder();
+            Builder<BlockLogTFC> logs = ImmutableList.builder();
+            Builder<BlockLeavesTFC> leaves = ImmutableList.builder();
+            Builder<BlockFenceGateTFC> fenceGates = ImmutableList.builder();
+            Builder<BlockSaplingTFC> saplings = ImmutableList.builder();
+            Builder<BlockDoorTFC> doors = ImmutableList.builder();
 
             for (Wood wood : Wood.values())
             {
-                b1.add(register(r, "log_" + wood.name().toLowerCase(), new BlockLogTFC(wood), CT_WOOD));
-                b2.add(register(r, "leaves_" + wood.name().toLowerCase(), new BlockLeavesTFC(wood), CT_WOOD));
-                b3.add(register(r, "planks_" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CT_WOOD));
-                b4.add(register(r, "fence_" + wood.name().toLowerCase(), new BlockFenceTFC(wood), CT_WOOD));
-                b5.add(register(r, "fence_gate_" + wood.name().toLowerCase(), new BlockFenceGateTFC(wood), CT_WOOD));
-                b6.add(register(r, "sapling_" + wood.name().toLowerCase(), new BlockSaplingTFC(wood), CT_WOOD));
+                logs.add(register(r, "log_" + wood.name().toLowerCase(), new BlockLogTFC(wood), CT_WOOD));
+                leaves.add(register(r, "leaves_" + wood.name().toLowerCase(), new BlockLeavesTFC(wood), CT_WOOD));
+                normalItemBlocks.add(register(r, "planks_" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CT_WOOD));
+                inventoryItemBlocks.add(register(r, "fence_" + wood.name().toLowerCase(), new BlockFenceTFC(wood), CT_WOOD));
+                fenceGates.add(register(r, "fence_gate_" + wood.name().toLowerCase(), new BlockFenceGateTFC(wood), CT_WOOD));
+                saplings.add(register(r, "sapling_" + wood.name().toLowerCase(), new BlockSaplingTFC(wood), CT_WOOD));
+                if (wood != Wood.PALM) //todo: make this enum constant
+                    doors.add(register(r, "door_" + wood.name().toLowerCase(), new BlockDoorTFC(wood), CT_WOOD));
             }
-            allLogBlocks = b1.build();
-            allLeafBlocks = b2.build();
-            allPlankBlocks = b3.build();
-            allFenceBlocks = b4.build();
-            allFenceGateBlocks = b5.build();
-            allSaplingBlocks = b6.build();
-            normalItemBlocks.addAll(allLogBlocks);
+            allLogBlocks = logs.build();
+            allLeafBlocks = leaves.build();
+            allFenceGateBlocks = fenceGates.build();
+            allSaplingBlocks = saplings.build();
+            allDoorBlocks = doors.build();
+            //logs are special
             normalItemBlocks.addAll(allLeafBlocks);
-            normalItemBlocks.addAll(allPlankBlocks);
-            inventoryItemBlocks.addAll(allFenceBlocks);
             inventoryItemBlocks.addAll(allFenceGateBlocks);
             inventoryItemBlocks.addAll(allSaplingBlocks);
+            // doors are special
         }
 
         allNormalItemBlocks = normalItemBlocks.build();
@@ -218,7 +214,6 @@ public final class BlocksTFC
     }
 
     // todo: change to property of type? (soil & stone maybe?)
-    // todo: peat grass, clay grass
 
     public static boolean isRawStone(IBlockState current)
     {

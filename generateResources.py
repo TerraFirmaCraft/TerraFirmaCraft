@@ -28,7 +28,7 @@ zipfolder('assets_backups/{}.zip'.format(int(time.time())), 'src/main/resources/
 
 os.chdir('src/main/resources/assets/tfc/')
 
-rock_types = [
+ROCK_TYPES = [
     'granite',
     'diorite',
     'gabbro',
@@ -51,7 +51,7 @@ rock_types = [
     'gneiss',
     'marble',
 ]
-fullblock_types = [
+FULLBLOCK_TYPES = [
     'raw',
     'smooth',
     'cobble',
@@ -61,11 +61,11 @@ fullblock_types = [
     'dirt',
     'clay',
 ]
-grass_types = [
+GRASS_TYPES = [
     'grass',
     'dry_grass',
 ]
-ores = {
+ORE_TYPES = {
     'native_copper': True,
     'native_gold': True,
     'native_platinum': True,
@@ -102,7 +102,7 @@ ores = {
     'olivine': False,
     'lapis_lazuli': False,
 }
-woods = [
+WOOD_TYPES = [
     'ash',
     'aspen',
     'birch',
@@ -124,331 +124,242 @@ woods = [
     'palm',
 ]
 
-for rock_type in rock_types:
-    for block_type in fullblock_types:
-        with open('blockstates/%s_%s.json' % (block_type, rock_type), 'w') as f:
-            json.dump({
-                'forge_marker': 1,
-                'defaults': {
-                    # 'transform': 'forge:default-item',
-                    'model': 'cube_all',
-                    'textures': {
-                        'all': 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type)
-                    }
-                },
-                'variants': {
-                    'normal': [{}]
-                }
-            }, f)
 
-    for block_type in ores:
-        with open('blockstates/%s_%s.json' % (block_type, rock_type), 'w') as f:
-            json.dump({
-                'forge_marker': 1,
-                'defaults': {
-                    # 'transform': 'forge:default-item',
-                    'model': 'tfc:ore',
-                    'textures': {
-                        'all': 'tfc:blocks/stonetypes/raw/%s' % rock_type,
-                        'particle': 'tfc:blocks/stonetypes/raw/%s' % rock_type,
-                        'overlay': 'tfc:blocks/ores/%s' % block_type,
-                    }
-                },
-                'variants': {
-                    'normal': [{}]
-                }
-            }, f)
+def del_none(d):
+    """
+    https://stackoverflow.com/a/4256027/4355781
+    Modifies input!
+    """
+    for key, value in list(d.items()):
+        if value is None:
+            del d[key]
+        elif isinstance(value, dict):
+            del_none(value)
+    return d
 
-    for block_type in grass_types:
-        with open('blockstates/%s_%s.json' % (block_type, rock_type), 'w') as f:
-            json.dump({
-                'forge_marker': 1,
-                'defaults': {
-                    # 'transform': 'forge:default-item',
-                    'model': 'tfc:grass',
-                    'textures': {
-                        'all': 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
-                        'particle': 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
-                        'top': 'tfc:blocks/%s_top' % block_type,
-                        'north': 'tfc:blocks/%s_side' % block_type,
-                        'south': 'tfc:blocks/%s_side' % block_type,
-                        'east': 'tfc:blocks/%s_side' % block_type,
-                        'west': 'tfc:blocks/%s_side' % block_type,
-                    }
-                },
-                'variants': {
-                    side: [{}] if side is 'normal' else {
-                        'true': {
-                            'textures': {
-                                side: 'tfc:blocks/%s_top' % block_type,
-                            }
-                        },
-                        'false': {}
-                    } for side in ['north', 'south', 'east', 'west', 'normal']
-                }
-            }, f)
-    with open('blockstates/clay_grass_%s.json' % rock_type, 'w') as f:
-        json.dump({
+
+def blockstate(filename_parts, model, textures, variants=None):
+    """
+    Magic.
+    :param filename_parts: Iterable of strings.
+    :param model: String or None
+    :param textures: Dict of <string>:<string> OR <iterable of strings>:<string>
+    :param variants: Dict of <string>:<variant> OR "normal":None (to disable the normal default)
+    """
+    _variants = {
+        'normal': [{}]
+    }
+    if variants:
+        _variants.update(variants)
+
+    _textures = {}
+    for key, val in textures.items():
+        if isinstance(key, str):
+            _textures[key] = val
+        else:
+            for x in key:
+                _textures[x] = val
+
+    with open('blockstates/%s.json' % '_'.join(filename_parts), 'w') as file:
+        json.dump(del_none({
             'forge_marker': 1,
             'defaults': {
-                # 'transform': 'forge:default-item',
-                'model': 'tfc:grass',
-                'textures': {
-                    'all': 'tfc:blocks/stonetypes/clay/%s' % rock_type,
-                    'particle': 'tfc:blocks/stonetypes/clay/%s' % rock_type,
-                    'top': 'tfc:blocks/grass_top',
-                    'north': 'tfc:blocks/grass_side',
-                    'south': 'tfc:blocks/grass_side',
-                    'east': 'tfc:blocks/grass_side',
-                    'west': 'tfc:blocks/grass_side',
-                }
+                'model': model,
+                'textures': _textures,
             },
-            'variants': {
-                side: [{}] if side is 'normal' else {
-                    'true': {
-                        'textures': {
-                            side: 'tfc:blocks/grass_top',
-                        }
-                    },
-                    'false': {}
-                } for side in ['north', 'south', 'east', 'west', 'normal']
-            }
-        }, f)
+            'variants': _variants,
+        }), file)
 
+
+def cube_all(filename_parts, texture, variants=None, model='cube_all'):
+    blockstate(filename_parts, model, textures={'all': texture}, variants=variants)
+
+
+def model(folder, filename_parts, parent, textures):
+    with open('models/%s/%s.json' % (folder, '_'.join(filename_parts)), 'w') as file:
+        json.dump(del_none({
+            'parent': parent,
+            'textures': textures,
+        }), file)
+
+
+def item(filename_parts, *layers):
+    model('item', filename_parts, 'item/generated', {'layer%d' % i: v for i, v in enumerate(layers)})
+
+
+# BLOCKSTATES
+
+# ROCK STUFF
+for rock_type in ROCK_TYPES:
+    # FULL BLOCKS
+    for block_type in FULLBLOCK_TYPES:
+        cube_all((block_type, rock_type), 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type))
+
+    # ORES
+    for block_type in ORE_TYPES:
+        blockstate((block_type, rock_type), 'tfc:ore', textures={
+            ('all', 'particle'): 'tfc:blocks/stonetypes/raw/%s' % rock_type,
+            'overlay': 'tfc:blocks/ores/%s' % block_type,
+        })
+
+    # GRASS
+    for block_type in GRASS_TYPES:
+        blockstate((block_type, rock_type), 'tfc:grass', textures={
+            ('all', 'particle'): 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
+            'particle': 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
+            'top': 'tfc:blocks/%s_top' % block_type,
+            ('north', 'south', 'east', 'west'): 'tfc:blocks/%s_side' % block_type,
+        }, variants={
+            side: {
+                'true': {'textures': {side: 'tfc:blocks/%s_top' % block_type}},
+                'false': {}
+            } for side in ['north', 'south', 'east', 'west']
+        })
+
+    # CLAY GRASS
+    blockstate(('clay_grass', rock_type), 'tfc:grass', textures={
+        ('all', 'particle'): 'tfc:blocks/stonetypes/clay/%s' % rock_type,
+        'top': 'tfc:blocks/grass_top',
+        ('north', 'south', 'east', 'west'): 'tfc:blocks/grass_side',
+    }, variants={
+        side: {
+            'true': {'textures': {side: 'tfc:blocks/grass_top'}},
+            'false': {}
+        } for side in ['north', 'south', 'east', 'west']
+    })
+
+    # WALLS (cobble & bricks only)
     for block_type in ['cobble', 'bricks']:
-        with open('blockstates/wall_%s_%s.json' % (block_type, rock_type), 'w') as f:
-            json.dump({
-                'forge_marker': 1,
-                'defaults': {
-                    # 'transform': 'forge:default-item',
-                    'model': 'tfc:empty',
-                    'textures': {
-                        'particle': 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type),
-                        'wall': 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type),
-                    },
-                },
-                'variants': {
-                    # 'normal': [{}],
-                    'inventory': {'model': 'wall_inventory'},
-                    # 'variant': {'cobblestone': {}, 'mossy_cobblestone': {}},  # unused
-                    'north': {
-                        'true': {
-                            'submodel': 'wall_side',
-                        },
-                        'false': {}
-                    },
-                    'east': {
-                        'true': {
-                            'submodel': 'wall_side',
-                            'y': 90,
-                        },
-                        'false': {}
-                    },
-                    'south': {
-                        'true': {
-                            'submodel': 'wall_side',
-                            'y': 180,
-                        },
-                        'false': {}
-                    },
-                    'west': {
-                        'true': {
-                            'submodel': 'wall_side',
-                            'y': 270,
-                        },
-                        'false': {}
-                    },
-                    'up': {
-                        'true': {
-                            'submodel': 'wall_post',
-                            'y': 270,
-                        },
-                        'false': {}
-                    },
-                },
-            }, f)
+        blockstate(('wall', block_type, rock_type), 'tfc:empty', textures={
+            ('wall', 'particle'): 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type),
+        }, variants={
+            'normal': None,
+            'inventory': {'model': 'wall_inventory'},
+            'north': {'true': {'submodel': 'wall_side'}, 'false': {}},
+            'east': {'true': {'submodel': 'wall_side', 'y': 90}, 'false': {}},
+            'south': {'true': {'submodel': 'wall_side', 'y': 180}, 'false': {}},
+            'west': {'true': {'submodel': 'wall_side', 'y': 270}, 'false': {}},
+            'up': {'true': {'submodel': 'wall_post', 'y': 270}, 'false': {}}
+        })
 
-for wood_type in woods:
-    with open('blockstates/log_%s.json' % wood_type, 'w') as f:
-        json.dump({
-            'forge_marker': 1,
-            'defaults': {
-                # 'transform': 'forge:default-item',
-                'model': 'cube_column',
-                'textures': {
-                    'particle': 'tfc:blocks/wood/log/%s' % wood_type,
-                    'end': 'tfc:blocks/wood/top/%s' % wood_type,
-                    'side': 'tfc:blocks/wood/log/%s' % wood_type,
-                }
-            },
-            'variants': {
-                'normal': [{}],
-                'axis': {
-                    'y': {},
-                    'z': {'x': 90},
-                    'x': {'x': 90, 'y': 90},
-                    'none': {
-                        'model': 'cube_all',
-                        'textures': {
-                            'all': 'tfc:blocks/wood/log/%s' % wood_type,
-                        }
-                    }
-                }
+# WOOD STUFF
+for wood_type in WOOD_TYPES:
+    # LOG BLOCKS
+    blockstate(('log', wood_type), 'cube_column', textures={
+        ('particle', 'side'): 'tfc:blocks/wood/log/%s' % wood_type,
+        'end': 'tfc:blocks/wood/top/%s' % wood_type,
+        'layer0': 'tfc:items/wood/log/%s' % wood_type,
+    }, variants={
+        'axis': {
+            'y': {},
+            'z': {'x': 90},
+            'x': {'x': 90, 'y': 90},
+            'none': {
+                'textures': {'end': 'tfc:blocks/wood/log/%s' % wood_type}
             }
-        }, f)
+        },
+        'small': {
+            'true': {'model': 'tfc:small_log'},
+            'false': {},
+        }
+    })
 
-    with open('blockstates/planks_%s.json' % wood_type, 'w') as f:
-        json.dump({
-            'forge_marker': 1,
-            'defaults': {
-                # 'transform': 'forge:default-item',
-                'model': 'cube_all',
-                'textures': {
-                    'all': 'tfc:blocks/wood/planks/%s' % wood_type
+    # PLANKS BLOCKS
+    cube_all(('planks', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
+    # LEAVES BLOCKS
+    cube_all(('leaves', wood_type), 'tfc:blocks/wood/leaves/%s' % wood_type, model='leaves')
+
+    # FENCES
+    blockstate(('fence', wood_type), 'fence_post', textures={
+        'texture': 'tfc:blocks/wood/planks/%s' % wood_type
+    }, variants={
+        'inventory': {'model': 'fence_inventory'},
+        'north': {'true': {'submodel': 'fence_side'}, 'false': {}},
+        'east': {'true': {'submodel': 'fence_side', 'y': 90}, 'false': {}},
+        'south': {'true': {'submodel': 'fence_side', 'y': 180}, 'false': {}},
+        'west': {'true': {'submodel': 'fence_side', 'y': 270}, 'false': {}},
+    })
+
+    # FENCE GATES
+    blockstate(('fence_gate', wood_type), 'fence_gate_closed', textures={
+        'texture': 'tfc:blocks/wood/planks/%s' % wood_type
+    }, variants={
+        'inventory': [{}],
+        'facing': {
+            'south': {},
+            'west': {'y': 90},
+            'north': {'y': 180},
+            'east': {'y': 270},
+        },
+        'open': {'true': {'model': 'fence_gate_open'}, 'false': {}},
+        'in_wall': {'true': {'transform': {'translation': [0, -3 / 16, 0]}}, 'false': {}},
+    })
+
+    # SAPLINGS
+    blockstate(('sapling', wood_type), 'cross', textures={
+        ('cross', 'layer0'): 'tfc:blocks/saplings/%s' % wood_type
+    }, variants={
+        'inventory': {
+            'model': 'builtin/generated',
+            'transform': 'forge:default-item'
+        }
+    })
+
+    # There is no method to this madness. Don't even try.
+    variants = {'normal': None,
+                "facing=east,half=lower,hinge=left,open=false": {"model": "door_bottom"},
+                "facing=south,half=lower,hinge=left,open=false": {"model": "door_bottom", "y": 90},
+                "facing=west,half=lower,hinge=left,open=false": {"model": "door_bottom", "y": 180},
+                "facing=north,half=lower,hinge=left,open=false": {"model": "door_bottom", "y": 270},
+                "facing=east,half=lower,hinge=right,open=false": {"model": "door_bottom_rh"},
+                "facing=south,half=lower,hinge=right,open=false": {"model": "door_bottom_rh", "y": 90},
+                "facing=west,half=lower,hinge=right,open=false": {"model": "door_bottom_rh", "y": 180},
+                "facing=north,half=lower,hinge=right,open=false": {"model": "door_bottom_rh", "y": 270},
+                "facing=east,half=lower,hinge=left,open=true": {"model": "door_bottom_rh", "y": 90},
+                "facing=south,half=lower,hinge=left,open=true": {"model": "door_bottom_rh", "y": 180},
+                "facing=west,half=lower,hinge=left,open=true": {"model": "door_bottom_rh", "y": 270},
+                "facing=north,half=lower,hinge=left,open=true": {"model": "door_bottom_rh"},
+                "facing=east,half=lower,hinge=right,open=true": {"model": "door_bottom", "y": 270},
+                "facing=south,half=lower,hinge=right,open=true": {"model": "door_bottom"},
+                "facing=west,half=lower,hinge=right,open=true": {"model": "door_bottom", "y": 90},
+                "facing=north,half=lower,hinge=right,open=true": {"model": "door_bottom", "y": 180},
+                "facing=east,half=upper,hinge=left,open=false": {"model": "door_top"},
+                "facing=south,half=upper,hinge=left,open=false": {"model": "door_top", "y": 90},
+                "facing=west,half=upper,hinge=left,open=false": {"model": "door_top", "y": 180},
+                "facing=north,half=upper,hinge=left,open=false": {"model": "door_top", "y": 270},
+                "facing=east,half=upper,hinge=right,open=false": {"model": "door_top_rh"},
+                "facing=south,half=upper,hinge=right,open=false": {"model": "door_top_rh", "y": 90},
+                "facing=west,half=upper,hinge=right,open=false": {"model": "door_top_rh", "y": 180},
+                "facing=north,half=upper,hinge=right,open=false": {"model": "door_top_rh", "y": 270},
+                "facing=east,half=upper,hinge=left,open=true": {"model": "door_top_rh", "y": 90},
+                "facing=south,half=upper,hinge=left,open=true": {"model": "door_top_rh", "y": 180},
+                "facing=west,half=upper,hinge=left,open=true": {"model": "door_top_rh", "y": 270},
+                "facing=north,half=upper,hinge=left,open=true": {"model": "door_top_rh"},
+                "facing=east,half=upper,hinge=right,open=true": {"model": "door_top", "y": 270},
+                "facing=south,half=upper,hinge=right,open=true": {"model": "door_top"},
+                "facing=west,half=upper,hinge=right,open=true": {"model": "door_top", "y": 90},
+                "facing=north,half=upper,hinge=right,open=true": {"model": "door_top", "y": 180}
                 }
-            },
-            'variants': {
-                'normal': [{}]
-            }
-        }, f)
+    blockstate(('door', wood_type), None, textures={
+        'bottom': 'tfc:blocks/wood/door/lower/%s' % wood_type,
+        'top': 'tfc:blocks/wood/door/upper/%s' % wood_type,
+    }, variants=variants)
 
-    with open('blockstates/leaves_%s.json' % wood_type, 'w') as f:
-        json.dump({
-            'forge_marker': 1,
-            'defaults': {
-                # 'transform': 'forge:default-item',
-                'model': 'leaves',
-                'textures': {
-                    'all': 'tfc:blocks/wood/leaves/%s' % wood_type
-                }
-            },
-            'variants': {
-                'normal': [{}]
-            }
-        }, f)
+# ITEMS
 
-    with open('blockstates/fence_%s.json' % wood_type, 'w') as f:
-        json.dump({
-            'forge_marker': 1,
-            'defaults': {
-                # 'transform': 'forge:default-item',
-                'model': 'fence_post',
-                'textures': {
-                    'texture': 'tfc:blocks/wood/planks/%s' % wood_type
-                }
-            },
-            'variants': {
-                'normal': [{}],
-                'inventory': {'model': 'fence_inventory'},
-                'north': {
-                    'true': {
-                        'submodel': 'fence_side',
-                    },
-                    'false': {}
-                },
-                'east': {
-                    'true': {
-                        'submodel': 'fence_side',
-                        'y': 90,
-                    },
-                    'false': {}
-                },
-                'south': {
-                    'true': {
-                        'submodel': 'fence_side',
-                        'y': 180,
-                    },
-                    'false': {}
-                },
-                'west': {
-                    'true': {
-                        'submodel': 'fence_side',
-                        'y': 270,
-                    },
-                    'false': {}
-                },
-            }
-        }, f)
-
-    with open('blockstates/fence_gate_%s.json' % wood_type, 'w') as f:
-        json.dump({
-            'forge_marker': 1,
-            'defaults': {
-                # 'transform': 'forge:default-item',
-                'model': 'fence_gate_closed',
-                'textures': {
-                    'texture': 'tfc:blocks/wood/planks/%s' % wood_type
-                }
-            },
-            'variants': {
-                'normal': [{}],
-                'inventory': [{}],
-                'facing': {
-                    'south': {},
-                    'west': {'y': 90},
-                    'north': {'y': 180},
-                    'east': {'y': 270},
-                },
-                'open': {
-                    'true': {
-                        'model': 'fence_gate_open',
-                    },
-                    'false': {}
-                },
-                'in_wall': {
-                    'true': {
-                        'transform': {
-                            'translation': [0, -3/16, 0]
-                        }
-                    },
-                    'false': {},
-                },
-            }
-        }, f)
-    with open('blockstates/sapling_%s.json' % wood_type, 'w') as f:
-        json.dump({
-            'forge_marker': 1,
-            'variants': {
-                'normal': {
-                    'model': 'cross',
-                    'textures': {
-                        'cross': 'tfc:blocks/saplings/%s' % wood_type
-                    }
-                },
-                'inventory': {
-                    'model': 'builtin/generated',
-                    'textures': {
-                        'layer0': 'tfc:blocks/saplings/%s' % wood_type
-                    },
-                    'transform': 'forge:default-item',
-                },
-            },
-        }, f)
-
-for ore_type in ores:
-    if ores[ore_type]:
+# ORES
+for ore_type in ORE_TYPES:
+    if ORE_TYPES[ore_type]:
         for grade in ['poor', 'rich']:
-            with open('models/item/%s_ore_%s.json' % (grade, ore_type), 'w') as f:
-                json.dump({
-                    'parent': 'item/generated',
-                    'textures': {
-                        'layer0': 'tfc:items/ore/%s/%s' % (grade, ore_type)
-                    },
-                }, f)
-    with open('models/item/ore_%s.json' % ore_type, 'w') as f:
-        json.dump({
-            'parent': 'item/generated',
-            'textures': {
-                'layer0': 'tfc:items/ore/%s' % ore_type
-            },
-        }, f)
+            item((grade, 'ore', ore_type), 'tfc:items/ore/%s/%s' % (grade, ore_type))
+    item(('ore', ore_type), 'tfc:items/ore/%s' % ore_type)
 
-for rock_type in rock_types:
+# ROCKS
+for rock_type in ROCK_TYPES:
     for item_type in ['rock', 'brick']:
-        with open('models/item/%s_%s.json' % (item_type, rock_type), 'w') as f:
-            json.dump({
-                'parent': 'item/generated',
-                'textures': {
-                    'layer0': 'tfc:items/stonetypes/%s/%s' % (item_type, rock_type)
-                },
-            }, f)
+        item((item_type, rock_type), 'tfc:items/stonetypes/%s/%s' % (item_type, rock_type))
+
+# DOORS
+for wood_type in WOOD_TYPES:
+    item(('log', wood_type), 'tfc:items/wood/log/%s' % wood_type)
+    item(('door', wood_type), 'tfc:items/wood/door/%s' % wood_type)

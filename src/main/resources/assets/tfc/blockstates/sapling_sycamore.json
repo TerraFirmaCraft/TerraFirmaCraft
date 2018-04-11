@@ -1,1 +1,1 @@
-{"forge_marker": 1, "variants": {"normal": {"model": "cross", "textures": {"cross": "tfc:blocks/saplings/sycamore"}}, "inventory": {"model": "builtin/generated", "textures": {"layer0": "tfc:blocks/saplings/sycamore"}, "transform": "forge:default-item"}}}
+{"forge_marker": 1, "defaults": {"model": "cross", "textures": {"cross": "tfc:blocks/saplings/sycamore", "layer0": "tfc:blocks/saplings/sycamore"}}, "variants": {"normal": [{}], "inventory": {"model": "builtin/generated", "transform": "forge:default-item"}}}
