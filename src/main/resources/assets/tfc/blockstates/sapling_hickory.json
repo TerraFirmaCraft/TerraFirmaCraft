@@ -1,1 +1,1 @@
-{"forge_marker": 1, "variants": {"normal": {"model": "cross", "textures": {"cross": "tfc:blocks/saplings/hickory"}}, "inventory": {"model": "builtin/generated", "textures": {"layer0": "tfc:blocks/saplings/hickory"}, "transform": "forge:default-item"}}}
+{"forge_marker": 1, "defaults": {"model": "cross", "textures": {"cross": "tfc:blocks/saplings/hickory", "layer0": "tfc:blocks/saplings/hickory"}}, "variants": {"normal": [{}], "inventory": {"model": "builtin/generated", "transform": "forge:default-item"}}}

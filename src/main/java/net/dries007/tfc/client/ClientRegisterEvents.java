@@ -1,15 +1,9 @@
 package net.dries007.tfc.client;
 
-import net.dries007.tfc.objects.blocks.BlockOreTFC;
-import net.dries007.tfc.objects.blocks.BlockRockVariant;
-import net.dries007.tfc.objects.blocks.BlockSaplingTFC;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.*;
 import net.dries007.tfc.objects.items.ItemOreTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFenceGate;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockWall;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -66,8 +60,14 @@ public final class ClientRegisterEvents
         for (Block block : BlocksTFC.getAllWallBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockWall.VARIANT).build());
 
-        for (Block block : BlocksTFC.getAllSaplingBlocksBlocks())
+        for (Block block : BlocksTFC.getAllLogBlocks())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockLogTFC.PLACED).build());
+
+        for (Block block : BlocksTFC.getAllSaplingBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockSaplingTFC.STAGE).build());
+
+        for (Block block : BlocksTFC.getAllDoorBlocks())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockDoor.POWERED).build());
 
         for (Block block : BlocksTFC.getAllNormalItemBlocks())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));

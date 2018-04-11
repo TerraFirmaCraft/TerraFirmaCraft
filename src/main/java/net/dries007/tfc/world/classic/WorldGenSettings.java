@@ -6,7 +6,7 @@ import net.dries007.tfc.Constants;
 @SuppressWarnings("WeakerAccess")
 public class WorldGenSettings
 {
-    public final int spawnFuzz;
+    public final int spawnFuzz; //todo: remove, vanilla does it with a gamerule
     public final boolean flatBedrock;
     public final int ravineRarity;
     public final int ravineHeight;

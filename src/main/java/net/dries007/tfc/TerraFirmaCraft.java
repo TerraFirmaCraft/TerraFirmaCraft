@@ -82,7 +82,6 @@ public class TerraFirmaCraft
         //todo: add loose rocks
         GameRegistry.registerWorldGenerator(new WorldGenSoilPits(), 6);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 7);
-        //todo: add large rocks
         //todo: add plants
     }
 

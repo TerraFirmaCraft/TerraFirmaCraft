@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.blocks.BlockDoorTFC;
+import net.dries007.tfc.objects.blocks.BlockLogTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -52,17 +54,23 @@ public final class ItemsTFC
 
         {
             for (Rock rock : Rock.values())
-                simpleItems.add(register(r, ("rock_" + rock.name()).toLowerCase(), new ItemRock(rock), CT_ROCK_ITEMS));
+                simpleItems.add(register(r, "rock_" + rock.name().toLowerCase(), new ItemRock(rock), CT_ROCK_ITEMS));
             for (Rock rock : Rock.values())
-                simpleItems.add(register(r, ("brick_" + rock.name()).toLowerCase(), new ItemBrickTFC(rock), CT_ROCK_ITEMS));
+                simpleItems.add(register(r, "brick_" + rock.name().toLowerCase(), new ItemBrickTFC(rock), CT_ROCK_ITEMS));
         }
 
         {
             Builder<ItemOreTFC> b = new Builder<>();
             for (Ore ore : Ore.values())
-                b.add(register(r, ("ore_" + ore.name()).toLowerCase(), new ItemOreTFC(ore), CT_ORE_ITEMS));
+                b.add(register(r, "ore_" + ore.name().toLowerCase(), new ItemOreTFC(ore), CT_ORE_ITEMS));
             allOreItems = b.build();
         }
+
+        for (BlockLogTFC log : BlocksTFC.getAllLogBlocks())
+            simpleItems.add(register(r, "log_" + log.wood.name().toLowerCase(), new ItemLogTFC(log), CT_WOOD));
+
+        for (BlockDoorTFC door : BlocksTFC.getAllDoorBlocks())
+            simpleItems.add(register(r, "door_" + door.wood.name().toLowerCase(), new ItemDoorTFC(door), CT_WOOD));
 
         allSimpleItems = simpleItems.build();
     }
