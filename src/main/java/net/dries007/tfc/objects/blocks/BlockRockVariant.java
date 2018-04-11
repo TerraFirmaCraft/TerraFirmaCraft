@@ -3,10 +3,13 @@ package net.dries007.tfc.objects.blocks;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Type;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
+import net.dries007.tfc.objects.items.ItemRock;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFallingBlock;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -41,9 +44,44 @@ public class BlockRockVariant extends Block implements IFallingBlock
         TABLE.put(rock, type, this);
         this.type = type;
         this.rock = rock;
-        if (type == Type.GRASS || type == Type.DRY_GRASS || type.isAffectedByGravity)
+        if (type.isGrass) setTickRandomly(true);
+        switch (type)
         {
-//            this.setTickRandomly(true); //todo: everyone for caveins? For dirt rolling down?
+            case BRICKS:
+            case RAW:
+                setSoundType(SoundType.STONE);
+                setHardness(2.0F).setResistance(10.0F);
+                setHarvestLevel("pickaxe", 0);
+                break;
+            case COBBLE:
+            case SMOOTH:
+                setSoundType(SoundType.STONE);
+                setHardness(1.5F).setResistance(10.0F);
+                setHarvestLevel("pickaxe", 0);
+                break;
+            case SAND:
+                setSoundType(SoundType.SAND);
+                setHardness(0.5F);
+                setHarvestLevel("shovel", 0);
+                break;
+            case DIRT:
+                setSoundType(SoundType.GROUND);
+                setHardness(0.5F);
+                setHarvestLevel("shovel", 0);
+                break;
+            case GRAVEL:
+                setSoundType(SoundType.GROUND);
+                setHardness(0.6F);
+                setHarvestLevel("shovel", 0);
+                break;
+            case CLAY:
+            case CLAY_GRASS:
+            case GRASS:
+            case DRY_GRASS:
+                setSoundType(SoundType.PLANT);
+                setHardness(0.6F);
+                setHarvestLevel("shovel", 0);
+                break;
         }
     }
 
@@ -55,14 +93,39 @@ public class BlockRockVariant extends Block implements IFallingBlock
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Items.AIR; //todo
+        switch (type)
+        {
+            case RAW:
+                return ItemRock.get(rock);
+            case CLAY:
+            case CLAY_GRASS:
+                return Items.CLAY_BALL; // todo: own clay or event for clay making?
+            default:
+                return super.getItemDropped(state, rand, fortune);
+            case GRASS:
+            case DRY_GRASS:
+                return Item.getItemFromBlock(get(rock, Type.DIRT));
+        }
     }
 
     @Override
-    public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune)
+    public int damageDropped(IBlockState state)
     {
-        //todo
-//        super.dropBlockAsItemWithChance(worldIn, pos, state, chance, fortune);
+        return getMetaFromState(state);
+    }
+
+    @Override
+    public int quantityDropped(IBlockState state, int fortune, Random random)
+    {
+        // todo: see how 1710 handles this
+        switch (type)
+        {
+            case CLAY:
+            case CLAY_GRASS:
+                return 4;
+            default:
+                return super.quantityDropped(state, fortune, random);
+        }
     }
 
     @Override
@@ -157,6 +220,12 @@ public class BlockRockVariant extends Block implements IFallingBlock
         }
 
         return false;
-//        return super.canSustainPlant(state, world, pos, direction, plantable);
+    }
+
+    @Override
+    public void randomTick(World world, BlockPos pos, IBlockState state, Random rand)
+    {
+        if (world.isRemote) return;
+        if (type.isGrass) Helpers.spreadGrass(world, pos, state, rand);
     }
 }

@@ -22,5 +22,6 @@ public class BlockFenceTFC extends BlockFence
         super(Material.WOOD, Material.WOOD.getMaterialMapColor());
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         this.wood = wood;
+        setHarvestLevel("axe", 0);
     }
 }

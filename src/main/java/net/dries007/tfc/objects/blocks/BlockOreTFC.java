@@ -6,6 +6,7 @@ import net.dries007.tfc.objects.Type;
 import net.dries007.tfc.objects.items.ItemOreTFC;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -44,14 +45,17 @@ public class BlockOreTFC extends Block
         TABLE.put(ore, rock, this);
         this.ore = ore;
         this.rock = rock;
-        this.setDefaultState(blockState.getBaseState().withProperty(GRADE, Grade.NORMAL));
+        setDefaultState(blockState.getBaseState().withProperty(GRADE, Grade.NORMAL));
+        setSoundType(SoundType.STONE);
+        setHardness(2.0F).setResistance(10.0F);
+        setHarvestLevel("pickaxe", 0);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(GRADE, Grade.byMetadata(meta));
+        return getDefaultState().withProperty(GRADE, Grade.byMetadata(meta));
     }
 
     @Override
@@ -69,7 +73,7 @@ public class BlockOreTFC extends Block
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return ItemOreTFC.get(this.ore);
+        return ItemOreTFC.get(ore);
     }
 
     @Override
@@ -81,7 +85,7 @@ public class BlockOreTFC extends Block
     @Override
     public int quantityDropped(IBlockState state, int fortune, Random random)
     {
-        return super.quantityDropped(state, fortune, random);
+        return super.quantityDropped(state, fortune, random); // todo: see how 1710 handles this
     }
 
     @Override

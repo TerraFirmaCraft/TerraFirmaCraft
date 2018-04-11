@@ -30,8 +30,8 @@ public class BlockLeavesTFC extends BlockLeaves
     {
         this.wood = wood;
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
-        this.setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true));
-        this.leavesFancy = true; // there doesn't seem to be an even for catching changing this, so lets not bother
+        setDefaultState(blockState.getBaseState().withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true));
+        leavesFancy = true; // there doesn't seem to be an even for catching changing this, so lets not bother
     }
 
     @Override

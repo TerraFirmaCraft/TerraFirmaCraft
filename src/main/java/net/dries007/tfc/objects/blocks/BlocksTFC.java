@@ -201,7 +201,6 @@ public final class BlocksTFC
     private static <T extends Block> T register(IForgeRegistry<Block> r, String name, T block, CreativeTabs ct)
     {
         block.setCreativeTab(ct);
-        block.setResistance(0).setHardness(0); // todo: remove
         return register(r, name, block);
     }
 
