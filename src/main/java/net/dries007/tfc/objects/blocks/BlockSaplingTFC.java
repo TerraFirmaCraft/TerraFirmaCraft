@@ -1,6 +1,9 @@
 package net.dries007.tfc.objects.blocks;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.Wood;
+
+import net.dries007.tfc.world.classic.worldgen.WorldGenTree;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.properties.PropertyInteger;
@@ -35,6 +38,13 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
         this.wood = wood;
         setDefaultState(blockState.getBaseState().withProperty(STAGE, 0));
         setHardness(0.0F);
+    }
+
+    @Override
+    public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
+    {
+        WorldGenTree treeGenerator = new WorldGenTree(wood, false); //check out what the notifier is for.
+        treeGenerator.grow(world, random, blockPos, blockState);
     }
 
     @Override
@@ -82,106 +92,6 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
         }
     }
 
-    public void generateTree(World world, BlockPos blockPos, IBlockState blockState, Random random)
-    {
-        // todo: forge event
-
-        //todo: actually generate
-
-        /*if (TerrainGen.saplingGrowTree(world, random, blockPos)) {
-            WorldGenerator worldgenerator = random.nextInt(10) == 0 ? new WorldGenBigTree(true) : new WorldGenTrees(true);
-            int i = 0;
-            int j = 0;
-            boolean flag = false;
-            IBlockState iblockstate;
-            switch((BlockPlanks.EnumType)blockState.getValue(TYPE)) {
-                case SPRUCE:
-                    label70:
-                    for(i = 0; i >= -1; --i) {
-                        for(j = 0; j >= -1; --j) {
-                            if (this.isTwoByTwoOfType(world, blockPos, i, j, BlockPlanks.EnumType.SPRUCE)) {
-                                worldgenerator = new WorldGenMegaPineTree(false, random.nextBoolean());
-                                flag = true;
-                                break label70;
-                            }
-                        }
-                    }
-
-                    if (!flag) {
-                        i = 0;
-                        j = 0;
-                        worldgenerator = new WorldGenTaiga2(true);
-                    }
-                    break;
-                case BIRCH:
-                    worldgenerator = new WorldGenBirchTree(true, false);
-                    break;
-                case JUNGLE:
-                    iblockstate = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
-                    IBlockState iblockstate1 = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, false);
-
-                    label84:
-                    for(i = 0; i >= -1; --i) {
-                        for(j = 0; j >= -1; --j) {
-                            if (this.isTwoByTwoOfType(world, blockPos, i, j, BlockPlanks.EnumType.JUNGLE)) {
-                                worldgenerator = new WorldGenMegaJungle(true, 10, 20, iblockstate, iblockstate1);
-                                flag = true;
-                                break label84;
-                            }
-                        }
-                    }
-
-                    if (!flag) {
-                        i = 0;
-                        j = 0;
-                        worldgenerator = new WorldGenTrees(true, 4 + random.nextInt(7), iblockstate, iblockstate1, false);
-                    }
-                    break;
-                case ACACIA:
-                    worldgenerator = new WorldGenSavannaTree(true);
-                    break;
-                case DARK_OAK:
-                    label98:
-                    for(i = 0; i >= -1; --i) {
-                        for(j = 0; j >= -1; --j) {
-                            if (this.isTwoByTwoOfType(world, blockPos, i, j, BlockPlanks.EnumType.DARK_OAK)) {
-                                worldgenerator = new WorldGenCanopyTree(true);
-                                flag = true;
-                                break label98;
-                            }
-                        }
-                    }
-
-                    if (!flag) {
-                        return;
-                    }
-                case OAK:
-            }
-
-            iblockstate = Blocks.AIR.getDefaultState();
-            if (flag) {
-                world.setBlockState(blockPos.add(i, 0, j), iblockstate, 4);
-                world.setBlockState(blockPos.add(i + 1, 0, j), iblockstate, 4);
-                world.setBlockState(blockPos.add(i, 0, j + 1), iblockstate, 4);
-                world.setBlockState(blockPos.add(i + 1, 0, j + 1), iblockstate, 4);
-            } else {
-                world.setBlockState(blockPos, iblockstate, 4);
-            }
-
-            if (!((WorldGenerator)worldgenerator).generate(world, random, blockPos.add(i, 0, j))) {
-                if (flag) {
-                    world.setBlockState(blockPos.add(i, 0, j), blockState, 4);
-                    world.setBlockState(blockPos.add(i + 1, 0, j), blockState, 4);
-                    world.setBlockState(blockPos.add(i, 0, j + 1), blockState, 4);
-                    world.setBlockState(blockPos.add(i + 1, 0, j + 1), blockState, 4);
-                } else {
-                    world.setBlockState(blockPos, blockState, 4);
-                }
-            }
-
-        }*/
-    }
-
     @Override
     public boolean canGrow(World world, BlockPos blockPos, IBlockState iBlockState, boolean b)
     {
@@ -191,17 +101,7 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     @Override
     public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, IBlockState iBlockState)
     {
+        TerraFirmaCraft.getLog().info("canUseBoneMeal called");
         return true;
-    }
-
-    @Override
-    public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
-    {
-        // todo: see what 1710 checks
-        /*if ((Integer)state.getValue(STAGE) == 0) {
-            world.setBlockState(pos, state.cycleProperty(STAGE), 4);
-        } else {*/
-        this.generateTree(world, blockPos, blockState, random);
-        //}
     }
 }
