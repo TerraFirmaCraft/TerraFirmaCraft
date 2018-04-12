@@ -50,6 +50,7 @@ public class TerraFirmaCraft
     public void preInit(FMLPreInitializationEvent event)
     {
         log = event.getModLog();
+        log.debug("If you can see this, debug logging is working :)");
 
         // No need to sync config here, forge magic
 

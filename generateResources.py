@@ -252,7 +252,9 @@ def blockstate(filename_parts, model, textures, variants=None):
             for x in key:
                 _textures[x] = val
 
-    with open('blockstates/%s.json' % '_'.join(filename_parts), 'w') as file:
+    p = os.path.join('blockstates', *filename_parts) + '.json'
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, 'w') as file:
         json.dump(del_none({
             'forge_marker': 1,
             'defaults': {
@@ -267,8 +269,10 @@ def cube_all(filename_parts, texture, variants=None, model='cube_all'):
     blockstate(filename_parts, model, textures={'all': texture}, variants=variants)
 
 
-def model(folder, filename_parts, parent, textures):
-    with open('models/%s/%s.json' % (folder, '_'.join(filename_parts)), 'w') as file:
+def model(filename_parts, parent, textures):
+    p = os.path.join('models', *filename_parts) + '.json'
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, 'w') as file:
         json.dump(del_none({
             'parent': parent,
             'textures': textures,
@@ -276,7 +280,7 @@ def model(folder, filename_parts, parent, textures):
 
 
 def item(filename_parts, *layers):
-    model('item', filename_parts, 'item/generated', {'layer%d' % i: v for i, v in enumerate(layers)})
+    model(('item', *filename_parts), 'item/generated', {'layer%d' % i: v for i, v in enumerate(layers)})
 
 
 # BLOCKSTATES
@@ -289,7 +293,7 @@ for rock_type in ROCK_TYPES:
 
     # ORES
     for block_type in ORE_TYPES:
-        blockstate((block_type, rock_type), 'tfc:ore', textures={
+        blockstate(('ore', block_type, rock_type), 'tfc:ore', textures={
             ('all', 'particle'): 'tfc:blocks/stonetypes/raw/%s' % rock_type,
             'overlay': 'tfc:blocks/ores/%s' % block_type,
         })
@@ -337,7 +341,7 @@ for rock_type in ROCK_TYPES:
 # WOOD STUFF
 for wood_type in WOOD_TYPES:
     # LOG BLOCKS
-    blockstate(('log', wood_type), 'cube_column', textures={
+    blockstate(('wood', 'log', wood_type), 'cube_column', textures={
         ('particle', 'side'): 'tfc:blocks/wood/log/%s' % wood_type,
         'end': 'tfc:blocks/wood/top/%s' % wood_type,
         'layer0': 'tfc:items/wood/log/%s' % wood_type,
@@ -357,12 +361,12 @@ for wood_type in WOOD_TYPES:
     })
 
     # PLANKS BLOCKS
-    cube_all(('planks', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
+    cube_all(('wood', 'planks', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
     # LEAVES BLOCKS
-    cube_all(('leaves', wood_type), 'tfc:blocks/wood/leaves/%s' % wood_type, model='leaves')
+    cube_all(('wood', 'leaves', wood_type), 'tfc:blocks/wood/leaves/%s' % wood_type, model='leaves')
 
     # FENCES
-    blockstate(('fence', wood_type), 'fence_post', textures={
+    blockstate(('wood', 'fence', wood_type), 'fence_post', textures={
         'texture': 'tfc:blocks/wood/planks/%s' % wood_type
     }, variants={
         'inventory': {'model': 'fence_inventory'},
@@ -373,7 +377,7 @@ for wood_type in WOOD_TYPES:
     })
 
     # FENCE GATES
-    blockstate(('fence_gate', wood_type), 'fence_gate_closed', textures={
+    blockstate(('wood', 'fence_gate', wood_type), 'fence_gate_closed', textures={
         'texture': 'tfc:blocks/wood/planks/%s' % wood_type
     }, variants={
         'inventory': [{}],
@@ -388,7 +392,7 @@ for wood_type in WOOD_TYPES:
     })
 
     # SAPLINGS
-    blockstate(('sapling', wood_type), 'cross', textures={
+    blockstate(('wood', 'sapling', wood_type), 'cross', textures={
         ('cross', 'layer0'): 'tfc:blocks/saplings/%s' % wood_type
     }, variants={
         'inventory': {
@@ -432,7 +436,7 @@ for wood_type in WOOD_TYPES:
                 "facing=west,half=upper,hinge=right,open=true": {"model": "door_top", "y": 90},
                 "facing=north,half=upper,hinge=right,open=true": {"model": "door_top", "y": 180}
                 }
-    blockstate(('door', wood_type), None, textures={
+    blockstate(('wood', 'door', wood_type), None, textures={
         'bottom': 'tfc:blocks/wood/door/lower/%s' % wood_type,
         'top': 'tfc:blocks/wood/door/upper/%s' % wood_type,
     }, variants=variants)
@@ -443,8 +447,8 @@ for wood_type in WOOD_TYPES:
 for ore_type in ORE_TYPES:
     if ORE_TYPES[ore_type]:
         for grade in ['poor', 'rich']:
-            item((grade, 'ore', ore_type), 'tfc:items/ore/%s/%s' % (grade, ore_type))
-    item(('ore', ore_type), 'tfc:items/ore/%s' % ore_type)
+            item(('ore', grade, ore_type), 'tfc:items/ore/%s/%s' % (grade, ore_type))
+    item(('ore', 'normal', ore_type), 'tfc:items/ore/%s' % ore_type)
 
 # ROCKS
 for rock_type in ROCK_TYPES:
@@ -453,20 +457,19 @@ for rock_type in ROCK_TYPES:
 
 # DOORS
 for wood_type in WOOD_TYPES:
-    item(('log', wood_type), 'tfc:items/wood/log/%s' % wood_type)
-    item(('door', wood_type), 'tfc:items/wood/door/%s' % wood_type)
+    item(('wood', 'log', wood_type), 'tfc:items/wood/log/%s' % wood_type)
+    item(('wood', 'door', wood_type), 'tfc:items/wood/door/%s' % wood_type)
 
 # GEMS
 for gem in GEM_TYPES:
     for grade in GEM_GRADES:
-        item(('gem', gem, grade), 'tfc:items/gem/%s/%s' % (grade, gem))
+        item(('gem', grade, gem), 'tfc:items/gem/%s/%s' % (grade, gem))
 
 # METALS
 for item_type, tool_item in METAL_ITEMS.items():
     for metal, tool_metal in METAL_TYPES.items():
         if tool_item and not tool_metal:
             continue
-        item((item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal))
-        print('item.tfc.', item_type.replace('_', '.'), '.', metal.replace('_', '.'), '.name=', metal.replace('_', ' ').title(), ' ', item_type.replace('_', ' ').title(), sep='')
+        item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal))
 for x in ['ingot', 'unshaped']:
-    item((x, 'unknown'), 'tfc:items/metal/%s/%s' % (x, 'unknown'))
+    item(('metal', x, 'unknown'), 'tfc:items/metal/%s/%s' % (x, 'unknown'))
