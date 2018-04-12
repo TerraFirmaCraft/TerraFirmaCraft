@@ -127,7 +127,7 @@ public final class BlocksTFC
             Builder<BlockRockVariant> b = ImmutableList.builder();
             for (Type type : Type.values())
                 for (Rock rock : Rock.values())
-                    b.add(register(r, (type.name() + "_" +  rock.name()).toLowerCase(), type.isGrass ? new BlockRockVariantConnected(type, rock) : new BlockRockVariant(type, rock), CT_ROCK_BLOCKS));
+                    b.add(register(r, (type.name() + "/" +  rock.name()).toLowerCase(), type.isGrass ? new BlockRockVariantConnected(type, rock) : new BlockRockVariant(type, rock), CT_ROCK_BLOCKS));
             allBlockRockVariants = b.build();
             normalItemBlocks.addAll(allBlockRockVariants);
         }
@@ -136,7 +136,7 @@ public final class BlocksTFC
             Builder<BlockOreTFC> b = ImmutableList.builder();
             for (Ore ore : Ore.values())
                 for (Rock rock : Rock.values())
-                    b.add(register(r, (ore.name() + "_" +  rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ORE_BLOCKS));
+                    b.add(register(r, ("ore/"+ ore.name() + "/" +  rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ORE_BLOCKS));
             allOreBlocks = b.build();
             normalItemBlocks.addAll(allOreBlocks);
         }
@@ -145,7 +145,7 @@ public final class BlocksTFC
             Builder<BlockWallTFC> b = ImmutableList.builder();
             for (Type type : new Type[]{Type.COBBLE, Type.BRICKS})
                 for (Rock rock : Rock.values())
-                    b.add(register(r, ("wall_" + type.name() + "_" + rock.name()).toLowerCase(), new BlockWallTFC(BlockRockVariant.get(rock, type)), CT_DECORATIONS));
+                    b.add(register(r, ("wall/" + type.name() + "/" + rock.name()).toLowerCase(), new BlockWallTFC(BlockRockVariant.get(rock, type)), CT_DECORATIONS));
             allWallBlocks = b.build();
             inventoryItemBlocks.addAll(allWallBlocks);
         }
@@ -159,14 +159,14 @@ public final class BlocksTFC
 
             for (Wood wood : Wood.values())
             {
-                logs.add(register(r, "log_" + wood.name().toLowerCase(), new BlockLogTFC(wood), CT_WOOD));
-                leaves.add(register(r, "leaves_" + wood.name().toLowerCase(), new BlockLeavesTFC(wood), CT_WOOD));
-                normalItemBlocks.add(register(r, "planks_" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CT_WOOD));
-                inventoryItemBlocks.add(register(r, "fence_" + wood.name().toLowerCase(), new BlockFenceTFC(wood), CT_WOOD));
-                fenceGates.add(register(r, "fence_gate_" + wood.name().toLowerCase(), new BlockFenceGateTFC(wood), CT_WOOD));
-                saplings.add(register(r, "sapling_" + wood.name().toLowerCase(), new BlockSaplingTFC(wood), CT_WOOD));
+                logs.add(register(r, "wood/log/" + wood.name().toLowerCase(), new BlockLogTFC(wood), CT_WOOD));
+                leaves.add(register(r, "wood/leaves/" + wood.name().toLowerCase(), new BlockLeavesTFC(wood), CT_WOOD));
+                normalItemBlocks.add(register(r, "wood/planks/" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CT_WOOD));
+                inventoryItemBlocks.add(register(r, "wood/fence/" + wood.name().toLowerCase(), new BlockFenceTFC(wood), CT_WOOD));
+                fenceGates.add(register(r, "wood/fence_gate/" + wood.name().toLowerCase(), new BlockFenceGateTFC(wood), CT_WOOD));
+                saplings.add(register(r, "wood/sapling/" + wood.name().toLowerCase(), new BlockSaplingTFC(wood), CT_WOOD));
                 if (wood != Wood.PALM) //todo: make this enum constant
-                    doors.add(register(r, "door_" + wood.name().toLowerCase(), new BlockDoorTFC(wood), CT_WOOD));
+                    doors.add(register(r, "wood/door/" + wood.name().toLowerCase(), new BlockDoorTFC(wood), CT_WOOD));
             }
             allLogBlocks = logs.build();
             allLeafBlocks = leaves.build();
@@ -203,7 +203,7 @@ public final class BlocksTFC
     private static <T extends Block> T register(IForgeRegistry<Block> r, String name, T block)
     {
         block.setRegistryName(MOD_ID, name);
-        block.setUnlocalizedName(MOD_ID + "." + name.replace('_', '.'));
+        block.setUnlocalizedName(MOD_ID + "." + name.replace('/', '.'));
         r.register(block);
         return block;
     }
