@@ -3,7 +3,6 @@ package net.dries007.tfc.world.classic.worldgen;
 import com.google.common.collect.ImmutableList;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Type;
 import net.dries007.tfc.objects.blocks.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
 import net.dries007.tfc.util.OreSpawnData;
@@ -168,7 +167,7 @@ public class WorldGenOre implements IWorldGenerator
 
                         final BlockRockVariant currentBlock = (BlockRockVariant) current.getBlock();
 
-                        if (currentBlock.type != Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
+                        if (currentBlock.type != Rock.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
 
                         world.setBlockState(pos, BlockOreTFC.get(ore, currentBlock.rock, grade), 2);
                         blocksSpawned ++;
@@ -280,7 +279,7 @@ public class WorldGenOre implements IWorldGenerator
 
                         final BlockRockVariant currentBlock = (BlockRockVariant) current.getBlock();
 
-                        if (currentBlock.type != Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
+                        if (currentBlock.type != Rock.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
 
                         world.setBlockState(pos, BlockOreTFC.get(ore, currentBlock.rock, grade), 2);
 
@@ -299,7 +298,7 @@ public class WorldGenOre implements IWorldGenerator
 
                 final BlockRockVariant currentBlock = (BlockRockVariant) current.getBlock();
 
-                if (currentBlock.type != Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
+                if (currentBlock.type != Rock.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
 
                 world.setBlockState(pos, BlockOreTFC.get(ore, currentBlock.rock, grade), 2);
 

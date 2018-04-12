@@ -5,6 +5,7 @@ import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.objects.CreativeTabsTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.trees.TreeRegistry;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
@@ -71,6 +72,8 @@ public class TerraFirmaCraft
     public void init(FMLInitializationEvent event)
     {
         CreativeTabsTFC.init();
+
+        ItemsTFC.init();
 
         worldTypeTFC = new WorldTypeTFC();
         TreeRegistry.loadTrees();

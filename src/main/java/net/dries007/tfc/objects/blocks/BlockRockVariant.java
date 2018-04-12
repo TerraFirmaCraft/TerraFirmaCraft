@@ -1,7 +1,6 @@
 package net.dries007.tfc.objects.blocks;
 
 import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Type;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.objects.items.ItemRock;
 import net.dries007.tfc.util.Helpers;
@@ -28,17 +27,17 @@ import java.util.Random;
 
 public class BlockRockVariant extends Block implements IFallingBlock
 {
-    private static final InsertOnlyEnumTable<Rock, Type, BlockRockVariant> TABLE = new InsertOnlyEnumTable<>(Rock.class, Type.class);
+    private static final InsertOnlyEnumTable<Rock, Rock.Type, BlockRockVariant> TABLE = new InsertOnlyEnumTable<>(Rock.class, Rock.Type.class);
 
-    public static BlockRockVariant get(Rock rock, Type type)
+    public static BlockRockVariant get(Rock rock, Rock.Type type)
     {
         return TABLE.get(rock, type);
     }
 
-    public final Type type;
+    public final Rock.Type type;
     public final Rock rock;
 
-    public BlockRockVariant(Type type, Rock rock)
+    public BlockRockVariant(Rock.Type type, Rock rock)
     {
         super(type.material);
         TABLE.put(rock, type, this);
@@ -85,7 +84,7 @@ public class BlockRockVariant extends Block implements IFallingBlock
         }
     }
 
-    public BlockRockVariant getVariant(Type t)
+    public BlockRockVariant getVariant(Rock.Type t)
     {
         return TABLE.get(rock, t);
     }
@@ -104,7 +103,7 @@ public class BlockRockVariant extends Block implements IFallingBlock
                 return super.getItemDropped(state, rand, fortune);
             case GRASS:
             case DRY_GRASS:
-                return Item.getItemFromBlock(get(rock, Type.DIRT));
+                return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
         }
     }
 
@@ -205,13 +204,13 @@ public class BlockRockVariant extends Block implements IFallingBlock
 
         switch (plantType)
         {
-            case Plains: return type == Type.DIRT || type == Type.GRASS; // todo: dry grass?
-            case Crop: return type == Type.DIRT || type == Type.GRASS; // todo: dry grass? Should this even be true? Might be required for wild crops.
-            case Desert: return type == Type.SAND;
+            case Plains: return type == Rock.Type.DIRT || type == Rock.Type.GRASS; // todo: dry grass?
+            case Crop: return type == Rock.Type.DIRT || type == Rock.Type.GRASS; // todo: dry grass? Should this even be true? Might be required for wild crops.
+            case Desert: return type == Rock.Type.SAND;
             case Cave: return true;
             case Water: return false;
             case Beach:
-                return (type == Type.DIRT || type == Type.GRASS || type == Type.SAND || type == Type.DRY_GRASS) && // todo: dry grass?
+                return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && // todo: dry grass?
                         (BlocksTFC.isWater(world.getBlockState(pos.add(1, 0, 0))) ||
                          BlocksTFC.isWater(world.getBlockState(pos.add(-1, 0, 0))) ||
                          BlocksTFC.isWater(world.getBlockState(pos.add(0, 0, 1))) ||

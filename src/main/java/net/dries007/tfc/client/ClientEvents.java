@@ -4,17 +4,23 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
+import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiCreateWorld;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -91,6 +97,32 @@ public class ClientEvents
 
                     list.add("");
                     data.getOresSpawned().stream().map(String::valueOf).forEach(list::add);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onItemTooltip(ItemTooltipEvent event)
+    {
+        if (event.getFlags().isAdvanced())
+        {
+            ItemStack stack = event.getItemStack();
+            Item item = stack.getItem();
+            for (String toolClass : item.getToolClasses(stack))
+            {
+                event.getToolTip().add("Tool: " + toolClass); //todo: localize
+            }
+            if (item instanceof IMetalObject)
+            {
+                ((IMetalObject) item).addMetalInfo(stack, event.getToolTip());
+            }
+            if (item instanceof ItemBlock)
+            {
+                Block block = ((ItemBlock) item).getBlock();
+                if (block instanceof IMetalObject)
+                {
+                    ((IMetalObject) block).addMetalInfo(stack, event.getToolTip());
                 }
             }
         }

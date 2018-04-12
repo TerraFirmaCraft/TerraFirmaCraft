@@ -2,7 +2,9 @@ package net.dries007.tfc.world.classic.worldgen;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.objects.blocks.*;
+import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
 import net.dries007.tfc.objects.trees.TreeRegistry;
 import net.dries007.tfc.objects.trees.TreeSchematicManager;
 import net.dries007.tfc.util.Schematic;

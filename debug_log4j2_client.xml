@@ -50,7 +50,7 @@
             <AppenderRef ref="File" />
             <AppenderRef ref="ServerGuiConsole" level="INFO" />
         </Logger>
-        <Logger leval="debug" name="tfc" additivity="false">
+        <Logger level="debug" name="tfc" additivity="false">
             <AppenderRef ref="FmlSysOut" level="DEBUG" />
             <AppenderRef ref="ServerGuiConsole" level="DEBUG" />
             <AppenderRef ref="FmlFile"/>

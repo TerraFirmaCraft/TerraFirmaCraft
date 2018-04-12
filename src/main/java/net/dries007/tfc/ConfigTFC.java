@@ -41,6 +41,17 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.yearLength")
         @Config.RangeInt(min = 12, max = 12000)
         public int yearLength = 96;
+
+        @Config.Comment("Normal decay leaf drop chance for sticks")
+        @Config.RangeDouble(min = 0, max = 1)
+        public double leafStickDropChance = 0.1; // todo: lang key
+
+        @Config.Comment("Bonus decay leaf drop chance for sticks")
+        @Config.RangeDouble(min = 0, max = 1)
+        public double leafStickDropChanceBonus = 0.25; // todo: lang key
+
+        @Config.Comment("Bonus decay leaf drop chance for sticks tool classes")
+        public String[] leafStickDropChanceBonusClasses = new String[] {"knife", "scythe"}; // todo: lang key
     }
 
     public static class ClientCFG

@@ -1,7 +1,7 @@
-package net.dries007.tfc.objects.items;
+package net.dries007.tfc.objects.items.wood;
 
 import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.objects.blocks.BlockDoorTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
 import net.minecraft.item.ItemDoor;
 
 import java.util.EnumMap;

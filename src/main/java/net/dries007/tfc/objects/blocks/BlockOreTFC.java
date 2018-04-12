@@ -2,7 +2,6 @@ package net.dries007.tfc.objects.blocks;
 
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Type;
 import net.dries007.tfc.objects.items.ItemOreTFC;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.minecraft.block.Block;
@@ -41,7 +40,7 @@ public class BlockOreTFC extends Block
 
     public BlockOreTFC(Ore ore, Rock rock)
     {
-        super(Type.RAW.material);
+        super(Rock.Type.RAW.material);
         TABLE.put(ore, rock, this);
         this.ore = ore;
         this.rock = rock;
@@ -100,7 +99,11 @@ public class BlockOreTFC extends Block
 
     public enum Grade implements IStringSerializable
     {
-        NORMAL, POOR, RICH;
+        NORMAL(25), POOR(15), RICH(35);
+
+        public final int smeltAmount;
+
+        Grade(int smeltAmount) {this.smeltAmount = smeltAmount;}
 
         public static Grade byMetadata(int meta)
         {

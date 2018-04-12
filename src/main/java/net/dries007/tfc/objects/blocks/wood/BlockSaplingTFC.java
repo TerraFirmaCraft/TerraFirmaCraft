@@ -1,8 +1,7 @@
-package net.dries007.tfc.objects.blocks;
+package net.dries007.tfc.objects.blocks.wood;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.Wood;
-
 import net.dries007.tfc.world.classic.worldgen.WorldGenTree;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
@@ -53,6 +52,7 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
         return new BlockStateContainer(this, STAGE);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
