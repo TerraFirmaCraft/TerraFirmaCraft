@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
@@ -92,6 +93,12 @@ public final class ClientRegisterEvents
 
         for (Block block : BlocksTFC.getAllDoorBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockDoor.POWERED).build());
+
+        for (BlockSlabTFC.Half block : BlocksTFC.getAllSlabBlocks())
+        {
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockSlabTFC.VARIANT).build());
+            ModelLoader.setCustomStateMapper(block.doubleSlab, new StateMap.Builder().ignore(BlockSlabTFC.VARIANT).build());
+        }
 
         for (Block block : BlocksTFC.getAllNormalItemBlocks())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));

@@ -56,6 +56,8 @@ public final class BlocksTFC
     private static ImmutableList<BlockFenceGateTFC> allFenceGateBlocks;
     private static ImmutableList<BlockSaplingTFC> allSaplingBlocks;
     private static ImmutableList<BlockDoorTFC> allDoorBlocks;
+    private static ImmutableList<BlockStairsTFC> allStairsBlocks;
+    private static ImmutableList<BlockSlabTFC.Half> allSlabBlocks;
 
     public static ImmutableList<Block> getAllNormalItemBlocks()
     {
@@ -101,6 +103,14 @@ public final class BlocksTFC
     {
         return allDoorBlocks;
     }
+    public static ImmutableList<BlockStairsTFC> getAllStairsBlocks()
+    {
+        return allStairsBlocks;
+    }
+    public static ImmutableList<BlockSlabTFC.Half> getAllSlabBlocks()
+    {
+        return allSlabBlocks;
+    }
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event)
@@ -143,7 +153,7 @@ public final class BlocksTFC
 
         {
             Builder<BlockWallTFC> b = ImmutableList.builder();
-            for (Rock.Type type : new Rock.Type[]{Rock.Type.COBBLE, Rock.Type.BRICKS})
+            for (Rock.Type type : new Rock.Type[]{COBBLE, BRICKS})
                 for (Rock rock : Rock.values())
                     b.add(register(r, ("wall/" + type.name() + "/" + rock.name()).toLowerCase(), new BlockWallTFC(BlockRockVariant.get(rock, type)), CT_DECORATIONS));
             allWallBlocks = b.build();
@@ -178,6 +188,36 @@ public final class BlocksTFC
             inventoryItemBlocks.addAll(allFenceGateBlocks);
             inventoryItemBlocks.addAll(allSaplingBlocks);
             // doors are special
+        }
+
+        {
+            Builder<BlockStairsTFC> stairs = new Builder<>();
+            Builder<BlockSlabTFC.Half> slab = new Builder<>();
+            // Stairs
+            for (Rock.Type type : new Rock.Type[]{SMOOTH, COBBLE, BRICKS})
+                for (Rock rock : Rock.values())
+                    stairs.add(register(r, "stairs/" + (type.name() + "/" +  rock.name()).toLowerCase(), new BlockStairsTFC(rock, type), CT_DECORATIONS));
+            for (Wood wood : Wood.values())
+                stairs.add(register(r, "stairs/wood/" + wood.name().toLowerCase(), new BlockStairsTFC(wood), CT_DECORATIONS));
+
+            // Full slabs are the same as full blocks, they are not saved to a list, they are kept track of by the halfslab version.
+            for (Rock.Type type : new Rock.Type[]{SMOOTH, COBBLE, BRICKS})
+                for (Rock rock : Rock.values())
+                    register(r, "slab/full/" + (type.name() + "/" +  rock.name()).toLowerCase(), new BlockSlabTFC.Double(rock, type));
+            for (Wood wood : Wood.values())
+                register(r, "slab/full/wood/" + wood.name().toLowerCase(), new BlockSlabTFC.Double(wood));
+
+            // Slabs
+            for (Rock.Type type : new Rock.Type[]{SMOOTH, COBBLE, BRICKS})
+                for (Rock rock : Rock.values())
+                    slab.add(register(r, "slab/half/" + (type.name() + "/" +  rock.name()).toLowerCase(), new BlockSlabTFC.Half(rock, type), CT_DECORATIONS));
+            for (Wood wood : Wood.values())
+                slab.add(register(r, "slab/half/wood/" + wood.name().toLowerCase(), new BlockSlabTFC.Half(wood), CT_DECORATIONS));
+
+            allStairsBlocks = stairs.build();
+            allSlabBlocks = slab.build();
+            normalItemBlocks.addAll(allStairsBlocks);
+            // slabs are special.
         }
 
         allNormalItemBlocks = normalItemBlocks.build();

@@ -6,6 +6,7 @@ import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
@@ -16,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSlab;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -106,6 +108,9 @@ public final class ItemsTFC
 
         for (BlockDoorTFC door : BlocksTFC.getAllDoorBlocks())
             simpleItems.add(register(r, door.getRegistryName().getResourcePath(), new ItemDoorTFC(door), CT_WOOD));
+
+        for (BlockSlabTFC.Half slab : BlocksTFC.getAllSlabBlocks())
+            simpleItems.add(register(r, slab.getRegistryName().getResourcePath(), new ItemSlab(slab, slab, slab.doubleSlab), CT_WOOD));
 
         allSimpleItems = simpleItems.build();
     }
