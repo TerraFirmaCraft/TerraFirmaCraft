@@ -13,9 +13,9 @@ public class FluidsTFC
     private static final ResourceLocation STILL = new ResourceLocation(MOD_ID, "blocks/fluid_still");
     private static final ResourceLocation FLOW = new ResourceLocation(MOD_ID, "blocks/fluid_flow");
 
-    public static final Fluid SALT_WATER = new Fluid("salt_water", STILL, FLOW, 0xFF354d35);
-    public static final Fluid FRESH_WATER = new Fluid("fresh_water", STILL, FLOW, 0xFF36677f);
-    public static final Fluid HOT_WATER = new Fluid("hot_water", STILL, FLOW, 0xFF1f5099).setTemperature(350);
+    public static final Fluid SALT_WATER = new Fluid("salt_water", STILL, FLOW, 0xFF1F5099);
+    public static final Fluid FRESH_WATER = new Fluid("fresh_water", STILL, FLOW, 0xFF1F32DA);
+    public static final Fluid HOT_WATER = new Fluid("hot_water", STILL, FLOW, 0xFF345FDA).setTemperature(350);
 
     private static ImmutableList<Fluid> allFluids;
 

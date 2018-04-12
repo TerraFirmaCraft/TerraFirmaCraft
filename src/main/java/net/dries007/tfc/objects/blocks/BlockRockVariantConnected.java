@@ -1,7 +1,6 @@
 package net.dries007.tfc.objects.blocks;
 
 import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Type;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -17,7 +16,7 @@ public class BlockRockVariantConnected extends BlockRockVariant
     public static final PropertyBool SOUTH = PropertyBool.create("south");
     public static final PropertyBool WEST = PropertyBool.create("west");
 
-    public BlockRockVariantConnected(Type type, Rock rock)
+    public BlockRockVariantConnected(Rock.Type type, Rock rock)
     {
         super(type, rock);
     }

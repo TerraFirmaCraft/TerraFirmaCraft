@@ -446,7 +446,7 @@ for wood_type in WOOD_TYPES:
 # ORES
 for ore_type in ORE_TYPES:
     if ORE_TYPES[ore_type]:
-        for grade in ['poor', 'rich']:
+        for grade in ['poor', 'rich', 'small']:
             item(('ore', grade, ore_type), 'tfc:items/ore/%s/%s' % (grade, ore_type))
     item(('ore', 'normal', ore_type), 'tfc:items/ore/%s' % ore_type)
 

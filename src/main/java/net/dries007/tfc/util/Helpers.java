@@ -1,6 +1,6 @@
 package net.dries007.tfc.util;
 
-import net.dries007.tfc.objects.Type;
+import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.blocks.BlockPeat;
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.Random;
+import java.util.Set;
 
 public final class Helpers
 {
@@ -50,14 +51,19 @@ public final class Helpers
                 }
                 else if (current.getBlock() instanceof BlockRockVariant)
                 {
-                    Type spreader = Type.GRASS;
-                    if ((us.getBlock() instanceof BlockRockVariant) && ((BlockRockVariant) us.getBlock()).type == Type.DRY_GRASS)
-                        spreader = Type.DRY_GRASS;
+                    Rock.Type spreader = Rock.Type.GRASS;
+                    if ((us.getBlock() instanceof BlockRockVariant) && ((BlockRockVariant) us.getBlock()).type == Rock.Type.DRY_GRASS)
+                        spreader = Rock.Type.DRY_GRASS;
 
                     BlockRockVariant block = ((BlockRockVariant) current.getBlock());
                     world.setBlockState(target, block.getVariant(block.type.getGrassVersion(spreader)).getDefaultState());
                 }
             }
         }
+    }
+
+    public static boolean containsAnyOfCaseInsensitive(Set<String> toolClasses, String[] classes)
+    {
+        return false;
     }
 }

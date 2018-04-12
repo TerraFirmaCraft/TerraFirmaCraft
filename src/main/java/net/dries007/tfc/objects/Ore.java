@@ -2,20 +2,20 @@ package net.dries007.tfc.objects;
 
 public enum Ore
 {
-    NATIVE_COPPER(true),
-    NATIVE_GOLD(true),
-    NATIVE_PLATINUM(true),
-    HEMATITE(true),
-    NATIVE_SILVER(true),
-    CASSITERITE(true),
-    GALENA(true),
-    BISMUTHINITE(true),
-    GARNIERITE(true),
-    MALACHITE(true),
-    MAGNETITE(true),
-    LIMONITE(true),
-    SPHALERITE(true),
-    TETRAHEDRITE(true),
+    NATIVE_COPPER(true, Metal.COPPER),
+    NATIVE_GOLD(true, Metal.GOLD),
+    NATIVE_PLATINUM(true, Metal.PLATINUM),
+    HEMATITE(true, Metal.PIG_IRON),
+    NATIVE_SILVER(true, Metal.SILVER),
+    CASSITERITE(true, Metal.TIN),
+    GALENA(true, Metal.LEAD),
+    BISMUTHINITE(true, Metal.BISMUTH),
+    GARNIERITE(true, Metal.NICKEL),
+    MALACHITE(true, Metal.COPPER),
+    MAGNETITE(true, Metal.PIG_IRON),
+    LIMONITE(true, Metal.PIG_IRON),
+    SPHALERITE(true, Metal.ZINC),
+    TETRAHEDRITE(true, Metal.COPPER),
     BITUMINOUS_COAL(false),
     LIGNITE(false),
     KAOLINITE(false),
@@ -39,9 +39,16 @@ public enum Ore
     LAPIS_LAZULI(false);
 
     public final boolean graded;
+    public final Metal metal;
 
     Ore(boolean graded)
     {
+        this(graded, null);
+    }
+
+    Ore(boolean graded, Metal metal)
+    {
         this.graded = graded;
+        this.metal = metal;
     }
 }

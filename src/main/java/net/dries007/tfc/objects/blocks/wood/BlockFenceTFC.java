@@ -1,4 +1,4 @@
-package net.dries007.tfc.objects.blocks;
+package net.dries007.tfc.objects.blocks.wood;
 
 import net.dries007.tfc.objects.Wood;
 import net.minecraft.block.BlockFence;

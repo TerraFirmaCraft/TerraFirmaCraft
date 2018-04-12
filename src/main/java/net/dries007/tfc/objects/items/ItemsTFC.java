@@ -6,18 +6,24 @@ import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.blocks.BlockDoorTFC;
-import net.dries007.tfc.objects.blocks.BlockLogTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.objects.items.metal.ItemMetal;
+import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
+import net.dries007.tfc.objects.items.wood.ItemLogTFC;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
+
+import java.lang.reflect.InvocationTargetException;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 import static net.dries007.tfc.objects.CreativeTabsTFC.*;
@@ -47,8 +53,9 @@ public final class ItemsTFC
         return allGemItems;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event)
+    public static void registerItems(RegistryEvent.Register<Item> event) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
     {
         IForgeRegistry<Item> r = event.getRegistry();
 
@@ -68,6 +75,10 @@ public final class ItemsTFC
             for (Ore ore : Ore.values())
                 b.add(register(r, "ore/" + ore.name().toLowerCase(), new ItemOreTFC(ore), CT_ORE_ITEMS));
             allOreItems = b.build();
+
+            for (Ore ore : Ore.values())
+                if (ore.graded)
+                    simpleItems.add(register(r, "ore/small/" + ore.name().toLowerCase(), new ItemSmallOre(ore), CT_ORE_ITEMS));
         }
 
         {
@@ -81,9 +92,9 @@ public final class ItemsTFC
         {
             for (Metal metal : Metal.values())
             {
-                if (type.toolItem && !metal.toolMetal) continue;
+                if (type.toolItem && metal.toolMetal == null) continue;
                 if (metal == Metal.UNKNOWN && !(type == Metal.ItemType.INGOT || type == Metal.ItemType.UNSHAPED)) continue;
-                simpleItems.add(register(r, ("metal/"+ type + "/" + metal).toLowerCase(), new ItemMetal(metal, type), CT_METAL));
+                simpleItems.add(register(r, ("metal/"+ type + "/" + metal).toLowerCase(), type.clazz.getConstructor(Metal.class, Metal.ItemType.class).newInstance(metal, type), CT_METAL));
             }
         }
 
@@ -101,6 +112,7 @@ public final class ItemsTFC
 
     private static void register_item_block(IForgeRegistry<Item> r, Block block)
     {
+        //noinspection ConstantConditions
         r.register(new ItemBlock(block).setRegistryName(block.getRegistryName()).setCreativeTab(block.getCreativeTabToDisplayOn()));
     }
 
@@ -111,5 +123,12 @@ public final class ItemsTFC
         item.setCreativeTab(ct);
         r.register(item);
         return item;
+    }
+
+    public static void init()
+    {
+        for (Metal metal : Metal.values())
+            if (metal.toolMetal != null)
+                metal.toolMetal.setRepairItem(new ItemStack(ItemMetal.get(metal, Metal.ItemType.SCRAP)));
     }
 }

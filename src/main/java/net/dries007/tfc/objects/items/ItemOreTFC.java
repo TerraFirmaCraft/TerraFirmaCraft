@@ -1,7 +1,9 @@
 package net.dries007.tfc.objects.items;
 
+import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.blocks.BlockOreTFC;
+import net.dries007.tfc.util.IMetalObject;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,7 +11,7 @@ import net.minecraft.util.NonNullList;
 
 import java.util.EnumMap;
 
-public class ItemOreTFC extends Item
+public class ItemOreTFC extends Item implements IMetalObject
 {
     private static final EnumMap<Ore, ItemOreTFC> MAP = new EnumMap<>(Ore.class);
 
@@ -60,5 +62,23 @@ public class ItemOreTFC extends Item
         BlockOreTFC.Grade grade = getGradeFromStack(stack);
         if (grade == BlockOreTFC.Grade.NORMAL) return super.getUnlocalizedName(stack);
         return super.getUnlocalizedName(stack) + "." + grade.getName();
+    }
+
+    @Override
+    public Metal getMetal(ItemStack stack)
+    {
+        return ore.metal;
+    }
+
+    @Override
+    public boolean isSmeltable(ItemStack stack)
+    {
+        return ore.metal != null;
+    }
+
+    @Override
+    public int getSmeltAmount(ItemStack stack)
+    {
+        return getGradeFromStack(stack).smeltAmount;
     }
 }

@@ -1,7 +1,7 @@
-package net.dries007.tfc.objects.blocks;
+package net.dries007.tfc.objects.blocks.wood;
 
 import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.objects.items.ItemDoorTFC;
+import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -28,7 +28,7 @@ public class BlockDoorTFC extends BlockDoor
 
     public final Wood wood;
 
-    protected BlockDoorTFC(Wood wood)
+    public BlockDoorTFC(Wood wood)
     {
         super(Material.WOOD);
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");

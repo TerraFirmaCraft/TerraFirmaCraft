@@ -2,7 +2,11 @@ package net.dries007.tfc.client;
 
 import com.google.common.base.Strings;
 import net.dries007.tfc.objects.Gem;
-import net.dries007.tfc.objects.blocks.*;
+import net.dries007.tfc.objects.blocks.BlockOreTFC;
+import net.dries007.tfc.objects.blocks.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
 import net.dries007.tfc.objects.items.ItemGem;
 import net.dries007.tfc.objects.items.ItemOreTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;

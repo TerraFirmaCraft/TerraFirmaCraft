@@ -1,4 +1,4 @@
-package net.dries007.tfc.objects.items;
+package net.dries007.tfc.objects.items.wood;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
