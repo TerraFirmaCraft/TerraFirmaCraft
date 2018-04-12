@@ -215,6 +215,84 @@ METAL_ITEMS = {
     'unfinished_helmet': True,
     'helmet': True,
 }
+DOOR_VARIANTS = {
+    'normal': None,
+    'facing=east,half=lower,hinge=left,open=false': {'model': 'door_bottom'},
+    'facing=south,half=lower,hinge=left,open=false': {'model': 'door_bottom', 'y': 90},
+    'facing=west,half=lower,hinge=left,open=false': {'model': 'door_bottom', 'y': 180},
+    'facing=north,half=lower,hinge=left,open=false': {'model': 'door_bottom', 'y': 270},
+    'facing=east,half=lower,hinge=right,open=false': {'model': 'door_bottom_rh'},
+    'facing=south,half=lower,hinge=right,open=false': {'model': 'door_bottom_rh', 'y': 90},
+    'facing=west,half=lower,hinge=right,open=false': {'model': 'door_bottom_rh', 'y': 180},
+    'facing=north,half=lower,hinge=right,open=false': {'model': 'door_bottom_rh', 'y': 270},
+    'facing=east,half=lower,hinge=left,open=true': {'model': 'door_bottom_rh', 'y': 90},
+    'facing=south,half=lower,hinge=left,open=true': {'model': 'door_bottom_rh', 'y': 180},
+    'facing=west,half=lower,hinge=left,open=true': {'model': 'door_bottom_rh', 'y': 270},
+    'facing=north,half=lower,hinge=left,open=true': {'model': 'door_bottom_rh'},
+    'facing=east,half=lower,hinge=right,open=true': {'model': 'door_bottom', 'y': 270},
+    'facing=south,half=lower,hinge=right,open=true': {'model': 'door_bottom'},
+    'facing=west,half=lower,hinge=right,open=true': {'model': 'door_bottom', 'y': 90},
+    'facing=north,half=lower,hinge=right,open=true': {'model': 'door_bottom', 'y': 180},
+    'facing=east,half=upper,hinge=left,open=false': {'model': 'door_top'},
+    'facing=south,half=upper,hinge=left,open=false': {'model': 'door_top', 'y': 90},
+    'facing=west,half=upper,hinge=left,open=false': {'model': 'door_top', 'y': 180},
+    'facing=north,half=upper,hinge=left,open=false': {'model': 'door_top', 'y': 270},
+    'facing=east,half=upper,hinge=right,open=false': {'model': 'door_top_rh'},
+    'facing=south,half=upper,hinge=right,open=false': {'model': 'door_top_rh', 'y': 90},
+    'facing=west,half=upper,hinge=right,open=false': {'model': 'door_top_rh', 'y': 180},
+    'facing=north,half=upper,hinge=right,open=false': {'model': 'door_top_rh', 'y': 270},
+    'facing=east,half=upper,hinge=left,open=true': {'model': 'door_top_rh', 'y': 90},
+    'facing=south,half=upper,hinge=left,open=true': {'model': 'door_top_rh', 'y': 180},
+    'facing=west,half=upper,hinge=left,open=true': {'model': 'door_top_rh', 'y': 270},
+    'facing=north,half=upper,hinge=left,open=true': {'model': 'door_top_rh'},
+    'facing=east,half=upper,hinge=right,open=true': {'model': 'door_top', 'y': 270},
+    'facing=south,half=upper,hinge=right,open=true': {'model': 'door_top'},
+    'facing=west,half=upper,hinge=right,open=true': {'model': 'door_top', 'y': 90},
+    'facing=north,half=upper,hinge=right,open=true': {'model': 'door_top', 'y': 180}
+ }
+STAIR_VARIANTS = {
+    'normal': {'model': 'stairs'},
+    'facing=east,half=bottom,shape=straight': {'model': 'stairs'},
+    'facing=west,half=bottom,shape=straight': {'model': 'stairs', 'y': 180},
+    'facing=south,half=bottom,shape=straight': {'model': 'stairs', 'y': 90},
+    'facing=north,half=bottom,shape=straight': {'model': 'stairs', 'y': 270},
+    'facing=east,half=bottom,shape=outer_right': {'model': 'outer_stairs'},
+    'facing=west,half=bottom,shape=outer_right': {'model': 'outer_stairs', 'y': 180},
+    'facing=south,half=bottom,shape=outer_right': {'model': 'outer_stairs', 'y': 90},
+    'facing=north,half=bottom,shape=outer_right': {'model': 'outer_stairs', 'y': 270},
+    'facing=east,half=bottom,shape=outer_left': {'model': 'outer_stairs', 'y': 270},
+    'facing=west,half=bottom,shape=outer_left': {'model': 'outer_stairs', 'y': 90},
+    'facing=south,half=bottom,shape=outer_left': {'model': 'outer_stairs'},
+    'facing=north,half=bottom,shape=outer_left': {'model': 'outer_stairs', 'y': 180},
+    'facing=east,half=bottom,shape=inner_right': {'model': 'inner_stairs'},
+    'facing=west,half=bottom,shape=inner_right': {'model': 'inner_stairs', 'y': 180},
+    'facing=south,half=bottom,shape=inner_right': {'model': 'inner_stairs', 'y': 90},
+    'facing=north,half=bottom,shape=inner_right': {'model': 'inner_stairs', 'y': 270},
+    'facing=east,half=bottom,shape=inner_left': {'model': 'inner_stairs', 'y': 270},
+    'facing=west,half=bottom,shape=inner_left': {'model': 'inner_stairs', 'y': 90},
+    'facing=south,half=bottom,shape=inner_left': {'model': 'inner_stairs'},
+    'facing=north,half=bottom,shape=inner_left': {'model': 'inner_stairs', 'y': 180},
+    'facing=east,half=top,shape=straight': {'model': 'stairs', 'x': 180},
+    'facing=west,half=top,shape=straight': {'model': 'stairs', 'x': 180, 'y': 180},
+    'facing=south,half=top,shape=straight': {'model': 'stairs', 'x': 180, 'y': 90},
+    'facing=north,half=top,shape=straight': {'model': 'stairs', 'x': 180, 'y': 270},
+    'facing=east,half=top,shape=outer_right': {'model': 'outer_stairs', 'x': 180, 'y': 90},
+    'facing=west,half=top,shape=outer_right': {'model': 'outer_stairs', 'x': 180, 'y': 270},
+    'facing=south,half=top,shape=outer_right': {'model': 'outer_stairs', 'x': 180, 'y': 180},
+    'facing=north,half=top,shape=outer_right': {'model': 'outer_stairs', 'x': 180},
+    'facing=east,half=top,shape=outer_left': {'model': 'outer_stairs', 'x': 180},
+    'facing=west,half=top,shape=outer_left': {'model': 'outer_stairs', 'x': 180, 'y': 180},
+    'facing=south,half=top,shape=outer_left': {'model': 'outer_stairs', 'x': 180, 'y': 90},
+    'facing=north,half=top,shape=outer_left': {'model': 'outer_stairs', 'x': 180, 'y': 270},
+    'facing=east,half=top,shape=inner_right': {'model': 'inner_stairs', 'x': 180, 'y': 90},
+    'facing=west,half=top,shape=inner_right': {'model': 'inner_stairs', 'x': 180, 'y': 270},
+    'facing=south,half=top,shape=inner_right': {'model': 'inner_stairs', 'x': 180, 'y': 180},
+    'facing=north,half=top,shape=inner_right': {'model': 'inner_stairs', 'x': 180},
+    'facing=east,half=top,shape=inner_left': {'model': 'inner_stairs', 'x': 180},
+    'facing=west,half=top,shape=inner_left': {'model': 'inner_stairs', 'x': 180, 'y': 180},
+    'facing=south,half=top,shape=inner_left': {'model': 'inner_stairs', 'x': 180, 'y': 90},
+    'facing=north,half=top,shape=inner_left': {'model': 'inner_stairs', 'x': 180, 'y': 270}
+}
 
 
 def del_none(d):
@@ -338,6 +416,22 @@ for rock_type in ROCK_TYPES:
             'up': {'true': {'submodel': 'wall_post', 'y': 270}, 'false': {}}
         })
 
+    # (ROCK) STAIRS & SLABS
+    for block_type in ['smooth', 'cobble', 'bricks']:
+        blockstate(('stairs', block_type, rock_type), None, textures={
+            ('top', 'bottom', 'side'): 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type),
+        }, variants=STAIR_VARIANTS)
+        blockstate(('slab', 'half', block_type, rock_type), 'half_slab', textures={
+            ('top', 'bottom', 'side'): 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type),
+        }, variants={
+            'half': {
+                'bottom': {},
+                'top': {'model': 'upper_slab'}
+            }
+        })
+        cube_all(('slab', 'full', block_type, rock_type), 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type))
+
+
 # WOOD STUFF
 for wood_type in WOOD_TYPES:
     # LOG BLOCKS
@@ -401,45 +495,25 @@ for wood_type in WOOD_TYPES:
         }
     })
 
-    # There is no method to this madness. Don't even try.
-    variants = {'normal': None,
-                "facing=east,half=lower,hinge=left,open=false": {"model": "door_bottom"},
-                "facing=south,half=lower,hinge=left,open=false": {"model": "door_bottom", "y": 90},
-                "facing=west,half=lower,hinge=left,open=false": {"model": "door_bottom", "y": 180},
-                "facing=north,half=lower,hinge=left,open=false": {"model": "door_bottom", "y": 270},
-                "facing=east,half=lower,hinge=right,open=false": {"model": "door_bottom_rh"},
-                "facing=south,half=lower,hinge=right,open=false": {"model": "door_bottom_rh", "y": 90},
-                "facing=west,half=lower,hinge=right,open=false": {"model": "door_bottom_rh", "y": 180},
-                "facing=north,half=lower,hinge=right,open=false": {"model": "door_bottom_rh", "y": 270},
-                "facing=east,half=lower,hinge=left,open=true": {"model": "door_bottom_rh", "y": 90},
-                "facing=south,half=lower,hinge=left,open=true": {"model": "door_bottom_rh", "y": 180},
-                "facing=west,half=lower,hinge=left,open=true": {"model": "door_bottom_rh", "y": 270},
-                "facing=north,half=lower,hinge=left,open=true": {"model": "door_bottom_rh"},
-                "facing=east,half=lower,hinge=right,open=true": {"model": "door_bottom", "y": 270},
-                "facing=south,half=lower,hinge=right,open=true": {"model": "door_bottom"},
-                "facing=west,half=lower,hinge=right,open=true": {"model": "door_bottom", "y": 90},
-                "facing=north,half=lower,hinge=right,open=true": {"model": "door_bottom", "y": 180},
-                "facing=east,half=upper,hinge=left,open=false": {"model": "door_top"},
-                "facing=south,half=upper,hinge=left,open=false": {"model": "door_top", "y": 90},
-                "facing=west,half=upper,hinge=left,open=false": {"model": "door_top", "y": 180},
-                "facing=north,half=upper,hinge=left,open=false": {"model": "door_top", "y": 270},
-                "facing=east,half=upper,hinge=right,open=false": {"model": "door_top_rh"},
-                "facing=south,half=upper,hinge=right,open=false": {"model": "door_top_rh", "y": 90},
-                "facing=west,half=upper,hinge=right,open=false": {"model": "door_top_rh", "y": 180},
-                "facing=north,half=upper,hinge=right,open=false": {"model": "door_top_rh", "y": 270},
-                "facing=east,half=upper,hinge=left,open=true": {"model": "door_top_rh", "y": 90},
-                "facing=south,half=upper,hinge=left,open=true": {"model": "door_top_rh", "y": 180},
-                "facing=west,half=upper,hinge=left,open=true": {"model": "door_top_rh", "y": 270},
-                "facing=north,half=upper,hinge=left,open=true": {"model": "door_top_rh"},
-                "facing=east,half=upper,hinge=right,open=true": {"model": "door_top", "y": 270},
-                "facing=south,half=upper,hinge=right,open=true": {"model": "door_top"},
-                "facing=west,half=upper,hinge=right,open=true": {"model": "door_top", "y": 90},
-                "facing=north,half=upper,hinge=right,open=true": {"model": "door_top", "y": 180}
-                }
+    # DOORS
     blockstate(('wood', 'door', wood_type), None, textures={
         'bottom': 'tfc:blocks/wood/door/lower/%s' % wood_type,
         'top': 'tfc:blocks/wood/door/upper/%s' % wood_type,
-    }, variants=variants)
+    }, variants=DOOR_VARIANTS)
+
+    # (WOOD) STAIRS & SLABS
+    blockstate(('stairs', 'wood', wood_type), None, textures={
+        ('top', 'bottom', 'side'): 'tfc:blocks/wood/planks/%s' % wood_type,
+    }, variants=STAIR_VARIANTS)
+    blockstate(('slab', 'half', 'wood', wood_type), 'half_slab', textures={
+        ('top', 'bottom', 'side'): 'tfc:blocks/wood/planks/%s' % wood_type,
+    }, variants={
+        'half': {
+            'bottom': {},
+            'top': {'model': 'upper_slab'}
+        }
+    })
+    cube_all(('slab', 'full', 'wood', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
 
 # ITEMS
 
