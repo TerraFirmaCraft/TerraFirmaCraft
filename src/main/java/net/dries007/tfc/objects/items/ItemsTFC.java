@@ -2,6 +2,8 @@ package net.dries007.tfc.objects.items;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+import net.dries007.tfc.objects.Gem;
+import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.blocks.BlockDoorTFC;
@@ -30,6 +32,7 @@ public final class ItemsTFC
 
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
+    private static ImmutableList<ItemGem> allGemItems;
 
     public static ImmutableList<Item> getAllSimpleItems()
     {
@@ -38,6 +41,10 @@ public final class ItemsTFC
     public static ImmutableList<ItemOreTFC> getAllOreItems()
     {
         return allOreItems;
+    }
+    public static ImmutableList<ItemGem> getAllGemItems()
+    {
+        return allGemItems;
     }
 
     @SubscribeEvent
@@ -71,6 +78,23 @@ public final class ItemsTFC
 
         for (BlockDoorTFC door : BlocksTFC.getAllDoorBlocks())
             simpleItems.add(register(r, "door_" + door.wood.name().toLowerCase(), new ItemDoorTFC(door), CT_WOOD));
+
+        {
+            Builder<ItemGem> b = new Builder<>();
+            for (Gem gem : Gem.values())
+                b.add(register(r, "gem_" + gem.name().toLowerCase(), new ItemGem(gem), CT_GEMS));
+            allGemItems = b.build();
+        }
+
+        for (Metal.ItemType type : Metal.ItemType.values())
+        {
+            for (Metal metal : Metal.values())
+            {
+                if (type.toolItem && !metal.toolMetal) continue;
+                if (metal == Metal.UNKNOWN && !(type == Metal.ItemType.INGOT || type == Metal.ItemType.UNSHAPED)) continue;
+                simpleItems.add(register(r, (type + "_" + metal).toLowerCase(), new ItemMetal(metal, type), CT_METAL));
+            }
+        }
 
         allSimpleItems = simpleItems.build();
     }

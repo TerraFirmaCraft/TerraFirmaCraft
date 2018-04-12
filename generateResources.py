@@ -123,6 +123,98 @@ WOOD_TYPES = [
     'blackwood',
     'palm',
 ]
+GEM_TYPES = [
+    'agate',
+    'amethyst',
+    'beryl',
+    'diamond',
+    'emerald',
+    'garnet',
+    'jade',
+    'jasper',
+    'opal',
+    'ruby',
+    'sapphire',
+    'topaz',
+    'tourmaline',
+]
+GEM_GRADES = [
+    'normal',
+    'flawed',
+    'flawless',
+    'chipped',
+    'exquisite',
+]
+METAL_TYPES = {
+    'bismuth': False,
+    'bismuth_bronze': True,
+    'black_bronze': True,
+    'brass': False,
+    'bronze': True,
+    'copper': True,
+    'gold': False,
+    'lead': False,
+    'nickel': False,
+    'rose_gold': False,
+    'silver': False,
+    'tin': False,
+    'zinc': False,
+    'sterling_silver': False,
+    'wrought_iron': True,
+    'pig_iron': False,
+    'steel': True,
+    'platinum': False,
+    'black_steel': True,
+    'blue_steel': True,
+    'red_steel': True,
+}  # + unknown
+METAL_ITEMS = {
+    'unshaped': False,
+    'ingot': False,
+    'double_ingot': False,
+    'scrap': False,
+    'dust': False,
+    'nugget': False,
+    'sheet': False,
+    'double_sheet': False,
+    'anvil': True,
+    'tuyere': True,
+    'lamp': False,
+    'pick': True,
+    'pick_head': True,
+    'shovel': True,
+    'shovel_head': True,
+    'axe': True,
+    'axe_head': True,
+    'hoe': True,
+    'hoe_head': True,
+    'chisel': True,
+    'chisel_head': True,
+    'sword': True,
+    'sword_blade': True,
+    'mace': True,
+    'mace_head': True,
+    'saw': True,
+    'saw_blade': True,
+    'javelin': True,
+    'javelin_head': True,
+    'hammer': True,
+    'hammer_head': True,
+    'propick': True,
+    'propick_head': True,
+    'knife': True,
+    'knife_blade': True,
+    'scythe': True,
+    'scythe_blade': True,
+    'unfinished_chestplate': True,
+    'chestplate': True,
+    'unfinished_greaves': True,
+    'greaves': True,
+    'unfinished_boots': True,
+    'boots': True,
+    'unfinished_helmet': True,
+    'helmet': True,
+}
 
 
 def del_none(d):
@@ -363,3 +455,18 @@ for rock_type in ROCK_TYPES:
 for wood_type in WOOD_TYPES:
     item(('log', wood_type), 'tfc:items/wood/log/%s' % wood_type)
     item(('door', wood_type), 'tfc:items/wood/door/%s' % wood_type)
+
+# GEMS
+for gem in GEM_TYPES:
+    for grade in GEM_GRADES:
+        item(('gem', gem, grade), 'tfc:items/gem/%s/%s' % (grade, gem))
+
+# METALS
+for item_type, tool_item in METAL_ITEMS.items():
+    for metal, tool_metal in METAL_TYPES.items():
+        if tool_item and not tool_metal:
+            continue
+        item((item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal))
+        print('item.tfc.', item_type.replace('_', '.'), '.', metal.replace('_', '.'), '.name=', metal.replace('_', ' ').title(), ' ', item_type.replace('_', ' ').title(), sep='')
+for x in ['ingot', 'unshaped']:
+    item((x, 'unknown'), 'tfc:items/metal/%s/%s' % (x, 'unknown'))

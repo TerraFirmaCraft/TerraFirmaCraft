@@ -1,5 +1,6 @@
 package net.dries007.tfc.client;
 
+import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.*;
 import net.dries007.tfc.objects.items.ItemOreTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -35,6 +36,10 @@ public final class ClientRegisterEvents
     {
         for (Item item : ItemsTFC.getAllSimpleItems())
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName().toString()));
+
+        for (Item item : ItemsTFC.getAllGemItems())
+            for (Gem.Grade grade : Gem.Grade.values())
+                ModelLoader.setCustomModelResourceLocation(item, grade.getMeta(), new ModelResourceLocation(item.getRegistryName().toString() + '_' + grade.name().toLowerCase()));
 
         for (ItemOreTFC item : ItemsTFC.getAllOreItems())
         {
