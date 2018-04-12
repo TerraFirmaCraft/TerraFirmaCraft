@@ -1,7 +1,9 @@
 package net.dries007.tfc.client;
 
+import com.google.common.base.Strings;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.*;
+import net.dries007.tfc.objects.items.ItemGem;
 import net.dries007.tfc.objects.items.ItemOreTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.minecraft.block.*;
@@ -30,6 +32,21 @@ public final class ClientRegisterEvents
 {
     private ClientRegisterEvents() {}
 
+    /**
+     * Turns "gem/diamond" + enum NORMAL into "gem/normal/diamond"
+     */
+    private static void registerEnumBasedMetaItems(String prefix, Enum e, Item item)
+    {
+        //noinspection ConstantConditions
+        String registryName = item.getRegistryName().getResourcePath();
+        StringBuilder path = new StringBuilder(MOD_ID).append(':');
+        if (!Strings.isNullOrEmpty(prefix)) path.append(prefix).append('/');
+        path.append(e.name());
+        if (!Strings.isNullOrEmpty(prefix)) path.append(registryName.replace(prefix, "")); // There well be a '/' at the start of registryName due to the prefix, so don't add an extra one.
+        else path.append('/').append(registryName);
+        ModelLoader.setCustomModelResourceLocation(item, e.ordinal(), new ModelResourceLocation(path.toString().toLowerCase()));
+    }
+
     @SuppressWarnings("ConstantConditions")
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event)
@@ -37,18 +54,16 @@ public final class ClientRegisterEvents
         for (Item item : ItemsTFC.getAllSimpleItems())
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName().toString()));
 
-        for (Item item : ItemsTFC.getAllGemItems())
+        for (ItemGem item : ItemsTFC.getAllGemItems())
             for (Gem.Grade grade : Gem.Grade.values())
-                ModelLoader.setCustomModelResourceLocation(item, grade.getMeta(), new ModelResourceLocation(item.getRegistryName().toString() + '_' + grade.name().toLowerCase()));
+                registerEnumBasedMetaItems("gem", grade, item);
 
         for (ItemOreTFC item : ItemsTFC.getAllOreItems())
-        {
-            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(MOD_ID + ':' + item.getRegistryName().getResourcePath()));
             if (item.ore.graded)
                 for (BlockOreTFC.Grade grade : BlockOreTFC.Grade.values())
-                    if (grade != BlockOreTFC.Grade.NORMAL)
-                        ModelLoader.setCustomModelResourceLocation(item, grade.getMeta(), new ModelResourceLocation(MOD_ID + ':' + grade.getName() + '_' + item.getRegistryName().getResourcePath()));
-        }
+                    registerEnumBasedMetaItems("ore", grade, item);
+            else
+                registerEnumBasedMetaItems("ore", BlockOreTFC.Grade.NORMAL, item);
 
         for (Block block : BlocksTFC.getAllFluidBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());

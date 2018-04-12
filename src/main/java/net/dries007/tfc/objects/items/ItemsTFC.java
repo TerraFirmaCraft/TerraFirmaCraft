@@ -56,33 +56,24 @@ public final class ItemsTFC
 
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
 
-        BlocksTFC.getAllNormalItemBlocks().forEach(x -> register_item_block(r, x));
-        BlocksTFC.getAllInventoryItemBlocks().forEach(x -> register_item_block(r, x));
-
         {
             for (Rock rock : Rock.values())
-                simpleItems.add(register(r, "rock_" + rock.name().toLowerCase(), new ItemRock(rock), CT_ROCK_ITEMS));
+                simpleItems.add(register(r, "rock/" + rock.name().toLowerCase(), new ItemRock(rock), CT_ROCK_ITEMS));
             for (Rock rock : Rock.values())
-                simpleItems.add(register(r, "brick_" + rock.name().toLowerCase(), new ItemBrickTFC(rock), CT_ROCK_ITEMS));
+                simpleItems.add(register(r, "brick/" + rock.name().toLowerCase(), new ItemBrickTFC(rock), CT_ROCK_ITEMS));
         }
 
         {
             Builder<ItemOreTFC> b = new Builder<>();
             for (Ore ore : Ore.values())
-                b.add(register(r, "ore_" + ore.name().toLowerCase(), new ItemOreTFC(ore), CT_ORE_ITEMS));
+                b.add(register(r, "ore/" + ore.name().toLowerCase(), new ItemOreTFC(ore), CT_ORE_ITEMS));
             allOreItems = b.build();
         }
-
-        for (BlockLogTFC log : BlocksTFC.getAllLogBlocks())
-            simpleItems.add(register(r, "log_" + log.wood.name().toLowerCase(), new ItemLogTFC(log), CT_WOOD));
-
-        for (BlockDoorTFC door : BlocksTFC.getAllDoorBlocks())
-            simpleItems.add(register(r, "door_" + door.wood.name().toLowerCase(), new ItemDoorTFC(door), CT_WOOD));
 
         {
             Builder<ItemGem> b = new Builder<>();
             for (Gem gem : Gem.values())
-                b.add(register(r, "gem_" + gem.name().toLowerCase(), new ItemGem(gem), CT_GEMS));
+                b.add(register(r, "gem/" + gem.name().toLowerCase(), new ItemGem(gem), CT_GEMS));
             allGemItems = b.build();
         }
 
@@ -92,9 +83,18 @@ public final class ItemsTFC
             {
                 if (type.toolItem && !metal.toolMetal) continue;
                 if (metal == Metal.UNKNOWN && !(type == Metal.ItemType.INGOT || type == Metal.ItemType.UNSHAPED)) continue;
-                simpleItems.add(register(r, (type + "_" + metal).toLowerCase(), new ItemMetal(metal, type), CT_METAL));
+                simpleItems.add(register(r, ("metal/"+ type + "/" + metal).toLowerCase(), new ItemMetal(metal, type), CT_METAL));
             }
         }
+
+        BlocksTFC.getAllNormalItemBlocks().forEach(x -> register_item_block(r, x));
+        BlocksTFC.getAllInventoryItemBlocks().forEach(x -> register_item_block(r, x));
+
+        for (BlockLogTFC log : BlocksTFC.getAllLogBlocks())
+            simpleItems.add(register(r, log.getRegistryName().getResourcePath(), new ItemLogTFC(log), CT_WOOD));
+
+        for (BlockDoorTFC door : BlocksTFC.getAllDoorBlocks())
+            simpleItems.add(register(r, door.getRegistryName().getResourcePath(), new ItemDoorTFC(door), CT_WOOD));
 
         allSimpleItems = simpleItems.build();
     }
@@ -107,7 +107,7 @@ public final class ItemsTFC
     private static <T extends Item> T register(IForgeRegistry<Item> r, String name, T item, CreativeTabs ct)
     {
         item.setRegistryName(MOD_ID, name);
-        item.setUnlocalizedName(MOD_ID + "." + name.replace('_', '.'));
+        item.setUnlocalizedName(MOD_ID + "." + name.replace('/', '.'));
         item.setCreativeTab(ct);
         r.register(item);
         return item;
