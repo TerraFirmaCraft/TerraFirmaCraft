@@ -5,7 +5,7 @@
             "model": "forge:fluid",
             "transform": "forge:default-item",
             "custom": {
-                "fluid": "water"
+                "fluid": "fresh_water"
             }
         }]
     }
