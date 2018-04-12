@@ -5,6 +5,7 @@ import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.objects.CreativeTabsTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.trees.TreeRegistry;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkCapabilityHandler;
@@ -71,6 +72,7 @@ public class TerraFirmaCraft
         CreativeTabsTFC.init();
 
         worldTypeTFC = new WorldTypeTFC();
+        TreeRegistry.loadTrees();
 
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true, 20)), 0);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureRarity, new WorldGenFissure(false, -1)), 0);
