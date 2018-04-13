@@ -5,75 +5,75 @@ import net.minecraft.nbt.NBTTagList;
 
 import java.util.ArrayList;
 /**
- * Ported and modified version of TFC2 code by Bioxx
+ * todo: change to proper vanilla schematics
  */
 public interface ISchematic
 {
-	public boolean Load();
+	boolean Load();
 
-	public void PostProcess();
+	void PostProcess();
 	/**
 	 * @return Schematic "Height"
 	 */
-	public int getSizeY();
+	int getSizeY();
 
-	public void setSizeY(int y);
+	void setSizeY(int y);
 
 	/**
 	 * @return Schematic "Width"
 	 */
-	public int getSizeX();
+	int getSizeX();
 
-	public void setSizeX(int x);
+	void setSizeX(int x);
 
 	/**
 	 * @return Schematic "Length"
 	 */
-	public int getSizeZ();
+	int getSizeZ();
 
-	public void setSizeZ(int z);
+	void setSizeZ(int z);
 
 	/**
 	 * @return Schematic "TileEntities"
 	 */
-	public NBTTagList getTileEntities();
+	NBTTagList getTileEntities();
 
-	public void setTileEntities(NBTTagList te);
+	void setTileEntities(NBTTagList te);
 
 	/**
 	 * @return Schematic "Entities"
 	 */
-	public NBTTagList getEntities();
+	NBTTagList getEntities();
 
-	public void setEntities(NBTTagList e);
+	void setEntities(NBTTagList e);
 
 	/**
 	 * Gets the file path.
 	 */
-	public String getPath();
+	String getPath();
 
-	public String getFileName();
+	String getFileName();
 
 	/**
 	 * Sets the file path for future reference.
 	 * @param path The path to the schematic file
 	 */
-	public void setPath(String path);
+	void setPath(String path);
 
 	/**
 	 * 
 	 * @return Center of the schematic X Coordinate
 	 */
-	public int getCenterX();
+	int getCenterX();
 
 	/**
 	 * 
 	 * @return Center of the schematic Z Coordinate
 	 */
-	public int getCenterZ();
+	int getCenterZ();
 
 	/**
 	 * @return Returns an Arraylist containing every block in this schematic for iteration
 	 */
-	public ArrayList<Schematic.SchematicBlock> getBlockMap();
+	ArrayList<Schematic.SchematicBlock> getBlockMap();
 }

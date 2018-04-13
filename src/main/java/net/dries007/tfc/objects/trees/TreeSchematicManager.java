@@ -12,7 +12,7 @@ import java.util.Random;
 import java.util.Vector;
 
 /**
- * Ported and modified version of TFC2 code by Bioxx
+ * todo: change to proper vanilla schematics
  */
 public class TreeSchematicManager
 {

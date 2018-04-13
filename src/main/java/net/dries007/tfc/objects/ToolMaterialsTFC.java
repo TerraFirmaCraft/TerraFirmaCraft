@@ -3,8 +3,10 @@ package net.dries007.tfc.objects;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.util.EnumHelper;
 
-public class ToolMaterialsTFC
+public final class ToolMaterialsTFC
 {
+    private ToolMaterialsTFC() {}
+
     public static final Item.ToolMaterial IG_IN = EnumHelper.addToolMaterial("IgIn", 1, 60, 7, 2.0f, 5); //Tier 0
     public static final Item.ToolMaterial SED = EnumHelper.addToolMaterial("Sed", 1, 70, 7, 2.0f, 5);
     public static final Item.ToolMaterial IG_EX = EnumHelper.addToolMaterial("IgEx", 1, 50, 6, 2.0f, 5);
