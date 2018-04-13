@@ -1,5 +1,7 @@
 package net.dries007.tfc.objects;
 
+import net.minecraft.util.IStringSerializable;
+
 public enum Ore
 {
     NATIVE_COPPER(true, Metal.COPPER),
@@ -50,5 +52,30 @@ public enum Ore
     {
         this.graded = graded;
         this.metal = metal;
+    }
+
+    public enum Grade implements IStringSerializable
+    {
+        NORMAL(25), POOR(15), RICH(35);
+
+        public final int smeltAmount;
+
+        Grade(int smeltAmount) {this.smeltAmount = smeltAmount;}
+
+        public static Grade byMetadata(int meta)
+        {
+            return Grade.values()[meta];
+        }
+
+        @Override
+        public String getName()
+        {
+            return this.name().toLowerCase();
+        }
+
+        public int getMeta()
+        {
+            return this.ordinal();
+        }
     }
 }

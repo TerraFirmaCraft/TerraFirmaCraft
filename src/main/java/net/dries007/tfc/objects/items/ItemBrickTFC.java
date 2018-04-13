@@ -1,6 +1,7 @@
 package net.dries007.tfc.objects.items;
 
 import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -22,10 +23,12 @@ public class ItemBrickTFC extends Item
 
     public final Rock ore;
 
-    public ItemBrickTFC(Rock ore)
+    public ItemBrickTFC(Rock rock)
     {
-        this.ore = ore;
-        if (MAP.put(ore, this) != null) throw new IllegalStateException("There can only be one.");
+        this.ore = rock;
+        if (MAP.put(rock, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
+        OreDictionaryHelper.register(this, "brick");
+        OreDictionaryHelper.register(this, "brick", rock);
     }
 }

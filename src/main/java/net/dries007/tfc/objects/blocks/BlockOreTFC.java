@@ -11,7 +11,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -26,14 +25,14 @@ public class BlockOreTFC extends Block
         return TABLE.get(ore, rock);
     }
 
-    public static IBlockState get(Ore ore, Rock rock, Grade grade)
+    public static IBlockState get(Ore ore, Rock rock, Ore.Grade grade)
     {
         IBlockState state = TABLE.get(ore, rock).getDefaultState();
         if (!ore.graded) return state;
         return state.withProperty(GRADE, grade);
     }
 
-    public static final PropertyEnum<Grade> GRADE = PropertyEnum.create("grade", Grade.class);
+    public static final PropertyEnum<Ore.Grade> GRADE = PropertyEnum.create("grade", Ore.Grade.class);
 
     public final Ore ore;
     public final Rock rock;
@@ -44,17 +43,20 @@ public class BlockOreTFC extends Block
         TABLE.put(ore, rock, this);
         this.ore = ore;
         this.rock = rock;
-        setDefaultState(blockState.getBaseState().withProperty(GRADE, Grade.NORMAL));
+        setDefaultState(blockState.getBaseState().withProperty(GRADE, Ore.Grade.NORMAL));
         setSoundType(SoundType.STONE);
         setHardness(2.0F).setResistance(10.0F);
         setHarvestLevel("pickaxe", 0);
+//        OreDictionaryHelper.register(this, "ore", ore);
+//        OreDictionaryHelper.register(this, "ore", ore, rock);
+//        if (ore.metal != null) OreDictionaryHelper.register(this, "ore", ore.metal);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return getDefaultState().withProperty(GRADE, Grade.byMetadata(meta));
+        return getDefaultState().withProperty(GRADE, Ore.Grade.byMetadata(meta));
     }
 
     @Override
@@ -95,30 +97,5 @@ public class BlockOreTFC extends Block
     public BlockRenderLayer getBlockLayer()
     {
         return BlockRenderLayer.CUTOUT;
-    }
-
-    public enum Grade implements IStringSerializable
-    {
-        NORMAL(25), POOR(15), RICH(35);
-
-        public final int smeltAmount;
-
-        Grade(int smeltAmount) {this.smeltAmount = smeltAmount;}
-
-        public static Grade byMetadata(int meta)
-        {
-            return Grade.values()[meta];
-        }
-
-        @Override
-        public String getName()
-        {
-            return this.name().toLowerCase();
-        }
-
-        public int getMeta()
-        {
-            return this.ordinal();
-        }
     }
 }

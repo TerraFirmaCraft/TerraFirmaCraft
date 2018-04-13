@@ -3,6 +3,7 @@ package net.dries007.tfc.objects.items.metal;
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -25,6 +26,8 @@ public class ItemMetal extends Item implements IMetalObject
         this.type = type;
         TABLE.put(metal, type, this);
         setNoRepair();
+        OreDictionaryHelper.register(this, type);
+        OreDictionaryHelper.register(this, type, metal);
     }
 
     @Override

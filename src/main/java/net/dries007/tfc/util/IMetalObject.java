@@ -9,9 +9,12 @@ public interface IMetalObject
 {
     default void addMetalInfo(ItemStack stack, List<String> text)
     {
-        text.add("Metal: " + getMetal(stack)); // todo: localize
+        Metal metal = getMetal(stack);
+        if (metal == null) return;
+        text.add("");
+        text.add("Metal: " + metal); // todo: localize
         if (isSmeltable(stack))
-            text.add("Smeltable for " + getSmeltAmount(stack) + " units in a " + getMetal(stack).tier.name); // todo: localize
+            text.add("Smeltable for " + getSmeltAmount(stack) + " units in a " + metal.tier.name); // todo: localize
     }
 
     Metal getMetal(ItemStack stack);

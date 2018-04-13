@@ -1,6 +1,7 @@
 package net.dries007.tfc.objects.blocks.wood;
 
 import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -36,6 +37,8 @@ public class BlockLogTFC extends BlockLog
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         setDefaultState(blockState.getBaseState().withProperty(LOG_AXIS, BlockLog.EnumAxis.Y).withProperty(PLACED, true).withProperty(SMALL, false));
         setHarvestLevel("axe", 0);
+        OreDictionaryHelper.register(this, "log", "wood");
+        OreDictionaryHelper.register(this, "log", "wood", wood);
     }
 
     @SuppressWarnings("deprecation")

@@ -1,6 +1,7 @@
 package net.dries007.tfc.objects.items.wood;
 
 import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -27,5 +28,7 @@ public class ItemLumberTFC extends Item
         this.wood = wood;
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
+        OreDictionaryHelper.register(this, "lumber");
+        OreDictionaryHelper.register(this, "lumber", wood);
     }
 }

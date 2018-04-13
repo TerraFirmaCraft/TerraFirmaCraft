@@ -3,6 +3,7 @@ package net.dries007.tfc.objects.blocks;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
@@ -157,12 +158,14 @@ public abstract class BlockSlabTFC extends BlockSlab
         {
             super(rock, type);
             ROCK_TABLE.put(rock, type, this);
+            // No oredict, because no item.
         }
 
         public Double(Wood wood)
         {
             super(wood);
             if (WOOD_MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+            // No oredict, because no item.
         }
 
         public boolean isDouble()
@@ -194,6 +197,8 @@ public abstract class BlockSlabTFC extends BlockSlab
             doubleSlab = Double.get(rock, type);
             doubleSlab.halfSlab = this;
             halfSlab = this;
+            OreDictionaryHelper.register(this, "slab");
+            OreDictionaryHelper.registerRockType(this, type, rock, "slab");
         }
 
         public Half(Wood wood)
@@ -203,6 +208,9 @@ public abstract class BlockSlabTFC extends BlockSlab
             doubleSlab = Double.get(wood);
             doubleSlab.halfSlab = this;
             halfSlab = this;
+            OreDictionaryHelper.register(this, "slab");
+            OreDictionaryHelper.register(this, "slab", "wood");
+            OreDictionaryHelper.register(this, "slab", "wood", wood);
         }
 
         public boolean isDouble()

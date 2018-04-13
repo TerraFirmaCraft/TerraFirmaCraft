@@ -6,6 +6,7 @@ import net.dries007.tfc.objects.items.ItemRock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFallingBlock;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
@@ -82,6 +83,7 @@ public class BlockRockVariant extends Block implements IFallingBlock
                 setHarvestLevel("shovel", 0);
                 break;
         }
+        OreDictionaryHelper.registerRockType(this, type, rock);
     }
 
     public BlockRockVariant getVariant(Rock.Type t)

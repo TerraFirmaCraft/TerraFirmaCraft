@@ -73,12 +73,12 @@ public final class ItemsTFC
         {
             Builder<ItemOreTFC> b = new Builder<>();
             for (Ore ore : Ore.values())
-                b.add(register(r, "ore/" + ore.name().toLowerCase(), new ItemOreTFC(ore), CT_ORE_ITEMS));
+                b.add(register(r, "ore/" + ore.name().toLowerCase(), new ItemOreTFC(ore), CT_ROCK_ITEMS));
             allOreItems = b.build();
 
             for (Ore ore : Ore.values())
                 if (ore.graded)
-                    simpleItems.add(register(r, "ore/small/" + ore.name().toLowerCase(), new ItemSmallOre(ore), CT_ORE_ITEMS));
+                    simpleItems.add(register(r, "ore/small/" + ore.name().toLowerCase(), new ItemSmallOre(ore), CT_ROCK_ITEMS));
         }
 
         {
@@ -105,10 +105,10 @@ public final class ItemsTFC
             simpleItems.add(register(r, log.getRegistryName().getResourcePath(), new ItemLogTFC(log), CT_WOOD));
 
         for (BlockDoorTFC door : BlocksTFC.getAllDoorBlocks())
-            simpleItems.add(register(r, door.getRegistryName().getResourcePath(), new ItemDoorTFC(door), CT_WOOD));
+            simpleItems.add(register(r, door.getRegistryName().getResourcePath(), new ItemDoorTFC(door), CT_DECORATIONS));
 
         for (BlockSlabTFC.Half slab : BlocksTFC.getAllSlabBlocks())
-            simpleItems.add(register(r, slab.getRegistryName().getResourcePath(), new ItemSlab(slab, slab, slab.doubleSlab), CT_WOOD));
+            simpleItems.add(register(r, slab.getRegistryName().getResourcePath(), new ItemSlab(slab, slab, slab.doubleSlab), CT_DECORATIONS));
 
         for (Wood wood : Wood.values())
             simpleItems.add(register(r, "wood/lumber/" + wood.name().toLowerCase(), new ItemLumberTFC(wood), CT_WOOD));

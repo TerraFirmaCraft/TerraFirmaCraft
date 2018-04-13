@@ -1,6 +1,7 @@
 package net.dries007.tfc.objects.blocks.wood;
 
 import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockPlanks;
 
@@ -23,5 +24,7 @@ public class BlockFenceGateTFC extends BlockFenceGate
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         this.wood = wood;
         setHarvestLevel("axe", 0);
+        OreDictionaryHelper.register(this, "fence", "gate");
+        OreDictionaryHelper.register(this, "fence", "gate", wood);
     }
 }
