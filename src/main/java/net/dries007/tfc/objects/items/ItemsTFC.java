@@ -88,13 +88,6 @@ public final class ItemsTFC
             allGemItems = b.build();
         }
 
-        /*{
-            Builder<ItemLumberTFC> b = new Builder<>();
-            for (Wood wood : Wood.values())
-                b.add(register(r, "wood/lumber/" + wood.name().toLowerCase(), new ItemLumberTFC(wood), CT_WOOD));
-            allLumberItems = b.build();
-        }*/
-
         for (Metal.ItemType type : Metal.ItemType.values())
         {
             for (Metal metal : Metal.values())
