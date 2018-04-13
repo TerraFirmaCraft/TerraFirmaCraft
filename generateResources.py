@@ -547,3 +547,7 @@ for item_type, tool_item in METAL_ITEMS.items():
         item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal))
 for x in ['ingot', 'unshaped']:
     item(('metal', x, 'unknown'), 'tfc:items/metal/%s/%s' % (x, 'unknown'))
+
+# WOOD STUFF
+for wood_type in WOOD_TYPES:
+    item(('wood', 'lumber', wood_type), 'tfc:items/wood/lumber/%s' % wood_type)
