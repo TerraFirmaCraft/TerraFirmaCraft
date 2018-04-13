@@ -146,7 +146,7 @@ public final class BlocksTFC
             Builder<BlockOreTFC> b = ImmutableList.builder();
             for (Ore ore : Ore.values())
                 for (Rock rock : Rock.values())
-                    b.add(register(r, ("ore/"+ ore.name() + "/" +  rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ORE_BLOCKS));
+                    b.add(register(r, ("ore/"+ ore.name() + "/" +  rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ROCK_BLOCKS));
             allOreBlocks = b.build();
             normalItemBlocks.addAll(allOreBlocks);
         }
@@ -172,11 +172,11 @@ public final class BlocksTFC
                 logs.add(register(r, "wood/log/" + wood.name().toLowerCase(), new BlockLogTFC(wood), CT_WOOD));
                 leaves.add(register(r, "wood/leaves/" + wood.name().toLowerCase(), new BlockLeavesTFC(wood), CT_WOOD));
                 normalItemBlocks.add(register(r, "wood/planks/" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CT_WOOD));
-                inventoryItemBlocks.add(register(r, "wood/fence/" + wood.name().toLowerCase(), new BlockFenceTFC(wood), CT_WOOD));
-                fenceGates.add(register(r, "wood/fence_gate/" + wood.name().toLowerCase(), new BlockFenceGateTFC(wood), CT_WOOD));
+                inventoryItemBlocks.add(register(r, "wood/fence/" + wood.name().toLowerCase(), new BlockFenceTFC(wood), CT_DECORATIONS));
+                fenceGates.add(register(r, "wood/fence_gate/" + wood.name().toLowerCase(), new BlockFenceGateTFC(wood), CT_DECORATIONS));
                 saplings.add(register(r, "wood/sapling/" + wood.name().toLowerCase(), new BlockSaplingTFC(wood), CT_WOOD));
                 if (wood != Wood.PALM) //todo: make this enum constant
-                    doors.add(register(r, "wood/door/" + wood.name().toLowerCase(), new BlockDoorTFC(wood), CT_WOOD));
+                    doors.add(register(r, "wood/door/" + wood.name().toLowerCase(), new BlockDoorTFC(wood), CT_DECORATIONS));
             }
             allLogBlocks = logs.build();
             allLeafBlocks = leaves.build();

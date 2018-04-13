@@ -2,6 +2,7 @@ package net.dries007.tfc.objects.items.wood;
 
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.item.ItemDoor;
 
 import java.util.EnumMap;
@@ -22,5 +23,7 @@ public class ItemDoorTFC extends ItemDoor
         super(block);
         if (MAP.put(block.wood, this) != null) throw new IllegalStateException("There can only be one.");
         wood = block.wood;
+        OreDictionaryHelper.register(this, "door");
+        OreDictionaryHelper.register(this, "door", wood);
     }
 }

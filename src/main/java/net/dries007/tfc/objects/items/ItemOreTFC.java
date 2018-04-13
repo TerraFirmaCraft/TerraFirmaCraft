@@ -2,8 +2,8 @@ package net.dries007.tfc.objects.items;
 
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.Ore;
-import net.dries007.tfc.objects.blocks.BlockOreTFC;
 import net.dries007.tfc.util.IMetalObject;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,7 +20,7 @@ public class ItemOreTFC extends Item implements IMetalObject
         return MAP.get(ore);
     }
 
-    public static ItemStack get(Ore ore, BlockOreTFC.Grade grade, int amount)
+    public static ItemStack get(Ore ore, Ore.Grade grade, int amount)
     {
         return new ItemStack(MAP.get(ore), amount, ore.graded ? grade.getMeta() : 0);
     }
@@ -38,6 +38,16 @@ public class ItemOreTFC extends Item implements IMetalObject
         if (MAP.put(ore, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
         if (ore.graded) setHasSubtypes(true);
+        OreDictionaryHelper.register(this, "ore");
+        OreDictionaryHelper.register(this, "ore", ore);
+        if (ore.graded)
+        {
+            for (Ore.Grade grade : Ore.Grade.values())
+            {
+                OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", grade);
+                OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore, grade);
+            }
+        }
     }
 
     @Override
@@ -45,22 +55,22 @@ public class ItemOreTFC extends Item implements IMetalObject
     {
         if (!isInCreativeTab(tab)) return;
         if (ore.graded)
-            for (BlockOreTFC.Grade grade : BlockOreTFC.Grade.values())
+            for (Ore.Grade grade : Ore.Grade.values())
                 items.add(new ItemStack(this, 1, grade.getMeta()));
         else
             items.add(new ItemStack(this));
     }
 
-    public BlockOreTFC.Grade getGradeFromStack(ItemStack stack)
+    public Ore.Grade getGradeFromStack(ItemStack stack)
     {
-        return BlockOreTFC.Grade.byMetadata(stack.getItemDamage());
+        return Ore.Grade.byMetadata(stack.getItemDamage());
     }
 
     @Override
     public String getUnlocalizedName(ItemStack stack)
     {
-        BlockOreTFC.Grade grade = getGradeFromStack(stack);
-        if (grade == BlockOreTFC.Grade.NORMAL) return super.getUnlocalizedName(stack);
+        Ore.Grade grade = getGradeFromStack(stack);
+        if (grade == Ore.Grade.NORMAL) return super.getUnlocalizedName(stack);
         return super.getUnlocalizedName(stack) + "." + grade.getName();
     }
 

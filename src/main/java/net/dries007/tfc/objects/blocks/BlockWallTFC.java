@@ -2,6 +2,7 @@ package net.dries007.tfc.objects.blocks;
 
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -25,6 +26,8 @@ public class BlockWallTFC extends BlockWall
         super(modelBlock);
         TABLE.put(modelBlock.rock, modelBlock.type, this);
         parent = modelBlock;
+        OreDictionaryHelper.register(this, "wall");
+        OreDictionaryHelper.registerRockType(this, modelBlock.type, modelBlock.rock, "wall");
     }
 
     @Override

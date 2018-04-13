@@ -110,7 +110,7 @@ public enum Metal
         MACE_HEAD(true, 200),
         SAW(true, 100, ItemMetalTool.class),
         SAW_BLADE(true, 100),
-        JAVELIN(true, 100, ItemMetalTool.class),
+        JAVELIN(true, 100, ItemMetalTool.class), // todo: special class?
         JAVELIN_HEAD(true, 100),
         HAMMER(true, 100, ItemMetalTool.class),
         HAMMER_HEAD(true, 100),

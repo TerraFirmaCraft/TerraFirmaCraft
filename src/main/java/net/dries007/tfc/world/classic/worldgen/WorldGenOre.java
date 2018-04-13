@@ -86,12 +86,12 @@ public class WorldGenOre implements IWorldGenerator
                     !spawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock))
                 continue;
 
-            BlockOreTFC.Grade grade = BlockOreTFC.Grade.NORMAL;
+            Ore.Grade grade = Ore.Grade.NORMAL;
             if (spawnData.ore.graded)
             {
                 int gradeInt = rng.nextInt(100);
-                if (gradeInt < 20) grade = BlockOreTFC.Grade.RICH;
-                else if (gradeInt < 50) grade = BlockOreTFC.Grade.POOR;
+                if (gradeInt < 20) grade = Ore.Grade.RICH;
+                else if (gradeInt < 50) grade = Ore.Grade.POOR;
             }
 
             if (rng.nextInt(spawnData.rarity) != 0) continue;
@@ -117,7 +117,7 @@ public class WorldGenOre implements IWorldGenerator
         }
     }
 
-    private int generateDefault(Ore ore, BlockOreTFC.Grade grade, World world, Random rng, BlockPos start, int size, ImmutableList<Rock> baseRocks, float density)
+    private int generateDefault(Ore ore, Ore.Grade grade, World world, Random rng, BlockPos start, int size, ImmutableList<Rock> baseRocks, float density)
     {
         int blocksSpawned = 0;
         final float angle = rng.nextFloat() * (float) Math.PI;
@@ -178,7 +178,7 @@ public class WorldGenOre implements IWorldGenerator
         return blocksSpawned;
     }
 
-    private int generateVein(Ore ore, BlockOreTFC.Grade grade, World world, Random rng, BlockPos start, int size, ImmutableList<Rock> baseRocks)
+    private int generateVein(Ore ore, Ore.Grade grade, World world, Random rng, BlockPos start, int size, ImmutableList<Rock> baseRocks)
     {
         int blocksSpawned = 0;
 

@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -26,8 +27,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 import static net.minecraft.util.text.TextFormatting.*;
@@ -35,6 +39,11 @@ import static net.minecraft.util.text.TextFormatting.*;
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)
 public class ClientEvents
 {
+    public static void preInit()
+    {
+        RenderingRegistry.registerEntityRenderingHandler(EntityFallingBlockTFC.class, RenderFallingBlockTFC::new);
+    }
+
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void openGUI(GuiScreenEvent.InitGuiEvent.Pre event)
     {
@@ -109,27 +118,34 @@ public class ClientEvents
         {
             ItemStack stack = event.getItemStack();
             Item item = stack.getItem();
-            for (String toolClass : item.getToolClasses(stack))
+            List<String> tt = event.getToolTip();
+            Set<String> toolClasses = item.getToolClasses(stack);
+            if (!toolClasses.isEmpty())
             {
-                event.getToolTip().add("Tool: " + toolClass); //todo: localize
+                tt.add("");
+                for (String toolClass : toolClasses)
+                {
+                    tt.add("Tool: " + toolClass); //todo: localize
+                }
             }
             if (item instanceof IMetalObject)
-            {
-                ((IMetalObject) item).addMetalInfo(stack, event.getToolTip());
-            }
+                ((IMetalObject) item).addMetalInfo(stack, tt);
             if (item instanceof ItemBlock)
             {
                 Block block = ((ItemBlock) item).getBlock();
                 if (block instanceof IMetalObject)
                 {
-                    ((IMetalObject) block).addMetalInfo(stack, event.getToolTip());
+                    ((IMetalObject) block).addMetalInfo(stack, tt);
                 }
             }
-        }
-    }
 
-    public static void preInit()
-    {
-        RenderingRegistry.registerEntityRenderingHandler(EntityFallingBlockTFC.class, RenderFallingBlockTFC::new);
+            int[] ids = OreDictionary.getOreIDs(stack);
+            if (ids != null && ids.length != 0)
+            {
+                tt.add("");
+                tt.add(TextFormatting.AQUA + "Ore Dictionary:");
+                Arrays.stream(ids).mapToObj(OreDictionary::getOreName).sorted().forEachOrdered(tt::add);
+            }
+        }
     }
 }

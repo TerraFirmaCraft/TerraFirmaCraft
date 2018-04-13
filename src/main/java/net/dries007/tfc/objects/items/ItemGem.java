@@ -1,6 +1,7 @@
 package net.dries007.tfc.objects.items;
 
 import net.dries007.tfc.objects.Gem;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,6 +31,13 @@ public class ItemGem extends Item
         if (MAP.put(gem, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
         setHasSubtypes(true);
+        OreDictionaryHelper.register(this, "gem");
+        OreDictionaryHelper.register(this, "gem", gem);
+        for (Gem.Grade grade : Gem.Grade.values())
+        {
+            OreDictionaryHelper.registerMeta(this, grade.getMeta(), "gem", gem, grade);
+            OreDictionaryHelper.registerMeta(this, grade.getMeta(), "gem", grade);
+        }
     }
 
     @Override

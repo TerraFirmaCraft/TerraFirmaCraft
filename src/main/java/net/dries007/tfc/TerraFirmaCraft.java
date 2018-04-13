@@ -6,6 +6,7 @@ import net.dries007.tfc.objects.CreativeTabsTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkCapabilityHandler;
@@ -70,8 +71,8 @@ public class TerraFirmaCraft
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
+        OreDictionaryHelper.init();
         CreativeTabsTFC.init();
-
         ItemsTFC.init();
 
         worldTypeTFC = new WorldTypeTFC();

@@ -20,7 +20,7 @@ public class ItemMetalTool extends ItemMetal
     public final float typeDamage;
     public final float efficiency;
     public final double attackDamage;
-    public final int areaOfAttack;
+    public final int areaOfAttack; // todo: implement
     public final float attackSpeed;
 
     public ItemMetalTool(Metal metal, Metal.ItemType type)
@@ -28,6 +28,11 @@ public class ItemMetalTool extends ItemMetal
         super(metal, type);
         if (metal.toolMetal == null) throw new IllegalArgumentException("You can't make tools out of non tool metals.");
         material = metal.toolMetal;
+
+        /*
+        HAMMER(true, 100, ItemMetalTool.class),
+        KNIFE(true, 100, ItemMetalTool.class),
+         */
 
         switch (type)
         {
@@ -49,17 +54,65 @@ public class ItemMetalTool extends ItemMetal
                 areaOfAttack = 1;
                 attackSpeed = -3f;
                 break;
+            case HOE:
+                setHarvestLevel("hoe", metal.toolMetal.getHarvestLevel());
+                typeDamage = 0.7f;
+                areaOfAttack = 1;
+                attackSpeed = -3;
+                break;
+            case CHISEL:
+                setHarvestLevel("chisel", metal.toolMetal.getHarvestLevel());
+                typeDamage = 0.7f;
+                areaOfAttack = 1;
+                attackSpeed = 0;
+                break;
+            case SAW:
+                setHarvestLevel("saw", metal.toolMetal.getHarvestLevel());
+                typeDamage = 0.5f;
+                areaOfAttack = 1;
+                attackSpeed = -1;
+                break;
+            case PROPICK:
+                setHarvestLevel("pickaxe", metal.toolMetal.getHarvestLevel());
+                typeDamage = 1f;
+                areaOfAttack = 1;
+                attackSpeed = -3.5f;
+                break;
             case SCYTHE:
                 setHarvestLevel("scythe", metal.toolMetal.getHarvestLevel());
                 typeDamage = 1.5f;
                 areaOfAttack = 3;
                 attackSpeed = -3.5f;
                 break;
-            default:
+            case KNIFE:
+                setHarvestLevel("knife", metal.toolMetal.getHarvestLevel());
                 typeDamage = 0.5f;
                 areaOfAttack = 1;
-                attackSpeed = 0;
+                attackSpeed = 3f;
                 break;
+            case HAMMER:
+                setHarvestLevel("hammer", metal.toolMetal.getHarvestLevel());
+                typeDamage = 2f;
+                areaOfAttack = 1;
+                attackSpeed = -3.5f;
+                break;
+            case SWORD:
+                typeDamage = 1f;
+                areaOfAttack = 1;
+                attackSpeed = -0.75f;
+                break;
+            case MACE:
+                typeDamage = 1.1f;
+                areaOfAttack = 1;
+                attackSpeed = -1;
+                break;
+            case JAVELIN:
+                typeDamage = 1f;
+                areaOfAttack = 1;
+                attackSpeed = -1;
+                break;
+            default:
+                throw new IllegalArgumentException("Tool from non tool type.");
         }
 
         setMaxStackSize(1);

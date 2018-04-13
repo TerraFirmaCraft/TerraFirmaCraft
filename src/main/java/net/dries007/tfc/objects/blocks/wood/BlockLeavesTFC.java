@@ -2,6 +2,7 @@ package net.dries007.tfc.objects.blocks.wood;
 
 import com.google.common.collect.ImmutableList;
 import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.BlockStateContainer;
@@ -36,6 +37,8 @@ public class BlockLeavesTFC extends BlockLeaves
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         setDefaultState(blockState.getBaseState().withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true));
         leavesFancy = true; // there doesn't seem to be an even for catching changing this, so lets not bother
+        OreDictionaryHelper.register(this, "tree", "leaves");
+        OreDictionaryHelper.register(this, "tree", "leaves", wood);
     }
 
     @Override

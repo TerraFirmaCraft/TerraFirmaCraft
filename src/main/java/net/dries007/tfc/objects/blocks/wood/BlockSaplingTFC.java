@@ -2,6 +2,7 @@ package net.dries007.tfc.objects.blocks.wood;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.world.classic.worldgen.WorldGenTree;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
@@ -37,6 +38,8 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
         this.wood = wood;
         setDefaultState(blockState.getBaseState().withProperty(STAGE, 0));
         setHardness(0.0F);
+        OreDictionaryHelper.register(this, "tree", "sapling");
+        OreDictionaryHelper.register(this, "tree", "sapling", wood);
     }
 
     @Override

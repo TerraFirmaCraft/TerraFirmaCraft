@@ -3,6 +3,7 @@ package net.dries007.tfc.objects.blocks;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 
@@ -29,6 +30,8 @@ public class BlockStairsTFC extends BlockStairs
         ROCK_TABLE.put(rock, type, this);
         Block c = BlockRockVariant.get(rock, type);
         setHarvestLevel(c.getHarvestTool(c.getDefaultState()), c.getHarvestLevel(c.getDefaultState()));
+        OreDictionaryHelper.register(this, "stair");
+        OreDictionaryHelper.registerRockType(this, type, rock, "stair");
     }
 
     public BlockStairsTFC(Wood wood)
@@ -37,5 +40,8 @@ public class BlockStairsTFC extends BlockStairs
         if (WOOD_MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         Block c = BlockPlanksTFC.get(wood);
         setHarvestLevel(c.getHarvestTool(c.getDefaultState()), c.getHarvestLevel(c.getDefaultState()));
+        OreDictionaryHelper.register(this, "stair");
+        OreDictionaryHelper.register(this, "stair", "wood");
+        OreDictionaryHelper.register(this, "stair", "wood", wood);
     }
 }

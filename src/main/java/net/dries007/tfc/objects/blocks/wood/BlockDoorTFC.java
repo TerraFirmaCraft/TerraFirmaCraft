@@ -36,6 +36,7 @@ public class BlockDoorTFC extends BlockDoor
         setSoundType(SoundType.WOOD);
         setHardness(3.0F);
         disableStats();
+        // No direct item, so no oredict.
     }
 
     public Item getItem()

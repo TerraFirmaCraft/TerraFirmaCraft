@@ -1,5 +1,6 @@
 package net.dries007.tfc.objects.blocks;
 
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -12,5 +13,6 @@ public class BlockPeat extends Block
         setSoundType(SoundType.GROUND);
         setHardness(0.6F);
         setHarvestLevel("shovel", 0);
+        OreDictionaryHelper.register(this, "peat");
     }
 }

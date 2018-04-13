@@ -2,6 +2,7 @@ package net.dries007.tfc.client;
 
 import com.google.common.base.Strings;
 import net.dries007.tfc.objects.Gem;
+import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.blocks.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
@@ -65,10 +66,10 @@ public final class ClientRegisterEvents
 
         for (ItemOreTFC item : ItemsTFC.getAllOreItems())
             if (item.ore.graded)
-                for (BlockOreTFC.Grade grade : BlockOreTFC.Grade.values())
+                for (Ore.Grade grade : Ore.Grade.values())
                     registerEnumBasedMetaItems("ore", grade, item);
             else
-                registerEnumBasedMetaItems("ore", BlockOreTFC.Grade.NORMAL, item);
+                registerEnumBasedMetaItems("ore", Ore.Grade.NORMAL, item);
 
         for (Block block : BlocksTFC.getAllFluidBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());

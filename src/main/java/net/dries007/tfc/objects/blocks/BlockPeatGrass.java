@@ -1,6 +1,7 @@
 package net.dries007.tfc.objects.blocks;
 
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -30,6 +31,8 @@ public class BlockPeatGrass extends BlockPeat
         super(material);
         setSoundType(SoundType.GROUND);
         setTickRandomly(true);
+        OreDictionaryHelper.register(this, "peat");
+        OreDictionaryHelper.register(this, "peat", "grass");
     }
 
     @Override
