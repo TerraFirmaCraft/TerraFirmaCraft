@@ -3,12 +3,15 @@ package net.dries007.tfc.objects.trees;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.objects.trees.TreeSchematicManager.*;
+import net.dries007.tfc.objects.trees.TreeSchematicManager.TreeSchematic;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 /**
- * Ported and modified version of TFC2 code by Bioxx
+ * todo: change to proper vanilla schematics
  */
 public class TreeRegistry {
 
@@ -29,7 +32,7 @@ public class TreeRegistry {
 
     public String[] getTreeNames()
     {
-        return (String[])treeList.keySet().toArray(new String[treeList.size()]);
+        return treeList.keySet().toArray(new String[treeList.size()]);
     }
 
     public TreeSchematic getRandomTreeSchematic(Random random)

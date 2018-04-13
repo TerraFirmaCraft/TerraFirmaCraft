@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 /**
- * Ported and modified version of TFC2 code by Bioxx
+ * todo: change to proper vanilla schematics
  */
 public class Schematic implements ISchematic
 {
