@@ -2,10 +2,7 @@ package net.dries007.tfc.objects.items;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
-import net.dries007.tfc.objects.Gem;
-import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.Ore;
-import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.*;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
@@ -13,6 +10,7 @@ import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 import net.dries007.tfc.objects.items.wood.ItemLogTFC;
+import net.dries007.tfc.objects.items.wood.ItemLumberTFC;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -90,6 +88,13 @@ public final class ItemsTFC
             allGemItems = b.build();
         }
 
+        /*{
+            Builder<ItemLumberTFC> b = new Builder<>();
+            for (Wood wood : Wood.values())
+                b.add(register(r, "wood/lumber/" + wood.name().toLowerCase(), new ItemLumberTFC(wood), CT_WOOD));
+            allLumberItems = b.build();
+        }*/
+
         for (Metal.ItemType type : Metal.ItemType.values())
         {
             for (Metal metal : Metal.values())
@@ -111,6 +116,9 @@ public final class ItemsTFC
 
         for (BlockSlabTFC.Half slab : BlocksTFC.getAllSlabBlocks())
             simpleItems.add(register(r, slab.getRegistryName().getResourcePath(), new ItemSlab(slab, slab, slab.doubleSlab), CT_WOOD));
+
+        for (Wood wood : Wood.values())
+            simpleItems.add(register(r, "wood/lumber/" + wood.name().toLowerCase(), new ItemLumberTFC(wood), CT_WOOD));
 
         allSimpleItems = simpleItems.build();
     }

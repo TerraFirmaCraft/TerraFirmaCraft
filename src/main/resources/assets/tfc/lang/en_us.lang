@@ -1517,6 +1517,26 @@ item.tfc.brick.gneiss.name=Gneiss Brick
 item.tfc.brick.marble.name=Marble Brick
 item.tfc.brick.ranite.name=Granite Brick
 
+item.tfc.wood.lumber.ash.name=Ash Lumber
+item.tfc.wood.lumber.aspen.name=Aspen Lumber
+item.tfc.wood.lumber.birch.name=Birch Lumber
+item.tfc.wood.lumber.chestnut.name=Chestnut Lumber
+item.tfc.wood.lumber.douglas_fir.name=Douglas Fir Lumber
+item.tfc.wood.lumber.hickory.name=Hickory Lumber
+item.tfc.wood.lumber.maple.name=Maple Lumber
+item.tfc.wood.lumber.oak.name=Oak Lumber
+item.tfc.wood.lumber.pine.name=Pine Lumber
+item.tfc.wood.lumber.sequoia.name=Sequoia Lumber
+item.tfc.wood.lumber.spruce.name=Spruce Lumber
+item.tfc.wood.lumber.sycamore.name=Sycamore Lumber
+item.tfc.wood.lumber.white_cedar.name=White Cedar Lumber
+item.tfc.wood.lumber.willow.name=Willow Lumber
+item.tfc.wood.lumber.kapok.name=Kapok Lumber
+item.tfc.wood.lumber.acacia.name=Acacia Lumber
+item.tfc.wood.lumber.rosewood.name=Rosewood Lumber
+item.tfc.wood.lumber.blackwood.name=Blackwood Lumber
+item.tfc.wood.lumber.palm.name=Palm Lumber
+
 item.tfc.wood.door.ash.name=Ash Door
 item.tfc.wood.door.aspen.name=Aspen Door
 item.tfc.wood.door.birch.name=Birch Door
