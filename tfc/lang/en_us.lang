@@ -49,7 +49,8 @@ generator.tfc_classic=TFC Classic
 
 # Items
 item.tfc.wand.name=TFC Debug Wand
-#todo: add all items
+item.tfc.firestarter.name=Firestarter
+tile.tfc.firepit.name=Firepit
 
 # Fluids
 fluid.salt_water=Salt water
@@ -61,7 +62,7 @@ tile.tfc.debug.name=TFC Debug Block
 tile.tfc.peat.name=Peat
 tile.tfc.peat.grass.name=Peat Grass
 
-## Stone types & variaties
+## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite
 tile.tfc.raw.diorite.name=Raw Diorite
 tile.tfc.raw.gabbro.name=Raw Gabbro
