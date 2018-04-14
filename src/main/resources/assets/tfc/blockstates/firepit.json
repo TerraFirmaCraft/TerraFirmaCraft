@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "tfc:blocks/devices/firepit_off",
+      "texture": "tfc:blocks/devices/firepit_off"
+    },
+    "model": "tfc:flat"
+  },
+  "variants": {
+    "normal": [{}],
+    "lit": {
+      "true": {"textures": {"texture": "tfc:blocks/devices/firepit_on"}},
+      "false": {}
+    }
+  }
+}

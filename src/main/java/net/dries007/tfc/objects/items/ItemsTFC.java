@@ -38,6 +38,7 @@ public final class ItemsTFC
     private ItemsTFC() {}
 
     public static final ItemDebug WAND = null;
+    public static final ItemFireStarter FIRESTARTER = null;
 
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
@@ -125,6 +126,8 @@ public final class ItemsTFC
             simpleItems.add(register(r, "stone/javelin/" + cat.name().toLowerCase(), new ItemRockJavelin(cat), CT_ROCK_ITEMS));
             simpleItems.add(register(r, "stone/hammer/" + cat.name().toLowerCase(), new ItemRockHammer(cat), CT_ROCK_ITEMS));
         }
+
+        simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
 
         allSimpleItems = simpleItems.build();
     }

@@ -5,6 +5,7 @@
     "description": "A 1.12+ port for the 1.7.10 classic TerraFirmaCraft",
     "version": "${version}",
     "mcversion": "${mcversion}",
+    "logoFile": "/assets/tfc/textures/gui/logo.png",
     "url": "https://ftc.dries007.net",
     "updateJson": "https://mc.dries007.net/tfc.json",
     "authorList": [
