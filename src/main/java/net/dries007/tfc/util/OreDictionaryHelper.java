@@ -8,9 +8,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import net.dries007.tfc.objects.Rock;
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.function.Predicate;
 
 import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
 
@@ -131,6 +135,23 @@ public class OreDictionaryHelper
         done = true;
         MAP.forEach((t, s) -> OreDictionary.registerOre(s, t.toItemStack()));
         MAP.clear(); // No need to keep this stuff around
+    }
+
+    public static Predicate<ItemStack> createPredicateStack(String... names)
+    {
+        return input -> {
+            if (input.isEmpty()) return false;
+            int[] ids = OreDictionary.getOreIDs(input);
+            for (String name : names)
+                if (ArrayUtils.contains(ids, OreDictionary.getOreID(name)))
+                    return true;
+            return false;
+        };
+    }
+
+    public static Predicate<EntityItem> createPredicateItemEntity(String... names)
+    {
+        return input -> input.isEntityAlive() && createPredicateStack(names).test(input.getItem());
     }
 
     private static class Thing
