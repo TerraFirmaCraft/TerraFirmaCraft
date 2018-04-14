@@ -557,6 +557,10 @@ for item_type, tool_item in METAL_ITEMS.items():
         if item_type in ['knife', 'javelin']:
             parent = 'tfc:item/handheld_flipped'
         item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal), parent=parent)
+for metal in ['steel', 'black_steel', 'blue_steel', 'red_steel']:
+    for type in ['high_carbon', 'weak']:
+        for x in ['ingot', 'unshaped']:
+            item(('metal', x, type + '_' + metal), 'tfc:items/metal/%s/%s' % (x, metal))
 for x in ['ingot', 'unshaped']:
     item(('metal', x, 'unknown'), 'tfc:items/metal/%s/%s' % (x, 'unknown'))
 

@@ -96,8 +96,7 @@ public final class ItemsTFC
         {
             for (Metal metal : Metal.values())
             {
-                if (type.toolItem && metal.toolMetal == null) continue;
-                if (metal == Metal.UNKNOWN && !(type == Metal.ItemType.INGOT || type == Metal.ItemType.UNSHAPED)) continue;
+                if (!metal.hasType(type)) continue;
                 simpleItems.add(register(r, ("metal/"+ type + "/" + metal).toLowerCase(), type.clazz.getConstructor(Metal.class, Metal.ItemType.class).newInstance(metal, type), CT_METAL));
             }
         }

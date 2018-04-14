@@ -33,7 +33,16 @@ public enum Metal
     BLUE_STEEL(TIER_V, 0.35, 1540, ToolMaterialsTFC.BLUE_STEEL),
     RED_STEEL(TIER_V, 0.35, 1540, ToolMaterialsTFC.RED_STEEL),
 
-    UNKNOWN();
+    WEAK_STEEL(false, TIER_V, 0.35, 1540),
+    WEAK_BLUE_STEEL(false, TIER_V, 0.35, 1540),
+    WEAK_RED_STEEL(false, TIER_V, 0.35, 1540),
+
+    HIGH_CARBON_STEEL(false, TIER_V, 0.35, 1540),
+    HIGH_CARBON_BLUE_STEEL(false, TIER_V, 0.35, 1540),
+    HIGH_CARBON_RED_STEEL(false, TIER_V, 0.35, 1540),
+    HIGH_CARBON_BLACK_STEEL(false, TIER_V, 0.35, 1540),
+
+    UNKNOWN(false, TIER_I, 0.5, 1250);
 
     public final boolean usable;
     public final Tier tier;
@@ -43,25 +52,32 @@ public enum Metal
 
     Metal(Tier tier, double sh, int melt)
     {
-        this(tier, sh, melt, null);
+        this(true, tier, sh, melt, null);
     }
 
     Metal(Tier tier, double sh, int melt, Item.ToolMaterial toolMetal)
     {
-        this.usable = true;
+        this(true, tier, sh, melt, toolMetal);
+    }
+
+    Metal(boolean usable, Tier tier, double sh, int melt)
+    {
+        this(usable, tier, sh, melt, null);
+    }
+
+    Metal(boolean usable, Tier tier, double sh, int melt, Item.ToolMaterial toolMetal)
+    {
+        this.usable = usable;
         this.tier = tier;
         this.specificHeat = sh;
         this.meltTemp = melt;
         this.toolMetal = toolMetal;
     }
 
-    Metal()
+    public boolean hasType(ItemType type)
     {
-        this.usable = false;
-        this.tier = TIER_I;
-        this.specificHeat = 0.5;
-        this.meltTemp = 1250;
-        this.toolMetal = null;
+        if (!usable) return type == ItemType.INGOT || type == ItemType.UNSHAPED;
+        return !type.toolItem || this.toolMetal != null;
     }
 
     public enum Tier

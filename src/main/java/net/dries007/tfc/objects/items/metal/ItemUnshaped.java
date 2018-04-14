@@ -14,6 +14,6 @@ public class ItemUnshaped extends ItemMetal
     @Override
     public int getSmeltAmount(ItemStack stack)
     {
-        return stack.getItemDamage();
+        return 100 - stack.getItemDamage();
     }
 }
