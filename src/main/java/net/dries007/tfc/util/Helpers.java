@@ -8,8 +8,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class Helpers
 {
@@ -62,8 +65,9 @@ public final class Helpers
         }
     }
 
-    public static boolean containsAnyOfCaseInsensitive(Set<String> toolClasses, String[] classes)
+    public static boolean containsAnyOfCaseInsensitive(Collection<String> input, String... items)
     {
-        return false;
+        Set<String> itemsSet = Arrays.stream(items).map(String::toLowerCase).collect(Collectors.toSet());
+        return input.stream().map(String::toLowerCase).anyMatch(itemsSet::contains);
     }
 }
