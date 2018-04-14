@@ -81,30 +81,38 @@ public class OreDictionaryHelper
             case RAW:
                 MAP.put(thing, toString(prefixParts, "stone"));
                 MAP.put(thing, toString(prefixParts, "stone", rock));
+                MAP.put(thing, toString(prefixParts, "stone", rock.category));
                 break;
             case SMOOTH:
                 MAP.put(thing, toString(prefixParts, "stone"));
                 MAP.put(thing, toString(prefixParts, "stone", "polished"));
                 MAP.put(thing, toString(prefixParts, "stone", rock));
                 MAP.put(thing, toString(prefixParts, "stone", rock, "polished"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.category));
+                MAP.put(thing, toString(prefixParts, "stone", rock.category, "polished"));
                 break;
             case COBBLE:
                 MAP.put(thing, toString(prefixParts, "cobblestone"));
                 MAP.put(thing, toString(prefixParts, "cobblestone", rock));
+                MAP.put(thing, toString(prefixParts, "cobblestone", rock.category));
                 break;
             case BRICKS:
                 MAP.put(thing, toString(prefixParts, "stone", "brick"));
                 MAP.put(thing, toString(prefixParts, "stone", rock, "brick"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.category, "brick"));
                 break;
             case CLAY_GRASS:
                 MAP.put(thing, toString(prefixParts, "clay"));
                 MAP.put(thing, toString(prefixParts, "clay", rock));
+                MAP.put(thing, toString(prefixParts, "clay", rock.category));
                 MAP.put(thing, toString(prefixParts, "clay", "grass"));
                 MAP.put(thing, toString(prefixParts, "clay", rock, "grass"));
+                MAP.put(thing, toString(prefixParts, "clay", rock.category, "grass"));
                 break;
             case DRY_GRASS:
                 MAP.put(thing, toString(prefixParts, type, "dry"));
                 MAP.put(thing, toString(prefixParts, type, rock, "dry"));
+                MAP.put(thing, toString(prefixParts, type, rock.category, "dry"));
                 break;
             case SAND:
             case GRAVEL:
@@ -114,6 +122,7 @@ public class OreDictionaryHelper
             default:
                 MAP.put(thing, toString(prefixParts, type));
                 MAP.put(thing, toString(prefixParts, type, rock));
+                MAP.put(thing, toString(prefixParts, type, rock.category));
         }
     }
 

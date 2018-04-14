@@ -1,4 +1,4 @@
-package net.dries007.tfc.objects.items;
+package net.dries007.tfc.objects.items.rock;
 
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -30,5 +30,6 @@ public class ItemBrickTFC extends Item
         setMaxDamage(0);
         OreDictionaryHelper.register(this, "brick");
         OreDictionaryHelper.register(this, "brick", rock);
+        OreDictionaryHelper.register(this, "brick", rock.category);
     }
 }

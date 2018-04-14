@@ -1,6 +1,7 @@
 package net.dries007.tfc.objects;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
 
 public enum Rock
 {
@@ -38,7 +39,17 @@ public enum Rock
 
     public enum Category
     {
-        SEDIMENTARY, METAMORPHIC, IGNEOUS_INTRUSIVE, IGNEOUS_EXTRUSIVE
+        SEDIMENTARY(ToolMaterialsTFC.SED),
+        METAMORPHIC(ToolMaterialsTFC.M_M),
+        IGNEOUS_INTRUSIVE(ToolMaterialsTFC.IG_IN),
+        IGNEOUS_EXTRUSIVE(ToolMaterialsTFC.IG_EX),
+        ;
+        public final Item.ToolMaterial toolMaterial;
+
+        Category(Item.ToolMaterial toolMaterial)
+        {
+            this.toolMaterial = toolMaterial;
+        }
     }
 
     public enum Type

@@ -2,7 +2,7 @@ package net.dries007.tfc.objects.blocks;
 
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.items.ItemOreTFC;
+import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
