@@ -17,28 +17,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemMetalTool extends ItemMetal
 {
     public final ToolMaterial material;
-    public final float typeDamage;
-    public final float efficiency;
-    public final double attackDamage;
-    public final int areaOfAttack; // todo: implement
-    public final float attackSpeed;
+    private final float efficiency;
+    private final double attackDamage;
+    private final int areaOfAttack; // todo: implement
+    private final float attackSpeed;
 
     public ItemMetalTool(Metal metal, Metal.ItemType type)
     {
         super(metal, type);
         if (metal.toolMetal == null) throw new IllegalArgumentException("You can't make tools out of non tool metals.");
         material = metal.toolMetal;
-
-        /*
-        HAMMER(true, 100, ItemMetalTool.class),
-        KNIFE(true, 100, ItemMetalTool.class),
-         */
-
+        float typeDamage;
         switch (type)
         {
             case PICK:
                 setHarvestLevel("pickaxe", metal.toolMetal.getHarvestLevel());
-                typeDamage = 1.2f;
+                typeDamage = 1.2f; // todo: use some central spot for this (config maybe?) and make the rock equivalents use the same numbers.
                 areaOfAttack = 1;
                 attackSpeed = -2.8f;
                 break;

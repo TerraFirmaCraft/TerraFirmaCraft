@@ -2,7 +2,7 @@ package net.dries007.tfc.objects.blocks;
 
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
-import net.dries007.tfc.objects.items.ItemRock;
+import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFallingBlock;
 import net.dries007.tfc.util.InsertOnlyEnumTable;

@@ -51,6 +51,12 @@ ROCK_TYPES = [
     'gneiss',
     'marble',
 ]
+ROCK_CATEGORIES = [
+    'sedimentary',
+    'metamorphic',
+    'igneous_intrusive',
+    'igneous_extrusive',
+]
 FULLBLOCK_TYPES = [
     'raw',
     'smooth',
@@ -215,6 +221,9 @@ METAL_ITEMS = {
     'unfinished_helmet': True,
     'helmet': True,
 }
+HANDHELDS = [
+    'pick', 'shovel', 'axe', 'hoe', 'chisel', 'sword', 'mace', 'saw', 'javelin', 'hammer', 'knife', 'scythe'
+]
 DOOR_VARIANTS = {
     'normal': None,
     'facing=east,half=lower,hinge=left,open=false': {'model': 'door_bottom'},
@@ -357,8 +366,8 @@ def model(filename_parts, parent, textures):
         }), file)
 
 
-def item(filename_parts, *layers):
-    model(('item', *filename_parts), 'item/generated', {'layer%d' % i: v for i, v in enumerate(layers)})
+def item(filename_parts, *layers, parent='item/generated'):
+    model(('item', *filename_parts), parent, {'layer%d' % i: v for i, v in enumerate(layers)})
 
 
 # BLOCKSTATES
@@ -544,10 +553,21 @@ for item_type, tool_item in METAL_ITEMS.items():
     for metal, tool_metal in METAL_TYPES.items():
         if tool_item and not tool_metal:
             continue
-        item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal))
+        parent = 'item/handheld' if item_type in HANDHELDS else 'item/generated'
+        if item_type in ['knife', 'javelin']:
+            parent = 'tfc:item/handheld_flipped'
+        item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal), parent=parent)
 for x in ['ingot', 'unshaped']:
     item(('metal', x, 'unknown'), 'tfc:items/metal/%s/%s' % (x, 'unknown'))
 
 # WOOD STUFF
 for wood_type in WOOD_TYPES:
     item(('wood', 'lumber', wood_type), 'tfc:items/wood/lumber/%s' % wood_type)
+
+# ROCK TOOLS
+for rock_cat in ROCK_CATEGORIES:
+    for item_type in ['axe', 'shovel', 'hoe', 'knife', 'javelin', 'hammer']:
+        parent = 'item/handheld'
+        if item_type in ['knife', 'javelin']:
+            parent = 'tfc:item/handheld_flipped'
+        item(('stone', item_type, rock_cat), 'tfc:items/stone/%s' % item_type, parent=parent)

@@ -2278,6 +2278,34 @@ item.tfc.metal.lamp.black_steel.name=Black Steel Lamp
 item.tfc.metal.lamp.blue_steel.name=Blue Steel Lamp
 item.tfc.metal.lamp.red_steel.name=Red Steel Lamp
 
+item.tfc.stone.axe.sedimentary.name=Rock Axe
+item.tfc.stone.shovel.sedimentary.name=Rock Shovel
+item.tfc.stone.hoe.sedimentary.name=Rock Hoe
+item.tfc.stone.knife.sedimentary.name=Rock Knife
+item.tfc.stone.javelin.sedimentary.name=Rock Javelin
+item.tfc.stone.hammer.sedimentary.name=Rock Hammer
+
+item.tfc.stone.axe.metamorphic.name=Rock Axe
+item.tfc.stone.shovel.metamorphic.name=Rock Shovel
+item.tfc.stone.hoe.metamorphic.name=Rock Hoe
+item.tfc.stone.knife.metamorphic.name=Rock Knife
+item.tfc.stone.javelin.metamorphic.name=Rock Javelin
+item.tfc.stone.hammer.metamorphic.name=Rock Hammer
+
+item.tfc.stone.axe.igneous_intrusive.name=Rock Axe
+item.tfc.stone.shovel.igneous_intrusive.name=Rock Shovel
+item.tfc.stone.hoe.igneous_intrusive.name=Rock Hoe
+item.tfc.stone.knife.igneous_intrusive.name=Rock Knife
+item.tfc.stone.javelin.igneous_intrusive.name=Rock Javelin
+item.tfc.stone.hammer.igneous_intrusive.name=Rock Hammer
+
+item.tfc.stone.axe.igneous_extrusive.name=Rock Axe
+item.tfc.stone.shovel.igneous_extrusive.name=Rock Shovel
+item.tfc.stone.hoe.igneous_extrusive.name=Rock Hoe
+item.tfc.stone.knife.igneous_extrusive.name=Rock Knife
+item.tfc.stone.javelin.igneous_extrusive.name=Rock Javelin
+item.tfc.stone.hammer.igneous_extrusive.name=Rock Hammer
+
 item.tfc.metal.unshaped.unknown.name=Unshaped Unknown Metal
 item.tfc.metal.ingot.unknown.name=Unknown Metal Ingot
 

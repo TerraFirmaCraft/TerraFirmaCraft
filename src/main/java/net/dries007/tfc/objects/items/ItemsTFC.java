@@ -8,6 +8,9 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
+import net.dries007.tfc.objects.items.metal.ItemOreTFC;
+import net.dries007.tfc.objects.items.metal.ItemSmallOre;
+import net.dries007.tfc.objects.items.rock.*;
 import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 import net.dries007.tfc.objects.items.wood.ItemLogTFC;
 import net.dries007.tfc.objects.items.wood.ItemLumberTFC;
@@ -112,6 +115,16 @@ public final class ItemsTFC
 
         for (Wood wood : Wood.values())
             simpleItems.add(register(r, "wood/lumber/" + wood.name().toLowerCase(), new ItemLumberTFC(wood), CT_WOOD));
+
+        for (Rock.Category cat : Rock.Category.values())
+        {
+            simpleItems.add(register(r, "stone/axe/" + cat.name().toLowerCase(), new ItemRockAxe(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/shovel/" + cat.name().toLowerCase(), new ItemRockShovel(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/hoe/" + cat.name().toLowerCase(), new ItemRockHoe(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/knife/" + cat.name().toLowerCase(), new ItemRockKnife(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/javelin/" + cat.name().toLowerCase(), new ItemRockJavelin(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/hammer/" + cat.name().toLowerCase(), new ItemRockHammer(cat), CT_ROCK_ITEMS));
+        }
 
         allSimpleItems = simpleItems.build();
     }
