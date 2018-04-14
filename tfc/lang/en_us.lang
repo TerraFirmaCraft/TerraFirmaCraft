@@ -1778,9 +1778,9 @@ item.tfc.metal.unshaped.zinc.name=Unshaped Zinc
 item.tfc.metal.unshaped.sterling_silver.name=Unshaped Sterling Silver 
 item.tfc.metal.unshaped.wrought_iron.name=Unshaped Wrought Iron 
 item.tfc.metal.unshaped.pig_iron.name=Unshaped Pig Iron 
-item.tfc.metal.unshaped.steel.name=Unshaped Steel 
-item.tfc.metal.unshaped.platinum.name=Unshaped Platinum 
-item.tfc.metal.unshaped.black_steel.name=Unshaped Black Steel 
+item.tfc.metal.unshaped.platinum.name=Unshaped Platinum
+item.tfc.metal.unshaped.steel.name=Unshaped Steel
+item.tfc.metal.unshaped.black_steel.name=Unshaped Black Steel
 item.tfc.metal.unshaped.blue_steel.name=Unshaped Blue Steel 
 item.tfc.metal.unshaped.red_steel.name=Unshaped Red Steel 
 item.tfc.metal.ingot.bismuth.name=Bismuth Ingot
@@ -2306,6 +2306,24 @@ item.tfc.stone.hoe.igneous_extrusive.name=Rock Hoe
 item.tfc.stone.knife.igneous_extrusive.name=Rock Knife
 item.tfc.stone.javelin.igneous_extrusive.name=Rock Javelin
 item.tfc.stone.hammer.igneous_extrusive.name=Rock Hammer
+
+item.tfc.metal.unshaped.high_carbon_steel.name=Unshaped High Carbon Steel
+item.tfc.metal.unshaped.high_carbon_black_steel.name=Unshaped Black High Carbon Steel
+item.tfc.metal.unshaped.high_carbon_blue_steel.name=Unshaped Blue High Carbon Steel
+item.tfc.metal.unshaped.high_carbon_red_steel.name=Unshaped Red High Carbon Steel
+item.tfc.metal.unshaped.weak_steel.name=Unshaped Weak Steel
+item.tfc.metal.unshaped.weak_black_steel.name=Unshaped Black Weak Steel
+item.tfc.metal.unshaped.weak_blue_steel.name=Unshaped Blue Weak Steel
+item.tfc.metal.unshaped.weak_red_steel.name=Unshaped Red Weak Steel
+
+item.tfc.metal.ingot.high_carbon_steel.name=High Carbon Steel Ingot
+item.tfc.metal.ingot.high_carbon_black_steel.name=Black High Carbon Steel Ingot
+item.tfc.metal.ingot.high_carbon_blue_steel.name=Blue High Carbon Steel Ingot
+item.tfc.metal.ingot.high_carbon_red_steel.name=Red High Carbon Steel Ingot
+item.tfc.metal.ingot.weak_steel.name=Weak Steel Ingot
+item.tfc.metal.ingot.weak_black_steel.name=Black Weak Steel Ingot
+item.tfc.metal.ingot.weak_blue_steel.name=Blue Weak Steel Ingot
+item.tfc.metal.ingot.weak_red_steel.name=Red Weak Steel Ingot
 
 item.tfc.metal.unshaped.unknown.name=Unshaped Unknown Metal
 item.tfc.metal.ingot.unknown.name=Unknown Metal Ingot
