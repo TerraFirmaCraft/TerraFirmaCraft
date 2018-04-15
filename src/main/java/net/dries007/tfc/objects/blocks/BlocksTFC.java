@@ -156,15 +156,6 @@ public final class BlocksTFC
         }
 
         {
-            Builder<BlockWallTFC> b = ImmutableList.builder();
-            for (Rock.Type type : new Rock.Type[]{COBBLE, BRICKS})
-                for (Rock rock : Rock.values())
-                    b.add(register(r, ("wall/" + type.name() + "/" + rock.name()).toLowerCase(), new BlockWallTFC(BlockRockVariant.get(rock, type)), CT_DECORATIONS));
-            allWallBlocks = b.build();
-            inventoryItemBlocks.addAll(allWallBlocks);
-        }
-
-        {
             Builder<BlockLogTFC> logs = ImmutableList.builder();
             Builder<BlockLeavesTFC> leaves = ImmutableList.builder();
             Builder<BlockFenceGateTFC> fenceGates = ImmutableList.builder();
@@ -195,8 +186,14 @@ public final class BlocksTFC
         }
 
         {
+            Builder<BlockWallTFC> b = ImmutableList.builder();
             Builder<BlockStairsTFC> stairs = new Builder<>();
             Builder<BlockSlabTFC.Half> slab = new Builder<>();
+
+            // Walls
+            for (Rock.Type type : new Rock.Type[]{COBBLE, BRICKS})
+                for (Rock rock : Rock.values())
+                    b.add(register(r, ("wall/" + type.name() + "/" + rock.name()).toLowerCase(), new BlockWallTFC(BlockRockVariant.get(rock, type)), CT_DECORATIONS));
             // Stairs
             for (Rock.Type type : new Rock.Type[]{SMOOTH, COBBLE, BRICKS})
                 for (Rock rock : Rock.values())
@@ -218,11 +215,60 @@ public final class BlocksTFC
             for (Wood wood : Wood.values())
                 slab.add(register(r, "slab/half/wood/" + wood.name().toLowerCase(), new BlockSlabTFC.Half(wood), CT_DECORATIONS));
 
+            allWallBlocks = b.build();
             allStairsBlocks = stairs.build();
             allSlabBlocks = slab.build();
+            inventoryItemBlocks.addAll(allWallBlocks);
             normalItemBlocks.addAll(allStairsBlocks);
             // slabs are special.
         }
+
+        // todo: cactus ?
+        // todo: reeds/sugarcane ?
+        // todo: pumpkin/melon ?
+        // todo: waterplants
+        // todo: varied lilypads?
+        // todo: plants
+        // todo: flowers
+        // todo: moss? (It's unused in tfc1710, but it's like a retextured vine that spawns on trees, might be nice to have)
+        // todo: fruit tree stuff (leaves, saplings, logs)
+
+        // todo: chest
+        // todo: bookshelf
+        // todo: button
+        // todo: workbench
+        // todo: supports (h & v)
+        // todo: farmland
+        // todo: barrels
+        // todo: tool racks
+        // todo: wood trap doors
+
+        // todo: torch (on/off with states)
+        // todo: metal lamps (on/off with states)
+        // todo: sluice
+        // todo: quern
+        // todo: loom
+        // todo: bellows
+        // todo: forge
+        // todo: anvils (items exist already)
+        // todo: bloomery
+        // todo: bloom/molten blocks
+        // todo: crusible
+        // todo: large vessels
+        // todo: nestbox
+        // todo: leather rack
+        // todo: grill
+        // todo: metal trap doors
+        // todo: smoke rack (placed with any string, so event based?) + smoke blocks or will we use particles?
+        // todo: custom flower pot (TE based probably, unless we want to not care about the dirt in it)
+
+        // todo: custom hopper or just a separate press block? I prefer the separate block, this will simplify things a lot.
+
+        // todo: placable items: pottery, metal sheets, (anvils are special because TE), tools?
+        // todo: pitkiln (maybe not a seperate block but rather a variation on the TE from any placeable item)
+        // todo: coal/charcoal pile
+        // todo: ingot pile
+        // todo: log pile (with charcoal pit mechanic)
 
         allNormalItemBlocks = normalItemBlocks.build();
         allInventoryItemBlocks = inventoryItemBlocks.build();

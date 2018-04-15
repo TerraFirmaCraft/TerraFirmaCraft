@@ -108,6 +108,20 @@ ORE_TYPES = {
     'olivine': False,
     'lapis_lazuli': False,
 }
+POWDERS = [
+    'flux',
+    'coke',
+    'kaolinite_powder',
+    'graphite_powder',
+    'sulfur_powder',
+    'saltpeter_powder',
+    'hematite_powder',
+    'lapis_lazuli_powder',
+    'limonite_powder',
+    'malachite_powder',
+    'salt',
+    'fertilizer',
+]
 WOOD_TYPES = [
     'ash',
     'aspen',
@@ -175,7 +189,7 @@ METAL_TYPES = {
     'red_steel': True,
 }  # + unknown
 METAL_ITEMS = {
-    'unshaped': False,
+    # 'unshaped': False, Special
     'ingot': False,
     'double_ingot': False,
     'scrap': False,
@@ -221,8 +235,14 @@ METAL_ITEMS = {
     'unfinished_helmet': True,
     'helmet': True,
 }
-HANDHELDS = [
-    'pick', 'shovel', 'axe', 'hoe', 'chisel', 'sword', 'mace', 'saw', 'javelin', 'hammer', 'knife', 'scythe'
+STEEL = {
+    'steel',
+    'blue_steel',
+    'red_steel',
+    'black_steel',
+}
+TOOLS = [
+    'pick', 'propick', 'shovel', 'axe', 'hoe', 'chisel', 'sword', 'mace', 'saw', 'javelin', 'hammer', 'knife', 'scythe'
 ]
 DOOR_VARIANTS = {
     'normal': None,
@@ -553,16 +573,14 @@ for item_type, tool_item in METAL_ITEMS.items():
     for metal, tool_metal in METAL_TYPES.items():
         if tool_item and not tool_metal:
             continue
-        parent = 'item/handheld' if item_type in HANDHELDS else 'item/generated'
+        parent = 'item/handheld' if item_type in TOOLS else 'item/generated'
         if item_type in ['knife', 'javelin']:
             parent = 'tfc:item/handheld_flipped'
         item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal), parent=parent)
-for metal in ['steel', 'black_steel', 'blue_steel', 'red_steel']:
+for metal in STEEL:
     for type in ['high_carbon', 'weak']:
-        for x in ['ingot', 'unshaped']:
-            item(('metal', x, type + '_' + metal), 'tfc:items/metal/%s/%s' % (x, metal))
-for x in ['ingot', 'unshaped']:
-    item(('metal', x, 'unknown'), 'tfc:items/metal/%s/%s' % (x, 'unknown'))
+        item(('metal', 'ingot', type + '_' + metal), 'tfc:items/metal/ingot/%s' % metal)
+item(('metal', 'ingot', 'unknown'), 'tfc:items/metal/ingot/%s' % 'unknown')
 
 # WOOD STUFF
 for wood_type in WOOD_TYPES:
@@ -575,3 +593,52 @@ for rock_cat in ROCK_CATEGORIES:
         if item_type in ['knife', 'javelin']:
             parent = 'tfc:item/handheld_flipped'
         item(('stone', item_type, rock_cat), 'tfc:items/stone/%s' % item_type, parent=parent)
+
+# POWDERS
+for powder in POWDERS:
+    item(('powder', powder), 'tfc:items/powder/%s' % powder)
+
+# GOLDPAN
+for type in ['empty', 'sand', 'gravel', 'clay', 'dirt']:
+    item(('goldpan', type), 'tfc:items/goldpan/%s' % type)
+
+# POTTERY
+_heads = [x + '_head' for x in TOOLS] + [x + '_blade' for x in TOOLS]
+for metal in ['empty', 'unfired', 'copper', 'bronze', 'black_bronze', 'bismuth_bronze']:
+    for item_type in METAL_ITEMS:
+        if item_type not in _heads:
+            continue
+        item(('mold', item_type, metal), 'tfc:items/mold/%s/%s' % (metal, item_type.split('_')[0]))
+del _heads
+for metal in list(METAL_TYPES.keys()) + ['unfired', 'empty']:
+    item(('mold', 'ingot', metal), 'tfc:items/mold/ingot/%s' % metal)
+item(('mold', 'ingot', 'unknown'), 'tfc:items/mold/ingot/unknown')
+for metal in STEEL:
+    for type in ['high_carbon', 'weak']:
+        item(('mold', 'ingot', type + '_' + metal), 'tfc:items/mold/ingot/%s' % metal)
+
+item(('ceramics', 'unfired', 'vessel'), 'tfc:items/ceramics/unfired/vessel')
+item(('ceramics', 'fired', 'vessel'), 'tfc:items/ceramics/fired/vessel')
+model(('item', 'ceramics', 'fired', 'vessel_glazed'), 'item/generated', {'layer0': 'tfc:items/ceramics/fired/vessel', 'layer1': 'tfc:items/ceramics/fired/vessel_overlay'})
+
+item(('ceramics', 'unfired', 'spindle'), 'tfc:items/ceramics/unfired/spindle')
+item(('ceramics', 'fired', 'spindle'), 'tfc:items/ceramics/fired/spindle')
+item(('ceramics', 'unfired', 'pot'), 'tfc:items/ceramics/unfired/pot')
+item(('ceramics', 'fired', 'pot'), 'tfc:items/ceramics/fired/pot')
+item(('ceramics', 'unfired', 'bowl'), 'tfc:items/ceramics/unfired/bowl')
+item(('ceramics', 'fired', 'bowl'), 'tfc:items/ceramics/fired/bowl')
+item(('ceramics', 'unfired', 'fire_brick'), 'tfc:items/ceramics/unfired/fire_brick')
+item(('ceramics', 'fired', 'fire_brick'), 'tfc:items/ceramics/fired/fire_brick')
+item(('ceramics', 'unfired', 'jug'), 'tfc:items/ceramics/unfired/jug')
+item(('ceramics', 'fired', 'jug'), 'tfc:items/ceramics/fired/jug')
+
+item(('ceramics', 'fire_clay'), 'tfc:items/ceramics/fire_clay')
+
+# FLAT
+for rock_cat in ROCK_TYPES:
+    item(('flat', rock_cat), 'tfc:items/flat/%s' % rock_cat)
+item(('flat', 'leather'), 'tfc:items/flat/leather')
+item(('flat', 'clay'), 'tfc:items/flat/clay')
+item(('flat', 'fire_clay'), 'tfc:items/flat/fire_clay')
+
+

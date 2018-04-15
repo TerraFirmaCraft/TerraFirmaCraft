@@ -10,6 +10,7 @@ import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
+import net.dries007.tfc.objects.items.pottery.*;
 import net.dries007.tfc.objects.items.rock.*;
 import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 import net.dries007.tfc.objects.items.wood.ItemLogTFC;
@@ -39,6 +40,16 @@ public final class ItemsTFC
 
     public static final ItemDebug WAND = null;
     public static final ItemFireStarter FIRESTARTER = null;
+    public static final ItemGoldPan GOLDPAN = null;
+
+    @GameRegistry.ObjectHolder("mold/ingo/empty")
+    public static final ItemFiredPottery MOLD_INGOT_EMPTY = null;
+    @GameRegistry.ObjectHolder("ceramics/unfired/vessel")
+    public static final ItemUnfiredPottery CERAMICS_UNFIRED_VERSSEL = null;
+    @GameRegistry.ObjectHolder("ceramics/fired/vessel")
+    public static final ItemSmallVessel CERAMICS_FIRED_VESSEL = null;
+    @GameRegistry.ObjectHolder("ceramics/fired/vessel_glazed")
+    public static final ItemSmallVessel CERAMICS_FIRED_VESSEL_GLAZED = null;
 
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
@@ -96,7 +107,7 @@ public final class ItemsTFC
         {
             for (Metal metal : Metal.values())
             {
-                if (!metal.hasType(type)) continue;
+                if (!metal.hasType(type) || type.clazz == null) continue;
                 simpleItems.add(register(r, ("metal/"+ type + "/" + metal).toLowerCase(), type.clazz.getConstructor(Metal.class, Metal.ItemType.class).newInstance(metal, type), CT_METAL));
             }
         }
@@ -126,7 +137,80 @@ public final class ItemsTFC
             simpleItems.add(register(r, "stone/hammer/" + cat.name().toLowerCase(), new ItemRockHammer(cat), CT_ROCK_ITEMS));
         }
 
+        for (Powder powder : Powder.values())
+            simpleItems.add(register(r, "powder/" + powder.name().toLowerCase(), new ItemPowder(powder), CT_MISC));
+
+        { // POTTERY
+            for (Metal.ItemType type : Metal.ItemType.values())
+            {
+                if (!type.hasMold) continue;
+                simpleItems.add(register(r, "mold/" + type.name().toLowerCase() + "/unfired", new ItemUnfiredMold(type), CT_POTTERY));
+                simpleItems.add(register(r, "mold/" + type.name().toLowerCase() + "/empty", new ItemMold(type), CT_POTTERY));
+                for (Metal metal : Metal.values())
+                {
+                    if (!metal.hasType(type) || metal.tier != Metal.Tier.TIER_I) continue;
+                    simpleItems.add(register(r, ("mold/" + type.name() + "/" + metal.name()).toLowerCase(), new ItemFilledMold(type, metal), CT_POTTERY));
+                }
+            }
+            for (Metal metal : Metal.values())
+                simpleItems.add(register(r, ("mold/ingot/" + metal.name()).toLowerCase(), new ItemFilledMold(Metal.ItemType.UNSHAPED, metal), CT_POTTERY));
+            simpleItems.add(register(r, "mold/ingot/unfired", new ItemUnfiredMold(Metal.ItemType.INGOT), CT_POTTERY));
+            simpleItems.add(register(r, "mold/ingot/empty", new ItemFiredPottery(), CT_POTTERY));
+
+            simpleItems.add(register(r, "ceramics/unfired/vessel", new ItemUnfiredPottery(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/fired/vessel", new ItemSmallVessel(false), CT_POTTERY));
+            register(r, "ceramics/fired/vessel_glazed", new ItemSmallVessel(true), CT_POTTERY);
+
+            simpleItems.add(register(r, "ceramics/unfired/spindle", new ItemUnfiredPottery(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/fired/spindle", new ItemFiredPottery(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/unfired/pot", new ItemUnfiredPottery(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/fired/pot", new ItemFiredPottery(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/unfired/jug", new ItemUnfiredPottery(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/fired/jug", new ItemFiredPottery(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/unfired/bowl", new ItemUnfiredPottery(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/fired/bowl", new ItemFiredPottery(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/unfired/fire_brick", new ItemUnfiredPottery(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/fired/fire_brick", new ItemFiredPottery(), CT_POTTERY));
+
+            simpleItems.add(register(r, "ceramics/fire_clay", new Item(), CT_MISC));
+        }
+
+        // FLAT
+        for (Rock rock : Rock.values())
+            r.register(new ItemFlat(rock).setRegistryName(MOD_ID, "flat/" + rock.name().toLowerCase()));
+        r.register(new ItemFlat().setRegistryName(MOD_ID, "flat/leather"));
+        r.register(new ItemFlat().setRegistryName(MOD_ID, "flat/clay"));
+        r.register(new ItemFlat().setRegistryName(MOD_ID, "flat/fire_clay"));
+
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
+        register(r, "goldpan", new ItemGoldPan(), CT_MISC);
+
+        // todo: Bow? Arrows?
+        // todo: Fishing rod?
+        // todo: (white) dye? (so white dye isn't bonemeal)
+        // todo: ink?
+        // todo: clay? (or catch rightclick with event, that should work too)
+        // todo: rope? (could just keep vanilla version)
+        // todo: shears? Higher durability versions for different metals (iron/streels/others?)?
+        // todo: flint & steel? Higher durability versions for different metals (iron/steels)?
+        // todo: fluid glass bottles? (alcohols/water/vinegar/brine)
+
+        // todo: water jug (make this have durability/multiple rounds of water?)
+
+        // todo: minecart with chest (so the chest dropped is the right kind of wood)
+        // todo: custom buckets: Wood (finite) & steel (infinite/classic/source)
+        // todo: wool, yarn, cloth (wool, silk & burlap)
+        // todo: mortar
+        // todo: hides (raw, soaked, scraped, prepared)
+        // todo: straw
+        // todo: fire clay & fire brick & fire bricks (block)
+
+        // todo: bloom & raw bloom ( = IMetalObject)
+        // todo: jute & jute fiber
+        // todo: quiver
+        // todo: millstone (quern)
+
+        // todo: foods & plants & seeds & fruits & fruit tree saplings & berries & berry bushes
 
         allSimpleItems = simpleItems.build();
     }

@@ -37,12 +37,6 @@ public class ItemMetal extends Item implements IMetalObject
     }
 
     @Override
-    public boolean isSmeltable(ItemStack stack)
-    {
-        return true;
-    }
-
-    @Override
     public int getSmeltAmount(ItemStack stack)
     {
         if (!isDamageable() || !stack.isItemDamaged()) return type.smeltAmount;

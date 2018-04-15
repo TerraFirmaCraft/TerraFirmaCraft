@@ -19,7 +19,10 @@ public interface IMetalObject
 
     Metal getMetal(ItemStack stack);
 
-    boolean isSmeltable(ItemStack stack);
+    default boolean isSmeltable(ItemStack stack)
+    {
+        return getMetal(stack) != null;
+    }
 
     int getSmeltAmount(ItemStack stack);
 }

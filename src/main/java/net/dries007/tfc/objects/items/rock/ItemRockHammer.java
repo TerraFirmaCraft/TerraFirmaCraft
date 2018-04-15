@@ -3,9 +3,16 @@ package net.dries007.tfc.objects.items.rock;
 import com.google.common.collect.ImmutableSet;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.util.OreDictionaryHelper;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.EnumMap;
+import java.util.List;
 
 public class ItemRockHammer extends ItemTool
 {
@@ -16,13 +23,23 @@ public class ItemRockHammer extends ItemTool
         return MAP.get(category);
     }
 
+    public final Rock.Category category;
+
     public ItemRockHammer(Rock.Category category)
     {
         super(2f * category.toolMaterial.getAttackDamage(), -3.5f, category.toolMaterial, ImmutableSet.of());
+        this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
         setHarvestLevel("hammer", category.toolMaterial.getHarvestLevel());
         OreDictionaryHelper.register(this, "hammer");
         OreDictionaryHelper.register(this, "hammer", "stone");
         OreDictionaryHelper.register(this, "hammer", "stone", category);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
     }
 }

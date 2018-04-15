@@ -4,54 +4,55 @@ import net.minecraft.util.IStringSerializable;
 
 public enum Ore
 {
-    NATIVE_COPPER(true, Metal.COPPER),
-    NATIVE_GOLD(true, Metal.GOLD),
-    NATIVE_PLATINUM(true, Metal.PLATINUM),
-    HEMATITE(true, Metal.PIG_IRON),
-    NATIVE_SILVER(true, Metal.SILVER),
-    CASSITERITE(true, Metal.TIN),
-    GALENA(true, Metal.LEAD),
-    BISMUTHINITE(true, Metal.BISMUTH),
-    GARNIERITE(true, Metal.NICKEL),
-    MALACHITE(true, Metal.COPPER),
-    MAGNETITE(true, Metal.PIG_IRON),
-    LIMONITE(true, Metal.PIG_IRON),
-    SPHALERITE(true, Metal.ZINC),
-    TETRAHEDRITE(true, Metal.COPPER),
-    BITUMINOUS_COAL(false),
-    LIGNITE(false),
-    KAOLINITE(false),
-    GYPSUM(false),
-    SATINSPAR(false),
-    SELENITE(false),
-    GRAPHITE(false),
-    KIMBERLITE(false),
-    PETRIFIED_WOOD(false),
-    SULFUR(false),
-    JET(false),
-    MICROCLINE(false),
-    PITCHBLENDE(false),
-    CINNABAR(false),
-    CRYOLITE(false),
-    SALTPETER(false),
-    SERPENTINE(false),
-    SYLVITE(false),
-    BORAX(false),
-    OLIVINE(false),
-    LAPIS_LAZULI(false);
+    NATIVE_COPPER(Metal.COPPER),
+    NATIVE_GOLD(Metal.GOLD),
+    NATIVE_PLATINUM(Metal.PLATINUM),
+    HEMATITE(Metal.PIG_IRON),
+    NATIVE_SILVER(Metal.SILVER),
+    CASSITERITE(Metal.TIN),
+    GALENA(Metal.LEAD),
+    BISMUTHINITE(Metal.BISMUTH),
+    GARNIERITE(Metal.NICKEL),
+    MALACHITE(Metal.COPPER),
+    MAGNETITE(Metal.PIG_IRON),
+    LIMONITE(Metal.PIG_IRON),
+    SPHALERITE(Metal.ZINC),
+    TETRAHEDRITE(Metal.COPPER),
+    BITUMINOUS_COAL,
+    LIGNITE,
+    KAOLINITE,
+    GYPSUM,
+    SATINSPAR,
+    SELENITE,
+    GRAPHITE,
+    KIMBERLITE,
+    PETRIFIED_WOOD,
+    SULFUR,
+    JET,
+    MICROCLINE,
+    PITCHBLENDE,
+    CINNABAR,
+    CRYOLITE,
+    SALTPETER,
+    SERPENTINE,
+    SYLVITE,
+    BORAX,
+    OLIVINE,
+    LAPIS_LAZULI;
 
     public final boolean graded;
     public final Metal metal;
 
-    Ore(boolean graded)
+    Ore(Metal metal)
     {
-        this(graded, null);
+        this.graded = true;
+        this.metal = metal;
     }
 
-    Ore(boolean graded, Metal metal)
+    Ore()
     {
-        this.graded = graded;
-        this.metal = metal;
+        this.graded = false;
+        this.metal = null;
     }
 
     public enum Grade implements IStringSerializable
@@ -60,7 +61,10 @@ public enum Ore
 
         public final int smeltAmount;
 
-        Grade(int smeltAmount) {this.smeltAmount = smeltAmount;}
+        Grade(int smeltAmount)
+        {
+            this.smeltAmount = smeltAmount;
+        }
 
         public static Grade byMetadata(int meta)
         {
