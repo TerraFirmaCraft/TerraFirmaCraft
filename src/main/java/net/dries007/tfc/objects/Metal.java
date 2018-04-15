@@ -98,7 +98,7 @@ public enum Metal
 
     public enum ItemType
     {
-        UNSHAPED(false, 100, ItemUnshaped.class),
+        UNSHAPED(false, 100, null), // Special case, because it's a pottery item
         INGOT(false, 100, ItemIngot.class),
         DOUBLE_INGOT(false, 200),
         SCRAP(false, 100),
@@ -110,32 +110,34 @@ public enum Metal
 
         ANVIL(true, 1400, ItemAnvil.class),
         TUYERE(true, 400),
+
         PICK(true, 100, ItemMetalTool.class),
-        PICK_HEAD(true, 100),
+        PICK_HEAD(true, 100, true),
         SHOVEL(true, 100, ItemMetalTool.class),
-        SHOVEL_HEAD(true, 100),
+        SHOVEL_HEAD(true, 100, true),
         AXE(true, 100, ItemMetalTool.class),
-        AXE_HEAD(true, 100),
+        AXE_HEAD(true, 100, true),
         HOE(true, 100, ItemMetalTool.class),
-        HOE_HEAD(true, 100),
+        HOE_HEAD(true, 100, true),
         CHISEL(true, 100, ItemMetalTool.class),
-        CHISEL_HEAD(true, 100),
-        SWORD(true, 100, ItemMetalTool.class),
-        SWORD_BLADE(true, 200),
-        MACE(true, 100, ItemMetalTool.class),
-        MACE_HEAD(true, 200),
+        CHISEL_HEAD(true, 100, true),
+        SWORD(true, 200, ItemMetalTool.class),
+        SWORD_BLADE(true, 200, true),
+        MACE(true, 200, ItemMetalTool.class),
+        MACE_HEAD(true, 200, true),
         SAW(true, 100, ItemMetalTool.class),
-        SAW_BLADE(true, 100),
+        SAW_BLADE(true, 100, true),
         JAVELIN(true, 100, ItemMetalTool.class), // todo: special class?
-        JAVELIN_HEAD(true, 100),
+        JAVELIN_HEAD(true, 100, true),
         HAMMER(true, 100, ItemMetalTool.class),
-        HAMMER_HEAD(true, 100),
+        HAMMER_HEAD(true, 100, true),
         PROPICK(true, 100, ItemMetalTool.class),
-        PROPICK_HEAD(true, 100),
+        PROPICK_HEAD(true, 100, true),
         KNIFE(true, 100, ItemMetalTool.class),
-        KNIFE_BLADE(true, 100),
+        KNIFE_BLADE(true, 100, true),
         SCYTHE(true, 100, ItemMetalTool.class),
-        SCYTHE_BLADE(true, 100),
+        SCYTHE_BLADE(true, 100, true),
+
         UNFINISHED_HELMET(true, 200),
         HELMET(true, 400, ItemMetalArmor.class),
         UNFINISHED_CHESTPLATE(true, 400),
@@ -148,19 +150,31 @@ public enum Metal
 
         public final boolean toolItem;
         public final int smeltAmount;
+        public final boolean hasMold;
         /** Internal use. */
         public final Class<? extends ItemMetal> clazz;
 
-        ItemType(boolean toolItem, int smeltAmount, Class<? extends ItemMetal> clazz)
+        ItemType(boolean toolItem, int smeltAmount, Class<? extends ItemMetal> clazz, boolean hasMold)
         {
             this.toolItem = toolItem;
             this.smeltAmount = smeltAmount;
             this.clazz = clazz;
+            this.hasMold = hasMold;
+        }
+
+        ItemType(boolean toolItem, int smeltAmount, Class<? extends ItemMetal> clazz)
+        {
+            this(toolItem, smeltAmount, clazz, false);
+        }
+
+        ItemType(boolean toolItem, int smeltAmount, boolean hasMold)
+        {
+            this(toolItem, smeltAmount, ItemMetal.class, hasMold);
         }
 
         ItemType(boolean toolItem, int smeltAmount)
         {
-            this(toolItem, smeltAmount, ItemMetal.class);
+            this(toolItem, smeltAmount, false);
         }
     }
 }

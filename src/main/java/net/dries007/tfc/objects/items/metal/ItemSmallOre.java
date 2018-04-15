@@ -42,14 +42,8 @@ public class ItemSmallOre extends Item implements IMetalObject
     }
 
     @Override
-    public boolean isSmeltable(ItemStack stack)
-    {
-        return ore.metal != null;
-    }
-
-    @Override
     public int getSmeltAmount(ItemStack stack)
     {
-        return 10;
+        return 10; //todo: config
     }
 }

@@ -37,15 +37,28 @@ public class ItemOreTFC extends Item implements IMetalObject
         this.ore = ore;
         if (MAP.put(ore, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
-        if (ore.graded) setHasSubtypes(true);
-        OreDictionaryHelper.register(this, "ore");
-        OreDictionaryHelper.register(this, "ore", ore);
-        if (ore.graded)
+        if (ore.metal != null)
         {
+            setHasSubtypes(true);
+            OreDictionaryHelper.register(this, "ore");
+            OreDictionaryHelper.register(this, "ore", ore);
             for (Ore.Grade grade : Ore.Grade.values())
             {
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", grade);
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore, grade);
+            }
+        }
+        else // Mineral
+        {
+            OreDictionaryHelper.register(this, "gem", ore);
+            switch (ore)
+            {
+                case LAPIS_LAZULI:
+                    OreDictionaryHelper.register(this, "gem", "lapis");
+                    break;
+                case BITUMINOUS_COAL:
+                    OreDictionaryHelper.register(this, "gem", "coal");
+                    break;
             }
         }
     }
@@ -78,12 +91,6 @@ public class ItemOreTFC extends Item implements IMetalObject
     public Metal getMetal(ItemStack stack)
     {
         return ore.metal;
-    }
-
-    @Override
-    public boolean isSmeltable(ItemStack stack)
-    {
-        return ore.metal != null;
     }
 
     @Override
