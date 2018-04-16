@@ -5,6 +5,7 @@ import net.dries007.tfc.objects.blocks.BlockPeat;
 import net.dries007.tfc.objects.blocks.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -69,5 +70,13 @@ public final class Helpers
     {
         Set<String> itemsSet = Arrays.stream(items).map(String::toLowerCase).collect(Collectors.toSet());
         return input.stream().map(String::toLowerCase).anyMatch(itemsSet::contains);
+    }
+
+    public static <T extends TileEntity> T getTE(World world, BlockPos pos, Class<T> aClass)
+    {
+        TileEntity te = world.getTileEntity(pos);
+        if (!aClass.isInstance(te)) return null;
+        //noinspection unchecked
+        return (T) te;
     }
 }
