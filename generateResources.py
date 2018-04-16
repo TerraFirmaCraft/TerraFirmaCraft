@@ -244,6 +244,30 @@ STEEL = {
 TOOLS = [
     'pick', 'propick', 'shovel', 'axe', 'hoe', 'chisel', 'sword', 'mace', 'saw', 'javelin', 'hammer', 'knife', 'scythe'
 ]
+FLUIDS = {
+    'salt_water': 'salt_water',
+    'fresh_water': 'fresh_water',
+    'hot_water': 'hot_water',
+    'finite_salt_water': 'salt_water',
+    'finite_fresh_water': 'fresh_water',
+    'finite_hot_water': 'hot_water',
+    'rum': 'rum',
+    'beer': 'beer',
+    'whiskey': 'whiskey',
+    'rye_whiskey': 'rye_whiskey',
+    'corn_whiskey': 'corn_whiskey',
+    'sake': 'sake',
+    'vodka': 'vodka',
+    'cider': 'cider',
+    'vinegar': 'vinegar',
+    'brine': 'brine',
+    'milk': 'milk',
+    'olive_oil': 'olive_oil',
+    'tannin': 'tannin',
+    'limewater': 'limewater',
+    'milk_curdled': 'milk_curdled',
+    'milk_vinegar': 'milk_vinegar',
+}
 DOOR_VARIANTS = {
     'normal': None,
     'facing=east,half=lower,hinge=left,open=false': {'model': 'door_bottom'},
@@ -391,6 +415,17 @@ def item(filename_parts, *layers, parent='item/generated'):
 
 
 # BLOCKSTATES
+
+# FLUIDS
+for name, fluid in FLUIDS.items():
+    blockstate(('fluid', name), 'forge:fluid', {}, {
+        'normal': {
+            'transform': "forge:default-item",
+            'custom': {
+                'fluid': fluid
+            }
+        }
+    })
 
 # ROCK STUFF
 for rock_type in ROCK_TYPES:

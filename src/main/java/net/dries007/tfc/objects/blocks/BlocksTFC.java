@@ -33,12 +33,28 @@ public final class BlocksTFC
 
     public static final BlockDebug DEBUG = null;
 
-    public static final BlockFluidBase SALT_WATER = null;
-    public static final BlockFluidBase FRESH_WATER = null;
-    public static final BlockFluidBase HOT_WATER = null;
-    public static final BlockFluidBase FINITE_SALT_WATER = null;
-    public static final BlockFluidBase FINITE_FRESH_WATER = null;
-    public static final BlockFluidBase FINITE_HOT_WATER = null;
+    @GameRegistry.ObjectHolder("fluid/salt_water") public static final BlockFluidBase FLUID_SALT_WATER = null;
+    @GameRegistry.ObjectHolder("fluid/fresh_water") public static final BlockFluidBase FLUID_FRESH_WATER = null;
+    @GameRegistry.ObjectHolder("fluid/hot_water") public static final BlockFluidBase FLUID_HOT_WATER = null;
+    @GameRegistry.ObjectHolder("fluid/finite_salt_water") public static final BlockFluidBase FLUID_FINITE_SALT_WATER = null;
+    @GameRegistry.ObjectHolder("fluid/finite_fresh_water") public static final BlockFluidBase FLUID_FINITE_FRESH_WATER = null;
+    @GameRegistry.ObjectHolder("fluid/finite_hot_water") public static final BlockFluidBase FLUID_FINITE_HOT_WATER = null;
+    @GameRegistry.ObjectHolder("fluid/rum") public static final BlockFluidBase FLUID_RUM = null;
+    @GameRegistry.ObjectHolder("fluid/beer") public static final BlockFluidBase FLUID_BEER = null;
+    @GameRegistry.ObjectHolder("fluid/whiskey") public static final BlockFluidBase FLUID_WHISKEY = null;
+    @GameRegistry.ObjectHolder("fluid/rye_whiskey") public static final BlockFluidBase FLUID_RYE_WHISKEY = null;
+    @GameRegistry.ObjectHolder("fluid/corn_whiskey") public static final BlockFluidBase FLUID_CORN_WHISKEY = null;
+    @GameRegistry.ObjectHolder("fluid/sake") public static final BlockFluidBase FLUID_SAKE = null;
+    @GameRegistry.ObjectHolder("fluid/vodka") public static final BlockFluidBase FLUID_VODKA = null;
+    @GameRegistry.ObjectHolder("fluid/cider") public static final BlockFluidBase FLUID_CIDER = null;
+    @GameRegistry.ObjectHolder("fluid/vinegar") public static final BlockFluidBase FLUID_VINEGAR = null;
+    @GameRegistry.ObjectHolder("fluid/brine") public static final BlockFluidBase FLUID_BRINE = null;
+    @GameRegistry.ObjectHolder("fluid/milk") public static final BlockFluidBase FLUID_MILK = null;
+    @GameRegistry.ObjectHolder("fluid/olive_oil") public static final BlockFluidBase FLUID_OLIVE_OIL = null;
+    @GameRegistry.ObjectHolder("fluid/tannin") public static final BlockFluidBase FLUID_TANNIN = null;
+    @GameRegistry.ObjectHolder("fluid/limewater") public static final BlockFluidBase FLUID_LIMEWATER = null;
+    @GameRegistry.ObjectHolder("fluid/milk_curdled") public static final BlockFluidBase FLUID_MILK_CURDLED = null;
+    @GameRegistry.ObjectHolder("fluid/milk_vinegar") public static final BlockFluidBase FLUID_MILK_VINEGAR = null;
 
     public static final BlockPeat PEAT = null;
     public static final BlockPeat PEAT_GRASS = null;
@@ -130,10 +146,14 @@ public final class BlocksTFC
         register(r, "firepit", new BlockFirePit()); // No item or creative tab.
 
         {
-            TerraFirmaCraft.getLog().info("The 3 warnings ('A mod has attempted to assign Block...') below this line are normal.");
+            TerraFirmaCraft.getLog().info("The fluid warnings ('A mod has attempted to assign Block...') below this line are normal.");
             Builder<BlockFluidBase> b = ImmutableList.builder();
-            for (Fluid f : FluidsTFC.getAllFluids())
-                registerFluid(b, r, f, Material.WATER);
+            for (Fluid fluid : FluidsTFC.getAllInfiniteFluids())
+                registerFluid(b, r, fluid, Material.WATER);
+            for (Fluid fluid : FluidsTFC.getAllAlcoholsFluids())
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidFiniteTFC(fluid, FluidsTFC.MATERIAL_ALCOHOL)));
+            for (Fluid fluid : FluidsTFC.getAllOtherFiniteFluids())
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidFiniteTFC(fluid, Material.WATER)));
             allFluidBlocks = b.build();
         }
 
@@ -277,10 +297,10 @@ public final class BlocksTFC
     private static void registerFluid(Builder<BlockFluidBase> b, IForgeRegistry<Block> r, Fluid fluid, Material material)
     {
         BlockFluidBase block = new BlockFluidClassicTFC(fluid, material);
-        register(r, fluid.getName(), block);
+        register(r, "fluid/" + fluid.getName(), block);
         b.add(block);
         block = new BlockFluidFiniteTFC(fluid, material);
-        register(r, "finite_" + fluid.getName(), block);
+        register(r, "fluid/finite_" + fluid.getName(), block);
         b.add(block);
     }
 

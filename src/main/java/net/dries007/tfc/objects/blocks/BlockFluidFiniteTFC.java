@@ -14,6 +14,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
+/**
+ * todo: The behaviour of this needs to be adjusted/debugged so it actually fills up blocks and doesn't live 1 level high residue.
+ */
 public class BlockFluidFiniteTFC extends BlockFluidFinite
 {
     public BlockFluidFiniteTFC(Fluid fluid, Material material)

@@ -52,9 +52,9 @@ public class ChunkGenTFC implements IChunkGenerator
 {
     public static final IBlockState STONE = Blocks.STONE.getDefaultState();
     public static final IBlockState AIR = Blocks.AIR.getDefaultState();
-    public static final IBlockState SALT_WATER = BlocksTFC.SALT_WATER.getDefaultState();
-    public static final IBlockState FRESH_WATER = BlocksTFC.FRESH_WATER.getDefaultState();
-    public static final IBlockState HOT_WATER = BlocksTFC.HOT_WATER.getDefaultState();
+    public static final IBlockState SALT_WATER = BlocksTFC.FLUID_SALT_WATER.getDefaultState();
+    public static final IBlockState FRESH_WATER = BlocksTFC.FLUID_FRESH_WATER.getDefaultState();
+    public static final IBlockState HOT_WATER = BlocksTFC.FLUID_HOT_WATER.getDefaultState();
     public static final IBlockState LAVA = Blocks.LAVA.getDefaultState(); // todo: replace
     public static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
     public static final IBlockState SNOW = Blocks.SNOW_LAYER.getDefaultState().withProperty(BlockSnow.LAYERS, 2);
