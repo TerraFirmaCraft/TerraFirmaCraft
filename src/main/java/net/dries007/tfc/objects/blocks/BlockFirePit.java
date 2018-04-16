@@ -27,7 +27,6 @@ import java.util.Random;
 
 /**
  * todo: Needs more work in general
- * todo: light when lit
  */
 public class BlockFirePit extends Block implements ITileEntityProvider
 {
@@ -37,9 +36,16 @@ public class BlockFirePit extends Block implements ITileEntityProvider
     public BlockFirePit()
     {
         super(Material.FIRE);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(LIT, false));
+        setDefaultState(blockState.getBaseState().withProperty(LIT, false));
         disableStats();
         setTickRandomly(true);
+        setLightLevel(1F);
+    }
+
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
     }
 
     @Override
