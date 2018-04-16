@@ -27,6 +27,7 @@ import java.util.Random;
 
 /**
  * todo: Needs more work in general
+ * todo: light when lit
  */
 public class BlockFirePit extends Block implements ITileEntityProvider
 {
