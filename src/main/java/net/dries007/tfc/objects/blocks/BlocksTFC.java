@@ -243,6 +243,8 @@ public final class BlocksTFC
             // slabs are special.
         }
 
+        normalItemBlocks.add(register(r, "torch", new BlockTorchTFC(), CT_MISC));
+
         // todo: cactus ?
         // todo: reeds/sugarcane ?
         // todo: pumpkin/melon ?
@@ -263,7 +265,6 @@ public final class BlocksTFC
         // todo: tool racks
         // todo: wood trap doors
 
-        // todo: torch (on/off with states)
         // todo: metal lamps (on/off with states)
         // todo: sluice
         // todo: quern
