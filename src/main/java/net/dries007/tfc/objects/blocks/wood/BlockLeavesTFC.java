@@ -10,10 +10,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.EnumMap;
@@ -93,11 +96,20 @@ public class BlockLeavesTFC extends BlockLeaves
         return Item.getItemFromBlock(BlockSaplingTFC.get(wood));
     }
 
-    @Override
-    public void onEntityWalk(World worldIn, BlockPos pos, Entity entity)
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer()
     {
-        entity.motionX *= 0.1D;
-        entity.motionZ *= 0.1D;
-        entity.motionY *= 0.9D;
+        return BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        //Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0. 
+        entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction. 
+        entityIn.fallDistance = 0;
+        //Entity motion is reduced by leaves.
+        entityIn.motionX *= 0.1D;
+        entityIn.motionY *= 0.1D;
+        entityIn.motionZ *= 0.1D;
     }
 }
