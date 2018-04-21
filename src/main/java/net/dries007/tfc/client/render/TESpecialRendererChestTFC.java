@@ -3,6 +3,7 @@ package net.dries007.tfc.client.render;
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.dries007.tfc.objects.te.TEChestTFC;
+import net.minecraft.block.BlockChest;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.renderer.GlStateManager;
@@ -20,12 +21,17 @@ public class TESpecialRendererChestTFC extends TileEntitySpecialRenderer<TEChest
 {
     private static final EnumMap<Wood, ResourceLocation> SINGLE_TEXTURES = new EnumMap<>(Wood.class);
     private static final EnumMap<Wood, ResourceLocation> DOUBLE_TEXTURES = new EnumMap<>(Wood.class);
+    private static final EnumMap<Wood, ResourceLocation> TRAP_SINGLE_TEXTURES = new EnumMap<>(Wood.class);
+    private static final EnumMap<Wood, ResourceLocation> TRAP_DOUBLE_TEXTURES = new EnumMap<>(Wood.class);
     static
     {
         for (Wood wood : Wood.values())
         {
             SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/model/wood/chest/" + wood.name().toLowerCase() + ".png"));
             DOUBLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/model/wood/chest_double/" + wood.name().toLowerCase() + ".png"));
+            // todo: make & use trapped textures (also change in the python script)
+            TRAP_SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/model/wood/chest/" + wood.name().toLowerCase() + ".png"));
+            TRAP_DOUBLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/model/wood/chest_double/" + wood.name().toLowerCase() + ".png"));
         }
     }
 
@@ -57,7 +63,6 @@ public class TESpecialRendererChestTFC extends TileEntitySpecialRenderer<TEChest
         if (te.adjacentChestZNeg != null || te.adjacentChestXNeg != null) return;
 
         ModelChest modelchest;
-
         if (te.adjacentChestXPos == null && te.adjacentChestZPos == null)
         {
             modelchest = simpleChest;
@@ -71,10 +76,10 @@ public class TESpecialRendererChestTFC extends TileEntitySpecialRenderer<TEChest
                 GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                 GlStateManager.matrixMode(5888);
             }
-//            else if (te.getChestType() == BlockChest.Type.TRAP)
-//            {
-//                bindTexture();
-//            }
+            else if (te.getChestType() == BlockChest.Type.TRAP)
+            {
+                bindTexture(TRAP_SINGLE_TEXTURES.get(te.getWood()));
+            }
             else
             {
                 bindTexture(SINGLE_TEXTURES.get(te.getWood()));
@@ -93,10 +98,10 @@ public class TESpecialRendererChestTFC extends TileEntitySpecialRenderer<TEChest
                 GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                 GlStateManager.matrixMode(5888);
             }
-//            else if (te.getChestType() == BlockChest.Type.TRAP)
-//            {
-//                bindTexture();
-//            }
+            else if (te.getChestType() == BlockChest.Type.TRAP)
+            {
+                bindTexture(TRAP_DOUBLE_TEXTURES.get(te.getWood()));
+            }
             else
             {
                 bindTexture(DOUBLE_TEXTURES.get(te.getWood()));
@@ -106,73 +111,50 @@ public class TESpecialRendererChestTFC extends TileEntitySpecialRenderer<TEChest
         GlStateManager.pushMatrix();
         GlStateManager.enableRescaleNormal();
 
-        if (destroyStage < 0)
-        {
-            GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
-        }
+        if (destroyStage < 0) GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
 
         GlStateManager.translate((float)x, (float)y + 1.0F, (float)z + 1.0F);
         GlStateManager.scale(1.0F, -1.0F, -1.0F);
         GlStateManager.translate(0.5F, 0.5F, 0.5F);
-        int j = 0;
+        int rotation = 0;
 
-        if (meta == 2)
+        switch (meta)
         {
-            j = 180;
+            case 2:
+                rotation = 180;
+                if (te.adjacentChestXPos != null) GlStateManager.translate(1.0F, 0.0F, 0.0F);
+                break;
+            case 3:
+                rotation = 0;
+                break;
+            case 4:
+                rotation = 90;
+                break;
+            case 5:
+                rotation = -90;
+                if (te.adjacentChestZPos != null) GlStateManager.translate(0.0F, 0.0F, -1.0F);
+                break;
         }
 
-        if (meta == 3)
-        {
-            j = 0;
-        }
-
-        if (meta == 4)
-        {
-            j = 90;
-        }
-
-        if (meta == 5)
-        {
-            j = -90;
-        }
-
-        if (meta == 2 && te.adjacentChestXPos != null)
-        {
-            GlStateManager.translate(1.0F, 0.0F, 0.0F);
-        }
-
-        if (meta == 5 && te.adjacentChestZPos != null)
-        {
-            GlStateManager.translate(0.0F, 0.0F, -1.0F);
-        }
-
-        GlStateManager.rotate((float)j, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate((float)rotation, 0.0F, 1.0F, 0.0F);
         GlStateManager.translate(-0.5F, -0.5F, -0.5F);
-        float f = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
+        float lidAngle = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
 
         if (te.adjacentChestZNeg != null)
         {
             float f1 = te.adjacentChestZNeg.prevLidAngle + (te.adjacentChestZNeg.lidAngle - te.adjacentChestZNeg.prevLidAngle) * partialTicks;
-
-            if (f1 > f)
-            {
-                f = f1;
-            }
+            if (f1 > lidAngle) lidAngle = f1;
         }
 
         if (te.adjacentChestXNeg != null)
         {
             float f2 = te.adjacentChestXNeg.prevLidAngle + (te.adjacentChestXNeg.lidAngle - te.adjacentChestXNeg.prevLidAngle) * partialTicks;
-
-            if (f2 > f)
-            {
-                f = f2;
-            }
+            if (f2 > lidAngle) lidAngle = f2;
         }
 
-        f = 1.0F - f;
-        f = 1.0F - f * f * f;
-        modelchest.chestLid.rotateAngleX = -(f * ((float)Math.PI / 2F));
+        lidAngle = 1.0F - lidAngle;
+        lidAngle = 1.0F - lidAngle * lidAngle * lidAngle;
+        modelchest.chestLid.rotateAngleX = -(lidAngle * ((float)Math.PI / 2F));
         modelchest.renderAll();
         GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
