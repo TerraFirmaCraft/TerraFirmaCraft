@@ -200,7 +200,8 @@ public final class BlocksTFC
                 if (wood != Wood.PALM) //todo: make this enum constant
                     doors.add(register(r, "wood/door/" + wood.name().toLowerCase(), new BlockDoorTFC(wood), CT_DECORATIONS));
                 chests.add(register(r, "wood/chest/" + wood.name().toLowerCase(), new BlockChestTFC(BlockChest.Type.BASIC, wood), CT_DECORATIONS));
-//                normalItemBlocks.add(register(r, "wood/chest" + wood.name().toLowerCase(), new BlockChestTFC(BlockChest.Type.TRAP), CT_DECORATIONS));
+                chests.add(register(r, "wood/chest_trap/" + wood.name().toLowerCase(), new BlockChestTFC(BlockChest.Type.TRAP, wood), CT_DECORATIONS));
+                inventoryItemBlocks.add(register(r, "wood/button/" + wood.name().toLowerCase(), new BlockButtonWoodTFC(wood), CT_DECORATIONS));
             }
             allLogBlocks = logs.build();
             allLeafBlocks = leaves.build();
@@ -246,6 +247,9 @@ public final class BlocksTFC
             for (Wood wood : Wood.values())
                 slab.add(register(r, "slab/half/wood/" + wood.name().toLowerCase(), new BlockSlabTFC.Half(wood), CT_DECORATIONS));
 
+            for (Rock rock : Rock.values())
+                inventoryItemBlocks.add(register(r, "stone/button/" + rock.name().toLowerCase(), new BlockButtonStoneTFC(rock), CT_DECORATIONS));
+
             allWallBlocks = b.build();
             allStairsBlocks = stairs.build();
             allSlabBlocks = slab.build();
@@ -266,9 +270,7 @@ public final class BlocksTFC
         // todo: moss? (It's unused in tfc1710, but it's like a retextured vine that spawns on trees, might be nice to have)
         // todo: fruit tree stuff (leaves, saplings, logs)
 
-        // todo: chest
         // todo: bookshelf
-        // todo: button
         // todo: workbench
         // todo: supports (h & v)
         // todo: farmland
