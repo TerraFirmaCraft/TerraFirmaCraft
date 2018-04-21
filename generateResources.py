@@ -411,7 +411,7 @@ def model(filename_parts, parent, textures):
 
 
 def item(filename_parts, *layers, parent='item/generated'):
-    model(('item', *filename_parts), parent, {'layer%d' % i: v for i, v in enumerate(layers)})
+    model(('item', *filename_parts), parent, None if len(layers) == 0 else {'layer%d' % i: v for i, v in enumerate(layers)})
 
 
 # BLOCKSTATES
@@ -578,6 +578,11 @@ for wood_type in WOOD_TYPES:
         }
     })
     cube_all(('slab', 'full', 'wood', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
+    blockstate(('wood', 'chest', wood_type), 'tfc:chest', textures={
+        'texture': 'tfc:model/wood/chest/%s' % wood_type,
+        'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
+    })
+    # item(('wood', 'chest', wood_type), parent='item/chest')
 
 # ITEMS
 

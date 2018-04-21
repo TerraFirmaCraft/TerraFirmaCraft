@@ -9,6 +9,7 @@ import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -76,6 +77,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockDoorTFC> allDoorBlocks;
     private static ImmutableList<BlockStairsTFC> allStairsBlocks;
     private static ImmutableList<BlockSlabTFC.Half> allSlabBlocks;
+    private static ImmutableList<BlockChestTFC> allChestBlocks;
 
     public static ImmutableList<Block> getAllNormalItemBlocks()
     {
@@ -129,6 +131,10 @@ public final class BlocksTFC
     {
         return allSlabBlocks;
     }
+    public static ImmutableList<BlockChestTFC> getAllChestBlocks()
+    {
+        return allChestBlocks;
+    }
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event)
@@ -181,6 +187,7 @@ public final class BlocksTFC
             Builder<BlockFenceGateTFC> fenceGates = ImmutableList.builder();
             Builder<BlockSaplingTFC> saplings = ImmutableList.builder();
             Builder<BlockDoorTFC> doors = ImmutableList.builder();
+            Builder<BlockChestTFC> chests = ImmutableList.builder();
 
             for (Wood wood : Wood.values())
             {
@@ -192,17 +199,21 @@ public final class BlocksTFC
                 saplings.add(register(r, "wood/sapling/" + wood.name().toLowerCase(), new BlockSaplingTFC(wood), CT_WOOD));
                 if (wood != Wood.PALM) //todo: make this enum constant
                     doors.add(register(r, "wood/door/" + wood.name().toLowerCase(), new BlockDoorTFC(wood), CT_DECORATIONS));
+                chests.add(register(r, "wood/chest/" + wood.name().toLowerCase(), new BlockChestTFC(BlockChest.Type.BASIC, wood), CT_DECORATIONS));
+//                normalItemBlocks.add(register(r, "wood/chest" + wood.name().toLowerCase(), new BlockChestTFC(BlockChest.Type.TRAP), CT_DECORATIONS));
             }
             allLogBlocks = logs.build();
             allLeafBlocks = leaves.build();
             allFenceGateBlocks = fenceGates.build();
             allSaplingBlocks = saplings.build();
             allDoorBlocks = doors.build();
+            allChestBlocks = chests.build();
             //logs are special
             normalItemBlocks.addAll(allLeafBlocks);
             inventoryItemBlocks.addAll(allFenceGateBlocks);
             inventoryItemBlocks.addAll(allSaplingBlocks);
             // doors are special
+            normalItemBlocks.addAll(allChestBlocks);
         }
 
         {

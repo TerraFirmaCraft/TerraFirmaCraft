@@ -1,6 +1,7 @@
 package net.dries007.tfc.client;
 
 import com.google.common.base.Strings;
+import net.dries007.tfc.client.render.TESpecialRendererChestTFC;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.blocks.BlockOreTFC;
@@ -13,6 +14,7 @@ import net.dries007.tfc.objects.items.ItemGem;
 import net.dries007.tfc.objects.items.ItemGoldPan;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
+import net.dries007.tfc.objects.te.TEChestTFC;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -29,6 +31,7 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -107,6 +110,10 @@ public final class ClientRegisterEvents
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockSlabTFC.VARIANT).build());
             ModelLoader.setCustomStateMapper(block.doubleSlab, new StateMap.Builder().ignore(BlockSlabTFC.VARIANT).build());
         }
+
+        for (Block block : BlocksTFC.getAllChestBlocks())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockChest.FACING).build());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEChestTFC.class, new TESpecialRendererChestTFC());
 
         for (Block block : BlocksTFC.getAllNormalItemBlocks())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
