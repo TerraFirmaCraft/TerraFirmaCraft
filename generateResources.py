@@ -606,7 +606,7 @@ for wood_type in WOOD_TYPES:
         'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
     })
     blockstate(('wood', 'chest_trap', wood_type), 'tfc:chest', textures={
-        'texture': 'tfc:model/wood/chest/%s' % wood_type,  # todo: make and use trap texture
+        'texture': 'tfc:model/wood/chest_trap/%s' % wood_type,
         'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
     })
 
