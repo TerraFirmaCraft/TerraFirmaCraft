@@ -60,6 +60,8 @@ public final class BlocksTFC
     public static final BlockPeat PEAT = null;
     public static final BlockPeat PEAT_GRASS = null;
 
+
+
     public static final BlockFirePit FIREPIT = null;
 
     // All these are for use in model registration. Do not use for block lookups.
@@ -148,6 +150,8 @@ public final class BlocksTFC
 
         normalItemBlocks.add(register(r, "peat", new BlockPeat(Material.GROUND), CT_ROCK_BLOCKS));
         normalItemBlocks.add(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_BLOCKS));
+
+        normalItemBlocks.add(register(r, "thatch", new BlockThatch(Material.PLANTS), CT_DECORATIONS));
 
         register(r, "firepit", new BlockFirePit()); // No item or creative tab.
 
