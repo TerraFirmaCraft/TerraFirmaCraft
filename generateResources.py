@@ -706,6 +706,7 @@ for metal in STEEL:
 
 item(('ceramics', 'unfired', 'vessel'), 'tfc:items/ceramics/unfired/vessel')
 item(('ceramics', 'fired', 'vessel'), 'tfc:items/ceramics/fired/vessel')
+model(('item', 'ceramics', 'unfired', 'vessel_glazed'), 'item/generated', {'layer0': 'tfc:items/ceramics/unfired/vessel', 'layer1': 'tfc:items/ceramics/fired/vessel_overlay'})
 model(('item', 'ceramics', 'fired', 'vessel_glazed'), 'item/generated', {'layer0': 'tfc:items/ceramics/fired/vessel', 'layer1': 'tfc:items/ceramics/fired/vessel_overlay'})
 
 item(('ceramics', 'unfired', 'spindle'), 'tfc:items/ceramics/unfired/spindle')

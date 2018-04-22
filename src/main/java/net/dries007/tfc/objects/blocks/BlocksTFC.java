@@ -59,10 +59,9 @@ public final class BlocksTFC
 
     public static final BlockPeat PEAT = null;
     public static final BlockPeat PEAT_GRASS = null;
-
-
-
     public static final BlockFirePit FIREPIT = null;
+    public static final BlockThatch THATCH = null;
+    public static final BlockPitKiln PIT_KILN = null;
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -263,6 +262,9 @@ public final class BlocksTFC
         }
 
         normalItemBlocks.add(register(r, "torch", new BlockTorchTFC(), CT_MISC));
+
+        // technical blocks
+        register(r, "pit_kiln", new BlockPitKiln());
 
         // todo: cactus ?
         // todo: reeds/sugarcane ?

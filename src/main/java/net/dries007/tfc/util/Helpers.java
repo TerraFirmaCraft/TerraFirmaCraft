@@ -7,6 +7,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.Arrays;
@@ -72,7 +73,7 @@ public final class Helpers
         return input.stream().map(String::toLowerCase).anyMatch(itemsSet::contains);
     }
 
-    public static <T extends TileEntity> T getTE(World world, BlockPos pos, Class<T> aClass)
+    public static <T extends TileEntity> T getTE(IBlockAccess world, BlockPos pos, Class<T> aClass)
     {
         TileEntity te = world.getTileEntity(pos);
         if (!aClass.isInstance(te)) return null;

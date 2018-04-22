@@ -17,7 +17,7 @@ import java.util.EnumMap;
 import static net.dries007.tfc.Constants.MOD_ID;
 
 @SideOnly(Side.CLIENT)
-public class TESpecialRendererChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
+public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
 {
     private static final EnumMap<Wood, ResourceLocation> SINGLE_TEXTURES = new EnumMap<>(Wood.class);
     private static final EnumMap<Wood, ResourceLocation> DOUBLE_TEXTURES = new EnumMap<>(Wood.class);

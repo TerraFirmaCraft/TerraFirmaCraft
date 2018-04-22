@@ -1,7 +1,9 @@
 package net.dries007.tfc.client;
 
 import com.google.common.base.Strings;
-import net.dries007.tfc.client.render.TESpecialRendererChestTFC;
+import com.google.common.collect.ImmutableMap;
+import net.dries007.tfc.client.render.TESRChestTFC;
+import net.dries007.tfc.client.render.TESRPitKiln;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.blocks.BlockOreTFC;
@@ -16,6 +18,7 @@ import net.dries007.tfc.objects.items.ItemGoldPan;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.te.TEChestTFC;
+import net.dries007.tfc.objects.te.TEPitKiln;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -67,7 +70,10 @@ public final class ClientRegisterEvents
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName().toString()));
 
         for (EnumDyeColor color : EnumDyeColor.values())
+        {
+            ModelLoader.setCustomModelResourceLocation(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, color.getDyeDamage(), new ModelResourceLocation(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED.getRegistryName().toString()));
             ModelLoader.setCustomModelResourceLocation(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, color.getDyeDamage(), new ModelResourceLocation(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED.getRegistryName().toString()));
+        }
 
         ItemGoldPan.registerModels();
 
@@ -114,7 +120,10 @@ public final class ClientRegisterEvents
 
         for (Block block : BlocksTFC.getAllChestBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockChest.FACING).build());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEChestTFC.class, new TESpecialRendererChestTFC());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEChestTFC.class, new TESRChestTFC());
+
+        ModelLoader.setCustomStateMapper(BlocksTFC.PIT_KILN, blockIn -> ImmutableMap.of(BlocksTFC.PIT_KILN.getDefaultState(), new ModelResourceLocation("tfc:empty")));
+        ClientRegistry.bindTileEntitySpecialRenderer(TEPitKiln.class, new TESRPitKiln());
 
         for (Block block : BlocksTFC.getAllNormalItemBlocks())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
@@ -163,6 +172,7 @@ public final class ClientRegisterEvents
                         event.getBlockColors().colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
                 BlocksTFC.getAllLeafBlocks().stream().toArray(BlockLeavesTFC[]::new));
 
-        itemColors.registerItemColorHandler((stack, tintIndex) -> tintIndex == 1 ? EnumDyeColor.byDyeDamage(stack.getItemDamage()).getColorValue() : 0xFFFFFF, ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED);
+        itemColors.registerItemColorHandler((stack, tintIndex) -> tintIndex == 1 ? EnumDyeColor.byDyeDamage(stack.getItemDamage()).getColorValue() : 0xFFFFFF,
+                ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED);
     }
 }
