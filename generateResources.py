@@ -411,7 +411,7 @@ def model(filename_parts, parent, textures):
 
 
 def item(filename_parts, *layers, parent='item/generated'):
-    model(('item', *filename_parts), parent, {'layer%d' % i: v for i, v in enumerate(layers)})
+    model(('item', *filename_parts), parent, None if len(layers) == 0 else {'layer%d' % i: v for i, v in enumerate(layers)})
 
 
 # BLOCKSTATES
@@ -494,6 +494,27 @@ for rock_type in ROCK_TYPES:
             }
         })
         cube_all(('slab', 'full', block_type, rock_type), 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type))
+
+    # (STONE) BUTTON
+    blockstate(('stone', 'button', rock_type), 'button', textures={
+        ('texture', 'particle'): 'tfc:blocks/stonetypes/raw/%s' % rock_type,
+    }, variants={
+        'powered': {
+            'false': {},
+            'true': {'model': 'button_pressed'}
+        },
+        'facing': {
+            'up': {},
+            'down': {'x': 180},
+            'east': {'x': 90, 'y': 90},
+            'west': {'x': 90, 'y': 270},
+            'south': {'x': 90, 'y': 180},
+            'north': {'x': 90},
+        },
+        'inventory': [{
+            'model': 'button_inventory'
+        }]
+    })
 
 
 # WOOD STUFF
@@ -578,6 +599,37 @@ for wood_type in WOOD_TYPES:
         }
     })
     cube_all(('slab', 'full', 'wood', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
+
+    # CHESTS
+    blockstate(('wood', 'chest', wood_type), 'tfc:chest', textures={
+        'texture': 'tfc:model/wood/chest/%s' % wood_type,
+        'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
+    })
+    blockstate(('wood', 'chest_trap', wood_type), 'tfc:chest', textures={
+        'texture': 'tfc:model/wood/chest/%s' % wood_type,  # todo: make and use trap texture
+        'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
+    })
+
+    # (WOOD) BUTTON
+    blockstate(('wood', 'button', wood_type), 'button', textures={
+        ('texture', 'particle'): 'tfc:blocks/wood/planks/%s' % wood_type,
+    }, variants={
+        'powered': {
+            'false': {},
+            'true': {'model': 'button_pressed'}
+        },
+        'facing': {
+            'up': {},
+            'down': {'x': 180},
+            'east': {'x': 90, 'y': 90},
+            'west': {'x': 90, 'y': 270},
+            'south': {'x': 90, 'y': 180},
+            'north': {'x': 90},
+        },
+        'inventory': [{
+            'model': 'button_inventory'
+        }]
+    })
 
 # ITEMS
 

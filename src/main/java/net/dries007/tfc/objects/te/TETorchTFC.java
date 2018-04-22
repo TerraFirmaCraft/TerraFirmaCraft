@@ -5,9 +5,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
+
+import static net.dries007.tfc.Constants.MOD_ID;
 
 public class TETorchTFC extends TileEntity implements ITickable
 {
+    public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "torch");
     public static final long BURN_SECONDS = 600;
     private long secondsleft = BURN_SECONDS;
 
