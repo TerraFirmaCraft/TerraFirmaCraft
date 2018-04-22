@@ -1,1 +1,1 @@
-{"forge_marker": 1, "defaults": {"model": "tfc:chest", "textures": {"texture": "tfc:model/wood/chest/birch", "particle": "tfc:blocks/wood/planks/birch"}}, "variants": {"normal": [{}]}}
+{"forge_marker": 1, "defaults": {"model": "tfc:chest", "textures": {"texture": "tfc:model/wood/chest_trap/birch", "particle": "tfc:blocks/wood/planks/birch"}}, "variants": {"normal": [{}]}}

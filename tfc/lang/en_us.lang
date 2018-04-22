@@ -51,6 +51,7 @@ generator.tfc_classic=TFC Classic
 # Items
 item.tfc.wand.name=TFC Debug Wand
 item.tfc.firestarter.name=Firestarter
+item.tfc.hay.name=Hay
 tile.tfc.firepit.name=Firepit
 
 # Fluids
@@ -62,6 +63,7 @@ fluid.hot_water=Hot water
 tile.tfc.debug.name=TFC Debug Block
 tile.tfc.peat.name=Peat
 tile.tfc.peat.grass.name=Peat Grass
+tile.tfc.thatch.name=Thatch
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite
@@ -2390,6 +2392,15 @@ item.tfc.mold.ingot.black_steel.name=Unshaped Black Steel
 item.tfc.mold.ingot.blue_steel.name=Unshaped Blue Steel
 item.tfc.mold.ingot.red_steel.name=Unshaped Red Steel
 
+item.tfc.mold.ingot.weak_steel.name=Unshaped Weak Steel
+item.tfc.mold.ingot.weak_black_steel.name=Unshaped Weak Black Steel
+item.tfc.mold.ingot.weak_blue_steel.name=Unshaped Weak Blue Steel
+item.tfc.mold.ingot.weak_red_steel.name=Unshaped Weak Red Steel
+item.tfc.mold.ingot.high_carbon_steel.name=Unshaped High Carbon Steel
+item.tfc.mold.ingot.high_carbon_black_steel.name=Unshaped High Carbon Black Steel
+item.tfc.mold.ingot.high_carbon_blue_steel.name=Unshaped High Carbon Blue Steel
+item.tfc.mold.ingot.high_carbon_red_steel.name=Unshaped High Carbon Red Steel
+
 item.tfc.mold.ingot.empty.name=Empty Ingot Mold
 
 item.tfc.mold.pick_head.empty.name=Pick Head Mold
@@ -2478,7 +2489,7 @@ item.tfc.mold.knife_blade.unfired.name=Unfired Knife Blade Mold
 item.tfc.mold.scythe_blade.unfired.name=Unfired Scythe Blade Mold
 
 item.tfc.ceramics.fired.vessel.name=Small Vessel
-item.tfc.ceramics.unfired.vessel.name=Unfired Small Vessel
+item.tfc.ceramics.unfired.vessel.name=Small Unfired Vessel
 item.tfc.ceramics.fired.vessel_glazed.white.name=Small White Vessel
 item.tfc.ceramics.fired.vessel_glazed.orange.name=Small Orange Vessel
 item.tfc.ceramics.fired.vessel_glazed.magenta.name=Small Magenta Vessel
@@ -2495,6 +2506,22 @@ item.tfc.ceramics.fired.vessel_glazed.brown.name=Small Brown Vessel
 item.tfc.ceramics.fired.vessel_glazed.green.name=Small Green Vessel
 item.tfc.ceramics.fired.vessel_glazed.red.name=Small Red Vessel
 item.tfc.ceramics.fired.vessel_glazed.black.name=Small Black Vessel
+item.tfc.ceramics.unfired.vessel_glazed.white.name=Small Unfired White Vessel
+item.tfc.ceramics.unfired.vessel_glazed.orange.name=Small Unfired Orange Vessel
+item.tfc.ceramics.unfired.vessel_glazed.magenta.name=Small Unfired Magenta Vessel
+item.tfc.ceramics.unfired.vessel_glazed.light_blue.name=Small Unfired Light_blue Vessel
+item.tfc.ceramics.unfired.vessel_glazed.yellow.name=Small Unfired Yellow Vessel
+item.tfc.ceramics.unfired.vessel_glazed.lime.name=Small Unfired Lime Vessel
+item.tfc.ceramics.unfired.vessel_glazed.pink.name=Small Unfired Pink Vessel
+item.tfc.ceramics.unfired.vessel_glazed.gray.name=Small Unfired Gray Vessel
+item.tfc.ceramics.unfired.vessel_glazed.silver.name=Small Unfired Silver Vessel
+item.tfc.ceramics.unfired.vessel_glazed.cyan.name=Small Unfired Cyan Vessel
+item.tfc.ceramics.unfired.vessel_glazed.purple.name=Small Unfired Purple Vessel
+item.tfc.ceramics.unfired.vessel_glazed.blue.name=Small Unfired Blue Vessel
+item.tfc.ceramics.unfired.vessel_glazed.brown.name=Small Unfired Brown Vessel
+item.tfc.ceramics.unfired.vessel_glazed.green.name=Small Unfired Green Vessel
+item.tfc.ceramics.unfired.vessel_glazed.red.name=Small Unfired Red Vessel
+item.tfc.ceramics.unfired.vessel_glazed.black.name=Small Unfired Black Vessel
 
 item.tfc.ceramics.fired.spindle.name=Spindle Head
 item.tfc.ceramics.unfired.spindle.name=Unfired Spindle Head
