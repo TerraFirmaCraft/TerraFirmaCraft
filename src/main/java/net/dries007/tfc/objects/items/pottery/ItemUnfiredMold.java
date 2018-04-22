@@ -15,8 +15,9 @@ public class ItemUnfiredMold extends ItemUnfiredPottery
 
     public final Metal.ItemType type;
 
-    public ItemUnfiredMold(Metal.ItemType type)
+    public ItemUnfiredMold(ItemFiredPottery firedVersion, Metal.ItemType type)
     {
+        super(firedVersion);
         this.type = type;
         if (MAP.put(type, this) != null) throw new IllegalStateException("There can only be one.");
     }

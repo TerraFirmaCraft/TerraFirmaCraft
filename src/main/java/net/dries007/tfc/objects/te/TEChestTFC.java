@@ -10,6 +10,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
@@ -42,6 +44,7 @@ public class TEChestTFC extends TileEntityChest
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));

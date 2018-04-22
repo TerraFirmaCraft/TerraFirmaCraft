@@ -83,7 +83,7 @@ public enum Metal
     public enum Tier
     {
         TIER_I("Pit Kiln"),
-        TIER_II("Beehive Kiln"),
+        TIER_II("Beehive Kiln"), // Not implemented, but presumed to be a more advanced, more capable version of the pit kiln.
         TIER_III("Bloomery"),
         TIER_IV("Blast Furnace"),
         TIER_V("Crucible");
