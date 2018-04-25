@@ -19,7 +19,7 @@ public final class BiomesTFC
 
     public static final BiomeTFC OCEAN = null;
     public static final BiomeTFC RIVER = null;
-    public static final BiomeTFC HELL = null;
+//    public static final BiomeTFC HELL = null;
     public static final BiomeTFC BEACH = null;
     public static final BiomeTFC GRAVEL_BEACH = null;
     public static final BiomeTFC HIGH_HILLS = null;
@@ -57,7 +57,7 @@ public final class BiomesTFC
 
     private static void register(IForgeRegistry<Biome> r, Biome item)
     {
-        r.register(item.setRegistryName(MOD_ID, item.getBiomeName().replace(MOD_NAME + " ", "").replace(' ', '_').toLowerCase()));
+        r.register(item.setRegistryName(MOD_ID, item.biomeName.replace(MOD_NAME + " ", "").replace(' ', '_').toLowerCase()));
     }
 
     public static boolean isOceanicBiome(int id)

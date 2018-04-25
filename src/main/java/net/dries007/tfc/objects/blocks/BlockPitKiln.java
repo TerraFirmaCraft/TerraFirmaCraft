@@ -30,6 +30,7 @@ public class BlockPitKiln extends Block implements ITileEntityProvider
     public BlockPitKiln()
     {
         super(Material.CIRCUITS);
+        setHardness(0.5f);
         setDefaultState(blockState.getBaseState().withProperty(FULL, false).withProperty(LIT, false));
         TileEntity.register(TEPitKiln.ID.toString(), TEPitKiln.class);
     }
@@ -135,6 +136,14 @@ public class BlockPitKiln extends Block implements ITileEntityProvider
 
     @Override
     @SuppressWarnings("deprecation")
+    public boolean isTopSolid(IBlockState state)
+    {
+        // This is required for the fire code, because forge doesn't 'fix' it to use the location sensitive version.
+        return true;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
@@ -144,13 +153,14 @@ public class BlockPitKiln extends Block implements ITileEntityProvider
     @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState state)
     {
-        return !state.getValue(FULL);
+        return true;
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
+        // todo: depend on fill level?
         return state.getActualState(source, pos).getValue(FULL) ? FULL_BLOCK_AABB : AABB;
     }
 

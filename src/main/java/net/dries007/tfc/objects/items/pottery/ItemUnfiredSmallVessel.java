@@ -13,6 +13,7 @@ public class ItemUnfiredSmallVessel extends ItemUnfiredPottery
     {
         super(firedVersion);
         glazed = firedVersion.glazed;
+        setHasSubtypes(true);
     }
 
     @Override

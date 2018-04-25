@@ -11,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -57,6 +58,7 @@ public class CommonEventHandler
         if (event.getFace() != EnumFacing.UP) return;
         if (!event.getEntityPlayer().isSneaking()) return;
         World world = event.getWorld();
+//        if (world.isRemote) return;
         BlockPos pos = event.getPos();
 
         IFireable fireable = IFireable.fromItem(event.getItemStack().getItem());
@@ -77,6 +79,8 @@ public class CommonEventHandler
             TEPitKiln te = Helpers.getTE(world, pos, TEPitKiln.class);
             if (te == null) return; // todo: log? This shouldn't happen, since the block must be a pitkiln by now.
             te.onRightClick(event.getEntityPlayer(), event.getItemStack(), (event.getHitVec().x % 1) < .5, (event.getHitVec().z % 1) < .5);
+            event.setCancellationResult(EnumActionResult.SUCCESS);
+            event.setCanceled(true);
         }
     }
 }
