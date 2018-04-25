@@ -197,7 +197,7 @@ public final class BlocksTFC
                 logs.add(register(r, "wood/log/" + wood.name().toLowerCase(), new BlockLogTFC(wood), CT_WOOD));
                 leaves.add(register(r, "wood/leaves/" + wood.name().toLowerCase(), new BlockLeavesTFC(wood), CT_WOOD));
                 normalItemBlocks.add(register(r, "wood/planks/" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CT_WOOD));
-                normalItemBlocks.add(register(r, "wood/bookcase/" + wood.name().toLowerCase(), new BlockBookcaseTFC(wood), CT_WOOD));
+                normalItemBlocks.add(register(r, "wood/bookshelf/" + wood.name().toLowerCase(), new BlockBookshelfTFC(wood), CT_WOOD));
                 normalItemBlocks.add(register(r, "wood/workbench/" + wood.name().toLowerCase(), new BlockWorkbenchTFC(wood), CT_WOOD));
                 inventoryItemBlocks.add(register(r, "wood/fence/" + wood.name().toLowerCase(), new BlockFenceTFC(wood), CT_DECORATIONS));
                 fenceGates.add(register(r, "wood/fence_gate/" + wood.name().toLowerCase(), new BlockFenceGateTFC(wood), CT_DECORATIONS));
