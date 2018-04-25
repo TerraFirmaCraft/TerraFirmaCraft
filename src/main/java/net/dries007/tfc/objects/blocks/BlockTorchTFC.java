@@ -9,6 +9,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -34,6 +35,7 @@ public class BlockTorchTFC extends BlockTorch implements ITileEntityProvider
         OreDictionaryHelper.register(this, "torch");
         setLightLevel(0.9375F);
         TileEntity.register(TETorchTFC.ID.toString(), TETorchTFC.class);
+        Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
     @Override

@@ -125,6 +125,8 @@ public class BlockFirePit extends Block implements ITileEntityProvider
         return world.getBlockState(pos).getValue(LIT);
     }
 
+    // todo: override the fire stuff, see BlockPitKiln
+
     @Override
     @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState state)

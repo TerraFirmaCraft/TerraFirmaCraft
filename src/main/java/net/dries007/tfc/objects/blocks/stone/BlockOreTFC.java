@@ -1,4 +1,4 @@
-package net.dries007.tfc.objects.blocks;
+package net.dries007.tfc.objects.blocks.stone;
 
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;

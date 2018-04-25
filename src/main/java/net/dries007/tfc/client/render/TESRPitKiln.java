@@ -24,6 +24,7 @@ public class TESRPitKiln extends TileEntitySpecialRenderer<TEPitKiln>
         //noinspection ConstantConditions
         if (world == null) return;
         NonNullList<ItemStack> items = te.getItems();
+        float timeD = (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
         for (int i = 0; i < items.size(); i++)
         {
             ItemStack stack = items.get(i);
@@ -34,6 +35,7 @@ public class TESRPitKiln extends TileEntitySpecialRenderer<TEPitKiln>
             GlStateManager.scale(0.5F, 0.5F, 0.5F);
             GlStateManager.translate(0.5, 0.5, 0.5);
             GlStateManager.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));
+            GlStateManager.rotate(timeD, 0, 1, 0);
             GlStateManager.pushAttrib();
             RenderHelper.enableStandardItemLighting();
             renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED);

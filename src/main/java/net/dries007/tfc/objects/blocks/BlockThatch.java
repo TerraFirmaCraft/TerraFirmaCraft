@@ -1,10 +1,12 @@
 package net.dries007.tfc.objects.blocks;
 
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -21,7 +23,8 @@ public class BlockThatch extends Block
         super(material);
         setSoundType(SoundType.PLANT);
         setHardness(0.6F);
-        //OreDictionaryHelper.register(this, "thatch");
+        OreDictionaryHelper.register(this, "thatch");
+        Blocks.FIRE.setFireInfo(this, 60, 20);
     }
 
     @SuppressWarnings("deprecation")

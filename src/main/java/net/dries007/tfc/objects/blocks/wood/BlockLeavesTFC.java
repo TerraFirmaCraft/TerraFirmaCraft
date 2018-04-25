@@ -8,6 +8,7 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -42,6 +43,7 @@ public class BlockLeavesTFC extends BlockLeaves
         leavesFancy = true; // there doesn't seem to be an even for catching changing this, so lets not bother
         OreDictionaryHelper.register(this, "tree", "leaves");
         OreDictionaryHelper.register(this, "tree", "leaves", wood);
+        Blocks.FIRE.setFireInfo(this, 30, 60);
     }
 
     @Override

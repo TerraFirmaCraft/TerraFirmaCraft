@@ -1,10 +1,11 @@
-package net.dries007.tfc.objects.blocks;
+package net.dries007.tfc.objects.blocks.wood;
 
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 
 import java.util.EnumMap;
 
@@ -29,5 +30,6 @@ public class BlockPlanksTFC extends Block
         setHarvestLevel("axe", 0);
         OreDictionaryHelper.register(this, "plank", "wood");
         OreDictionaryHelper.register(this, "plank", "wood", wood);
+        Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 }

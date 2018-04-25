@@ -4,6 +4,7 @@ import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 
 import java.util.EnumMap;
 
@@ -26,5 +27,6 @@ public class BlockFenceTFC extends BlockFence
         setHarvestLevel("axe", 0);
         OreDictionaryHelper.register(this, "fence");
         OreDictionaryHelper.register(this, "fence", wood);
+        Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 }

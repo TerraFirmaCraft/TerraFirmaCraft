@@ -2,6 +2,7 @@ package net.dries007.tfc.objects.blocks;
 
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.objects.blocks.wood.BlockPlanksTFC;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
@@ -12,6 +13,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
@@ -42,6 +44,7 @@ public abstract class BlockSlabTFC extends BlockSlab
         Block c = BlockPlanksTFC.get(wood);
         //noinspection ConstantConditions
         setHarvestLevel(c.getHarvestTool(c.getDefaultState()), c.getHarvestLevel(c.getDefaultState()));
+        Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
     private BlockSlabTFC(Block block)

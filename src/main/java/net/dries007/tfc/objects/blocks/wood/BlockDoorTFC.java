@@ -7,6 +7,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -37,6 +38,7 @@ public class BlockDoorTFC extends BlockDoor
         setHardness(3.0F);
         disableStats();
         // No direct item, so no oredict.
+        Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
     public Item getItem()

@@ -31,10 +31,6 @@ public class ItemSmallVessel extends ItemFiredPottery
     {
         if (!glazed)
             return super.getUnlocalizedName(stack);
-        return super.getUnlocalizedName(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage());
+        return super.getUnlocalizedName(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
     }
-
-    // todo
-
-    //todo: make dye-able (see other color items, in client model registry events thing)
 }

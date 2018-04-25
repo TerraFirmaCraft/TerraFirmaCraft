@@ -5,10 +5,13 @@ import net.dries007.tfc.util.Helpers;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -20,12 +23,43 @@ import javax.annotation.Nullable;
 
 public class BlockPitKiln extends Block implements ITileEntityProvider
 {
-    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.03125D, 0.9375D);
+    public static final PropertyBool FULL = PropertyBool.create("full");
+    public static final PropertyBool LIT = PropertyBool.create("lit");
+    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 1D/16D, 1);
 
     public BlockPitKiln()
     {
         super(Material.CIRCUITS);
+        setDefaultState(blockState.getBaseState().withProperty(FULL, false).withProperty(LIT, false));
         TileEntity.register(TEPitKiln.ID.toString(), TEPitKiln.class);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState();
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return 0;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
+        if (te == null) return state;
+        return state.withProperty(BlockPitKiln.LIT, te.isLit()).withProperty(BlockPitKiln.FULL, te.hasFuel());
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, FULL, LIT);
     }
 
     @Nullable
@@ -44,50 +78,35 @@ public class BlockPitKiln extends Block implements ITileEntityProvider
             worldIn.destroyBlock(pos, true);
     }
 
-    public boolean canLight(IBlockAccess world, BlockPos pos)
-    {
-        for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL)
-        {
-            if (!world.isSideSolid(pos.offset(facing), facing.getOpposite(), false))
-                return false;
-        }
-
-        TEPitKiln te = Helpers.getTE(world, pos, TEPitKiln.class);
-        if (te == null || te.isLit()) return false;
-
-        return te.hasFuel();
-    }
-
     @Override
     public boolean isFireSource(World world, BlockPos pos, EnumFacing side)
     {
-        if (side != EnumFacing.UP)
-            return false;
-        TEPitKiln te = Helpers.getTE(world, pos, TEPitKiln.class);
-        if (te == null) return false;
-        return te.isLit();
+        return world.getBlockState(pos).getActualState(world, pos).getValue(LIT);
     }
 
     @Override
     public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face)
     {
-        TEPitKiln te = Helpers.getTE(world, pos, TEPitKiln.class);
-        if (te == null || !te.isLit()) return 0;
-        return 120; // Twice as much as the highest vanilla level (60)
+        return world.getBlockState(pos).getActualState(world, pos).getValue(LIT) ? 120 : 0; // Twice as much as the highest vanilla level (60)
     }
 
     @Override
     public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face)
     {
-        return canLight(world, pos) ? 200 : 0; // Chance is x/300, so 200 = 2/3 chance to light.
+        return 0;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
+        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
     public boolean isBurning(IBlockAccess world, BlockPos pos)
     {
-        TEPitKiln te = Helpers.getTE(world, pos, TEPitKiln.class);
-        if (te == null) return true;
-        return te.isLit();
+        return world.getBlockState(pos).getActualState(world, pos).getValue(LIT);
     }
 
     @Override
@@ -100,13 +119,18 @@ public class BlockPitKiln extends Block implements ITileEntityProvider
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (side != EnumFacing.UP) return false;
-        TEPitKiln te = Helpers.getTE(world, pos, TEPitKiln.class);
-        if (te == null) return false;
-        return te.hasFuel();
+        TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
+        if (te != null) te.onBreakBlock();
+        super.breakBlock(worldIn, pos, state); // todo: drop items
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        return state.getActualState(world, pos).getValue(FULL);
     }
 
     @Override
@@ -120,24 +144,20 @@ public class BlockPitKiln extends Block implements ITileEntityProvider
     @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState state)
     {
-        return false;
+        return !state.getValue(FULL);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        TEPitKiln te = Helpers.getTE(source, pos, TEPitKiln.class);
-        if (te == null || te.hasFuel()) return FULL_BLOCK_AABB;
-        return AABB;
+        return state.getActualState(source, pos).getValue(FULL) ? FULL_BLOCK_AABB : AABB;
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
-        TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
-        if (te == null || te.hasFuel()) return BlockFaceShape.SOLID;
         return BlockFaceShape.UNDEFINED;
     }
 }

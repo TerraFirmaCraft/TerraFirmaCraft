@@ -32,6 +32,6 @@ public class ItemUnfiredSmallVessel extends ItemUnfiredPottery
     {
         if (!glazed)
             return super.getUnlocalizedName(stack);
-        return super.getUnlocalizedName(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage());
+        return super.getUnlocalizedName(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
     }
 }

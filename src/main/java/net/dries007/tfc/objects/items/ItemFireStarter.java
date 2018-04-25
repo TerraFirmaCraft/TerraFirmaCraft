@@ -59,6 +59,7 @@ public class ItemFireStarter extends Item
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
+        //todo: move to public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
         ItemStack stack = playerIn.getHeldItem(handIn);
         if (worldIn.isRemote) return new ActionResult<>(EnumActionResult.PASS, stack);
         if (handIn != EnumHand.MAIN_HAND) return new ActionResult<>(EnumActionResult.PASS, stack);
