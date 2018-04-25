@@ -9,6 +9,7 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -40,6 +41,7 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
         setHardness(0.0F);
         OreDictionaryHelper.register(this, "tree", "sapling");
         OreDictionaryHelper.register(this, "tree", "sapling", wood);
+        Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
     @Override

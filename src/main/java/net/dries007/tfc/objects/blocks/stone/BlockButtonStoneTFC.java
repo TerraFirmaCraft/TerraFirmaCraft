@@ -1,4 +1,4 @@
-package net.dries007.tfc.objects.blocks;
+package net.dries007.tfc.objects.blocks.stone;
 
 import net.dries007.tfc.objects.Rock;
 import net.minecraft.block.BlockButtonStone;

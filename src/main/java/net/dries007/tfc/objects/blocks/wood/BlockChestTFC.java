@@ -4,6 +4,7 @@ import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.te.TEChestTFC;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.SoundType;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -39,6 +40,7 @@ public class BlockChestTFC extends BlockChest
                 throw new IllegalStateException();
         }
         TileEntity.register(TEChestTFC.ID.toString(), TEChestTFC.class);
+        Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
     @Override

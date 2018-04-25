@@ -2,10 +2,12 @@ package net.dries007.tfc.objects.blocks;
 
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.objects.blocks.wood.BlockPlanksTFC;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
+import net.minecraft.init.Blocks;
 
 import java.util.EnumMap;
 
@@ -43,5 +45,6 @@ public class BlockStairsTFC extends BlockStairs
         OreDictionaryHelper.register(this, "stair");
         OreDictionaryHelper.register(this, "stair", "wood");
         OreDictionaryHelper.register(this, "stair", "wood", wood);
+        Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 }

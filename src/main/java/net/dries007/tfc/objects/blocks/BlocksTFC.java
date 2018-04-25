@@ -6,6 +6,8 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.minecraft.block.Block;

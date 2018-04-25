@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -33,6 +34,7 @@ public class BlockPeatGrass extends BlockPeat
         setTickRandomly(true);
         OreDictionaryHelper.register(this, "peat");
         OreDictionaryHelper.register(this, "peat", "grass");
+        Blocks.FIRE.setFireInfo(this, 5, 5);
     }
 
     @Override
