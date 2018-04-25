@@ -1,6 +1,7 @@
 package net.dries007.tfc.objects.blocks.wood;
 
 import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -26,6 +27,8 @@ public class BlockWorkbenchTFC extends Block {
         setSoundType(SoundType.WOOD);
         setHardness(2.0F).setResistance(5.0F);
         setHarvestLevel("axe", 0);
+        OreDictionaryHelper.register(this, "workbench");
+
     }
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer()
