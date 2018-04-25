@@ -76,6 +76,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockFenceGateTFC> allFenceGateBlocks;
     private static ImmutableList<BlockSaplingTFC> allSaplingBlocks;
     private static ImmutableList<BlockDoorTFC> allDoorBlocks;
+    private static ImmutableList<BlockTrapDoorWoodTFC> allTrapDoorWoodBlocks;
     private static ImmutableList<BlockStairsTFC> allStairsBlocks;
     private static ImmutableList<BlockSlabTFC.Half> allSlabBlocks;
     private static ImmutableList<BlockChestTFC> allChestBlocks;
@@ -123,6 +124,10 @@ public final class BlocksTFC
     public static ImmutableList<BlockDoorTFC> getAllDoorBlocks()
     {
         return allDoorBlocks;
+    }
+    public static ImmutableList<BlockTrapDoorWoodTFC> getAllTrapDoorWoodBlocks()
+    {
+        return allTrapDoorWoodBlocks;
     }
     public static ImmutableList<BlockStairsTFC> getAllStairsBlocks()
     {
@@ -190,6 +195,7 @@ public final class BlocksTFC
             Builder<BlockFenceGateTFC> fenceGates = ImmutableList.builder();
             Builder<BlockSaplingTFC> saplings = ImmutableList.builder();
             Builder<BlockDoorTFC> doors = ImmutableList.builder();
+            Builder<BlockTrapDoorWoodTFC> trapdoorwood = ImmutableList.builder();
             Builder<BlockChestTFC> chests = ImmutableList.builder();
 
             for (Wood wood : Wood.values())
@@ -197,13 +203,14 @@ public final class BlocksTFC
                 logs.add(register(r, "wood/log/" + wood.name().toLowerCase(), new BlockLogTFC(wood), CT_WOOD));
                 leaves.add(register(r, "wood/leaves/" + wood.name().toLowerCase(), new BlockLeavesTFC(wood), CT_WOOD));
                 normalItemBlocks.add(register(r, "wood/planks/" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CT_WOOD));
-                normalItemBlocks.add(register(r, "wood/bookshelf/" + wood.name().toLowerCase(), new BlockBookshelfTFC(wood), CT_WOOD));
-                normalItemBlocks.add(register(r, "wood/workbench/" + wood.name().toLowerCase(), new BlockWorkbenchTFC(wood), CT_WOOD));
+                normalItemBlocks.add(register(r, "wood/bookshelf/" + wood.name().toLowerCase(), new BlockBookshelfTFC(wood), CT_DECORATIONS));
+                normalItemBlocks.add(register(r, "wood/workbench/" + wood.name().toLowerCase(), new BlockWorkbenchTFC(wood), CT_DECORATIONS));
                 inventoryItemBlocks.add(register(r, "wood/fence/" + wood.name().toLowerCase(), new BlockFenceTFC(wood), CT_DECORATIONS));
                 fenceGates.add(register(r, "wood/fence_gate/" + wood.name().toLowerCase(), new BlockFenceGateTFC(wood), CT_DECORATIONS));
                 saplings.add(register(r, "wood/sapling/" + wood.name().toLowerCase(), new BlockSaplingTFC(wood), CT_WOOD));
                 if (wood != Wood.PALM) //todo: make this enum constant
                     doors.add(register(r, "wood/door/" + wood.name().toLowerCase(), new BlockDoorTFC(wood), CT_DECORATIONS));
+                trapdoorwood.add(register(r, "wood/trapdoor/" + wood.name().toLowerCase(), new BlockTrapDoorWoodTFC(wood), CT_DECORATIONS));
                 chests.add(register(r, "wood/chest/" + wood.name().toLowerCase(), new BlockChestTFC(BlockChest.Type.BASIC, wood), CT_DECORATIONS));
                 chests.add(register(r, "wood/chest_trap/" + wood.name().toLowerCase(), new BlockChestTFC(BlockChest.Type.TRAP, wood), CT_DECORATIONS));
                 inventoryItemBlocks.add(register(r, "wood/button/" + wood.name().toLowerCase(), new BlockButtonWoodTFC(wood), CT_DECORATIONS));
@@ -213,12 +220,14 @@ public final class BlocksTFC
             allFenceGateBlocks = fenceGates.build();
             allSaplingBlocks = saplings.build();
             allDoorBlocks = doors.build();
+            allTrapDoorWoodBlocks = trapdoorwood.build();
             allChestBlocks = chests.build();
             //logs are special
             normalItemBlocks.addAll(allLeafBlocks);
             inventoryItemBlocks.addAll(allFenceGateBlocks);
             inventoryItemBlocks.addAll(allSaplingBlocks);
             // doors are special
+            inventoryItemBlocks.addAll(allTrapDoorWoodBlocks);
             normalItemBlocks.addAll(allChestBlocks);
         }
 
