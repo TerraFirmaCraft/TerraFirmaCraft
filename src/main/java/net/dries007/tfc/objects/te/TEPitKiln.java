@@ -1,6 +1,5 @@
 package net.dries007.tfc.objects.te;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.blocks.BlockPitKiln;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -39,6 +38,7 @@ public class TEPitKiln extends TileEntity implements ITickable
 
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
+    public static final int BURN_TICKS = 10 * 60; // * 20; // 10 IRL minutes todo
 
     private int burnTicksToGo;
     private final NonNullList<ItemStack> logs = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
@@ -55,7 +55,6 @@ public class TEPitKiln extends TileEntity implements ITickable
             if (world.isAirBlock(above))
             {
                 world.setBlockState(above, Blocks.FIRE.getDefaultState());
-                TerraFirmaCraft.getLog().info("set on fire again");
             }
             else
             {
@@ -172,12 +171,12 @@ public class TEPitKiln extends TileEntity implements ITickable
             if (current.isEmpty()) return;
             player.addItemStackToInventory(current.splitStack(1));
             items.set(slot, ItemStack.EMPTY);
+            updateBlock();
             if (items.stream().filter(ItemStack::isEmpty).count() == 4)
             {
                 world.setBlockToAir(pos);
                 return;
             }
-            updateBlock();
             return;
         }
         if (IFireable.fromItem(item.getItem()) != null)
@@ -215,10 +214,16 @@ public class TEPitKiln extends TileEntity implements ITickable
         if (count < WOOD_NEEDED) return;
         if (item.getItem() instanceof ItemFireStarter || item.getItem() instanceof ItemFlintAndSteel)
         {
-            TerraFirmaCraft.getLog().info("Fire!");
-            burnTicksToGo = 600;
-            updateBlock();
+            light();
+            return;
         }
+    }
+
+    private void light()
+    {
+        burnTicksToGo = BURN_TICKS;
+        updateBlock();
+        world.setBlockState(getPos().add(0, 1, 0), Blocks.FIRE.getDefaultState());
     }
 
     private void addStraw(ItemStack stack)

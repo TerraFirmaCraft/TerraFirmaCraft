@@ -1,7 +1,20 @@
-/.idea/
-/out/
+# OS specific files (Thumbs.db etc) must be added to your own global gitignore. They have no place in any project.
+
+# Gradle
 .gradle
 /build/
+
+# IntelliJ
+/out/
+/.idea/
 *.iml
 *.ipr
 *.iws
+
+# Eclipse
+.classpath
+.settings
+.project
+*.launch
+bin/
+

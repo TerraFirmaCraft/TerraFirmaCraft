@@ -55,11 +55,10 @@ public class BlockThatch extends Block
         entityIn.setInWeb();
     }
 
-
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return true;
     }
-
 }
