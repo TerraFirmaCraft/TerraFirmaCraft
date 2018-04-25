@@ -631,6 +631,23 @@ for wood_type in WOOD_TYPES:
         }]
     })
 
+    # BOOKCASE
+        blockstate(('wood', 'bookcase', wood_type), 'tfc:bookcase', textures={
+            ('texture'): 'tfc:blocks/wood/planks/%s' % wood_type,
+            'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
+            ('north', 'south', 'east', 'west'): 'tfc:blocks/overlays/bookcase,
+        })
+
+    # WORKBENCH
+            blockstate(('wood', 'workbench', wood_type), 'tfc:workbench', textures={
+                ('texture'): 'tfc:blocks/wood/planks/%s' % wood_type,
+                'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
+                ('top'): 'tfc:blocks/overlays/workbench_top,
+                ('north', 'south'): 'tfc:blocks/overlays/workbench_front,
+                ('east', 'west'): 'tfc:blocks/overlays/workbench_side,
+
+            })
+
 # ITEMS
 
 # ORES
