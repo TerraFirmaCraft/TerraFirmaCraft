@@ -1,0 +1,16 @@
+{"forge_marker": 1, 
+ "defaults": {
+   "model": "tfc:bookshelf", 
+   "textures": {
+     "all": "tfc:blocks/wood/planks/blackwood", 
+     "particle": "tfc:blocks/wood/planks/blackwood",  
+     "north": "tfc:blocks/overlays/bookshelf", 
+     "south": "tfc:blocks/overlays/bookshelf", 
+     "east": "tfc:blocks/overlays/bookshelf", 
+     "west": "tfc:blocks/overlays/bookshelf"
+   }
+ }, 
+ "variants": {
+   "normal": [{}]
+ }
+}
