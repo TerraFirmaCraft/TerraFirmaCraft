@@ -108,3 +108,16 @@ project.tasks.withType(Jar) { jarTask ->
     }
     jarTask.appendix = "MC" + project.minecraft.version
 }
+
+task signJar(type: SignJar, dependsOn: reobfJar) {
+    if (!project.hasProperty("signjar.keystore")) return
+    keyStore = project.getProperty("signjar.keystore")
+    alias = project.getProperty("signjar.alias")
+    storePass = project.getProperty("signjar.storePass")
+    keyPass = project.getProperty("signjar.keyPass")
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
+}
+
+if (project.hasProperty("signjar.keystore"))
+    build.dependsOn signJar
