@@ -1,8 +1,9 @@
 package net.dries007.tfc.world.classic.genlayers.datalayers.evt;
 
-import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
+
+import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerAddEVT extends GenLayerTFC
 {
@@ -54,8 +55,7 @@ public class GenLayerAddEVT extends GenLayerTFC
                         outCache[var12 + var11 * xSize] = outID;
                     else
                         outCache[var12 + var11 * xSize] = thisID;
-                }
-                else if (id0 < thisID || id1 < thisID || id2 < thisID || id3 < thisID)
+                } else if (id0 < thisID || id1 < thisID || id2 < thisID || id3 < thisID)
                 {
                     int count = 1;
                     int outID = thisID;
@@ -76,8 +76,7 @@ public class GenLayerAddEVT extends GenLayerTFC
                         outCache[var12 + var11 * xSize] = outID;
                     else
                         outCache[var12 + var11 * xSize] = thisID;
-                }
-                else
+                } else
                 {
                     outCache[var12 + var11 * xSize] = thisID;
                 }

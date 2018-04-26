@@ -1,13 +1,8 @@
 package net.dries007.tfc.world.classic.worldgen;
 
+import java.util.Random;
+
 import com.google.common.collect.ImmutableList;
-import net.dries007.tfc.objects.Ore;
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.blocks.BlockRockVariant;
-import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
-import net.dries007.tfc.util.OreSpawnData;
-import net.dries007.tfc.world.classic.ChunkGenTFC;
-import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -16,7 +11,13 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import java.util.Random;
+import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.util.OreSpawnData;
+import net.dries007.tfc.world.classic.ChunkGenTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 /**
  * todo: maybe fix cascading worldgen issues? idk if it's worth it though.
@@ -100,7 +101,7 @@ public class WorldGenOre implements IWorldGenerator
             float avgDensity = (spawnData.densityHorizontal + spawnData.densityVertical) / 2f;
             for (int i = 0; i < veinAmount; i++)
             {
-                final BlockPos pos = start.add((1f-spawnData.densityHorizontal) * (rng.nextInt(diameter) - diameter/2), (1f-spawnData.densityVertical) * (rng.nextInt(height) - height/2), (1f-spawnData.densityHorizontal) * (rng.nextInt(diameter) - diameter/2));
+                final BlockPos pos = start.add((1f - spawnData.densityHorizontal) * (rng.nextInt(diameter) - diameter / 2), (1f - spawnData.densityVertical) * (rng.nextInt(height) - height / 2), (1f - spawnData.densityHorizontal) * (rng.nextInt(diameter) - diameter / 2));
 //                final BlockPos pos = start.add(calculateDensity(rng, diameter, spawnData.densityHorizontal), calculateDensity(rng, height, spawnData.densityVertical), calculateDensity(rng, diameter, spawnData.densityHorizontal));
                 // todo: use density
                 switch (spawnData.type)
@@ -170,7 +171,7 @@ public class WorldGenOre implements IWorldGenerator
                         if (currentBlock.type != Rock.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
 
                         world.setBlockState(pos, BlockOreTFC.get(ore, currentBlock.rock, grade), 2);
-                        blocksSpawned ++;
+                        blocksSpawned++;
                     }
                 }
             }
@@ -283,7 +284,7 @@ public class WorldGenOre implements IWorldGenerator
 
                         world.setBlockState(pos, BlockOreTFC.get(ore, currentBlock.rock, grade), 2);
 
-                        blocksSpawned ++;
+                        blocksSpawned++;
                     }
                 }
 
@@ -302,7 +303,7 @@ public class WorldGenOre implements IWorldGenerator
 
                 world.setBlockState(pos, BlockOreTFC.get(ore, currentBlock.rock, grade), 2);
 
-                blocksSpawned ++;
+                blocksSpawned++;
             }
 
             start = start.add(rng.nextInt(3) - 1, rng.nextInt(3) - 1, rng.nextInt(3) - 1);

@@ -1,6 +1,5 @@
 package net.dries007.tfc.objects.blocks;
 
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -16,6 +15,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.util.OreDictionaryHelper;
+
 public class BlockThatch extends Block
 {
     public BlockThatch(Material material)
@@ -29,16 +30,23 @@ public class BlockThatch extends Block
 
     @SuppressWarnings("deprecation")
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    public boolean isFullCube(IBlockState state)
     {
-        return NULL_AABB;
+        return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
+        return true;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isFullCube(IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
-        return false;
+        return NULL_AABB;
     }
 
     @SideOnly(Side.CLIENT)
@@ -53,12 +61,5 @@ public class BlockThatch extends Block
         entityIn.fall((entityIn.fallDistance - 10), 1.0F); // TODO: 17/4/18 balance fall damage reduction.
         entityIn.fallDistance = 0;
         entityIn.setInWeb();
-    }
-
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings("deprecation")
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-    {
-        return true;
     }
 }

@@ -1,20 +1,21 @@
 package net.dries007.tfc.util;
 
+import java.util.function.Predicate;
+
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import com.google.common.base.Joiner;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
-import net.dries007.tfc.objects.Rock;
+import org.apache.commons.lang3.ArrayUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.function.Predicate;
+import net.dries007.tfc.objects.Rock;
 
 import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
 
@@ -27,10 +28,9 @@ import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
 public class OreDictionaryHelper
 {
     private static final Multimap<Thing, String> MAP = HashMultimap.create();
-    private static boolean done = false;
-
     private static final Converter<String, String> UPPER_UNDERSCORE_TO_LOWER_CAMEL = CaseFormat.UPPER_UNDERSCORE.converterTo(CaseFormat.LOWER_CAMEL);
     private static final Joiner JOINER_UNDERSCORE = Joiner.on('_').skipNulls();
+    private static boolean done = false;
 
     public static String toString(Object... parts)
     {
@@ -62,12 +62,6 @@ public class OreDictionaryHelper
         register(new Thing(thing, meta), parts);
     }
 
-    private static void register(Thing thing, Object... parts)
-    {
-        if (done) throw new IllegalStateException("Cannot use the helper to register after init has past.");
-        MAP.put(thing, toString(parts));
-    }
-
     public static void registerRockType(Block thing, Rock.Type type, Rock rock, Object... prefixParts)
     {
         registerRockType(new Thing(thing), type, rock, prefixParts);
@@ -76,6 +70,36 @@ public class OreDictionaryHelper
     public static void registerRockType(Item thing, Rock.Type type, Rock rock, Object... prefixParts)
     {
         registerRockType(new Thing(thing), type, rock, prefixParts);
+    }
+
+    public static void init()
+    {
+        done = true;
+        MAP.forEach((t, s) -> OreDictionary.registerOre(s, t.toItemStack()));
+        MAP.clear(); // No need to keep this stuff around
+    }
+
+    public static Predicate<ItemStack> createPredicateStack(String... names)
+    {
+        return input -> {
+            if (input.isEmpty()) return false;
+            int[] ids = OreDictionary.getOreIDs(input);
+            for (String name : names)
+                if (ArrayUtils.contains(ids, OreDictionary.getOreID(name)))
+                    return true;
+            return false;
+        };
+    }
+
+    public static Predicate<EntityItem> createPredicateItemEntity(String... names)
+    {
+        return input -> input.isEntityAlive() && createPredicateStack(names).test(input.getItem());
+    }
+
+    private static void register(Thing thing, Object... parts)
+    {
+        if (done) throw new IllegalStateException("Cannot use the helper to register after init has past.");
+        MAP.put(thing, toString(parts));
     }
 
     private static void registerRockType(Thing thing, Rock.Type type, Rock rock, Object... prefixParts)
@@ -128,30 +152,6 @@ public class OreDictionaryHelper
                 MAP.put(thing, toString(prefixParts, type, rock));
                 MAP.put(thing, toString(prefixParts, type, rock.category));
         }
-    }
-
-    public static void init()
-    {
-        done = true;
-        MAP.forEach((t, s) -> OreDictionary.registerOre(s, t.toItemStack()));
-        MAP.clear(); // No need to keep this stuff around
-    }
-
-    public static Predicate<ItemStack> createPredicateStack(String... names)
-    {
-        return input -> {
-            if (input.isEmpty()) return false;
-            int[] ids = OreDictionary.getOreIDs(input);
-            for (String name : names)
-                if (ArrayUtils.contains(ids, OreDictionary.getOreID(name)))
-                    return true;
-            return false;
-        };
-    }
-
-    public static Predicate<EntityItem> createPredicateItemEntity(String... names)
-    {
-        return input -> input.isEntityAlive() && createPredicateStack(names).test(input.getItem());
     }
 
     private static class Thing

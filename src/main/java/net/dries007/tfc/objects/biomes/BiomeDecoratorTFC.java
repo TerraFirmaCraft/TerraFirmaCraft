@@ -1,15 +1,16 @@
 package net.dries007.tfc.objects.biomes;
 
-import net.dries007.tfc.world.classic.ClimateTFC;
-import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
-import net.dries007.tfc.world.classic.worldgen.*;
+import java.util.Random;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 
-import java.util.Random;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
+import net.dries007.tfc.world.classic.worldgen.*;
 
 public class BiomeDecoratorTFC extends BiomeDecorator
 {
@@ -79,7 +80,8 @@ public class BiomeDecoratorTFC extends BiomeDecorator
 
             float temperature = ClimateTFC.getBioTemperatureHeight(world, p2);
             float rainfall = ChunkDataTFC.getRainfall(world, p2);
-            if (temperature > 20 && rainfall < 125) cactusGen.generate(world, rng, p2);  //todo: make less likely as water moves out of range?
+            if (temperature > 20 && rainfall < 125)
+                cactusGen.generate(world, rng, p2);  //todo: make less likely as water moves out of range?
         }
 
         for (int i = 0; i < waterPlantsPerChunk; i++)

@@ -1,11 +1,7 @@
 package net.dries007.tfc.world.classic.worldgen;
 
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.world.classic.ChunkGenTFC;
-import net.dries007.tfc.world.classic.ClimateTFC;
-import net.dries007.tfc.world.classic.WorldTypeTFC;
-import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
+import java.util.Random;
+
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -16,7 +12,12 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import java.util.Random;
+import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.world.classic.ChunkGenTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.WorldTypeTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class WorldGenSoilPits implements IWorldGenerator
 {
@@ -63,8 +64,7 @@ public class WorldGenSoilPits implements IWorldGenerator
                     {
                         world.setBlockState(pos, ChunkDataTFC.getRockHeight(world, pos).getVariant(Rock.Type.CLAY).getDefaultState(), 2);
                         flag = true;
-                    }
-                    else if (BlocksTFC.isGrass(current))
+                    } else if (BlocksTFC.isGrass(current))
                     {
                         world.setBlockState(pos, ChunkDataTFC.getRockHeight(world, pos).getVariant(Rock.Type.CLAY_GRASS).getDefaultState(), 2);
                         flag = true;
@@ -104,8 +104,7 @@ public class WorldGenSoilPits implements IWorldGenerator
                     {
                         world.setBlockState(pos, BlocksTFC.PEAT_GRASS.getDefaultState(), 2);
                         flag = true;
-                    }
-                    else if (BlocksTFC.isDirt(current) || BlocksTFC.isClay(current))
+                    } else if (BlocksTFC.isDirt(current) || BlocksTFC.isClay(current))
                     {
                         world.setBlockState(pos, BlocksTFC.PEAT.getDefaultState(), 2);
                         flag = true;

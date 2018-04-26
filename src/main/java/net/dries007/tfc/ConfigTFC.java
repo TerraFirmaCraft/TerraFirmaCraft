@@ -1,12 +1,13 @@
 package net.dries007.tfc;
 
-import net.dries007.tfc.world.classic.CalenderTFC;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import net.dries007.tfc.world.classic.CalenderTFC;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
@@ -25,6 +26,25 @@ public class ConfigTFC
     @Config.Comment("Client side settings")
     @Config.LangKey("config." + MOD_ID + ".client")
     public static final ClientCFG CLIENT = new ClientCFG();
+
+    @SubscribeEvent
+    public static void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
+    {
+        if (event.getModID().equals(MOD_ID))
+        {
+            TerraFirmaCraft.getLog().warn("Config changed");
+
+            if (GENERAL.yearLength % 12 != 0)
+            {
+                TerraFirmaCraft.getLog().warn("Year lengths must be a multiple of 12! Changed from {} to {}!", GENERAL.yearLength, 12 * (GENERAL.yearLength / 12));
+                GENERAL.yearLength = 12 * (GENERAL.yearLength / 12);
+            }
+
+            CalenderTFC.reload();
+
+            ConfigManager.sync(MOD_ID, Config.Type.INSTANCE);
+        }
+    }
 
     public static class GeneralCFG
     {
@@ -60,24 +80,5 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".client.makeWorldTypeClassicDefault")
         @Config.RequiresMcRestart
         public boolean makeWorldTypeClassicDefault = true;
-    }
-
-    @SubscribeEvent
-    public static void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
-    {
-        if (event.getModID().equals(MOD_ID))
-        {
-            TerraFirmaCraft.getLog().warn("Config changed");
-
-            if (GENERAL.yearLength % 12 != 0)
-            {
-                TerraFirmaCraft.getLog().warn("Year lengths must be a multiple of 12! Changed from {} to {}!", GENERAL.yearLength, 12 * (GENERAL.yearLength / 12));
-                GENERAL.yearLength = 12 * (GENERAL.yearLength / 12);
-            }
-
-            CalenderTFC.reload();
-
-            ConfigManager.sync(MOD_ID, Config.Type.INSTANCE);
-        }
     }
 }

@@ -1,7 +1,8 @@
 package net.dries007.tfc.objects.blocks.wood;
 
-import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
+import java.util.EnumMap;
+import java.util.Random;
+
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -15,8 +16,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-import java.util.EnumMap;
-import java.util.Random;
+import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 
 public class BlockDoorTFC extends BlockDoor
 {

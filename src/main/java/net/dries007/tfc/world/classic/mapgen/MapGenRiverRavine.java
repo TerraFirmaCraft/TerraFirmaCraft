@@ -1,12 +1,13 @@
 package net.dries007.tfc.world.classic.mapgen;
 
-import net.dries007.tfc.objects.blocks.BlocksTFC;
+import java.util.Random;
+
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.MapGenBase;
 
-import java.util.Random;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 
 import static net.dries007.tfc.world.classic.ChunkGenTFC.*;
 
@@ -38,7 +39,7 @@ public class MapGenRiverRavine extends MapGenBase
         double x = chunkX * 16 + rand.nextInt(16);
         double y = 80;
         double z = chunkZ * 16 + rand.nextInt(16);
-        float angleY = rand.nextFloat() * (float)Math.PI * 2.0F;
+        float angleY = rand.nextFloat() * (float) Math.PI * 2.0F;
         float angleZ = (rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
         float angleX = (rand.nextFloat() * 2.0F + rand.nextFloat()) * 2.0F;
 
@@ -65,9 +66,10 @@ public class MapGenRiverRavine extends MapGenBase
             }
         }
 
-outer:  for (int round = 0; round < rounds; round++)
+        outer:
+        for (int round = 0; round < rounds; round++)
         {
-            double min = 3.5D + MathHelper.sin(round * (float)Math.PI / rounds) * angleX * 1.0F;
+            double min = 3.5D + MathHelper.sin(round * (float) Math.PI / rounds) * angleX * 1.0F;
             double max = min * 0.8;
             min *= rand.nextFloat() * 0.25D + 0.75D;
             max *= rand.nextFloat() * 0.25D + 0.75D;
@@ -113,11 +115,11 @@ outer:  for (int round = 0; round < rounds; round++)
             if (zMin < 0) zMin = 0;
             if (zMax > 16) zMax = 16;
 
-            for (int x = Math.max(xMin-1, 0); x < Math.min(xMax+1, 16); ++x)
+            for (int x = Math.max(xMin - 1, 0); x < Math.min(xMax + 1, 16); ++x)
             {
-                for (int z = Math.max(zMin-1, 0); z < Math.min(zMax+1, 16); ++z)
+                for (int z = Math.max(zMin - 1, 0); z < Math.min(zMax + 1, 16); ++z)
                 {
-                    for (int y = Math.min(yMax+1, 250); y >= Math.max(yMin-2, 1); --y)
+                    for (int y = Math.min(yMax + 1, 250); y >= Math.max(yMin - 2, 1); --y)
                     {
                         if (BlocksTFC.isWater(primer.getBlockState(x, y, z)))
                             continue outer;
@@ -136,10 +138,13 @@ outer:  for (int round = 0; round < rounds; round++)
                     for (int y = yMax - 1; y >= yMin; y--)
                     {
                         final double yNormalized = (y + 0.5D - startY) / max;
-                        if ((xNormalized * xNormalized + zNormalized * zNormalized) * multipliers[y] + yNormalized * yNormalized / 6.0D >= 1.0D) continue;
-                        if (!BlocksTFC.isRawStone(primer.getBlockState(x, y, z)) && !BlocksTFC.isSoil(primer.getBlockState(x, y, z))) continue;
+                        if ((xNormalized * xNormalized + zNormalized * zNormalized) * multipliers[y] + yNormalized * yNormalized / 6.0D >= 1.0D)
+                            continue;
+                        if (!BlocksTFC.isRawStone(primer.getBlockState(x, y, z)) && !BlocksTFC.isSoil(primer.getBlockState(x, y, z)))
+                            continue;
 
-                        if (y < 20/* todo make option, was 10*/) primer.setBlockState(x, y, z, LAVA); // todo: check stability?
+                        if (y < 20/* todo make option, was 10*/)
+                            primer.setBlockState(x, y, z, LAVA); // todo: check stability?
                         else if (y < waterHeight) primer.setBlockState(x, y, z, FRESH_WATER);
                         else primer.setBlockState(x, y, z, AIR);
                     }

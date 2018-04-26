@@ -1,6 +1,8 @@
 package net.dries007.tfc.objects.blocks;
 
-import net.dries007.tfc.objects.items.ItemFireStarter;
+import java.util.Random;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -22,8 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.Random;
+import net.dries007.tfc.objects.items.ItemFireStarter;
 
 /**
  * todo: Needs more work in general
@@ -43,12 +44,6 @@ public class BlockFirePit extends Block implements ITileEntityProvider
     }
 
     @Override
-    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
@@ -56,82 +51,9 @@ public class BlockFirePit extends Block implements ITileEntityProvider
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(LIT) ? 1 : 0;
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, LIT);
-    }
-
-    @Override
-    public int tickRate(World worldIn)
-    {
-        return 30;
-    }
-
-    @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
-        if (worldIn.isRainingAt(pos)) //todo
-            worldIn.setBlockState(pos, state.withProperty(LIT, false), 2);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-        if (!canBePlacedOn(worldIn, pos.add(0, -1, 0)))
-            worldIn.setBlockToAir(pos);
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
-    {
-        return null; //todo
-    }
-
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-    {
-        return super.canPlaceBlockAt(worldIn, pos) && canBePlacedOn(worldIn, pos.add(0, -1, 0));
-    }
-
-    private boolean canBePlacedOn(World worldIn, BlockPos pos)
-    {
-        return worldIn.getBlockState(pos).isSideSolid(worldIn, pos, EnumFacing.UP);
-    }
-
-    @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return Items.AIR;
-    }
-
-    @Override
-    public boolean isBurning(IBlockAccess world, BlockPos pos)
-    {
-        return world.getBlockState(pos).getValue(LIT);
-    }
-
-    // todo: override the fire stuff, see BlockPitKiln
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
     }
 
     @Override
@@ -155,6 +77,20 @@ public class BlockFirePit extends Block implements ITileEntityProvider
         return BlockFaceShape.UNDEFINED;
     }
 
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        if (worldIn.isRainingAt(pos)) //todo
+            worldIn.setBlockState(pos, state.withProperty(LIT, false), 2);
+    }
+
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rng)
     {
@@ -162,7 +98,7 @@ public class BlockFirePit extends Block implements ITileEntityProvider
 
         if (rng.nextInt(24) == 0)
         {
-            world.playSound((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0F + rng.nextFloat(), rng.nextFloat() * 0.7F + 0.3F, false);
+            world.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0F + rng.nextFloat(), rng.nextFloat() * 0.7F + 0.3F, false);
         }
         double x = pos.getX() + 0.5;
         double y = pos.getY() + 0.1;
@@ -173,6 +109,41 @@ public class BlockFirePit extends Block implements ITileEntityProvider
         if (rng.nextFloat() > 0.75)
             world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x + rng.nextFloat() - 0.5, y, z + rng.nextFloat() - 0.5, 0.0D, 0.1D, 0.0D);
     }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        if (!canBePlacedOn(worldIn, pos.add(0, -1, 0)))
+            worldIn.setBlockToAir(pos);
+    }
+
+    @Override
+    public int tickRate(World worldIn)
+    {
+        return 30;
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Items.AIR;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        return super.canPlaceBlockAt(worldIn, pos) && canBePlacedOn(worldIn, pos.add(0, -1, 0));
+    }
+
+    // todo: override the fire stuff, see BlockPitKiln
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
@@ -186,5 +157,35 @@ public class BlockFirePit extends Block implements ITileEntityProvider
 
         //todo: gui
         return true;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, LIT);
+    }
+
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
+    }
+
+    @Override
+    public boolean isBurning(IBlockAccess world, BlockPos pos)
+    {
+        return world.getBlockState(pos).getValue(LIT);
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta)
+    {
+        return null; //todo
+    }
+
+    private boolean canBePlacedOn(World worldIn, BlockPos pos)
+    {
+        return worldIn.getBlockState(pos).isSideSolid(worldIn, pos, EnumFacing.UP);
     }
 }

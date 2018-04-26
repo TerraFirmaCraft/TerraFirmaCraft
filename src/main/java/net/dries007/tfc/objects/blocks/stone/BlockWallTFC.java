@@ -1,13 +1,14 @@
 package net.dries007.tfc.objects.blocks.stone;
 
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.util.InsertOnlyEnumTable;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+
+import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.util.InsertOnlyEnumTable;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 //todo: actually by-pass the variant? or would it be worth adding a mossy texture for nice looking walls
 public class BlockWallTFC extends BlockWall

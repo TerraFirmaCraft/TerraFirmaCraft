@@ -1,6 +1,5 @@
 package net.dries007.tfc.world.classic.chunkdata;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.chunk.Chunk;
@@ -9,6 +8,8 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import net.dries007.tfc.TerraFirmaCraft;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 

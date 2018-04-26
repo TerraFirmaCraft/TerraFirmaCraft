@@ -1,11 +1,12 @@
 package net.dries007.tfc.objects.recipes;
 
-import net.dries007.tfc.objects.Metal;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
+
+import net.dries007.tfc.objects.Metal;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 

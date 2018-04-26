@@ -1,9 +1,10 @@
 package net.dries007.tfc.world.classic;
 
-import net.dries007.tfc.ConfigTFC;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+
+import net.dries007.tfc.ConfigTFC;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 

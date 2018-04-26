@@ -1,22 +1,23 @@
 package net.dries007.tfc.world.classic.genlayers;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+
+import net.minecraft.world.gen.layer.GenLayer;
+
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.world.classic.genlayers.biome.*;
 import net.dries007.tfc.world.classic.genlayers.river.GenLayerRiverInitTFC;
 import net.dries007.tfc.world.classic.genlayers.river.GenLayerRiverMixTFC;
 import net.dries007.tfc.world.classic.genlayers.river.GenLayerRiverTFC;
-import net.minecraft.world.gen.layer.GenLayer;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
 public abstract class GenLayerTFC extends GenLayer
 {
     // Distinct colors for debug map gen
-    private static Color[] COLORS = new Color[]{
+    private static Color[] COLORS = new Color[] {
             new Color(0xFFB300),    // Vivid Yellow
             new Color(0x803E75),    // Strong Purple
             new Color(0xFF6800),    // Vivid Orange
@@ -38,11 +39,6 @@ public abstract class GenLayerTFC extends GenLayer
             new Color(0xF13A13),    // Vivid Reddish Orange
             new Color(0x232C16),    // Dark Olive Green
     };
-
-    public GenLayerTFC(long seed)
-    {
-        super(seed);
-    }
 
     public static GenLayerTFC[] initialize2(long seed)
     {
@@ -97,7 +93,7 @@ public abstract class GenLayerTFC extends GenLayer
 //        drawImage(512, finalCont, "Biome 21");
         riverMix.initWorldGenSeed(seed);
         finalCont.initWorldGenSeed(seed);
-        return new GenLayerTFC[]{riverMix, finalCont};
+        return new GenLayerTFC[] {riverMix, finalCont};
     }
 
     public static GenLayerTFC genContinent(long seed)
@@ -149,11 +145,15 @@ public abstract class GenLayerTFC extends GenLayer
             }
             TerraFirmaCraft.getLog().info(name + ".bmp");
             ImageIO.write(outBitmap, "BMP", outFile);
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             TerraFirmaCraft.getLog().catching(e);
         }
+    }
+
+    public GenLayerTFC(long seed)
+    {
+        super(seed);
     }
 
 }

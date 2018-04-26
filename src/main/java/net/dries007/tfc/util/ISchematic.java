@@ -1,79 +1,80 @@
 package net.dries007.tfc.util;
 
 
+import java.util.ArrayList;
+
 import net.minecraft.nbt.NBTTagList;
 
-import java.util.ArrayList;
 /**
  * todo: change to proper vanilla schematics
  */
 public interface ISchematic
 {
-	boolean Load();
+    boolean Load();
 
-	void PostProcess();
-	/**
-	 * @return Schematic "Height"
-	 */
-	int getSizeY();
+    void PostProcess();
 
-	void setSizeY(int y);
+    /**
+     * @return Schematic "Height"
+     */
+    int getSizeY();
 
-	/**
-	 * @return Schematic "Width"
-	 */
-	int getSizeX();
+    void setSizeY(int y);
 
-	void setSizeX(int x);
+    /**
+     * @return Schematic "Width"
+     */
+    int getSizeX();
 
-	/**
-	 * @return Schematic "Length"
-	 */
-	int getSizeZ();
+    void setSizeX(int x);
 
-	void setSizeZ(int z);
+    /**
+     * @return Schematic "Length"
+     */
+    int getSizeZ();
 
-	/**
-	 * @return Schematic "TileEntities"
-	 */
-	NBTTagList getTileEntities();
+    void setSizeZ(int z);
 
-	void setTileEntities(NBTTagList te);
+    /**
+     * @return Schematic "TileEntities"
+     */
+    NBTTagList getTileEntities();
 
-	/**
-	 * @return Schematic "Entities"
-	 */
-	NBTTagList getEntities();
+    void setTileEntities(NBTTagList te);
 
-	void setEntities(NBTTagList e);
+    /**
+     * @return Schematic "Entities"
+     */
+    NBTTagList getEntities();
 
-	/**
-	 * Gets the file path.
-	 */
-	String getPath();
+    void setEntities(NBTTagList e);
 
-	String getFileName();
+    /**
+     * Gets the file path.
+     */
+    String getPath();
 
-	/**
-	 * Sets the file path for future reference.
-	 * @param path The path to the schematic file
-	 */
-	void setPath(String path);
+    /**
+     * Sets the file path for future reference.
+     *
+     * @param path The path to the schematic file
+     */
+    void setPath(String path);
 
-	/**
-	 * 
-	 * @return Center of the schematic X Coordinate
-	 */
-	int getCenterX();
+    String getFileName();
 
-	/**
-	 * 
-	 * @return Center of the schematic Z Coordinate
-	 */
-	int getCenterZ();
+    /**
+     * @return Center of the schematic X Coordinate
+     */
+    int getCenterX();
 
-	/**
-	 * @return Returns an Arraylist containing every block in this schematic for iteration
-	 */
-	ArrayList<Schematic.SchematicBlock> getBlockMap();
+    /**
+     * @return Center of the schematic Z Coordinate
+     */
+    int getCenterZ();
+
+    /**
+     * @return Returns an Arraylist containing every block in this schematic for iteration
+     */
+    ArrayList<Schematic.SchematicBlock> getBlockMap();
 }

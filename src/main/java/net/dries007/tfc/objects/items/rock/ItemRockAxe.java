@@ -1,7 +1,9 @@
 package net.dries007.tfc.objects.items.rock;
 
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.util.OreDictionaryHelper;
+import java.util.EnumMap;
+import java.util.List;
+import javax.annotation.Nullable;
+
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
@@ -9,9 +11,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.EnumMap;
-import java.util.List;
+import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class ItemRockAxe extends ItemAxe
 {

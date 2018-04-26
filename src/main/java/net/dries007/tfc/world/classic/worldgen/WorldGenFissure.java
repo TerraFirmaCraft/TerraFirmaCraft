@@ -1,12 +1,9 @@
 package net.dries007.tfc.world.classic.worldgen;
 
+import java.util.List;
+import java.util.Random;
+
 import com.google.common.collect.ImmutableList;
-import net.dries007.tfc.objects.biomes.BiomesTFC;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.util.CollapseData;
-import net.dries007.tfc.util.CollapseList;
-import net.dries007.tfc.world.classic.ChunkGenTFC;
-import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -16,8 +13,12 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import java.util.List;
-import java.util.Random;
+import net.dries007.tfc.objects.biomes.BiomesTFC;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.util.CollapseData;
+import net.dries007.tfc.util.CollapseList;
+import net.dries007.tfc.world.classic.ChunkGenTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.util.CollapseData.Direction.*;
 
@@ -99,10 +100,10 @@ public class WorldGenFissure implements IWorldGenerator
                 if (rng.nextInt(3) == 0) carve(world, pos.add(-1 + rng.nextInt(3), d, -1 + rng.nextInt(3)), rock);
             }
             if (localFillBlock == ChunkGenTFC.LAVA)
-                world.setBlockState(pos.add(0, -poolDepth-1, 0), rock, 2);
+                world.setBlockState(pos.add(0, -poolDepth - 1, 0), rock, 2);
         }
 
-        if (list.size() > 10) makeTunnel(rng, world, start.add(0, -poolDepth-1, 0), rock, localFillBlock);
+        if (list.size() > 10) makeTunnel(rng, world, start.add(0, -poolDepth - 1, 0), rock, localFillBlock);
     }
 
     private List<BlockPos> getCollapseMap(World world, BlockPos pos, IBlockState fillBlock, int poolDepth)
@@ -123,7 +124,8 @@ public class WorldGenFissure implements IWorldGenerator
         {
             CollapseData data = collapseList.pop();
 
-            if (!world.isBlockLoaded(data.pos)) continue; // todo: non-successful attempt at stopping cascading world gen
+            if (!world.isBlockLoaded(data.pos))
+                continue; // todo: non-successful attempt at stopping cascading world gen
 
             IBlockState block = world.getBlockState(data.pos);
 
@@ -174,8 +176,7 @@ public class WorldGenFissure implements IWorldGenerator
                         collapseList.add(new CollapseData(WEST.offset(pos), data.chance - WEST.decrement, WEST));
                         break;
                 }
-            }
-            else if (data.chance < 1)
+            } else if (data.chance < 1)
             {
                 for (int i = 0; i <= poolDepth; i++)
                 {
@@ -230,16 +231,23 @@ public class WorldGenFissure implements IWorldGenerator
             if (random.nextFloat() < downChance / 100f)
             {
                 pos = pos.add(0, -1, 0);
-            }
-            else
+            } else
             {
                 int dir = random.nextInt(3);
-                switch(dir)
+                switch (dir)
                 {
-                    case 0: pos = pos.add(-1, 0, 0); break;
-                    case 1: pos = pos.add(1, 0, 0); break;
-                    case 2: pos = pos.add(0, 0, -1); break;
-                    case 3: pos = pos.add(0, 0, 1); break;
+                    case 0:
+                        pos = pos.add(-1, 0, 0);
+                        break;
+                    case 1:
+                        pos = pos.add(1, 0, 0);
+                        break;
+                    case 2:
+                        pos = pos.add(0, 0, -1);
+                        break;
+                    case 3:
+                        pos = pos.add(0, 0, 1);
+                        break;
                 }
             }
 

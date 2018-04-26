@@ -1,14 +1,15 @@
 package net.dries007.tfc.objects.blocks.wood;
 
-import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.objects.te.TEChestTFC;
+import java.util.EnumMap;
+
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.SoundType;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import java.util.EnumMap;
+import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.objects.te.TEChestTFC;
 
 public class BlockChestTFC extends BlockChest
 {
@@ -19,6 +20,7 @@ public class BlockChestTFC extends BlockChest
     {
         return MAP_BASIC.get(wood);
     }
+
     public static BlockChestTFC getTrap(Wood wood)
     {
         return MAP_TRAP.get(wood);
@@ -34,8 +36,12 @@ public class BlockChestTFC extends BlockChest
         setSoundType(SoundType.WOOD);
         switch (type)
         {
-            case BASIC: if (MAP_BASIC.put(wood, this) != null) throw new IllegalStateException("There can only be one."); break;
-            case TRAP: if (MAP_TRAP.put(wood, this) != null) throw new IllegalStateException("There can only be one."); break;
+            case BASIC:
+                if (MAP_BASIC.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+                break;
+            case TRAP:
+                if (MAP_TRAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+                break;
             default:
                 throw new IllegalStateException();
         }

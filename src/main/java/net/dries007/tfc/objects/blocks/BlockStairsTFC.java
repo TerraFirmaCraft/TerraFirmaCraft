@@ -1,15 +1,17 @@
 package net.dries007.tfc.objects.blocks;
 
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.objects.blocks.wood.BlockPlanksTFC;
-import net.dries007.tfc.util.InsertOnlyEnumTable;
-import net.dries007.tfc.util.OreDictionaryHelper;
+import java.util.EnumMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.init.Blocks;
 
-import java.util.EnumMap;
+import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.wood.BlockPlanksTFC;
+import net.dries007.tfc.util.InsertOnlyEnumTable;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockStairsTFC extends BlockStairs
 {

@@ -8,11 +8,6 @@ public abstract class GenEVTLayer extends GenLayerTFC
     public static final int LOW = DataLayer.EVT_0_25.layerID;
     public static final int HIGH = DataLayer.EVT_8.layerID;
 
-    public GenEVTLayer(long par1)
-    {
-        super(par1);
-    }
-
     public static GenLayerTFC initialize(long seed)
     {
         GenLayerTFC continent = genContinent(0);
@@ -63,5 +58,10 @@ public abstract class GenEVTLayer extends GenLayerTFC
         continent = new GenLayerAddEVT(4L, continent);
 //        drawImage(512, continent, "EVT Init 8 Add EVT");
         return continent;
+    }
+
+    public GenEVTLayer(long par1)
+    {
+        super(par1);
     }
 }

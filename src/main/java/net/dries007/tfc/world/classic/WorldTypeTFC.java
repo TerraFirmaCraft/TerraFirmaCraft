@@ -1,6 +1,5 @@
 package net.dries007.tfc.world.classic;
 
-import net.dries007.tfc.client.gui.GuiCustomizeWorld;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiCreateWorld;
 import net.minecraft.server.MinecraftServer;
@@ -11,6 +10,8 @@ import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import net.dries007.tfc.client.gui.GuiCustomizeWorld;
 
 /**
  * todo: spawn stuff, see worldevent.createspawn & worldProvider
@@ -39,19 +40,6 @@ public class WorldTypeTFC extends WorldType
     }
 
     @Override
-    public boolean isCustomizable()
-    {
-        return true;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void onCustomizeButton(Minecraft mc, GuiCreateWorld guiCreateWorld)
-    {
-        mc.displayGuiScreen(new GuiCustomizeWorld(guiCreateWorld, guiCreateWorld.chunkProviderSettingsJson));
-    }
-
-    @Override
     public int getMinimumSpawnHeight(World world)
     {
         return SEALEVEL; //todo
@@ -68,6 +56,19 @@ public class WorldTypeTFC extends WorldType
     {
         if (world.getGameRules().hasRule("spawnRadius")) return world.getGameRules().getInt("spawnRadius");
         return ((ChunkGenTFC) world.getChunkProvider().chunkGenerator).s.spawnFuzz;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void onCustomizeButton(Minecraft mc, GuiCreateWorld guiCreateWorld)
+    {
+        mc.displayGuiScreen(new GuiCustomizeWorld(guiCreateWorld, guiCreateWorld.chunkProviderSettingsJson));
+    }
+
+    @Override
+    public boolean isCustomizable()
+    {
+        return true;
     }
 
     @Override

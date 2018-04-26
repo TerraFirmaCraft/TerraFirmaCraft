@@ -1,10 +1,11 @@
 package net.dries007.tfc.world.classic.genlayers.river;
 
-import net.dries007.tfc.objects.biomes.BiomesTFC;
-import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
+
+import net.dries007.tfc.objects.biomes.BiomesTFC;
+import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerRiverTFC extends GenLayerTFC
 {
@@ -37,8 +38,7 @@ public class GenLayerRiverTFC extends GenLayerTFC
                 if (k3 == k2 && k3 == i3 && k3 == l2 && k3 == j3)
                 {
                     aint1[j2 + i2 * par3] = 0;
-                }
-                else
+                } else
                 {
                     aint1[j2 + i2 * par3] = Biome.getIdForBiome(BiomesTFC.RIVER);
                 }

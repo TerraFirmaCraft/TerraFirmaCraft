@@ -1,6 +1,5 @@
 package net.dries007.tfc.cmd;
 
-import net.dries007.tfc.objects.blocks.BlockRockVariant;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockStaticLiquid;
@@ -15,6 +14,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
+
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 
 public class StripWorldCommand extends CommandBase
 {
@@ -48,7 +49,7 @@ public class StripWorldCommand extends CommandBase
         {
             for (int z = -radius; z < radius; z++)
             {
-                for (int y = 255-center.getY(); y > -center.getY(); y--)
+                for (int y = 255 - center.getY(); y > -center.getY(); y--)
                 {
                     final BlockPos pos = center.add(x, y, z);
                     final Block current = world.getBlockState(pos).getBlock();

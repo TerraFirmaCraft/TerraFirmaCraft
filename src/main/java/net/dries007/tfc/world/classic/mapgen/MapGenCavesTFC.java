@@ -1,14 +1,15 @@
 package net.dries007.tfc.world.classic.mapgen;
 
-import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.world.classic.DataLayer;
+import java.util.Random;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.MapGenBase;
 
-import java.util.Random;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.world.classic.DataLayer;
 
 import static net.dries007.tfc.world.classic.ChunkGenTFC.AIR;
 import static net.dries007.tfc.world.classic.ChunkGenTFC.LAVA;
@@ -47,23 +48,19 @@ public class MapGenCavesTFC extends MapGenBase
         {
             width += 0.5;
             caveChance -= 5;
-        }
-        else if (rain > 2000)
+        } else if (rain > 2000)
         {
             width += 1;
             caveChance -= 10;
-        }
-        else if (rain < 1000)
+        } else if (rain < 1000)
         {
             width -= 0.5;
             caveChance += 5;
-        }
-        else if (rain < 500)
+        } else if (rain < 500)
         {
             width -= 1;
             caveChance += 10;
-        }
-        else if (rain < 250)
+        } else if (rain < 250)
         {
             width -= 1.25;
             caveChance += 15;
@@ -145,7 +142,8 @@ public class MapGenCavesTFC extends MapGenBase
 
         final int rndRange2 = rng.nextInt(rndRange / 2) + rndRange / 4;
         boolean smallRnd = rng.nextInt(6) == 0;
-outer:  for (; i1 < rndRange; ++i1)
+        outer:
+        for (; i1 < rndRange; ++i1)
         {
             float var33 = MathHelper.cos(f3);
             float var34 = MathHelper.sin(f3);
@@ -163,8 +161,8 @@ outer:  for (; i1 < rndRange; ++i1)
 
             if (!onlyOne && i1 == rndRange2 && f1 > 1.0F && rndRange > 0)
             {
-                this.generateCaveNode(rng.nextLong(), chunkX, chunkZ, primer, xOffset, yOffset, zOffset, rng.nextFloat() * 0.5F + 0.5F, f2 - ((float)Math.PI / 2F), f3 / 3.0F, i1, 1.0D, width);
-                this.generateCaveNode(rng.nextLong(), chunkX, chunkZ, primer, xOffset, yOffset, zOffset, rng.nextFloat() * 0.5F + 0.5F, f2 + ((float)Math.PI / 2F), f3 / 3.0F, i1, 1.0D, width);
+                this.generateCaveNode(rng.nextLong(), chunkX, chunkZ, primer, xOffset, yOffset, zOffset, rng.nextFloat() * 0.5F + 0.5F, f2 - ((float) Math.PI / 2F), f3 / 3.0F, i1, 1.0D, width);
+                this.generateCaveNode(rng.nextLong(), chunkX, chunkZ, primer, xOffset, yOffset, zOffset, rng.nextFloat() * 0.5F + 0.5F, f2 + ((float) Math.PI / 2F), f3 / 3.0F, i1, 1.0D, width);
                 return;
             }
 
@@ -199,11 +197,11 @@ outer:  for (; i1 < rndRange; ++i1)
                 if (initialZ < 0) initialZ = 0;
                 if (maxZ > 16) maxZ = 16;
 
-                for (int xCoord = Math.max(initialX-1, 0); xCoord < Math.min(maxX+1, 16); ++xCoord)
+                for (int xCoord = Math.max(initialX - 1, 0); xCoord < Math.min(maxX + 1, 16); ++xCoord)
                 {
-                    for (int zCoord = Math.max(initialZ-1, 0); zCoord < Math.min(maxZ+1, 16); ++zCoord)
+                    for (int zCoord = Math.max(initialZ - 1, 0); zCoord < Math.min(maxZ + 1, 16); ++zCoord)
                     {
-                        for (int yCoord = Math.min(initialY+1, 250); yCoord > Math.max(minY-1, 0); --yCoord)
+                        for (int yCoord = Math.min(initialY + 1, 250); yCoord > Math.max(minY - 1, 0); --yCoord)
                         {
                             if (BlocksTFC.isWater(primer.getBlockState(xCoord, yCoord, zCoord)))
                                 continue outer;
@@ -236,15 +234,14 @@ outer:  for (; i1 < rndRange; ++i1)
 
                             if (BlocksTFC.isGrass(current)) grass = primer.getBlockState(xCoord, y, zCoord);
 
-                            for(int upCount = 1; BlocksTFC.isSoilOrGravel(primer.getBlockState(xCoord, y + upCount, zCoord)); upCount++)
+                            for (int upCount = 1; BlocksTFC.isSoilOrGravel(primer.getBlockState(xCoord, y + upCount, zCoord)); upCount++)
                                 primer.setBlockState(xCoord, y + upCount, zCoord, AIR);
 
 
                             if (y < 20 /* todo make option? was 10*/ && stabilityLayer[(worldZ & 15) << 4 | (worldX & 15)].valueInt == 1)
                             {
                                 primer.setBlockState(xCoord, y, zCoord, LAVA);
-                            }
-                            else
+                            } else
                             {
                                 primer.setBlockState(xCoord, y, zCoord, AIR);
                                 if (grass != null && BlocksTFC.isDirt(primer.getBlockState(xCoord, y - 1, zCoord)))

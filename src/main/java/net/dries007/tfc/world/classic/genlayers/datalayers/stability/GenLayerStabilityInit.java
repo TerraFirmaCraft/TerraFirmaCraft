@@ -1,8 +1,9 @@
 package net.dries007.tfc.world.classic.genlayers.datalayers.stability;
 
+import net.minecraft.world.gen.layer.IntCache;
+
 import net.dries007.tfc.world.classic.DataLayer;
 import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
-import net.minecraft.world.gen.layer.IntCache;
 
 public class GenLayerStabilityInit extends GenLayerTFC
 {

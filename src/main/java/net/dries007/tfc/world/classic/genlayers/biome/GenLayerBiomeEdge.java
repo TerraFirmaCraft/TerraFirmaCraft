@@ -1,10 +1,11 @@
 package net.dries007.tfc.world.classic.genlayers.biome;
 
-import net.dries007.tfc.objects.biomes.BiomesTFC;
-import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
+
+import net.dries007.tfc.objects.biomes.BiomesTFC;
+import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerBiomeEdge extends GenLayerTFC
 {
@@ -43,29 +44,25 @@ public class GenLayerBiomeEdge extends GenLayerTFC
                         outCache[x + z * xSize] = thisID;
                     else
                         outCache[x + z * xSize] = Biome.getIdForBiome(BiomesTFC.HIGH_HILLS_EDGE);
-                }
-                else if (thisID == Biome.getIdForBiome(BiomesTFC.MOUNTAINS))
+                } else if (thisID == Biome.getIdForBiome(BiomesTFC.MOUNTAINS))
                 {
                     if (var10 == Biome.getIdForBiome(BiomesTFC.MOUNTAINS) && var11 == Biome.getIdForBiome(BiomesTFC.MOUNTAINS) && var12 == Biome.getIdForBiome(BiomesTFC.MOUNTAINS) && var13 == Biome.getIdForBiome(BiomesTFC.MOUNTAINS))
                         outCache[x + z * xSize] = thisID;
                     else
                         outCache[x + z * xSize] = Biome.getIdForBiome(BiomesTFC.MOUNTAINS_EDGE);
-                }
-                else if (thisID == Biome.getIdForBiome(BiomesTFC.SWAMPLAND))
+                } else if (thisID == Biome.getIdForBiome(BiomesTFC.SWAMPLAND))
                 {
                     if (var10 == Biome.getIdForBiome(BiomesTFC.SWAMPLAND) && var11 == Biome.getIdForBiome(BiomesTFC.SWAMPLAND) && var12 == Biome.getIdForBiome(BiomesTFC.SWAMPLAND) && var13 == Biome.getIdForBiome(BiomesTFC.SWAMPLAND))
                         outCache[x + z * xSize] = thisID;
                     else
                         outCache[x + z * xSize] = Biome.getIdForBiome(BiomesTFC.PLAINS);
-                }
-                else if (thisID == Biome.getIdForBiome(BiomesTFC.HIGH_PLAINS))
+                } else if (thisID == Biome.getIdForBiome(BiomesTFC.HIGH_PLAINS))
                 {
                     if (var10 == Biome.getIdForBiome(BiomesTFC.HIGH_PLAINS) && var11 == Biome.getIdForBiome(BiomesTFC.HIGH_PLAINS) && var12 == Biome.getIdForBiome(BiomesTFC.HIGH_PLAINS) && var13 == Biome.getIdForBiome(BiomesTFC.HIGH_PLAINS))
                         outCache[x + z * xSize] = thisID;
                     else
                         outCache[x + z * xSize] = Biome.getIdForBiome(BiomesTFC.PLAINS);
-                }
-                else
+                } else
                 {
                     outCache[x + z * xSize] = thisID;
                 }

@@ -38,8 +38,7 @@ public class GenLayerSmoothTFC extends GenLayerTFC
                         var17 = var13;
                     else
                         var17 = var15;
-                }
-                else
+                } else
                 {
                     if (var13 == var14)
                         var17 = var13;

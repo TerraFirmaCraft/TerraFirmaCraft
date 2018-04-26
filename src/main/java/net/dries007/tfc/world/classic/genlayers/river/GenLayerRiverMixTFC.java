@@ -1,10 +1,11 @@
 package net.dries007.tfc.world.classic.genlayers.river;
 
-import net.dries007.tfc.objects.biomes.BiomesTFC;
-import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
+
+import net.dries007.tfc.objects.biomes.BiomesTFC;
+import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerRiverMixTFC extends GenLayerTFC
 {
@@ -25,7 +26,48 @@ public class GenLayerRiverMixTFC extends GenLayerTFC
         this.riverPatternGeneratorChain = par4GenLayer;
     }
 
+    public void removeRiver(int index, int biomeToReplaceWith)
+    {
+        if (layerOut[index] == Biome.getIdForBiome(BiomesTFC.RIVER))
+        {
+            if (xn >= 0 && layerBiomes[xn] == biomeToReplaceWith)
+            {
+                layerOut[index] = biomeToReplaceWith;
+            }
+            if (zn >= 0 && layerBiomes[zn] == biomeToReplaceWith)
+            {
+                layerOut[index] = biomeToReplaceWith;
+            }
+            if (xp < layerBiomes.length && layerBiomes[xp] == biomeToReplaceWith)
+            {
+                layerOut[index] = biomeToReplaceWith;
+            }
+            if (zp < layerBiomes.length && layerBiomes[zp] == biomeToReplaceWith)
+            {
+                layerOut[index] = biomeToReplaceWith;
+            }
+        }
+    }
+
+    public boolean inBounds(int index, int[] array)
+    {
+        return index < array.length && index >= 0;
+    }
+
+    /**
+     * Initialize layer's local worldGenSeed based on its own baseSeed and the world's global seed (passed in as an
+     * argument).
+     */
     @Override
+    public void initWorldGenSeed(long par1)
+    {
+        this.biomePatternGeneratorChain.initWorldGenSeed(par1);
+        this.riverPatternGeneratorChain.initWorldGenSeed(par1);
+        super.initWorldGenSeed(par1);
+    }
+
+    @Override
+    @SuppressWarnings("ConstantConditions")
     public int[] getInts(int x, int z, int xSize, int zSize)
     {
         layerBiomes = this.biomePatternGeneratorChain.getInts(x, z, xSize, zSize);
@@ -80,8 +122,7 @@ public class GenLayerRiverMixTFC extends GenLayerTFC
                             layerOut[index] = b;
                         }
                     }
-                }
-                else
+                } else
                     layerOut[index] = b;
 
                 //Similar to above, if we're near a lake, we turn the river into lake.
@@ -90,45 +131,5 @@ public class GenLayerRiverMixTFC extends GenLayerTFC
             }
         }
         return layerOut.clone();
-    }
-
-    public void removeRiver(int index, int biomeToReplaceWith)
-    {
-        if (layerOut[index] == Biome.getIdForBiome(BiomesTFC.RIVER))
-        {
-            if (xn >= 0 && layerBiomes[xn] == biomeToReplaceWith)
-            {
-                layerOut[index] = biomeToReplaceWith;
-            }
-            if (zn >= 0 && layerBiomes[zn] == biomeToReplaceWith)
-            {
-                layerOut[index] = biomeToReplaceWith;
-            }
-            if (xp < layerBiomes.length && layerBiomes[xp] == biomeToReplaceWith)
-            {
-                layerOut[index] = biomeToReplaceWith;
-            }
-            if (zp < layerBiomes.length && layerBiomes[zp] == biomeToReplaceWith)
-            {
-                layerOut[index] = biomeToReplaceWith;
-            }
-        }
-    }
-
-    public boolean inBounds(int index, int[] array)
-    {
-        return index < array.length && index >= 0;
-    }
-
-    /**
-     * Initialize layer's local worldGenSeed based on its own baseSeed and the world's global seed (passed in as an
-     * argument).
-     */
-    @Override
-    public void initWorldGenSeed(long par1)
-    {
-        this.biomePatternGeneratorChain.initWorldGenSeed(par1);
-        this.riverPatternGeneratorChain.initWorldGenSeed(par1);
-        super.initWorldGenSeed(par1);
     }
 }

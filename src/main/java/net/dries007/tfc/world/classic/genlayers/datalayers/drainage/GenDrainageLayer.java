@@ -11,11 +11,6 @@ public abstract class GenDrainageLayer extends GenLayerTFC
     public static final int MIN = DataLayer.DRAINAGE_NONE.layerID;
     public static final int MAX = DataLayer.DRAINAGE_VERY_GOOD.layerID;
 
-    public GenDrainageLayer(long par1)
-    {
-        super(par1);
-    }
-
     public static GenLayerTFC initialize(long seed)
     {
         GenLayerTFC continent = genContinent(0);
@@ -66,5 +61,10 @@ public abstract class GenDrainageLayer extends GenLayerTFC
         continent = new GenLayerAddDrainage(4L, continent);
 //        drawImage(512, continent, "Drainage Init 8 Add Drainage");
         return continent;
+    }
+
+    public GenDrainageLayer(long par1)
+    {
+        super(par1);
     }
 }

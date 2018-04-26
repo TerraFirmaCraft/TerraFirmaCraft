@@ -1,9 +1,12 @@
 package net.dries007.tfc.world.classic.chunkdata;
 
-import net.dries007.tfc.objects.Ore;
-import net.dries007.tfc.objects.blocks.BlockRockVariant;
-import net.dries007.tfc.util.OreSpawnData;
-import net.dries007.tfc.world.classic.DataLayer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.*;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -11,12 +14,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.util.OreSpawnData;
+import net.dries007.tfc.world.classic.DataLayer;
 
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER2;
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER3;
@@ -27,21 +28,6 @@ public final class ChunkDataTFC
     public static final int FISH_POP_MAX = 60;
 
     private static final ChunkDataTFC EMPTY = new ChunkDataTFC();
-
-    private boolean initialized = false;
-    private final DataLayer[] rockLayer1 = new DataLayer[256];
-    private final DataLayer[] rockLayer2 = new DataLayer[256];
-    private final DataLayer[] rockLayer3 = new DataLayer[256];
-    private final DataLayer[] evtLayer = new DataLayer[256];
-    private final DataLayer[] rainfallLayer = new DataLayer[256];
-    private final DataLayer[] drainageLayer = new DataLayer[256];
-    private final DataLayer[] stabilityLayer = new DataLayer[256];
-    private final int[] seaLevelOffset = new int[256];
-
-    private final List<ChunkDataOreSpawned> oresSpawned = new ArrayList<>();
-    private final List<ChunkDataOreSpawned> oresSpawnedView = Collections.unmodifiableList(oresSpawned);
-
-    private int fishPopulation = FISH_POP_MAX; // todo: Set this based on biome? temp? rng?
 
     static
     {
@@ -62,15 +48,37 @@ public final class ChunkDataTFC
     }
 
     public static BlockRockVariant getRock1(World world, BlockPos pos) { return get(world, pos).getRockLayer1(pos.getX() & 15, pos.getZ() & 15).block; }
+
     public static BlockRockVariant getRock2(World world, BlockPos pos) { return get(world, pos).getRockLayer2(pos.getX() & 15, pos.getZ() & 15).block; }
+
     public static BlockRockVariant getRock3(World world, BlockPos pos) { return get(world, pos).getRockLayer3(pos.getX() & 15, pos.getZ() & 15).block; }
+
     public static float getEvt(World world, BlockPos pos) { return get(world, pos).getEvtLayer(pos.getX() & 15, pos.getZ() & 15).valueFloat; }
+
     public static float getRainfall(World world, BlockPos pos) { return get(world, pos).getRainfallLayer(pos.getX() & 15, pos.getZ() & 15).valueFloat; }
+
     public static boolean isStable(World world, BlockPos pos) { return get(world, pos).getStabilityLayer(pos.getX() & 15, pos.getZ() & 15).valueInt == 0; }
+
     public static int getDrainage(World world, BlockPos pos) { return get(world, pos).getDrainageLayer(pos.getX() & 15, pos.getZ() & 15).valueInt; }
+
     public static int getSeaLevelOffset(World world, BlockPos pos) { return get(world, pos).getSeaLevelOffset(pos.getX() & 15, pos.getZ() & 15); }
+
     public static int getFishPopulation(World world, BlockPos pos) { return get(world, pos).getFishPopulation(); }
+
     public static BlockRockVariant getRockHeight(World world, BlockPos pos) { return get(world, pos).getRockLayerHeight(pos.getX() & 15, pos.getY(), pos.getZ() & 15).block; }
+
+    private final DataLayer[] rockLayer1 = new DataLayer[256];
+    private final DataLayer[] rockLayer2 = new DataLayer[256];
+    private final DataLayer[] rockLayer3 = new DataLayer[256];
+    private final DataLayer[] evtLayer = new DataLayer[256];
+    private final DataLayer[] rainfallLayer = new DataLayer[256];
+    private final DataLayer[] drainageLayer = new DataLayer[256];
+    private final DataLayer[] stabilityLayer = new DataLayer[256];
+    private final int[] seaLevelOffset = new int[256];
+    private final List<ChunkDataOreSpawned> oresSpawned = new ArrayList<>();
+    private final List<ChunkDataOreSpawned> oresSpawnedView = Collections.unmodifiableList(oresSpawned);
+    private boolean initialized = false;
+    private int fishPopulation = FISH_POP_MAX; // todo: Set this based on biome? temp? rng?
 
     /**
      * INTERNAL USE ONLY.
@@ -103,27 +111,41 @@ public final class ChunkDataTFC
     }
 
     public BlockRockVariant getRock1(int x, int z) { return getRockLayer1(x, z).block; }
+
     public BlockRockVariant getRock2(int x, int z) { return getRockLayer2(x, z).block; }
+
     public BlockRockVariant getRock3(int x, int z) { return getRockLayer3(x, z).block; }
+
     public float getEvt(int x, int z) { return getEvtLayer(x, z).valueFloat; }
+
     public float getRainfall(int x, int z) { return getRainfallLayer(x, z).valueFloat; }
+
     public boolean isStable(int x, int z) { return getStabilityLayer(x, z).valueInt == 0; }
+
     public int getDrainage(int x, int z) { return getDrainageLayer(x, z).valueInt; }
+
     public BlockRockVariant getRockHeight(int x, int y, int z) { return getRockLayerHeight(x & 15, y, z & 15).block; }
 
     public int getSeaLevelOffset(int x, int z) { return seaLevelOffset[z << 4 | x]; }
 
     public int getFishPopulation() { return fishPopulation; }
+
     public List<ChunkDataOreSpawned> getOresSpawned() { return oresSpawnedView; }
 
     // Directly accessing the DataLayer is discouraged (except for getting the name). It's easy to use the wrong value.
-    public DataLayer getRockLayer1(int x, int z) {      return rockLayer1   [z << 4 | x]; }
-    public DataLayer getRockLayer2(int x, int z) {      return rockLayer2   [z << 4 | x]; }
-    public DataLayer getRockLayer3(int x, int z) {      return rockLayer3   [z << 4 | x]; }
-    public DataLayer getEvtLayer(int x, int z) {        return evtLayer     [z << 4 | x]; }
-    public DataLayer getRainfallLayer(int x, int z) {   return rainfallLayer[z << 4 | x]; }
+    public DataLayer getRockLayer1(int x, int z) { return rockLayer1[z << 4 | x]; }
+
+    public DataLayer getRockLayer2(int x, int z) { return rockLayer2[z << 4 | x]; }
+
+    public DataLayer getRockLayer3(int x, int z) { return rockLayer3[z << 4 | x]; }
+
+    public DataLayer getEvtLayer(int x, int z) { return evtLayer[z << 4 | x]; }
+
+    public DataLayer getRainfallLayer(int x, int z) { return rainfallLayer[z << 4 | x]; }
+
     public DataLayer getStabilityLayer(int x, int z) { return stabilityLayer[z << 4 | x]; }
-    public DataLayer getDrainageLayer(int x, int z) {   return drainageLayer[z << 4 | x]; }
+
+    public DataLayer getDrainageLayer(int x, int z) { return drainageLayer[z << 4 | x]; }
 
     public DataLayer getRockLayerHeight(int x, int y, int z)
     {
@@ -137,7 +159,7 @@ public final class ChunkDataTFC
     {
         public static NBTTagByteArray write(DataLayer[] layers)
         {
-            return new NBTTagByteArray(Arrays.stream(layers).map(x -> (byte)x.layerID).collect(Collectors.toList()));
+            return new NBTTagByteArray(Arrays.stream(layers).map(x -> (byte) x.layerID).collect(Collectors.toList()));
         }
 
         public static void read(DataLayer[] layers, byte[] bytes)

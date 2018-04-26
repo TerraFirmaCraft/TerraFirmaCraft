@@ -1,15 +1,16 @@
 package net.dries007.tfc.objects.items.metal;
 
-import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.Ore;
-import net.dries007.tfc.util.IMetalObject;
-import net.dries007.tfc.util.OreDictionaryHelper;
+import java.util.EnumMap;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-import java.util.EnumMap;
+import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.util.IMetalObject;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class ItemOreTFC extends Item implements IMetalObject
 {
@@ -47,8 +48,7 @@ public class ItemOreTFC extends Item implements IMetalObject
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", grade);
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore, grade);
             }
-        }
-        else // Mineral
+        } else // Mineral
         {
             OreDictionaryHelper.register(this, "gem", ore);
             switch (ore)
@@ -63,17 +63,6 @@ public class ItemOreTFC extends Item implements IMetalObject
         }
     }
 
-    @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
-    {
-        if (!isInCreativeTab(tab)) return;
-        if (ore.graded)
-            for (Ore.Grade grade : Ore.Grade.values())
-                items.add(new ItemStack(this, 1, grade.getMeta()));
-        else
-            items.add(new ItemStack(this));
-    }
-
     public Ore.Grade getGradeFromStack(ItemStack stack)
     {
         return Ore.Grade.byMetadata(stack.getItemDamage());
@@ -85,6 +74,17 @@ public class ItemOreTFC extends Item implements IMetalObject
         Ore.Grade grade = getGradeFromStack(stack);
         if (grade == Ore.Grade.NORMAL) return super.getUnlocalizedName(stack);
         return super.getUnlocalizedName(stack) + "." + grade.getName();
+    }
+
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    {
+        if (!isInCreativeTab(tab)) return;
+        if (ore.graded)
+            for (Ore.Grade grade : Ore.Grade.values())
+                items.add(new ItemStack(this, 1, grade.getMeta()));
+        else
+            items.add(new ItemStack(this));
     }
 
     @Override

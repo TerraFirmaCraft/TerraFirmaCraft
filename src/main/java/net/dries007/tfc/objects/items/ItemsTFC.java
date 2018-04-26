@@ -1,7 +1,21 @@
 package net.dries007.tfc.objects.items;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSlab;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
+
 import net.dries007.tfc.objects.*;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -15,19 +29,6 @@ import net.dries007.tfc.objects.items.rock.*;
 import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 import net.dries007.tfc.objects.items.wood.ItemLogTFC;
 import net.dries007.tfc.objects.items.wood.ItemLumberTFC;
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemSlab;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.registries.IForgeRegistry;
-
-import java.lang.reflect.InvocationTargetException;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 import static net.dries007.tfc.objects.CreativeTabsTFC.*;
@@ -36,19 +37,20 @@ import static net.dries007.tfc.objects.CreativeTabsTFC.*;
 @GameRegistry.ObjectHolder(MOD_ID)
 public final class ItemsTFC
 {
-    private ItemsTFC() {}
-
     public static final ItemDebug WAND = null;
     public static final ItemFireStarter FIRESTARTER = null;
     public static final ItemGoldPan GOLDPAN = null;
     public static final Item HAY = null;
-
-    @GameRegistry.ObjectHolder("mold/ingo/empty") public static final ItemFiredPottery MOLD_INGOT_EMPTY = null;
-    @GameRegistry.ObjectHolder("ceramics/unfired/vessel") public static final ItemUnfiredPottery CERAMICS_UNFIRED_VERSSEL = null;
-    @GameRegistry.ObjectHolder("ceramics/fired/vessel") public static final ItemSmallVessel CERAMICS_FIRED_VESSEL = null;
-    @GameRegistry.ObjectHolder("ceramics/unfired/vessel_glazed") public static final ItemUnfiredSmallVessel CERAMICS_UNFIRED_VESSEL_GLAZED = null;
-    @GameRegistry.ObjectHolder("ceramics/fired/vessel_glazed") public static final ItemSmallVessel CERAMICS_FIRED_VESSEL_GLAZED = null;
-
+    @GameRegistry.ObjectHolder("mold/ingo/empty")
+    public static final ItemFiredPottery MOLD_INGOT_EMPTY = null;
+    @GameRegistry.ObjectHolder("ceramics/unfired/vessel")
+    public static final ItemUnfiredPottery CERAMICS_UNFIRED_VERSSEL = null;
+    @GameRegistry.ObjectHolder("ceramics/fired/vessel")
+    public static final ItemSmallVessel CERAMICS_FIRED_VESSEL = null;
+    @GameRegistry.ObjectHolder("ceramics/unfired/vessel_glazed")
+    public static final ItemUnfiredSmallVessel CERAMICS_UNFIRED_VESSEL_GLAZED = null;
+    @GameRegistry.ObjectHolder("ceramics/fired/vessel_glazed")
+    public static final ItemSmallVessel CERAMICS_FIRED_VESSEL_GLAZED = null;
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
     private static ImmutableList<ItemGem> allGemItems;
@@ -57,10 +59,12 @@ public final class ItemsTFC
     {
         return allSimpleItems;
     }
+
     public static ImmutableList<ItemOreTFC> getAllOreItems()
     {
         return allOreItems;
     }
+
     public static ImmutableList<ItemGem> getAllGemItems()
     {
         return allGemItems;
@@ -106,7 +110,7 @@ public final class ItemsTFC
             for (Metal metal : Metal.values())
             {
                 if (!metal.hasType(type) || type.clazz == null) continue;
-                simpleItems.add(register(r, ("metal/"+ type + "/" + metal).toLowerCase(), type.clazz.getConstructor(Metal.class, Metal.ItemType.class).newInstance(metal, type), CT_METAL));
+                simpleItems.add(register(r, ("metal/" + type + "/" + metal).toLowerCase(), type.clazz.getConstructor(Metal.class, Metal.ItemType.class).newInstance(metal, type), CT_METAL));
             }
         }
 
@@ -206,6 +210,13 @@ public final class ItemsTFC
         allSimpleItems = simpleItems.build();
     }
 
+    public static void init()
+    {
+        for (Metal metal : Metal.values())
+            if (metal.toolMetal != null)
+                metal.toolMetal.setRepairItem(new ItemStack(ItemMetal.get(metal, Metal.ItemType.SCRAP)));
+    }
+
     private static void registerPottery(Builder<Item> items, IForgeRegistry<Item> r, String nameUnfired, String nameFired, ItemUnfiredPottery unfiredPottery)
     {
         register(r, nameFired, unfiredPottery.firedVersion, CT_POTTERY);
@@ -228,10 +239,5 @@ public final class ItemsTFC
         return item;
     }
 
-    public static void init()
-    {
-        for (Metal metal : Metal.values())
-            if (metal.toolMetal != null)
-                metal.toolMetal.setRepairItem(new ItemStack(ItemMetal.get(metal, Metal.ItemType.SCRAP)));
-    }
+    private ItemsTFC() {}
 }

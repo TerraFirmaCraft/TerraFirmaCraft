@@ -11,11 +11,6 @@ public abstract class GenPHLayer extends GenLayerTFC
     public static final int MIN = DataLayer.PH_ACID_HIGH.layerID;
     public static final int MAX = DataLayer.PH_ALKALINE_HIGH.layerID;
 
-    public GenPHLayer(long par1)
-    {
-        super(par1);
-    }
-
     public static GenLayerTFC initialize(long seed)
     {
         GenLayerTFC continent = genContinent(0);
@@ -66,5 +61,10 @@ public abstract class GenPHLayer extends GenLayerTFC
         continent = new GenLayerAddPH(4L, continent);
 //        drawImage(512, continent, "PH Init 8 Add PH");
         return continent;
+    }
+
+    public GenPHLayer(long par1)
+    {
+        super(par1);
     }
 }

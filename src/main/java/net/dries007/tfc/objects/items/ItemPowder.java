@@ -1,11 +1,12 @@
 package net.dries007.tfc.objects.items;
 
-import net.dries007.tfc.objects.Powder;
-import net.dries007.tfc.util.OreDictionaryHelper;
+import java.util.EnumMap;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import java.util.EnumMap;
+import net.dries007.tfc.objects.Powder;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class ItemPowder extends Item
 {

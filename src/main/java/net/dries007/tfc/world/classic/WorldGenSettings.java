@@ -1,11 +1,18 @@
 package net.dries007.tfc.world.classic;
 
 import com.google.common.base.Strings;
+
 import net.dries007.tfc.Constants;
 
 @SuppressWarnings("WeakerAccess")
 public class WorldGenSettings
 {
+    public static WorldGenSettingsBuilder fromString(String options)
+    {
+        if (Strings.isNullOrEmpty(options)) return new WorldGenSettingsBuilder();
+        return Constants.GSON.fromJson(options, WorldGenSettingsBuilder.class);
+    }
+
     public final int spawnFuzz; //todo: remove, vanilla does it with a gamerule
     public final boolean flatBedrock;
     public final int ravineRarity;
@@ -15,7 +22,6 @@ public class WorldGenSettings
     public final int surfaceRavineHeight;
     public final int surfaceRavineVariability;
     public final int riverRavineRarity;
-
     public final int lavaFissureRarity = 25; //todo
     public final int waterFissureRarity = 90; //todo
     public final int lavaFissureClusterRarity = 400; //todo
@@ -73,12 +79,6 @@ public class WorldGenSettings
         {
             return Constants.GSON.toJson(this);
         }
-    }
-
-    public static WorldGenSettingsBuilder fromString(String options)
-    {
-        if (Strings.isNullOrEmpty(options)) return new WorldGenSettingsBuilder();
-        return Constants.GSON.fromJson(options, WorldGenSettingsBuilder.class);
     }
 
     @Override

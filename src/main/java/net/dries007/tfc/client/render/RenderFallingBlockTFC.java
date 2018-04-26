@@ -1,6 +1,7 @@
 package net.dries007.tfc.client.render;
 
-import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -16,22 +17,18 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
+import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 
+@SideOnly(Side.CLIENT)
 public class RenderFallingBlockTFC extends Render<EntityFallingBlockTFC>
 {
     public RenderFallingBlockTFC(RenderManager manager)
     {
         super(manager);
         this.shadowSize = 0.5F;
-    }
-
-    @Nullable
-    @Override
-    protected ResourceLocation getEntityTexture(EntityFallingBlockTFC entity)
-    {
-        return TextureMap.LOCATION_BLOCKS_TEXTURE;
     }
 
     @Override
@@ -61,7 +58,7 @@ public class RenderFallingBlockTFC extends Render<EntityFallingBlockTFC>
 
         bufferbuilder.begin(7, DefaultVertexFormats.BLOCK);
         BlockPos posTop = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
-        GlStateManager.translate((float)(x - (double)posTop.getX() - 0.5D), (float)(y - (double)posTop.getY()), (float)(z - (double)posTop.getZ() - 0.5D));
+        GlStateManager.translate((float) (x - (double) posTop.getX() - 0.5D), (float) (y - (double) posTop.getY()), (float) (z - (double) posTop.getZ() - 0.5D));
         BlockRendererDispatcher brd = Minecraft.getMinecraft().getBlockRendererDispatcher();
         brd.getBlockModelRenderer().renderModel(world, brd.getModelForState(state), state, posTop, bufferbuilder, false, MathHelper.getPositionRandom(entity.getOrigin()));
         tessellator.draw();
@@ -76,5 +73,12 @@ public class RenderFallingBlockTFC extends Render<EntityFallingBlockTFC>
         GlStateManager.popMatrix();
 
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
+    }
+
+    @Nullable
+    @Override
+    protected ResourceLocation getEntityTexture(EntityFallingBlockTFC entity)
+    {
+        return TextureMap.LOCATION_BLOCKS_TEXTURE;
     }
 }

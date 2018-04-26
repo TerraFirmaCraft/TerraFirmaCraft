@@ -1,7 +1,6 @@
 package net.dries007.tfc.objects.fluids;
 
 import com.google.common.collect.ImmutableSet;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
@@ -10,17 +9,19 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+
 import static net.dries007.tfc.Constants.MOD_ID;
 
+@SuppressWarnings("WeakerAccess")
 public class FluidsTFC
 {
+    public static final Material MATERIAL_ALCOHOL = new MaterialLiquid(MapColor.WATER);
     private static final ResourceLocation STILL = new ResourceLocation(MOD_ID, "blocks/fluid_still");
     private static final ResourceLocation FLOW = new ResourceLocation(MOD_ID, "blocks/fluid_flow");
-
     public static final Fluid SALT_WATER = new Fluid("salt_water", STILL, FLOW, 0xFF1F5099);
     public static final Fluid FRESH_WATER = new Fluid("fresh_water", STILL, FLOW, 0xFF1F32DA);
     public static final Fluid HOT_WATER = new Fluid("hot_water", STILL, FLOW, 0xFF345FDA).setTemperature(350);
-
     // todo set viscosity & density etc
     public static final Fluid RUM = new Fluid("rum", STILL, FLOW, 0xFF6E0123).setRarity(EnumRarity.UNCOMMON);
     public static final Fluid BEER = new Fluid("beer", STILL, FLOW, 0xFFC39E37).setRarity(EnumRarity.UNCOMMON);
@@ -38,25 +39,9 @@ public class FluidsTFC
     public static final Fluid LIMEWATER = new Fluid("limewater", STILL, FLOW, 0xFFB4B4B4);
     public static final Fluid MILK_CURDLED = new Fluid("milk_curdled", STILL, FLOW, 0xFFFFFBE8);
     public static final Fluid MILK_VINEGAR = new Fluid("milk_vinegar", STILL, FLOW, 0xFFFFFBE8);
-
-    public static final Material MATERIAL_ALCOHOL = new MaterialLiquid(MapColor.WATER);
-
     private static final ImmutableSet<Fluid> allInfiniteFluids;
     private static final ImmutableSet<Fluid> allAlcoholsFluids;
     private static final ImmutableSet<Fluid> allOtherFiniteFluids;
-
-    public static ImmutableSet<Fluid> getAllInfiniteFluids()
-    {
-        return allInfiniteFluids;
-    }
-    public static ImmutableSet<Fluid> getAllAlcoholsFluids()
-    {
-        return allAlcoholsFluids;
-    }
-    public static ImmutableSet<Fluid> getAllOtherFiniteFluids()
-    {
-        return allOtherFiniteFluids;
-    }
 
     static
     {
@@ -70,6 +55,21 @@ public class FluidsTFC
             FluidRegistry.addBucketForFluid(f);
         for (Fluid f : allOtherFiniteFluids)
             FluidRegistry.addBucketForFluid(f);
+    }
+
+    public static ImmutableSet<Fluid> getAllInfiniteFluids()
+    {
+        return allInfiniteFluids;
+    }
+
+    public static ImmutableSet<Fluid> getAllAlcoholsFluids()
+    {
+        return allAlcoholsFluids;
+    }
+
+    public static ImmutableSet<Fluid> getAllOtherFiniteFluids()
+    {
+        return allOtherFiniteFluids;
     }
 
     public static void preInit()
@@ -94,6 +94,6 @@ public class FluidsTFC
         LIMEWATER.setBlock(BlocksTFC.FLUID_LIMEWATER);
         MILK_CURDLED.setBlock(BlocksTFC.FLUID_MILK_CURDLED);
         MILK_VINEGAR.setBlock(BlocksTFC.FLUID_MILK_VINEGAR);
-        
+
     }
 }

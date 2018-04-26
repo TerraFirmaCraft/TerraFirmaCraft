@@ -1,5 +1,18 @@
 package net.dries007.tfc;
 
+import org.apache.logging.log4j.Logger;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ModMetadata;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+
 import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.objects.CreativeTabsTFC;
@@ -12,18 +25,6 @@ import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkCapabilityHandler;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataMessage;
 import net.dries007.tfc.world.classic.worldgen.*;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ModMetadata;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import org.apache.logging.log4j.Logger;
 
 import static net.dries007.tfc.Constants.*;
 
@@ -38,14 +39,39 @@ public class TerraFirmaCraft
     @Mod.Metadata()
     private static ModMetadata metadata = null;
 
-    private Logger log;
-    private WorldTypeTFC worldTypeTFC;
-    private SimpleNetworkWrapper network;
-
     static
     {
         FluidRegistry.enableUniversalBucket();
     }
+
+    public static Logger getLog()
+    {
+        return instance.log;
+    }
+
+    public static String getVersion()
+    {
+        return metadata.version;
+    }
+
+    public static WorldTypeTFC getWorldTypeTFC()
+    {
+        return instance.worldTypeTFC;
+    }
+
+    public static SimpleNetworkWrapper getNetwork()
+    {
+        return instance.network;
+    }
+
+    public static TerraFirmaCraft getInstance()
+    {
+        return instance;
+    }
+
+    private Logger log;
+    private WorldTypeTFC worldTypeTFC;
+    private SimpleNetworkWrapper network;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -101,30 +127,5 @@ public class TerraFirmaCraft
     public void onServerStarting(FMLServerStartingEvent event)
     {
         event.registerServerCommand(new StripWorldCommand());
-    }
-
-    public static Logger getLog()
-    {
-        return instance.log;
-    }
-
-    public static String getVersion()
-    {
-        return metadata.version;
-    }
-
-    public static WorldTypeTFC getWorldTypeTFC()
-    {
-        return instance.worldTypeTFC;
-    }
-
-    public static SimpleNetworkWrapper getNetwork()
-    {
-        return instance.network;
-    }
-
-    public static TerraFirmaCraft getInstance()
-    {
-        return instance;
     }
 }

@@ -1,31 +1,66 @@
 package net.dries007.tfc.objects.trees;
 
-import net.dries007.tfc.Constants;
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.objects.trees.TreeSchematicManager.TreeSchematic;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import net.dries007.tfc.Constants;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.objects.trees.TreeSchematicManager.TreeSchematic;
+
 /**
  * todo: change to proper vanilla schematics
  */
-public class TreeRegistry {
+public class TreeRegistry
+{
 
     public static TreeRegistry instance = new TreeRegistry();
+
+    public static void loadTrees()
+    {
+        TreeRegistry treeRegistry = TreeRegistry.instance;
+
+        //log.info("Loading Trees");
+        for (Wood wood : Wood.values())
+        {
+            treeRegistry.addTreeType(wood);
+
+            for (TreeSize treeSize : TreeSize.values())
+            {
+                for (int schematicID = 0; schematicID < 99; schematicID++)
+                {
+                    String schematicPath = Constants.TREEPATH + wood.name() + "/" + treeSize.name() + "_" + String.format("%02d", schematicID) + ".schematic";
+
+                    TreeSchematic treeSchematic = new TreeSchematic(schematicPath, treeSize.name() + "_" + String.format("%02d", schematicID), wood);
+
+                    TerraFirmaCraft.getLog().info("Tree schematic " + wood.name() + " loading");
+
+                    if (treeSchematic.Load())
+                    {
+                        treeSchematic.PostProcess();
+                        TreeRegistry.instance.RegisterSchematic(wood, treeSchematic);
+                    } else
+                    {
+                        TerraFirmaCraft.getLog().info("ERROR loading " + wood.name());
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     private HashMap<Wood, TreeSchematicManager> treeList;
 
     public TreeRegistry()
     {
-        treeList  = new HashMap<Wood, TreeSchematicManager>();
+        treeList = new HashMap<Wood, TreeSchematicManager>();
     }
 
     public void RegisterSchematic(Wood wood, TreeSchematic treeSchematic)
     {
-        if(!treeList.containsKey(wood))
+        if (!treeList.containsKey(wood))
             treeList.put(wood, new TreeSchematicManager());
         treeList.get(wood).addSchematic(treeSchematic);
     }
@@ -45,7 +80,7 @@ public class TreeRegistry {
      */
     public TreeSchematic getRandomTreeSchematic(Random random, String treeID)
     {
-        if(!treeList.containsKey(treeID)) return null;
+        if (!treeList.containsKey(treeID)) return null;
         return treeList.get(treeID).getRandomSchematic(random);
     }
 
@@ -54,7 +89,7 @@ public class TreeRegistry {
      */
     public TreeSchematic getRandomTreeSchematic(Random R, String treeID, int growthStage)
     {
-        if(!treeList.containsKey(treeID)) return null;
+        if (!treeList.containsKey(treeID)) return null;
         return treeList.get(treeID).getRandomSchematic(R, growthStage);
     }
 
@@ -63,7 +98,7 @@ public class TreeRegistry {
      */
     public TreeSchematic getTreeSchematic(String treeID, int schemID, int growthStage)
     {
-        if(!treeList.containsKey(treeID)) return null;
+        if (!treeList.containsKey(treeID)) return null;
         return treeList.get(treeID).getSchematic(schemID, growthStage);
     }
 
@@ -78,7 +113,8 @@ public class TreeRegistry {
      */
     public TreeSchematicManager managerFromString(String name)
     {
-        for (Wood wood : Wood.values()) {
+        for (Wood wood : Wood.values())
+        {
             if (wood.name() == name)
                 if (treeList.containsKey(wood))
                     return treeList.get(wood);
@@ -92,23 +128,13 @@ public class TreeRegistry {
      */
     public Wood treeFromString(String name)
     {
-        for (Wood wood : Wood.values()) {
+        for (Wood wood : Wood.values())
+        {
             if (wood.name() == name)
                 if (treeList.containsKey(wood))
                     return wood;
         }
         return null;
-    }
-
-    /**
-     * Get random Wood object from registry.
-     * @return Wood object
-     */
-    public Wood getRandomTree()
-    {
-        List<Wood> keysAsArray = new ArrayList<Wood>(treeList.keySet());
-        Random random = new Random();
-        return keysAsArray.get(random.nextInt(keysAsArray.size()));
     }
 
     //public String getRandomTreeTypeForIsland(Random r, ClimateTemp temp, Moisture moisture, boolean swamp)
@@ -145,38 +171,16 @@ public class TreeRegistry {
         return list.get(r.nextInt(list.size()));
     }*/
 
-    public static void loadTrees()
+    /**
+     * Get random Wood object from registry.
+     *
+     * @return Wood object
+     */
+    public Wood getRandomTree()
     {
-        TreeRegistry treeRegistry = TreeRegistry.instance;
-
-        //log.info("Loading Trees");
-        for (Wood wood : Wood.values())
-        {
-            treeRegistry.addTreeType(wood);
-
-            for(TreeSize treeSize : TreeSize.values())
-            {
-                for(int schematicID = 0; schematicID < 99; schematicID++)
-                {
-                    String schematicPath = Constants.TREEPATH + wood.name() + "/" + treeSize.name() + "_" + String.format("%02d", schematicID) + ".schematic";
-
-                    TreeSchematic treeSchematic = new TreeSchematic(schematicPath, treeSize.name() + "_" + String.format("%02d", schematicID), wood);
-
-                    TerraFirmaCraft.getLog().info("Tree schematic " + wood.name() + " loading");
-
-                    if(treeSchematic.Load())
-                    {
-                        treeSchematic.PostProcess();
-                        TreeRegistry.instance.RegisterSchematic(wood, treeSchematic);
-                    }
-                    else
-                    {
-                        TerraFirmaCraft.getLog().info("ERROR loading " + wood.name());
-                        break;
-                    }
-                }
-            }
-        }
+        List<Wood> keysAsArray = new ArrayList<Wood>(treeList.keySet());
+        Random random = new Random();
+        return keysAsArray.get(random.nextInt(keysAsArray.size()));
     }
 
     public enum TreeSize

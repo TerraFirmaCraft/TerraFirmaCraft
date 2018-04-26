@@ -1,14 +1,15 @@
 package net.dries007.tfc.world.classic.worldgen;
 
-import net.dries007.tfc.world.classic.ChunkGenTFC;
-import net.dries007.tfc.world.classic.WorldGenSettings;
+import java.util.Random;
+import java.util.function.ToIntFunction;
+
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import java.util.Random;
-import java.util.function.ToIntFunction;
+import net.dries007.tfc.world.classic.ChunkGenTFC;
+import net.dries007.tfc.world.classic.WorldGenSettings;
 
 public final class RarityBasedWorldGen implements IWorldGenerator
 {
@@ -27,7 +28,8 @@ public final class RarityBasedWorldGen implements IWorldGenerator
         if (chunkGenerator instanceof ChunkGenTFC)
         {
             int rarity = getRarityFunction.applyAsInt(((ChunkGenTFC) chunkGenerator).s);
-            if (rarity != 0 && random.nextInt(rarity) == 0) worldGenerator.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+            if (rarity != 0 && random.nextInt(rarity) == 0)
+                worldGenerator.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
         }
     }
 }

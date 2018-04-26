@@ -1,7 +1,7 @@
 package net.dries007.tfc.objects.blocks.wood;
 
-import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.util.OreDictionaryHelper;
+import java.util.EnumMap;
+
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -14,16 +14,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.EnumMap;
+import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockLogTFC extends BlockLog
 {
-    private static final EnumMap<Wood, BlockLogTFC> MAP = new EnumMap<>(Wood.class);
     public static final PropertyBool PLACED = PropertyBool.create("placed");
     public static final PropertyBool SMALL = PropertyBool.create("small");
     public static final AxisAlignedBB SMALL_AABB_Y = new AxisAlignedBB(0.25, 0, 0.25, 0.75, 1, 0.75);
     public static final AxisAlignedBB SMALL_AABB_X = new AxisAlignedBB(0, 0.25, 0.25, 1, 0.75, 0.75);
     public static final AxisAlignedBB SMALL_AABB_Z = new AxisAlignedBB(0.25, 0.25, 0, 0.75, 0.75, 1);
+    private static final EnumMap<Wood, BlockLogTFC> MAP = new EnumMap<>(Wood.class);
 
     public static BlockLogTFC get(Wood wood)
     {
@@ -45,14 +46,24 @@ public class BlockLogTFC extends BlockLog
 
     @SuppressWarnings("deprecation")
     @Override
+    public boolean isFullCube(IBlockState state)
+    {
+        return !state.getValue(SMALL);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         if (!state.getValue(SMALL)) return FULL_BLOCK_AABB;
         switch (state.getValue(LOG_AXIS))
         {
-            case X: return SMALL_AABB_X;
-            case Y: return SMALL_AABB_Y;
-            case Z: return SMALL_AABB_Z;
+            case X:
+                return SMALL_AABB_X;
+            case Y:
+                return SMALL_AABB_Y;
+            case Z:
+                return SMALL_AABB_Z;
         }
         return FULL_BLOCK_AABB;
     }
@@ -64,19 +75,6 @@ public class BlockLogTFC extends BlockLog
         return !state.getValue(SMALL);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isFullCube(IBlockState state)
-    {
-        return !state.getValue(SMALL);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, LOG_AXIS, PLACED, SMALL);
-    }
-
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
@@ -86,7 +84,13 @@ public class BlockLogTFC extends BlockLog
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(LOG_AXIS).ordinal() | (state.getValue(PLACED) ? 0b100 : 0)  | (state.getValue(SMALL) ? 0b1000 : 0);
+        return state.getValue(LOG_AXIS).ordinal() | (state.getValue(PLACED) ? 0b100 : 0) | (state.getValue(SMALL) ? 0b1000 : 0);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, LOG_AXIS, PLACED, SMALL);
     }
 
     @Override

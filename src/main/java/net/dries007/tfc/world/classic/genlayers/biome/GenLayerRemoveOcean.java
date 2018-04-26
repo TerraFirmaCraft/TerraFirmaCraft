@@ -1,7 +1,8 @@
 package net.dries007.tfc.world.classic.genlayers.biome;
 
-import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 import net.minecraft.world.gen.layer.IntCache;
+
+import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerRemoveOcean extends GenLayerTFC
 {
@@ -41,8 +42,7 @@ public class GenLayerRemoveOcean extends GenLayerTFC
                 if (checkType && biome == 0 && k2 == 0 && l2 == 0 && i3 == 0 && j3 == 0 && this.nextInt(chance) == 0)
                 {
                     out[j2 + i2 * par3] = 1;
-                }
-                else if (!checkType && biome == 0 && k2 != 0 && l2 != 0 && i3 != 0 && j3 != 0)
+                } else if (!checkType && biome == 0 && k2 != 0 && l2 != 0 && i3 != 0 && j3 != 0)
                 {
                     out[j2 + i2 * par3] = 1;
                 }

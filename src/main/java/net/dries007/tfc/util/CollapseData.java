@@ -37,14 +37,22 @@ public class CollapseData
         {
             switch (this)
             {
-                case NORTH: return pos.add(0, 0, -1);
-                case SOUTH: return pos.add(0, 0, 1);
-                case EAST:  return pos.add(+1, 0, 0);
-                case WEST:  return pos.add(-1, 0, 0);
-                case NORTHEAST: return pos.add(1, 0, 1);
-                case SOUTHEAST: return pos.add(1, 0, -1);
-                case NORTHWEST: return pos.add(-1, 0, +1);
-                case SOUTHWEST: return pos.add(-1, 0, -1);
+                case NORTH:
+                    return pos.add(0, 0, -1);
+                case SOUTH:
+                    return pos.add(0, 0, 1);
+                case EAST:
+                    return pos.add(+1, 0, 0);
+                case WEST:
+                    return pos.add(-1, 0, 0);
+                case NORTHEAST:
+                    return pos.add(1, 0, 1);
+                case SOUTHEAST:
+                    return pos.add(1, 0, -1);
+                case NORTHWEST:
+                    return pos.add(-1, 0, +1);
+                case SOUTHWEST:
+                    return pos.add(-1, 0, -1);
             }
             return pos;
         }

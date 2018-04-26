@@ -1,8 +1,9 @@
 package net.dries007.tfc.world.classic.genlayers.biome;
 
-import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
+
+import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerAddIslandTFC extends GenLayerTFC
 {
@@ -54,15 +55,13 @@ public class GenLayerAddIslandTFC extends GenLayerTFC
                         var10[var12 + var11 * w] = var19;
                     else
                         var10[var12 + var11 * w] = 0;
-                }
-                else if (var17 > 0 && (var13 == 0 || var14 == 0 || var15 == 0 || var16 == 0))
+                } else if (var17 > 0 && (var13 == 0 || var14 == 0 || var15 == 0 || var16 == 0))
                 {
                     if (this.nextInt(5) == 0)
                         var10[var12 + var11 * w] = 0;
                     else
                         var10[var12 + var11 * w] = var17;
-                }
-                else
+                } else
                 {
                     var10[var12 + var11 * w] = var17;
                 }

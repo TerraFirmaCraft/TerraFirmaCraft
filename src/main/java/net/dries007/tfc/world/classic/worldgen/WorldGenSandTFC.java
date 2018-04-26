@@ -1,14 +1,15 @@
 package net.dries007.tfc.world.classic.worldgen;
 
-import net.dries007.tfc.objects.blocks.BlockRockVariant;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
+import java.util.Random;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-import java.util.Random;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.objects.Rock.Type.SAND;
 

@@ -1,8 +1,9 @@
 package net.dries007.tfc.world.classic.genlayers.datalayers.rock;
 
-import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
+
+import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerAddRock extends GenLayerTFC
 {

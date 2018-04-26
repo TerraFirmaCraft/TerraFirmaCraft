@@ -5,7 +5,7 @@ public enum Wood
     ASH(12600, 5970, false, true),//Black Ash
     ASPEN(9230, 5220, false, true),//Black Poplar
     BIRCH(12300, 5690, false, true),//Paper Birch
-    CHESTNUT(8600, 5320,false, true),//Sweet Chestnut
+    CHESTNUT(8600, 5320, false, true),//Sweet Chestnut
     DOUGLAS_FIR(12500, 6950, true, false),//Douglas Fir
     HICKORY(17100, 9040, false, false),//Bitternut Hickory
     MAPLE(13400, 6540, false, false),//Red Maple

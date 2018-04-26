@@ -1,9 +1,9 @@
 package net.dries007.tfc.util;
 
-import net.minecraft.util.math.BlockPos;
-
 import java.util.HashSet;
 import java.util.LinkedList;
+
+import net.minecraft.util.math.BlockPos;
 
 public class CollapseList
 {

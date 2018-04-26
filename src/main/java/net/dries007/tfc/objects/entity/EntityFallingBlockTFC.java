@@ -1,7 +1,6 @@
 package net.dries007.tfc.objects.entity;
 
 import com.google.common.base.Optional;
-import net.dries007.tfc.util.IFallingBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.crash.CrashReportCategory;
@@ -19,6 +18,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import net.dries007.tfc.util.IFallingBlock;
 
 /**
  * todo: add entity damage
@@ -43,7 +44,7 @@ public class EntityFallingBlockTFC extends Entity
         this(world);
         this.falling = falling;
         setSize(0.98F, 0.98F);
-        setPosition(start.getX() + 0.5f, start.getY() + (double)((1.0F - height) / 2.0F), start.getZ() + 0.5f);
+        setPosition(start.getX() + 0.5f, start.getY() + (double) ((1.0F - height) / 2.0F), start.getZ() + 0.5f);
         motionX = 0.0D;
         motionY = 0.0D;
         motionZ = 0.0D;
@@ -52,6 +53,23 @@ public class EntityFallingBlockTFC extends Entity
         prevPosZ = posY;
         dataManager.set(ORIGIN, start);
         dataManager.set(BLOCK, Optional.of(state));
+    }
+
+    public IBlockState getState()
+    {
+        return dataManager.get(BLOCK).orNull();
+    }
+
+    public BlockPos getOrigin()
+    {
+        return dataManager.get(ORIGIN);
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        dataManager.register(ORIGIN, BlockPos.ORIGIN);
+        dataManager.register(BLOCK, Optional.absent());
     }
 
     public void onUpdate()
@@ -72,8 +90,7 @@ public class EntityFallingBlockTFC extends Entity
             if (world.getBlockState(pos) == state)
             {
                 world.setBlockToAir(pos);
-            }
-            else if (!world.isRemote)
+            } else if (!world.isRemote)
             {
                 setDead();
                 return;
@@ -105,8 +122,7 @@ public class EntityFallingBlockTFC extends Entity
                 }
                 setDead();
             }
-        }
-        else // On ground
+        } else // On ground
         {
             final IBlockState current = world.getBlockState(pos);
 
@@ -145,8 +161,7 @@ public class EntityFallingBlockTFC extends Entity
                         te.markDirty();
                     }
                 }
-            }
-            else if (world.getGameRules().getBoolean("doEntityDrops"))
+            } else if (world.getGameRules().getBoolean("doEntityDrops"))
             {
                 falling.getDropsFromFall(world, pos, state, teData, fallTime, fallDistance).forEach(x -> entityDropItem(x, 0));
             }
@@ -154,9 +169,22 @@ public class EntityFallingBlockTFC extends Entity
     }
 
     @Override
+    protected boolean canTriggerWalking()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canBeCollidedWith()
+    {
+        return !isDead;
+    }
+
+    @Override
     protected void readEntityFromNBT(NBTTagCompound compound)
     {
-        if (compound.hasKey("State")) dataManager.set(BLOCK, Optional.of(NBTUtil.readBlockState(compound.getCompoundTag("State"))));
+        if (compound.hasKey("State"))
+            dataManager.set(BLOCK, Optional.of(NBTUtil.readBlockState(compound.getCompoundTag("State"))));
         fallTime = compound.getInteger("FallTime");
         if (compound.hasKey("TileEntityData")) teData = compound.getCompoundTag("TileEntityData");
     }
@@ -171,6 +199,12 @@ public class EntityFallingBlockTFC extends Entity
     }
 
     @Override
+    public boolean canBeAttackedWithItem()
+    {
+        return false;
+    }
+
+    @Override
     public void addEntityCrashInfo(CrashReportCategory category)
     {
         super.addEntityCrashInfo(category);
@@ -181,21 +215,9 @@ public class EntityFallingBlockTFC extends Entity
         category.addCrashSection("TileEntityData", teData);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected void entityInit()
-    {
-        dataManager.register(ORIGIN, BlockPos.ORIGIN);
-        dataManager.register(BLOCK, Optional.absent());
-    }
-
-    @Override
-    protected boolean canTriggerWalking()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean canBeAttackedWithItem()
+    public boolean canRenderOnFire()
     {
         return false;
     }
@@ -204,28 +226,5 @@ public class EntityFallingBlockTFC extends Entity
     public boolean ignoreItemEntityData()
     {
         return true;
-    }
-
-    @Override
-    public boolean canBeCollidedWith()
-    {
-        return !isDead;
-    }
-
-    public IBlockState getState()
-    {
-        return dataManager.get(BLOCK).orNull();
-    }
-
-    public BlockPos getOrigin()
-    {
-        return dataManager.get(ORIGIN);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public boolean canRenderOnFire()
-    {
-        return false;
     }
 }

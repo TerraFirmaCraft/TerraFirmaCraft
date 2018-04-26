@@ -1,8 +1,7 @@
 package net.dries007.tfc.client.render;
 
-import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
-import net.dries007.tfc.objects.te.TEChestTFC;
+import java.util.EnumMap;
+
 import net.minecraft.block.BlockChest;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
@@ -12,7 +11,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.EnumMap;
+import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
+import net.dries007.tfc.objects.te.TEChestTFC;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
@@ -23,6 +24,7 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
     private static final EnumMap<Wood, ResourceLocation> DOUBLE_TEXTURES = new EnumMap<>(Wood.class);
     private static final EnumMap<Wood, ResourceLocation> TRAP_SINGLE_TEXTURES = new EnumMap<>(Wood.class);
     private static final EnumMap<Wood, ResourceLocation> TRAP_DOUBLE_TEXTURES = new EnumMap<>(Wood.class);
+
     static
     {
         for (Wood wood : Wood.values())
@@ -74,17 +76,14 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
                 GlStateManager.scale(4.0F, 4.0F, 1.0F);
                 GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                 GlStateManager.matrixMode(5888);
-            }
-            else if (te.getChestType() == BlockChest.Type.TRAP)
+            } else if (te.getChestType() == BlockChest.Type.TRAP)
             {
                 bindTexture(TRAP_SINGLE_TEXTURES.get(te.getWood()));
-            }
-            else
+            } else
             {
                 bindTexture(SINGLE_TEXTURES.get(te.getWood()));
             }
-        }
-        else
+        } else
         {
             modelchest = largeChest;
 
@@ -96,12 +95,10 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
                 GlStateManager.scale(8.0F, 4.0F, 1.0F);
                 GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                 GlStateManager.matrixMode(5888);
-            }
-            else if (te.getChestType() == BlockChest.Type.TRAP)
+            } else if (te.getChestType() == BlockChest.Type.TRAP)
             {
                 bindTexture(TRAP_DOUBLE_TEXTURES.get(te.getWood()));
-            }
-            else
+            } else
             {
                 bindTexture(DOUBLE_TEXTURES.get(te.getWood()));
             }
@@ -112,7 +109,7 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
 
         if (destroyStage < 0) GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
 
-        GlStateManager.translate((float)x, (float)y + 1.0F, (float)z + 1.0F);
+        GlStateManager.translate((float) x, (float) y + 1.0F, (float) z + 1.0F);
         GlStateManager.scale(1.0F, -1.0F, -1.0F);
         GlStateManager.translate(0.5F, 0.5F, 0.5F);
         int rotation = 0;
@@ -135,7 +132,7 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
                 break;
         }
 
-        GlStateManager.rotate((float)rotation, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate((float) rotation, 0.0F, 1.0F, 0.0F);
         GlStateManager.translate(-0.5F, -0.5F, -0.5F);
         float lidAngle = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
 
@@ -153,7 +150,7 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
 
         lidAngle = 1.0F - lidAngle;
         lidAngle = 1.0F - lidAngle * lidAngle * lidAngle;
-        modelchest.chestLid.rotateAngleX = -(lidAngle * ((float)Math.PI / 2F));
+        modelchest.chestLid.rotateAngleX = -(lidAngle * ((float) Math.PI / 2F));
         modelchest.renderAll();
         GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();

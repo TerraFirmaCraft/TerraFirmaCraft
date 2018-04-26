@@ -1,7 +1,8 @@
 package net.dries007.tfc.objects;
 
-import net.dries007.tfc.objects.items.metal.*;
 import net.minecraft.item.Item;
+
+import net.dries007.tfc.objects.items.metal.*;
 
 import static net.dries007.tfc.objects.Metal.Tier.*;
 
@@ -145,13 +146,14 @@ public enum Metal
         UNFINISHED_GREAVES(true, 400),
         GREAVES(true, 600, ItemMetalArmor.class),
         UNFINISHED_BOOTS(true, 200),
-        BOOTS(true, 200, ItemMetalArmor.class),
-        ;
+        BOOTS(true, 200, ItemMetalArmor.class),;
 
         public final boolean toolItem;
         public final int smeltAmount;
         public final boolean hasMold;
-        /** Internal use. */
+        /**
+         * Internal use.
+         */
         public final Class<? extends ItemMetal> clazz;
 
         ItemType(boolean toolItem, int smeltAmount, Class<? extends ItemMetal> clazz, boolean hasMold)
