@@ -1,19 +1,18 @@
-package net.dries007.tfc.objects.items.pottery;
+package net.dries007.tfc.objects.items.ceramics;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-public class ItemUnfiredSmallVessel extends ItemUnfiredPottery
+public class ItemSmallVessel extends ItemFiredPottery
 {
     public final boolean glazed;
 
-    public ItemUnfiredSmallVessel(ItemSmallVessel firedVersion)
+    public ItemSmallVessel(boolean glazed)
     {
-        super(firedVersion);
-        glazed = firedVersion.glazed;
-        setHasSubtypes(true);
+        this.glazed = glazed;
+        setHasSubtypes(glazed);
     }
 
     @Override
