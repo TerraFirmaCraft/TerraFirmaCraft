@@ -16,9 +16,22 @@ The goal of this project is to be **the** TerraFirmaCraft for 1.12.2, not a mire
 ### Required
 
 + Import & use the project's Code Style.
++ Add the proper copyright header to new files. (See below.)
 + Before you submit a PR:
     + Run the `generateResources.py` script.
     + Reformat & Rearrange your code. (IntelliJ can do this for you.)
+
+#### Copyright header
+This header should be applied to all java source files.
+Other files will be assessed on a case by case basis.
+```java
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+```
+Hint: Setup IntelliJ to do this automatically with a copyright profile applied 
+to a shared scope matching pattern `net.dries007.tfc..*`.
 
 ### Optional
 
