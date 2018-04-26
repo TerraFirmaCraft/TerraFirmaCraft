@@ -1,6 +1,7 @@
-package net.dries007.tfc.objects.blocks;
+package net.dries007.tfc.objects.blocks.stone;
 
 import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
