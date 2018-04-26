@@ -6,8 +6,8 @@
     "version": "${version}",
     "mcversion": "${mcversion}",
     "logoFile": "/assets/tfc/textures/gui/logo.png",
-    "url": "https://ftc.dries007.net",
-    "updateJson": "https://mc.dries007.net/tfc.json",
+    "url": "https://tfc.dries007.net",
+    "updateJson": "https://mc.dries007.net/terrafirmacraft.json",
     "authorList": [
       "Dries007"
     ],

@@ -1,3 +1,7 @@
+import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
 buildscript {
     repositories {
         jcenter()
@@ -14,8 +18,21 @@ buildscript {
 apply plugin: "net.minecraftforge.gradle.forge"
 
 version = "0.1.0"
+if (System.getenv().BUILD_NUMBER != null) version += "." + System.getenv().BUILD_NUMBER
 group = "net.dries007.tfc"
 archivesBaseName = "TerraFirmaCraft"
+
+sourceCompatibility = targetCompatibility = "1.8"
+
+ext.getChangeLog = { ->
+    def outStream = new ByteArrayOutputStream()
+    exec {
+        executable = 'git'
+        args = ['log', '-n', '1', "--format='%B'"]
+        standardOutput = outStream
+    }
+    return outStream.toString().replaceAll("^\\s*'\\s*|\\s*'\\s*\$", "").replaceAll("[\\r\\n]+", "\n")
+}
 
 minecraft {
     version = "1.12.2-14.23.2.2611"
@@ -48,11 +65,46 @@ processResources {
         exclude "mcmod.info"
     }
 
+    from('.') {
+        include "LICENSE.txt"
+    }
+
     rename '(.+_at.cfg)', 'META-INF/$1'
+
+    doLast {
+        //noinspection GroovyAssignabilityCheck
+        def updateFile = new File("build/" + project.archivesBaseName.toLowerCase() + '.json')
+        def json
+        if (updateFile.exists()) {
+            json = new JsonSlurper().parseText(updateFile.getText())
+        } else {
+            def builder = new JsonBuilder()
+            json = builder(homepage: "https://tfc.dries007.net", promos: new HashMap<>())
+        }
+        //noinspection GroovyAssignabilityCheck
+        json['promos'][project.minecraft.version + '-latest'] = project.version
+        //noinspection GroovyAssignabilityCheck
+        json['promos'][project.minecraft.version + '-recommended'] = project.version
+        if (!json.containsKey(project.minecraft.version)) json.put(project.minecraft.version, new HashMap<>())
+        //noinspection GroovyAssignabilityCheck
+        def version = json[project.minecraft.version]
+        version.put(project.version, getChangeLog())
+        updateFile.write JsonOutput.prettyPrint(JsonOutput.toJson(json))
+    }
 }
 
-jar {
-    manifest {
+task deobfJar(type: Jar, dependsOn: 'jar') {
+    from sourceSets.main.output
+    classifier "deobf"
+}
+
+artifacts {
+    archives deobfJar
+}
+
+project.tasks.withType(Jar) { jarTask ->
+    jarTask.manifest {
         attributes 'FMLAT': 'tfc_at.cfg'
     }
+    jarTask.appendix = "MC" + project.minecraft.version
 }
