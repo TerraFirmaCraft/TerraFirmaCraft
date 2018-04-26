@@ -1,4 +1,4 @@
-package net.dries007.tfc.objects.items.pottery;
+package net.dries007.tfc.objects.items.ceramics;
 
 import java.util.EnumMap;
 
