@@ -7,12 +7,11 @@ package net.dries007.tfc;
 
 import org.apache.logging.log4j.Logger;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.ICrashCallable;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModMetadata;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -34,7 +33,7 @@ import net.dries007.tfc.world.classic.worldgen.*;
 import static net.dries007.tfc.Constants.*;
 
 @SuppressWarnings("DefaultAnnotationParam")
-@Mod(modid = MOD_ID, name = MOD_NAME, useMetadata = true, guiFactory = GUI_FACTORY, canBeDeactivated = false)
+@Mod(modid = MOD_ID, name = MOD_NAME, useMetadata = true, guiFactory = GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = "ee4505933cd28f4b09a0bc91007935f61e7d786e")
 @Mod.EventBusSubscriber()
 public class TerraFirmaCraft
 {
@@ -43,6 +42,8 @@ public class TerraFirmaCraft
 
     @Mod.Metadata()
     private static ModMetadata metadata = null;
+
+    private boolean isSignedBuild = true;
 
     static
     {
@@ -83,6 +84,8 @@ public class TerraFirmaCraft
     {
         log = event.getModLog();
         log.debug("If you can see this, debug logging is working :)");
+        if (!isSignedBuild)
+            log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
 
         // No need to sync config here, forge magic
 
@@ -102,6 +105,9 @@ public class TerraFirmaCraft
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
+        if (!isSignedBuild)
+            log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
+
         OreDictionaryHelper.init();
         CreativeTabsTFC.init();
         ItemsTFC.init();
@@ -125,12 +131,41 @@ public class TerraFirmaCraft
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
-
+        if (!isSignedBuild)
+            log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
     }
 
     @Mod.EventHandler
     public void onServerStarting(FMLServerStartingEvent event)
     {
+        if (!isSignedBuild)
+            log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
         event.registerServerCommand(new StripWorldCommand());
+    }
+
+    @Mod.EventHandler
+    public void onIMC(FMLInterModComms.IMCEvent event)
+    {
+        //todo: provide nice API here.
+    }
+
+    @Mod.EventHandler
+    public void onFingerprintViolation(FMLFingerprintViolationEvent event)
+    {
+        isSignedBuild = false;
+        FMLCommonHandler.instance().registerCrashCallable(new ICrashCallable()
+        {
+            @Override
+            public String getLabel()
+            {
+                return Constants.MOD_NAME;
+            }
+
+            @Override
+            public String call()
+            {
+                return "You are not running an official build. Please do not use this and then report bugs or issues.";
+            }
+        });
     }
 }
