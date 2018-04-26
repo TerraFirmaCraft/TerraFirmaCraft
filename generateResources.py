@@ -303,6 +303,25 @@ DOOR_VARIANTS = {
     'facing=west,half=upper,hinge=right,open=true': {'model': 'door_top', 'y': 90},
     'facing=north,half=upper,hinge=right,open=true': {'model': 'door_top', 'y': 180}
  }
+TRAPDOOR_VARIANTS = {
+    'normal': None,
+    "facing=north,half=bottom,open=false": { "model": "trapdoor_bottom"},
+      "facing=south,half=bottom,open=false": { "model": "trapdoor_bottom"},
+      "facing=east,half=bottom,open=false": { "model": "trapdoor_bottom"},
+      "facing=west,half=bottom,open=false": { "model": "trapdoor_bottom"},
+      "facing=north,half=top,open=false": { "model": "trapdoor_top"},
+      "facing=south,half=top,open=false": { "model": "trapdoor_top"},
+      "facing=east,half=top,open=false": { "model": "trapdoor_top"},
+      "facing=west,half=top,open=false": { "model": "trapdoor_top"},
+      "facing=north,half=bottom,open=true": { "model": "trapdoor_open" },
+      "facing=south,half=bottom,open=true": { "model": "trapdoor_open", "y": 180},
+      "facing=east,half=bottom,open=true": { "model": "trapdoor_open", "y": 90},
+      "facing=west,half=bottom,open=true": { "model": "trapdoor_open", "y": 270},
+      "facing=north,half=top,open=true": { "model": "trapdoor_open"},
+      "facing=south,half=top,open=true": { "model": "trapdoor_open", "y": 180},
+      "facing=east,half=top,open=true": { "model": "trapdoor_open", "y": 90},
+      "facing=west,half=top,open=true": { "model": "trapdoor_open", "y": 270}
+}
 STAIR_VARIANTS = {
     'normal': {'model': 'stairs'},
     'facing=east,half=bottom,shape=straight': {'model': 'stairs'},
@@ -600,6 +619,11 @@ for wood_type in WOOD_TYPES:
     })
     cube_all(('slab', 'full', 'wood', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
 
+    # TRAPDOORS
+    blockstate(('wood', 'door', wood_type), None, textures={
+            'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type,
+        }, variants=TRAPDOOR_VARIANTS)
+
     # CHESTS
     blockstate(('wood', 'chest', wood_type), 'tfc:chest', textures={
         'texture': 'tfc:model/wood/chest/%s' % wood_type,
@@ -645,7 +669,6 @@ for wood_type in WOOD_TYPES:
                 ('top'): 'tfc:blocks/overlays/workbench_top,
                 ('north', 'south'): 'tfc:blocks/overlays/workbench_front,
                 ('east', 'west'): 'tfc:blocks/overlays/workbench_side,
-
             })
 
 # ITEMS
