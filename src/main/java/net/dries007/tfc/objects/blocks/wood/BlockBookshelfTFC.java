@@ -5,6 +5,7 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -28,7 +29,7 @@ public class BlockBookshelfTFC extends Block {
         setHardness(2.0F).setResistance(5.0F);
         setHarvestLevel("axe", 0);
         OreDictionaryHelper.register(this, "bookshelf");
-
+        Blocks.FIRE.setFireInfo(this, 30, 20);
     }
 
     @SideOnly(Side.CLIENT)
