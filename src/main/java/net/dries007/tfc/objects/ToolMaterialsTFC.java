@@ -3,10 +3,9 @@ package net.dries007.tfc.objects;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.util.EnumHelper;
 
+@SuppressWarnings("WeakerAccess")
 public final class ToolMaterialsTFC
 {
-    private ToolMaterialsTFC() {}
-
     public static final Item.ToolMaterial IG_IN = EnumHelper.addToolMaterial("IgIn", 1, 60, 7, 2.0f, 5); //Tier 0
     public static final Item.ToolMaterial SED = EnumHelper.addToolMaterial("Sed", 1, 70, 7, 2.0f, 5);
     public static final Item.ToolMaterial IG_EX = EnumHelper.addToolMaterial("IgEx", 1, 50, 6, 2.0f, 5);
@@ -20,4 +19,6 @@ public final class ToolMaterialsTFC
     public static final Item.ToolMaterial BLACK_STEEL = EnumHelper.addToolMaterial("BlackSteel", 3, 4200, 16, 10.25f, 12); //Tier 5
     public static final Item.ToolMaterial BLUE_STEEL = EnumHelper.addToolMaterial("BlueSteel", 3, 6500, 18, 12.0f, 22); //Tier 6
     public static final Item.ToolMaterial RED_STEEL = EnumHelper.addToolMaterial("RedSteel", 3, 6500, 18, 12.0f, 22);
+
+    private ToolMaterialsTFC() {}
 }

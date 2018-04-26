@@ -1,11 +1,12 @@
 package net.dries007.tfc.objects.items.wood;
 
+import java.util.EnumMap;
+
+import net.minecraft.item.ItemDoor;
+
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.minecraft.item.ItemDoor;
-
-import java.util.EnumMap;
 
 public class ItemDoorTFC extends ItemDoor
 {

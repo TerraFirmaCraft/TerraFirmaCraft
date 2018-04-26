@@ -5,11 +5,6 @@ import net.dries007.tfc.world.classic.genlayers.*;
 
 public abstract class GenTreeLayer extends GenLayerTFC
 {
-    public GenTreeLayer(long par1)
-    {
-        super(par1);
-    }
-
     public static GenLayerTFC initialize(long par0, DataLayer[] trees)
     {
         GenLayerTFC layer = new GenLayerTreeInit(1L, trees);
@@ -41,5 +36,10 @@ public abstract class GenTreeLayer extends GenLayerTFC
 
         voronoiLayer.initWorldGenSeed(par0);
         return voronoiLayer;
+    }
+
+    public GenTreeLayer(long par1)
+    {
+        super(par1);
     }
 }

@@ -1,10 +1,5 @@
 package net.dries007.tfc;
 
-import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.te.TEPitKiln;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IFireable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
@@ -19,6 +14,12 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.te.TEPitKiln;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.IFireable;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
@@ -49,8 +50,8 @@ public class CommonEventHandler
 
     /**
      * Place pit kiln block & add items
-     *      Note: `onBlockActivate` doesn't get called when the player is sneaking, unless doesSneakBypassUse returns true.
-     *      We have this event already, might as well use it.
+     * Note: `onBlockActivate` doesn't get called when the player is sneaking, unless doesSneakBypassUse returns true.
+     * We have this event already, might as well use it.
      */
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)

@@ -1,21 +1,20 @@
 package net.dries007.tfc.objects;
 
-import net.dries007.tfc.TerraFirmaCraft;
+import java.util.Arrays;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.dries007.tfc.TerraFirmaCraft;
 
 import static net.dries007.tfc.Constants.MOD_ID;
+import static net.minecraft.creativetab.CreativeTabs.CREATIVE_TAB_ARRAY;
 
 public final class CreativeTabsTFC
 {
-    private static final List<CT> LIST = new ArrayList<>();
-
     public static final CreativeTabs CT_ROCK_BLOCKS = new CT("rock.blocks", "tfc:smooth/granite");
     public static final CreativeTabs CT_ROCK_ITEMS = new CT("rock.items", "tfc:ore/tetrahedrite");
     public static final CreativeTabs CT_WOOD = new CT("wood", "tfc:wood/log/pine");
@@ -27,7 +26,7 @@ public final class CreativeTabsTFC
 
     public static void init()
     {
-        LIST.forEach(CT::loadIconStack);
+        Arrays.stream(CREATIVE_TAB_ARRAY).filter(CT.class::isInstance).map(CT.class::cast).forEach(CT::loadIconStack);
     }
 
     private static class CT extends CreativeTabs
@@ -40,8 +39,6 @@ public final class CreativeTabsTFC
             super(MOD_ID + "." + label);
 
             iconResourceLocation = new ResourceLocation(icon);
-
-            LIST.add(this);
         }
 
         @Override

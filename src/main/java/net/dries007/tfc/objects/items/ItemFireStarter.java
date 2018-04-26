@@ -1,7 +1,8 @@
 package net.dries007.tfc.objects.items;
 
-import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.util.OreDictionaryHelper;
+import java.util.List;
+import java.util.function.Predicate;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -19,8 +20,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-import java.util.List;
-import java.util.function.Predicate;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
 
@@ -29,6 +30,14 @@ public class ItemFireStarter extends Item
     private static final Predicate<EntityItem> IS_STICK = OreDictionaryHelper.createPredicateItemEntity("stickWood");
     private static final Predicate<EntityItem> IS_KINDLING = OreDictionaryHelper.createPredicateItemEntity("kindling", "paper", "hay");
 
+    public static boolean canIgnite(ItemStack stack)
+    {
+        if (stack.isEmpty()) return false;
+        Item item = stack.getItem();
+        //noinspection ConstantConditions
+        return item == ItemsTFC.FIRESTARTER || item == Items.FLINT_AND_STEEL || item == Items.FIRE_CHARGE || item instanceof ItemFlintAndSteel;
+    }
+
     public ItemFireStarter()
     {
         setMaxDamage(8);
@@ -36,12 +45,16 @@ public class ItemFireStarter extends Item
         setNoRepair();
     }
 
-    public static boolean canIgnite(ItemStack stack)
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-        if (stack.isEmpty()) return false;
-        Item item = stack.getItem();
-        //noinspection ConstantConditions
-        return item == ItemsTFC.FIRESTARTER || item == Items.FLINT_AND_STEEL || item == Items.FIRE_CHARGE || item instanceof ItemFlintAndSteel;
+        //todo: move to public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+        ItemStack stack = playerIn.getHeldItem(handIn);
+        if (worldIn.isRemote) return new ActionResult<>(EnumActionResult.PASS, stack);
+        if (handIn != EnumHand.MAIN_HAND) return new ActionResult<>(EnumActionResult.PASS, stack);
+        if (canStartFire(worldIn, playerIn) == null) return new ActionResult<>(EnumActionResult.FAIL, stack);
+        playerIn.setActiveHand(handIn);
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -57,40 +70,13 @@ public class ItemFireStarter extends Item
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
-    {
-        //todo: move to public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-        ItemStack stack = playerIn.getHeldItem(handIn);
-        if (worldIn.isRemote) return new ActionResult<>(EnumActionResult.PASS, stack);
-        if (handIn != EnumHand.MAIN_HAND) return new ActionResult<>(EnumActionResult.PASS, stack);
-        if (canStartFire(worldIn, playerIn) == null) return new ActionResult<>(EnumActionResult.FAIL, stack);
-        playerIn.setActiveHand(handIn);
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-    }
-
-    private RayTraceResult canStartFire(World world, EntityPlayer player)
-    {
-        RayTraceResult result = rayTrace(world, player, true);
-        //noinspection ConstantConditions
-        if (result == null) return null;
-        if (result.typeOfHit != RayTraceResult.Type.BLOCK) return null;
-        BlockPos pos = result.getBlockPos();
-        final IBlockState current = player.world.getBlockState(pos);
-        if (result.sideHit != EnumFacing.UP) return null;
-        if (!current.isSideSolid(world, pos, EnumFacing.UP)) return null;
-        if (current.getMaterial() == Material.WATER) return null;
-        pos = pos.add(0, 1, 0);
-        if (!world.isAirBlock(pos)) return null;
-        return result;
-    }
-
-    @Override
     public void onUsingTick(ItemStack stack, EntityLivingBase entityLivingBase, int countLeft)
     {
         if (!(entityLivingBase instanceof EntityPlayer)) return;
         final EntityPlayer player = ((EntityPlayer) entityLivingBase);
         final RayTraceResult result = canStartFire(player.world, player);
-        if (result == null) {
+        if (result == null)
+        {
             player.resetActiveHand();
             return;
         }
@@ -102,12 +88,11 @@ public class ItemFireStarter extends Item
 
         if (world.isRemote) // Client
         {
-            if (chance > 0.7 && world.rand.nextFloat() < count / (double)total)
+            if (chance > 0.7 && world.rand.nextFloat() < count / (double) total)
                 world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, result.hitVec.x, result.hitVec.y, result.hitVec.z, 0.0F, 0.1F, 0.0F);
-            if (chance > 0.7 && countLeft < 10 && world.rand.nextFloat() < count / (double)total)
+            if (chance > 0.7 && countLeft < 10 && world.rand.nextFloat() < count / (double) total)
                 world.spawnParticle(EnumParticleTypes.FLAME, result.hitVec.x, result.hitVec.y, result.hitVec.z, 0.0F, 0.0F, 0.0F);
-        }
-        else if (countLeft == 1) // Server, and last tick of use
+        } else if (countLeft == 1) // Server, and last tick of use
         {
             stack.damageItem(1, player);
 
@@ -125,5 +110,21 @@ public class ItemFireStarter extends Item
                 list.forEach(Entity::setDead);
             }
         }
+    }
+
+    private RayTraceResult canStartFire(World world, EntityPlayer player)
+    {
+        RayTraceResult result = rayTrace(world, player, true);
+        //noinspection ConstantConditions
+        if (result == null) return null;
+        if (result.typeOfHit != RayTraceResult.Type.BLOCK) return null;
+        BlockPos pos = result.getBlockPos();
+        final IBlockState current = player.world.getBlockState(pos);
+        if (result.sideHit != EnumFacing.UP) return null;
+        if (!current.isSideSolid(world, pos, EnumFacing.UP)) return null;
+        if (current.getMaterial() == Material.WATER) return null;
+        pos = pos.add(0, 1, 0);
+        if (!world.isAirBlock(pos)) return null;
+        return result;
     }
 }

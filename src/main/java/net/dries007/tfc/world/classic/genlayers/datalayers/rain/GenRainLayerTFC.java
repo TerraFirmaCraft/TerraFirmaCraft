@@ -8,11 +8,6 @@ public abstract class GenRainLayerTFC extends GenLayerTFC
     public static final int WET = DataLayer.RAIN_4000.layerID;
     public static final int DRY = DataLayer.RAIN_125.layerID;
 
-    public GenRainLayerTFC(long par1)
-    {
-        super(par1);
-    }
-
     public static GenLayerTFC initialize(long seed)
     {
         GenLayerTFC continent = genContinent(0);
@@ -63,5 +58,10 @@ public abstract class GenRainLayerTFC extends GenLayerTFC
         continent = new GenLayerZoomTFC(2003L, continent);
 //        drawImage(512, continent, "Rain Init 7 Zoom");
         return continent;
+    }
+
+    public GenRainLayerTFC(long par1)
+    {
+        super(par1);
     }
 }

@@ -1,10 +1,8 @@
 package net.dries007.tfc.objects.blocks;
 
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.objects.blocks.wood.BlockPlanksTFC;
-import net.dries007.tfc.util.InsertOnlyEnumTable;
-import net.dries007.tfc.util.OreDictionaryHelper;
+import java.util.EnumMap;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
@@ -20,15 +18,18 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.EnumMap;
-import java.util.Random;
+import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.wood.BlockPlanksTFC;
+import net.dries007.tfc.util.InsertOnlyEnumTable;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public abstract class BlockSlabTFC extends BlockSlab
 {
     public static final PropertyEnum<Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
-
-    protected Half halfSlab;
     public final Block modelBlock;
+    protected Half halfSlab;
 
     private BlockSlabTFC(Rock rock, Rock.Type type)
     {
@@ -57,56 +58,10 @@ public abstract class BlockSlabTFC extends BlockSlab
         setLightOpacity(255);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
-    {
-        return modelBlock.getBlockHardness(blockState, worldIn, pos);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public float getExplosionResistance(Entity exploder)
-    {
-        return modelBlock.getExplosionResistance(exploder);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public SoundType getSoundType()
-    {
-        return modelBlock.getSoundType();
-    }
-
     @Override
     public String getUnlocalizedName(int meta)
     {
         return getUnlocalizedName();
-    }
-
-    @Override
-    public IProperty<?> getVariantProperty()
-    {
-        return VARIANT; // why is this not null-tolerable ...
-    }
-
-    @Override
-    public Comparable<?> getTypeForItem(ItemStack stack)
-    {
-        return Variant.DEFAULT;
-    }
-
-    @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(halfSlab);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
-    {
-        return new ItemStack(halfSlab);
     }
 
     @SuppressWarnings("deprecation")
@@ -136,10 +91,66 @@ public abstract class BlockSlabTFC extends BlockSlab
         return i;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
+    {
+        return modelBlock.getBlockHardness(blockState, worldIn, pos);
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Item.getItemFromBlock(halfSlab);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public float getExplosionResistance(Entity exploder)
+    {
+        return modelBlock.getExplosionResistance(exploder);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
+    {
+        return new ItemStack(halfSlab);
+    }
+
     @Override
     protected BlockStateContainer createBlockState()
     {
         return this.isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, HALF, VARIANT);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public SoundType getSoundType()
+    {
+        return modelBlock.getSoundType();
+    }
+
+    @Override
+    public IProperty<?> getVariantProperty()
+    {
+        return VARIANT; // why is this not null-tolerable ...
+    }
+
+    @Override
+    public Comparable<?> getTypeForItem(ItemStack stack)
+    {
+        return Variant.DEFAULT;
+    }
+
+    public enum Variant implements IStringSerializable
+    {
+        DEFAULT;
+
+        public String getName()
+        {
+            return "default";
+        }
     }
 
     public static class Double extends BlockSlabTFC
@@ -181,7 +192,6 @@ public abstract class BlockSlabTFC extends BlockSlab
     {
         private static final InsertOnlyEnumTable<Rock, Rock.Type, Half> ROCK_TABLE = new InsertOnlyEnumTable<>(Rock.class, Rock.Type.class);
         private static final EnumMap<Wood, Half> WOOD_MAP = new EnumMap<>(Wood.class);
-        public final Double doubleSlab;
 
         public static Half get(Rock rock, Rock.Type type)
         {
@@ -192,6 +202,8 @@ public abstract class BlockSlabTFC extends BlockSlab
         {
             return WOOD_MAP.get(wood);
         }
+
+        public final Double doubleSlab;
 
         public Half(Rock rock, Rock.Type type)
         {
@@ -219,16 +231,6 @@ public abstract class BlockSlabTFC extends BlockSlab
         public boolean isDouble()
         {
             return false;
-        }
-    }
-
-    public enum Variant implements IStringSerializable
-    {
-        DEFAULT;
-
-        public String getName()
-        {
-            return "default";
         }
     }
 }

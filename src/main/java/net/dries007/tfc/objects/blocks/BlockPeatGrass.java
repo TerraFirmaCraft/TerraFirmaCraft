@@ -1,7 +1,7 @@
 package net.dries007.tfc.objects.blocks;
 
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.OreDictionaryHelper;
+import java.util.Random;
+
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -17,7 +17,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Random;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockPeatGrass extends BlockPeat
 {
@@ -43,12 +44,6 @@ public class BlockPeatGrass extends BlockPeat
         return 0;
     }
 
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
@@ -58,6 +53,13 @@ public class BlockPeatGrass extends BlockPeat
                 .withProperty(EAST, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.EAST))))
                 .withProperty(SOUTH, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.SOUTH))))
                 .withProperty(WEST, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.WEST))));
+    }
+
+    @Override
+    public void randomTick(World world, BlockPos pos, IBlockState state, Random rand)
+    {
+        if (world.isRemote) return;
+        Helpers.spreadGrass(world, pos, state, rand);
     }
 
     @Override
@@ -75,9 +77,8 @@ public class BlockPeatGrass extends BlockPeat
     }
 
     @Override
-    public void randomTick(World world, BlockPos pos, IBlockState state, Random rand)
+    protected BlockStateContainer createBlockState()
     {
-        if (world.isRemote) return;
-        Helpers.spreadGrass(world, pos, state, rand);
+        return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
     }
 }

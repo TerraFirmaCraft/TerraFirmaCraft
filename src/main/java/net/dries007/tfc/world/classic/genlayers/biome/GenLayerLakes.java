@@ -1,9 +1,10 @@
 package net.dries007.tfc.world.classic.genlayers.biome;
 
-import net.dries007.tfc.objects.biomes.BiomesTFC;
-import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.IntCache;
+
+import net.dries007.tfc.objects.biomes.BiomesTFC;
+import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerLakes extends GenLayerTFC
 {
@@ -42,8 +43,7 @@ public class GenLayerLakes extends GenLayerTFC
                         var6[var8 + var7 * par3] = Biome.getIdForBiome(BiomesTFC.LAKE);
                     else
                         var6[var8 + var7 * par3] = var9;
-                }
-                else
+                } else
                 {
                     var6[var8 + var7 * par3] = var9;
                 }

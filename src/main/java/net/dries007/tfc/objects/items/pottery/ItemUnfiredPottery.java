@@ -1,7 +1,8 @@
 package net.dries007.tfc.objects.items.pottery;
 
-import net.dries007.tfc.objects.Metal;
 import net.minecraft.item.ItemStack;
+
+import net.dries007.tfc.objects.Metal;
 
 public class ItemUnfiredPottery extends ItemPottery
 {

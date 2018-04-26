@@ -1,10 +1,11 @@
 package net.dries007.tfc.world.classic.chunkdata;
 
-import net.dries007.tfc.objects.Ore;
-import net.dries007.tfc.util.OreSpawnData;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.BlockPos;
+
+import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.util.OreSpawnData;
 
 public class ChunkDataOreSpawned
 {

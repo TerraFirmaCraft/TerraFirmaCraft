@@ -1,6 +1,7 @@
 package net.dries007.tfc.world.classic.worldgen;
 
-import net.dries007.tfc.objects.blocks.BlocksTFC;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPumpkin;
 import net.minecraft.util.EnumFacing;
@@ -8,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-import java.util.Random;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 
 public class WorldGenPumpkinTFC extends WorldGenerator
 {

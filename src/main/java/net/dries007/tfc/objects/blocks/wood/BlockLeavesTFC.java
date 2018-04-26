@@ -1,8 +1,11 @@
 package net.dries007.tfc.objects.blocks.wood;
 
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Random;
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.ImmutableList;
-import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.BlockStateContainer;
@@ -19,10 +22,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Random;
+import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockLeavesTFC extends BlockLeaves
 {
@@ -46,12 +47,6 @@ public class BlockLeavesTFC extends BlockLeaves
         Blocks.FIRE.setFireInfo(this, 30, 60);
     }
 
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, CHECK_DECAY, DECAYABLE);
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
@@ -59,11 +54,10 @@ public class BlockLeavesTFC extends BlockLeaves
         return this.getDefaultState().withProperty(DECAYABLE, (meta & 0b01) == 0b01).withProperty(CHECK_DECAY, (meta & 0b10) == 0b10);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    public int getMetaFromState(IBlockState state)
     {
-        return NULL_AABB;
+        return (state.getValue(DECAYABLE) ? 0b01 : 0) | (state.getValue(CHECK_DECAY) ? 0b10 : 0);
     }
 
     @SuppressWarnings("deprecation")
@@ -73,16 +67,28 @@ public class BlockLeavesTFC extends BlockLeaves
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public int getMetaFromState(IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
-        return (state.getValue(DECAYABLE) ? 0b01 : 0) | (state.getValue(CHECK_DECAY) ? 0b10 : 0);
+        return NULL_AABB;
+    }
+
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        //Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
+        entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
+        entityIn.fallDistance = 0;
+        //Entity motion is reduced by leaves.
+        entityIn.motionX *= 0.1D;
+        entityIn.motionY *= 0.1D;
+        entityIn.motionZ *= 0.1D;
     }
 
     @Override
-    public BlockPlanks.EnumType getWoodType(int meta)
+    protected BlockStateContainer createBlockState()
     {
-        return null;
+        return new BlockStateContainer(this, CHECK_DECAY, DECAYABLE);
     }
 
     @Nonnull
@@ -104,14 +110,9 @@ public class BlockLeavesTFC extends BlockLeaves
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    @Override
+    public BlockPlanks.EnumType getWoodType(int meta)
     {
-        //Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0. 
-        entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction. 
-        entityIn.fallDistance = 0;
-        //Entity motion is reduced by leaves.
-        entityIn.motionX *= 0.1D;
-        entityIn.motionY *= 0.1D;
-        entityIn.motionZ *= 0.1D;
+        return null;
     }
 }

@@ -1,6 +1,7 @@
 package net.dries007.tfc.util;
 
 import com.google.common.collect.ImmutableList;
+
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Rock.*;
@@ -19,21 +20,22 @@ import static net.dries007.tfc.util.OreSpawnData.SpawnType.VEINS;
 public final class OreSpawnData
 {
     public static final ImmutableList<OreSpawnData> ORE_SPAWN_DATA;
+
     static
     {
         ImmutableList.Builder<OreSpawnData> b = new ImmutableList.Builder<>();
 
         // Metals
         b.add(new OreSpawnData(NATIVE_COPPER, VEINS, LARGE, 120, IGNEOUS_EXTRUSIVE, 5, 128, 80, 60));
-        b.add(new OreSpawnData(NATIVE_GOLD, VEINS, LARGE, 120, new Category[]{IGNEOUS_EXTRUSIVE, IGNEOUS_INTRUSIVE}, 5, 128, 80, 60));
+        b.add(new OreSpawnData(NATIVE_GOLD, VEINS, LARGE, 120, new Category[] {IGNEOUS_EXTRUSIVE, IGNEOUS_INTRUSIVE}, 5, 128, 80, 60));
         b.add(new OreSpawnData(NATIVE_PLATINUM, VEINS, SMALL, 150, SEDIMENTARY, 5, 128, 40, 80));
         b.add(new OreSpawnData(HEMATITE, VEINS, MEDIUM, 125, IGNEOUS_EXTRUSIVE, 5, 128, 80, 60));
-        b.add(new OreSpawnData(NATIVE_SILVER, VEINS, MEDIUM, 100, new Rock[]{GRANITE, GNEISS}, 5, 128, 80, 60));
+        b.add(new OreSpawnData(NATIVE_SILVER, VEINS, MEDIUM, 100, new Rock[] {GRANITE, GNEISS}, 5, 128, 80, 60));
         b.add(new OreSpawnData(CASSITERITE, VEINS, MEDIUM, 100, IGNEOUS_INTRUSIVE, 5, 128, 80, 60));
-        b.add(new OreSpawnData(GALENA, VEINS, MEDIUM, 100, new Rock[]{GRANITE, LIMESTONE}, new Category[]{IGNEOUS_EXTRUSIVE, METAMORPHIC}, 5, 128, 80, 60));
-        b.add(new OreSpawnData(BISMUTHINITE, VEINS, MEDIUM, 100, new Category[]{IGNEOUS_EXTRUSIVE, SEDIMENTARY}, 5, 128, 80, 60));
+        b.add(new OreSpawnData(GALENA, VEINS, MEDIUM, 100, new Rock[] {GRANITE, LIMESTONE}, new Category[] {IGNEOUS_EXTRUSIVE, METAMORPHIC}, 5, 128, 80, 60));
+        b.add(new OreSpawnData(BISMUTHINITE, VEINS, MEDIUM, 100, new Category[] {IGNEOUS_EXTRUSIVE, SEDIMENTARY}, 5, 128, 80, 60));
         b.add(new OreSpawnData(GARNIERITE, VEINS, MEDIUM, 150, GABBRO, 5, 128, 80, 60));
-        b.add(new OreSpawnData(MALACHITE, VEINS, LARGE, 100, new Rock[]{LIMESTONE, MARBLE}, 5, 128, 80, 60));
+        b.add(new OreSpawnData(MALACHITE, VEINS, LARGE, 100, new Rock[] {LIMESTONE, MARBLE}, 5, 128, 80, 60));
         b.add(new OreSpawnData(MAGNETITE, VEINS, MEDIUM, 150, SEDIMENTARY, 5, 128, 80, 60));
         b.add(new OreSpawnData(LIMONITE, VEINS, MEDIUM, 150, SEDIMENTARY, 5, 128, 80, 60));
         b.add(new OreSpawnData(SPHALERITE, VEINS, MEDIUM, 100, METAMORPHIC, 5, 128, 80, 60));
@@ -46,14 +48,14 @@ public final class OreSpawnData
         b.add(new OreSpawnData(GYPSUM, VEINS, LARGE, 120, SEDIMENTARY, 5, 128, 80, 60));
         //b.add(new OreSpawnData(SATINSPAR, VEINS, SMALL, 150, SEDIMENTARY, 5, 128, 40, 60));
         //b.add(new OreSpawnData(SELENITE, VEINS, MEDIUM, 125, IGNEOUS_EXTRUSIVE, 5, 128, 60, 60));
-        b.add(new OreSpawnData(GRAPHITE, VEINS, MEDIUM, 100, new Rock[]{MARBLE, GNEISS, QUARTZITE, SCHIST}, 5, 128, 80, 60));
-        b.add(new OreSpawnData(KIMBERLITE, VEINS, MEDIUM, 200, new Rock[]{GABBRO}, 5, 128, 30, 80));
+        b.add(new OreSpawnData(GRAPHITE, VEINS, MEDIUM, 100, new Rock[] {MARBLE, GNEISS, QUARTZITE, SCHIST}, 5, 128, 80, 60));
+        b.add(new OreSpawnData(KIMBERLITE, VEINS, MEDIUM, 200, new Rock[] {GABBRO}, 5, 128, 30, 80));
         //b.add(new OreSpawnData(PETRIFIED_WOOD, VEINS, MEDIUM, 100, new Rock[]{GRANITE, LIMESTONE}, new Category[]{IGNEOUS_EXTRUSIVE, METAMORPHIC}, 5, 128, 60, 80));
         //b.add(new OreSpawnData(SULFUR, VEINS, MEDIUM, 100, new Category[]{IGNEOUS_EXTRUSIVE, SEDIMENTARY}, 5, 128, 60, 60));
-        b.add(new OreSpawnData(JET, VEINS, LARGE, 110, new Category[]{SEDIMENTARY}, 5, 128, 80, 60));
+        b.add(new OreSpawnData(JET, VEINS, LARGE, 110, new Category[] {SEDIMENTARY}, 5, 128, 80, 60));
         //b.add(new OreSpawnData(MICROCLINE, VEINS, LARGE, 100, new Rock[]{LIMESTONE, MARBLE}, 5, 128, 60, 60));
-        b.add(new OreSpawnData(PITCHBLENDE, VEINS, SMALL, 150, new Rock[]{GRANITE}, 5, 128, 80, 60));
-        b.add(new OreSpawnData(CINNABAR, VEINS, SMALL, 150, new Rock[]{SHALE, QUARTZITE}, new Category[]{IGNEOUS_EXTRUSIVE}, 5, 128, 30, 80));
+        b.add(new OreSpawnData(PITCHBLENDE, VEINS, SMALL, 150, new Rock[] {GRANITE}, 5, 128, 80, 60));
+        b.add(new OreSpawnData(CINNABAR, VEINS, SMALL, 150, new Rock[] {SHALE, QUARTZITE}, new Category[] {IGNEOUS_EXTRUSIVE}, 5, 128, 30, 80));
         b.add(new OreSpawnData(CRYOLITE, VEINS, SMALL, 100, GRANITE, 5, 128, 80, 60));
         b.add(new OreSpawnData(SALTPETER, VEINS, MEDIUM, 120, SEDIMENTARY, 5, 128, 80, 60));
         //b.add(new OreSpawnData(SERPENTINE, VEINS, LARGE, 100, SEDIMENTARY, 5, 128, 90, 40));
@@ -65,7 +67,7 @@ public final class OreSpawnData
         // Surface ores
         b.add(new OreSpawnData(NATIVE_COPPER, VEINS, SMALL, 35, IGNEOUS_EXTRUSIVE, 128, 240, 40, 40));
         b.add(new OreSpawnData(CASSITERITE, VEINS, SMALL, 35, GRANITE, 128, 240, 40, 40));
-        b.add(new OreSpawnData(BISMUTHINITE, VEINS, SMALL, 35, new Category[]{IGNEOUS_EXTRUSIVE, SEDIMENTARY}, 128, 240, 40, 40));
+        b.add(new OreSpawnData(BISMUTHINITE, VEINS, SMALL, 35, new Category[] {IGNEOUS_EXTRUSIVE, SEDIMENTARY}, 128, 240, 40, 40));
         b.add(new OreSpawnData(SPHALERITE, VEINS, SMALL, 35, METAMORPHIC, 128, 240, 40, 40));
         b.add(new OreSpawnData(TETRAHEDRITE, VEINS, SMALL, 35, METAMORPHIC, 128, 240, 40, 40));
 
@@ -94,12 +96,12 @@ public final class OreSpawnData
 
     private OreSpawnData(Ore ore, SpawnType type, SpawnSize size, int rarity, Category baseRocksCategorie, int minY, int maxY, int densityVertical, int densityHorizontal)
     {
-        this(ore, type, size, rarity, null, new Category[]{baseRocksCategorie}, minY, maxY, densityVertical, densityHorizontal);
+        this(ore, type, size, rarity, null, new Category[] {baseRocksCategorie}, minY, maxY, densityVertical, densityHorizontal);
     }
 
     private OreSpawnData(Ore ore, SpawnType type, SpawnSize size, int rarity, Rock baseRock, int minY, int maxY, int densityVertical, int densityHorizontal)
     {
-        this(ore, type, size, rarity, new Rock[]{baseRock}, null, minY, maxY, densityVertical, densityHorizontal);
+        this(ore, type, size, rarity, new Rock[] {baseRock}, null, minY, maxY, densityVertical, densityHorizontal);
     }
 
     private OreSpawnData(Ore ore, SpawnType type, SpawnSize size, int rarity, Rock[] baseRocks, Category[] baseRocksCategories, int minY, int maxY, int densityVertical, int densityHorizontal)
@@ -124,16 +126,6 @@ public final class OreSpawnData
         this.densityHorizontal = densityHorizontal * 0.01f;
     }
 
-    public enum SpawnType
-    {
-        DEFAULT, VEINS
-    }
-
-    public enum SpawnSize
-    {
-        SMALL, MEDIUM, LARGE
-    }
-
     @Override
     public String toString()
     {
@@ -148,5 +140,15 @@ public final class OreSpawnData
                 ", densityVertical=" + densityVertical +
                 ", densityHorizontal=" + densityHorizontal +
                 '}';
+    }
+
+    public enum SpawnType
+    {
+        DEFAULT, VEINS
+    }
+
+    public enum SpawnSize
+    {
+        SMALL, MEDIUM, LARGE
     }
 }

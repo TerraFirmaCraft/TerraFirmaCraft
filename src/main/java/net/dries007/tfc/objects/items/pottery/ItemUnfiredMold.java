@@ -1,8 +1,8 @@
 package net.dries007.tfc.objects.items.pottery;
 
-import net.dries007.tfc.objects.Metal;
-
 import java.util.EnumMap;
+
+import net.dries007.tfc.objects.Metal;
 
 public class ItemUnfiredMold extends ItemUnfiredPottery
 {

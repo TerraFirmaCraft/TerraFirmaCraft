@@ -1,13 +1,14 @@
 package net.dries007.tfc.objects.items.metal;
 
+import java.util.EnumMap;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
-import java.util.EnumMap;
 
 public class ItemSmallOre extends Item implements IMetalObject
 {

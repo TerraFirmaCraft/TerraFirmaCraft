@@ -1,9 +1,10 @@
 package net.dries007.tfc.util;
 
-import net.dries007.tfc.objects.Metal;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
-import java.util.List;
+import net.dries007.tfc.objects.Metal;
 
 public interface IMetalObject
 {

@@ -1,7 +1,5 @@
 package net.dries007.tfc.objects.te;
 
-import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.item.ItemStack;
@@ -12,6 +10,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
@@ -33,6 +34,13 @@ public class TEChestTFC extends TileEntityChest
         return block instanceof BlockChestTFC ? ((BlockChestTFC) block) : null;
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
+    }
+
     public Wood getWood()
     {
         if (cachedWood == null)
@@ -44,10 +52,9 @@ public class TEChestTFC extends TileEntityChest
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox()
+    public int getSizeInventory()
     {
-        return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
+        return SIZE;
     }
 
     @Override
@@ -56,12 +63,6 @@ public class TEChestTFC extends TileEntityChest
         if (world == null) return false;
 
         Block block = this.world.getBlockState(posIn).getBlock();
-        return block instanceof BlockChestTFC && ((BlockChestTFC) block).wood == getWood() && ((BlockChest)block).chestType == getChestType();
-    }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return SIZE;
+        return block instanceof BlockChestTFC && ((BlockChestTFC) block).wood == getWood() && ((BlockChest) block).chestType == getChestType();
     }
 }

@@ -19,25 +19,7 @@ public class ItemDebug extends Item
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack)
-    {
-        return true;
-    }
-
-    @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
-    {
-        return false;
-    }
-
-    @Override
-    public EnumRarity getRarity(ItemStack stack)
-    {
-        return EnumRarity.EPIC;
-    }
-
-    @Override
-    public boolean canHarvestBlock(IBlockState blockIn)
     {
         return false;
     }
@@ -49,14 +31,32 @@ public class ItemDebug extends Item
     }
 
     @Override
-    public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
+    public boolean canHarvestBlock(IBlockState blockIn)
     {
         return false;
+    }
+
+    @Override
+    public boolean hasEffect(ItemStack stack)
+    {
+        return true;
+    }
+
+    @Override
+    public EnumRarity getRarity(ItemStack stack)
+    {
+        return EnumRarity.EPIC;
     }
 
     @Override
     public int getEntityLifespan(ItemStack itemStack, World world)
     {
         return 60;
+    }
+
+    @Override
+    public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
+    {
+        return false;
     }
 }

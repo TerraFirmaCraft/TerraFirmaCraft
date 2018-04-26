@@ -4,18 +4,18 @@ import net.minecraft.world.gen.layer.IntCache;
 
 public class GenLayerZoomTFC extends GenLayerTFC
 {
-    public GenLayerZoomTFC(long seed, GenLayerTFC par3GenLayer)
-    {
-        super(seed);
-        super.parent = par3GenLayer;
-    }
-
     public static GenLayerTFC magnify(long par0, GenLayerTFC par2GenLayer, int par3)
     {
         Object var4 = par2GenLayer;
         for (int var5 = 0; var5 < par3; ++var5)
             var4 = new GenLayerZoomTFC(par0 + var5, (GenLayerTFC) var4);
         return (GenLayerTFC) var4;
+    }
+
+    public GenLayerZoomTFC(long seed, GenLayerTFC par3GenLayer)
+    {
+        super(seed);
+        super.parent = par3GenLayer;
     }
 
     @Override

@@ -1,7 +1,10 @@
 package net.dries007.tfc.objects.items.metal;
 
+import java.util.UUID;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Multimap;
-import net.dries007.tfc.objects.Metal;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
@@ -19,9 +22,7 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.UUID;
+import net.dries007.tfc.objects.Metal;
 
 import static net.minecraft.entity.SharedMonsterAttributes.ARMOR;
 import static net.minecraft.entity.SharedMonsterAttributes.ARMOR_TOUGHNESS;
@@ -32,10 +33,9 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
     //todo: render items
 
     public final EntityEquipmentSlot slot;
-    private final ToolMaterial toolMaterial;
-
     public final double damageReduceAmount = 5; //todo: actual numbers
     public final double toughness = 1; //todo: actual numbers
+    private final ToolMaterial toolMaterial;
     private final UUID uuid;
 
     public ItemMetalArmor(Metal metal, Metal.ItemType type)
@@ -71,19 +71,6 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
     }
 
     @Override
-    public int getItemEnchantability()
-    {
-        return toolMaterial.getEnchantability();
-    }
-
-    @Nullable
-    @Override
-    public EntityEquipmentSlot getEquipmentSlot(ItemStack stack)
-    {
-        return slot;
-    }
-
-    @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         ItemStack heldItem = playerIn.getHeldItem(handIn);
@@ -92,11 +79,16 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
             playerIn.setItemStackToSlot(slot, heldItem.copy());
             heldItem.shrink(1);
             return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
-        }
-        else
+        } else
         {
             return new ActionResult<>(EnumActionResult.FAIL, heldItem);
         }
+    }
+
+    @Override
+    public int getItemEnchantability()
+    {
+        return toolMaterial.getEnchantability();
     }
 
     @Override
@@ -109,6 +101,29 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
             multimap.put(ARMOR_TOUGHNESS.getName(), new AttributeModifier(uuid, "Armor toughness", toughness, 0));
         }
         return multimap;
+    }
+
+    @Nullable
+    @Override
+    public EntityEquipmentSlot getEquipmentSlot(ItemStack stack)
+    {
+        return slot;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Nullable
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
+    {
+        return super.getArmorTexture(stack, entity, slot, type); // todo
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Nullable
+    @Override
+    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default)
+    {
+        return super.getArmorModel(entityLiving, itemStack, armorSlot, _default); // todo
     }
 
     @Override
@@ -127,21 +142,5 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
     public void damageArmor(EntityLivingBase entity, @Nonnull ItemStack stack, DamageSource source, int damage, int slot)
     {
         //todo
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Nullable
-    @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
-    {
-        return super.getArmorTexture(stack, entity, slot, type); // todo
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Nullable
-    @Override
-    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default)
-    {
-        return super.getArmorModel(entityLiving, itemStack, armorSlot, _default); // todo
     }
 }

@@ -1,5 +1,7 @@
 package net.dries007.tfc.objects.items;
 
+import java.util.Arrays;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -17,19 +19,45 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Arrays;
-
 import static net.dries007.tfc.Constants.MOD_ID;
 
 public class ItemGoldPan extends Item
 {
     private static final String[] TYPES = new String[] {"empty", "sand", "gravel", "clay", "dirt"};
+
+    @SuppressWarnings("ConstantConditions")
+    @SideOnly(Side.CLIENT)
+    public static void registerModels()
+    {
+        for (int meta = 0; meta < TYPES.length; meta++)
+            ModelLoader.setCustomModelResourceLocation(ItemsTFC.GOLDPAN, meta, new ModelResourceLocation(MOD_ID + ":goldpan/" + TYPES[meta]));
+        ModelLoader.registerItemVariants(ItemsTFC.GOLDPAN, Arrays.stream(TYPES).map(e -> new ResourceLocation(MOD_ID, "goldpan/" + e)).toArray(ResourceLocation[]::new));
+    }
+
     public ItemGoldPan()
     {
         setMaxDamage(0);
         setMaxStackSize(1);
         setNoRepair();
         setHasSubtypes(true);
+    }
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
+    {
+        //todo: move to public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+        ItemStack stack = playerIn.getHeldItem(handIn);
+        if (worldIn.isRemote) return new ActionResult<>(EnumActionResult.PASS, stack);
+        if (handIn != EnumHand.MAIN_HAND) return new ActionResult<>(EnumActionResult.PASS, stack);
+        if (canPan(worldIn, playerIn) == null) return new ActionResult<>(EnumActionResult.FAIL, stack);
+        playerIn.setActiveHand(handIn);
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack stack)
+    {
+        return super.getUnlocalizedName(stack) + "." + TYPES[stack.getItemDamage()];
     }
 
     @Override
@@ -54,21 +82,23 @@ public class ItemGoldPan extends Item
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack)
+    public void onUsingTick(ItemStack stack, EntityLivingBase entityLivingBase, int countLeft)
     {
-        return super.getUnlocalizedName(stack) + "." + TYPES[stack.getItemDamage()];
-    }
+        if (!(entityLivingBase instanceof EntityPlayer)) return;
+        final EntityPlayer player = ((EntityPlayer) entityLivingBase);
+        final RayTraceResult result = canPan(player.world, player);
+        if (result == null)
+        {
+            player.resetActiveHand();
+            return;
+        }
+        final int total = getMaxItemUseDuration(stack);
+        final int count = total - countLeft;
+        final BlockPos pos = result.getBlockPos().add(0, 1, 0);
+        final World world = player.world;
+        final float chance = world.rand.nextFloat();
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
-    {
-        //todo: move to public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-        ItemStack stack = playerIn.getHeldItem(handIn);
-        if (worldIn.isRemote) return new ActionResult<>(EnumActionResult.PASS, stack);
-        if (handIn != EnumHand.MAIN_HAND) return new ActionResult<>(EnumActionResult.PASS, stack);
-        if (canPan(worldIn, playerIn) == null) return new ActionResult<>(EnumActionResult.FAIL, stack);
-        playerIn.setActiveHand(handIn);
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+        //todo: this is a copypaste from firestarter, it needs to pan, not start fires.
     }
 
     private RayTraceResult canPan(World world, EntityPlayer player)
@@ -82,33 +112,5 @@ public class ItemGoldPan extends Item
         pos = pos.add(0, 1, 0);
         if (world.getBlockState(pos).getMaterial() != Material.WATER) return null;
         return result;
-    }
-
-    @Override
-    public void onUsingTick(ItemStack stack, EntityLivingBase entityLivingBase, int countLeft)
-    {
-        if (!(entityLivingBase instanceof EntityPlayer)) return;
-        final EntityPlayer player = ((EntityPlayer) entityLivingBase);
-        final RayTraceResult result = canPan(player.world, player);
-        if (result == null) {
-            player.resetActiveHand();
-            return;
-        }
-        final int total = getMaxItemUseDuration(stack);
-        final int count = total - countLeft;
-        final BlockPos pos = result.getBlockPos().add(0, 1, 0);
-        final World world = player.world;
-        final float chance = world.rand.nextFloat();
-
-        //todo: this is a copypaste from firestarter, it needs to pan, not start fires.
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    @SideOnly(Side.CLIENT)
-    public static void registerModels()
-    {
-        for (int meta = 0; meta < TYPES.length; meta++)
-            ModelLoader.setCustomModelResourceLocation(ItemsTFC.GOLDPAN, meta, new ModelResourceLocation(MOD_ID + ":goldpan/" + TYPES[meta]));
-        ModelLoader.registerItemVariants(ItemsTFC.GOLDPAN, Arrays.stream(TYPES).map(e -> new ResourceLocation(MOD_ID,"goldpan/" + e)).toArray(ResourceLocation[]::new));
     }
 }

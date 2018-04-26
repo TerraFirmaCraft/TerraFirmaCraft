@@ -15,11 +15,9 @@ import static net.dries007.tfc.Constants.MOD_NAME;
 @GameRegistry.ObjectHolder(MOD_ID)
 public final class BiomesTFC
 {
-    private BiomesTFC() {}
-
     public static final BiomeTFC OCEAN = null;
     public static final BiomeTFC RIVER = null;
-//    public static final BiomeTFC HELL = null;
+    //    public static final BiomeTFC HELL = null;
     public static final BiomeTFC BEACH = null;
     public static final BiomeTFC GRAVEL_BEACH = null;
     public static final BiomeTFC HIGH_HILLS = null;
@@ -32,6 +30,8 @@ public final class BiomesTFC
     public static final BiomeTFC HIGH_PLAINS = null;
     public static final BiomeTFC DEEP_OCEAN = null;
     public static final BiomeTFC LAKE = null;
+    private static BiomeTFC[] PLAYER_SPAWN_BIOMES;
+    private static BiomeTFC[] OVERWORLD_GENERATE_BIOMES;
 
     @SubscribeEvent
     public static void registerBiomes(RegistryEvent.Register<Biome> event)
@@ -53,11 +53,6 @@ public final class BiomesTFC
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-3.2f).setHeightVariation(-2.6990001f).setBaseBiome("tfc:ocean"), 2, 5/*todo: was 0*/));
 
 //        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_hell").setRainDisabled().setTemperature(2.0F).setRainfall(0.0F)));
-    }
-
-    private static void register(IForgeRegistry<Biome> r, Biome item)
-    {
-        r.register(item.setRegistryName(MOD_ID, item.biomeName.replace(MOD_NAME + " ", "").replace(' ', '_').toLowerCase()));
     }
 
     public static boolean isOceanicBiome(int id)
@@ -90,9 +85,6 @@ public final class BiomesTFC
         return BEACH == b || GRAVEL_BEACH == b;
     }
 
-    private static BiomeTFC[] PLAYER_SPAWN_BIOMES;
-    private static BiomeTFC[] OVERWORLD_GENERATE_BIOMES;
-
     public static BiomeTFC[] getPlayerSpawnBiomes()
     {
         if (PLAYER_SPAWN_BIOMES == null)
@@ -124,4 +116,11 @@ public final class BiomesTFC
         }
         return OVERWORLD_GENERATE_BIOMES;
     }
+
+    private static void register(IForgeRegistry<Biome> r, Biome item)
+    {
+        r.register(item.setRegistryName(MOD_ID, item.biomeName.replace(MOD_NAME + " ", "").replace(' ', '_').toLowerCase()));
+    }
+
+    private BiomesTFC() {}
 }

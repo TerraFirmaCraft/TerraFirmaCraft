@@ -2,23 +2,6 @@ package net.dries007.tfc.client;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import net.dries007.tfc.client.render.TESRChestTFC;
-import net.dries007.tfc.client.render.TESRPitKiln;
-import net.dries007.tfc.objects.Gem;
-import net.dries007.tfc.objects.Ore;
-import net.dries007.tfc.objects.blocks.BlockRockVariant;
-import net.dries007.tfc.objects.blocks.BlockSlabTFC;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
-import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
-import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
-import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
-import net.dries007.tfc.objects.items.ItemGem;
-import net.dries007.tfc.objects.items.ItemGoldPan;
-import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.objects.items.metal.ItemOreTFC;
-import net.dries007.tfc.objects.te.TEChestTFC;
-import net.dries007.tfc.objects.te.TEPitKiln;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -39,31 +22,34 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import net.dries007.tfc.client.render.TESRChestTFC;
+import net.dries007.tfc.client.render.TESRPitKiln;
+import net.dries007.tfc.objects.Gem;
+import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.blocks.BlockSlabTFC;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
+import net.dries007.tfc.objects.items.ItemGem;
+import net.dries007.tfc.objects.items.ItemGoldPan;
+import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.items.metal.ItemOreTFC;
+import net.dries007.tfc.objects.te.TEChestTFC;
+import net.dries007.tfc.objects.te.TEPitKiln;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)
 public final class ClientRegisterEvents
 {
-    private ClientRegisterEvents() {}
-
-    /**
-     * Turns "gem/diamond" + enum NORMAL into "gem/normal/diamond"
-     */
-    private static void registerEnumBasedMetaItems(String prefix, Enum e, Item item)
-    {
-        //noinspection ConstantConditions
-        String registryName = item.getRegistryName().getResourcePath();
-        StringBuilder path = new StringBuilder(MOD_ID).append(':');
-        if (!Strings.isNullOrEmpty(prefix)) path.append(prefix).append('/');
-        path.append(e.name());
-        if (!Strings.isNullOrEmpty(prefix)) path.append(registryName.replace(prefix, "")); // There well be a '/' at the start of registryName due to the prefix, so don't add an extra one.
-        else path.append('/').append(registryName);
-        ModelLoader.setCustomModelResourceLocation(item, e.ordinal(), new ModelResourceLocation(path.toString().toLowerCase()));
-    }
-
-    @SuppressWarnings("ConstantConditions")
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("ConstantConditions")
     public static void registerModels(ModelRegistryEvent event)
     {
         for (Item item : ItemsTFC.getAllSimpleItems())
@@ -133,6 +119,7 @@ public final class ClientRegisterEvents
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
     {
         BlockColors blockcolors = event.getBlockColors();
@@ -154,25 +141,43 @@ public final class ClientRegisterEvents
                 BlocksTFC.getAllLeafBlocks().toArray(new Block[0]));
     }
 
-    @SuppressWarnings("deprecation")
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
     public static void registerColorHandlerItems(ColorHandlerEvent.Item event)
     {
         ItemColors itemColors = event.getItemColors();
 
         itemColors.registerItemColorHandler((stack, tintIndex) ->
-                        event.getBlockColors().colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
+                        event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
                 BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isGrass).toArray(BlockRockVariant[]::new));
 
         itemColors.registerItemColorHandler((stack, tintIndex) ->
-                        event.getBlockColors().colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
+                        event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
                 BlocksTFC.PEAT_GRASS);
 
         itemColors.registerItemColorHandler((stack, tintIndex) ->
-                        event.getBlockColors().colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
+                        event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
                 BlocksTFC.getAllLeafBlocks().stream().toArray(BlockLeavesTFC[]::new));
 
         itemColors.registerItemColorHandler((stack, tintIndex) -> tintIndex == 1 ? EnumDyeColor.byDyeDamage(stack.getItemDamage()).getColorValue() : 0xFFFFFF,
                 ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED);
+    }
+
+    /**
+     * Turns "gem/diamond" + enum NORMAL into "gem/normal/diamond"
+     */
+    @SideOnly(Side.CLIENT)
+    private static void registerEnumBasedMetaItems(String prefix, Enum e, Item item)
+    {
+        //noinspection ConstantConditions
+        String registryName = item.getRegistryName().getResourcePath();
+        StringBuilder path = new StringBuilder(MOD_ID).append(':');
+        if (!Strings.isNullOrEmpty(prefix)) path.append(prefix).append('/');
+        path.append(e.name());
+        if (!Strings.isNullOrEmpty(prefix))
+            path.append(registryName.replace(prefix, "")); // There well be a '/' at the start of registryName due to the prefix, so don't add an extra one.
+        else path.append('/').append(registryName);
+        ModelLoader.setCustomModelResourceLocation(item, e.ordinal(), new ModelResourceLocation(path.toString().toLowerCase()));
     }
 }

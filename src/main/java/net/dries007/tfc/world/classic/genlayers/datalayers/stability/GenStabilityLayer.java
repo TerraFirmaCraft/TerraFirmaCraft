@@ -4,11 +4,6 @@ import net.dries007.tfc.world.classic.genlayers.*;
 
 public abstract class GenStabilityLayer extends GenLayerTFC
 {
-    public GenStabilityLayer(long par1)
-    {
-        super(par1);
-    }
-
     public static GenLayerTFC initialize(long seed)
     {
         GenLayerTFC continent = genContinent(seed);
@@ -41,5 +36,10 @@ public abstract class GenStabilityLayer extends GenLayerTFC
         continent = new GenLayerZoomTFC(2003L, continent);
         //continent = new GenLayerAddIslandTFC(4L, continent);
         return continent;
+    }
+
+    public GenStabilityLayer(long par1)
+    {
+        super(par1);
     }
 }

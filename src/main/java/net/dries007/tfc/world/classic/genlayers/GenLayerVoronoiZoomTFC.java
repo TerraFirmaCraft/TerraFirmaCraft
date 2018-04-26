@@ -63,16 +63,13 @@ public class GenLayerVoronoiZoomTFC extends GenLayerTFC
                         if (d9 < d10 && d9 < d11 && d9 < d12)
                         {
                             aint1[j4++] = i3;
-                        }
-                        else if (d10 < d9 && d10 < d11 && d10 < d12)
+                        } else if (d10 < d9 && d10 < d11 && d10 < d12)
                         {
                             aint1[j4++] = k3;
-                        }
-                        else if (d11 < d9 && d11 < d10 && d11 < d12)
+                        } else if (d11 < d9 && d11 < d10 && d11 < d12)
                         {
                             aint1[j4++] = j3;
-                        }
-                        else
+                        } else
                         {
                             aint1[j4++] = l3;
                         }

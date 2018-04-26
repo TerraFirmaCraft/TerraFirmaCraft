@@ -1,12 +1,13 @@
 package net.dries007.tfc.objects.items.metal;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
+
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
 
 public class ItemMetal extends Item implements IMetalObject
 {
@@ -40,7 +41,7 @@ public class ItemMetal extends Item implements IMetalObject
     public int getSmeltAmount(ItemStack stack)
     {
         if (!isDamageable() || !stack.isItemDamaged()) return type.smeltAmount;
-        double d = (stack.getMaxDamage() - stack.getItemDamage()) / (double)stack.getMaxDamage() - .10;
+        double d = (stack.getMaxDamage() - stack.getItemDamage()) / (double) stack.getMaxDamage() - .10;
         return d < 0 ? 0 : MathHelper.floor(type.smeltAmount * d);
     }
 }

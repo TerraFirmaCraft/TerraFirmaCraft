@@ -1,10 +1,11 @@
 package net.dries007.tfc.objects.blocks.stone;
 
-import net.dries007.tfc.objects.Rock;
+import java.util.EnumMap;
+
 import net.minecraft.block.BlockButtonStone;
 import net.minecraft.block.SoundType;
 
-import java.util.EnumMap;
+import net.dries007.tfc.objects.Rock;
 
 public class BlockButtonStoneTFC extends BlockButtonStone
 {

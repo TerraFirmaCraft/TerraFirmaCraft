@@ -1,7 +1,5 @@
 package net.dries007.tfc.objects.recipes;
 
-import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -9,6 +7,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.objects.items.metal.ItemMetal;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
@@ -39,15 +40,13 @@ public class MetalToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> implement
             {
                 if (stick) return false;
                 stick = true;
-            }
-            else if (stack.getItem() instanceof ItemMetal)
+            } else if (stack.getItem() instanceof ItemMetal)
             {
                 ItemMetal metal = ((ItemMetal) stack.getItem());
                 if (metal.type != inp) return false;
                 if (toolhead) return false;
                 toolhead = true;
-            }
-            else
+            } else
             {
                 return false;
             }
@@ -69,15 +68,13 @@ public class MetalToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> implement
             {
                 if (stick) return null;
                 stick = true;
-            }
-            else if (stack.getItem() instanceof ItemMetal)
+            } else if (stack.getItem() instanceof ItemMetal)
             {
                 ItemMetal metal = ((ItemMetal) stack.getItem());
                 if (metal.type != inp) return null;
                 if (toolhead != null) return null;
                 toolhead = metal;
-            }
-            else
+            } else
             {
                 return null;
             }

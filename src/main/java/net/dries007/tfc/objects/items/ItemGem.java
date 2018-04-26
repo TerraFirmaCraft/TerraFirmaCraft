@@ -1,13 +1,14 @@
 package net.dries007.tfc.objects.items;
 
-import net.dries007.tfc.objects.Gem;
-import net.dries007.tfc.util.OreDictionaryHelper;
+import java.util.EnumMap;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-import java.util.EnumMap;
+import net.dries007.tfc.objects.Gem;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class ItemGem extends Item
 {
@@ -40,15 +41,6 @@ public class ItemGem extends Item
         }
     }
 
-    @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
-    {
-        if (!isInCreativeTab(tab)) return;
-
-        for (Gem.Grade grade : Gem.Grade.values())
-            items.add(new ItemStack(this, 1, grade.getMeta()));
-    }
-
     public Gem.Grade getGradeFromStack(ItemStack stack)
     {
         return Gem.Grade.fromMeta(stack.getItemDamage());
@@ -59,5 +51,14 @@ public class ItemGem extends Item
     {
         Gem.Grade grade = getGradeFromStack(stack);
         return super.getUnlocalizedName(stack) + "." + grade.name().toLowerCase();
+    }
+
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    {
+        if (!isInCreativeTab(tab)) return;
+
+        for (Gem.Grade grade : Gem.Grade.values())
+            items.add(new ItemStack(this, 1, grade.getMeta()));
     }
 }

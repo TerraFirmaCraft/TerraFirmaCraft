@@ -1,9 +1,8 @@
 package net.dries007.tfc.objects.blocks.wood;
 
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.util.OreDictionaryHelper;
-import net.dries007.tfc.world.classic.worldgen.WorldGenTree;
+import java.util.EnumMap;
+import java.util.Random;
+
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.properties.PropertyInteger;
@@ -15,20 +14,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.EnumMap;
-import java.util.Random;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockSaplingTFC extends BlockBush implements IGrowable
 {
+    public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 4);
+    protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
     private static final EnumMap<Wood, BlockSaplingTFC> MAP = new EnumMap<>(Wood.class);
 
     public static BlockSaplingTFC get(Wood wood)
     {
         return MAP.get(wood);
     }
-
-    protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
-    public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 4);
 
     public final Wood wood;
 
@@ -42,19 +41,6 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
         OreDictionaryHelper.register(this, "tree", "sapling");
         OreDictionaryHelper.register(this, "tree", "sapling", wood);
         Blocks.FIRE.setFireInfo(this, 5, 20);
-    }
-
-    @Override
-    public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
-    {
-        WorldGenTree treeGenerator = new WorldGenTree(wood, false); //check out what the notifier is for.
-        treeGenerator.grow(world, random, blockPos, blockState);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, STAGE);
     }
 
     @SuppressWarnings("deprecation")
@@ -98,6 +84,12 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     }
 
     @Override
+    public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
+    {
+
+    }
+
+    @Override
     public boolean canGrow(World world, BlockPos blockPos, IBlockState iBlockState, boolean b)
     {
         return true;
@@ -108,5 +100,11 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     {
         TerraFirmaCraft.getLog().info("canUseBoneMeal called");
         return true;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, STAGE);
     }
 }

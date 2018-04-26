@@ -5,11 +5,6 @@ import net.dries007.tfc.world.classic.genlayers.*;
 
 public abstract class GenRockLayer extends GenLayerTFC
 {
-    public GenRockLayer(long par1)
-    {
-        super(par1);
-    }
-
     public static GenLayerTFC initialize(long seed, DataLayer[] rocks)
     {
         GenLayerTFC layer = new GenLayerRockInit(1L, rocks);
@@ -41,5 +36,10 @@ public abstract class GenRockLayer extends GenLayerTFC
         smoothedLayer.initWorldGenSeed(seed);
         voronoiLayer.initWorldGenSeed(seed);
         return voronoiLayer;
+    }
+
+    public GenRockLayer(long par1)
+    {
+        super(par1);
     }
 }

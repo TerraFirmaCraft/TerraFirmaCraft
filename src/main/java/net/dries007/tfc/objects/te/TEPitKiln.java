@@ -1,12 +1,7 @@
 package net.dries007.tfc.objects.te;
 
-import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.blocks.BlockPitKiln;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.items.ItemFireStarter;
-import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.objects.items.wood.ItemLogTFC;
-import net.dries007.tfc.util.IFireable;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +23,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
+import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.objects.blocks.BlockPitKiln;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.items.ItemFireStarter;
+import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.items.wood.ItemLogTFC;
+import net.dries007.tfc.util.IFireable;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
@@ -39,24 +40,22 @@ public class TEPitKiln extends TileEntity implements ITickable
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
     public static final int BURN_TICKS = 10 * 60; // * 20; // 10 IRL minutes todo
-
-    private int burnTicksToGo;
     private final NonNullList<ItemStack> logs = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> straw = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
+    private int burnTicksToGo;
 
     @Override
     public void update()
     {
         if (burnTicksToGo > 0)
         {
-            burnTicksToGo --;
+            burnTicksToGo--;
             BlockPos above = getPos().add(0, 1, 0);
             if (world.isAirBlock(above))
             {
                 world.setBlockState(above, Blocks.FIRE.getDefaultState());
-            }
-            else
+            } else
             {
                 IBlockState stateAbove = world.getBlockState(above);
                 if (stateAbove.getMaterial() != Material.FIRE)
@@ -85,10 +84,13 @@ public class TEPitKiln extends TileEntity implements ITickable
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox()
+    public void readFromNBT(NBTTagCompound compound)
     {
-        return new AxisAlignedBB(getPos(), getPos().add(1, 1, 1));
+        super.readFromNBT(compound);
+        burnTicksToGo = compound.getInteger("burnTicksToGo");
+        ItemStackHelper.loadAllItems(compound.getCompoundTag("items"), items);
+        ItemStackHelper.loadAllItems(compound.getCompoundTag("straw"), straw);
+        ItemStackHelper.loadAllItems(compound.getCompoundTag("logs"), logs);
     }
 
     @Override
@@ -102,22 +104,6 @@ public class TEPitKiln extends TileEntity implements ITickable
         return compound;
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound compound)
-    {
-        super.readFromNBT(compound);
-        burnTicksToGo = compound.getInteger("burnTicksToGo");
-        ItemStackHelper.loadAllItems(compound.getCompoundTag("items"), items);
-        ItemStackHelper.loadAllItems(compound.getCompoundTag("straw"), straw);
-        ItemStackHelper.loadAllItems(compound.getCompoundTag("logs"), logs);
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag()
-    {
-        return writeToNBT(new NBTTagCompound());
-    }
-
     @Nullable
     @Override
     public SPacketUpdateTileEntity getUpdatePacket()
@@ -126,10 +112,23 @@ public class TEPitKiln extends TileEntity implements ITickable
     }
 
     @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
         readFromNBT(pkt.getNbtCompound());
         updateBlock();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return new AxisAlignedBB(getPos(), getPos().add(1, 1, 1));
     }
 
     public boolean isLit()
@@ -219,33 +218,6 @@ public class TEPitKiln extends TileEntity implements ITickable
         }
     }
 
-    private void light()
-    {
-        burnTicksToGo = BURN_TICKS;
-        updateBlock();
-        world.setBlockState(getPos().add(0, 1, 0), Blocks.FIRE.getDefaultState());
-    }
-
-    private void addStraw(ItemStack stack)
-    {
-        for (int i = 0; i < straw.size(); i++)
-        {
-            if (!straw.get(i).isEmpty()) continue;
-            straw.set(i, stack);
-            return;
-        }
-    }
-
-    private void addLog(ItemStack stack)
-    {
-        for (int i = 0; i < logs.size(); i++)
-        {
-            if (!logs.get(i).isEmpty()) continue;
-            logs.set(i, stack);
-            return;
-        }
-    }
-
     public void updateBlock()
     {
         IBlockState state = world.getBlockState(pos);
@@ -273,5 +245,32 @@ public class TEPitKiln extends TileEntity implements ITickable
     public int getStrawCount()
     {
         return (int) straw.stream().filter(i -> !i.isEmpty()).count();
+    }
+
+    private void light()
+    {
+        burnTicksToGo = BURN_TICKS;
+        updateBlock();
+        world.setBlockState(getPos().add(0, 1, 0), Blocks.FIRE.getDefaultState());
+    }
+
+    private void addStraw(ItemStack stack)
+    {
+        for (int i = 0; i < straw.size(); i++)
+        {
+            if (!straw.get(i).isEmpty()) continue;
+            straw.set(i, stack);
+            return;
+        }
+    }
+
+    private void addLog(ItemStack stack)
+    {
+        for (int i = 0; i < logs.size(); i++)
+        {
+            if (!logs.get(i).isEmpty()) continue;
+            logs.set(i, stack);
+            return;
+        }
     }
 }

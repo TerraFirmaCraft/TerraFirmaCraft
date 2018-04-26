@@ -1,9 +1,10 @@
 package net.dries007.tfc.objects.items;
 
-import net.dries007.tfc.objects.Rock;
+import java.util.EnumMap;
+
 import net.minecraft.item.Item;
 
-import java.util.EnumMap;
+import net.dries007.tfc.objects.Rock;
 
 public final class ItemFlat extends Item
 {

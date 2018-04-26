@@ -1,16 +1,16 @@
 package net.dries007.tfc.util;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Table;
-import com.google.common.collect.Tables;
-
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Table;
+import com.google.common.collect.Tables;
 
 public class InsertOnlyEnumTable<R extends Enum<R>, C extends Enum<C>, T> implements Table<R, C, T>
 {
@@ -56,15 +56,6 @@ public class InsertOnlyEnumTable<R extends Enum<R>, C extends Enum<C>, T> implem
     }
 
     @SuppressWarnings("SuspiciousMethodCalls")
-    public T get(@Nullable R rowKey, @Nullable C columnKey)
-    {
-        if (rowKey == null || columnKey == null) return null;
-        EnumMap<C, T> row = rowMap.get(rowKey);
-        if (row == null) return null;
-        return row.get(columnKey);
-    }
-
-    @SuppressWarnings("SuspiciousMethodCalls")
     @Override
     public T get(@Nullable Object rowKey, @Nullable Object columnKey)
     {
@@ -102,8 +93,7 @@ public class InsertOnlyEnumTable<R extends Enum<R>, C extends Enum<C>, T> implem
             row = new EnumMap<>(colClass);
             row.put(columnKey, value);
             rowMap.put(rowKey, row);
-        }
-        else
+        } else
         {
             if (row.containsKey(columnKey)) throw new UnsupportedOperationException();
             row.put(columnKey, value);
@@ -173,5 +163,14 @@ public class InsertOnlyEnumTable<R extends Enum<R>, C extends Enum<C>, T> implem
     public ImmutableMap<C, Map<R, T>> columnMap()
     {
         return columnKeySet().stream().map(x -> new ImmutablePair<>(x, column(x))).collect(ImmutableMap.toImmutableMap(x -> x.a, x -> x.b));
+    }
+
+    @SuppressWarnings("SuspiciousMethodCalls")
+    public T get(@Nullable R rowKey, @Nullable C columnKey)
+    {
+        if (rowKey == null || columnKey == null) return null;
+        EnumMap<C, T> row = rowMap.get(rowKey);
+        if (row == null) return null;
+        return row.get(columnKey);
     }
 }

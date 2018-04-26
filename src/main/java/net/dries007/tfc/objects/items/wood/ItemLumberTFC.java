@@ -1,11 +1,12 @@
 package net.dries007.tfc.objects.items.wood;
 
-import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.util.OreDictionaryHelper;
+import java.util.EnumMap;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import java.util.EnumMap;
+import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class ItemLumberTFC extends Item
 {

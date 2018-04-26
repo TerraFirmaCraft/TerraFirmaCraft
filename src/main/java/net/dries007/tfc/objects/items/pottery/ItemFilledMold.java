@@ -1,10 +1,11 @@
 package net.dries007.tfc.objects.items.pottery;
 
+import net.minecraft.item.ItemStack;
+
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.minecraft.item.ItemStack;
 
 public class ItemFilledMold extends ItemFiredPottery implements IMetalObject
 {

@@ -15,6 +15,14 @@ public class ItemSmallVessel extends ItemFiredPottery
     }
 
     @Override
+    public String getUnlocalizedName(ItemStack stack)
+    {
+        if (!glazed)
+            return super.getUnlocalizedName(stack);
+        return super.getUnlocalizedName(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
+    }
+
+    @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
         if (!isInCreativeTab(tab)) return;
@@ -24,13 +32,5 @@ public class ItemSmallVessel extends ItemFiredPottery
         else
             for (EnumDyeColor color : EnumDyeColor.values())
                 items.add(new ItemStack(this, 1, color.getDyeDamage()));
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack)
-    {
-        if (!glazed)
-            return super.getUnlocalizedName(stack);
-        return super.getUnlocalizedName(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
     }
 }

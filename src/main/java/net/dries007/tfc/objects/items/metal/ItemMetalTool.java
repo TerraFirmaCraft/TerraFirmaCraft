@@ -1,7 +1,6 @@
 package net.dries007.tfc.objects.items.metal;
 
 import com.google.common.collect.Multimap;
-import net.dries007.tfc.objects.Metal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,6 +12,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import net.dries007.tfc.objects.Metal;
 
 public class ItemMetalTool extends ItemMetal
 {
@@ -122,15 +123,18 @@ public class ItemMetalTool extends ItemMetal
         switch (type)
         {
             case AXE:
-                if (material == Material.WOOD || material == Material.PLANTS || material == Material.VINE) return efficiency;
+                if (material == Material.WOOD || material == Material.PLANTS || material == Material.VINE)
+                    return efficiency;
                 break;
             case PICK:
-                if (material == Material.IRON || material == Material.ANVIL || material == Material.ROCK) return efficiency;
+                if (material == Material.IRON || material == Material.ANVIL || material == Material.ROCK)
+                    return efficiency;
                 break;
             case SHOVEL:
                 if (material == Material.SNOW || material == Material.CRAFTED_SNOW) return efficiency;
             case SCYTHE:
-                if (material == Material.PLANTS || material == Material.VINE || material == Material.LEAVES) return efficiency;
+                if (material == Material.PLANTS || material == Material.VINE || material == Material.LEAVES)
+                    return efficiency;
         }
         for (String type : getToolClasses(stack))
         {
@@ -170,19 +174,19 @@ public class ItemMetalTool extends ItemMetal
     }
 
     @Override
-    public boolean canHarvestBlock(IBlockState blockIn)
-    {
-        return super.canHarvestBlock(blockIn);
-    }
-
-    @Override
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
     {
-        if (!worldIn.isRemote && (double)state.getBlockHardness(worldIn, pos) != 0.0D)
+        if (!worldIn.isRemote && (double) state.getBlockHardness(worldIn, pos) != 0.0D)
         {
             stack.damageItem(1, entityLiving);
         }
         return true;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockState blockIn)
+    {
+        return super.canHarvestBlock(blockIn);
     }
 
     @Override

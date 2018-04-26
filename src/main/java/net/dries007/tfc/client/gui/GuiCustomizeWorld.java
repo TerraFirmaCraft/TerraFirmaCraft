@@ -1,16 +1,17 @@
 package net.dries007.tfc.client.gui;
 
+import java.io.IOException;
+
 import com.google.common.base.Strings;
 import com.google.gson.JsonParseException;
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.world.classic.WorldGenSettings;
-import net.dries007.tfc.world.classic.WorldGenSettings.WorldGenSettingsBuilder;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.io.IOException;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.world.classic.WorldGenSettings;
+import net.dries007.tfc.world.classic.WorldGenSettings.WorldGenSettingsBuilder;
 
 @SideOnly(Side.CLIENT)
 public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelper, GuiPageButtonList.GuiResponder
@@ -29,7 +30,7 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     private static final int ID_SURFACE_RAVINE_RARITY = 105;
     private static final int ID_SURFACE_RAVINE_HEIGHT = 106;
     private static final int ID_SURFACE_RAVINE_VARIABILITY = 107;
-    
+
     private static final int ID_RIVER_RAVINE_RARITY = 108;
 
     private final GuiCreateWorld parent;
@@ -50,26 +51,112 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
         settings = loadSettings(prevSettings);
     }
 
-    private void update()
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        defaultsBtn.enabled = !settings.isDefault();
+        drawDefaultBackground();
+        drawCenteredString(fontRenderer, title, width / 2, 8, 16777215);
+        this.list.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
-    private WorldGenSettingsBuilder loadSettings(String str)
+    @Override
+    public void setEntryValue(int id, boolean value)
     {
-        if (!Strings.isNullOrEmpty(str))
+        switch (id)
         {
-            try
-            {
-                return WorldGenSettings.fromString(str);
-            }
-            catch (JsonParseException e)
-            {
-                TerraFirmaCraft.getLog().error("Error parsing s: {}", str);
-                TerraFirmaCraft.getLog().catching(e);
-            }
+            case ID_FLAT_BEDROCK:
+                settings.flatBedrock = value;
+                break;
         }
-        return new WorldGenSettingsBuilder();
+        update();
+    }
+
+    @Override
+    public void setEntryValue(int id, float value)
+    {
+        switch (id)
+        {
+            case ID_SPAWN_FUZZ:
+                settings.spawnFuzz = Math.round(value);
+                break;
+
+            case ID_RAVINE_RARITY:
+                settings.ravineRarity = Math.round(value);
+                break;
+            case ID_RAVINE_HEIGHT:
+                settings.ravineHeight = Math.round(value);
+                break;
+            case ID_RAVINE_VARIABILITY:
+                settings.ravineVariability = Math.round(value);
+                break;
+
+            case ID_SURFACE_RAVINE_RARITY:
+                settings.surfaceRavineRarity = Math.round(value);
+                break;
+            case ID_SURFACE_RAVINE_HEIGHT:
+                settings.surfaceRavineHeight = Math.round(value);
+                break;
+            case ID_SURFACE_RAVINE_VARIABILITY:
+                settings.surfaceRavineVariability = Math.round(value);
+                break;
+
+            case ID_RIVER_RAVINE_RARITY:
+                settings.riverRavineRarity = Math.round(value);
+                break;
+        }
+        update();
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode)
+    {
+        list.onKeyPressed(typedChar, keyCode);
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException
+    {
+        if (!button.enabled) return;
+
+        switch (button.id)
+        {
+            case ID_DONE:
+                parent.chunkProviderSettingsJson = settings.build().toString();
+                mc.displayGuiScreen(parent);
+                break;
+
+            case ID_CANCEL:
+                mc.displayGuiScreen(parent);
+                break;
+
+            case ID_DEFAULTS:
+                settings = loadSettings("");
+                break;
+        }
+        super.actionPerformed(button);
+        update();
+    }
+
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
+    {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        list.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException
+    {
+        super.handleMouseInput();
+        this.list.handleMouseInput();
+    }
+
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state)
+    {
+        super.mouseReleased(mouseX, mouseY, state);
+        list.mouseReleased(mouseX, mouseY, state);
     }
 
     @Override
@@ -105,96 +192,6 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
-    {
-        drawDefaultBackground();
-        drawCenteredString(fontRenderer, title, width / 2, 8, 16777215);
-        this.list.drawScreen(mouseX, mouseY, partialTicks);
-        super.drawScreen(mouseX, mouseY, partialTicks);
-    }
-
-    @Override
-    protected void actionPerformed(GuiButton button) throws IOException
-    {
-        if (!button.enabled) return;
-
-        switch (button.id)
-        {
-            case ID_DONE:
-                parent.chunkProviderSettingsJson = settings.build().toString();
-                mc.displayGuiScreen(parent);
-                break;
-
-            case ID_CANCEL:
-                mc.displayGuiScreen(parent);
-                break;
-
-            case ID_DEFAULTS:
-                settings = loadSettings("");
-                break;
-        }
-        super.actionPerformed(button);
-        update();
-    }
-
-    @Override
-    public void handleMouseInput() throws IOException
-    {
-        super.handleMouseInput();
-        this.list.handleMouseInput();
-    }
-
-    @Override
-    protected void keyTyped(char typedChar, int keyCode)
-    {
-        list.onKeyPressed(typedChar, keyCode);
-    }
-
-    @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
-    {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-        list.mouseClicked(mouseX, mouseY, mouseButton);
-    }
-
-    @Override
-    protected void mouseReleased(int mouseX, int mouseY, int state)
-    {
-        super.mouseReleased(mouseX, mouseY, state);
-        list.mouseReleased(mouseX, mouseY, state);
-    }
-
-    @Override
-    public void setEntryValue(int id, boolean value)
-    {
-        switch (id)
-        {
-            case ID_FLAT_BEDROCK: settings.flatBedrock = value; break;
-        }
-        update();
-    }
-
-    @Override
-    public void setEntryValue(int id, float value)
-    {
-        switch (id)
-        {
-            case ID_SPAWN_FUZZ: settings.spawnFuzz = Math.round(value); break;
-
-            case ID_RAVINE_RARITY: settings.ravineRarity = Math.round(value); break;
-            case ID_RAVINE_HEIGHT: settings.ravineHeight = Math.round(value); break;
-            case ID_RAVINE_VARIABILITY: settings.ravineVariability = Math.round(value); break;
-
-            case ID_SURFACE_RAVINE_RARITY: settings.surfaceRavineRarity = Math.round(value); break;
-            case ID_SURFACE_RAVINE_HEIGHT: settings.surfaceRavineHeight = Math.round(value); break;
-            case ID_SURFACE_RAVINE_VARIABILITY: settings.surfaceRavineVariability = Math.round(value); break;
-
-            case ID_RIVER_RAVINE_RARITY: settings.riverRavineRarity = Math.round(value); break;
-        }
-        update();
-    }
-
-    @Override
     public void setEntryValue(int id, String value)
     {
         update();
@@ -204,6 +201,27 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     public String getText(int id, String name, float value)
     {
         return name + ": " + this.getFormattedValue(id, value);
+    }
+
+    private void update()
+    {
+        defaultsBtn.enabled = !settings.isDefault();
+    }
+
+    private WorldGenSettingsBuilder loadSettings(String str)
+    {
+        if (!Strings.isNullOrEmpty(str))
+        {
+            try
+            {
+                return WorldGenSettings.fromString(str);
+            } catch (JsonParseException e)
+            {
+                TerraFirmaCraft.getLog().error("Error parsing s: {}", str);
+                TerraFirmaCraft.getLog().catching(e);
+            }
+        }
+        return new WorldGenSettingsBuilder();
     }
 
     private String getFormattedValue(int id, float value)

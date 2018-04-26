@@ -1,9 +1,10 @@
 package net.dries007.tfc.world.classic.genlayers.biome;
 
-import net.dries007.tfc.objects.biomes.BiomesTFC;
-import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.IntCache;
+
+import net.dries007.tfc.objects.biomes.BiomesTFC;
+import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerShoreTFC extends GenLayerTFC
 {
@@ -45,8 +46,7 @@ public class GenLayerShoreTFC extends GenLayerTFC
                         if (BiomesTFC.isMountainBiome(var9)) beachid = Biome.getIdForBiome(BiomesTFC.GRAVEL_BEACH);
                         var6[var8 + var7 * par3] = beachid;
                     }
-                }
-                else
+                } else
                 {
                     var6[var8 + var7 * par3] = var9;
                 }

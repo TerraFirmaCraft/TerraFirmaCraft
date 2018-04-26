@@ -24,14 +24,14 @@ public enum Gem
         CHIPPED,
         EXQUISITE;
 
-        public int getMeta()
-        {
-            return this.ordinal();
-        }
-
         public static Grade fromMeta(int meta)
         {
             return values()[meta];
+        }
+
+        public int getMeta()
+        {
+            return this.ordinal();
         }
     }
 }

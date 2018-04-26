@@ -59,16 +59,16 @@ public enum Ore
     {
         NORMAL(25), POOR(15), RICH(35);
 
+        public static Grade byMetadata(int meta)
+        {
+            return Grade.values()[meta];
+        }
+
         public final int smeltAmount;
 
         Grade(int smeltAmount)
         {
             this.smeltAmount = smeltAmount;
-        }
-
-        public static Grade byMetadata(int meta)
-        {
-            return Grade.values()[meta];
         }
 
         @Override

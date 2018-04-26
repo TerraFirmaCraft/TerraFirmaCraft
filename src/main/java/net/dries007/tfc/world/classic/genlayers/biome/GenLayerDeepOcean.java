@@ -1,9 +1,10 @@
 package net.dries007.tfc.world.classic.genlayers.biome;
 
-import net.dries007.tfc.objects.biomes.BiomesTFC;
-import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.IntCache;
+
+import net.dries007.tfc.objects.biomes.BiomesTFC;
+import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerDeepOcean extends GenLayerTFC
 {
@@ -58,8 +59,7 @@ public class GenLayerDeepOcean extends GenLayerTFC
                 if (thisID == 0 && oceanCount > 3)
                 {
                     outCache[outIndex] = Biome.getIdForBiome(BiomesTFC.DEEP_OCEAN);
-                }
-                else
+                } else
                 {
                     outCache[outIndex] = thisID;
                 }

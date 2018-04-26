@@ -1,14 +1,9 @@
 package net.dries007.tfc.client;
 
-import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.client.render.RenderFallingBlockTFC;
-import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
-import net.dries007.tfc.util.IMetalObject;
-import net.dries007.tfc.world.classic.CalenderTFC;
-import net.dries007.tfc.world.classic.ClimateTFC;
-import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiCreateWorld;
@@ -27,11 +22,18 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.client.render.RenderFallingBlockTFC;
+import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
+import net.dries007.tfc.util.IMetalObject;
+import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 import static net.minecraft.util.text.TextFormatting.*;
@@ -44,6 +46,7 @@ public class ClientEvents
         RenderingRegistry.registerEntityRenderingHandler(EntityFallingBlockTFC.class, RenderFallingBlockTFC::new);
     }
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void openGUI(GuiScreenEvent.InitGuiEvent.Pre event)
     {
@@ -51,11 +54,13 @@ public class ClientEvents
         {
             GuiCreateWorld gui = ((GuiCreateWorld) event.getGui());
             // Only change if default is selected, because coming back from customisation, this will be set already.
-            if (gui.selectedIndex == WorldType.DEFAULT.getId()) gui.selectedIndex = TerraFirmaCraft.getWorldTypeTFC().getId();
+            if (gui.selectedIndex == WorldType.DEFAULT.getId())
+                gui.selectedIndex = TerraFirmaCraft.getWorldTypeTFC().getId();
         }
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
     {
         // todo: check if this is allowed to be displayed, debug/op only maybe?
@@ -112,6 +117,7 @@ public class ClientEvents
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public static void onItemTooltip(ItemTooltipEvent event)
     {
         if (event.getFlags().isAdvanced())

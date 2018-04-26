@@ -1,7 +1,7 @@
 package net.dries007.tfc.world.classic;
 
 import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.blocks.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 
 /**
  * Todo: Rewrite to make typesafe ?
@@ -88,42 +88,17 @@ public final class DataLayer
 
     public static final DataLayer ERROR = new DataLayer(-1, null, "ERROR", Integer.MIN_VALUE, Float.NaN);
 
-    public static final DataLayer[] ROCK_LAYER_1 = new DataLayer[] {
-            DataLayer.SHALE, DataLayer.CLAYSTONE, DataLayer.ROCKSALT, DataLayer.LIMESTONE,
-            DataLayer.CONGLOMERATE, DataLayer.DOLOMITE, DataLayer.CHERT, DataLayer.CHALK,
-            DataLayer.RHYOLITE, DataLayer.BASALT, DataLayer.ANDESITE, DataLayer.DACITE,
-            DataLayer.QUARTZITE, DataLayer.SLATE, DataLayer.PHYLLITE, DataLayer.SCHIST,
-            DataLayer.GNEISS, DataLayer.MARBLE, DataLayer.GRANITE, DataLayer.DIORITE, DataLayer.GABBRO
-    };
-    public static final DataLayer[] ROCK_LAYER_2 = new DataLayer[] {
-            DataLayer.RHYOLITE, DataLayer.BASALT, DataLayer.ANDESITE, DataLayer.DACITE,
-            DataLayer.QUARTZITE, DataLayer.SLATE, DataLayer.PHYLLITE, DataLayer.SCHIST,
-            DataLayer.GNEISS, DataLayer.MARBLE, DataLayer.GRANITE, DataLayer.DIORITE,
-            DataLayer.GABBRO
-    };
-    public static final DataLayer[] ROCK_LAYER_3 = new DataLayer[] {
-            DataLayer.RHYOLITE, DataLayer.BASALT, DataLayer.ANDESITE,
-            DataLayer.DACITE, DataLayer.GRANITE, DataLayer.DIORITE, DataLayer.GABBRO
-    };
-    public static final DataLayer[] TREE_ARRAY = new DataLayer[] {
-            DataLayer.ASH, DataLayer.ASPEN, DataLayer.BIRCH, DataLayer.CHESTNUT, DataLayer.DOUGLASFIR,
-            DataLayer.HICKORY, DataLayer.MAPLE, DataLayer.OAK, DataLayer.PINE, DataLayer.REDWOOD, DataLayer.PINE, DataLayer.SPRUCE, DataLayer.SYCAMORE,
-            DataLayer.WHITECEDAR, DataLayer.WHITEELM, DataLayer.WILLOW, DataLayer.NO_TREE
-    };
+    /* @formatter:off */
+    public static final DataLayer[] ROCK_LAYER_1 = new DataLayer[] {SHALE, CLAYSTONE, ROCKSALT, LIMESTONE, CONGLOMERATE, DOLOMITE, CHERT, CHALK, RHYOLITE, BASALT, ANDESITE, DACITE, QUARTZITE, SLATE, PHYLLITE, SCHIST, GNEISS, MARBLE, GRANITE, DIORITE, GABBRO};
+    public static final DataLayer[] ROCK_LAYER_2 = new DataLayer[] {RHYOLITE, BASALT, ANDESITE, DACITE, QUARTZITE, SLATE, PHYLLITE, SCHIST, GNEISS, MARBLE, GRANITE, DIORITE, GABBRO};
+    public static final DataLayer[] ROCK_LAYER_3 = new DataLayer[] {RHYOLITE, BASALT, ANDESITE, DACITE, GRANITE, DIORITE, GABBRO};
+    public static final DataLayer[] TREE_ARRAY = new DataLayer[] {ASH, ASPEN, BIRCH, CHESTNUT, DOUGLASFIR, HICKORY, MAPLE, OAK, PINE, REDWOOD, PINE, SPRUCE, SYCAMORE, WHITECEDAR, WHITEELM, WILLOW, NO_TREE};
+    /* @formatter:on */
 
-    public final int layerID;
-    public final BlockRockVariant block;
-    public final String name;
-    public final int valueInt;
-    public final float valueFloat;
-
-    private DataLayer(int i, BlockRockVariant block, String name, int valueInt, float valueFloat)
+    public static DataLayer get(int i)
     {
-        this.layerID = i;
-        this.block = block;
-        this.name = name;
-        this.valueInt = valueInt;
-        this.valueFloat = valueFloat;
+        if (LAYERS[i] == null) throw new IllegalArgumentException("Layer " + i + " not used.");
+        return LAYERS[i];
     }
 
     private static DataLayer newBlockDataLayer(int i, BlockRockVariant block, String name)
@@ -144,9 +119,18 @@ public final class DataLayer
         return LAYERS[i] = new DataLayer(i, null, name, Integer.MIN_VALUE, value);
     }
 
-    public static DataLayer get(int i)
+    public final int layerID;
+    public final BlockRockVariant block;
+    public final String name;
+    public final int valueInt;
+    public final float valueFloat;
+
+    private DataLayer(int i, BlockRockVariant block, String name, int valueInt, float valueFloat)
     {
-        if (LAYERS[i] == null) throw new IllegalArgumentException("Layer " + i + " not used.");
-        return LAYERS[i];
+        this.layerID = i;
+        this.block = block;
+        this.name = name;
+        this.valueInt = valueInt;
+        this.valueFloat = valueFloat;
     }
 }

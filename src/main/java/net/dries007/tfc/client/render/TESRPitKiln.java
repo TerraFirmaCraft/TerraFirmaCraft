@@ -1,6 +1,5 @@
 package net.dries007.tfc.client.render;
 
-import net.dries007.tfc.objects.te.TEPitKiln;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -16,6 +15,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import net.dries007.tfc.objects.te.TEPitKiln;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
@@ -98,14 +99,14 @@ public class TESRPitKiln extends TileEntitySpecialRenderer<TEPitKiln>
 
             bindTexture(BARK);
 
-            for (int row = 0; row < LOG_ROWS && logs > 0; row ++)
+            for (int row = 0; row < LOG_ROWS && logs > 0; row++)
             {
                 GlStateManager.pushMatrix();
-                GlStateManager.translate(0, row * 0.5d/(double)LOG_ROWS, 0);
+                GlStateManager.translate(0, row * 0.5d / (double) LOG_ROWS, 0);
                 for (int i = 0; i < LOGS_PER_ROW && logs > 0; i++, logs--)
                 {
                     GlStateManager.pushMatrix();
-                    GlStateManager.translate(0, 0, i/(double)LOGS_PER_ROW);
+                    GlStateManager.translate(0, 0, i / (double) LOGS_PER_ROW);
                     LOG.render(null, 0, 0, 0, 0, 0, SCALE);
                     GlStateManager.popMatrix();
                 }

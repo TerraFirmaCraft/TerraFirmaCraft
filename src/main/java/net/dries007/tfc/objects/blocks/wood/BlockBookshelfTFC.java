@@ -1,7 +1,7 @@
 package net.dries007.tfc.objects.blocks.wood;
 
-import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.util.OreDictionaryHelper;
+import java.util.EnumMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -10,18 +10,22 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.EnumMap;
+import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class BlockBookshelfTFC extends Block {
+public class BlockBookshelfTFC extends Block
+{
     private static final EnumMap<Wood, BlockBookshelfTFC> MAP = new EnumMap<>(Wood.class);
 
-    public static BlockBookshelfTFC get(Wood wood) {
+    public static BlockBookshelfTFC get(Wood wood)
+    {
         return MAP.get(wood);
     }
 
     public final Wood wood;
 
-    public BlockBookshelfTFC(Wood wood) {
+    public BlockBookshelfTFC(Wood wood)
+    {
         super(Material.WOOD);
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         this.wood = wood;
