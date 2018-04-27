@@ -43,8 +43,6 @@ public class TerraFirmaCraft
     @Mod.Metadata()
     private static ModMetadata metadata = null;
 
-    private boolean isSignedBuild = true;
-
     static
     {
         FluidRegistry.enableUniversalBucket();
@@ -75,6 +73,7 @@ public class TerraFirmaCraft
         return instance;
     }
 
+    private boolean isSignedBuild = true;
     private Logger log;
     private WorldTypeTFC worldTypeTFC;
     private SimpleNetworkWrapper network;

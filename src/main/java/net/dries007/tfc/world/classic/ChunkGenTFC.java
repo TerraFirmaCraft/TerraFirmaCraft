@@ -443,7 +443,8 @@ public class ChunkGenTFC implements IChunkGenerator
                     if (scaledNoise6Value < -1.0D) //Error Checking
                         scaledNoise6Value = -1.0D;
                     scaledNoise6Value /= 1.4D * 2.0D; // Results in values between 0 and -0.357143
-                } else
+                }
+                else
                 {
                     if (scaledNoise6Value > 1.0D)
                         scaledNoise6Value = 1.0D;
@@ -579,7 +580,8 @@ public class ChunkGenTFC implements IChunkGenerator
                         if (biome == BiomesTFC.BEACH || biome == BiomesTFC.OCEAN || biome == BiomesTFC.DEEP_OCEAN)
                         {
                             subSurfaceBlock = surfaceBlock = rock1.block.getVariant(Rock.Type.SAND).getDefaultState();
-                        } else if (biome == BiomesTFC.GRAVEL_BEACH)
+                        }
+                        else if (biome == BiomesTFC.GRAVEL_BEACH)
                         {
                             subSurfaceBlock = surfaceBlock = rock1.block.getVariant(Rock.Type.GRAVEL).getDefaultState();
                         }
@@ -647,7 +649,8 @@ public class ChunkGenTFC implements IChunkGenerator
                             {
                                 if (outp.getBlockState(x, y + yOffset, z) != rock1.block.getVariant(Rock.Type.SAND).getDefaultState() && rand.nextInt(5) != 0)
                                     outp.setBlockState(x, y + yOffset, z, rock1.block.getVariant(Rock.Type.GRAVEL).getDefaultState());
-                            } else // Swamp biomes have bottoms that are mostly dirt
+                            }
+                            else // Swamp biomes have bottoms that are mostly dirt
                             {
                                 if (outp.getBlockState(x, y + yOffset, z) != rock1.block.getVariant(Rock.Type.SAND).getDefaultState())
                                     outp.setBlockState(x, y + yOffset, z, rock1.block.getVariant(Rock.Type.DIRT).getDefaultState());
@@ -669,7 +672,8 @@ public class ChunkGenTFC implements IChunkGenerator
                     if (y < 1 + (s.flatBedrock ? 0 : rand.nextInt(3))) //  + (seaLevelOffsetMap[colIndex] / 3)
                     {
                         outp.setBlockState(x, y, z, BEDROCK);
-                    } else if (outp.isEmpty(x, y, z))
+                    }
+                    else if (outp.isEmpty(x, y, z))
                     {
                         if (y <= ROCKLAYER3 + seaLevelOffsetMap[colIndex])
                             outp.setBlockState(x, y, z, rock3.block.getDefaultState());

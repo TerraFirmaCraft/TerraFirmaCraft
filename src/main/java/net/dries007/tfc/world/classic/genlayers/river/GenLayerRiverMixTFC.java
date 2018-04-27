@@ -127,7 +127,8 @@ public class GenLayerRiverMixTFC extends GenLayerTFC
                             layerOut[index] = b;
                         }
                     }
-                } else
+                }
+                else
                     layerOut[index] = b;
 
                 //Similar to above, if we're near a lake, we turn the river into lake.

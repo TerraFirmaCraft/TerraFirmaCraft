@@ -98,7 +98,8 @@ public class InsertOnlyEnumTable<R extends Enum<R>, C extends Enum<C>, T> implem
             row = new EnumMap<>(colClass);
             row.put(columnKey, value);
             rowMap.put(rowKey, row);
-        } else
+        }
+        else
         {
             if (row.containsKey(columnKey)) throw new UnsupportedOperationException();
             row.put(columnKey, value);

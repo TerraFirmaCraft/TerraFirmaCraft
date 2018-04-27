@@ -70,7 +70,8 @@ public class Schematic implements ISchematic
                 {
                     blockArray[i] = b[i];
                 }
-            } else if (tree.hasKey("BlocksInt"))
+            }
+            else if (tree.hasKey("BlocksInt"))
             {
                 blockArray = tree.getIntArray("Blocks");
             }
@@ -92,11 +93,13 @@ public class Schematic implements ISchematic
             }
 
             aabb = new AxisAlignedBB(0, 0, 0, width, height, length);
-        } catch (FileNotFoundException e)
+        }
+        catch (FileNotFoundException e)
         {
             System.out.println("TFC FileNotFound: " + path);
             return false;
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             System.out.println("TFC IOException: " + path);
             return false;

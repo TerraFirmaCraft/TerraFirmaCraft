@@ -45,13 +45,15 @@ public class MetalToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> implement
             {
                 if (stick) return false;
                 stick = true;
-            } else if (stack.getItem() instanceof ItemMetal)
+            }
+            else if (stack.getItem() instanceof ItemMetal)
             {
                 ItemMetal metal = ((ItemMetal) stack.getItem());
                 if (metal.type != inp) return false;
                 if (toolhead) return false;
                 toolhead = true;
-            } else
+            }
+            else
             {
                 return false;
             }
@@ -73,13 +75,15 @@ public class MetalToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> implement
             {
                 if (stick) return null;
                 stick = true;
-            } else if (stack.getItem() instanceof ItemMetal)
+            }
+            else if (stack.getItem() instanceof ItemMetal)
             {
                 ItemMetal metal = ((ItemMetal) stack.getItem());
                 if (metal.type != inp) return null;
                 if (toolhead != null) return null;
                 toolhead = metal;
-            } else
+            }
+            else
             {
                 return null;
             }

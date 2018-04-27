@@ -150,7 +150,8 @@ public abstract class GenLayerTFC extends GenLayer
             }
             TerraFirmaCraft.getLog().info(name + ".bmp");
             ImageIO.write(outBitmap, "BMP", outFile);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             TerraFirmaCraft.getLog().catching(e);
         }

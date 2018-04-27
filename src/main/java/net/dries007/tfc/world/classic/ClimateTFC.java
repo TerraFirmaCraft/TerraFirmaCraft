@@ -52,7 +52,8 @@ public final class ClimateTFC
             {
                 // diff > 0
                 factor = y * y / 677.966f;  // 17.85 for y=110
-            } else
+            }
+            else
             {
                 // diff <= 0
                 factor = 0.16225f * y;  // 17.85 for y=110

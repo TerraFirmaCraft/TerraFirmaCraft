@@ -47,7 +47,8 @@ public class GenLayerRemoveOcean extends GenLayerTFC
                 if (checkType && biome == 0 && k2 == 0 && l2 == 0 && i3 == 0 && j3 == 0 && this.nextInt(chance) == 0)
                 {
                     out[j2 + i2 * par3] = 1;
-                } else if (!checkType && biome == 0 && k2 != 0 && l2 != 0 && i3 != 0 && j3 != 0)
+                }
+                else if (!checkType && biome == 0 && k2 != 0 && l2 != 0 && i3 != 0 && j3 != 0)
                 {
                     out[j2 + i2 * par3] = 1;
                 }
