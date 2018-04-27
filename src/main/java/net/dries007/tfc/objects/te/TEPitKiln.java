@@ -60,7 +60,8 @@ public class TEPitKiln extends TileEntity implements ITickable
             if (world.isAirBlock(above))
             {
                 world.setBlockState(above, Blocks.FIRE.getDefaultState());
-            } else
+            }
+            else
             {
                 IBlockState stateAbove = world.getBlockState(above);
                 if (stateAbove.getMaterial() != Material.FIRE)

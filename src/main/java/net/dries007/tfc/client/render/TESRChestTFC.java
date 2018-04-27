@@ -81,14 +81,17 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
                 GlStateManager.scale(4.0F, 4.0F, 1.0F);
                 GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                 GlStateManager.matrixMode(5888);
-            } else if (te.getChestType() == BlockChest.Type.TRAP)
+            }
+            else if (te.getChestType() == BlockChest.Type.TRAP)
             {
                 bindTexture(TRAP_SINGLE_TEXTURES.get(te.getWood()));
-            } else
+            }
+            else
             {
                 bindTexture(SINGLE_TEXTURES.get(te.getWood()));
             }
-        } else
+        }
+        else
         {
             modelchest = largeChest;
 
@@ -100,10 +103,12 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
                 GlStateManager.scale(8.0F, 4.0F, 1.0F);
                 GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                 GlStateManager.matrixMode(5888);
-            } else if (te.getChestType() == BlockChest.Type.TRAP)
+            }
+            else if (te.getChestType() == BlockChest.Type.TRAP)
             {
                 bindTexture(TRAP_DOUBLE_TEXTURES.get(te.getWood()));
-            } else
+            }
+            else
             {
                 bindTexture(DOUBLE_TEXTURES.get(te.getWood()));
             }

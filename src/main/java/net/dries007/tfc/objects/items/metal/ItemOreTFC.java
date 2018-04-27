@@ -53,7 +53,8 @@ public class ItemOreTFC extends Item implements IMetalObject
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", grade);
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore, grade);
             }
-        } else // Mineral
+        }
+        else // Mineral
         {
             OreDictionaryHelper.register(this, "gem", ore);
             switch (ore)

@@ -36,12 +36,14 @@ public final class Helpers
             {
                 //noinspection ConstantConditions
                 world.setBlockState(pos, BlocksTFC.PEAT.getDefaultState());
-            } else if (us.getBlock() instanceof BlockRockVariant)
+            }
+            else if (us.getBlock() instanceof BlockRockVariant)
             {
                 BlockRockVariant block = ((BlockRockVariant) us.getBlock());
                 world.setBlockState(pos, block.getVariant(block.type.getNonGrassVersion()).getDefaultState());
             }
-        } else
+        }
+        else
         {
             if (world.getLightFromNeighbors(pos.up()) < 9) return;
 
@@ -60,7 +62,8 @@ public final class Helpers
                 {
                     //noinspection ConstantConditions
                     world.setBlockState(target, BlocksTFC.PEAT_GRASS.getDefaultState());
-                } else if (current.getBlock() instanceof BlockRockVariant)
+                }
+                else if (current.getBlock() instanceof BlockRockVariant)
                 {
                     Rock.Type spreader = Rock.Type.GRASS;
                     if ((us.getBlock() instanceof BlockRockVariant) && ((BlockRockVariant) us.getBlock()).type == Rock.Type.DRY_GRASS)

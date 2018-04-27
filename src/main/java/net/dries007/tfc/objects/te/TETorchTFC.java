@@ -53,7 +53,8 @@ public class TETorchTFC extends TileEntity implements ITickable
         {
             world.setBlockState(pos, state.withProperty(BlockTorchTFC.LIT, false));
             secondsleft = 0;
-        } else
+        }
+        else
         {
             world.setBlockState(pos, state.withProperty(BlockTorchTFC.LIT, true));
             secondsleft = BURN_SECONDS; // todo: adjust 600 seconds = 10 minutes

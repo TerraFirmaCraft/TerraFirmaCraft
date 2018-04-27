@@ -95,7 +95,8 @@ public class EntityFallingBlockTFC extends Entity
             if (world.getBlockState(pos) == state)
             {
                 world.setBlockToAir(pos);
-            } else if (!world.isRemote)
+            }
+            else if (!world.isRemote)
             {
                 setDead();
                 return;
@@ -127,7 +128,8 @@ public class EntityFallingBlockTFC extends Entity
                 }
                 setDead();
             }
-        } else // On ground
+        }
+        else // On ground
         {
             final IBlockState current = world.getBlockState(pos);
 
@@ -166,7 +168,8 @@ public class EntityFallingBlockTFC extends Entity
                         te.markDirty();
                     }
                 }
-            } else if (world.getGameRules().getBoolean("doEntityDrops"))
+            }
+            else if (world.getGameRules().getBoolean("doEntityDrops"))
             {
                 falling.getDropsFromFall(world, pos, state, teData, fallTime, fallDistance).forEach(x -> entityDropItem(x, 0));
             }

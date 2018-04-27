@@ -121,7 +121,8 @@ public class BlockRockVariant extends Block implements IFallingBlock
             if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
             {
                 worldIn.spawnEntity(new EntityFallingBlockTFC(worldIn, pos, this, worldIn.getBlockState(pos)));
-            } else
+            }
+            else
             {
                 worldIn.setBlockToAir(pos);
                 pos = pos.add(0, -1, 0);

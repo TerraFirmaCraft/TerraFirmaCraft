@@ -181,7 +181,8 @@ public class WorldGenFissure implements IWorldGenerator
                         collapseList.add(new CollapseData(WEST.offset(pos), data.chance - WEST.decrement, WEST));
                         break;
                 }
-            } else if (data.chance < 1)
+            }
+            else if (data.chance < 1)
             {
                 for (int i = 0; i <= poolDepth; i++)
                 {
@@ -236,7 +237,8 @@ public class WorldGenFissure implements IWorldGenerator
             if (random.nextFloat() < downChance / 100f)
             {
                 pos = pos.add(0, -1, 0);
-            } else
+            }
+            else
             {
                 int dir = random.nextInt(3);
                 switch (dir)

@@ -53,19 +53,23 @@ public class MapGenCavesTFC extends MapGenBase
         {
             width += 0.5;
             caveChance -= 5;
-        } else if (rain > 2000)
+        }
+        else if (rain > 2000)
         {
             width += 1;
             caveChance -= 10;
-        } else if (rain < 1000)
+        }
+        else if (rain < 1000)
         {
             width -= 0.5;
             caveChance += 5;
-        } else if (rain < 500)
+        }
+        else if (rain < 500)
         {
             width -= 1;
             caveChance += 10;
-        } else if (rain < 250)
+        }
+        else if (rain < 250)
         {
             width -= 1.25;
             caveChance += 15;
@@ -246,7 +250,8 @@ public class MapGenCavesTFC extends MapGenBase
                             if (y < 20 /* todo make option? was 10*/ && stabilityLayer[(worldZ & 15) << 4 | (worldX & 15)].valueInt == 1)
                             {
                                 primer.setBlockState(xCoord, y, zCoord, LAVA);
-                            } else
+                            }
+                            else
                             {
                                 primer.setBlockState(xCoord, y, zCoord, AIR);
                                 if (grass != null && BlocksTFC.isDirt(primer.getBlockState(xCoord, y - 1, zCoord)))
