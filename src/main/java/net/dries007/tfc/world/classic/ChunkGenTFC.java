@@ -56,6 +56,11 @@ import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER3;
 @SuppressWarnings("ConstantConditions")
 public class ChunkGenTFC implements IChunkGenerator
 {
+    public static final DataLayer[] ROCK_LAYER_1 = new DataLayer[] {SHALE, CLAYSTONE, ROCKSALT, LIMESTONE, CONGLOMERATE, DOLOMITE, CHERT, CHALK, RHYOLITE, BASALT, ANDESITE, DACITE, QUARTZITE, SLATE, PHYLLITE, SCHIST, GNEISS, MARBLE, GRANITE, DIORITE, GABBRO};
+    public static final DataLayer[] ROCK_LAYER_2 = new DataLayer[] {RHYOLITE, BASALT, ANDESITE, DACITE, QUARTZITE, SLATE, PHYLLITE, SCHIST, GNEISS, MARBLE, GRANITE, DIORITE, GABBRO};
+    public static final DataLayer[] ROCK_LAYER_3 = new DataLayer[] {RHYOLITE, BASALT, ANDESITE, DACITE, GRANITE, DIORITE, GABBRO};
+    public static final DataLayer[] TREE_ARRAY = new DataLayer[] {ASH, ASPEN, BIRCH, CHESTNUT, DOUGLASFIR, HICKORY, MAPLE, OAK, PINE, REDWOOD, PINE, SPRUCE, SYCAMORE, WHITECEDAR, WHITEELM, WILLOW, NO_TREE};
+
     public static final IBlockState STONE = Blocks.STONE.getDefaultState();
     public static final IBlockState AIR = Blocks.AIR.getDefaultState();
     public static final IBlockState SALT_WATER = BlocksTFC.FLUID_SALT_WATER.getDefaultState();

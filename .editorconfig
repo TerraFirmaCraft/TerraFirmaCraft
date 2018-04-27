@@ -1,0 +1,15 @@
+[*]
+charset=utf-8
+end_of_line=lf
+insert_final_newline=false
+indent_style=space
+indent_size=4
+
+[{mcmod.info,.babelrc,composer.lock,.stylelintrc,jest.config,.eslintrc,*.bowerrc,*.jsb3,*.jsb2,*.info,*.mcmeta,*.json}]
+indent_style=space
+indent_size=2
+
+[{*.scala,*.sc}]
+indent_style=space
+indent_size=2
+

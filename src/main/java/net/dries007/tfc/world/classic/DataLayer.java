@@ -14,13 +14,8 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 @SuppressWarnings("WeakerAccess")
 public final class DataLayer
 {
-    public static final DataLayer ERROR = new DataLayer(-1, null, "ERROR", Integer.MIN_VALUE, Float.NaN);
-    /* @formatter:off */
-    public static final DataLayer[] ROCK_LAYER_1 = new DataLayer[] {SHALE, CLAYSTONE, ROCKSALT, LIMESTONE, CONGLOMERATE, DOLOMITE, CHERT, CHALK, RHYOLITE, BASALT, ANDESITE, DACITE, QUARTZITE, SLATE, PHYLLITE, SCHIST, GNEISS, MARBLE, GRANITE, DIORITE, GABBRO};
-    public static final DataLayer[] ROCK_LAYER_2 = new DataLayer[] {RHYOLITE, BASALT, ANDESITE, DACITE, QUARTZITE, SLATE, PHYLLITE, SCHIST, GNEISS, MARBLE, GRANITE, DIORITE, GABBRO};
-    public static final DataLayer[] ROCK_LAYER_3 = new DataLayer[] {RHYOLITE, BASALT, ANDESITE, DACITE, GRANITE, DIORITE, GABBRO};
-    public static final DataLayer[] TREE_ARRAY = new DataLayer[] {ASH, ASPEN, BIRCH, CHESTNUT, DOUGLASFIR, HICKORY, MAPLE, OAK, PINE, REDWOOD, PINE, SPRUCE, SYCAMORE, WHITECEDAR, WHITEELM, WILLOW, NO_TREE};
     private static final DataLayer[] LAYERS = new DataLayer[256];
+    public static final DataLayer ERROR = new DataLayer(-1, null, "ERROR", Integer.MIN_VALUE, Float.NaN);
     public static final DataLayer GRANITE = newBlockDataLayer(0, BlockRockVariant.get(Rock.GRANITE, Rock.Type.RAW), "Granite");
     public static final DataLayer DIORITE = newBlockDataLayer(1, BlockRockVariant.get(Rock.DIORITE, Rock.Type.RAW), "Diorite");
     public static final DataLayer GABBRO = newBlockDataLayer(2, BlockRockVariant.get(Rock.GABBRO, Rock.Type.RAW), "Gabbro");
@@ -89,7 +84,6 @@ public final class DataLayer
     public static final DataLayer PH_NEUTRAL = newIntDataLayer(132, "Neutral", 2);
     public static final DataLayer PH_ALKALINE_LOW = newIntDataLayer(133, "Low Alkalinity", 3);
     public static final DataLayer PH_ALKALINE_HIGH = newIntDataLayer(134, "High Alkalinity", 4);
-    /* @formatter:on */
 
     public static DataLayer get(int i)
     {
