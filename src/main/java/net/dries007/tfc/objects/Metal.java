@@ -88,18 +88,11 @@ public enum Metal
 
     public enum Tier
     {
-        TIER_I("Pit Kiln"),
-        TIER_II("Beehive Kiln"), // Not implemented, but presumed to be a more advanced, more capable version of the pit kiln.
-        TIER_III("Bloomery"),
-        TIER_IV("Blast Furnace"),
-        TIER_V("Crucible");
-
-        public final String name;
-
-        Tier(String name)
-        {
-            this.name = name;
-        }
+        TIER_I,
+        TIER_II, // Not implemented, but presumed to be a more advanced, more capable version of the pit kiln.
+        TIER_III,
+        TIER_IV,
+        TIER_V
     }
 
     public enum ItemType

@@ -12,6 +12,7 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiCreateWorld;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -136,7 +137,7 @@ public class ClientEvents
                 tt.add("");
                 for (String toolClass : toolClasses)
                 {
-                    tt.add("Tool: " + toolClass); //todo: localize
+                    tt.add(I18n.format("tfc.tooltip.toolclass", toolClass));
                 }
             }
             if (item instanceof IMetalObject)
