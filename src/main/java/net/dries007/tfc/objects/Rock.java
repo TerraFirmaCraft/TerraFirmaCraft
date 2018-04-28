@@ -5,8 +5,14 @@
 
 package net.dries007.tfc.objects;
 
+import java.util.function.BiFunction;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
+
+import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariantConnected;
 
 public enum Rock
 {
@@ -68,17 +74,28 @@ public enum Rock
         GRASS(Material.GRASS, false, true),
         DRY_GRASS(Material.GRASS, false, true),
         CLAY(Material.GRASS, false, false),
-        CLAY_GRASS(Material.GRASS, false, true);
+        CLAY_GRASS(Material.GRASS, false, true),
+        FARMLAND(Material.GRASS, false, false, BlockFarmlandTFC::new);
 
         public final Material material;
         public final boolean isAffectedByGravity;
         public final boolean isGrass;
+        /**
+         * Internal use only.
+         */
+        public final BiFunction<Rock.Type, Rock, BlockRockVariant> supplier;
 
         Type(Material material, boolean isAffectedByGravity, boolean isGrass)
+        {
+            this(material, isAffectedByGravity, isGrass, isGrass ? BlockRockVariantConnected::new : BlockRockVariant::new);
+        }
+
+        Type(Material material, boolean isAffectedByGravity, boolean isGrass, BiFunction<Rock.Type, Rock, BlockRockVariant> supplier)
         {
             this.material = material;
             this.isAffectedByGravity = isAffectedByGravity;
             this.isGrass = isGrass;
+            this.supplier = supplier;
         }
 
         public Type getNonGrassVersion()
