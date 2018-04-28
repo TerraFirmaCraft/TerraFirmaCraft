@@ -33,7 +33,7 @@ import net.dries007.tfc.world.classic.worldgen.*;
 import static net.dries007.tfc.Constants.*;
 
 @SuppressWarnings("DefaultAnnotationParam")
-@Mod(modid = MOD_ID, name = MOD_NAME, useMetadata = true, guiFactory = GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = "ee4505933cd28f4b09a0bc91007935f61e7d786e")
+@Mod(modid = MOD_ID, name = MOD_NAME, useMetadata = true, guiFactory = GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = SIGNING_KEY)
 @Mod.EventBusSubscriber()
 public class TerraFirmaCraft
 {
@@ -42,8 +42,6 @@ public class TerraFirmaCraft
 
     @Mod.Metadata()
     private static ModMetadata metadata = null;
-
-    private boolean isSignedBuild = true;
 
     static
     {
@@ -75,6 +73,7 @@ public class TerraFirmaCraft
         return instance;
     }
 
+    private boolean isSignedBuild = true;
     private Logger log;
     private WorldTypeTFC worldTypeTFC;
     private SimpleNetworkWrapper network;

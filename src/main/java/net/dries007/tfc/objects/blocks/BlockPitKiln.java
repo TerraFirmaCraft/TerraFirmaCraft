@@ -15,6 +15,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -121,6 +122,11 @@ public class BlockPitKiln extends Block implements ITileEntityProvider
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
         if (!worldIn.isSideSolid(pos.add(0, -1, 0), EnumFacing.UP))
             worldIn.destroyBlock(pos, true);
+        if (blockIn == Blocks.FIRE)
+        {
+            TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
+            if (te != null) te.tryLight();
+        }
     }
 
     @Override

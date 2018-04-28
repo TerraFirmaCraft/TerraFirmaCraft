@@ -11,12 +11,14 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.google.common.base.Joiner;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.blocks.BlockPeat;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -24,6 +26,8 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 
 public final class Helpers
 {
+    private static final Joiner JOINER_DOT = Joiner.on('.');
+
     public static void spreadGrass(World world, BlockPos pos, IBlockState us, Random rand)
     {
         if (world.getLightFromNeighbors(pos.up()) < 4 && world.getBlockState(pos.up()).getLightOpacity(world, pos.up()) > 2)
@@ -32,12 +36,14 @@ public final class Helpers
             {
                 //noinspection ConstantConditions
                 world.setBlockState(pos, BlocksTFC.PEAT.getDefaultState());
-            } else if (us.getBlock() instanceof BlockRockVariant)
+            }
+            else if (us.getBlock() instanceof BlockRockVariant)
             {
                 BlockRockVariant block = ((BlockRockVariant) us.getBlock());
                 world.setBlockState(pos, block.getVariant(block.type.getNonGrassVersion()).getDefaultState());
             }
-        } else
+        }
+        else
         {
             if (world.getLightFromNeighbors(pos.up()) < 9) return;
 
@@ -56,7 +62,8 @@ public final class Helpers
                 {
                     //noinspection ConstantConditions
                     world.setBlockState(target, BlocksTFC.PEAT_GRASS.getDefaultState());
-                } else if (current.getBlock() instanceof BlockRockVariant)
+                }
+                else if (current.getBlock() instanceof BlockRockVariant)
                 {
                     Rock.Type spreader = Rock.Type.GRASS;
                     if ((us.getBlock() instanceof BlockRockVariant) && ((BlockRockVariant) us.getBlock()).type == Rock.Type.DRY_GRASS)
@@ -83,5 +90,8 @@ public final class Helpers
         return (T) te;
     }
 
-    private Helpers() {}
+    public static String getEnumName(Enum<?> anEnum)
+    {
+        return JOINER_DOT.join(Constants.MOD_ID, "enum", anEnum.getDeclaringClass().getSimpleName(), anEnum).toLowerCase();
+    }
 }

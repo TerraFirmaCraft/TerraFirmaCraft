@@ -43,7 +43,8 @@ public class GenLayerRiverTFC extends GenLayerTFC
                 if (k3 == k2 && k3 == i3 && k3 == l2 && k3 == j3)
                 {
                     aint1[j2 + i2 * par3] = 0;
-                } else
+                }
+                else
                 {
                     aint1[j2 + i2 * par3] = Biome.getIdForBiome(BiomesTFC.RIVER);
                 }

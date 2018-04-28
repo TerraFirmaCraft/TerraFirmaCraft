@@ -97,7 +97,8 @@ public class ItemFireStarter extends Item
                 world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, result.hitVec.x, result.hitVec.y, result.hitVec.z, 0.0F, 0.1F, 0.0F);
             if (chance > 0.7 && countLeft < 10 && world.rand.nextFloat() < count / (double) total)
                 world.spawnParticle(EnumParticleTypes.FLAME, result.hitVec.x, result.hitVec.y, result.hitVec.z, 0.0F, 0.0F, 0.0F);
-        } else if (countLeft == 1) // Server, and last tick of use
+        }
+        else if (countLeft == 1) // Server, and last tick of use
         {
             stack.damageItem(1, player);
 

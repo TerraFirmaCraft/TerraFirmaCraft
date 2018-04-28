@@ -48,7 +48,8 @@ public class GenLayerLakes extends GenLayerTFC
                         var6[var8 + var7 * par3] = Biome.getIdForBiome(BiomesTFC.LAKE);
                     else
                         var6[var8 + var7 * par3] = var9;
-                } else
+                }
+                else
                 {
                     var6[var8 + var7 * par3] = var9;
                 }

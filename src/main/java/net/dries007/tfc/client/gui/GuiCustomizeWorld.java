@@ -144,27 +144,6 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
-    {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-        list.mouseClicked(mouseX, mouseY, mouseButton);
-    }
-
-    @Override
-    public void handleMouseInput() throws IOException
-    {
-        super.handleMouseInput();
-        this.list.handleMouseInput();
-    }
-
-    @Override
-    protected void mouseReleased(int mouseX, int mouseY, int state)
-    {
-        super.mouseReleased(mouseX, mouseY, state);
-        list.mouseReleased(mouseX, mouseY, state);
-    }
-
-    @Override
     public void initGui()
     {
         super.initGui();
@@ -197,6 +176,27 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     }
 
     @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
+    {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        list.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state)
+    {
+        super.mouseReleased(mouseX, mouseY, state);
+        list.mouseReleased(mouseX, mouseY, state);
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException
+    {
+        super.handleMouseInput();
+        this.list.handleMouseInput();
+    }
+
+    @Override
     public void setEntryValue(int id, String value)
     {
         update();
@@ -220,7 +220,8 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
             try
             {
                 return WorldGenSettings.fromString(str);
-            } catch (JsonParseException e)
+            }
+            catch (JsonParseException e)
             {
                 TerraFirmaCraft.getLog().error("Error parsing s: {}", str);
                 TerraFirmaCraft.getLog().catching(e);

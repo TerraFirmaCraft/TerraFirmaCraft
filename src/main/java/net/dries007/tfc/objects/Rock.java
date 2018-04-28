@@ -5,8 +5,14 @@
 
 package net.dries007.tfc.objects;
 
+import java.util.function.BiFunction;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
+
+import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariantConnected;
 
 public enum Rock
 {
@@ -58,30 +64,39 @@ public enum Rock
 
     public enum Type
     {
-        RAW(Material.ROCK, false, false, false),
-        SMOOTH(Material.ROCK, false, false, false),
-        COBBLE(Material.ROCK, true, false, false),
-        BRICKS(Material.ROCK, false, false, false),
-        SAND(Material.SAND, true, false, false),
-        GRAVEL(Material.SAND, true, false, false),
-        DIRT(Material.GROUND, false, false, false),
-        GRASS(Material.GRASS, false, true, false),
-        DRY_GRASS(Material.GRASS, false, true, false),
-        PATH(Material.GROUND, true, false, true),
-        CLAY(Material.GRASS, false, false, false),
-        CLAY_GRASS(Material.GRASS, false, true, false);
+        RAW(Material.ROCK, false, false),
+        SMOOTH(Material.ROCK, false, false),
+        COBBLE(Material.ROCK, true, false),
+        BRICKS(Material.ROCK, false, false),
+        SAND(Material.SAND, true, false),
+        GRAVEL(Material.SAND, true, false),
+        DIRT(Material.GROUND, false, false),
+        GRASS(Material.GRASS, false, true),
+        DRY_GRASS(Material.GRASS, false, true),
+        CLAY(Material.GRASS, false, false),
+        CLAY_GRASS(Material.GRASS, false, true),
+        FARMLAND(Material.GROUND, false, false, BlockFarmlandTFC::new),
+        PATH(Material.GROUND, false, false);
 
         public final Material material;
         public final boolean isAffectedByGravity;
         public final boolean isGrass;
-        public final boolean isPath;
+        /**
+         * Internal use only.
+         */
+        public final BiFunction<Rock.Type, Rock, BlockRockVariant> supplier;
 
         Type(Material material, boolean isAffectedByGravity, boolean isGrass, boolean isPath)
+        {
+            this(material, isAffectedByGravity, isGrass, isGrass ? BlockRockVariantConnected::new : BlockRockVariant::new);
+        }
+
+        Type(Material material, boolean isAffectedByGravity, boolean isGrass, BiFunction<Rock.Type, Rock, BlockRockVariant> supplier)
         {
             this.material = material;
             this.isAffectedByGravity = isAffectedByGravity;
             this.isGrass = isGrass;
-            this.isPath = isPath;
+            this.supplier = supplier;
         }
 
         public Type getNonGrassVersion()

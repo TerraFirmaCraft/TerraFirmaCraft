@@ -84,7 +84,8 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
             playerIn.setItemStackToSlot(slot, heldItem.copy());
             heldItem.shrink(1);
             return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
-        } else
+        }
+        else
         {
             return new ActionResult<>(EnumActionResult.FAIL, heldItem);
         }

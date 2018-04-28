@@ -65,7 +65,8 @@ public class BlockWorkbenchTFC extends BlockWorkbench
         if (worldIn.isRemote)
         {
             return true;
-        } else
+        }
+        else
         {
             playerIn.displayGui(new InterfaceCraftingTable(this, worldIn, pos));
             playerIn.addStat(StatList.CRAFTING_TABLE_INTERACTION);
@@ -143,7 +144,8 @@ public class BlockWorkbenchTFC extends BlockWorkbench
             if (world.getBlockState(pos).getBlock() != block)
             {
                 return false;
-            } else
+            }
+            else
             {
                 return playerIn.getDistanceSq((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D) <= 64.0D;
             }
