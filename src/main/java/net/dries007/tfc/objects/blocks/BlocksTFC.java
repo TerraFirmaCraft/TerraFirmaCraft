@@ -24,7 +24,10 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.objects.blocks.stone.*;
+import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.stone.BlockWallTFC;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 
@@ -214,7 +217,7 @@ public final class BlocksTFC
             Builder<BlockRockVariant> b = ImmutableList.builder();
             for (Rock.Type type : Rock.Type.values())
                 for (Rock rock : Rock.values())
-                    b.add(register(r, (type.name() + "/" + rock.name()).toLowerCase(), type.isGrass ? new BlockRockVariantConnected(type, rock) : type.isPath ? new BlockRockVariantPath(type, rock) : new BlockRockVariant(type, rock), CT_ROCK_BLOCKS));
+                  b.add(register(r, (type.name() + "/" + rock.name()).toLowerCase(), type.supplier.apply(type, rock), CT_ROCK_BLOCKS));
             allBlockRockVariants = b.build();
             normalItemBlocks.addAll(allBlockRockVariants);
         }
@@ -325,8 +328,6 @@ public final class BlocksTFC
         // todo: moss? (It's unused in tfc1710, but it's like a retextured vine that spawns on trees, might be nice to have)
         // todo: fruit tree stuff (leaves, saplings, logs)
 
-        // todo: bookshelf
-        // todo: workbench
         // todo: supports (h & v)
         // todo: farmland
         // todo: barrels

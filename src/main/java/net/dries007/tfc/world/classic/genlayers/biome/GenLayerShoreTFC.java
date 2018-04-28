@@ -51,7 +51,8 @@ public class GenLayerShoreTFC extends GenLayerTFC
                         if (BiomesTFC.isMountainBiome(var9)) beachid = Biome.getIdForBiome(BiomesTFC.GRAVEL_BEACH);
                         var6[var8 + var7 * par3] = beachid;
                     }
-                } else
+                }
+                else
                 {
                     var6[var8 + var7 * par3] = var9;
                 }

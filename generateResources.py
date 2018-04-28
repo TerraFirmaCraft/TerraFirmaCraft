@@ -513,6 +513,11 @@ for rock_type in ROCK_TYPES:
         ('bottom', 'particle'): 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
         'top': 'tfc:blocks/stonetypes/path/top/%s' % rock_type,
         'side': 'tfc:blocks/stonetypes/path/side/%s' % rock_type,
+
+    # FARMLAND
+    blockstate(('farmland', rock_type), 'tfc:farmland', textures={
+        ('dirt', 'particle'): 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
+        'top': 'tfc:blocks/stonetypes/farmland/%s' % rock_type,
     })
 
     # WALLS (cobble & bricks only)

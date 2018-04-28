@@ -71,6 +71,7 @@ public class BlockRockVariant extends Block implements IFallingBlock
                 setHarvestLevel("shovel", 0);
                 break;
             case DIRT:
+            case FARMLAND:
                 setSoundType(SoundType.GROUND);
                 setHardness(0.5F);
                 setHarvestLevel("shovel", 0);
@@ -108,6 +109,7 @@ public class BlockRockVariant extends Block implements IFallingBlock
     {
         if (world.isRemote) return;
         if (type.isGrass) Helpers.spreadGrass(world, pos, state, rand);
+        super.randomTick(world, pos, state, rand);
     }
 
     @Override
@@ -223,7 +225,7 @@ public class BlockRockVariant extends Block implements IFallingBlock
             case Plains:
                 return type == Rock.Type.DIRT || type == Rock.Type.GRASS; // todo: dry grass?
             case Crop:
-                return type == Rock.Type.DIRT || type == Rock.Type.GRASS; // todo: dry grass? Should this even be true? Might be required for wild crops.
+                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.FARMLAND; // todo: dry grass? Should this even be true? Might be required for wild crops.
             case Desert:
                 return type == Rock.Type.SAND;
             case Cave:
@@ -231,6 +233,7 @@ public class BlockRockVariant extends Block implements IFallingBlock
             case Water:
                 return false;
             case Beach:
+                // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
                 return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && // todo: dry grass?
                         (BlocksTFC.isWater(world.getBlockState(pos.add(1, 0, 0))) ||
                                 BlocksTFC.isWater(world.getBlockState(pos.add(-1, 0, 0))) ||

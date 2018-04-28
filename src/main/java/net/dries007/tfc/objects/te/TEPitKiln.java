@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -29,7 +30,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.blocks.BlockPitKiln;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -44,7 +44,7 @@ public class TEPitKiln extends TileEntity implements ITickable
 
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
-    public static final int BURN_TICKS = 10 * 60; // * 20; // 10 IRL minutes todo
+    public static final int BURN_TICKS = 10 * 60 * 20; // 10 IRL minutes
     private final NonNullList<ItemStack> logs = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> straw = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
@@ -60,7 +60,8 @@ public class TEPitKiln extends TileEntity implements ITickable
             if (world.isAirBlock(above))
             {
                 world.setBlockState(above, Blocks.FIRE.getDefaultState());
-            } else
+            }
+            else
             {
                 IBlockState stateAbove = world.getBlockState(above);
                 if (stateAbove.getMaterial() != Material.FIRE)
@@ -149,8 +150,7 @@ public class TEPitKiln extends TileEntity implements ITickable
     @SuppressWarnings("ConstantConditions")
     public void onRightClick(EntityPlayer player, ItemStack item, boolean x, boolean z)
     {
-        IBlockState state = world.getBlockState(pos);
-        if (state.getValue(BlockPitKiln.LIT)) return;
+        if (isLit()) return;
         int count = getStrawCount();
         int slot = 0;
         if (x) slot += 1;
@@ -218,7 +218,7 @@ public class TEPitKiln extends TileEntity implements ITickable
         if (count < WOOD_NEEDED) return;
         if (item.getItem() instanceof ItemFireStarter || item.getItem() instanceof ItemFlintAndSteel)
         {
-            light();
+            tryLight();
             return;
         }
     }
@@ -252,11 +252,19 @@ public class TEPitKiln extends TileEntity implements ITickable
         return (int) straw.stream().filter(i -> !i.isEmpty()).count();
     }
 
-    private void light()
+    public boolean tryLight()
     {
+        if (!hasFuel()) return false;
+        BlockPos above = pos.add(0, 1, 0);
+        if (!Blocks.FIRE.canPlaceBlockAt(world, above)) return false;
+        for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL)
+        {
+            if (!world.isSideSolid(pos.offset(facing), facing.getOpposite())) return false;
+        }
         burnTicksToGo = BURN_TICKS;
         updateBlock();
-        world.setBlockState(getPos().add(0, 1, 0), Blocks.FIRE.getDefaultState());
+        world.setBlockState(above, Blocks.FIRE.getDefaultState());
+        return true;
     }
 
     private void addStraw(ItemStack stack)

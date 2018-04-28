@@ -46,7 +46,8 @@ public class TreeRegistry
                     {
                         treeSchematic.PostProcess();
                         TreeRegistry.instance.RegisterSchematic(wood, treeSchematic);
-                    } else
+                    }
+                    else
                     {
                         TerraFirmaCraft.getLog().info("ERROR loading " + wood.name());
                         break;

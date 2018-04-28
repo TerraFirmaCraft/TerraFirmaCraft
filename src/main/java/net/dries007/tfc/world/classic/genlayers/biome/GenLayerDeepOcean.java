@@ -64,7 +64,8 @@ public class GenLayerDeepOcean extends GenLayerTFC
                 if (thisID == 0 && oceanCount > 3)
                 {
                     outCache[outIndex] = Biome.getIdForBiome(BiomesTFC.DEEP_OCEAN);
-                } else
+                }
+                else
                 {
                     outCache[outIndex] = thisID;
                 }
