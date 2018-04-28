@@ -2,6 +2,11 @@
 
 # Gui
 
+tfc.tooltip.toolclass=Tool: %s
+tfc.tooltip.metal=Metal: %s
+tfc.tooltip.units=%d units
+tfc.tooltip.smelting=Smelt in %s
+
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=Spawn Fuzzing Radius
 createWorld.customize.custom.flatbedrock=Flat Bedrock
@@ -48,11 +53,49 @@ itemGroup.tfc.metal=TFC Metal
 itemGroup.tfc.gems=TFC Gems
 generator.tfc_classic=TFC Classic
 
+# Enum types
+# todo: add other enums
+## Metal related
+tfc.enum.metal.bismuth=Bismuth
+tfc.enum.metal.bismuth_bronze=Bismuth Bronze
+tfc.enum.metal.black_bronze=Black Bronze
+tfc.enum.metal.brass=Brass
+tfc.enum.metal.bronze=Bronze
+tfc.enum.metal.copper=Copper
+tfc.enum.metal.gold=Gold
+tfc.enum.metal.lead=Lead
+tfc.enum.metal.nickel=Nickel
+tfc.enum.metal.rose_gold=Rose Gold
+tfc.enum.metal.silver=Silver
+tfc.enum.metal.tin=Tin
+tfc.enum.metal.zinc=Zinc
+tfc.enum.metal.sterling_silver=Sterling Silver
+tfc.enum.metal.wrought_iron=Wrought Iron
+tfc.enum.metal.pig_iron=Pig Iron
+tfc.enum.metal.steel=Steel
+tfc.enum.metal.platinum=Platinum
+tfc.enum.metal.black_steel=Black Steel
+tfc.enum.metal.blue_steel=Blue Steel
+tfc.enum.metal.red_steel=Red Steel
+tfc.enum.metal.weak_steel=Weak Steel
+tfc.enum.metal.weak_black_steel=Black Weak Steel
+tfc.enum.metal.weak_blue_steel=Blue Weak Steel
+tfc.enum.metal.weak_red_steel=Red Weak Steel
+tfc.enum.metal.high_carbon_steel=High Carbon Steel
+tfc.enum.metal.high_carbon_black_steel=Black High Carbon Steel
+tfc.enum.metal.high_carbon_blue_steel=Blue High Carbon Steel
+tfc.enum.metal.high_carbon_red_steel=Red High Carbon Steel
+
+tfc.enum.tier.tier_i=Pit Kiln
+tfc.enum.tier.tier_ii=Beehive Kiln
+tfc.enum.tier.tier_iii=Bloomery
+tfc.enum.tier.tier_iv=Blast Furnace
+tfc.enum.tier.tier_v=Crucible
+
 # Items
 item.tfc.wand.name=TFC Debug Wand
 item.tfc.firestarter.name=Firestarter
 item.tfc.hay.name=Hay
-tile.tfc.firepit.name=Firepit
 
 # Fluids
 fluid.salt_water=Salt water
@@ -64,6 +107,7 @@ tile.tfc.debug.name=TFC Debug Block
 tile.tfc.peat.name=Peat
 tile.tfc.peat.grass.name=Peat Grass
 tile.tfc.thatch.name=Thatch
+tile.tfc.firepit.name=Firepit
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite
@@ -297,6 +341,7 @@ tile.tfc.dry_grass.phyllite.name=Dry Phyllite Grass
 tile.tfc.dry_grass.schist.name=Dry Schist Grass
 tile.tfc.dry_grass.gneiss.name=Dry Gneiss Grass
 tile.tfc.dry_grass.marble.name=Dry Marble Grass
+
 tile.tfc.path.granite.name=Granite Path
 tile.tfc.path.diorite.name=Diorite Path
 tile.tfc.path.gabbro.name=Gabbro Path
@@ -318,6 +363,28 @@ tile.tfc.path.phyllite.name=Phyllite Path
 tile.tfc.path.schist.name=Schist Path
 tile.tfc.path.gneiss.name=Gneiss Path
 tile.tfc.path.marble.name=Marble Path
+
+tile.tfc.farmland.granite.name=Granite Farmland
+tile.tfc.farmland.diorite.name=Diorite Farmland
+tile.tfc.farmland.gabbro.name=Gabbro Farmland
+tile.tfc.farmland.shale.name=Shale Farmland
+tile.tfc.farmland.claystone.name=Claystone Farmland
+tile.tfc.farmland.rocksalt.name=Rocksalt Farmland
+tile.tfc.farmland.limestone.name=Limestone Farmland
+tile.tfc.farmland.conglomerate.name=Conglomerate Farmland
+tile.tfc.farmland.dolomite.name=Dolomite Farmland
+tile.tfc.farmland.chert.name=Chert Farmland
+tile.tfc.farmland.chalk.name=Chalk Farmland
+tile.tfc.farmland.rhyolite.name=Rhyolite Farmland
+tile.tfc.farmland.basalt.name=Basalt Farmland
+tile.tfc.farmland.andesite.name=Andesite Farmland
+tile.tfc.farmland.dacite.name=Dacite Farmland
+tile.tfc.farmland.quartzite.name=Quartzite Farmland
+tile.tfc.farmland.slate.name=Slate Farmland
+tile.tfc.farmland.phyllite.name=Phyllite Farmland
+tile.tfc.farmland.schist.name=Schist Farmland
+tile.tfc.farmland.gneiss.name=Gneiss Farmland
+tile.tfc.farmland.marble.name=Marble Farmland
 
 tile.tfc.stairs.smooth.granite.name=Smooth Granite Stairs
 tile.tfc.stairs.smooth.diorite.name=Smooth Diorite Stairs
