@@ -5,8 +5,6 @@
 
 package net.dries007.tfc.objects.items;
 
-import java.lang.reflect.InvocationTargetException;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import net.minecraft.block.Block;
@@ -77,7 +75,7 @@ public final class ItemsTFC
 
     @SuppressWarnings("ConstantConditions")
     @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
+    public static void registerItems(RegistryEvent.Register<Item> event)
     {
         IForgeRegistry<Item> r = event.getRegistry();
 
@@ -114,8 +112,8 @@ public final class ItemsTFC
         {
             for (Metal metal : Metal.values())
             {
-                if (!metal.hasType(type) || type.clazz == null) continue;
-                simpleItems.add(register(r, ("metal/" + type + "/" + metal).toLowerCase(), type.clazz.getConstructor(Metal.class, Metal.ItemType.class).newInstance(metal, type), CT_METAL));
+                if (!metal.hasType(type) || type.supplier == null) continue;
+                simpleItems.add(register(r, ("metal/" + type + "/" + metal).toLowerCase(), type.supplier.apply(metal, type), CT_METAL));
             }
         }
 
