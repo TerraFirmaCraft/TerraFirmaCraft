@@ -5,8 +5,14 @@
 
 package net.dries007.tfc.objects.blocks.stone;
 
-import java.util.Random;
-
+import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
+import net.dries007.tfc.objects.items.rock.ItemRock;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.IFallingBlock;
+import net.dries007.tfc.util.InsertOnlyEnumTable;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
@@ -24,14 +30,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
-import net.dries007.tfc.objects.items.rock.ItemRock;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IFallingBlock;
-import net.dries007.tfc.util.InsertOnlyEnumTable;
-import net.dries007.tfc.util.OreDictionaryHelper;
+import java.util.Random;
 
 public class BlockRockVariant extends Block implements IFallingBlock
 {
@@ -121,7 +120,8 @@ public class BlockRockVariant extends Block implements IFallingBlock
             if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
             {
                 worldIn.spawnEntity(new EntityFallingBlockTFC(worldIn, pos, this, worldIn.getBlockState(pos)));
-            } else
+            }
+            else
             {
                 worldIn.setBlockToAir(pos);
                 pos = pos.add(0, -1, 0);
@@ -181,6 +181,7 @@ public class BlockRockVariant extends Block implements IFallingBlock
                 return super.getItemDropped(state, rand, fortune);
             case GRASS:
             case DRY_GRASS:
+            case PATH:
                 return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
         }
     }
