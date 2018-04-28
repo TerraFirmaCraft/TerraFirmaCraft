@@ -75,7 +75,8 @@ public enum Rock
         DRY_GRASS(Material.GRASS, false, true),
         CLAY(Material.GRASS, false, false),
         CLAY_GRASS(Material.GRASS, false, true),
-        FARMLAND(Material.GRASS, false, false, BlockFarmlandTFC::new);
+        FARMLAND(Material.GROUND, false, false, BlockFarmlandTFC::new),
+        PATH(Material.GROUND, false, false);
 
         public final Material material;
         public final boolean isAffectedByGravity;
@@ -85,7 +86,7 @@ public enum Rock
          */
         public final BiFunction<Rock.Type, Rock, BlockRockVariant> supplier;
 
-        Type(Material material, boolean isAffectedByGravity, boolean isGrass)
+        Type(Material material, boolean isAffectedByGravity, boolean isGrass, boolean isPath)
         {
             this(material, isAffectedByGravity, isGrass, isGrass ? BlockRockVariantConnected::new : BlockRockVariant::new);
         }

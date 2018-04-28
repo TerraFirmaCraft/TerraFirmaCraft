@@ -186,8 +186,7 @@ public final class BlocksTFC
     }
 
     @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event)
-    {
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> r = event.getRegistry();
 
         Builder<Block> normalItemBlocks = ImmutableList.builder();
@@ -218,7 +217,7 @@ public final class BlocksTFC
             Builder<BlockRockVariant> b = ImmutableList.builder();
             for (Rock.Type type : Rock.Type.values())
                 for (Rock rock : Rock.values())
-                    b.add(register(r, (type.name() + "/" + rock.name()).toLowerCase(), type.supplier.apply(type, rock), CT_ROCK_BLOCKS));
+                  b.add(register(r, (type.name() + "/" + rock.name()).toLowerCase(), type.supplier.apply(type, rock), CT_ROCK_BLOCKS));
             allBlockRockVariants = b.build();
             normalItemBlocks.addAll(allBlockRockVariants);
         }
