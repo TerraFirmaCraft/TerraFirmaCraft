@@ -58,27 +58,30 @@ public enum Rock
 
     public enum Type
     {
-        RAW(Material.ROCK, false, false),
-        SMOOTH(Material.ROCK, false, false),
-        COBBLE(Material.ROCK, true, false),
-        BRICKS(Material.ROCK, false, false),
-        SAND(Material.SAND, true, false),
-        GRAVEL(Material.SAND, true, false),
-        DIRT(Material.GROUND, false, false),
-        GRASS(Material.GRASS, false, true),
-        DRY_GRASS(Material.GRASS, false, true),
-        CLAY(Material.GRASS, false, false),
-        CLAY_GRASS(Material.GRASS, false, true);
+        RAW(Material.ROCK, false, false, false),
+        SMOOTH(Material.ROCK, false, false, false),
+        COBBLE(Material.ROCK, true, false, false),
+        BRICKS(Material.ROCK, false, false, false),
+        SAND(Material.SAND, true, false, false),
+        GRAVEL(Material.SAND, true, false, false),
+        DIRT(Material.GROUND, false, false, false),
+        GRASS(Material.GRASS, false, true, false),
+        DRY_GRASS(Material.GRASS, false, true, false),
+        PATH(Material.GROUND, true, false, true),
+        CLAY(Material.GRASS, false, false, false),
+        CLAY_GRASS(Material.GRASS, false, true, false);
 
         public final Material material;
         public final boolean isAffectedByGravity;
         public final boolean isGrass;
+        public final boolean isPath;
 
-        Type(Material material, boolean isAffectedByGravity, boolean isGrass)
+        Type(Material material, boolean isAffectedByGravity, boolean isGrass, boolean isPath)
         {
             this.material = material;
             this.isAffectedByGravity = isAffectedByGravity;
             this.isGrass = isGrass;
+            this.isPath = isPath;
         }
 
         public Type getNonGrassVersion()
