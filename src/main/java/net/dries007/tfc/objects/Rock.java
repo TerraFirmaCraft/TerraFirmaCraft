@@ -11,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockPathTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariantConnected;
 
@@ -76,7 +77,7 @@ public enum Rock
         CLAY(Material.GRASS, false, false),
         CLAY_GRASS(Material.GRASS, false, true),
         FARMLAND(Material.GROUND, false, false, BlockFarmlandTFC::new),
-        PATH(Material.GROUND, false, false);
+        PATH(Material.GROUND, false, false, BlockPathTFC::new);
 
         public final Material material;
         public final boolean isAffectedByGravity;
@@ -86,7 +87,7 @@ public enum Rock
          */
         public final BiFunction<Rock.Type, Rock, BlockRockVariant> supplier;
 
-        Type(Material material, boolean isAffectedByGravity, boolean isGrass, boolean isPath)
+        Type(Material material, boolean isAffectedByGravity, boolean isGrass)
         {
             this(material, isAffectedByGravity, isGrass, isGrass ? BlockRockVariantConnected::new : BlockRockVariant::new);
         }

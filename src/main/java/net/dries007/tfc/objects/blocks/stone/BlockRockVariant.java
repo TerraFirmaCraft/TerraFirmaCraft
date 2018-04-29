@@ -5,17 +5,9 @@
 
 package net.dries007.tfc.objects.blocks.stone;
 
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
-import net.dries007.tfc.objects.items.rock.ItemRock;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IFallingBlock;
-import net.dries007.tfc.util.InsertOnlyEnumTable;
-import net.dries007.tfc.util.OreDictionaryHelper;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFalling;
-import net.minecraft.block.SoundType;
+import java.util.Random;
+
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -30,7 +22,14 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Random;
+import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
+import net.dries007.tfc.objects.items.rock.ItemRock;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.IFallingBlock;
+import net.dries007.tfc.util.InsertOnlyEnumTable;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockRockVariant extends Block implements IFallingBlock
 {
@@ -71,6 +70,7 @@ public class BlockRockVariant extends Block implements IFallingBlock
                 setHarvestLevel("shovel", 0);
                 break;
             case DIRT:
+            case PATH:
             case FARMLAND:
                 setSoundType(SoundType.GROUND);
                 setHardness(0.5F);
@@ -244,5 +244,46 @@ public class BlockRockVariant extends Block implements IFallingBlock
         }
 
         return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        switch (this.type)
+        {
+            case PATH:
+            case FARMLAND:
+                switch (side)
+                {
+                    case UP:
+                        return true;
+                    case NORTH:
+                    case SOUTH:
+                    case WEST:
+                    case EAST:
+                        IBlockState state = world.getBlockState(pos.offset(side));
+                        Block block = state.getBlock();
+                        if (state.isOpaqueCube()) return false;
+                        if (block instanceof BlockFarmland || block instanceof BlockGrassPath) return false;
+                        if (block instanceof BlockRockVariant)
+                        {
+                            switch (((BlockRockVariant) block).type)
+                            {
+                                case FARMLAND:
+                                case PATH:
+                                    return false;
+                                default:
+                                    return true;
+                            }
+                        }
+                        return true;
+                    case DOWN:
+                        return super.shouldSideBeRendered(blockState, world, pos, side);
+                }
+            default:
+                return super.shouldSideBeRendered(blockState, world, pos, side);
+        }
     }
 }
