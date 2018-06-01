@@ -91,6 +91,7 @@ public final class BlocksTFC
     public static final BlockFirePit FIREPIT = null;
     public static final BlockThatch THATCH = null;
     public static final BlockPitKiln PIT_KILN = null;
+    public static final BlockWorldItem WORLD_ITEM = null;
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -355,6 +356,7 @@ public final class BlocksTFC
         // todo: custom hopper or just a separate press block? I prefer the separate block, this will simplify things a lot.
 
         // todo: placable items: pottery, metal sheets, (anvils are special because TE), tools?
+        register(r, "world_item", new BlockWorldItem());
         // todo: pitkiln (maybe not a seperate block but rather a variation on the TE from any placeable item)
         // todo: coal/charcoal pile
         // todo: ingot pile
