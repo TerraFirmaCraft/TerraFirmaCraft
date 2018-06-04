@@ -662,12 +662,12 @@ for wood_type in WOOD_TYPES:
 
     # CHESTS
     blockstate(('wood', 'chest', wood_type), 'tfc:chest', textures={
-        'texture': 'tfc:model/wood/chest/%s' % wood_type,
-        'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
+        'texture': 'tfc:blocks/wood/chests/chest/%s' % wood_type,
+        'particle': 'tfc:blocks/wood/chests/chest/%s' % wood_type,
     })
     blockstate(('wood', 'chest_trap', wood_type), 'tfc:chest', textures={
-        'texture': 'tfc:model/wood/chest_trap/%s' % wood_type,
-        'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
+        'texture': 'tfc:blocks/wood/chests/chest_trap/%s' % wood_type,
+        'particle': 'tfc:blocks/wood/chests/chest_trap/%s' % wood_type,
     })
 
     # (WOOD) BUTTON
