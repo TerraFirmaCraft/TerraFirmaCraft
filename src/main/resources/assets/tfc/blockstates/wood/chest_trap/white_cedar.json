@@ -4,8 +4,8 @@
   "defaults": {
     "model": "tfc:chest",
     "textures": {
-      "texture": "tfc:blocks/wood/chests/chest_trap/white_cedar",
-      "particle": "tfc:blocks/wood/chests/chest_trap/white_cedar"
+      "texture": "tfc:entity/chests/chest_trap/white_cedar",
+      "particle": "tfc:entity/chests/chest_trap/white_cedar"
     }
   },
   "variants": {

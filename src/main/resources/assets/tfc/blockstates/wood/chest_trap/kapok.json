@@ -4,8 +4,8 @@
   "defaults": {
     "model": "tfc:chest",
     "textures": {
-      "texture": "tfc:blocks/wood/chests/chest_trap/kapok",
-      "particle": "tfc:blocks/wood/chests/chest_trap/kapok"
+      "texture": "tfc:entity/chests/chest_trap/kapok",
+      "particle": "tfc:entity/chests/chest_trap/kapok"
     }
   },
   "variants": {
