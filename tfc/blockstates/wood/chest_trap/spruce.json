@@ -4,8 +4,8 @@
   "defaults": {
     "model": "tfc:chest",
     "textures": {
-      "texture": "tfc:blocks/wood/chests/chest_trap/spruce",
-      "particle": "tfc:blocks/wood/chests/chest_trap/spruce"
+      "texture": "tfc:entity/chests/chest_trap/spruce",
+      "particle": "tfc:entity/chests/chest_trap/spruce"
     }
   },
   "variants": {

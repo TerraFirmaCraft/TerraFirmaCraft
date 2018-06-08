@@ -4,8 +4,8 @@
   "defaults": {
     "model": "tfc:chest",
     "textures": {
-      "texture": "tfc:blocks/wood/chests/chest/sycamore",
-      "particle": "tfc:blocks/wood/chests/chest/sycamore"
+      "texture": "tfc:entity/chests/chest/sycamore",
+      "particle": "tfc:entity/chests/chest/sycamore"
     }
   },
   "variants": {
