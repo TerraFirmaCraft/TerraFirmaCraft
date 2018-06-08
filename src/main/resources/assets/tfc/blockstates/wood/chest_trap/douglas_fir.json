@@ -4,8 +4,8 @@
   "defaults": {
     "model": "tfc:chest",
     "textures": {
-      "texture": "tfc:model/wood/chest_trap/douglas_fir",
-      "particle": "tfc:blocks/wood/planks/douglas_fir"
+      "texture": "tfc:entity/chests/chest_trap/douglas_fir",
+      "particle": "tfc:entity/chests/chest_trap/douglas_fir"
     }
   },
   "variants": {

@@ -4,8 +4,8 @@
   "defaults": {
     "model": "tfc:chest",
     "textures": {
-      "texture": "tfc:model/wood/chest_trap/acacia",
-      "particle": "tfc:blocks/wood/planks/acacia"
+      "texture": "tfc:entity/chests/chest_trap/acacia",
+      "particle": "tfc:entity/chests/chest_trap/acacia"
     }
   },
   "variants": {
