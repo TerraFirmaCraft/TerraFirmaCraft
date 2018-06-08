@@ -4,8 +4,8 @@
   "defaults": {
     "model": "tfc:chest",
     "textures": {
-      "texture": "tfc:model/wood/chest/aspen",
-      "particle": "tfc:blocks/wood/planks/aspen"
+      "texture": "tfc:entity/chests/chest/aspen",
+      "particle": "tfc:entity/chests/chest/aspen"
     }
   },
   "variants": {
