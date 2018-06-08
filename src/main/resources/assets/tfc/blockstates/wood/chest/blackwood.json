@@ -4,8 +4,8 @@
   "defaults": {
     "model": "tfc:chest",
     "textures": {
-      "texture": "tfc:blocks/wood/chests/chest/blackwood",
-      "particle": "tfc:blocks/wood/chests/chest/blackwood"
+      "texture": "tfc:entity/chests/chest/blackwood",
+      "particle": "tfc:entity/chests/chest/blackwood"
     }
   },
   "variants": {
