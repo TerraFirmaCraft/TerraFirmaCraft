@@ -38,13 +38,9 @@ public class TEWorldItem extends TileEntity
         InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), item);
     }
 
-    public void setItem(ItemStack item, boolean markDirty){
+    public void setItem(ItemStack item, boolean doMarkDirty){
         this.item = item;
-        if(world == null) return;
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 18); // sync TE
-        if(markDirty)
-        markDirty();
+        updateBlock(doMarkDirty);
     }
 
     /*public void setItem(){
@@ -52,13 +48,16 @@ public class TEWorldItem extends TileEntity
     }*/
 
     public ItemStack getItem(){
+        if(item == ItemStack.EMPTY)
+            updateBlock(false);
         return item;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        super.readFromNBT(compound);        setItem(new ItemStack(compound.getCompoundTag("Item")), false);
+        super.readFromNBT(compound);
+        setItem(new ItemStack(compound.getCompoundTag("Item")), false);
     }
 
     @Override
@@ -71,16 +70,17 @@ public class TEWorldItem extends TileEntity
 
     @Override
     public void onLoad(){
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos, state, state, 18);
+            updateBlock(false);
     }
 
-    /*public void updateBlock()
+    public void updateBlock(boolean doMarkDirty)
     {
+        if(world == null) return;
         IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 18); // sync TE
-        //markDirty(); // make sure everything saves to disk
-    }*/
+        world.notifyBlockUpdate(pos, state, state, 2); // sync TE
+        if(doMarkDirty)
+        markDirty();
+    }
 
     @Nullable
     @Override
