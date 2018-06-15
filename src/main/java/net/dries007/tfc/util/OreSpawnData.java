@@ -25,6 +25,7 @@ import static net.dries007.tfc.util.OreSpawnData.SpawnType.VEINS;
 public final class OreSpawnData
 {
     public static final ImmutableList<OreSpawnData> ORE_SPAWN_DATA;
+    public static final double TOTAL_WEIGHT;
 
     static
     {
@@ -77,6 +78,13 @@ public final class OreSpawnData
         b.add(new OreSpawnData(TETRAHEDRITE, VEINS, SMALL, 35, METAMORPHIC, 128, 240, 40, 40));
 
         ORE_SPAWN_DATA = b.build();
+
+        double totalWeight = 0;
+        for(OreSpawnData data : ORE_SPAWN_DATA){
+            totalWeight += data.weight;
+        }
+        TOTAL_WEIGHT = totalWeight;
+        System.out.println("TOTAL WEIGHT: "+totalWeight);
     }
 
     public final Ore ore;
@@ -88,6 +96,11 @@ public final class OreSpawnData
     public final int maxY;
     public final float densityVertical;
     public final float densityHorizontal;
+    public final float densityModifier;
+    public final int maxClusters;
+
+    // NEW
+    public final double weight;
 
     private OreSpawnData(Ore ore, SpawnType type, SpawnSize size, int rarity, Category[] baseRocksCategories, int minY, int maxY, int densityVertical, int densityHorizontal)
     {
@@ -115,6 +128,8 @@ public final class OreSpawnData
         this.type = type;
         this.size = size;
         this.rarity = rarity;
+        this.weight = 1.0D / (double)rarity;
+        this.maxClusters = 5;
 
         ImmutableList.Builder<Rock> b = new ImmutableList.Builder<>();
         if (baseRocks != null) b.add(baseRocks);
@@ -129,6 +144,7 @@ public final class OreSpawnData
         this.maxY = maxY;
         this.densityVertical = densityVertical * 0.01f;
         this.densityHorizontal = densityHorizontal * 0.01f;
+        this.densityModifier = this.densityHorizontal + this.densityVertical / 2.0f;
     }
 
     @Override
@@ -154,6 +170,27 @@ public final class OreSpawnData
 
     public enum SpawnSize
     {
-        SMALL, MEDIUM, LARGE
+        SMALL(8.0F, 0.7F),
+        MEDIUM(12.0F, 0.6F),
+        LARGE(16.0F, 0.5F);
+
+        public final float radius;
+        public final float densityModifier;
+
+        SpawnSize(float radius, float densityModifier)
+        {
+            this.radius = radius;
+            this.densityModifier = densityModifier;
+        }
+
+        public float getDensityModifier()
+        {
+            return densityModifier;
+        }
+
+        public float getRadius()
+        {
+            return radius;
+        }
     }
 }
