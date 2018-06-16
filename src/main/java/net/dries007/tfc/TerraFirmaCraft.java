@@ -5,8 +5,6 @@
 
 package net.dries007.tfc;
 
-import net.dries007.tfc.objects.Ore;
-import net.dries007.tfc.util.OreSpawnData;
 import org.apache.logging.log4j.Logger;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -26,6 +24,7 @@ import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
+import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkCapabilityHandler;

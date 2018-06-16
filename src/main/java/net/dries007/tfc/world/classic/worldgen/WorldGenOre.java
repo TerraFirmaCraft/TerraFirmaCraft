@@ -8,9 +8,8 @@ package net.dries007.tfc.world.classic.worldgen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.annotation.Nullable;
 
-import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
-import net.dries007.tfc.world.classic.worldgen.vein.VeinTypeCluster;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -25,8 +24,8 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
-
-import javax.annotation.Nullable;
+import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
+import net.dries007.tfc.world.classic.worldgen.vein.VeinTypeCluster;
 
 import static net.dries007.tfc.util.OreSpawnData.TOTAL_WEIGHT;
 
@@ -34,7 +33,6 @@ public class WorldGenOre implements IWorldGenerator
 {
 
     private static final int CHUNK_RADIUS = 2;
-
     public static final int VEIN_MAX_RADIUS = 16 * CHUNK_RADIUS;
     public static final int VEIN_MAX_RADIUS_SQUARED = VEIN_MAX_RADIUS * VEIN_MAX_RADIUS;
 
@@ -86,7 +84,7 @@ public class WorldGenOre implements IWorldGenerator
                         if (blockAt.type != Rock.Type.RAW || !vein.oreSpawnData.baseRocks.contains(blockAt.rock))
                             continue;
 
-                        if(vein.oreSpawnData.ore == Ore.UNKNOWN_ORE && vein.oreSpawnData.state != null)
+                        if (vein.oreSpawnData.ore == Ore.UNKNOWN_ORE && vein.oreSpawnData.state != null)
                         {
                             world.setBlockState(posAt, vein.oreSpawnData.state, 2);
                         }
@@ -108,7 +106,8 @@ public class WorldGenOre implements IWorldGenerator
     }
 
     // Used to generate chunk
-    private List<VeinType> getNearbyVeins(int chunkX, int chunkZ, long worldSeed, ChunkDataTFC chunkData) {
+    private List<VeinType> getNearbyVeins(int chunkX, int chunkZ, long worldSeed, ChunkDataTFC chunkData)
+    {
         List<VeinType> veins = new ArrayList<>();
 
         for (int x = -CHUNK_RADIUS; x <= CHUNK_RADIUS; x++)

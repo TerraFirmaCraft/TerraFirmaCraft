@@ -5,11 +5,12 @@
 
 package net.dries007.tfc.world.classic.worldgen.vein;
 
-import net.dries007.tfc.objects.Ore;
-import net.dries007.tfc.util.OreSpawnData;
+import java.util.Random;
+
 import net.minecraft.util.math.BlockPos;
 
-import java.util.Random;
+import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.util.OreSpawnData;
 
 public class VeinTypeCluster extends VeinType
 {
@@ -27,13 +28,13 @@ public class VeinTypeCluster extends VeinType
         this.verticalModifier = (1.5 - rand.nextDouble()) * data.size.radius;
 
         int clusters = data.type.minClusters;
-        if(data.type.maxClusters > clusters)
+        if (data.type.maxClusters > clusters)
         {
             clusters += rand.nextInt(data.type.maxClusters - data.type.minClusters);
         }
         spawnPoints = new Cluster[clusters];
-        spawnPoints[0] = new Cluster(pos,0.6 + 0.5 * rand.nextDouble());
-        for(int i = 1; i < clusters; i++)
+        spawnPoints[0] = new Cluster(pos, 0.6 + 0.5 * rand.nextDouble());
+        for (int i = 1; i < clusters; i++)
         {
             final BlockPos clusterPos = pos.add(
                 1.5 * horizontalModifier * (0.5 - rand.nextDouble()),
@@ -49,15 +50,15 @@ public class VeinTypeCluster extends VeinType
     {
         double shortestRadius = -1;
 
-        for(Cluster c : spawnPoints)
+        for (Cluster c : spawnPoints)
         {
             final double dx = Math.pow(c.pos.getX() - pos1.getX(), 2);
             final double dy = Math.pow(c.pos.getY() - pos1.getY(), 2);
             final double dz = Math.pow(c.pos.getZ() - pos1.getZ(), 2);
 
-            final double radius = (dx + dz) / Math.pow(c.size*horizontalModifier, 2) + dy / Math.pow(c.size*verticalModifier, 2);
+            final double radius = (dx + dz) / Math.pow(c.size * horizontalModifier, 2) + dy / Math.pow(c.size * verticalModifier, 2);
 
-            if(shortestRadius == -1 || radius < shortestRadius) shortestRadius = radius;
+            if (shortestRadius == -1 || radius < shortestRadius) shortestRadius = radius;
         }
         return oreSpawnData.density * oreSpawnData.size.densityModifier * (1.0 - shortestRadius);
     }
