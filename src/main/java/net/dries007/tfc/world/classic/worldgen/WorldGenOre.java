@@ -8,6 +8,7 @@ package net.dries007.tfc.world.classic.worldgen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.state.IBlockState;
@@ -32,6 +33,7 @@ import static net.dries007.tfc.util.OreSpawnData.TOTAL_WEIGHT;
 public class WorldGenOre implements IWorldGenerator
 {
 
+    private static final int NUM_ROLLS = 3;
     private static final int CHUNK_RADIUS = 2;
     public static final int VEIN_MAX_RADIUS = 16 * CHUNK_RADIUS;
     public static final int VEIN_MAX_RADIUS_SQUARED = VEIN_MAX_RADIUS * VEIN_MAX_RADIUS;
@@ -57,11 +59,6 @@ public class WorldGenOre implements IWorldGenerator
         for (VeinType vein : veins)
         {
             // Do checks here that are specific to each vein
-            if (!vein.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0).rock) &&
-                !vein.oreSpawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock) &&
-                !vein.oreSpawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock))
-                continue;
-
 
             for (int x = 0; x < 16; x++)
             {
@@ -128,19 +125,28 @@ public class WorldGenOre implements IWorldGenerator
     {
         Random rand = new Random(worldSeed + chunkX * 341873128712L + chunkZ * 132897987541L);
 
-        if (rand.nextFloat() < TOTAL_WEIGHT)
+        if (rand.nextDouble() < TOTAL_WEIGHT)
         {
-            OreSpawnData.OreEntry oreType = getWeightedOreType(rand);
+            OreSpawnData.OreEntry oreType;
+            BlockPos startPos;
+            int rolls = 0;
+            while (true)
+            {
+                oreType = getWeightedOreType(rand);
+                startPos = new BlockPos(
+                    chunkX * 16 + rand.nextInt(16),
+                    oreType.minY + rand.nextInt(oreType.maxY - oreType.minY), // Todo: make max value be the min of top block and maxY ? Is that possible?
+                    chunkZ * 16 + rand.nextInt(16)
+                );
 
-            BlockPos startPos = new BlockPos(
-                chunkX * 16 + rand.nextInt(16),
-                oreType.minY + rand.nextInt(oreType.maxY - oreType.minY), // Todo: make max value be the min of top block and maxY ? Is that possible?
-                chunkZ * 16 + rand.nextInt(16)
-            );
+                if (oreType.baseRocks.contains(chunkData.getRockHeight(startPos.getX(), startPos.getY(), startPos.getZ()).rock))
+                {
+                    break;
+                }
 
-            if (!oreType.baseRocks.contains(chunkData.getRockHeight(startPos.getX(), startPos.getY(), startPos.getZ()).rock))
-                return null;
-
+                rolls++;
+                if (rolls >= NUM_ROLLS) return null;
+            }
             Ore.Grade grade = Ore.Grade.NORMAL;
             if (oreType.ore.graded)
             {
@@ -153,6 +159,7 @@ public class WorldGenOre implements IWorldGenerator
         return null;
     }
 
+    @Nonnull
     private OreSpawnData.OreEntry getWeightedOreType(Random rand)
     {
         double r = rand.nextDouble() * TOTAL_WEIGHT;

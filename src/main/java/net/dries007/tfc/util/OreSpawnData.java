@@ -6,31 +6,38 @@
 package net.dries007.tfc.util;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.annotations.SerializedName;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigValue;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Rock.Category;
 
+import static net.dries007.tfc.Constants.GSON;
+
 // todo: someone look through assets/tfc/config/tfc_ore_spawn_data.json and verify that everything looks good  -Alex (alcatrazEscapee)
 public class OreSpawnData
 {
     public static ImmutableList<OreEntry> ORE_SPAWN_DATA;
-    public static double TOTAL_WEIGHT = 0.0;
+    public static double TOTAL_WEIGHT;
 
     public static File configDir;
-    private static File genFile;
+    private static String genData;
 
 
     public static void preInit()
@@ -54,7 +61,8 @@ public class OreSpawnData
                 return;
             }
         }
-        genFile = new File(tfcDir, "tfc_ore_spawn_data.json");
+        File genFile = new File(tfcDir, "tfc_ore_spawn_data.json");
+        Path genPath = genFile.toPath();
         try
         {
             if (genFile.createNewFile())
@@ -71,13 +79,141 @@ public class OreSpawnData
         {
             TerraFirmaCraft.getLog().fatal("Problem creating TFC world gen json: ", e);
         }
+        try
+        {
+            genData = new String(Files.readAllBytes(genPath));
+        }
+        catch (IOException e)
+        {
+            TerraFirmaCraft.getLog().fatal("Unable to read world gen json.", e);
+        }
+
         TerraFirmaCraft.getLog().info("Complete.");
     }
 
     // todo: test that all the exceptions and try statements catch problems with json
     public static void reloadOreGen()
     {
-        Config genData = ConfigFactory.parseFile(genFile);
+        Set<Map.Entry<String, JsonElement>> entries;
+        ImmutableList.Builder<OreEntry> builder = new ImmutableList.Builder<>();
+        TOTAL_WEIGHT = 0.0;
+
+        try
+        {
+            JsonElement rootJson = new JsonParser().parse(genData);
+            JsonObject rootObject = rootJson.getAsJsonObject();
+
+            entries = rootObject.entrySet();
+        }
+        catch (Exception e)
+        {
+            // Problems
+            return;
+        }
+
+        for (Map.Entry<String, JsonElement> entry : entries)
+        {
+            OreJson genEntry;
+            Ore ore;
+            IBlockState state;
+            final SpawnSize size;
+            final SpawnType shape;
+            final int rarity;
+            final int minY;
+            final int maxY;
+            final int density;
+            List<String> baseStrings;
+
+            try
+            {
+                genEntry = GSON.fromJson(entry.getValue(), OreJson.class);
+
+                size = SpawnSize.valueOf(genEntry.size.toUpperCase());
+                shape = SpawnType.valueOf(genEntry.shape.toUpperCase());
+
+                rarity = genEntry.rarity;
+                minY = genEntry.minY;
+                maxY = genEntry.maxY;
+                density = genEntry.density;
+
+                baseStrings = genEntry.baseRocks;
+
+            }
+            catch (Exception e)
+            {
+                //Problems
+                TerraFirmaCraft.getLog().warn("Problem parsing data for ore generation entry with key: \"" + entry.getKey() + "\" Skipping.");
+                continue;
+            }
+
+            try
+            {
+                ore = Ore.valueOf(genEntry.ore.toUpperCase());
+                if (ore == Ore.UNKNOWN_ORE)
+                    throw new Exception("Can't assign to unknown ore");
+                state = null;
+            }
+            catch (Exception e1)
+            {
+                try
+                {
+                    String blockName = genEntry.ore;
+                    Block block = Block.getBlockFromName(blockName);
+                    if (block != null)
+                    {
+                        state = block.getDefaultState();
+                        ore = Ore.UNKNOWN_ORE;
+                    }
+                    else
+                    {
+                        TerraFirmaCraft.getLog().warn("Problem parsing IBlockState: block doesn't exist for ore generation entry with key: \"" + entry.getKey() + "\" Skipping.");
+                        continue;
+                    }
+                }
+                catch (Exception e2)
+                {
+                    TerraFirmaCraft.getLog().warn("Problem parsing Ore / IBlockState for ore generation entry with key: \"" + entry.getKey() + "\" Skipping.");
+                    continue;
+                }
+            }
+
+            ImmutableList.Builder<Rock> b = new ImmutableList.Builder<>();
+            for (String s : baseStrings)
+            {
+                try
+                {
+                    Rock rock = Rock.valueOf(s.toUpperCase());
+                    b.add(rock);
+                }
+                catch (IllegalArgumentException e1)
+                {
+                    try
+                    {
+                        Category category = Category.valueOf(s.toUpperCase());
+                        for (Rock rock : Rock.values())
+                        {
+                            if (rock.category == category)
+                            {
+                                b.add(rock);
+                            }
+                        }
+                    }
+                    catch (IllegalArgumentException e2)
+                    {
+                        TerraFirmaCraft.getLog().warn("Problem parsing base rock \"" + s + "\" for ore generation entry with key+\"" + entry.getKey() + "\" Skipping");
+                    }
+                }
+            }
+
+            builder.add(new OreEntry(ore, state, size, shape, b.build(), rarity, minY, maxY, density));
+            TOTAL_WEIGHT += 1.0D / (double) rarity;
+            TerraFirmaCraft.getLog().debug("Added ore generation entry for " + entry.getKey());
+        }
+        TerraFirmaCraft.getLog().debug("Total weight for ore generator = " + TOTAL_WEIGHT);
+        ORE_SPAWN_DATA = builder.build();
+    }
+
+        /*Config genData = ConfigFactory.parseFile(genFile);
         ImmutableList.Builder<OreEntry> builder = new ImmutableList.Builder<>();
 
         for (Map.Entry<String, ConfigValue> genEntry : genData.root().entrySet())
@@ -175,11 +311,11 @@ public class OreSpawnData
 
             builder.add(new OreEntry(ore, state, size, shape, b.build(), rarity, minY, maxY, density));
             TOTAL_WEIGHT += 1.0D / (double) rarity;
-            TerraFirmaCraft.getLog().debug("Added ore generation entry for " + genEntry.getKey());
-        }
+            TerraFirmaCraft.getLog().debug("Added ore generation entry for " + genEntry.getKey());*/
+    //}
 
-        ORE_SPAWN_DATA = builder.build();
-    }
+    //ORE_SPAWN_DATA = builder.build();
+    //}
 
     public enum SpawnType
     {
@@ -218,12 +354,13 @@ public class OreSpawnData
         public final IBlockState state;
         public final SpawnType type;
         public final SpawnSize size;
-        public final int rarity;
         public final ImmutableList<Rock> baseRocks;
         public final int minY;
         public final int maxY;
         public final double weight;
         public final double density;
+
+        final int rarity;
 
         private OreEntry(@Nonnull Ore ore, @Nullable IBlockState state, SpawnSize size, SpawnType type, ImmutableList<Rock> baseRocks, int rarity, int minY, int maxY, int density)
         {
@@ -257,5 +394,23 @@ public class OreSpawnData
                 ", density=" + density +
                 '}';
         }
+    }
+
+    private class OreJson
+    {
+
+        private String ore;
+        private String size;
+        private String shape;
+
+        private int rarity;
+        private int density;
+        @SerializedName("minimum_height")
+        private int minY;
+        @SerializedName("maximum_height")
+        private int maxY;
+
+        @SerializedName("base_rocks")
+        private List<String> baseRocks;
     }
 }
