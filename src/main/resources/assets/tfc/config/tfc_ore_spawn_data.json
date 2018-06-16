@@ -4,10 +4,10 @@
 		"size": "large",
 		"shape": "scattered_cluster",
 		"rarity": 120,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"igneous_extrusive"
 		]
 
@@ -17,10 +17,10 @@
 		"size": "large",
 		"shape": "scattered_cluster",
 		"rarity": 120,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"igneous_extrusive",
 			"igneous_intrusive"
 		]
@@ -31,10 +31,10 @@
 		"size": "small",
 		"shape": "scattered_cluster",
 		"rarity": 150,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 60,
-		"base-rocks": [
+    "base_rocks": [
 			"sedimentary"
 		]
 
@@ -44,10 +44,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 100,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"gabbro",
 			"gneiss"
 		]
@@ -58,10 +58,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 125,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"igneous_extrusive"
 		]
 
@@ -71,10 +71,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 100,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"igneous_intrusive"
 		]
 
@@ -84,10 +84,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 100,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"igneous_extrusive",
 			"metamorphic",
 			"granite",
@@ -100,10 +100,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 100,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"igneous_extrusive",
 			"sedimentary"
 		]
@@ -114,10 +114,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 150,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"gabbro"
 		]
 
@@ -127,10 +127,10 @@
 		"size": "large",
 		"shape": "scattered_cluster",
 		"rarity": 100,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"limestone",
 			"marble"
 		]
@@ -141,10 +141,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 150,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"sedimentary"
 		]
 
@@ -154,10 +154,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 150,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"sedimentary"
 		]
 
@@ -167,10 +167,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 100,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"metamorphic"
 		]
 
@@ -180,10 +180,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 100,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"metamorphic"
 		]
 
@@ -193,10 +193,10 @@
 		"size": "large",
 		"shape": "scattered_cluster",
 		"rarity": 100,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 60,
-		"base-rocks": [
+    "base_rocks": [
 			"sedimentary"
 		]
 
@@ -206,10 +206,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 100,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 60,
-		"base-rocks": [
+    "base_rocks": [
 			"sedimentary"
 		]
 
@@ -219,10 +219,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 90,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"sedimentary"
 		]
 
@@ -232,10 +232,10 @@
 		"size": "large",
 		"shape": "scattered_cluster",
 		"rarity": 120,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"sedimentary"
 		]
 
@@ -245,10 +245,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 100,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"marble",
 			"gneiss",
 			"quartzite",
@@ -261,10 +261,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 200,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 50,
-		"base-rocks": [
+    "base_rocks": [
 			"gabbro"
 		]
 
@@ -274,10 +274,10 @@
 		"size": "large",
 		"shape": "scattered_cluster",
 		"rarity": 110,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"sedimentary"
 		]
 
@@ -287,10 +287,10 @@
 		"size": "small",
 		"shape": "scattered_cluster",
 		"rarity": 150,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"granite"
 		]
 
@@ -300,10 +300,10 @@
 		"size": "small",
 		"shape": "scattered_cluster",
 		"rarity": 150,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 60,
-		"base-rocks": [
+    "base_rocks": [
 			"igneous_extrusive",
 			"shale",
 			"quartzite"
@@ -315,10 +315,10 @@
 		"size": "small",
 		"shape": "scattered_cluster",
 		"rarity": 100,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"granite"
 		]
 
@@ -328,10 +328,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 120,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"sedimentary"
 		]
 
@@ -341,10 +341,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 100,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 60,
-		"base-rocks": [
+    "base_rocks": [
 			"rocksalt"
 		]
 
@@ -354,10 +354,10 @@
 		"size": "medium",
 		"shape": "scattered_cluster",
 		"rarity": 120,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"rocksalt"
 		]
 
@@ -367,10 +367,10 @@
 		"size": "large",
 		"shape": "scattered_cluster",
 		"rarity": 120,
-		"minimum-height": 5,
-		"maximum-height": 128,
+    "minimum_height": 5,
+    "maximum_height": 128,
 		"density": 70,
-		"base-rocks": [
+    "base_rocks": [
 			"marble"
 		]
 
@@ -380,10 +380,10 @@
 		"size": "small",
 		"shape": "scattered_cluster",
 		"rarity": 35,
-		"minimum-height": 128,
-		"maximum-height": 240,
+    "minimum_height": 128,
+    "maximum_height": 240,
 		"density": 40,
-		"base-rocks": [
+    "base_rocks": [
 			"igneous_extrusive"
 		]
 
@@ -393,10 +393,10 @@
 		"size": "small",
 		"shape": "scattered_cluster",
 		"rarity": 35,
-		"minimum-height": 128,
-		"maximum-height": 240,
+    "minimum_height": 128,
+    "maximum_height": 240,
 		"density": 40,
-		"base-rocks": [
+    "base_rocks": [
 			"granite"
 		]
 
@@ -406,10 +406,10 @@
 		"size": "small",
 		"shape": "scattered_cluster",
 		"rarity": 35,
-		"minimum-height": 128,
-		"maximum-height": 240,
+    "minimum_height": 128,
+    "maximum_height": 240,
 		"density": 40,
-		"base-rocks": [
+    "base_rocks": [
 			"igneous_extrusive",
 			"sedimentary"
 		]
@@ -420,10 +420,10 @@
 		"size": "small",
 		"shape": "scattered_cluster",
 		"rarity": 35,
-		"minimum-height": 128,
-		"maximum-height": 240,
+    "minimum_height": 128,
+    "maximum_height": 240,
 		"density": 40,
-		"base-rocks": [
+    "base_rocks": [
 			"metamorphic"
 		]
 
@@ -433,10 +433,10 @@
 		"size": "small",
 		"shape": "scattered_cluster",
 		"rarity": 35,
-		"minimum-height": 128,
-		"maximum-height": 240,
+    "minimum_height": 128,
+    "maximum_height": 240,
 		"density": 40,
-		"base-rocks": [
+    "base_rocks": [
 			"metamorphic"
 		]
 
