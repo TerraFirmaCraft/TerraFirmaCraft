@@ -5,6 +5,8 @@
 
 package net.dries007.tfc;
 
+import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.util.OreSpawnData;
 import org.apache.logging.log4j.Logger;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -98,6 +100,9 @@ public class TerraFirmaCraft
         EntitiesTFC.preInit();
         FluidsTFC.preInit();
 
+        OreSpawnData.configDir = event.getModConfigurationDirectory();
+        OreSpawnData.preInit();
+
         if (event.getSide().isClient()) ClientEvents.preInit();
     }
 
@@ -130,6 +135,8 @@ public class TerraFirmaCraft
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
+        OreSpawnData.reloadOreGen();
+
         if (!isSignedBuild)
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
     }

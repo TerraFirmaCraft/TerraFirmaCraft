@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.world.classic.worldgen.vein;
 
 import net.dries007.tfc.objects.Ore;
@@ -8,10 +13,10 @@ import net.minecraft.util.math.BlockPos;
 public abstract class VeinType
 {
     public final BlockPos pos;
-    public final OreSpawnData oreSpawnData;
+    public final OreSpawnData.OreEntry oreSpawnData;
     public final Ore.Grade grade;
 
-    VeinType(BlockPos pos, OreSpawnData oreSpawnData, Ore.Grade grade)
+    VeinType(BlockPos pos, OreSpawnData.OreEntry oreSpawnData, Ore.Grade grade)
     {
         this.pos = pos;
         this.oreSpawnData = oreSpawnData;

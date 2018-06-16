@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.world.classic.worldgen.vein;
 
 import net.dries007.tfc.objects.Ore;
@@ -14,14 +19,18 @@ public class VeinTypeCluster extends VeinType
 
     private final Cluster[] spawnPoints;
 
-    public VeinTypeCluster(BlockPos pos, OreSpawnData data, Ore.Grade grade, Random rand)
+    public VeinTypeCluster(BlockPos pos, OreSpawnData.OreEntry data, Ore.Grade grade, Random rand)
     {
         super(pos, data, grade);
 
-        this.horizontalModifier = (1.5 - rand.nextDouble()) * data.size.getRadius();
-        this.verticalModifier = (1.5 - rand.nextDouble()) * data.size.getRadius();
+        this.horizontalModifier = (1.5 - rand.nextDouble()) * data.size.radius;
+        this.verticalModifier = (1.5 - rand.nextDouble()) * data.size.radius;
 
-        int clusters = 1 + rand.nextInt(data.maxClusters);
+        int clusters = data.type.minClusters;
+        if(data.type.maxClusters > clusters)
+        {
+            clusters += rand.nextInt(data.type.maxClusters - data.type.minClusters);
+        }
         spawnPoints = new Cluster[clusters];
         spawnPoints[0] = new Cluster(pos,0.6 + 0.5 * rand.nextDouble());
         for(int i = 1; i < clusters; i++)
@@ -36,7 +45,8 @@ public class VeinTypeCluster extends VeinType
     }
 
     @Override
-    public double getChanceToGenerate(BlockPos pos1){
+    public double getChanceToGenerate(BlockPos pos1)
+    {
         double shortestRadius = -1;
 
         for(Cluster c : spawnPoints)
@@ -49,7 +59,7 @@ public class VeinTypeCluster extends VeinType
 
             if(shortestRadius == -1 || radius < shortestRadius) shortestRadius = radius;
         }
-        return (double)oreSpawnData.densityModifier * oreSpawnData.size.getDensityModifier() * (1.0 - shortestRadius);
+        return oreSpawnData.density * oreSpawnData.size.densityModifier * (1.0 - shortestRadius);
     }
 
     final class Cluster

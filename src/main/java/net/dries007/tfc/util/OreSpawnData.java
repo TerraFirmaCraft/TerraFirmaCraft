@@ -7,150 +7,191 @@ package net.dries007.tfc.util;
 
 import com.google.common.collect.ImmutableList;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigValue;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Rock.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 
-import static net.dries007.tfc.objects.Ore.*;
-import static net.dries007.tfc.objects.Rock.Category.*;
-import static net.dries007.tfc.objects.Rock.*;
-import static net.dries007.tfc.util.OreSpawnData.SpawnSize.*;
-import static net.dries007.tfc.util.OreSpawnData.SpawnType.DEFAULT;
-import static net.dries007.tfc.util.OreSpawnData.SpawnType.VEINS;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
 
-/**
- * todo: make this configurable
- * todo: have this checked by someone
- */
-public final class OreSpawnData
+// todo: someone look through assets/tfc/config/tfc_ore_spawn_data.json and verify that everything looks good  -Alex (alcatrazEscapee)
+public class OreSpawnData
 {
-    public static final ImmutableList<OreSpawnData> ORE_SPAWN_DATA;
-    public static final double TOTAL_WEIGHT;
+    public static ImmutableList<OreEntry> ORE_SPAWN_DATA;
+    public static double TOTAL_WEIGHT = 0.0;
 
-    static
+    public static File configDir;
+    private static File genFile;
+
+
+    public static void preInit()
     {
-        ImmutableList.Builder<OreSpawnData> b = new ImmutableList.Builder<>();
+        TerraFirmaCraft.getLog().info("Loading or creating ore generation config file");
 
-        // Metals
-        b.add(new OreSpawnData(NATIVE_COPPER, VEINS, LARGE, 120, IGNEOUS_EXTRUSIVE, 5, 128, 80, 60));
-        b.add(new OreSpawnData(NATIVE_GOLD, VEINS, LARGE, 120, new Category[] {IGNEOUS_EXTRUSIVE, IGNEOUS_INTRUSIVE}, 5, 128, 80, 60));
-        b.add(new OreSpawnData(NATIVE_PLATINUM, VEINS, SMALL, 150, SEDIMENTARY, 5, 128, 40, 80));
-        b.add(new OreSpawnData(HEMATITE, VEINS, MEDIUM, 125, IGNEOUS_EXTRUSIVE, 5, 128, 80, 60));
-        b.add(new OreSpawnData(NATIVE_SILVER, VEINS, MEDIUM, 100, new Rock[] {GRANITE, GNEISS}, 5, 128, 80, 60));
-        b.add(new OreSpawnData(CASSITERITE, VEINS, MEDIUM, 100, IGNEOUS_INTRUSIVE, 5, 128, 80, 60));
-        b.add(new OreSpawnData(GALENA, VEINS, MEDIUM, 100, new Rock[] {GRANITE, LIMESTONE}, new Category[] {IGNEOUS_EXTRUSIVE, METAMORPHIC}, 5, 128, 80, 60));
-        b.add(new OreSpawnData(BISMUTHINITE, VEINS, MEDIUM, 100, new Category[] {IGNEOUS_EXTRUSIVE, SEDIMENTARY}, 5, 128, 80, 60));
-        b.add(new OreSpawnData(GARNIERITE, VEINS, MEDIUM, 150, GABBRO, 5, 128, 80, 60));
-        b.add(new OreSpawnData(MALACHITE, VEINS, LARGE, 100, new Rock[] {LIMESTONE, MARBLE}, 5, 128, 80, 60));
-        b.add(new OreSpawnData(MAGNETITE, VEINS, MEDIUM, 150, SEDIMENTARY, 5, 128, 80, 60));
-        b.add(new OreSpawnData(LIMONITE, VEINS, MEDIUM, 150, SEDIMENTARY, 5, 128, 80, 60));
-        b.add(new OreSpawnData(SPHALERITE, VEINS, MEDIUM, 100, METAMORPHIC, 5, 128, 80, 60));
-        b.add(new OreSpawnData(TETRAHEDRITE, VEINS, MEDIUM, 120, METAMORPHIC, 5, 128, 80, 60));
-        b.add(new OreSpawnData(BITUMINOUS_COAL, DEFAULT, LARGE, 100, SEDIMENTARY, 5, 128, 90, 40));
-        b.add(new OreSpawnData(LIGNITE, DEFAULT, MEDIUM, 100, SEDIMENTARY, 5, 128, 90, 40));
+        File tfcDir = new File(configDir, "/tfc/");
 
-        // Minerals
-        b.add(new OreSpawnData(KAOLINITE, DEFAULT, MEDIUM, 90, SEDIMENTARY, 5, 128, 80, 60));
-        b.add(new OreSpawnData(GYPSUM, VEINS, LARGE, 120, SEDIMENTARY, 5, 128, 80, 60));
-        //b.add(new OreSpawnData(SATINSPAR, VEINS, SMALL, 150, SEDIMENTARY, 5, 128, 40, 60));
-        //b.add(new OreSpawnData(SELENITE, VEINS, MEDIUM, 125, IGNEOUS_EXTRUSIVE, 5, 128, 60, 60));
-        b.add(new OreSpawnData(GRAPHITE, VEINS, MEDIUM, 100, new Rock[] {MARBLE, GNEISS, QUARTZITE, SCHIST}, 5, 128, 80, 60));
-        b.add(new OreSpawnData(KIMBERLITE, VEINS, MEDIUM, 200, new Rock[] {GABBRO}, 5, 128, 30, 80));
-        //b.add(new OreSpawnData(PETRIFIED_WOOD, VEINS, MEDIUM, 100, new Rock[]{GRANITE, LIMESTONE}, new Category[]{IGNEOUS_EXTRUSIVE, METAMORPHIC}, 5, 128, 60, 80));
-        //b.add(new OreSpawnData(SULFUR, VEINS, MEDIUM, 100, new Category[]{IGNEOUS_EXTRUSIVE, SEDIMENTARY}, 5, 128, 60, 60));
-        b.add(new OreSpawnData(JET, VEINS, LARGE, 110, new Category[] {SEDIMENTARY}, 5, 128, 80, 60));
-        //b.add(new OreSpawnData(MICROCLINE, VEINS, LARGE, 100, new Rock[]{LIMESTONE, MARBLE}, 5, 128, 60, 60));
-        b.add(new OreSpawnData(PITCHBLENDE, VEINS, SMALL, 150, new Rock[] {GRANITE}, 5, 128, 80, 60));
-        b.add(new OreSpawnData(CINNABAR, VEINS, SMALL, 150, new Rock[] {SHALE, QUARTZITE}, new Category[] {IGNEOUS_EXTRUSIVE}, 5, 128, 30, 80));
-        b.add(new OreSpawnData(CRYOLITE, VEINS, SMALL, 100, GRANITE, 5, 128, 80, 60));
-        b.add(new OreSpawnData(SALTPETER, VEINS, MEDIUM, 120, SEDIMENTARY, 5, 128, 80, 60));
-        //b.add(new OreSpawnData(SERPENTINE, VEINS, LARGE, 100, SEDIMENTARY, 5, 128, 90, 40));
-        b.add(new OreSpawnData(SYLVITE, VEINS, MEDIUM, 100, ROCKSALT, 5, 128, 90, 40));
-        b.add(new OreSpawnData(BORAX, VEINS, LARGE, 120, ROCKSALT, 5, 128, 80, 60));
-        b.add(new OreSpawnData(LAPIS_LAZULI, VEINS, LARGE, 120, MARBLE, 5, 128, 80, 60));
-        //b.add(new OreSpawnData(OLIVINE, VEINS, SMALL, 150, MARBLE, 5, 128, 40, 80));
-
-        // Surface ores
-        b.add(new OreSpawnData(NATIVE_COPPER, VEINS, SMALL, 35, IGNEOUS_EXTRUSIVE, 128, 240, 40, 40));
-        b.add(new OreSpawnData(CASSITERITE, VEINS, SMALL, 35, GRANITE, 128, 240, 40, 40));
-        b.add(new OreSpawnData(BISMUTHINITE, VEINS, SMALL, 35, new Category[] {IGNEOUS_EXTRUSIVE, SEDIMENTARY}, 128, 240, 40, 40));
-        b.add(new OreSpawnData(SPHALERITE, VEINS, SMALL, 35, METAMORPHIC, 128, 240, 40, 40));
-        b.add(new OreSpawnData(TETRAHEDRITE, VEINS, SMALL, 35, METAMORPHIC, 128, 240, 40, 40));
-
-        ORE_SPAWN_DATA = b.build();
-
-        double totalWeight = 0;
-        for(OreSpawnData data : ORE_SPAWN_DATA){
-            totalWeight += data.weight;
+        if (!tfcDir.exists())
+        {
+            try
+            {
+                if (!tfcDir.mkdir())
+                {
+                    throw new Error("Problem creating TFC World gen directory: (unknown error)");
+                }
+            }
+            catch (Exception e)
+            {
+                TerraFirmaCraft.getLog().fatal("Problem creating TFC World gen directory:", e);
+                return;
+            }
         }
-        TOTAL_WEIGHT = totalWeight;
-        System.out.println("TOTAL WEIGHT: "+totalWeight);
+        genFile = new File(tfcDir, "tfc_ore_spawn_data.json");
+        try
+        {
+            if (genFile.createNewFile())
+            {
+                FileUtils.copyFile("assets/tfc/config/tfc_ore_spawn_data.json", genFile);
+                TerraFirmaCraft.getLog().info("Created standard generation json.");
+            }
+            else if (!genFile.exists())
+            {
+                throw new Error("Problem creating TFC world gen json: (unspecified error).");
+            }
+        } catch (Exception e) {
+            TerraFirmaCraft.getLog().fatal("Problem creating TFC world gen json: ", e);
+        }
+        TerraFirmaCraft.getLog().info("Complete.");
     }
 
-    public final Ore ore;
-    public final SpawnType type;
-    public final SpawnSize size;
-    public final int rarity;
-    public final ImmutableList<Rock> baseRocks;
-    public final int minY;
-    public final int maxY;
-    public final float densityVertical;
-    public final float densityHorizontal;
-    public final float densityModifier;
-    public final int maxClusters;
+    // todo: test that all the exceptions and try statements catch problems with json
+    public static void reloadOreGen(){
+        Config genData = ConfigFactory.parseFile(genFile);
+        ImmutableList.Builder<OreEntry> builder = new ImmutableList.Builder<>();
 
-    // NEW
-    public final double weight;
+        for (Map.Entry<String, ConfigValue> genEntry : genData.root().entrySet())
+        {
+            Config entryData;
+            Ore ore;
+            IBlockState state;
+            final SpawnSize size;
+            final SpawnType shape;
+            final int rarity;
+            final int minY;
+            final int maxY;
+            final int density;
+            List<String> baseStrings;
+            try {
+                entryData = genData.getConfig(genEntry.getKey());
 
-    private OreSpawnData(Ore ore, SpawnType type, SpawnSize size, int rarity, Category[] baseRocksCategories, int minY, int maxY, int densityVertical, int densityHorizontal)
-    {
-        this(ore, type, size, rarity, null, baseRocksCategories, minY, maxY, densityVertical, densityHorizontal);
+                //ore = Ore.valueOf(entryData.getString("ore").toUpperCase());
+                size = SpawnSize.valueOf(entryData.getString("size").toUpperCase());
+                shape = SpawnType.valueOf(entryData.getString("shape").toUpperCase());
+
+                rarity = entryData.getInt("rarity");
+                minY = entryData.getInt("minimum-height");
+                maxY = entryData.getInt("maximum-height");
+                density = entryData.getInt("density");
+
+                baseStrings = entryData.getStringList("base-rocks");
+
+            } catch (Exception e) {
+                TerraFirmaCraft.getLog().warn("Problem parsing data for ore generation entry with key: \""+genEntry.getKey()+"\" Skipping.");
+                continue;
+            }
+
+            try{
+                ore = Ore.valueOf(entryData.getString("ore").toUpperCase());
+                state = null;
+            } catch (Exception e1) {
+                try {
+                    String blockName = entryData.getString("ore");
+                    Block block = Block.getBlockFromName(blockName);
+                    if(block != null)
+                    {
+                        state = block.getDefaultState();
+                        ore = Ore.UNKNOWN_ORE;
+                    }else{
+                        TerraFirmaCraft.getLog().warn("Problem parsing IBlockState: block doesn't exist for ore generation entry with key: \\\"\"+genEntry.getKey()+\"\\\" Skipping.\"");
+                        continue;
+                    }
+                } catch (Exception e2){
+                    TerraFirmaCraft.getLog().warn("Problem parsing Ore / IBlockState for ore generation entry with key: \\\"\"+genEntry.getKey()+\"\\\" Skipping.\"");
+                    continue;
+                }
+            }
+
+            ImmutableList.Builder<Rock> b = new ImmutableList.Builder<>();
+            for(String s : baseStrings)
+            {
+                try {
+                    Rock rock = Rock.valueOf(s.toUpperCase());
+                    b.add(rock);
+                } catch(IllegalArgumentException e1){
+                    try{
+                        Category category = Category.valueOf(s.toUpperCase());
+                        for (Rock rock : Rock.values())
+                        {
+                            if (rock.category == category)
+                            {
+                                b.add(rock);
+                            }
+                        }
+                    } catch(IllegalArgumentException e2){
+                        TerraFirmaCraft.getLog().warn("Problem parsing base rock \""+s+"\" for ore generation entry with key+\""+genEntry.getKey()+"\" Skipping");
+                    }
+                }
+            }
+
+            builder.add(new OreEntry(ore, state, size, shape, b.build(), rarity, minY, maxY, density));
+            TOTAL_WEIGHT += 1.0D / (double) rarity;
+            TerraFirmaCraft.getLog().debug("Added ore generation entry for "+genEntry.getKey());
+        }
+
+        ORE_SPAWN_DATA = builder.build();
     }
 
-    private OreSpawnData(Ore ore, SpawnType type, SpawnSize size, int rarity, Rock[] baseRocks, int minY, int maxY, int densityVertical, int densityHorizontal)
+    public static final class OreEntry
     {
-        this(ore, type, size, rarity, baseRocks, null, minY, maxY, densityVertical, densityHorizontal);
-    }
+        public final Ore ore;
+        public final IBlockState state;
+        public final SpawnType type;
+        public final SpawnSize size;
+        public final int rarity;
+        public final ImmutableList<Rock> baseRocks;
+        public final int minY;
+        public final int maxY;
+        public final double weight;
+        public final double density;
 
-    private OreSpawnData(Ore ore, SpawnType type, SpawnSize size, int rarity, Category baseRocksCategorie, int minY, int maxY, int densityVertical, int densityHorizontal)
-    {
-        this(ore, type, size, rarity, null, new Category[] {baseRocksCategorie}, minY, maxY, densityVertical, densityHorizontal);
-    }
+        private OreEntry(@Nonnull Ore ore, @Nullable IBlockState state, SpawnSize size, SpawnType type, ImmutableList<Rock> baseRocks, int rarity, int minY, int maxY, int density)
+        {
+            this.ore = ore;
+            this.state = state;
+            this.size = size;
+            this.type = type;
+            this.baseRocks = baseRocks;
 
-    private OreSpawnData(Ore ore, SpawnType type, SpawnSize size, int rarity, Rock baseRock, int minY, int maxY, int densityVertical, int densityHorizontal)
-    {
-        this(ore, type, size, rarity, new Rock[] {baseRock}, null, minY, maxY, densityVertical, densityHorizontal);
-    }
+            this.rarity = rarity;
+            this.weight = 1.0D / (double) rarity;
+            this.minY = minY;
+            this.maxY = maxY;
+            this.density= 0.01D * (double)density; // For debug purposes, removing the 0.01D will lead to ore veins being full size, easy to see shapes
 
-    private OreSpawnData(Ore ore, SpawnType type, SpawnSize size, int rarity, Rock[] baseRocks, Category[] baseRocksCategories, int minY, int maxY, int densityVertical, int densityHorizontal)
-    {
-        this.ore = ore;
-        this.type = type;
-        this.size = size;
-        this.rarity = rarity;
-        this.weight = 1.0D / (double)rarity;
-        this.maxClusters = 5;
+            if(ore == Ore.UNKNOWN_ORE && state == null) throw new IllegalStateException("Ore Entry has neither a IBlockState or a Ore type");
+        }
 
-        ImmutableList.Builder<Rock> b = new ImmutableList.Builder<>();
-        if (baseRocks != null) b.add(baseRocks);
-        if (baseRocksCategories != null)
-            for (Category baseRocksCategory : baseRocksCategories)
-                for (Rock rock : Rock.values())
-                    if (rock.category == baseRocksCategory)
-                        b.add(rock);
-        this.baseRocks = b.build();
-
-        this.minY = minY;
-        this.maxY = maxY;
-        this.densityVertical = densityVertical * 0.01f;
-        this.densityHorizontal = densityHorizontal * 0.01f;
-        this.densityModifier = this.densityHorizontal + this.densityVertical / 2.0f;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "OreSpawnData{" +
+        @Override
+        public String toString() {
+            return "OreSpawnData{" +
                 "ore=" + ore +
                 ", type=" + type +
                 ", size=" + size +
@@ -158,14 +199,24 @@ public final class OreSpawnData
                 ", baseRocks=" + baseRocks +
                 ", minY=" + minY +
                 ", maxY=" + maxY +
-                ", densityVertical=" + densityVertical +
-                ", densityHorizontal=" + densityHorizontal +
+                ", density=" + density +
                 '}';
+        }
     }
 
     public enum SpawnType
     {
-        DEFAULT, VEINS
+        SCATTERED_CLUSTER(2, 5), // This is the default. It creates scattered spheriods
+        SINGLE_CLUSTER(1, 1); // This is to create a single spheriod
+
+        public final int minClusters;
+        public final int maxClusters;
+
+        SpawnType(int minClusters, int maxClusters)
+        {
+            this.minClusters = minClusters;
+            this.maxClusters = maxClusters;
+        }
     }
 
     public enum SpawnSize
@@ -181,16 +232,6 @@ public final class OreSpawnData
         {
             this.radius = radius;
             this.densityModifier = densityModifier;
-        }
-
-        public float getDensityModifier()
-        {
-            return densityModifier;
-        }
-
-        public float getRadius()
-        {
-            return radius;
         }
     }
 }
