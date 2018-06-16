@@ -30,10 +30,8 @@ import javax.annotation.Nullable;
 
 import static net.dries007.tfc.util.OreSpawnData.TOTAL_WEIGHT;
 
-/**
- * todo: maybe fix cascading worldgen issues? idk if it's worth it though.
- */
-public class WorldGenOre implements IWorldGenerator {
+public class WorldGenOre implements IWorldGenerator
+{
 
     private static final int CHUNK_RADIUS = 2;
 
@@ -41,7 +39,8 @@ public class WorldGenOre implements IWorldGenerator {
     public static final int VEIN_MAX_RADIUS_SQUARED = VEIN_MAX_RADIUS * VEIN_MAX_RADIUS;
 
     @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
+    {
         if (!(chunkGenerator instanceof ChunkGenTFC)) return;
         final BlockPos chunkBlockPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
         ChunkDataTFC chunkData = ChunkDataTFC.get(world, chunkBlockPos);
@@ -57,7 +56,8 @@ public class WorldGenOre implements IWorldGenerator {
         int xoff = chunkX * 16 + 8;
         int zoff = chunkZ * 16 + 8;
 
-        for (VeinType vein : veins) {
+        for (VeinType vein : veins)
+        {
             // Do checks here that are specific to each vein
             if (!vein.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0).rock) &&
                 !vein.oreSpawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock) &&
@@ -65,12 +65,15 @@ public class WorldGenOre implements IWorldGenerator {
                 continue;
 
 
-            for (int x = 0; x < 16; x++) {
-                for (int z = 0; z < 16; z++) {
+            for (int x = 0; x < 16; x++)
+            {
+                for (int z = 0; z < 16; z++)
+                {
                     // Do checks here that are specific to the the horizontal position, not the vertical one
                     if (!vein.inRange(new BlockPos(xoff + x, 0, zoff + z))) continue;
 
-                    for (int y = vein.getLowestY(); y <= vein.getHighestY(); y++) {
+                    for (int y = vein.getLowestY(); y <= vein.getHighestY(); y++)
+                    {
 
                         final BlockPos posAt = new BlockPos(xoff + x, y, z + zoff);
                         final IBlockState stateAt = world.getBlockState(posAt);
@@ -83,16 +86,23 @@ public class WorldGenOre implements IWorldGenerator {
                         if (blockAt.type != Rock.Type.RAW || !vein.oreSpawnData.baseRocks.contains(blockAt.rock))
                             continue;
 
-                        world.setBlockState(posAt, BlockOreTFC.get(vein.oreSpawnData.ore, blockAt.rock, vein.grade), 2);
+                        if(vein.oreSpawnData.ore == Ore.UNKNOWN_ORE && vein.oreSpawnData.state != null)
+                        {
+                            world.setBlockState(posAt, vein.oreSpawnData.state, 2);
+                        }
+                        else
+                        {
+                            world.setBlockState(posAt, BlockOreTFC.get(vein.oreSpawnData.ore, blockAt.rock, vein.grade), 2);
+                        }
                     }
                 }
             }
         }
 
-        // Chunk Data (It needs to be a bit different now, as it is harder to get the exact number of blocks spawned)
-        // TODO: remove the "blocks spawned" count from ore vein chunk data
+        // TODO: remove the "blocks spawned" count from ore vein chunk data. Not worth it to include (because it won't be accurate)
         VeinType veinAtChunk = getVeinAtChunk(chunkX, chunkZ, world.getSeed(), chunkData);
-        if (veinAtChunk != null) {
+        if (veinAtChunk != null)
+        {
             chunkData.addSpawnedOre(veinAtChunk.oreSpawnData.ore, veinAtChunk.oreSpawnData.size, veinAtChunk.grade, veinAtChunk.pos, 0);
         }
     }
@@ -101,8 +111,10 @@ public class WorldGenOre implements IWorldGenerator {
     private List<VeinType> getNearbyVeins(int chunkX, int chunkZ, long worldSeed, ChunkDataTFC chunkData) {
         List<VeinType> veins = new ArrayList<>();
 
-        for (int x = -CHUNK_RADIUS; x <= CHUNK_RADIUS; x++) {
-            for (int z = -CHUNK_RADIUS; z <= CHUNK_RADIUS; z++) {
+        for (int x = -CHUNK_RADIUS; x <= CHUNK_RADIUS; x++)
+        {
+            for (int z = -CHUNK_RADIUS; z <= CHUNK_RADIUS; z++)
+            {
                 VeinType vein = getVeinAtChunk(chunkX + x, chunkZ + z, worldSeed, chunkData);
                 if (vein != null) veins.add(vein);
             }
@@ -113,15 +125,17 @@ public class WorldGenOre implements IWorldGenerator {
 
     // Gets veins at a single chunk. Deterministic for a specific chunk x/z and world seed
     @Nullable
-    private VeinType getVeinAtChunk(int chunkX, int chunkZ, Long worldSeed, ChunkDataTFC chunkData) {
+    private VeinType getVeinAtChunk(int chunkX, int chunkZ, Long worldSeed, ChunkDataTFC chunkData)
+    {
         Random rand = new Random(worldSeed + chunkX * 341873128712L + chunkZ * 132897987541L);
 
-        if (rand.nextFloat() < TOTAL_WEIGHT) {
-            OreSpawnData oreType = getWeightedOreType(rand);
+        if (rand.nextFloat() < TOTAL_WEIGHT)
+        {
+            OreSpawnData.OreEntry oreType = getWeightedOreType(rand);
 
             BlockPos startPos = new BlockPos(
                 chunkX * 16 + rand.nextInt(16),
-                oreType.minY + rand.nextInt(oreType.maxY - oreType.minY),
+                oreType.minY + rand.nextInt(oreType.maxY - oreType.minY), // Todo: make max value be the min of top block and maxY ? Is that possible?
                 chunkZ * 16 + rand.nextInt(16)
             );
 
@@ -129,7 +143,8 @@ public class WorldGenOre implements IWorldGenerator {
                 return null;
 
             Ore.Grade grade = Ore.Grade.NORMAL;
-            if (oreType.ore.graded) {
+            if (oreType.ore.graded)
+            {
                 int gradeInt = rand.nextInt(100);
                 if (gradeInt < 20) grade = Ore.Grade.RICH;
                 else if (gradeInt < 50) grade = Ore.Grade.POOR;
@@ -139,10 +154,12 @@ public class WorldGenOre implements IWorldGenerator {
         return null;
     }
 
-    private OreSpawnData getWeightedOreType(Random rand) {
+    private OreSpawnData.OreEntry getWeightedOreType(Random rand)
+    {
         double r = rand.nextDouble() * TOTAL_WEIGHT;
         double countWeight = 0.0;
-        for (OreSpawnData ore : OreSpawnData.ORE_SPAWN_DATA) {
+        for (OreSpawnData.OreEntry ore : OreSpawnData.ORE_SPAWN_DATA)
+        {
             countWeight += ore.weight;
             if (countWeight >= r)
                 return ore;
