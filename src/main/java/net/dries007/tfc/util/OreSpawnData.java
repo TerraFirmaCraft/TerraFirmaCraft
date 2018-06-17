@@ -7,12 +7,12 @@ package net.dries007.tfc.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
@@ -59,11 +59,25 @@ public class OreSpawnData
     // todo: test that all the exceptions and try statements catch problems with json
     public static void reloadOreGen()
     {
-        if (!genFile.exists())
+        String str = null;
+        if (genFile.exists())
         {
             try
             {
-                FileUtils.copyInputStreamToFile(OreSpawnData.class.getResourceAsStream("assets/tfc/config/ore_spawn_data.json"), genFile);
+                str = FileUtils.readFileToString(genFile, Charset.defaultCharset());
+            }
+            catch (IOException e)
+            {
+                throw new Error("Error reading config file.", e);
+            }
+        }
+        if (Strings.isNullOrEmpty(str))
+        {
+            try
+            {
+                FileUtils.copyInputStreamToFile(OreSpawnData.class.getResourceAsStream("/assets/tfc/config/ore_spawn_data.json"), genFile);
+                str = FileUtils.readFileToString(genFile, Charset.defaultCharset());
+                if (Strings.isNullOrEmpty(str)) throw new RuntimeException("wut");
             }
             catch (IOException e)
             {
@@ -71,17 +85,9 @@ public class OreSpawnData
             }
         }
 
-        Map<String, OreJson> configMap;
-        try
-        {
-            String str = FileUtils.readFileToString(genFile, Charset.defaultCharset());
-            Type mapType = new TypeToken<Map<String, OreJson>>() {}.getType();
-            configMap = GSON.fromJson(str, mapType);
-        }
-        catch (IOException e)
-        {
-            throw new Error("Error providing default config file.", e);
-        }
+        if (Strings.isNullOrEmpty(str)) throw new Error("The config file is empty");
+        Map<String, OreJson> configMap = GSON.fromJson(str, new TypeToken<Map<String, OreJson>>() {}.getType());
+        if (configMap == null) throw new Error("Error reading config file.");
         totalWeight = 0.0;
         oreSpawnEntries = Collections.unmodifiableList(configMap.entrySet().stream().map(entry ->
         {
