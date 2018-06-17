@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.*;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -105,9 +106,9 @@ public final class ChunkDataTFC
     /**
      * INTERNAL USE ONLY.
      */
-    public void addSpawnedOre(Ore ore, OreSpawnData.SpawnSize size, Ore.Grade grade, BlockPos pos, int count)
+    public void addSpawnedOre(Ore ore, IBlockState state, OreSpawnData.SpawnSize size, Ore.Grade grade, BlockPos pos, int count)
     {
-        oresSpawned.add(new ChunkDataOreSpawned(ore, size, grade, pos, count));
+        oresSpawned.add(new ChunkDataOreSpawned(ore, state, size, grade, pos, count));
     }
 
     public boolean isInitialized()

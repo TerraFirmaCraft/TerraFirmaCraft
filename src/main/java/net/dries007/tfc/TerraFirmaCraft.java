@@ -99,8 +99,7 @@ public class TerraFirmaCraft
         EntitiesTFC.preInit();
         FluidsTFC.preInit();
 
-        OreSpawnData.configDir = event.getModConfigurationDirectory();
-        OreSpawnData.preInit();
+        OreSpawnData.preInit(event.getModConfigurationDirectory());
 
         if (event.getSide().isClient()) ClientEvents.preInit();
     }
@@ -134,10 +133,10 @@ public class TerraFirmaCraft
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
-        OreSpawnData.reloadOreGen();
-
         if (!isSignedBuild)
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
+
+        OreSpawnData.reloadOreGen();
     }
 
     @Mod.EventHandler
