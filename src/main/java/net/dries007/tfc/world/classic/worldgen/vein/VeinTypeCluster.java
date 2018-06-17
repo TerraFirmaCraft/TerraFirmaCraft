@@ -14,7 +14,6 @@ import net.dries007.tfc.util.OreSpawnData;
 
 public class VeinTypeCluster extends VeinType
 {
-
     private final double verticalModifier;
     private final double horizontalModifier;
 
@@ -63,7 +62,7 @@ public class VeinTypeCluster extends VeinType
         return oreSpawnData.density * oreSpawnData.size.densityModifier * (1.0 - shortestRadius);
     }
 
-    final class Cluster
+    private final class Cluster
     {
         final BlockPos pos;
         final double size;

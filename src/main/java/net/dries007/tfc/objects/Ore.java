@@ -43,8 +43,7 @@ public enum Ore
     SYLVITE,
     BORAX,
     OLIVINE,
-    LAPIS_LAZULI,
-    UNKNOWN_ORE;
+    LAPIS_LAZULI;
 
     public final boolean graded;
     public final Metal metal;
