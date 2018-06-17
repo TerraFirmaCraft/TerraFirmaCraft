@@ -96,7 +96,7 @@ public class WorldGenOre implements IWorldGenerator
         VeinType veinAtChunk = getVeinAtChunk(chunkX, chunkZ, world.getSeed(), chunkData);
         if (veinAtChunk != null)
         {
-            chunkData.addSpawnedOre(veinAtChunk.oreSpawnData.ore, veinAtChunk.oreSpawnData.size, veinAtChunk.grade, veinAtChunk.pos, 0);
+            chunkData.addSpawnedOre(veinAtChunk.oreSpawnData.ore, veinAtChunk.oreSpawnData.state, veinAtChunk.oreSpawnData.size, veinAtChunk.grade, veinAtChunk.pos, 0);
         }
     }
 
@@ -146,7 +146,7 @@ public class WorldGenOre implements IWorldGenerator
                 if (rolls >= NUM_ROLLS) return null;
             }
             Ore.Grade grade = Ore.Grade.NORMAL;
-            if (oreType.ore.graded)
+            if (oreType.ore != null && oreType.ore.graded)
             {
                 int gradeInt = rand.nextInt(100);
                 if (gradeInt < 20) grade = Ore.Grade.RICH;

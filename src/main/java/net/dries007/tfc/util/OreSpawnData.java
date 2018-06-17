@@ -188,8 +188,7 @@ public class OreSpawnData
         public final int maxY;
         public final double weight;
         public final double density;
-
-        final int rarity;
+        public final int rarity;
 
         private OreEntry(@Nullable Ore ore, @Nullable IBlockState state, SpawnSize size, SpawnType type, Collection<Rock> baseRocks, int rarity, int minY, int maxY, int density)
         {
