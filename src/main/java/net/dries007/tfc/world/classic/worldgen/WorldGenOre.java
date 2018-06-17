@@ -28,8 +28,6 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinTypeCluster;
 
-import static net.dries007.tfc.util.OreSpawnData.TOTAL_WEIGHT;
-
 public class WorldGenOre implements IWorldGenerator
 {
 
@@ -81,7 +79,7 @@ public class WorldGenOre implements IWorldGenerator
                         if (blockAt.type != Rock.Type.RAW || !vein.oreSpawnData.baseRocks.contains(blockAt.rock))
                             continue;
 
-                        if (vein.oreSpawnData.ore == Ore.UNKNOWN_ORE && vein.oreSpawnData.state != null)
+                        if (vein.oreSpawnData.ore == null && vein.oreSpawnData.state != null)
                         {
                             world.setBlockState(posAt, vein.oreSpawnData.state, 2);
                         }
@@ -98,7 +96,7 @@ public class WorldGenOre implements IWorldGenerator
         VeinType veinAtChunk = getVeinAtChunk(chunkX, chunkZ, world.getSeed(), chunkData);
         if (veinAtChunk != null)
         {
-            chunkData.addSpawnedOre(veinAtChunk.oreSpawnData.ore, veinAtChunk.oreSpawnData.size, veinAtChunk.grade, veinAtChunk.pos, 0);
+            chunkData.addSpawnedOre(veinAtChunk.oreSpawnData.ore, veinAtChunk.oreSpawnData.state, veinAtChunk.oreSpawnData.size, veinAtChunk.grade, veinAtChunk.pos, 0);
         }
     }
 
@@ -125,7 +123,7 @@ public class WorldGenOre implements IWorldGenerator
     {
         Random rand = new Random(worldSeed + chunkX * 341873128712L + chunkZ * 132897987541L);
 
-        if (rand.nextDouble() < TOTAL_WEIGHT)
+        if (rand.nextDouble() < OreSpawnData.getTotalWeight())
         {
             OreSpawnData.OreEntry oreType;
             BlockPos startPos;
@@ -148,7 +146,7 @@ public class WorldGenOre implements IWorldGenerator
                 if (rolls >= NUM_ROLLS) return null;
             }
             Ore.Grade grade = Ore.Grade.NORMAL;
-            if (oreType.ore.graded)
+            if (oreType.ore != null && oreType.ore.graded)
             {
                 int gradeInt = rand.nextInt(100);
                 if (gradeInt < 20) grade = Ore.Grade.RICH;
@@ -162,9 +160,9 @@ public class WorldGenOre implements IWorldGenerator
     @Nonnull
     private OreSpawnData.OreEntry getWeightedOreType(Random rand)
     {
-        double r = rand.nextDouble() * TOTAL_WEIGHT;
+        double r = rand.nextDouble() * OreSpawnData.getTotalWeight();
         double countWeight = 0.0;
-        for (OreSpawnData.OreEntry ore : OreSpawnData.ORE_SPAWN_DATA)
+        for (OreSpawnData.OreEntry ore : OreSpawnData.getOreSpawnEntries())
         {
             countWeight += ore.weight;
             if (countWeight >= r)
