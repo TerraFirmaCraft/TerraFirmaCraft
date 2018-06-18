@@ -37,7 +37,7 @@ public class WorldGenOre implements IWorldGenerator
     public static final int VEIN_MAX_RADIUS_SQUARED = VEIN_MAX_RADIUS * VEIN_MAX_RADIUS;
 
     // Used to generate chunk
-    public static List<VeinType> getNearbyVeins(World world, int chunkX, int chunkZ, long worldSeed, int radius)
+    public static List<VeinType> getNearbyVeins(int chunkX, int chunkZ, long worldSeed, int radius)
     {
         List<VeinType> veins = new ArrayList<>();
 
@@ -45,7 +45,7 @@ public class WorldGenOre implements IWorldGenerator
         {
             for (int z = -radius; z <= radius; z++)
             {
-                List<VeinType> vein = getVeinsAtChunk(world, chunkX + x, chunkZ + z, worldSeed);
+                List<VeinType> vein = getVeinsAtChunk(chunkX + x, chunkZ + z, worldSeed);
                 if (!vein.isEmpty()) veins.addAll(vein);
             }
         }
@@ -55,7 +55,7 @@ public class WorldGenOre implements IWorldGenerator
 
     // Gets veins at a single chunk. Deterministic for a specific chunk x/z and world seed
     @Nonnull
-    private static List<VeinType> getVeinsAtChunk(World world, int chunkX, int chunkZ, Long worldSeed)
+    private static List<VeinType> getVeinsAtChunk(int chunkX, int chunkZ, Long worldSeed)
     {
         Random rand = new Random(worldSeed + chunkX * 341873128712L + chunkZ * 132897987541L);
         List<VeinType> veins = new ArrayList<>();
@@ -115,7 +115,7 @@ public class WorldGenOre implements IWorldGenerator
         // Check dimension is overworld
         if (world.provider.getDimension() != 0) return;
 
-        List<VeinType> veins = getNearbyVeins(world, chunkX, chunkZ, world.getSeed(), CHUNK_RADIUS);
+        List<VeinType> veins = getNearbyVeins(chunkX, chunkZ, world.getSeed(), CHUNK_RADIUS);
         if (veins.isEmpty()) return;
 
         // Set constant values here
@@ -167,15 +167,21 @@ public class WorldGenOre implements IWorldGenerator
         }
 
         // TODO: remove the "blocks spawned" count from ore vein chunk data. Not worth it to include (because it won't be accurate)
-        // TODO: re-add this as chunk data
-        //List<VeinType> veinAtChunk = getVeinsAtChunk(chunkX, chunkZ, world.getSeed(), chunkData);
-        //if (!veinAtChunk.isEmpty())
-        //{
-        //    veinAtChunk.forEach(v ->
-        //        chunkData.addSpawnedOre(v.oreSpawnData.ore, v.oreSpawnData.state, v.oreSpawnData.size, v.grade, v.pos, 0)
-        //    );
-        //chunkData.addSpawnedOre(veinAtChunk.oreSpawnData.ore, veinAtChunk.oreSpawnData.state, veinAtChunk.oreSpawnData.size, veinAtChunk.grade, veinAtChunk.pos, 0);
-        //}
+        // Note: chunk data is now VERY inaccurate. It should ONLY be used to test where ores are spawning
+        // If you want to get veins at a chunk, see how WorldGenLooseRocks uses getNearbyVeins and then trims it based on spawning params
+        List<VeinType> veinsAtChunk = getVeinsAtChunk(chunkX, chunkZ, world.getSeed());
+        if (!veinsAtChunk.isEmpty())
+        {
+            veinsAtChunk.forEach(v -> {
+                if ((v.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0).rock) ||
+                    v.oreSpawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock) ||
+                    v.oreSpawnData.baseRocks.contains(chunkData.getRock3(0, 0).rock)) &&
+                    v.pos.getY() >= WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos))
+                {
+                    chunkData.addSpawnedOre(v.oreSpawnData.ore, v.oreSpawnData.state, v.oreSpawnData.size, v.grade, v.pos, 0);
+                }
+            });
+        }
     }
 
 }
