@@ -18,8 +18,15 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.blocks.BlockWorldItem;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.items.metal.ItemOreTFC;
+import net.dries007.tfc.objects.items.metal.ItemSmallOre;
+import net.dries007.tfc.objects.items.rock.ItemRock;
+import net.dries007.tfc.objects.te.TEWorldItem;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -66,20 +73,24 @@ public class WorldGenLooseRocks implements IWorldGenerator
                 zoff + random.nextInt(16)
             );
             Rock rock = chunkData.getRock1(pos).rock;
-            generateRock(world, pos.up(world.getTopSolidOrLiquidBlock(pos).getY() - 1), getRandomVein(veins, random), rock);
+            generateRock(world, pos.up(world.getTopSolidOrLiquidBlock(pos).getY()), getRandomVein(veins, random), rock);
         }
     }
 
     private void generateRock(World world, BlockPos pos, @Nullable VeinType vein, Rock rock)
     {
 
-        IBlockState stateAt = world.getBlockState(pos);
-        if (world.isAirBlock(pos.up()) && stateAt.isFullCube())
+        IBlockState stateAt = world.getBlockState(pos.down());
+        if (world.isAirBlock(pos) && stateAt.isFullCube())
         {
             // todo: replace this with actual ore stone blocks
             // ores are gotten from vein.oreSpawnData.ore
             // the current rock can be gotten from the rock
-            world.setBlockState(pos.up(), vein == null ? BlockRockVariant.get(rock, Rock.Type.RAW).getDefaultState() : BlockOreTFC.get(vein.oreSpawnData.ore, Rock.ANDESITE, Ore.Grade.NORMAL), 2);
+            world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState(),2);
+            TEWorldItem tile = (TEWorldItem) world.getTileEntity(pos);
+            if(tile != null)
+                tile.setItem(vein == null ? ItemRock.get(rock, 1) : ItemSmallOre.get(vein.oreSpawnData.ore,1), true);
+            //world.setBlockState(pos, vein == null ? BlockRockVariant.get(rock, Rock.Type.RAW).getDefaultState() : BlockOreTFC.get(vein.oreSpawnData.ore, Rock.ANDESITE, Ore.Grade.NORMAL), 2);
         }
     }
 
