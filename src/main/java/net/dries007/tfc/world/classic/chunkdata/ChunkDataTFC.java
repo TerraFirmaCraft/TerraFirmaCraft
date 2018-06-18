@@ -116,10 +116,13 @@ public final class ChunkDataTFC
         return initialized;
     }
 
+    public BlockRockVariant getRock1(BlockPos pos) { return getRock1(pos.getX() & 15, pos.getY() & 15); }
     public BlockRockVariant getRock1(int x, int z) { return getRockLayer1(x, z).block; }
 
+    public BlockRockVariant getRock2(BlockPos pos) { return getRock2(pos.getX() & 15, pos.getY() & 15); }
     public BlockRockVariant getRock2(int x, int z) { return getRockLayer2(x, z).block; }
 
+    public BlockRockVariant getRock3(BlockPos pos) { return getRock3(pos.getX() & 15, pos.getY() & 15); }
     public BlockRockVariant getRock3(int x, int z) { return getRockLayer3(x, z).block; }
 
     public float getEvt(int x, int z) { return getEvtLayer(x, z).valueFloat; }
@@ -130,8 +133,10 @@ public final class ChunkDataTFC
 
     public int getDrainage(int x, int z) { return getDrainageLayer(x, z).valueInt; }
 
+    public BlockRockVariant getRockHeight(BlockPos pos) { return getRockHeight(pos.getX(), pos.getY(), pos.getZ()); }
     public BlockRockVariant getRockHeight(int x, int y, int z) { return getRockLayerHeight(x & 15, y, z & 15).block; }
 
+    public int getSeaLevelOffset(BlockPos pos) { return getSeaLevelOffset(pos.getX() & 15, pos.getY() & 15); }
     public int getSeaLevelOffset(int x, int z) { return seaLevelOffset[z << 4 | x]; }
 
     public int getFishPopulation() { return fishPopulation; }
