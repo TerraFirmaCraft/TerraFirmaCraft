@@ -38,9 +38,9 @@ public class WorldGenLooseRocks implements IWorldGenerator
 
         // Check dimension is overworld
         if (world.provider.getDimension() != 0) return;
-        //TerraFirmaCraft.getLog().debug("Starting chunk gen at "+chunkX+","+chunkZ);
-        List<VeinType> veins = WorldGenOre.getNearbyVeins(world, chunkX, chunkZ, world.getSeed(), 1);
-        //veins.forEach(v -> TerraFirmaCraft.getLog().debug("> "+v.oreSpawnData.ore+" "+v.pos));
+
+        // Get the proper list of veins
+        List<VeinType> veins = WorldGenOre.getNearbyVeins(chunkX, chunkZ, world.getSeed(), 1);
         if (!veins.isEmpty())
         {
             veins.removeIf(v -> {
@@ -53,8 +53,6 @@ public class WorldGenLooseRocks implements IWorldGenerator
 
             });
         }
-        //TerraFirmaCraft.getLog().debug("After removal");
-        //veins.forEach(v -> TerraFirmaCraft.getLog().debug("> "+v.oreSpawnData.ore+" "+v.pos));
 
         // Set constant values here
         int xoff = chunkX * 16 + 8;
@@ -76,7 +74,6 @@ public class WorldGenLooseRocks implements IWorldGenerator
     {
 
         IBlockState stateAt = world.getBlockState(pos);
-        //TerraFirmaCraft.getLog().debug("CHECKS: "+pos+" gives "+ world.isAirBlock(pos.up()) + " | "+ stateAt.isFullCube());
         if (world.isAirBlock(pos.up()) && stateAt.isFullCube())
         {
             // todo: replace this with actual ore stone blocks
