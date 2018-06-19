@@ -4,8 +4,8 @@
   "defaults": {
     "model": "tfc:chest",
     "textures": {
-      "texture": "tfc:model/wood/chest_trap/hickory",
-      "particle": "tfc:blocks/wood/planks/hickory"
+      "texture": "tfc:entity/chests/chest_trap/hickory",
+      "particle": "tfc:entity/chests/chest_trap/hickory"
     }
   },
   "variants": {

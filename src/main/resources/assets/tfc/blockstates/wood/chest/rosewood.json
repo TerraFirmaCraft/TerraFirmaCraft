@@ -4,8 +4,8 @@
   "defaults": {
     "model": "tfc:chest",
     "textures": {
-      "texture": "tfc:model/wood/chest/rosewood",
-      "particle": "tfc:blocks/wood/planks/rosewood"
+      "texture": "tfc:entity/chests/chest/rosewood",
+      "particle": "tfc:entity/chests/chest/rosewood"
     }
   },
   "variants": {

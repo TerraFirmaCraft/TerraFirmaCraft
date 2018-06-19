@@ -24,6 +24,7 @@ import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
+import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkCapabilityHandler;
@@ -91,12 +92,14 @@ public class TerraFirmaCraft
         network = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
         int id = 0;
         network.registerMessage(ChunkDataMessage.Handler.class, ChunkDataMessage.class, ++id, Side.CLIENT);
-
         ChunkCapabilityHandler.preInit();
+
         CalenderTFC.reload();
 
         EntitiesTFC.preInit();
         FluidsTFC.preInit();
+
+        OreSpawnData.preInit(event.getModConfigurationDirectory());
 
         if (event.getSide().isClient()) ClientEvents.preInit();
     }
@@ -122,6 +125,7 @@ public class TerraFirmaCraft
         //todo: add cave decorator
         //todo: add forests
         //todo: add loose rocks
+        GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 5);
         GameRegistry.registerWorldGenerator(new WorldGenSoilPits(), 6);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 7);
         //todo: add plants
@@ -132,6 +136,8 @@ public class TerraFirmaCraft
     {
         if (!isSignedBuild)
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
+
+        OreSpawnData.reloadOreGen();
     }
 
     @Mod.EventHandler

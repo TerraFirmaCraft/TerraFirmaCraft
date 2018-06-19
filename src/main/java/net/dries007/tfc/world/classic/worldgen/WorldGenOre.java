@@ -5,12 +5,13 @@
 
 package net.dries007.tfc.world.classic.worldgen;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import javax.annotation.Nonnull;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
@@ -22,298 +23,165 @@ import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
+import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
+import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
+import net.dries007.tfc.world.classic.worldgen.vein.VeinTypeCluster;
 
-/**
- * todo: maybe fix cascading worldgen issues? idk if it's worth it though.
- */
 public class WorldGenOre implements IWorldGenerator
 {
+
+    private static final int NUM_ROLLS = 2;
+    private static final int CHUNK_RADIUS = 2;
+    public static final int VEIN_MAX_RADIUS = 16 * CHUNK_RADIUS;
+    public static final int VEIN_MAX_RADIUS_SQUARED = VEIN_MAX_RADIUS * VEIN_MAX_RADIUS;
+
+    // Used to generate chunk
+    public static List<VeinType> getNearbyVeins(int chunkX, int chunkZ, long worldSeed, int radius)
+    {
+        List<VeinType> veins = new ArrayList<>();
+
+        for (int x = -radius; x <= radius; x++)
+        {
+            for (int z = -radius; z <= radius; z++)
+            {
+                List<VeinType> vein = getVeinsAtChunk(chunkX + x, chunkZ + z, worldSeed);
+                if (!vein.isEmpty()) veins.addAll(vein);
+            }
+        }
+
+        return veins;
+    }
+
+    // Gets veins at a single chunk. Deterministic for a specific chunk x/z and world seed
+    @Nonnull
+    private static List<VeinType> getVeinsAtChunk(int chunkX, int chunkZ, Long worldSeed)
+    {
+        Random rand = new Random(worldSeed + chunkX * 341873128712L + chunkZ * 132897987541L);
+        List<VeinType> veins = new ArrayList<>();
+
+        for (int i = 0; i < NUM_ROLLS; i++)
+        {
+
+            OreSpawnData.OreEntry oreType;
+            BlockPos startPos;
+
+            if (rand.nextDouble() < OreSpawnData.getTotalWeight())
+            {
+
+                oreType = getWeightedOreType(rand);
+                startPos = new BlockPos(
+                    chunkX * 16 + 8 + rand.nextInt(16),
+                    oreType.minY + rand.nextInt(oreType.maxY - oreType.minY),
+                    chunkZ * 16 + 8 + rand.nextInt(16)
+                );
+
+                Ore.Grade grade = Ore.Grade.NORMAL;
+                if (oreType.ore != null && oreType.ore.graded)
+                {
+                    int gradeInt = rand.nextInt(100);
+                    if (gradeInt < 20) grade = Ore.Grade.RICH;
+                    else if (gradeInt < 50) grade = Ore.Grade.POOR;
+                }
+
+                veins.add(new VeinTypeCluster(startPos, oreType, grade, rand));
+            }
+        }
+        return veins;
+    }
+
+    @Nonnull
+    private static OreSpawnData.OreEntry getWeightedOreType(Random rand)
+    {
+        double r = rand.nextDouble() * OreSpawnData.getTotalWeight();
+        double countWeight = 0.0;
+        for (OreSpawnData.OreEntry ore : OreSpawnData.getOreSpawnEntries())
+        {
+            countWeight += ore.weight;
+            if (countWeight >= r)
+                return ore;
+        }
+        throw new RuntimeException("Problem choosing random ore weights. Should never be shown");
+    }
+
     @Override
-    public void generate(Random rng, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
         if (!(chunkGenerator instanceof ChunkGenTFC)) return;
         final BlockPos chunkBlockPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
         ChunkDataTFC chunkData = ChunkDataTFC.get(world, chunkBlockPos);
         if (!chunkData.isInitialized()) return;
 
-        for (OreSpawnData spawnData : OreSpawnData.ORE_SPAWN_DATA)
-        {
-            int veinSize;
-            int veinAmount;
-            int height;
-            int diameter;
-            switch (spawnData.size)
-            {
-                /* Bioxx numbers, unajusted for changes in worldgen
-                case SMALL:
-                    veinSize = 20;
-                    veinAmount = 30;
-                    height = 5;
-                    diameter = 40;
-                    break;
-                case MEDIUM:
-                    veinSize = 30;
-                    veinAmount = 40;
-                    height = 10;
-                    diameter = 60;
-                    break;
-                case LARGE:
-                    veinSize = 60;
-                    veinAmount = 45;
-                    height = 20;
-                    diameter = 80;
-                    break;
-                */
-                case SMALL:
-                    veinSize = 20;
-                    veinAmount = 30;
-                    height = 5;
-                    diameter = 20;
-                    break;
-                case MEDIUM:
-                    veinSize = 30;
-                    veinAmount = 80;
-                    height = 10;
-                    diameter = 30;
-                    break;
-                case LARGE:
-                    veinSize = 60;
-                    veinAmount = 80;
-                    height = 20;
-                    diameter = 40;
-                    break;
-                default:
-                    throw new RuntimeException("Enum constants not constant");
-            }
+        // Check dimension is overworld
+        if (world.provider.getDimension() != 0) return;
 
-            if (!spawnData.baseRocks.contains(chunkData.getRock1(0, 0).rock) &&
-                    !spawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock) &&
-                    !spawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock))
+        List<VeinType> veins = getNearbyVeins(chunkX, chunkZ, world.getSeed(), CHUNK_RADIUS);
+        if (veins.isEmpty()) return;
+
+        // Set constant values here
+        int xoff = chunkX * 16 + 8;
+        int zoff = chunkZ * 16 + 8;
+
+        for (VeinType vein : veins)
+        {
+            // Do checks here that are specific to each vein
+            if (!vein.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0).rock) &&
+                !vein.oreSpawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock) &&
+                !vein.oreSpawnData.baseRocks.contains(chunkData.getRock3(0, 0).rock))
+                continue;
+            if (vein.pos.getY() >= WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(vein.pos))
                 continue;
 
-            Ore.Grade grade = Ore.Grade.NORMAL;
-            if (spawnData.ore.graded)
+            for (int x = 0; x < 16; x++)
             {
-                int gradeInt = rng.nextInt(100);
-                if (gradeInt < 20) grade = Ore.Grade.RICH;
-                else if (gradeInt < 50) grade = Ore.Grade.POOR;
-            }
-
-            if (rng.nextInt(spawnData.rarity) != 0) continue;
-            final BlockPos start = chunkBlockPos.add(0, spawnData.minY + rng.nextInt(spawnData.maxY - spawnData.minY), 0);
-            int blocksSpawned = 0;
-            float avgDensity = (spawnData.densityHorizontal + spawnData.densityVertical) / 2f;
-            for (int i = 0; i < veinAmount; i++)
-            {
-                final BlockPos pos = start.add((1f - spawnData.densityHorizontal) * (rng.nextInt(diameter) - diameter / 2), (1f - spawnData.densityVertical) * (rng.nextInt(height) - height / 2), (1f - spawnData.densityHorizontal) * (rng.nextInt(diameter) - diameter / 2));
-//                final BlockPos pos = start.add(calculateDensity(rng, diameter, spawnData.densityHorizontal), calculateDensity(rng, height, spawnData.densityVertical), calculateDensity(rng, diameter, spawnData.densityHorizontal));
-                // todo: use density
-                switch (spawnData.type)
+                for (int z = 0; z < 16; z++)
                 {
-                    case DEFAULT:
-                        blocksSpawned += generateDefault(spawnData.ore, grade, world, rng, pos, veinSize, spawnData.baseRocks, avgDensity);
-                        break;
-                    case VEINS:
-                        blocksSpawned += generateVein(spawnData.ore, grade, world, rng, pos, veinSize, spawnData.baseRocks);
-                        break;
-                }
-            }
-            if (blocksSpawned != 0) chunkData.addSpawnedOre(spawnData.ore, spawnData.size, grade, start, blocksSpawned);
-        }
-    }
+                    // Do checks here that are specific to the the horizontal position, not the vertical one
+                    if (!vein.inRange(new BlockPos(xoff + x, 0, zoff + z))) continue;
 
-    private int generateDefault(Ore ore, Ore.Grade grade, World world, Random rng, BlockPos start, int size, ImmutableList<Rock> baseRocks, float density)
-    {
-        int blocksSpawned = 0;
-        final float angle = rng.nextFloat() * (float) Math.PI;
-        final double minX = start.getX() + 8 + MathHelper.sin(angle) * size / 8.0F;
-        final double maxX = start.getX() + 8 - MathHelper.sin(angle) * size / 8.0F;
-        final double minZ = start.getZ() + 8 + MathHelper.cos(angle) * size / 8.0F;
-        final double maxZ = start.getZ() + 8 - MathHelper.cos(angle) * size / 8.0F;
-        final double minY = start.getY() + rng.nextInt(3) - 2;
-        final double maxY = start.getY() + rng.nextInt(3) - 2;
-
-        for (int i = 0; i <= size; ++i)
-        {
-            final double centerX = minX + (maxX - minX) * i / size;
-            final double centerY = minY + (maxY - minY) * i / size;
-            final double centerZ = minZ + (maxZ - minZ) * i / size;
-            final double scale = rng.nextDouble() * size / 16.0D;
-            final double radius = (MathHelper.sin(i * (float) Math.PI / size) + 1.0F) * scale + 1.0D;
-            final int startX = MathHelper.floor(centerX - radius / 2.0D);
-            final int startY = MathHelper.floor(centerY - radius / 2.0D);
-            final int startZ = MathHelper.floor(centerZ - radius / 2.0D);
-            final int endX = MathHelper.floor(centerX + radius / 2.0D);
-            final int endY = MathHelper.floor(centerY + radius / 2.0D);
-            final int endZ = MathHelper.floor(centerZ + radius / 2.0D);
-
-            for (int posX = startX; posX <= endX; ++posX)
-            {
-                double rx = (posX + 0.5D - centerX) / (radius / 2.0D);
-                if (rx * rx >= 1.0D) continue;
-
-                for (int posY = startY; posY <= endY; ++posY)
-                {
-                    double ry = (posY + 0.5D - centerY) / (radius / 2.0D);
-                    if (rx * rx + ry * ry >= 1.0D) continue;
-
-                    for (int posZ = startZ; posZ <= endZ; ++posZ)
+                    for (int y = vein.getLowestY(); y <= vein.getHighestY(); y++)
                     {
-                        double rz = (posZ + 0.5D - centerZ) / (radius / 2.0D);
-                        if (rx * rx + ry * ry + rz * rz >= 1.0D) continue;
 
-                        if (density < rng.nextFloat()) continue;
+                        final BlockPos posAt = new BlockPos(xoff + x, y, z + zoff);
+                        final IBlockState stateAt = world.getBlockState(posAt);
+                        // Do checks specific to the individual block pos that is getting replaced
 
-                        BlockPos pos = new BlockPos(posX, posY, posZ);
-                        pos = pos.add(0, ChunkDataTFC.getSeaLevelOffset(world, pos), 0);
-                        final IBlockState current = world.getBlockState(pos);
+                        if (random.nextDouble() > vein.getChanceToGenerate(posAt)) continue;
+                        if (!(stateAt.getBlock() instanceof BlockRockVariant)) continue;
 
-                        if (!(current.getBlock() instanceof BlockRockVariant)) continue;
+                        final BlockRockVariant blockAt = (BlockRockVariant) stateAt.getBlock();
+                        if (blockAt.type != Rock.Type.RAW || !vein.oreSpawnData.baseRocks.contains(blockAt.rock))
+                            continue;
 
-                        final BlockRockVariant currentBlock = (BlockRockVariant) current.getBlock();
-
-                        if (currentBlock.type != Rock.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
-
-                        world.setBlockState(pos, BlockOreTFC.get(ore, currentBlock.rock, grade), 2);
-                        blocksSpawned++;
+                        if (vein.oreSpawnData.ore == null && vein.oreSpawnData.state != null)
+                        {
+                            world.setBlockState(posAt, vein.oreSpawnData.state, 2);
+                        }
+                        else
+                        {
+                            world.setBlockState(posAt, BlockOreTFC.get(vein.oreSpawnData.ore, blockAt.rock, vein.grade), 2);
+                        }
                     }
                 }
             }
         }
-        return blocksSpawned;
-    }
 
-    private int generateVein(Ore ore, Ore.Grade grade, World world, Random rng, BlockPos start, int size, ImmutableList<Rock> baseRocks)
-    {
-        int blocksSpawned = 0;
-
-        int posX2 = 0;
-        int posY2 = 0;
-        int posZ2 = 0;
-        int directionX;
-        int directionY;
-        int directionZ;
-        int directionX2;
-        int directionY2;
-        int directionZ2;
-        int directionChange;
-        int directionChange2;
-        int blocksToUse2;
-
-        for (int blocksMade = 0; blocksMade <= size; ) // make veins
+        // TODO: remove the "blocks spawned" count from ore vein chunk data. Not worth it to include (because it won't be accurate)
+        // Note: chunk data is now VERY inaccurate. It should ONLY be used to test where ores are spawning
+        // If you want to get veins at a chunk, see how WorldGenLooseRocks uses getNearbyVeins and then trims it based on spawning params
+        List<VeinType> veinsAtChunk = getVeinsAtChunk(chunkX, chunkZ, world.getSeed());
+        if (!veinsAtChunk.isEmpty())
         {
-            int posX = start.getX();
-            int posY = start.getY();
-            int posZ = start.getZ();
-
-            blocksToUse2 = 1 + (size / 30);
-            directionChange = rng.nextInt(6);
-            directionX = rng.nextInt(2);
-            directionY = rng.nextInt(2);
-            directionZ = rng.nextInt(2);
-
-            for (int blocksMade1 = 0; blocksMade1 <= blocksToUse2; ) // make branch
-            {
-                if (directionX == 0 && directionChange != 1)
-                    posX = posX + rng.nextInt(2);
-                if (directionX == 1 && directionChange != 1)
-                    posX = posX - rng.nextInt(2);
-                if (directionY == 0 && directionChange != 2)
-                    posY = posY + rng.nextInt(2);
-                if (directionY == 1 && directionChange != 2)
-                    posY = posY - rng.nextInt(2);
-                if (directionZ == 0 && directionChange != 3)
-                    posZ = posZ + rng.nextInt(2);
-                if (directionZ == 1 && directionChange != 3)
-                    posZ = posZ - rng.nextInt(2);
-                if (rng.nextInt(4) == 0)
+            veinsAtChunk.forEach(v -> {
+                if ((v.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0).rock) ||
+                    v.oreSpawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock) ||
+                    v.oreSpawnData.baseRocks.contains(chunkData.getRock3(0, 0).rock)) &&
+                    v.pos.getY() >= WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos))
                 {
-                    posX2 = posX2 + rng.nextInt(2);
-                    posY2 = posY2 + rng.nextInt(2);
-                    posZ2 = posZ2 + rng.nextInt(2);
-                    posX2 = posX2 - rng.nextInt(2);
-                    posY2 = posY2 - rng.nextInt(2);
-                    posZ2 = posZ2 - rng.nextInt(2);
+                    chunkData.addSpawnedOre(v.oreSpawnData.ore, v.oreSpawnData.state, v.oreSpawnData.size, v.grade, v.pos, 0);
                 }
-                if (rng.nextInt(3) == 0) // make sub-branch
-                {
-                    posX2 = posX;
-                    posY2 = posY;
-                    posZ2 = posZ;
-                    directionX2 = rng.nextInt(2);
-                    directionY2 = rng.nextInt(2);
-                    directionZ2 = rng.nextInt(2);
-                    directionChange2 = rng.nextInt(6);
-                    if (directionX2 == 0 && directionChange2 != 0)
-                        posX2 = posX2 + rng.nextInt(2);
-                    if (directionY2 == 0 && directionChange2 != 1)
-                        posY2 = posY2 + rng.nextInt(2);
-                    if (directionZ2 == 0 && directionChange2 != 2)
-                        posZ2 = posZ2 + rng.nextInt(2);
-                    if (directionX2 == 1 && directionChange2 != 0)
-                        posX2 = posX2 - rng.nextInt(2);
-                    if (directionY2 == 1 && directionChange2 != 1)
-                        posY2 = posY2 - rng.nextInt(2);
-                    if (directionZ2 == 1 && directionChange2 != 2)
-                        posZ2 = posZ2 - rng.nextInt(2);
-
-                    for (int blocksMade2 = 0; blocksMade2 <= (1 + (blocksToUse2 / 5)); )
-                    {
-                        if (directionX2 == 0 && directionChange2 != 0)
-                            posX2 = posX2 + rng.nextInt(2);
-                        if (directionY2 == 0 && directionChange2 != 1)
-                            posY2 = posY2 + rng.nextInt(2);
-                        if (directionZ2 == 0 && directionChange2 != 2)
-                            posZ2 = posZ2 + rng.nextInt(2);
-                        if (directionX2 == 1 && directionChange2 != 0)
-                            posX2 = posX2 - rng.nextInt(2);
-                        if (directionY2 == 1 && directionChange2 != 1)
-                            posY2 = posY2 - rng.nextInt(2);
-                        if (directionZ2 == 1 && directionChange2 != 2)
-                            posZ2 = posZ2 - rng.nextInt(2);
-
-                        blocksMade++;
-                        blocksMade1++;
-                        blocksMade2++;
-
-                        BlockPos pos = new BlockPos(posX, posY, posZ);
-                        pos = pos.add(0, ChunkDataTFC.getSeaLevelOffset(world, pos), 0);
-                        final IBlockState current = world.getBlockState(pos);
-
-                        if (!(current.getBlock() instanceof BlockRockVariant)) continue;
-
-                        final BlockRockVariant currentBlock = (BlockRockVariant) current.getBlock();
-
-                        if (currentBlock.type != Rock.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
-
-                        world.setBlockState(pos, BlockOreTFC.get(ore, currentBlock.rock, grade), 2);
-
-                        blocksSpawned++;
-                    }
-                }
-
-                blocksMade++;
-                blocksMade1++;
-
-                BlockPos pos = new BlockPos(posX, posY, posZ);
-                pos = pos.add(0, ChunkDataTFC.getSeaLevelOffset(world, pos), 0);
-                final IBlockState current = world.getBlockState(pos);
-
-                if (!(current.getBlock() instanceof BlockRockVariant)) continue;
-
-                final BlockRockVariant currentBlock = (BlockRockVariant) current.getBlock();
-
-                if (currentBlock.type != Rock.Type.RAW || !baseRocks.contains(currentBlock.rock)) continue;
-
-                world.setBlockState(pos, BlockOreTFC.get(ore, currentBlock.rock, grade), 2);
-
-                blocksSpawned++;
-            }
-
-            start = start.add(rng.nextInt(3) - 1, rng.nextInt(3) - 1, rng.nextInt(3) - 1);
+            });
         }
-
-        return blocksSpawned;
     }
+
 }
