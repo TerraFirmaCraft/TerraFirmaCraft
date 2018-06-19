@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.te;
 
+import java.util.Random;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -28,14 +29,14 @@ import static net.dries007.tfc.Constants.MOD_ID;
 public class TEWorldItem extends TileEntity
 {
     public ItemStackHandler inventory = new ItemStackHandler(1);
+    private byte rotation;
 
     public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "world_item");
 
     public TEWorldItem()
     {
-        super();
-
-        this.markDirty();
+        Random rand = new Random();
+        rotation = (byte) rand.nextInt(4);
     }
 
     public void onBreakBlock()
@@ -44,17 +45,19 @@ public class TEWorldItem extends TileEntity
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void readFromNBT(NBTTagCompound tag)
     {
-        inventory.deserializeNBT(compound.getCompoundTag("inventory"));
-        super.readFromNBT(compound);
+        inventory.deserializeNBT(tag.getCompoundTag("inventory"));
+        rotation = tag.hasKey("rotation") ? tag.getByte("rotation") : 0;
+        super.readFromNBT(tag);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
-        compound.setTag("inventory", inventory.serializeNBT());
-        return super.writeToNBT(compound);
+        tag.setTag("inventory", inventory.serializeNBT());
+        tag.setByte("rotation", rotation);
+        return super.writeToNBT(tag);
     }
 
     @Override
@@ -65,6 +68,18 @@ public class TEWorldItem extends TileEntity
     }
 
     @Override
+    @Nullable
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        if (world != null)
+        {
+            return new SPacketUpdateTileEntity(this.getPos(), 0, this.writeToNBT(new NBTTagCompound()));
+        }
+
+        return null;
+    }
+
+    @Override
     public NBTTagCompound getUpdateTag()
     {
         // The tag from this method is used for the initial chunk packet, and it needs to have the TE position!
@@ -72,20 +87,8 @@ public class TEWorldItem extends TileEntity
         nbt.setInteger("x", this.getPos().getX());
         nbt.setInteger("y", this.getPos().getY());
         nbt.setInteger("z", this.getPos().getZ());
-        return getUpdatePacketTag(nbt);
+        return writeToNBT(nbt);
 
-    }
-
-    @Override
-    @Nullable
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
-        if (world != null)
-        {
-            return new SPacketUpdateTileEntity(this.getPos(), 0, this.getUpdatePacketTag(new NBTTagCompound()));
-        }
-
-        return null;
     }
 
     @Override
@@ -104,15 +107,11 @@ public class TEWorldItem extends TileEntity
     @Override
     public void handleUpdateTag(NBTTagCompound tag)
     {
-        if (tag.hasKey("inventory"))
-        {
-            inventory.deserializeNBT(tag.getCompoundTag("inventory"));
-        }
+        readFromNBT(tag);
     }
 
-    private NBTTagCompound getUpdatePacketTag(NBTTagCompound nbt)
+    public byte getRotation()
     {
-        nbt.setTag("inventory", inventory.serializeNBT());
-        return nbt;
+        return rotation;
     }
 }
