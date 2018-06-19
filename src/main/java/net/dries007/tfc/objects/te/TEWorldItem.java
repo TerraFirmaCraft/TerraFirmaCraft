@@ -5,10 +5,13 @@
 
 package net.dries007.tfc.objects.te;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -103,6 +106,56 @@ public class TEWorldItem extends TileEntity
         //    TerraFirmaCraft.getNetwork().sendToServer(new PacketRequestWorldItem(this));
         //}
         // updateBlock(false);
+    }
+
+    public NBTTagCompound getUpdatePacketTag(NBTTagCompound nbt)
+    {
+        nbt.setTag("inventory", inventory.serializeNBT());
+        return nbt;
+    }
+
+    @Override
+    @Nullable
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        if (world != null)
+        {
+            return new SPacketUpdateTileEntity(this.getPos(), 0, this.getUpdatePacketTag(new NBTTagCompound()));
+        }
+
+        return null;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        // The tag from this method is used for the initial chunk packet,
+        // and it needs to have the TE position!
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setInteger("x", this.getPos().getX());
+        nbt.setInteger("y", this.getPos().getY());
+        nbt.setInteger("z", this.getPos().getZ());
+        getUpdatePacketTag(nbt);
+        //nbt.setTag("inventory", inventory.serializeNBT());
+
+        // Add the per-block data to the tag
+        return nbt;
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
+    {
+        this.handleUpdateTag(packet.getNbtCompound());
+    }
+
+    @Override
+    public void handleUpdateTag(NBTTagCompound tag)
+    {
+        if (tag.hasKey("inventory"))
+        {
+            inventory.deserializeNBT(tag.getCompoundTag("inventory"));
+        }
+        //TerraFirmaCraft.getLog().debug("Got update packet!");
     }
 
     /*public void updateBlock(boolean doMarkDirty)
