@@ -91,6 +91,13 @@ public class TEWorldItem extends TileEntity
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return 1024.0D;
+    }
+
+    @Override
     public void onLoad(){
         //if (world.isRemote) {
         //    TerraFirmaCraft.getNetwork().sendToServer(new PacketRequestWorldItem(this));
@@ -132,6 +139,6 @@ public class TEWorldItem extends TileEntity
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return new AxisAlignedBB(getPos().add(0.25D, 0D, 0.25D), getPos().add(0.75D, 0.0625D, 0.75D));//TODO:see block bounding box method
+        return new AxisAlignedBB(getPos(), getPos().add(1D, 1D, 1D));//TODO:see block bounding box method
     }
 }

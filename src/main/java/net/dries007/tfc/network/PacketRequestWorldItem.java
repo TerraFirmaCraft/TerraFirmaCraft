@@ -58,6 +58,7 @@ public class PacketRequestWorldItem implements IMessage
         public PacketUpdateWorldItem onMessage(PacketRequestWorldItem message, MessageContext ctx)
         {
             World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension);
+            if (!world.isBlockLoaded(message.pos)) return null;
             TEWorldItem te = (TEWorldItem) world.getTileEntity(message.pos);
             if (te != null)
             {
