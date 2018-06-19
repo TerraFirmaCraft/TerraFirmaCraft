@@ -6,107 +6,113 @@
 package net.dries007.tfc.objects.te;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemStackHandler;
+
+import mcp.MethodsReturnNonnullByDefault;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class TEWorldItem extends TileEntity
 {
-    public TEWorldItem(){ } //this has to be here otherwise it will fail to load somehow
+    public ItemStackHandler inventory = new ItemStackHandler(1);
 
-    public TEWorldItem(World world){
-        super();
-        this.world = world;
-    }
     public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "world_item");
-    private ItemStack item = ItemStack.EMPTY;
+
+    public TEWorldItem()
+    {
+        super();
+
+        this.markDirty();
+    }
+
     public void onBreakBlock()
     {
-        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), item);
-    }
-
-    public void setItem(ItemStack item, boolean doMarkDirty){
-        this.item = item;
-        updateBlock(doMarkDirty);
-    }
-
-    /*public void setItem(){
-
-    }*/
-
-    public ItemStack getItem(){
-        if(item == ItemStack.EMPTY)
-            updateBlock(false);
-        return item;
+        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(0));
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
+        inventory.deserializeNBT(compound.getCompoundTag("inventory"));
         super.readFromNBT(compound);
-        setItem(new ItemStack(compound.getCompoundTag("Item")), false);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        super.writeToNBT(compound);
-        compound.setTag("Item", item.writeToNBT(new NBTTagCompound()));
-        return compound;
+        compound.setTag("inventory", inventory.serializeNBT());
+        return super.writeToNBT(compound);
     }
 
     @Override
-    public void onLoad(){
-            updateBlock(false);
-    }
-
-    public void updateBlock(boolean doMarkDirty)
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
     {
-        if(world == null) return;
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 2); // sync TE
-        if(doMarkDirty)
-        markDirty();
-    }
-
-    @Nullable
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
-        return new SPacketUpdateTileEntity(pos, 127, getUpdateTag());
+        return 1024.0D;
     }
 
     @Override
     public NBTTagCompound getUpdateTag()
     {
-        return item.writeToNBT(new NBTTagCompound());
+        // The tag from this method is used for the initial chunk packet, and it needs to have the TE position!
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setInteger("x", this.getPos().getX());
+        nbt.setInteger("y", this.getPos().getY());
+        nbt.setInteger("z", this.getPos().getZ());
+        return getUpdatePacketTag(nbt);
+
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
+    @Nullable
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
-        //readFromNBT(pkt.getNbtCompound());
-        setItem(new ItemStack(pkt.getNbtCompound()), false);
-        //updateBlock();
+        if (world != null)
+        {
+            return new SPacketUpdateTileEntity(this.getPos(), 0, this.getUpdatePacketTag(new NBTTagCompound()));
+        }
+
+        return null;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return new AxisAlignedBB(getPos().add(0.25D, 0D, 0.25D), getPos().add(0.75D, 0.0625D, 0.75D));//TODO:see block bounding box method
+        return new AxisAlignedBB(getPos(), getPos().add(1D, 1D, 1D));
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
+    {
+        this.handleUpdateTag(packet.getNbtCompound());
+    }
+
+    @Override
+    public void handleUpdateTag(NBTTagCompound tag)
+    {
+        if (tag.hasKey("inventory"))
+        {
+            inventory.deserializeNBT(tag.getCompoundTag("inventory"));
+        }
+    }
+
+    private NBTTagCompound getUpdatePacketTag(NBTTagCompound nbt)
+    {
+        nbt.setTag("inventory", inventory.serializeNBT());
+        return nbt;
     }
 }
