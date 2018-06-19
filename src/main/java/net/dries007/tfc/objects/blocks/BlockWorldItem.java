@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.blocks;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -20,12 +22,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.te.TEWorldItem;
 import net.dries007.tfc.util.Helpers;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class BlockWorldItem extends Block implements ITileEntityProvider
 {
-    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.25D, 0D, 0.25D, 0.75D, 0.0625D, 0.75D);
+    private static final AxisAlignedBB AABB = new AxisAlignedBB(0.25D, 0D, 0.25D, 0.75D, 0.0625D, 0.75D);
 
     public BlockWorldItem()
     {
@@ -38,7 +43,7 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
-        return new TEWorldItem(worldIn);
+        return new TEWorldItem();
     }
 
     @Override
@@ -96,7 +101,10 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        worldIn.setBlockToAir(pos);
+        TEWorldItem te = (TEWorldItem) worldIn.getTileEntity(pos);
+        if (te == null) return true;
+        te.inventory.setStackInSlot(0, playerIn.getHeldItem(hand).copy());
+        //worldIn.setBlockToAir(pos);
         return true;
     }
 }

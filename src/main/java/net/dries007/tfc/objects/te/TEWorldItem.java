@@ -5,84 +5,109 @@
 
 package net.dries007.tfc.objects.te;
 
-import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemStackHandler;
+
+import mcp.MethodsReturnNonnullByDefault;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class TEWorldItem extends TileEntity
 {
-    public TEWorldItem(){ } //this has to be here otherwise it will fail to load somehow
+    public ItemStackHandler inventory = new ItemStackHandler(1);/*{
+        @Override
+        protected void onContentsChanged(int slot) {
+            if (!world.isRemote) {
+                TerraFirmaCraft.getNetwork().sendToAllAround(new PacketUpdateWorldItem(TEWorldItem.this),
+                    new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
+            }
+        }
+    };*/
 
-    public TEWorldItem(World world){
-        super();
-        this.world = world;
-    }
     public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "world_item");
-    private ItemStack item = ItemStack.EMPTY;
+    //private ItemStack item = ItemStack.EMPTY;
+
+    public TEWorldItem()
+    {
+        super();
+
+        this.markDirty();
+    }
+
     public void onBreakBlock()
     {
-        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), item);
+        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(0));
     }
 
-    public void setItem(ItemStack item, boolean doMarkDirty){
+    /*public void setItem(ItemStack item){
         this.item = item;
-        updateBlock(doMarkDirty);
-    }
+        //updateBlock(doMarkDirty);
+        if(!world.isRemote)
+        {
+            this.markDirty();
+            TerraFirmaCraft.getNetwork().sendToAllAround(new PacketUpdateWorldItem(this),
+                new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
+        }
+    }*/
 
     /*public void setItem(){
 
     }*/
 
-    public ItemStack getItem(){
-        if(item == ItemStack.EMPTY)
-            updateBlock(false);
+    /*public ItemStack getItem(){
+        //if(item == ItemStack.EMPTY)
+        //    updateBlock(false);
         return item;
-    }
+    }*/
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
+        inventory.deserializeNBT(compound.getCompoundTag("inventory"));
         super.readFromNBT(compound);
-        setItem(new ItemStack(compound.getCompoundTag("Item")), false);
+        //ItemStack stack = new ItemStack(compound.getCompoundTag("Item"));
+        //TerraFirmaCraft.getLog().debug("Trying to load state + "+compound.getCompoundTag("Item")+" and "+stack.getDisplayName());
+        //if(stack != null && !stack.isEmpty())
+        //    setItem(stack);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        super.writeToNBT(compound);
-        compound.setTag("Item", item.writeToNBT(new NBTTagCompound()));
-        return compound;
+        compound.setTag("inventory", inventory.serializeNBT());
+        return super.writeToNBT(compound);
+        //compound.setTag("Item", item.writeToNBT(new NBTTagCompound()));
+        //return compound;
     }
 
     @Override
     public void onLoad(){
-            updateBlock(false);
+        //if (world.isRemote) {
+        //    TerraFirmaCraft.getNetwork().sendToServer(new PacketRequestWorldItem(this));
+        //}
+        // updateBlock(false);
     }
 
-    public void updateBlock(boolean doMarkDirty)
+    /*public void updateBlock(boolean doMarkDirty)
     {
         if(world == null) return;
         IBlockState state = world.getBlockState(pos);
         world.notifyBlockUpdate(pos, state, state, 2); // sync TE
         if(doMarkDirty)
         markDirty();
-    }
+    }*/
 
-    @Nullable
+    /*@Nullable
     @Override
     public SPacketUpdateTileEntity getUpdatePacket()
     {
@@ -99,9 +124,9 @@ public class TEWorldItem extends TileEntity
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
         //readFromNBT(pkt.getNbtCompound());
-        setItem(new ItemStack(pkt.getNbtCompound()), false);
+        setItem(new ItemStack(pkt.getNbtCompound()));
         //updateBlock();
-    }
+    }*/
 
     @Override
     @SideOnly(Side.CLIENT)

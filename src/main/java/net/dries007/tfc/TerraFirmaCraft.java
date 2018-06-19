@@ -19,6 +19,8 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.cmd.StripWorldCommand;
+import net.dries007.tfc.network.PacketRequestWorldItem;
+import net.dries007.tfc.network.PacketUpdateWorldItem;
 import net.dries007.tfc.objects.CreativeTabsTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
@@ -92,8 +94,11 @@ public class TerraFirmaCraft
         network = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
         int id = 0;
         network.registerMessage(ChunkDataMessage.Handler.class, ChunkDataMessage.class, ++id, Side.CLIENT);
-
         ChunkCapabilityHandler.preInit();
+        // For world item rendering
+        network.registerMessage(PacketUpdateWorldItem.Handler.class, PacketUpdateWorldItem.class, ++id, Side.CLIENT);
+        network.registerMessage(PacketRequestWorldItem.Handler.class, PacketRequestWorldItem.class, ++id, Side.SERVER);
+
         CalenderTFC.reload();
 
         EntitiesTFC.preInit();
