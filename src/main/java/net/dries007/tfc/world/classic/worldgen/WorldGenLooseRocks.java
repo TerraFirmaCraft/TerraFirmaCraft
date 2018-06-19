@@ -16,14 +16,8 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.blocks.BlockWorldItem;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
-import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.te.TEWorldItem;
@@ -89,7 +83,9 @@ public class WorldGenLooseRocks implements IWorldGenerator
             world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState(),2);
             TEWorldItem tile = (TEWorldItem) world.getTileEntity(pos);
             if(tile != null)
-                tile.setItem(vein == null ? ItemRock.get(rock, 1) : ItemSmallOre.get(vein.oreSpawnData.ore,1), true);
+                tile.inventory.setStackInSlot(0, vein == null ? ItemRock.get(rock, 1) : ItemSmallOre.get(vein.oreSpawnData.ore, 1));
+            //TerraFirmaCraft.getNetwork().sendToAllAround(new PacketUpdateWorldItem(tile),
+            //   new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
             //world.setBlockState(pos, vein == null ? BlockRockVariant.get(rock, Rock.Type.RAW).getDefaultState() : BlockOreTFC.get(vein.oreSpawnData.ore, Rock.ANDESITE, Ore.Grade.NORMAL), 2);
         }
     }
