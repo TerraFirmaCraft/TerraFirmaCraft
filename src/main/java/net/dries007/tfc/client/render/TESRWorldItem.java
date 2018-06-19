@@ -11,8 +11,6 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.network.PacketRequestWorldItem;
 import net.dries007.tfc.objects.te.TEWorldItem;
 
 public class TESRWorldItem extends TileEntitySpecialRenderer<TEWorldItem>
@@ -20,11 +18,11 @@ public class TESRWorldItem extends TileEntitySpecialRenderer<TEWorldItem>
     @Override
     public void render(TEWorldItem te, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
         ItemStack stack = te.inventory.getStackInSlot(0);
-        if (stack.isEmpty())
-        {
-            TerraFirmaCraft.getNetwork().sendToServer(new PacketRequestWorldItem(te));
-            return;
-        }
+        //if (stack.isEmpty())
+        //{
+        //    TerraFirmaCraft.getNetwork().sendToServer(new PacketRequestWorldItem(te));
+        //    return;
+        //}
         GlStateManager.pushMatrix();
         //GlStateManager.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));
         //GlStateManager.rotate(timeD, 0, 1, 0);
