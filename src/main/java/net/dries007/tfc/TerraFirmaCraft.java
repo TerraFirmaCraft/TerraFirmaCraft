@@ -93,9 +93,6 @@ public class TerraFirmaCraft
         int id = 0;
         network.registerMessage(ChunkDataMessage.Handler.class, ChunkDataMessage.class, ++id, Side.CLIENT);
         ChunkCapabilityHandler.preInit();
-        // For world item rendering
-        //network.registerMessage(PacketUpdateWorldItem.Handler.class, PacketUpdateWorldItem.class, ++id, Side.CLIENT);
-        //network.registerMessage(PacketRequestWorldItem.Handler.class, PacketRequestWorldItem.class, ++id, Side.SERVER);
 
         CalenderTFC.reload();
 
