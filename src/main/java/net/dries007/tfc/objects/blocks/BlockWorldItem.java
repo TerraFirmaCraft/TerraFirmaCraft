@@ -32,7 +32,7 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
 {
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.25D, 0D, 0.25D, 0.75D, 0.0625D, 0.75D);
 
-    public BlockWorldItem()
+    BlockWorldItem()
     {
         super(Material.CIRCUITS);
         setDefaultState(blockState.getBaseState());
@@ -101,10 +101,7 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        TEWorldItem te = (TEWorldItem) worldIn.getTileEntity(pos);
-        if (te == null) return true;
-        te.inventory.setStackInSlot(0, playerIn.getHeldItem(hand).copy());
-        //worldIn.setBlockToAir(pos);
+        worldIn.setBlockToAir(pos);
         return true;
     }
 }

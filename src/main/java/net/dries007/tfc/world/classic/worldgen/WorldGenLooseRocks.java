@@ -77,16 +77,10 @@ public class WorldGenLooseRocks implements IWorldGenerator
         IBlockState stateAt = world.getBlockState(pos.down());
         if (world.isAirBlock(pos) && stateAt.isFullCube())
         {
-            // todo: replace this with actual ore stone blocks
-            // ores are gotten from vein.oreSpawnData.ore
-            // the current rock can be gotten from the rock
             world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState(),2);
             TEWorldItem tile = (TEWorldItem) world.getTileEntity(pos);
             if(tile != null)
                 tile.inventory.setStackInSlot(0, vein == null ? ItemRock.get(rock, 1) : ItemSmallOre.get(vein.oreSpawnData.ore, 1));
-            //TerraFirmaCraft.getNetwork().sendToAllAround(new PacketUpdateWorldItem(tile),
-            //   new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
-            //world.setBlockState(pos, vein == null ? BlockRockVariant.get(rock, Rock.Type.RAW).getDefaultState() : BlockOreTFC.get(vein.oreSpawnData.ore, Rock.ANDESITE, Ore.Grade.NORMAL), 2);
         }
     }
 
