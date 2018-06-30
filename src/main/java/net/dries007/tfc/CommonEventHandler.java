@@ -25,7 +25,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
+import net.dries007.tfc.objects.blocks.BlockLogPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFireable;
@@ -75,7 +77,8 @@ public class CommonEventHandler
         /*
          Note: This event handler is fired first with the main hand as event.getStack()
          If nothing happens (as per vanilla behavior, even if this event causes something to happen),
-         The event will fire AGAIN with the offhand.
+         The event will fire AGAIN with the offhand and offhand stack.
+
          This is to prevent that second firing of the event from causing duplicate actions
          i.e. if you hold charcoal with main hand and a block of dirt with offhand, the dirt will try and place because
          vanilla behavior doesn't do anything with charcoal in the main hand
@@ -84,6 +87,11 @@ public class CommonEventHandler
         {
             ItemStack mainStack = player.getHeldItem(EnumHand.MAIN_HAND);
             if (mainStack.getItem() == Items.COAL && mainStack.getMetadata() == 1)
+            {
+                event.setCanceled(true);
+                return;
+            }
+            if (Helpers.doesStackMatchOre(mainStack, "logWood"))
             {
                 event.setCanceled(true);
                 return;
@@ -105,10 +113,11 @@ public class CommonEventHandler
                     && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing)))
                 {
 
-                    if (world.getBlockState(pos).getBlock() instanceof BlockCharcoalPile || world.getBlockState(pos).getBlock() instanceof BlockCharcoalPile)
+                    if (world.getBlockState(pos).getBlock() instanceof BlockCharcoalPile)
                     {
                         if (world.getBlockState(pos).getValue(LAYERS) != 8)
                         {
+                            // Adding layers is handled in BlockCharcoalPile
                             return;
                         }
                     }
@@ -122,8 +131,82 @@ public class CommonEventHandler
                         }
                         world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0F, 0.5F);
                         event.setCanceled(true);
+                        return;
                     }
 
+                }
+            }
+        }
+        if (Helpers.doesStackMatchOre(stack, "logWood"))
+        {
+            EnumFacing facing = event.getFace();
+            if (facing != null)
+            {
+                if (world.getBlockState(pos).getBlock() instanceof BlockLogPile)
+                {
+                    if (!world.isRemote)
+                    {
+                        TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
+                        if (te != null)
+                        {
+                            if (te.insertLog(stack.copy()))
+                            {
+                                if (!player.capabilities.isCreativeMode)
+                                {
+                                    player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, 1));
+                                }
+                                world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                                event.setCanceled(true);
+                                return;
+                            }
+                            else
+                            {
+                                // Insert log didn't work, see if trying to place another log pile
+                                if (facing == EnumFacing.UP && te.countLogs() == 16)
+                                {
+                                    world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
+
+                                    TELogPile te2 = Helpers.getTE(world, pos, TELogPile.class);
+                                    if (te2 != null)
+                                    {
+                                        te2.insertLog(stack.copy());
+                                    }
+
+                                    if (!player.capabilities.isCreativeMode)
+                                    {
+                                        player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, 1));
+                                    }
+                                    world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                                }
+                            }
+                            event.setCanceled(true);
+                            return;
+                        }
+                    }
+                }
+                if (world.getBlockState(pos.down().offset(facing)).isNormalCube() && !(world.getBlockState(pos.down().offset(facing)).getBlock() instanceof BlockLogPile)
+                    && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing)) &&
+                    player.isSneaking())
+                {
+
+                    if (!world.isRemote)
+                    {
+                        world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
+
+                        TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
+                        if (te != null)
+                        {
+                            te.insertLog(stack.copy());
+                        }
+
+                        if (!player.capabilities.isCreativeMode)
+                        {
+                            player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, 1));
+                        }
+                        world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    }
+                    event.setCanceled(true);
+                    return;
                 }
             }
         }
