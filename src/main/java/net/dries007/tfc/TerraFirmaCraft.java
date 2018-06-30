@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import net.dries007.tfc.client.ClientEvents;
+import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.objects.CreativeTabsTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
@@ -93,6 +94,8 @@ public class TerraFirmaCraft
         int id = 0;
         network.registerMessage(ChunkDataMessage.Handler.class, ChunkDataMessage.class, ++id, Side.CLIENT);
         ChunkCapabilityHandler.preInit();
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new TFCGuiHandler());
 
         CalenderTFC.reload();
 

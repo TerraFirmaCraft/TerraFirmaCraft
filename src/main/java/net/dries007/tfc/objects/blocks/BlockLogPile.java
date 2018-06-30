@@ -21,6 +21,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -36,7 +37,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.te.TELogPile;
+import net.dries007.tfc.objects.te.TESidedInventory;
+import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -122,11 +127,12 @@ public class BlockLogPile extends Block implements ITileEntityProvider
             if (te == null) { return true; }
 
             // Special Interactions
-            // 1. Try and put a log inside
+            // 1. Try and put a log inside (happens on right click event)
             // 2. Try and light the TE
             // 3. Open the GUI
-            /*ItemStack stack = player.getHeldItem(hand);
-            if((stack.getItem() == Items.FLINT_AND_STEEL || stack.getItem() == ModItems.firestarter) && ! state.getValue(ONFIRE) && side == EnumFacing.UP){
+            ItemStack stack = player.getHeldItem(hand);
+            if (stack.getItem() == Items.FLINT_AND_STEEL && !state.getValue(ONFIRE) && side == EnumFacing.UP)
+            {
                 // Light the Pile
                 if(world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos)){
                     te.burning = true;
@@ -138,8 +144,8 @@ public class BlockLogPile extends Block implements ITileEntityProvider
             }
 
             if (!player.isSneaking() && !state.getValue(ONFIRE)) {
-                player.openGui(NoTreePunching.instance, ModGuiHandler.WOODPILE, world, pos.getX(), pos.getY(), pos.getZ());
-            }*/
+                player.openGui(TerraFirmaCraft.getInstance(), TFCGuiHandler.LOG_PILE, world, pos.getX(), pos.getY(), pos.getZ());
+            }
         }
         return true;
     }
@@ -158,19 +164,10 @@ public class BlockLogPile extends Block implements ITileEntityProvider
     @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
-        /*if(!worldIn.isRemote && te != null){
-            TELogPile tile = (TELogPile) te;
-            IItemHandler itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
-            if (itemHandler != null) {
-                for (int i = 0; i < itemHandler.getSlots(); i++) {
-                    ItemStack stack2 = itemHandler.getStackInSlot(i);
-                    if (!stack.isEmpty()) {
-                        EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack2);
-                        worldIn.spawnEntity(item);
-                    }
-                }
-            }
-        }*/
+        if (!worldIn.isRemote && te != null && te instanceof TESidedInventory)
+        {
+            ((TESidedInventory) te).onBreakBlock(worldIn, pos);
+        }
         super.harvestBlock(worldIn, player, pos, state, te, stack);
     }
 
@@ -200,7 +197,12 @@ public class BlockLogPile extends Block implements ITileEntityProvider
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        return new ItemStack(Blocks.LOG); // TODO: get the TE and find the first log in inventory
+        TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
+        if (te != null)
+        {
+            return te.getLog().copy();
+        }
+        return ItemStack.EMPTY;
     }
 
     private boolean isValidCoverBlock(World world, BlockPos pos)
