@@ -10,9 +10,11 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 
 import com.google.common.base.Joiner;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -93,5 +95,13 @@ public final class Helpers
     public static String getEnumName(Enum<?> anEnum)
     {
         return JOINER_DOT.join(Constants.MOD_ID, "enum", anEnum.getDeclaringClass().getSimpleName(), anEnum).toLowerCase();
+    }
+
+    @Nonnull
+    public static ItemStack consumeItem(ItemStack stack, int amount)
+    {
+        if (stack.getCount() <= amount) return ItemStack.EMPTY;
+        stack.shrink(amount);
+        return stack;
     }
 }
