@@ -92,6 +92,8 @@ public final class BlocksTFC
     public static final BlockThatch THATCH = null;
     public static final BlockPitKiln PIT_KILN = null;
     public static final BlockWorldItem WORLD_ITEM = null;
+    public static final BlockCharcoalPile CHARCOAL_PILE = null;
+    public static final BlockLogPile LOG_PILE = null;
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -359,8 +361,10 @@ public final class BlocksTFC
         register(r, "world_item", new BlockWorldItem());
         // todo: pitkiln (maybe not a seperate block but rather a variation on the TE from any placeable item)
         // todo: coal/charcoal pile
+        register(r, "charcoal_pile", new BlockCharcoalPile());
         // todo: ingot pile
         // todo: log pile (with charcoal pit mechanic)
+        register(r, "log_pile", new BlockLogPile());
 
         allNormalItemBlocks = normalItemBlocks.build();
         allInventoryItemBlocks = inventoryItemBlocks.build();

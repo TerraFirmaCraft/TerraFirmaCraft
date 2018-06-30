@@ -1,0 +1,45 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:charcoal_pile_1",
+    "textures": {
+      "all": "tfc:blocks/charcoal_pile",
+      "top": "tfc:blocks/charcoal_pile",
+      "particle": "tfc:blocks/charcoal_pile"
+    }
+  },
+  "variants": {
+    "type": {
+      "1": {
+        "model": "tfc:charcoal_pile_1"
+      },
+      "2": {
+        "model": "tfc:charcoal_pile_2"
+      },
+      "3": {
+        "model": "tfc:charcoal_pile_3"
+      },
+      "4": {
+        "model": "tfc:charcoal_pile_4"
+      },
+      "5": {
+        "model": "tfc:charcoal_pile_5"
+      },
+      "6": {
+        "model": "tfc:charcoal_pile_6"
+      },
+      "7": {
+        "model": "tfc:charcoal_pile_7"
+      },
+      "8": {
+        "model": "tfc:charcoal_pile_8"
+      }
+    },
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {}
+    ]
+  }
+}
