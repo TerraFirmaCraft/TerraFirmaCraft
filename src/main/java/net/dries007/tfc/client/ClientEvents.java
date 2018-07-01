@@ -35,6 +35,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
+import net.dries007.tfc.util.IItemSize;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
@@ -149,6 +150,10 @@ public class ClientEvents
                 {
                     ((IMetalObject) block).addMetalInfo(stack, tt);
                 }
+            }
+            if (item instanceof IItemSize)
+            {
+                ((IItemSize) item).addSizeInfo(stack, tt);
             }
 
             int[] ids = OreDictionary.getOreIDs(stack);

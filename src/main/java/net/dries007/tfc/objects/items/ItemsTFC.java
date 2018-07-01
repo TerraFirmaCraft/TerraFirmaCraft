@@ -117,8 +117,8 @@ public final class ItemsTFC
             }
         }
 
-        BlocksTFC.getAllNormalItemBlocks().forEach(x -> registerItemBlock(r, x));
-        BlocksTFC.getAllInventoryItemBlocks().forEach(x -> registerItemBlock(r, x));
+        BlocksTFC.getAllNormalItemBlocks().forEach((x, y) -> registerItemBlock(r, x, y));
+        BlocksTFC.getAllInventoryItemBlocks().forEach((x, y) -> registerItemBlock(r, x, y));
 
         for (BlockLogTFC log : BlocksTFC.getAllLogBlocks())
             simpleItems.add(register(r, log.getRegistryName().getResourcePath(), new ItemLogTFC(log), CT_WOOD));
@@ -225,6 +225,19 @@ public final class ItemsTFC
         register(r, nameFired, unfiredPottery.firedVersion, CT_POTTERY);
         register(r, nameUnfired, unfiredPottery, CT_POTTERY);
         if (items != null) items.add(unfiredPottery.firedVersion, unfiredPottery);
+    }
+
+    private static <T extends ItemBlock> void registerItemBlock(IForgeRegistry<Item> r, Block block, Class<T> itemBlockClass)
+    {
+        try
+        {
+            //noinspection ConstantConditions
+            r.register(itemBlockClass.getDeclaredConstructor(Block.class).newInstance(block).setRegistryName(block.getRegistryName()).setCreativeTab(block.getCreativeTabToDisplayOn()));
+        }
+        catch (Exception e)
+        {
+            // Problems
+        }
     }
 
     private static void registerItemBlock(IForgeRegistry<Item> r, Block block)

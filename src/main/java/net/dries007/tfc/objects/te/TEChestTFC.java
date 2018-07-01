@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.te;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.item.ItemStack;
@@ -16,11 +18,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
+@MethodsReturnNonnullByDefault
 public class TEChestTFC extends TileEntityChest
 {
     public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "chest");
@@ -36,11 +40,12 @@ public class TEChestTFC extends TileEntityChest
     public BlockChestTFC getBlockType()
     {
         Block block = super.getBlockType();
-        return block instanceof BlockChestTFC ? ((BlockChestTFC) block) : null;
+        return block instanceof BlockChestTFC ? ((BlockChestTFC) block) : null; // TODO: this shouldn't return null ever
     }
 
     @Override
     @SideOnly(Side.CLIENT)
+    @Nonnull
     public AxisAlignedBB getRenderBoundingBox()
     {
         return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));

@@ -14,6 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -30,7 +31,7 @@ import static net.dries007.tfc.objects.blocks.BlockLogPile.ONFIRE;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class TELogPile extends TESidedInventory
+public class TELogPile extends TESidedInventory implements ITickable
 {
 
     public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "log_pile");
@@ -42,7 +43,7 @@ public class TELogPile extends TESidedInventory
         return (stack.isEmpty() || Helpers.doesStackMatchOre(stack, "logWood"));
     }
 
-    private final int maxBurnTicks = 20 * 60 * 8; // 8 In game hours
+    private final int maxBurnTicks = 100;//20 * 60 * 8; // 8 In game hours
     public boolean burning;
     private int burnTicks;
 
@@ -82,16 +83,19 @@ public class TELogPile extends TESidedInventory
     @Override
     public void setAndUpdateSlots(int slot)
     {
-        if (world.isRemote) { return; }
-        for (int i = 0; i < 4; i++)
+        if (!world.isRemote)
         {
-            if (!inventory.getStackInSlot(i).isEmpty())
+            for (int i = 0; i < 4; i++)
             {
-                return;
+                if (!inventory.getStackInSlot(i).isEmpty())
+                {
+                    super.setAndUpdateSlots(slot);
+                    return;
+                }
             }
+            world.setBlockToAir(pos);
         }
-
-        world.setBlockToAir(pos);
+        super.setAndUpdateSlots(slot);
     }
 
     @Override
@@ -107,18 +111,19 @@ public class TELogPile extends TESidedInventory
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound c)
-    {
-        c.setInteger("burn_ticks", burnTicks);
-        c.setBoolean("burning", burning);
-        return c;
-    }
-
-    @Override
     public void readFromNBT(NBTTagCompound c)
     {
         burnTicks = c.getInteger("burn_ticks");
         burning = c.getBoolean("burning");
+        super.readFromNBT(c);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound c)
+    {
+        c.setInteger("burn_ticks", burnTicks);
+        c.setBoolean("burning", burning);
+        return super.writeToNBT(c);
     }
 
     public boolean insertLog(ItemStack stack)
@@ -146,7 +151,13 @@ public class TELogPile extends TESidedInventory
         return ItemStack.EMPTY;
     }
 
-    public void tryLightNearby(World world, BlockPos pos)
+    public void light()
+    {
+        this.burning = true;
+        tryLightNearby();
+    }
+
+    private void tryLightNearby()
     {
         for (EnumFacing side : EnumFacing.values())
         {
@@ -155,10 +166,11 @@ public class TELogPile extends TESidedInventory
             {
                 if (state.getValue(ONFIRE)) continue;
                 world.setBlockState(pos.offset(side), state.withProperty(ONFIRE, true));
-                TELogPile tile = Helpers.getTE(world, pos, TELogPile.class);
-                if (tile == null) continue;
-                tile.burning = true;
-                tile.tryLightNearby(world, pos.offset(side));
+                TELogPile tile = Helpers.getTE(world, pos.offset(side), TELogPile.class);
+                if (tile != null)
+                {
+                    tile.light();
+                }
             }
         }
     }
@@ -204,6 +216,7 @@ public class TELogPile extends TESidedInventory
         if (j == 1)
         {
             // This log pile is at the bottom of the charcoal pit
+            //noinspection ConstantConditions
             world.setBlockState(pos, BlocksTFC.CHARCOAL_PILE.getDefaultState().withProperty(LAYERS, charcoal));
             return;
         }
@@ -214,6 +227,7 @@ public class TELogPile extends TESidedInventory
             if (state.getBlock() == Blocks.AIR)
             {
                 // If it hits air, place the remaining pile in that block
+                //noinspection ConstantConditions
                 world.setBlockState(pos.down(k), BlocksTFC.CHARCOAL_PILE.getDefaultState().withProperty(LAYERS, charcoal));
                 world.setBlockState(pos, Blocks.AIR.getDefaultState());
                 return;
@@ -224,6 +238,7 @@ public class TELogPile extends TESidedInventory
                 // Place what it can in the existing charcoal pit, then continue climbing
                 charcoal += state.getValue(LAYERS);
                 int toCreate = charcoal > 8 ? 8 : charcoal;
+                //noinspection ConstantConditions
                 world.setBlockState(pos.down(k), BlocksTFC.CHARCOAL_PILE.getDefaultState().withProperty(LAYERS, toCreate));
                 charcoal -= toCreate;
             }
@@ -235,6 +250,7 @@ public class TELogPile extends TESidedInventory
             }
         }
         // If you exit the loop, its arrived back at the original position OR needs to rest the original position, and needs to replace that block
+        //noinspection ConstantConditions
         world.setBlockState(pos, BlocksTFC.CHARCOAL_PILE.getDefaultState().withProperty(LAYERS, charcoal));
     }
 }

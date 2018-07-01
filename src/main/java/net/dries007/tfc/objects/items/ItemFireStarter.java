@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.items;
 
 import java.util.List;
 import java.util.function.Predicate;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -25,11 +26,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
+import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.objects.blocks.BlockLogPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.te.TELogPile;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
+import static net.dries007.tfc.objects.blocks.BlockLogPile.ONFIRE;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class ItemFireStarter extends Item
 {
     private static final Predicate<EntityItem> IS_STICK = OreDictionaryHelper.createPredicateItemEntity("stickWood");
@@ -100,20 +108,35 @@ public class ItemFireStarter extends Item
         }
         else if (countLeft == 1) // Server, and last tick of use
         {
-            stack.damageItem(1, player);
-
-            final List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 0.5, pos.getZ() + 1), i -> IS_KINDLING.test(i) || IS_STICK.test(i));
-
-            int sticks = list.stream().filter(IS_STICK).mapToInt(e -> e.getItem().getCount()).sum();
-            int kindling = list.stream().filter(IS_KINDLING).mapToInt(e -> e.getItem().getCount()).sum();
-
-            if (sticks < 3) return;
-
-            if (world.rand.nextFloat() < chance + Math.min(kindling * 0.1, 0.5))
+            final IBlockState state = world.getBlockState(pos);
+            if (state.getBlock() instanceof BlockLogPile)
             {
-                //noinspection ConstantConditions
-                world.setBlockState(pos, BlocksTFC.FIREPIT.getDefaultState().withProperty(LIT, true), 11); //todo: fire
-                list.forEach(Entity::setDead);
+                // Charcoal pile lighting
+                if (world.rand.nextFloat() < chance)
+                {
+                    world.setBlockState(pos, state.withProperty(ONFIRE, true));
+                    TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
+                    if (te != null) te.light();
+                }
+            }
+            else
+            {
+                // Firepit creation
+                stack.damageItem(1, player);
+
+                final List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 0.5, pos.getZ() + 1), i -> IS_KINDLING.test(i) || IS_STICK.test(i));
+
+                int sticks = list.stream().filter(IS_STICK).mapToInt(e -> e.getItem().getCount()).sum();
+                int kindling = list.stream().filter(IS_KINDLING).mapToInt(e -> e.getItem().getCount()).sum();
+
+                if (sticks < 3) return;
+
+                if (world.rand.nextFloat() < chance + Math.min(kindling * 0.1, 0.5))
+                {
+                    //noinspection ConstantConditions
+                    world.setBlockState(pos, BlocksTFC.FIREPIT.getDefaultState().withProperty(LIT, true), 11); //todo: fire
+                    list.forEach(Entity::setDead);
+                }
             }
         }
     }
