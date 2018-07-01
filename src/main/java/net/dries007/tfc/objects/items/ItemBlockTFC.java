@@ -1,39 +1,47 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
-package net.dries007.tfc.objects.items.wood;
+package net.dries007.tfc.objects.items;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Size;
 import net.dries007.tfc.objects.Weight;
-import net.dries007.tfc.objects.items.ItemBlockTFC;
-import net.dries007.tfc.util.IPlacableItem;
+import net.dries007.tfc.util.IItemSize;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ItemLogTFC extends ItemBlockTFC implements IPlacableItem
+public class ItemBlockTFC extends ItemBlock implements IItemSize
 {
-    public ItemLogTFC(Block block)
+
+    public ItemBlockTFC(Block b)
     {
-        super(block);
+        super(b);
     }
 
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.NORMAL;
+        return Size.VERY_SMALL;
     }
 
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.MEDIUM;
+        return Weight.HEAVY;
+    }
+
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        return getStackSize(stack);
     }
 }

@@ -4,7 +4,7 @@
  *
  */
 
-package net.dries007.tfc.objects.items.itemblock;
+package net.dries007.tfc.objects.items;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;

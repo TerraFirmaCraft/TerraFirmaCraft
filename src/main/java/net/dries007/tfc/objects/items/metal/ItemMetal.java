@@ -126,4 +126,15 @@ public class ItemMetal extends ItemTFC implements IMetalObject
         }
     }
 
+    @Override
+    public boolean canStack(ItemStack stack)
+    {
+        switch (type)
+        {
+            case TUYERE:
+                return false;
+            default:
+                return true;
+        }
+    }
 }

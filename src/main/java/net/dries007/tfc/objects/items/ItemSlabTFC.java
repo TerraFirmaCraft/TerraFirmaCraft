@@ -4,44 +4,37 @@
  *
  */
 
-package net.dries007.tfc.objects.items.itemblock;
+package net.dries007.tfc.objects.items;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSlab;
 import net.minecraft.item.ItemStack;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Size;
 import net.dries007.tfc.objects.Weight;
+import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.util.IItemSize;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ItemBlockTFC extends ItemBlock implements IItemSize
+public class ItemSlabTFC extends ItemSlab implements IItemSize
 {
-
-    public ItemBlockTFC(Block b)
+    public ItemSlabTFC(BlockSlabTFC.Half slab, BlockSlabTFC.Half slab1, BlockSlabTFC.Double doubleSlab)
     {
-        super(b);
+        super(slab, slab1, doubleSlab);
     }
 
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.VERY_SMALL;
+        return Size.SMALL;
     }
 
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.HEAVY;
-    }
-
-    @Override
-    public int getItemStackLimit(ItemStack stack)
-    {
-        return getStackSize(stack);
+        return Weight.MEDIUM;
     }
 }
