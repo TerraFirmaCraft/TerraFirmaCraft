@@ -92,6 +92,20 @@ tfc.enum.tier.tier_iii=Bloomery
 tfc.enum.tier.tier_iv=Blast Furnace
 tfc.enum.tier.tier_v=Crucible
 
+## Size
+tfc.enum.size.tiny=Tiny
+tfc.enum.size.very_small=Very Small
+tfc.enum.size.small=Small
+tfc.enum.size.normal=Normal
+tfc.enum.size.large=Large
+tfc.enum.size.very_large=Very Large
+tfc.enum.size.huge=Huge
+
+## Weight
+tfc.enum.weight.light=Light
+tfc.enum.weight.medium=Medium
+tfc.enum.weight.heavy=Heavy
+
 # Items
 item.tfc.wand.name=TFC Debug Wand
 item.tfc.firestarter.name=Firestarter
