@@ -92,8 +92,8 @@ public class TerraFirmaCraft
         network = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
         int id = 0;
         network.registerMessage(ChunkDataMessage.Handler.class, ChunkDataMessage.class, ++id, Side.CLIENT);
-
         ChunkCapabilityHandler.preInit();
+
         CalenderTFC.reload();
 
         EntitiesTFC.preInit();
@@ -125,6 +125,7 @@ public class TerraFirmaCraft
         //todo: add cave decorator
         //todo: add forests
         //todo: add loose rocks
+        GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 5);
         GameRegistry.registerWorldGenerator(new WorldGenSoilPits(), 6);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 7);
         //todo: add plants
