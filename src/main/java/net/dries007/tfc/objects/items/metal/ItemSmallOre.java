@@ -6,16 +6,22 @@
 package net.dries007.tfc.objects.items.metal;
 
 import java.util.EnumMap;
+import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.Size;
+import net.dries007.tfc.objects.Weight;
+import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemSmallOre extends Item implements IMetalObject
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class ItemSmallOre extends ItemTFC implements IMetalObject
 {
     private static final EnumMap<Ore, ItemSmallOre> MAP = new EnumMap<>(Ore.class);
 
@@ -51,5 +57,17 @@ public class ItemSmallOre extends Item implements IMetalObject
     public int getSmeltAmount(ItemStack stack)
     {
         return 10; //todo: config
+    }
+
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.SMALL;
+    }
+
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.HEAVY;
     }
 }

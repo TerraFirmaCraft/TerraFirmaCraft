@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.items.metal;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockDispenser;
@@ -27,12 +28,15 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Metal;
 
 import static net.minecraft.entity.SharedMonsterAttributes.ARMOR;
 import static net.minecraft.entity.SharedMonsterAttributes.ARMOR_TOUGHNESS;
 import static net.minecraft.item.ItemArmor.DISPENSER_BEHAVIOR;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
 {
     //todo: render items
@@ -148,5 +152,11 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
     public void damageArmor(EntityLivingBase entity, @Nonnull ItemStack stack, DamageSource source, int damage, int slot)
     {
         //todo
+    }
+
+    @Override
+    public boolean canStack(ItemStack stack)
+    {
+        return false;
     }
 }

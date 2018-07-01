@@ -6,14 +6,22 @@
 package net.dries007.tfc.objects.items.wood;
 
 import java.util.EnumMap;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemDoor;
+import net.minecraft.item.ItemStack;
 
+import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.objects.Size;
+import net.dries007.tfc.objects.Weight;
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
+import net.dries007.tfc.util.IItemSize;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemDoorTFC extends ItemDoor
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class ItemDoorTFC extends ItemDoor implements IItemSize
 {
     private static final EnumMap<Wood, ItemDoorTFC> MAP = new EnumMap<>(Wood.class);
 
@@ -31,5 +39,23 @@ public class ItemDoorTFC extends ItemDoor
         wood = block.wood;
         OreDictionaryHelper.register(this, "door");
         OreDictionaryHelper.register(this, "door", wood);
+    }
+
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.HUGE;
+    }
+
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.MEDIUM;
+    }
+
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        return getStackSize(stack);
     }
 }
