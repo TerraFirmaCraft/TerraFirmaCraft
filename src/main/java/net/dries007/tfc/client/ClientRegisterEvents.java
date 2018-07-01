@@ -127,11 +127,12 @@ public final class ClientRegisterEvents
         ModelLoader.setCustomStateMapper(BlocksTFC.WORLD_ITEM, blockIn -> ImmutableMap.of(BlocksTFC.WORLD_ITEM.getDefaultState(), new ModelResourceLocation("tfc:empty")));
         ClientRegistry.bindTileEntitySpecialRenderer(TEWorldItem.class, new TESRWorldItem());
 
-        for (Block block : BlocksTFC.getAllNormalItemBlocks())
+        for (Block block : BlocksTFC.getAllNormalItemBlocks().keySet())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
 
-        for (Block block : BlocksTFC.getAllInventoryItemBlocks())
+        for (Block block : BlocksTFC.getAllInventoryItemBlocks().keySet())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
+
     }
 
     @SubscribeEvent

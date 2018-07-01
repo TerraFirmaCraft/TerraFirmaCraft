@@ -7,11 +7,13 @@ package net.dries007.tfc.objects.blocks;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+import com.google.common.collect.ImmutableListMultimap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
@@ -30,6 +32,8 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockWallTFC;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockTorchTFC;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 import static net.dries007.tfc.objects.CreativeTabsTFC.*;
@@ -97,8 +101,8 @@ public final class BlocksTFC
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
-    private static ImmutableList<Block> allNormalItemBlocks;
-    private static ImmutableList<Block> allInventoryItemBlocks;
+    private static ImmutableListMultimap<Block, Class<? extends ItemBlock>> allNormalItemBlocks;
+    private static ImmutableListMultimap<Block, Class<? extends ItemBlock>> allInventoryItemBlocks;
     private static ImmutableList<BlockFluidBase> allFluidBlocks;
     private static ImmutableList<BlockRockVariant> allBlockRockVariants;
     private static ImmutableList<BlockOreTFC> allOreBlocks;
@@ -113,12 +117,12 @@ public final class BlocksTFC
     private static ImmutableList<BlockSlabTFC.Half> allSlabBlocks;
     private static ImmutableList<BlockChestTFC> allChestBlocks;
 
-    public static ImmutableList<Block> getAllNormalItemBlocks()
+    public static ImmutableListMultimap<Block, Class<? extends ItemBlock>> getAllNormalItemBlocks()
     {
         return allNormalItemBlocks;
     }
 
-    public static ImmutableList<Block> getAllInventoryItemBlocks()
+    public static ImmutableListMultimap<Block, Class<? extends ItemBlock>> getAllInventoryItemBlocks()
     {
         return allInventoryItemBlocks;
     }
@@ -192,15 +196,15 @@ public final class BlocksTFC
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> r = event.getRegistry();
 
-        Builder<Block> normalItemBlocks = ImmutableList.builder();
-        Builder<Block> inventoryItemBlocks = ImmutableList.builder();
+        ImmutableListMultimap.Builder<Block, Class<? extends ItemBlock>> normalItemBlocks = ImmutableListMultimap.builder();
+        ImmutableListMultimap.Builder<Block, Class<? extends ItemBlock>> inventoryItemBlocks = ImmutableListMultimap.builder();
 
-        normalItemBlocks.add(register(r, "debug", new BlockDebug(), CT_MISC));
+        normalItemBlocks.put(register(r, "debug", new BlockDebug(), CT_MISC), ItemBlock.class);
 
-        normalItemBlocks.add(register(r, "peat", new BlockPeat(Material.GROUND), CT_ROCK_BLOCKS));
-        normalItemBlocks.add(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_BLOCKS));
+        normalItemBlocks.put(register(r, "peat", new BlockPeat(Material.GROUND), CT_ROCK_BLOCKS), ItemBlock.class);
+        normalItemBlocks.put(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_BLOCKS), ItemBlock.class);
 
-        normalItemBlocks.add(register(r, "thatch", new BlockThatch(Material.PLANTS), CT_DECORATIONS));
+        normalItemBlocks.put(register(r, "thatch", new BlockThatch(Material.PLANTS), CT_DECORATIONS), ItemBlock.class);
 
         register(r, "firepit", new BlockFirePit()); // No item or creative tab.
 
@@ -222,7 +226,7 @@ public final class BlocksTFC
                 for (Rock rock : Rock.values())
                   b.add(register(r, (type.name() + "/" + rock.name()).toLowerCase(), type.supplier.apply(type, rock), CT_ROCK_BLOCKS));
             allBlockRockVariants = b.build();
-            normalItemBlocks.addAll(allBlockRockVariants);
+            allBlockRockVariants.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
         }
 
         {
@@ -231,7 +235,7 @@ public final class BlocksTFC
                 for (Rock rock : Rock.values())
                     b.add(register(r, ("ore/" + ore.name() + "/" + rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ROCK_BLOCKS));
             allOreBlocks = b.build();
-            normalItemBlocks.addAll(allOreBlocks);
+            allOreBlocks.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
         }
 
         {
@@ -247,17 +251,17 @@ public final class BlocksTFC
             {
                 logs.add(register(r, "wood/log/" + wood.name().toLowerCase(), new BlockLogTFC(wood), CT_WOOD));
                 leaves.add(register(r, "wood/leaves/" + wood.name().toLowerCase(), new BlockLeavesTFC(wood), CT_WOOD));
-                normalItemBlocks.add(register(r, "wood/planks/" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CT_WOOD));
-                normalItemBlocks.add(register(r, "wood/bookshelf/" + wood.name().toLowerCase(), new BlockBookshelfTFC(wood), CT_DECORATIONS));
-                normalItemBlocks.add(register(r, "wood/workbench/" + wood.name().toLowerCase(), new BlockWorkbenchTFC(wood), CT_DECORATIONS));
-                inventoryItemBlocks.add(register(r, "wood/fence/" + wood.name().toLowerCase(), new BlockFenceTFC(wood), CT_DECORATIONS));
+                normalItemBlocks.put(register(r, "wood/planks/" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CT_WOOD), ItemBlockTFC.class);
+                normalItemBlocks.put(register(r, "wood/bookshelf/" + wood.name().toLowerCase(), new BlockBookshelfTFC(wood), CT_DECORATIONS), ItemBlockTFC.class);
+                normalItemBlocks.put(register(r, "wood/workbench/" + wood.name().toLowerCase(), new BlockWorkbenchTFC(wood), CT_DECORATIONS), ItemBlockTFC.class);
+                inventoryItemBlocks.put(register(r, "wood/fence/" + wood.name().toLowerCase(), new BlockFenceTFC(wood), CT_DECORATIONS), ItemBlockTFC.class);
                 fenceGates.add(register(r, "wood/fence_gate/" + wood.name().toLowerCase(), new BlockFenceGateTFC(wood), CT_DECORATIONS));
                 saplings.add(register(r, "wood/sapling/" + wood.name().toLowerCase(), new BlockSaplingTFC(wood), CT_WOOD));
                 doors.add(register(r, "wood/door/" + wood.name().toLowerCase(), new BlockDoorTFC(wood), CT_DECORATIONS));
                 trapdoorwood.add(register(r, "wood/trapdoor/" + wood.name().toLowerCase(), new BlockTrapDoorWoodTFC(wood), CT_DECORATIONS));
                 chests.add(register(r, "wood/chest/" + wood.name().toLowerCase(), new BlockChestTFC(BlockChest.Type.BASIC, wood), CT_DECORATIONS));
                 chests.add(register(r, "wood/chest_trap/" + wood.name().toLowerCase(), new BlockChestTFC(BlockChest.Type.TRAP, wood), CT_DECORATIONS));
-                inventoryItemBlocks.add(register(r, "wood/button/" + wood.name().toLowerCase(), new BlockButtonWoodTFC(wood), CT_DECORATIONS));
+                inventoryItemBlocks.put(register(r, "wood/button/" + wood.name().toLowerCase(), new BlockButtonWoodTFC(wood), CT_DECORATIONS), ItemBlockTFC.class);
             }
             allLogBlocks = logs.build();
             allLeafBlocks = leaves.build();
@@ -266,13 +270,15 @@ public final class BlocksTFC
             allDoorBlocks = doors.build();
             allTrapDoorWoodBlocks = trapdoorwood.build();
             allChestBlocks = chests.build();
+
             //logs are special
-            normalItemBlocks.addAll(allLeafBlocks);
-            inventoryItemBlocks.addAll(allFenceGateBlocks);
-            inventoryItemBlocks.addAll(allSaplingBlocks);
+            allLeafBlocks.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
+            allFenceGateBlocks.forEach(x -> inventoryItemBlocks.put(x, ItemBlockTFC.class));
+            allSaplingBlocks.forEach(x -> inventoryItemBlocks.put(x, ItemBlockTFC.class));
+
             // doors are special
-            inventoryItemBlocks.addAll(allTrapDoorWoodBlocks);
-            normalItemBlocks.addAll(allChestBlocks);
+            allTrapDoorWoodBlocks.forEach(x -> inventoryItemBlocks.put(x, ItemBlockTFC.class));
+            allChestBlocks.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
         }
 
         {
@@ -306,17 +312,17 @@ public final class BlocksTFC
                 slab.add(register(r, "slab/half/wood/" + wood.name().toLowerCase(), new BlockSlabTFC.Half(wood), CT_DECORATIONS));
 
             for (Rock rock : Rock.values())
-                inventoryItemBlocks.add(register(r, "stone/button/" + rock.name().toLowerCase(), new BlockButtonStoneTFC(rock), CT_DECORATIONS));
+                inventoryItemBlocks.put(register(r, "stone/button/" + rock.name().toLowerCase(), new BlockButtonStoneTFC(rock), CT_DECORATIONS), ItemBlockTFC.class);
 
             allWallBlocks = b.build();
             allStairsBlocks = stairs.build();
             allSlabBlocks = slab.build();
-            inventoryItemBlocks.addAll(allWallBlocks);
-            normalItemBlocks.addAll(allStairsBlocks);
+            allWallBlocks.forEach(x -> inventoryItemBlocks.put(x, ItemBlockTFC.class));
+            allStairsBlocks.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
             // slabs are special.
         }
 
-        normalItemBlocks.add(register(r, "torch", new BlockTorchTFC(), CT_MISC));
+        inventoryItemBlocks.put(register(r, "torch", new BlockTorchTFC(), CT_MISC), ItemBlockTorchTFC.class);
 
         // technical blocks
         register(r, "pit_kiln", new BlockPitKiln());
@@ -360,10 +366,8 @@ public final class BlocksTFC
         // todo: placable items: pottery, metal sheets, (anvils are special because TE), tools?
         register(r, "world_item", new BlockWorldItem());
         // todo: pitkiln (maybe not a seperate block but rather a variation on the TE from any placeable item)
-        // todo: coal/charcoal pile
         register(r, "charcoal_pile", new BlockCharcoalPile());
         // todo: ingot pile
-        // todo: log pile (with charcoal pit mechanic)
         register(r, "log_pile", new BlockLogPile());
 
         allNormalItemBlocks = normalItemBlocks.build();

@@ -42,6 +42,7 @@ public class CommonEventHandler
      * Make leaves drop sticks
      */
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public static void onBlockHarvestDrops(BlockEvent.HarvestDropsEvent event)
     {
         final EntityPlayer harvester = event.getHarvester();
@@ -65,12 +66,12 @@ public class CommonEventHandler
      * Note: `onBlockActivate` doesn't get called when the player is sneaking, unless doesSneakBypassUse returns true.
      * We have this event already, might as well use it.
      */
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
     {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
-        IBlockState state = world.getBlockState(pos);
         ItemStack stack = event.getItemStack();
         EntityPlayer player = event.getEntityPlayer();
 
@@ -123,6 +124,7 @@ public class CommonEventHandler
                     }
                     if (!world.isRemote)
                     {
+                        // noinspection ConstantConditions
                         world.setBlockState(pos.offset(facing), BlocksTFC.CHARCOAL_PILE.getDefaultState());
 
                         if (!player.isCreative())
@@ -156,17 +158,17 @@ public class CommonEventHandler
                                     player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, 1));
                                 }
                                 world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                                event.setCanceled(true);
-                                return;
                             }
                             else
                             {
                                 // Insert log didn't work, see if trying to place another log pile
-                                if (facing == EnumFacing.UP && te.countLogs() == 16)
+                                if (facing == EnumFacing.UP && te.countLogs() == 16 || (facing != EnumFacing.UP && world.getBlockState(pos.down().offset(facing)).isNormalCube()
+                                    && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing))))
                                 {
+                                    // noinspection ConstantConditions
                                     world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
 
-                                    TELogPile te2 = Helpers.getTE(world, pos, TELogPile.class);
+                                    TELogPile te2 = Helpers.getTE(world, pos.offset(facing), TELogPile.class);
                                     if (te2 != null)
                                     {
                                         te2.insertLog(stack.copy());
@@ -179,39 +181,39 @@ public class CommonEventHandler
                                     world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
                                 }
                             }
-                            event.setCanceled(true);
-                            return;
                         }
                     }
                 }
-                if (world.getBlockState(pos.down().offset(facing)).isNormalCube() && !(world.getBlockState(pos.down().offset(facing)).getBlock() instanceof BlockLogPile)
-                    && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing)) &&
-                    player.isSneaking())
+                else
                 {
-
-                    if (!world.isRemote)
+                    if (world.getBlockState(pos.down().offset(facing)).isNormalCube()
+                        && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing)) &&
+                        player.isSneaking())
                     {
-                        world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
-
-                        TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
-                        if (te != null)
+                        // Place log pile
+                        if (!world.isRemote)
                         {
-                            te.insertLog(stack.copy());
-                        }
+                            // noinspection ConstantConditions
+                            world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
 
-                        if (!player.capabilities.isCreativeMode)
-                        {
-                            player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, 1));
+                            TELogPile te = Helpers.getTE(world, pos.offset(facing), TELogPile.class);
+                            if (te != null)
+                            {
+                                te.insertLog(stack.copy());
+                            }
+
+                            if (!player.capabilities.isCreativeMode)
+                            {
+                                player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, 1));
+                            }
+                            world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
                         }
-                        world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     }
-                    event.setCanceled(true);
-                    return;
                 }
             }
+            event.setCanceled(true);
+            return;
         }
-        // TODO: Log Piles
-        // TODO: IPlaceableItem instances Call getBlockForPlacement or something like that
         // Kiln Pottery
         IFireable fireable = IFireable.fromItem(event.getItemStack().getItem());
         if (fireable != null && event.getEntityPlayer().isSneaking() && event.getFace() == EnumFacing.UP)
@@ -236,5 +238,6 @@ public class CommonEventHandler
                 event.setCanceled(true);
             }
         }
+        // TODO: General placement behavior for IPlaceableItem
     }
 }

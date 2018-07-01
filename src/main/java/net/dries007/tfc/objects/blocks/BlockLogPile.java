@@ -25,10 +25,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -110,7 +107,8 @@ public class BlockLogPile extends Block implements ITileEntityProvider
     {
         if (stateIn.getValue(ONFIRE))
         {
-            //NoTreePunching.proxy.generateParticle(worldIn, pos, 3);
+            worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + rand.nextFloat(), pos.getY() + 1, pos.getZ() + rand.nextFloat(),
+                0f, 0.1f + 0.1f * rand.nextFloat(), 0f);
             if (rand.nextDouble() < 0.4D)
             {
                 worldIn.playSound((double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 0.5F, 0.6F, false);
@@ -135,9 +133,10 @@ public class BlockLogPile extends Block implements ITileEntityProvider
             {
                 // Light the Pile
                 if(world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos)){
-                    te.burning = true;
+                    //te.burning = true;
                     world.setBlockState(pos, state.withProperty(ONFIRE, true));
-                    te.tryLightNearby(world, pos);
+                    te.light();
+                    //te.tryLightNearby(world, pos);
                     world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
                     world.playSound(null,pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS,1.0F,1.0F);
                 }
