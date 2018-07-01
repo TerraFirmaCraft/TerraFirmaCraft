@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.items.rock;
 import java.util.EnumMap;
 import java.util.List;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.util.ITooltipFlag;
@@ -17,10 +18,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.Size;
+import net.dries007.tfc.objects.Weight;
+import net.dries007.tfc.util.IItemSize;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemRockKnife extends ItemTool
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class ItemRockKnife extends ItemTool implements IItemSize
 {
     private static final EnumMap<Rock.Category, ItemRockKnife> MAP = new EnumMap<>(Rock.Category.class);
 
@@ -47,5 +54,23 @@ public class ItemRockKnife extends ItemTool
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
+    }
+
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.NORMAL;
+    }
+
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.MEDIUM;
+    }
+
+    @Override
+    public boolean canStack(ItemStack stack)
+    {
+        return false;
     }
 }

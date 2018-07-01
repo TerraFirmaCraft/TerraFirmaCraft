@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.items;
 
 import java.util.List;
 import java.util.function.Predicate;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.material.Material;
@@ -27,6 +28,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.objects.Size;
+import net.dries007.tfc.objects.Weight;
 import net.dries007.tfc.objects.blocks.BlockLogPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TELogPile;
@@ -38,7 +41,7 @@ import static net.dries007.tfc.objects.blocks.BlockLogPile.ONFIRE;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ItemFireStarter extends Item
+public class ItemFireStarter extends ItemTFC
 {
     private static final Predicate<EntityItem> IS_STICK = OreDictionaryHelper.createPredicateItemEntity("stickWood");
     private static final Predicate<EntityItem> IS_KINDLING = OreDictionaryHelper.createPredicateItemEntity("kindling", "paper", "hay");
@@ -141,6 +144,19 @@ public class ItemFireStarter extends Item
         }
     }
 
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.SMALL;
+    }
+
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.LIGHT;
+    }
+
+    @Nullable
     private RayTraceResult canStartFire(World world, EntityPlayer player)
     {
         RayTraceResult result = rayTrace(world, player, true);

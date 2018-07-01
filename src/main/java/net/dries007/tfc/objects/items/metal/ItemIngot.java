@@ -5,9 +5,14 @@
 
 package net.dries007.tfc.objects.items.metal;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.util.IPlacableItem;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class ItemIngot extends ItemMetal implements IPlacableItem
 {
     public ItemIngot(Metal metal, Metal.ItemType type)

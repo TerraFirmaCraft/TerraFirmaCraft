@@ -6,14 +6,19 @@
 package net.dries007.tfc.objects.items;
 
 import java.util.EnumMap;
+import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Powder;
+import net.dries007.tfc.objects.Size;
+import net.dries007.tfc.objects.Weight;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemPowder extends Item
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class ItemPowder extends ItemTFC
 {
     private static final EnumMap<Powder, ItemPowder> MAP = new EnumMap<>(Powder.class);
 
@@ -36,5 +41,17 @@ public class ItemPowder extends Item
         setMaxDamage(0);
         OreDictionaryHelper.register(this, "dust");
         OreDictionaryHelper.register(this, "dust", Powder);
+    }
+
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.TINY;
+    }
+
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.LIGHT;
     }
 }

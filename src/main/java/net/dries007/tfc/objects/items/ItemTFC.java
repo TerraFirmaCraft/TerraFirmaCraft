@@ -1,30 +1,31 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
-package net.dries007.tfc.objects.items.metal;
+package net.dries007.tfc.objects.items;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.util.IPlacableItem;
+import net.dries007.tfc.util.IItemSize;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ItemAnvil extends ItemMetal implements IPlacableItem
+public abstract class ItemTFC extends Item implements IItemSize
 {
-    public ItemAnvil(Metal metal, Metal.ItemType type)
+    public ItemTFC()
     {
-        super(metal, type);
+        super();
     }
 
     @Override
-    public boolean canStack(ItemStack stack)
+    public int getItemStackLimit(ItemStack stack)
     {
-        return false;
+        return getStackSize(stack);
     }
 }
