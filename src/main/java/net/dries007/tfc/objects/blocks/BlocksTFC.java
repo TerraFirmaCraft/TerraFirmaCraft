@@ -98,6 +98,7 @@ public final class BlocksTFC
     public static final BlockWorldItem WORLD_ITEM = null;
     public static final BlockCharcoalPile CHARCOAL_PILE = null;
     public static final BlockLogPile LOG_PILE = null;
+    public static final BlockIngotPile INGOT_PILE = null;
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -319,7 +320,7 @@ public final class BlocksTFC
             allSlabBlocks = slab.build();
             allWallBlocks.forEach(x -> inventoryItemBlocks.put(x, ItemBlockTFC.class));
             allStairsBlocks.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
-            // slabs are special.
+            // slabs are special. (ItemSlabTFC)
         }
 
         inventoryItemBlocks.put(register(r, "torch", new BlockTorchTFC(), CT_MISC), ItemBlockTorchTFC.class);
@@ -368,6 +369,7 @@ public final class BlocksTFC
         // todo: pitkiln (maybe not a seperate block but rather a variation on the TE from any placeable item)
         register(r, "charcoal_pile", new BlockCharcoalPile());
         // todo: ingot pile
+        register(r, "ingot_pile", new BlockIngotPile());
         register(r, "log_pile", new BlockLogPile());
 
         allNormalItemBlocks = normalItemBlocks.build();
