@@ -25,8 +25,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
-import net.dries007.tfc.objects.blocks.BlockLogPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockLogPile;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
@@ -219,6 +219,7 @@ public class CommonEventHandler
             IPlacableItem item = (IPlacableItem) stack.getItem();
             if (item.placeItemInWorld(world, pos, stack, event.getFace(), player))
             {
+                player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
                 return;
             }
         }

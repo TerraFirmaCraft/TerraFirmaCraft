@@ -30,14 +30,14 @@ import net.minecraft.world.World;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Size;
 import net.dries007.tfc.objects.Weight;
-import net.dries007.tfc.objects.blocks.BlockLogPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockLogPile;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
-import static net.dries007.tfc.objects.blocks.BlockLogPile.ONFIRE;
+import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault

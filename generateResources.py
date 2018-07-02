@@ -469,6 +469,12 @@ for name, fluid in FLUIDS.items():
         }
     })
 
+for key in METAL_TYPES:
+    if METAL_TYPES[key]:
+        blockstate(('anvil', key), 'tfc:anvil', textures={
+            ('all', 'particle'): 'tfc:blocks/metal/%s' % key
+        })
+
 # ROCK STUFF
 for rock_type in ROCK_TYPES:
     # FULL BLOCKS

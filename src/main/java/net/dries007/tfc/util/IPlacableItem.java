@@ -23,7 +23,7 @@ public interface IPlacableItem
      * @param stack  The player's held itemstack
      * @param facing The side of the block that was clicked
      * @param player The current player
-     * @return If true, the event's default behavior will be canceled
+     * @return if the block was placed (will consume one item from the player's item)
      */
     default boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EnumFacing facing, EntityPlayer player) { return false; }
 }

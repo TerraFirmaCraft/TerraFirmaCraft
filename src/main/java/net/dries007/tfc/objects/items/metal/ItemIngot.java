@@ -16,8 +16,8 @@ import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.blocks.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.te.TEIngotPile;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IPlacableItem;
@@ -64,7 +64,7 @@ public class ItemIngot extends ItemMetal implements IPlacableItem
         {
             if (facing == EnumFacing.UP)
             {
-                TEIngotPile te = Helpers.getTE(world, pos.up(), TEIngotPile.class);
+                TEIngotPile te = Helpers.getTE(world, pos, TEIngotPile.class);
                 if (te != null && te.getCount() == 64 && te.getMetal() == item.metal)
                 {
                     if (!world.isRemote)
