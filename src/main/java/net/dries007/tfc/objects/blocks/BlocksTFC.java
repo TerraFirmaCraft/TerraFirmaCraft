@@ -29,6 +29,7 @@ import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
+import net.dries007.tfc.objects.blocks.metal.BlockSheet;
 import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -121,6 +122,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockSlabTFC.Half> allSlabBlocks;
     private static ImmutableList<BlockChestTFC> allChestBlocks;
     private static ImmutableList<BlockAnvilTFC> allAnvils;
+    private static ImmutableList<BlockSheet> allSheets;
 
     public static ImmutableListMultimap<Block, Class<? extends ItemBlock>> getAllNormalItemBlocks()
     {
@@ -200,6 +202,11 @@ public final class BlocksTFC
     public static ImmutableList<BlockAnvilTFC> getAllAnvils()
     {
         return allAnvils;
+    }
+
+    public static ImmutableList<BlockSheet> getAllSheets()
+    {
+        return allSheets;
     }
 
     @SubscribeEvent
@@ -333,13 +340,19 @@ public final class BlocksTFC
         }
 
         {
-            Builder<BlockAnvilTFC> b = ImmutableList.builder();
+            Builder<BlockAnvilTFC> anvils = ImmutableList.builder();
+            Builder<BlockSheet> sheets = ImmutableList.builder();
 
             for (Metal metal : Metal.values())
+            {
                 if (metal.hasType(Metal.ItemType.ANVIL))
-                    b.add(register(r, "anvil/" + metal.name().toLowerCase(), new BlockAnvilTFC(metal), CT_METAL));
+                    anvils.add(register(r, "anvil/" + metal.name().toLowerCase(), new BlockAnvilTFC(metal), CT_METAL));
 
-            allAnvils = b.build();
+                sheets.add(register(r, "sheet/" + metal.name().toLowerCase(), new BlockSheet(metal), CT_METAL));
+            }
+
+            allAnvils = anvils.build();
+            allSheets = sheets.build();
         }
 
         inventoryItemBlocks.put(register(r, "torch", new BlockTorchTFC(), CT_MISC), ItemBlockTorchTFC.class);

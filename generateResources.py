@@ -469,11 +469,28 @@ for name, fluid in FLUIDS.items():
         }
     })
 
+# ANVILS
 for key in METAL_TYPES:
     if METAL_TYPES[key]:
         blockstate(('anvil', key), 'tfc:anvil', textures={
             ('all', 'particle'): 'tfc:blocks/metal/%s' % key
         })
+
+# METAL SHEETS
+for key in METAL_TYPES:
+    blockstate(('sheet', key), 'tfc:sheet', textures={
+        ('all', 'particle'): 'tfc:blocks/metal/%s' % key
+    }, variants={
+        'normal': None,
+        'face': {
+            'north': {'x': 90},
+            'east': {'y': 90, 'x': 90},
+            'south': {'y': 180, 'x': 90},
+            'west': {'y': 270, 'x': 90},
+            'up': {},
+            'down': {'x': 180}
+        }
+    })
 
 # ROCK STUFF
 for rock_type in ROCK_TYPES:
