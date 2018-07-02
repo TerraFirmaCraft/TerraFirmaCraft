@@ -31,6 +31,7 @@ import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFireable;
+import net.dries007.tfc.util.IPlacableItem;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
@@ -87,16 +88,14 @@ public class CommonEventHandler
         if (event.getHand() == EnumHand.OFF_HAND)
         {
             ItemStack mainStack = player.getHeldItem(EnumHand.MAIN_HAND);
-            if (mainStack.getItem() == Items.COAL && mainStack.getMetadata() == 1)
+            if ((mainStack.getItem() == Items.COAL && mainStack.getMetadata() == 1) ||
+                Helpers.doesStackMatchOre(mainStack, "logWood") ||
+                mainStack.getItem() instanceof IPlacableItem)
             {
                 event.setCanceled(true);
                 return;
             }
-            if (Helpers.doesStackMatchOre(mainStack, "logWood"))
-            {
-                event.setCanceled(true);
-                return;
-            }
+
             IFireable fireable = IFireable.fromItem(event.getItemStack().getItem());
             if (fireable != null && event.getEntityPlayer().isSneaking() && event.getFace() == EnumFacing.UP)
             {
@@ -132,7 +131,6 @@ public class CommonEventHandler
                             player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, 1));
                         }
                         world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0F, 0.5F);
-                        event.setCanceled(true);
                         return;
                     }
 
@@ -214,6 +212,17 @@ public class CommonEventHandler
             event.setCanceled(true);
             return;
         }
+
+        // Ingots are taken care of here
+        if (stack.getItem() instanceof IPlacableItem)
+        {
+            IPlacableItem item = (IPlacableItem) stack.getItem();
+            if (item.placeItemInWorld(world, pos, stack, event.getFace(), player))
+            {
+                return;
+            }
+        }
+
         // Kiln Pottery
         IFireable fireable = IFireable.fromItem(event.getItemStack().getItem());
         if (fireable != null && event.getEntityPlayer().isSneaking() && event.getFace() == EnumFacing.UP)
@@ -238,6 +247,5 @@ public class CommonEventHandler
                 event.setCanceled(true);
             }
         }
-        // TODO: General placement behavior for IPlaceableItem
     }
 }
