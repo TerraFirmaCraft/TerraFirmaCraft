@@ -23,9 +23,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.Ore;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
+import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -117,6 +120,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockStairsTFC> allStairsBlocks;
     private static ImmutableList<BlockSlabTFC.Half> allSlabBlocks;
     private static ImmutableList<BlockChestTFC> allChestBlocks;
+    private static ImmutableList<BlockAnvilTFC> allAnvils;
 
     public static ImmutableListMultimap<Block, Class<? extends ItemBlock>> getAllNormalItemBlocks()
     {
@@ -191,6 +195,11 @@ public final class BlocksTFC
     public static ImmutableList<BlockChestTFC> getAllChestBlocks()
     {
         return allChestBlocks;
+    }
+
+    public static ImmutableList<BlockAnvilTFC> getAllAnvils()
+    {
+        return allAnvils;
     }
 
     @SubscribeEvent
@@ -321,6 +330,16 @@ public final class BlocksTFC
             allWallBlocks.forEach(x -> inventoryItemBlocks.put(x, ItemBlockTFC.class));
             allStairsBlocks.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
             // slabs are special. (ItemSlabTFC)
+        }
+
+        {
+            Builder<BlockAnvilTFC> b = ImmutableList.builder();
+
+            for (Metal metal : Metal.values())
+                if (metal.hasType(Metal.ItemType.ANVIL))
+                    b.add(register(r, "anvil/" + metal.name().toLowerCase(), new BlockAnvilTFC(metal), CT_METAL));
+
+            allAnvils = b.build();
         }
 
         inventoryItemBlocks.put(register(r, "torch", new BlockTorchTFC(), CT_MISC), ItemBlockTorchTFC.class);

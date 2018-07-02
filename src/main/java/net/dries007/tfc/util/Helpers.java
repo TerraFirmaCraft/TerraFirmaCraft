@@ -14,6 +14,7 @@ import javax.annotation.Nonnull;
 
 import com.google.common.base.Joiner;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
@@ -105,6 +106,12 @@ public final class Helpers
         if (stack.getCount() <= amount) return ItemStack.EMPTY;
         stack.shrink(amount);
         return stack;
+    }
+
+    @Nonnull
+    public static ItemStack consumeItem(ItemStack stack, EntityPlayer player, int amount)
+    {
+        return player.isCreative() ? stack : consumeItem(stack, amount);
     }
 
     // Checks if an itemstack has the ore name 'name'

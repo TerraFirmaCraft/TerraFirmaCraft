@@ -127,11 +127,17 @@ public class ClientEvents
     @SideOnly(Side.CLIENT)
     public static void onItemTooltip(ItemTooltipEvent event)
     {
+        ItemStack stack = event.getItemStack();
+        Item item = stack.getItem();
+        List<String> tt = event.getToolTip();
+
+        if (item instanceof IItemSize)
+        {
+            ((IItemSize) item).addSizeInfo(stack, tt);
+        }
+
         if (event.getFlags().isAdvanced())
         {
-            ItemStack stack = event.getItemStack();
-            Item item = stack.getItem();
-            List<String> tt = event.getToolTip();
             Set<String> toolClasses = item.getToolClasses(stack);
             if (!toolClasses.isEmpty())
             {
@@ -150,10 +156,6 @@ public class ClientEvents
                 {
                     ((IMetalObject) block).addMetalInfo(stack, tt);
                 }
-            }
-            if (item instanceof IItemSize)
-            {
-                ((IItemSize) item).addSizeInfo(stack, tt);
             }
 
             int[] ids = OreDictionary.getOreIDs(stack);

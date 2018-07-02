@@ -4,7 +4,7 @@
  *
  */
 
-package net.dries007.tfc.objects.blocks;
+package net.dries007.tfc.objects.blocks.wood;
 
 
 import java.util.Random;
@@ -36,6 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.objects.te.TESidedInventory;
 import net.dries007.tfc.util.Helpers;
@@ -47,7 +48,7 @@ public class BlockLogPile extends Block implements ITileEntityProvider
     public static final PropertyBool ONFIRE = PropertyBool.create("onfire");
     private static final PropertyBool AXIS = PropertyBool.create("axis");
 
-    BlockLogPile()
+    public BlockLogPile()
     {
         super(Material.WOOD);
 

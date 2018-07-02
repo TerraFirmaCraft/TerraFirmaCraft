@@ -21,13 +21,13 @@ import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
-import net.dries007.tfc.objects.blocks.BlockLogPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockLogPile;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
-import static net.dries007.tfc.objects.blocks.BlockLogPile.ONFIRE;
+import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
