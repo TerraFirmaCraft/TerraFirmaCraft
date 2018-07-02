@@ -89,7 +89,7 @@ public class CommonEventHandler
         {
             ItemStack mainStack = player.getHeldItem(EnumHand.MAIN_HAND);
             if ((mainStack.getItem() == Items.COAL && mainStack.getMetadata() == 1) ||
-                Helpers.doesStackMatchOre(mainStack, "logWood") ||
+                (Helpers.doesStackMatchOre(mainStack, "logWood") && player.isSneaking()) ||
                 mainStack.getItem() instanceof IPlacableItem)
             {
                 event.setCanceled(true);

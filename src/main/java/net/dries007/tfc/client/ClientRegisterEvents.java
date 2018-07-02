@@ -112,6 +112,9 @@ public final class ClientRegisterEvents
         for (Block block : BlocksTFC.getAllAnvils())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().build());
 
+        for (Block block : BlocksTFC.getAllSheets())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().build());
+
         for (BlockSlabTFC.Half block : BlocksTFC.getAllSlabBlocks())
         {
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockSlabTFC.VARIANT).build());
