@@ -6,8 +6,10 @@
 package net.dries007.tfc.objects.items.metal;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -31,6 +33,7 @@ public class ItemSheet extends ItemMetal implements IPlacableItem
         {
             ItemSheet sheet = (ItemSheet) stack.getItem();
             world.setBlockState(pos.offset(facing), BlockSheet.get(sheet.metal).getDefaultState().withProperty(FACE, facing));
+            world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
             return true;
         }
         return false;

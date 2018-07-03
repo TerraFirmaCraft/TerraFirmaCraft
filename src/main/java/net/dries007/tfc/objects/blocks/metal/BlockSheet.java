@@ -7,6 +7,7 @@
 package net.dries007.tfc.objects.blocks.metal;
 
 import java.util.EnumMap;
+import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
@@ -14,14 +15,19 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.objects.items.metal.ItemSheet;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -49,6 +55,9 @@ public class BlockSheet extends Block
         this.metal = metal;
         if (MAP.put(metal, this) != null) throw new IllegalStateException("There can only be one.");
 
+        setHardness(2.5F);
+        setResistance(10F);
+        setHarvestLevel("pickaxe", 0);
         this.setDefaultState(blockState.getBaseState().withProperty(FACE, EnumFacing.NORTH));
     }
 
@@ -76,7 +85,30 @@ public class BlockSheet extends Block
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return FULL_BLOCK_AABB; // todo: proper bounding box
+        switch (state.getValue(FACE))
+        {
+            case UP:
+                return new AxisAlignedBB(0d, 0d, 0d, 1d, 0.0625d, 1d);
+            case DOWN:
+                return new AxisAlignedBB(0d, 0.9375d, 0d, 1d, 1d, 1d);
+            case EAST:
+                return new AxisAlignedBB(0d, 0d, 0d, 0.0625d, 1d, 1d);
+            case WEST:
+                return new AxisAlignedBB(0.9375d, 0d, 0d, 1d, 1d, 1d);
+            case SOUTH:
+                return new AxisAlignedBB(0d, 0d, 0d, 1d, 1d, 0.0625d);
+            case NORTH:
+                return new AxisAlignedBB(0d, 0d, 0.9375d, 1d, 1d, 1d);
+        }
+        return FULL_BLOCK_AABB;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
+    {
+        return getBoundingBox(state, worldIn, pos);
     }
 
     @SuppressWarnings("deprecation")
@@ -90,5 +122,11 @@ public class BlockSheet extends Block
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACE);
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return ItemSheet.get(metal, Metal.ItemType.SHEET);
     }
 }
