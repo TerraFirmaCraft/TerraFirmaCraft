@@ -137,7 +137,7 @@ public class CommonEventHandler
                 }
             }
         }
-        if (Helpers.doesStackMatchOre(stack, "logWood"))
+        if (Helpers.doesStackMatchOre(stack, "logWood") && player.isSneaking())
         {
             EnumFacing facing = event.getFace();
             if (facing != null)
@@ -213,17 +213,6 @@ public class CommonEventHandler
             return;
         }
 
-        // Ingots are taken care of here
-        if (stack.getItem() instanceof IPlacableItem)
-        {
-            IPlacableItem item = (IPlacableItem) stack.getItem();
-            if (item.placeItemInWorld(world, pos, stack, event.getFace(), player))
-            {
-                player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
-                return;
-            }
-        }
-
         // Kiln Pottery
         IFireable fireable = IFireable.fromItem(event.getItemStack().getItem());
         if (fireable != null && event.getEntityPlayer().isSneaking() && event.getFace() == EnumFacing.UP)
@@ -246,6 +235,16 @@ public class CommonEventHandler
                 te.onRightClick(event.getEntityPlayer(), event.getItemStack(), (event.getHitVec().x % 1) < .5, (event.getHitVec().z % 1) < .5);
                 event.setCancellationResult(EnumActionResult.SUCCESS);
                 event.setCanceled(true);
+            }
+        }
+
+        // All items that can should use this implementation instead of the other exceptions (which are for items that can't implement IPlacableItem)
+        if (stack.getItem() instanceof IPlacableItem)
+        {
+            IPlacableItem item = (IPlacableItem) stack.getItem();
+            if (item.placeItemInWorld(world, pos, stack, event.getFace(), player))
+            {
+                player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
             }
         }
     }

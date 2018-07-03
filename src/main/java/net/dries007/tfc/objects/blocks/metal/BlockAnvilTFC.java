@@ -12,16 +12,17 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Metal;
@@ -44,6 +45,7 @@ public class BlockAnvilTFC extends Block
     }
 
     public final Metal metal;
+    private static final AxisAlignedBB ANVIL_AABB = new AxisAlignedBB(0.1875d, 0d, 0d, 0.625d, 0.625, 1d);
 
     public BlockAnvilTFC(Metal metal)
     {
@@ -51,14 +53,18 @@ public class BlockAnvilTFC extends Block
 
         this.metal = metal;
         if (MAP.put(metal, this) != null) throw new IllegalStateException("There can only be one.");
+
+        setHardness(3.0F);
+        setResistance(10F);
+        setHarvestLevel("pickaxe", 0);
     }
 
-    @Override
+    /*@Override
     @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
-    }
+    }*/
 
     @Override
     @SuppressWarnings("deprecation")
@@ -77,5 +83,20 @@ public class BlockAnvilTFC extends Block
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return ANVIL_AABB;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
+    {
+        return getBoundingBox(state, worldIn, pos);
     }
 }

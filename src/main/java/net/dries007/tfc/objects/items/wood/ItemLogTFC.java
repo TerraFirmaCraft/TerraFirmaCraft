@@ -14,11 +14,10 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Size;
 import net.dries007.tfc.objects.Weight;
 import net.dries007.tfc.objects.items.ItemBlockTFC;
-import net.dries007.tfc.util.IPlacableItem;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ItemLogTFC extends ItemBlockTFC implements IPlacableItem
+public class ItemLogTFC extends ItemBlockTFC
 {
     public ItemLogTFC(Block block)
     {

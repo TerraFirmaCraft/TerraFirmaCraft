@@ -9,8 +9,10 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -62,6 +64,8 @@ public class ItemAnvil extends ItemMetal implements IPlacableItem
             {
                 ItemAnvil anvil = (ItemAnvil) stack.getItem();
                 world.setBlockState(pos.offset(facing), BlockAnvilTFC.get(anvil.metal).getDefaultState());
+
+                world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }
             return true;
         }
