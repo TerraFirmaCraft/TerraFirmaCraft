@@ -16,11 +16,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -64,7 +66,7 @@ public class BlockSheet extends Block
         this.metal = metal;
         if (MAP.put(metal, this) != null) throw new IllegalStateException("There can only be one.");
 
-        setHardness(2.5F);
+        setHardness(3.5F);
         setResistance(10F);
         setHarvestLevel("pickaxe", 0);
         this.setDefaultState(blockState.getBaseState().withProperty(FACE, EnumFacing.NORTH));
@@ -130,5 +132,11 @@ public class BlockSheet extends Block
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return ItemSheet.get(metal, Metal.ItemType.SHEET);
+    }
+
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        return new ItemStack(ItemSheet.get(metal, Metal.ItemType.SHEET));
     }
 }

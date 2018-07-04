@@ -29,6 +29,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemFireStarter;
@@ -38,6 +40,7 @@ import net.dries007.tfc.util.IFireable;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
+@MethodsReturnNonnullByDefault
 public class TEPitKiln extends TileEntity implements ITickable
 {
     public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "pit_kiln");
@@ -150,6 +153,7 @@ public class TEPitKiln extends TileEntity implements ITickable
     @SuppressWarnings("ConstantConditions")
     public void onRightClick(EntityPlayer player, ItemStack item, boolean x, boolean z)
     {
+        TerraFirmaCraft.getLog().info("Placing a thing and stuff: " + x + " " + z);
         if (isLit()) return;
         int count = getStrawCount();
         int slot = 0;
