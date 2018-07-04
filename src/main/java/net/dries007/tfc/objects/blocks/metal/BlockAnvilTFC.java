@@ -58,7 +58,7 @@ public class BlockAnvilTFC extends Block
         this.metal = metal;
         if (MAP.put(metal, this) != null) throw new IllegalStateException("There can only be one.");
 
-        setHardness(3.0F);
+        setHardness(4.0F);
         setResistance(10F);
         setHarvestLevel("pickaxe", 0);
 

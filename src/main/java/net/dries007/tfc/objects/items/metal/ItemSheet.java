@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.objects.Metal;
@@ -27,7 +28,7 @@ public class ItemSheet extends ItemMetal implements IPlacableItem
     }
 
     @Override
-    public boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EnumFacing facing, EntityPlayer player)
+    public boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, EnumFacing facing, Vec3d hitVec)
     {
         if (world.getBlockState(pos).isNormalCube() && stack.getItem() instanceof ItemSheet)
         {

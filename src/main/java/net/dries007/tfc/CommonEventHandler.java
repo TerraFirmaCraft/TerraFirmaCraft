@@ -23,12 +23,10 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogPile;
 import net.dries007.tfc.objects.te.TELogPile;
-import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFireable;
 import net.dries007.tfc.util.IPlacableItem;
@@ -151,10 +149,7 @@ public class CommonEventHandler
                         {
                             if (te.insertLog(stack.copy()))
                             {
-                                if (!player.capabilities.isCreativeMode)
-                                {
-                                    player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, 1));
-                                }
+                                player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
                                 world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
                             }
                             else
@@ -172,10 +167,7 @@ public class CommonEventHandler
                                         te2.insertLog(stack.copy());
                                     }
 
-                                    if (!player.capabilities.isCreativeMode)
-                                    {
-                                        player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, 1));
-                                    }
+                                    player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
                                     world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
                                 }
                             }
@@ -200,10 +192,7 @@ public class CommonEventHandler
                                 te.insertLog(stack.copy());
                             }
 
-                            if (!player.capabilities.isCreativeMode)
-                            {
-                                player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, 1));
-                            }
+                            player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
                             world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
                         }
                     }
@@ -214,36 +203,11 @@ public class CommonEventHandler
             return;
         }
 
-        // Kiln Pottery
-        IFireable fireable = IFireable.fromItem(event.getItemStack().getItem());
-        if (fireable != null && event.getEntityPlayer().isSneaking() && event.getFace() == EnumFacing.UP)
-        {
-
-            if (fireable.getFireableTiers().contains(Metal.Tier.TIER_I))
-            {
-                //noinspection ConstantConditions
-                if (world.getBlockState(pos).getBlock() != BlocksTFC.PIT_KILN)
-                {
-                    if (!world.isSideSolid(pos, EnumFacing.UP)) return;
-                    pos = pos.add(0, 1, 0); // also important for TE fetch
-                    if (!world.getBlockState(pos).getMaterial().isReplaceable()) return; // can't put down the block
-                    //noinspection ConstantConditions
-                    world.setBlockState(pos, BlocksTFC.PIT_KILN.getDefaultState());
-                }
-
-                TEPitKiln te = Helpers.getTE(world, pos, TEPitKiln.class);
-                if (te == null) return;
-                te.onRightClick(event.getEntityPlayer(), event.getItemStack(), (event.getHitVec().x % 1) < .5, (event.getHitVec().z % 1) < .5);
-                event.setCancellationResult(EnumActionResult.SUCCESS);
-                event.setCanceled(true);
-            }
-        }
-
         // All items that can should use this implementation instead of the other exceptions (which are for items that can't implement IPlacableItem)
         if (stack.getItem() instanceof IPlacableItem)
         {
             IPlacableItem item = (IPlacableItem) stack.getItem();
-            if (item.placeItemInWorld(world, pos, stack, event.getFace(), player))
+            if (item.placeItemInWorld(world, pos, stack, player, event.getFace(), event.getHitVec()))
             {
                 player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
 
