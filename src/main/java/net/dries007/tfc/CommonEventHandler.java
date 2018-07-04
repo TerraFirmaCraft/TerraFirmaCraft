@@ -209,6 +209,7 @@ public class CommonEventHandler
                     }
                 }
             }
+            event.setCancellationResult(EnumActionResult.SUCCESS);
             event.setCanceled(true);
             return;
         }
@@ -245,6 +246,9 @@ public class CommonEventHandler
             if (item.placeItemInWorld(world, pos, stack, event.getFace(), player))
             {
                 player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
+
+                event.setCancellationResult(EnumActionResult.SUCCESS);
+                event.setCanceled(true);
             }
         }
     }

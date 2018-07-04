@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.blocks.metal;
 
 import java.util.EnumMap;
 import java.util.Random;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
@@ -47,6 +48,14 @@ public class BlockSheet extends Block
     }
 
     public final Metal metal;
+    private static final AxisAlignedBB[] SHEET_AABB = new AxisAlignedBB[] {
+        new AxisAlignedBB(0d, 0.9375d, 0d, 1d, 1d, 1d),
+        new AxisAlignedBB(0d, 0d, 0d, 1d, 0.0625d, 1d),
+        new AxisAlignedBB(0d, 0d, 0.9375d, 1d, 1d, 1d),
+        new AxisAlignedBB(0d, 0d, 0d, 1d, 1d, 0.0625d),
+        new AxisAlignedBB(0.9375d, 0d, 0d, 1d, 1d, 1d),
+        new AxisAlignedBB(0d, 0d, 0d, 0.0625d, 1d, 1d)
+    };
 
     public BlockSheet(Metal metal)
     {
@@ -85,22 +94,15 @@ public class BlockSheet extends Block
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        switch (state.getValue(FACE))
-        {
-            case UP:
-                return new AxisAlignedBB(0d, 0d, 0d, 1d, 0.0625d, 1d);
-            case DOWN:
-                return new AxisAlignedBB(0d, 0.9375d, 0d, 1d, 1d, 1d);
-            case EAST:
-                return new AxisAlignedBB(0d, 0d, 0d, 0.0625d, 1d, 1d);
-            case WEST:
-                return new AxisAlignedBB(0.9375d, 0d, 0d, 1d, 1d, 1d);
-            case SOUTH:
-                return new AxisAlignedBB(0d, 0d, 0d, 1d, 1d, 0.0625d);
-            case NORTH:
-                return new AxisAlignedBB(0d, 0d, 0.9375d, 1d, 1d, 1d);
-        }
-        return FULL_BLOCK_AABB;
+        return SHEET_AABB[state.getValue(FACE).getIndex()];
+    }
+
+    @Nullable
+    @Override
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        return SHEET_AABB[state.getValue(FACE).getIndex()];
     }
 
     @SideOnly(Side.CLIENT)
@@ -108,7 +110,7 @@ public class BlockSheet extends Block
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
-        return getBoundingBox(state, worldIn, pos);
+        return SHEET_AABB[state.getValue(FACE).getIndex()];
     }
 
     @SuppressWarnings("deprecation")

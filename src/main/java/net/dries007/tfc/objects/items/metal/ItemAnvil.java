@@ -23,6 +23,8 @@ import net.dries007.tfc.objects.Weight;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.util.IPlacableItem;
 
+import static net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC.AXIS;
+
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemAnvil extends ItemMetal implements IPlacableItem
@@ -63,7 +65,7 @@ public class ItemAnvil extends ItemMetal implements IPlacableItem
             if (!world.isRemote)
             {
                 ItemAnvil anvil = (ItemAnvil) stack.getItem();
-                world.setBlockState(pos.offset(facing), BlockAnvilTFC.get(anvil.metal).getDefaultState());
+                world.setBlockState(pos.offset(facing), BlockAnvilTFC.get(anvil.metal).getDefaultState().withProperty(AXIS, player.getHorizontalFacing().getAxis() == EnumFacing.Axis.X));
 
                 world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }

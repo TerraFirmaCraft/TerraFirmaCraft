@@ -474,6 +474,11 @@ for key in METAL_TYPES:
     if METAL_TYPES[key]:
         blockstate(('anvil', key), 'tfc:anvil', textures={
             ('all', 'particle'): 'tfc:blocks/metal/%s' % key
+        }, variants={
+            'axis': {
+                'true': {'y': 90},
+                'false': {}
+            }
         })
 
 # METAL SHEETS
