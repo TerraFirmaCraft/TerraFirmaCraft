@@ -134,10 +134,8 @@ public class BlockLogPile extends Block implements ITileEntityProvider
             {
                 // Light the Pile
                 if(world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos)){
-                    //te.burning = true;
                     world.setBlockState(pos, state.withProperty(ONFIRE, true));
                     te.light();
-                    //te.tryLightNearby(world, pos);
                     world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
                     world.playSound(null,pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS,1.0F,1.0F);
                 }
