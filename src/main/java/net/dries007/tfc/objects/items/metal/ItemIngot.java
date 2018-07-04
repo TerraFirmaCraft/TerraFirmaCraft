@@ -77,6 +77,7 @@ public class ItemIngot extends ItemMetal implements IPlacableItem
                         te.setMetal(item.metal);
                         te.setCount(1);
                     }
+                    world.playSound(null, pos.up(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.3F, 1.5F);
                     return true;
                 }
             }
