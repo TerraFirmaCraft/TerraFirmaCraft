@@ -31,15 +31,20 @@ public interface IItemSize
         return true;
     }
 
-    default int getStackSize(ItemStack stack)
+    static int getStackSize(Size size, Weight weight, boolean canStack)
     {
-        return canStack(stack) ? Math.min(getSize(stack).stackSize * getWeight(stack).multiplier, 64) : 1;
+        return canStack ? Math.min(size.stackSize * weight.multiplier, 64) : 1;
     }
 
     @SideOnly(Side.CLIENT)
     default void addSizeInfo(ItemStack stack, List<String> text)
     {
         text.add("\u2696 " + I18n.format(Helpers.getEnumName(getWeight(stack))) + " \u21F2 " + I18n.format(Helpers.getEnumName(getSize(stack))));
+    }
+
+    default int getStackSize(ItemStack stack)
+    {
+        return getStackSize(getSize(stack), getWeight(stack), canStack(stack));
     }
 
 }
