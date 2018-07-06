@@ -35,6 +35,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
+import net.dries007.tfc.util.CapabilityItemSize;
 import net.dries007.tfc.util.IItemSize;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.world.classic.CalenderTFC;
@@ -134,6 +135,14 @@ public class ClientEvents
         if (item instanceof IItemSize)
         {
             ((IItemSize) item).addSizeInfo(stack, tt);
+        }
+        else if (stack.hasCapability(CapabilityItemSize.ITEM_SIZE_CAPABILITY, null))
+        {
+            IItemSize cap = stack.getCapability(CapabilityItemSize.ITEM_SIZE_CAPABILITY, null);
+            if (cap != null)
+            {
+                cap.addSizeInfo(stack, tt);
+            }
         }
 
         if (event.getFlags().isAdvanced())

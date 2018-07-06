@@ -11,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -18,15 +19,18 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import net.dries007.tfc.objects.Size;
+import net.dries007.tfc.objects.Weight;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.wood.BlockLogPile;
 import net.dries007.tfc.objects.te.TELogPile;
+import net.dries007.tfc.util.CapabilityItemSize;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFireable;
 import net.dries007.tfc.util.IPlacableItem;
@@ -140,7 +144,8 @@ public class CommonEventHandler
             EnumFacing facing = event.getFace();
             if (facing != null)
             {
-                if (world.getBlockState(pos).getBlock() instanceof BlockLogPile)
+                //noinspection ConstantConditions
+                if (world.getBlockState(pos).getBlock() == BlocksTFC.LOG_PILE)
                 {
                     if (!world.isRemote)
                     {
@@ -215,5 +220,14 @@ public class CommonEventHandler
                 event.setCanceled(true);
             }
         }
+    }
+
+    @SubscribeEvent
+    public void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> e)
+    {
+        ItemStack stack = e.getObject();
+        Item item = stack.getItem();
+
+        if (item == Items.COAL) CapabilityItemSize.add(e, Items.COAL, Size.SMALL, Weight.MEDIUM, true);
     }
 }
