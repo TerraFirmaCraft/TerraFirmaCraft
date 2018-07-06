@@ -11,8 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -222,12 +221,31 @@ public class CommonEventHandler
         }
     }
 
+    //Used for IItemSize capability. You can either implement the interface or use the capability
     @SubscribeEvent
     public void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> e)
     {
         ItemStack stack = e.getObject();
-        Item item = stack.getItem();
+        // Skip items with existing capabilities
+        if (CapabilityItemSize.getIItemSize(stack) != null) return;
 
-        if (item == Items.COAL) CapabilityItemSize.add(e, Items.COAL, Size.SMALL, Weight.MEDIUM, true);
+        Item item = stack.getItem();
+        boolean canStack = stack.getMaxStackSize() > 1; // This is nessecary so it isn't accidentally overriden by a default implementation
+
+        // todo: Add more items here
+        if (item == Items.COAL)
+            CapabilityItemSize.add(e, Items.COAL, Size.SMALL, Weight.MEDIUM, canStack);
+        else if (item == Items.STICK)
+            CapabilityItemSize.add(e, Items.STICK, Size.SMALL, Weight.LIGHT, canStack);
+
+            // Final checks for general item types
+        else if (item instanceof ItemTool)
+            CapabilityItemSize.add(e, item, Size.LARGE, Weight.MEDIUM, canStack);
+        else if (item instanceof ItemArmor)
+            CapabilityItemSize.add(e, item, Size.LARGE, Weight.HEAVY, canStack);
+        else if (item instanceof ItemBlock)
+            CapabilityItemSize.add(e, item, Size.SMALL, Weight.MEDIUM, canStack);
+        else
+            CapabilityItemSize.add(e, item, Size.VERY_SMALL, Weight.LIGHT, canStack);
     }
 }

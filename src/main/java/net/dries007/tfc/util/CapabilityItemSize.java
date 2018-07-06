@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.util;
 
-import java.util.concurrent.Callable;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -31,6 +30,7 @@ public class CapabilityItemSize
 {
     private static final CapabilityItemSize INSTANCE = new CapabilityItemSize();
     private static final ResourceLocation ID = new ResourceLocation(Constants.MOD_ID, "item_size");
+
     @CapabilityInject(IItemSize.class)
     public static Capability<IItemSize> ITEM_SIZE_CAPABILITY = null;
 
@@ -50,40 +50,77 @@ public class CapabilityItemSize
             {
 
             }
-        }, new CapabilityItemSize.Factory());
+        }, () -> INSTANCE.getCapability(Size.SMALL, Weight.MEDIUM, true));
 
     }
 
+    /**
+     * Adds a simple IItemSize capability to an item instance. Call this from an AttachCapabilitiesEvent handler.
+     * This will also override the item's stacksize. If an item uses a custom getStacksize implementation, that will take priority
+     *
+     * @param event    The AttachCapabilitiesEvent that was fired
+     * @param item     The item to attach the capability to
+     * @param size     The item size
+     * @param weight   The item weight
+     * @param canStack An override for if this item can stack or not.
+     */
     public static void add(AttachCapabilitiesEvent<ItemStack> event, Item item, Size size, Weight weight, boolean canStack)
     {
-        event.addCapability(ID, INSTANCE.get(size, weight, canStack));
+        event.addCapability(ID, INSTANCE.getProvider(size, weight, canStack));
         item.setMaxStackSize(IItemSize.getStackSize(size, weight, canStack));
     }
 
-    public ICapabilityProvider get(Size size, Weight weight, boolean canStack)
+    /**
+     * Gets the IItemSize instance from an itemstack, either via capability or via interface
+     *
+     * @param stack The stack
+     * @return The IItemSize if it exists, or null if it doesn't
+     */
+    @Nullable
+    public static IItemSize getIItemSize(ItemStack stack)
+    {
+        if (stack.getItem() instanceof IItemSize)
+        {
+            return (IItemSize) stack.getItem();
+        }
+        return stack.getCapability(ITEM_SIZE_CAPABILITY, null);
+    }
+
+    /**
+     * Gets a default instance of a ICapabilityProvider for IItemSize. Use with CapabilityItemSize.INSTANCE.getProvider
+     *
+     * @param size     The size
+     * @param weight   The weight
+     * @param canStack override for non-stackable items
+     * @return The ICapabilityProvider for an object
+     */
+    public ICapabilityProvider getProvider(Size size, Weight weight, boolean canStack)
     {
         return new ItemSizeProvider(size, weight, canStack);
     }
 
-    public static class Factory implements Callable<IItemSize>
+    /**
+     * Gets a default implementation of IItemSize. Use with CapabilityItemSize.INSTANCE.getCapability
+     *
+     * @param size     The size
+     * @param weight   The weight
+     * @param canStack override for non-stackable items
+     * @return The IItemSize
+     */
+    public IItemSize getCapability(Size size, Weight weight, boolean canStack)
     {
-        @Nonnull
-        @Override
-        public IItemSize call()
-        {
-            return new ItemSize(Size.SMALL, Weight.LIGHT, true);
-        }
+        return new ItemSize(size, weight, canStack);
     }
 
     @ParametersAreNonnullByDefault
     @MethodsReturnNonnullByDefault
-    public static class ItemSize implements IItemSize
+    private class ItemSize implements IItemSize
     {
         private final Size size;
         private final Weight weight;
         private boolean canStack;
 
-        public ItemSize(Size size, Weight weight, boolean canStack)
+        private ItemSize(Size size, Weight weight, boolean canStack)
         {
             this.size = size;
             this.weight = weight;
@@ -109,16 +146,11 @@ public class CapabilityItemSize
         }
     }
 
-    public class ItemSizeProvider implements ICapabilityProvider
+    private class ItemSizeProvider implements ICapabilityProvider
     {
         private final IItemSize capability;
 
-        public ItemSizeProvider(ItemSize capability)
-        {
-            this.capability = capability;
-        }
-
-        public ItemSizeProvider(Size size, Weight weight, boolean canStack)
+        private ItemSizeProvider(Size size, Weight weight, boolean canStack)
         {
             this.capability = new ItemSize(size, weight, canStack);
         }

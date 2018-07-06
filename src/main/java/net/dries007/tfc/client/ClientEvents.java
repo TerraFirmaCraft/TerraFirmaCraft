@@ -132,17 +132,10 @@ public class ClientEvents
         Item item = stack.getItem();
         List<String> tt = event.getToolTip();
 
-        if (item instanceof IItemSize)
+        IItemSize size = CapabilityItemSize.getIItemSize(stack);
+        if (size != null)
         {
-            ((IItemSize) item).addSizeInfo(stack, tt);
-        }
-        else if (stack.hasCapability(CapabilityItemSize.ITEM_SIZE_CAPABILITY, null))
-        {
-            IItemSize cap = stack.getCapability(CapabilityItemSize.ITEM_SIZE_CAPABILITY, null);
-            if (cap != null)
-            {
-                cap.addSizeInfo(stack, tt);
-            }
+            size.addSizeInfo(stack, tt);
         }
 
         if (event.getFlags().isAdvanced())
