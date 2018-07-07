@@ -44,7 +44,6 @@ public class CommonEventHandler
      * Make leaves drop sticks
      */
     @SubscribeEvent
-    @SuppressWarnings("unused")
     public static void onBlockHarvestDrops(BlockEvent.HarvestDropsEvent event)
     {
         final EntityPlayer harvester = event.getHarvester();
@@ -68,7 +67,6 @@ public class CommonEventHandler
      * Note: `onBlockActivate` doesn't get called when the player is sneaking, unless doesSneakBypassUse returns true.
      * We have this event already, might as well use it.
      */
-    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
     {
