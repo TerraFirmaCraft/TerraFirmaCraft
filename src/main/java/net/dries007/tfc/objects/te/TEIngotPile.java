@@ -9,6 +9,8 @@ package net.dries007.tfc.objects.te;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -20,6 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.objects.items.metal.ItemIngot;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
@@ -102,6 +105,12 @@ public class TEIngotPile extends TileEntity
     public AxisAlignedBB getRenderBoundingBox()
     {
         return new AxisAlignedBB(getPos(), getPos().add(1D, 1D, 1D));
+    }
+
+    public void onBreakBlock()
+    {
+        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(),
+            new ItemStack(ItemIngot.get(metal, Metal.ItemType.INGOT), count));
     }
 
     public Metal getMetal()

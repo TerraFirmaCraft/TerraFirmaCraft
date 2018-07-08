@@ -345,10 +345,13 @@ public final class BlocksTFC
 
             for (Metal metal : Metal.values())
             {
+                // Anvils
                 if (metal.hasType(Metal.ItemType.ANVIL))
                     anvils.add(register(r, "anvil/" + metal.name().toLowerCase(), new BlockAnvilTFC(metal), CT_METAL));
 
-                sheets.add(register(r, "sheet/" + metal.name().toLowerCase(), new BlockSheet(metal), CT_METAL));
+                // Sheets
+                if (metal.hasType(Metal.ItemType.SHEET))
+                    sheets.add(register(r, "sheet/" + metal.name().toLowerCase(), new BlockSheet(metal), CT_METAL));
             }
 
             allAnvils = anvils.build();

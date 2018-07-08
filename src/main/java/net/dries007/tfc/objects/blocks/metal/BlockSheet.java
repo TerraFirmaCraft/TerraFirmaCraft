@@ -17,6 +17,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -136,6 +137,25 @@ public class BlockSheet extends Block
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        return new ItemStack(ItemSheet.get(metal, Metal.ItemType.SHEET));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        EnumFacing face = state.getValue(FACE).getOpposite();
+        if (!worldIn.isSideSolid(pos.offset(face), face.getOpposite()))
+        {
+            InventoryHelper.spawnItemStack(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, getItem(worldIn, pos, state));
+            worldIn.setBlockToAir(pos);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
         return new ItemStack(ItemSheet.get(metal, Metal.ItemType.SHEET));
     }
