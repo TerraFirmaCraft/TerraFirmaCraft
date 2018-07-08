@@ -16,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
@@ -31,8 +32,8 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Size;
 import net.dries007.tfc.objects.Weight;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.wood.BlockLogPile;
 import net.dries007.tfc.objects.te.TELogPile;
+import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
@@ -86,6 +87,7 @@ public class ItemFireStarter extends ItemTFC
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public void onUsingTick(ItemStack stack, EntityLivingBase entityLivingBase, int countLeft)
     {
         if (!(entityLivingBase instanceof EntityPlayer)) return;
@@ -111,20 +113,31 @@ public class ItemFireStarter extends ItemTFC
         }
         else if (countLeft == 1) // Server, and last tick of use
         {
-            final IBlockState state = world.getBlockState(pos);
-            if (state.getBlock() instanceof BlockLogPile)
+            final IBlockState state = world.getBlockState(pos.down());
+            if (state.getBlock() == BlocksTFC.LOG_PILE)
             {
-                // Charcoal pile lighting
-                if (world.rand.nextFloat() < chance)
+                // Log pile
+                if (Math.random() < chance)
                 {
-                    world.setBlockState(pos, state.withProperty(ONFIRE, true));
-                    TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
+                    world.setBlockState(pos.down(), state.withProperty(ONFIRE, true));
+                    TELogPile te = Helpers.getTE(world, pos.down(), TELogPile.class);
                     if (te != null) te.light();
+                    if (!Blocks.FIRE.canPlaceBlockAt(world, pos))
+                        world.setBlockState(pos, Blocks.FIRE.getDefaultState());
+                }
+            }
+            else if (state.getBlock() == BlocksTFC.PIT_KILN)
+            {
+                // Pit Kiln
+                if (Math.random() < chance)
+                {
+                    TEPitKiln te = Helpers.getTE(world, pos.down(), TEPitKiln.class);
+                    if (te != null) te.tryLight();
                 }
             }
             else
             {
-                // Firepit creation
+                // Fire pit
                 stack.damageItem(1, player);
 
                 final List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 0.5, pos.getZ() + 1), i -> IS_KINDLING.test(i) || IS_STICK.test(i));
