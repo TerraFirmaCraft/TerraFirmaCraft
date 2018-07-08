@@ -182,40 +182,6 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
                 }
             }
         } while (posTop.getY() <= 256);
-
-        /*if (te != null)
-        {
-            if (!playerIn.isSneaking())
-            {
-                te.setCount(te.getCount() - 1);
-                if (!worldIn.isRemote)
-                {
-                    if (te.getCount() <= 0)
-                    {
-                        worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
-                    }
-                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 0.125 * (te.getCount() / 8 + 2), pos.getZ(), new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
-                }
-
-            }*/
-            /*else
-            {
-                if (playerIn.getHeldItem(hand).getItem() instanceof ItemMetal)
-                {
-                    //noinspection ConstantConditions
-                    ItemMetal item = (ItemMetal) playerIn.getHeldItem(hand).getItem();
-                    if (item.type == Metal.ItemType.INGOT && item.metal == te.getMetal())
-                    {
-                        if (te.getCount() < 64)
-                        {
-                            te.setCount(te.getCount() + 1);
-                            playerIn.setHeldItem(hand, Helpers.consumeItem(playerIn.getHeldItem(hand), playerIn, 1));
-                        }
-                        worldIn.playSound(null, pos.up(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.3F, 1.5F);
-                    }
-                }
-            }*/
-        //}
         return false;
     }
 

@@ -105,26 +105,6 @@ public class ItemIngot extends ItemMetal implements IPlacableItem
                 }
 
             } while (posTop.getY() <= 256);
-            /*if (facing == EnumFacing.UP)
-            {
-                TEIngotPile te = Helpers.getTE(world, pos, TEIngotPile.class);
-                if (te != null && te.getCount() == 64 && te.getMetal() == item.metal)
-                {
-                    if (!world.isRemote)
-                    {
-                        //noinspection ConstantConditions
-                        world.setBlockState(pos.up(), BlocksTFC.INGOT_PILE.getDefaultState());
-                        TEIngotPile teUp = Helpers.getTE(world, pos.up(), TEIngotPile.class);
-                        if (teUp != null)
-                        {
-                            teUp.setMetal(item.metal);
-                            teUp.setCount(1);
-                        }
-                    }
-                    world.playSound(null, pos.up(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.3F, 1.5F);
-                    return true;
-                }
-            }*/
         }
         return false;
     }
