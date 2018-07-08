@@ -43,7 +43,7 @@ public class TELogPile extends TESidedInventory implements ITickable
         return (stack.isEmpty() || Helpers.doesStackMatchOre(stack, "logWood"));
     }
 
-    private final int maxBurnTicks = 100;//20 * 60 * 8; // 8 In game hours
+    private final int maxBurnTicks = 8000; // 8 In-game Hours
     public boolean burning;
     private int burnTicks;
 
