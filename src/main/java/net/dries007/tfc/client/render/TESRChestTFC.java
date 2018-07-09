@@ -34,10 +34,10 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
     {
         for (Wood wood : Wood.values())
         {
-            SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/model/wood/chest/" + wood.name().toLowerCase() + ".png"));
-            DOUBLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/model/wood/chest_double/" + wood.name().toLowerCase() + ".png"));
-            TRAP_SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/model/wood/chest_trap/" + wood.name().toLowerCase() + ".png"));
-            TRAP_DOUBLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/model/wood/chest_trap_double/" + wood.name().toLowerCase() + ".png"));
+            SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest/" + wood.name().toLowerCase() + ".png"));
+            DOUBLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest_double/" + wood.name().toLowerCase() + ".png"));
+            TRAP_SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest_trap/" + wood.name().toLowerCase() + ".png"));
+            TRAP_DOUBLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest_trap_double/" + wood.name().toLowerCase() + ".png"));
         }
     }
 

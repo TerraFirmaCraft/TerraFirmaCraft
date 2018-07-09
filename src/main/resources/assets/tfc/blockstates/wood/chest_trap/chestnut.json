@@ -4,8 +4,8 @@
   "defaults": {
     "model": "tfc:chest",
     "textures": {
-      "texture": "tfc:model/wood/chest_trap/chestnut",
-      "particle": "tfc:blocks/wood/planks/chestnut"
+      "texture": "tfc:entity/chests/chest_trap/chestnut",
+      "particle": "tfc:entity/chests/chest_trap/chestnut"
     }
   },
   "variants": {

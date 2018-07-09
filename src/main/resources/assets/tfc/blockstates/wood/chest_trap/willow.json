@@ -4,8 +4,8 @@
   "defaults": {
     "model": "tfc:chest",
     "textures": {
-      "texture": "tfc:model/wood/chest_trap/willow",
-      "particle": "tfc:blocks/wood/planks/willow"
+      "texture": "tfc:entity/chests/chest_trap/willow",
+      "particle": "tfc:entity/chests/chest_trap/willow"
     }
   },
   "variants": {
