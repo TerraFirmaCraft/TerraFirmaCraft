@@ -1,9 +1,19 @@
+/*
+ * !!README!!
+ *
+ * Willing contributors: Do not change anything in this file that is not marked with a comment saying you can edit it!
+ *
+ * !!README!!
+ *
+ */
+// Allow json magic in build script (used for update json file)
 import groovy.json.JsonBuilder
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-
+// Required build script stuff
 buildscript {
     repositories {
+        // Repositories required for ForgeGradle go here.
         jcenter()
         maven {
             name = "forge"
@@ -14,19 +24,35 @@ buildscript {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
     }
 }
-
+// Go Forge go!
 apply plugin: "net.minecraftforge.gradle.forge"
 
-version = "0.1.0"
+/**
+ * Versioning rules: (Highly based on Semantic Versioning 2.0.0, https://semver.org/)
+ *
+ * 1. The only versions of this mod that should be in the hands of any non-contributor or
+ *    special testers should be produced by the build server, and thus have a build number.
+ * 2. Major version 1 is reserved for the first version deemed "a full port of TFC 1.7.10".
+ *    We'll see about everything after that when/if we get there :)
+ * 3. Minor versions should increase every public build with added features (that are not just bugfixes) or an API is changed.
+ *    This resets when(/if) the major version is increased.
+ *    This should be done when the feature is merged into the master, not before.
+ * 4. The patch version should increase if a bugfix release is required. It resets every minor version.
+ * 5. No special stuff is added to the version string. Ever. No exceptions.
+ *    Extra information about the build can be included in the jar manifest or some other suitable source.
+ *    The version number is a sacret tool that a computer must understand and be able to compare to see what's what.
+ *    `-SNAPSHOT` or `.rc0v14s4dffds2` communicates nothing useful.
+ */
+version = "0.1.0" // To be clear, you can edit this if you are submitting a patch PR, or if you are merging a feature into master.
 if (System.getenv().BUILD_NUMBER != null) version += "." + System.getenv().BUILD_NUMBER
-group = "net.dries007.tfc"
-archivesBaseName = "TerraFirmaCraft"
 
-sourceCompatibility = targetCompatibility = "1.8"
+group = "net.dries007.tfc" // According to java standards, as I have control over this domain. If you fork this and release your own version, change this.
+archivesBaseName = "TerraFirmaCraft" // Jar filename. The final result must match ^[\w-\.]+$. (Alphanumerical + `_-.`)
+sourceCompatibility = targetCompatibility = "1.8" // We require Java 8
 
-ext.getChangeLog = { ->
+ext.getChangeLog = { -> // Create a new function that gets the changelog from git (used for updates json file)
     def outStream = new ByteArrayOutputStream()
-    exec {
+    exec { // todo: make this not crash and burn for people who don't have git in their path. (poor Windows users...)
         executable = 'git'
         args = ['log', '-n', '1', "--format='%B'"]
         standardOutput = outStream
@@ -34,17 +60,20 @@ ext.getChangeLog = { ->
     return outStream.toString().replaceAll("^\\s*'\\s*|\\s*'\\s*\$", "").replaceAll("[\\r\\n]+", "\n")
 }
 
-minecraft {
+minecraft { // Only change any of this with prior approval from the dev team!
     version = "1.12.2-14.23.2.2611"
     runDir = "run"
     mappings = "snapshot_20180330"
 }
 
 repositories {
+    // Repositories required for dependencies, not ForgeGradle go here.
     mavenCentral()
 }
 
 dependencies {
+    // Mod dependencies go here.
+    // Do not add dependencies without prior approval from the dev team. You can update existing ones.
 }
 
 processResources {
@@ -52,34 +81,38 @@ processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
+    // copy mcmod.info from resources
     from(sourceSets.main.resources.srcDirs) {
         include "mcmod.info"
 
-        // replace version and mcversion
+        // replace version and mcversion variables/placeholders
         expand "version": project.version, "mcversion": project.minecraft.version
     }
 
-    // copy everything else, thats not the mcmod.info
+    // copy everything else from resources
     from(sourceSets.main.resources.srcDirs) {
         exclude "mcmod.info"
     }
 
+    // from the project root, include the LICENSE file
     from('.') {
         include "LICENSE.txt"
     }
 
+    // move any Access Transformer (there is/should be only 1, but this is nice and safe) to the right folder.
     rename '(.+_at.cfg)', 'META-INF/$1'
 
+    // Write the update's json file. This file is kept by jenkins and put in a WWW accessible folder.
+    // For more info on the exact format, see Forge documentation & source code.
     doLast {
         //noinspection GroovyAssignabilityCheck
-        def updateFile = new File("build/" + project.archivesBaseName.toLowerCase() + '.json')
+        def updateFile = new File('tfc.json')
         def json
         if (updateFile.exists()) {
             json = new JsonSlurper().parseText(updateFile.getText())
         } else {
             def builder = new JsonBuilder()
-            json = builder(homepage: "https://tfc.dries007.net", promos: new HashMap<>())
+            json = builder(homepage: "https://tfc.dries007.net", promos: new HashMap<>()) // defaults: Again, change if you fork & release
         }
         //noinspection GroovyAssignabilityCheck
         json['promos'][project.minecraft.version + '-latest'] = project.version
@@ -89,26 +122,32 @@ processResources {
         //noinspection GroovyAssignabilityCheck
         def version = json[project.minecraft.version]
         version.put(project.version, getChangeLog())
-        updateFile.write JsonOutput.prettyPrint(JsonOutput.toJson(json))
+        updateFile.write JsonOutput.prettyPrint(JsonOutput.toJson(json)) // Pretty print cause why not, it's a small file anyway.
     }
 }
 
+// Deobf jar allows people to drop this in mod folder on a dev environment
 task deobfJar(type: Jar, dependsOn: 'jar') {
     from sourceSets.main.output
     classifier "deobf"
 }
 
 artifacts {
-    archives deobfJar
+    archives deobfJar // Default jars are already in there.
 }
 
-project.tasks.withType(Jar) { jarTask ->
+project.tasks.withType(Jar) { jarTask -> // For all jar tasks
     jarTask.manifest {
-        attributes 'FMLAT': 'tfc_at.cfg'
+        attributes 'FMLAT': 'tfc_at.cfg' // See FML source code
+        // todo: add git information about branch, repo, last commit, hash, etc...
     }
+    // Add "MC${mcversion}" to the jar, so the name ends up `TerraFirmaCraft-MC1.12.2-0.0.0.0.jar`
+    // This didn't used to have the `MC` prefix, but it confuses some hosting websites as the actual version numbers then.
     jarTask.appendix = "MC" + project.minecraft.version
 }
 
+// If the keystore properties are installed (in ~/.gradle/gradle.properties) only.
+// Only really relevant on the build server, but usable in dev also.
 task signJar(type: SignJar, dependsOn: reobfJar) {
     if (!project.hasProperty("signjar.keystore")) return
     keyStore = project.getProperty("signjar.keystore")
@@ -119,5 +158,8 @@ task signJar(type: SignJar, dependsOn: reobfJar) {
     outputFile = jar.archivePath
 }
 
+// If the keystore properties are installed (in ~/.gradle/gradle.properties) only.
+// Only really relevant on the build server, but usable in dev also.
+// Makes it so you don't have to add the sign task in the command line, building will do.
 if (project.hasProperty("signjar.keystore"))
     build.dependsOn signJar

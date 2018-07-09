@@ -1,10 +1,16 @@
 # TerraFirmaCraft
 
-Work in progress.
+**Work in progress.**
+
+This project is the official port of TerraFirmaCraft (the original, also called beta) to Minecraft 1.12 and beyond.
+
+[See the website/forum for more information, a roadmap and FAQ is available there.](https://terrafirmacraft.com/) 
 
 ## Goal
 
-The goal of this project is to be **the** TerraFirmaCraft for 1.12.2, not a mire partial imitation.
+- The ultimate goal of this project is to be **the** TerraFirmaCraft for 1.12.2, not a mire partial imitation.
+- The idea is to stay faithful to the original where possible until at least version 1.0.
+  Major content adding will probably be only done after that point.
 
 ## Contributing
 
@@ -12,6 +18,7 @@ The goal of this project is to be **the** TerraFirmaCraft for 1.12.2, not a mire
   under the same license as this project.
 + In addition we request that you give use the right to changed the license in the future.
   Your pull request may not be accepted if you don't.
++ You can read the versioning rules in the build.gradle file.
 
 ### Required
 
@@ -41,6 +48,12 @@ to a shared scope matching pattern `net.dries007.tfc..*`.
     2. In the (java) `run client` run config, add a 'Before launch' step of type `Run another configuration` and select `generateResources` there.
     3. Move the new `run 'Python 'generateResources''` task to before the `Build` step.
     4. Done. Whenever you launch the client, it will first run the python script now. You'll see it appear in the run tab. 
+
+## Addons
+
+For now there is no real API, as almost none of the internal mechanics have been decided on yet.
+This means that you can't really rely on anything being stable between versions.
+I recommend you have narrow compatible version range string in your Forge/FML dependency string.
 
 ## License / Copyright / Credit
 
