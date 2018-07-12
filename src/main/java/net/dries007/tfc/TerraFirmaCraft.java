@@ -131,6 +131,7 @@ public class TerraFirmaCraft
         GameRegistry.registerWorldGenerator(new WorldGenOre(), 2);
         //todo: add cave decorator
         //todo: add forests
+        GameRegistry.registerWorldGenerator(new WorldGenTrees(), 4);
         //todo: add loose rocks
         GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 5);
         GameRegistry.registerWorldGenerator(new WorldGenSoilPits(), 6);
