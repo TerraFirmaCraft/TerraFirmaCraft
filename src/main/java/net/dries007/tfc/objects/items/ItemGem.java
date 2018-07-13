@@ -6,16 +6,21 @@
 package net.dries007.tfc.objects.items;
 
 import java.util.EnumMap;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Gem;
+import net.dries007.tfc.objects.Size;
+import net.dries007.tfc.objects.Weight;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemGem extends Item
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class ItemGem extends ItemTFC
 {
     private static final EnumMap<Gem, ItemGem> MAP = new EnumMap<>(Gem.class);
 
@@ -65,5 +70,17 @@ public class ItemGem extends Item
 
         for (Gem.Grade grade : Gem.Grade.values())
             items.add(new ItemStack(this, 1, grade.getMeta()));
+    }
+
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.TINY;
+    }
+
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.LIGHT;
     }
 }

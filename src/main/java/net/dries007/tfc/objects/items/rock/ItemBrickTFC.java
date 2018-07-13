@@ -6,14 +6,20 @@
 package net.dries007.tfc.objects.items.rock;
 
 import java.util.EnumMap;
+import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.objects.Size;
+import net.dries007.tfc.objects.Weight;
+import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemBrickTFC extends Item
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class ItemBrickTFC extends ItemTFC
 {
     private static final EnumMap<Rock, ItemBrickTFC> MAP = new EnumMap<>(Rock.class);
 
@@ -37,5 +43,17 @@ public class ItemBrickTFC extends Item
         OreDictionaryHelper.register(this, "brick");
         OreDictionaryHelper.register(this, "brick", rock);
         OreDictionaryHelper.register(this, "brick", rock.category);
+    }
+
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.TINY;
+    }
+
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.LIGHT;
     }
 }

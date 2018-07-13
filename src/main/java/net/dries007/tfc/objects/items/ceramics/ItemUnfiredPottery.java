@@ -5,10 +5,15 @@
 
 package net.dries007.tfc.objects.items.ceramics;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.item.ItemStack;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Metal;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class ItemUnfiredPottery extends ItemPottery
 {
     public final ItemFiredPottery firedVersion;

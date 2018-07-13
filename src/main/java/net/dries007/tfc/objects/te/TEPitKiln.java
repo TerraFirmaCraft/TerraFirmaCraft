@@ -29,22 +29,23 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.wood.ItemLogTFC;
 import net.dries007.tfc.util.IFireable;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
+@MethodsReturnNonnullByDefault
 public class TEPitKiln extends TileEntity implements ITickable
 {
     public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "pit_kiln");
 
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
-    public static final int BURN_TICKS = 10 * 60 * 20; // 10 IRL minutes
+    public static final int BURN_TICKS = 8000; // 8 In-game Hours
     private final NonNullList<ItemStack> logs = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> straw = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
@@ -216,10 +217,9 @@ public class TEPitKiln extends TileEntity implements ITickable
             return;
         }
         if (count < WOOD_NEEDED) return;
-        if (item.getItem() instanceof ItemFireStarter || item.getItem() instanceof ItemFlintAndSteel)
+        if (item.getItem() instanceof ItemFlintAndSteel)
         {
             tryLight();
-            return;
         }
     }
 

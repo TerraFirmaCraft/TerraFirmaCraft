@@ -35,6 +35,8 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
+import net.dries007.tfc.util.CapabilityItemSize;
+import net.dries007.tfc.util.IItemSize;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
@@ -126,11 +128,18 @@ public class ClientEvents
     @SideOnly(Side.CLIENT)
     public static void onItemTooltip(ItemTooltipEvent event)
     {
+        ItemStack stack = event.getItemStack();
+        Item item = stack.getItem();
+        List<String> tt = event.getToolTip();
+
+        IItemSize size = CapabilityItemSize.getIItemSize(stack);
+        if (size != null)
+        {
+            size.addSizeInfo(stack, tt);
+        }
+
         if (event.getFlags().isAdvanced())
         {
-            ItemStack stack = event.getItemStack();
-            Item item = stack.getItem();
-            List<String> tt = event.getToolTip();
             Set<String> toolClasses = item.getToolClasses(stack);
             if (!toolClasses.isEmpty())
             {

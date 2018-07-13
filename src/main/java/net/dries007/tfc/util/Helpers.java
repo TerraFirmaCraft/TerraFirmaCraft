@@ -10,13 +10,18 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 
 import com.google.common.base.Joiner;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.Rock;
@@ -93,5 +98,63 @@ public final class Helpers
     public static String getEnumName(Enum<?> anEnum)
     {
         return JOINER_DOT.join(Constants.MOD_ID, "enum", anEnum.getDeclaringClass().getSimpleName(), anEnum).toLowerCase();
+    }
+
+    @Nonnull
+    public static ItemStack consumeItem(ItemStack stack, int amount)
+    {
+        if (stack.getCount() <= amount) return ItemStack.EMPTY;
+        stack.shrink(amount);
+        return stack;
+    }
+
+    @Nonnull
+    public static ItemStack consumeItem(ItemStack stack, EntityPlayer player, int amount)
+    {
+        return player.isCreative() ? stack : consumeItem(stack, amount);
+    }
+
+    // Checks if an itemstack has the ore name 'name'
+    public static boolean doesStackMatchOre(@Nonnull ItemStack stack, String name)
+    {
+        if (stack.isEmpty()) return false;
+        int[] ids = OreDictionary.getOreIDs(stack);
+        for (int id : ids)
+        {
+            String oreName = OreDictionary.getOreName(id);
+            if (name.equals(oreName))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Checks is an ItemStack has ore names, which have a certain prefix
+    // used to search for all 'ingots' / all 'plates' etc.
+    public static boolean doesStackMatchOrePrefix(@Nonnull ItemStack stack, String prefix)
+    {
+        if (stack.isEmpty()) return false;
+        int[] ids = OreDictionary.getOreIDs(stack);
+        for (int id : ids)
+        {
+            String oreName = OreDictionary.getOreName(id);
+            if (oreName.length() >= prefix.length())
+            {
+                if (oreName.substring(0, prefix.length()).equals(prefix))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // This both checks if an ore dictionary entry exists, and it it has at least one itemstack
+    public static boolean doesOreHaveStack(String ore)
+    {
+        if (!OreDictionary.doesOreNameExist(ore)) return false;
+        NonNullList<ItemStack> stacks = OreDictionary.getOres(ore);
+        return !stacks.isEmpty();
     }
 }

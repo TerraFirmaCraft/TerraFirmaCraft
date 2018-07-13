@@ -19,9 +19,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+@MethodsReturnNonnullByDefault
 public class BlockLogTFC extends BlockLog
 {
     public static final PropertyBool PLACED = PropertyBool.create("placed");
