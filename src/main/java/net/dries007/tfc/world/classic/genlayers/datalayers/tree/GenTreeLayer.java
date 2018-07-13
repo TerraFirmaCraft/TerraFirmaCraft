@@ -5,12 +5,12 @@
 
 package net.dries007.tfc.world.classic.genlayers.datalayers.tree;
 
-import net.dries007.tfc.world.classic.DataLayer;
+import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.world.classic.genlayers.*;
 
 public abstract class GenTreeLayer extends GenLayerTFC
 {
-    public static GenLayerTFC initialize(long par0, DataLayer[] trees)
+    public static GenLayerTFC initialize(long par0, Wood[] trees)
     {
         GenLayerTFC layer = new GenLayerTreeInit(1L, trees);
 //        drawImage(512, layer, "Tree 0");
@@ -37,7 +37,7 @@ public abstract class GenTreeLayer extends GenLayerTFC
 
         GenLayerSmoothTFC smoothedLayer = new GenLayerSmoothTFC(1000L, layer);
         GenLayerVoronoiZoomTFC voronoiLayer = new GenLayerVoronoiZoomTFC(10L, smoothedLayer);
-//        drawImage(512, layer, "Tree Final");
+        drawImage(512, layer, "Tree Final");
 
         voronoiLayer.initWorldGenSeed(par0);
         return voronoiLayer;
