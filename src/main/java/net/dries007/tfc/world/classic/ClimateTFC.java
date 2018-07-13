@@ -13,17 +13,20 @@ import net.minecraft.world.World;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 /**
- * TODO: *important* store some of this (perhaps bio/non height adjusted temp?) to chunkdata
+ * 
  */
 public final class ClimateTFC
 {
     public static final float MAX_TEMP = 52;
-    private static final int MAX_Z = 30000;
+    private static final int MAX_Z = 15000;
+    private static final int MIN_Z = -15000;
+    private static final int TOTAL_Z = MAX_Z - MIN_Z;
     private static final float[] Y_FACTOR_CACHE = new float[441];
     private static final float[] Z_FACTOR_CACHE = new float[MAX_Z + 1];
     private static final float[][] MONTH_TEMP_CACHE = new float[12][MAX_Z + 1];
     private static final Random rng = new Random();
 
+    // TODO: 13/7/18 Fix the height adjusted temperature, goal is to discorage sky fridges, but also have temperatures go up as you go down 
     static
     {
         //internationally accepted average lapse time is 6.49 K / 1000 m, for the first 11 km of the atmosphere. I suggest graphing our temperature
@@ -61,9 +64,9 @@ public final class ClimateTFC
             Y_FACTOR_CACHE[y] = factor;
         }
 
-        for (int zCoord = 0; zCoord < MAX_Z + 1; ++zCoord)
+        for (int zCoord = MIN_Z; zCoord < MAX_Z + 1; ++zCoord)
         {
-            float factor = (MAX_Z - (float) zCoord) / MAX_Z;
+            float factor = (MAX_Z - (float) zCoord) / TOTAL_Z;
             Z_FACTOR_CACHE[zCoord] = factor;
 
             for (int month = 0; month < 12; ++month)
@@ -76,30 +79,30 @@ public final class ClimateTFC
                 switch (month)
                 {
                     case 10:
-                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 13.5 * latitudeFactor - (latitudeFactor * 55));
+                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 13.5 * latitudeFactor - (latitudeFactor * 55)); //January
                         break;
                     case 9:
                     case 11:
-                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 12.5 * latitudeFactor - (latitudeFactor * 53));
+                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 12.5 * latitudeFactor - (latitudeFactor * 53)); // Febuary December
                         break;
                     case 0:
                     case 8:
-                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 10 * latitudeFactor - (latitudeFactor * 46));
+                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 10 * latitudeFactor - (latitudeFactor * 46)); // March November
                         break;
                     case 1:
                     case 7:
-                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 7.5 * latitudeFactor - (latitudeFactor * 40));
+                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 7.5 * latitudeFactor - (latitudeFactor * 40)); // April October
                         break;
                     case 2:
                     case 6:
-                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 5 * latitudeFactor - (latitudeFactor * 33));
+                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 5 * latitudeFactor - (latitudeFactor * 33)); // May September
                         break;
                     case 3:
                     case 5:
-                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 2.5 * latitudeFactor - (latitudeFactor * 27));
+                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 2.5 * latitudeFactor - (latitudeFactor * 27)); // June August
                         break;
                     case 4:
-                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 1.5 * latitudeFactor - (latitudeFactor * 27));
+                        MONTH_TEMP_CACHE[month][zCoord] = (float) (MAXTEMP - 1.5 * latitudeFactor - (latitudeFactor * 27)); // July
                         break;
                 }
             }
@@ -179,7 +182,9 @@ public final class ClimateTFC
 
     private static float getTemp(long seed, int z, long day, long hour, boolean bio, float rain)
     {
-        if (z < 0) z = -z;
+        // TODO: 13/7/18 Fix so that temperature that temp just goes hotter as you go south
+
+        if (z < MIN_Z) z = MIN_Z;
         if (z > MAX_Z) z = MAX_Z;
 
         final float zMod = Z_FACTOR_CACHE[z];
@@ -201,8 +206,8 @@ public final class ClimateTFC
 
         final float rainMod = (1f - (rain / 4000f)) * zMod;
 
-        final float monthTemp = MONTH_TEMP_CACHE[CalenderTFC.getSeasonFromDayOfYear(day, z > 0)][z];
-        final float lastMonthTemp = MONTH_TEMP_CACHE[CalenderTFC.getSeasonFromDayOfYear(day - CalenderTFC.getDaysInMonth(), z > 0)][z];
+        final float monthTemp = MONTH_TEMP_CACHE[CalenderTFC.getMonthFromDayOfYear(day)][z];
+        final float lastMonthTemp = MONTH_TEMP_CACHE[CalenderTFC.getMonthFromDayOfYear(day - CalenderTFC.getDaysInMonth())][z];
 
         final float monthDelta = ((monthTemp - lastMonthTemp) * CalenderTFC.getDayOfMonthFromDayOfYear(day)) / CalenderTFC.getDaysInMonth();
 
