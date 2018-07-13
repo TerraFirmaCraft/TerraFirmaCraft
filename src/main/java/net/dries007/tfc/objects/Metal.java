@@ -9,10 +9,12 @@ import java.util.function.BiFunction;
 
 import net.minecraft.item.Item;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.items.metal.*;
 
 import static net.dries007.tfc.objects.Metal.Tier.*;
 
+@MethodsReturnNonnullByDefault
 public enum Metal
 {
     BISMUTH(TIER_I, 0.14, 270),

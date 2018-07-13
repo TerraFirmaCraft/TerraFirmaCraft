@@ -30,6 +30,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.render.TESRChestTFC;
+import net.dries007.tfc.client.render.TESRIngotPile;
 import net.dries007.tfc.client.render.TESRPitKiln;
 import net.dries007.tfc.client.render.TESRWorldItem;
 import net.dries007.tfc.objects.Gem;
@@ -48,6 +49,7 @@ import net.dries007.tfc.objects.items.ItemGoldPan;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.te.TEChestTFC;
+import net.dries007.tfc.objects.te.TEIngotPile;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.objects.te.TEWorldItem;
 
@@ -107,6 +109,12 @@ public final class ClientRegisterEvents
         for (Block block : BlocksTFC.getAllDoorBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockDoor.POWERED).build());
 
+        for (Block block : BlocksTFC.getAllAnvils())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().build());
+
+        for (Block block : BlocksTFC.getAllSheets())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().build());
+
         for (BlockSlabTFC.Half block : BlocksTFC.getAllSlabBlocks())
         {
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockSlabTFC.VARIANT).build());
@@ -127,11 +135,15 @@ public final class ClientRegisterEvents
         ModelLoader.setCustomStateMapper(BlocksTFC.WORLD_ITEM, blockIn -> ImmutableMap.of(BlocksTFC.WORLD_ITEM.getDefaultState(), new ModelResourceLocation("tfc:empty")));
         ClientRegistry.bindTileEntitySpecialRenderer(TEWorldItem.class, new TESRWorldItem());
 
-        for (Block block : BlocksTFC.getAllNormalItemBlocks())
+        ModelLoader.setCustomStateMapper(BlocksTFC.INGOT_PILE, blockIn -> ImmutableMap.of(BlocksTFC.INGOT_PILE.getDefaultState(), new ModelResourceLocation("tfc:empty")));
+        ClientRegistry.bindTileEntitySpecialRenderer(TEIngotPile.class, new TESRIngotPile());
+
+        for (Block block : BlocksTFC.getAllNormalItemBlocks().keySet())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
 
-        for (Block block : BlocksTFC.getAllInventoryItemBlocks())
+        for (Block block : BlocksTFC.getAllInventoryItemBlocks().keySet())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
+
     }
 
     @SubscribeEvent

@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.items.metal;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import com.google.common.collect.Multimap;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -18,8 +20,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Metal;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class ItemMetalTool extends ItemMetal
 {
     public final ToolMaterial material;
@@ -217,5 +222,11 @@ public class ItemMetalTool extends ItemMetal
             multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", attackSpeed, 0));
         }
         return multimap;
+    }
+
+    @Override
+    public boolean canStack(ItemStack stack)
+    {
+        return false;
     }
 }

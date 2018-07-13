@@ -6,6 +6,7 @@
 package net.dries007.tfc;
 
 import org.apache.logging.log4j.Logger;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ICrashCallable;
@@ -18,11 +19,13 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import net.dries007.tfc.client.ClientEvents;
+import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.objects.CreativeTabsTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.util.CapabilityItemSize;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.CalenderTFC;
@@ -94,12 +97,16 @@ public class TerraFirmaCraft
         network.registerMessage(ChunkDataMessage.Handler.class, ChunkDataMessage.class, ++id, Side.CLIENT);
         ChunkCapabilityHandler.preInit();
 
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new TFCGuiHandler());
+
         CalenderTFC.reload();
 
         EntitiesTFC.preInit();
         FluidsTFC.preInit();
 
         OreSpawnData.preInit(event.getModConfigurationDirectory());
+        CapabilityItemSize.preInit();
+        MinecraftForge.EVENT_BUS.register(new CommonEventHandler());
 
         if (event.getSide().isClient()) ClientEvents.preInit();
     }

@@ -11,7 +11,6 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemSlab;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -117,8 +116,8 @@ public final class ItemsTFC
             }
         }
 
-        BlocksTFC.getAllNormalItemBlocks().forEach(x -> registerItemBlock(r, x));
-        BlocksTFC.getAllInventoryItemBlocks().forEach(x -> registerItemBlock(r, x));
+        BlocksTFC.getAllNormalItemBlocks().forEach((x, y) -> registerItemBlock(r, x, y));
+        BlocksTFC.getAllInventoryItemBlocks().forEach((x, y) -> registerItemBlock(r, x, y));
 
         for (BlockLogTFC log : BlocksTFC.getAllLogBlocks())
             simpleItems.add(register(r, log.getRegistryName().getResourcePath(), new ItemLogTFC(log), CT_WOOD));
@@ -127,7 +126,7 @@ public final class ItemsTFC
             simpleItems.add(register(r, door.getRegistryName().getResourcePath(), new ItemDoorTFC(door), CT_DECORATIONS));
 
         for (BlockSlabTFC.Half slab : BlocksTFC.getAllSlabBlocks())
-            simpleItems.add(register(r, slab.getRegistryName().getResourcePath(), new ItemSlab(slab, slab, slab.doubleSlab), CT_DECORATIONS));
+            simpleItems.add(register(r, slab.getRegistryName().getResourcePath(), new ItemSlabTFC(slab, slab, slab.doubleSlab), CT_DECORATIONS));
 
         for (Wood wood : Wood.values())
             simpleItems.add(register(r, "wood/lumber/" + wood.name().toLowerCase(), new ItemLumberTFC(wood), CT_WOOD));
@@ -180,7 +179,7 @@ public final class ItemsTFC
         r.register(new ItemFlat().setRegistryName(MOD_ID, "flat/fire_clay"));
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
-        simpleItems.add(register(r, "hay", new Item(), CT_MISC));
+        simpleItems.add(register(r, "hay", new ItemMisc(Size.SMALL, Weight.LIGHT), CT_MISC));
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
 
         // todo: Bow? Arrows?
@@ -225,6 +224,19 @@ public final class ItemsTFC
         register(r, nameFired, unfiredPottery.firedVersion, CT_POTTERY);
         register(r, nameUnfired, unfiredPottery, CT_POTTERY);
         if (items != null) items.add(unfiredPottery.firedVersion, unfiredPottery);
+    }
+
+    private static <T extends ItemBlock> void registerItemBlock(IForgeRegistry<Item> r, Block block, Class<T> itemBlockClass)
+    {
+        try
+        {
+            //noinspection ConstantConditions
+            r.register(itemBlockClass.getDeclaredConstructor(Block.class).newInstance(block).setRegistryName(block.getRegistryName()).setCreativeTab(block.getCreativeTabToDisplayOn()));
+        }
+        catch (Exception e)
+        {
+            // Problems
+        }
     }
 
     private static void registerItemBlock(IForgeRegistry<Item> r, Block block)

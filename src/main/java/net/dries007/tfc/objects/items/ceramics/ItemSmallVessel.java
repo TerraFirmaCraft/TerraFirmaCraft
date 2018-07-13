@@ -5,11 +5,17 @@
 
 package net.dries007.tfc.objects.items.ceramics;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
+import mcp.MethodsReturnNonnullByDefault;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class ItemSmallVessel extends ItemFiredPottery
 {
     public final boolean glazed;
