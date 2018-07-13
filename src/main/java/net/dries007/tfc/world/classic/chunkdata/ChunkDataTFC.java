@@ -21,6 +21,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 
 import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.DataLayer;
@@ -40,6 +41,7 @@ public final class ChunkDataTFC
         Arrays.fill(EMPTY.rockLayer1, DataLayer.ERROR);
         Arrays.fill(EMPTY.rockLayer2, DataLayer.ERROR);
         Arrays.fill(EMPTY.rockLayer3, DataLayer.ERROR);
+        Arrays.fill(EMPTY.treeLayers, null);
         Arrays.fill(EMPTY.evtLayer, DataLayer.ERROR);
         Arrays.fill(EMPTY.rainfallLayer, DataLayer.ERROR);
         Arrays.fill(EMPTY.drainageLayer, DataLayer.ERROR);
@@ -76,6 +78,7 @@ public final class ChunkDataTFC
     private final DataLayer[] rockLayer1 = new DataLayer[256];
     private final DataLayer[] rockLayer2 = new DataLayer[256];
     private final DataLayer[] rockLayer3 = new DataLayer[256];
+    private final Wood[] treeLayers = new Wood[3];
     private final DataLayer[] evtLayer = new DataLayer[256];
     private final DataLayer[] rainfallLayer = new DataLayer[256];
     private final DataLayer[] drainageLayer = new DataLayer[256];
@@ -90,12 +93,15 @@ public final class ChunkDataTFC
      * INTERNAL USE ONLY.
      * No need to mark as dirty, since this will only ever be called on worldgen, before the first chunk save.
      */
-    public void setGenerationData(DataLayer[] rockLayer1, DataLayer[] rockLayer2, DataLayer[] rockLayer3, DataLayer[] evtLayer, DataLayer[] rainfallLayer, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset)
+    public void setGenerationData(DataLayer[] rockLayer1, DataLayer[] rockLayer2, DataLayer[] rockLayer3, Wood[] treeLayers,
+                                  DataLayer[] evtLayer, DataLayer[] rainfallLayer, DataLayer[] stabilityLayer, DataLayer[] drainageLayer,
+                                  int[] seaLevelOffset)
     {
         this.initialized = true;
         System.arraycopy(rockLayer1, 0, this.rockLayer1, 0, 256);
         System.arraycopy(rockLayer2, 0, this.rockLayer2, 0, 256);
         System.arraycopy(rockLayer3, 0, this.rockLayer3, 0, 256);
+        System.arraycopy(treeLayers, 0, this.treeLayers, 0, 3);
         System.arraycopy(evtLayer, 0, this.evtLayer, 0, 256);
         System.arraycopy(rainfallLayer, 0, this.rainfallLayer, 0, 256);
         System.arraycopy(stabilityLayer, 0, this.stabilityLayer, 0, 256);
@@ -150,6 +156,12 @@ public final class ChunkDataTFC
 
     public DataLayer getRockLayer3(int x, int z) { return rockLayer3[z << 4 | x]; }
 
+    public Wood getTree1() { return treeLayers[0]; }
+
+    public Wood getTree2() { return treeLayers[1]; }
+
+    public Wood getTree3() { return treeLayers[2]; }
+
     public DataLayer getEvtLayer(int x, int z) { return evtLayer[z << 4 | x]; }
 
     public DataLayer getRainfallLayer(int x, int z) { return rainfallLayer[z << 4 | x]; }
@@ -173,11 +185,24 @@ public final class ChunkDataTFC
             return new NBTTagByteArray(Arrays.stream(layers).map(x -> (byte) x.layerID).collect(Collectors.toList()));
         }
 
+        public static NBTTagByteArray write(Wood[] trees)
+        {
+            return new NBTTagByteArray(Arrays.stream(trees).map(x -> (byte) x.index).collect(Collectors.toList()));
+        }
+
         public static void read(DataLayer[] layers, byte[] bytes)
         {
             for (int i = bytes.length - 1; i >= 0; i--)
             {
                 layers[i] = DataLayer.get(bytes[i]);
+            }
+        }
+
+        public static void read(Wood[] layers, byte[] bytes)
+        {
+            for (int i = bytes.length - 1; i >= 0; i--)
+            {
+                layers[i] = Wood.get(bytes[i]);
             }
         }
 
@@ -190,6 +215,7 @@ public final class ChunkDataTFC
             root.setTag("rockLayer1", write(instance.rockLayer1));
             root.setTag("rockLayer2", write(instance.rockLayer2));
             root.setTag("rockLayer3", write(instance.rockLayer3));
+            root.setTag("treeLayers", write(instance.treeLayers));
             root.setTag("evtLayer", write(instance.evtLayer));
             root.setTag("rainfallLayer", write(instance.rainfallLayer));
             root.setTag("stabilityLayer", write(instance.stabilityLayer));
@@ -212,6 +238,7 @@ public final class ChunkDataTFC
             read(instance.rockLayer1, root.getByteArray("rockLayer1"));
             read(instance.rockLayer2, root.getByteArray("rockLayer2"));
             read(instance.rockLayer3, root.getByteArray("rockLayer3"));
+            read(instance.treeLayers, root.getByteArray("treeLayers"));
             read(instance.evtLayer, root.getByteArray("evtLayer"));
             read(instance.rainfallLayer, root.getByteArray("rainfallLayer"));
             read(instance.stabilityLayer, root.getByteArray("stabilityLayer"));
