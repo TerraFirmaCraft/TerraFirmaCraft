@@ -121,7 +121,9 @@ public class ChunkGenTFC implements IChunkGenerator
     private final DataLayer[] rainfallLayer = new DataLayer[256];
     private final DataLayer[] stabilityLayer = new DataLayer[256];
     private final DataLayer[] drainageLayer = new DataLayer[256];
-    private final Wood[] trees = new Wood[3];
+    private final Wood[] treeLayer1 = new Wood[256];
+    private final Wood[] treeLayer2 = new Wood[256];
+    private final Wood[] treeLayer3 = new Wood[256];
     private final int[] seaLevelOffsetMap = new int[256];
     private final int[] chunkHeightMap = new int[256];
 
@@ -187,14 +189,13 @@ public class ChunkGenTFC implements IChunkGenerator
         loadLayerGeneratorData(rocksGenLayer1, rockLayer1, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(rocksGenLayer2, rockLayer2, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(rocksGenLayer3, rockLayer3, chunkX * 16, chunkZ * 16, 16, 16);
+        loadLayerGeneratorData(treesGenLayer1, treeLayer1, chunkX * 16, chunkZ * 16, 16, 16);
+        loadLayerGeneratorData(treesGenLayer2, treeLayer2, chunkX * 16, chunkZ * 16, 16, 16);
+        loadLayerGeneratorData(treesGenLayer3, treeLayer3, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(evtGenLayer, evtLayer, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(rainfallGenLayer, rainfallLayer, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(stabilityGenLayer, stabilityLayer, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(drainageGenLayer, drainageLayer, chunkX * 16, chunkZ * 16, 16, 16);
-
-        trees[0] = Wood.get(treesGenLayer1.getInts(chunkX * 16, chunkZ * 16, 1, 1)[0]);
-        trees[1] = Wood.get(treesGenLayer2.getInts(chunkX * 16, chunkZ * 16, 1, 1)[0]);
-        trees[2] = Wood.get(treesGenLayer3.getInts(chunkX * 16, chunkZ * 16, 1, 1)[0]);
 
         CustomChunkPrimer chunkPrimerOut = new CustomChunkPrimer();
         replaceBlocksForBiomeHigh(chunkX, chunkZ, chunkPrimerIn, chunkPrimerOut);
@@ -229,7 +230,8 @@ public class ChunkGenTFC implements IChunkGenerator
 
         ChunkDataTFC chunkData = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
         if (chunkData == null) throw new IllegalStateException("ChunkData capability is missing.");
-        chunkData.setGenerationData(rockLayer1, rockLayer2, rockLayer3, trees, evtLayer, rainfallLayer, stabilityLayer, drainageLayer, seaLevelOffsetMap);
+        chunkData.setGenerationData(rockLayer1, rockLayer2, rockLayer3, treeLayer1, treeLayer2, treeLayer3,
+            evtLayer, rainfallLayer, stabilityLayer, drainageLayer, seaLevelOffsetMap);
 
         byte[] biomeIds = chunk.getBiomeArray();
         for (int x = 0; x < 16; ++x)
@@ -346,6 +348,15 @@ public class ChunkGenTFC implements IChunkGenerator
         for (int i = 0; i < width * height; ++i)
         {
             layers[i] = DataLayer.get(ints[i]);
+        }
+    }
+    private void loadLayerGeneratorData(GenLayerTFC gen, Wood[] layers, int x, int y, int width, int height)
+    {
+        IntCache.resetIntCache();
+        int[] ints = gen.getInts(x, y, width, height);
+        for (int i = 0; i < width * height; ++i)
+        {
+            layers[i] = Wood.get(ints[i]);
         }
     }
 

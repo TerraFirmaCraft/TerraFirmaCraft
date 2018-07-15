@@ -109,6 +109,7 @@ public class ClientEvents
                     list.add(GRAY + "Rocks: " + WHITE + data.getRockLayer1(x, z).name + ", " + data.getRockLayer2(x, z).name + ", " + data.getRockLayer3(x, z).name);
                     list.add(GRAY + "EVT: " + WHITE + data.getEvtLayer(x, z).name);
                     list.add(GRAY + "Rainfall: " + WHITE + data.getRainfallLayer(x, z).name);
+                    list.add(GRAY + "Trees: "+ WHITE + data.getTreeLayer1(x, z).name() + ", " + data.getTreeLayer2(x, z).name() + ", " + data.getTreeLayer3(x, z).name());
                     list.add(GRAY + "Stability: " + WHITE + data.getStabilityLayer(x, z).name);
                     list.add(GRAY + "Drainage: " + WHITE + data.getDrainageLayer(x, z).name);
                     list.add(GRAY + "Sea level offset: " + WHITE + data.getSeaLevelOffset(x, z));
