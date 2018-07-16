@@ -7,6 +7,7 @@ package net.dries007.tfc.objects;
 
 import net.dries007.tfc.objects.trees.ITreeGenerator;
 import net.dries007.tfc.objects.trees.TreeGenNormal;
+import net.dries007.tfc.objects.trees.TreeGenTall;
 
 public enum Wood
 {
