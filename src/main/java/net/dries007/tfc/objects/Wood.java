@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.objects;
 
+import net.dries007.tfc.objects.trees.ITreeGenerator;
+import net.dries007.tfc.objects.trees.TreeGenNormal;
+
 public enum Wood
 {
     ACACIA(0, 12620, 7060, false, false), //Acacia Koa
@@ -36,6 +39,25 @@ public enum Wood
         }
         throw new IndexOutOfBoundsException("No wood found matching " + i);
     }
+
+    private static ITreeGenerator genNormal = new TreeGenNormal();
+    private static ITreeGenerator genTall = new TreeGenTall();
+
+    public int getRadiusForGrowth() { return 2; } // todo: make this a property of each tree
+
+    public ITreeGenerator getTreeGenerator()
+    {
+        switch(this)
+        {
+            case DOUGLAS_FIR:
+            case WHITE_CEDAR:
+            case BLACKWOOD:
+                return genTall;
+            default:
+                return genNormal;
+        }
+    }
+
     public final int bend;
     public final int compression;
     public final boolean isEverGreen, isSwapTree;

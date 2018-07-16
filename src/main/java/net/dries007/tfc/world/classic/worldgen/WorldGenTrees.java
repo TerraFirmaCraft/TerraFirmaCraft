@@ -27,12 +27,39 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.biomes.BiomeTFC;
 import net.dries007.tfc.objects.biomes.BiomesTFC;
-import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.trees.ITreeGenerator;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class WorldGenTrees implements IWorldGenerator
 {
+
+    public static PlacementSettings getDefaultSettings()
+    {
+        return new PlacementSettings()
+            //.setMirror(Mirror.values()[rand.nextInt(Mirror.values().length)])
+            //.setRotation(Rotation.values()[rand.nextInt(Rotation.values().length)])
+            .setIgnoreEntities(false)
+            .setIgnoreStructureBlock(false)
+            .setReplacedBlock(Blocks.AIR);
+
+    }
+
+    public static boolean canGenerateTree(World world, BlockPos pos, Template tree, PlacementSettings settings, Wood treeType)
+    {
+        // Check if ground is flat enough
+        final int radius = treeType.getRadiusForGrowth();
+        for (int x = -radius; x <= radius; x++)
+        {
+            for (int z = -radius; z <= radius; z++)
+            {
+                if (!world.getBlockState(pos.add(x, 1, z)).getMaterial().isReplaceable())
+                    return false;
+            }
+        }
+        return true;
+    }
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
@@ -43,17 +70,19 @@ public class WorldGenTrees implements IWorldGenerator
         ChunkDataTFC chunkData = ChunkDataTFC.get(world, chunkBlockPos);
         if (!chunkData.isInitialized()) return;
 
-        Biome b = world.getBiome(chunkBlockPos);
+        final Biome b = world.getBiome(chunkBlockPos);
         //noinspection ConstantConditions
         if(!(b instanceof BiomeTFC) || b == BiomesTFC.OCEAN || b == BiomesTFC.DEEP_OCEAN || b == BiomesTFC.LAKE || b == BiomesTFC.RIVER) return;
 
-        TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
+        final TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
 
         for(int i = 0; i < 3; i++)
         {
             final int x = chunkX * 16 + random.nextInt(16) + 8;
             final int z = chunkZ * 16 + random.nextInt(16) + 8;
             final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x,0,z));
+            if (world.getBlockState(pos).getBlock() != Blocks.AIR || !BlocksTFC.isSoil(world.getBlockState(pos.down())))
+                continue;
 
             final Wood tree;
             final float rng = random.nextFloat();
@@ -65,14 +94,17 @@ public class WorldGenTrees implements IWorldGenerator
             else
                 tree = chunkData.getTree3(pos);
 
+            ITreeGenerator gen = tree.getTreeGenerator();
+            gen.generateTree(manager, world, pos, tree, random);
+
             //world.setBlockState(new BlockPos(x, 180, z), BlockLogTFC.get(tree1).getDefaultState(), 2);
             //world.setBlockState(new BlockPos(x + 1, 180, z), BlockLogTFC.get(tree2).getDefaultState(), 2);
             //world.setBlockState(new BlockPos(x + 2, 180, z), BlockLogTFC.get(tree3).getDefaultState(), 2);
 
-            //generateTree(manager, world, pos, Wood.ASH, random);
+            //generateTree(manager, world, pos, tree, random);
 
-            for(int j = 0; j < 5; j++)
-                world.setBlockState(pos.up(j), BlockLogTFC.get(tree).getDefaultState(), 2);
+            //for(int j = 0; j < 5; j++)
+            //    world.setBlockState(pos.up(j), BlockLogTFC.get(tree).getDefaultState(), 2);
 
         }
 
@@ -92,17 +124,9 @@ public class WorldGenTrees implements IWorldGenerator
             .setIgnoreStructureBlock(false)
             .setReplacedBlock(Blocks.AIR);
 
-        if (canGenerateTree(world, pos, template))
+        //if (canGenerateTree(world, pos, template, settings, tree))
         {
             template.addBlocksToWorld(world, pos, settings);
         }
-    }
-
-    private boolean canGenerateTree(World world, BlockPos pos, Template tree)
-    {
-        // Check if ground is flat enough
-        // Check if no blocks will be overwritten
-        //tree.getDataBlocks()
-        return false;
     }
 }
