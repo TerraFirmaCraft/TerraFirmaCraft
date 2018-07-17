@@ -7,7 +7,7 @@ package net.dries007.tfc.objects;
 
 import net.dries007.tfc.objects.trees.ITreeGenerator;
 import net.dries007.tfc.objects.trees.TreeGenNormal;
-import net.dries007.tfc.objects.trees.TreeGenTall;
+import net.dries007.tfc.objects.trees.TreeGenVariants;
 
 public enum Wood
 {
@@ -41,8 +41,10 @@ public enum Wood
         throw new IndexOutOfBoundsException("No wood found matching " + i);
     }
 
-    private static ITreeGenerator genNormal = new TreeGenNormal();
-    private static ITreeGenerator genTall = new TreeGenTall();
+    private static ITreeGenerator genNormal = new TreeGenNormal(1, 3); // Short trees. For oak style
+    private static ITreeGenerator genFixed = new TreeGenNormal(0, 0); // Fixed height. For douglas fir style
+    private static ITreeGenerator genTall = new TreeGenNormal(3, 3); // Tall trees. For oak style
+    private static ITreeGenerator genPineVariant = new TreeGenVariants(false, "1", "2", "3", "4", "5", "6", "7");
 
     public int getRadiusForGrowth() { return 2; } // todo: make this a property of each tree
 
@@ -53,7 +55,14 @@ public enum Wood
             case DOUGLAS_FIR:
             case WHITE_CEDAR:
             case BLACKWOOD:
+                return genFixed;
+            case ASH:
+            case ASPEN:
+            case HICKORY:
                 return genTall;
+            case PINE:
+            case SPRUCE:
+                return genPineVariant;
             default:
                 return genNormal;
         }

@@ -30,25 +30,25 @@ def tree(origin, wood, nameout):
 
 
 WOOD_TYPES = {
+    'acacia': 'normal',
     'ash': 'normal',
     'aspen': 'normal',
     'birch': 'normal',
+    'blackwood': 'normal'
     'chestnut': 'normal',
     'douglas_fir': 'tall',
     'hickory': 'normal',
     'maple': 'normal',
     'oak': 'normal',
-    'pine': 'normal',
+'palm': 'palm'
+        'pine': 'conifer',
+                'rosewood': 'tall'
     'sequoia': 'normal',
-    'spruce': 'normal',
+               'spruce': 'conifer',
     'sycamore': 'normal',
     'white_cedar': 'tall',
     'willow': 'normal',
-    'kapok': 'normal',
-    'acacia': 'normal',
-    'rosewood': 'normal',
-    'blackwood': 'tall',
-    'palm': 'normal'
+'kapok': 'normal'
 }
 
 for wood, key in WOOD_TYPES.items():
@@ -60,3 +60,9 @@ for wood, key in WOOD_TYPES.items():
     if key == 'tall':
         tree('base/tall', wood, 'base')
         tree('base/tall_overlay', wood, 'overlay')
+    # todo: palm trees
+    if key == 'conifer':
+        for s in ['1', '2', '3', '4', '5', '6', '7']:
+            tree('base/conifer' + s, wood, s)
+    # todo: 2x2 coniferous trees
+    # todo: willow trees

@@ -16,5 +16,14 @@ import net.dries007.tfc.objects.Wood;
 
 public interface ITreeGenerator
 {
+    /**
+     * Called to generate a tree. Each Tree must have one of these. Used for world gen and sapling growth
+     *
+     * @param manager an instance of the world's template manager. Used for getting structures.
+     * @param world   The world
+     * @param pos     The position where the sapling was / would've been
+     * @param tree    The tree type to spawn
+     * @param rand    A random to use in generation
+     */
     void generateTree(TemplateManager manager, World world, BlockPos pos, Wood tree, Random rand);
 }
