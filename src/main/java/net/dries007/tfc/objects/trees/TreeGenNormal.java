@@ -17,12 +17,26 @@ import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
 public class TreeGenNormal implements ITreeGenerator
 {
+    private final int heightMin;
+    private final int heightRange;
+
+    public TreeGenNormal(int heightMin, int heightRange)
+    {
+        this.heightMin = heightMin;
+        this.heightRange = heightRange;
+    }
+
+    public TreeGenNormal()
+    {
+        this(1, 4);
+    }
 
     @Override
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Wood tree, Random rand)
@@ -30,12 +44,17 @@ public class TreeGenNormal implements ITreeGenerator
         ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree + "/base");
         ResourceLocation overlay = new ResourceLocation(Constants.MOD_ID, tree + "/overlay");
 
-        Template structureBase = manager.getTemplate(world.getMinecraftServer(), base);
-        Template structureOverlay = manager.getTemplate(world.getMinecraftServer(), overlay);
+        Template structureBase = manager.get(world.getMinecraftServer(), base);
+        Template structureOverlay = manager.get(world.getMinecraftServer(), overlay);
+
+        if (structureBase == null || structureOverlay == null)
+        {
+            TerraFirmaCraft.getLog().warn("Unable to find a template for " + base.toString() + " or " + overlay.toString());
+            return;
+        }
 
         PlacementSettings settings = WorldGenTrees.getDefaultSettings();
-
-        int height = 1 + rand.nextInt(4);
+        int height = heightMin + (heightRange > 0 ? rand.nextInt(heightRange) : 0);
 
         BlockPos size = structureBase.getSize();
         pos = pos.add(-size.getX() / 2, height, -size.getZ() / 2);
