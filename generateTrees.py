@@ -1,8 +1,8 @@
 import os
+
 from nbtlib import nbt
 from nbtlib.tag import *
 
-os.chdir('src/main/resources/assets/tfc/structures/')
 
 def tree(origin, wood, nameout):
     f = nbt.load(origin + '.nbt')
@@ -24,9 +24,9 @@ def tree(origin, wood, nameout):
                 'check_decay': String('true'),
                 'decayable': String('true')
             })
-    if not os.path.exists(wood):
-        os.mkdir(wood)
-    f.save(wood + '/' + nameout + '.nbt')
+    if not os.path.exists('src/main/resources/assets/tfc/structures/' + wood):
+        os.makedirs('src/main/resources/assets/tfc/structures/' + wood)
+    f.save('src/main/resources/assets/tfc/structures/' + wood + '/' + nameout + '.nbt')
 
 
 WOOD_TYPES = {
@@ -34,35 +34,49 @@ WOOD_TYPES = {
     'ash': 'normal',
     'aspen': 'normal',
     'birch': 'normal',
-    'blackwood': 'normal'
+    'blackwood': 'normal',
     'chestnut': 'normal',
     'douglas_fir': 'tall',
     'hickory': 'normal',
     'maple': 'normal',
     'oak': 'normal',
-'palm': 'palm'
-        'pine': 'conifer',
-                'rosewood': 'tall'
+    'palm': 'tropical',
+    'pine': 'conifer',
+    'rosewood': 'tall',
     'sequoia': 'normal',
-               'spruce': 'conifer',
+    'spruce': 'conifer',
     'sycamore': 'normal',
     'white_cedar': 'tall',
-    'willow': 'normal',
-'kapok': 'normal'
+    'willow': 'willow',
+    'kapok': 'normal'
 }
 
 for wood, key in WOOD_TYPES.items():
-    # normal
+    # normal (vanilla oak)
     if key == 'normal':
-        tree('base/normal', wood, 'base')
-        tree('base/normal_overlay', wood, 'overlay')
+        tree('structure_templates/normal', wood, 'base')
+        tree('structure_templates/normal_overlay', wood, 'overlay')
+
     # tall (douglas fir)
     if key == 'tall':
-        tree('base/tall', wood, 'base')
-        tree('base/tall_overlay', wood, 'overlay')
-    # todo: palm trees
+        tree('structure_templates/tall', wood, 'base')
+        tree('structure_templates/tall_overlay', wood, 'overlay')
+
+    # overhang (willow)
+    if key == 'willow':
+        tree('structure_templates/w1', wood, 'base')
+        tree('structure_templates/w2', wood, 'overlay')
+
+    # conifer (vanilla spruce)
     if key == 'conifer':
         for s in ['1', '2', '3', '4', '5', '6', '7']:
-            tree('base/conifer' + s, wood, s)
-    # todo: 2x2 coniferous trees
-    # todo: willow trees
+            tree('structure_templates/conifer' + s, wood, s)
+
+    # palm like trees
+    if key == 'tropical':
+        for s in ['1', '2', '3', '4', '5', '6', '7']:
+            tree('structure_templates/t' + s, wood, s)
+
+    # todo: 2x2 coniferous trees (built in parts)
+    # todo: acacia trees (vanilla style, but bigger?)
+    # todo: kapok trees (vanilla style jungle, built in parts)

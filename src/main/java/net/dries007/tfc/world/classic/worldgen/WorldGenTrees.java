@@ -9,8 +9,6 @@ package net.dries007.tfc.world.classic.worldgen;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -23,7 +21,6 @@ import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.biomes.BiomeTFC;
 import net.dries007.tfc.objects.biomes.BiomesTFC;
@@ -38,12 +35,16 @@ public class WorldGenTrees implements IWorldGenerator
     public static PlacementSettings getDefaultSettings()
     {
         return new PlacementSettings()
-            //.setMirror(Mirror.values()[rand.nextInt(Mirror.values().length)])
-            //.setRotation(Rotation.values()[rand.nextInt(Rotation.values().length)])
             .setIgnoreEntities(false)
             .setIgnoreStructureBlock(false)
             .setReplacedBlock(Blocks.AIR);
+    }
 
+    public static PlacementSettings getRandomSettings(Random rand)
+    {
+        return getDefaultSettings()
+            //.setMirror(Mirror.values()[rand.nextInt(Mirror.values().length)])
+            .setRotation(Rotation.values()[rand.nextInt(Rotation.values().length)]);
     }
 
     public static boolean canGenerateTree(World world, BlockPos pos, Template tree, PlacementSettings settings, Wood treeType)
@@ -108,25 +109,5 @@ public class WorldGenTrees implements IWorldGenerator
 
         }
 
-    }
-
-    public void generateTree(TemplateManager manager, World world, BlockPos pos, Wood tree, Random rand)
-    {
-        // todo: change this to use some number somewhere of tree structure names
-        ResourceLocation loc = new ResourceLocation(Constants.MOD_ID, tree.name().toLowerCase() + "/" + "ashlarge1");
-        Template template = manager.getTemplate(world.getMinecraftServer(), loc);
-        BlockPos size = template.getSize();
-        pos = pos.add(-size.getX() / 2, 0, -size.getY() / 2);
-        PlacementSettings settings = new PlacementSettings()
-            .setMirror(Mirror.values()[rand.nextInt(Mirror.values().length)])
-            .setRotation(Rotation.values()[rand.nextInt(Rotation.values().length)])
-            .setIgnoreEntities(false)
-            .setIgnoreStructureBlock(false)
-            .setReplacedBlock(Blocks.AIR);
-
-        //if (canGenerateTree(world, pos, template, settings, tree))
-        {
-            template.addBlocksToWorld(world, pos, settings);
-        }
     }
 }
