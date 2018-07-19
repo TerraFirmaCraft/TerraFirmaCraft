@@ -8,6 +8,7 @@ package net.dries007.tfc.objects;
 import net.dries007.tfc.objects.trees.ITreeGenerator;
 import net.dries007.tfc.objects.trees.TreeGenNormal;
 import net.dries007.tfc.objects.trees.TreeGenVariants;
+import net.dries007.tfc.objects.trees.TreeGenWillow;
 
 public enum Wood
 {
@@ -42,9 +43,11 @@ public enum Wood
     }
 
     private static ITreeGenerator genNormal = new TreeGenNormal(1, 3); // Short trees. For oak style
-    private static ITreeGenerator genFixed = new TreeGenNormal(0, 0); // Fixed height. For douglas fir style
+    private static ITreeGenerator genFixed = new TreeGenNormal(0, 2); // Short height range For douglas fir style
     private static ITreeGenerator genTall = new TreeGenNormal(3, 3); // Tall trees. For oak style
-    private static ITreeGenerator genPineVariant = new TreeGenVariants(false, "1", "2", "3", "4", "5", "6", "7");
+    private static ITreeGenerator genVariant7 = new TreeGenVariants(false, "1", "2", "3", "4", "5", "6", "7"); // 7 Variants. Conifer
+    private static ITreeGenerator genVariant7WithRotation = new TreeGenVariants(true, "1", "2", "3", "4", "5", "6", "7"); // 7 Variants. Tropical
+    private static ITreeGenerator genWillow = new TreeGenWillow(); // Special builder for willow trees
 
     public int getRadiusForGrowth() { return 2; } // todo: make this a property of each tree
 
@@ -59,10 +62,15 @@ public enum Wood
             case ASH:
             case ASPEN:
             case HICKORY:
+            case BIRCH:
                 return genTall;
             case PINE:
             case SPRUCE:
-                return genPineVariant;
+                return genVariant7;
+            case PALM:
+                return genVariant7WithRotation;
+            case WILLOW:
+                return genWillow;
             default:
                 return genNormal;
         }

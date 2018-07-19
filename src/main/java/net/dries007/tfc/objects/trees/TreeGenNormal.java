@@ -56,11 +56,11 @@ public class TreeGenNormal implements ITreeGenerator
         PlacementSettings settings = WorldGenTrees.getDefaultSettings();
         int height = heightMin + (heightRange > 0 ? rand.nextInt(heightRange) : 0);
 
-        BlockPos size = structureBase.getSize();
-        pos = pos.add(-size.getX() / 2, height, -size.getZ() / 2);
-
-        if (WorldGenTrees.canGenerateTree(world, pos.down(height), structureBase, settings, tree))
+        if (WorldGenTrees.canGenerateTree(world, pos, structureBase, settings, tree))
         {
+            BlockPos size = structureBase.getSize();
+            pos = pos.add(-size.getX() / 2, height, -size.getZ() / 2);
+
             structureBase.addBlocksToWorld(world, pos, settings);
             structureOverlay.addBlocksToWorld(world, pos, settings.setIntegrity(0.5f));
 

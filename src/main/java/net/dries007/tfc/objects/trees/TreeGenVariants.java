@@ -49,13 +49,13 @@ public class TreeGenVariants implements ITreeGenerator
             return;
         }
 
-        PlacementSettings settings = WorldGenTrees.getDefaultSettings();
-        // do rotation things. Keep block pos in mind
-        BlockPos size = structureBase.getSize();
-        pos = pos.add(-size.getX() / 2, 0, -size.getZ() / 2);
+        PlacementSettings settings = useRotation ? WorldGenTrees.getRandomSettings(rand) : WorldGenTrees.getDefaultSettings();
 
         if (WorldGenTrees.canGenerateTree(world, pos, structureBase, settings, tree))
         {
+            BlockPos size = structureBase.getSize().rotate(settings.getRotation());
+            // Begin rotation things
+            pos = pos.add(-size.getX() / 2, 0, -size.getZ() / 2);
             structureBase.addBlocksToWorld(world, pos, settings);
         }
     }
