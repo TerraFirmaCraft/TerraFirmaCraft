@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.blocks.metal;
@@ -76,13 +75,6 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
@@ -109,19 +101,19 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
 
     @Override
     @SuppressWarnings("deprecation")
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         if (!collapseDown(worldIn, pos) && !worldIn.isSideSolid(pos.down(), EnumFacing.UP))
         {
             worldIn.setBlockToAir(pos);
         }
-    }
-
-    @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        TEIngotPile te = Helpers.getTE(world, pos, TEIngotPile.class);
-        return new ItemStack(ItemMetal.get((te != null ? te.getMetal() : Metal.UNKNOWN), Metal.ItemType.INGOT));
     }
 
     @Override
@@ -183,6 +175,13 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
             }
         } while (posTop.getY() <= 256);
         return false;
+    }
+
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        TEIngotPile te = Helpers.getTE(world, pos, TEIngotPile.class);
+        return new ItemStack(ItemMetal.get((te != null ? te.getMetal() : Metal.UNKNOWN), Metal.ItemType.INGOT));
     }
 
     private boolean collapseDown(World world, BlockPos pos)

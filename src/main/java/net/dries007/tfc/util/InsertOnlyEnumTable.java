@@ -136,9 +136,9 @@ public class InsertOnlyEnumTable<R extends Enum<R>, C extends Enum<C>, T> implem
     public ImmutableSet<Cell<R, C, T>> cellSet()
     {
         return rowMap.entrySet().stream().map(
-                e1 -> e1.getValue().entrySet().stream().map(
-                        e2 -> Tables.immutableCell(e1.getKey(), e2.getKey(), e2.getValue())
-                ).collect(Collectors.toSet())).flatMap(Set::stream).collect(ImmutableSet.toImmutableSet());
+            e1 -> e1.getValue().entrySet().stream().map(
+                e2 -> Tables.immutableCell(e1.getKey(), e2.getKey(), e2.getValue())
+            ).collect(Collectors.toSet())).flatMap(Set::stream).collect(ImmutableSet.toImmutableSet());
     }
 
     @Override

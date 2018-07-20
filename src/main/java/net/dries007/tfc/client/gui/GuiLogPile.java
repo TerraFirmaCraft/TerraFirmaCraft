@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.client.gui;
@@ -12,13 +11,15 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 
+@SideOnly(Side.CLIENT)
 public class GuiLogPile extends GuiContainer
 {
-
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/log_pile.png");
     private InventoryPlayer playerInv;
 

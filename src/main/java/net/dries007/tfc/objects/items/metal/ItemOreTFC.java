@@ -14,7 +14,7 @@ import net.minecraft.util.NonNullList;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.objects.Size;
 import net.dries007.tfc.objects.Weight;
 import net.dries007.tfc.objects.items.ItemTFC;
@@ -25,26 +25,26 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class ItemOreTFC extends ItemTFC implements IMetalObject
 {
-    private static final EnumMap<Ore, ItemOreTFC> MAP = new EnumMap<>(Ore.class);
+    private static final EnumMap<OreEnum, ItemOreTFC> MAP = new EnumMap<>(OreEnum.class);
 
-    public static ItemOreTFC get(Ore ore)
+    public static ItemOreTFC get(OreEnum ore)
     {
         return MAP.get(ore);
     }
 
-    public static ItemStack get(Ore ore, Ore.Grade grade, int amount)
+    public static ItemStack get(OreEnum ore, OreEnum.Grade grade, int amount)
     {
         return new ItemStack(MAP.get(ore), amount, ore.graded ? grade.getMeta() : 0);
     }
 
-    public static ItemStack get(Ore ore, int amount)
+    public static ItemStack get(OreEnum ore, int amount)
     {
         return new ItemStack(MAP.get(ore), amount);
     }
 
-    public final Ore ore;
+    public final OreEnum ore;
 
-    public ItemOreTFC(Ore ore)
+    public ItemOreTFC(OreEnum ore)
     {
         this.ore = ore;
         if (MAP.put(ore, this) != null) throw new IllegalStateException("There can only be one.");
@@ -54,7 +54,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
             setHasSubtypes(true);
             OreDictionaryHelper.register(this, "ore");
             OreDictionaryHelper.register(this, "ore", ore);
-            for (Ore.Grade grade : Ore.Grade.values())
+            for (OreEnum.Grade grade : OreEnum.Grade.values())
             {
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", grade);
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore, grade);
@@ -75,16 +75,16 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
         }
     }
 
-    public Ore.Grade getGradeFromStack(ItemStack stack)
+    public OreEnum.Grade getGradeFromStack(ItemStack stack)
     {
-        return Ore.Grade.byMetadata(stack.getItemDamage());
+        return OreEnum.Grade.byMetadata(stack.getItemDamage());
     }
 
     @Override
     public String getUnlocalizedName(ItemStack stack)
     {
-        Ore.Grade grade = getGradeFromStack(stack);
-        if (grade == Ore.Grade.NORMAL) return super.getUnlocalizedName(stack);
+        OreEnum.Grade grade = getGradeFromStack(stack);
+        if (grade == OreEnum.Grade.NORMAL) return super.getUnlocalizedName(stack);
         return super.getUnlocalizedName(stack) + "." + grade.getName();
     }
 
@@ -93,7 +93,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     {
         if (!isInCreativeTab(tab)) return;
         if (ore.graded)
-            for (Ore.Grade grade : Ore.Grade.values())
+            for (OreEnum.Grade grade : OreEnum.Grade.values())
                 items.add(new ItemStack(this, 1, grade.getMeta()));
         else
             items.add(new ItemStack(this));

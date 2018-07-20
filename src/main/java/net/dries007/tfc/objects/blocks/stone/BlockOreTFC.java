@@ -17,38 +17,38 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
 
 public class BlockOreTFC extends Block
 {
-    public static final PropertyEnum<Ore.Grade> GRADE = PropertyEnum.create("grade", Ore.Grade.class);
-    private static final InsertOnlyEnumTable<Ore, Rock, BlockOreTFC> TABLE = new InsertOnlyEnumTable<>(Ore.class, Rock.class);
+    public static final PropertyEnum<OreEnum.Grade> GRADE = PropertyEnum.create("grade", OreEnum.Grade.class);
+    private static final InsertOnlyEnumTable<OreEnum, Rock, BlockOreTFC> TABLE = new InsertOnlyEnumTable<>(OreEnum.class, Rock.class);
 
-    public static BlockOreTFC get(Ore ore, Rock rock)
+    public static BlockOreTFC get(OreEnum ore, Rock rock)
     {
         return TABLE.get(ore, rock);
     }
 
-    public static IBlockState get(Ore ore, Rock rock, Ore.Grade grade)
+    public static IBlockState get(OreEnum ore, Rock rock, OreEnum.Grade grade)
     {
         IBlockState state = TABLE.get(ore, rock).getDefaultState();
         if (!ore.graded) return state;
         return state.withProperty(GRADE, grade);
     }
 
-    public final Ore ore;
+    public final OreEnum ore;
     public final Rock rock;
 
-    public BlockOreTFC(Ore ore, Rock rock)
+    public BlockOreTFC(OreEnum ore, Rock rock)
     {
         super(Rock.Type.RAW.material);
         TABLE.put(ore, rock, this);
         this.ore = ore;
         this.rock = rock;
-        setDefaultState(blockState.getBaseState().withProperty(GRADE, Ore.Grade.NORMAL));
+        setDefaultState(blockState.getBaseState().withProperty(GRADE, OreEnum.Grade.NORMAL));
         setSoundType(SoundType.STONE);
         setHardness(2.0F).setResistance(10.0F);
         setHarvestLevel("pickaxe", 0);
@@ -58,7 +58,7 @@ public class BlockOreTFC extends Block
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return getDefaultState().withProperty(GRADE, Ore.Grade.byMetadata(meta));
+        return getDefaultState().withProperty(GRADE, OreEnum.Grade.byMetadata(meta));
     }
 
     @Override

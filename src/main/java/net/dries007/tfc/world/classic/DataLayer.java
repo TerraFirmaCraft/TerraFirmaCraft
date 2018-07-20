@@ -14,8 +14,8 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 @SuppressWarnings("WeakerAccess")
 public final class DataLayer
 {
-    private static final DataLayer[] LAYERS = new DataLayer[256];
     public static final DataLayer ERROR = new DataLayer(-1, null, "ERROR", Integer.MIN_VALUE, Float.NaN);
+    private static final DataLayer[] LAYERS = new DataLayer[256];
     public static final DataLayer GRANITE = newBlockDataLayer(0, BlockRockVariant.get(Rock.GRANITE, Rock.Type.RAW), "Granite");
     public static final DataLayer DIORITE = newBlockDataLayer(1, BlockRockVariant.get(Rock.DIORITE, Rock.Type.RAW), "Diorite");
     public static final DataLayer GABBRO = newBlockDataLayer(2, BlockRockVariant.get(Rock.GABBRO, Rock.Type.RAW), "Gabbro");
@@ -44,17 +44,20 @@ public final class DataLayer
     public static final DataLayer CHESTNUT = newIntDataLayer(33, "Chestnut", 3);
     public static final DataLayer DOUGLASFIR = newIntDataLayer(34, "Douglas Fir", 4);
     public static final DataLayer HICKORY = newIntDataLayer(35, "Hickory", 5);
-    public static final DataLayer KOA = newIntDataLayer(45, "Acacia Koa", 0);
     public static final DataLayer MAPLE = newIntDataLayer(36, "Maple", 6);
     public static final DataLayer OAK = newIntDataLayer(37, "Oak", 0);
     public static final DataLayer PINE = newIntDataLayer(38, "Pine", 8);
     public static final DataLayer REDWOOD = newIntDataLayer(39, "Sequoia", 9);
     public static final DataLayer SPRUCE = newIntDataLayer(40, "Spruce", 10);
     public static final DataLayer SYCAMORE = newIntDataLayer(41, "Sycamore", 11);
-    public static final DataLayer SAVANNAHACACIA = newIntDataLayer(46, "Acacia Savannah", 0);
     public static final DataLayer WHITECEDAR = newIntDataLayer(42, "White Cedar", 12);
     public static final DataLayer WHITEELM = newIntDataLayer(43, "White Elm", 13);
     public static final DataLayer WILLOW = newIntDataLayer(44, "Willow", 14);
+
+    public static final DataLayer KOA = newIntDataLayer(45, "Acacia Koa", 0);
+    public static final DataLayer SAVANNAHACACIA = newIntDataLayer(46, "Acacia Savannah", 0);
+
+    //Evapotranspiration,
     public static final DataLayer EVT_0_125 = newFloatDataLayer(80, "0.125", 0.125f);
     public static final DataLayer EVT_0_25 = newFloatDataLayer(81, "0.25", 0.25f);
     public static final DataLayer EVT_0_5 = newFloatDataLayer(82, "0.5", 0.5f);

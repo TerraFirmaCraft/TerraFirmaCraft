@@ -105,6 +105,47 @@ public class BlockRockVariant extends Block implements IFallingBlock
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        switch (this.type)
+        {
+            case PATH:
+            case FARMLAND:
+                switch (side)
+                {
+                    case UP:
+                        return true;
+                    case NORTH:
+                    case SOUTH:
+                    case WEST:
+                    case EAST:
+                        IBlockState state = world.getBlockState(pos.offset(side));
+                        Block block = state.getBlock();
+                        if (state.isOpaqueCube()) return false;
+                        if (block instanceof BlockFarmland || block instanceof BlockGrassPath) return false;
+                        if (block instanceof BlockRockVariant)
+                        {
+                            switch (((BlockRockVariant) block).type)
+                            {
+                                case FARMLAND:
+                                case PATH:
+                                    return false;
+                                default:
+                                    return true;
+                            }
+                        }
+                        return true;
+                    case DOWN:
+                        return super.shouldSideBeRendered(blockState, world, pos, side);
+                }
+            default:
+                return super.shouldSideBeRendered(blockState, world, pos, side);
+        }
+    }
+
+    @Override
     public void randomTick(World world, BlockPos pos, IBlockState state, Random rand)
     {
         if (world.isRemote) return;
@@ -235,55 +276,14 @@ public class BlockRockVariant extends Block implements IFallingBlock
             case Beach:
                 // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
                 return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && // todo: dry grass?
-                        (BlocksTFC.isWater(world.getBlockState(pos.add(1, 0, 0))) ||
-                                BlocksTFC.isWater(world.getBlockState(pos.add(-1, 0, 0))) ||
-                                BlocksTFC.isWater(world.getBlockState(pos.add(0, 0, 1))) ||
-                                BlocksTFC.isWater(world.getBlockState(pos.add(0, 0, -1))));
+                    (BlocksTFC.isWater(world.getBlockState(pos.add(1, 0, 0))) ||
+                        BlocksTFC.isWater(world.getBlockState(pos.add(-1, 0, 0))) ||
+                        BlocksTFC.isWater(world.getBlockState(pos.add(0, 0, 1))) ||
+                        BlocksTFC.isWater(world.getBlockState(pos.add(0, 0, -1))));
             case Nether:
                 return false;
         }
 
         return false;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings("deprecation")
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side)
-    {
-        switch (this.type)
-        {
-            case PATH:
-            case FARMLAND:
-                switch (side)
-                {
-                    case UP:
-                        return true;
-                    case NORTH:
-                    case SOUTH:
-                    case WEST:
-                    case EAST:
-                        IBlockState state = world.getBlockState(pos.offset(side));
-                        Block block = state.getBlock();
-                        if (state.isOpaqueCube()) return false;
-                        if (block instanceof BlockFarmland || block instanceof BlockGrassPath) return false;
-                        if (block instanceof BlockRockVariant)
-                        {
-                            switch (((BlockRockVariant) block).type)
-                            {
-                                case FARMLAND:
-                                case PATH:
-                                    return false;
-                                default:
-                                    return true;
-                            }
-                        }
-                        return true;
-                    case DOWN:
-                        return super.shouldSideBeRendered(blockState, world, pos, side);
-                }
-            default:
-                return super.shouldSideBeRendered(blockState, world, pos, side);
-        }
     }
 }
