@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.objects.Size;
 import net.dries007.tfc.objects.Weight;
 import net.dries007.tfc.objects.items.ItemTFC;
@@ -23,21 +23,21 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class ItemSmallOre extends ItemTFC implements IMetalObject
 {
-    private static final EnumMap<Ore, ItemSmallOre> MAP = new EnumMap<>(Ore.class);
+    private static final EnumMap<OreEnum, ItemSmallOre> MAP = new EnumMap<>(OreEnum.class);
 
-    public static ItemSmallOre get(Ore ore)
+    public static ItemSmallOre get(OreEnum ore)
     {
         return MAP.get(ore);
     }
 
-    public static ItemStack get(Ore ore, int amount)
+    public static ItemStack get(OreEnum ore, int amount)
     {
         return new ItemStack(MAP.get(ore), amount);
     }
 
-    public final Ore ore;
+    public final OreEnum ore;
 
-    public ItemSmallOre(Ore ore)
+    public ItemSmallOre(OreEnum ore)
     {
         this.ore = ore;
         if (MAP.put(ore, this) != null) throw new IllegalStateException("There can only be one.");

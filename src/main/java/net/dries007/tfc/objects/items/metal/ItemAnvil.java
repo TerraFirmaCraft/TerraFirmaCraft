@@ -36,12 +36,6 @@ public class ItemAnvil extends ItemMetal implements IPlacableItem
     }
 
     @Override
-    public boolean canStack(ItemStack stack)
-    {
-        return false;
-    }
-
-    @Override
     public Size getSize(ItemStack stack)
     {
         return Size.HUGE;
@@ -51,6 +45,12 @@ public class ItemAnvil extends ItemMetal implements IPlacableItem
     public Weight getWeight(ItemStack stack)
     {
         return Weight.HEAVY;
+    }
+
+    @Override
+    public boolean canStack(ItemStack stack)
+    {
+        return false;
     }
 
     @Override

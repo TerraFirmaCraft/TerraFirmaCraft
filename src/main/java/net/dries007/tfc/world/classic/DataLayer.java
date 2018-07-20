@@ -14,8 +14,8 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 @SuppressWarnings("WeakerAccess")
 public final class DataLayer
 {
-    private static final DataLayer[] LAYERS = new DataLayer[256];
     public static final DataLayer ERROR = new DataLayer(-1, null, "ERROR", Integer.MIN_VALUE, Float.NaN);
+    private static final DataLayer[] LAYERS = new DataLayer[256];
     public static final DataLayer GRANITE = newBlockDataLayer(0, BlockRockVariant.get(Rock.GRANITE, Rock.Type.RAW), "Granite");
     public static final DataLayer DIORITE = newBlockDataLayer(1, BlockRockVariant.get(Rock.DIORITE, Rock.Type.RAW), "Diorite");
     public static final DataLayer GABBRO = newBlockDataLayer(2, BlockRockVariant.get(Rock.GABBRO, Rock.Type.RAW), "Gabbro");
@@ -58,6 +58,8 @@ public final class DataLayer
     public static final DataLayer SYCAMORE = newIntDataLayer(41, "Sycamore", 11);
     public static final DataLayer WHITECEDAR = newIntDataLayer(42, "White Cedar", 12);
     public static final DataLayer WILLOW = newIntDataLayer(44, "Willow", 14);*/
+
+    // Evapotranspiration
     public static final DataLayer EVT_0_125 = newFloatDataLayer(80, "0.125", 0.125f);
     public static final DataLayer EVT_0_25 = newFloatDataLayer(81, "0.25", 0.25f);
     public static final DataLayer EVT_0_5 = newFloatDataLayer(82, "0.5", 0.5f);

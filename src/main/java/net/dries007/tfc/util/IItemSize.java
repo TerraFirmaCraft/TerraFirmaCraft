@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.util;
@@ -22,6 +21,11 @@ import net.dries007.tfc.objects.Weight;
 @ParametersAreNonnullByDefault
 public interface IItemSize
 {
+    static int getStackSize(Size size, Weight weight, boolean canStack)
+    {
+        return canStack ? Math.min(size.stackSize * weight.multiplier, 64) : 1;
+    }
+
     Size getSize(ItemStack stack);
 
     Weight getWeight(ItemStack stack);
@@ -29,11 +33,6 @@ public interface IItemSize
     default boolean canStack(ItemStack stack)
     {
         return true;
-    }
-
-    static int getStackSize(Size size, Weight weight, boolean canStack)
-    {
-        return canStack ? Math.min(size.stackSize * weight.multiplier, 64) : 1;
     }
 
     @SideOnly(Side.CLIENT)
