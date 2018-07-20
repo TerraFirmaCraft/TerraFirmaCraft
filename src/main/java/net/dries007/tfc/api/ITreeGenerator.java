@@ -4,7 +4,7 @@
  *
  */
 
-package net.dries007.tfc.objects.trees;
+package net.dries007.tfc.api;
 
 import java.util.Random;
 

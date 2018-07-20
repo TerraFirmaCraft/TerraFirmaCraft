@@ -4,12 +4,16 @@
  *
  */
 
-package net.dries007.tfc.objects.trees;
+package net.dries007.tfc.api.types;
 
-// This is the thing that will be registered
-public class Tree
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import net.dries007.tfc.api.ITreeGenerator;
+
+public class Tree extends IForgeRegistryEntry.Impl<Tree>
 {
-    // Properties to be accessed by world gen
+
     public final float minTemp;
     public final float maxTemp;
     public final float minRain;
@@ -22,13 +26,12 @@ public class Tree
     public final int maxGrowthRadius;
 
     /**
-     * This is the object that should be registered via the custom registry event
-     * It needs to have a string name, which is used similar to how the enum is used.
-     * It also needs to have an int index, which will be used by the worldgen to save and load this value
+     * This is a registry object that will create a number of things:
+     * 1. Wood logs, planks, and leaf blocks, and all the respective variants
+     * 2. A Tree object to be used in TFC world gen
      *
      * Addon mods that want to add trees should subscribe to the registry event for this class
      * They also must put (in their mod) the required resources in /assets/tfc/...
-     * That way there is no need for custom logic during tree generation
      *
      * @param minTemp min temperature
      * @param maxTemp max temperature
@@ -38,7 +41,7 @@ public class Tree
      * @param maxEVT  max EVT
      * @param gen     the generator that should be called to generate this tree, both during world gen and when growing from a sapling
      */
-    public Tree(float minTemp, float maxTemp, float minRain, float maxRain, float minEVT, float maxEVT, ITreeGenerator gen, int maxGrowthRadius)
+    public Tree(ResourceLocation name, float minTemp, float maxTemp, float minRain, float maxRain, float minEVT, float maxEVT, int maxGrowthRadius, ITreeGenerator gen)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -50,5 +53,6 @@ public class Tree
         this.gen = gen;
         this.maxGrowthRadius = maxGrowthRadius;
 
+        setRegistryName(name);
     }
 }

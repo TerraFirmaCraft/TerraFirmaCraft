@@ -5,10 +5,10 @@
 
 package net.dries007.tfc.objects;
 
-import net.dries007.tfc.objects.trees.ITreeGenerator;
-import net.dries007.tfc.objects.trees.TreeGenNormal;
-import net.dries007.tfc.objects.trees.TreeGenVariants;
-import net.dries007.tfc.objects.trees.TreeGenWillow;
+import net.dries007.tfc.api.ITreeGenerator;
+import net.dries007.tfc.world.classic.worldgen.trees.TreeGenNormal;
+import net.dries007.tfc.world.classic.worldgen.trees.TreeGenVariants;
+import net.dries007.tfc.world.classic.worldgen.trees.TreeGenWillow;
 
 public enum Wood
 {

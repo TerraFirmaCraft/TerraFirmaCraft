@@ -19,8 +19,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.objects.Wood;
-import net.dries007.tfc.objects.trees.ITreeGenerator;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
