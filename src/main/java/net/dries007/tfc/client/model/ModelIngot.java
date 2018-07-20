@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.client.model;
@@ -18,7 +17,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModelIngot extends ModelBox
 {
-
     private TexturedQuad[] quadList;
 
     public ModelIngot(ModelRenderer renderer, int textureOffsetX, int textureOffsetY)

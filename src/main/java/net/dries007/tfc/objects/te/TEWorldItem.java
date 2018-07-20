@@ -28,10 +28,9 @@ import static net.dries007.tfc.Constants.MOD_ID;
 @MethodsReturnNonnullByDefault
 public class TEWorldItem extends TileEntity
 {
+    public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "world_item");
     public ItemStackHandler inventory = new ItemStackHandler(1);
     private byte rotation;
-
-    public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "world_item");
 
     public TEWorldItem()
     {
@@ -92,13 +91,6 @@ public class TEWorldItem extends TileEntity
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-        return new AxisAlignedBB(getPos(), getPos().add(1D, 1D, 1D));
-    }
-
-    @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
     {
         this.handleUpdateTag(packet.getNbtCompound());
@@ -108,6 +100,13 @@ public class TEWorldItem extends TileEntity
     public void handleUpdateTag(NBTTagCompound tag)
     {
         readFromNBT(tag);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return new AxisAlignedBB(getPos(), getPos().add(1D, 1D, 1D));
     }
 
     public byte getRotation()

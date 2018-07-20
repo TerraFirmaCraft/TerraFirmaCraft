@@ -91,11 +91,11 @@ public final class ItemsTFC
 
         {
             Builder<ItemOreTFC> b = new Builder<>();
-            for (Ore ore : Ore.values())
+            for (OreEnum ore : OreEnum.values())
                 b.add(register(r, "ore/" + ore.name().toLowerCase(), new ItemOreTFC(ore), CT_ROCK_ITEMS));
             allOreItems = b.build();
 
-            for (Ore ore : Ore.values())
+            for (OreEnum ore : OreEnum.values())
                 if (ore.graded)
                     simpleItems.add(register(r, "ore/small/" + ore.name().toLowerCase(), new ItemSmallOre(ore), CT_ROCK_ITEMS));
         }

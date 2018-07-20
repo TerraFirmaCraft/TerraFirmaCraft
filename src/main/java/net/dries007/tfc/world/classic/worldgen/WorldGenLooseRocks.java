@@ -77,9 +77,9 @@ public class WorldGenLooseRocks implements IWorldGenerator
         IBlockState stateAt = world.getBlockState(pos.down());
         if (world.isAirBlock(pos) && stateAt.isFullCube())
         {
-            world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState(),2);
+            world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState(), 2);
             TEWorldItem tile = (TEWorldItem) world.getTileEntity(pos);
-            if(tile != null)
+            if (tile != null)
                 tile.inventory.setStackInSlot(0, vein == null ? ItemRock.get(rock, 1) : ItemSmallOre.get(vein.oreSpawnData.ore, 1));
         }
     }
