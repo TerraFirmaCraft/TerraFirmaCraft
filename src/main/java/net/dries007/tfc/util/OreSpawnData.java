@@ -21,7 +21,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Rock.Category;
 
@@ -94,11 +94,11 @@ public class OreSpawnData
             final String name = entry.getKey();
             final OreJson json = entry.getValue();
 
-            Ore ore = null;
+            OreEnum ore = null;
             IBlockState state = null;
             try
             {
-                ore = Ore.valueOf(json.ore.toUpperCase());
+                ore = OreEnum.valueOf(json.ore.toUpperCase());
             }
             catch (IllegalArgumentException e)
             {
@@ -184,7 +184,7 @@ public class OreSpawnData
     public static final class OreEntry
     {
         @Nullable
-        public final Ore ore;
+        public final OreEnum ore;
         @Nullable
         public final IBlockState state;
         public final SpawnType type;
@@ -196,7 +196,7 @@ public class OreSpawnData
         public final double density;
         public final int rarity;
 
-        private OreEntry(@Nullable Ore ore, @Nullable IBlockState state, SpawnSize size, SpawnType type, Collection<Rock> baseRocks, int rarity, int minY, int maxY, int density)
+        private OreEntry(@Nullable OreEnum ore, @Nullable IBlockState state, SpawnSize size, SpawnType type, Collection<Rock> baseRocks, int rarity, int minY, int maxY, int density)
         {
             this.ore = ore;
             this.state = state;
@@ -211,7 +211,7 @@ public class OreSpawnData
             this.density = 0.01D * (double) density; // For debug purposes, removing the 0.01D will lead to ore veins being full size, easy to see shapes
 
             if (ore == null && state == null)
-                throw new IllegalStateException("Ore Entry has neither a IBlockState or a Ore type");
+                throw new IllegalStateException("OreEnum Entry has neither a IBlockState or a OreEnum type");
         }
 
         @Override

@@ -100,9 +100,9 @@ public class MapGenRavineTFC extends MapGenBase
             }
 
             if (!(xCoord >= chunkMidX - 16.0D - min * 2.0D &&
-                    zCoord >= chunkMidZ - 16.0D - min * 2.0D &&
-                    xCoord <= chunkMidX + 16.0D + min * 2.0D &&
-                    zCoord <= chunkMidZ + 16.0D + min * 2.0D))
+                zCoord >= chunkMidZ - 16.0D - min * 2.0D &&
+                xCoord <= chunkMidX + 16.0D + min * 2.0D &&
+                zCoord <= chunkMidZ + 16.0D + min * 2.0D))
                 continue;
 
             int xMin = MathHelper.floor(xCoord - min) - chunkX * 16 - 1;

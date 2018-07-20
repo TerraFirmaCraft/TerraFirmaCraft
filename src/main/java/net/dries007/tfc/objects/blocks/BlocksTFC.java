@@ -24,7 +24,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
@@ -210,7 +210,8 @@ public final class BlocksTFC
     }
 
     @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event) {
+    public static void registerBlocks(RegistryEvent.Register<Block> event)
+    {
         IForgeRegistry<Block> r = event.getRegistry();
 
         ImmutableListMultimap.Builder<Block, Class<? extends ItemBlock>> normalItemBlocks = ImmutableListMultimap.builder();
@@ -241,14 +242,14 @@ public final class BlocksTFC
             Builder<BlockRockVariant> b = ImmutableList.builder();
             for (Rock.Type type : Rock.Type.values())
                 for (Rock rock : Rock.values())
-                  b.add(register(r, (type.name() + "/" + rock.name()).toLowerCase(), type.supplier.apply(type, rock), CT_ROCK_BLOCKS));
+                    b.add(register(r, (type.name() + "/" + rock.name()).toLowerCase(), type.supplier.apply(type, rock), CT_ROCK_BLOCKS));
             allBlockRockVariants = b.build();
             allBlockRockVariants.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
         }
 
         {
             Builder<BlockOreTFC> b = ImmutableList.builder();
-            for (Ore ore : Ore.values())
+            for (OreEnum ore : OreEnum.values())
                 for (Rock rock : Rock.values())
                     b.add(register(r, ("ore/" + ore.name() + "/" + rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ROCK_BLOCKS));
             allOreBlocks = b.build();

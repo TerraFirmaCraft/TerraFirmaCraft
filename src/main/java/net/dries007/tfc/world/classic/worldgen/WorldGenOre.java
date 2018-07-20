@@ -17,7 +17,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -30,11 +30,9 @@ import net.dries007.tfc.world.classic.worldgen.vein.VeinTypeCluster;
 
 public class WorldGenOre implements IWorldGenerator
 {
-
     private static final int NUM_ROLLS = 2;
     private static final int CHUNK_RADIUS = 2;
     public static final int VEIN_MAX_RADIUS = 16 * CHUNK_RADIUS;
-    public static final int VEIN_MAX_RADIUS_SQUARED = VEIN_MAX_RADIUS * VEIN_MAX_RADIUS;
 
     // Used to generate chunk
     public static List<VeinType> getNearbyVeins(int chunkX, int chunkZ, long worldSeed, int radius)
@@ -76,12 +74,12 @@ public class WorldGenOre implements IWorldGenerator
                     chunkZ * 16 + 8 + rand.nextInt(16)
                 );
 
-                Ore.Grade grade = Ore.Grade.NORMAL;
+                OreEnum.Grade grade = OreEnum.Grade.NORMAL;
                 if (oreType.ore != null && oreType.ore.graded)
                 {
                     int gradeInt = rand.nextInt(100);
-                    if (gradeInt < 20) grade = Ore.Grade.RICH;
-                    else if (gradeInt < 50) grade = Ore.Grade.POOR;
+                    if (gradeInt < 20) grade = OreEnum.Grade.RICH;
+                    else if (gradeInt < 50) grade = OreEnum.Grade.POOR;
                 }
 
                 veins.add(new VeinTypeCluster(startPos, oreType, grade, rand));

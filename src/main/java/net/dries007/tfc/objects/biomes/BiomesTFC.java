@@ -95,11 +95,11 @@ public final class BiomesTFC
         if (PLAYER_SPAWN_BIOMES == null)
         {
             PLAYER_SPAWN_BIOMES = new BiomeTFC[] {
-                    PLAINS,
-                    ROLLING_HILLS,
-                    SWAMPLAND,
-                    MOUNTAINS,
-                    HIGH_PLAINS,
+                PLAINS,
+                ROLLING_HILLS,
+                SWAMPLAND,
+                MOUNTAINS,
+                HIGH_PLAINS,
             };
         }
         return PLAYER_SPAWN_BIOMES;
@@ -110,13 +110,13 @@ public final class BiomesTFC
         if (OVERWORLD_GENERATE_BIOMES == null)
         {
             OVERWORLD_GENERATE_BIOMES = new BiomeTFC[] {
-                    OCEAN,
-                    HIGH_HILLS,
-                    PLAINS,
-                    HIGH_PLAINS,
-                    SWAMPLAND,
-                    ROLLING_HILLS,
-                    MOUNTAINS,
+                OCEAN,
+                HIGH_HILLS,
+                PLAINS,
+                HIGH_PLAINS,
+                SWAMPLAND,
+                ROLLING_HILLS,
+                MOUNTAINS,
             };
         }
         return OVERWORLD_GENERATE_BIOMES;

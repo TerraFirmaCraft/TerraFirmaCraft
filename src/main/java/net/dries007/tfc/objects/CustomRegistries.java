@@ -5,23 +5,57 @@
 
 package net.dries007.tfc.objects;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.block.Block;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
 
-import net.dries007.tfc.objects.recipes.WeldingRecipe;
+import net.dries007.tfc.api.TFCRegistries;
+import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.types.RockCategory;
 
 import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.TFCRegistries.*;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class CustomRegistries
 {
+    private static final Map<ResourceLocation, IForgeRegistry<?>> preBlockRegistries = new HashMap<>();
+    private static IForgeRegistry<RockCategory> rockCategoryRegistry;
+    private static IForgeRegistry<Rock> rockRegistry;
+    private static IForgeRegistry<Ore> oreRegistry;
+
     @SubscribeEvent
     public static void onNewRegistryEvent(RegistryEvent.NewRegistry event)
     {
-        RegistryBuilder<WeldingRecipe> rb = new RegistryBuilder<>();
+        rockCategoryRegistry = newRegistry(ROCK_TYPE, RockCategory.class, true);
+        rockRegistry = newRegistry(ROCK, Rock.class, true);
+        oreRegistry = newRegistry(ORE, Ore.class, true);
+    }
 
+    /**
+     * Danger: dirty hack.
+     */
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onRegisterBlock(RegistryEvent.Register<Block> event)
+    {
+        preBlockRegistries.forEach((e, r) -> MinecraftForge.EVENT_BUS.post(new TFCRegistries.RegisterPreBlock<>(e, r)));
+    }
 
+    private static <T extends IForgeRegistryEntry<T>> IForgeRegistry<T> newRegistry(ResourceLocation name, Class<T> tClass, boolean isPreBlockRegistry)
+    {
+        IForgeRegistry<T> reg = new RegistryBuilder<T>().setName(name).setType(tClass).create();
+        if (isPreBlockRegistry) preBlockRegistries.put(name, reg);
+        return reg;
     }
 }

@@ -90,18 +90,18 @@ public class ClientEvents
                 else
                 {
                     list.add(String.format("%sTemps: Base: %s%.0f°%s Bio: %s%.0f°%s Height adjusted: %s%.0f°",
-                            GRAY, WHITE, ClimateTFC.getTemp(mc.world, blockpos), GRAY,
-                            WHITE, ClimateTFC.getBioTemperatureHeight(mc.world, blockpos), GRAY,
-                            WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)
+                        GRAY, WHITE, ClimateTFC.getTemp(mc.world, blockpos), GRAY,
+                        WHITE, ClimateTFC.getBioTemperatureHeight(mc.world, blockpos), GRAY,
+                        WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)
                     ));
                     list.add(String.format("%sTime: %s%02d:%02d %04d/%02d/%02d",
-                            GRAY, WHITE,
-                            CalenderTFC.getHourOfDay(),
-                            CalenderTFC.getMinuteOfHour(),
-                            CalenderTFC.getTotalYears(),
-                            CalenderTFC.getMonthOfYear(),
-                            CalenderTFC.getDayOfMonth()
-                            )
+                        GRAY, WHITE,
+                        CalenderTFC.getHourOfDay(),
+                        CalenderTFC.getMinuteOfHour(),
+                        CalenderTFC.getTotalYears(),
+                        CalenderTFC.getMonthOfYear(),
+                        CalenderTFC.getDayOfMonth()
+                        )
                     );
 
                     list.add(GRAY + "Biome: " + WHITE + mc.world.getBiome(blockpos).getBiomeName());
@@ -165,7 +165,7 @@ public class ClientEvents
             if (ids != null && ids.length != 0)
             {
                 tt.add("");
-                tt.add(TextFormatting.AQUA + "Ore Dictionary:");
+                tt.add(TextFormatting.AQUA + "OreEnum Dictionary:");
                 Arrays.stream(ids).mapToObj(OreDictionary::getOreName).sorted().forEachOrdered(tt::add);
             }
         }

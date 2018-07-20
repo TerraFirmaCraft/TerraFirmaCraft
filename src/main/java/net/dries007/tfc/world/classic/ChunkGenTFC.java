@@ -618,9 +618,9 @@ public class ChunkGenTFC implements IChunkGenerator
                             for (int counter = 1; counter < noise / 3; counter++)
                             {
                                 if (arrayIndexx >= 0 && seaLevelOffsetMap[colIndex] - (3 * counter) > seaLevelOffsetMap[arrayIndexx] &&
-                                        arrayIndexX >= 0 && seaLevelOffsetMap[colIndex] - (3 * counter) > seaLevelOffsetMap[arrayIndexX] &&
-                                        arrayIndexz >= 0 && seaLevelOffsetMap[colIndex] - (3 * counter) > seaLevelOffsetMap[arrayIndexz] &&
-                                        arrayIndexZ >= 0 && seaLevelOffsetMap[colIndex] - (3 * counter) > seaLevelOffsetMap[arrayIndexZ])
+                                    arrayIndexX >= 0 && seaLevelOffsetMap[colIndex] - (3 * counter) > seaLevelOffsetMap[arrayIndexX] &&
+                                    arrayIndexz >= 0 && seaLevelOffsetMap[colIndex] - (3 * counter) > seaLevelOffsetMap[arrayIndexz] &&
+                                    arrayIndexZ >= 0 && seaLevelOffsetMap[colIndex] - (3 * counter) > seaLevelOffsetMap[arrayIndexZ])
                                 {
                                     seaLevelOffsetMap[colIndex]--;
                                     noise--;
@@ -665,7 +665,7 @@ public class ChunkGenTFC implements IChunkGenerator
                         }
 
                         if (y > seaLevel - 2 && y < seaLevel && inp.getBlockState(x, y + 1, z) == SALT_WATER ||
-                                y < seaLevel && inp.getBlockState(x, y + 1, z) == SALT_WATER)
+                            y < seaLevel && inp.getBlockState(x, y + 1, z) == SALT_WATER)
                         {
                             if (biome != BiomesTFC.SWAMPLAND) // Most areas have gravel and sand bottoms
                             {

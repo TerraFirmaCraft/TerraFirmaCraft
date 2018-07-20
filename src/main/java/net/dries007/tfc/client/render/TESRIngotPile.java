@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.client.render;
@@ -9,6 +8,8 @@ package net.dries007.tfc.client.render;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.model.ModelIngotPile;
 import net.dries007.tfc.objects.Metal;
@@ -16,9 +17,9 @@ import net.dries007.tfc.objects.te.TEIngotPile;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
+@SideOnly(Side.CLIENT)
 public class TESRIngotPile extends TileEntitySpecialRenderer<TEIngotPile>
 {
-
     private ModelIngotPile model = new ModelIngotPile();
 
     public TESRIngotPile()

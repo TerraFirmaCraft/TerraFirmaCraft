@@ -12,21 +12,21 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.BlockPos;
 
-import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.util.OreSpawnData;
 
 public class ChunkDataOreSpawned
 {
     @Nullable
-    public final Ore ore;
+    public final OreEnum ore;
     @Nullable
     public final IBlockState state;
     public final OreSpawnData.SpawnSize size;
-    public final Ore.Grade grade;
+    public final OreEnum.Grade grade;
     public final BlockPos pos;
     public final int count;
 
-    public ChunkDataOreSpawned(@Nullable Ore ore, @Nullable IBlockState state, OreSpawnData.SpawnSize size, Ore.Grade grade, BlockPos pos, int count)
+    public ChunkDataOreSpawned(@Nullable OreEnum ore, @Nullable IBlockState state, OreSpawnData.SpawnSize size, OreEnum.Grade grade, BlockPos pos, int count)
     {
         this.ore = ore;
         this.state = state;
@@ -39,9 +39,9 @@ public class ChunkDataOreSpawned
 
     public ChunkDataOreSpawned(NBTTagCompound tag)
     {
-        ore = tag.hasKey("ore") ? Ore.valueOf(tag.getString("ore").toUpperCase()) : null;
+        ore = tag.hasKey("ore") ? OreEnum.valueOf(tag.getString("ore").toUpperCase()) : null;
         state = tag.hasKey("state") ? NBTUtil.readBlockState(tag.getCompoundTag("state")) : null;
-        grade = Ore.Grade.valueOf(tag.getString("grade").toUpperCase());
+        grade = OreEnum.Grade.valueOf(tag.getString("grade").toUpperCase());
         size = OreSpawnData.SpawnSize.valueOf(tag.getString("size").toUpperCase());
         pos = NBTUtil.getPosFromTag(tag.getCompoundTag("pos"));
         count = tag.getInteger("count");

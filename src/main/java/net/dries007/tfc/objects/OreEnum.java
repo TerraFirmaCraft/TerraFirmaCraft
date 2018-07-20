@@ -7,7 +7,7 @@ package net.dries007.tfc.objects;
 
 import net.minecraft.util.IStringSerializable;
 
-public enum Ore
+public enum OreEnum
 {
     NATIVE_COPPER(Metal.COPPER),
     NATIVE_GOLD(Metal.GOLD),
@@ -48,13 +48,13 @@ public enum Ore
     public final boolean graded;
     public final Metal metal;
 
-    Ore(Metal metal)
+    OreEnum(Metal metal)
     {
         this.graded = true;
         this.metal = metal;
     }
 
-    Ore()
+    OreEnum()
     {
         this.graded = false;
         this.metal = null;

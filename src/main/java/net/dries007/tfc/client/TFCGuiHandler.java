@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.client;
@@ -21,7 +20,6 @@ import net.dries007.tfc.util.Helpers;
 
 public class TFCGuiHandler implements IGuiHandler
 {
-
     public static final int LOG_PILE = 0;
 
     @Override
