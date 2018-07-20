@@ -7,6 +7,7 @@
 package net.dries007.tfc.objects.trees;
 
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -25,15 +26,15 @@ public class TreeGenVariants implements ITreeGenerator
     private final String[] variants;
     private final boolean useRotation;
 
-    public TreeGenVariants()
-    {
-        this(false, "1");
-    }
-
     public TreeGenVariants(boolean useRotation, String... variants)
     {
         this.variants = variants;
         this.useRotation = useRotation;
+    }
+
+    public TreeGenVariants(boolean useRotation, int numVariants)
+    {
+        this(useRotation, IntStream.range(0, numVariants + 1).mapToObj(String::valueOf).toArray(String[]::new));
     }
 
     @Override
