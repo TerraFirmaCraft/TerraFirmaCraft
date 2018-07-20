@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,7 @@ import net.dries007.tfc.api.TFCRegistries;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.api.types.Tree;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 import static net.dries007.tfc.api.TFCRegistries.*;
@@ -34,6 +37,12 @@ public class CustomRegistries
     private static IForgeRegistry<RockCategory> rockCategoryRegistry;
     private static IForgeRegistry<Rock> rockRegistry;
     private static IForgeRegistry<Ore> oreRegistry;
+    private static IForgeRegistry<Tree> treeRegistry;
+
+    public static Collection<Tree> getTrees()
+    {
+        return Collections.unmodifiableCollection(treeRegistry.getValuesCollection());
+    }
 
     @SubscribeEvent
     public static void onNewRegistryEvent(RegistryEvent.NewRegistry event)
@@ -41,6 +50,7 @@ public class CustomRegistries
         rockCategoryRegistry = newRegistry(ROCK_TYPE, RockCategory.class, true);
         rockRegistry = newRegistry(ROCK, Rock.class, true);
         oreRegistry = newRegistry(ORE, Ore.class, true);
+        treeRegistry = newRegistry(TREE, Tree.class, true);
     }
 
     /**

@@ -18,6 +18,7 @@ public class TFCRegistries
     public static final ResourceLocation ROCK_TYPE = new ResourceLocation(MOD_ID, "rock_type");
     public static final ResourceLocation ROCK = new ResourceLocation(MOD_ID, "rock");
     public static final ResourceLocation ORE = new ResourceLocation(MOD_ID, "ore");
+    public static final ResourceLocation TREE = new ResourceLocation(MOD_ID, "tree");
 
     /**
      * Required (for now) because of https://github.com/MinecraftForge/MinecraftForge/issues/4987

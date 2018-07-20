@@ -4,7 +4,7 @@
  *
  */
 
-package net.dries007.tfc.objects.trees;
+package net.dries007.tfc.world.classic.worldgen.trees;
 
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -18,6 +18,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
