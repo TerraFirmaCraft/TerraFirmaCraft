@@ -24,10 +24,14 @@ import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
-import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
 import static net.minecraft.block.BlockLog.LOG_AXIS;
 
+/**
+ * This is a tree generator only used for the willow tree shapes. Requires two structure blocks:
+ * both found in /assets/tfc/[TREE NAME]/, named base.nbt and overlay.nbt respectively. See the examples for
+ * TFC willow tree for what the structure blocks should look like.
+ */
 public class TreeGenWillow implements ITreeGenerator
 {
     private Template structureBase;
@@ -49,10 +53,10 @@ public class TreeGenWillow implements ITreeGenerator
             TerraFirmaCraft.getLog().warn("Unable to find a template for " + base.toString() + " or " + overlay.toString());
             return;
         }
-        settingsFull = WorldGenTrees.getDefaultSettings();
-        settingsWeak = WorldGenTrees.getDefaultSettings().setIntegrity(0.5F);
+        settingsFull = ITreeGenerator.getDefaultSettings();
+        settingsWeak = ITreeGenerator.getDefaultSettings().setIntegrity(0.5F);
 
-        if (!WorldGenTrees.canGenerateTree(world, pos, structureBase, settingsFull, tree))
+        if (!canGenerateTree(world, pos, tree))
             return;
 
         int height = 3 + rand.nextInt(3), branches = 2 + rand.nextInt(3), x1, z1, y1;

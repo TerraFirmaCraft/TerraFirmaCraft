@@ -20,19 +20,31 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
 public class TreeGenVariants implements ITreeGenerator
 {
     private final String[] variants;
     private final boolean useRotation;
 
+    /**
+     * A tree generator which select a random structure to place. Can choose to use a random rotation as well
+     *
+     * @param useRotation Should it try and randomly rotate the structures on placement
+     * @param variants    The list of variants for the generator to look for. Structure files should be placed in
+     *                    assets/tfc/[TREE NAME]/ This needs to be the list of file names, (i.e. "tree1.nbt" should pass in "tree 1")
+     */
     public TreeGenVariants(boolean useRotation, String... variants)
     {
         this.variants = variants;
         this.useRotation = useRotation;
     }
 
+    /**
+     * Alternate constructor which will auto populate the list of variants
+     *
+     * @param useRotation Should it try and randomly rotate the structures on placement
+     * @param numVariants The number of variant files. Files need to be named 1.nbt, 2.nbt, 3.nbt ...
+     */
     public TreeGenVariants(boolean useRotation, int numVariants)
     {
         this(useRotation, IntStream.range(0, numVariants + 1).mapToObj(String::valueOf).toArray(String[]::new));
@@ -51,9 +63,9 @@ public class TreeGenVariants implements ITreeGenerator
             return;
         }
 
-        PlacementSettings settings = useRotation ? WorldGenTrees.getRandomSettings(rand) : WorldGenTrees.getDefaultSettings();
+        PlacementSettings settings = useRotation ? ITreeGenerator.getRandomSettings(rand) : ITreeGenerator.getDefaultSettings();
 
-        if (WorldGenTrees.canGenerateTree(world, pos, structureBase, settings, tree))
+        if (canGenerateTree(world, pos, tree))
         {
             BlockPos size = structureBase.getSize().rotate(settings.getRotation());
             // Begin rotation things

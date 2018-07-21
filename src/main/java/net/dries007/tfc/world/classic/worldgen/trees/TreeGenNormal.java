@@ -21,13 +21,19 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
-import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
 public class TreeGenNormal implements ITreeGenerator
 {
     private final int heightMin;
     private final int heightRange;
 
+    /**
+     * A basic tree generator. It will generate a structure found in /assets/tfc/[TREE NAME]/base.nbt
+     * Additionally, it will try and apply an overlay with the name /overlay.nbt at 50% integrity.
+     *
+     * @param heightMin   The minimum amount of logs to add to the bottom of the trunk Set to 0 for no extra height
+     * @param heightRange The maximum amount of logs to add to the bottom of the trunk. Set to 0 for no extra height
+     */
     public TreeGenNormal(int heightMin, int heightRange)
     {
         this.heightMin = heightMin;
@@ -48,22 +54,25 @@ public class TreeGenNormal implements ITreeGenerator
         Template structureBase = manager.get(world.getMinecraftServer(), base);
         Template structureOverlay = manager.get(world.getMinecraftServer(), overlay);
 
-        if (structureBase == null || structureOverlay == null)
+        if (structureBase == null)
         {
-            TerraFirmaCraft.getLog().warn("Unable to find a template for " + base.toString() + " or " + overlay.toString());
+            TerraFirmaCraft.getLog().warn("Unable to find a template for " + base.toString());
             return;
         }
 
-        PlacementSettings settings = WorldGenTrees.getDefaultSettings();
+        PlacementSettings settings = ITreeGenerator.getDefaultSettings();
         int height = heightMin + (heightRange > 0 ? rand.nextInt(heightRange) : 0);
 
-        if (WorldGenTrees.canGenerateTree(world, pos, structureBase, settings, tree))
+        if (canGenerateTree(world, pos, tree))
         {
             BlockPos size = structureBase.getSize();
             pos = pos.add(-size.getX() / 2, height, -size.getZ() / 2);
 
             structureBase.addBlocksToWorld(world, pos, settings);
-            structureOverlay.addBlocksToWorld(world, pos, settings.setIntegrity(0.5f));
+            if (structureOverlay != null)
+            {
+                structureOverlay.addBlocksToWorld(world, pos, settings.setIntegrity(0.5f));
+            }
 
             final IBlockState log = BlockLogTFC.get(tree).getDefaultState();
             for (int i = 0; i < height; i++)
