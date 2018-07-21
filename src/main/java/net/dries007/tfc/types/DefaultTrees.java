@@ -9,7 +9,6 @@ package net.dries007.tfc.types;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.ITreeGenerator;
@@ -81,34 +80,5 @@ public class DefaultTrees
             new Tree(WILLOW, 2000f, 4000f, 10f, 30f, 0f, 1f, 2, GEN_WILLOW),
             new Tree(KAPOK, 1000f, 4000f, 30f, 50f, 0f, 4f, 2, GEN_KAPOK)
         );
-    }
-
-    /**
-     * Do not rely on this to contain all the tree objects. Because it won't. (not necessarily)
-     */
-    @GameRegistry.ObjectHolder(MOD_ID)
-    public static final class O
-    {
-
-        public static final Tree ACACIA = null;
-        public static final Tree ASH = null;
-        public static final Tree ASPEN = null;
-        public static final Tree BIRCH = null;
-        public static final Tree BLACKWOOD = null;
-        public static final Tree CHESTNUT = null;
-        public static final Tree DOUGLAS_FIR = null;
-        public static final Tree HICKORY = null;
-        public static final Tree MAPLE = null;
-        public static final Tree OAK = null;
-        public static final Tree PALM = null;
-        public static final Tree PINE = null;
-        public static final Tree ROSEWOOD = null;
-        public static final Tree SEQUOIA = null;
-        public static final Tree SPRUCE = null;
-        public static final Tree SYCAMORE = null;
-        public static final Tree WHITE_CEDAR = null;
-        public static final Tree WILLOW = null;
-        public static final Tree KAPOK = null;
-
     }
 }
