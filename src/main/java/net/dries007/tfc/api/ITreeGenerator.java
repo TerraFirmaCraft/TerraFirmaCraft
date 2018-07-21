@@ -52,6 +52,7 @@ public interface ITreeGenerator
 
     /**
      * Checks if a tree can be generated. This implementation only checks if the ground is flat enough
+     * Suggested use is to use within your implementation of generateTree()
      *
      * @param world    The world
      * @param pos      The pos of the tree
