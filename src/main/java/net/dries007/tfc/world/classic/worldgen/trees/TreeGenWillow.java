@@ -21,7 +21,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
@@ -36,10 +36,10 @@ public class TreeGenWillow implements ITreeGenerator
     private PlacementSettings settingsFull;
 
     @Override
-    public void generateTree(TemplateManager manager, World world, BlockPos pos, Wood tree, Random rand)
+    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {
-        ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree + "/base");
-        ResourceLocation overlay = new ResourceLocation(Constants.MOD_ID, tree + "/overlay");
+        ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree.name + "/base");
+        ResourceLocation overlay = new ResourceLocation(Constants.MOD_ID, tree.name + "/overlay");
 
         structureBase = manager.get(world.getMinecraftServer(), base);
         structureOverlay = manager.get(world.getMinecraftServer(), overlay);
@@ -73,7 +73,7 @@ public class TreeGenWillow implements ITreeGenerator
         }
     }
 
-    private void createBranch(World world, BlockPos pos1, int x, int y, int z, Random rand, Wood tree)
+    private void createBranch(World world, BlockPos pos1, int x, int y, int z, Random rand, Tree tree)
     {
         int x1 = x / Math.abs(x), z1 = z / Math.abs(z);
         do
@@ -99,7 +99,7 @@ public class TreeGenWillow implements ITreeGenerator
         structureOverlay.addBlocksToWorld(world, pos, settingsWeak);
     }
 
-    private void tryPlaceLog(World world, BlockPos pos, Wood tree, BlockLog.EnumAxis axis)
+    private void tryPlaceLog(World world, BlockPos pos, Tree tree, BlockLog.EnumAxis axis)
     {
         Block block = world.getBlockState(pos).getBlock();
         if (block == Blocks.AIR || block instanceof BlockLeavesTFC)

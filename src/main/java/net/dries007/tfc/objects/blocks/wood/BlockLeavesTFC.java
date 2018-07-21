@@ -5,8 +5,9 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nonnull;
 
@@ -27,21 +28,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockLeavesTFC extends BlockLeaves
 {
-    private static final EnumMap<Wood, BlockLeavesTFC> MAP = new EnumMap<>(Wood.class);
+    private static final Map<Tree, BlockLeavesTFC> MAP = new HashMap<>();
 
-    public static BlockLeavesTFC get(Wood wood)
+    public static BlockLeavesTFC get(Tree wood)
     {
         return MAP.get(wood);
     }
 
-    public final Wood wood;
+    public final Tree wood;
 
-    public BlockLeavesTFC(Wood wood)
+    public BlockLeavesTFC(Tree wood)
     {
         this.wood = wood;
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");

@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
@@ -39,9 +41,34 @@ public class CustomRegistries
     private static IForgeRegistry<Ore> oreRegistry;
     private static IForgeRegistry<Tree> treeRegistry;
 
+    @Nonnull
     public static Collection<Tree> getTrees()
     {
         return Collections.unmodifiableCollection(treeRegistry.getValuesCollection());
+    }
+
+    @Nullable
+    public static Tree getTree(String name)
+    {
+        return treeRegistry.getValuesCollection().stream().filter(tree -> tree.name.equals(name)).findFirst().orElse(null);
+    }
+
+    @Nonnull
+    public static Collection<Rock> getRocks()
+    {
+        return Collections.unmodifiableCollection(rockRegistry.getValuesCollection());
+    }
+
+    @Nonnull
+    public static Collection<RockCategory> getRockCategories()
+    {
+        return Collections.unmodifiableCollection(rockCategoryRegistry.getValuesCollection());
+    }
+
+    @Nonnull
+    public static Collection<Ore> getOres()
+    {
+        return Collections.unmodifiableCollection(oreRegistry.getValuesCollection());
     }
 
     @SubscribeEvent

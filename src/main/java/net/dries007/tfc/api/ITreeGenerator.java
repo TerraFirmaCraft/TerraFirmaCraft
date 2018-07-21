@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 
 public interface ITreeGenerator
 {
@@ -25,5 +25,5 @@ public interface ITreeGenerator
      * @param tree    The tree type to spawn
      * @param rand    A random to use in generation
      */
-    void generateTree(TemplateManager manager, World world, BlockPos pos, Wood tree, Random rand);
+    void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand);
 }

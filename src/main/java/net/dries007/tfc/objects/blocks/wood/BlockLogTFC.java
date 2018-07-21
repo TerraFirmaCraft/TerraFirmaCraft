@@ -5,7 +5,8 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.PropertyBool;
@@ -20,7 +21,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
@@ -31,16 +32,16 @@ public class BlockLogTFC extends BlockLog
     public static final AxisAlignedBB SMALL_AABB_Y = new AxisAlignedBB(0.25, 0, 0.25, 0.75, 1, 0.75);
     public static final AxisAlignedBB SMALL_AABB_X = new AxisAlignedBB(0, 0.25, 0.25, 1, 0.75, 0.75);
     public static final AxisAlignedBB SMALL_AABB_Z = new AxisAlignedBB(0.25, 0.25, 0, 0.75, 0.75, 1);
-    private static final EnumMap<Wood, BlockLogTFC> MAP = new EnumMap<>(Wood.class);
+    private static final Map<Tree, BlockLogTFC> MAP = new HashMap<>();
 
-    public static BlockLogTFC get(Wood wood)
+    public static BlockLogTFC get(Tree wood)
     {
         return MAP.get(wood);
     }
 
-    public final Wood wood;
+    public final Tree wood;
 
-    public BlockLogTFC(Wood wood)
+    public BlockLogTFC(Tree wood)
     {
         this.wood = wood;
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");

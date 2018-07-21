@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.*;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -128,8 +129,8 @@ public final class ItemsTFC
         for (BlockSlabTFC.Half slab : BlocksTFC.getAllSlabBlocks())
             simpleItems.add(register(r, slab.getRegistryName().getResourcePath(), new ItemSlabTFC(slab, slab, slab.doubleSlab), CT_DECORATIONS));
 
-        for (Wood wood : Wood.values())
-            simpleItems.add(register(r, "wood/lumber/" + wood.name().toLowerCase(), new ItemLumberTFC(wood), CT_WOOD));
+        for (Tree wood : CustomRegistries.getTrees())
+            simpleItems.add(register(r, "wood/lumber/" + wood.name, new ItemLumberTFC(wood), CT_WOOD));
 
         for (Rock.Category cat : Rock.Category.values())
         {

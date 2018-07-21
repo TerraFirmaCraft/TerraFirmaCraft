@@ -19,8 +19,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
+import net.dries007.tfc.types.DefaultTrees;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
@@ -30,7 +31,7 @@ public class TEChestTFC extends TileEntityChest
     public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "chest");
     public static final int SIZE = 18;
 
-    private Wood cachedWood;
+    private Tree cachedWood;
 
     {
         chestContents = NonNullList.withSize(SIZE, ItemStack.EMPTY); // todo: make chest size configurable.
@@ -51,11 +52,11 @@ public class TEChestTFC extends TileEntityChest
         return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
     }
 
-    public Wood getWood()
+    public Tree getWood()
     {
         if (cachedWood == null)
         {
-            if (world == null || getBlockType() == null) return Wood.OAK;
+            if (world == null || getBlockType() == null) return DefaultTrees.O.OAK;
             cachedWood = getBlockType().wood;
         }
         return cachedWood;

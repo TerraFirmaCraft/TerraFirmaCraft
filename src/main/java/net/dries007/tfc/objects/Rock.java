@@ -15,6 +15,7 @@ import net.dries007.tfc.objects.blocks.stone.BlockPathTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariantConnected;
 
+@Deprecated
 public enum Rock
 {
     GRANITE(Category.IGNEOUS_INTRUSIVE),
@@ -46,6 +47,7 @@ public enum Rock
         this.category = category;
     }
 
+    @Deprecated
     public enum Category
     {
         SEDIMENTARY(ToolMaterialsTFC.SED),

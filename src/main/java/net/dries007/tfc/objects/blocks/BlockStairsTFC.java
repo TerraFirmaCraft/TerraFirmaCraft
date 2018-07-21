@@ -5,14 +5,15 @@
 
 package net.dries007.tfc.objects.blocks;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.init.Blocks;
 
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.wood.BlockPlanksTFC;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
@@ -21,14 +22,14 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 public class BlockStairsTFC extends BlockStairs
 {
     private static final InsertOnlyEnumTable<Rock, Rock.Type, BlockStairsTFC> ROCK_TABLE = new InsertOnlyEnumTable<>(Rock.class, Rock.Type.class);
-    private static final EnumMap<Wood, BlockStairsTFC> WOOD_MAP = new EnumMap<>(Wood.class);
+    private static final Map<Tree, BlockStairsTFC> WOOD_MAP = new HashMap<>();
 
     public static BlockStairsTFC get(Rock rock, Rock.Type type)
     {
         return ROCK_TABLE.get(rock, type);
     }
 
-    public static BlockStairsTFC get(Wood wood)
+    public static BlockStairsTFC get(Tree wood)
     {
         return WOOD_MAP.get(wood);
     }
@@ -43,7 +44,7 @@ public class BlockStairsTFC extends BlockStairs
         OreDictionaryHelper.registerRockType(this, type, rock, "stair");
     }
 
-    public BlockStairsTFC(Wood wood)
+    public BlockStairsTFC(Tree wood)
     {
         super(BlockPlanksTFC.get(wood).getDefaultState());
         if (WOOD_MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");

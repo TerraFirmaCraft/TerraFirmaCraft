@@ -19,7 +19,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
 public class TreeGenVariants implements ITreeGenerator
@@ -39,10 +39,10 @@ public class TreeGenVariants implements ITreeGenerator
     }
 
     @Override
-    public void generateTree(TemplateManager manager, World world, BlockPos pos, Wood tree, Random rand)
+    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {
         String variant = variants[variants.length == 1 ? 0 : rand.nextInt(variants.length)];
-        ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree + "/" + variant);
+        ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree.name + "/" + variant);
 
         Template structureBase = manager.get(world.getMinecraftServer(), base);
         if (structureBase == null)

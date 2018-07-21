@@ -7,6 +7,7 @@ package net.dries007.tfc.objects;
 
 import net.minecraft.util.IStringSerializable;
 
+@Deprecated
 public enum OreEnum
 {
     NATIVE_COPPER(Metal.COPPER),

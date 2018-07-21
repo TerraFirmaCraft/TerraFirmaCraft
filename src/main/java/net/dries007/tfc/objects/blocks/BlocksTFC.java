@@ -23,10 +23,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.CustomRegistries;
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
@@ -265,21 +266,21 @@ public final class BlocksTFC
             Builder<BlockTrapDoorWoodTFC> trapdoorwood = ImmutableList.builder();
             Builder<BlockChestTFC> chests = ImmutableList.builder();
 
-            for (Wood wood : Wood.values())
+            for (Tree wood : CustomRegistries.getTrees())
             {
-                logs.add(register(r, "wood/log/" + wood.name().toLowerCase(), new BlockLogTFC(wood), CT_WOOD));
-                leaves.add(register(r, "wood/leaves/" + wood.name().toLowerCase(), new BlockLeavesTFC(wood), CT_WOOD));
-                normalItemBlocks.put(register(r, "wood/planks/" + wood.name().toLowerCase(), new BlockPlanksTFC(wood), CT_WOOD), ItemBlockTFC.class);
-                normalItemBlocks.put(register(r, "wood/bookshelf/" + wood.name().toLowerCase(), new BlockBookshelfTFC(wood), CT_DECORATIONS), ItemBlockTFC.class);
-                normalItemBlocks.put(register(r, "wood/workbench/" + wood.name().toLowerCase(), new BlockWorkbenchTFC(wood), CT_DECORATIONS), ItemBlockTFC.class);
-                inventoryItemBlocks.put(register(r, "wood/fence/" + wood.name().toLowerCase(), new BlockFenceTFC(wood), CT_DECORATIONS), ItemBlockTFC.class);
-                fenceGates.add(register(r, "wood/fence_gate/" + wood.name().toLowerCase(), new BlockFenceGateTFC(wood), CT_DECORATIONS));
-                saplings.add(register(r, "wood/sapling/" + wood.name().toLowerCase(), new BlockSaplingTFC(wood), CT_WOOD));
-                doors.add(register(r, "wood/door/" + wood.name().toLowerCase(), new BlockDoorTFC(wood), CT_DECORATIONS));
-                trapdoorwood.add(register(r, "wood/trapdoor/" + wood.name().toLowerCase(), new BlockTrapDoorWoodTFC(wood), CT_DECORATIONS));
-                chests.add(register(r, "wood/chest/" + wood.name().toLowerCase(), new BlockChestTFC(BlockChest.Type.BASIC, wood), CT_DECORATIONS));
-                chests.add(register(r, "wood/chest_trap/" + wood.name().toLowerCase(), new BlockChestTFC(BlockChest.Type.TRAP, wood), CT_DECORATIONS));
-                inventoryItemBlocks.put(register(r, "wood/button/" + wood.name().toLowerCase(), new BlockButtonWoodTFC(wood), CT_DECORATIONS), ItemBlockTFC.class);
+                logs.add(register(r, "wood/log/" + wood.name, new BlockLogTFC(wood), CT_WOOD));
+                leaves.add(register(r, "wood/leaves/" + wood.name, new BlockLeavesTFC(wood), CT_WOOD));
+                normalItemBlocks.put(register(r, "wood/planks/" + wood.name, new BlockPlanksTFC(wood), CT_WOOD), ItemBlockTFC.class);
+                normalItemBlocks.put(register(r, "wood/bookshelf/" + wood.name, new BlockBookshelfTFC(wood), CT_DECORATIONS), ItemBlockTFC.class);
+                normalItemBlocks.put(register(r, "wood/workbench/" + wood.name, new BlockWorkbenchTFC(wood), CT_DECORATIONS), ItemBlockTFC.class);
+                inventoryItemBlocks.put(register(r, "wood/fence/" + wood.name, new BlockFenceTFC(wood), CT_DECORATIONS), ItemBlockTFC.class);
+                fenceGates.add(register(r, "wood/fence_gate/" + wood.name, new BlockFenceGateTFC(wood), CT_DECORATIONS));
+                saplings.add(register(r, "wood/sapling/" + wood.name, new BlockSaplingTFC(wood), CT_WOOD));
+                doors.add(register(r, "wood/door/" + wood.name, new BlockDoorTFC(wood), CT_DECORATIONS));
+                trapdoorwood.add(register(r, "wood/trapdoor/" + wood.name, new BlockTrapDoorWoodTFC(wood), CT_DECORATIONS));
+                chests.add(register(r, "wood/chest/" + wood.name, new BlockChestTFC(BlockChest.Type.BASIC, wood), CT_DECORATIONS));
+                chests.add(register(r, "wood/chest_trap/" + wood.name, new BlockChestTFC(BlockChest.Type.TRAP, wood), CT_DECORATIONS));
+                inventoryItemBlocks.put(register(r, "wood/button/" + wood.name, new BlockButtonWoodTFC(wood), CT_DECORATIONS), ItemBlockTFC.class);
             }
             allLogBlocks = logs.build();
             allLeafBlocks = leaves.build();
@@ -312,22 +313,22 @@ public final class BlocksTFC
             for (Rock.Type type : new Rock.Type[] {SMOOTH, COBBLE, BRICKS})
                 for (Rock rock : Rock.values())
                     stairs.add(register(r, "stairs/" + (type.name() + "/" + rock.name()).toLowerCase(), new BlockStairsTFC(rock, type), CT_DECORATIONS));
-            for (Wood wood : Wood.values())
-                stairs.add(register(r, "stairs/wood/" + wood.name().toLowerCase(), new BlockStairsTFC(wood), CT_DECORATIONS));
+            for (Tree wood : CustomRegistries.getTrees())
+                stairs.add(register(r, "stairs/wood/" + wood.name, new BlockStairsTFC(wood), CT_DECORATIONS));
 
             // Full slabs are the same as full blocks, they are not saved to a list, they are kept track of by the halfslab version.
             for (Rock.Type type : new Rock.Type[] {SMOOTH, COBBLE, BRICKS})
                 for (Rock rock : Rock.values())
                     register(r, "slab/full/" + (type.name() + "/" + rock.name()).toLowerCase(), new BlockSlabTFC.Double(rock, type));
-            for (Wood wood : Wood.values())
-                register(r, "slab/full/wood/" + wood.name().toLowerCase(), new BlockSlabTFC.Double(wood));
+            for (Tree wood : CustomRegistries.getTrees())
+                register(r, "slab/full/wood/" + wood.name, new BlockSlabTFC.Double(wood));
 
             // Slabs
             for (Rock.Type type : new Rock.Type[] {SMOOTH, COBBLE, BRICKS})
                 for (Rock rock : Rock.values())
                     slab.add(register(r, "slab/half/" + (type.name() + "/" + rock.name()).toLowerCase(), new BlockSlabTFC.Half(rock, type), CT_DECORATIONS));
-            for (Wood wood : Wood.values())
-                slab.add(register(r, "slab/half/wood/" + wood.name().toLowerCase(), new BlockSlabTFC.Half(wood), CT_DECORATIONS));
+            for (Tree wood : CustomRegistries.getTrees())
+                slab.add(register(r, "slab/half/wood/" + wood.name, new BlockSlabTFC.Half(wood), CT_DECORATIONS));
 
             for (Rock rock : Rock.values())
                 inventoryItemBlocks.put(register(r, "stone/button/" + rock.name().toLowerCase(), new BlockButtonStoneTFC(rock), CT_DECORATIONS), ItemBlockTFC.class);

@@ -29,8 +29,9 @@ import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.layer.IntCache;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.CustomRegistries;
 import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Wood;
 import net.dries007.tfc.objects.biomes.BiomesTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
@@ -60,7 +61,7 @@ public class ChunkGenTFC implements IChunkGenerator
     public static final DataLayer[] ROCK_LAYER_1 = new DataLayer[] {SHALE, CLAYSTONE, ROCKSALT, LIMESTONE, CONGLOMERATE, DOLOMITE, CHERT, CHALK, RHYOLITE, BASALT, ANDESITE, DACITE, QUARTZITE, SLATE, PHYLLITE, SCHIST, GNEISS, MARBLE, GRANITE, DIORITE, GABBRO};
     public static final DataLayer[] ROCK_LAYER_2 = new DataLayer[] {RHYOLITE, BASALT, ANDESITE, DACITE, QUARTZITE, SLATE, PHYLLITE, SCHIST, GNEISS, MARBLE, GRANITE, DIORITE, GABBRO};
     public static final DataLayer[] ROCK_LAYER_3 = new DataLayer[] {RHYOLITE, BASALT, ANDESITE, DACITE, GRANITE, DIORITE, GABBRO};
-    public static final Wood[] TREE_ARRAY = Wood.values();
+    public static final Tree[] TREE_ARRAY = CustomRegistries.getTrees().toArray(new Tree[0]);
 
     public static final IBlockState STONE = Blocks.STONE.getDefaultState();
     public static final IBlockState AIR = Blocks.AIR.getDefaultState();
@@ -121,9 +122,7 @@ public class ChunkGenTFC implements IChunkGenerator
     private final DataLayer[] rainfallLayer = new DataLayer[256];
     private final DataLayer[] stabilityLayer = new DataLayer[256];
     private final DataLayer[] drainageLayer = new DataLayer[256];
-    private final Wood[] treeLayer1 = new Wood[256];
-    private final Wood[] treeLayer2 = new Wood[256];
-    private final Wood[] treeLayer3 = new Wood[256];
+    private final Tree[] treeLayers = new Tree[3];
     private final int[] seaLevelOffsetMap = new int[256];
     private final int[] chunkHeightMap = new int[256];
 
@@ -189,9 +188,9 @@ public class ChunkGenTFC implements IChunkGenerator
         loadLayerGeneratorData(rocksGenLayer1, rockLayer1, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(rocksGenLayer2, rockLayer2, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(rocksGenLayer3, rockLayer3, chunkX * 16, chunkZ * 16, 16, 16);
-        loadLayerGeneratorData(treesGenLayer1, treeLayer1, chunkX * 16, chunkZ * 16, 16, 16);
-        loadLayerGeneratorData(treesGenLayer2, treeLayer2, chunkX * 16, chunkZ * 16, 16, 16);
-        loadLayerGeneratorData(treesGenLayer3, treeLayer3, chunkX * 16, chunkZ * 16, 16, 16);
+        treeLayers[0] = TREE_ARRAY[treesGenLayer1.getInts(chunkX * 16, chunkZ * 16, 1, 1)[0]];
+        treeLayers[1] = TREE_ARRAY[treesGenLayer2.getInts(chunkX * 16, chunkZ * 16, 1, 1)[0]];
+        treeLayers[2] = TREE_ARRAY[treesGenLayer3.getInts(chunkX * 16, chunkZ * 16, 1, 1)[0]];
         loadLayerGeneratorData(evtGenLayer, evtLayer, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(rainfallGenLayer, rainfallLayer, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(stabilityGenLayer, stabilityLayer, chunkX * 16, chunkZ * 16, 16, 16);
@@ -230,7 +229,7 @@ public class ChunkGenTFC implements IChunkGenerator
 
         ChunkDataTFC chunkData = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
         if (chunkData == null) throw new IllegalStateException("ChunkData capability is missing.");
-        chunkData.setGenerationData(rockLayer1, rockLayer2, rockLayer3, treeLayer1, treeLayer2, treeLayer3,
+        chunkData.setGenerationData(rockLayer1, rockLayer2, rockLayer3, treeLayers,
             evtLayer, rainfallLayer, stabilityLayer, drainageLayer, seaLevelOffsetMap);
 
         byte[] biomeIds = chunk.getBiomeArray();
@@ -348,15 +347,6 @@ public class ChunkGenTFC implements IChunkGenerator
         for (int i = 0; i < width * height; ++i)
         {
             layers[i] = DataLayer.get(ints[i]);
-        }
-    }
-    private void loadLayerGeneratorData(GenLayerTFC gen, Wood[] layers, int x, int y, int width, int height)
-    {
-        IntCache.resetIntCache();
-        int[] ints = gen.getInts(x, y, width, height);
-        for (int i = 0; i < width * height; ++i)
-        {
-            layers[i] = Wood.get(ints[i]);
         }
     }
 
