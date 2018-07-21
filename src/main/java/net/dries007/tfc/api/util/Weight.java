@@ -4,7 +4,7 @@
  *
  */
 
-package net.dries007.tfc.objects;
+package net.dries007.tfc.api.util;
 
 public enum Weight
 {

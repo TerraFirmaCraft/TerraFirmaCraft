@@ -40,14 +40,11 @@ public class TreeGenNormal implements ITreeGenerator
         this.heightRange = heightRange;
     }
 
-    public TreeGenNormal()
-    {
-        this(1, 4);
-    }
-
     @Override
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {
+        if (!canGenerateTree(world, pos, tree))
+            return;
         ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree.name + "/base");
         ResourceLocation overlay = new ResourceLocation(Constants.MOD_ID, tree.name + "/overlay");
 
@@ -63,21 +60,18 @@ public class TreeGenNormal implements ITreeGenerator
         PlacementSettings settings = ITreeGenerator.getDefaultSettings();
         int height = heightMin + (heightRange > 0 ? rand.nextInt(heightRange) : 0);
 
-        if (canGenerateTree(world, pos, tree))
+        BlockPos size = structureBase.getSize();
+        pos = pos.add(-size.getX() / 2, height, -size.getZ() / 2);
+
+        structureBase.addBlocksToWorld(world, pos, settings);
+        if (structureOverlay != null)
         {
-            BlockPos size = structureBase.getSize();
-            pos = pos.add(-size.getX() / 2, height, -size.getZ() / 2);
-
-            structureBase.addBlocksToWorld(world, pos, settings);
-            if (structureOverlay != null)
-            {
-                structureOverlay.addBlocksToWorld(world, pos, settings.setIntegrity(0.5f));
-            }
-
-            final IBlockState log = BlockLogTFC.get(tree).getDefaultState();
-            for (int i = 0; i < height; i++)
-                world.setBlockState(pos.add(size.getX() / 2, i - height, size.getZ() / 2), log);
+            structureOverlay.addBlocksToWorld(world, pos, settings.setIntegrity(0.5f));
         }
+
+        final IBlockState log = BlockLogTFC.get(tree).getDefaultState();
+        for (int i = 0; i < height; i++)
+            world.setBlockState(pos.add(size.getX() / 2, i - height, size.getZ() / 2), log);
     }
 
 }
