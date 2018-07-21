@@ -53,11 +53,13 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
         GlStateManager.depthFunc(515);
         GlStateManager.depthMask(true);
         int meta = 0;
+        Tree wood = null;
 
         if (te.hasWorld())
         {
             BlockChestTFC block = te.getBlockType();
             meta = te.getBlockMetadata();
+            wood = te.getWood();
 
             if (block != null && meta == 0)
             {
@@ -84,13 +86,13 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
                 GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                 GlStateManager.matrixMode(5888);
             }
-            else if (te.getChestType() == BlockChest.Type.TRAP)
+            else if (te.getChestType() == BlockChest.Type.TRAP && wood != null)
             {
-                bindTexture(TRAP_SINGLE_TEXTURES.get(te.getWood()));
+                bindTexture(TRAP_SINGLE_TEXTURES.get(wood));
             }
-            else
+            else if (wood != null)
             {
-                bindTexture(SINGLE_TEXTURES.get(te.getWood()));
+                bindTexture(SINGLE_TEXTURES.get(wood));
             }
         }
         else
@@ -106,13 +108,13 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
                 GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                 GlStateManager.matrixMode(5888);
             }
-            else if (te.getChestType() == BlockChest.Type.TRAP)
+            else if (te.getChestType() == BlockChest.Type.TRAP && wood != null)
             {
-                bindTexture(TRAP_DOUBLE_TEXTURES.get(te.getWood()));
+                bindTexture(TRAP_DOUBLE_TEXTURES.get(wood));
             }
-            else
+            else if (wood != null)
             {
-                bindTexture(DOUBLE_TEXTURES.get(te.getWood()));
+                bindTexture(DOUBLE_TEXTURES.get(wood));
             }
         }
 

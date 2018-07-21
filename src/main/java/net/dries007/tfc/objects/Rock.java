@@ -15,6 +15,9 @@ import net.dries007.tfc.objects.blocks.stone.BlockPathTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariantConnected;
 
+/**
+ * Use api.types.Rock / api.types.RockCategory instead
+ */
 @Deprecated
 public enum Rock
 {

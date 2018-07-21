@@ -22,30 +22,29 @@ import static net.dries007.tfc.Constants.MOD_ID;
 public class DefaultTrees
 {
 
-    public static final ResourceLocation ACACIA = new ResourceLocation(MOD_ID, "acacia");
-    public static final ResourceLocation ASH = new ResourceLocation(MOD_ID, "ash");
-    public static final ResourceLocation ASPEN = new ResourceLocation(MOD_ID, "aspen");
-    public static final ResourceLocation BIRCH = new ResourceLocation(MOD_ID, "birch");
-    public static final ResourceLocation BLACKWOOD = new ResourceLocation(MOD_ID, "blackwood");
-    public static final ResourceLocation CHESTNUT = new ResourceLocation(MOD_ID, "chestnut");
-    public static final ResourceLocation DOUGLAS_FIR = new ResourceLocation(MOD_ID, "douglas_fir");
-    public static final ResourceLocation HICKORY = new ResourceLocation(MOD_ID, "hickory");
-    public static final ResourceLocation MAPLE = new ResourceLocation(MOD_ID, "maple");
-    public static final ResourceLocation OAK = new ResourceLocation(MOD_ID, "oak");
-    public static final ResourceLocation PALM = new ResourceLocation(MOD_ID, "palm");
-    public static final ResourceLocation PINE = new ResourceLocation(MOD_ID, "pine");
-    public static final ResourceLocation ROSEWOOD = new ResourceLocation(MOD_ID, "rosewood");
-    public static final ResourceLocation SEQUOIA = new ResourceLocation(MOD_ID, "sequoia");
-    public static final ResourceLocation SPRUCE = new ResourceLocation(MOD_ID, "spruce");
-    public static final ResourceLocation SYCAMORE = new ResourceLocation(MOD_ID, "sycamore");
-    public static final ResourceLocation WHITE_CEDAR = new ResourceLocation(MOD_ID, "white_cedar");
-    public static final ResourceLocation WILLOW = new ResourceLocation(MOD_ID, "willow");
-    public static final ResourceLocation KAPOK = new ResourceLocation(MOD_ID, "kapok");
-
     /**
-     * Simple ITreeGenerator instances.
+     * Simple ITreeGenerator instances. You can use these when registering custom trees.
      */
     public static final ITreeGenerator GEN_NORMAL = new TreeGenNormal(1, 3);
+    private static final ResourceLocation ACACIA = new ResourceLocation(MOD_ID, "acacia");
+    private static final ResourceLocation ASH = new ResourceLocation(MOD_ID, "ash");
+    private static final ResourceLocation ASPEN = new ResourceLocation(MOD_ID, "aspen");
+    private static final ResourceLocation BIRCH = new ResourceLocation(MOD_ID, "birch");
+    private static final ResourceLocation BLACKWOOD = new ResourceLocation(MOD_ID, "blackwood");
+    private static final ResourceLocation CHESTNUT = new ResourceLocation(MOD_ID, "chestnut");
+    private static final ResourceLocation DOUGLAS_FIR = new ResourceLocation(MOD_ID, "douglas_fir");
+    private static final ResourceLocation HICKORY = new ResourceLocation(MOD_ID, "hickory");
+    private static final ResourceLocation MAPLE = new ResourceLocation(MOD_ID, "maple");
+    private static final ResourceLocation OAK = new ResourceLocation(MOD_ID, "oak");
+    private static final ResourceLocation PALM = new ResourceLocation(MOD_ID, "palm");
+    private static final ResourceLocation PINE = new ResourceLocation(MOD_ID, "pine");
+    private static final ResourceLocation ROSEWOOD = new ResourceLocation(MOD_ID, "rosewood");
+    private static final ResourceLocation SEQUOIA = new ResourceLocation(MOD_ID, "sequoia");
+    private static final ResourceLocation SPRUCE = new ResourceLocation(MOD_ID, "spruce");
+    private static final ResourceLocation SYCAMORE = new ResourceLocation(MOD_ID, "sycamore");
+    private static final ResourceLocation WHITE_CEDAR = new ResourceLocation(MOD_ID, "white_cedar");
+    private static final ResourceLocation WILLOW = new ResourceLocation(MOD_ID, "willow");
+    private static final ResourceLocation KAPOK = new ResourceLocation(MOD_ID, "kapok");
     public static final ITreeGenerator GEN_TALL = new TreeGenNormal(3, 3);
     public static final ITreeGenerator GEN_LARGE = new TreeGenNormal(0, 2);
     public static final ITreeGenerator GEN_CONIFER = new TreeGenVariants(false, 7);
@@ -60,7 +59,7 @@ public class DefaultTrees
     {
         IForgeRegistry<Tree> r = event.getRegistry();
         r.registerAll(
-            new Tree(ACACIA, 250f, 4000f, 28f, 50f, 4f, 8f, 2, GEN_ACACIA),
+            new Tree(ACACIA, 250f, 4000f, 28f, 50f, 4f, 8f, 3, GEN_ACACIA),
             new Tree(ASH, 125f, 4000f, 4f, 24f, 1f, 8f, 2, GEN_TALL),
             new Tree(ASPEN, 125f, 1000f, -5f, 18f, 0.25f, 4f, 2, GEN_TALL),
             new Tree(BIRCH, 62.5f, 250f, -10f, 12f, 0f, 4f, 2, GEN_TALL),
@@ -73,12 +72,12 @@ public class DefaultTrees
             new Tree(PALM, 1000f, 4000f, 12f, 50f, 2f, 8f, 2, GEN_TROPICAL),
             new Tree(PINE, 125f, 4000f, -15f, 24f, 0.25f, 8f, 2, GEN_CONIFER),
             new Tree(ROSEWOOD, 500f, 4000f, 8f, 18f, 0f, 2f, 2, GEN_LARGE),
-            new Tree(SEQUOIA, 1000f, 4000f, 10f, 16f, 0f, 1f, 2, GEN_SEQUOIA),
+            new Tree(SEQUOIA, 1000f, 4000f, 10f, 16f, 0f, 1f, 3, GEN_SEQUOIA),
             new Tree(SPRUCE, 125f, 4000f, -5f, 24f, 0f, 4f, 2, GEN_CONIFER),
             new Tree(SYCAMORE, 250f, 4000f, 6f, 30f, 0f, 4f, 2, GEN_NORMAL),
             new Tree(WHITE_CEDAR, 125f, 4000f, -5f, 24f, 0f, 8f, 2, GEN_LARGE),
             new Tree(WILLOW, 2000f, 4000f, 10f, 30f, 0f, 1f, 2, GEN_WILLOW),
-            new Tree(KAPOK, 1000f, 4000f, 30f, 50f, 0f, 4f, 2, GEN_KAPOK)
+            new Tree(KAPOK, 1000f, 4000f, 30f, 50f, 0f, 4f, 3, GEN_KAPOK)
         );
     }
 }

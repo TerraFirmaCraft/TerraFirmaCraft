@@ -7,6 +7,9 @@ package net.dries007.tfc.objects;
 
 import net.minecraft.util.IStringSerializable;
 
+/**
+ * Use api.types.ore instead
+ */
 @Deprecated
 public enum OreEnum
 {

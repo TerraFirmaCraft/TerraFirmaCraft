@@ -9,15 +9,12 @@ package net.dries007.tfc.world.classic.worldgen;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
@@ -30,36 +27,6 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class WorldGenTrees implements IWorldGenerator
 {
-
-    public static PlacementSettings getDefaultSettings()
-    {
-        return new PlacementSettings()
-            .setIgnoreEntities(false)
-            .setIgnoreStructureBlock(false)
-            .setReplacedBlock(Blocks.AIR);
-    }
-
-    public static PlacementSettings getRandomSettings(Random rand)
-    {
-        return getDefaultSettings()
-            //.setMirror(Mirror.values()[rand.nextInt(Mirror.values().length)])
-            .setRotation(Rotation.values()[rand.nextInt(Rotation.values().length)]);
-    }
-
-    public static boolean canGenerateTree(World world, BlockPos pos, Template tree, PlacementSettings settings, Tree treeType)
-    {
-        // Check if ground is flat enough
-        final int radius = treeType.maxGrowthRadius;
-        for (int x = -radius; x <= radius; x++)
-        {
-            for (int z = -radius; z <= radius; z++)
-            {
-                if (!world.getBlockState(pos.add(x, 1, z)).getMaterial().isReplaceable())
-                    return false;
-            }
-        }
-        return true;
-    }
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)

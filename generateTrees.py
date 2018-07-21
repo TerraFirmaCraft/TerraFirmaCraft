@@ -43,7 +43,7 @@ WOOD_TYPES = {
     'palm': 'tropical',
     'pine': 'conifer',
     'rosewood': 'tall',
-    'sequoia': 'normal',
+    'sequoia': 'sequoia',
     'spruce': 'conifer',
     'sycamore': 'normal',
     'white_cedar': 'tall',
@@ -71,6 +71,13 @@ for wood, key in WOOD_TYPES.items():
     if key == 'conifer':
         for s in ['1', '2', '3', '4', '5', '6', '7']:
             tree('structure_templates/conifer' + s, wood, s)
+
+    # sequoia (large vanilla spruce kind of)
+    if key == 'sequoia':
+        for s in ['base', 'mid', 'top']:
+            for t in ['1', '2', '3']:
+                tree('structure_templates/conifer_large_' + s + t, wood, s + t)
+
 
     # palm like trees
     if key == 'tropical':
