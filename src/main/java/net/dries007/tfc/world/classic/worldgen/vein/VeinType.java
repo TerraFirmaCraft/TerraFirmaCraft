@@ -26,7 +26,7 @@ public abstract class VeinType
 
     public final boolean inRange(BlockPos pos1)
     {
-        return Math.pow(pos1.getX() - this.pos.getX(), 2) + Math.pow(pos1.getZ() - this.pos.getZ(), 2) <= WorldGenOre.VEIN_MAX_RADIUS_SQUARED;
+        return Math.pow(pos1.getX() - this.pos.getX(), 2) + Math.pow(pos1.getZ() - this.pos.getZ(), 2) <= WorldGenOre.VEIN_MAX_RADIUS * WorldGenOre.VEIN_MAX_RADIUS;
     }
 
     public int getLowestY()

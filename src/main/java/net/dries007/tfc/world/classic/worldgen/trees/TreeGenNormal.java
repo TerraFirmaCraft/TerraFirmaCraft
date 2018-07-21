@@ -19,7 +19,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
@@ -40,10 +40,10 @@ public class TreeGenNormal implements ITreeGenerator
     }
 
     @Override
-    public void generateTree(TemplateManager manager, World world, BlockPos pos, Wood tree, Random rand)
+    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {
-        ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree + "/base");
-        ResourceLocation overlay = new ResourceLocation(Constants.MOD_ID, tree + "/overlay");
+        ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree.name + "/base");
+        ResourceLocation overlay = new ResourceLocation(Constants.MOD_ID, tree.name + "/overlay");
 
         Template structureBase = manager.get(world.getMinecraftServer(), base);
         Template structureOverlay = manager.get(world.getMinecraftServer(), overlay);

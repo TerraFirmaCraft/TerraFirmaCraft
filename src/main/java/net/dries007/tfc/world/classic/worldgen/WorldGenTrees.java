@@ -21,8 +21,7 @@ import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import net.dries007.tfc.api.ITreeGenerator;
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.biomes.BiomeTFC;
 import net.dries007.tfc.objects.biomes.BiomesTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -47,10 +46,10 @@ public class WorldGenTrees implements IWorldGenerator
             .setRotation(Rotation.values()[rand.nextInt(Rotation.values().length)]);
     }
 
-    public static boolean canGenerateTree(World world, BlockPos pos, Template tree, PlacementSettings settings, Wood treeType)
+    public static boolean canGenerateTree(World world, BlockPos pos, Template tree, PlacementSettings settings, Tree treeType)
     {
         // Check if ground is flat enough
-        final int radius = treeType.getRadiusForGrowth();
+        final int radius = treeType.maxGrowthRadius;
         for (int x = -radius; x <= radius; x++)
         {
             for (int z = -radius; z <= radius; z++)
@@ -85,18 +84,17 @@ public class WorldGenTrees implements IWorldGenerator
             if (world.getBlockState(pos).getBlock() != Blocks.AIR || !BlocksTFC.isSoil(world.getBlockState(pos.down())))
                 continue;
 
-            final Wood tree;
+            final Tree tree;
             final float rng = random.nextFloat();
 
             if(rng < 0.5)
-                tree = chunkData.getTree1(pos);
+                tree = chunkData.getTree1();
             else if(rng < 0.8)
-                tree = chunkData.getTree2(pos);
+                tree = chunkData.getTree2();
             else
-                tree = chunkData.getTree3(pos);
+                tree = chunkData.getTree3();
 
-            ITreeGenerator gen = tree.getTreeGenerator();
-            gen.generateTree(manager, world, pos, tree, random);
+            tree.makeTree(manager, world, pos, random);
 
             //world.setBlockState(new BlockPos(x, 180, z), BlockLogTFC.get(tree1).getDefaultState(), 2);
             //world.setBlockState(new BlockPos(x + 1, 180, z), BlockLogTFC.get(tree2).getDefaultState(), 2);

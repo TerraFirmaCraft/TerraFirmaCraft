@@ -13,12 +13,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import net.dries007.tfc.api.ITreeGenerator;
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 
 public class TreeGenAcacia implements ITreeGenerator
 {
     @Override
-    public void generateTree(TemplateManager manager, World world, BlockPos pos, Wood tree, Random rand)
+    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {
         // todo
     }

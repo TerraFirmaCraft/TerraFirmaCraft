@@ -5,12 +5,12 @@
 
 package net.dries007.tfc.world.classic.genlayers.datalayers.tree;
 
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.world.classic.genlayers.*;
 
 public abstract class GenTreeLayer extends GenLayerTFC
 {
-    public static GenLayerTFC initialize(long par0, Wood[] trees)
+    public static GenLayerTFC initialize(long par0, Tree[] trees)
     {
         GenLayerTFC layer = new GenLayerTreeInit(1L, trees);
 //        drawImage(512, layer, "Tree 0");

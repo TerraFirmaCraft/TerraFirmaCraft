@@ -5,7 +5,8 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.block.BlockWorkbench;
 import net.minecraft.block.SoundType;
@@ -27,21 +28,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockWorkbenchTFC extends BlockWorkbench
 {
-    private static final EnumMap<Wood, BlockWorkbenchTFC> MAP = new EnumMap<>(Wood.class);
+    private static final Map<Tree, BlockWorkbenchTFC> MAP = new HashMap<>();
 
-    public static BlockWorkbenchTFC get(Wood wood)
+    public static BlockWorkbenchTFC get(Tree wood)
     {
         return MAP.get(wood);
     }
 
-    public final Wood wood;
+    public final Tree wood;
 
-    public BlockWorkbenchTFC(Wood wood)
+    public BlockWorkbenchTFC(Tree wood)
     {
         super();
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");

@@ -5,7 +5,8 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.block.BlockBush;
@@ -20,23 +21,23 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockSaplingTFC extends BlockBush implements IGrowable
 {
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 4);
     protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
-    private static final EnumMap<Wood, BlockSaplingTFC> MAP = new EnumMap<>(Wood.class);
+    private static final Map<Tree, BlockSaplingTFC> MAP = new HashMap<>();
 
-    public static BlockSaplingTFC get(Wood wood)
+    public static BlockSaplingTFC get(Tree wood)
     {
         return MAP.get(wood);
     }
 
-    public final Wood wood;
+    public final Tree wood;
 
-    public BlockSaplingTFC(Wood wood)
+    public BlockSaplingTFC(Tree wood)
     {
         super();
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
@@ -91,7 +92,8 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     @Override
     public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
     {
-
+        // todo
+        //wood.makeTree(world, blockPos, random);
     }
 
     @Override

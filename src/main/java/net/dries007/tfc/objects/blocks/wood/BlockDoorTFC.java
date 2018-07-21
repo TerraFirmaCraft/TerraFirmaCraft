@@ -5,7 +5,8 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.block.BlockDoor;
@@ -21,21 +22,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 
 public class BlockDoorTFC extends BlockDoor
 {
-    private static final EnumMap<Wood, BlockDoorTFC> MAP = new EnumMap<>(Wood.class);
+    private static final Map<Tree, BlockDoorTFC> MAP = new HashMap<>();
 
-    public static BlockDoorTFC get(Wood wood)
+    public static BlockDoorTFC get(Tree wood)
     {
         return MAP.get(wood);
     }
 
-    public final Wood wood;
+    public final Tree wood;
 
-    public BlockDoorTFC(Wood wood)
+    public BlockDoorTFC(Tree wood)
     {
         super(Material.WOOD);
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");

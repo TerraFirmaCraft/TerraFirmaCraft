@@ -7,14 +7,14 @@ package net.dries007.tfc.world.classic.genlayers.datalayers.tree;
 
 import net.minecraft.world.gen.layer.IntCache;
 
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerTreeInit extends GenLayerTFC
 {
-    private Wood[] layerTrees;
+    private Tree[] layerTrees;
 
-    public GenLayerTreeInit(long par1, Wood[] trees)
+    public GenLayerTreeInit(long par1, Tree[] trees)
     {
         super(par1);
         layerTrees = trees.clone();
@@ -30,7 +30,7 @@ public class GenLayerTreeInit extends GenLayerTFC
             for (int x = 0; x < maxX; ++x)
             {
                 this.initChunkSeed(par1 + x, par2 + z);
-                cache[x + z * maxX] = layerTrees[this.nextInt(layerTrees.length)].index;
+                cache[x + z * maxX] = this.nextInt(layerTrees.length);
             }
         }
 
