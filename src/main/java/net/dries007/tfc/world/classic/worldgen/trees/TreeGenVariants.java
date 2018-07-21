@@ -53,6 +53,8 @@ public class TreeGenVariants implements ITreeGenerator
     @Override
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {
+        if (!canGenerateTree(world, pos, tree))
+            return;
         String variant = variants[variants.length == 1 ? 0 : rand.nextInt(variants.length)];
         ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree.name + "/" + variant);
 
@@ -65,12 +67,9 @@ public class TreeGenVariants implements ITreeGenerator
 
         PlacementSettings settings = useRotation ? ITreeGenerator.getRandomSettings(rand) : ITreeGenerator.getDefaultSettings();
 
-        if (canGenerateTree(world, pos, tree))
-        {
-            BlockPos size = structureBase.getSize().rotate(settings.getRotation());
-            // Begin rotation things
-            pos = pos.add(-size.getX() / 2, 0, -size.getZ() / 2);
-            structureBase.addBlocksToWorld(world, pos, settings);
-        }
+        BlockPos size = structureBase.getSize().rotate(settings.getRotation());
+        // Begin rotation things
+        pos = pos.add(-size.getX() / 2, 0, -size.getZ() / 2);
+        structureBase.addBlocksToWorld(world, pos, settings);
     }
 }

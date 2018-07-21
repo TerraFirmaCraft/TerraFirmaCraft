@@ -26,6 +26,18 @@ public class DefaultTrees
      * Simple ITreeGenerator instances. You can use these when registering custom trees.
      */
     public static final ITreeGenerator GEN_NORMAL = new TreeGenNormal(1, 3);
+    public static final ITreeGenerator GEN_TALL = new TreeGenNormal(3, 3);
+    public static final ITreeGenerator GEN_LARGE = new TreeGenNormal(0, 2);
+    public static final ITreeGenerator GEN_CONIFER = new TreeGenVariants(false, 7);
+    public static final ITreeGenerator GEN_TROPICAL = new TreeGenVariants(true, 7);
+    public static final ITreeGenerator GEN_WILLOW = new TreeGenWillow();
+    public static final ITreeGenerator GEN_ACACIA = new TreeGenAcacia();
+    public static final ITreeGenerator GEN_KAPOK = new TreeGenKapok();
+    public static final ITreeGenerator GEN_SEQUOIA = new TreeGenSequoia();
+
+    /**
+     * Default tree ResourceLocations
+     */
     private static final ResourceLocation ACACIA = new ResourceLocation(MOD_ID, "acacia");
     private static final ResourceLocation ASH = new ResourceLocation(MOD_ID, "ash");
     private static final ResourceLocation ASPEN = new ResourceLocation(MOD_ID, "aspen");
@@ -45,14 +57,6 @@ public class DefaultTrees
     private static final ResourceLocation WHITE_CEDAR = new ResourceLocation(MOD_ID, "white_cedar");
     private static final ResourceLocation WILLOW = new ResourceLocation(MOD_ID, "willow");
     private static final ResourceLocation KAPOK = new ResourceLocation(MOD_ID, "kapok");
-    public static final ITreeGenerator GEN_TALL = new TreeGenNormal(3, 3);
-    public static final ITreeGenerator GEN_LARGE = new TreeGenNormal(0, 2);
-    public static final ITreeGenerator GEN_CONIFER = new TreeGenVariants(false, 7);
-    public static final ITreeGenerator GEN_TROPICAL = new TreeGenVariants(true, 7);
-    public static final ITreeGenerator GEN_WILLOW = new TreeGenWillow();
-    public static final ITreeGenerator GEN_ACACIA = new TreeGenAcacia();
-    public static final ITreeGenerator GEN_KAPOK = new TreeGenKapok();
-    public static final ITreeGenerator GEN_SEQUOIA = new TreeGenSequoia();
 
     @SubscribeEvent
     public static void onPreRegisterRockCategory(TFCRegistries.RegisterPreBlock<Tree> event)
@@ -63,12 +67,12 @@ public class DefaultTrees
             new Tree(ASH, 125f, 4000f, 4f, 24f, 1f, 8f, 2, GEN_TALL),
             new Tree(ASPEN, 125f, 1000f, -5f, 18f, 0.25f, 4f, 2, GEN_TALL),
             new Tree(BIRCH, 62.5f, 250f, -10f, 12f, 0f, 4f, 2, GEN_TALL),
-            new Tree(BLACKWOOD, 62.5f, 500f, 4f, 28f, 0.5f, 2f, 2, GEN_NORMAL),
+            new Tree(BLACKWOOD, 62.5f, 500f, 4f, 28f, 0.5f, 2f, 2, GEN_LARGE),
             new Tree(CHESTNUT, 125f, 4000f, 3f, 24f, 0f, 2f, 2, GEN_NORMAL),
-            new Tree(DOUGLAS_FIR, 500f, 4000f, 1f, 14f, 0f, 4f, 2, GEN_LARGE),
+            new Tree(DOUGLAS_FIR, 500f, 4000f, 1f, 14f, 0f, 4f, 2, GEN_TALL),
             new Tree(HICKORY, 125f, 4000f, 4f, 28f, 0f, 4f, 2, GEN_TALL),
             new Tree(MAPLE, 125f, 4000f, 3f, 20f, 0f, 4f, 2, GEN_NORMAL),
-            new Tree(OAK, 250f, 1000f, 5f, 25f, 0.25f, 8f, 2, GEN_NORMAL),
+            new Tree(OAK, 250f, 1000f, 5f, 25f, 0.25f, 8f, 2, GEN_TALL),
             new Tree(PALM, 1000f, 4000f, 12f, 50f, 2f, 8f, 2, GEN_TROPICAL),
             new Tree(PINE, 125f, 4000f, -15f, 24f, 0.25f, 8f, 2, GEN_CONIFER),
             new Tree(ROSEWOOD, 500f, 4000f, 8f, 18f, 0f, 2f, 2, GEN_LARGE),

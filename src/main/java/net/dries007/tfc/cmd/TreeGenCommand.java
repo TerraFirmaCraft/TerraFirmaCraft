@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.cmd;
 
+import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.command.CommandBase;
@@ -26,6 +27,8 @@ import net.dries007.tfc.objects.CustomRegistries;
 @ParametersAreNonnullByDefault
 public class TreeGenCommand extends CommandBase
 {
+
+    private static final Random random = new Random();
 
     @Override
     public String getName()
@@ -54,7 +57,7 @@ public class TreeGenCommand extends CommandBase
         final BlockPos center = new BlockPos(sender.getCommandSenderEntity());
         final TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
 
-        tree.makeTree(manager, world, center, world.rand);
+        tree.makeTree(manager, world, center, random);
 
     }
 }

@@ -24,6 +24,7 @@ import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 
+// todo: sequoia leaves are decaying because the tree is too big >:( Do something about this.
 public class TreeGenSequoia implements ITreeGenerator
 {
     private final PlacementSettings settings = ITreeGenerator.getDefaultSettings();
@@ -54,8 +55,7 @@ public class TreeGenSequoia implements ITreeGenerator
             else
                 k += placeLayer(manager, world, pos.up(k), tree.name + "/base" + baseVariant);
         }
-        placeTrunk(world, pos.up(k));
-        placeLayer(manager, world, pos.up(k + 1), tree.name + "/top" + topVariant);
+        placeLayer(manager, world, pos.up(k), tree.name + "/top" + topVariant);
 
     }
 
@@ -79,9 +79,9 @@ public class TreeGenSequoia implements ITreeGenerator
     private void placeTrunk(World world, BlockPos pos)
     {
         world.setBlockState(pos, trunk);
-        world.setBlockState(pos.add(1, 0, 0), trunk);
-        world.setBlockState(pos.add(0, 0, 1), trunk);
-        world.setBlockState(pos.add(1, 0, 1), trunk);
+        world.setBlockState(pos.add(-1, 0, 0), trunk);
+        world.setBlockState(pos.add(0, 0, -1), trunk);
+        world.setBlockState(pos.add(-1, 0, -1), trunk);
 
     }
 

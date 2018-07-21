@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.util.IItemSize;
+import net.dries007.tfc.api.util.IItemSize;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault

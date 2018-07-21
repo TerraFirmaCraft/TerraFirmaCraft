@@ -30,16 +30,16 @@ def tree(origin, wood, nameout):
 
 
 WOOD_TYPES = {
-    'acacia': 'normal',
+    'acacia': 'acacia',
     'ash': 'normal',
     'aspen': 'normal',
     'birch': 'normal',
-    'blackwood': 'normal',
+    'blackwood': 'tall',
     'chestnut': 'normal',
-    'douglas_fir': 'tall',
+    'douglas_fir': 'tallXL',
     'hickory': 'normal',
     'maple': 'normal',
-    'oak': 'normal',
+    'oak': 'tallXL',
     'palm': 'tropical',
     'pine': 'conifer',
     'rosewood': 'tall',
@@ -48,7 +48,7 @@ WOOD_TYPES = {
     'sycamore': 'normal',
     'white_cedar': 'tall',
     'willow': 'willow',
-    'kapok': 'normal'
+    'kapok': 'kapok'
 }
 
 for wood, key in WOOD_TYPES.items():
@@ -57,10 +57,15 @@ for wood, key in WOOD_TYPES.items():
         tree('structure_templates/normal', wood, 'base')
         tree('structure_templates/normal_overlay', wood, 'overlay')
 
-    # tall (douglas fir)
+    # tall (tfc douglas fir, but smaller)
     if key == 'tall':
         tree('structure_templates/tall', wood, 'base')
         tree('structure_templates/tall_overlay', wood, 'overlay')
+
+    # tallXL (tfc douglas fir, full size-ish)
+    if key == 'tallXL':
+        tree('structure_templates/large2_base', wood, 'base')
+        tree('structure_templates/large2_overlay', wood, 'overlay')
 
     # overhang (willow)
     if key == 'willow':
@@ -78,6 +83,10 @@ for wood, key in WOOD_TYPES.items():
             for t in ['1', '2', '3']:
                 tree('structure_templates/conifer_large_' + s + t, wood, s + t)
 
+    # acacia (vanilla acacia, bit bigger)
+    if key == 'acacia':
+        for s in ['1', '2', '3']:
+            tree('structure_templates/acacia_branch' + s, wood, 'branch' + s)
 
     # palm like trees
     if key == 'tropical':

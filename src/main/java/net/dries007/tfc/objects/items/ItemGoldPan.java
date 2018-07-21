@@ -26,8 +26,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Size;
-import net.dries007.tfc.objects.Weight;
+import net.dries007.tfc.api.util.Size;
+import net.dries007.tfc.api.util.Weight;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 

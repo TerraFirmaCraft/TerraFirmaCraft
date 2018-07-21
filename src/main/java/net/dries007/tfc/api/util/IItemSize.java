@@ -1,9 +1,10 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.api.util;
 
 import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -14,8 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Size;
-import net.dries007.tfc.objects.Weight;
+import net.dries007.tfc.util.Helpers;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
