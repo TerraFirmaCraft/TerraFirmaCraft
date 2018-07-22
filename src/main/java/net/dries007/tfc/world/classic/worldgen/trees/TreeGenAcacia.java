@@ -47,7 +47,7 @@ public class TreeGenAcacia implements ITreeGenerator
         trunk = BlockLogTFC.get(tree).getDefaultState().withProperty(PLACED, false);
         final boolean smallBranch = rand.nextBoolean();
         final int branches = 2 + rand.nextInt(2);
-        final int height = 5 + rand.nextInt(3);
+        final int height = 4 + rand.nextInt(3);
         List<EnumFacing> sides = Arrays.stream(EnumFacing.HORIZONTALS).collect(Collectors.toList());
         EnumFacing face;
 
@@ -62,7 +62,7 @@ public class TreeGenAcacia implements ITreeGenerator
         for (int i = 0; i < branches; i++)
         {
             x1 = 2 + rand.nextInt(3);
-            y1 = 3 + rand.nextInt(height - 2);
+            y1 = 3 + rand.nextInt(height - 1);
             if (y1 > y2)
                 y2 = y1;
             face = sides.remove(rand.nextInt(sides.size()));
@@ -71,7 +71,7 @@ public class TreeGenAcacia implements ITreeGenerator
             int branch = 1 + rand.nextInt(2);
             placeBranch(manager, world, pos.add(0, y1, 0).offset(face, x1), tree.name + "/branch" + branch);
         }
-        for (int i = 0; i < height - 2; i++)
+        for (int i = 0; i < height; i++)
         {
             if (smallBranch && i == y1)
                 pos = pos.offset(side.getOpposite());
