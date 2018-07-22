@@ -5,13 +5,11 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import javax.annotation.Nonnull;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.BlockStateContainer;
@@ -21,6 +19,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -46,8 +45,8 @@ public class BlockLeavesTFC extends BlockLeaves
     {
         this.wood = wood;
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
-        setDefaultState(blockState.getBaseState().withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true));
-        leavesFancy = true; // there doesn't seem to be an even for catching changing this, so lets not bother
+        setDefaultState(blockState.getBaseState().withProperty(DECAYABLE, true)); // TFC leaves don't use CHECK_DECAY, so just don't use it
+        leavesFancy = true; // Fast / Fancy graphics works correctly
         OreDictionaryHelper.register(this, "tree", "leaves");
         OreDictionaryHelper.register(this, "tree", "leaves", wood);
         Blocks.FIRE.setFireInfo(this, 30, 60);
@@ -55,15 +54,16 @@ public class BlockLeavesTFC extends BlockLeaves
 
     @SuppressWarnings("deprecation")
     @Override
+    @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(DECAYABLE, (meta & 0b01) == 0b01).withProperty(CHECK_DECAY, (meta & 0b10) == 0b10);
+        return this.getDefaultState().withProperty(DECAYABLE, (meta & 0b01) == 0b01);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return (state.getValue(DECAYABLE) ? 0b01 : 0) | (state.getValue(CHECK_DECAY) ? 0b10 : 0);
+        return (state.getValue(DECAYABLE) ? 1 : 0);
     }
 
     @SuppressWarnings("deprecation")
@@ -75,9 +75,62 @@ public class BlockLeavesTFC extends BlockLeaves
 
     @SuppressWarnings("deprecation")
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos)
     {
         return NULL_AABB;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        // todo: ya'll should go look at the TFC 1.7 cluster**** that was leaf decay and how much better this is.
+        // TFC Leaf Decay
+        if (world.isRemote || !state.getValue(DECAYABLE))
+            return;
+
+        int r = 8; // max search radius
+        List<BlockPos> paths = new ArrayList<>();
+        List<BlockPos> pathsToAdd;
+        BlockPos.MutableBlockPos pos1 = new BlockPos.MutableBlockPos(pos);
+        IBlockState state1;
+        paths.add(pos); // Center block
+
+        for (int i = 0; i < r; i++)
+        {
+            pathsToAdd = new ArrayList<>();
+            for (BlockPos p1 : paths)
+            {
+                for (EnumFacing face : EnumFacing.values())
+                {
+                    pos1.setPos(p1).move(face);
+                    if (paths.contains(pos1.toImmutable()))
+                        continue;
+                    state1 = world.getBlockState(pos1);
+                    if (state1.getBlock() == BlockLogTFC.get(wood))
+                        return;
+                    if (state1.getBlock() == this)
+                        pathsToAdd.add(pos1.toImmutable());
+
+                }
+            }
+            paths.addAll(pathsToAdd);
+        }
+
+        world.setBlockToAir(pos);
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, DECAYABLE);
+    }
+
+    @Override
+    public void updateTick(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, Random rand)
+    {
+        // Don't do vanilla decay
     }
 
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
@@ -91,10 +144,12 @@ public class BlockLeavesTFC extends BlockLeaves
         entityIn.motionZ *= 0.1D;
     }
 
-    @Override
-    protected BlockStateContainer createBlockState()
+    @SideOnly(Side.CLIENT)
+    @Nonnull
+    public BlockRenderLayer getBlockLayer()
     {
-        return new BlockStateContainer(this, CHECK_DECAY, DECAYABLE);
+        // This is dirty but it works
+        return Blocks.LEAVES.isOpaqueCube(null) ? BlockRenderLayer.SOLID : BlockRenderLayer.CUTOUT_MIPPED;
     }
 
     @Nonnull
@@ -111,16 +166,23 @@ public class BlockLeavesTFC extends BlockLeaves
         return Item.getItemFromBlock(BlockSaplingTFC.get(wood));
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
     @Nonnull
-    public BlockRenderLayer getBlockLayer()
+    public BlockPlanks.EnumType getWoodType(int meta)
     {
-        return BlockRenderLayer.CUTOUT_MIPPED;
+        // Unused so return whatever
+        return BlockPlanks.EnumType.OAK;
     }
 
     @Override
-    public BlockPlanks.EnumType getWoodType(int meta)
+    public void beginLeavesDecay(IBlockState state, @Nonnull World world, @Nonnull BlockPos pos)
     {
-        return null;
+        // Don't do vanilla decay
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(@Nonnull IBlockState blockState, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, @Nonnull EnumFacing side)
+    {
+        return !Blocks.LEAVES.isOpaqueCube(null) && blockAccess.getBlockState(pos.offset(side)).getBlock() == this || super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 }
