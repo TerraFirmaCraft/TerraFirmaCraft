@@ -39,12 +39,6 @@ public class ConfigTFC
         {
             TerraFirmaCraft.getLog().warn("Config changed");
 
-            if (GENERAL.yearLength % 12 != 0)
-            {
-                TerraFirmaCraft.getLog().warn("Year lengths must be a multiple of 12! Changed from {} to {}!", GENERAL.yearLength, 12 * (GENERAL.yearLength / 12));
-                GENERAL.yearLength = 12 * (GENERAL.yearLength / 12);
-            }
-
             CalenderTFC.reload();
 
             ConfigManager.sync(MOD_ID, Config.Type.INSTANCE);
@@ -62,10 +56,10 @@ public class ConfigTFC
         @Config.RequiresWorldRestart
         public boolean debugWorldGen = false;
 
-        @Config.Comment("Lengths of a year in in game days. MUST BE MULTIPLE OF 12!")
-        @Config.LangKey("config." + MOD_ID + ".general.yearLength")
-        @Config.RangeInt(min = 12, max = 12000)
-        public int yearLength = 96;
+        @Config.Comment("Lengths of a month in game days. Year length is this value x 12!")
+        @Config.LangKey("config." + MOD_ID + ".general.monthLength")
+        @Config.RangeInt(min = 1, max = 1000)
+        public int monthLength = 8;
 
         @Config.Comment("Normal decay leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
