@@ -121,6 +121,9 @@ public final class ClientRegisterEvents
             ModelLoader.setCustomStateMapper(block.doubleSlab, new StateMap.Builder().ignore(BlockSlabTFC.VARIANT).build());
         }
 
+        for (Block block : BlocksTFC.getAllCropBlocks())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().build());
+
         BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type == Rock.Type.FARMLAND).forEach(e ->
             ModelLoader.setCustomStateMapper(e, new StateMap.Builder().ignore(BlockFarmlandTFC.MOISTURE).build())
         );

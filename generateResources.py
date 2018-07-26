@@ -154,6 +154,30 @@ WOOD_TYPES = [
     'blackwood',
     'palm',
 ]
+CROP_TYPES = [
+    'barley',
+    'beet',
+    'cabbage',
+    'carrot',
+    'garlic',
+    'oat',
+    'onion',
+    'potato',
+    'redbellpepper',
+    'rice',
+    'rye',
+    'soybean',
+    'squash',
+    'yellowbellpepper',
+    'wheat',
+]
+CROP_TALL_TYPES = [
+    'maize',
+    'greenbean',
+    'jute',
+    'sugarcane',
+    'tomato',
+]
 GEM_TYPES = [
     'agate',
     'amethyst',
@@ -685,8 +709,8 @@ for wood_type in WOOD_TYPES:
 
     # TRAPDOORS
     blockstate(('wood', 'trapdoor', wood_type), None, textures={
-            'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type,
-        }, variants=TRAPDOOR_VARIANTS)
+        'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type,
+    }, variants=TRAPDOOR_VARIANTS)
 
     # CHESTS
     blockstate(('wood', 'chest', wood_type), 'tfc:chest', textures={
@@ -733,13 +757,44 @@ for wood_type in WOOD_TYPES:
         ('east', 'west'): 'tfc:blocks/wood/workbench_side',
     })
 
+
+# CROP STUFF
+for crop_type in CROP_TYPES:
+    # CROPS
+    blockstate(('crops', crop_type), 'crop', textures={
+        'crop': 'tfc:blocks/crops/%s_0' % crop_type
+    }, variants={
+        ('stage=0'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_0' % crop_type}},
+        ('stage=1'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_1' % crop_type}},
+        ('stage=2'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_2' % crop_type}},
+        ('stage=3'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_3' % crop_type}},
+        ('stage=4'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_4' % crop_type}},
+        ('stage=5'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_5' % crop_type}},
+        ('stage=6'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_6' % crop_type}},
+        ('stage=7'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_7' % crop_type}}
+    })
+for crop_tall_type in CROP_TALL_TYPES:
+    # CROPS
+    blockstate(('crops', crop_tall_type), 'tfc:crops_tall', textures={
+        'crop': 'tfc:blocks/crops/%s_0' % crop_tall_type
+    }, variants={
+        ('stage=0'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_0' % crop_tall_type}},
+        ('stage=1'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_1' % crop_tall_type}},
+        ('stage=2'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_2' % crop_tall_type}},
+        ('stage=3'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_3' % crop_tall_type}},
+        ('stage=4'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_4' % crop_tall_type}},
+        ('stage=5'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_5' % crop_tall_type}},
+        ('stage=6'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_6' % crop_tall_type}},
+        ('stage=7'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_7' % crop_tall_type}}
+    })
+
 #   _____ _
 #  |_   _| |
 #    | | | |_ ___ _ __ ___  ___
 #    | | | __/ _ \ '_ ` _ \/ __|
 #   _| |_| ||  __/ | | | | \__ \
 #  |_____|\__\___|_| |_| |_|___/
-# 
+#
 # ITEMS
 
 # ORES
@@ -842,4 +897,8 @@ item(('flat', 'leather'), 'tfc:items/flat/leather')
 item(('flat', 'clay'), 'tfc:items/flat/clay')
 item(('flat', 'fire_clay'), 'tfc:items/flat/fire_clay')
 
-
+# SEEDBAGS
+for crop_type in CROP_TYPES:
+    item(('crops', 'seedbag', crop_type), 'tfc:items/crops/seedbag/%s' % crop_type)
+for crop_tall_type in CROP_TALL_TYPES:
+    item(('crops', 'seedbag', crop_tall_type), 'tfc:items/crops/seedbag/%s' % crop_tall_type)

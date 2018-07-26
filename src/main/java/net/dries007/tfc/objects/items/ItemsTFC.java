@@ -21,6 +21,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.dries007.tfc.objects.*;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.plant.crops.BlockCropsTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.ceramics.*;
@@ -170,6 +171,9 @@ public final class ItemsTFC
 
             simpleItems.add(register(r, "ceramics/fire_clay", new Item(), CT_MISC));
         }
+
+        for (Agriculture.Crop seedbag : Agriculture.Crop.values())
+            simpleItems.add(register(r, "crops/seedbag/" + seedbag.name().toLowerCase(), (new ItemSeedsTFC(seedbag, (BlockCropsTFC.get(seedbag)))), CT_PLANTS));
 
         // FLAT
         for (Rock rock : Rock.values())
