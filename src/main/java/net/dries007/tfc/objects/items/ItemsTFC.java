@@ -25,6 +25,7 @@ import net.dries007.tfc.objects.blocks.plant.crops.BlockCropsTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.ceramics.*;
+import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
@@ -174,6 +175,9 @@ public final class ItemsTFC
 
         for (Agriculture.Crop seedbag : Agriculture.Crop.values())
             simpleItems.add(register(r, "crops/seedbag/" + seedbag.name().toLowerCase(), (new ItemSeedsTFC(seedbag, (BlockCropsTFC.get(seedbag)))), CT_PLANTS));
+
+        for (Food food : Food.values())
+            simpleItems.add(register(r, "food/" + food.name().toLowerCase(), (new ItemFoodTFC(food, food.heal, food.saturation)), CT_FOOD ));
 
         // FLAT
         for (Rock rock : Rock.values())
