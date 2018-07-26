@@ -27,6 +27,7 @@ public final class CreativeTabsTFC
     public static final CreativeTabs CT_METAL = new CT("metal", "tfc:metal/ingot/bronze");
     public static final CreativeTabs CT_GEMS = new CT("gems", "tfc:gem/diamond");
     public static final CreativeTabs CT_POTTERY = new CT("pottery", "tfc:mold/axe_head/bronze");
+    public static final CreativeTabs CT_PLANTS = new CT("plants", "tfc:crops/seedbag/tomato");
     public static final CreativeTabs CT_MISC = new CT("misc", "tfc:wand");
 
     public static void init()

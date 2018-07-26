@@ -23,13 +23,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.Ore;
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.objects.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
+import net.dries007.tfc.objects.blocks.plant.crops.BlockCropsTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -121,6 +119,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockStairsTFC> allStairsBlocks;
     private static ImmutableList<BlockSlabTFC.Half> allSlabBlocks;
     private static ImmutableList<BlockChestTFC> allChestBlocks;
+    private static ImmutableList<BlockCropsTFC> allCropBlocks;
     private static ImmutableList<BlockAnvilTFC> allAnvils;
     private static ImmutableList<BlockSheet> allSheets;
 
@@ -198,6 +197,8 @@ public final class BlocksTFC
     {
         return allChestBlocks;
     }
+
+    public static ImmutableList<BlockCropsTFC> getAllCropBlocks() { return allCropBlocks; }
 
     public static ImmutableList<BlockAnvilTFC> getAllAnvils()
     {
@@ -296,6 +297,19 @@ public final class BlocksTFC
             // doors are special
             allTrapDoorWoodBlocks.forEach(x -> inventoryItemBlocks.put(x, ItemBlockTFC.class));
             allChestBlocks.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
+        }
+
+        {
+            Builder<BlockCropsTFC> crops = ImmutableList.builder();
+
+            for (Agriculture.Crop crop : Agriculture.Crop.values())
+            {
+                crops.add(register(r, "crops/" + crop.name().toLowerCase(), new BlockCropsTFC(crop), CT_PLANTS));
+            }
+
+            allCropBlocks = crops.build();
+
+            //inventoryItemBlocks.addAll(allCropBlocks);
         }
 
         {
