@@ -9,6 +9,7 @@ package net.dries007.tfc.world.classic.worldgen.trees;
 import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -20,6 +21,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
@@ -78,11 +80,17 @@ public class TreeGenSequoia implements ITreeGenerator
 
     private void placeTrunk(World world, BlockPos pos)
     {
-        world.setBlockState(pos, trunk);
-        world.setBlockState(pos.add(-1, 0, 0), trunk);
-        world.setBlockState(pos.add(0, 0, -1), trunk);
-        world.setBlockState(pos.add(-1, 0, -1), trunk);
+        checkAndPlace(world, pos);
+        checkAndPlace(world, pos.add(-1, 0, 0));
+        checkAndPlace(world, pos.add(0, 0, -1));
+        checkAndPlace(world, pos.add(-1, 0, -1));
 
+    }
+
+    private void checkAndPlace(World world, BlockPos pos)
+    {
+        if (world.getBlockState(pos).getBlock() == Blocks.AIR || world.getBlockState(pos).getBlock() instanceof BlockLeavesTFC)
+            world.setBlockState(pos, trunk);
     }
 
 }

@@ -14,7 +14,7 @@ def tree(origin, wood, nameout):
             prop = block['Properties']
             block['Properties'] = Compound({
                 'small': String('false'),
-                'placed': String('true'),
+                'placed': String('false'),
                 'axis': prop['axis']
             })
 
@@ -48,7 +48,7 @@ WOOD_TYPES = {
     'sycamore': 'normal',
     'white_cedar': 'tall',
     'willow': 'willow',
-    'kapok': 'kapok'
+    'kapok': 'jungle'
 }
 
 for wood, key in WOOD_TYPES.items():
@@ -91,8 +91,9 @@ for wood, key in WOOD_TYPES.items():
     # palm like trees
     if key == 'tropical':
         for s in ['1', '2', '3', '4', '5', '6', '7']:
-            tree('structure_templates/t' + s, wood, s)
+            tree('structure_templates/tropical' + s, wood, s)
 
-    # todo: 2x2 coniferous trees (built in parts)
-    # todo: acacia trees (vanilla style, but bigger?)
-    # todo: kapok trees (vanilla style jungle, built in parts)
+    # kapok (vanilla jungle trees, but better)
+    if key == 'jungle':
+        for s in ['branch1', 'branch2', 'branch3', 'top']:
+            tree('structure_templates/jungle_' + s, wood, s)
