@@ -978,3 +978,7 @@ for crop_type in CROP_TYPES:
     item(('crops', 'seedbag', crop_type), 'tfc:items/crops/seedbag/%s' % crop_type)
 for crop_tall_type in CROP_TALL_TYPES:
     item(('crops', 'seedbag', crop_tall_type), 'tfc:items/crops/seedbag/%s' % crop_tall_type)
+
+# FOOD
+for food_type in FOOD_TYPES:
+    item(('food', food_type), 'tfc:items/food/%s' % food_type)
