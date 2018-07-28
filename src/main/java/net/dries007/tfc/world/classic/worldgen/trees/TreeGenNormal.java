@@ -22,6 +22,8 @@ import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 
+import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
+
 public class TreeGenNormal implements ITreeGenerator
 {
     private final int heightMin;
@@ -69,7 +71,7 @@ public class TreeGenNormal implements ITreeGenerator
             structureOverlay.addBlocksToWorld(world, pos, settings.setIntegrity(0.5f));
         }
 
-        final IBlockState log = BlockLogTFC.get(tree).getDefaultState();
+        final IBlockState log = BlockLogTFC.get(tree).getDefaultState().withProperty(PLACED, false);
         for (int i = 0; i < height; i++)
             world.setBlockState(pos.add(size.getX() / 2, i - height, size.getZ() / 2), log);
     }

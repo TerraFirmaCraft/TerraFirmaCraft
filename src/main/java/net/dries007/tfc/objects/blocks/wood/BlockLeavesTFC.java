@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.blocks.wood;
 
 import java.util.*;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
@@ -48,8 +49,9 @@ public class BlockLeavesTFC extends BlockLeaves
         setDefaultState(blockState.getBaseState().withProperty(DECAYABLE, true)); // TFC leaves don't use CHECK_DECAY, so just don't use it
         leavesFancy = true; // Fast / Fancy graphics works correctly
         OreDictionaryHelper.register(this, "tree", "leaves");
-        OreDictionaryHelper.register(this, "tree", "leaves", wood);
+        OreDictionaryHelper.register(this, "tree", "leaves", wood.name);
         Blocks.FIRE.setFireInfo(this, 30, 60);
+        setTickRandomly(true);
     }
 
     @SuppressWarnings("deprecation")
@@ -82,21 +84,90 @@ public class BlockLeavesTFC extends BlockLeaves
 
     @Override
     @SuppressWarnings("deprecation")
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, @Nullable Block blockIn, @Nullable BlockPos fromPos)
     {
-        // todo: ya'll should go look at the TFC 1.7 cluster**** that was leaf decay and how much better this is.
+        doLeafDecay(world, pos, state);
+    }
+
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        //Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
+        entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
+        entityIn.fallDistance = 0;
+        //Entity motion is reduced by leaves.
+        entityIn.motionX *= 0.1D;
+        entityIn.motionY *= 0.1D;
+        entityIn.motionZ *= 0.1D;
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, DECAYABLE);
+    }
+
+    @Override
+    public void updateTick(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, Random rand)
+    {
+        doLeafDecay(worldIn, pos, state);
+    }
+
+    @Override
+    @Nonnull
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Item.getItemFromBlock(BlockSaplingTFC.get(wood));
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Nonnull
+    public BlockRenderLayer getBlockLayer()
+    {
+        // This is dirty but it works
+        return Blocks.LEAVES.isOpaqueCube(null) ? BlockRenderLayer.SOLID : BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+    @Override
+    @Nonnull
+    public BlockPlanks.EnumType getWoodType(int meta)
+    {
+        // Unused so return whatever
+        return BlockPlanks.EnumType.OAK;
+    }
+
+    @Override
+    public void beginLeavesDecay(IBlockState state, @Nonnull World world, @Nonnull BlockPos pos)
+    {
+        // Don't do vanilla decay
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(@Nonnull IBlockState blockState, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, @Nonnull EnumFacing side)
+    {
+        return !Blocks.LEAVES.isOpaqueCube(null) && blockAccess.getBlockState(pos.offset(side)).getBlock() == this || super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+    }
+
+    @Nonnull
+    @Override
+    public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
+    {
+        return ImmutableList.of(new ItemStack(this));
+    }
+
+    private void doLeafDecay(World world, BlockPos pos, IBlockState state)
+    {
         // TFC Leaf Decay
         if (world.isRemote || !state.getValue(DECAYABLE))
             return;
 
-        int r = 8; // max search radius
         List<BlockPos> paths = new ArrayList<>();
         List<BlockPos> pathsToAdd;
         BlockPos.MutableBlockPos pos1 = new BlockPos.MutableBlockPos(pos);
         IBlockState state1;
         paths.add(pos); // Center block
 
-        for (int i = 0; i < r; i++)
+        for (int i = 0; i < wood.maxDecayDistance; i++)
         {
             pathsToAdd = new ArrayList<>();
             for (BlockPos p1 : paths)
@@ -118,71 +189,5 @@ public class BlockLeavesTFC extends BlockLeaves
         }
 
         world.setBlockToAir(pos);
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, DECAYABLE);
-    }
-
-    @Override
-    public void updateTick(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, Random rand)
-    {
-        // Don't do vanilla decay
-    }
-
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
-    {
-        //Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
-        entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
-        entityIn.fallDistance = 0;
-        //Entity motion is reduced by leaves.
-        entityIn.motionX *= 0.1D;
-        entityIn.motionY *= 0.1D;
-        entityIn.motionZ *= 0.1D;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Nonnull
-    public BlockRenderLayer getBlockLayer()
-    {
-        // This is dirty but it works
-        return Blocks.LEAVES.isOpaqueCube(null) ? BlockRenderLayer.SOLID : BlockRenderLayer.CUTOUT_MIPPED;
-    }
-
-    @Nonnull
-    @Override
-    public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
-    {
-        return ImmutableList.of(new ItemStack(this));
-    }
-
-    @Override
-    @Nonnull
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(BlockSaplingTFC.get(wood));
-    }
-
-    @Override
-    @Nonnull
-    public BlockPlanks.EnumType getWoodType(int meta)
-    {
-        // Unused so return whatever
-        return BlockPlanks.EnumType.OAK;
-    }
-
-    @Override
-    public void beginLeavesDecay(IBlockState state, @Nonnull World world, @Nonnull BlockPos pos)
-    {
-        // Don't do vanilla decay
-    }
-
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(@Nonnull IBlockState blockState, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, @Nonnull EnumFacing side)
-    {
-        return !Blocks.LEAVES.isOpaqueCube(null) && blockAccess.getBlockState(pos.offset(side)).getBlock() == this || super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 }

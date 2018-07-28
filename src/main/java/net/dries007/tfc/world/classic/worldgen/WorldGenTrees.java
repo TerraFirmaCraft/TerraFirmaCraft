@@ -23,6 +23,7 @@ import net.dries007.tfc.objects.biomes.BiomeTFC;
 import net.dries007.tfc.objects.biomes.BiomesTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class WorldGenTrees implements IWorldGenerator
@@ -42,6 +43,9 @@ public class WorldGenTrees implements IWorldGenerator
         if(!(b instanceof BiomeTFC) || b == BiomesTFC.OCEAN || b == BiomesTFC.DEEP_OCEAN || b == BiomesTFC.LAKE || b == BiomesTFC.RIVER) return;
 
         final TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
+        final float temp = ClimateTFC.getTemp(world, chunkBlockPos);
+        final float rain = chunkData.getRainfall(chunkBlockPos);
+        final float evt = chunkData.getEvt(chunkBlockPos);
 
         for(int i = 0; i < 3; i++)
         {
@@ -60,6 +64,9 @@ public class WorldGenTrees implements IWorldGenerator
                 tree = chunkData.getTree2();
             else
                 tree = chunkData.getTree3();
+
+            if (tree.minTemp > temp || tree.maxTemp < temp || tree.minEVT > evt || tree.maxEVT < evt || tree.minRain > rain || tree.maxRain < rain)
+                continue;
 
             tree.makeTree(manager, world, pos, random);
 

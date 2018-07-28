@@ -7,9 +7,11 @@
 package net.dries007.tfc.world.classic.worldgen.trees;
 
 import java.util.Random;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -48,15 +50,21 @@ public class TreeGenKapok implements ITreeGenerator
         for (int i = 0; i < branches; i++)
         {
             y1 = 6 + rand.nextInt(height - 8);
-            x1 = rand.nextInt(7) - 3;
-            z1 = rand.nextInt(7) - 3;
+            x1 = rand.nextInt(3);
+            z1 = rand.nextInt(3);
+            if (x1 + z1 == 0)
+                x1 += 1 + rand.nextInt(2);
+            if (rand.nextBoolean())
+                x1 = -x1 - 1;
+            if (rand.nextBoolean())
+                x1 = -z1 - 1;
             type = 1 + rand.nextInt(3);
             placeBranch(manager, world, pos.add(x1, y1, z1), tree.name + "/branch" + type);
-            checkAndPlace(world, pos.add(x1 * 0.5, y1 - 1, z1 * 0.5));
+            checkAndPlace(world, pos.add(x1 - Math.abs(x1) / x1, y1 - 1, z1 - Math.abs(z1) / z1), rand, null);
         }
 
         for (int i = 0; i < height; i++)
-            placeTrunk(world, pos.add(0, i, 0));
+            placeTrunk(world, pos.add(0, i, 0), rand);
         placeBranch(manager, world, pos.add(0, height, 0), tree.name + "/top");
     }
 
@@ -76,17 +84,20 @@ public class TreeGenKapok implements ITreeGenerator
         structureBase.addBlocksToWorld(world, pos, settings);
     }
 
-    private void placeTrunk(World world, BlockPos pos)
+    private void placeTrunk(World world, BlockPos pos, Random rand)
     {
-        checkAndPlace(world, pos);
-        checkAndPlace(world, pos.add(-1, 0, 0));
-        checkAndPlace(world, pos.add(0, 0, -1));
-        checkAndPlace(world, pos.add(-1, 0, -1));
+        checkAndPlace(world, pos, rand, EnumFacing.SOUTH);
+        checkAndPlace(world, pos.add(-1, 0, 0), rand, EnumFacing.EAST);
+        checkAndPlace(world, pos.add(0, 0, -1), rand, EnumFacing.WEST);
+        checkAndPlace(world, pos.add(-1, 0, -1), rand, EnumFacing.NORTH);
     }
 
-    private void checkAndPlace(World world, BlockPos pos)
+    private void checkAndPlace(World world, BlockPos pos, Random rand, @Nullable EnumFacing vineFace)
     {
         if (world.getBlockState(pos).getBlock() == Blocks.AIR || world.getBlockState(pos).getBlock() instanceof BlockLeavesTFC)
             world.setBlockState(pos, trunk);
+        // Random vines
+        if (vineFace != null && rand.nextFloat() < 0.6 && world.getBlockState(pos.offset(vineFace)) == Blocks.AIR.getDefaultState())
+            world.setBlockState(pos.offset(vineFace), Blocks.VINE.getDefaultState());
     }
 }

@@ -14,6 +14,7 @@ import javax.annotation.Nonnull;
 
 import com.google.common.base.Joiner;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -156,5 +157,14 @@ public final class Helpers
         if (!OreDictionary.doesOreNameExist(ore)) return false;
         NonNullList<ItemStack> stacks = OreDictionary.getOres(ore);
         return !stacks.isEmpty();
+    }
+
+    // Simple method to spawn items in the world at a precise location, rather than using InventoryHelper
+    public static void spawnItemStack(World world, BlockPos pos, ItemStack stack)
+    {
+        if (stack.isEmpty())
+            return;
+        EntityItem entityitem = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+        world.spawnEntity(entityitem);
     }
 }
