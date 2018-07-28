@@ -72,16 +72,16 @@ public class DefaultTrees
             new Tree.Builder(DOUGLAS_FIR, 500f, 4000f, 1f, 14f, 0f, 4f, GEN_TALL).setMaxHeight(14).build(),
             new Tree.Builder(HICKORY, 125f, 4000f, 4f, 28f, 0f, 4f, GEN_TALL).build(),
             new Tree.Builder(MAPLE, 125f, 4000f, 3f, 20f, 0f, 4f, GEN_NORMAL).build(),
-            new Tree.Builder(OAK, 250f, 1000f, 5f, 25f, 0.25f, 8f, GEN_TALL).setMaxHeight(14).build(),
+            new Tree.Builder(OAK, 250f, 1000f, 5f, 25f, 0.25f, 8f, GEN_TALL).setMaxHeight(14).setGrowthTime(10f).build(),
             new Tree.Builder(PALM, 1000f, 4000f, 12f, 50f, 2f, 8f, GEN_TROPICAL).build(),
             new Tree.Builder(PINE, 125f, 4000f, -15f, 24f, 0.25f, 8f, GEN_CONIFER).setIsConifer().build(),
             new Tree.Builder(ROSEWOOD, 500f, 4000f, 8f, 18f, 0f, 2f, GEN_LARGE).setMaxHeight(10).build(),
-            new Tree.Builder(SEQUOIA, 1000f, 4000f, 10f, 16f, 0f, 1f, GEN_SEQUOIA).setMaxGrowthRadius(3).setMaxDecayDistance(8).setIsConifer().build(),
+            new Tree.Builder(SEQUOIA, 1000f, 4000f, 10f, 16f, 0f, 1f, GEN_SEQUOIA).setMaxGrowthRadius(3).setMaxDecayDistance(8).setIsConifer().setGrowthTime(22f).build(),
             new Tree.Builder(SPRUCE, 125f, 4000f, -5f, 24f, 0f, 4f, GEN_CONIFER).setIsConifer().build(),
             new Tree.Builder(SYCAMORE, 250f, 4000f, 6f, 30f, 0f, 4f, GEN_NORMAL).build(),
             new Tree.Builder(WHITE_CEDAR, 125f, 4000f, -5f, 24f, 0f, 8f, GEN_LARGE).setMaxHeight(10).build(),
             new Tree.Builder(WILLOW, 2000f, 4000f, 10f, 30f, 0f, 1f, GEN_WILLOW).build(),
-            new Tree.Builder(KAPOK, 1000f, 4000f, 30f, 50f, 0f, 4f, GEN_KAPOK).setMaxDecayDistance(6).setMaxGrowthRadius(3).setMaxHeight(24).build()
+            new Tree.Builder(KAPOK, 1000f, 4000f, 30f, 50f, 0f, 4f, GEN_KAPOK).setMaxDecayDistance(6).setMaxGrowthRadius(3).setMaxHeight(24).setGrowthTime(18f).build()
         );
     }
 }

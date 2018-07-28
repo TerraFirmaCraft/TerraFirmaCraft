@@ -52,8 +52,6 @@ public class BlockChestTFC extends BlockChest
                 throw new IllegalStateException();
         }
         Blocks.FIRE.setFireInfo(this, 5, 20);
-        TileEntity.register(TEChestTFC.ID.toString(), TEChestTFC.class);
-        Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
     @Override

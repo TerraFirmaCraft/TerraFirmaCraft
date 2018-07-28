@@ -18,6 +18,7 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.biomes.BiomeTFC;
 import net.dries007.tfc.objects.biomes.BiomesTFC;
@@ -43,9 +44,11 @@ public class WorldGenTrees implements IWorldGenerator
         if(!(b instanceof BiomeTFC) || b == BiomesTFC.OCEAN || b == BiomesTFC.DEEP_OCEAN || b == BiomesTFC.LAKE || b == BiomesTFC.RIVER) return;
 
         final TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
-        final float temp = ClimateTFC.getTemp(world, chunkBlockPos);
         final float rain = chunkData.getRainfall(chunkBlockPos);
         final float evt = chunkData.getEvt(chunkBlockPos);
+        final float temp = ClimateTFC.getBioTemperature(world.getSeed(), chunkBlockPos.getZ(), rain);
+
+        TerraFirmaCraft.getLog().info("Numbas: " + temp + " | " + rain + " | " + evt + " for " + chunkData.getTree1().name);
 
         for(int i = 0; i < 3; i++)
         {
@@ -65,8 +68,8 @@ public class WorldGenTrees implements IWorldGenerator
             else
                 tree = chunkData.getTree3();
 
-            if (tree.minTemp > temp || tree.maxTemp < temp || tree.minEVT > evt || tree.maxEVT < evt || tree.minRain > rain || tree.maxRain < rain)
-                continue;
+            //if (tree.minTemp > temp || tree.maxTemp < temp || tree.minEVT > evt || tree.maxEVT < evt || tree.minRain > rain || tree.maxRain < rain)
+            //    continue;
 
             tree.makeTree(manager, world, pos, random);
 

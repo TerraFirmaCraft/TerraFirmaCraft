@@ -14,6 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
@@ -39,6 +40,7 @@ import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemBlockTFC;
 import net.dries007.tfc.objects.items.ItemBlockTorchTFC;
+import net.dries007.tfc.objects.te.*;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 import static net.dries007.tfc.objects.CreativeTabsTFC.*;
@@ -411,6 +413,17 @@ public final class BlocksTFC
 
         allNormalItemBlocks = normalItemBlocks.build();
         allInventoryItemBlocks = inventoryItemBlocks.build();
+
+        // Register Tile Entities
+        // Putting tile entity registration in the respective block calls it multiple times. Just put here to avoid duplicates
+        TileEntity.register(TESaplingTFC.ID.toString(), TESaplingTFC.class);
+        TileEntity.register(TEChestTFC.ID.toString(), TEChestTFC.class);
+        TileEntity.register(TEWorldItem.ID.toString(), TEWorldItem.class);
+        TileEntity.register(TETorchTFC.ID.toString(), TETorchTFC.class);
+        TileEntity.register(TEPitKiln.ID.toString(), TEPitKiln.class);
+        TileEntity.register(TELogPile.ID.toString(), TELogPile.class);
+        TileEntity.register(TEIngotPile.ID.toString(), TEIngotPile.class);
+
     }
 
     public static boolean isWater(IBlockState current)

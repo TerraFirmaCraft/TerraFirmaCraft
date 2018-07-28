@@ -47,7 +47,6 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
         setHardness(3.0F);
         setResistance(10.0F);
         setHarvestLevel("pickaxe", 0);
-        TileEntity.register(TEIngotPile.ID.toString(), TEIngotPile.class);
     }
 
     @Nullable

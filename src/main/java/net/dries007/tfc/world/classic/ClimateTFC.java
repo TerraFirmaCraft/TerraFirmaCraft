@@ -169,7 +169,7 @@ public final class ClimateTFC
     }
 
     // only for worldgen use
-    static float getBioTemperature(long seed, int z, float rain)
+    public static float getBioTemperature(long seed, int z, float rain)
     {
         float temp = 0;
         for (int i = 0; i < 24; i++)

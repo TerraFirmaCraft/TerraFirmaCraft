@@ -51,13 +51,13 @@ public interface ITreeGenerator
     }
 
     /**
-     * Checks if a tree can be generated. This implementation only checks if the ground is flat enough
+     * Checks if a tree can be generated. This implementation checks height, radius, and light level
      * Suggested use is to use within your implementation of generateTree()
      *
      * @param world    The world
      * @param pos      The pos of the tree
      * @param treeType The tree type (for checking if the tree can generate)
-     * @return true if the tree has enough horizontal space to generate.
+     * @return true if the tree can generate.
      */
     default boolean canGenerateTree(World world, BlockPos pos, Tree treeType)
     {
@@ -67,10 +67,16 @@ public interface ITreeGenerator
         {
             for (int z = -radius; z <= radius; z++)
             {
-                if (!world.getBlockState(pos.add(x, 1, z)).getMaterial().isReplaceable())
+                if (!world.getBlockState(pos.add(x, 0, z)).getMaterial().isReplaceable() && (x != 0 || z != 0))
                     return false;
             }
         }
-        return true;
+        final int height = treeType.maxHeight;
+        for (int y = 1; y <= height; y++)
+            if (!world.getBlockState(pos.up(y)).getMaterial().isReplaceable())
+                return false;
+        if (world.getLightFromNeighbors(pos) <= 7)
+            return false;
+        return true;//world.getLightFromNeighbors(pos) >= 7;
     }
 }

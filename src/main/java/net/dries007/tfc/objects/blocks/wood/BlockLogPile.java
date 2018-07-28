@@ -56,8 +56,6 @@ public class BlockLogPile extends Block implements ITileEntityProvider
         setTickRandomly(true);
         setHarvestLevel("axe", 0);
         this.setDefaultState(this.getDefaultState().withProperty(AXIS, false).withProperty(ONFIRE, false));
-
-        TileEntity.register(TELogPile.ID.toString(), TELogPile.class);
     }
 
     @Override

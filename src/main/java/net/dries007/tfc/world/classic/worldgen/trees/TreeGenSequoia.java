@@ -35,10 +35,6 @@ public class TreeGenSequoia implements ITreeGenerator
     @Override
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {
-        //todo: better generation checks
-        if (!canGenerateTree(world, pos, tree))
-            return;
-
         final int baseVariant = 1 + rand.nextInt(3);
         final int topVariant = 1 + rand.nextInt(3);
         final int layers = 4 + rand.nextInt(3);

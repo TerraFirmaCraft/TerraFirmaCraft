@@ -6,6 +6,8 @@
 package net.dries007.tfc.objects.blocks.wood;
 
 import java.util.*;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.PropertyBool;
@@ -15,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -26,12 +29,11 @@ import net.minecraft.world.World;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.items.metal.ItemMetalTool;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class BlockLogTFC extends BlockLog
 {
     public static final PropertyBool PLACED = PropertyBool.create("placed");
@@ -131,7 +133,7 @@ public class BlockLogTFC extends BlockLog
         for (int x = -1; x <= 1; x++)
             for (int y = -1; y <= 1; y++)
                 for (int z = -1; z <= 1; z++)
-                    if (world.getBlockState(pos.add(x, y, z)).getBlock() == this && (z != 0 || y != 0 || x != 0))
+                    if (state.getValue(PLACED) || (world.getBlockState(pos.add(x, y, z)).getBlock() == this && (z != 0 || y != 0 || x != 0)))
                         return;
         world.setBlockToAir(pos);
     }
@@ -140,13 +142,14 @@ public class BlockLogTFC extends BlockLog
     public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
     {
         // The itemstack is a cheeky hack
-        removeTree(worldIn, pos, null, new ItemStack(ItemMetalTool.get(Metal.RED_STEEL, Metal.ItemType.AXE)), 1);
+        if (!worldIn.isRemote)
+            removeTree(worldIn, pos, null, ItemStack.EMPTY, 1);
     }
 
-    @Override
+   /* @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
     {
-        if (state.getValue(PLACED))
+        if (state.getValue(PLACED) && worldIn.isRemote)
             return;
 
         // Check if player has a valid tool
@@ -170,12 +173,51 @@ public class BlockLogTFC extends BlockLog
             worldIn.setBlockToAir(pos);
             Helpers.spawnItemStack(worldIn, pos.add(0.5D, 0.5D, 0.5D), new ItemStack(Items.STICK, 1 + (int) (Math.random() * 3)));
         }
+    }*/
+
+    @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    {
+        if (state.getValue(PLACED) || world.isRemote)
+            return super.removedByPlayer(state, world, pos, player, willHarvest);
+
+        // Check if player has a valid tool
+        ItemStack stack = player.getHeldItemMainhand();
+        int flags = 0;
+        if (Helpers.doesStackMatchOrePrefix(stack, "axe"))
+            flags += 1; // axe
+        if (Helpers.doesStackMatchOrePrefix(stack, "hammer"))
+            flags += 2; // hammer
+        if (Helpers.doesStackMatchOre(stack, "axeStone") || Helpers.doesStackMatchOre(stack, "hammerStone"))
+            flags += 4; // stone
+
+        if ((flags & 1) != 0) // bit 1 = is axe, bit 2 = is hammer, bit 3 is stone tool
+        {
+            // cut down the tree
+            return removeTree(world, pos, player, stack, flags);
+        }
+        else if ((flags & 2) != 0)
+        {
+            // Break log and spawn some sticks
+            world.setBlockToAir(pos);
+            Helpers.spawnItemStack(world, pos.add(0.5D, 0.5D, 0.5D), new ItemStack(Items.STICK, 1 + (int) (Math.random() * 3)));
+            return true;
+        }
+        return super.removedByPlayer(state, world, pos, player, willHarvest);
     }
 
-    private void removeTree(World world, BlockPos pos, EntityPlayer player, ItemStack stack, int flags)
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        // Don't do vanilla leaf decay
+    }
+
+    private boolean removeTree(World world, BlockPos pos, @Nullable EntityPlayer player, ItemStack stack, int flags)
     {
         TerraFirmaCraft.getLog().info("Natural log harvesting");
-        int maxLogs = 1 + stack.getMaxDamage() - stack.getItemDamage();
+        int maxLogs = Integer.MAX_VALUE;
+        if (!stack.isEmpty())
+            maxLogs = 1 + stack.getMaxDamage() - stack.getItemDamage();
 
         // find all logs and add them to a list
         List<BlockPos> logs = new ArrayList<>();
@@ -208,11 +250,20 @@ public class BlockLogTFC extends BlockLog
         {
             // Remove the top log of the list
             pos1 = logs.get(i);
-            if ((flags & 4) == 0 || Math.random() < 0.6) // Stone tools are 60% efficient
-                harvestBlock(world, player, pos1, world.getBlockState(pos1), null, stack);
-            stack.damageItem(1, player);
+            if (!stack.isEmpty() && player != null)
+            {
+                if ((flags & 4) == 0 || Math.random() < 0.6) // Stone tools are 60% efficient
+                    harvestBlock(world, player, pos1, world.getBlockState(pos1), null, stack);
+                stack.damageItem(1, player);
+            }
+            else
+            {
+                if (Math.random() < 0.3) // Explosions are 30% Efficient: no TNT powered tree farms.
+                    Helpers.spawnItemStack(world, pos.add(0.5d, 0.5d, 0.5d), new ItemStack(Item.getItemFromBlock(this)));
+            }
             world.setBlockToAir(pos1);
         }
+        return maxLogs >= logs.size();
     }
 
 }

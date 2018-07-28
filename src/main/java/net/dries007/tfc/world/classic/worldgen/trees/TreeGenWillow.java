@@ -57,9 +57,6 @@ public class TreeGenWillow implements ITreeGenerator
         settingsFull = ITreeGenerator.getDefaultSettings();
         settingsWeak = ITreeGenerator.getDefaultSettings().setIntegrity(0.5F);
 
-        if (!canGenerateTree(world, pos, tree))
-            return;
-
         int height = 3 + rand.nextInt(3), branches = 2 + rand.nextInt(3), x1, z1, y1;
         for (int n = 0; n <= height; n++)
         {
