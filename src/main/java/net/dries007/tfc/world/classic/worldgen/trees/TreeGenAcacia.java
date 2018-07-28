@@ -39,10 +39,6 @@ public class TreeGenAcacia implements ITreeGenerator
     @Override
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {
-        // todo: better generation checks
-        if (!canGenerateTree(world, pos, tree))
-            return;
-
         settings = ITreeGenerator.getDefaultSettings();
         trunk = BlockLogTFC.get(tree).getDefaultState().withProperty(PLACED, false);
         final boolean smallBranch = rand.nextBoolean();

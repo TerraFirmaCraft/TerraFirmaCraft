@@ -44,7 +44,6 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     {
         super(Material.CIRCUITS);
         setDefaultState(blockState.getBaseState());
-        TileEntity.register(TEWorldItem.ID.toString(), TEWorldItem.class);
         setHardness(0.1F);
     }
 

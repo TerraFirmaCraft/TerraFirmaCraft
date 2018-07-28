@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -35,6 +36,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
     public final int maxHeight;
     public final int maxDecayDistance;
     public final boolean isConifer;
+    public final float minGrowthTime;
     // Used when growing a tree
     private final ITreeGenerator gen;
 
@@ -60,10 +62,11 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      * @param maxGrowthRadius used to check growth conditions
      * @param maxHeight used to check growth conditions
      * @param isConifer todo
+     * @param minGrowthTime the amount of time (in in-game days) that this tree requires to grow
      */
     private Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator gen,
                  float minTemp, float maxTemp, float minRain, float maxRain, float minEVT, float maxEVT,
-                 int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer)
+                 int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, float minGrowthTime)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -75,15 +78,28 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         this.maxHeight = maxHeight;
         this.maxDecayDistance = maxDecayDistance;
         this.isConifer = isConifer;
+        this.minGrowthTime = minGrowthTime;
 
         this.gen = gen;
         this.name = name.getResourcePath().toLowerCase();
         setRegistryName(name);
     }
 
+    public void makeTreeWithoutChecking(TemplateManager manager, World world, BlockPos pos, Random rand)
+    {
+        gen.generateTree(manager, world, pos, this, rand);
+    }
     public void makeTree(TemplateManager manager, World world, BlockPos pos, Random rand)
     {
-        this.gen.generateTree(manager, world, pos, this, rand);
+        if (gen.canGenerateTree(world, pos, this))
+            makeTreeWithoutChecking(manager, world, pos, rand);
+    }
+
+    public void makeTree(World world, BlockPos pos, Random rand)
+    {
+        if (world.isRemote) return;
+        final TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
+        makeTree(manager, world, pos, rand);
     }
 
     public static class Builder
@@ -98,6 +114,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         private int maxGrowthRadius;
         private int maxDecayDistance;
         private boolean isConifer;
+        private float minGrowthTime;
         private ITreeGenerator gen;
         private ResourceLocation name;
 
@@ -109,12 +126,13 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
             this.maxRain = maxRain;
             this.minEVT = minEVT;
             this.maxEVT = maxEVT;
+            this.name = name;
+            this.gen = gen;
             this.maxGrowthRadius = 2; // default values
             this.maxHeight = 6;
             this.maxDecayDistance = 4;
             this.isConifer = false;
-            this.name = name;
-            this.gen = gen;
+            this.minGrowthTime = 7;
         }
 
         public Builder setMaxGrowthRadius(int maxGrowthRadius)
@@ -141,9 +159,15 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
             return this;
         }
 
+        public Builder setGrowthTime(float growthTime)
+        {
+            this.minGrowthTime = growthTime;
+            return this;
+        }
+
         public Tree build()
         {
-            return new Tree(name, gen, minTemp, maxTemp, minRain, maxRain, minEVT, maxEVT, maxGrowthRadius, maxHeight, maxDecayDistance, isConifer);
+            return new Tree(name, gen, minTemp, maxTemp, minRain, maxRain, minEVT, maxEVT, maxGrowthRadius, maxHeight, maxDecayDistance, isConifer, minGrowthTime);
         }
     }
 }

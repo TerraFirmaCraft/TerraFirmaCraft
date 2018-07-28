@@ -53,8 +53,6 @@ public class TreeGenVariants implements ITreeGenerator
     @Override
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {
-        if (!canGenerateTree(world, pos, tree))
-            return;
         String variant = variants[variants.length == 1 ? 0 : rand.nextInt(variants.length)];
         ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree.name + "/" + variant);
 
