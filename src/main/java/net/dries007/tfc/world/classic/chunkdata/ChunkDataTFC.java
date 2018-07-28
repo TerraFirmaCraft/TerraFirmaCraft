@@ -136,7 +136,11 @@ public final class ChunkDataTFC
 
     public BlockRockVariant getRock3(int x, int z) { return getRockLayer3(x, z).block; }
 
+    public float getEvt(BlockPos pos) { return getEvt(pos.getX() & 15, pos.getZ() & 15); }
+
     public float getEvt(int x, int z) { return getEvtLayer(x, z).valueFloat; }
+
+    public float getRainfall(BlockPos pos) { return getRainfall(pos.getX() & 15, pos.getZ() & 15); }
 
     public float getRainfall(int x, int z) { return getRainfallLayer(x, z).valueFloat; }
 
@@ -215,8 +219,8 @@ public final class ChunkDataTFC
             root.setTag("drainageLayer", write(instance.drainageLayer));
 
             root.setString("treeLayer1", instance.treeLayers[0].name);
-            root.setString("treeLayer1", instance.treeLayers[1].name);
-            root.setString("treeLayer1", instance.treeLayers[2].name);
+            root.setString("treeLayer2", instance.treeLayers[1].name);
+            root.setString("treeLayer3", instance.treeLayers[2].name);
 
             root.setTag("seaLevelOffset", new NBTTagIntArray(instance.seaLevelOffset));
             root.setInteger("fishPopulation", instance.fishPopulation);

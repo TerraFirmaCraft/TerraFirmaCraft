@@ -66,8 +66,8 @@ public class BlockSheet extends Block
         this.metal = metal;
         if (MAP.put(metal, this) != null) throw new IllegalStateException("There can only be one.");
 
-        setHardness(3.5F);
-        setResistance(10F);
+        setHardness(40F);
+        setResistance(25F);
         setHarvestLevel("pickaxe", 0);
         this.setDefaultState(blockState.getBaseState().withProperty(FACE, EnumFacing.NORTH));
     }

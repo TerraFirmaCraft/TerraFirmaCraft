@@ -63,25 +63,25 @@ public class DefaultTrees
     {
         IForgeRegistry<Tree> r = event.getRegistry();
         r.registerAll(
-            new Tree(ACACIA, 250f, 4000f, 28f, 50f, 4f, 8f, 3, GEN_ACACIA),
-            new Tree(ASH, 125f, 4000f, 4f, 24f, 1f, 8f, 2, GEN_TALL),
-            new Tree(ASPEN, 125f, 1000f, -5f, 18f, 0.25f, 4f, 2, GEN_TALL),
-            new Tree(BIRCH, 62.5f, 250f, -10f, 12f, 0f, 4f, 2, GEN_TALL),
-            new Tree(BLACKWOOD, 62.5f, 500f, 4f, 28f, 0.5f, 2f, 2, GEN_LARGE),
-            new Tree(CHESTNUT, 125f, 4000f, 3f, 24f, 0f, 2f, 2, GEN_NORMAL),
-            new Tree(DOUGLAS_FIR, 500f, 4000f, 1f, 14f, 0f, 4f, 2, GEN_TALL),
-            new Tree(HICKORY, 125f, 4000f, 4f, 28f, 0f, 4f, 2, GEN_TALL),
-            new Tree(MAPLE, 125f, 4000f, 3f, 20f, 0f, 4f, 2, GEN_NORMAL),
-            new Tree(OAK, 250f, 1000f, 5f, 25f, 0.25f, 8f, 2, GEN_TALL),
-            new Tree(PALM, 1000f, 4000f, 12f, 50f, 2f, 8f, 2, GEN_TROPICAL),
-            new Tree(PINE, 125f, 4000f, -15f, 24f, 0.25f, 8f, 2, GEN_CONIFER),
-            new Tree(ROSEWOOD, 500f, 4000f, 8f, 18f, 0f, 2f, 2, GEN_LARGE),
-            new Tree(SEQUOIA, 1000f, 4000f, 10f, 16f, 0f, 1f, 3, GEN_SEQUOIA),
-            new Tree(SPRUCE, 125f, 4000f, -5f, 24f, 0f, 4f, 2, GEN_CONIFER),
-            new Tree(SYCAMORE, 250f, 4000f, 6f, 30f, 0f, 4f, 2, GEN_NORMAL),
-            new Tree(WHITE_CEDAR, 125f, 4000f, -5f, 24f, 0f, 8f, 2, GEN_LARGE),
-            new Tree(WILLOW, 2000f, 4000f, 10f, 30f, 0f, 1f, 2, GEN_WILLOW),
-            new Tree(KAPOK, 1000f, 4000f, 30f, 50f, 0f, 4f, 3, GEN_KAPOK)
+            new Tree.Builder(ACACIA, 250f, 4000f, 28f, 50f, 4f, 8f, GEN_ACACIA).setMaxGrowthRadius(3).setMaxHeight(10).build(),
+            new Tree.Builder(ASH, 125f, 4000f, 4f, 24f, 1f, 8f, GEN_TALL).build(),
+            new Tree.Builder(ASPEN, 125f, 1000f, -5f, 18f, 0.25f, 4f, GEN_TALL).build(),
+            new Tree.Builder(BIRCH, 62.5f, 250f, -10f, 12f, 0f, 4f, GEN_TALL).build(),
+            new Tree.Builder(BLACKWOOD, 62.5f, 500f, 4f, 28f, 0.5f, 2f, GEN_LARGE).setMaxHeight(10).build(),
+            new Tree.Builder(CHESTNUT, 125f, 4000f, 3f, 24f, 0f, 2f, GEN_NORMAL).build(),
+            new Tree.Builder(DOUGLAS_FIR, 500f, 4000f, 1f, 14f, 0f, 4f, GEN_TALL).setMaxHeight(14).build(),
+            new Tree.Builder(HICKORY, 125f, 4000f, 4f, 28f, 0f, 4f, GEN_TALL).build(),
+            new Tree.Builder(MAPLE, 125f, 4000f, 3f, 20f, 0f, 4f, GEN_NORMAL).build(),
+            new Tree.Builder(OAK, 250f, 1000f, 5f, 25f, 0.25f, 8f, GEN_TALL).setMaxHeight(14).build(),
+            new Tree.Builder(PALM, 1000f, 4000f, 12f, 50f, 2f, 8f, GEN_TROPICAL).build(),
+            new Tree.Builder(PINE, 125f, 4000f, -15f, 24f, 0.25f, 8f, GEN_CONIFER).setIsConifer().build(),
+            new Tree.Builder(ROSEWOOD, 500f, 4000f, 8f, 18f, 0f, 2f, GEN_LARGE).setMaxHeight(10).build(),
+            new Tree.Builder(SEQUOIA, 1000f, 4000f, 10f, 16f, 0f, 1f, GEN_SEQUOIA).setMaxGrowthRadius(3).setMaxDecayDistance(8).setIsConifer().build(),
+            new Tree.Builder(SPRUCE, 125f, 4000f, -5f, 24f, 0f, 4f, GEN_CONIFER).setIsConifer().build(),
+            new Tree.Builder(SYCAMORE, 250f, 4000f, 6f, 30f, 0f, 4f, GEN_NORMAL).build(),
+            new Tree.Builder(WHITE_CEDAR, 125f, 4000f, -5f, 24f, 0f, 8f, GEN_LARGE).setMaxHeight(10).build(),
+            new Tree.Builder(WILLOW, 2000f, 4000f, 10f, 30f, 0f, 1f, GEN_WILLOW).build(),
+            new Tree.Builder(KAPOK, 1000f, 4000f, 30f, 50f, 0f, 4f, GEN_KAPOK).setMaxDecayDistance(6).setMaxGrowthRadius(3).setMaxHeight(24).build()
         );
     }
 }

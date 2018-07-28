@@ -45,7 +45,7 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
         setDefaultState(blockState.getBaseState().withProperty(STAGE, 0));
         setHardness(0.0F);
         OreDictionaryHelper.register(this, "tree", "sapling");
-        OreDictionaryHelper.register(this, "tree", "sapling", wood);
+        OreDictionaryHelper.register(this, "tree", "sapling", wood.name);
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 

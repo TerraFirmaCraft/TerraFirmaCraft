@@ -12,7 +12,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -33,6 +32,9 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      */
     public final String name;
     public final int maxGrowthRadius;
+    public final int maxHeight;
+    public final int maxDecayDistance;
+    public final boolean isConifer;
     // Used when growing a tree
     private final ITreeGenerator gen;
 
@@ -44,15 +46,24 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      * Addon mods that want to add trees should subscribe to the registry event for this class
      * They also must put (in their mod) the required resources in /assets/tfc/...
      *
+     * When using this class, use the provided Builder to create your trees. This will require all the default values, as well as
+     * provide optional values
+     *
+     * @param name    the ResourceLocation registry name of this tree
+     * @param gen     the generator that should be called to generate this tree, both during world gen and when growing from a sapling
      * @param minTemp min temperature
      * @param maxTemp max temperature
      * @param minRain min rainfall
      * @param maxRain max rainfall
      * @param minEVT  min EVT
      * @param maxEVT  max EVT
-     * @param gen     the generator that should be called to generate this tree, both during world gen and when growing from a sapling
+     * @param maxGrowthRadius used to check growth conditions
+     * @param maxHeight used to check growth conditions
+     * @param isConifer todo
      */
-    public Tree(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minRain, float maxRain, float minEVT, float maxEVT, int maxGrowthRadius, @Nonnull ITreeGenerator gen)
+    private Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator gen,
+                 float minTemp, float maxTemp, float minRain, float maxRain, float minEVT, float maxEVT,
+                 int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -60,10 +71,12 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         this.maxRain = maxRain;
         this.minEVT = minEVT;
         this.maxEVT = maxEVT;
+        this.maxGrowthRadius = maxGrowthRadius;
+        this.maxHeight = maxHeight;
+        this.maxDecayDistance = maxDecayDistance;
+        this.isConifer = isConifer;
 
         this.gen = gen;
-        this.maxGrowthRadius = maxGrowthRadius;
-
         this.name = name.getResourcePath().toLowerCase();
         setRegistryName(name);
     }
@@ -73,10 +86,64 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         this.gen.generateTree(manager, world, pos, this, rand);
     }
 
-    public void makeTree(World world, BlockPos pos, Random rand)
+    public static class Builder
     {
-        if (world.isRemote) return;
-        final TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
-        this.gen.generateTree(manager, world, pos, this, rand);
+        private float minTemp;
+        private float maxTemp;
+        private float minRain;
+        private float maxRain;
+        private float minEVT;
+        private float maxEVT;
+        private int maxHeight;
+        private int maxGrowthRadius;
+        private int maxDecayDistance;
+        private boolean isConifer;
+        private ITreeGenerator gen;
+        private ResourceLocation name;
+
+        public Builder(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minRain, float maxRain, float minEVT, float maxEVT, @Nonnull ITreeGenerator gen)
+        {
+            this.minTemp = minTemp; // required values
+            this.maxTemp = maxTemp;
+            this.minRain = minRain;
+            this.maxRain = maxRain;
+            this.minEVT = minEVT;
+            this.maxEVT = maxEVT;
+            this.maxGrowthRadius = 2; // default values
+            this.maxHeight = 6;
+            this.maxDecayDistance = 4;
+            this.isConifer = false;
+            this.name = name;
+            this.gen = gen;
+        }
+
+        public Builder setMaxGrowthRadius(int maxGrowthRadius)
+        {
+            this.maxGrowthRadius = maxGrowthRadius;
+            return this;
+        }
+
+        public Builder setMaxDecayDistance(int maxDecayDistance)
+        {
+            this.maxDecayDistance = maxDecayDistance;
+            return this;
+        }
+
+        public Builder setIsConifer()
+        {
+            isConifer = true;
+            return this;
+        }
+
+        public Builder setMaxHeight(int maxHeight)
+        {
+            this.maxHeight = maxHeight;
+            return this;
+        }
+
+        public Tree build()
+        {
+            return new Tree(name, gen, minTemp, maxTemp, minRain, maxRain, minEVT, maxEVT, maxGrowthRadius, maxHeight, maxDecayDistance, isConifer);
+        }
     }
 }

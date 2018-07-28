@@ -25,6 +25,7 @@ import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 
+import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 import static net.minecraft.block.BlockLog.LOG_AXIS;
 
 /**
@@ -90,7 +91,7 @@ public class TreeGenWillow implements ITreeGenerator
             if (rand.nextBoolean())
                 createLeafGroup(world, pos1.add(x, y, z));
         }
-        while (Math.abs(x) + Math.abs(z) > 1);
+        while (Math.abs(x) + Math.abs(z) > 0);
     }
 
     private void createLeafGroup(World world, BlockPos pos)
@@ -107,6 +108,6 @@ public class TreeGenWillow implements ITreeGenerator
     {
         Block block = world.getBlockState(pos).getBlock();
         if (block == Blocks.AIR || block instanceof BlockLeavesTFC)
-            world.setBlockState(pos, BlockLogTFC.get(tree).getDefaultState().withProperty(LOG_AXIS, axis));
+            world.setBlockState(pos, BlockLogTFC.get(tree).getDefaultState().withProperty(LOG_AXIS, axis).withProperty(PLACED, false));
     }
 }

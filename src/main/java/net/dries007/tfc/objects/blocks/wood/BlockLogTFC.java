@@ -14,10 +14,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -26,7 +28,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.items.metal.ItemMetalTool;
-import net.dries007.tfc.objects.items.rock.ItemRockAxe;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
@@ -52,10 +54,10 @@ public class BlockLogTFC extends BlockLog
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         setDefaultState(blockState.getBaseState().withProperty(LOG_AXIS, BlockLog.EnumAxis.Y).withProperty(PLACED, true).withProperty(SMALL, false));
         setHarvestLevel("axe", 0);
-        setHardness(10.0F);
+        setHardness(15.0F);
         setResistance(5.0F);
         OreDictionaryHelper.register(this, "log", "wood");
-        OreDictionaryHelper.register(this, "log", "wood", wood);
+        OreDictionaryHelper.register(this, "log", "wood", wood.name);
         Blocks.FIRE.setFireInfo(this, 5, 5);
         setTickRandomly(true);
     }
@@ -65,6 +67,13 @@ public class BlockLogTFC extends BlockLog
     public boolean isFullCube(IBlockState state)
     {
         return !state.getValue(SMALL);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
+    {
+        return (blockState.getValue(PLACED) ? 1.0f : 2.5f) * super.getBlockHardness(blockState, worldIn, pos);
     }
 
     @SuppressWarnings("deprecation")
@@ -116,37 +125,57 @@ public class BlockLogTFC extends BlockLog
     }
 
     @Override
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
+    {
+        // For floating tree things, just make them gently disappear over time
+        for (int x = -1; x <= 1; x++)
+            for (int y = -1; y <= 1; y++)
+                for (int z = -1; z <= 1; z++)
+                    if (world.getBlockState(pos.add(x, y, z)).getBlock() == this && (z != 0 || y != 0 || x != 0))
+                        return;
+        world.setBlockToAir(pos);
+    }
+
+    @Override
+    public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
+    {
+        // The itemstack is a cheeky hack
+        removeTree(worldIn, pos, null, new ItemStack(ItemMetalTool.get(Metal.RED_STEEL, Metal.ItemType.AXE)), 1);
+    }
+
+    @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
     {
-        removeTree(worldIn, pos, player, player.getHeldItemMainhand(), 1);
         if (state.getValue(PLACED))
             return;
 
         // Check if player has a valid tool
-        ItemStack stack = player.getActiveItemStack();
+        ItemStack stack = player.getHeldItemMainhand();
         int flags = 0;
-        if (stack.getItem() instanceof ItemMetalTool)
-        {
-            ItemMetalTool tool = (ItemMetalTool) stack.getItem();
-            if (tool.type == Metal.ItemType.AXE)
-            {
-                flags += 1;
-            }
-        }
-        else if (stack.getItem() instanceof ItemRockAxe)
-        {
-            flags += 3;
-        }
-        if ((flags & 0b1) == 0b1) // bit 1 = is axe, bit 2 = is stone
+        //todo: compare via ore dict
+        if (Helpers.doesStackMatchOrePrefix(stack, "axe"))
+            flags += 1; // axe;
+        if (Helpers.doesStackMatchOrePrefix(stack, "hammer"))
+            if (Helpers.doesStackMatchOre(stack, "axeStone"))
+                flags += 4;
+
+        if ((flags & 1) != 0) // bit 1 = is axe, bit 2 = is hammer, bit 3 is stone tool
         {
             // cut down the tree
             removeTree(worldIn, pos, player, stack, flags);
+        }
+        else if ((flags & 2) != 0)
+        {
+            // Break log and spawn some sticks
+            worldIn.setBlockToAir(pos);
+            Helpers.spawnItemStack(worldIn, pos.add(0.5D, 0.5D, 0.5D), new ItemStack(Items.STICK, 1 + (int) (Math.random() * 3)));
         }
     }
 
     private void removeTree(World world, BlockPos pos, EntityPlayer player, ItemStack stack, int flags)
     {
-        int maxLogs = stack.getMaxDamage() - stack.getItemDamage();
+        TerraFirmaCraft.getLog().info("Natural log harvesting");
+        int maxLogs = 1 + stack.getMaxDamage() - stack.getItemDamage();
 
         // find all logs and add them to a list
         List<BlockPos> logs = new ArrayList<>();
@@ -163,34 +192,27 @@ public class BlockLogTFC extends BlockLog
                     for (int z = -1; z <= 1; z++)
                     {
                         pos2 = pos1.add(x, y, z);
-                        if (world.getBlockState(pos2).getBlock() == this && !logs.contains(pos2))
+                        IBlockState state = world.getBlockState(pos2);
+                        if (state.getBlock() == this && !state.getValue(PLACED) && !logs.contains(pos2))
                             logs.add(pos2);
                     }
                 }
             }
         }
+        TerraFirmaCraft.getLog().info("Logs to break + " + maxLogs + " in: " + logs);
         // sort the list in terms of max distance to the original tree
         logs.sort(Comparator.comparing(x -> x.distanceSq(pos)));
+        Collections.reverse(logs);
         // start removing logs*/
-        logs.forEach(x -> TerraFirmaCraft.getLog().info("Trying to cut log + " + x));
         for (int i = 0; i < Math.min(logs.size(), maxLogs); i++)
         {
             // Remove the top log of the list
             pos1 = logs.get(i);
-            harvestBlock(world, player, pos1, world.getBlockState(pos1), null, stack);
+            if ((flags & 4) == 0 || Math.random() < 0.6) // Stone tools are 60% efficient
+                harvestBlock(world, player, pos1, world.getBlockState(pos1), null, stack);
             stack.damageItem(1, player);
             world.setBlockToAir(pos1);
         }
     }
-
-    /*@Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
-        for(int x = -1; x <= 1; x++)
-            for(int y = -1; y <= 1; y++)
-                for(int z = -1; z <= 1; z++)
-                    if(world.getBlockState(pos.add(x, y, z)).getBlock() == this && (z != 0 || y != 0 || x != 0))
-                        world.setBlockToAir(pos)
-    }*/
 
 }
