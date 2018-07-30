@@ -48,9 +48,7 @@ public class WorldGenTrees implements IWorldGenerator
         final float evt = chunkData.getEvt(chunkBlockPos);
         final float temp = ClimateTFC.getBioTemperature(world.getSeed(), chunkBlockPos.getZ(), rain);
 
-        TerraFirmaCraft.getLog().info("Numbas: " + temp + " | " + rain + " | " + evt + " for " + chunkData.getTree1().name);
-
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 10; i++)
         {
             final int x = chunkX * 16 + random.nextInt(16) + 8;
             final int z = chunkZ * 16 + random.nextInt(16) + 8;
@@ -68,21 +66,10 @@ public class WorldGenTrees implements IWorldGenerator
             else
                 tree = chunkData.getTree3();
 
-            //if (tree.minTemp > temp || tree.maxTemp < temp || tree.minEVT > evt || tree.maxEVT < evt || tree.minRain > rain || tree.maxRain < rain)
-            //    continue;
+            if (tree.minEVT > evt || tree.maxEVT < evt || tree.minRain > rain || tree.maxRain < rain) // tree.minTemp > temp || tree.maxTemp < temp ||
+                continue;
 
             tree.makeTree(manager, world, pos, random);
-
-            //world.setBlockState(new BlockPos(x, 180, z), BlockLogTFC.get(tree1).getDefaultState(), 2);
-            //world.setBlockState(new BlockPos(x + 1, 180, z), BlockLogTFC.get(tree2).getDefaultState(), 2);
-            //world.setBlockState(new BlockPos(x + 2, 180, z), BlockLogTFC.get(tree3).getDefaultState(), 2);
-
-            //generateTree(manager, world, pos, tree, random);
-
-            //for(int j = 0; j < 5; j++)
-            //    world.setBlockState(pos.up(j), BlockLogTFC.get(tree).getDefaultState(), 2);
-
         }
-
     }
 }
