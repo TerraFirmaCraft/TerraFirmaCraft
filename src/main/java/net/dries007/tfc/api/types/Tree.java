@@ -118,7 +118,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         private ITreeGenerator gen;
         private ResourceLocation name;
 
-        public Builder(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minRain, float maxRain, float minEVT, float maxEVT, @Nonnull ITreeGenerator gen)
+        public Builder(@Nonnull ResourceLocation name, float minRain, float maxRain, float minTemp, float maxTemp, float minEVT, float maxEVT, @Nonnull ITreeGenerator gen)
         {
             this.minTemp = minTemp; // required values
             this.maxTemp = maxTemp;
