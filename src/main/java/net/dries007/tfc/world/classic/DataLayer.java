@@ -38,27 +38,6 @@ public final class DataLayer
     public static final DataLayer GNEISS = newBlockDataLayer(21, BlockRockVariant.get(Rock.GNEISS, Rock.Type.RAW), "Gneiss");
     public static final DataLayer MARBLE = newBlockDataLayer(22, BlockRockVariant.get(Rock.MARBLE, Rock.Type.RAW), "Marble");
 
-    /*
-     * Trees!
-     */
-    /*public static final DataLayer NO_TREE = newIntDataLayer(29, "No Tree", -1);
-    public static final DataLayer ACACIA = newIntDataLayer(29, "Acacia", -1);
-    public static final DataLayer ASH = newIntDataLayer(30, "Ash", 1);
-    public static final DataLayer ASPEN = newIntDataLayer(31, "Aspen", 2);
-    public static final DataLayer BIRCH = newIntDataLayer(32, "Birch", 3);
-    public static final DataLayer BLACKWOOD = newIntDataLayer(32, "Birch", 3);
-    public static final DataLayer CHESTNUT = newIntDataLayer(33, "Chestnut", 3);
-    public static final DataLayer DOUGLASFIR = newIntDataLayer(34, "Douglas Fir", 4);
-    public static final DataLayer HICKORY = newIntDataLayer(35, "Hickory", 5);
-    public static final DataLayer MAPLE = newIntDataLayer(36, "Maple", 6);
-    public static final DataLayer OAK = newIntDataLayer(37, "Oak", 0);
-    public static final DataLayer PINE = newIntDataLayer(38, "Pine", 8);
-    public static final DataLayer SEQUOIA = newIntDataLayer(38, "Sequoia", 8);
-    public static final DataLayer SPRUCE = newIntDataLayer(40, "Spruce", 10);
-    public static final DataLayer SYCAMORE = newIntDataLayer(41, "Sycamore", 11);
-    public static final DataLayer WHITECEDAR = newIntDataLayer(42, "White Cedar", 12);
-    public static final DataLayer WILLOW = newIntDataLayer(44, "Willow", 14);*/
-
     // Evapotranspiration
     public static final DataLayer EVT_0_125 = newFloatDataLayer(80, "0.125", 0.125f);
     public static final DataLayer EVT_0_25 = newFloatDataLayer(81, "0.25", 0.25f);

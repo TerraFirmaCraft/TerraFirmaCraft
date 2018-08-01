@@ -145,36 +145,6 @@ public class BlockLogTFC extends BlockLog
         if (!worldIn.isRemote)
             removeTree(worldIn, pos, null, ItemStack.EMPTY, 1);
     }
-
-   /* @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
-    {
-        if (state.getValue(PLACED) && worldIn.isRemote)
-            return;
-
-        // Check if player has a valid tool
-        ItemStack stack = player.getHeldItemMainhand();
-        int flags = 0;
-        //todo: compare via ore dict
-        if (Helpers.doesStackMatchOrePrefix(stack, "axe"))
-            flags += 1; // axe;
-        if (Helpers.doesStackMatchOrePrefix(stack, "hammer"))
-            if (Helpers.doesStackMatchOre(stack, "axeStone"))
-                flags += 4;
-
-        if ((flags & 1) != 0) // bit 1 = is axe, bit 2 = is hammer, bit 3 is stone tool
-        {
-            // cut down the tree
-            removeTree(worldIn, pos, player, stack, flags);
-        }
-        else if ((flags & 2) != 0)
-        {
-            // Break log and spawn some sticks
-            worldIn.setBlockToAir(pos);
-            Helpers.spawnItemStack(worldIn, pos.add(0.5D, 0.5D, 0.5D), new ItemStack(Items.STICK, 1 + (int) (Math.random() * 3)));
-        }
-    }*/
-
     @Override
     public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
     {
