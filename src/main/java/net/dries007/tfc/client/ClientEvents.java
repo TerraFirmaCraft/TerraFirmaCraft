@@ -165,7 +165,7 @@ public class ClientEvents
             if (ids != null && ids.length != 0)
             {
                 tt.add("");
-                tt.add(TextFormatting.AQUA + "OreEnum Dictionary:");
+                tt.add(TextFormatting.AQUA + "Ore Dictionary:");
                 Arrays.stream(ids).mapToObj(OreDictionary::getOreName).sorted().forEachOrdered(tt::add);
             }
         }

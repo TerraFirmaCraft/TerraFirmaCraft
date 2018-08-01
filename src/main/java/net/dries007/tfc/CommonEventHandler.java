@@ -28,7 +28,6 @@ import net.dries007.tfc.api.util.Size;
 import net.dries007.tfc.api.util.Weight;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.CapabilityItemSize;
 import net.dries007.tfc.util.Helpers;
@@ -61,17 +60,6 @@ public class CommonEventHandler
             if (event.getWorld().rand.nextFloat() < chance)
                 event.getDrops().add(new ItemStack(Items.STICK));
         }
-    }
-
-    // Used to replace wood blocks when broken with an axe that then breaks
-    @SubscribeEvent
-    public static void onBlockBreak(BlockEvent.BreakEvent event)
-    {
-        if (event.getState().getBlock() instanceof BlockLogTFC)
-        {
-            TerraFirmaCraft.getLog().info("Could this replace the block?");
-        }
-
     }
 
     /**

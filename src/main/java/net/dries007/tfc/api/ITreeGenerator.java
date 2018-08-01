@@ -33,6 +33,7 @@ public interface ITreeGenerator
     /**
      * @return A default set of placement settings for tree generation
      */
+
     static PlacementSettings getDefaultSettings()
     {
         return new PlacementSettings()

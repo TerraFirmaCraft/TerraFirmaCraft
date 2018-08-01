@@ -105,18 +105,17 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable, ITileEntity
             if (te != null)
             {
                 long hours = te.getHoursSincePlaced();
-                TerraFirmaCraft.getLog().info("Checking sapling. Time alive: " + hours + " | of: " + (wood.minGrowthTime * CalenderTFC.HOURS_IN_DAY));
                 if (hours > wood.minGrowthTime * CalenderTFC.HOURS_IN_DAY)
                 {
                     grow(world, random, pos, state);
                 }
-                if (world.getBlockState(pos.down(2)) == Blocks.GLASS.getDefaultState())
+                // This is a hack to make saplings grow faster if the block underneath the dirt is glass. Useful for testing
+                /*if (world.getBlockState(pos.down(2)) == Blocks.GLASS.getDefaultState())
                 {
-                    // cheeky hack to speed up tree growth for testing /todo: remove
-                    te.timer -= 1;
+                    te.timer -= 10;
                     te.markDirty();
                     TerraFirmaCraft.getLog().info("Hacking the timer! New time:" + te.getHoursSincePlaced());
-                }
+                }*/
             }
         }
     }
