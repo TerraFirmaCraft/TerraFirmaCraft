@@ -32,6 +32,10 @@ public class ConfigTFC
     @Config.LangKey("config." + MOD_ID + ".client")
     public static final ClientCFG CLIENT = new ClientCFG();
 
+    @Config.Comment("World gen settings")
+    @Config.LangKey("config." + MOD_ID + ".world")
+    public static final WorldCFG WORLD = new WorldCFG();
+
     @SubscribeEvent
     public static void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
     {
@@ -57,11 +61,6 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.debug")
         public boolean debug = Launch.blackboard.get("fml.deobfuscatedEnvironment") != null;
 
-        @Config.Comment("Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!")
-        @Config.LangKey("config." + MOD_ID + ".general.debugWorldGen")
-        @Config.RequiresWorldRestart
-        public boolean debugWorldGen = false;
-
         @Config.Comment("Lengths of a year in in game days. MUST BE MULTIPLE OF 12!")
         @Config.LangKey("config." + MOD_ID + ".general.yearLength")
         @Config.RangeInt(min = 12, max = 12000)
@@ -85,5 +84,24 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".client.makeWorldTypeClassicDefault")
         @Config.RequiresMcRestart
         public boolean makeWorldTypeClassicDefault = true;
+    }
+
+    public static class WorldCFG
+    {
+        @Config.Comment({"This controls how the temperature gradient appears near the equator.", "1: south of equator is hot, north of equator is cold", "-1: south of equator is cold, north of equator is hot"})
+        @Config.LangKey("config." + MOD_ID + ".world.hemisphereType")
+        @Config.RangeInt(min = -1, max = 1)
+        @Config.RequiresMcRestart
+        public int hemisphereType = 1;
+
+        @Config.Comment("This controls the appearance of cyclic temperature regions. If you want an endless north / south with a temperate equator, set this to false")
+        @Config.LangKey("config." + MOD_ID + ".world.cyclicTemperatureRegions")
+        @Config.RequiresMcRestart
+        public boolean cyclicTemperatureRegions = true;
+
+        @Config.Comment("Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!")
+        @Config.LangKey("config." + MOD_ID + ".general.debugWorldGen")
+        @Config.RequiresWorldRestart
+        public boolean debugMode = false;
     }
 }

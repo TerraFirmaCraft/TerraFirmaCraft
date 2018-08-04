@@ -23,17 +23,21 @@ public class DefaultTrees
 {
 
     /**
-     * Simple ITreeGenerator instances. You can use these when registering custom trees.
+     * Simple ITreeGenerator instances.
      */
-    public static final ITreeGenerator GEN_NORMAL = new TreeGenNormal(1, 3);
-    public static final ITreeGenerator GEN_TALL = new TreeGenNormal(3, 3);
-    public static final ITreeGenerator GEN_LARGE = new TreeGenNormal(0, 2);
-    public static final ITreeGenerator GEN_CONIFER = new TreeGenVariants(false, 7);
-    public static final ITreeGenerator GEN_TROPICAL = new TreeGenVariants(true, 7);
-    public static final ITreeGenerator GEN_WILLOW = new TreeGenWillow();
-    public static final ITreeGenerator GEN_ACACIA = new TreeGenAcacia();
-    public static final ITreeGenerator GEN_KAPOK = new TreeGenKapok();
-    public static final ITreeGenerator GEN_SEQUOIA = new TreeGenSequoia();
+    private static final ITreeGenerator GEN_NORMAL = new TreeGenNormal(1, 3);
+    private static final ITreeGenerator GEN_TALL = new TreeGenNormal(3, 3);
+    private static final ITreeGenerator GEN_LARGE = new TreeGenNormal(0, 2);
+    private static final ITreeGenerator GEN_CONIFER = new TreeGenVariants(false, 7);
+    private static final ITreeGenerator GEN_TROPICAL = new TreeGenVariants(true, 7);
+    private static final ITreeGenerator GEN_WILLOW = new TreeGenWillow();
+    private static final ITreeGenerator GEN_ACACIA = new TreeGenAcacia();
+    private static final ITreeGenerator GEN_KAPOK = new TreeGenKapok();
+    /**
+     * Composite ITreeGenerator (takes a weighted selection of multiple ITreeGenerators. Can be layered)
+     */
+    public static final ITreeGenerator GEN_KAPOK_COMPOSITE = new TreeGenComposite().add(0.4f, GEN_TALL).add(0.6f, GEN_KAPOK);
+    private static final ITreeGenerator GEN_SEQUOIA = new TreeGenSequoia();
 
     /**
      * Default tree ResourceLocations
@@ -63,25 +67,25 @@ public class DefaultTrees
     {
         IForgeRegistry<Tree> r = event.getRegistry();
         r.registerAll(
-            new Tree.Builder(ACACIA, 250f, 4000f, 28f, 50f, 4f, 8f, GEN_ACACIA).setMaxGrowthRadius(3).setMaxHeight(10).build(),
-            new Tree.Builder(ASH, 125f, 4000f, 4f, 24f, 1f, 8f, GEN_TALL).build(),
-            new Tree.Builder(ASPEN, 125f, 1000f, -5f, 18f, 0.25f, 4f, GEN_TALL).build(),
-            new Tree.Builder(BIRCH, 62.5f, 250f, -10f, 12f, 0f, 4f, GEN_TALL).build(),
-            new Tree.Builder(BLACKWOOD, 62.5f, 500f, 4f, 28f, 0.5f, 2f, GEN_LARGE).setMaxHeight(10).build(),
-            new Tree.Builder(CHESTNUT, 125f, 4000f, 3f, 24f, 0f, 2f, GEN_NORMAL).build(),
-            new Tree.Builder(DOUGLAS_FIR, 500f, 4000f, 1f, 14f, 0f, 4f, GEN_TALL).setMaxHeight(14).build(),
-            new Tree.Builder(HICKORY, 125f, 4000f, 4f, 28f, 0f, 4f, GEN_TALL).build(),
-            new Tree.Builder(MAPLE, 125f, 4000f, 3f, 20f, 0f, 4f, GEN_NORMAL).build(),
-            new Tree.Builder(OAK, 250f, 1000f, 5f, 25f, 0.25f, 8f, GEN_TALL).setMaxHeight(14).setGrowthTime(10f).build(),
-            new Tree.Builder(PALM, 1000f, 4000f, 12f, 50f, 2f, 8f, GEN_TROPICAL).build(),
-            new Tree.Builder(PINE, 125f, 4000f, -15f, 24f, 0.25f, 8f, GEN_CONIFER).setIsConifer().build(),
-            new Tree.Builder(ROSEWOOD, 500f, 4000f, 8f, 18f, 0f, 2f, GEN_LARGE).setMaxHeight(10).build(),
-            new Tree.Builder(SEQUOIA, 1000f, 4000f, 10f, 16f, 0f, 1f, GEN_SEQUOIA).setMaxGrowthRadius(3).setMaxDecayDistance(8).setIsConifer().setGrowthTime(22f).build(),
-            new Tree.Builder(SPRUCE, 125f, 4000f, -5f, 24f, 0f, 4f, GEN_CONIFER).setIsConifer().build(),
-            new Tree.Builder(SYCAMORE, 250f, 4000f, 6f, 30f, 0f, 4f, GEN_NORMAL).build(),
-            new Tree.Builder(WHITE_CEDAR, 125f, 4000f, -5f, 24f, 0f, 8f, GEN_LARGE).setMaxHeight(10).build(),
-            new Tree.Builder(WILLOW, 2000f, 4000f, 10f, 30f, 0f, 1f, GEN_WILLOW).build(),
-            new Tree.Builder(KAPOK, 1000f, 4000f, 30f, 50f, 0f, 4f, GEN_KAPOK).setMaxDecayDistance(6).setMaxGrowthRadius(3).setMaxHeight(24).setGrowthTime(18f).build()
+            new Tree.Builder(ACACIA, 30f, 210f, 19f, 31f, 8, GEN_ACACIA).setRadius(3).setGrowthTime(11).setDensity(0.1f, 0.6f).build(),
+            new Tree.Builder(ASH, 60f, 140f, -6f, 12f, 5, GEN_TALL).build(),
+            new Tree.Builder(ASPEN, 10f, 80f, -10f, 12f, 9, GEN_TALL).setGrowthTime(8).build(),
+            new Tree.Builder(BIRCH, 20f, 180f, -15f, 7f, 5, GEN_TALL).build(),
+            new Tree.Builder(BLACKWOOD, 0f, 120f, 4f, 28f, 3, GEN_LARGE).setHeight(10).setGrowthTime(8).build(),
+            new Tree.Builder(CHESTNUT, 160f, 320f, 11f, 24f, 9, GEN_NORMAL).setRadius(1).build(),
+            new Tree.Builder(DOUGLAS_FIR, 280f, 480f, -2f, 14f, 5, GEN_TALL).setHeight(14).setDensity(0.25f, 2f).build(),
+            new Tree.Builder(HICKORY, 80f, 250f, 7f, 29f, 7, GEN_TALL).setGrowthTime(10).build(),
+            new Tree.Builder(MAPLE, 140f, 360f, 3f, 20f, 6, GEN_NORMAL).setRadius(1).build(),
+            new Tree.Builder(OAK, 180f, 430f, -8f, 12f, 5, GEN_TALL).setHeight(14).setGrowthTime(10).build(),
+            new Tree.Builder(PALM, 280f, 500f, 16f, 35f, 7, GEN_TROPICAL).build(),
+            new Tree.Builder(PINE, 59f, 250f, -15f, 5f, 5, GEN_CONIFER).setConifer().setDensity(0.1f, 0.8f).build(),
+            new Tree.Builder(ROSEWOOD, 10f, 190f, 8f, 18f, 8, GEN_LARGE).setHeight(10).setGrowthTime(8).build(),
+            new Tree.Builder(SEQUOIA, 250f, 420f, -5f, 8f, 3, GEN_SEQUOIA).setRadius(3).setHeight(24).setDecayDist(6).setGrowthTime(18).setConifer().setDensity(0.4f, 0.9f).build(),
+            new Tree.Builder(SPRUCE, 120f, 380f, -11f, 6f, 6, GEN_CONIFER).setConifer().setDensity(0.1f, 0.8f).build(),
+            new Tree.Builder(SYCAMORE, 120f, 290f, 17f, 33f, 2, GEN_NORMAL).setRadius(1).setGrowthTime(8).setDensity(0.25f, 2f).build(),
+            new Tree.Builder(WHITE_CEDAR, 10f, 240f, -8f, 17f, 8, GEN_LARGE).setHeight(10).build(),
+            new Tree.Builder(WILLOW, 230f, 500f, 10f, 34f, 3, GEN_WILLOW).setGrowthTime(11).build(),
+            new Tree.Builder(KAPOK, 180f, 400f, 15f, 35f, 10, GEN_KAPOK_COMPOSITE).setRadius(3).setHeight(24).setDecayDist(6).setGrowthTime(18).setDensity(0.55f, 2f).build()
         );
     }
 }

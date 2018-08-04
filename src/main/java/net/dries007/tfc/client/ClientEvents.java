@@ -39,7 +39,6 @@ import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.util.CapabilityItemSize;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.world.classic.CalenderTFC;
-import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -89,10 +88,10 @@ public class ClientEvents
                 if (data == null || !data.isInitialized()) list.add("No data ?!");
                 else
                 {
-                    list.add(String.format("%sTemps: Base: %s%.0f°%s Bio: %s%.0f°%s Height adjusted: %s%.0f°",
-                        GRAY, WHITE, ClimateTFC.getTemp(mc.world, blockpos), GRAY,
-                        WHITE, ClimateTFC.getBioTemperatureHeight(mc.world, blockpos), GRAY,
-                        WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)
+                    list.add(String.format("%sTemps: Base: %s%.1f°%s Bio: %s%.1f°%s Height adjusted: %s%.1f°",
+                        GRAY, WHITE, data.getBaseTemp(), GRAY,
+                        WHITE, data.getAverageTemp(), GRAY,
+                        WHITE, data.getAverageTemp() // todo: replace with height adjusted
                     ));
                     list.add(String.format("%sTime: %s%02d:%02d %04d/%02d/%02d",
                         GRAY, WHITE,
@@ -106,19 +105,25 @@ public class ClientEvents
 
                     list.add(GRAY + "Biome: " + WHITE + mc.world.getBiome(blockpos).getBiomeName());
 
-                    list.add(GRAY + "Rocks: " + WHITE + data.getRockLayer1(x, z).name + ", " + data.getRockLayer2(x, z).name + ", " + data.getRockLayer3(x, z).name);
-                    list.add(GRAY + "EVT: " + WHITE + data.getEvtLayer(x, z).name);
-                    list.add(GRAY + "Rainfall: " + WHITE + data.getRainfallLayer(x, z).name);
-                    list.add(GRAY + "Trees: " + WHITE + data.getTree1().name + ", " + data.getTree2().name + ", " + data.getTree3().name);
-                    list.add(GRAY + "Stability: " + WHITE + data.getStabilityLayer(x, z).name);
-                    list.add(GRAY + "Drainage: " + WHITE + data.getDrainageLayer(x, z).name);
-                    list.add(GRAY + "Sea level offset: " + WHITE + data.getSeaLevelOffset(x, z));
-                    list.add(GRAY + "Fish population: " + WHITE + data.getFishPopulation());
+                    list.add(GRAY + "Rainfall: " + WHITE + data.getRainfall());
+                    list.add(GRAY + "Flora Density: " + WHITE + data.getFloraDensity());
+                    list.add(GRAY + "Flora Diversity: " + WHITE + data.getFloraDiversity());
 
-                    list.add("");
-                    list.add(GRAY + "Rock at feet: " + WHITE + data.getRockLayerHeight(x, blockpos.getY(), z).name);
+                    list.add(GRAY + "Valid Trees: ");
+                    data.getValidTrees().forEach(t -> list.add(WHITE + t.name + " (" + t.dominance + ")"));
 
-                    list.add("");
+                    //list.add(GRAY + "Rocks: " + WHITE + data.getRockLayer1(x, z).name + ", " + data.getRockLayer2(x, z).name + ", " + data.getRockLayer3(x, z).name);
+                    //list.add(GRAY + "EVT: " + WHITE + data.getEvtLayer(x, z).name);
+                    //list.add(GRAY + "Rainfall: " + WHITE + data.getRainfallLayer(x, z).name);
+                    //list.add(GRAY + "Stability: " + WHITE + data.getStabilityLayer(x, z).name);
+                    //list.add(GRAY + "Drainage: " + WHITE + data.getDrainageLayer(x, z).name);
+                    //list.add(GRAY + "Sea level offset: " + WHITE + data.getSeaLevelOffset(x, z));
+                    //list.add(GRAY + "Fish population: " + WHITE + data.getFishPopulation());
+
+                    //list.add("");
+                    //list.add(GRAY + "Rock at feet: " + WHITE + data.getRockLayerHeight(x, blockpos.getY(), z).name);
+
+                    // list.add("");
                     data.getOresSpawned().stream().map(String::valueOf).forEach(list::add);
                 }
             }
