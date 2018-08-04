@@ -21,7 +21,7 @@ import net.dries007.tfc.api.ITreeGenerator;
 public class Tree extends IForgeRegistryEntry.Impl<Tree>
 {
 
-    public final int dominance;
+    public final float dominance;
     private final float minTemp;
     private final float maxTemp;
     private final float minRain;
@@ -50,7 +50,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      * They also must put (in their mod) the required resources in /assets/tfc/...
      *
      * When using this class, use the provided Builder to create your trees. This will require all the default values, as well as
-     * provide optional values
+     * provide optional values that you can change
      *
      * @param name    the ResourceLocation registry name of this tree
      * @param gen     the generator that should be called to generate this tree, both during world gen and when growing from a sapling
@@ -58,21 +58,21 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      * @param maxTemp max temperature
      * @param minRain min rainfall
      * @param maxRain max rainfall
-     * @param dominance how much this tree is chosen over other trees. Range 0 <> 5 with 0 being less common, 5 more common
+     * @param dominance how much this tree is chosen over other trees. Range 0 <> 10 with 10 being the most common
      * @param maxGrowthRadius used to check growth conditions
      * @param maxHeight used to check growth conditions
      * @param isConifer todo
      * @param minGrowthTime the amount of time (in in-game days) that this tree requires to grow
      */
     private Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator gen,
-                 float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, int dominance,
+                 float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, float dominance,
                  int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, float minGrowthTime)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
         this.minRain = minRain;
         this.maxRain = maxRain;
-        this.dominance = dominance;
+        this.dominance = dominance != -1f ? dominance : 0.001f * (maxTemp - minTemp) * (maxRain - minRain);
         this.maxGrowthRadius = maxGrowthRadius;
         this.maxHeight = maxHeight;
         this.maxDecayDistance = maxDecayDistance;
@@ -116,7 +116,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         private float maxRain;
         private float minDensity;
         private float maxDensity;
-        private int dominance;
+        private float dominance;
         private int maxHeight;
         private int maxGrowthRadius;
         private int maxDecayDistance;
@@ -125,16 +125,16 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         private ITreeGenerator gen;
         private ResourceLocation name;
 
-        public Builder(@Nonnull ResourceLocation name, float minRain, float maxRain, float minTemp, float maxTemp, int dominance, @Nonnull ITreeGenerator gen)
+        public Builder(@Nonnull ResourceLocation name, float minRain, float maxRain, float minTemp, float maxTemp, @Nonnull ITreeGenerator gen)
         {
             this.minTemp = minTemp; // required values
             this.maxTemp = maxTemp;
             this.minRain = minRain;
             this.maxRain = maxRain;
-            this.dominance = dominance;
             this.name = name;
             this.gen = gen;
             this.maxGrowthRadius = 2; // default values
+            this.dominance = -1f;
             this.maxHeight = 6;
             this.maxDecayDistance = 4;
             this.isConifer = false;
@@ -177,6 +177,12 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         {
             this.minDensity = min;
             this.maxDensity = max;
+            return this;
+        }
+
+        public Builder setDominance(float dom)
+        {
+            this.dominance = dom;
             return this;
         }
 

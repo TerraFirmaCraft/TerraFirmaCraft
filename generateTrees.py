@@ -93,7 +93,9 @@ for wood, key in WOOD_TYPES.items():
         for s in ['1', '2', '3', '4', '5', '6', '7']:
             tree('structure_templates/tropical' + s, wood, s)
 
-    # kapok (vanilla jungle trees, but better)
+    # kapok (vanilla jungle trees, but better) These also need to include a normal variant as well
     if key == 'jungle':
         for s in ['branch1', 'branch2', 'branch3', 'top']:
             tree('structure_templates/jungle_' + s, wood, s)
+        tree('structure_templates/normal', wood, 'base')
+        tree('structure_templates/normal_overlay', wood, 'overlay')

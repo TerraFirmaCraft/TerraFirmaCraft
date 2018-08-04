@@ -31,7 +31,7 @@ public class TreeGenVariants implements ITreeGenerator
      *
      * @param useRotation Should it try and randomly rotate the structures on placement
      * @param variants    The list of variants for the generator to look for. Structure files should be placed in
-     *                    assets/tfc/[TREE NAME]/ This needs to be the list of file names, (i.e. "tree1.nbt" should pass in "tree 1")
+     *                    assets/tfc/[TREE NAME]/ This needs to be the list of file names, (i.e. "tree1.nbt" should pass in "tree1")
      */
     public TreeGenVariants(boolean useRotation, String... variants)
     {
@@ -47,7 +47,7 @@ public class TreeGenVariants implements ITreeGenerator
      */
     public TreeGenVariants(boolean useRotation, int numVariants)
     {
-        this(useRotation, IntStream.range(0, numVariants + 1).mapToObj(String::valueOf).toArray(String[]::new));
+        this(useRotation, IntStream.range(1, numVariants + 1).mapToObj(String::valueOf).toArray(String[]::new));
     }
 
     @Override
