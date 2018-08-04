@@ -37,9 +37,7 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 import net.dries007.tfc.world.classic.genlayers.datalayers.drainage.GenDrainageLayer;
-import net.dries007.tfc.world.classic.genlayers.datalayers.evt.GenEVTLayer;
 import net.dries007.tfc.world.classic.genlayers.datalayers.ph.GenPHLayer;
-import net.dries007.tfc.world.classic.genlayers.datalayers.rain.GenRainLayerTFC;
 import net.dries007.tfc.world.classic.genlayers.datalayers.rock.GenRockLayer;
 import net.dries007.tfc.world.classic.genlayers.datalayers.stability.GenStabilityLayer;
 import net.dries007.tfc.world.classic.mapgen.MapGenCavesTFC;
@@ -100,8 +98,6 @@ public class ChunkGenTFC implements IChunkGenerator
     private final GenLayerTFC rocksGenLayer1;
     private final GenLayerTFC rocksGenLayer2;
     private final GenLayerTFC rocksGenLayer3;
-    private final GenLayerTFC evtGenLayer;
-    private final GenLayerTFC rainfallGenLayer;
     private final GenLayerTFC stabilityGenLayer;
     private final GenLayerTFC phGenLayer;
     private final GenLayerTFC drainageGenLayer;
@@ -116,14 +112,12 @@ public class ChunkGenTFC implements IChunkGenerator
     private final DataLayer[] rockLayer1 = new DataLayer[256];
     private final DataLayer[] rockLayer2 = new DataLayer[256];
     private final DataLayer[] rockLayer3 = new DataLayer[256];
-    private final DataLayer[] evtLayer = new DataLayer[256];
-    private final DataLayer[] rainfallLayer = new DataLayer[256];
     private final DataLayer[] stabilityLayer = new DataLayer[256];
     private final DataLayer[] drainageLayer = new DataLayer[256];
     private final int[] seaLevelOffsetMap = new int[256];
     private final int[] chunkHeightMap = new int[256];
 
-    private final MapGenBase caveGen;
+    private final MapGenCavesTFC caveGen;
     private final MapGenBase surfaceRavineGen;
     private final MapGenBase ravineGen;
     private final MapGenBase riverRavineGen;
@@ -158,13 +152,11 @@ public class ChunkGenTFC implements IChunkGenerator
         noiseGen9 = new NoiseGeneratorPerlin(new Random(seed + 6), 4);
         noiseGen10 = new NoiseGeneratorPerlin(new Random(seed + 7), 4);
 
-        evtGenLayer = GenEVTLayer.initialize(seed + 7);
-        rainfallGenLayer = GenRainLayerTFC.initialize(seed + 8);
         stabilityGenLayer = GenStabilityLayer.initialize(seed + 9);
         phGenLayer = GenPHLayer.initialize(seed + 10);
         drainageGenLayer = GenDrainageLayer.initialize(seed + 11);
 
-        caveGen = new MapGenCavesTFC(rockLayer1, rainfallLayer, stabilityLayer);
+        caveGen = new MapGenCavesTFC(rockLayer1, stabilityLayer);
         surfaceRavineGen = new MapGenRavineTFC(s.surfaceRavineRarity, s.surfaceRavineHeight, s.surfaceRavineVariability);
         ravineGen = new MapGenRavineTFC(s.ravineRarity, s.ravineHeight, s.ravineVariability);
         riverRavineGen = new MapGenRiverRavine(s.riverRavineRarity);
@@ -192,8 +184,6 @@ public class ChunkGenTFC implements IChunkGenerator
         loadLayerGeneratorData(rocksGenLayer1, rockLayer1, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(rocksGenLayer2, rockLayer2, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(rocksGenLayer3, rockLayer3, chunkX * 16, chunkZ * 16, 16, 16);
-        loadLayerGeneratorData(evtGenLayer, evtLayer, chunkX * 16, chunkZ * 16, 16, 16);
-        loadLayerGeneratorData(rainfallGenLayer, rainfallLayer, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(stabilityGenLayer, stabilityLayer, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(drainageGenLayer, drainageLayer, chunkX * 16, chunkZ * 16, 16, 16);
 
@@ -214,6 +204,7 @@ public class ChunkGenTFC implements IChunkGenerator
         CustomChunkPrimer chunkPrimerOut = new CustomChunkPrimer();
         replaceBlocksForBiomeHigh(chunkX, chunkZ, chunkPrimerIn, chunkPrimerOut);
 
+        caveGen.setRainfall(rainfall);
         caveGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
         surfaceRavineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
         ravineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
@@ -231,8 +222,6 @@ public class ChunkGenTFC implements IChunkGenerator
                     chunkPrimerOut.setBlockState(x, 244, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer2[z << 4 | x].layerID & 15));
                     chunkPrimerOut.setBlockState(x, 246, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer3[z << 4 | x].layerID & 15));
 
-                    chunkPrimerOut.setBlockState(x, 248, z, Blocks.STAINED_GLASS.getStateFromMeta(evtLayer[x << 4 | z].layerID & 15));
-                    chunkPrimerOut.setBlockState(x, 250, z, Blocks.STAINED_GLASS.getStateFromMeta(rainfallLayer[x << 4 | z].layerID & 15));
                     chunkPrimerOut.setBlockState(x, 252, z, Blocks.STAINED_GLASS.getStateFromMeta(stabilityLayer[x << 4 | z].layerID & 15));
                     chunkPrimerOut.setBlockState(x, 254, z, Blocks.STAINED_GLASS.getStateFromMeta(drainageLayer[x << 4 | z].layerID & 15));
 
@@ -244,7 +233,7 @@ public class ChunkGenTFC implements IChunkGenerator
 
         ChunkDataTFC chunkData = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
         if (chunkData == null) throw new IllegalStateException("ChunkData capability is missing.");
-        chunkData.setGenerationData(rockLayer1, rockLayer2, rockLayer3, evtLayer, rainfallLayer, stabilityLayer, drainageLayer, seaLevelOffsetMap,
+        chunkData.setGenerationData(rockLayer1, rockLayer2, rockLayer3, stabilityLayer, drainageLayer, seaLevelOffsetMap,
             rainfall, baseTemp, averageTemp, floraDensity, floraDiversity);
 
         byte[] biomeIds = chunk.getBiomeArray();
@@ -535,17 +524,15 @@ public class ChunkGenTFC implements IChunkGenerator
                 DataLayer rock1 = rockLayer1[colIndex];
                 DataLayer rock2 = rockLayer2[colIndex];
                 DataLayer rock3 = rockLayer3[colIndex];
-//                DataLayer evt = evtLayer[colIndex];
-                DataLayer rain = rainfallLayer[colIndex];
                 DataLayer drainage = drainageLayer[colIndex];
                 DataLayer stability = stabilityLayer[colIndex];
                 int noise = (int) (noise4[colIndex] / 3.0D + 6.0D);
                 int smooth = -1;
 
-                IBlockState surfaceBlock = rock1.block.getVariant(rain.valueFloat >= 500 ? Rock.Type.GRASS : Rock.Type.DRY_GRASS).getDefaultState();
+                IBlockState surfaceBlock = rock1.block.getVariant(rainfall + 1.3 * rand.nextGaussian() >= 150f ? Rock.Type.GRASS : Rock.Type.DRY_GRASS).getDefaultState();
                 IBlockState subSurfaceBlock = rock1.block.getVariant(Rock.Type.DIRT).getDefaultState();
 
-                final float bioTemp = ClimateTFC.getBioTemperature(seed, z, rainfallLayer[z << 4 | x].valueFloat);
+                final float bioTemp = ClimateTFC.getBioTemperature(seed, z, rainfall);
 
                 if (BiomesTFC.isBeachBiome(getBiomeOffset(x - 1, z)) || BiomesTFC.isBeachBiome(getBiomeOffset(x + 1, z)) || BiomesTFC.isBeachBiome(getBiomeOffset(x, z + 1)) || BiomesTFC.isBeachBiome(getBiomeOffset(x, z - 1)))
                 {
@@ -594,12 +581,12 @@ public class ChunkGenTFC implements IChunkGenerator
                             outp.setBlockState(x, y + yOffset, z, rock1.block.getDefaultState());
 
                         //First we check to see if its a cold desert
-                        if (rain.valueFloat < 125 && temp < 1.5f)
+                        if (rainfall < 75f && temp < 1.5f)
                         {
                             subSurfaceBlock = surfaceBlock = rock1.block.getVariant(Rock.Type.SAND).getDefaultState();
                         }
                         //Next we check for all other warm deserts
-                        else if (rain.valueFloat < 125 && biome.getHeightVariation() < 0.5f && temp > 20f)
+                        else if (rainfall < 75f && biome.getHeightVariation() < 0.5f && temp > 20f)
                         {
                             subSurfaceBlock = surfaceBlock = rock1.block.getVariant(Rock.Type.SAND).getDefaultState();
                         }

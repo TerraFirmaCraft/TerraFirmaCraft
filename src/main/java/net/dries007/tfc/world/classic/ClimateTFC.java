@@ -106,6 +106,7 @@ public final class ClimateTFC
         }
     }
 
+    @Deprecated
     public static float getHeightAdjustedTemp(World world, BlockPos pos)
     {
         float temp = getTemp(world, pos);
@@ -119,24 +120,27 @@ public final class ClimateTFC
         return temp - (temp * (0.25f * (1 - (world.getLight(pos) / 15f))));
     }
 
+    @Deprecated
     public static float getTemp(World world, BlockPos pos)
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (data == null || !data.isInitialized()) return Float.NaN;
-        return getTemp(world.getSeed(), pos.getZ(), CalenderTFC.getTotalDays(), CalenderTFC.getTotalHours(), false, data.getRainfall(pos.getX() & 15, pos.getZ() & 15));
+        return getTemp(world.getSeed(), pos.getZ(), CalenderTFC.getTotalDays(), CalenderTFC.getTotalHours(), false, data.getRainfall());
     }
 
+    @Deprecated
     public static float getBioTemperatureHeight(World world, BlockPos pos)
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (data == null || !data.isInitialized()) return Float.NaN;
-        float rain = data.getRainfall(pos.getX() & 15, pos.getZ() & 15);
+        float rain = data.getRainfall();
         float temp = 0;
         for (int i = 0; i < 12; i++)
             temp += adjustHeightToTemp(pos.getY(), getTemp(world.getSeed(), pos.getZ(), i * CalenderTFC.getDaysInMonth(), 0, true, rain));
         return temp / 12;
     }
 
+    @Deprecated
     public static float adjustHeightToTemp(int y, float temp)
     {
         //internationally accepted average lapse time is 6.49 K / 1000 m, for the first 11 km of the atmosphere. I suggest graphing our temperature
@@ -163,12 +167,14 @@ public final class ClimateTFC
     public static boolean isSwamp(World world, BlockPos pos)
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
-        return data.getRainfall(pos.getX() & 15, pos.getZ() & 15) >= 1000 &&
-            data.getEvt(pos.getX() & 15, pos.getZ() & 15) <= 0.25 &&
+        return data.getRainfall() >= 375f &&
+            data.getFloraDiversity() >= 0.5f &&
+            data.getFloraDensity() >= 0.5f &&
             world.getBiome(pos).getHeightVariation() < 0.15;
     }
 
     // only for worldgen use
+    @Deprecated
     public static float getBioTemperature(long seed, int z, float rain)
     {
         float temp = 0;
@@ -177,6 +183,7 @@ public final class ClimateTFC
         return temp / 24;
     }
 
+    @Deprecated
     private static float getTemp(long seed, int z, long day, long hour, boolean bio, float rain)
     {
         if (z < 0) z = -z;

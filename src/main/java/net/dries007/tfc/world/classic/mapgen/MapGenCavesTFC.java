@@ -25,15 +25,20 @@ import static net.dries007.tfc.world.classic.ChunkGenTFC.LAVA;
 public class MapGenCavesTFC extends MapGenBase
 {
     private final DataLayer[] rockLayer1;
-    private final DataLayer[] rainfallLayer;
     private final DataLayer[] stabilityLayer;
 
-    public MapGenCavesTFC(DataLayer[] rockLayer1, DataLayer[] rainfallLayer, DataLayer[] stabilityLayer)
+    private float rainfall = 0f;
+
+    public MapGenCavesTFC(DataLayer[] rockLayer1, DataLayer[] stabilityLayer)
     {
         // todo: add settings?
         this.rockLayer1 = rockLayer1;
-        this.rainfallLayer = rainfallLayer;
         this.stabilityLayer = stabilityLayer;
+    }
+
+    public void setRainfall(float rainfall)
+    {
+        this.rainfall = rainfall;
     }
 
     @Override
@@ -44,35 +49,20 @@ public class MapGenCavesTFC extends MapGenBase
         final int yCoord = this.rand.nextInt(1 + this.rand.nextInt(140)) + 60;
         final int zCoord = chunkZ * 16 + this.rand.nextInt(16);
         final int dlIndex = (zCoord & 15) << 4 | (xCoord & 15);
-        final float rain = rainfallLayer[dlIndex].valueFloat;
 
         double width = 2;
         int caveChance = 35;
 
-        if (rain > 1000)
+        //todo: improve
+        if (rainfall > 250f)
         {
             width += 0.5;
             caveChance -= 5;
         }
-        else if (rain > 2000)
-        {
-            width += 1;
-            caveChance -= 10;
-        }
-        else if (rain < 1000)
+        else
         {
             width -= 0.5;
             caveChance += 5;
-        }
-        else if (rain < 500)
-        {
-            width -= 1;
-            caveChance += 10;
-        }
-        else if (rain < 250)
-        {
-            width -= 1.25;
-            caveChance += 15;
         }
 
         switch (rockLayer1[dlIndex].block.rock.category)
