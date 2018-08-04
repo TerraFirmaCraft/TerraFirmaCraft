@@ -68,16 +68,18 @@ public interface ITreeGenerator
         {
             for (int z = -radius; z <= radius; z++)
             {
-                if (!world.getBlockState(pos.add(x, 0, z)).getMaterial().isReplaceable() && (x != 0 || z != 0))
-                    return false;
+                if ((x == 0 && z == 0) ||
+                    world.getBlockState(pos.add(x, 0, z)).getMaterial().isReplaceable() ||
+                    ((x > 1 || z > 1) && world.getBlockState(pos.add(x, 1, z)).getMaterial().isReplaceable()))
+                    continue;
+                return false;
             }
         }
         final int height = treeType.maxHeight;
         for (int y = 1; y <= height; y++)
             if (!world.getBlockState(pos.up(y)).getMaterial().isReplaceable())
                 return false;
-        if (world.getLightFromNeighbors(pos) <= 7)
-            return false;
-        return true;//world.getLightFromNeighbors(pos) >= 7;
+
+        return world.getLightFromNeighbors(pos) >= 7;
     }
 }

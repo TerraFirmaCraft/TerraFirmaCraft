@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.world.classic;
 
+import java.util.Arrays;
+
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -106,5 +108,45 @@ public class CalenderTFC
         if (event.phase == TickEvent.Phase.END) return;
 
         time = event.world.getTotalWorldTime();
+    }
+
+    public enum Month
+    {
+        JANUARY(10, 66.5f),
+        FEBRUARY(11, 65.5f),
+        MARCH(0, 56f),
+        APRIL(1, 47.5f),
+        MAY(2, 38f),
+        JUNE(3, 29.5f),
+        JULY(4, 27f),
+        AUGUST(5, 29.5f),
+        SEPTEMBER(6, 38f),
+        OCTOBER(7, 47.5f),
+        NOVEMBER(8, 56f),
+        DECEMBER(9, 65.5f);
+
+        private static float averageTempMod;
+
+        static
+        {
+            averageTempMod = 0.0f;
+            Arrays.stream(Month.values()).forEach(m -> averageTempMod += m.getTempMod());
+            averageTempMod /= 12f;
+        }
+
+        public static float getAverageTempMod() { return averageTempMod; }
+
+        final int index;
+        final float tMod;
+
+        Month(int index, float tMod)
+        {
+            this.index = index;
+            this.tMod = tMod;
+        }
+
+        public int id() { return index; }
+
+        public float getTempMod() { return tMod; }
     }
 }

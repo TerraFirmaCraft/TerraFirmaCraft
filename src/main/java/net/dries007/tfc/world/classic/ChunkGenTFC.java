@@ -26,6 +26,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
+import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.layer.IntCache;
 
 import net.dries007.tfc.ConfigTFC;
@@ -43,7 +44,6 @@ import net.dries007.tfc.world.classic.genlayers.datalayers.ph.GenPHLayer;
 import net.dries007.tfc.world.classic.genlayers.datalayers.rain.GenRainLayerTFC;
 import net.dries007.tfc.world.classic.genlayers.datalayers.rock.GenRockLayer;
 import net.dries007.tfc.world.classic.genlayers.datalayers.stability.GenStabilityLayer;
-import net.dries007.tfc.world.classic.genlayers.datalayers.tree.GenTreeLayer;
 import net.dries007.tfc.world.classic.mapgen.MapGenCavesTFC;
 import net.dries007.tfc.world.classic.mapgen.MapGenRavineTFC;
 import net.dries007.tfc.world.classic.mapgen.MapGenRiverRavine;
@@ -96,12 +96,13 @@ public class ChunkGenTFC implements IChunkGenerator
     private final NoiseGeneratorOctaves noiseGen5;
     private final NoiseGeneratorOctaves noiseGen6;
     private final NoiseGeneratorOctaves mobSpawnerNoise;
+    private final NoiseGeneratorPerlin noiseGen7; // Rainfall
+    private final NoiseGeneratorPerlin noiseGen8; // Flora Density
+    private final NoiseGeneratorPerlin noiseGen9; // Flora Diversity
+    private final NoiseGeneratorPerlin noiseGen10; // Temperature
     private final GenLayerTFC rocksGenLayer1;
     private final GenLayerTFC rocksGenLayer2;
     private final GenLayerTFC rocksGenLayer3;
-    private final GenLayerTFC treesGenLayer1;
-    private final GenLayerTFC treesGenLayer2;
-    private final GenLayerTFC treesGenLayer3;
     private final GenLayerTFC evtGenLayer;
     private final GenLayerTFC rainfallGenLayer;
     private final GenLayerTFC stabilityGenLayer;
@@ -122,7 +123,6 @@ public class ChunkGenTFC implements IChunkGenerator
     private final DataLayer[] rainfallLayer = new DataLayer[256];
     private final DataLayer[] stabilityLayer = new DataLayer[256];
     private final DataLayer[] drainageLayer = new DataLayer[256];
-    private final Tree[] treeLayers = new Tree[3];
     private final int[] seaLevelOffsetMap = new int[256];
     private final int[] chunkHeightMap = new int[256];
 
@@ -130,6 +130,12 @@ public class ChunkGenTFC implements IChunkGenerator
     private final MapGenBase surfaceRavineGen;
     private final MapGenBase ravineGen;
     private final MapGenBase riverRavineGen;
+
+    private float rainfall;
+    private float floraDensity;
+    private float floraDiversity;
+    private float baseTemp;
+    private float averageTemp;
 
     public ChunkGenTFC(World w, String settingsString)
     {
@@ -150,9 +156,10 @@ public class ChunkGenTFC implements IChunkGenerator
         rocksGenLayer2 = GenRockLayer.initialize(seed + 2, ROCK_LAYER_2);
         rocksGenLayer3 = GenRockLayer.initialize(seed + 3, ROCK_LAYER_3);
 
-        treesGenLayer1 = GenTreeLayer.initialize(seed + 4, TREE_ARRAY);
-        treesGenLayer2 = GenTreeLayer.initialize(seed + 5, TREE_ARRAY);
-        treesGenLayer3 = GenTreeLayer.initialize(seed + 6, TREE_ARRAY);
+        noiseGen7 = new NoiseGeneratorPerlin(new Random(seed + 4), 4);
+        noiseGen8 = new NoiseGeneratorPerlin(new Random(seed + 5), 4);
+        noiseGen9 = new NoiseGeneratorPerlin(new Random(seed + 6), 4);
+        noiseGen10 = new NoiseGeneratorPerlin(new Random(seed + 7), 4);
 
         evtGenLayer = GenEVTLayer.initialize(seed + 7);
         rainfallGenLayer = GenRainLayerTFC.initialize(seed + 8);
@@ -188,13 +195,24 @@ public class ChunkGenTFC implements IChunkGenerator
         loadLayerGeneratorData(rocksGenLayer1, rockLayer1, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(rocksGenLayer2, rockLayer2, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(rocksGenLayer3, rockLayer3, chunkX * 16, chunkZ * 16, 16, 16);
-        treeLayers[0] = TREE_ARRAY[treesGenLayer1.getInts(chunkX * 16, chunkZ * 16, 1, 1)[0]];
-        treeLayers[1] = TREE_ARRAY[treesGenLayer2.getInts(chunkX * 16, chunkZ * 16, 1, 1)[0]];
-        treeLayers[2] = TREE_ARRAY[treesGenLayer3.getInts(chunkX * 16, chunkZ * 16, 1, 1)[0]];
         loadLayerGeneratorData(evtGenLayer, evtLayer, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(rainfallGenLayer, rainfallLayer, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(stabilityGenLayer, stabilityLayer, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(drainageGenLayer, drainageLayer, chunkX * 16, chunkZ * 16, 16, 16);
+
+        rainfall = 250f + 250f * 0.084f * (float) noiseGen7.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 500
+        floraDensity = 0.5f + 0.5f * 0.084f * (float) noiseGen8.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
+        floraDiversity = 0.5f + 0.5f * 0.084f * (float) noiseGen9.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
+
+        float adjChunkZ = chunkZ;
+        if (!ConfigTFC.WORLD.cyclicTemperatureRegions)
+            adjChunkZ = Math.max(-1250, Math.min(1250, chunkZ));
+        final float latitudeFactor = 0.5f - 0.5f * ConfigTFC.WORLD.hemisphereType * (float) Math.sin(0.0004f * Math.PI * adjChunkZ); // Range 0 <> 1
+        final float monthFactor = 41f - 1.1f * CalenderTFC.Month.getAverageTempMod() * (1f - 0.8f * latitudeFactor);
+        final float regionalFactor = 3f * 0.084f * (float) noiseGen9.getValue(chunkX * 0.005, chunkZ * 0.005); // Range -3 <> 3
+
+        baseTemp = 45f * latitudeFactor - 25f + regionalFactor;
+        averageTemp = monthFactor + 0.2f * baseTemp;
 
         CustomChunkPrimer chunkPrimerOut = new CustomChunkPrimer();
         replaceBlocksForBiomeHigh(chunkX, chunkZ, chunkPrimerIn, chunkPrimerOut);
@@ -204,7 +222,7 @@ public class ChunkGenTFC implements IChunkGenerator
         ravineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
         riverRavineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
 
-        if (ConfigTFC.GENERAL.debugWorldGen)
+        if (ConfigTFC.WORLD.debugMode)
         {
             for (int x = 0; x < 16; ++x)
             {
@@ -229,8 +247,8 @@ public class ChunkGenTFC implements IChunkGenerator
 
         ChunkDataTFC chunkData = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
         if (chunkData == null) throw new IllegalStateException("ChunkData capability is missing.");
-        chunkData.setGenerationData(rockLayer1, rockLayer2, rockLayer3, treeLayers,
-            evtLayer, rainfallLayer, stabilityLayer, drainageLayer, seaLevelOffsetMap);
+        chunkData.setGenerationData(rockLayer1, rockLayer2, rockLayer3, evtLayer, rainfallLayer, stabilityLayer, drainageLayer, seaLevelOffsetMap,
+            rainfall, baseTemp, averageTemp, floraDensity, floraDiversity);
 
         byte[] biomeIds = chunk.getBiomeArray();
         for (int x = 0; x < 16; ++x)
