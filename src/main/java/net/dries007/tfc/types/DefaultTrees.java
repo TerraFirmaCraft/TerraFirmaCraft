@@ -33,11 +33,11 @@ public class DefaultTrees
     private static final ITreeGenerator GEN_WILLOW = new TreeGenWillow();
     private static final ITreeGenerator GEN_ACACIA = new TreeGenAcacia();
     private static final ITreeGenerator GEN_KAPOK = new TreeGenKapok();
+    private static final ITreeGenerator GEN_SEQUOIA = new TreeGenSequoia();
     /**
      * Composite ITreeGenerator (takes a weighted selection of multiple ITreeGenerators. Can be layered)
      */
-    public static final ITreeGenerator GEN_KAPOK_COMPOSITE = new TreeGenComposite().add(0.4f, GEN_TALL).add(0.6f, GEN_KAPOK);
-    private static final ITreeGenerator GEN_SEQUOIA = new TreeGenSequoia();
+    private static final ITreeGenerator GEN_KAPOK_COMPOSITE = new TreeGenComposite().add(0.4f, GEN_TALL).add(0.6f, GEN_KAPOK);
 
     /**
      * Default tree ResourceLocations
@@ -67,25 +67,25 @@ public class DefaultTrees
     {
         IForgeRegistry<Tree> r = event.getRegistry();
         r.registerAll(
-            new Tree.Builder(ACACIA, 30f, 210f, 19f, 31f, 8, GEN_ACACIA).setRadius(3).setGrowthTime(11).setDensity(0.1f, 0.6f).build(),
-            new Tree.Builder(ASH, 60f, 140f, -6f, 12f, 5, GEN_TALL).build(),
-            new Tree.Builder(ASPEN, 10f, 80f, -10f, 12f, 9, GEN_TALL).setGrowthTime(8).build(),
-            new Tree.Builder(BIRCH, 20f, 180f, -15f, 7f, 5, GEN_TALL).build(),
-            new Tree.Builder(BLACKWOOD, 0f, 120f, 4f, 28f, 3, GEN_LARGE).setHeight(10).setGrowthTime(8).build(),
-            new Tree.Builder(CHESTNUT, 160f, 320f, 11f, 24f, 9, GEN_NORMAL).setRadius(1).build(),
-            new Tree.Builder(DOUGLAS_FIR, 280f, 480f, -2f, 14f, 5, GEN_TALL).setHeight(14).setDensity(0.25f, 2f).build(),
-            new Tree.Builder(HICKORY, 80f, 250f, 7f, 29f, 7, GEN_TALL).setGrowthTime(10).build(),
-            new Tree.Builder(MAPLE, 140f, 360f, 3f, 20f, 6, GEN_NORMAL).setRadius(1).build(),
-            new Tree.Builder(OAK, 180f, 430f, -8f, 12f, 5, GEN_TALL).setHeight(14).setGrowthTime(10).build(),
-            new Tree.Builder(PALM, 280f, 500f, 16f, 35f, 7, GEN_TROPICAL).build(),
-            new Tree.Builder(PINE, 59f, 250f, -15f, 5f, 5, GEN_CONIFER).setConifer().setDensity(0.1f, 0.8f).build(),
-            new Tree.Builder(ROSEWOOD, 10f, 190f, 8f, 18f, 8, GEN_LARGE).setHeight(10).setGrowthTime(8).build(),
-            new Tree.Builder(SEQUOIA, 250f, 420f, -5f, 8f, 3, GEN_SEQUOIA).setRadius(3).setHeight(24).setDecayDist(6).setGrowthTime(18).setConifer().setDensity(0.4f, 0.9f).build(),
-            new Tree.Builder(SPRUCE, 120f, 380f, -11f, 6f, 6, GEN_CONIFER).setConifer().setDensity(0.1f, 0.8f).build(),
-            new Tree.Builder(SYCAMORE, 120f, 290f, 17f, 33f, 2, GEN_NORMAL).setRadius(1).setGrowthTime(8).setDensity(0.25f, 2f).build(),
-            new Tree.Builder(WHITE_CEDAR, 10f, 240f, -8f, 17f, 8, GEN_LARGE).setHeight(10).build(),
-            new Tree.Builder(WILLOW, 230f, 500f, 10f, 34f, 3, GEN_WILLOW).setGrowthTime(11).build(),
-            new Tree.Builder(KAPOK, 180f, 400f, 15f, 35f, 10, GEN_KAPOK_COMPOSITE).setRadius(3).setHeight(24).setDecayDist(6).setGrowthTime(18).setDensity(0.55f, 2f).build()
+            new Tree.Builder(ACACIA, 30f, 210f, 19f, 31f, GEN_ACACIA).setRadius(3).setGrowthTime(11).setDensity(0.1f, 0.6f).build(),
+            new Tree.Builder(ASH, 60f, 140f, -6f, 12f, GEN_TALL).build(),
+            new Tree.Builder(ASPEN, 10f, 80f, -10f, 12f, GEN_TALL).setGrowthTime(8).build(),
+            new Tree.Builder(BIRCH, 20f, 180f, -15f, 7f, GEN_TALL).build(),
+            new Tree.Builder(BLACKWOOD, 0f, 120f, 4f, 28f, GEN_LARGE).setHeight(10).setGrowthTime(8).build(),
+            new Tree.Builder(CHESTNUT, 160f, 320f, 11f, 24f, GEN_NORMAL).setRadius(1).build(),
+            new Tree.Builder(DOUGLAS_FIR, 280f, 480f, -2f, 14f, GEN_TALL).setDominance(5.2f).setHeight(14).setDensity(0.25f, 2f).build(),
+            new Tree.Builder(HICKORY, 80f, 250f, 7f, 29f, GEN_TALL).setGrowthTime(10).build(),
+            new Tree.Builder(MAPLE, 140f, 360f, 3f, 20f, GEN_NORMAL).setDominance(6.3f).setRadius(1).build(),
+            new Tree.Builder(OAK, 180f, 430f, -8f, 12f, GEN_TALL).setHeight(14).setGrowthTime(10).build(),
+            new Tree.Builder(PALM, 280f, 500f, 16f, 35f, GEN_TROPICAL).build(),
+            new Tree.Builder(PINE, 59f, 250f, -15f, 5f, GEN_CONIFER).setConifer().setDensity(0.1f, 0.8f).build(),
+            new Tree.Builder(ROSEWOOD, 10f, 190f, 8f, 18f, GEN_LARGE).setHeight(10).setGrowthTime(8).build(),
+            new Tree.Builder(SEQUOIA, 250f, 420f, -5f, 8f, GEN_SEQUOIA).setRadius(3).setHeight(24).setDecayDist(6).setGrowthTime(18).setConifer().setDensity(0.4f, 0.9f).build(),
+            new Tree.Builder(SPRUCE, 120f, 380f, -11f, 6f, GEN_CONIFER).setConifer().setDensity(0.1f, 0.8f).build(),
+            new Tree.Builder(SYCAMORE, 120f, 290f, 17f, 33f, GEN_NORMAL).setRadius(1).setGrowthTime(8).setDensity(0.25f, 2f).build(),
+            new Tree.Builder(WHITE_CEDAR, 10f, 240f, -8f, 17f, GEN_LARGE).setHeight(10).build(),
+            new Tree.Builder(WILLOW, 230f, 500f, 10f, 34f, GEN_WILLOW).setGrowthTime(11).build(),
+            new Tree.Builder(KAPOK, 180f, 400f, 15f, 35f, GEN_KAPOK_COMPOSITE).setDominance(8.5f).setRadius(3).setHeight(24).setDecayDist(6).setGrowthTime(18).setDensity(0.55f, 2f).build()
         );
     }
 }

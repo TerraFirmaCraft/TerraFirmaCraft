@@ -30,8 +30,6 @@ import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.layer.IntCache;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.CustomRegistries;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.biomes.BiomesTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -61,7 +59,6 @@ public class ChunkGenTFC implements IChunkGenerator
     public static final DataLayer[] ROCK_LAYER_1 = new DataLayer[] {SHALE, CLAYSTONE, ROCKSALT, LIMESTONE, CONGLOMERATE, DOLOMITE, CHERT, CHALK, RHYOLITE, BASALT, ANDESITE, DACITE, QUARTZITE, SLATE, PHYLLITE, SCHIST, GNEISS, MARBLE, GRANITE, DIORITE, GABBRO};
     public static final DataLayer[] ROCK_LAYER_2 = new DataLayer[] {RHYOLITE, BASALT, ANDESITE, DACITE, QUARTZITE, SLATE, PHYLLITE, SCHIST, GNEISS, MARBLE, GRANITE, DIORITE, GABBRO};
     public static final DataLayer[] ROCK_LAYER_3 = new DataLayer[] {RHYOLITE, BASALT, ANDESITE, DACITE, GRANITE, DIORITE, GABBRO};
-    public static final Tree[] TREE_ARRAY = CustomRegistries.getTrees().toArray(new Tree[0]);
 
     public static final IBlockState STONE = Blocks.STONE.getDefaultState();
     public static final IBlockState AIR = Blocks.AIR.getDefaultState();
@@ -201,8 +198,8 @@ public class ChunkGenTFC implements IChunkGenerator
         loadLayerGeneratorData(drainageGenLayer, drainageLayer, chunkX * 16, chunkZ * 16, 16, 16);
 
         rainfall = 250f + 250f * 0.084f * (float) noiseGen7.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 500
-        floraDensity = 0.5f + 0.5f * 0.084f * (float) noiseGen8.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
-        floraDiversity = 0.5f + 0.5f * 0.084f * (float) noiseGen9.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
+        floraDiversity = (0.3f + 0.4f * rainfall / 500f) + 0.3f * 0.084f * (float) noiseGen9.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
+        floraDensity = (0.3f + 0.4f * rainfall / 500f) + 0.3f * 0.084f * (float) noiseGen8.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
 
         float adjChunkZ = chunkZ;
         if (!ConfigTFC.WORLD.cyclicTemperatureRegions)
