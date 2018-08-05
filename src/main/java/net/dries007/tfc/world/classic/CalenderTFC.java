@@ -78,9 +78,9 @@ public class CalenderTFC
         return (int) ((time / TICKS_IN_DAY) % daysInMonth);
     }
 
-    public static int getMonthOfYear()
+    public static Month getMonthOfYear()
     {
-        return (int) ((time / ticksInMonth) % 12);
+        return Month.getById((int) ((time / ticksInMonth) % 12));
     }
 
     public static void reload()
@@ -136,8 +136,13 @@ public class CalenderTFC
 
         public static float getAverageTempMod() { return averageTempMod; }
 
-        final int index;
-        final float tMod;
+        public static Month getById(int id)
+        {
+            return Arrays.stream(Month.values()).filter(m -> m.index == id).findFirst().orElse(MARCH);
+        }
+
+        private final int index;
+        private final float tMod;
 
         Month(int index, float tMod)
         {
@@ -148,5 +153,19 @@ public class CalenderTFC
         public int id() { return index; }
 
         public float getTempMod() { return tMod; }
+
+        public Month next()
+        {
+            if (this == FEBRUARY)
+                return MARCH;
+            return Month.getById(this.index + 1);
+        }
+
+        public Month previous()
+        {
+            if (this == MARCH)
+                return FEBRUARY;
+            return Month.getById(this.index - 1);
+        }
     }
 }

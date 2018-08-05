@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockFalling;
@@ -29,6 +30,7 @@ import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.layer.IntCache;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.biomes.BiomesTFC;
@@ -52,6 +54,8 @@ import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER3;
  * todo: Find out how to make ocean bottoms not so super flat.
  */
 @SuppressWarnings("ConstantConditions")
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class ChunkGenTFC implements IChunkGenerator
 {
     public static final DataLayer[] ROCK_LAYER_1 = new DataLayer[] {SHALE, CLAYSTONE, ROCKSALT, LIMESTONE, CONGLOMERATE, DOLOMITE, CHERT, CHALK, RHYOLITE, BASALT, ANDESITE, DACITE, QUARTZITE, SLATE, PHYLLITE, SCHIST, GNEISS, MARBLE, GRANITE, DIORITE, GABBRO};
@@ -532,8 +536,6 @@ public class ChunkGenTFC implements IChunkGenerator
                 IBlockState surfaceBlock = rock1.block.getVariant(rainfall + 1.3 * rand.nextGaussian() >= 150f ? Rock.Type.GRASS : Rock.Type.DRY_GRASS).getDefaultState();
                 IBlockState subSurfaceBlock = rock1.block.getVariant(Rock.Type.DIRT).getDefaultState();
 
-                final float bioTemp = ClimateTFC.getBioTemperature(seed, z, rainfall);
-
                 if (BiomesTFC.isBeachBiome(getBiomeOffset(x - 1, z)) || BiomesTFC.isBeachBiome(getBiomeOffset(x + 1, z)) || BiomesTFC.isBeachBiome(getBiomeOffset(x, z + 1)) || BiomesTFC.isBeachBiome(getBiomeOffset(x, z - 1)))
                 {
                     if (!BiomesTFC.isBeachBiome(getBiomeOffset(x, z))) cliffMap[colIndex] = true;
@@ -546,7 +548,7 @@ public class ChunkGenTFC implements IChunkGenerator
                      * HIGH PART (yOffset is used)
                      */
 
-                    float temp = ClimateTFC.adjustHeightToTemp(y + yOffset, bioTemp);
+                    float temp = ClimateTFC.adjustTempByHeight(y + yOffset, averageTemp);
                     if (BiomesTFC.isBeachBiome(biome) && y + yOffset > seaLevel + h && inp.getBlockState(x, y + yOffset, z) == STONE)
                     {
                         inp.setBlockState(x, y + yOffset, z, AIR);

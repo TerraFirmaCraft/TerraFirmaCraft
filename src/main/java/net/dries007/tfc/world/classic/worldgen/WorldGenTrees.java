@@ -46,15 +46,21 @@ public class WorldGenTrees implements IWorldGenerator
         final List<Tree> trees = chunkData.getValidTrees();
         final float diversity = chunkData.getFloraDiversity();
 
-        if (trees.isEmpty() && random.nextFloat() < 0.5) // This is to avoid giant regions of no trees whatsoever. It will create sparse trees
+        // This is to avoid giant regions of no trees whatsoever.
+        // It will create sparse trees ( < 1 per chunk) by averaging the climate data to make it more temperate
+        // The thought is in very harsh conditions, a few trees might survive outside their typical temperature zone
+        if (trees.isEmpty())
         {
+            if (random.nextFloat() < 0.3f)
+                return;
+
             Tree extra = chunkData.getSparseGenTree();
             if (extra != null)
             {
                 final int x = chunkX * 16 + random.nextInt(16) + 8;
                 final int z = chunkZ * 16 + random.nextInt(16) + 8;
                 final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
-                if (world.getBlockState(pos).getBlock() != Blocks.AIR || !BlocksTFC.isSoil(world.getBlockState(pos.down())))
+                if (world.getBlockState(pos).getBlock() == Blocks.AIR && BlocksTFC.isSoil(world.getBlockState(pos.down())))
                     extra.makeTree(manager, world, pos, random);
             }
             return;
