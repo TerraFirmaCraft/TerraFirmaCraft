@@ -42,7 +42,6 @@ public final class ChunkDataTFC
         Arrays.fill(EMPTY.rockLayer1, DataLayer.ERROR);
         Arrays.fill(EMPTY.rockLayer2, DataLayer.ERROR);
         Arrays.fill(EMPTY.rockLayer3, DataLayer.ERROR);
-        Arrays.fill(EMPTY.evtLayer, DataLayer.ERROR);
         Arrays.fill(EMPTY.drainageLayer, DataLayer.ERROR);
         Arrays.fill(EMPTY.stabilityLayer, DataLayer.ERROR);
         Arrays.fill(EMPTY.seaLevelOffset, -1);
@@ -75,9 +74,8 @@ public final class ChunkDataTFC
     private final DataLayer[] rockLayer1 = new DataLayer[256];
     private final DataLayer[] rockLayer2 = new DataLayer[256];
     private final DataLayer[] rockLayer3 = new DataLayer[256];
-    private final DataLayer[] evtLayer = new DataLayer[256];
-    private final DataLayer[] drainageLayer = new DataLayer[256];
-    private final DataLayer[] stabilityLayer = new DataLayer[256];
+    private final DataLayer[] drainageLayer = new DataLayer[256]; // To be removed / replaced?
+    private final DataLayer[] stabilityLayer = new DataLayer[256]; // To be removed / replaced?
     private final int[] seaLevelOffset = new int[256];
     private final List<ChunkDataOreSpawned> oresSpawned = new ArrayList<>();
     private final List<ChunkDataOreSpawned> oresSpawnedView = Collections.unmodifiableList(oresSpawned);
@@ -101,7 +99,6 @@ public final class ChunkDataTFC
         System.arraycopy(rockLayer1, 0, this.rockLayer1, 0, 256);
         System.arraycopy(rockLayer2, 0, this.rockLayer2, 0, 256);
         System.arraycopy(rockLayer3, 0, this.rockLayer3, 0, 256);
-        System.arraycopy(evtLayer, 0, this.evtLayer, 0, 256);
         System.arraycopy(stabilityLayer, 0, this.stabilityLayer, 0, 256);
         System.arraycopy(drainageLayer, 0, this.drainageLayer, 0, 256);
         System.arraycopy(seaLevelOffset, 0, this.seaLevelOffset, 0, 256);
@@ -191,8 +188,6 @@ public final class ChunkDataTFC
 
     public DataLayer getRockLayer3(int x, int z) { return rockLayer3[z << 4 | x]; }
 
-    public DataLayer getEvtLayer(int x, int z) { return evtLayer[z << 4 | x]; }
-
     public DataLayer getStabilityLayer(int x, int z) { return stabilityLayer[z << 4 | x]; }
 
     public DataLayer getDrainageLayer(int x, int z) { return drainageLayer[z << 4 | x]; }
@@ -229,7 +224,6 @@ public final class ChunkDataTFC
             root.setTag("rockLayer1", write(instance.rockLayer1));
             root.setTag("rockLayer2", write(instance.rockLayer2));
             root.setTag("rockLayer3", write(instance.rockLayer3));
-            root.setTag("evtLayer", write(instance.evtLayer));
             root.setTag("stabilityLayer", write(instance.stabilityLayer));
             root.setTag("drainageLayer", write(instance.drainageLayer));
 
@@ -256,7 +250,6 @@ public final class ChunkDataTFC
             read(instance.rockLayer1, root.getByteArray("rockLayer1"));
             read(instance.rockLayer2, root.getByteArray("rockLayer2"));
             read(instance.rockLayer3, root.getByteArray("rockLayer3"));
-            read(instance.evtLayer, root.getByteArray("evtLayer"));
             read(instance.stabilityLayer, root.getByteArray("stabilityLayer"));
             read(instance.drainageLayer, root.getByteArray("drainageLayer"));
 

@@ -6,6 +6,7 @@
 package net.dries007.tfc.world.classic.worldgen;
 
 import java.util.Random;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -14,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.IPlantable;
 
+@ParametersAreNonnullByDefault
 public class WorldGenTallPlant extends WorldGenerator
 {
     private IPlantable plant;
