@@ -22,6 +22,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 
@@ -32,6 +33,10 @@ public class TreeGenKapok implements ITreeGenerator
 {
     private IBlockState trunk;
     private PlacementSettings settings;
+
+    private static final BlockPos[] trunkPos = new BlockPos[] {
+        new BlockPos(0, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 0, -1), new BlockPos(-1, 0, -1)
+    };
 
     @Override
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
@@ -45,7 +50,6 @@ public class TreeGenKapok implements ITreeGenerator
         int x1, y1, z1, type;
         for (int i = 0; i < branches; i++)
         {
-            // todo: this is a mess
             y1 = 6 + rand.nextInt(height - 8);
             x1 = rand.nextInt(3);
             z1 = rand.nextInt(3);
@@ -62,9 +66,30 @@ public class TreeGenKapok implements ITreeGenerator
             checkAndPlace(world, pos.add(x1 - Math.abs(x1) / x1, y1 - 1, z1 - Math.abs(z1) / z1));
         }
 
-        for (int i = 0; i < height; i++)
+        for (int i = -1; i < height; i++)
             placeTrunk(world, pos.add(0, i, 0));
         placeBranch(manager, world, pos.add(0, height, 0), tree.name + "/top");
+
+    }
+
+    @Override
+    public boolean canGenerateTree(World world, BlockPos pos, Tree treeType)
+    {
+        for (BlockPos p1 : trunkPos)
+        {
+            if (BlocksTFC.isSoil(world.getBlockState(pos.add(p1))))
+                continue;
+            if (world.getBlockState(pos.add(p1)).getMaterial().isReplaceable())
+            {
+                if (BlocksTFC.isSoil(world.getBlockState(pos.add(p1).down(1))))
+                    continue;
+                if (BlocksTFC.isSoil(world.getBlockState(pos.add(p1).down(2))) && world.getBlockState(pos.add(p1.down(1))).getMaterial().isReplaceable())
+                    continue;
+            }
+            return false;
+        }
+
+        return ITreeGenerator.checkGenerationConditions(world, pos, treeType);
     }
 
     private void placeBranch(TemplateManager manager, World world, BlockPos pos, String name)
@@ -85,10 +110,8 @@ public class TreeGenKapok implements ITreeGenerator
 
     private void placeTrunk(World world, BlockPos pos)
     {
-        checkAndPlace(world, pos);
-        checkAndPlace(world, pos.add(-1, 0, 0));
-        checkAndPlace(world, pos.add(0, 0, -1));
-        checkAndPlace(world, pos.add(-1, 0, -1));
+        for (BlockPos p1 : trunkPos)
+            checkAndPlace(world, pos.add(p1));
 
         placeVine(world, pos.add(1, 0, 0), WEST);
         placeVine(world, pos.add(1, 0, -1), WEST);
@@ -102,7 +125,7 @@ public class TreeGenKapok implements ITreeGenerator
 
     private void checkAndPlace(World world, BlockPos pos)
     {
-        if (world.getBlockState(pos).getBlock() == Blocks.AIR || world.getBlockState(pos).getBlock() instanceof BlockLeavesTFC)
+        if (world.getBlockState(pos).getMaterial().isReplaceable() || world.getBlockState(pos).getBlock() instanceof BlockLeavesTFC)
             world.setBlockState(pos, trunk);
     }
 

@@ -57,7 +57,7 @@ public class TreeGenCommand extends CommandBase
         final BlockPos center = new BlockPos(sender.getCommandSenderEntity());
         final TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
 
-        tree.makeTree(manager, world, center, random);
+        tree.makeTreeWithoutChecking(manager, world, center, random);
 
     }
 }
