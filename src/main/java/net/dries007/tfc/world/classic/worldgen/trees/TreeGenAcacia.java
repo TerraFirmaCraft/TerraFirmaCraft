@@ -47,7 +47,7 @@ public class TreeGenAcacia implements ITreeGenerator
         List<EnumFacing> sides = Arrays.stream(EnumFacing.HORIZONTALS).collect(Collectors.toList());
         EnumFacing face;
 
-        int x1, y1 = 0, y2 = 0, y3 = 0;
+        int x1, y1, y2 = 0, y3 = 0;
         EnumFacing side = EnumFacing.UP;
         if (smallBranch)
         {

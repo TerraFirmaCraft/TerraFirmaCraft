@@ -33,8 +33,8 @@ import net.minecraft.world.gen.layer.IntCache;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.biomes.BiomesTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
@@ -191,16 +191,16 @@ public class ChunkGenTFC implements IChunkGenerator
         loadLayerGeneratorData(stabilityGenLayer, stabilityLayer, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(drainageGenLayer, drainageLayer, chunkX * 16, chunkZ * 16, 16, 16);
 
-        rainfall = 250f + 250f * 0.084f * (float) noiseGen7.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 500
-        floraDiversity = (0.3f + 0.4f * rainfall / 500f) + 0.3f * 0.084f * (float) noiseGen9.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
-        floraDensity = (0.3f + 0.4f * rainfall / 500f) + 0.3f * 0.084f * (float) noiseGen8.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
+        rainfall = 250f + 250f * 0.09f * (float) noiseGen7.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 500
+        floraDiversity = 0.5f + 0.5f * 0.09f * (float) noiseGen9.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
+        floraDensity = (0.3f + 0.4f * rainfall / 500f) + 0.3f * 0.09f * (float) noiseGen8.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
 
         float adjChunkZ = chunkZ;
         if (!ConfigTFC.WORLD.cyclicTemperatureRegions)
             adjChunkZ = Math.max(-1250, Math.min(1250, chunkZ));
-        final float latitudeFactor = 0.5f - 0.5f * ConfigTFC.WORLD.hemisphereType * (float) Math.sin(0.0004f * Math.PI * adjChunkZ); // Range 0 <> 1
+        final float latitudeFactor = 0.5f + 0.5f * ConfigTFC.WORLD.hemisphereType * (float) Math.sin(0.0004f * Math.PI * adjChunkZ); // Range 0 <> 1
         final float monthFactor = 41f - 1.1f * CalenderTFC.Month.getAverageTempMod() * (1f - 0.8f * latitudeFactor);
-        final float regionalFactor = 3f * 0.084f * (float) noiseGen9.getValue(chunkX * 0.005, chunkZ * 0.005); // Range -3 <> 3
+        final float regionalFactor = 15f * 0.09f * (float) noiseGen9.getValue(chunkX * 0.005, chunkZ * 0.005); // Range -15 <> 15
 
         baseTemp = 45f * latitudeFactor - 25f + regionalFactor;
         averageTemp = monthFactor + 0.2f * baseTemp;

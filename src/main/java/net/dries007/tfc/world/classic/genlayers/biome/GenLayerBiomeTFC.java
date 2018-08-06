@@ -9,8 +9,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
-import net.dries007.tfc.objects.biomes.BiomeTFC;
-import net.dries007.tfc.objects.biomes.BiomesTFC;
+import net.dries007.tfc.world.classic.biomes.BiomeTFC;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerBiomeTFC extends GenLayerTFC

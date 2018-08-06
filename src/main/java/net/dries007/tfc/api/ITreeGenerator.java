@@ -8,6 +8,7 @@ package net.dries007.tfc.api;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockSapling;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 
 public interface ITreeGenerator
 {
@@ -51,16 +53,7 @@ public interface ITreeGenerator
         return getDefaultSettings().setRotation(Rotation.values()[rand.nextInt(Rotation.values().length)]);
     }
 
-    /**
-     * Checks if a tree can be generated. This implementation checks height, radius, and light level
-     * Suggested use is to use within your implementation of generateTree()
-     *
-     * @param world    The world
-     * @param pos      The pos of the tree
-     * @param treeType The tree type (for checking if the tree can generate)
-     * @return true if the tree can generate.
-     */
-    default boolean canGenerateTree(World world, BlockPos pos, Tree treeType)
+    static boolean checkGenerationConditions(World world, BlockPos pos, Tree treeType)
     {
         // Check if ground is flat enough
         final int radius = treeType.maxGrowthRadius;
@@ -75,11 +68,36 @@ public interface ITreeGenerator
                 return false;
             }
         }
+        // Check if there is room directly upwards
         final int height = treeType.maxHeight;
         for (int y = 1; y <= height; y++)
             if (!world.getBlockState(pos.up(y)).getMaterial().isReplaceable())
                 return false;
 
+        // Check if there is soil beneath
+        if (!BlocksTFC.isSoil(world.getBlockState(pos.down())))
+            return false;
+
+        // Check the position for liquids, etc.
+        if (world.getBlockState(pos).getMaterial().isLiquid() || !world.getBlockState(pos).getMaterial().isReplaceable())
+            if (!(world.getBlockState(pos) instanceof BlockSapling))
+                return false;
+
+        // Check if there is sufficient light level
         return world.getLightFromNeighbors(pos) >= 7;
+    }
+
+    /**
+     * Checks if a tree can be generated. This implementation checks height, radius, and light level
+     * Suggested use is to use within your implementation of generateTree()
+     *
+     * @param world    The world
+     * @param pos      The pos of the tree
+     * @param treeType The tree type (for checking if the tree can generate)
+     * @return true if the tree can generate.
+     */
+    default boolean canGenerateTree(World world, BlockPos pos, Tree treeType)
+    {
+        return checkGenerationConditions(world, pos, treeType);
     }
 }

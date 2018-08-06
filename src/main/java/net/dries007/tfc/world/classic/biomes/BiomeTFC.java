@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.biomes;
+package net.dries007.tfc.world.classic.biomes;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;

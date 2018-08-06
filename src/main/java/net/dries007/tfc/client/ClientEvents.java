@@ -92,7 +92,7 @@ public class ClientEvents
                     list.add(String.format("%sTemps: Base: %s%.1f°%s Biome Avg: %s%.1f°%s Actual: %s%.1f°",
                         GRAY, WHITE, data.getBaseTemp(), GRAY,
                         WHITE, data.getAverageTemp(), GRAY,
-                        WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos) // todo: replace with height adjusted
+                        WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)
                     ));
                     list.add(String.format("%sTime: %s%02d:%02d %04d/%02d/%02d",
                         GRAY, WHITE,
@@ -116,7 +116,7 @@ public class ClientEvents
                     //list.add(GRAY + "Rocks: " + WHITE + data.getRockLayer1(x, z).name + ", " + data.getRockLayer2(x, z).name + ", " + data.getRockLayer3(x, z).name);
                     //list.add(GRAY + "Stability: " + WHITE + data.getStabilityLayer(x, z).name);
                     //list.add(GRAY + "Drainage: " + WHITE + data.getDrainageLayer(x, z).name);
-                    //list.add(GRAY + "Sea level offset: " + WHITE + data.getSeaLevelOffset(x, z));
+                    list.add(GRAY + "Sea level offset: " + WHITE + data.getSeaLevelOffset(x, z));
                     //list.add(GRAY + "Fish population: " + WHITE + data.getFishPopulation());
 
                     //list.add("");

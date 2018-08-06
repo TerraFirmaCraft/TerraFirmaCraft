@@ -37,6 +37,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
     public final int maxHeight;
     public final int maxDecayDistance;
     public final boolean isConifer;
+    public final boolean hasBushes;
     public final float minGrowthTime;
     // Used when growing a tree
     private final ITreeGenerator gen;
@@ -66,13 +67,13 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      */
     private Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator gen,
                  float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, float dominance,
-                 int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, float minGrowthTime)
+                 int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, boolean hasBushes, float minGrowthTime)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
         this.minRain = minRain;
         this.maxRain = maxRain;
-        this.dominance = dominance != -1f ? dominance : 0.001f * (maxTemp - minTemp) * (maxRain - minRain);
+        this.dominance = dominance;
         this.maxGrowthRadius = maxGrowthRadius;
         this.maxHeight = maxHeight;
         this.maxDecayDistance = maxDecayDistance;
@@ -80,6 +81,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         this.minGrowthTime = minGrowthTime;
         this.minDensity = minDensity;
         this.maxDensity = maxDensity;
+        this.hasBushes = hasBushes;
 
         this.gen = gen;
         this.name = name.getResourcePath().toLowerCase();
@@ -121,6 +123,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         private int maxGrowthRadius;
         private int maxDecayDistance;
         private boolean isConifer;
+        private boolean canMakeBushes;
         private float minGrowthTime;
         private ITreeGenerator gen;
         private ResourceLocation name;
@@ -134,10 +137,11 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
             this.name = name;
             this.gen = gen;
             this.maxGrowthRadius = 2; // default values
-            this.dominance = -1f;
+            this.dominance = 0.001f * (maxTemp - minTemp) * (maxRain - minRain);
             this.maxHeight = 6;
             this.maxDecayDistance = 4;
             this.isConifer = false;
+            this.canMakeBushes = false;
             this.minGrowthTime = 7;
             this.minDensity = 0.1f;
             this.maxDensity = 2f;
@@ -158,6 +162,12 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         public Builder setConifer()
         {
             isConifer = true;
+            return this;
+        }
+
+        public Builder setBushes()
+        {
+            canMakeBushes = true;
             return this;
         }
 
@@ -188,7 +198,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
 
         public Tree build()
         {
-            return new Tree(name, gen, minTemp, maxTemp, minRain, maxRain, minDensity, maxDensity, dominance, maxGrowthRadius, maxHeight, maxDecayDistance, isConifer, minGrowthTime);
+            return new Tree(name, gen, minTemp, maxTemp, minRain, maxRain, minDensity, maxDensity, dominance, maxGrowthRadius, maxHeight, maxDecayDistance, isConifer, canMakeBushes, minGrowthTime);
         }
     }
 }

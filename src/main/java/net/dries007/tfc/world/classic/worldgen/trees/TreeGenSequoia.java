@@ -9,7 +9,6 @@ package net.dries007.tfc.world.classic.worldgen.trees;
 import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -21,16 +20,20 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 
-// todo: sequoia leaves are decaying because the tree is too big >:( Do something about this.
 public class TreeGenSequoia implements ITreeGenerator
 {
     private final PlacementSettings settings = ITreeGenerator.getDefaultSettings();
     private IBlockState trunk;
+
+    private static final BlockPos[] trunkPos = new BlockPos[] {
+        new BlockPos(0, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 0, -1), new BlockPos(-1, 0, -1)
+    };
 
     @Override
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
@@ -57,6 +60,26 @@ public class TreeGenSequoia implements ITreeGenerator
 
     }
 
+    @Override
+    public boolean canGenerateTree(World world, BlockPos pos, Tree treeType)
+    {
+        for (BlockPos p1 : trunkPos)
+        {
+            if (BlocksTFC.isSoil(world.getBlockState(pos.add(p1))))
+                continue;
+            if (world.getBlockState(pos.add(p1)).getMaterial().isReplaceable())
+            {
+                if (BlocksTFC.isSoil(world.getBlockState(pos.add(p1).down(1))))
+                    continue;
+                if (BlocksTFC.isSoil(world.getBlockState(pos.add(p1).down(2))) && world.getBlockState(pos.add(p1.down(1))).getMaterial().isReplaceable())
+                    continue;
+            }
+            return false;
+        }
+
+        return ITreeGenerator.checkGenerationConditions(world, pos, treeType);
+    }
+
     private int placeLayer(TemplateManager manager, World world, BlockPos pos, String name)
     {
         ResourceLocation base = new ResourceLocation(Constants.MOD_ID, name);
@@ -76,16 +99,13 @@ public class TreeGenSequoia implements ITreeGenerator
 
     private void placeTrunk(World world, BlockPos pos)
     {
-        checkAndPlace(world, pos);
-        checkAndPlace(world, pos.add(-1, 0, 0));
-        checkAndPlace(world, pos.add(0, 0, -1));
-        checkAndPlace(world, pos.add(-1, 0, -1));
-
+        for (BlockPos p1 : trunkPos)
+            checkAndPlace(world, pos.add(p1));
     }
 
     private void checkAndPlace(World world, BlockPos pos)
     {
-        if (world.getBlockState(pos).getBlock() == Blocks.AIR || world.getBlockState(pos).getBlock() instanceof BlockLeavesTFC)
+        if (world.getBlockState(pos).getMaterial().isReplaceable() || world.getBlockState(pos).getBlock() instanceof BlockLeavesTFC)
             world.setBlockState(pos, trunk);
     }
 
