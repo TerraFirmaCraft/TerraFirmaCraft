@@ -37,7 +37,8 @@ public class WorldGenTallPlant extends WorldGenerator
             {
                 spot = spot.add(0, +1, 0);
                 IBlockState toPlant = plant.getPlant(world, spot);
-                if (!world.isAirBlock(spot) || !prevState.getBlock().canSustainPlant(prevState, world, prevSpot, EnumFacing.UP, plant))
+                if (!world.isAirBlock(spot) || !prevState.getBlock().canSustainPlant(prevState, world, prevSpot, EnumFacing.UP, plant) ||
+                    !plant.getPlant(world, spot).getBlock().canPlaceBlockAt(world, spot))
                     break;
                 setBlockAndNotifyAdequately(world, spot, toPlant);
                 prevState = toPlant;

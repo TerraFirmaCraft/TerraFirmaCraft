@@ -582,13 +582,8 @@ public class ChunkGenTFC implements IChunkGenerator
                         else
                             outp.setBlockState(x, y + yOffset, z, rock1.block.getDefaultState());
 
-                        //First we check to see if its a cold desert
-                        if (rainfall < 75f && temp < 1.5f)
-                        {
-                            subSurfaceBlock = surfaceBlock = rock1.block.getVariant(Rock.Type.SAND).getDefaultState();
-                        }
-                        //Next we check for all other warm deserts
-                        else if (rainfall < 75f && biome.getHeightVariation() < 0.5f && temp > 20f)
+                        // Deserts / dry areas
+                        if (rainfall < +1.3 * rand.nextGaussian() + 75f)
                         {
                             subSurfaceBlock = surfaceBlock = rock1.block.getVariant(Rock.Type.SAND).getDefaultState();
                         }

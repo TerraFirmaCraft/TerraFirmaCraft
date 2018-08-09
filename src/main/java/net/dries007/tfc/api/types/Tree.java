@@ -59,10 +59,14 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      * @param maxTemp max temperature
      * @param minRain min rainfall
      * @param maxRain max rainfall
+     * @param minDensity min density. Use -1 to get all density values. 0.1 is the default, to create really low density regions of no trees
+     * @param maxDensity max density. Use 2 to get all density values
      * @param dominance how much this tree is chosen over other trees. Range 0 <> 10 with 10 being the most common
      * @param maxGrowthRadius used to check growth conditions
      * @param maxHeight used to check growth conditions
+     * @param maxDecayDistance maximum decay distance for leaves
      * @param isConifer todo
+     * @param hasBushes will the tree generate small bushes
      * @param minGrowthTime the amount of time (in in-game days) that this tree requires to grow
      */
     private Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator gen,

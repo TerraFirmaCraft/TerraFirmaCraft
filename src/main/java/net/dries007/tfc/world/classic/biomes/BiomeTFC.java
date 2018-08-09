@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.world.classic.biomes;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 
@@ -35,6 +37,7 @@ public class BiomeTFC extends Biome
     }
 
     @Override
+    @Nonnull
     public BiomeDecorator createBiomeDecorator()
     {
         // todo: Forge event wrap this

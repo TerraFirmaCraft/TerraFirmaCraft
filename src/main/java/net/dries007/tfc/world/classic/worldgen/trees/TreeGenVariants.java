@@ -20,11 +20,13 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
 public class TreeGenVariants implements ITreeGenerator
 {
     private final String[] variants;
     private final boolean useRotation;
+    private static final PlacementSettings settings = ITreeGenerator.getDefaultSettings();
 
     /**
      * A tree generator which select a random structure to place. Can choose to use a random rotation as well
@@ -63,11 +65,11 @@ public class TreeGenVariants implements ITreeGenerator
             return;
         }
 
-        PlacementSettings settings = useRotation ? ITreeGenerator.getRandomSettings(rand) : ITreeGenerator.getDefaultSettings();
+        PlacementSettings settings2 = useRotation ? ITreeGenerator.getRandomSettings(rand) : settings;
 
-        BlockPos size = structureBase.getSize().rotate(settings.getRotation());
+        BlockPos size = structureBase.getSize().rotate(settings2.getRotation());
         // Begin rotation things
         pos = pos.add(-size.getX() / 2, 0, -size.getZ() / 2);
-        structureBase.addBlocksToWorld(world, pos, settings);
+        WorldGenTrees.addStructureToWorld(world, pos, structureBase, settings2);
     }
 }
