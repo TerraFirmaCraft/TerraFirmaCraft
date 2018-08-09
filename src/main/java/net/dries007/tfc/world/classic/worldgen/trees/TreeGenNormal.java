@@ -21,6 +21,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 
@@ -28,6 +29,9 @@ public class TreeGenNormal implements ITreeGenerator
 {
     private final int heightMin;
     private final int heightRange;
+
+    private static final PlacementSettings settingsFull = ITreeGenerator.getDefaultSettings();
+    private static final PlacementSettings settingsWeak = ITreeGenerator.getDefaultSettings().setIntegrity(0.5f);
 
     /**
      * A basic tree generator. It will generate a structure found in /assets/tfc/[TREE NAME]/base.nbt
@@ -57,16 +61,15 @@ public class TreeGenNormal implements ITreeGenerator
             return;
         }
 
-        PlacementSettings settings = ITreeGenerator.getDefaultSettings();
         int height = heightMin + (heightRange > 0 ? rand.nextInt(heightRange) : 0);
 
         BlockPos size = structureBase.getSize();
         pos = pos.add(-size.getX() / 2, height, -size.getZ() / 2);
 
-        structureBase.addBlocksToWorld(world, pos, settings);
+        WorldGenTrees.addStructureToWorld(world, pos, structureBase, settingsFull);
         if (structureOverlay != null)
         {
-            structureOverlay.addBlocksToWorld(world, pos, settings.setIntegrity(0.5f));
+            WorldGenTrees.addStructureToWorld(world, pos, structureOverlay, settingsWeak);
         }
 
         final IBlockState log = BlockLogTFC.get(tree).getDefaultState().withProperty(PLACED, false);

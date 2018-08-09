@@ -42,9 +42,6 @@ public final class ChunkDataTFC
         Arrays.fill(EMPTY.rockLayer1, DataLayer.ERROR);
         Arrays.fill(EMPTY.rockLayer2, DataLayer.ERROR);
         Arrays.fill(EMPTY.rockLayer3, DataLayer.ERROR);
-        Arrays.fill(EMPTY.treeLayers, null);
-        Arrays.fill(EMPTY.evtLayer, DataLayer.ERROR);
-        Arrays.fill(EMPTY.rainfallLayer, DataLayer.ERROR);
         Arrays.fill(EMPTY.drainageLayer, DataLayer.ERROR);
         Arrays.fill(EMPTY.stabilityLayer, DataLayer.ERROR);
         Arrays.fill(EMPTY.seaLevelOffset, -1);
@@ -62,9 +59,7 @@ public final class ChunkDataTFC
 
     public static BlockRockVariant getRock3(World world, BlockPos pos) { return get(world, pos).getRockLayer3(pos.getX() & 15, pos.getZ() & 15).block; }
 
-    public static float getEvt(World world, BlockPos pos) { return get(world, pos).getEvtLayer(pos.getX() & 15, pos.getZ() & 15).valueFloat; }
-
-    public static float getRainfall(World world, BlockPos pos) { return get(world, pos).getRainfallLayer(pos.getX() & 15, pos.getZ() & 15).valueFloat; }
+    public static float getRainfall(World world, BlockPos pos) { return get(world, pos).getRainfall(); }
 
     public static boolean isStable(World world, BlockPos pos) { return get(world, pos).getStabilityLayer(pos.getX() & 15, pos.getZ() & 15).valueInt == 0; }
 
@@ -79,36 +74,40 @@ public final class ChunkDataTFC
     private final DataLayer[] rockLayer1 = new DataLayer[256];
     private final DataLayer[] rockLayer2 = new DataLayer[256];
     private final DataLayer[] rockLayer3 = new DataLayer[256];
-    // todo: decide what to do here. 3x 256 tree layers, 1x 3 layer, or something else
-    private final Tree[] treeLayers = new Tree[3];
-    private final DataLayer[] evtLayer = new DataLayer[256];
-    private final DataLayer[] rainfallLayer = new DataLayer[256];
-    private final DataLayer[] drainageLayer = new DataLayer[256];
-    private final DataLayer[] stabilityLayer = new DataLayer[256];
+    private final DataLayer[] drainageLayer = new DataLayer[256]; // To be removed / replaced?
+    private final DataLayer[] stabilityLayer = new DataLayer[256]; // To be removed / replaced?
     private final int[] seaLevelOffset = new int[256];
     private final List<ChunkDataOreSpawned> oresSpawned = new ArrayList<>();
     private final List<ChunkDataOreSpawned> oresSpawnedView = Collections.unmodifiableList(oresSpawned);
     private boolean initialized = false;
     private int fishPopulation = FISH_POP_MAX; // todo: Set this based on biome? temp? rng?
 
+    private float rainfall;
+    private float baseTemp;
+    private float avgTemp;
+    private float floraDensity;
+    private float floraDiversity;
+
     /**
      * INTERNAL USE ONLY.
      * No need to mark as dirty, since this will only ever be called on worldgen, before the first chunk save.
      */
-    public void setGenerationData(DataLayer[] rockLayer1, DataLayer[] rockLayer2, DataLayer[] rockLayer3, Tree[] treeLayers,
-                                  DataLayer[] evtLayer, DataLayer[] rainfallLayer, DataLayer[] stabilityLayer, DataLayer[] drainageLayer,
-                                  int[] seaLevelOffset)
+    public void setGenerationData(DataLayer[] rockLayer1, DataLayer[] rockLayer2, DataLayer[] rockLayer3, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset,
+                                  float rainfall, float baseTemp, float avgTemp, float floraDensity, float floraDiversity)
     {
         this.initialized = true;
         System.arraycopy(rockLayer1, 0, this.rockLayer1, 0, 256);
         System.arraycopy(rockLayer2, 0, this.rockLayer2, 0, 256);
         System.arraycopy(rockLayer3, 0, this.rockLayer3, 0, 256);
-        System.arraycopy(treeLayers, 0, this.treeLayers, 0, 3);
-        System.arraycopy(evtLayer, 0, this.evtLayer, 0, 256);
-        System.arraycopy(rainfallLayer, 0, this.rainfallLayer, 0, 256);
         System.arraycopy(stabilityLayer, 0, this.stabilityLayer, 0, 256);
         System.arraycopy(drainageLayer, 0, this.drainageLayer, 0, 256);
         System.arraycopy(seaLevelOffset, 0, this.seaLevelOffset, 0, 256);
+
+        this.rainfall = rainfall;
+        this.baseTemp = baseTemp;
+        this.avgTemp = avgTemp;
+        this.floraDensity = floraDensity;
+        this.floraDiversity = floraDiversity;
     }
 
     /**
@@ -136,14 +135,6 @@ public final class ChunkDataTFC
 
     public BlockRockVariant getRock3(int x, int z) { return getRockLayer3(x, z).block; }
 
-    public float getEvt(BlockPos pos) { return getEvt(pos.getX() & 15, pos.getZ() & 15); }
-
-    public float getEvt(int x, int z) { return getEvtLayer(x, z).valueFloat; }
-
-    public float getRainfall(BlockPos pos) { return getRainfall(pos.getX() & 15, pos.getZ() & 15); }
-
-    public float getRainfall(int x, int z) { return getRainfallLayer(x, z).valueFloat; }
-
     public boolean isStable(int x, int z) { return getStabilityLayer(x, z).valueInt == 0; }
 
     public int getDrainage(int x, int z) { return getDrainageLayer(x, z).valueInt; }
@@ -160,22 +151,42 @@ public final class ChunkDataTFC
 
     public List<ChunkDataOreSpawned> getOresSpawned() { return oresSpawnedView; }
 
+    public float getRainfall() { return rainfall; }
+
+    public float getBaseTemp() { return baseTemp; }
+
+    public float getAverageTemp() { return avgTemp; }
+
+    public float getFloraDensity() { return floraDensity; }
+
+    public float getFloraDiversity() { return floraDiversity; }
+
+    public List<Tree> getValidTrees()
+    {
+        return CustomRegistries.getTrees()
+            .stream()
+            .filter(t -> t.isValidLocation(avgTemp, rainfall, floraDensity))
+            .sorted((s, t) -> (int) (t.dominance - s.dominance))
+            .collect(Collectors.toList());
+    }
+
+    @Nullable
+    public Tree getSparseGenTree()
+    {
+        return CustomRegistries.getTrees()
+            .stream()
+            .filter(t -> t.isValidLocation(0.5f * avgTemp + 10f, 0.5f * rainfall + 120f, 0.5f))
+            .sorted((s, t) -> (int) (t.dominance - s.dominance))
+            .findFirst()
+            .orElse(null);
+    }
+
     // Directly accessing the DataLayer is discouraged (except for getting the name). It's easy to use the wrong value.
     public DataLayer getRockLayer1(int x, int z) { return rockLayer1[z << 4 | x]; }
 
     public DataLayer getRockLayer2(int x, int z) { return rockLayer2[z << 4 | x]; }
 
     public DataLayer getRockLayer3(int x, int z) { return rockLayer3[z << 4 | x]; }
-
-    public Tree getTree1() { return treeLayers[0]; }
-
-    public Tree getTree2() { return treeLayers[1]; }
-
-    public Tree getTree3() { return treeLayers[2]; }
-
-    public DataLayer getEvtLayer(int x, int z) { return evtLayer[z << 4 | x]; }
-
-    public DataLayer getRainfallLayer(int x, int z) { return rainfallLayer[z << 4 | x]; }
 
     public DataLayer getStabilityLayer(int x, int z) { return stabilityLayer[z << 4 | x]; }
 
@@ -213,17 +224,17 @@ public final class ChunkDataTFC
             root.setTag("rockLayer1", write(instance.rockLayer1));
             root.setTag("rockLayer2", write(instance.rockLayer2));
             root.setTag("rockLayer3", write(instance.rockLayer3));
-            root.setTag("evtLayer", write(instance.evtLayer));
-            root.setTag("rainfallLayer", write(instance.rainfallLayer));
             root.setTag("stabilityLayer", write(instance.stabilityLayer));
             root.setTag("drainageLayer", write(instance.drainageLayer));
 
-            root.setString("treeLayer1", instance.treeLayers[0].name);
-            root.setString("treeLayer2", instance.treeLayers[1].name);
-            root.setString("treeLayer3", instance.treeLayers[2].name);
-
             root.setTag("seaLevelOffset", new NBTTagIntArray(instance.seaLevelOffset));
             root.setInteger("fishPopulation", instance.fishPopulation);
+
+            root.setFloat("rainfall", instance.rainfall);
+            root.setFloat("baseTemp", instance.baseTemp);
+            root.setFloat("avgTemp", instance.avgTemp);
+            root.setFloat("floraDensity", instance.floraDensity);
+            root.setFloat("floraDiversity", instance.floraDiversity);
 
             NBTTagList chunkDataOreSpawnedNBT = new NBTTagList();
             instance.oresSpawned.stream().map(ChunkDataOreSpawned::serialize).forEach(chunkDataOreSpawnedNBT::appendTag);
@@ -239,18 +250,17 @@ public final class ChunkDataTFC
             read(instance.rockLayer1, root.getByteArray("rockLayer1"));
             read(instance.rockLayer2, root.getByteArray("rockLayer2"));
             read(instance.rockLayer3, root.getByteArray("rockLayer3"));
-            read(instance.evtLayer, root.getByteArray("evtLayer"));
-            read(instance.rainfallLayer, root.getByteArray("rainfallLayer"));
             read(instance.stabilityLayer, root.getByteArray("stabilityLayer"));
             read(instance.drainageLayer, root.getByteArray("drainageLayer"));
 
-            instance.treeLayers[0] = CustomRegistries.getTree(root.getString("treeLayer1"));
-            instance.treeLayers[1] = CustomRegistries.getTree(root.getString("treeLayer2"));
-            instance.treeLayers[2] = CustomRegistries.getTree(root.getString("treeLayer3"));
-
-
             System.arraycopy(root.getIntArray("seaLevelOffset"), 0, instance.seaLevelOffset, 0, 256);
             instance.fishPopulation = root.getInteger("fishPopulation");
+
+            instance.rainfall = root.getFloat("rainfall");
+            instance.baseTemp = root.getFloat("baseTemp");
+            instance.avgTemp = root.getFloat("avgTemp");
+            instance.floraDensity = root.getFloat("floraDensity");
+            instance.floraDiversity = root.getFloat("floraDiversity");
 
             instance.oresSpawned.clear();
             root.getTagList("oresSpawned", Constants.NBT.TAG_COMPOUND).forEach(x -> instance.oresSpawned.add(new ChunkDataOreSpawned(((NBTTagCompound) x))));

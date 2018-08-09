@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.blocks;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
@@ -72,6 +73,14 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return AABB;
+    }
+
+    @Nullable
+    @Override
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return NULL_AABB;
     }
 
     @Override
