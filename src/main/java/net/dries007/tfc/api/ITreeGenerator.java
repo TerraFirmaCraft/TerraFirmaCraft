@@ -8,7 +8,7 @@ package net.dries007.tfc.api;
 
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockSapling;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,9 +16,11 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 
 public interface ITreeGenerator
 {
+
     /**
      * Called to generate a tree. Each Tree must have one of these. Used for world gen and sapling growth
      *
@@ -37,9 +39,8 @@ public interface ITreeGenerator
     static PlacementSettings getDefaultSettings()
     {
         return new PlacementSettings()
-            .setIgnoreEntities(false)
-            .setIgnoreStructureBlock(false)
-            .setReplacedBlock(Blocks.AIR);
+            .setIgnoreEntities(true)
+            .setIgnoreStructureBlock(false);
     }
 
     /**
@@ -48,7 +49,42 @@ public interface ITreeGenerator
      */
     static PlacementSettings getRandomSettings(Random rand)
     {
-        return getDefaultSettings().setRotation(Rotation.values()[rand.nextInt(Rotation.values().length)]);
+        return getDefaultSettings()
+            .setRotation(Rotation.values()[rand.nextInt(Rotation.values().length)]);
+    }
+
+    static boolean checkGenerationConditions(World world, BlockPos pos, Tree treeType)
+    {
+        // Check if ground is flat enough
+        final int radius = treeType.maxGrowthRadius;
+        for (int x = -radius; x <= radius; x++)
+        {
+            for (int z = -radius; z <= radius; z++)
+            {
+                if ((x == 0 && z == 0) ||
+                    world.getBlockState(pos.add(x, 0, z)).getMaterial().isReplaceable() ||
+                    ((x > 1 || z > 1) && world.getBlockState(pos.add(x, 1, z)).getMaterial().isReplaceable()))
+                    continue;
+                return false;
+            }
+        }
+        // Check if there is room directly upwards
+        final int height = treeType.maxHeight;
+        for (int y = 1; y <= height; y++)
+            if (!world.getBlockState(pos.up(y)).getMaterial().isReplaceable())
+                return false;
+
+        // Check if there is soil beneath
+        if (!BlocksTFC.isSoil(world.getBlockState(pos.down())))
+            return false;
+
+        // Check the position for liquids, etc.
+        if (world.getBlockState(pos).getMaterial().isLiquid() || !world.getBlockState(pos).getMaterial().isReplaceable())
+            if (!(world.getBlockState(pos) instanceof BlockSapling))
+                return false;
+
+        // Check if there is sufficient light level
+        return world.getLightFromNeighbors(pos) >= 7;
     }
 
     /**
@@ -62,22 +98,6 @@ public interface ITreeGenerator
      */
     default boolean canGenerateTree(World world, BlockPos pos, Tree treeType)
     {
-        // Check if ground is flat enough
-        final int radius = treeType.maxGrowthRadius;
-        for (int x = -radius; x <= radius; x++)
-        {
-            for (int z = -radius; z <= radius; z++)
-            {
-                if (!world.getBlockState(pos.add(x, 0, z)).getMaterial().isReplaceable() && (x != 0 || z != 0))
-                    return false;
-            }
-        }
-        final int height = treeType.maxHeight;
-        for (int y = 1; y <= height; y++)
-            if (!world.getBlockState(pos.up(y)).getMaterial().isReplaceable())
-                return false;
-        if (world.getLightFromNeighbors(pos) <= 7)
-            return false;
-        return true;//world.getLightFromNeighbors(pos) >= 7;
+        return checkGenerationConditions(world, pos, treeType);
     }
 }

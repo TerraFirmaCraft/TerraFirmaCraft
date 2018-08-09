@@ -264,9 +264,9 @@ public class BlockRockVariant extends Block implements IFallingBlock
         switch (plantType)
         {
             case Plains:
-                return type == Rock.Type.DIRT || type == Rock.Type.GRASS; // todo: dry grass?
+                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY_GRASS;
             case Crop:
-                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.FARMLAND; // todo: dry grass? Should this even be true? Might be required for wild crops.
+                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.FARMLAND || type == Rock.Type.DRY_GRASS;
             case Desert:
                 return type == Rock.Type.SAND;
             case Cave:
