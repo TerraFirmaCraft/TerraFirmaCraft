@@ -10,17 +10,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.template.*;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.biomes.BiomeTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -31,6 +36,62 @@ public class WorldGenTrees implements IWorldGenerator
 {
 
     private static final ITreeGenerator GEN_BUSHES = new TreeGenBushes();
+
+    /**
+     * This is a copy of the method included in the Template class, with some key differences.
+     * This will ignore TEs / Entities, and does less checks for bad usage, since it will only be used for tree worldgen
+     * It will do an additional check that the block is replaceable; important for tree growth; as to not replace other blocks
+     *
+     * @param worldIn     the world
+     * @param pos         the position
+     * @param template    the template
+     * @param placementIn the placement settings
+     */
+    public static void addStructureToWorld(World worldIn, BlockPos pos, Template template, PlacementSettings placementIn)
+    {
+        int flags = 2;
+        ITemplateProcessor templateProcessor = new BlockRotationProcessor(pos, placementIn);
+        StructureBoundingBox structureboundingbox = placementIn.getBoundingBox();
+
+        for (Template.BlockInfo template$blockinfo : template.blocks)
+        {
+            BlockPos blockpos = Template.transformedBlockPos(placementIn, template$blockinfo.pos).add(pos);
+            Template.BlockInfo template$blockinfo1 = templateProcessor.processBlock(worldIn, blockpos, template$blockinfo);
+
+            if (template$blockinfo1 != null)
+            {
+                Block block1 = template$blockinfo1.blockState.getBlock();
+
+                if ((!placementIn.getIgnoreStructureBlock() || block1 != Blocks.STRUCTURE_BLOCK) && (structureboundingbox == null || structureboundingbox.isVecInside(blockpos)))
+                {
+                    IBlockState iblockstate = template$blockinfo1.blockState.withMirror(placementIn.getMirror());
+                    IBlockState iblockstate1 = iblockstate.withRotation(placementIn.getRotation());
+
+                    if (worldIn.getBlockState(blockpos).getMaterial().isReplaceable() || worldIn.getBlockState(blockpos).getBlock() instanceof BlockLeavesTFC)
+                        worldIn.setBlockState(blockpos, iblockstate1, flags);
+
+                }
+            }
+        }
+
+        for (Template.BlockInfo template$blockinfo2 : template.blocks)
+        {
+            BlockPos blockpos1 = Template.transformedBlockPos(placementIn, template$blockinfo2.pos).add(pos);
+
+            if (structureboundingbox == null || structureboundingbox.isVecInside(blockpos1))
+            {
+                worldIn.notifyNeighborsRespectDebug(blockpos1, template$blockinfo2.blockState.getBlock(), false);
+            }
+
+        }
+    }
+
+    private Tree getTree(List<Tree> trees, float density, Random random)
+    {
+        if (trees.size() == 1 || random.nextFloat() < 0.8f - density * 0.4f)
+            return trees.get(0);
+        return trees.get(1 + random.nextInt(trees.size() - 1));
+    }
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
@@ -57,7 +118,7 @@ public class WorldGenTrees implements IWorldGenerator
         // The thought is in very harsh conditions, a few trees might survive outside their typical temperature zone
         if (trees.isEmpty())
         {
-            if (random.nextFloat() < 0.1f)
+            if (random.nextFloat() > 0.2f)
                 return;
 
             Tree extra = chunkData.getSparseGenTree();
@@ -87,9 +148,9 @@ public class WorldGenTrees implements IWorldGenerator
 
         trees.removeIf(t -> !t.hasBushes);
         // Small bushes in high density areas
-        if (density > 0.75f && !trees.isEmpty())
+        if (density > 0.6f && !trees.isEmpty()) // Density requirement is the same for jungles (kapok trees) to generate
         {
-            for (int i = 0; i < trees.size() * 3; i++)
+            for (int i = 0; i < trees.size() * 4f * density; i++)
             {
                 final int x = chunkX * 16 + random.nextInt(16) + 8;
                 final int z = chunkZ * 16 + random.nextInt(16) + 8;
@@ -102,10 +163,4 @@ public class WorldGenTrees implements IWorldGenerator
         }
     }
 
-    private Tree getTree(List<Tree> trees, float density, Random random)
-    {
-        if (trees.size() == 1 || random.nextFloat() < 0.8f - density * 0.4f)
-            return trees.get(0);
-        return trees.get(1 + random.nextInt(trees.size() - 1));
-    }
 }

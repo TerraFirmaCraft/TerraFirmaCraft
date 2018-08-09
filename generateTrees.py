@@ -1,11 +1,17 @@
 import os
 
+# noinspection PyUnresolvedReferences
 from nbtlib import nbt
+# noinspection PyUnresolvedReferences
 from nbtlib.tag import *
 
 
+# noinspection PyUnresolvedReferences
 def tree(origin, wood, nameout):
     f = nbt.load(origin + '.nbt')
+
+    # remove all air blocks in the block list
+    # keep a count
 
     for block in f.root['palette']:
 
@@ -18,12 +24,20 @@ def tree(origin, wood, nameout):
                 'axis': prop['axis']
             })
 
+        if block['Name'] == 'minecraft:planks':  # Planks indicate bark blocks
+            block['Name'] = String('tfc:wood/log/' + wood)
+            block['Properties'] = Compound({
+                'small': String('false'),
+                'placed': String('false'),
+                'axis': String('none')
+            })
+
         if block['Name'] == 'minecraft:leaves':
             block['Name'] = String('tfc:wood/leaves/' + wood)
             block['Properties'] = Compound({
-                'check_decay': String('true'),
                 'decayable': String('true')
             })
+
     if not os.path.exists('src/main/resources/assets/tfc/structures/' + wood):
         os.makedirs('src/main/resources/assets/tfc/structures/' + wood)
     f.save('src/main/resources/assets/tfc/structures/' + wood + '/' + nameout + '.nbt')
@@ -64,13 +78,13 @@ for wood, key in WOOD_TYPES.items():
 
     # tallXL (tfc douglas fir, full size-ish)
     if key == 'tallXL':
-        tree('structure_templates/large2_base', wood, 'base')
-        tree('structure_templates/large2_overlay', wood, 'overlay')
+        tree('structure_templates/tall2', wood, 'base')
+        tree('structure_templates/tall2_overlay', wood, 'overlay')
 
     # overhang (willow)
     if key == 'willow':
-        tree('structure_templates/w1', wood, 'base')
-        tree('structure_templates/w2', wood, 'overlay')
+        tree('structure_templates/willow', wood, 'base')
+        tree('structure_templates/willow_overlay', wood, 'overlay')
 
     # conifer (vanilla spruce)
     if key == 'conifer':
@@ -93,7 +107,7 @@ for wood, key in WOOD_TYPES.items():
         for s in ['1', '2', '3', '4', '5', '6', '7']:
             tree('structure_templates/tropical' + s, wood, s)
 
-    # kapok (vanilla jungle trees, but better) These also need to include a normal variant as well
+    # kapok (vanilla jungle trees, but better) Also have a vanilla oak variant
     if key == 'jungle':
         for s in ['branch1', 'branch2', 'branch3', 'top']:
             tree('structure_templates/jungle_' + s, wood, s)

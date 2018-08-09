@@ -38,6 +38,8 @@ public class TreeGenComposite implements ITreeGenerator
     @Override
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {
+        if (gens.isEmpty())
+            return;
         float r = rand.nextFloat() * totalWeight;
         float countWeight = 0f;
         for (Map.Entry<Float, ITreeGenerator> entry : gens.entries())

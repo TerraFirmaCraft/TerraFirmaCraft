@@ -23,6 +23,7 @@ import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 
@@ -93,7 +94,7 @@ public class TreeGenSequoia implements ITreeGenerator
         BlockPos size = structureBase.getSize();
         pos = pos.add(-size.getX() / 2, 0, -size.getZ() / 2);
 
-        structureBase.addBlocksToWorld(world, pos, settings);
+        WorldGenTrees.addStructureToWorld(world, pos, structureBase, settings);
         return size.getY();
     }
 

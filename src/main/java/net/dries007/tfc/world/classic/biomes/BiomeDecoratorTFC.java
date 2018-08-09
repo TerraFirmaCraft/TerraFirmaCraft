@@ -45,7 +45,6 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         this.mushroomRedGen = null;
         this.bigMushroomGen = null;
         this.reedGen = null;
-        this.cactusGen = null;
         this.waterlilyGen = null;
 
         grassGen = new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
@@ -56,7 +55,6 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         sandGen = new WorldGenSandTFC(7);
         waterlilyGen = new WorldGenWaterlilyTFC(); // todo: replace block?
         pumpkinGen = new WorldGenPumpkinTFC(Blocks.PUMPKIN); // todo: replace block?
-        cactusGen = new WorldGenTallPlant(Blocks.CACTUS); // todo: replace block?
         waterplantGen = new WorldGenWaterPlants(); // todo: replace block
     }
 
@@ -89,7 +87,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
 
             final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
 
-            if (ClimateTFC.getHeightAdjustedBiomeTemp(world, p2) >= 20 + rng.nextFloat() * 5f)
+            if (temperature >= 15f + rng.nextFloat() * 5f && rainfall > 75f)
                 reedGen.generate(world, rng, p2);
         }
 
@@ -98,13 +96,10 @@ public class BiomeDecoratorTFC extends BiomeDecorator
             pumpkinGen.generate(world, rng, world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8)));
         }
 
-        if (temperature > 20f && rainfall < 100f + 25f * rng.nextFloat())
+        if (temperature > 15f && rainfall < 75f && rng.nextBoolean())
         {
-            for (int i = 0; i < cactiPerChunk; i++)
-            {
-                final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                cactusGen.generate(world, rng, p2);
-            }
+            final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+            cactusGen.generate(world, rng, p2);
         }
 
         for (int i = 0; i < waterPlantsPerChunk; i++)
@@ -120,14 +115,19 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         }
         else
         {
-            final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
             if (temperature > 20f && rainfall > 300f)
             {
-                for (int i = 0; i < floraDensity * 5; i++)
+                for (int i = 0; i < 3 + floraDensity * 5; i++)
+                {
+                    final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                     fernGen.generate(world, rng, p2);
+                }
             }
-            for (int i = 0; i < floraDensity * 5; i++)
+            for (int i = 0; i < 1 + floraDensity * 5; i++)
+            {
+                final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                 grassGen.generate(world, rng, p2);
+            }
         }
     }
 }
