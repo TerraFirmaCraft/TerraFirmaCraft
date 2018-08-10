@@ -71,6 +71,12 @@ public class CustomRegistries
         return Collections.unmodifiableCollection(oreRegistry.getValuesCollection());
     }
 
+    @Nullable
+    public static Ore getOre(String name)
+    {
+        return oreRegistry.getValuesCollection().stream().filter(o -> o.name.equals(name)).findFirst().orElse(null);
+    }
+
     @SubscribeEvent
     public static void onNewRegistryEvent(RegistryEvent.NewRegistry event)
     {

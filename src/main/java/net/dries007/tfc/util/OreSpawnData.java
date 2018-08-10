@@ -10,25 +10,23 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.objects.OreEnum;
+import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.objects.CustomRegistries;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Rock.Category;
 
 import static net.dries007.tfc.Constants.GSON;
 import static net.dries007.tfc.Constants.MOD_ID;
 
-// todo: someone look through assets/tfc/config/ore_spawn_data.json and verify that everything looks good  -Alex (alcatrazEscapee)
 public class OreSpawnData
 {
     private static List<OreEntry> oreSpawnEntries;
@@ -56,7 +54,6 @@ public class OreSpawnData
         genFile = new File(tfcDir, "ore_spawn_data.json");
     }
 
-    // todo: test that all the exceptions and try statements catch problems with json
     public static void reloadOreGen()
     {
         String str = null;
@@ -77,7 +74,7 @@ public class OreSpawnData
             {
                 FileUtils.copyInputStreamToFile(OreSpawnData.class.getResourceAsStream("/assets/tfc/config/ore_spawn_data.json"), genFile);
                 str = FileUtils.readFileToString(genFile, Charset.defaultCharset());
-                if (Strings.isNullOrEmpty(str)) throw new RuntimeException("wut");
+                if (Strings.isNullOrEmpty(str)) throw new RuntimeException("Default entry is empty... wut did u do");
             }
             catch (IOException e)
             {
@@ -94,22 +91,11 @@ public class OreSpawnData
             final String name = entry.getKey();
             final OreJson json = entry.getValue();
 
-            OreEnum ore = null;
-            IBlockState state = null;
-            try
+            Ore ore = CustomRegistries.getOre(json.ore);
+            if (ore == null)
             {
-                ore = OreEnum.valueOf(json.ore.toUpperCase());
-            }
-            catch (IllegalArgumentException e)
-            {
-                String blockName = json.ore;
-                Block block = Block.getBlockFromName(blockName);
-                if (block == null)
-                {
-                    TerraFirmaCraft.getLog().warn("Problem parsing IBlockState: block doesn't exist for ore generation entry with key: '" + name + "' Skipping.");
-                    return null;
-                }
-                state = block.getDefaultState();
+                TerraFirmaCraft.getLog().warn("Problem parsing ore entry '" + name + "'. Ore is not defined. Skipping.");
+                return null;
             }
             SpawnSize size;
             SpawnType shape;
@@ -120,7 +106,8 @@ public class OreSpawnData
             }
             catch (IllegalArgumentException e)
             {
-                throw new Error("Error reading the size/shape of ore spawn with key '" + name + "'.", e);
+                TerraFirmaCraft.getLog().warn("Problem parsing ore entry '" + name + "'. Size / shape is not defined. Skipping.", e);
+                return null;
             }
             List<Rock> blocks = new ArrayList<>();
             json.baseRocks.forEach(s ->
@@ -146,7 +133,7 @@ public class OreSpawnData
                 }
             });
             totalWeight += 1.0D / (double) json.rarity;
-            return new OreEntry(ore, state, size, shape, blocks, json.rarity, json.minY, json.maxY, json.density);
+            return new OreEntry(ore, size, shape, blocks, json.rarity, json.minY, json.maxY, json.density);
         }).filter(Objects::nonNull).collect(Collectors.toList()));
     }
 
@@ -183,10 +170,7 @@ public class OreSpawnData
 
     public static final class OreEntry
     {
-        @Nullable
-        public final OreEnum ore;
-        @Nullable
-        public final IBlockState state;
+        public final Ore ore;
         public final SpawnType type;
         public final SpawnSize size;
         public final ImmutableSet<Rock> baseRocks;
@@ -196,10 +180,9 @@ public class OreSpawnData
         public final double density;
         public final int rarity;
 
-        private OreEntry(@Nullable OreEnum ore, @Nullable IBlockState state, SpawnSize size, SpawnType type, Collection<Rock> baseRocks, int rarity, int minY, int maxY, int density)
+        private OreEntry(@Nonnull Ore ore, SpawnSize size, SpawnType type, Collection<Rock> baseRocks, int rarity, int minY, int maxY, int density)
         {
             this.ore = ore;
-            this.state = state;
             this.size = size;
             this.type = type;
             this.baseRocks = ImmutableSet.copyOf(baseRocks);
@@ -209,9 +192,6 @@ public class OreSpawnData
             this.minY = minY;
             this.maxY = maxY;
             this.density = 0.01D * (double) density; // For debug purposes, removing the 0.01D will lead to ore veins being full size, easy to see shapes
-
-            if (ore == null && state == null)
-                throw new IllegalStateException("OreEnum Entry has neither a IBlockState or a OreEnum type");
         }
 
         @Override

@@ -9,6 +9,7 @@ import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
 
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.util.OreSpawnData;
 
@@ -19,7 +20,13 @@ public class VeinTypeCluster extends VeinType
 
     private final Cluster[] spawnPoints;
 
+    @Deprecated
     public VeinTypeCluster(BlockPos pos, OreSpawnData.OreEntry data, OreEnum.Grade grade, Random rand)
+    {
+        this(pos, data, Ore.Grade.NORMAL, rand);
+    }
+
+    public VeinTypeCluster(BlockPos pos, OreSpawnData.OreEntry data, Ore.Grade grade, Random rand)
     {
         super(pos, data, grade);
 

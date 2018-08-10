@@ -5,7 +5,8 @@
 
 package net.dries007.tfc.objects.items.metal;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,10 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.util.Size;
 import net.dries007.tfc.api.util.Weight;
 import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -25,26 +26,26 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class ItemOreTFC extends ItemTFC implements IMetalObject
 {
-    private static final EnumMap<OreEnum, ItemOreTFC> MAP = new EnumMap<>(OreEnum.class);
+    private static final Map<Ore, ItemOreTFC> MAP = new HashMap<>();
 
-    public static ItemOreTFC get(OreEnum ore)
+    public static ItemOreTFC get(Ore ore)
     {
         return MAP.get(ore);
     }
 
-    public static ItemStack get(OreEnum ore, OreEnum.Grade grade, int amount)
+    public static ItemStack get(Ore ore, Ore.Grade grade, int amount)
     {
         return new ItemStack(MAP.get(ore), amount, ore.graded ? grade.getMeta() : 0);
     }
 
-    public static ItemStack get(OreEnum ore, int amount)
+    public static ItemStack get(Ore ore, int amount)
     {
         return new ItemStack(MAP.get(ore), amount);
     }
 
-    public final OreEnum ore;
+    public final Ore ore;
 
-    public ItemOreTFC(OreEnum ore)
+    public ItemOreTFC(Ore ore)
     {
         this.ore = ore;
         if (MAP.put(ore, this) != null) throw new IllegalStateException("There can only be one.");
@@ -54,7 +55,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
             setHasSubtypes(true);
             OreDictionaryHelper.register(this, "ore");
             OreDictionaryHelper.register(this, "ore", ore);
-            for (OreEnum.Grade grade : OreEnum.Grade.values())
+            for (Ore.Grade grade : Ore.Grade.values())
             {
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", grade);
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore, grade);
@@ -63,7 +64,8 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
         else // Mineral
         {
             OreDictionaryHelper.register(this, "gem", ore);
-            switch (ore)
+            // todo: fix this
+            /*switch (ore)
             {
                 case LAPIS_LAZULI:
                     OreDictionaryHelper.register(this, "gem", "lapis");
@@ -71,20 +73,20 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
                 case BITUMINOUS_COAL:
                     OreDictionaryHelper.register(this, "gem", "coal");
                     break;
-            }
+            }*/
         }
     }
 
-    public OreEnum.Grade getGradeFromStack(ItemStack stack)
+    public Ore.Grade getGradeFromStack(ItemStack stack)
     {
-        return OreEnum.Grade.byMetadata(stack.getItemDamage());
+        return Ore.Grade.byMetadata(stack.getItemDamage());
     }
 
     @Override
     public String getUnlocalizedName(ItemStack stack)
     {
-        OreEnum.Grade grade = getGradeFromStack(stack);
-        if (grade == OreEnum.Grade.NORMAL) return super.getUnlocalizedName(stack);
+        Ore.Grade grade = getGradeFromStack(stack);
+        if (grade == Ore.Grade.NORMAL) return super.getUnlocalizedName(stack);
         return super.getUnlocalizedName(stack) + "." + grade.getName();
     }
 
@@ -93,7 +95,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     {
         if (!isInCreativeTab(tab)) return;
         if (ore.graded)
-            for (OreEnum.Grade grade : OreEnum.Grade.values())
+            for (Ore.Grade grade : Ore.Grade.values())
                 items.add(new ItemStack(this, 1, grade.getMeta()));
         else
             items.add(new ItemStack(this));
