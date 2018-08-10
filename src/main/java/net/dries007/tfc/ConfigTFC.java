@@ -94,8 +94,14 @@ public class ConfigTFC
         public boolean cyclicTemperatureRegions = true;
 
         @Config.Comment("Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!")
-        @Config.LangKey("config." + MOD_ID + ".general.debugWorldGen")
+        @Config.LangKey("config." + MOD_ID + ".world.debugWorldGen")
         @Config.RequiresWorldRestart
         public boolean debugMode = false;
+
+        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave.",
+            "The equation is roughly sin(pi * zCoord / (16 * zTemperatureModifier)). 2500 gives a total range of 40 km (peaks at +/- 20km)"})
+        @Config.RangeDouble(min = 100, max = 10000)
+        @Config.LangKey("config." + MOD_ID + ".world.zTemperatureModifier")
+        public double zTemperatureModifier = 2500f;
     }
 }

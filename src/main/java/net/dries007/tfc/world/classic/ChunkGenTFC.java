@@ -198,9 +198,9 @@ public class ChunkGenTFC implements IChunkGenerator
         float adjChunkZ = chunkZ;
         if (!ConfigTFC.WORLD.cyclicTemperatureRegions)
             adjChunkZ = Math.max(-1250, Math.min(1250, chunkZ));
-        final float latitudeFactor = 0.5f + 0.5f * ConfigTFC.WORLD.hemisphereType * (float) Math.sin(0.0004f * Math.PI * adjChunkZ); // Range 0 <> 1
+        final float latitudeFactor = 0.5f + 0.5f * ConfigTFC.WORLD.hemisphereType * (float) Math.sin(Math.PI * adjChunkZ / ConfigTFC.WORLD.zTemperatureModifier); // Range 0 <> 1
         final float monthFactor = 41f - 1.1f * CalenderTFC.Month.getAverageTempMod() * (1f - 0.8f * latitudeFactor);
-        final float regionalFactor = 15f * 0.09f * (float) noiseGen9.getValue(chunkX * 0.005, chunkZ * 0.005); // Range -15 <> 15
+        final float regionalFactor = 15f * 0.09f * (float) noiseGen10.getValue(chunkX * 0.005, chunkZ * 0.005); // Range -15 <> 15
 
         baseTemp = 45f * latitudeFactor - 25f + regionalFactor;
         averageTemp = monthFactor + 0.2f * baseTemp;
