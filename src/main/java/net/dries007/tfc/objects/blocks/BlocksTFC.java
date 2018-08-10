@@ -24,10 +24,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.CustomRegistries;
 import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
@@ -252,9 +252,9 @@ public final class BlocksTFC
 
         {
             Builder<BlockOreTFC> b = ImmutableList.builder();
-            for (OreEnum ore : OreEnum.values())
+            for (Ore ore : CustomRegistries.getOres())
                 for (Rock rock : Rock.values())
-                    b.add(register(r, ("ore/" + ore.name() + "/" + rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ROCK_BLOCKS));
+                    b.add(register(r, ("ore/" + ore.name + "/" + rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ROCK_BLOCKS));
             allOreBlocks = b.build();
             allOreBlocks.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
         }

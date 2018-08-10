@@ -7,6 +7,7 @@ package net.dries007.tfc.world.classic.worldgen.vein;
 
 import net.minecraft.util.math.BlockPos;
 
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.worldgen.WorldGenOre;
@@ -15,9 +16,15 @@ public abstract class VeinType
 {
     public final BlockPos pos;
     public final OreSpawnData.OreEntry oreSpawnData;
-    public final OreEnum.Grade grade;
+    public final Ore.Grade grade;
 
+    @Deprecated
     VeinType(BlockPos pos, OreSpawnData.OreEntry oreSpawnData, OreEnum.Grade grade)
+    {
+        this(pos, oreSpawnData, Ore.Grade.NORMAL);
+    }
+
+    VeinType(BlockPos pos, OreSpawnData.OreEntry oreSpawnData, Ore.Grade grade)
     {
         this.pos = pos;
         this.oreSpawnData = oreSpawnData;

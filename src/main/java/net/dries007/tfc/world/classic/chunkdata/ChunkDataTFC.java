@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.*;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -20,9 +19,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.CustomRegistries;
-import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.DataLayer;
@@ -113,9 +112,9 @@ public final class ChunkDataTFC
     /**
      * INTERNAL USE ONLY.
      */
-    public void addSpawnedOre(OreEnum ore, IBlockState state, OreSpawnData.SpawnSize size, OreEnum.Grade grade, BlockPos pos, int count)
+    public void addSpawnedOre(Ore ore, OreSpawnData.SpawnSize size, Ore.Grade grade, BlockPos pos)
     {
-        oresSpawned.add(new ChunkDataOreSpawned(ore, state, size, grade, pos, count));
+        oresSpawned.add(new ChunkDataOreSpawned(ore, size, grade, pos));
     }
 
     public boolean isInitialized()
@@ -176,8 +175,7 @@ public final class ChunkDataTFC
         return CustomRegistries.getTrees()
             .stream()
             .filter(t -> t.isValidLocation(0.5f * avgTemp + 10f, 0.5f * rainfall + 120f, 0.5f))
-            .sorted((s, t) -> (int) (t.dominance - s.dominance))
-            .findFirst()
+            .min((s, t) -> (int) (t.dominance - s.dominance))
             .orElse(null);
     }
 

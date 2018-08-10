@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.api.util.Size;
 import net.dries007.tfc.api.util.Weight;
@@ -94,13 +95,13 @@ public final class ItemsTFC
 
         {
             Builder<ItemOreTFC> b = new Builder<>();
-            for (OreEnum ore : OreEnum.values())
-                b.add(register(r, "ore/" + ore.name().toLowerCase(), new ItemOreTFC(ore), CT_ROCK_ITEMS));
+            for (Ore ore : CustomRegistries.getOres())
+                b.add(register(r, "ore/" + ore.name, new ItemOreTFC(ore), CT_ROCK_ITEMS));
             allOreItems = b.build();
 
-            for (OreEnum ore : OreEnum.values())
+            for (Ore ore : CustomRegistries.getOres())
                 if (ore.graded)
-                    simpleItems.add(register(r, "ore/small/" + ore.name().toLowerCase(), new ItemSmallOre(ore), CT_ROCK_ITEMS));
+                    simpleItems.add(register(r, "ore/small/" + ore.name, new ItemSmallOre(ore), CT_ROCK_ITEMS));
         }
 
         {

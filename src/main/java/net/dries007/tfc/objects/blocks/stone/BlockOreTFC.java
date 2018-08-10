@@ -5,7 +5,10 @@
 
 package net.dries007.tfc.objects.blocks.stone;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -17,38 +20,43 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.objects.OreEnum;
+import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
-import net.dries007.tfc.util.InsertOnlyEnumTable;
 
+@MethodsReturnNonnullByDefault
 public class BlockOreTFC extends Block
 {
-    public static final PropertyEnum<OreEnum.Grade> GRADE = PropertyEnum.create("grade", OreEnum.Grade.class);
-    private static final InsertOnlyEnumTable<OreEnum, Rock, BlockOreTFC> TABLE = new InsertOnlyEnumTable<>(OreEnum.class, Rock.class);
+    public static final PropertyEnum<Ore.Grade> GRADE = PropertyEnum.create("grade", Ore.Grade.class);
+    private static final Map<Ore, Map<Rock, BlockOreTFC>> TABLE = new HashMap<>();
 
-    public static BlockOreTFC get(OreEnum ore, Rock rock)
+    public static BlockOreTFC get(Ore ore, Rock rock)
     {
-        return TABLE.get(ore, rock);
+        return TABLE.get(ore).get(rock);
     }
 
-    public static IBlockState get(OreEnum ore, Rock rock, OreEnum.Grade grade)
+    public static IBlockState get(Ore ore, Rock rock, Ore.Grade grade)
     {
-        IBlockState state = TABLE.get(ore, rock).getDefaultState();
+        IBlockState state = TABLE.get(ore).get(rock).getDefaultState();
         if (!ore.graded) return state;
         return state.withProperty(GRADE, grade);
     }
 
-    public final OreEnum ore;
+    public final Ore ore;
     public final Rock rock;
 
-    public BlockOreTFC(OreEnum ore, Rock rock)
+    public BlockOreTFC(Ore ore, Rock rock)
     {
         super(Rock.Type.RAW.material);
-        TABLE.put(ore, rock, this);
+
+        if (!TABLE.containsKey(ore))
+            TABLE.put(ore, new HashMap<>());
+        TABLE.get(ore).put(rock, this);
+
         this.ore = ore;
         this.rock = rock;
-        setDefaultState(blockState.getBaseState().withProperty(GRADE, OreEnum.Grade.NORMAL));
+        setDefaultState(blockState.getBaseState().withProperty(GRADE, Ore.Grade.NORMAL));
         setSoundType(SoundType.STONE);
         setHardness(2.0F).setResistance(10.0F);
         setHarvestLevel("pickaxe", 0);
@@ -58,7 +66,7 @@ public class BlockOreTFC extends Block
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return getDefaultState().withProperty(GRADE, OreEnum.Grade.byMetadata(meta));
+        return getDefaultState().withProperty(GRADE, Ore.Grade.byMetadata(meta));
     }
 
     @Override
@@ -96,7 +104,7 @@ public class BlockOreTFC extends Block
     }
 
     @Override
-    public int quantityDropped(IBlockState state, int fortune, Random random)
+    public int quantityDropped(IBlockState state, int fortune, @Nonnull Random random)
     {
         return super.quantityDropped(state, fortune, random); // todo: see how 1710 handles this
     }

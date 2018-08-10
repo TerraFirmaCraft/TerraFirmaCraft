@@ -5,16 +5,17 @@
 
 package net.dries007.tfc.objects.items.metal;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.util.Size;
 import net.dries007.tfc.api.util.Weight;
 import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -23,21 +24,21 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class ItemSmallOre extends ItemTFC implements IMetalObject
 {
-    private static final EnumMap<OreEnum, ItemSmallOre> MAP = new EnumMap<>(OreEnum.class);
+    private static final Map<Ore, ItemSmallOre> MAP = new HashMap<>();
 
-    public static ItemSmallOre get(OreEnum ore)
+    public static ItemSmallOre get(Ore ore)
     {
         return MAP.get(ore);
     }
 
-    public static ItemStack get(OreEnum ore, int amount)
+    public static ItemStack get(Ore ore, int amount)
     {
         return new ItemStack(MAP.get(ore), amount);
     }
 
-    public final OreEnum ore;
+    public final Ore ore;
 
-    public ItemSmallOre(OreEnum ore)
+    public ItemSmallOre(Ore ore)
     {
         this.ore = ore;
         if (MAP.put(ore, this) != null) throw new IllegalStateException("There can only be one.");

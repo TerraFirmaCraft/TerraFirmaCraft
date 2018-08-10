@@ -17,7 +17,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import net.dries007.tfc.objects.OreEnum;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -74,12 +74,12 @@ public class WorldGenOre implements IWorldGenerator
                     chunkZ * 16 + 8 + rand.nextInt(16)
                 );
 
-                OreEnum.Grade grade = OreEnum.Grade.NORMAL;
+                Ore.Grade grade = Ore.Grade.NORMAL;
                 if (oreType.ore != null && oreType.ore.graded)
                 {
                     int gradeInt = rand.nextInt(100);
-                    if (gradeInt < 20) grade = OreEnum.Grade.RICH;
-                    else if (gradeInt < 50) grade = OreEnum.Grade.POOR;
+                    if (gradeInt < 20) grade = Ore.Grade.RICH;
+                    else if (gradeInt < 50) grade = Ore.Grade.POOR;
                 }
 
                 veins.add(new VeinTypeCluster(startPos, oreType, grade, rand));
@@ -122,6 +122,9 @@ public class WorldGenOre implements IWorldGenerator
 
         for (VeinType vein : veins)
         {
+            // Add to chunk data
+            chunkData.addSpawnedOre(vein.oreSpawnData.ore, vein.oreSpawnData.size, vein.grade, vein.pos);
+
             // Do checks here that are specific to each vein
             if (!vein.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0).rock) &&
                 !vein.oreSpawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock) &&
@@ -151,35 +154,10 @@ public class WorldGenOre implements IWorldGenerator
                         if (blockAt.type != Rock.Type.RAW || !vein.oreSpawnData.baseRocks.contains(blockAt.rock))
                             continue;
 
-                        if (vein.oreSpawnData.ore == null && vein.oreSpawnData.state != null)
-                        {
-                            world.setBlockState(posAt, vein.oreSpawnData.state, 2);
-                        }
-                        else
-                        {
-                            world.setBlockState(posAt, BlockOreTFC.get(vein.oreSpawnData.ore, blockAt.rock, vein.grade), 2);
-                        }
+                        world.setBlockState(posAt, BlockOreTFC.get(vein.oreSpawnData.ore, blockAt.rock, vein.grade), 2);
                     }
                 }
             }
         }
-
-        // TODO: remove the "blocks spawned" count from ore vein chunk data. Not worth it to include (because it won't be accurate)
-        // Note: chunk data is now VERY inaccurate. It should ONLY be used to test where ores are spawning
-        // If you want to get veins at a chunk, see how WorldGenLooseRocks uses getNearbyVeins and then trims it based on spawning params
-        List<VeinType> veinsAtChunk = getVeinsAtChunk(chunkX, chunkZ, world.getSeed());
-        if (!veinsAtChunk.isEmpty())
-        {
-            veinsAtChunk.forEach(v -> {
-                if ((v.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0).rock) ||
-                    v.oreSpawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock) ||
-                    v.oreSpawnData.baseRocks.contains(chunkData.getRock3(0, 0).rock)) &&
-                    v.pos.getY() >= WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos))
-                {
-                    chunkData.addSpawnedOre(v.oreSpawnData.ore, v.oreSpawnData.state, v.oreSpawnData.size, v.grade, v.pos, 0);
-                }
-            });
-        }
     }
-
 }
