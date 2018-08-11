@@ -21,7 +21,6 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.CustomRegistries;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -48,7 +47,7 @@ public class TreeGenCommand extends CommandBase
         if (args.length != 1)
             throw new WrongUsageException("1 argument required.");
 
-        Tree tree = CustomRegistries.getTree(args[0]);
+        Tree tree = Tree.get(args[0]);
         if (tree == null) throw new WrongUsageException("Tree type " + args[0] + " not found");
 
         if (sender.getCommandSenderEntity() == null) return;

@@ -14,9 +14,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import net.dries007.tfc.api.TFCRegistries;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.api.types.TFCRegistries;
 import net.dries007.tfc.objects.ToolMaterialsTFC;
 
 import static net.dries007.tfc.Constants.MOD_ID;

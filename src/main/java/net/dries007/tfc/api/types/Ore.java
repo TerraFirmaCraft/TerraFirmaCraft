@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.api.types;
 
+import java.util.Collection;
+import java.util.Collections;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.IStringSerializable;
@@ -18,6 +21,24 @@ import net.dries007.tfc.objects.Metal;
  */
 public class Ore extends IForgeRegistryEntry.Impl<Ore>
 {
+    @Nonnull
+    public static Collection<Ore> values()
+    {
+        return Collections.unmodifiableCollection(TFCRegistries.getOres().getValuesCollection());
+    }
+
+    @Nullable
+    public static Ore get(String name)
+    {
+        return values().stream().filter(x -> x.name().equals(name)).findFirst().orElse(null);
+    }
+
+    @Nonnull
+    public String name()
+    {
+        return name;
+    }
+
 
     public final boolean graded;
     public final Metal metal;

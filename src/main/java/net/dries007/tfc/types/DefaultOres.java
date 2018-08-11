@@ -10,8 +10,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import net.dries007.tfc.api.TFCRegistries;
 import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.api.types.TFCRegistries;
 import net.dries007.tfc.objects.Metal;
 
 import static net.dries007.tfc.Constants.MOD_ID;

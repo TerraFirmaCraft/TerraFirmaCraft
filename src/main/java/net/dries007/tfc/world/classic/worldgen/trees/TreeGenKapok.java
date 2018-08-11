@@ -66,13 +66,13 @@ public class TreeGenKapok implements ITreeGenerator
             if (z1 == 0 || z1 == -1)
                 z1 = z1 * 3 + 1;
             type = 1 + rand.nextInt(3);
-            placeBranch(manager, world, pos.add(x1, y1, z1), tree.name + "/branch" + type);
+            placeBranch(manager, world, pos.add(x1, y1, z1), tree.name() + "/branch" + type);
             checkAndPlace(world, pos.add(x1 - Math.abs(x1) / x1, y1 - 1, z1 - Math.abs(z1) / z1), true);
         }
 
         for (int i = -1; i < height; i++)
             placeTrunk(world, pos.add(0, i, 0));
-        placeBranch(manager, world, pos.add(0, height, 0), tree.name + "/top");
+        placeBranch(manager, world, pos.add(0, height, 0), tree.name() + "/top");
 
     }
 

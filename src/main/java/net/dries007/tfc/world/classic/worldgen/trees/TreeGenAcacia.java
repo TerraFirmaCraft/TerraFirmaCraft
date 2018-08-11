@@ -56,7 +56,7 @@ public class TreeGenAcacia implements ITreeGenerator
         {
             y3 = rand.nextInt(3) + 2;
             side = sides.get(rand.nextInt(sides.size()));
-            placeBranch(manager, world, pos.offset(side).add(0, y3, 0), tree.name + "/branch3");
+            placeBranch(manager, world, pos.offset(side).add(0, y3, 0), tree.name() + "/branch3");
         }
         for (int i = 0; i < branches; i++)
         {
@@ -68,7 +68,7 @@ public class TreeGenAcacia implements ITreeGenerator
             for (int j = 1; j < x1; j++)
                 placeLog(world, pos.add(0, y1 - j, 0).offset(face, x1 - j), true);
             int branch = 1 + rand.nextInt(2);
-            placeBranch(manager, world, pos.add(0, y1, 0).offset(face, x1), tree.name + "/branch" + branch);
+            placeBranch(manager, world, pos.add(0, y1, 0).offset(face, x1), tree.name() + "/branch" + branch);
         }
         for (int i = 0; i < height; i++)
         {
@@ -81,7 +81,7 @@ public class TreeGenAcacia implements ITreeGenerator
             }
             placeLog(world, pos.add(0, i, 0), false);
         }
-        placeBranch(manager, world, pos.add(0, height, 0), tree.name + "/branch3");
+        placeBranch(manager, world, pos.add(0, height, 0), tree.name() + "/branch3");
     }
 
     private void placeBranch(TemplateManager manager, World world, BlockPos pos, String name)

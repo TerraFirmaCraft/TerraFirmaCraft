@@ -21,7 +21,6 @@ import net.minecraftforge.common.util.Constants;
 
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.CustomRegistries;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.DataLayer;
@@ -162,7 +161,7 @@ public final class ChunkDataTFC
 
     public List<Tree> getValidTrees()
     {
-        return CustomRegistries.getTrees()
+        return Tree.values()
             .stream()
             .filter(t -> t.isValidLocation(avgTemp, rainfall, floraDensity))
             .sorted((s, t) -> (int) (t.dominance - s.dominance))
@@ -172,7 +171,7 @@ public final class ChunkDataTFC
     @Nullable
     public Tree getSparseGenTree()
     {
-        return CustomRegistries.getTrees()
+        return Tree.values()
             .stream()
             .filter(t -> t.isValidLocation(0.5f * avgTemp + 10f, 0.5f * rainfall + 120f, 0.5f))
             .min((s, t) -> (int) (t.dominance - s.dominance))
