@@ -20,7 +20,6 @@ import org.apache.commons.io.FileUtils;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.objects.CustomRegistries;
 import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.Rock.Category;
 
@@ -91,7 +90,7 @@ public class OreSpawnData
             final String name = entry.getKey();
             final OreJson json = entry.getValue();
 
-            Ore ore = CustomRegistries.getOre(json.ore);
+            Ore ore = Ore.get(json.ore);
             if (ore == null)
             {
                 TerraFirmaCraft.getLog().warn("Problem parsing ore entry '" + name + "'. Ore is not defined. Skipping.");

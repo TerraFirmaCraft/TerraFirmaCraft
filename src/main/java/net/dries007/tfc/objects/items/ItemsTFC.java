@@ -22,7 +22,10 @@ import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.api.util.Size;
 import net.dries007.tfc.api.util.Weight;
-import net.dries007.tfc.objects.*;
+import net.dries007.tfc.objects.Gem;
+import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.objects.Powder;
+import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
@@ -95,11 +98,11 @@ public final class ItemsTFC
 
         {
             Builder<ItemOreTFC> b = new Builder<>();
-            for (Ore ore : CustomRegistries.getOres())
+            for (Ore ore : Ore.values())
                 b.add(register(r, "ore/" + ore.name, new ItemOreTFC(ore), CT_ROCK_ITEMS));
             allOreItems = b.build();
 
-            for (Ore ore : CustomRegistries.getOres())
+            for (Ore ore : Ore.values())
                 if (ore.graded)
                     simpleItems.add(register(r, "ore/small/" + ore.name, new ItemSmallOre(ore), CT_ROCK_ITEMS));
         }
@@ -132,8 +135,8 @@ public final class ItemsTFC
         for (BlockSlabTFC.Half slab : BlocksTFC.getAllSlabBlocks())
             simpleItems.add(register(r, slab.getRegistryName().getResourcePath(), new ItemSlabTFC(slab, slab, slab.doubleSlab), CT_DECORATIONS));
 
-        for (Tree wood : CustomRegistries.getTrees())
-            simpleItems.add(register(r, "wood/lumber/" + wood.name, new ItemLumberTFC(wood), CT_WOOD));
+        for (Tree wood : Tree.values())
+            simpleItems.add(register(r, "wood/lumber/" + wood.name(), new ItemLumberTFC(wood), CT_WOOD));
 
         for (Rock.Category cat : Rock.Category.values())
         {

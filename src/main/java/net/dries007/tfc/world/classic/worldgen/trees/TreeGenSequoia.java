@@ -53,11 +53,11 @@ public class TreeGenSequoia implements ITreeGenerator
         for (int j = 0; j < layers; j++)
         {
             if (j == layers - 1 || (j == layers - 2 && rand.nextBoolean()))
-                k += placeLayer(manager, world, pos.up(k), tree.name + "/mid" + baseVariant);
+                k += placeLayer(manager, world, pos.up(k), tree.name() + "/mid" + baseVariant);
             else
-                k += placeLayer(manager, world, pos.up(k), tree.name + "/base" + baseVariant);
+                k += placeLayer(manager, world, pos.up(k), tree.name() + "/base" + baseVariant);
         }
-        placeLayer(manager, world, pos.up(k), tree.name + "/top" + topVariant);
+        placeLayer(manager, world, pos.up(k), tree.name() + "/top" + topVariant);
 
     }
 

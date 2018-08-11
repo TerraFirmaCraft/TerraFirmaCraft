@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.BlockPos;
 
 import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.objects.CustomRegistries;
 import net.dries007.tfc.util.OreSpawnData;
 
 public class ChunkDataOreSpawned
@@ -32,7 +31,7 @@ public class ChunkDataOreSpawned
 
     public ChunkDataOreSpawned(NBTTagCompound tag)
     {
-        ore = CustomRegistries.getOre(tag.getString("ore"));
+        ore = Ore.get(tag.getString("ore"));
         grade = Ore.Grade.valueOf(tag.getString("grade").toUpperCase());
         size = OreSpawnData.SpawnSize.valueOf(tag.getString("size").toUpperCase());
         pos = NBTUtil.getPosFromTag(tag.getCompoundTag("pos"));

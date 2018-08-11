@@ -56,7 +56,7 @@ public class TreeGenVariants implements ITreeGenerator
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {
         String variant = variants[variants.length == 1 ? 0 : rand.nextInt(variants.length)];
-        ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree.name + "/" + variant);
+        ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree.name() + "/" + variant);
 
         Template structureBase = manager.get(world.getMinecraftServer(), base);
         if (structureBase == null)

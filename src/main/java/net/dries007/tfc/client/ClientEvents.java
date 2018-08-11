@@ -111,7 +111,7 @@ public class ClientEvents
                     list.add(GRAY + "Flora Diversity: " + WHITE + data.getFloraDiversity());
 
                     list.add(GRAY + "Valid Trees: ");
-                    data.getValidTrees().forEach(t -> list.add(String.format("%s %s (%.1f)", WHITE, t.name, t.dominance)));
+                    data.getValidTrees().forEach(t -> list.add(String.format("%s %s (%.1f)", WHITE, t.name(), t.dominance)));
 
                     //list.add(GRAY + "Rocks: " + WHITE + data.getRockLayer1(x, z).name + ", " + data.getRockLayer2(x, z).name + ", " + data.getRockLayer3(x, z).name);
                     //list.add(GRAY + "Stability: " + WHITE + data.getStabilityLayer(x, z).name);

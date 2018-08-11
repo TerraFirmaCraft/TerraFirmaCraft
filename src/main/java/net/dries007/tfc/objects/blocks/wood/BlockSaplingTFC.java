@@ -56,7 +56,7 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable, ITileEntity
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
         OreDictionaryHelper.register(this, "tree", "sapling");
-        OreDictionaryHelper.register(this, "tree", "sapling", wood.name);
+        OreDictionaryHelper.register(this, "tree", "sapling", wood.name());
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 

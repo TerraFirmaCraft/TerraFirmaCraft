@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.ITreeGenerator;
-import net.dries007.tfc.api.TFCRegistries;
+import net.dries007.tfc.api.types.TFCRegistries;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.world.classic.worldgen.trees.*;
 

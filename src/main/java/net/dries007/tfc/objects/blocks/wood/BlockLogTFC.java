@@ -59,7 +59,7 @@ public class BlockLogTFC extends BlockLog
         setHardness(15.0F);
         setResistance(5.0F);
         OreDictionaryHelper.register(this, "log", "wood");
-        OreDictionaryHelper.register(this, "log", "wood", wood.name);
+        OreDictionaryHelper.register(this, "log", "wood", wood.name());
         Blocks.FIRE.setFireInfo(this, 5, 5);
         setTickRandomly(true);
     }

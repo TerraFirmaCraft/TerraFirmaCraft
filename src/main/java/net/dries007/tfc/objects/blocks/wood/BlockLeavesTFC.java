@@ -49,7 +49,7 @@ public class BlockLeavesTFC extends BlockLeaves
         setDefaultState(blockState.getBaseState().withProperty(DECAYABLE, false)); // TFC leaves don't use CHECK_DECAY, so just don't use it
         leavesFancy = true; // Fast / Fancy graphics works correctly
         OreDictionaryHelper.register(this, "tree", "leaves");
-        OreDictionaryHelper.register(this, "tree", "leaves", wood.name);
+        OreDictionaryHelper.register(this, "tree", "leaves", wood.name());
         Blocks.FIRE.setFireInfo(this, 30, 60);
         setTickRandomly(true);
     }

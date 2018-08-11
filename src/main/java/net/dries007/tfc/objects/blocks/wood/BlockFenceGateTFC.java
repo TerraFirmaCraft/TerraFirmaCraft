@@ -33,7 +33,7 @@ public class BlockFenceGateTFC extends BlockFenceGate
         this.wood = wood;
         setHarvestLevel("axe", 0);
         OreDictionaryHelper.register(this, "fence", "gate");
-        OreDictionaryHelper.register(this, "fence", "gate", wood.name);
+        OreDictionaryHelper.register(this, "fence", "gate", wood.name());
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 }
