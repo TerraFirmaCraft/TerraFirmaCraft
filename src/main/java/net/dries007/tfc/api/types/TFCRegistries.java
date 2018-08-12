@@ -22,11 +22,13 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.types.TFCRegistries.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class TFCRegistries
 {
+    static final String MOD_ID = "tfc"; // This is here to avoid a import statement.
+
     private static final ResourceLocation ROCK_TYPE = new ResourceLocation(MOD_ID, "rock_type");
     private static final ResourceLocation ROCK = new ResourceLocation(MOD_ID, "rock");
     private static final ResourceLocation ORE = new ResourceLocation(MOD_ID, "ore");

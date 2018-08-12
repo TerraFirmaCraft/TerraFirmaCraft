@@ -16,7 +16,6 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
 
 public interface ITreeGenerator
 {
@@ -74,8 +73,8 @@ public interface ITreeGenerator
             if (!world.getBlockState(pos.up(y)).getMaterial().isReplaceable())
                 return false;
 
-        // Check if there is soil beneath
-        if (!BlocksTFC.isSoil(world.getBlockState(pos.down())))
+        // Check if there is a solid block beneath
+        if (!world.getBlockState(pos.down()).isNormalCube())
             return false;
 
         // Check the position for liquids, etc.

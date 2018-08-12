@@ -29,13 +29,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.client.render.TESRChestTFC;
 import net.dries007.tfc.client.render.TESRIngotPile;
 import net.dries007.tfc.client.render.TESRPitKiln;
 import net.dries007.tfc.client.render.TESRWorldItem;
 import net.dries007.tfc.objects.Gem;
-import net.dries007.tfc.objects.OreEnum;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
@@ -80,10 +80,10 @@ public final class ClientRegisterEvents
 
         for (ItemOreTFC item : ItemsTFC.getAllOreItems())
             if (item.ore.graded)
-                for (OreEnum.Grade grade : OreEnum.Grade.values())
+                for (Ore.Grade grade : Ore.Grade.values())
                     registerEnumBasedMetaItems("ore", grade, item);
             else
-                registerEnumBasedMetaItems("ore", OreEnum.Grade.NORMAL, item);
+                registerEnumBasedMetaItems("ore", Ore.Grade.NORMAL, item);
 
         for (Block block : BlocksTFC.getAllFluidBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());
