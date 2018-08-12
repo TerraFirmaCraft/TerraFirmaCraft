@@ -16,7 +16,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.objects.items.rock.ItemRock;
@@ -45,12 +45,11 @@ public class WorldGenLooseRocks implements IWorldGenerator
         if (!veins.isEmpty())
         {
             veins.removeIf(v -> {
-                if (v.oreSpawnData.ore == null) return true;
                 if (!v.oreSpawnData.ore.graded) return true;
 
                 int minScanY = (WorldTypeTFC.ROCKLAYER2 + WorldTypeTFC.ROCKLAYER3) / 2;
                 int maxScanY = WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos);
-                return v.pos.getY() <= minScanY || v.pos.getY() >= maxScanY || !v.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0).rock);
+                return v.pos.getY() <= minScanY || v.pos.getY() >= maxScanY || !v.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0));
 
             });
         }
@@ -66,7 +65,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
                 0,
                 zoff + random.nextInt(16)
             );
-            Rock rock = chunkData.getRock1(pos).rock;
+            Rock rock = chunkData.getRock1(pos);
             generateRock(world, pos.up(world.getTopSolidOrLiquidBlock(pos).getY()), getRandomVein(veins, random), rock);
         }
     }

@@ -36,10 +36,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         return values().stream().filter(tree -> tree.name().equals(name)).findFirst().orElse(null);
     }
 
-    /**
-     * The path part of the resource location, used for assigning block names
-     */
-    private final String name;
+    public final int maxGrowthRadius;
 
     public final float dominance;
     private final float minTemp;
@@ -48,20 +45,14 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
     private final float maxRain;
     private final float minDensity;
     private final float maxDensity;
-
-    public String name()
-    {
-        return name;
-    }
-    public final int maxGrowthRadius;
     public final int maxHeight;
     public final int maxDecayDistance;
     public final boolean isConifer;
     public final boolean hasBushes;
     public final float minGrowthTime;
+    private final ResourceLocation name;
     // Used when growing a tree
     private final ITreeGenerator gen;
-
     /**
      * This is a registry object that will create a number of things:
      * 1. Wood logs, planks, and leaf blocks, and all the respective variants
@@ -108,8 +99,13 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         this.hasBushes = hasBushes;
 
         this.gen = gen;
-        this.name = name.getResourcePath().toLowerCase();
+        this.name = name;
         setRegistryName(name);
+    }
+
+    public String name()
+    {
+        return name.getResourcePath();
     }
 
     public void makeTreeWithoutChecking(TemplateManager manager, World world, BlockPos pos, Random rand)

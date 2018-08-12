@@ -40,7 +40,7 @@ public class ChunkDataOreSpawned
     public NBTTagCompound serialize()
     {
         NBTTagCompound root = new NBTTagCompound();
-        if (ore != null) root.setString("ore", ore.name);
+        root.setString("ore", ore.name());
         root.setString("grade", grade.name());
         root.setString("size", size.name());
         root.setTag("pos", NBTUtil.createPosTag(pos));

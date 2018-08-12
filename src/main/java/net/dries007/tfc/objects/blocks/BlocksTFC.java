@@ -25,9 +25,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
@@ -42,8 +42,8 @@ import net.dries007.tfc.objects.items.ItemBlockTorchTFC;
 import net.dries007.tfc.objects.te.*;
 
 import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.types.Rock.Type.*;
 import static net.dries007.tfc.objects.CreativeTabsTFC.*;
-import static net.dries007.tfc.objects.Rock.Type.*;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -244,7 +244,7 @@ public final class BlocksTFC
             Builder<BlockRockVariant> b = ImmutableList.builder();
             for (Rock.Type type : Rock.Type.values())
                 for (Rock rock : Rock.values())
-                    b.add(register(r, (type.name() + "/" + rock.name()).toLowerCase(), type.supplier.apply(type, rock), CT_ROCK_BLOCKS));
+                    b.add(register(r, (type.name() + "/" + rock.name()).toLowerCase(), BlockRockVariant.create(rock, type), CT_ROCK_BLOCKS));
             allBlockRockVariants = b.build();
             allBlockRockVariants.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
         }
@@ -253,7 +253,7 @@ public final class BlocksTFC
             Builder<BlockOreTFC> b = ImmutableList.builder();
             for (Ore ore : Ore.values())
                 for (Rock rock : Rock.values())
-                    b.add(register(r, ("ore/" + ore.name + "/" + rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ROCK_BLOCKS));
+                    b.add(register(r, ("ore/" + ore.name() + "/" + rock.name()).toLowerCase(), new BlockOreTFC(ore, rock), CT_ROCK_BLOCKS));
             allOreBlocks = b.build();
             allOreBlocks.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
         }

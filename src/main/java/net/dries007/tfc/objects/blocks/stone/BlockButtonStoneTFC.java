@@ -5,16 +5,17 @@
 
 package net.dries007.tfc.objects.blocks.stone;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.block.BlockButtonStone;
 import net.minecraft.block.SoundType;
 
-import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.api.types.Rock;
 
 public class BlockButtonStoneTFC extends BlockButtonStone
 {
-    private static final EnumMap<Rock, BlockButtonStoneTFC> MAP = new EnumMap<>(Rock.class);
+    private static final Map<Rock, BlockButtonStoneTFC> MAP = new HashMap<>();
 
     public static BlockButtonStoneTFC get(Rock rock)
     {

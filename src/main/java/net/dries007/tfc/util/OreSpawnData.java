@@ -20,8 +20,8 @@ import org.apache.commons.io.FileUtils;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Rock.Category;
+import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.types.RockCategory;
 
 import static net.dries007.tfc.Constants.GSON;
 import static net.dries007.tfc.Constants.MOD_ID;
@@ -111,24 +111,18 @@ public class OreSpawnData
             List<Rock> blocks = new ArrayList<>();
             json.baseRocks.forEach(s ->
             {
-                try
+                Rock rock = Rock.get(s);
+                if (rock == null)
                 {
-                    blocks.add(Rock.valueOf(s.toUpperCase()));
+                    RockCategory category = RockCategory.get(s);
+                    if (category == null)
+                        TerraFirmaCraft.getLog().warn("Problem parsing ore entry '" + name + "'. Rock / Rock Category '" + s + "' is not defined. Skipping.");
+                    else
+                        blocks.addAll(category.getRocks());
                 }
-                catch (IllegalArgumentException e1)
+                else
                 {
-                    try
-                    {
-                        Category category = Category.valueOf(s.toUpperCase());
-                        for (Rock rock : Rock.values())
-                        {
-                            if (category == rock.category) blocks.add(rock);
-                        }
-                    }
-                    catch (IllegalArgumentException e2)
-                    {
-                        TerraFirmaCraft.getLog().warn("Problem parsing base rock '" + s + "' for ore generation entry with key+'" + name + "' Skipping");
-                    }
+                    blocks.add(rock);
                 }
             });
             totalWeight += 1.0D / (double) json.rarity;
@@ -209,6 +203,7 @@ public class OreSpawnData
         }
     }
 
+    @SuppressWarnings("unused")
     private class OreJson
     {
         private String ore;

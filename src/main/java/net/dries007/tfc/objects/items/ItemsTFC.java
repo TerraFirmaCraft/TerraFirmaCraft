@@ -90,7 +90,7 @@ public final class ItemsTFC
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
 
         {
-            for (Rock rock : Rock.values())
+            for (net.dries007.tfc.api.types.Rock rock : net.dries007.tfc.api.types.Rock.values())
                 simpleItems.add(register(r, "rock/" + rock.name().toLowerCase(), new ItemRock(rock), CT_ROCK_ITEMS));
             for (Rock rock : Rock.values())
                 simpleItems.add(register(r, "brick/" + rock.name().toLowerCase(), new ItemBrickTFC(rock), CT_ROCK_ITEMS));
@@ -99,12 +99,12 @@ public final class ItemsTFC
         {
             Builder<ItemOreTFC> b = new Builder<>();
             for (Ore ore : Ore.values())
-                b.add(register(r, "ore/" + ore.name, new ItemOreTFC(ore), CT_ROCK_ITEMS));
+                b.add(register(r, "ore/" + ore.name(), new ItemOreTFC(ore), CT_ROCK_ITEMS));
             allOreItems = b.build();
 
             for (Ore ore : Ore.values())
                 if (ore.graded)
-                    simpleItems.add(register(r, "ore/small/" + ore.name, new ItemSmallOre(ore), CT_ROCK_ITEMS));
+                    simpleItems.add(register(r, "ore/small/" + ore.name(), new ItemSmallOre(ore), CT_ROCK_ITEMS));
         }
 
         {
