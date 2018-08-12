@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.objects.blocks.stone;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.block.*;
@@ -22,22 +25,37 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFallingBlock;
-import net.dries007.tfc.util.InsertOnlyEnumTable;
-import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockRockVariant extends Block implements IFallingBlock
 {
-    private static final InsertOnlyEnumTable<Rock, Rock.Type, BlockRockVariant> TABLE = new InsertOnlyEnumTable<>(Rock.class, Rock.Type.class);
+    private static final Map<Rock, EnumMap<Rock.Type, BlockRockVariant>> TABLE = new HashMap<>();
 
     public static BlockRockVariant get(Rock rock, Rock.Type type)
     {
-        return TABLE.get(rock, type);
+        return TABLE.get(rock).get(type);
+    }
+
+    public static BlockRockVariant create(Rock rock, Rock.Type type)
+    {
+        switch (type)
+        {
+            case FARMLAND:
+                return new BlockFarmlandTFC(type, rock);
+            case PATH:
+                return new BlockPathTFC(type, rock);
+            case GRASS:
+            case DRY_GRASS:
+            case CLAY_GRASS:
+                return new BlockRockVariantConnected(type, rock);
+            default:
+                return new BlockRockVariant(type, rock);
+        }
     }
 
     public final Rock.Type type;
@@ -46,7 +64,11 @@ public class BlockRockVariant extends Block implements IFallingBlock
     public BlockRockVariant(Rock.Type type, Rock rock)
     {
         super(type.material);
-        TABLE.put(rock, type, this);
+
+        if (!TABLE.containsKey(rock))
+            TABLE.put(rock, new EnumMap<>(Rock.Type.class));
+        TABLE.get(rock).put(type, this);
+
         this.type = type;
         this.rock = rock;
         if (type.isGrass) setTickRandomly(true);
@@ -90,12 +112,12 @@ public class BlockRockVariant extends Block implements IFallingBlock
                 setHarvestLevel("shovel", 0);
                 break;
         }
-        OreDictionaryHelper.registerRockType(this, type, rock);
+        //OreDictionaryHelper.registerRockType(this, type, rock); // todo: fix
     }
 
     public BlockRockVariant getVariant(Rock.Type t)
     {
-        return TABLE.get(rock, t);
+        return TABLE.get(rock).get(t);
     }
 
     @Override

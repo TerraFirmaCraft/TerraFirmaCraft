@@ -33,24 +33,23 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
         return values().stream().filter(x -> x.name().equals(name)).findFirst().orElse(null);
     }
 
-    @Nonnull
-    public String name()
-    {
-        return name;
-    }
-
+    private final ResourceLocation name;
 
     public final boolean graded;
     public final Metal metal;
-    public final String name;
-
     public Ore(ResourceLocation name, @Nullable Metal metal)
     {
         this.graded = (metal != null);
         this.metal = metal;
 
-        this.name = name.getResourcePath();
+        this.name = name;
         setRegistryName(name);
+    }
+
+    @Nonnull
+    public String name()
+    {
+        return name.getResourcePath();
     }
 
     public enum Grade implements IStringSerializable

@@ -20,8 +20,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 
 import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.DataLayer;
 
@@ -37,9 +37,6 @@ public final class ChunkDataTFC
 
     static
     {
-        Arrays.fill(EMPTY.rockLayer1, DataLayer.ERROR);
-        Arrays.fill(EMPTY.rockLayer2, DataLayer.ERROR);
-        Arrays.fill(EMPTY.rockLayer3, DataLayer.ERROR);
         Arrays.fill(EMPTY.drainageLayer, DataLayer.ERROR);
         Arrays.fill(EMPTY.stabilityLayer, DataLayer.ERROR);
         Arrays.fill(EMPTY.seaLevelOffset, -1);
@@ -51,11 +48,11 @@ public final class ChunkDataTFC
         return data == null ? EMPTY : data;
     }
 
-    public static BlockRockVariant getRock1(World world, BlockPos pos) { return get(world, pos).getRockLayer1(pos.getX() & 15, pos.getZ() & 15).block; }
+    public static Rock getRock1(World world, BlockPos pos) { return get(world, pos).getRockLayer1(pos.getX() & 15, pos.getZ() & 15); }
 
-    public static BlockRockVariant getRock2(World world, BlockPos pos) { return get(world, pos).getRockLayer2(pos.getX() & 15, pos.getZ() & 15).block; }
+    public static Rock getRock2(World world, BlockPos pos) { return get(world, pos).getRockLayer2(pos.getX() & 15, pos.getZ() & 15); }
 
-    public static BlockRockVariant getRock3(World world, BlockPos pos) { return get(world, pos).getRockLayer3(pos.getX() & 15, pos.getZ() & 15).block; }
+    public static Rock getRock3(World world, BlockPos pos) { return get(world, pos).getRockLayer3(pos.getX() & 15, pos.getZ() & 15); }
 
     public static float getRainfall(World world, BlockPos pos) { return get(world, pos).getRainfall(); }
 
@@ -67,11 +64,11 @@ public final class ChunkDataTFC
 
     public static int getFishPopulation(World world, BlockPos pos) { return get(world, pos).getFishPopulation(); }
 
-    public static BlockRockVariant getRockHeight(World world, BlockPos pos) { return get(world, pos).getRockLayerHeight(pos.getX() & 15, pos.getY(), pos.getZ() & 15).block; }
+    public static Rock getRockHeight(World world, BlockPos pos) { return get(world, pos).getRockLayerHeight(pos.getX() & 15, pos.getY(), pos.getZ() & 15); }
 
-    private final DataLayer[] rockLayer1 = new DataLayer[256];
-    private final DataLayer[] rockLayer2 = new DataLayer[256];
-    private final DataLayer[] rockLayer3 = new DataLayer[256];
+    private final int[] rockLayer1 = new int[256];
+    private final int[] rockLayer2 = new int[256];
+    private final int[] rockLayer3 = new int[256];
     private final DataLayer[] drainageLayer = new DataLayer[256]; // To be removed / replaced?
     private final DataLayer[] stabilityLayer = new DataLayer[256]; // To be removed / replaced?
     private final int[] seaLevelOffset = new int[256];
@@ -90,7 +87,7 @@ public final class ChunkDataTFC
      * INTERNAL USE ONLY.
      * No need to mark as dirty, since this will only ever be called on worldgen, before the first chunk save.
      */
-    public void setGenerationData(DataLayer[] rockLayer1, DataLayer[] rockLayer2, DataLayer[] rockLayer3, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset,
+    public void setGenerationData(int[] rockLayer1, int[] rockLayer2, int[] rockLayer3, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset,
                                   float rainfall, float baseTemp, float avgTemp, float floraDensity, float floraDiversity)
     {
         this.initialized = true;
@@ -121,25 +118,25 @@ public final class ChunkDataTFC
         return initialized;
     }
 
-    public BlockRockVariant getRock1(BlockPos pos) { return getRock1(pos.getX() & 15, pos.getY() & 15); }
+    public Rock getRock1(BlockPos pos) { return getRock1(pos.getX() & 15, pos.getY() & 15); }
 
-    public BlockRockVariant getRock1(int x, int z) { return getRockLayer1(x, z).block; }
+    public Rock getRock1(int x, int z) { return getRockLayer1(x, z); }
 
-    public BlockRockVariant getRock2(BlockPos pos) { return getRock2(pos.getX() & 15, pos.getY() & 15); }
+    public Rock getRock2(BlockPos pos) { return getRock2(pos.getX() & 15, pos.getY() & 15); }
 
-    public BlockRockVariant getRock2(int x, int z) { return getRockLayer2(x, z).block; }
+    public Rock getRock2(int x, int z) { return getRockLayer2(x, z); }
 
-    public BlockRockVariant getRock3(BlockPos pos) { return getRock3(pos.getX() & 15, pos.getY() & 15); }
+    public Rock getRock3(BlockPos pos) { return getRock3(pos.getX() & 15, pos.getY() & 15); }
 
-    public BlockRockVariant getRock3(int x, int z) { return getRockLayer3(x, z).block; }
+    public Rock getRock3(int x, int z) { return getRockLayer3(x, z); }
 
     public boolean isStable(int x, int z) { return getStabilityLayer(x, z).valueInt == 0; }
 
     public int getDrainage(int x, int z) { return getDrainageLayer(x, z).valueInt; }
 
-    public BlockRockVariant getRockHeight(BlockPos pos) { return getRockHeight(pos.getX(), pos.getY(), pos.getZ()); }
+    public Rock getRockHeight(BlockPos pos) { return getRockHeight(pos.getX(), pos.getY(), pos.getZ()); }
 
-    public BlockRockVariant getRockHeight(int x, int y, int z) { return getRockLayerHeight(x & 15, y, z & 15).block; }
+    public Rock getRockHeight(int x, int y, int z) { return getRockLayerHeight(x & 15, y, z & 15); }
 
     public int getSeaLevelOffset(BlockPos pos) { return getSeaLevelOffset(pos.getX() & 15, pos.getY() & 15); }
 
@@ -179,17 +176,17 @@ public final class ChunkDataTFC
     }
 
     // Directly accessing the DataLayer is discouraged (except for getting the name). It's easy to use the wrong value.
-    public DataLayer getRockLayer1(int x, int z) { return rockLayer1[z << 4 | x]; }
+    public Rock getRockLayer1(int x, int z) { return Rock.get(rockLayer1[z << 4 | x]); }
 
-    public DataLayer getRockLayer2(int x, int z) { return rockLayer2[z << 4 | x]; }
+    public Rock getRockLayer2(int x, int z) { return Rock.get(rockLayer2[z << 4 | x]); }
 
-    public DataLayer getRockLayer3(int x, int z) { return rockLayer3[z << 4 | x]; }
+    public Rock getRockLayer3(int x, int z) { return Rock.get(rockLayer3[z << 4 | x]); }
 
     public DataLayer getStabilityLayer(int x, int z) { return stabilityLayer[z << 4 | x]; }
 
     public DataLayer getDrainageLayer(int x, int z) { return drainageLayer[z << 4 | x]; }
 
-    public DataLayer getRockLayerHeight(int x, int y, int z)
+    public Rock getRockLayerHeight(int x, int y, int z)
     {
         int offset = getSeaLevelOffset(x, z);
         if (y <= ROCKLAYER3 + offset) return getRockLayer3(x, z);
@@ -218,13 +215,15 @@ public final class ChunkDataTFC
         {
             if (instance == null) return null;
             NBTTagCompound root = new NBTTagCompound();
-            root.setTag("rockLayer1", write(instance.rockLayer1));
-            root.setTag("rockLayer2", write(instance.rockLayer2));
-            root.setTag("rockLayer3", write(instance.rockLayer3));
+
+            root.setTag("rockLayer1", new NBTTagIntArray(instance.rockLayer1));
+            root.setTag("rockLayer2", new NBTTagIntArray(instance.rockLayer2));
+            root.setTag("rockLayer3", new NBTTagIntArray(instance.rockLayer3));
+            root.setTag("seaLevelOffset", new NBTTagIntArray(instance.seaLevelOffset));
+
             root.setTag("stabilityLayer", write(instance.stabilityLayer));
             root.setTag("drainageLayer", write(instance.drainageLayer));
 
-            root.setTag("seaLevelOffset", new NBTTagIntArray(instance.seaLevelOffset));
             root.setInteger("fishPopulation", instance.fishPopulation);
 
             root.setFloat("rainfall", instance.rainfall);
@@ -244,13 +243,15 @@ public final class ChunkDataTFC
         public void readNBT(Capability<ChunkDataTFC> capability, ChunkDataTFC instance, EnumFacing side, NBTBase nbt)
         {
             NBTTagCompound root = ((NBTTagCompound) nbt);
-            read(instance.rockLayer1, root.getByteArray("rockLayer1"));
-            read(instance.rockLayer2, root.getByteArray("rockLayer2"));
-            read(instance.rockLayer3, root.getByteArray("rockLayer3"));
+
+            System.arraycopy(root.getIntArray("rockLayer1"), 0, instance.rockLayer1, 0, 256);
+            System.arraycopy(root.getIntArray("rockLayer2"), 0, instance.rockLayer2, 0, 256);
+            System.arraycopy(root.getIntArray("rockLayer3"), 0, instance.rockLayer3, 0, 256);
+            System.arraycopy(root.getIntArray("seaLevelOffset"), 0, instance.seaLevelOffset, 0, 256);
+
             read(instance.stabilityLayer, root.getByteArray("stabilityLayer"));
             read(instance.drainageLayer, root.getByteArray("drainageLayer"));
 
-            System.arraycopy(root.getIntArray("seaLevelOffset"), 0, instance.seaLevelOffset, 0, 256);
             instance.fishPopulation = root.getInteger("fishPopulation");
 
             instance.rainfall = root.getFloat("rainfall");

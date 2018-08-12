@@ -18,7 +18,7 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.util.OreSpawnData;
@@ -126,9 +126,9 @@ public class WorldGenOre implements IWorldGenerator
             chunkData.addSpawnedOre(vein.oreSpawnData.ore, vein.oreSpawnData.size, vein.grade, vein.pos);
 
             // Do checks here that are specific to each vein
-            if (!vein.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0).rock) &&
-                !vein.oreSpawnData.baseRocks.contains(chunkData.getRock2(0, 0).rock) &&
-                !vein.oreSpawnData.baseRocks.contains(chunkData.getRock3(0, 0).rock))
+            if (!vein.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0)) &&
+                !vein.oreSpawnData.baseRocks.contains(chunkData.getRock2(0, 0)) &&
+                !vein.oreSpawnData.baseRocks.contains(chunkData.getRock3(0, 0)))
                 continue;
             if (vein.pos.getY() >= WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(vein.pos))
                 continue;

@@ -55,7 +55,10 @@ public class TFCRegistries
         preBlockRegistries.forEach((e, r) -> MinecraftForge.EVENT_BUS.post(new TFCRegistries.RegisterPreBlock<>(e, r)));
     }
 
-    static IForgeRegistry<Rock> getRocks() { return rockRegistry; }
+    static IForgeRegistry<Rock> getRocks()
+    {
+        return rockRegistry;
+    }
 
     static IForgeRegistry<Ore> getOres()
     {

@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.MapGenBase;
 
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.world.classic.DataLayer;
 
@@ -24,12 +25,12 @@ import static net.dries007.tfc.world.classic.ChunkGenTFC.LAVA;
  */
 public class MapGenCavesTFC extends MapGenBase
 {
-    private final DataLayer[] rockLayer1;
+    private final int[] rockLayer1;
     private final DataLayer[] stabilityLayer;
 
     private float rainfall = 0f;
 
-    public MapGenCavesTFC(DataLayer[] rockLayer1, DataLayer[] stabilityLayer)
+    public MapGenCavesTFC(int[] rockLayer1, DataLayer[] stabilityLayer)
     {
         // todo: add settings?
         this.rockLayer1 = rockLayer1;
@@ -50,37 +51,11 @@ public class MapGenCavesTFC extends MapGenBase
         final int zCoord = chunkZ * 16 + this.rand.nextInt(16);
         final int dlIndex = (zCoord & 15) << 4 | (xCoord & 15);
 
-        double width = 2;
-        int caveChance = 35;
+        double width = 1.5d + rainfall / 500d;
+        int caveChance = 30 + (int) (rainfall / 50d);
 
-        //todo: improve
-        if (rainfall > 250f)
-        {
-            width += 0.5;
-            caveChance -= 5;
-        }
-        else
-        {
-            width -= 0.5;
-            caveChance += 5;
-        }
-
-        switch (rockLayer1[dlIndex].block.rock.category)
-        {
-            case SEDIMENTARY:
-                width += 0.2;
-                runs += 5;
-                break;
-            case METAMORPHIC:
-                width += 0.3;
-                break;
-            case IGNEOUS_INTRUSIVE:
-                width -= 0.5;
-                break;
-            case IGNEOUS_EXTRUSIVE:
-                width -= 0.4;
-                break;
-        }
+        width += Rock.get(rockLayer1[dlIndex]).getRockCategory().caveGenMod;
+        runs += Rock.get(rockLayer1[dlIndex]).getRockCategory().caveFreqMod;
 
         if (yCoord < 32) width *= 0.5;
         else if (yCoord < 64) width *= 0.65;

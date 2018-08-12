@@ -10,10 +10,7 @@ import java.util.function.BiFunction;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 
-import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockPathTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
-import net.dries007.tfc.objects.blocks.stone.BlockRockVariantConnected;
 
 /**
  * Use api.types.Rock / api.types.RockCategory instead
@@ -78,8 +75,8 @@ public enum Rock
         DRY_GRASS(Material.GRASS, false, true),
         CLAY(Material.GRASS, false, false),
         CLAY_GRASS(Material.GRASS, false, true),
-        FARMLAND(Material.GROUND, false, false, BlockFarmlandTFC::new),
-        PATH(Material.GROUND, false, false, BlockPathTFC::new);
+        FARMLAND(Material.GROUND, false, false, null),
+        PATH(Material.GROUND, false, false, null);
 
         public final Material material;
         public final boolean isAffectedByGravity;
@@ -91,7 +88,7 @@ public enum Rock
 
         Type(Material material, boolean isAffectedByGravity, boolean isGrass)
         {
-            this(material, isAffectedByGravity, isGrass, isGrass ? BlockRockVariantConnected::new : BlockRockVariant::new);
+            this(material, isAffectedByGravity, isGrass, null);
         }
 
         Type(Material material, boolean isAffectedByGravity, boolean isGrass, BiFunction<Rock.Type, Rock, BlockRockVariant> supplier)

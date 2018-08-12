@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.blocks;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,21 +13,20 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.init.Blocks;
 
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.wood.BlockPlanksTFC;
-import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockStairsTFC extends BlockStairs
 {
-    private static final InsertOnlyEnumTable<Rock, Rock.Type, BlockStairsTFC> ROCK_TABLE = new InsertOnlyEnumTable<>(Rock.class, Rock.Type.class);
+    private static final Map<Rock, EnumMap<Rock.Type, BlockStairsTFC>> ROCK_TABLE = new HashMap<>();
     private static final Map<Tree, BlockStairsTFC> WOOD_MAP = new HashMap<>();
 
     public static BlockStairsTFC get(Rock rock, Rock.Type type)
     {
-        return ROCK_TABLE.get(rock, type);
+        return ROCK_TABLE.get(rock).get(type);
     }
 
     public static BlockStairsTFC get(Tree wood)
@@ -37,11 +37,15 @@ public class BlockStairsTFC extends BlockStairs
     public BlockStairsTFC(Rock rock, Rock.Type type)
     {
         super(BlockRockVariant.get(rock, type).getDefaultState());
-        ROCK_TABLE.put(rock, type, this);
+
+        if (!ROCK_TABLE.containsKey(rock))
+            ROCK_TABLE.put(rock, new EnumMap<>(Rock.Type.class));
+        ROCK_TABLE.get(rock).put(type, this);
+
         Block c = BlockRockVariant.get(rock, type);
         setHarvestLevel(c.getHarvestTool(c.getDefaultState()), c.getHarvestLevel(c.getDefaultState()));
         OreDictionaryHelper.register(this, "stair");
-        OreDictionaryHelper.registerRockType(this, type, rock, "stair");
+        //OreDictionaryHelper.registerRockType(this, type, rock, "stair"); // todo: fix
     }
 
     public BlockStairsTFC(Tree wood)

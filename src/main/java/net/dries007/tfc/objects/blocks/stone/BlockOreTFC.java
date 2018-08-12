@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 
 @MethodsReturnNonnullByDefault

@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.world.classic;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -15,6 +17,7 @@ public class CustomChunkPrimer extends ChunkPrimer
     private final IBlockState[] data = new IBlockState[65536];
 
     @Override
+    @Nonnull
     public IBlockState getBlockState(int x, int y, int z)
     {
         IBlockState iblockstate = data[x << 12 | z << 8 | y];
@@ -22,7 +25,7 @@ public class CustomChunkPrimer extends ChunkPrimer
     }
 
     @Override
-    public void setBlockState(int x, int y, int z, IBlockState state)
+    public void setBlockState(int x, int y, int z, @Nonnull IBlockState state)
     {
         data[x << 12 | z << 8 | y] = state;
     }

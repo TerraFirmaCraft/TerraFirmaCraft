@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.blocks;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -24,11 +25,10 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.wood.BlockPlanksTFC;
-import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 public abstract class BlockSlabTFC extends BlockSlab
@@ -161,12 +161,12 @@ public abstract class BlockSlabTFC extends BlockSlab
 
     public static class Double extends BlockSlabTFC
     {
-        private static final InsertOnlyEnumTable<Rock, Rock.Type, Double> ROCK_TABLE = new InsertOnlyEnumTable<>(Rock.class, Rock.Type.class);
+        private static final Map<Rock, EnumMap<Rock.Type, Double>> ROCK_TABLE = new HashMap<>();
         private static final Map<Tree, Double> WOOD_MAP = new HashMap<>();
 
         public static Double get(Rock rock, Rock.Type type)
         {
-            return ROCK_TABLE.get(rock, type);
+            return ROCK_TABLE.get(rock).get(type);
         }
 
         public static Double get(Tree wood)
@@ -177,7 +177,11 @@ public abstract class BlockSlabTFC extends BlockSlab
         public Double(Rock rock, Rock.Type type)
         {
             super(rock, type);
-            ROCK_TABLE.put(rock, type, this);
+
+            if (!ROCK_TABLE.containsKey(rock))
+                ROCK_TABLE.put(rock, new EnumMap<>(Rock.Type.class));
+            ROCK_TABLE.get(rock).put(type, this);
+
             // No oredict, because no item.
         }
 
@@ -196,12 +200,12 @@ public abstract class BlockSlabTFC extends BlockSlab
 
     public static class Half extends BlockSlabTFC
     {
-        private static final InsertOnlyEnumTable<Rock, Rock.Type, Half> ROCK_TABLE = new InsertOnlyEnumTable<>(Rock.class, Rock.Type.class);
+        private static final Map<Rock, EnumMap<Rock.Type, Half>> ROCK_TABLE = new HashMap<>();
         private static final Map<Tree, Half> WOOD_MAP = new HashMap<>();
 
         public static Half get(Rock rock, Rock.Type type)
         {
-            return ROCK_TABLE.get(rock, type);
+            return ROCK_TABLE.get(rock).get(type);
         }
 
         public static Half get(Tree wood)
@@ -214,12 +218,16 @@ public abstract class BlockSlabTFC extends BlockSlab
         public Half(Rock rock, Rock.Type type)
         {
             super(rock, type);
-            ROCK_TABLE.put(rock, type, this);
+
+            if (!ROCK_TABLE.containsKey(rock))
+                ROCK_TABLE.put(rock, new EnumMap<>(Rock.Type.class));
+            ROCK_TABLE.get(rock).put(type, this);
+
             doubleSlab = Double.get(rock, type);
             doubleSlab.halfSlab = this;
             halfSlab = this;
             OreDictionaryHelper.register(this, "slab");
-            OreDictionaryHelper.registerRockType(this, type, rock, "slab");
+            //OreDictionaryHelper.registerRockType(this, type, rock, "slab"); // todo: fix
         }
 
         public Half(Tree wood)

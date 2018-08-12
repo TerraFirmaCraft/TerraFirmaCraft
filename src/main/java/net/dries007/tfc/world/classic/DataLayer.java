@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.world.classic;
 
-import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 
 /**
@@ -16,6 +15,8 @@ public final class DataLayer
 {
     public static final DataLayer ERROR = new DataLayer(-1, null, "ERROR", Integer.MIN_VALUE, Float.NaN);
     private static final DataLayer[] LAYERS = new DataLayer[256];
+
+    /*
     public static final DataLayer GRANITE = newBlockDataLayer(0, BlockRockVariant.get(Rock.GRANITE, Rock.Type.RAW), "Granite");
     public static final DataLayer DIORITE = newBlockDataLayer(1, BlockRockVariant.get(Rock.DIORITE, Rock.Type.RAW), "Diorite");
     public static final DataLayer GABBRO = newBlockDataLayer(2, BlockRockVariant.get(Rock.GABBRO, Rock.Type.RAW), "Gabbro");
@@ -37,8 +38,10 @@ public final class DataLayer
     public static final DataLayer SCHIST = newBlockDataLayer(20, BlockRockVariant.get(Rock.SCHIST, Rock.Type.RAW), "Schist");
     public static final DataLayer GNEISS = newBlockDataLayer(21, BlockRockVariant.get(Rock.GNEISS, Rock.Type.RAW), "Gneiss");
     public static final DataLayer MARBLE = newBlockDataLayer(22, BlockRockVariant.get(Rock.MARBLE, Rock.Type.RAW), "Marble");
+    */
 
     // Evapotranspiration
+    /*
     public static final DataLayer EVT_0_125 = newFloatDataLayer(80, "0.125", 0.125f);
     public static final DataLayer EVT_0_25 = newFloatDataLayer(81, "0.25", 0.25f);
     public static final DataLayer EVT_0_5 = newFloatDataLayer(82, "0.5", 0.5f);
@@ -55,14 +58,17 @@ public final class DataLayer
     public static final DataLayer RAIN_2000 = newFloatDataLayer(95, "2000", 2000f);
     public static final DataLayer RAIN_4000 = newFloatDataLayer(96, "4000", 4000f);
     public static final DataLayer RAIN_8000 = newFloatDataLayer(97, "8000", 8000f);
+    */
     public static final DataLayer SEISMIC_STABLE = newIntDataLayer(110, "Stable", 0);
     public static final DataLayer SEISMIC_UNSTABLE = newIntDataLayer(111, "Unstable", 1);
+
     public static final DataLayer DRAINAGE_NONE = newIntDataLayer(120, "None", 0);
     public static final DataLayer DRAINAGE_VERY_POOR = newIntDataLayer(121, "Very Poor", 1);
     public static final DataLayer DRAINAGE_POOR = newIntDataLayer(122, "Poor", 2);
     public static final DataLayer DRAINAGE_NORMAL = newIntDataLayer(123, "Normal", 3);
     public static final DataLayer DRAINAGE_GOOD = newIntDataLayer(124, "Good", 4);
     public static final DataLayer DRAINAGE_VERY_GOOD = newIntDataLayer(125, "Very Good", 5);
+
     public static final DataLayer PH_ACID_HIGH = newIntDataLayer(130, "High Acidity", 0);
     public static final DataLayer PH_ACID_LOW = newIntDataLayer(131, "Low acidity", 1);
     public static final DataLayer PH_NEUTRAL = newIntDataLayer(132, "Neutral", 2);
