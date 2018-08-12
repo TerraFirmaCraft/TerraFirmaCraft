@@ -19,13 +19,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.api.util.Size;
 import net.dries007.tfc.api.util.Weight;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.Powder;
-import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
@@ -138,7 +139,7 @@ public final class ItemsTFC
         for (Tree wood : Tree.values())
             simpleItems.add(register(r, "wood/lumber/" + wood.name(), new ItemLumberTFC(wood), CT_WOOD));
 
-        for (Rock.Category cat : Rock.Category.values())
+        for (RockCategory cat : RockCategory.values())
         {
             simpleItems.add(register(r, "stone/axe/" + cat.name().toLowerCase(), new ItemRockAxe(cat), CT_ROCK_ITEMS));
             simpleItems.add(register(r, "stone/shovel/" + cat.name().toLowerCase(), new ItemRockShovel(cat), CT_ROCK_ITEMS));
