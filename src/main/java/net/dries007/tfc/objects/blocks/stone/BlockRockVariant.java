@@ -9,6 +9,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -25,13 +26,17 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFallingBlock;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class BlockRockVariant extends Block implements IFallingBlock
 {
     private static final Map<Rock, EnumMap<Rock.Type, BlockRockVariant>> TABLE = new HashMap<>();
@@ -112,7 +117,7 @@ public class BlockRockVariant extends Block implements IFallingBlock
                 setHarvestLevel("shovel", 0);
                 break;
         }
-        //OreDictionaryHelper.registerRockType(this, type, rock); // todo: fix
+        OreDictionaryHelper.registerRockType(this, type, rock);
     }
 
     public BlockRockVariant getVariant(Rock.Type t)

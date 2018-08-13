@@ -64,16 +64,15 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
         else // Mineral
         {
             OreDictionaryHelper.register(this, "gem", ore);
-            // todo: fix this
-            /*switch (ore)
+            switch (ore.name())
             {
-                case LAPIS_LAZULI:
+                case "lapis_lazuli":
                     OreDictionaryHelper.register(this, "gem", "lapis");
                     break;
-                case BITUMINOUS_COAL:
+                case "bituminous_coal":
                     OreDictionaryHelper.register(this, "gem", "coal");
                     break;
-            }*/
+            }
         }
     }
 

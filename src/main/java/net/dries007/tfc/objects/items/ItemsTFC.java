@@ -91,7 +91,7 @@ public final class ItemsTFC
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
 
         {
-            for (net.dries007.tfc.api.types.Rock rock : net.dries007.tfc.api.types.Rock.values())
+            for (Rock rock : Rock.values())
                 simpleItems.add(register(r, "rock/" + rock.name().toLowerCase(), new ItemRock(rock), CT_ROCK_ITEMS));
             for (Rock rock : Rock.values())
                 simpleItems.add(register(r, "brick/" + rock.name().toLowerCase(), new ItemBrickTFC(rock), CT_ROCK_ITEMS));

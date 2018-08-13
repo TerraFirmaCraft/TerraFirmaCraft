@@ -8,7 +8,7 @@ package net.dries007.tfc.world.classic;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 
 /**
- * Todo: Rewrite to make typesafe ?
+ * Todo: Get rid. PH is already obselete / Siesmic and drainage can be done much easier similar to rainfall / temperature
  */
 @SuppressWarnings("WeakerAccess")
 public final class DataLayer
@@ -16,49 +16,6 @@ public final class DataLayer
     public static final DataLayer ERROR = new DataLayer(-1, null, "ERROR", Integer.MIN_VALUE, Float.NaN);
     private static final DataLayer[] LAYERS = new DataLayer[256];
 
-    /*
-    public static final DataLayer GRANITE = newBlockDataLayer(0, BlockRockVariant.get(Rock.GRANITE, Rock.Type.RAW), "Granite");
-    public static final DataLayer DIORITE = newBlockDataLayer(1, BlockRockVariant.get(Rock.DIORITE, Rock.Type.RAW), "Diorite");
-    public static final DataLayer GABBRO = newBlockDataLayer(2, BlockRockVariant.get(Rock.GABBRO, Rock.Type.RAW), "Gabbro");
-    public static final DataLayer SHALE = newBlockDataLayer(5, BlockRockVariant.get(Rock.SHALE, Rock.Type.RAW), "Shale");
-    public static final DataLayer CLAYSTONE = newBlockDataLayer(6, BlockRockVariant.get(Rock.CLAYSTONE, Rock.Type.RAW), "Claystone");
-    public static final DataLayer ROCKSALT = newBlockDataLayer(7, BlockRockVariant.get(Rock.ROCKSALT, Rock.Type.RAW), "Rock Salt");
-    public static final DataLayer LIMESTONE = newBlockDataLayer(8, BlockRockVariant.get(Rock.LIMESTONE, Rock.Type.RAW), "Limestone");
-    public static final DataLayer CONGLOMERATE = newBlockDataLayer(9, BlockRockVariant.get(Rock.CONGLOMERATE, Rock.Type.RAW), "Conglomerate");
-    public static final DataLayer DOLOMITE = newBlockDataLayer(10, BlockRockVariant.get(Rock.DOLOMITE, Rock.Type.RAW), "Dolomite");
-    public static final DataLayer CHERT = newBlockDataLayer(11, BlockRockVariant.get(Rock.CHERT, Rock.Type.RAW), "Chert");
-    public static final DataLayer CHALK = newBlockDataLayer(12, BlockRockVariant.get(Rock.CHALK, Rock.Type.RAW), "Chalk");
-    public static final DataLayer RHYOLITE = newBlockDataLayer(13, BlockRockVariant.get(Rock.RHYOLITE, Rock.Type.RAW), "Rhyolite");
-    public static final DataLayer BASALT = newBlockDataLayer(14, BlockRockVariant.get(Rock.BASALT, Rock.Type.RAW), "Basalt");
-    public static final DataLayer ANDESITE = newBlockDataLayer(15, BlockRockVariant.get(Rock.ANDESITE, Rock.Type.RAW), "Andesite");
-    public static final DataLayer DACITE = newBlockDataLayer(16, BlockRockVariant.get(Rock.DACITE, Rock.Type.RAW), "Dacite");
-    public static final DataLayer QUARTZITE = newBlockDataLayer(17, BlockRockVariant.get(Rock.QUARTZITE, Rock.Type.RAW), "Quartzite");
-    public static final DataLayer SLATE = newBlockDataLayer(18, BlockRockVariant.get(Rock.SLATE, Rock.Type.RAW), "Slate");
-    public static final DataLayer PHYLLITE = newBlockDataLayer(19, BlockRockVariant.get(Rock.PHYLLITE, Rock.Type.RAW), "Phyllite");
-    public static final DataLayer SCHIST = newBlockDataLayer(20, BlockRockVariant.get(Rock.SCHIST, Rock.Type.RAW), "Schist");
-    public static final DataLayer GNEISS = newBlockDataLayer(21, BlockRockVariant.get(Rock.GNEISS, Rock.Type.RAW), "Gneiss");
-    public static final DataLayer MARBLE = newBlockDataLayer(22, BlockRockVariant.get(Rock.MARBLE, Rock.Type.RAW), "Marble");
-    */
-
-    // Evapotranspiration
-    /*
-    public static final DataLayer EVT_0_125 = newFloatDataLayer(80, "0.125", 0.125f);
-    public static final DataLayer EVT_0_25 = newFloatDataLayer(81, "0.25", 0.25f);
-    public static final DataLayer EVT_0_5 = newFloatDataLayer(82, "0.5", 0.5f);
-    public static final DataLayer EVT_1 = newFloatDataLayer(83, "1", 1f);
-    public static final DataLayer EVT_2 = newFloatDataLayer(84, "2", 2f);
-    public static final DataLayer EVT_4 = newFloatDataLayer(85, "4", 4f);
-    public static final DataLayer EVT_8 = newFloatDataLayer(86, "8", 8f);
-    public static final DataLayer EVT_16 = newFloatDataLayer(87, "16", 16f);
-    public static final DataLayer RAIN_62_5 = newFloatDataLayer(90, "62.5", 62.5f);
-    public static final DataLayer RAIN_125 = newFloatDataLayer(91, "125", 125f);
-    public static final DataLayer RAIN_250 = newFloatDataLayer(92, "250", 250f);
-    public static final DataLayer RAIN_500 = newFloatDataLayer(93, "500", 500f);
-    public static final DataLayer RAIN_1000 = newFloatDataLayer(94, "1000", 1000f);
-    public static final DataLayer RAIN_2000 = newFloatDataLayer(95, "2000", 2000f);
-    public static final DataLayer RAIN_4000 = newFloatDataLayer(96, "4000", 4000f);
-    public static final DataLayer RAIN_8000 = newFloatDataLayer(97, "8000", 8000f);
-    */
     public static final DataLayer SEISMIC_STABLE = newIntDataLayer(110, "Stable", 0);
     public static final DataLayer SEISMIC_UNSTABLE = newIntDataLayer(111, "Unstable", 1);
 
@@ -81,22 +38,10 @@ public final class DataLayer
         return LAYERS[i];
     }
 
-    private static DataLayer newBlockDataLayer(int i, BlockRockVariant block, String name)
-    {
-        if (LAYERS[i] != null) throw new IllegalArgumentException("Layer " + i + " already in use.");
-        return LAYERS[i] = new DataLayer(i, block, name, Integer.MIN_VALUE, Float.NaN);
-    }
-
     private static DataLayer newIntDataLayer(int i, String name, int value)
     {
         if (LAYERS[i] != null) throw new IllegalArgumentException("Layer " + i + " already in use.");
         return LAYERS[i] = new DataLayer(i, null, name, value, Float.NaN);
-    }
-
-    private static DataLayer newFloatDataLayer(int i, String name, float value)
-    {
-        if (LAYERS[i] != null) throw new IllegalArgumentException("Layer " + i + " already in use.");
-        return LAYERS[i] = new DataLayer(i, null, name, Integer.MIN_VALUE, value);
     }
 
     public final int layerID;

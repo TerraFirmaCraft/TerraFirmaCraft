@@ -59,12 +59,6 @@ import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER3;
 @ParametersAreNonnullByDefault
 public class ChunkGenTFC implements IChunkGenerator
 {
-    //private static final Rock[] ROCK_LAYER_1 = Rock.values().removeIf(x -> x.)
-
-    //public static final DataLayer[] ROCK_LAYER_1 = new DataLayer[] {SHALE, CLAYSTONE, ROCKSALT, LIMESTONE, CONGLOMERATE, DOLOMITE, CHERT, CHALK, RHYOLITE, BASALT, ANDESITE, DACITE, QUARTZITE, SLATE, PHYLLITE, SCHIST, GNEISS, MARBLE, GRANITE, DIORITE, GABBRO};
-    //public static final DataLayer[] ROCK_LAYER_2 = new DataLayer[] {RHYOLITE, BASALT, ANDESITE, DACITE, QUARTZITE, SLATE, PHYLLITE, SCHIST, GNEISS, MARBLE, GRANITE, DIORITE, GABBRO};
-    //public static final DataLayer[] ROCK_LAYER_3 = new DataLayer[] {RHYOLITE, BASALT, ANDESITE, DACITE, GRANITE, DIORITE, GABBRO};
-
     public static final IBlockState STONE = Blocks.STONE.getDefaultState();
     public static final IBlockState AIR = Blocks.AIR.getDefaultState();
     public static final IBlockState SALT_WATER = BlocksTFC.FLUID_SALT_WATER.getDefaultState();
@@ -116,9 +110,6 @@ public class ChunkGenTFC implements IChunkGenerator
     private final double[] noise6 = new double[425];
     private final double[] heightMap = new double[425];
     private final Biome[] biomes = new Biome[324];
-    //private final DataLayer[] rockLayer1 = new DataLayer[256];
-    //private final DataLayer[] rockLayer2 = new DataLayer[256];
-    //private final DataLayer[] rockLayer3 = new DataLayer[256];
     private final DataLayer[] stabilityLayer = new DataLayer[256];
     private final DataLayer[] drainageLayer = new DataLayer[256];
     private final int[] seaLevelOffsetMap = new int[256];
@@ -191,9 +182,6 @@ public class ChunkGenTFC implements IChunkGenerator
 
         world.getBiomeProvider().getBiomes(biomes, chunkX * 16 - 1, chunkZ * 16 - 1, 18, 18);
 
-        //loadLayerGeneratorData(rocksGenLayer1, rockLayer1, chunkX * 16, chunkZ * 16, 16, 16);
-        //loadLayerGeneratorData(rocksGenLayer2, rockLayer2, chunkX * 16, chunkZ * 16, 16, 16);
-        //loadLayerGeneratorData(rocksGenLayer3, rockLayer3, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(stabilityGenLayer, stabilityLayer, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(drainageGenLayer, drainageLayer, chunkX * 16, chunkZ * 16, 16, 16);
 
@@ -232,10 +220,9 @@ public class ChunkGenTFC implements IChunkGenerator
                 {
                     chunkPrimerOut.setBlockState(x, 240, z, Blocks.STAINED_GLASS.getStateFromMeta(Biome.getIdForBiome(getBiomeOffset(x, z)) & 15));
 
-                    // todo: fix
-                    //chunkPrimerOut.setBlockState(x, 242, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer1[z << 4 | x].layerID & 15));
-                    //chunkPrimerOut.setBlockState(x, 244, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer2[z << 4 | x].layerID & 15));
-                    //chunkPrimerOut.setBlockState(x, 246, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer3[z << 4 | x].layerID & 15));
+                    chunkPrimerOut.setBlockState(x, 242, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer1[z << 4 | x] & 15));
+                    chunkPrimerOut.setBlockState(x, 244, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer2[z << 4 | x] & 15));
+                    chunkPrimerOut.setBlockState(x, 246, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer3[z << 4 | x] & 15));
 
                     chunkPrimerOut.setBlockState(x, 252, z, Blocks.STAINED_GLASS.getStateFromMeta(stabilityLayer[x << 4 | z].layerID & 15));
                     chunkPrimerOut.setBlockState(x, 254, z, Blocks.STAINED_GLASS.getStateFromMeta(drainageLayer[x << 4 | z].layerID & 15));
