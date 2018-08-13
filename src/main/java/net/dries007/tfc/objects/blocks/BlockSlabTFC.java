@@ -9,6 +9,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
@@ -25,12 +26,15 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.wood.BlockPlanksTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public abstract class BlockSlabTFC extends BlockSlab
 {
     public static final PropertyEnum<Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
@@ -227,7 +231,7 @@ public abstract class BlockSlabTFC extends BlockSlab
             doubleSlab.halfSlab = this;
             halfSlab = this;
             OreDictionaryHelper.register(this, "slab");
-            //OreDictionaryHelper.registerRockType(this, type, rock, "slab"); // todo: fix
+            OreDictionaryHelper.registerRockType(this, type, rock, "slab");
         }
 
         public Half(Tree wood)
