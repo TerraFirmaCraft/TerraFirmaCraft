@@ -13,6 +13,8 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -25,7 +27,9 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
+import net.dries007.tfc.objects.te.TEWorldItem;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.biomes.BiomeTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -113,6 +117,11 @@ public class WorldGenTrees implements IWorldGenerator
         List<Tree> trees = chunkData.getValidTrees();
         Collections.rotate(trees, -(int) (diversity * (trees.size() - 1f)));
 
+        int stickDensity = 3 + (int) (4f * density + 1.5f * trees.size());
+        if (trees.isEmpty())
+            stickDensity = 1 + (int) (1.5f * density);
+        generateLooseSticks(random, chunkX, chunkZ, world, stickDensity);
+
         // This is to avoid giant regions of no trees whatsoever.
         // It will create sparse trees ( < 1 per chunk) by averaging the climate data to make it more temperate
         // The thought is in very harsh conditions, a few trees might survive outside their typical temperature zone
@@ -159,6 +168,25 @@ public class WorldGenTrees implements IWorldGenerator
 
                 if (GEN_BUSHES.canGenerateTree(world, pos, tree))
                     GEN_BUSHES.generateTree(manager, world, pos, tree, random);
+            }
+        }
+    }
+
+    private void generateLooseSticks(Random rand, int chunkX, int chunkZ, World world, int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            final int x = chunkX * 16 + rand.nextInt(16) + 8;
+            final int z = chunkZ * 16 + rand.nextInt(16) + 8;
+            final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
+
+            if (world.getBlockState(pos).getMaterial().isReplaceable() && !world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).isOpaqueCube())
+            {
+                //noinspection ConstantConditions
+                world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState());
+                TEWorldItem tile = (TEWorldItem) world.getTileEntity(pos);
+                if (tile != null)
+                    tile.inventory.setStackInSlot(0, new ItemStack(Items.STICK));
             }
         }
     }

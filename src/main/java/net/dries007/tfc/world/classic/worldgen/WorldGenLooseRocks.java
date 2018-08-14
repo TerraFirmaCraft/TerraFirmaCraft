@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -58,7 +57,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
         int xoff = chunkX * 16 + 8;
         int zoff = chunkZ * 16 + 8;
 
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 12; i++)
         {
             BlockPos pos = new BlockPos(
                 xoff + random.nextInt(16),
@@ -73,8 +72,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
     private void generateRock(World world, BlockPos pos, @Nullable VeinType vein, Rock rock)
     {
 
-        IBlockState stateAt = world.getBlockState(pos.down());
-        if (world.isAirBlock(pos) && stateAt.isFullCube())
+        if (world.getBlockState(pos).getMaterial().isReplaceable() && !world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).isFullCube())
         {
             //noinspection ConstantConditions
             world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState(), 2);
