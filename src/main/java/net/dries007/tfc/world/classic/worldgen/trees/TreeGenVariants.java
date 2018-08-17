@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.world.classic.worldgen.trees;
@@ -20,7 +19,6 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
 public class TreeGenVariants implements ITreeGenerator
 {
@@ -70,6 +68,6 @@ public class TreeGenVariants implements ITreeGenerator
         BlockPos size = structureBase.getSize().rotate(settings2.getRotation());
         // Begin rotation things
         pos = pos.add(-size.getX() / 2, 0, -size.getZ() / 2);
-        WorldGenTrees.addStructureToWorld(world, pos, structureBase, settings2);
+        ITreeGenerator.addStructureToWorld(world, pos, structureBase, settings2);
     }
 }

@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.world.classic.worldgen.trees;
@@ -26,7 +25,6 @@ import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
-import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 import static net.minecraft.block.BlockLog.LOG_AXIS;
@@ -93,7 +91,7 @@ public class TreeGenKapok implements ITreeGenerator
             return false;
         }
 
-        return ITreeGenerator.checkGenerationConditions(world, pos, treeType);
+        return ITreeGenerator.super.canGenerateTree(world, pos, treeType);
     }
 
     private void placeBranch(TemplateManager manager, World world, BlockPos pos, String name)
@@ -109,7 +107,7 @@ public class TreeGenKapok implements ITreeGenerator
         BlockPos size = structureBase.getSize();
         pos = pos.add(-size.getX() / 2, 0, -size.getZ() / 2);
 
-        WorldGenTrees.addStructureToWorld(world, pos, structureBase, settings);
+        ITreeGenerator.addStructureToWorld(world, pos, structureBase, settings);
     }
 
     private void placeTrunk(World world, BlockPos pos)

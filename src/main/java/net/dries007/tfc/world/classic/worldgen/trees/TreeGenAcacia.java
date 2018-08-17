@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.world.classic.worldgen.trees;
@@ -27,7 +26,6 @@ import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
-import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 import static net.minecraft.block.BlockLog.LOG_AXIS;
@@ -97,7 +95,7 @@ public class TreeGenAcacia implements ITreeGenerator
         BlockPos size = structureBase.getSize();
         pos = pos.add(-size.getX() / 2, 0, -size.getZ() / 2);
 
-        WorldGenTrees.addStructureToWorld(world, pos, structureBase, settings);
+        ITreeGenerator.addStructureToWorld(world, pos, structureBase, settings);
     }
 
     private void placeLog(World world, BlockPos pos, boolean useBark)
