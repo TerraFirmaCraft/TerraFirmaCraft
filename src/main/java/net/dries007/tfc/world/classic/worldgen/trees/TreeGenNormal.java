@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.world.classic.worldgen.trees;
@@ -21,7 +20,6 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
-import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 
@@ -66,10 +64,10 @@ public class TreeGenNormal implements ITreeGenerator
         BlockPos size = structureBase.getSize();
         pos = pos.add(-size.getX() / 2, height, -size.getZ() / 2);
 
-        WorldGenTrees.addStructureToWorld(world, pos, structureBase, settingsFull);
+        ITreeGenerator.addStructureToWorld(world, pos, structureBase, settingsFull);
         if (structureOverlay != null)
         {
-            WorldGenTrees.addStructureToWorld(world, pos, structureOverlay, settingsWeak);
+            ITreeGenerator.addStructureToWorld(world, pos, structureOverlay, settingsWeak);
         }
 
         final IBlockState log = BlockLogTFC.get(tree).getDefaultState().withProperty(PLACED, false);

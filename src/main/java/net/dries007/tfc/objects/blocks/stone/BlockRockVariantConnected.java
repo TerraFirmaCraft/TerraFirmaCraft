@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.blocks.stone;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -12,10 +14,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 
-public class BlockRockVariantConnected extends BlockRockVariant
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class BlockRockVariantConnected extends BlockRockVariantFallable
 {
     // Used for connected textures only.
     public static final PropertyBool NORTH = PropertyBool.create("north");
