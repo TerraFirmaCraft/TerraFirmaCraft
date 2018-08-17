@@ -41,55 +41,6 @@ public class WorldGenTrees implements IWorldGenerator
 
     private static final ITreeGenerator GEN_BUSHES = new TreeGenBushes();
 
-    /**
-     * This is a copy of the method included in the Template class, with some key differences.
-     * This will ignore TEs / Entities, and does less checks for bad usage, since it will only be used for tree worldgen
-     * It will do an additional check that the block is replaceable; important for tree growth; as to not replace other blocks
-     *
-     * @param worldIn     the world
-     * @param pos         the position
-     * @param template    the template
-     * @param placementIn the placement settings
-     */
-    public static void addStructureToWorld(World worldIn, BlockPos pos, Template template, PlacementSettings placementIn)
-    {
-        int flags = 2;
-        ITemplateProcessor templateProcessor = new BlockRotationProcessor(pos, placementIn);
-        StructureBoundingBox structureboundingbox = placementIn.getBoundingBox();
-
-        for (Template.BlockInfo template$blockinfo : template.blocks)
-        {
-            BlockPos blockpos = Template.transformedBlockPos(placementIn, template$blockinfo.pos).add(pos);
-            Template.BlockInfo template$blockinfo1 = templateProcessor.processBlock(worldIn, blockpos, template$blockinfo);
-
-            if (template$blockinfo1 != null)
-            {
-                Block block1 = template$blockinfo1.blockState.getBlock();
-
-                if ((!placementIn.getIgnoreStructureBlock() || block1 != Blocks.STRUCTURE_BLOCK) && (structureboundingbox == null || structureboundingbox.isVecInside(blockpos)))
-                {
-                    IBlockState iblockstate = template$blockinfo1.blockState.withMirror(placementIn.getMirror());
-                    IBlockState iblockstate1 = iblockstate.withRotation(placementIn.getRotation());
-
-                    if (worldIn.getBlockState(blockpos).getMaterial().isReplaceable() || worldIn.getBlockState(blockpos).getBlock() instanceof BlockLeavesTFC)
-                        worldIn.setBlockState(blockpos, iblockstate1, flags);
-
-                }
-            }
-        }
-
-        for (Template.BlockInfo template$blockinfo2 : template.blocks)
-        {
-            BlockPos blockpos1 = Template.transformedBlockPos(placementIn, template$blockinfo2.pos).add(pos);
-
-            if (structureboundingbox == null || structureboundingbox.isVecInside(blockpos1))
-            {
-                worldIn.notifyNeighborsRespectDebug(blockpos1, template$blockinfo2.blockState.getBlock(), false);
-            }
-
-        }
-    }
-
     private Tree getTree(List<Tree> trees, float density, Random random)
     {
         if (trees.size() == 1 || random.nextFloat() < 0.8f - density * 0.4f)

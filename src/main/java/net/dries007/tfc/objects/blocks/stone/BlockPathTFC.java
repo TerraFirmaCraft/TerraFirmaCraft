@@ -7,6 +7,8 @@ package net.dries007.tfc.objects.blocks.stone;
 
 import java.util.Random;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -15,11 +17,14 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
 
-public class BlockPathTFC extends BlockRockVariant
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class BlockPathTFC extends BlockRockVariantFallable
 {
-    protected static final AxisAlignedBB GRASS_PATH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
+    private static final AxisAlignedBB GRASS_PATH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
 
     public BlockPathTFC(Rock.Type type, Rock rock)
     {
