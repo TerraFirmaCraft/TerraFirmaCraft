@@ -19,11 +19,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -77,6 +80,23 @@ public class BlockLeavesTFC extends BlockLeaves
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos)
     {
         return NULL_AABB;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Nonnull
+    @Override
+    public BlockRenderLayer getRenderLayer()
+    {
+        // This is dirty but it works
+        return Blocks.LEAVES.getDefaultState().isOpaqueCube() ? BlockRenderLayer.SOLID : BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean shouldSideBeRendered(@Nonnull IBlockState blockState, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, @Nonnull EnumFacing side)
+    {
+        return !Blocks.LEAVES.getDefaultState().isOpaqueCube() && blockAccess.getBlockState(pos.offset(side)).getBlock() == this || super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 
     @Override
