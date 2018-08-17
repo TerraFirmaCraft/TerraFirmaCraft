@@ -76,7 +76,7 @@ public class BlockSheet extends Block
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACE, EnumFacing.getFront(meta));
+        return this.getDefaultState().withProperty(FACE, EnumFacing.byIndex(meta));
     }
 
     @Override

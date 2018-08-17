@@ -67,9 +67,9 @@ public class ItemGoldPan extends ItemTFC
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack)
+    public String getTranslationKey(ItemStack stack)
     {
-        return super.getUnlocalizedName(stack) + "." + TYPES[stack.getItemDamage()];
+        return super.getTranslationKey(stack) + "." + TYPES[stack.getItemDamage()];
     }
 
     @Override

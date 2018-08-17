@@ -203,6 +203,7 @@ public class BlockRockVariant extends Block implements IFallingBlock
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         if (!this.type.isAffectedByGravity) return;
@@ -264,7 +265,7 @@ public class BlockRockVariant extends Block implements IFallingBlock
 
     @Override
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return type.isGrass ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
     }

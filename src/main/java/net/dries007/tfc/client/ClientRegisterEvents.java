@@ -202,7 +202,7 @@ public final class ClientRegisterEvents
     private static void registerEnumBasedMetaItems(String prefix, Enum e, Item item)
     {
         //noinspection ConstantConditions
-        String registryName = item.getRegistryName().getResourcePath();
+        String registryName = item.getRegistryName().getPath();
         StringBuilder path = new StringBuilder(MOD_ID).append(':');
         if (!Strings.isNullOrEmpty(prefix)) path.append(prefix).append('/');
         path.append(e.name());

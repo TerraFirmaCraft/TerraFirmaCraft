@@ -58,7 +58,8 @@ public class BlockWorkbenchTFC extends BlockWorkbench
 
     @SideOnly(Side.CLIENT)
     @Nonnull
-    public BlockRenderLayer getBlockLayer()
+    @Override
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.TRANSLUCENT;
     }
@@ -95,6 +96,7 @@ public class BlockWorkbenchTFC extends BlockWorkbench
         /**
          * Get the name of this object. For players this returns their username
          */
+        @Override
         public String getName()
         {
             return "crafting_table";
@@ -103,6 +105,7 @@ public class BlockWorkbenchTFC extends BlockWorkbench
         /**
          * Returns true if this thing is named
          */
+        @Override
         public boolean hasCustomName()
         {
             return false;
@@ -111,16 +114,19 @@ public class BlockWorkbenchTFC extends BlockWorkbench
         /**
          * Get the formatted ChatComponent that will be used for the sender's username in chat
          */
+        @Override
         public ITextComponent getDisplayName()
         {
-            return new TextComponentTranslation(workbenchTFC.getUnlocalizedName() + ".name");
+            return new TextComponentTranslation(workbenchTFC.getTranslationKey() + ".name");
         }
 
+        @Override
         public Container createContainer(InventoryPlayer inv, EntityPlayer player)
         {
             return new ContainerWorkbenchTFC(inv, world, position, workbenchTFC);
         }
 
+        @Override
         public String getGuiID()
         {
             return "minecraft:crafting_table";

@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.te;
@@ -80,7 +79,6 @@ public class TESaplingTFC extends TileEntity
         nbt.setInteger("y", this.getPos().getY());
         nbt.setInteger("z", this.getPos().getZ());
         return writeToNBT(nbt);
-
     }
 
     @Override
@@ -94,5 +92,4 @@ public class TESaplingTFC extends TileEntity
     {
         readFromNBT(tag);
     }
-
 }

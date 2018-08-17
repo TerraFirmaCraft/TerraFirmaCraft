@@ -39,7 +39,6 @@ import net.dries007.tfc.util.Helpers;
 @ParametersAreNonnullByDefault
 public class BlockIngotPile extends Block implements ITileEntityProvider
 {
-
     public BlockIngotPile()
     {
         super(Material.IRON);
@@ -209,5 +208,4 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
         }
         return false;
     }
-
 }

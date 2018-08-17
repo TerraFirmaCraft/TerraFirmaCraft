@@ -57,10 +57,10 @@ public class ItemGem extends ItemTFC
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack)
+    public String getTranslationKey(ItemStack stack)
     {
         Gem.Grade grade = getGradeFromStack(stack);
-        return super.getUnlocalizedName(stack) + "." + grade.name().toLowerCase();
+        return super.getTranslationKey(stack) + "." + grade.name().toLowerCase();
     }
 
     @Override

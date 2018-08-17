@@ -48,6 +48,8 @@ public class BlockDoorTFC extends BlockDoor
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
+    // todo: Is private, but it might be worth it making protected/public
+    // @Override
     public Item getItem()
     {
         return ItemDoorTFC.get(wood);

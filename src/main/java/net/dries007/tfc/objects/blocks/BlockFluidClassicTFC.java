@@ -28,6 +28,7 @@ public class BlockFluidClassicTFC extends BlockFluidClassic
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         if (rand.nextInt(4) != 0) return;

@@ -49,7 +49,7 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
     @Nonnull
     public String name()
     {
-        return name.getResourcePath();
+        return name.getPath();
     }
 
     public enum Grade implements IStringSerializable

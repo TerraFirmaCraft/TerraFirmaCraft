@@ -510,7 +510,7 @@ public final class BlocksTFC
     private static <T extends Block> T register(IForgeRegistry<Block> r, String name, T block)
     {
         block.setRegistryName(MOD_ID, name);
-        block.setUnlocalizedName(MOD_ID + "." + name.replace('/', '.'));
+        block.setTranslationKey(MOD_ID + "." + name.replace('/', '.'));
         r.register(block);
         return block;
     }
