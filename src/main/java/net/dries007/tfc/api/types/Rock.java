@@ -14,6 +14,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import static net.dries007.tfc.api.types.Rock.FallingBlockType.*;
+
 /**
  * todo: document API
  */
@@ -79,29 +81,40 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
 
     public enum Type
     {
-        RAW(Material.ROCK, false, false),
-        SMOOTH(Material.ROCK, false, false),
-        COBBLE(Material.ROCK, true, false),
-        BRICKS(Material.ROCK, false, false),
-        SAND(Material.SAND, true, false),
-        GRAVEL(Material.SAND, true, false),
-        DIRT(Material.GROUND, false, false),
-        GRASS(Material.GRASS, false, true),
-        DRY_GRASS(Material.GRASS, false, true),
-        CLAY(Material.GRASS, false, false),
-        CLAY_GRASS(Material.GRASS, false, true),
-        FARMLAND(Material.GROUND, false, false),
-        PATH(Material.GROUND, false, false);
+        RAW(Material.ROCK, NO_FALL, false), // Todo: add collapsing when broken
+        SMOOTH(Material.ROCK, NO_FALL, false),
+        COBBLE(Material.ROCK, FALL_HORIZONTAL, false),
+        BRICKS(Material.ROCK, NO_FALL, false),
+        SAND(Material.SAND, FALL_HORIZONTAL, false),
+        GRAVEL(Material.SAND, FALL_HORIZONTAL, false),
+        DIRT(Material.GROUND, FALL_HORIZONTAL, false),
+        GRASS(Material.GRASS, FALL_HORIZONTAL, true),
+        DRY_GRASS(Material.GRASS, FALL_HORIZONTAL, true),
+        CLAY(Material.GRASS, FALL_VERTICAL, false),
+        CLAY_GRASS(Material.GRASS, FALL_VERTICAL, true),
+        FARMLAND(Material.GROUND, FALL_VERTICAL, false),
+        PATH(Material.GROUND, FALL_VERTICAL, false);
 
         public final Material material;
-        public final boolean isAffectedByGravity;
         public final boolean isGrass;
 
-        Type(Material material, boolean isAffectedByGravity, boolean isGrass)
+        private final FallingBlockType gravType;
+
+        Type(Material material, FallingBlockType gravType, boolean isGrass)
         {
             this.material = material;
-            this.isAffectedByGravity = isAffectedByGravity;
+            this.gravType = gravType;
             this.isGrass = isGrass;
+        }
+
+        public boolean canFall()
+        {
+            return gravType != NO_FALL;
+        }
+
+        public boolean canFallHorizontal()
+        {
+            return gravType == FALL_HORIZONTAL;
         }
 
         public Type getNonGrassVersion()
@@ -131,5 +144,12 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
             }
             throw new IllegalArgumentException("You cannot get grass from rock types.");
         }
+    }
+
+    protected enum FallingBlockType
+    {
+        NO_FALL,
+        FALL_VERTICAL,
+        FALL_HORIZONTAL
     }
 }
