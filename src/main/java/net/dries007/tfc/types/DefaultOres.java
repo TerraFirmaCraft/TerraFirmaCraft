@@ -19,7 +19,6 @@ import static net.dries007.tfc.Constants.MOD_ID;
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class DefaultOres
 {
-
     private static final ResourceLocation NATIVE_COPPER = new ResourceLocation(MOD_ID, "native_copper");
     private static final ResourceLocation NATIVE_GOLD = new ResourceLocation(MOD_ID, "native_gold");
     private static final ResourceLocation NATIVE_PLATINUM = new ResourceLocation(MOD_ID, "native_platinum");
