@@ -5,10 +5,8 @@
 
 package net.dries007.tfc.objects.blocks.stone;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.*;
@@ -27,6 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
@@ -37,7 +36,7 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockRockVariant extends Block implements IFallingBlock
+public class BlockRockVariant extends Block
 {
     private static final Map<Rock, EnumMap<Rock.Type, BlockRockVariant>> TABLE = new HashMap<>();
 
@@ -50,6 +49,8 @@ public class BlockRockVariant extends Block implements IFallingBlock
     {
         switch (type)
         {
+            case RAW:
+                return new BlockRockRaw(type, rock);
             case FARMLAND:
                 return new BlockFarmlandTFC(type, rock);
             case PATH:
@@ -58,6 +59,12 @@ public class BlockRockVariant extends Block implements IFallingBlock
             case DRY_GRASS:
             case CLAY_GRASS:
                 return new BlockRockVariantConnected(type, rock);
+            case SAND:
+            case DIRT:
+            case CLAY:
+            case GRAVEL:
+            case COBBLE:
+                return new BlockRockVariantFallable(type, rock);
             default:
                 return new BlockRockVariant(type, rock);
         }
@@ -126,12 +133,6 @@ public class BlockRockVariant extends Block implements IFallingBlock
     }
 
     @Override
-    public boolean shouldFall(IBlockState state, World world, BlockPos pos)
-    {
-        return type.isAffectedByGravity && IFallingBlock.super.shouldFall(state, world, pos);
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("deprecation")
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side)
@@ -180,61 +181,11 @@ public class BlockRockVariant extends Block implements IFallingBlock
         super.randomTick(world, pos, state, rand);
     }
 
-    @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
-        super.updateTick(worldIn, pos, state, rand);
-        if (worldIn.isRemote) return;
-        if (shouldFall(state, worldIn, pos))
-        {
-            if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
-            {
-                worldIn.spawnEntity(new EntityFallingBlockTFC(worldIn, pos, this, worldIn.getBlockState(pos)));
-            }
-            else
-            {
-                worldIn.setBlockToAir(pos);
-                pos = pos.add(0, -1, 0);
-                while (canFallThrough(worldIn.getBlockState(pos)) && pos.getY() > 0)
-                    pos = pos.add(0, -1, 0);
-                if (pos.getY() > 0) worldIn.setBlockState(pos.up(), state); // Includes Forge's fix for data loss.
-            }
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
-    {
-        if (!this.type.isAffectedByGravity) return;
-        if (rand.nextInt(16) != 0) return;
-        if (shouldFall(stateIn, worldIn, pos))
-        {
-            double d0 = (double) ((float) pos.getX() + rand.nextFloat());
-            double d1 = (double) pos.getY() - 0.05D;
-            double d2 = (double) ((float) pos.getZ() + rand.nextFloat());
-            worldIn.spawnParticle(EnumParticleTypes.FALLING_DUST, d0, d1, d2, 0.0D, 0.0D, 0.0D, Block.getStateId(stateIn));
-        }
-    }
-
-    // IDK what the alternative is supposed to be, so I'm gonna continue using this.
-    @SuppressWarnings("deprecation")
-    @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (shouldFall(state, worldIn, pos)) worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
-    }
-
+    // This only affects things that tick constantly AFAIK, not random ticks.
     @Override
     public int tickRate(World worldIn)
     {
         return 1; // todo: tickrate in vanilla is 2, in tfc1710 it's 10
-    }
-
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if (shouldFall(state, worldIn, pos)) worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
     }
 
     @Override
