@@ -32,7 +32,6 @@ import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 @MethodsReturnNonnullByDefault
 public class TELogPile extends TESidedInventory implements ITickable
 {
-
     public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "log_pile");
 
     private static final int NUM_SLOTS = 4;
@@ -54,6 +53,7 @@ public class TELogPile extends TESidedInventory implements ITickable
         burning = false;
     }
 
+    @Override
     public void update()
     {
         if (world.isRemote) { return; }

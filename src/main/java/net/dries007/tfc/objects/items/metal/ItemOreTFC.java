@@ -82,11 +82,11 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack)
+    public String getTranslationKey(ItemStack stack)
     {
         Ore.Grade grade = getGradeFromStack(stack);
-        if (grade == Ore.Grade.NORMAL) return super.getUnlocalizedName(stack);
-        return super.getUnlocalizedName(stack) + "." + grade.getName();
+        if (grade == Ore.Grade.NORMAL) return super.getTranslationKey(stack);
+        return super.getTranslationKey(stack) + "." + grade.getName();
     }
 
     @Override

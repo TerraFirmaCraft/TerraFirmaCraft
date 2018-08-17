@@ -77,7 +77,7 @@ public class ClientEvents
         if (ConfigTFC.GENERAL.debug && mc.gameSettings.showDebugInfo)
         {
             BlockPos blockpos = new BlockPos(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().getEntityBoundingBox().minY, mc.getRenderViewEntity().posZ);
-            Chunk chunk = mc.world.getChunkFromBlockCoords(blockpos);
+            Chunk chunk = mc.world.getChunk(blockpos);
             if (mc.world.isBlockLoaded(blockpos) && !chunk.isEmpty())
             {
                 final int x = blockpos.getX() & 15, z = blockpos.getZ() & 15;

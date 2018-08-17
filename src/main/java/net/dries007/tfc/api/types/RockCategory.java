@@ -64,7 +64,7 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
 
     public String name()
     {
-        return name.getResourcePath();
+        return name.getPath();
     }
 
     @Nonnull

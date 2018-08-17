@@ -139,7 +139,7 @@ public class BlockLogTFC extends BlockLog
     }
 
     @Override
-    public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
+    public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
     {
         // The itemstack is a cheeky hack
         if (!worldIn.isRemote)

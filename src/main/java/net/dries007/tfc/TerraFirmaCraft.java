@@ -22,7 +22,6 @@ import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.cmd.TreeGenCommand;
-import net.dries007.tfc.objects.CreativeTabsTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -119,7 +118,6 @@ public class TerraFirmaCraft
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
 
         OreDictionaryHelper.init();
-        CreativeTabsTFC.init();
         ItemsTFC.init();
 
         worldTypeTFC = new WorldTypeTFC();

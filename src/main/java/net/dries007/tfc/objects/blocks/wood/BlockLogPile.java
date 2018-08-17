@@ -71,6 +71,7 @@ public class BlockLogPile extends Block implements ITileEntityProvider
         return this.getDefaultState().withProperty(AXIS, meta == 0).withProperty(ONFIRE, meta >= 2);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
         return (state.getValue(AXIS) ? 0 : 1) + (state.getValue(ONFIRE) ? 2 : 0);
@@ -168,6 +169,7 @@ public class BlockLogPile extends Block implements ITileEntityProvider
         super.harvestBlock(worldIn, player, pos, state, te, stack);
     }
 
+    @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, AXIS, ONFIRE);

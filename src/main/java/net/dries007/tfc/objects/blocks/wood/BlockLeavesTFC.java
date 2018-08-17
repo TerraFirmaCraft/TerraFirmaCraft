@@ -19,14 +19,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -89,7 +86,8 @@ public class BlockLeavesTFC extends BlockLeaves
         doLeafDecay(world, pos, state);
     }
 
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    @Override
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         //Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
         entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
@@ -120,14 +118,6 @@ public class BlockLeavesTFC extends BlockLeaves
         return Item.getItemFromBlock(BlockSaplingTFC.get(wood));
     }
 
-    @SideOnly(Side.CLIENT)
-    @Nonnull
-    public BlockRenderLayer getBlockLayer()
-    {
-        // This is dirty but it works
-        return Blocks.LEAVES.isOpaqueCube(null) ? BlockRenderLayer.SOLID : BlockRenderLayer.CUTOUT_MIPPED;
-    }
-
     @Override
     @Nonnull
     public BlockPlanks.EnumType getWoodType(int meta)
@@ -142,14 +132,8 @@ public class BlockLeavesTFC extends BlockLeaves
         // Don't do vanilla decay
     }
 
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(@Nonnull IBlockState blockState, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, @Nonnull EnumFacing side)
-    {
-        return !Blocks.LEAVES.isOpaqueCube(null) && blockAccess.getBlockState(pos.offset(side)).getBlock() == this || super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-    }
-
-    @Nonnull
     @Override
+    @Nonnull
     public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
         return ImmutableList.of(new ItemStack(this));

@@ -69,9 +69,9 @@ public abstract class BlockSlabTFC extends BlockSlab
     }
 
     @Override
-    public String getUnlocalizedName(int meta)
+    public String getTranslationKey(int meta)
     {
-        return getUnlocalizedName();
+        return super.getTranslationKey();
     }
 
     @SuppressWarnings("deprecation")
@@ -157,6 +157,7 @@ public abstract class BlockSlabTFC extends BlockSlab
     {
         DEFAULT;
 
+        @Override
         public String getName()
         {
             return "default";
@@ -196,6 +197,7 @@ public abstract class BlockSlabTFC extends BlockSlab
             // No oredict, because no item.
         }
 
+        @Override
         public boolean isDouble()
         {
             return true;
@@ -246,11 +248,10 @@ public abstract class BlockSlabTFC extends BlockSlab
             OreDictionaryHelper.register(this, "slab", "wood", wood);
         }
 
+        @Override
         public boolean isDouble()
         {
             return false;
         }
     }
-
-
 }

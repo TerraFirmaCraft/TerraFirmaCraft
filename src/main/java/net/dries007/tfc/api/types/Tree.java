@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.api.types;
@@ -105,7 +104,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
 
     public String name()
     {
-        return name.getResourcePath();
+        return name.getPath();
     }
 
     public void makeTreeWithoutChecking(TemplateManager manager, World world, BlockPos pos, Random rand)

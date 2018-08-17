@@ -44,7 +44,7 @@ public final class ChunkDataTFC
 
     public static ChunkDataTFC get(World world, BlockPos pos)
     {
-        ChunkDataTFC data = world.getChunkFromBlockCoords(pos).getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
+        ChunkDataTFC data = world.getChunk(pos).getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
         return data == null ? EMPTY : data;
     }
 

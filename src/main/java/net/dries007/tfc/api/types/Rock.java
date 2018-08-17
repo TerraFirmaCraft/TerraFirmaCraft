@@ -64,7 +64,7 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
     @Nonnull
     public String name()
     {
-        return name.getResourcePath();
+        return name.getPath();
     }
 
     public int getId()

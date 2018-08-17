@@ -128,13 +128,13 @@ public final class ItemsTFC
         BlocksTFC.getAllInventoryItemBlocks().forEach((x, y) -> registerItemBlock(r, x, y));
 
         for (BlockLogTFC log : BlocksTFC.getAllLogBlocks())
-            simpleItems.add(register(r, log.getRegistryName().getResourcePath(), new ItemLogTFC(log), CT_WOOD));
+            simpleItems.add(register(r, log.getRegistryName().getPath(), new ItemLogTFC(log), CT_WOOD));
 
         for (BlockDoorTFC door : BlocksTFC.getAllDoorBlocks())
-            simpleItems.add(register(r, door.getRegistryName().getResourcePath(), new ItemDoorTFC(door), CT_DECORATIONS));
+            simpleItems.add(register(r, door.getRegistryName().getPath(), new ItemDoorTFC(door), CT_DECORATIONS));
 
         for (BlockSlabTFC.Half slab : BlocksTFC.getAllSlabBlocks())
-            simpleItems.add(register(r, slab.getRegistryName().getResourcePath(), new ItemSlabTFC(slab, slab, slab.doubleSlab), CT_DECORATIONS));
+            simpleItems.add(register(r, slab.getRegistryName().getPath(), new ItemSlabTFC(slab, slab, slab.doubleSlab), CT_DECORATIONS));
 
         for (Tree wood : Tree.values())
             simpleItems.add(register(r, "wood/lumber/" + wood.name(), new ItemLumberTFC(wood), CT_WOOD));
@@ -239,7 +239,7 @@ public final class ItemsTFC
         try
         {
             //noinspection ConstantConditions
-            r.register(itemBlockClass.getDeclaredConstructor(Block.class).newInstance(block).setRegistryName(block.getRegistryName()).setCreativeTab(block.getCreativeTabToDisplayOn()));
+            r.register(itemBlockClass.getDeclaredConstructor(Block.class).newInstance(block).setRegistryName(block.getRegistryName()).setCreativeTab(block.getCreativeTab()));
         }
         catch (Exception e)
         {
@@ -250,13 +250,13 @@ public final class ItemsTFC
     private static void registerItemBlock(IForgeRegistry<Item> r, Block block)
     {
         //noinspection ConstantConditions
-        r.register(new ItemBlock(block).setRegistryName(block.getRegistryName()).setCreativeTab(block.getCreativeTabToDisplayOn()));
+        r.register(new ItemBlock(block).setRegistryName(block.getRegistryName()).setCreativeTab(block.getCreativeTab()));
     }
 
     private static <T extends Item> T register(IForgeRegistry<Item> r, String name, T item, CreativeTabs ct)
     {
         item.setRegistryName(MOD_ID, name);
-        item.setUnlocalizedName(MOD_ID + "." + name.replace('/', '.'));
+        item.setTranslationKey(MOD_ID + "." + name.replace('/', '.'));
         item.setCreativeTab(ct);
         r.register(item);
         return item;
