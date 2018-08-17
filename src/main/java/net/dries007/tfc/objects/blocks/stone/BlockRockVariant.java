@@ -5,17 +5,21 @@
 
 package net.dries007.tfc.objects.blocks.stone;
 
-import java.util.*;
-import javax.annotation.Nullable;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockFarmland;
+import net.minecraft.block.BlockGrassPath;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -25,13 +29,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IFallingBlock;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
@@ -179,13 +180,6 @@ public class BlockRockVariant extends Block
         if (world.isRemote) return;
         if (type.isGrass) Helpers.spreadGrass(world, pos, state, rand);
         super.randomTick(world, pos, state, rand);
-    }
-
-    // This only affects things that tick constantly AFAIK, not random ticks.
-    @Override
-    public int tickRate(World worldIn)
-    {
-        return 1; // todo: tickrate in vanilla is 2, in tfc1710 it's 10
     }
 
     @Override
