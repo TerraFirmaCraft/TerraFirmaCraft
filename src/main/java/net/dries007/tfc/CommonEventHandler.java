@@ -24,12 +24,12 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import net.dries007.tfc.api.util.Size;
-import net.dries007.tfc.api.util.Weight;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TELogPile;
-import net.dries007.tfc.util.CapabilityItemSize;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFireable;
 import net.dries007.tfc.util.IPlacableItem;

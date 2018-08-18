@@ -7,24 +7,25 @@ package net.dries007.tfc.objects.items.ceramics;
 
 import net.minecraft.item.ItemStack;
 
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class ItemFilledMold extends ItemFiredPottery implements IMetalObject
 {
-    private static final InsertOnlyEnumTable<Metal, Metal.ItemType, ItemFilledMold> TABLE = new InsertOnlyEnumTable<>(Metal.class, Metal.ItemType.class);
+    private static final InsertOnlyEnumTable<MetalEnum, MetalType, ItemFilledMold> TABLE = new InsertOnlyEnumTable<>(MetalEnum.class, MetalType.class);
 
-    public static ItemFilledMold get(Metal metal, Metal.ItemType type)
+    public static ItemFilledMold get(MetalEnum metal, MetalType type)
     {
         return TABLE.get(metal, type);
     }
 
-    public final Metal metal;
-    public final Metal.ItemType type;
+    public final MetalEnum metal;
+    public final MetalType type;
 
-    public ItemFilledMold(Metal.ItemType type, Metal metal)
+    public ItemFilledMold(MetalType type, MetalEnum metal)
     {
         this.type = type;
         this.metal = metal;
@@ -36,7 +37,7 @@ public class ItemFilledMold extends ItemFiredPottery implements IMetalObject
     }
 
     @Override
-    public Metal getMetal(ItemStack stack)
+    public MetalEnum getMetal(ItemStack stack)
     {
         return metal;
     }

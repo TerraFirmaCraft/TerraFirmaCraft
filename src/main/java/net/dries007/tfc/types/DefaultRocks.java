@@ -8,7 +8,6 @@ package net.dries007.tfc.types;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
@@ -50,8 +49,7 @@ public class DefaultRocks
     @SubscribeEvent
     public static void onPreRegisterRockCategory(TFCRegistries.RegisterPreBlock<RockCategory> event)
     {
-        IForgeRegistry<RockCategory> r = event.getRegistry();
-        r.registerAll(
+        event.getRegistry().registerAll(
             new RockCategory(IGNEOUS_INTRUSIVE, ToolMaterialsTFC.IG_IN, true, true, true, -0.4f, 0f),
             new RockCategory(IGNEOUS_EXTRUSIVE, ToolMaterialsTFC.IG_EX, true, true, true, -0.5f, 0f),
             new RockCategory(SEDIMENTARY, ToolMaterialsTFC.SED, true, false, false, 0.3f, 5f),
@@ -62,8 +60,7 @@ public class DefaultRocks
     @SubscribeEvent
     public static void onPreRegisterRock(TFCRegistries.RegisterPreBlock<Rock> event)
     {
-        IForgeRegistry<Rock> r = event.getRegistry();
-        r.registerAll(
+        event.getRegistry().registerAll(
             new Rock(GRANITE, IGNEOUS_INTRUSIVE),
             new Rock(DIORITE, IGNEOUS_INTRUSIVE),
             new Rock(GABBRO, IGNEOUS_INTRUSIVE),

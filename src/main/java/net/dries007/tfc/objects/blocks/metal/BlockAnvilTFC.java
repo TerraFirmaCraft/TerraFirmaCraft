@@ -26,7 +26,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 
 @ParametersAreNonnullByDefault
@@ -34,22 +35,23 @@ import net.dries007.tfc.objects.items.metal.ItemAnvil;
 public class BlockAnvilTFC extends Block
 {
     public static final PropertyBool AXIS = PropertyBool.create("axis");
-    private static final EnumMap<Metal, BlockAnvilTFC> MAP = new EnumMap<>(Metal.class);
+    private static final EnumMap<MetalEnum, BlockAnvilTFC> MAP = new EnumMap<>(MetalEnum.class);
     private static final AxisAlignedBB AABB_Z = new AxisAlignedBB(0.1875, 0, 0, 0.8125, 0.625, 1);
     private static final AxisAlignedBB AABB_X = new AxisAlignedBB(0, 0, 0.1875, 1, 0.625, 0.8125);
 
-    public static BlockAnvilTFC get(Metal metal)
+    public static BlockAnvilTFC get(MetalEnum metal)
     {
         return MAP.get(metal);
     }
 
-    public static ItemStack get(Metal metal, int amount)
+    public static ItemStack get(MetalEnum metal, int amount)
     {
         return new ItemStack(MAP.get(metal), amount);
     }
-    public final Metal metal;
 
-    public BlockAnvilTFC(Metal metal)
+    public final MetalEnum metal;
+
+    public BlockAnvilTFC(MetalEnum metal)
     {
         super(Material.IRON);
 
@@ -114,7 +116,7 @@ public class BlockAnvilTFC extends Block
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return ItemAnvil.get(metal, Metal.ItemType.ANVIL);
+        return ItemAnvil.get(metal, MetalType.ANVIL);
     }
 
     @Override
@@ -132,6 +134,6 @@ public class BlockAnvilTFC extends Block
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        return new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL));
+        return new ItemStack(ItemAnvil.get(metal, MetalType.ANVIL));
     }
 }

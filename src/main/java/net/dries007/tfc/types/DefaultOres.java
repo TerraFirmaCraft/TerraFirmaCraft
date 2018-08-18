@@ -8,11 +8,10 @@ package net.dries007.tfc.types;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.api.types.MetalEnum;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.TFCRegistries;
-import net.dries007.tfc.objects.Metal;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
@@ -58,22 +57,21 @@ public class DefaultOres
     @SubscribeEvent
     public static void onPreRegisterRockCategory(TFCRegistries.RegisterPreBlock<Ore> event)
     {
-        IForgeRegistry<Ore> r = event.getRegistry();
-        r.registerAll(
-            new Ore(NATIVE_COPPER, Metal.COPPER),
-            new Ore(NATIVE_GOLD, Metal.GOLD),
-            new Ore(NATIVE_PLATINUM, Metal.PLATINUM),
-            new Ore(HEMATITE, Metal.PIG_IRON),
-            new Ore(NATIVE_SILVER, Metal.SILVER),
-            new Ore(CASSITERITE, Metal.TIN),
-            new Ore(GALENA, Metal.LEAD),
-            new Ore(BISMUTHINITE, Metal.BISMUTH),
-            new Ore(GARNIERITE, Metal.NICKEL),
-            new Ore(MALACHITE, Metal.COPPER),
-            new Ore(MAGNETITE, Metal.PIG_IRON),
-            new Ore(LIMONITE, Metal.PIG_IRON),
-            new Ore(SPHALERITE, Metal.ZINC),
-            new Ore(TETRAHEDRITE, Metal.COPPER),
+        event.getRegistry().registerAll(
+            new Ore(NATIVE_COPPER, MetalEnum.COPPER),
+            new Ore(NATIVE_GOLD, MetalEnum.GOLD),
+            new Ore(NATIVE_PLATINUM, MetalEnum.PLATINUM),
+            new Ore(HEMATITE, MetalEnum.PIG_IRON),
+            new Ore(NATIVE_SILVER, MetalEnum.SILVER),
+            new Ore(CASSITERITE, MetalEnum.TIN),
+            new Ore(GALENA, MetalEnum.LEAD),
+            new Ore(BISMUTHINITE, MetalEnum.BISMUTH),
+            new Ore(GARNIERITE, MetalEnum.NICKEL),
+            new Ore(MALACHITE, MetalEnum.COPPER),
+            new Ore(MAGNETITE, MetalEnum.PIG_IRON),
+            new Ore(LIMONITE, MetalEnum.PIG_IRON),
+            new Ore(SPHALERITE, MetalEnum.ZINC),
+            new Ore(TETRAHEDRITE, MetalEnum.COPPER),
             new Ore(BITUMINOUS_COAL, null),
             new Ore(LIGNITE, null),
             new Ore(KAOLINITE, null),

@@ -24,10 +24,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.types.MetalEnum;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.objects.MetalType;
+import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
@@ -42,8 +44,8 @@ import net.dries007.tfc.objects.items.ItemBlockTorchTFC;
 import net.dries007.tfc.objects.te.*;
 
 import static net.dries007.tfc.Constants.MOD_ID;
-import static net.dries007.tfc.api.types.Rock.Type.*;
 import static net.dries007.tfc.objects.CreativeTabsTFC.*;
+import static net.dries007.tfc.objects.RockType.*;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -242,9 +244,9 @@ public final class BlocksTFC
 
         {
             Builder<BlockRockVariant> b = ImmutableList.builder();
-            for (Rock.Type type : Rock.Type.values())
+            for (RockType type : RockType.values())
                 for (Rock rock : Rock.values())
-                    b.add(register(r, (type.name() + "/" + rock.name()).toLowerCase(), BlockRockVariant.create(rock, type), CT_ROCK_BLOCKS));
+                    b.add(register(r, (type.name() + "/" + rock.name()).toLowerCase(), type.create(rock), CT_ROCK_BLOCKS));
             allBlockRockVariants = b.build();
             allBlockRockVariants.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
         }
@@ -307,25 +309,25 @@ public final class BlocksTFC
             Builder<BlockSlabTFC.Half> slab = new Builder<>();
 
             // Walls
-            for (Rock.Type type : new Rock.Type[] {COBBLE, BRICKS})
+            for (RockType type : new RockType[] {COBBLE, BRICKS})
                 for (Rock rock : Rock.values())
                     b.add(register(r, ("wall/" + type.name() + "/" + rock.name()).toLowerCase(), new BlockWallTFC(BlockRockVariant.get(rock, type)), CT_DECORATIONS));
             // Stairs
-            for (Rock.Type type : new Rock.Type[] {SMOOTH, COBBLE, BRICKS})
+            for (RockType type : new RockType[] {SMOOTH, COBBLE, BRICKS})
                 for (Rock rock : Rock.values())
                     stairs.add(register(r, "stairs/" + (type.name() + "/" + rock.name()).toLowerCase(), new BlockStairsTFC(rock, type), CT_DECORATIONS));
             for (Tree wood : Tree.values())
                 stairs.add(register(r, "stairs/wood/" + wood.name(), new BlockStairsTFC(wood), CT_DECORATIONS));
 
             // Full slabs are the same as full blocks, they are not saved to a list, they are kept track of by the halfslab version.
-            for (Rock.Type type : new Rock.Type[] {SMOOTH, COBBLE, BRICKS})
+            for (RockType type : new RockType[] {SMOOTH, COBBLE, BRICKS})
                 for (Rock rock : Rock.values())
                     register(r, "slab/full/" + (type.name() + "/" + rock.name()).toLowerCase(), new BlockSlabTFC.Double(rock, type));
             for (Tree wood : Tree.values())
                 register(r, "slab/full/wood/" + wood.name(), new BlockSlabTFC.Double(wood));
 
             // Slabs
-            for (Rock.Type type : new Rock.Type[] {SMOOTH, COBBLE, BRICKS})
+            for (RockType type : new RockType[] {SMOOTH, COBBLE, BRICKS})
                 for (Rock rock : Rock.values())
                     slab.add(register(r, "slab/half/" + (type.name() + "/" + rock.name()).toLowerCase(), new BlockSlabTFC.Half(rock, type), CT_DECORATIONS));
             for (Tree wood : Tree.values())
@@ -346,14 +348,14 @@ public final class BlocksTFC
             Builder<BlockAnvilTFC> anvils = ImmutableList.builder();
             Builder<BlockSheet> sheets = ImmutableList.builder();
 
-            for (Metal metal : Metal.values())
+            for (MetalEnum metal : MetalEnum.values())
             {
                 // Anvils
-                if (metal.hasType(Metal.ItemType.ANVIL))
+                if (metal.hasType(MetalType.ANVIL))
                     anvils.add(register(r, "anvil/" + metal.name().toLowerCase(), new BlockAnvilTFC(metal), CT_METAL));
 
                 // Sheets
-                if (metal.hasType(Metal.ItemType.SHEET))
+                if (metal.hasType(MetalType.SHEET))
                     sheets.add(register(r, "sheet/" + metal.name().toLowerCase(), new BlockSheet(metal), CT_METAL));
             }
 
@@ -433,28 +435,28 @@ public final class BlocksTFC
     public static boolean isRawStone(IBlockState current)
     {
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        Rock.Type type = ((BlockRockVariant) current.getBlock()).type;
+        RockType type = ((BlockRockVariant) current.getBlock()).type;
         return type == RAW;
     }
 
     public static boolean isClay(IBlockState current)
     {
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        Rock.Type type = ((BlockRockVariant) current.getBlock()).type;
+        RockType type = ((BlockRockVariant) current.getBlock()).type;
         return type == CLAY || type == CLAY_GRASS;
     }
 
     public static boolean isDirt(IBlockState current)
     {
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        Rock.Type type = ((BlockRockVariant) current.getBlock()).type;
+        RockType type = ((BlockRockVariant) current.getBlock()).type;
         return type == DIRT;
     }
 
     public static boolean isSand(IBlockState current)
     {
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        Rock.Type type = ((BlockRockVariant) current.getBlock()).type;
+        RockType type = ((BlockRockVariant) current.getBlock()).type;
         return type == SAND;
     }
 
@@ -464,7 +466,7 @@ public final class BlocksTFC
     {
         if (current.getBlock() instanceof BlockPeat) return true;
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        Rock.Type type = ((BlockRockVariant) current.getBlock()).type;
+        RockType type = ((BlockRockVariant) current.getBlock()).type;
         return type == GRASS || type == DRY_GRASS || type == DIRT || type == CLAY || type == CLAY_GRASS;
     }
 
@@ -472,7 +474,7 @@ public final class BlocksTFC
     {
         if (current.getBlock() instanceof BlockPeat) return true;
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        Rock.Type type = ((BlockRockVariant) current.getBlock()).type;
+        RockType type = ((BlockRockVariant) current.getBlock()).type;
         return type == GRASS || type == DRY_GRASS || type == DIRT || type == GRAVEL;
     }
 
@@ -480,14 +482,14 @@ public final class BlocksTFC
     {
         if (current.getBlock() instanceof BlockPeatGrass) return true;
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        Rock.Type type = ((BlockRockVariant) current.getBlock()).type;
+        RockType type = ((BlockRockVariant) current.getBlock()).type;
         return type.isGrass;
     }
 
     public static boolean isGround(IBlockState current)
     {
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
-        Rock.Type type = ((BlockRockVariant) current.getBlock()).type;
+        RockType type = ((BlockRockVariant) current.getBlock()).type;
         return type == GRASS || type == DRY_GRASS || type == DIRT || type == GRAVEL || type == RAW || type == SAND;
     }
 

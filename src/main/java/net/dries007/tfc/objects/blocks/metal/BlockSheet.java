@@ -29,7 +29,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.items.metal.ItemSheet;
 
 @MethodsReturnNonnullByDefault
@@ -37,7 +38,7 @@ import net.dries007.tfc.objects.items.metal.ItemSheet;
 public class BlockSheet extends Block
 {
     public static final PropertyDirection FACE = PropertyDirection.create("face");
-    private static final EnumMap<Metal, BlockSheet> MAP = new EnumMap<>(Metal.class);
+    private static final EnumMap<MetalEnum, BlockSheet> MAP = new EnumMap<>(MetalEnum.class);
     private static final AxisAlignedBB[] SHEET_AABB = new AxisAlignedBB[] {
         new AxisAlignedBB(0d, 0.9375d, 0d, 1d, 1d, 1d),
         new AxisAlignedBB(0d, 0d, 0d, 1d, 0.0625d, 1d),
@@ -47,19 +48,19 @@ public class BlockSheet extends Block
         new AxisAlignedBB(0d, 0d, 0d, 0.0625d, 1d, 1d)
     };
 
-    public static BlockSheet get(Metal metal)
+    public static BlockSheet get(MetalEnum metal)
     {
         return MAP.get(metal);
     }
 
-    public static ItemStack get(Metal metal, int amount)
+    public static ItemStack get(MetalEnum metal, int amount)
     {
         return new ItemStack(MAP.get(metal), amount);
     }
 
-    public final Metal metal;
+    public final MetalEnum metal;
 
-    public BlockSheet(Metal metal)
+    public BlockSheet(MetalEnum metal)
     {
         super(Material.IRON);
 
@@ -137,14 +138,14 @@ public class BlockSheet extends Block
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return ItemSheet.get(metal, Metal.ItemType.SHEET);
+        return ItemSheet.get(metal, MetalType.SHEET);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
-        return new ItemStack(ItemSheet.get(metal, Metal.ItemType.SHEET));
+        return new ItemStack(ItemSheet.get(metal, MetalType.SHEET));
     }
 
     @Override
@@ -156,6 +157,6 @@ public class BlockSheet extends Block
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        return new ItemStack(ItemSheet.get(metal, Metal.ItemType.SHEET));
+        return new ItemStack(ItemSheet.get(metal, MetalType.SHEET));
     }
 }
