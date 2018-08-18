@@ -21,7 +21,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.items.metal.ItemIngot;
 
 import static net.dries007.tfc.Constants.MOD_ID;
@@ -32,19 +33,19 @@ public class TEIngotPile extends TileEntity
 {
     public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "ingot_pile");
 
-    private Metal metal;
+    private MetalEnum metal;
     private int count;
 
     public TEIngotPile()
     {
-        metal = Metal.UNKNOWN;
+        metal = MetalEnum.UNKNOWN;
         count = 1;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag)
     {
-        metal = tag.hasKey("metal") ? Metal.valueOf(tag.getString("metal")) : Metal.UNKNOWN;
+        metal = tag.hasKey("metal") ? MetalEnum.valueOf(tag.getString("metal")) : MetalEnum.UNKNOWN;
         count = tag.hasKey("count") ? tag.getInteger("count") : 1;
         super.readFromNBT(tag);
     }
@@ -110,15 +111,15 @@ public class TEIngotPile extends TileEntity
     public void onBreakBlock()
     {
         InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(),
-            new ItemStack(ItemIngot.get(metal, Metal.ItemType.INGOT), count));
+            new ItemStack(ItemIngot.get(metal, MetalType.INGOT), count));
     }
 
-    public Metal getMetal()
+    public MetalEnum getMetal()
     {
         return metal;
     }
 
-    public void setMetal(Metal metal)
+    public void setMetal(MetalEnum metal)
     {
         this.metal = metal;
     }

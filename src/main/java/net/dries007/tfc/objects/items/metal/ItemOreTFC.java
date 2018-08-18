@@ -14,10 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.MetalEnum;
 import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.api.util.Size;
-import net.dries007.tfc.api.util.Weight;
-import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -101,7 +101,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     }
 
     @Override
-    public Metal getMetal(ItemStack stack)
+    public MetalEnum getMetal(ItemStack stack)
     {
         return ore.metal;
     }

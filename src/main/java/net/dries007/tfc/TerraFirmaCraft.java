@@ -18,14 +18,16 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.cmd.ItemHeatCommand;
 import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.cmd.TreeGenCommand;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.util.CapabilityItemSize;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.CalenderTFC;
@@ -106,6 +108,7 @@ public class TerraFirmaCraft
 
         OreSpawnData.preInit(event.getModConfigurationDirectory());
         CapabilityItemSize.preInit();
+        CapabilityItemHeat.preInit();
         MinecraftForge.EVENT_BUS.register(new CommonEventHandler());
 
         if (event.getSide().isClient()) ClientEvents.preInit();
@@ -152,6 +155,7 @@ public class TerraFirmaCraft
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
         event.registerServerCommand(new StripWorldCommand());
         event.registerServerCommand(new TreeGenCommand());
+        event.registerServerCommand(new ItemHeatCommand());
     }
 
     @Mod.EventHandler

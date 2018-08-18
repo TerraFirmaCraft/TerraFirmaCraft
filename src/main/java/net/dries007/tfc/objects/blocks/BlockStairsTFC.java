@@ -15,16 +15,17 @@ import net.minecraft.init.Blocks;
 
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.wood.BlockPlanksTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockStairsTFC extends BlockStairs
 {
-    private static final Map<Rock, EnumMap<Rock.Type, BlockStairsTFC>> ROCK_TABLE = new HashMap<>();
+    private static final Map<Rock, EnumMap<RockType, BlockStairsTFC>> ROCK_TABLE = new HashMap<>();
     private static final Map<Tree, BlockStairsTFC> WOOD_MAP = new HashMap<>();
 
-    public static BlockStairsTFC get(Rock rock, Rock.Type type)
+    public static BlockStairsTFC get(Rock rock, RockType type)
     {
         return ROCK_TABLE.get(rock).get(type);
     }
@@ -34,12 +35,12 @@ public class BlockStairsTFC extends BlockStairs
         return WOOD_MAP.get(wood);
     }
 
-    public BlockStairsTFC(Rock rock, Rock.Type type)
+    public BlockStairsTFC(Rock rock, RockType type)
     {
         super(BlockRockVariant.get(rock, type).getDefaultState());
 
         if (!ROCK_TABLE.containsKey(rock))
-            ROCK_TABLE.put(rock, new EnumMap<>(Rock.Type.class));
+            ROCK_TABLE.put(rock, new EnumMap<>(RockType.class));
         ROCK_TABLE.get(rock).put(type, this);
 
         Block c = BlockRockVariant.get(rock, type);

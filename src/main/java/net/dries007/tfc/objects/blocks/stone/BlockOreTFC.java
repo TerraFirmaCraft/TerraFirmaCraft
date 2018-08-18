@@ -23,6 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 
 @MethodsReturnNonnullByDefault
@@ -48,7 +49,7 @@ public class BlockOreTFC extends Block
 
     public BlockOreTFC(Ore ore, Rock rock)
     {
-        super(Rock.Type.RAW.material);
+        super(RockType.RAW.material);
 
         if (!TABLE.containsKey(ore))
             TABLE.put(ore, new HashMap<>());

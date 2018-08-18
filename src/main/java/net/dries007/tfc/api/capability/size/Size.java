@@ -4,7 +4,7 @@
  *
  */
 
-package net.dries007.tfc.api.util;
+package net.dries007.tfc.api.capability.size;
 
 public enum Size
 {

@@ -16,8 +16,8 @@ import net.minecraft.world.IBlockAccess;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.util.IFallingBlock;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -29,7 +29,7 @@ public class BlockRockVariantConnected extends BlockRockVariantFallable
     public static final PropertyBool SOUTH = PropertyBool.create("south");
     public static final PropertyBool WEST = PropertyBool.create("west");
 
-    public BlockRockVariantConnected(Rock.Type type, Rock rock)
+    public BlockRockVariantConnected(RockType type, Rock rock)
     {
         super(type, rock);
     }

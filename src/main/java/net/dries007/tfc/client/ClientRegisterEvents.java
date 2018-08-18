@@ -30,12 +30,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.client.render.TESRChestTFC;
 import net.dries007.tfc.client.render.TESRIngotPile;
 import net.dries007.tfc.client.render.TESRPitKiln;
 import net.dries007.tfc.client.render.TESRWorldItem;
 import net.dries007.tfc.objects.Gem;
+import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
@@ -121,7 +121,7 @@ public final class ClientRegisterEvents
             ModelLoader.setCustomStateMapper(block.doubleSlab, new StateMap.Builder().ignore(BlockSlabTFC.VARIANT).build());
         }
 
-        BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type == Rock.Type.FARMLAND).forEach(e ->
+        BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type == RockType.FARMLAND).forEach(e ->
             ModelLoader.setCustomStateMapper(e, new StateMap.Builder().ignore(BlockFarmlandTFC.MOISTURE).build())
         );
 
@@ -157,7 +157,7 @@ public final class ClientRegisterEvents
             BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isGrass).toArray(BlockRockVariant[]::new));
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> BlockFarmlandTFC.TINT[state.getValue(BlockFarmlandTFC.MOISTURE)],
-            BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type == Rock.Type.FARMLAND).toArray(BlockRockVariant[]::new));
+            BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type == RockType.FARMLAND).toArray(BlockRockVariant[]::new));
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
                 worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D),

@@ -11,9 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.util.Size;
-import net.dries007.tfc.api.util.Weight;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.InsertOnlyEnumTable;
@@ -23,17 +24,17 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class ItemMetal extends ItemTFC implements IMetalObject
 {
-    private static final InsertOnlyEnumTable<Metal, Metal.ItemType, ItemMetal> TABLE = new InsertOnlyEnumTable<>(Metal.class, Metal.ItemType.class);
+    private static final InsertOnlyEnumTable<MetalEnum, MetalType, ItemMetal> TABLE = new InsertOnlyEnumTable<>(MetalEnum.class, MetalType.class);
 
-    public static ItemMetal get(Metal metal, Metal.ItemType type)
+    public static ItemMetal get(MetalEnum metal, MetalType type)
     {
         return TABLE.get(metal, type);
     }
 
-    public final Metal metal;
-    public final Metal.ItemType type;
+    public final MetalEnum metal;
+    public final MetalType type;
 
-    public ItemMetal(Metal metal, Metal.ItemType type)
+    public ItemMetal(MetalEnum metal, MetalType type)
     {
         this.metal = metal;
         this.type = type;
@@ -44,7 +45,7 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     }
 
     @Override
-    public Metal getMetal(ItemStack stack)
+    public MetalEnum getMetal(ItemStack stack)
     {
         return metal;
     }

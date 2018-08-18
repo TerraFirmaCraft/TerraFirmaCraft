@@ -9,7 +9,6 @@ package net.dries007.tfc.types;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.TFCRegistries;
@@ -64,8 +63,7 @@ public class DefaultTrees
     @SubscribeEvent
     public static void onPreRegisterRockCategory(TFCRegistries.RegisterPreBlock<Tree> event)
     {
-        IForgeRegistry<Tree> r = event.getRegistry();
-        r.registerAll(
+        event.getRegistry().registerAll(
             new Tree.Builder(ACACIA, 30f, 210f, 19f, 31f, GEN_ACACIA).setRadius(3).setGrowthTime(11).setDensity(0.1f, 0.6f).build(),
             new Tree.Builder(ASH, 60f, 140f, -6f, 12f, GEN_NORMAL).build(),
             new Tree.Builder(ASPEN, 10f, 80f, -10f, 16f, GEN_MEDIUM).setGrowthTime(8).build(),

@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.objects.blocks.BlockPeat;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -71,9 +71,9 @@ public final class Helpers
                 }
                 else if (current.getBlock() instanceof BlockRockVariant)
                 {
-                    Rock.Type spreader = Rock.Type.GRASS;
-                    if ((us.getBlock() instanceof BlockRockVariant) && ((BlockRockVariant) us.getBlock()).type == Rock.Type.DRY_GRASS)
-                        spreader = Rock.Type.DRY_GRASS;
+                    RockType spreader = RockType.GRASS;
+                    if ((us.getBlock() instanceof BlockRockVariant) && ((BlockRockVariant) us.getBlock()).type == RockType.DRY_GRASS)
+                        spreader = RockType.DRY_GRASS;
 
                     BlockRockVariant block = ((BlockRockVariant) current.getBlock());
                     world.setBlockState(target, block.getVariant(block.type.getGrassVersion(spreader)).getDefaultState());

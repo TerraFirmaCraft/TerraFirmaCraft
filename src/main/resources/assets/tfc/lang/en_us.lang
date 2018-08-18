@@ -106,6 +106,20 @@ tfc.enum.weight.light=Light
 tfc.enum.weight.medium=Medium
 tfc.enum.weight.heavy=Heavy
 
+## Heat
+tfc.enum.heat.warming=Warming
+tfc.enum.heat.hot=Hot
+tfc.enum.heat.very_hot=Very Hot
+tfc.enum.heat.faint_red=Faint Red
+tfc.enum.heat.dark_red=Dark Red
+tfc.enum.heat.bright_red=Bright Red
+tfc.enum.heat.orange=Orange
+tfc.enum.heat.yellow=Yellow
+tfc.enum.heat.yellow_white=Yellow White
+tfc.enum.heat.white=White
+tfc.enum.heat.brilliant_white=Brilliant White
+tfc.enum.heat.liquid=Liquid
+
 # Items
 item.tfc.wand.name=TFC Debug Wand
 item.tfc.firestarter.name=Firestarter

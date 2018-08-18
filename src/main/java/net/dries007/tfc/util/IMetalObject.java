@@ -12,14 +12,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.MetalEnum;
 
 public interface IMetalObject
 {
     @SideOnly(Side.CLIENT)
     default void addMetalInfo(ItemStack stack, List<String> text)
     {
-        Metal metal = getMetal(stack);
+        MetalEnum metal = getMetal(stack);
         if (metal == null) return;
         text.add("");
         text.add(I18n.format("tfc.tooltip.metal", I18n.format(Helpers.getEnumName(metal))));
@@ -30,7 +30,7 @@ public interface IMetalObject
         }
     }
 
-    Metal getMetal(ItemStack stack);
+    MetalEnum getMetal(ItemStack stack);
 
     default boolean isSmeltable(ItemStack stack)
     {

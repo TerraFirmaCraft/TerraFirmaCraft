@@ -14,8 +14,6 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import net.dries007.tfc.objects.Metal;
-
 /**
  * todo: document API
  */
@@ -36,8 +34,9 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
     private final ResourceLocation name;
 
     public final boolean graded;
-    public final Metal metal;
-    public Ore(ResourceLocation name, @Nullable Metal metal)
+    public final MetalEnum metal;
+
+    public Ore(ResourceLocation name, @Nullable MetalEnum metal)
     {
         this.graded = (metal != null);
         this.metal = metal;

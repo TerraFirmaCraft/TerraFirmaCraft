@@ -83,23 +83,6 @@ public class BlockLeavesTFC extends BlockLeaves
         return NULL_AABB;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Nonnull
-    @Override
-    public BlockRenderLayer getRenderLayer()
-    {
-        // This is dirty but it works
-        return Blocks.LEAVES.getDefaultState().isOpaqueCube() ? BlockRenderLayer.SOLID : BlockRenderLayer.CUTOUT_MIPPED;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean shouldSideBeRendered(@Nonnull IBlockState blockState, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, @Nonnull EnumFacing side)
-    {
-        return !Blocks.LEAVES.getDefaultState().isOpaqueCube() && blockAccess.getBlockState(pos.offset(side)).getBlock() == this || super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-    }
-
     @Override
     @SuppressWarnings("deprecation")
     public void neighborChanged(IBlockState state, World world, BlockPos pos, @Nullable Block blockIn, @Nullable BlockPos fromPos)

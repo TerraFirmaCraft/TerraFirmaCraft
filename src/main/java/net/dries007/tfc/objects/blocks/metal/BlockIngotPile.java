@@ -29,7 +29,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.te.TEIngotPile;
@@ -146,7 +147,7 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
                     {
                         worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                     }
-                    InventoryHelper.spawnItemStack(worldIn, posTop.getX(), posTop.down().getY() + 0.125 * (te.getCount() / 8 + 2), posTop.getZ(), new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
+                    InventoryHelper.spawnItemStack(worldIn, posTop.getX(), posTop.down().getY() + 0.125 * (te.getCount() / 8 + 2), posTop.getZ(), new ItemStack(ItemMetal.get(te.getMetal(), MetalType.INGOT)));
 
                 }
                 return true;
@@ -165,7 +166,7 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
                             {
                                 worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                             }
-                            InventoryHelper.spawnItemStack(worldIn, posTop.getX(), posTop.getY() + 0.125 * (te.getCount() / 8 + 2), posTop.getZ(), new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
+                            InventoryHelper.spawnItemStack(worldIn, posTop.getX(), posTop.getY() + 0.125 * (te.getCount() / 8 + 2), posTop.getZ(), new ItemStack(ItemMetal.get(te.getMetal(), MetalType.INGOT)));
                         }
                         return true;
                     }
@@ -179,7 +180,7 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         TEIngotPile te = Helpers.getTE(world, pos, TEIngotPile.class);
-        return new ItemStack(ItemMetal.get((te != null ? te.getMetal() : Metal.UNKNOWN), Metal.ItemType.INGOT));
+        return new ItemStack(ItemMetal.get((te != null ? te.getMetal() : MetalEnum.UNKNOWN), MetalType.INGOT));
     }
 
     private boolean collapseDown(World world, BlockPos pos)
