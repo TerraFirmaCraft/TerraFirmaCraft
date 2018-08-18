@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.blocks.stone;
@@ -17,7 +16,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -71,17 +69,17 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
     @Override
     public BlockPos getFallablePos(World world, BlockPos pos)
     {
-        for(EnumFacing f : EnumFacing.HORIZONTALS)
-            TerraFirmaCraft.getLog().info("Can it fall: "+f+"? "+shouldFall(world, pos.offset(f)));
-        if(type.canFall() && shouldFall(world, pos))
+        for (EnumFacing f : EnumFacing.HORIZONTALS)
+            TerraFirmaCraft.getLog().info("Can it fall: " + f + "? " + shouldFall(world, pos.offset(f)));
+        if (type.canFall() && shouldFall(world, pos))
             return pos;
-        if(type.canFallHorizontal())
+        if (type.canFallHorizontal())
         {
             // Check if supported
             EnumFacing[] faces = Arrays.stream(EnumFacing.HORIZONTALS)
                 .filter(x -> world.getBlockState(pos.offset(x)).isOpaqueCube())
                 .toArray(EnumFacing[]::new);
-            if(faces.length >= 2)
+            if (faces.length >= 2)
             {
                 TerraFirmaCraft.getLog().info("Defeated by the supported blocks");
                 return null;
@@ -92,8 +90,8 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
                 .filter(x -> shouldFall(world, pos.offset(x)))
                 .toArray(EnumFacing[]::new);
 
-            if(faces.length >= 1)
-                return pos.offset(faces[(int)(Math.random() * faces.length)]);
+            if (faces.length >= 1)
+                return pos.offset(faces[(int) (Math.random() * faces.length)]);
         }
         return null;
     }

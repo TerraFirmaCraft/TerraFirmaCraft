@@ -130,10 +130,11 @@ public class BlockLogTFC extends BlockLog
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
     {
         // For floating tree things, just make them gently disappear over time
+        if (state.getValue(PLACED)) return;
         for (int x = -1; x <= 1; x++)
             for (int y = -1; y <= 1; y++)
                 for (int z = -1; z <= 1; z++)
-                    if (state.getValue(PLACED) || (world.getBlockState(pos.add(x, y, z)).getBlock() == this && (z != 0 || y != 0 || x != 0)))
+                    if (world.getBlockState(pos.add(x, y, z)).getBlock() == this && (z != 0 || y != 0 || x != 0))
                         return;
         world.setBlockToAir(pos);
     }

@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.blocks.stone;
 
 import java.util.Random;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

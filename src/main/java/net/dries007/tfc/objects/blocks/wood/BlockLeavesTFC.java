@@ -15,6 +15,7 @@ import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -193,5 +194,31 @@ public class BlockLeavesTFC extends BlockLeaves
         }
 
         world.setBlockToAir(pos);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public BlockRenderLayer getRenderLayer()
+    {
+        /*
+         * This is a way to make sure the leave settings are updated.
+         * The result of this call is cached somewhere, so it's not that important, but:
+         * The alternative would be to use `Minecraft.getMinecraft().gameSettings.fancyGraphics` directly in the 2 relevant methods.
+         * It's better to do that than to refer to Blocks.LEAVES, for performance reasons.
+         */
+        leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
+        return super.getRenderLayer();
+    }
+
+    @SuppressWarnings("deprecation")
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
+        /*
+         * See comment on getRenderLayer()
+         */
+        leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
+        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 }
