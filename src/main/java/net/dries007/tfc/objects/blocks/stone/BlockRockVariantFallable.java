@@ -22,13 +22,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.util.IFallingBlock;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class BlockRockVariantFallable extends BlockRockVariant implements IFallingBlock
 {
-    public BlockRockVariantFallable(Rock.Type type, Rock rock)
+    public BlockRockVariantFallable(RockType type, Rock rock)
     {
         super(type, rock);
     }

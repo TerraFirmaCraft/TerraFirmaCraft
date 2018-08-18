@@ -18,7 +18,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.util.CollapseData;
@@ -91,7 +91,7 @@ public class WorldGenFissure implements IWorldGenerator
         if (depth > 0)
             start = start.add(0, -20 - rng.nextInt(depth), 0);
 
-        final IBlockState rock = BlockRockVariant.get(getRock3(world, start), Rock.Type.RAW).getDefaultState();
+        final IBlockState rock = BlockRockVariant.get(getRock3(world, start), RockType.RAW).getDefaultState();
         final IBlockState localFillBlock = (!stable && BlocksTFC.isWater(fillBlock)) ? ChunkGenTFC.HOT_WATER : fillBlock;
 
         List<BlockPos> list = getCollapseMap(world, start.add(0, -creviceDepth, 0), fillBlock, poolDepth);
@@ -119,8 +119,8 @@ public class WorldGenFissure implements IWorldGenerator
         final ImmutableList.Builder<BlockPos> b = ImmutableList.builder();
 
         final IBlockState rock = fillBlock == ChunkGenTFC.LAVA ?
-            BlockRockVariant.get(getRock3(world, pos), Rock.Type.RAW).getDefaultState() :
-            BlockRockVariant.get(ChunkDataTFC.getRockHeight(world, pos), Rock.Type.RAW).getDefaultState();
+            BlockRockVariant.get(getRock3(world, pos), RockType.RAW).getDefaultState() :
+            BlockRockVariant.get(ChunkDataTFC.getRockHeight(world, pos), RockType.RAW).getDefaultState();
 
         // todo this must be also used somewhere else probably move it.
         // todo this must be optimizable also

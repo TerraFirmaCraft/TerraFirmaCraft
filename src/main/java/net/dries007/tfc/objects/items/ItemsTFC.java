@@ -18,14 +18,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.api.types.RockCategory;
-import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.api.util.Size;
-import net.dries007.tfc.api.util.Weight;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.Gem;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.Powder;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -115,9 +112,9 @@ public final class ItemsTFC
             allGemItems = b.build();
         }
 
-        for (Metal.ItemType type : Metal.ItemType.values())
+        for (MetalType type : MetalType.values())
         {
-            for (Metal metal : Metal.values())
+            for (MetalEnum metal : MetalEnum.values())
             {
                 if (!metal.hasType(type) || type.supplier == null) continue;
                 simpleItems.add(register(r, ("metal/" + type + "/" + metal).toLowerCase(), type.supplier.apply(metal, type), CT_METAL));
@@ -153,18 +150,18 @@ public final class ItemsTFC
             simpleItems.add(register(r, "powder/" + powder.name().toLowerCase(), new ItemPowder(powder), CT_MISC));
 
         { // POTTERY
-            for (Metal.ItemType type : Metal.ItemType.values())
+            for (MetalType type : MetalType.values())
             {
                 if (!type.hasMold) continue;
                 registerPottery(simpleItems, r, "mold/" + type.name().toLowerCase() + "/unfired", "mold/" + type.name().toLowerCase() + "/empty", new ItemUnfiredMold(new ItemMold(type), type));
-                for (Metal metal : Metal.values())
+                for (MetalEnum metal : MetalEnum.values())
                 {
-                    if (!metal.hasType(type) || metal.tier != Metal.Tier.TIER_I) continue;
+                    if (!metal.hasType(type) || metal.tier != MetalEnum.Tier.TIER_I) continue;
                     simpleItems.add(register(r, ("mold/" + type.name() + "/" + metal.name()).toLowerCase(), new ItemFilledMold(type, metal), CT_POTTERY));
                 }
             }
-            for (Metal metal : Metal.values())
-                simpleItems.add(register(r, ("mold/ingot/" + metal.name()).toLowerCase(), new ItemFilledMold(Metal.ItemType.UNSHAPED, metal), CT_POTTERY));
+            for (MetalEnum metal : MetalEnum.values())
+                simpleItems.add(register(r, ("mold/ingot/" + metal.name()).toLowerCase(), new ItemFilledMold(MetalType.UNSHAPED, metal), CT_POTTERY));
 
             registerPottery(simpleItems, r, "mold/ingot/unfired", "mold/ingot/empty", new ItemUnfiredPottery(new ItemFiredPottery()));
             registerPottery(simpleItems, r, "ceramics/unfired/vessel", "ceramics/fired/vessel", new ItemUnfiredSmallVessel(new ItemSmallVessel(false)));
@@ -222,9 +219,9 @@ public final class ItemsTFC
 
     public static void init()
     {
-        for (Metal metal : Metal.values())
+        for (MetalEnum metal : MetalEnum.values())
             if (metal.toolMetal != null)
-                metal.toolMetal.setRepairItem(new ItemStack(ItemMetal.get(metal, Metal.ItemType.SCRAP)));
+                metal.toolMetal.setRepairItem(new ItemStack(ItemMetal.get(metal, MetalType.SCRAP)));
     }
 
     private static void registerPottery(Builder<Item> items, IForgeRegistry<Item> r, String nameUnfired, String nameFired, ItemUnfiredPottery unfiredPottery)

@@ -33,10 +33,12 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.util.IItemSize;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
-import net.dries007.tfc.util.CapabilityItemSize;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
@@ -141,6 +143,11 @@ public class ClientEvents
         if (size != null)
         {
             size.addSizeInfo(stack, tt);
+        }
+        IItemHeat heat = CapabilityItemHeat.getIItemHeat(stack);
+        if (heat != null)
+        {
+            heat.addHeatInfo(stack, tt);
         }
 
         if (event.getFlags().isAdvanced())

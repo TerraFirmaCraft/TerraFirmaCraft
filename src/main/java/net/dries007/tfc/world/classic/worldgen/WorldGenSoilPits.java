@@ -17,7 +17,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
@@ -68,12 +68,12 @@ public class WorldGenSoilPits implements IWorldGenerator
                     final IBlockState current = world.getBlockState(pos);
                     if (BlocksTFC.isDirt(current))
                     {
-                        world.setBlockState(pos, BlockRockVariant.get(ChunkDataTFC.getRockHeight(world, pos), Rock.Type.CLAY).getDefaultState(), 2);
+                        world.setBlockState(pos, BlockRockVariant.get(ChunkDataTFC.getRockHeight(world, pos), RockType.CLAY).getDefaultState(), 2);
                         flag = true;
                     }
                     else if (BlocksTFC.isGrass(current))
                     {
-                        world.setBlockState(pos, BlockRockVariant.get(ChunkDataTFC.getRockHeight(world, pos), Rock.Type.CLAY_GRASS).getDefaultState(), 2);
+                        world.setBlockState(pos, BlockRockVariant.get(ChunkDataTFC.getRockHeight(world, pos), RockType.CLAY_GRASS).getDefaultState(), 2);
                         flag = true;
                     }
                 }

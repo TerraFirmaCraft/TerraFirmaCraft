@@ -8,8 +8,6 @@ package net.dries007.tfc.objects.blocks.stone;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -20,6 +18,7 @@ import net.minecraft.world.IBlockAccess;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.RockType;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -27,7 +26,7 @@ public class BlockPathTFC extends BlockRockVariantFallable
 {
     private static final AxisAlignedBB GRASS_PATH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
 
-    public BlockPathTFC(Rock.Type type, Rock rock)
+    public BlockPathTFC(RockType type, Rock rock)
     {
         super(type, rock);
         setLightOpacity(255);
@@ -36,7 +35,7 @@ public class BlockPathTFC extends BlockRockVariantFallable
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
+        return Item.getItemFromBlock(get(rock, RockType.DIRT));
     }
 
     @Override

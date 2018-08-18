@@ -30,7 +30,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.MetalEnum;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.wood.ItemLogTFC;
@@ -82,7 +82,7 @@ public class TEPitKiln extends TileEntity implements ITickable
                     Item item = stack.getItem();
                     if (!(item instanceof IFireable)) continue;
                     IFireable fireable = ((IFireable) item);
-                    items.set(i, fireable.getFiringResult(stack, Metal.Tier.TIER_I));
+                    items.set(i, fireable.getFiringResult(stack, MetalEnum.Tier.TIER_I));
                 }
                 world.setBlockToAir(above);
                 updateBlock();

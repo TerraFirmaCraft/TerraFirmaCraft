@@ -7,20 +7,20 @@ package net.dries007.tfc.objects.items.ceramics;
 
 import java.util.EnumMap;
 
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.objects.MetalType;
 
 public class ItemMold extends ItemFiredPottery
 {
-    private static final EnumMap<Metal.ItemType, ItemMold> MAP = new EnumMap<>(Metal.ItemType.class);
+    private static final EnumMap<MetalType, ItemMold> MAP = new EnumMap<>(MetalType.class);
 
-    public static ItemMold get(Metal.ItemType category)
+    public static ItemMold get(MetalType category)
     {
         return MAP.get(category);
     }
 
-    public final Metal.ItemType type;
+    public final MetalType type;
 
-    public ItemMold(Metal.ItemType type)
+    public ItemMold(MetalType type)
     {
         this.type = type;
         if (MAP.put(type, this) != null) throw new IllegalStateException("There can only be one.");

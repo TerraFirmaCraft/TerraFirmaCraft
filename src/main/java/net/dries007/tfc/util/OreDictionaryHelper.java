@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.RockType;
 
 import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
 
@@ -67,12 +68,12 @@ public class OreDictionaryHelper
         register(new Thing(thing, meta), parts);
     }
 
-    public static void registerRockType(Block thing, Rock.Type type, Rock rock, Object... prefixParts)
+    public static void registerRockType(Block thing, RockType type, Rock rock, Object... prefixParts)
     {
         registerRockType(new Thing(thing), type, rock, prefixParts);
     }
 
-    public static void registerRockType(Item thing, Rock.Type type, Rock rock, Object... prefixParts)
+    public static void registerRockType(Item thing, RockType type, Rock rock, Object... prefixParts)
     {
         registerRockType(new Thing(thing), type, rock, prefixParts);
     }
@@ -107,7 +108,7 @@ public class OreDictionaryHelper
         MAP.put(thing, toString(parts));
     }
 
-    private static void registerRockType(Thing thing, Rock.Type type, Rock rock, Object... prefixParts)
+    private static void registerRockType(Thing thing, RockType type, Rock rock, Object... prefixParts)
     {
         switch (type)
         {

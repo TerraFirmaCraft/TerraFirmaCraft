@@ -5,21 +5,26 @@
 
 package net.dries007.tfc.objects.items.metal;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEIngotPile;
 import net.dries007.tfc.util.Helpers;
@@ -29,7 +34,7 @@ import net.dries007.tfc.util.IPlacableItem;
 @ParametersAreNonnullByDefault
 public class ItemIngot extends ItemMetal implements IPlacableItem
 {
-    public ItemIngot(Metal metal, Metal.ItemType type)
+    public ItemIngot(MetalEnum metal, MetalType type)
     {
         super(metal, type);
     }
@@ -107,5 +112,12 @@ public class ItemIngot extends ItemMetal implements IPlacableItem
             } while (posTop.getY() <= 256);
         }
         return false;
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new CapabilityItemHeat.ItemHeat(nbt, 1, 1000);
     }
 }

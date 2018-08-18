@@ -33,11 +33,15 @@ public class TFCRegistries
     private static final ResourceLocation ROCK = new ResourceLocation(MOD_ID, "rock");
     private static final ResourceLocation ORE = new ResourceLocation(MOD_ID, "ore");
     private static final ResourceLocation TREE = new ResourceLocation(MOD_ID, "tree");
+    private static final ResourceLocation METAL = new ResourceLocation(MOD_ID, "metal");
+
     private static final Map<ResourceLocation, IForgeRegistry<?>> preBlockRegistries = new HashMap<>();
+
     private static IForgeRegistry<RockCategory> rockCategoryRegistry;
     private static IForgeRegistry<Rock> rockRegistry;
     private static IForgeRegistry<Ore> oreRegistry;
     private static IForgeRegistry<Tree> treeRegistry;
+    private static IForgeRegistry<Metal> metalRegistry;
 
     @SubscribeEvent
     public static void onNewRegistryEvent(RegistryEvent.NewRegistry event)
@@ -46,6 +50,7 @@ public class TFCRegistries
         rockRegistry = newRegistry(ROCK, Rock.class, true);
         oreRegistry = newRegistry(ORE, Ore.class, true);
         treeRegistry = newRegistry(TREE, Tree.class, true);
+        metalRegistry = newRegistry(METAL, Metal.class, true);
     }
 
     /**
@@ -76,6 +81,8 @@ public class TFCRegistries
     {
         return rockCategoryRegistry;
     }
+
+    static IForgeRegistry<Metal> getMetals() { return metalRegistry; }
 
     private static <T extends IForgeRegistryEntry<T>> IForgeRegistry<T> newRegistry(ResourceLocation name, Class<T> tClass, boolean isPreBlockRegistry)
     {

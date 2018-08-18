@@ -1,9 +1,10 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.api.capability.size;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,9 +23,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.api.util.IItemSize;
-import net.dries007.tfc.api.util.Size;
-import net.dries007.tfc.api.util.Weight;
 
 public class CapabilityItemSize
 {

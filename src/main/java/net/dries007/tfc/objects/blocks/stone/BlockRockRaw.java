@@ -9,6 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.util.ICollapsableBlock;
 
 @MethodsReturnNonnullByDefault
@@ -16,7 +17,7 @@ import net.dries007.tfc.util.ICollapsableBlock;
 public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
 {
 
-    public BlockRockRaw(Rock.Type type, Rock rock)
+    public BlockRockRaw(RockType type, Rock rock)
     {
         super(type, rock);
     }
