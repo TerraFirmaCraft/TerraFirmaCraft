@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.world.classic.worldgen.trees;
@@ -34,7 +33,8 @@ public class TreeGenBushes implements ITreeGenerator
     {
         IBlockState leaves = BlockLeavesTFC.get(tree).getDefaultState().withProperty(DECAYABLE, true);
 
-        checkAndPlace(BlockLogTFC.get(tree).getDefaultState().withProperty(PLACED, false).withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE), world, pos);
+        // Has to fake being placed, otherwise the log will just poof out of existence. todo: better fix for this.
+        checkAndPlace(BlockLogTFC.get(tree).getDefaultState().withProperty(PLACED, true).withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE), world, pos);
         checkAndPlace(leaves, world, pos.add(0, 1, 0));
 
         for (EnumFacing face : EnumFacing.HORIZONTALS)

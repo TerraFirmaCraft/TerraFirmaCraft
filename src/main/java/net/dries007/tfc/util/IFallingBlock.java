@@ -16,7 +16,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.BlockFluidBase;
+
+import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
@@ -45,7 +46,7 @@ public interface IFallingBlock
         {
             if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
             {
-                if(!pos1.equals(pos))
+                if (!pos1.equals(pos))
                 {
                     worldIn.setBlockToAir(pos);
                     worldIn.setBlockState(pos1, state);
