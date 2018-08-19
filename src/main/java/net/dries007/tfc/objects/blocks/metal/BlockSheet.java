@@ -5,7 +5,8 @@
 
 package net.dries007.tfc.objects.blocks.metal;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -29,7 +30,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.items.metal.ItemSheet;
 
@@ -38,7 +39,7 @@ import net.dries007.tfc.objects.items.metal.ItemSheet;
 public class BlockSheet extends Block
 {
     public static final PropertyDirection FACE = PropertyDirection.create("face");
-    private static final EnumMap<MetalEnum, BlockSheet> MAP = new EnumMap<>(MetalEnum.class);
+    private static final Map<Metal, BlockSheet> MAP = new HashMap<>();
     private static final AxisAlignedBB[] SHEET_AABB = new AxisAlignedBB[] {
         new AxisAlignedBB(0d, 0.9375d, 0d, 1d, 1d, 1d),
         new AxisAlignedBB(0d, 0d, 0d, 1d, 0.0625d, 1d),
@@ -48,19 +49,19 @@ public class BlockSheet extends Block
         new AxisAlignedBB(0d, 0d, 0d, 0.0625d, 1d, 1d)
     };
 
-    public static BlockSheet get(MetalEnum metal)
+    public static BlockSheet get(Metal metal)
     {
         return MAP.get(metal);
     }
 
-    public static ItemStack get(MetalEnum metal, int amount)
+    public static ItemStack get(Metal metal, int amount)
     {
         return new ItemStack(MAP.get(metal), amount);
     }
 
-    public final MetalEnum metal;
+    public final Metal metal;
 
-    public BlockSheet(MetalEnum metal)
+    public BlockSheet(Metal metal)
     {
         super(Material.IRON);
 

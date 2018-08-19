@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.api.types;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.minecraft.block.Block;
@@ -30,12 +30,12 @@ public class TFCRegistries
     static final String MOD_ID = "tfc"; // This is here to avoid a import statement.
 
     private static final ResourceLocation ROCK_TYPE = new ResourceLocation(MOD_ID, "rock_type");
+    private static final ResourceLocation METAL = new ResourceLocation(MOD_ID, "metal");
     private static final ResourceLocation ROCK = new ResourceLocation(MOD_ID, "rock");
     private static final ResourceLocation ORE = new ResourceLocation(MOD_ID, "ore");
     private static final ResourceLocation TREE = new ResourceLocation(MOD_ID, "tree");
-    private static final ResourceLocation METAL = new ResourceLocation(MOD_ID, "metal");
 
-    private static final Map<ResourceLocation, IForgeRegistry<?>> preBlockRegistries = new HashMap<>();
+    private static final Map<ResourceLocation, IForgeRegistry<?>> preBlockRegistries = new LinkedHashMap<>();
 
     private static IForgeRegistry<RockCategory> rockCategoryRegistry;
     private static IForgeRegistry<Rock> rockRegistry;
@@ -47,10 +47,10 @@ public class TFCRegistries
     public static void onNewRegistryEvent(RegistryEvent.NewRegistry event)
     {
         rockCategoryRegistry = newRegistry(ROCK_TYPE, RockCategory.class, true);
+        metalRegistry = newRegistry(METAL, Metal.class, true);
         rockRegistry = newRegistry(ROCK, Rock.class, true);
         oreRegistry = newRegistry(ORE, Ore.class, true);
         treeRegistry = newRegistry(TREE, Tree.class, true);
-        metalRegistry = newRegistry(METAL, Metal.class, true);
     }
 
     /**
@@ -59,7 +59,13 @@ public class TFCRegistries
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onRegisterBlock(RegistryEvent.Register<Block> event)
     {
-        preBlockRegistries.forEach((e, r) -> MinecraftForge.EVENT_BUS.post(new TFCRegistries.RegisterPreBlock<>(e, r)));
+        // This needs to be done in a specific order
+        MinecraftForge.EVENT_BUS.post(new TFCRegistries.RegisterPreBlock<>(ROCK_TYPE, rockCategoryRegistry)); // Before Rock
+        MinecraftForge.EVENT_BUS.post(new TFCRegistries.RegisterPreBlock<>(METAL, metalRegistry)); // Before Ore
+
+        MinecraftForge.EVENT_BUS.post(new TFCRegistries.RegisterPreBlock<>(ROCK, rockRegistry));
+        MinecraftForge.EVENT_BUS.post(new TFCRegistries.RegisterPreBlock<>(ORE, oreRegistry));
+        MinecraftForge.EVENT_BUS.post(new TFCRegistries.RegisterPreBlock<>(TREE, treeRegistry));
     }
 
     static IForgeRegistry<Rock> getRocks()

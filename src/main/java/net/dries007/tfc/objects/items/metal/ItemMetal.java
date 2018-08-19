@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.objects.items.metal;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
@@ -13,39 +16,42 @@ import net.minecraft.util.math.MathHelper;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
-import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemMetal extends ItemTFC implements IMetalObject
 {
-    private static final InsertOnlyEnumTable<MetalEnum, MetalType, ItemMetal> TABLE = new InsertOnlyEnumTable<>(MetalEnum.class, MetalType.class);
+    private static final Map<Metal, EnumMap<MetalType, ItemMetal>> TABLE = new HashMap<>();
 
-    public static ItemMetal get(MetalEnum metal, MetalType type)
+    public static ItemMetal get(Metal metal, MetalType type)
     {
-        return TABLE.get(metal, type);
+        return TABLE.get(metal).get(type);
     }
 
-    public final MetalEnum metal;
+    public final Metal metal;
     public final MetalType type;
 
-    public ItemMetal(MetalEnum metal, MetalType type)
+    public ItemMetal(Metal metal, MetalType type)
     {
         this.metal = metal;
         this.type = type;
-        TABLE.put(metal, type, this);
+
+        if (!TABLE.containsKey(metal))
+            TABLE.put(metal, new EnumMap<>(MetalType.class));
+        TABLE.get(metal).put(type, this);
+
         setNoRepair();
         OreDictionaryHelper.register(this, type);
-        OreDictionaryHelper.register(this, type, metal);
+        OreDictionaryHelper.register(this, type, metal.name());
     }
 
     @Override
-    public MetalEnum getMetal(ItemStack stack)
+    public Metal getMetal(ItemStack stack)
     {
         return metal;
     }

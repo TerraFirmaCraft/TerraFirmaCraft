@@ -89,20 +89,20 @@ public final class ItemsTFC
 
         {
             for (Rock rock : Rock.values())
-                simpleItems.add(register(r, "rock/" + rock.name().toLowerCase(), new ItemRock(rock), CT_ROCK_ITEMS));
+                simpleItems.add(register(r, "rock/" + rock.name(), new ItemRock(rock), CT_ROCK_ITEMS));
             for (Rock rock : Rock.values())
-                simpleItems.add(register(r, "brick/" + rock.name().toLowerCase(), new ItemBrickTFC(rock), CT_ROCK_ITEMS));
+                simpleItems.add(register(r, "brick/" + rock.name(), new ItemBrickTFC(rock), CT_ROCK_ITEMS));
         }
 
         {
             Builder<ItemOreTFC> b = new Builder<>();
             for (Ore ore : Ore.values())
+            {
                 b.add(register(r, "ore/" + ore.name(), new ItemOreTFC(ore), CT_ROCK_ITEMS));
-            allOreItems = b.build();
-
-            for (Ore ore : Ore.values())
                 if (ore.graded)
                     simpleItems.add(register(r, "ore/small/" + ore.name(), new ItemSmallOre(ore), CT_ROCK_ITEMS));
+            }
+            allOreItems = b.build();
         }
 
         {
@@ -113,13 +113,9 @@ public final class ItemsTFC
         }
 
         for (MetalType type : MetalType.values())
-        {
-            for (MetalEnum metal : MetalEnum.values())
-            {
-                if (!metal.hasType(type) || type.supplier == null) continue;
-                simpleItems.add(register(r, ("metal/" + type + "/" + metal).toLowerCase(), type.supplier.apply(metal, type), CT_METAL));
-            }
-        }
+            for (Metal metal : Metal.values())
+                if (type.hasType(metal))
+                    simpleItems.add(register(r, ("metal/" + type.name() + "/" + metal.name()).toLowerCase(), MetalType.create(metal, type), CT_METAL));
 
         BlocksTFC.getAllNormalItemBlocks().forEach((x, y) -> registerItemBlock(r, x, y));
         BlocksTFC.getAllInventoryItemBlocks().forEach((x, y) -> registerItemBlock(r, x, y));
@@ -138,12 +134,12 @@ public final class ItemsTFC
 
         for (RockCategory cat : RockCategory.values())
         {
-            simpleItems.add(register(r, "stone/axe/" + cat.name().toLowerCase(), new ItemRockAxe(cat), CT_ROCK_ITEMS));
-            simpleItems.add(register(r, "stone/shovel/" + cat.name().toLowerCase(), new ItemRockShovel(cat), CT_ROCK_ITEMS));
-            simpleItems.add(register(r, "stone/hoe/" + cat.name().toLowerCase(), new ItemRockHoe(cat), CT_ROCK_ITEMS));
-            simpleItems.add(register(r, "stone/knife/" + cat.name().toLowerCase(), new ItemRockKnife(cat), CT_ROCK_ITEMS));
-            simpleItems.add(register(r, "stone/javelin/" + cat.name().toLowerCase(), new ItemRockJavelin(cat), CT_ROCK_ITEMS));
-            simpleItems.add(register(r, "stone/hammer/" + cat.name().toLowerCase(), new ItemRockHammer(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/axe/" + cat.name(), new ItemRockAxe(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/shovel/" + cat.name(), new ItemRockShovel(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/hoe/" + cat.name(), new ItemRockHoe(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/knife/" + cat.name(), new ItemRockKnife(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/javelin/" + cat.name(), new ItemRockJavelin(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/hammer/" + cat.name(), new ItemRockHammer(cat), CT_ROCK_ITEMS));
         }
 
         for (Powder powder : Powder.values())
@@ -153,15 +149,15 @@ public final class ItemsTFC
             for (MetalType type : MetalType.values())
             {
                 if (!type.hasMold) continue;
-                registerPottery(simpleItems, r, "mold/" + type.name().toLowerCase() + "/unfired", "mold/" + type.name().toLowerCase() + "/empty", new ItemUnfiredMold(new ItemMold(type), type));
-                for (MetalEnum metal : MetalEnum.values())
+                registerPottery(simpleItems, r, "mold/" + type.name() + "/unfired", "mold/" + type.name() + "/empty", new ItemUnfiredMold(new ItemMold(type), type));
+                for (Metal metal : Metal.values())
                 {
-                    if (!metal.hasType(type) || metal.tier != MetalEnum.Tier.TIER_I) continue;
-                    simpleItems.add(register(r, ("mold/" + type.name() + "/" + metal.name()).toLowerCase(), new ItemFilledMold(type, metal), CT_POTTERY));
+                    if (!type.hasType(metal) || metal.tier != Metal.Tier.TIER_I) continue;
+                    simpleItems.add(register(r, "mold/" + type.name() + "/" + metal.name(), new ItemFilledMold(type, metal), CT_POTTERY));
                 }
             }
-            for (MetalEnum metal : MetalEnum.values())
-                simpleItems.add(register(r, ("mold/ingot/" + metal.name()).toLowerCase(), new ItemFilledMold(MetalType.UNSHAPED, metal), CT_POTTERY));
+            for (Metal metal : Metal.values())
+                simpleItems.add(register(r, "mold/ingot/" + metal.name(), new ItemFilledMold(MetalType.UNSHAPED, metal), CT_POTTERY));
 
             registerPottery(simpleItems, r, "mold/ingot/unfired", "mold/ingot/empty", new ItemUnfiredPottery(new ItemFiredPottery()));
             registerPottery(simpleItems, r, "ceramics/unfired/vessel", "ceramics/fired/vessel", new ItemUnfiredSmallVessel(new ItemSmallVessel(false)));
@@ -178,7 +174,7 @@ public final class ItemsTFC
 
         // FLAT
         for (Rock rock : Rock.values())
-            r.register(new ItemFlat(rock).setRegistryName(MOD_ID, "flat/" + rock.name().toLowerCase()));
+            r.register(new ItemFlat(rock).setRegistryName(MOD_ID, "flat/" + rock.name()));
         r.register(new ItemFlat().setRegistryName(MOD_ID, "flat/leather"));
         r.register(new ItemFlat().setRegistryName(MOD_ID, "flat/clay"));
         r.register(new ItemFlat().setRegistryName(MOD_ID, "flat/fire_clay"));
@@ -219,7 +215,7 @@ public final class ItemsTFC
 
     public static void init()
     {
-        for (MetalEnum metal : MetalEnum.values())
+        for (Metal metal : Metal.values())
             if (metal.toolMetal != null)
                 metal.toolMetal.setRepairItem(new ItemStack(ItemMetal.get(metal, MetalType.SCRAP)));
     }

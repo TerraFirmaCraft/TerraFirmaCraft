@@ -16,7 +16,7 @@ import net.minecraft.util.NonNullList;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
@@ -54,11 +54,11 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
         {
             setHasSubtypes(true);
             OreDictionaryHelper.register(this, "ore");
-            OreDictionaryHelper.register(this, "ore", ore);
+            OreDictionaryHelper.register(this, "ore", ore.name());
             for (Ore.Grade grade : Ore.Grade.values())
             {
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", grade);
-                OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore, grade);
+                OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore.name(), grade);
             }
         }
         else // Mineral
@@ -101,7 +101,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     }
 
     @Override
-    public MetalEnum getMetal(ItemStack stack)
+    public Metal getMetal(ItemStack stack)
     {
         return ore.metal;
     }
