@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
 import net.dries007.tfc.util.IPlacableItem;
@@ -23,7 +23,7 @@ import static net.dries007.tfc.objects.blocks.metal.BlockSheet.FACE;
 
 public class ItemSheet extends ItemMetal implements IPlacableItem
 {
-    public ItemSheet(MetalEnum metal, MetalType type)
+    public ItemSheet(Metal metal, MetalType type)
     {
         super(metal, type);
     }

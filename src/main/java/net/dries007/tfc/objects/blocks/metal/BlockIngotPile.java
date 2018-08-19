@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
@@ -180,7 +180,7 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         TEIngotPile te = Helpers.getTE(world, pos, TEIngotPile.class);
-        return new ItemStack(ItemMetal.get((te != null ? te.getMetal() : MetalEnum.UNKNOWN), MetalType.INGOT));
+        return new ItemStack(ItemMetal.get((te != null ? te.getMetal() : Metal.get("unknown")), MetalType.INGOT));
     }
 
     private boolean collapseDown(World world, BlockPos pos)

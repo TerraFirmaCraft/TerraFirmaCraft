@@ -26,7 +26,6 @@ import net.dries007.tfc.cmd.ItemHeatCommand;
 import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.cmd.TreeGenCommand;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
-import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.OreSpawnData;
@@ -104,11 +103,10 @@ public class TerraFirmaCraft
         CalenderTFC.reload();
 
         EntitiesTFC.preInit();
-        FluidsTFC.preInit();
-
         OreSpawnData.preInit(event.getModConfigurationDirectory());
         CapabilityItemSize.preInit();
         CapabilityItemHeat.preInit();
+
         MinecraftForge.EVENT_BUS.register(new CommonEventHandler());
 
         if (event.getSide().isClient()) ClientEvents.preInit();

@@ -34,15 +34,24 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
     private final ResourceLocation name;
 
     public final boolean graded;
-    public final MetalEnum metal;
+    public final Metal metal;
 
-    public Ore(ResourceLocation name, @Nullable MetalEnum metal)
+    public Ore(ResourceLocation name, @Nonnull ResourceLocation metalLoc)
     {
-        this.graded = (metal != null);
-        this.metal = metal;
-
         this.name = name;
         setRegistryName(name);
+
+        this.metal = TFCRegistries.getMetals().getValue(metalLoc);
+        this.graded = metal != null;
+    }
+
+    public Ore(ResourceLocation name)
+    {
+        this.name = name;
+        setRegistryName(name);
+
+        this.metal = null;
+        this.graded = false;
     }
 
     @Nonnull

@@ -101,6 +101,11 @@ public final class Helpers
         return JOINER_DOT.join(Constants.MOD_ID, "enum", anEnum.getDeclaringClass().getSimpleName(), anEnum).toLowerCase();
     }
 
+    public static String getTypeName(String name)
+    {
+        return JOINER_DOT.join(Constants.MOD_ID, "types", name).toLowerCase();
+    }
+
     @Nonnull
     public static ItemStack consumeItem(ItemStack stack, int amount)
     {
