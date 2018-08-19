@@ -114,39 +114,39 @@ public class OreDictionaryHelper
         {
             case RAW:
                 MAP.put(thing, toString(prefixParts, "stone"));
-                MAP.put(thing, toString(prefixParts, "stone", rock));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory()));
+                MAP.put(thing, toString(prefixParts, "stone", rock.name()));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().name()));
                 break;
             case SMOOTH:
                 MAP.put(thing, toString(prefixParts, "stone"));
                 MAP.put(thing, toString(prefixParts, "stone", "polished"));
-                MAP.put(thing, toString(prefixParts, "stone", rock));
-                MAP.put(thing, toString(prefixParts, "stone", rock, "polished"));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory()));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory(), "polished"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.name()));
+                MAP.put(thing, toString(prefixParts, "stone", rock.name(), "polished"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().name()));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().name(), "polished"));
                 break;
             case COBBLE:
                 MAP.put(thing, toString(prefixParts, "cobblestone"));
-                MAP.put(thing, toString(prefixParts, "cobblestone", rock));
-                MAP.put(thing, toString(prefixParts, "cobblestone", rock.getRockCategory()));
+                MAP.put(thing, toString(prefixParts, "cobblestone", rock.name()));
+                MAP.put(thing, toString(prefixParts, "cobblestone", rock.getRockCategory().name()));
                 break;
             case BRICKS:
                 MAP.put(thing, toString(prefixParts, "stone", "brick"));
-                MAP.put(thing, toString(prefixParts, "stone", rock, "brick"));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory(), "brick"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.name(), "brick"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().name(), "brick"));
                 break;
             case CLAY_GRASS:
                 MAP.put(thing, toString(prefixParts, "clay"));
-                MAP.put(thing, toString(prefixParts, "clay", rock));
-                MAP.put(thing, toString(prefixParts, "clay", rock.getRockCategory()));
+                MAP.put(thing, toString(prefixParts, "clay", rock.name()));
+                MAP.put(thing, toString(prefixParts, "clay", rock.getRockCategory().name()));
                 MAP.put(thing, toString(prefixParts, "clay", "grass"));
-                MAP.put(thing, toString(prefixParts, "clay", rock, "grass"));
-                MAP.put(thing, toString(prefixParts, "clay", rock.getRockCategory(), "grass"));
+                MAP.put(thing, toString(prefixParts, "clay", rock.name(), "grass"));
+                MAP.put(thing, toString(prefixParts, "clay", rock.getRockCategory().name(), "grass"));
                 break;
             case DRY_GRASS:
                 MAP.put(thing, toString(prefixParts, type, "dry"));
-                MAP.put(thing, toString(prefixParts, type, rock, "dry"));
-                MAP.put(thing, toString(prefixParts, type, rock.getRockCategory(), "dry"));
+                MAP.put(thing, toString(prefixParts, type, rock.name(), "dry"));
+                MAP.put(thing, toString(prefixParts, type, rock.getRockCategory().name(), "dry"));
                 break;
             case SAND:
             case GRAVEL:
@@ -155,8 +155,8 @@ public class OreDictionaryHelper
             case CLAY:
             default:
                 MAP.put(thing, toString(prefixParts, type));
-                MAP.put(thing, toString(prefixParts, type, rock));
-                MAP.put(thing, toString(prefixParts, type, rock.getRockCategory()));
+                MAP.put(thing, toString(prefixParts, type, rock.name()));
+                MAP.put(thing, toString(prefixParts, type, rock.getRockCategory().name()));
         }
     }
 

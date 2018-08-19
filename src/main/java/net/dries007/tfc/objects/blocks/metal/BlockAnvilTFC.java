@@ -5,7 +5,8 @@
 
 package net.dries007.tfc.objects.blocks.metal;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -26,7 +27,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 
@@ -35,23 +36,23 @@ import net.dries007.tfc.objects.items.metal.ItemAnvil;
 public class BlockAnvilTFC extends Block
 {
     public static final PropertyBool AXIS = PropertyBool.create("axis");
-    private static final EnumMap<MetalEnum, BlockAnvilTFC> MAP = new EnumMap<>(MetalEnum.class);
+    private static final Map<Metal, BlockAnvilTFC> MAP = new HashMap<>();
     private static final AxisAlignedBB AABB_Z = new AxisAlignedBB(0.1875, 0, 0, 0.8125, 0.625, 1);
     private static final AxisAlignedBB AABB_X = new AxisAlignedBB(0, 0, 0.1875, 1, 0.625, 0.8125);
 
-    public static BlockAnvilTFC get(MetalEnum metal)
+    public static BlockAnvilTFC get(Metal metal)
     {
         return MAP.get(metal);
     }
 
-    public static ItemStack get(MetalEnum metal, int amount)
+    public static ItemStack get(Metal metal, int amount)
     {
         return new ItemStack(MAP.get(metal), amount);
     }
 
-    public final MetalEnum metal;
+    public final Metal metal;
 
-    public BlockAnvilTFC(MetalEnum metal)
+    public BlockAnvilTFC(Metal metal)
     {
         super(Material.IRON);
 

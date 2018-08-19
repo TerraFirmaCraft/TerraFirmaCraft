@@ -10,7 +10,7 @@ import java.util.function.BiFunction;
 
 import net.minecraft.item.Item;
 
-import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.items.metal.*;
 
 public enum MetalType
@@ -67,22 +67,20 @@ public enum MetalType
     public final boolean toolItem;
     public final int smeltAmount;
     public final boolean hasMold;
-    /**
-     * Internal use only.
-     */
-    public final BiFunction<MetalEnum, MetalType, Item> supplier;
 
-    MetalType(boolean toolItem, int smeltAmount, BiFunction<MetalEnum, MetalType, Item> supplier, boolean hasMold)
+    public static Item create(Metal metal, MetalType type)
+    {
+        return type.supplier.apply(metal, type);
+    }
+
+    public final BiFunction<Metal, MetalType, Item> supplier;
+
+    MetalType(boolean toolItem, int smeltAmount, BiFunction<Metal, MetalType, Item> supplier, boolean hasMold)
     {
         this.toolItem = toolItem;
         this.smeltAmount = smeltAmount;
         this.supplier = supplier;
         this.hasMold = hasMold;
-    }
-
-    MetalType(boolean toolItem, int smeltAmount, BiFunction<MetalEnum, MetalType, Item> supplier)
-    {
-        this(toolItem, smeltAmount, supplier, false);
     }
 
     MetalType(boolean toolItem, int smeltAmount, boolean hasMold)
@@ -93,5 +91,19 @@ public enum MetalType
     MetalType(boolean toolItem, int smeltAmount)
     {
         this(toolItem, smeltAmount, false);
+    }
+
+    MetalType(boolean toolItem, int smeltAmount, BiFunction<Metal, MetalType, Item> supplier)
+    {
+        this(toolItem, smeltAmount, supplier, false);
+    }
+
+    public boolean hasType(Metal metal)
+    {
+        if (supplier == null)
+            return false;
+        if (!metal.usable)
+            return this == MetalType.INGOT || this == MetalType.UNSHAPED;
+        return !this.toolItem || metal.getToolMetal() != null;
     }
 }

@@ -23,7 +23,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEIngotPile;
@@ -34,7 +34,7 @@ import net.dries007.tfc.util.IPlacableItem;
 @ParametersAreNonnullByDefault
 public class ItemIngot extends ItemMetal implements IPlacableItem
 {
-    public ItemIngot(MetalEnum metal, MetalType type)
+    public ItemIngot(Metal metal, MetalType type)
     {
         super(metal, type);
     }

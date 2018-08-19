@@ -10,7 +10,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.api.types.Metal;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -24,7 +24,7 @@ public class ItemUnfiredPottery extends ItemPottery
     }
 
     @Override
-    public ItemStack getFiringResult(ItemStack input, MetalEnum.Tier tier)
+    public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
     {
         ItemStack output = new ItemStack(firedVersion);
         if (input.getHasSubtypes() && output.getHasSubtypes()) output.setItemDamage(input.getMetadata());

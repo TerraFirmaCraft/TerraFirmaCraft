@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
@@ -44,12 +44,12 @@ public class ItemSmallOre extends ItemTFC implements IMetalObject
         if (MAP.put(ore, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
         OreDictionaryHelper.register(this, "ore");
-        OreDictionaryHelper.register(this, "ore", ore);
-        OreDictionaryHelper.register(this, "ore", ore, "small");
+        OreDictionaryHelper.register(this, "ore", ore.name());
+        OreDictionaryHelper.register(this, "ore", ore.name(), "small");
     }
 
     @Override
-    public MetalEnum getMetal(ItemStack stack)
+    public Metal getMetal(ItemStack stack)
     {
         return ore.metal;
     }

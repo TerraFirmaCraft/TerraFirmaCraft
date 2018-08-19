@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.items.metal.ItemIngot;
 
@@ -33,19 +33,19 @@ public class TEIngotPile extends TileEntity
 {
     public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "ingot_pile");
 
-    private MetalEnum metal;
+    private Metal metal;
     private int count;
 
     public TEIngotPile()
     {
-        metal = MetalEnum.UNKNOWN;
+        metal = Metal.get("unknown");
         count = 1;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag)
     {
-        metal = tag.hasKey("metal") ? MetalEnum.valueOf(tag.getString("metal")) : MetalEnum.UNKNOWN;
+        metal = tag.hasKey("metal") ? Metal.get(tag.getString("metal")) : Metal.get("unknown");
         count = tag.hasKey("count") ? tag.getInteger("count") : 1;
         super.readFromNBT(tag);
     }
@@ -114,12 +114,12 @@ public class TEIngotPile extends TileEntity
             new ItemStack(ItemIngot.get(metal, MetalType.INGOT), count));
     }
 
-    public MetalEnum getMetal()
+    public Metal getMetal()
     {
         return metal;
     }
 
-    public void setMetal(MetalEnum metal)
+    public void setMetal(Metal metal)
     {
         this.metal = metal;
     }

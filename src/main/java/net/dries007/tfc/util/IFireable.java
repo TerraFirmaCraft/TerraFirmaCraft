@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEPitKiln;
 
@@ -33,12 +33,12 @@ public interface IFireable extends IPlacableItem
         return null;
     }
 
-    default EnumSet<MetalEnum.Tier> getFireableTiers()
+    default EnumSet<Metal.Tier> getFireableTiers()
     {
-        return EnumSet.of(MetalEnum.Tier.TIER_I, MetalEnum.Tier.TIER_II);
+        return EnumSet.of(Metal.Tier.TIER_I, Metal.Tier.TIER_II);
     }
 
-    ItemStack getFiringResult(ItemStack stack, MetalEnum.Tier tier);
+    ItemStack getFiringResult(ItemStack stack, Metal.Tier tier);
 
     @Override
     default boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, EnumFacing facing, Vec3d hitVec)
@@ -47,7 +47,7 @@ public interface IFireable extends IPlacableItem
         if (fireable != null && player.isSneaking() && facing == EnumFacing.UP)
         {
 
-            if (fireable.getFireableTiers().contains(MetalEnum.Tier.TIER_I))
+            if (fireable.getFireableTiers().contains(Metal.Tier.TIER_I))
             {
                 //noinspection ConstantConditions
                 if (world.getBlockState(pos).getBlock() != BlocksTFC.PIT_KILN)

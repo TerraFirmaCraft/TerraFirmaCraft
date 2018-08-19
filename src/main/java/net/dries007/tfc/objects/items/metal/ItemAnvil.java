@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.api.types.MetalEnum;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.util.IPlacableItem;
@@ -31,7 +31,7 @@ import static net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC.AXIS;
 @ParametersAreNonnullByDefault
 public class ItemAnvil extends ItemMetal implements IPlacableItem
 {
-    public ItemAnvil(MetalEnum metal, MetalType type)
+    public ItemAnvil(Metal metal, MetalType type)
     {
         super(metal, type);
     }
