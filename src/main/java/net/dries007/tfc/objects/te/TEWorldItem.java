@@ -9,18 +9,19 @@ import java.util.Random;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
@@ -28,10 +29,9 @@ import static net.dries007.tfc.Constants.MOD_ID;
 @MethodsReturnNonnullByDefault
 public class TEWorldItem extends TileEntity
 {
+    public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "world_item");
     public ItemStackHandler inventory = new ItemStackHandler(1);
     private byte rotation;
-
-    public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "world_item");
 
     public TEWorldItem()
     {
@@ -39,9 +39,9 @@ public class TEWorldItem extends TileEntity
         rotation = (byte) rand.nextInt(4);
     }
 
-    public void onBreakBlock()
+    public void onBreakBlock(BlockPos pos1)
     {
-        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(0));
+        Helpers.spawnItemStack(world, pos1, inventory.getStackInSlot(0));
     }
 
     @Override
@@ -92,13 +92,6 @@ public class TEWorldItem extends TileEntity
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-        return new AxisAlignedBB(getPos(), getPos().add(1D, 1D, 1D));
-    }
-
-    @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
     {
         this.handleUpdateTag(packet.getNbtCompound());
@@ -108,6 +101,13 @@ public class TEWorldItem extends TileEntity
     public void handleUpdateTag(NBTTagCompound tag)
     {
         readFromNBT(tag);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return new AxisAlignedBB(getPos(), getPos().add(1D, 1D, 1D));
     }
 
     public byte getRotation()

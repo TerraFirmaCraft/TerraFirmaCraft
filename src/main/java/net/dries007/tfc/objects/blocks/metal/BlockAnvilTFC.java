@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.blocks.metal;
@@ -34,7 +33,10 @@ import net.dries007.tfc.objects.items.metal.ItemAnvil;
 @MethodsReturnNonnullByDefault
 public class BlockAnvilTFC extends Block
 {
+    public static final PropertyBool AXIS = PropertyBool.create("axis");
     private static final EnumMap<Metal, BlockAnvilTFC> MAP = new EnumMap<>(Metal.class);
+    private static final AxisAlignedBB AABB_Z = new AxisAlignedBB(0.1875, 0, 0, 0.8125, 0.625, 1);
+    private static final AxisAlignedBB AABB_X = new AxisAlignedBB(0, 0, 0.1875, 1, 0.625, 0.8125);
 
     public static BlockAnvilTFC get(Metal metal)
     {
@@ -45,11 +47,7 @@ public class BlockAnvilTFC extends Block
     {
         return new ItemStack(MAP.get(metal), amount);
     }
-
     public final Metal metal;
-    public static final PropertyBool AXIS = PropertyBool.create("axis");
-    private static final AxisAlignedBB AABB_Z = new AxisAlignedBB(0.1875, 0, 0, 0.8125, 0.625, 1);
-    private static final AxisAlignedBB AABB_X = new AxisAlignedBB(0, 0, 0.1875, 1, 0.625, 0.8125);
 
     public BlockAnvilTFC(Metal metal)
     {
@@ -74,13 +72,6 @@ public class BlockAnvilTFC extends Block
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(AXIS, meta == 0);
@@ -89,18 +80,6 @@ public class BlockAnvilTFC extends Block
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(AXIS) ? 0 : 1;
-    }
-
-    @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return ItemAnvil.get(metal, Metal.ItemType.ANVIL);
-    }
-
-    @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        return new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL));
     }
 
     @Override
@@ -126,6 +105,19 @@ public class BlockAnvilTFC extends Block
     }
 
     @Override
+    @SuppressWarnings("deprecation")
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return ItemAnvil.get(metal, Metal.ItemType.ANVIL);
+    }
+
+    @Override
     public BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, AXIS);
@@ -135,5 +127,11 @@ public class BlockAnvilTFC extends Block
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return false;
+    }
+
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        return new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL));
     }
 }

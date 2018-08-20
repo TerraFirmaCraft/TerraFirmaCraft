@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.blocks.metal;
@@ -39,6 +38,14 @@ public class BlockSheet extends Block
 {
     public static final PropertyDirection FACE = PropertyDirection.create("face");
     private static final EnumMap<Metal, BlockSheet> MAP = new EnumMap<>(Metal.class);
+    private static final AxisAlignedBB[] SHEET_AABB = new AxisAlignedBB[] {
+        new AxisAlignedBB(0d, 0.9375d, 0d, 1d, 1d, 1d),
+        new AxisAlignedBB(0d, 0d, 0d, 1d, 0.0625d, 1d),
+        new AxisAlignedBB(0d, 0d, 0.9375d, 1d, 1d, 1d),
+        new AxisAlignedBB(0d, 0d, 0d, 1d, 1d, 0.0625d),
+        new AxisAlignedBB(0.9375d, 0d, 0d, 1d, 1d, 1d),
+        new AxisAlignedBB(0d, 0d, 0d, 0.0625d, 1d, 1d)
+    };
 
     public static BlockSheet get(Metal metal)
     {
@@ -51,14 +58,6 @@ public class BlockSheet extends Block
     }
 
     public final Metal metal;
-    private static final AxisAlignedBB[] SHEET_AABB = new AxisAlignedBB[] {
-        new AxisAlignedBB(0d, 0.9375d, 0d, 1d, 1d, 1d),
-        new AxisAlignedBB(0d, 0d, 0d, 1d, 0.0625d, 1d),
-        new AxisAlignedBB(0d, 0d, 0.9375d, 1d, 1d, 1d),
-        new AxisAlignedBB(0d, 0d, 0d, 1d, 1d, 0.0625d),
-        new AxisAlignedBB(0.9375d, 0d, 0d, 1d, 1d, 1d),
-        new AxisAlignedBB(0d, 0d, 0d, 0.0625d, 1d, 1d)
-    };
 
     public BlockSheet(Metal metal)
     {
@@ -67,8 +66,8 @@ public class BlockSheet extends Block
         this.metal = metal;
         if (MAP.put(metal, this) != null) throw new IllegalStateException("There can only be one.");
 
-        setHardness(3.5F);
-        setResistance(10F);
+        setHardness(40F);
+        setResistance(25F);
         setHarvestLevel("pickaxe", 0);
         this.setDefaultState(blockState.getBaseState().withProperty(FACE, EnumFacing.NORTH));
     }
@@ -77,7 +76,7 @@ public class BlockSheet extends Block
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACE, EnumFacing.getFront(meta));
+        return this.getDefaultState().withProperty(FACE, EnumFacing.byIndex(meta));
     }
 
     @Override
@@ -124,24 +123,6 @@ public class BlockSheet extends Block
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACE);
-    }
-
-    @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return ItemSheet.get(metal, Metal.ItemType.SHEET);
-    }
-
-    @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        return new ItemStack(ItemSheet.get(metal, Metal.ItemType.SHEET));
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
@@ -154,8 +135,26 @@ public class BlockSheet extends Block
     }
 
     @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return ItemSheet.get(metal, Metal.ItemType.SHEET);
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
+    {
+        return new ItemStack(ItemSheet.get(metal, Metal.ItemType.SHEET));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, FACE);
+    }
+
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(ItemSheet.get(metal, Metal.ItemType.SHEET));
     }

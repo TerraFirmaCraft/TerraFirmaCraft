@@ -22,12 +22,12 @@ public class WorldGenWaterlilyTFC extends WorldGenerator
         for (int i = 0; i < 10; ++i)
         {
             final BlockPos p2 = position.add(rand.nextInt(8) - rand.nextInt(8),
-                    rand.nextInt(4) - rand.nextInt(4),
-                    rand.nextInt(8) - rand.nextInt(8));
+                rand.nextInt(4) - rand.nextInt(4),
+                rand.nextInt(8) - rand.nextInt(8));
 
             if (worldIn.isAirBlock(p2) && Blocks.WATERLILY.canPlaceBlockAt(worldIn, p2) &&
-                    worldIn.getBlockState(p2.add(0, -1, 0)) == FRESH_WATER &&
-                    worldIn.getBlockState(p2.add(0, -2, 0)) != FRESH_WATER) // todo: make this a little less harsh
+                worldIn.getBlockState(p2.add(0, -1, 0)) == FRESH_WATER &&
+                worldIn.getBlockState(p2.add(0, -2, 0)) != FRESH_WATER) // todo: make this a little less harsh
             {
                 worldIn.setBlockState(p2, Blocks.WATERLILY.getDefaultState(), 0x02);
             }

@@ -36,7 +36,5 @@ public class RecipeRegistryEvents
         r.register(new MetalToolRecipe(Metal.ItemType.PROPICK_HEAD, Metal.ItemType.PROPICK).setRegistryName(MOD_ID, "metal_propick"));
         r.register(new MetalToolRecipe(Metal.ItemType.KNIFE_BLADE, Metal.ItemType.KNIFE).setRegistryName(MOD_ID, "metal_knife"));
         r.register(new MetalToolRecipe(Metal.ItemType.SCYTHE_BLADE, Metal.ItemType.SCYTHE).setRegistryName(MOD_ID, "metal_scythe"));
-
-
     }
 }

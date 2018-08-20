@@ -33,10 +33,10 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.util.IItemSize;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.util.CapabilityItemSize;
-import net.dries007.tfc.util.IItemSize;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
@@ -77,7 +77,7 @@ public class ClientEvents
         if (ConfigTFC.GENERAL.debug && mc.gameSettings.showDebugInfo)
         {
             BlockPos blockpos = new BlockPos(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().getEntityBoundingBox().minY, mc.getRenderViewEntity().posZ);
-            Chunk chunk = mc.world.getChunkFromBlockCoords(blockpos);
+            Chunk chunk = mc.world.getChunk(blockpos);
             if (mc.world.isBlockLoaded(blockpos) && !chunk.isEmpty())
             {
                 final int x = blockpos.getX() & 15, z = blockpos.getZ() & 15;
@@ -89,36 +89,41 @@ public class ClientEvents
                 if (data == null || !data.isInitialized()) list.add("No data ?!");
                 else
                 {
-                    list.add(String.format("%sTemps: Base: %s%.0f°%s Bio: %s%.0f°%s Height adjusted: %s%.0f°",
-                            GRAY, WHITE, ClimateTFC.getTemp(mc.world, blockpos), GRAY,
-                            WHITE, ClimateTFC.getBioTemperatureHeight(mc.world, blockpos), GRAY,
-                            WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)
+                    list.add(String.format("%sTemps: Base: %s%.1f°%s Biome Avg: %s%.1f°%s Actual: %s%.1f°",
+                        GRAY, WHITE, data.getBaseTemp(), GRAY,
+                        WHITE, data.getAverageTemp(), GRAY,
+                        WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)
                     ));
                     list.add(String.format("%sTime: %s%02d:%02d %04d/%02d/%02d",
-                            GRAY, WHITE,
-                            CalenderTFC.getHourOfDay(),
-                            CalenderTFC.getMinuteOfHour(),
-                            CalenderTFC.getTotalYears(),
-                            CalenderTFC.getMonthOfYear(),
-                            CalenderTFC.getDayOfMonth()
-                            )
+                        GRAY, WHITE,
+                        CalenderTFC.getHourOfDay(),
+                        CalenderTFC.getMinuteOfHour(),
+                        CalenderTFC.getTotalYears(),
+                        CalenderTFC.getMonthOfYear().id(),
+                        CalenderTFC.getDayOfMonth()
+                        )
                     );
 
                     list.add(GRAY + "Biome: " + WHITE + mc.world.getBiome(blockpos).getBiomeName());
 
-                    list.add(GRAY + "Rocks: " + WHITE + data.getRockLayer1(x, z).name + ", " + data.getRockLayer2(x, z).name + ", " + data.getRockLayer3(x, z).name);
-                    list.add(GRAY + "EVT: " + WHITE + data.getEvtLayer(x, z).name);
-                    list.add(GRAY + "Rainfall: " + WHITE + data.getRainfallLayer(x, z).name);
-                    list.add(GRAY + "Stability: " + WHITE + data.getStabilityLayer(x, z).name);
-                    list.add(GRAY + "Drainage: " + WHITE + data.getDrainageLayer(x, z).name);
+                    list.add(GRAY + "Rainfall: " + WHITE + data.getRainfall());
+                    list.add(GRAY + "Flora Density: " + WHITE + data.getFloraDensity());
+                    list.add(GRAY + "Flora Diversity: " + WHITE + data.getFloraDiversity());
+
+                    list.add(GRAY + "Valid Trees: ");
+                    data.getValidTrees().forEach(t -> list.add(String.format("%s %s (%.1f)", WHITE, t.name(), t.dominance)));
+
+                    //list.add(GRAY + "Rocks: " + WHITE + data.getRockLayer1(x, z).name + ", " + data.getRockLayer2(x, z).name + ", " + data.getRockLayer3(x, z).name);
+                    //list.add(GRAY + "Stability: " + WHITE + data.getStabilityLayer(x, z).name);
+                    //list.add(GRAY + "Drainage: " + WHITE + data.getDrainageLayer(x, z).name);
                     list.add(GRAY + "Sea level offset: " + WHITE + data.getSeaLevelOffset(x, z));
-                    list.add(GRAY + "Fish population: " + WHITE + data.getFishPopulation());
+                    //list.add(GRAY + "Fish population: " + WHITE + data.getFishPopulation());
 
-                    list.add("");
-                    list.add(GRAY + "Rock at feet: " + WHITE + data.getRockLayerHeight(x, blockpos.getY(), z).name);
+                    //list.add("");
+                    //list.add(GRAY + "Rock at feet: " + WHITE + data.getRockLayerHeight(x, blockpos.getY(), z).name);
 
-                    list.add("");
-                    data.getOresSpawned().stream().map(String::valueOf).forEach(list::add);
+                    // list.add("");
+                    //data.getOresSpawned().stream().map(String::valueOf).forEach(list::add);
                 }
             }
         }

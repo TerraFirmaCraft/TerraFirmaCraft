@@ -5,8 +5,9 @@
 
 package net.dries007.tfc.objects.items.rock;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -19,31 +20,31 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Size;
-import net.dries007.tfc.objects.Weight;
-import net.dries007.tfc.util.IItemSize;
+import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.api.util.IItemSize;
+import net.dries007.tfc.api.util.Size;
+import net.dries007.tfc.api.util.Weight;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemRockKnife extends ItemTool implements IItemSize
 {
-    private static final EnumMap<Rock.Category, ItemRockKnife> MAP = new EnumMap<>(Rock.Category.class);
+    private static final Map<RockCategory, ItemRockKnife> MAP = new HashMap<>();
 
-    public static ItemRockKnife get(Rock.Category category)
+    public static ItemRockKnife get(RockCategory category)
     {
         return MAP.get(category);
     }
 
-    public final Rock.Category category;
+    public final RockCategory category;
 
-    public ItemRockKnife(Rock.Category category)
+    public ItemRockKnife(RockCategory category)
     {
-        super(0.5f * category.toolMaterial.getAttackDamage(), 3, category.toolMaterial, ImmutableSet.of());
+        super(0.5f * category.getToolMaterial().getAttackDamage(), 3, category.getToolMaterial(), ImmutableSet.of());
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
-        setHarvestLevel("knife", category.toolMaterial.getHarvestLevel());
+        setHarvestLevel("knife", category.getToolMaterial().getHarvestLevel());
         OreDictionaryHelper.register(this, "knife");
         OreDictionaryHelper.register(this, "knife", "stone");
         OreDictionaryHelper.register(this, "knife", "stone", category);
