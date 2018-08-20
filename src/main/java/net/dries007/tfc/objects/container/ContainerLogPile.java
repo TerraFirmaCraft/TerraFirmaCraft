@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.container;
@@ -85,6 +84,13 @@ public class ContainerLogPile extends ContainerTFC<TELogPile>
     }
 
     @Override
+    public boolean canInteractWith(@Nonnull EntityPlayer player)
+    {
+        if (this.tile.burning) { return false; }
+        return this.tile.countLogs() > 0;
+    }
+
+    @Override
     protected void addContainerSlots(TELogPile tile)
     {
         IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -95,12 +101,5 @@ public class ContainerLogPile extends ContainerTFC<TELogPile>
             addSlotToContainer(new SlotTEInput(inventory, 2, 71, 41, tile, TELogPile::isStackValid));
             addSlotToContainer(new SlotTEInput(inventory, 3, 89, 41, tile, TELogPile::isStackValid));
         }
-    }
-
-    @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer player)
-    {
-        if (this.tile.burning) { return false; }
-        return this.tile.countLogs() > 0;
     }
 }

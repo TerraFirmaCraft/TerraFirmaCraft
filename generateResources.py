@@ -8,15 +8,10 @@ You should set this script up to run automatically whenever you launch the game,
 For IntelliJ instructions, see README.md.
 """
 
-# noinspection PyUnresolvedReferences
 import json
-# noinspection PyUnresolvedReferences
 import os
-# noinspection PyUnresolvedReferences
 import time
-# noinspection PyUnresolvedReferences
 import zipfile
-
 
 def zipfolder(zip_name, target_dir):
     zipobj = zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED)

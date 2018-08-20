@@ -5,8 +5,9 @@
 
 package net.dries007.tfc.objects.items.rock;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -18,32 +19,32 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Size;
-import net.dries007.tfc.objects.Weight;
-import net.dries007.tfc.util.IItemSize;
+import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.api.util.IItemSize;
+import net.dries007.tfc.api.util.Size;
+import net.dries007.tfc.api.util.Weight;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemRockShovel extends ItemSpade implements IItemSize
 {
-    private static final EnumMap<Rock.Category, ItemRockShovel> MAP = new EnumMap<>(Rock.Category.class);
+    private static final Map<RockCategory, ItemRockShovel> MAP = new HashMap<>();
 
-    public static ItemRockShovel get(Rock.Category category)
+    public static ItemRockShovel get(RockCategory category)
     {
         return MAP.get(category);
     }
 
-    public final Rock.Category category;
+    public final RockCategory category;
 
-    public ItemRockShovel(Rock.Category category)
+    public ItemRockShovel(RockCategory category)
     {
-        super(category.toolMaterial);
+        super(category.getToolMaterial());
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
-        attackDamage = 1.5f * category.toolMaterial.getAttackDamage();
-        setHarvestLevel("shovel", category.toolMaterial.getHarvestLevel());
+        attackDamage = 1.5f * category.getToolMaterial().getAttackDamage();
+        setHarvestLevel("shovel", category.getToolMaterial().getHarvestLevel());
         OreDictionaryHelper.register(this, "shovel");
         OreDictionaryHelper.register(this, "shovel", "stone");
         OreDictionaryHelper.register(this, "shovel", "stone", category);

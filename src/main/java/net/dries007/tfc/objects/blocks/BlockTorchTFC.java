@@ -40,7 +40,6 @@ public class BlockTorchTFC extends BlockTorch implements ITileEntityProvider
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(LIT, true));
         OreDictionaryHelper.register(this, "torch");
         setLightLevel(0.9375F);
-        TileEntity.register(TETorchTFC.ID.toString(), TETorchTFC.class);
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 

@@ -77,6 +77,7 @@ public class EntityFallingBlockTFC extends Entity
         dataManager.register(BLOCK, Optional.absent());
     }
 
+    @Override
     public void onUpdate()
     {
         IBlockState state = getState();

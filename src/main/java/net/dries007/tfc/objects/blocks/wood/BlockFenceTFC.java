@@ -5,34 +5,35 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockFenceTFC extends BlockFence
 {
-    private static final EnumMap<Wood, BlockFenceTFC> MAP = new EnumMap<>(Wood.class);
+    private static final Map<Tree, BlockFenceTFC> MAP = new HashMap<>();
 
-    public static BlockFenceTFC get(Wood wood)
+    public static BlockFenceTFC get(Tree wood)
     {
         return MAP.get(wood);
     }
 
-    public final Wood wood;
+    public final Tree wood;
 
-    public BlockFenceTFC(Wood wood)
+    public BlockFenceTFC(Tree wood)
     {
         super(Material.WOOD, Material.WOOD.getMaterialMapColor());
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         this.wood = wood;
         setHarvestLevel("axe", 0);
         OreDictionaryHelper.register(this, "fence");
-        OreDictionaryHelper.register(this, "fence", wood);
+        OreDictionaryHelper.register(this, "fence", wood.name());
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 }

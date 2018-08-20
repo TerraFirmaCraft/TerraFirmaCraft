@@ -5,7 +5,8 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.SoundType;
@@ -13,27 +14,27 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.te.TEChestTFC;
 
 public class BlockChestTFC extends BlockChest
 {
-    private static final EnumMap<Wood, BlockChestTFC> MAP_BASIC = new EnumMap<>(Wood.class);
-    private static final EnumMap<Wood, BlockChestTFC> MAP_TRAP = new EnumMap<>(Wood.class);
+    private static final Map<Tree, BlockChestTFC> MAP_BASIC = new HashMap<>();
+    private static final Map<Tree, BlockChestTFC> MAP_TRAP = new HashMap<>();
 
-    public static BlockChestTFC getBasic(Wood wood)
+    public static BlockChestTFC getBasic(Tree wood)
     {
         return MAP_BASIC.get(wood);
     }
 
-    public static BlockChestTFC getTrap(Wood wood)
+    public static BlockChestTFC getTrap(Tree wood)
     {
         return MAP_TRAP.get(wood);
     }
 
-    public final Wood wood;
+    public final Tree wood;
 
-    public BlockChestTFC(Type type, Wood wood)
+    public BlockChestTFC(Type type, Tree wood)
     {
         super(type);
         this.wood = wood;
@@ -50,8 +51,6 @@ public class BlockChestTFC extends BlockChest
             default:
                 throw new IllegalStateException();
         }
-        Blocks.FIRE.setFireInfo(this, 5, 20);
-        TileEntity.register(TEChestTFC.ID.toString(), TEChestTFC.class);
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 

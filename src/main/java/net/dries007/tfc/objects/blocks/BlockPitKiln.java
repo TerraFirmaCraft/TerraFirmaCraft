@@ -43,7 +43,6 @@ public class BlockPitKiln extends Block implements ITileEntityProvider
         super(Material.CIRCUITS);
         setHardness(0.5f);
         setDefaultState(blockState.getBaseState().withProperty(FULL, false).withProperty(LIT, false));
-        TileEntity.register(TEPitKiln.ID.toString(), TEPitKiln.class);
     }
 
     @Nullable
