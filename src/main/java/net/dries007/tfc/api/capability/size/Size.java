@@ -25,4 +25,9 @@ public enum Size
         this.stackSize = stackSize;
     }
 
+    public boolean isSmallerThan(Size other)
+    {
+        return this.stackSize >= other.stackSize;
+    }
+
 }

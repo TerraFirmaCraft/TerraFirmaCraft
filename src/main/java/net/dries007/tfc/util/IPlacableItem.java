@@ -14,8 +14,6 @@ import net.minecraft.world.World;
 
 public interface IPlacableItem
 {
-    // todo: remove the default here. This method should always be implemented
-
     /**
      * Called by CommonEventHandler for IPlaceableItems.
      *

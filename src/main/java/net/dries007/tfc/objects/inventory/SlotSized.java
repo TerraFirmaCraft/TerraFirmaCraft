@@ -6,9 +6,14 @@
 
 package net.dries007.tfc.objects.inventory;
 
+import javax.annotation.Nonnull;
+
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 
@@ -32,5 +37,14 @@ public class SlotSized extends SlotItemHandler
     public SlotSized(IItemHandler inv, int idx, int x, int y, Weight weight)
     {
         this(inv, idx, x, y, Size.HUGE, weight);
+    }
+
+    @Override
+    public boolean isItemValid(@Nonnull ItemStack stack)
+    {
+        IItemSize size = CapabilityItemSize.getIItemSize(stack);
+        if (size == null)
+            return false;
+        return size.getSize(stack).isSmallerThan(this.size) && size.getWeight(stack).isSmallerThan(this.weight);
     }
 }

@@ -22,7 +22,9 @@ public class CapabilityItemHeat
 {
 
     public static final CapabilityItemHeat INSTANCE = new CapabilityItemHeat();
-    private static final ResourceLocation ID = new ResourceLocation(Constants.MOD_ID, "item_heat");
+    public static final String NBT_TAG = "item_heat";
+
+    private static final ResourceLocation ID = new ResourceLocation(Constants.MOD_ID, NBT_TAG);
 
     @CapabilityInject(IItemHeat.class)
     public static Capability<IItemHeat> ITEM_HEAT_CAPABILITY = null;
@@ -101,13 +103,15 @@ public class CapabilityItemHeat
         @Override
         public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
         {
-            return true;
+            return capability == ITEM_HEAT_CAPABILITY;
         }
 
         @Nullable
         @Override
         public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
         {
+            if (capability != ITEM_HEAT_CAPABILITY)
+                return null;
             return CapabilityItemHeat.ITEM_HEAT_CAPABILITY.cast(this);
         }
 
@@ -131,7 +135,7 @@ public class CapabilityItemHeat
         public NBTBase writeNBT(Capability<IItemHeat> capability, IItemHeat instance, EnumFacing side)
         {
             NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setFloat("temperature", instance.getTemperature());
+            nbt.setFloat("value", instance.getTemperature());
             return nbt;
         }
 
@@ -144,7 +148,9 @@ public class CapabilityItemHeat
                 return;
             }
             NBTTagCompound nbt = (NBTTagCompound) base;
-            instance.setTemperature(nbt.getFloat("temperature"));
+            if (nbt.hasKey(NBT_TAG, net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND))
+                instance.setTemperature(nbt.getCompoundTag(NBT_TAG).getFloat("value"));
+            instance.setTemperature(nbt.getFloat("value"));
         }
     }
 

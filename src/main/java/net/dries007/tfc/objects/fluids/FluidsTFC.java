@@ -5,6 +5,10 @@
 
 package net.dries007.tfc.objects.fluids;
 
+import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -30,7 +34,7 @@ public class FluidsTFC
 
     private static ImmutableSet<Fluid> allInfiniteFluids;
     private static ImmutableSet<Fluid> allAlcoholsFluids;
-    private static ImmutableSet<Fluid> allMetalFluids;
+    private static ImmutableMap<Metal, Fluid> allMetalFluids;
     private static ImmutableSet<Fluid> allOtherFiniteFluids;
 
     public static ImmutableSet<Fluid> getAllInfiniteFluids()
@@ -48,7 +52,16 @@ public class FluidsTFC
         return allOtherFiniteFluids;
     }
 
-    public static ImmutableSet<Fluid> getAllMetalFluids() { return allMetalFluids; }
+    public static ImmutableCollection<Fluid> getAllMetalFluids()
+    {
+        return allMetalFluids.values();
+    }
+
+    @Nullable
+    public static Fluid getMetalFluid(Metal metal)
+    {
+        return allMetalFluids.get(metal);
+    }
 
     public static void preInit()
     {
@@ -90,19 +103,26 @@ public class FluidsTFC
             allOtherFiniteFluids = b.build();
         }
         {
-            ImmutableSet.Builder<Fluid> b = ImmutableSet.builder();
+            ImmutableMap.Builder<Metal, Fluid> b = ImmutableMap.builder();
 
             for (Metal metal : Metal.values())
-                registerFluid(b, new Fluid(metal.name(), STILL, FLOW, metal.color));
+                registerFluid(b, metal, new FluidMetal(metal.name(), STILL, FLOW, metal.color));
 
             allMetalFluids = b.build();
         }
     }
 
-    private static <T extends Fluid> void registerFluid(ImmutableSet.Builder b, T fluid)
+    private static <T extends Fluid> void registerFluid(ImmutableSet.Builder<T> b, T fluid)
     {
         FluidRegistry.registerFluid(fluid);
         FluidRegistry.addBucketForFluid(fluid);
         b.add(fluid);
+    }
+
+    private static <T extends Fluid, V> void registerFluid(ImmutableMap.Builder<V, T> b, V key, T fluid)
+    {
+        FluidRegistry.registerFluid(fluid);
+        FluidRegistry.addBucketForFluid(fluid);
+        b.put(key, fluid);
     }
 }
