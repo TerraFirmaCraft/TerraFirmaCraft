@@ -15,8 +15,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import net.dries007.tfc.client.gui.GuiLogPile;
+import net.dries007.tfc.client.gui.GuiSmallVesselLiquid;
 import net.dries007.tfc.objects.container.ContainerLogPile;
 import net.dries007.tfc.objects.container.ContainerSmallVessel;
+import net.dries007.tfc.objects.container.ContainerSmallVesselLiquid;
 import net.dries007.tfc.objects.items.ceramics.ItemSmallVessel;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
@@ -25,21 +27,30 @@ public class TFCGuiHandler implements IGuiHandler
 {
     public static final int LOG_PILE = 0;
     public static final int SMALL_VESSEL = 1;
+    public static final int SMALL_VESSEL_LIQUID = 2;
+    public static final int MOLD = 3;
 
     @Override
     @Nullable
     public Container getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         BlockPos pos = new BlockPos(x, y, z);
+        ItemStack stack;
         switch (ID)
         {
             case LOG_PILE:
                 TELogPile teLogPile = Helpers.getTE(world, pos, TELogPile.class);
                 return teLogPile == null ? null : new ContainerLogPile(player.inventory, teLogPile);
             case SMALL_VESSEL:
-                ItemStack stack = player.getHeldItemMainhand();
+                stack = player.getHeldItemMainhand();
                 return new ContainerSmallVessel(player.inventory, stack.getItem() instanceof ItemSmallVessel ?
                     stack : player.getHeldItemOffhand());
+            case SMALL_VESSEL_LIQUID:
+                stack = player.getHeldItemMainhand();
+                return new ContainerSmallVesselLiquid(player.inventory, stack.getItem() instanceof ItemSmallVessel ?
+                    stack : player.getHeldItemOffhand());
+            case MOLD:
+
             default:
                 return null;
         }
@@ -50,12 +61,19 @@ public class TFCGuiHandler implements IGuiHandler
     {
         Container container = getServerGuiElement(ID, player, world, x, y, z);
         BlockPos pos = new BlockPos(x, y, z);
+        ItemStack stack;
         switch (ID)
         {
             case LOG_PILE:
                 return new GuiLogPile(container, player.inventory);
             case SMALL_VESSEL:
                 return new GuiLogPile(container, player.inventory);
+            case SMALL_VESSEL_LIQUID:
+                stack = player.getHeldItemMainhand();
+                return new GuiSmallVesselLiquid(container, player.inventory, stack.getItem() instanceof ItemSmallVessel ?
+                    stack : player.getHeldItemOffhand());
+            case MOLD:
+
             default:
                 return null;
         }

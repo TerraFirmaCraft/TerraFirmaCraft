@@ -20,4 +20,9 @@ public enum Weight
         this.name = name;
         this.multiplier = multiplier;
     }
+
+    public boolean isSmallerThan(Weight other)
+    {
+        return this.multiplier >= other.multiplier;
+    }
 }

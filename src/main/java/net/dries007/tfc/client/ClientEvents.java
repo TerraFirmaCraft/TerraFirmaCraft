@@ -149,6 +149,10 @@ public class ClientEvents
         {
             heat.addHeatInfo(stack, tt);
         }
+        if (stack.hasTagCompound())
+        {
+            tt.add("NBT: " + stack.getTagCompound().toString());
+        }
 
         if (event.getFlags().isAdvanced())
         {

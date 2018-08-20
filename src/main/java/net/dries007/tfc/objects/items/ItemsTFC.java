@@ -145,21 +145,13 @@ public final class ItemsTFC
         for (Powder powder : Powder.values())
             simpleItems.add(register(r, "powder/" + powder.name().toLowerCase(), new ItemPowder(powder), CT_MISC));
 
-        { // POTTERY
+        {
+            // POTTERY
             for (MetalType type : MetalType.values())
-            {
-                if (!type.hasMold) continue;
-                registerPottery(simpleItems, r, "mold/" + type.name() + "/unfired", "mold/" + type.name() + "/empty", new ItemUnfiredMold(new ItemMold(type), type));
-                for (Metal metal : Metal.values())
-                {
-                    if (!type.hasType(metal) || metal.tier != Metal.Tier.TIER_I) continue;
-                    simpleItems.add(register(r, "mold/" + type.name() + "/" + metal.name(), new ItemFilledMold(type, metal), CT_POTTERY));
-                }
-            }
-            for (Metal metal : Metal.values())
-                simpleItems.add(register(r, "mold/ingot/" + metal.name(), new ItemFilledMold(MetalType.UNSHAPED, metal), CT_POTTERY));
+                if (type.hasMold)
+                    registerPottery(simpleItems, r, "mold/" + type.name().toLowerCase() + "/unfired", "mold/" + type.name().toLowerCase(), new ItemUnfiredMold(new ItemMold(type), type));
 
-            registerPottery(simpleItems, r, "mold/ingot/unfired", "mold/ingot/empty", new ItemUnfiredPottery(new ItemFiredPottery()));
+            registerPottery(simpleItems, r, "mold/ingot/unfired", "mold/ingot", new ItemUnfiredPottery(new ItemFiredPottery()));
             registerPottery(simpleItems, r, "ceramics/unfired/vessel", "ceramics/fired/vessel", new ItemUnfiredSmallVessel(new ItemSmallVessel(false)));
             registerPottery(null, r, "ceramics/unfired/vessel_glazed", "ceramics/fired/vessel_glazed", new ItemUnfiredSmallVessel(new ItemSmallVessel(true)));
 

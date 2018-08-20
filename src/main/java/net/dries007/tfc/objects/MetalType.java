@@ -16,7 +16,7 @@ import net.dries007.tfc.objects.items.metal.*;
 public enum MetalType
 {
     UNSHAPED(false, 100, null), // Special case, because it's a pottery item
-    INGOT(false, 100, ItemIngot::new),
+    INGOT(false, 100, ItemIngot::new, true),
     DOUBLE_INGOT(false, 200),
     SCRAP(false, 100),
     DUST(false, 100),
