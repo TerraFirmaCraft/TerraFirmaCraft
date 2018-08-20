@@ -9,14 +9,13 @@ import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.objects.items.rock.ItemRock;
@@ -45,12 +44,11 @@ public class WorldGenLooseRocks implements IWorldGenerator
         if (!veins.isEmpty())
         {
             veins.removeIf(v -> {
-                if (v.oreSpawnData.ore == null) return true;
                 if (!v.oreSpawnData.ore.graded) return true;
 
                 int minScanY = (WorldTypeTFC.ROCKLAYER2 + WorldTypeTFC.ROCKLAYER3) / 2;
                 int maxScanY = WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos);
-                return v.pos.getY() <= minScanY || v.pos.getY() >= maxScanY || !v.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0).rock);
+                return v.pos.getY() <= minScanY || v.pos.getY() >= maxScanY || !v.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0));
 
             });
         }
@@ -59,14 +57,14 @@ public class WorldGenLooseRocks implements IWorldGenerator
         int xoff = chunkX * 16 + 8;
         int zoff = chunkZ * 16 + 8;
 
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 12; i++)
         {
             BlockPos pos = new BlockPos(
                 xoff + random.nextInt(16),
                 0,
                 zoff + random.nextInt(16)
             );
-            Rock rock = chunkData.getRock1(pos).rock;
+            Rock rock = chunkData.getRock1(pos);
             generateRock(world, pos.up(world.getTopSolidOrLiquidBlock(pos).getY()), getRandomVein(veins, random), rock);
         }
     }
@@ -74,12 +72,12 @@ public class WorldGenLooseRocks implements IWorldGenerator
     private void generateRock(World world, BlockPos pos, @Nullable VeinType vein, Rock rock)
     {
 
-        IBlockState stateAt = world.getBlockState(pos.down());
-        if (world.isAirBlock(pos) && stateAt.isFullCube())
+        if (world.getBlockState(pos).getMaterial().isReplaceable() && !world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).isFullCube())
         {
-            world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState(),2);
+            //noinspection ConstantConditions
+            world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState(), 2);
             TEWorldItem tile = (TEWorldItem) world.getTileEntity(pos);
-            if(tile != null)
+            if (tile != null)
                 tile.inventory.setStackInSlot(0, vein == null ? ItemRock.get(rock, 1) : ItemSmallOre.get(vein.oreSpawnData.ore, 1));
         }
     }

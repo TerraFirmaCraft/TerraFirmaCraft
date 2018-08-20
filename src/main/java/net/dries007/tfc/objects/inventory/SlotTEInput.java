@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.inventory;
@@ -17,7 +16,6 @@ import net.dries007.tfc.objects.te.TESidedInventory;
 
 public class SlotTEInput extends SlotItemHandler
 {
-
     private final TESidedInventory te;
     private final Function<ItemStack, Boolean> f;
 

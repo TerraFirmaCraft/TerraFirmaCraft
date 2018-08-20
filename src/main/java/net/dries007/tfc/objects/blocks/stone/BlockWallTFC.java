@@ -5,24 +5,27 @@
 
 package net.dries007.tfc.objects.blocks.stone;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.util.InsertOnlyEnumTable;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 //todo: actually by-pass the variant? or would it be worth adding a mossy texture for nice looking walls
 public class BlockWallTFC extends BlockWall
 {
-    private static final InsertOnlyEnumTable<Rock, Rock.Type, BlockWallTFC> TABLE = new InsertOnlyEnumTable<>(Rock.class, Rock.Type.class);
+    private static final Map<Rock, EnumMap<Rock.Type, BlockWallTFC>> TABLE = new HashMap<>();
 
     public static BlockWallTFC get(Rock rock, Rock.Type type)
     {
-        return TABLE.get(rock, type);
+        return TABLE.get(rock).get(type);
     }
 
     public final BlockRockVariant parent;
@@ -30,7 +33,11 @@ public class BlockWallTFC extends BlockWall
     public BlockWallTFC(BlockRockVariant modelBlock)
     {
         super(modelBlock);
-        TABLE.put(modelBlock.rock, modelBlock.type, this);
+
+        if (!TABLE.containsKey(modelBlock.rock))
+            TABLE.put(modelBlock.rock, new EnumMap<>(Rock.Type.class));
+        TABLE.get(modelBlock.rock).put(modelBlock.type, this);
+
         parent = modelBlock;
         OreDictionaryHelper.register(this, "wall");
         OreDictionaryHelper.registerRockType(this, modelBlock.type, modelBlock.rock, "wall");

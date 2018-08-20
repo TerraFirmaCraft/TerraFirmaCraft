@@ -18,9 +18,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.util.Size;
+import net.dries007.tfc.api.util.Weight;
 import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.Size;
-import net.dries007.tfc.objects.Weight;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.util.IPlacableItem;
 
@@ -36,12 +36,6 @@ public class ItemAnvil extends ItemMetal implements IPlacableItem
     }
 
     @Override
-    public boolean canStack(ItemStack stack)
-    {
-        return false;
-    }
-
-    @Override
     public Size getSize(ItemStack stack)
     {
         return Size.HUGE;
@@ -51,6 +45,12 @@ public class ItemAnvil extends ItemMetal implements IPlacableItem
     public Weight getWeight(ItemStack stack)
     {
         return Weight.HEAVY;
+    }
+
+    @Override
+    public boolean canStack(ItemStack stack)
+    {
+        return false;
     }
 
     @Override

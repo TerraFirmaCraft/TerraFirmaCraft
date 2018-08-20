@@ -7,7 +7,7 @@ package net.dries007.tfc.world.classic.worldgen.vein;
 
 import net.minecraft.util.math.BlockPos;
 
-import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.worldgen.WorldGenOre;
 
@@ -26,7 +26,7 @@ public abstract class VeinType
 
     public final boolean inRange(BlockPos pos1)
     {
-        return Math.pow(pos1.getX() - this.pos.getX(), 2) + Math.pow(pos1.getZ() - this.pos.getZ(), 2) <= WorldGenOre.VEIN_MAX_RADIUS_SQUARED;
+        return Math.pow(pos1.getX() - this.pos.getX(), 2) + Math.pow(pos1.getZ() - this.pos.getZ(), 2) <= WorldGenOre.VEIN_MAX_RADIUS * WorldGenOre.VEIN_MAX_RADIUS;
     }
 
     public int getLowestY()

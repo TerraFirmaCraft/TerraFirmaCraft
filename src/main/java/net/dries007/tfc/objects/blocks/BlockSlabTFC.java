@@ -6,7 +6,10 @@
 package net.dries007.tfc.objects.blocks;
 
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
@@ -23,13 +26,15 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Wood;
+import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.wood.BlockPlanksTFC;
-import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public abstract class BlockSlabTFC extends BlockSlab
 {
     public static final PropertyEnum<Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
@@ -44,7 +49,7 @@ public abstract class BlockSlabTFC extends BlockSlab
         setHarvestLevel(c.getHarvestTool(c.getDefaultState()), c.getHarvestLevel(c.getDefaultState()));
     }
 
-    private BlockSlabTFC(Wood wood)
+    private BlockSlabTFC(Tree wood)
     {
         this(BlockPlanksTFC.get(wood));
         Block c = BlockPlanksTFC.get(wood);
@@ -64,9 +69,9 @@ public abstract class BlockSlabTFC extends BlockSlab
     }
 
     @Override
-    public String getUnlocalizedName(int meta)
+    public String getTranslationKey(int meta)
     {
-        return getUnlocalizedName();
+        return super.getTranslationKey();
     }
 
     @SuppressWarnings("deprecation")
@@ -152,6 +157,7 @@ public abstract class BlockSlabTFC extends BlockSlab
     {
         DEFAULT;
 
+        @Override
         public String getName()
         {
             return "default";
@@ -160,15 +166,15 @@ public abstract class BlockSlabTFC extends BlockSlab
 
     public static class Double extends BlockSlabTFC
     {
-        private static final InsertOnlyEnumTable<Rock, Rock.Type, Double> ROCK_TABLE = new InsertOnlyEnumTable<>(Rock.class, Rock.Type.class);
-        private static final EnumMap<Wood, Double> WOOD_MAP = new EnumMap<>(Wood.class);
+        private static final Map<Rock, EnumMap<Rock.Type, Double>> ROCK_TABLE = new HashMap<>();
+        private static final Map<Tree, Double> WOOD_MAP = new HashMap<>();
 
         public static Double get(Rock rock, Rock.Type type)
         {
-            return ROCK_TABLE.get(rock, type);
+            return ROCK_TABLE.get(rock).get(type);
         }
 
-        public static Double get(Wood wood)
+        public static Double get(Tree wood)
         {
             return WOOD_MAP.get(wood);
         }
@@ -176,17 +182,22 @@ public abstract class BlockSlabTFC extends BlockSlab
         public Double(Rock rock, Rock.Type type)
         {
             super(rock, type);
-            ROCK_TABLE.put(rock, type, this);
+
+            if (!ROCK_TABLE.containsKey(rock))
+                ROCK_TABLE.put(rock, new EnumMap<>(Rock.Type.class));
+            ROCK_TABLE.get(rock).put(type, this);
+
             // No oredict, because no item.
         }
 
-        public Double(Wood wood)
+        public Double(Tree wood)
         {
             super(wood);
             if (WOOD_MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
             // No oredict, because no item.
         }
 
+        @Override
         public boolean isDouble()
         {
             return true;
@@ -195,15 +206,15 @@ public abstract class BlockSlabTFC extends BlockSlab
 
     public static class Half extends BlockSlabTFC
     {
-        private static final InsertOnlyEnumTable<Rock, Rock.Type, Half> ROCK_TABLE = new InsertOnlyEnumTable<>(Rock.class, Rock.Type.class);
-        private static final EnumMap<Wood, Half> WOOD_MAP = new EnumMap<>(Wood.class);
+        private static final Map<Rock, EnumMap<Rock.Type, Half>> ROCK_TABLE = new HashMap<>();
+        private static final Map<Tree, Half> WOOD_MAP = new HashMap<>();
 
         public static Half get(Rock rock, Rock.Type type)
         {
-            return ROCK_TABLE.get(rock, type);
+            return ROCK_TABLE.get(rock).get(type);
         }
 
-        public static Half get(Wood wood)
+        public static Half get(Tree wood)
         {
             return WOOD_MAP.get(wood);
         }
@@ -213,7 +224,11 @@ public abstract class BlockSlabTFC extends BlockSlab
         public Half(Rock rock, Rock.Type type)
         {
             super(rock, type);
-            ROCK_TABLE.put(rock, type, this);
+
+            if (!ROCK_TABLE.containsKey(rock))
+                ROCK_TABLE.put(rock, new EnumMap<>(Rock.Type.class));
+            ROCK_TABLE.get(rock).put(type, this);
+
             doubleSlab = Double.get(rock, type);
             doubleSlab.halfSlab = this;
             halfSlab = this;
@@ -221,7 +236,7 @@ public abstract class BlockSlabTFC extends BlockSlab
             OreDictionaryHelper.registerRockType(this, type, rock, "slab");
         }
 
-        public Half(Wood wood)
+        public Half(Tree wood)
         {
             super(wood);
             if (WOOD_MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
@@ -233,11 +248,10 @@ public abstract class BlockSlabTFC extends BlockSlab
             OreDictionaryHelper.register(this, "slab", "wood", wood);
         }
 
+        @Override
         public boolean isDouble()
         {
             return false;
         }
     }
-
-
 }

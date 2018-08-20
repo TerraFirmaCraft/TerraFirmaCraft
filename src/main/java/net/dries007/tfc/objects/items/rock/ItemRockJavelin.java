@@ -5,8 +5,9 @@
 
 package net.dries007.tfc.objects.items.rock;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -19,28 +20,28 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Size;
-import net.dries007.tfc.objects.Weight;
-import net.dries007.tfc.util.IItemSize;
+import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.api.util.IItemSize;
+import net.dries007.tfc.api.util.Size;
+import net.dries007.tfc.api.util.Weight;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemRockJavelin extends ItemTool implements IItemSize
 {
-    private static final EnumMap<Rock.Category, ItemRockJavelin> MAP = new EnumMap<>(Rock.Category.class);
+    private static final Map<RockCategory, ItemRockJavelin> MAP = new HashMap<>();
 
-    public static ItemRockJavelin get(Rock.Category category)
+    public static ItemRockJavelin get(RockCategory category)
     {
         return MAP.get(category);
     }
 
-    public final Rock.Category category;
+    public final RockCategory category;
 
-    public ItemRockJavelin(Rock.Category category)
+    public ItemRockJavelin(RockCategory category)
     {
-        super(1f * category.toolMaterial.getAttackDamage(), -1, category.toolMaterial, ImmutableSet.of());
+        super(1f * category.getToolMaterial().getAttackDamage(), -1, category.getToolMaterial(), ImmutableSet.of());
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
         OreDictionaryHelper.register(this, "javelin");

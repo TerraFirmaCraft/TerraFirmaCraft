@@ -5,15 +5,16 @@
 
 package net.dries007.tfc.objects.items.rock;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Size;
-import net.dries007.tfc.objects.Weight;
+import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.util.Size;
+import net.dries007.tfc.api.util.Weight;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
@@ -21,7 +22,7 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class ItemRock extends ItemTFC
 {
-    private static final EnumMap<Rock, ItemRock> MAP = new EnumMap<>(Rock.class);
+    private static final Map<Rock, ItemRock> MAP = new HashMap<>();
 
     public static ItemRock get(Rock rock)
     {
@@ -42,7 +43,7 @@ public class ItemRock extends ItemTFC
         setMaxDamage(0);
         OreDictionaryHelper.register(this, "rock");
         OreDictionaryHelper.register(this, "rock", rock);
-        OreDictionaryHelper.register(this, "rock", rock.category);
+        OreDictionaryHelper.register(this, "rock", rock.getRockCategory());
     }
 
     @Override

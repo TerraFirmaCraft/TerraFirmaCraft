@@ -5,8 +5,9 @@
 
 package net.dries007.tfc.objects.items.rock;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -19,31 +20,31 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Size;
-import net.dries007.tfc.objects.Weight;
-import net.dries007.tfc.util.IItemSize;
+import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.api.util.IItemSize;
+import net.dries007.tfc.api.util.Size;
+import net.dries007.tfc.api.util.Weight;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class ItemRockHammer extends ItemTool implements IItemSize
 {
-    private static final EnumMap<Rock.Category, ItemRockHammer> MAP = new EnumMap<>(Rock.Category.class);
+    private static final Map<RockCategory, ItemRockHammer> MAP = new HashMap<>();
 
-    public static ItemRockHammer get(Rock.Category category)
+    public static ItemRockHammer get(RockCategory category)
     {
         return MAP.get(category);
     }
 
-    public final Rock.Category category;
+    public final RockCategory category;
 
-    public ItemRockHammer(Rock.Category category)
+    public ItemRockHammer(RockCategory category)
     {
-        super(2f * category.toolMaterial.getAttackDamage(), -3.5f, category.toolMaterial, ImmutableSet.of());
+        super(2f * category.getToolMaterial().getAttackDamage(), -3.5f, category.getToolMaterial(), ImmutableSet.of());
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
-        setHarvestLevel("hammer", category.toolMaterial.getHarvestLevel());
+        setHarvestLevel("hammer", category.getToolMaterial().getHarvestLevel());
         OreDictionaryHelper.register(this, "hammer");
         OreDictionaryHelper.register(this, "hammer", "stone");
         OreDictionaryHelper.register(this, "hammer", "stone", category);
