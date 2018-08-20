@@ -464,6 +464,37 @@ for name, fluid in FLUIDS.items():
         }
     })
 
+# METAL FLUIDS
+for name in METAL_TYPES.keys():
+    blockstate(('fluid', name), 'forge:fluid', {}, {
+        'normal': {
+            'transform': "forge:default-item",
+            'custom': {
+                'fluid': name
+            }
+        }
+    })
+for name in STEEL:
+    for type in ['weak', 'high_carbon']:
+        if name == 'black_steel' and type == 'weak':
+            continue
+        blockstate(('fluid', type + "_" + name), 'forge:fluid', {}, {
+            'normal': {
+                'transform': "forge:default-item",
+                'custom': {
+                    'fluid': type + "_" + name
+                }
+            }
+        })
+blockstate(('fluid', 'unknown'), 'forge:fluid', {}, {
+    'normal': {
+        'transform': "forge:default-item",
+        'custom': {
+            'fluid': 'unknown'
+        }
+    }
+})
+
 # ANVILS
 for key in METAL_TYPES:
     if METAL_TYPES[key]:
