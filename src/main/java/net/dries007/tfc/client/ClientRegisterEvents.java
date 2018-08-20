@@ -29,13 +29,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.client.render.TESRChestTFC;
 import net.dries007.tfc.client.render.TESRIngotPile;
 import net.dries007.tfc.client.render.TESRPitKiln;
 import net.dries007.tfc.client.render.TESRWorldItem;
 import net.dries007.tfc.objects.Gem;
-import net.dries007.tfc.objects.Ore;
-import net.dries007.tfc.objects.Rock;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
@@ -55,11 +55,11 @@ import net.dries007.tfc.objects.te.TEWorldItem;
 
 import static net.dries007.tfc.Constants.MOD_ID;
 
+@SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)
 public final class ClientRegisterEvents
 {
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
     @SuppressWarnings("ConstantConditions")
     public static void registerModels(ModelRegistryEvent event)
     {
@@ -92,7 +92,7 @@ public final class ClientRegisterEvents
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockFenceGate.POWERED).build());
 
         for (Block block : BlocksTFC.getAllLeafBlocks())
-            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build());
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockLeaves.DECAYABLE).build());
 
         for (Block block : BlocksTFC.getAllOreBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockOreTFC.GRADE).build());
@@ -156,23 +156,23 @@ public final class ClientRegisterEvents
         BlockColors blockcolors = event.getBlockColors();
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
-                        worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D),
-                BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isGrass).toArray(BlockRockVariant[]::new));
+                worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D),
+            BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isGrass).toArray(BlockRockVariant[]::new));
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> BlockFarmlandTFC.TINT[state.getValue(BlockFarmlandTFC.MOISTURE)],
             BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type == Rock.Type.FARMLAND).toArray(BlockRockVariant[]::new));
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
-                        worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D),
-                BlocksTFC.PEAT_GRASS);
+                worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D),
+            BlocksTFC.PEAT_GRASS);
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
-                        worldIn != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(worldIn, pos) : 0,
-                BlocksTFC.getAllFluidBlocks().stream().filter(x -> x.getDefaultState().getMaterial() == Material.WATER).toArray(BlockFluidBase[]::new));
+                worldIn != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(worldIn, pos) : 0,
+            BlocksTFC.getAllFluidBlocks().stream().filter(x -> x.getDefaultState().getMaterial() == Material.WATER).toArray(BlockFluidBase[]::new));
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
-                        worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic(),
-                BlocksTFC.getAllLeafBlocks().toArray(new Block[0]));
+                worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic(),
+            BlocksTFC.getAllLeafBlocks().toArray(new Block[0]));
     }
 
     @SubscribeEvent
@@ -183,19 +183,19 @@ public final class ClientRegisterEvents
         ItemColors itemColors = event.getItemColors();
 
         itemColors.registerItemColorHandler((stack, tintIndex) ->
-                        event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
-                BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isGrass).toArray(BlockRockVariant[]::new));
+                event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
+            BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isGrass).toArray(BlockRockVariant[]::new));
 
         itemColors.registerItemColorHandler((stack, tintIndex) ->
-                        event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
-                BlocksTFC.PEAT_GRASS);
+                event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
+            BlocksTFC.PEAT_GRASS);
 
         itemColors.registerItemColorHandler((stack, tintIndex) ->
-                        event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
-                BlocksTFC.getAllLeafBlocks().stream().toArray(BlockLeavesTFC[]::new));
+                event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
+            BlocksTFC.getAllLeafBlocks().stream().toArray(BlockLeavesTFC[]::new));
 
         itemColors.registerItemColorHandler((stack, tintIndex) -> tintIndex == 1 ? EnumDyeColor.byDyeDamage(stack.getItemDamage()).getColorValue() : 0xFFFFFF,
-                ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED);
+            ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED);
     }
 
     /**
@@ -205,7 +205,7 @@ public final class ClientRegisterEvents
     private static void registerEnumBasedMetaItems(String prefix, Enum e, Item item)
     {
         //noinspection ConstantConditions
-        String registryName = item.getRegistryName().getResourcePath();
+        String registryName = item.getRegistryName().getPath();
         StringBuilder path = new StringBuilder(MOD_ID).append(':');
         if (!Strings.isNullOrEmpty(prefix)) path.append(prefix).append('/');
         path.append(e.name());

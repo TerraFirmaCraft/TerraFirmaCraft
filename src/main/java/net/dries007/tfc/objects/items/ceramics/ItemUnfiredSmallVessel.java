@@ -28,11 +28,11 @@ public class ItemUnfiredSmallVessel extends ItemUnfiredPottery
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack)
+    public String getTranslationKey(ItemStack stack)
     {
         if (!glazed)
-            return super.getUnlocalizedName(stack);
-        return super.getUnlocalizedName(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
+            return super.getTranslationKey(stack);
+        return super.getTranslationKey(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
     }
 
     @Override

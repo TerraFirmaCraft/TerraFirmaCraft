@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.blocks;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
@@ -12,15 +13,23 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.te.TEWorldItem;
@@ -36,8 +45,7 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     {
         super(Material.CIRCUITS);
         setDefaultState(blockState.getBaseState());
-        TileEntity.register(TEWorldItem.ID.toString(), TEWorldItem.class);
-
+        setHardness(0.1F);
     }
 
     @Override
@@ -64,7 +72,15 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return AABB;//.offset(state.getOffset(source, pos));TODO:maybe giving it randomization in placement like MC flowers do?
+        return AABB;
+    }
+
+    @Nullable
+    @Override
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return NULL_AABB;
     }
 
     @Override
@@ -94,14 +110,50 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TEWorldItem te = Helpers.getTE(worldIn, pos, TEWorldItem.class);
-        if (te != null) te.onBreakBlock();
+        if (te != null) te.onBreakBlock(pos.add(0.5D, 0.01D, 0.5D));
         super.breakBlock(worldIn, pos, state);
     }
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        worldIn.setBlockToAir(pos);
+        TEWorldItem te = Helpers.getTE(worldIn, pos, TEWorldItem.class);
+        if (te != null && !worldIn.isRemote)
+        {
+            te.onBreakBlock(playerIn.getPosition());
+            te.inventory.setStackInSlot(0, ItemStack.EMPTY); // Prevent it from dropping itself AGAIN
+            worldIn.setBlockToAir(pos);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles)
+    {
+        // todo: add custom particles
+        return true;
+    }
+
+    @Override
+    public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity)
+    {
+        // todo: add custom particles
+        return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager)
+    {
+        // todo: add custom particles
+        return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager)
+    {
+        // todo: add custom particles
         return true;
     }
 }

@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.blocks.stone;
 
 import java.util.Random;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -26,9 +27,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
-import net.dries007.tfc.objects.Rock;
+import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.types.Rock;
 
-public class BlockFarmlandTFC extends BlockRockVariant
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class BlockFarmlandTFC extends BlockRockVariantFallable
 {
     public static final int MAX_MOISTURE = 15;
     public static final PropertyInteger MOISTURE = PropertyInteger.create("moisture", 0, MAX_MOISTURE);
@@ -50,8 +54,8 @@ public class BlockFarmlandTFC extends BlockRockVariant
         0xff8f8f8f,
         0xff878787,
     };
-    protected static final AxisAlignedBB FARMLAND_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
-    protected static final AxisAlignedBB FLIPPED_AABB = new AxisAlignedBB(0.0D, 0.9375D, 0.0D, 1.0D, 1.0D, 1.0D);
+    private static final AxisAlignedBB FARMLAND_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
+    private static final AxisAlignedBB FLIPPED_AABB = new AxisAlignedBB(0.0D, 0.9375D, 0.0D, 1.0D, 1.0D, 1.0D);
 
     public BlockFarmlandTFC(Rock.Type type, Rock rock)
     {

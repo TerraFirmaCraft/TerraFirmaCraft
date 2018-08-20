@@ -5,7 +5,8 @@
 
 package net.dries007.tfc.client.render;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.block.BlockChest;
 import net.minecraft.client.model.ModelChest;
@@ -16,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.dries007.tfc.objects.te.TEChestTFC;
 
@@ -25,19 +26,19 @@ import static net.dries007.tfc.Constants.MOD_ID;
 @SideOnly(Side.CLIENT)
 public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
 {
-    private static final EnumMap<Wood, ResourceLocation> SINGLE_TEXTURES = new EnumMap<>(Wood.class);
-    private static final EnumMap<Wood, ResourceLocation> DOUBLE_TEXTURES = new EnumMap<>(Wood.class);
-    private static final EnumMap<Wood, ResourceLocation> TRAP_SINGLE_TEXTURES = new EnumMap<>(Wood.class);
-    private static final EnumMap<Wood, ResourceLocation> TRAP_DOUBLE_TEXTURES = new EnumMap<>(Wood.class);
+    private static final Map<Tree, ResourceLocation> SINGLE_TEXTURES = new HashMap<>();
+    private static final Map<Tree, ResourceLocation> DOUBLE_TEXTURES = new HashMap<>();
+    private static final Map<Tree, ResourceLocation> TRAP_SINGLE_TEXTURES = new HashMap<>();
+    private static final Map<Tree, ResourceLocation> TRAP_DOUBLE_TEXTURES = new HashMap<>();
 
     static
     {
-        for (Wood wood : Wood.values())
+        for (Tree wood : Tree.values())
         {
-            SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest/" + wood.name().toLowerCase() + ".png"));
-            DOUBLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest_double/" + wood.name().toLowerCase() + ".png"));
-            TRAP_SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest_trap/" + wood.name().toLowerCase() + ".png"));
-            TRAP_DOUBLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest_trap_double/" + wood.name().toLowerCase() + ".png"));
+            SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest/" + wood.name() + ".png"));
+            DOUBLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest_double/" + wood.name() + ".png"));
+            TRAP_SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest_trap/" + wood.name() + ".png"));
+            TRAP_DOUBLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest_trap_double/" + wood.name() + ".png"));
         }
     }
 
@@ -51,11 +52,13 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
         GlStateManager.depthFunc(515);
         GlStateManager.depthMask(true);
         int meta = 0;
+        Tree wood = null;
 
         if (te.hasWorld())
         {
             BlockChestTFC block = te.getBlockType();
             meta = te.getBlockMetadata();
+            wood = te.getWood();
 
             if (block != null && meta == 0)
             {
@@ -82,13 +85,13 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
                 GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                 GlStateManager.matrixMode(5888);
             }
-            else if (te.getChestType() == BlockChest.Type.TRAP)
+            else if (te.getChestType() == BlockChest.Type.TRAP && wood != null)
             {
-                bindTexture(TRAP_SINGLE_TEXTURES.get(te.getWood()));
+                bindTexture(TRAP_SINGLE_TEXTURES.get(wood));
             }
-            else
+            else if (wood != null)
             {
-                bindTexture(SINGLE_TEXTURES.get(te.getWood()));
+                bindTexture(SINGLE_TEXTURES.get(wood));
             }
         }
         else
@@ -104,13 +107,13 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
                 GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                 GlStateManager.matrixMode(5888);
             }
-            else if (te.getChestType() == BlockChest.Type.TRAP)
+            else if (te.getChestType() == BlockChest.Type.TRAP && wood != null)
             {
-                bindTexture(TRAP_DOUBLE_TEXTURES.get(te.getWood()));
+                bindTexture(TRAP_DOUBLE_TEXTURES.get(wood));
             }
-            else
+            else if (wood != null)
             {
-                bindTexture(DOUBLE_TEXTURES.get(te.getWood()));
+                bindTexture(DOUBLE_TEXTURES.get(wood));
             }
         }
 

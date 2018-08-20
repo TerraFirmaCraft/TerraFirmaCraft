@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.te;
@@ -33,7 +32,6 @@ import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 @MethodsReturnNonnullByDefault
 public class TELogPile extends TESidedInventory implements ITickable
 {
-
     public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "log_pile");
 
     private static final int NUM_SLOTS = 4;
@@ -55,6 +53,7 @@ public class TELogPile extends TESidedInventory implements ITickable
         burning = false;
     }
 
+    @Override
     public void update()
     {
         if (world.isRemote) { return; }
@@ -157,6 +156,22 @@ public class TELogPile extends TESidedInventory implements ITickable
         tryLightNearby();
     }
 
+    public int countLogs()
+    {
+        int logs = 0;
+        for (int i = 0; i < inventory.getSlots(); i++)
+        {
+            logs += inventory.getStackInSlot(i).getCount();
+        }
+        return logs;
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+    {
+        return (oldState.getBlock() != newState.getBlock());
+    }
+
     private void tryLightNearby()
     {
         for (EnumFacing side : EnumFacing.values())
@@ -173,22 +188,6 @@ public class TELogPile extends TESidedInventory implements ITickable
                 }
             }
         }
-    }
-
-    public int countLogs()
-    {
-        int logs = 0;
-        for (int i = 0; i < inventory.getSlots(); i++)
-        {
-            logs += inventory.getStackInSlot(i).getCount();
-        }
-        return logs;
-    }
-
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
-    {
-        return (oldState.getBlock() != newState.getBlock());
     }
 
     // This function does some magic **** to not create floating charcoal. Don't touch unless broken

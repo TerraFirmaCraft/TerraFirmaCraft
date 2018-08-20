@@ -97,6 +97,7 @@ public class BlockFirePit extends Block implements ITileEntityProvider
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rng)
     {
         if (!state.getValue(LIT)) return;
@@ -137,7 +138,7 @@ public class BlockFirePit extends Block implements ITileEntityProvider
 
     @Override
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

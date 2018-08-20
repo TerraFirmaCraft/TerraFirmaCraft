@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.util;
@@ -23,8 +22,9 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.objects.Size;
-import net.dries007.tfc.objects.Weight;
+import net.dries007.tfc.api.util.IItemSize;
+import net.dries007.tfc.api.util.Size;
+import net.dries007.tfc.api.util.Weight;
 
 public class CapabilityItemSize
 {
@@ -51,7 +51,6 @@ public class CapabilityItemSize
 
             }
         }, () -> INSTANCE.getCapability(Size.SMALL, Weight.MEDIUM, true));
-
     }
 
     /**

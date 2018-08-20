@@ -5,8 +5,9 @@
 
 package net.dries007.tfc.objects.items.rock;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -18,31 +19,31 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Rock;
-import net.dries007.tfc.objects.Size;
-import net.dries007.tfc.objects.Weight;
-import net.dries007.tfc.util.IItemSize;
+import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.api.util.IItemSize;
+import net.dries007.tfc.api.util.Size;
+import net.dries007.tfc.api.util.Weight;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemRockHoe extends ItemHoe implements IItemSize
 {
-    private static final EnumMap<Rock.Category, ItemRockHoe> MAP = new EnumMap<>(Rock.Category.class);
+    private static final Map<RockCategory, ItemRockHoe> MAP = new HashMap<>();
 
-    public static ItemRockHoe get(Rock.Category category)
+    public static ItemRockHoe get(RockCategory category)
     {
         return MAP.get(category);
     }
 
-    public final Rock.Category category;
+    public final RockCategory category;
 
-    public ItemRockHoe(Rock.Category category)
+    public ItemRockHoe(RockCategory category)
     {
-        super(category.toolMaterial);
+        super(category.getToolMaterial());
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
-        setHarvestLevel("hoe", category.toolMaterial.getHarvestLevel());
+        setHarvestLevel("hoe", category.getToolMaterial().getHarvestLevel());
         OreDictionaryHelper.register(this, "hoe");
         OreDictionaryHelper.register(this, "hoe", "stone");
         OreDictionaryHelper.register(this, "hoe", "stone", category);

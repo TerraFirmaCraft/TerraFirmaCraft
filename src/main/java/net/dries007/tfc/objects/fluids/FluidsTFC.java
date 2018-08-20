@@ -99,6 +99,5 @@ public class FluidsTFC
         LIMEWATER.setBlock(BlocksTFC.FLUID_LIMEWATER);
         MILK_CURDLED.setBlock(BlocksTFC.FLUID_MILK_CURDLED);
         MILK_VINEGAR.setBlock(BlocksTFC.FLUID_MILK_VINEGAR);
-
     }
 }
