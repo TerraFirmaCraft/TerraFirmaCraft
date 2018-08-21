@@ -182,7 +182,7 @@ public class ContainerSmallVesselLiquid extends Container
 
     private void addContainerSlots(ItemStack stack)
     {
-        addSlotToContainer(new SlotFluidTransfer(inventory, 0, 71, 23));
+        addSlotToContainer(new SlotFluidTransfer(inventory, 0, 80, 34));
     }
 
 }

@@ -14,11 +14,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
-import net.dries007.tfc.client.gui.GuiLogPile;
+import net.dries007.tfc.client.gui.GuiSmallInventory;
 import net.dries007.tfc.client.gui.GuiSmallVesselLiquid;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.container.ContainerLogPile;
 import net.dries007.tfc.objects.container.ContainerSmallVessel;
 import net.dries007.tfc.objects.container.ContainerSmallVesselLiquid;
+import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemSmallVessel;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
@@ -65,9 +67,9 @@ public class TFCGuiHandler implements IGuiHandler
         switch (ID)
         {
             case LOG_PILE:
-                return new GuiLogPile(container, player.inventory);
+                return new GuiSmallInventory(container, player.inventory, BlocksTFC.LOG_PILE.getTranslationKey());
             case SMALL_VESSEL:
-                return new GuiLogPile(container, player.inventory);
+                return new GuiSmallInventory(container, player.inventory, ItemsTFC.CERAMICS_FIRED_VESSEL.getTranslationKey());
             case SMALL_VESSEL_LIQUID:
                 stack = player.getHeldItemMainhand();
                 return new GuiSmallVesselLiquid(container, player.inventory, stack.getItem() instanceof ItemSmallVessel ?

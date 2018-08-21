@@ -47,6 +47,7 @@ import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
 import net.dries007.tfc.objects.items.ItemGem;
 import net.dries007.tfc.objects.items.ItemGoldPan;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.te.TEChestTFC;
 import net.dries007.tfc.objects.te.TEIngotPile;
@@ -73,6 +74,7 @@ public final class ClientRegisterEvents
         }
 
         ItemGoldPan.registerModels();
+        ItemMold.registerModels();
 
         for (ItemGem item : ItemsTFC.getAllGemItems())
             for (Gem.Grade grade : Gem.Grade.values())

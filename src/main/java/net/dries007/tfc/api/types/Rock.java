@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
@@ -30,22 +31,18 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         return values().stream().filter(x -> x.name().equals(name)).findFirst().orElse(null);
     }
 
-    private static int i = -1;
-
     @Nullable
     public static Rock get(int id)
     {
-        return values().stream().filter(x -> x.id == id).findFirst().orElse(null);
+        return ((ForgeRegistry<Rock>) TFCRegistries.getRocks()).getValue(id);
     }
 
     private final ResourceLocation name;
     private final RockCategory rockCategory;
-    private final int id;
 
     public Rock(@Nonnull ResourceLocation name, @Nonnull RockCategory rockCategory)
     {
         setRegistryName(name);
-        this.id = ++i;
         this.rockCategory = rockCategory;
         this.name = name;
     }
@@ -53,7 +50,6 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
     public Rock(@Nonnull ResourceLocation name, @Nonnull ResourceLocation categoryName)
     {
         setRegistryName(name);
-        this.id = ++i;
         this.name = name;
         this.rockCategory = TFCRegistries.getRockCategories().getValue(categoryName);
         if (rockCategory == null)
@@ -68,7 +64,7 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
 
     public int getId()
     {
-        return id;
+        return ((ForgeRegistry<Rock>) TFCRegistries.getRocks()).getID(this);
     }
 
     public RockCategory getRockCategory()

@@ -15,18 +15,19 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
 
 @SideOnly(Side.CLIENT)
-public class GuiLogPile extends GuiContainer
+public class GuiSmallInventory extends GuiContainer
 {
-    private static final ResourceLocation BG_TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/log_pile.png");
+    private static final ResourceLocation BG_TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/small_inventory.png");
     private InventoryPlayer playerInv;
+    private String translationKey;
 
-    public GuiLogPile(Container container, InventoryPlayer playerInv)
+    public GuiSmallInventory(Container container, InventoryPlayer playerInv, String titleKey)
     {
         super(container);
         this.playerInv = playerInv;
+        this.translationKey = titleKey;
     }
 
     @Override
@@ -41,7 +42,7 @@ public class GuiLogPile extends GuiContainer
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         //noinspection ConstantConditions
-        String name = I18n.format(BlocksTFC.LOG_PILE.getTranslationKey() + ".name");
+        String name = I18n.format(translationKey + ".name");
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
         fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
     }
