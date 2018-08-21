@@ -106,7 +106,7 @@ public class ItemSmallVessel extends ItemFiredPottery
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new SmallVesselCapability(stack, nbt);
+        return new SmallVesselCapability(stack, nbt, 1, Float.MAX_VALUE);
     }
 
     @Override
@@ -188,14 +188,19 @@ public class ItemSmallVessel extends ItemFiredPottery
     {
         private final ItemStack container;
         private final FluidTank tank;
+        private final float heatCapacity;
+        private final float meltingTemp;
 
         private boolean fluidMode; // Does the stack contain molten metal?
         private IFluidTankProperties fluidTankProperties[];
+        private float temperature;
 
-        public SmallVesselCapability(ItemStack stack, @Nullable NBTTagCompound nbt)
+        public SmallVesselCapability(ItemStack stack, @Nullable NBTTagCompound nbt, float heatCapacity, float meltingTemp)
         {
             super(4);
             this.container = stack;
+            this.heatCapacity = heatCapacity;
+            this.meltingTemp = meltingTemp;
 
             tank = new FluidTank(4000);
             fluidMode = false;
@@ -234,6 +239,7 @@ public class ItemSmallVessel extends ItemFiredPottery
             NBTTagCompound nbt = new NBTTagCompound();
             fluidMode = tank.getFluidAmount() > 0;
             nbt.setBoolean("liquid", fluidMode);
+            nbt.setFloat("item_heat", temperature);
             if (fluidMode)
             {
                 // Save fluid data
@@ -252,6 +258,7 @@ public class ItemSmallVessel extends ItemFiredPottery
         @Override
         public void deserializeNBT(NBTTagCompound nbt)
         {
+            temperature = nbt.getFloat("item_heat");
             if (nbt.hasKey("liquid"))
             {
                 fluidMode = nbt.getBoolean("liquid");
@@ -303,6 +310,36 @@ public class ItemSmallVessel extends ItemFiredPottery
             if (fluidMode)
                 return tank.drain(maxDrain, doDrain);
             return null;
+        }
+
+        @Override
+        public float getTemperature()
+        {
+            return temperature;
+        }
+
+        @Override
+        public void setTemperature(float temperature)
+        {
+            this.temperature = temperature;
+        }
+
+        @Override
+        public float getMeltingPoint()
+        {
+            return meltingTemp;
+        }
+
+        @Override
+        public float getHeatCapacity()
+        {
+            return heatCapacity;
+        }
+
+        @Override
+        public void addTemperature(float temperature)
+        {
+            this.temperature += temperature;
         }
     }
 

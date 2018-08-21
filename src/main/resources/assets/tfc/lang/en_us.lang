@@ -2597,7 +2597,7 @@ item.tfc.mold.ingot.high_carbon_black_steel.name=Unshaped High Carbon Black Stee
 item.tfc.mold.ingot.high_carbon_blue_steel.name=Unshaped High Carbon Blue Steel
 item.tfc.mold.ingot.high_carbon_red_steel.name=Unshaped High Carbon Red Steel
 
-item.tfc.mold.ingot.empty.name=Empty Ingot Mold
+item.tfc.mold.ingot.name=Empty Ingot Mold
 
 item.tfc.mold.pick_head.empty.name=Pick Head Mold
 item.tfc.mold.shovel_head.empty.name=Shovel Head Mold

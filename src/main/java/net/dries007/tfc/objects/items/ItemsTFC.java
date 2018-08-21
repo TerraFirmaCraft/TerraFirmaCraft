@@ -148,10 +148,16 @@ public final class ItemsTFC
         {
             // POTTERY
             for (MetalType type : MetalType.values())
+            {
                 if (type.hasMold)
-                    registerPottery(simpleItems, r, "mold/" + type.name().toLowerCase() + "/unfired", "mold/" + type.name().toLowerCase(), new ItemUnfiredMold(new ItemMold(type), type));
+                {
+                    ItemFiredPottery item = new ItemMold(type);
+                    register(r, "mold/" + type.name().toLowerCase(), item, CT_POTTERY);
+                    simpleItems.add(register(r, "mold/" + type.name().toLowerCase() + "/unfired", new ItemUnfiredMold(item, type), CT_POTTERY));
+                    //registerPottery(null, r, "mold/" + type.name().toLowerCase() + "/unfired", "mold/" + type.name().toLowerCase(), new ItemUnfiredMold(new ItemMold(type), type));
+                }
+            }
 
-            registerPottery(simpleItems, r, "mold/ingot/unfired", "mold/ingot", new ItemUnfiredPottery(new ItemFiredPottery()));
             registerPottery(simpleItems, r, "ceramics/unfired/vessel", "ceramics/fired/vessel", new ItemUnfiredSmallVessel(new ItemSmallVessel(false)));
             registerPottery(null, r, "ceramics/unfired/vessel_glazed", "ceramics/fired/vessel_glazed", new ItemUnfiredSmallVessel(new ItemSmallVessel(true)));
 
