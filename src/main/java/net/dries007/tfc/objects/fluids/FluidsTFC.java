@@ -106,7 +106,7 @@ public class FluidsTFC
             ImmutableMap.Builder<Metal, Fluid> b = ImmutableMap.builder();
 
             for (Metal metal : Metal.values())
-                registerFluid(b, metal, new FluidMetal(metal.name(), STILL, FLOW, metal.color));
+                registerFluid(b, metal, new FluidMetal(metal, metal.name(), STILL, FLOW, metal.color));
 
             allMetalFluids = b.build();
         }
