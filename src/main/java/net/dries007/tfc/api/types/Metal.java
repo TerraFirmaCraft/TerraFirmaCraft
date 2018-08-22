@@ -80,6 +80,11 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         return toolMetal;
     }
 
+    public boolean isToolMetal()
+    {
+        return toolMetal != null;
+    }
+
     public enum Tier
     {
         TIER_I,

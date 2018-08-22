@@ -76,21 +76,19 @@ public class CapabilityItemHeat
         }
 
         @Override
-        public float getMeltingPoint()
+        public void updateTemperature(float enviromentTemperature, float weight)
         {
-            return meltingPoint;
-        }
-
-        @Override
-        public float getHeatCapacity()
-        {
-            return heatCapacity;
-        }
-
-        @Override
-        public void addTemperature(float temperature)
-        {
-            this.temperature += temperature;
+            if (heatCapacity * weight > Math.abs(enviromentTemperature - temperature))
+            {
+                this.temperature = enviromentTemperature;
+            }
+            else
+            {
+                if (enviromentTemperature > temperature)
+                    temperature += weight * heatCapacity;
+                else
+                    temperature -= weight * heatCapacity;
+            }
         }
 
         @Override
