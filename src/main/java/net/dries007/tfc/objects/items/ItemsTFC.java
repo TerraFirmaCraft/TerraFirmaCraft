@@ -48,8 +48,8 @@ public final class ItemsTFC
     public static final ItemFireStarter FIRESTARTER = null;
     public static final ItemGoldPan GOLDPAN = null;
     public static final Item HAY = null;
-    @GameRegistry.ObjectHolder("mold/ingo/empty")
-    public static final ItemFiredPottery MOLD_INGOT_EMPTY = null;
+    @GameRegistry.ObjectHolder("mold/ingot")
+    public static final ItemFiredPottery MOLD_INGOT = null;
     @GameRegistry.ObjectHolder("ceramics/unfired/vessel")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_VERSSEL = null;
     @GameRegistry.ObjectHolder("ceramics/fired/vessel")
@@ -151,6 +151,7 @@ public final class ItemsTFC
             {
                 if (type.hasMold)
                 {
+                    // Not using registerPottery here because the ItemMold uses a custom ItemModelMesher, meaning it can't be in simpleItems
                     ItemFiredPottery item = new ItemMold(type);
                     register(r, "mold/" + type.name().toLowerCase(), item, CT_POTTERY);
                     simpleItems.add(register(r, "mold/" + type.name().toLowerCase() + "/unfired", new ItemUnfiredMold(item, type), CT_POTTERY));

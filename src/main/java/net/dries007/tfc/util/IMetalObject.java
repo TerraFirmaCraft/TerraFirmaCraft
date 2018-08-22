@@ -22,7 +22,7 @@ public interface IMetalObject
         Metal metal = getMetal(stack);
         if (metal == null) return;
         text.add("");
-        text.add(I18n.format("tfc.tooltip.metal", I18n.format(Helpers.getTypeName(metal.name()))));
+        text.add(I18n.format("tfc.tooltip.metal", I18n.format(Helpers.getTypeName(metal))));
         if (isSmeltable(stack))
         {
             text.add(I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));

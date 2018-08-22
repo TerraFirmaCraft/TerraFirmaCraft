@@ -25,11 +25,7 @@ public interface IItemHeat extends ICapabilitySerializable<NBTTagCompound>
 
     void setTemperature(float temperature);
 
-    float getMeltingPoint();
-
-    float getHeatCapacity();
-
-    void addTemperature(float temperature);
+    void updateTemperature(float enviromentTemperature, float weight);
 
     @SideOnly(Side.CLIENT)
     default void addHeatInfo(ItemStack stack, List<String> text)

@@ -66,6 +66,7 @@ public class ItemSmallVessel extends ItemFiredPottery
         ItemStack stack = player.getHeldItem(hand);
         if (!world.isRemote)
         {
+            TerraFirmaCraft.getLog().info("Hand that this was called with: " + hand + " | " + (stack.getItem() == this));
             int flag = 0;
             NBTTagCompound nbt = stack.getTagCompound();
             if (nbt != null && nbt.hasKey("liquid"))
@@ -216,6 +217,19 @@ public class ItemSmallVessel extends ItemFiredPottery
             this.fluidMode = fluidMode;
         }
 
+        @Nullable
+        @Override
+        public Metal getMetal()
+        {
+            return fluidMode ? ((FluidMetal) tank.getFluid().getFluid()).getMetal() : null;
+        }
+
+        @Override
+        public int getAmount()
+        {
+            return fluidMode ? tank.getFluidAmount() : 0;
+        }
+
         @Override
         public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
         {
@@ -325,21 +339,19 @@ public class ItemSmallVessel extends ItemFiredPottery
         }
 
         @Override
-        public float getMeltingPoint()
+        public void updateTemperature(float enviromentTemperature, float weight)
         {
-            return meltingTemp;
-        }
-
-        @Override
-        public float getHeatCapacity()
-        {
-            return heatCapacity;
-        }
-
-        @Override
-        public void addTemperature(float temperature)
-        {
-            this.temperature += temperature;
+            if (heatCapacity * weight > Math.abs(enviromentTemperature - temperature))
+            {
+                this.temperature = enviromentTemperature;
+            }
+            else
+            {
+                if (enviromentTemperature > temperature)
+                    temperature += weight * heatCapacity;
+                else
+                    temperature -= weight * heatCapacity;
+            }
         }
     }
 

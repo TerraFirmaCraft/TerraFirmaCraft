@@ -32,8 +32,10 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.fluids.FluidMetal;
 
@@ -71,11 +73,13 @@ public class ItemMold extends ItemFiredPottery
                     return FALLBACK;
                 }
             });
+
+            ModelBakery.registerItemVariants(item, new ModelResourceLocation(item.getRegistryName().toString() + "/empty"));
             ModelBakery.registerItemVariants(item, Metal.values()
                 .stream()
+                .filter(x -> item.type.hasMold && x.isToolMetal() && (x.tier == Metal.Tier.TIER_I || x.tier == Metal.Tier.TIER_II))
                 .map(x -> new ModelResourceLocation(item.getRegistryName().toString() + "/" + x.name()))
                 .toArray(ModelResourceLocation[]::new));
-            ModelBakery.registerItemVariants(item, new ModelResourceLocation(item.getRegistryName().toString() + "/empty"));
         }
     }
 
@@ -88,6 +92,21 @@ public class ItemMold extends ItemFiredPottery
     }
 
     @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    {
+
+        ItemStack stack = player.getHeldItem(hand);
+        if (!world.isRemote)
+        {
+            if (!player.isSneaking())
+            {
+                player.openGui(TerraFirmaCraft.getInstance(), TFCGuiHandler.MOLD, world, 0, 0, 0);
+            }
+        }
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+    }
+
+    @Override
     public String getTranslationKey(ItemStack stack)
     {
         IFluidHandler capFluidHandler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
@@ -97,26 +116,11 @@ public class ItemMold extends ItemFiredPottery
             FluidStack fs = cap.drain(1, false);
             if (fs != null)
             {
-                Metal metal = ((FluidMetal) fs.getFluid()).metal;
+                Metal metal = ((FluidMetal) fs.getFluid()).getMetal();
                 return super.getTranslationKey(stack) + "." + metal.name();
             }
         }
         return super.getTranslationKey(stack);
-    }
-
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-
-        ItemStack stack = player.getHeldItem(hand);
-        if (!world.isRemote)
-        {
-            if (!player.isSneaking())
-            {
-            }
-        }
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
     @Nullable
@@ -152,7 +156,13 @@ public class ItemMold extends ItemFiredPottery
         {
             if (tank.getFluidAmount() == 0)
                 return null;
-            return ((FluidMetal) tank.getFluid().getFluid()).metal;
+            return ((FluidMetal) tank.getFluid().getFluid()).getMetal();
+        }
+
+        @Override
+        public int getAmount()
+        {
+            return tank.getFluidAmount();
         }
 
         @Override
@@ -232,21 +242,19 @@ public class ItemMold extends ItemFiredPottery
         }
 
         @Override
-        public float getMeltingPoint()
+        public void updateTemperature(float enviromentTemperature, float weight)
         {
-            return meltingPoint;
-        }
-
-        @Override
-        public float getHeatCapacity()
-        {
-            return heatCapacity;
-        }
-
-        @Override
-        public void addTemperature(float temperature)
-        {
-            this.temperature += temperature;
+            if (heatCapacity * weight > Math.abs(enviromentTemperature - temperature))
+            {
+                this.temperature = enviromentTemperature;
+            }
+            else
+            {
+                if (enviromentTemperature > temperature)
+                    temperature += weight * heatCapacity;
+                else
+                    temperature -= weight * heatCapacity;
+            }
         }
     }
 }
