@@ -25,6 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.objects.blocks.BlockPeat;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -101,8 +102,22 @@ public final class Helpers
         return JOINER_DOT.join(Constants.MOD_ID, "enum", anEnum.getDeclaringClass().getSimpleName(), anEnum).toLowerCase();
     }
 
-    public static String getTypeName(String name)
+    public static String getTypeName(Object type)
     {
+        String name;
+        if (type instanceof Metal)
+            name = "metal." + ((Metal) type).name();
+        else if (type instanceof Ore)
+            name = "ore." + ((Ore) type).name();
+        else if (type instanceof Rock)
+            name = "rock." + ((Rock) type).name();
+        else if (type instanceof RockCategory)
+            name = "rockCategory." + ((RockCategory) type).name();
+        else if (type instanceof Tree)
+            name = "tree." + ((Tree) type).name();
+        else
+            throw new IllegalArgumentException("Object must be a TFC registry type");
+
         return JOINER_DOT.join(Constants.MOD_ID, "types", name).toLowerCase();
     }
 

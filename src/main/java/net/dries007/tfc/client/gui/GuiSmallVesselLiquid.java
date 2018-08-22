@@ -6,57 +6,52 @@
 
 package net.dries007.tfc.client.gui;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.api.capability.ISmallVesselHandler;
+import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.util.Helpers;
 
 @SideOnly(Side.CLIENT)
-public class GuiSmallVesselLiquid extends GuiContainer
+public class GuiSmallVesselLiquid extends GuiContainerTFC
 {
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/small_vessel_liquid.png");
-    private final ItemStack stack;
-    private InventoryPlayer playerInv;
+    private final int slotIdx;
 
-    public GuiSmallVesselLiquid(Container container, InventoryPlayer playerInv, ItemStack stack)
+    public GuiSmallVesselLiquid(Container container, InventoryPlayer playerInv)
     {
-        super(container);
-        this.playerInv = playerInv;
-        this.stack = stack;
-    }
+        super(container, playerInv, BG_TEXTURE, "");
 
-    @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
-    {
-        this.drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
+        slotIdx = playerInv.currentItem;
+        // todo: handle offhand usage?
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-        //noinspection ConstantConditions
-        String name = I18n.format(BlocksTFC.LOG_PILE.getTranslationKey() + ".name");
-        fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
+        ItemStack stack = playerInv.getStackInSlot(slotIdx);
+        IFluidHandler cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+        if (cap instanceof ISmallVesselHandler)
+        {
+            Metal metal = ((ISmallVesselHandler) cap).getMetal();
+            if (metal != null)
+            {
+                String metalName = I18n.format(Helpers.getTypeName(metal));
+                String amountName = I18n.format("tfc.tooltip.units", ((ISmallVesselHandler) cap).getAmount());
+                fontRenderer.drawString(metalName, xSize / 2 - fontRenderer.getStringWidth(metalName) / 2, 14, 0x404040);
+                fontRenderer.drawString(amountName, xSize / 2 - fontRenderer.getStringWidth(amountName) / 2, 23, 0x404040);
+            }
+        }
         fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
     }
 
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-    {
-        GlStateManager.color(1, 1, 1, 1);
-        mc.getTextureManager().bindTexture(BG_TEXTURE);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
-        drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-    }
 }
