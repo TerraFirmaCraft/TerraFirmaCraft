@@ -18,6 +18,9 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.world.classic.WorldGenSettings;
 import net.dries007.tfc.world.classic.WorldGenSettings.WorldGenSettingsBuilder;
 
+/**
+ * todo: remove, won't be supported in 1.13 by vanilla anyway, there will be something else in 1.14.
+ */
 @SideOnly(Side.CLIENT)
 public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelper, GuiPageButtonList.GuiResponder
 {
@@ -63,6 +66,12 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
         drawCenteredString(fontRenderer, title, width / 2, 8, 16777215);
         this.list.drawScreen(mouseX, mouseY, partialTicks);
         super.drawScreen(mouseX, mouseY, partialTicks);
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode)
+    {
+        list.onKeyPressed(typedChar, keyCode);
     }
 
     @Override
@@ -114,12 +123,6 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode)
-    {
-        list.onKeyPressed(typedChar, keyCode);
-    }
-
-    @Override
     protected void actionPerformed(GuiButton button) throws IOException
     {
         if (!button.enabled) return;
@@ -148,13 +151,6 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         list.mouseClicked(mouseX, mouseY, mouseButton);
-    }
-
-    @Override
-    public void handleMouseInput() throws IOException
-    {
-        super.handleMouseInput();
-        this.list.handleMouseInput();
     }
 
     @Override
@@ -194,6 +190,13 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
         });
 
         update();
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException
+    {
+        super.handleMouseInput();
+        this.list.handleMouseInput();
     }
 
     @Override

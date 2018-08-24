@@ -54,7 +54,7 @@ import net.dries007.tfc.objects.te.TEIngotPile;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.objects.te.TEWorldItem;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)
@@ -81,7 +81,7 @@ public final class ClientRegisterEvents
                 registerEnumBasedMetaItems("gem", grade, item);
 
         for (ItemOreTFC item : ItemsTFC.getAllOreItems())
-            if (item.ore.graded)
+            if (item.ore.isGraded())
                 for (Ore.Grade grade : Ore.Grade.values())
                     registerEnumBasedMetaItems("ore", grade, item);
             else

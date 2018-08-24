@@ -59,7 +59,7 @@ public class BlockLogTFC extends BlockLog
         setHardness(15.0F);
         setResistance(5.0F);
         OreDictionaryHelper.register(this, "log", "wood");
-        OreDictionaryHelper.register(this, "log", "wood", wood.name());
+        OreDictionaryHelper.register(this, "log", "wood", wood.getRegistryName().getPath());
         Blocks.FIRE.setFireInfo(this, 5, 5);
         setTickRandomly(true);
     }
@@ -103,30 +103,6 @@ public class BlockLogTFC extends BlockLog
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return getDefaultState().withProperty(LOG_AXIS, EnumAxis.values()[meta & 0b11]).withProperty(PLACED, (meta & 0b100) == 0b100).withProperty(SMALL, (meta & 0b1000) == 0b1000);
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(LOG_AXIS).ordinal() | (state.getValue(PLACED) ? 0b100 : 0) | (state.getValue(SMALL) ? 0b1000 : 0);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, LOG_AXIS, PLACED, SMALL);
-    }
-
-    @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(PLACED, true).withProperty(SMALL, placer.isSneaking());
-    }
-
-    @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
     {
         // For floating tree things, just make them gently disappear over time
@@ -146,6 +122,7 @@ public class BlockLogTFC extends BlockLog
         if (!worldIn.isRemote)
             removeTree(worldIn, pos, null, ItemStack.EMPTY, 1);
     }
+
     @Override
     public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
     {
@@ -178,9 +155,33 @@ public class BlockLogTFC extends BlockLog
     }
 
     @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(LOG_AXIS, EnumAxis.values()[meta & 0b11]).withProperty(PLACED, (meta & 0b100) == 0b100).withProperty(SMALL, (meta & 0b1000) == 0b1000);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(LOG_AXIS).ordinal() | (state.getValue(PLACED) ? 0b100 : 0) | (state.getValue(SMALL) ? 0b1000 : 0);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, LOG_AXIS, PLACED, SMALL);
+    }
+
+    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         // Don't do vanilla leaf decay
+    }
+
+    @Override
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
+        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(PLACED, true).withProperty(SMALL, placer.isSneaking());
     }
 
     private boolean removeTree(World world, BlockPos pos, @Nullable EntityPlayer player, ItemStack stack, int flags)

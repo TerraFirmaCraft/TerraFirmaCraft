@@ -15,7 +15,6 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
-import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
@@ -27,12 +26,11 @@ import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 
 public class TreeGenSequoia implements ITreeGenerator
 {
-    private final PlacementSettings settings = ITreeGenerator.getDefaultSettings();
-    private IBlockState trunk;
-
     private static final BlockPos[] trunkPos = new BlockPos[] {
         new BlockPos(0, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 0, -1), new BlockPos(-1, 0, -1)
     };
+    private final PlacementSettings settings = ITreeGenerator.getDefaultSettings();
+    private IBlockState trunk;
 
     @Override
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
@@ -51,11 +49,11 @@ public class TreeGenSequoia implements ITreeGenerator
         for (int j = 0; j < layers; j++)
         {
             if (j == layers - 1 || (j == layers - 2 && rand.nextBoolean()))
-                k += placeLayer(manager, world, pos.up(k), tree.name() + "/mid" + baseVariant);
+                k += placeLayer(manager, world, pos.up(k), tree.getRegistryName() + "/mid" + baseVariant);
             else
-                k += placeLayer(manager, world, pos.up(k), tree.name() + "/base" + baseVariant);
+                k += placeLayer(manager, world, pos.up(k), tree.getRegistryName() + "/base" + baseVariant);
         }
-        placeLayer(manager, world, pos.up(k), tree.name() + "/top" + topVariant);
+        placeLayer(manager, world, pos.up(k), tree.getRegistryName() + "/top" + topVariant);
 
     }
 
@@ -81,7 +79,7 @@ public class TreeGenSequoia implements ITreeGenerator
 
     private int placeLayer(TemplateManager manager, World world, BlockPos pos, String name)
     {
-        ResourceLocation base = new ResourceLocation(Constants.MOD_ID, name);
+        ResourceLocation base = new ResourceLocation(name);
         Template structureBase = manager.get(world.getMinecraftServer(), base);
 
         if (structureBase == null)

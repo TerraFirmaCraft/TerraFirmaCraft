@@ -13,18 +13,16 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import net.dries007.tfc.ConfigTFC;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class CalenderTFC
 {
-    private static long time; // todo: handle better
-
     public static final int TICKS_IN_HOUR = 1000;
     public static final int TICKS_IN_MINUTE = TICKS_IN_HOUR / 60;
     public static final int TICKS_IN_DAY = 24000;
-    public static final int HOURS_IN_DAY = (int) (TICKS_IN_DAY / TICKS_IN_HOUR);
-
+    public static final int HOURS_IN_DAY = (TICKS_IN_DAY / TICKS_IN_HOUR);
+    private static long time; // todo: handle better
     private static int daysInYear;
     private static int daysInMonth;
     private static int ticksInYear;

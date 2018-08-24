@@ -108,6 +108,25 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
     }
 
     @Override
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
+    {
+        int current = state.getValue(MOISTURE);
+        int target = world.isRainingAt(pos.up()) ? MAX_MOISTURE : getWaterScore(world, pos);
+
+        if (current < target)
+        {
+            if (current < MAX_MOISTURE) world.setBlockState(pos, state.withProperty(MOISTURE, current + 1), 2);
+        }
+        else if (current > target || target == 0)
+        {
+            if (current > 0) world.setBlockState(pos, state.withProperty(MOISTURE, current - 1), 2);
+            else if (!hasCrops(world, pos)) turnToDirt(world, pos);
+        }
+
+        super.updateTick(world, pos, state, rand);
+    }
+
+    @Override
     public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance)
     {
         if (!worldIn.isRemote && entityIn.canTrample(worldIn, this, pos, fallDistance)) // Forge: Move logic to Entity#canTrample
@@ -127,25 +146,6 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(Item.getItemFromBlock(this));
-    }
-
-    @Override
-    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
-    {
-        int current = state.getValue(MOISTURE);
-        int target = world.isRainingAt(pos.up()) ? MAX_MOISTURE : getWaterScore(world, pos);
-
-        if (current < target)
-        {
-            if (current < MAX_MOISTURE) world.setBlockState(pos, state.withProperty(MOISTURE, current + 1), 2);
-        }
-        else if (current > target || target == 0)
-        {
-            if (current > 0) world.setBlockState(pos, state.withProperty(MOISTURE, current - 1), 2);
-            else if (!hasCrops(world, pos)) turnToDirt(world, pos);
-        }
-
-        super.updateTick(world, pos, state, rand);
     }
 
     @Override

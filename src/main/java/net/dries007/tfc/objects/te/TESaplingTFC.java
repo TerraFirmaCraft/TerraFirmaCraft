@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.world.classic.CalenderTFC;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault

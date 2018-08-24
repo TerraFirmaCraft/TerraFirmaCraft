@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.objects.blocks.BlockTorchTFC;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class TETorchTFC extends TileEntity implements ITickable
 {

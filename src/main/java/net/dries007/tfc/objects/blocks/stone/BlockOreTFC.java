@@ -40,7 +40,7 @@ public class BlockOreTFC extends Block
     public static IBlockState get(Ore ore, Rock rock, Ore.Grade grade)
     {
         IBlockState state = TABLE.get(ore).get(rock).getDefaultState();
-        if (!ore.graded) return state;
+        if (!ore.isGraded()) return state;
         return state.withProperty(GRADE, grade);
     }
 

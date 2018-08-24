@@ -34,7 +34,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFireable;
 import net.dries007.tfc.util.IPlacableItem;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)

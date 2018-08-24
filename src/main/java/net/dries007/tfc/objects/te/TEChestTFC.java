@@ -23,7 +23,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @MethodsReturnNonnullByDefault
 public class TEChestTFC extends TileEntityChest
