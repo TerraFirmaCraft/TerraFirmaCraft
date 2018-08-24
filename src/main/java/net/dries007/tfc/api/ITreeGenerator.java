@@ -73,18 +73,8 @@ public interface ITreeGenerator
     }
 
     /**
-     * Called to generate a tree. Each Tree must have one of these. Used for world gen and sapling growth
-     *
-     * @param manager an instance of the world's template manager. Used for getting structures.
-     * @param world   The world
-     * @param pos     The position where the sapling was / would've been
-     * @param tree    The tree type to spawn
-     * @param rand    A random to use in generation
-     */
-    void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand);
-
-    /**
      * This only sets the properties used by ITreeGenerator.addStructureToWorld
+     *
      * @return A default set of placement settings for tree generation
      */
 
@@ -95,6 +85,7 @@ public interface ITreeGenerator
 
     /**
      * This only sets the properties used by ITreeGenerator.addStructureToWorld
+     *
      * @param rand For generating random settings
      * @return A set of placement settings with random rotation
      */
@@ -102,6 +93,17 @@ public interface ITreeGenerator
     {
         return getDefaultSettings().setRotation(Rotation.values()[rand.nextInt(Rotation.values().length)]);
     }
+
+    /**
+     * Called to generate a tree. Each Tree must have one of these. Used for world gen and sapling growth
+     *
+     * @param manager an instance of the world's template manager. Used for getting structures.
+     * @param world   The world
+     * @param pos     The position where the sapling was / would've been
+     * @param tree    The tree type to spawn
+     * @param rand    A random to use in generation
+     */
+    void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand);
 
     /**
      * Checks if a tree can be generated. This implementation checks height, radius, and light level
@@ -114,7 +116,7 @@ public interface ITreeGenerator
     default boolean canGenerateTree(World world, BlockPos pos, Tree treeType)
     {
         // Check if ground is flat enough
-        final int radius = treeType.maxGrowthRadius;
+        final int radius = treeType.getMaxGrowthRadius();
         for (int x = -radius; x <= radius; x++)
         {
             for (int z = -radius; z <= radius; z++)
@@ -127,7 +129,7 @@ public interface ITreeGenerator
             }
         }
         // Check if there is room directly upwards
-        final int height = treeType.maxHeight;
+        final int height = treeType.getMaxHeight();
         for (int y = 1; y <= height; y++)
             if (!world.getBlockState(pos.up(y)).getMaterial().isReplaceable())
                 return false;

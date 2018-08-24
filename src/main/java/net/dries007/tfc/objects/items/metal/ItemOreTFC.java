@@ -19,6 +19,7 @@ import net.dries007.tfc.api.util.Size;
 import net.dries007.tfc.api.util.Weight;
 import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.items.ItemTFC;
+import net.dries007.tfc.types.DefaultOres;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
@@ -35,7 +36,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
 
     public static ItemStack get(Ore ore, Ore.Grade grade, int amount)
     {
-        return new ItemStack(MAP.get(ore), amount, ore.graded ? grade.getMeta() : 0);
+        return new ItemStack(MAP.get(ore), amount, ore.isGraded() ? grade.getMeta() : 0);
     }
 
     public static ItemStack get(Ore ore, int amount)
@@ -50,7 +51,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
         this.ore = ore;
         if (MAP.put(ore, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
-        if (ore.metal != null)
+        if (ore.getMetal() != null)
         {
             setHasSubtypes(true);
             OreDictionaryHelper.register(this, "ore");
@@ -64,15 +65,10 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
         else // Mineral
         {
             OreDictionaryHelper.register(this, "gem", ore);
-            switch (ore.name())
-            {
-                case "lapis_lazuli":
-                    OreDictionaryHelper.register(this, "gem", "lapis");
-                    break;
-                case "bituminous_coal":
-                    OreDictionaryHelper.register(this, "gem", "coal");
-                    break;
-            }
+            if (DefaultOres.LAPIS_LAZULI.equals(ore.getRegistryName()))
+                OreDictionaryHelper.register(this, "gem", "lapis");
+            if (DefaultOres.BITUMINOUS_COAL.equals(ore.getRegistryName()))
+                OreDictionaryHelper.register(this, "gem", "coal");
         }
     }
 
@@ -93,7 +89,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
         if (!isInCreativeTab(tab)) return;
-        if (ore.graded)
+        if (ore.isGraded())
             for (Ore.Grade grade : Ore.Grade.values())
                 items.add(new ItemStack(this, 1, grade.getMeta()));
         else
@@ -103,7 +99,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     @Override
     public Metal getMetal(ItemStack stack)
     {
-        return ore.metal;
+        return ore.getMetal();
     }
 
     @Override

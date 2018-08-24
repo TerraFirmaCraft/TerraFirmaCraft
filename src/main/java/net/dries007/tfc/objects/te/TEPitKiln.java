@@ -36,7 +36,7 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.wood.ItemLogTFC;
 import net.dries007.tfc.util.IFireable;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @MethodsReturnNonnullByDefault
 public class TEPitKiln extends TileEntity implements ITickable

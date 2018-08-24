@@ -84,6 +84,11 @@ public class OreDictionaryHelper
         MAP.clear(); // No need to keep this stuff around
     }
 
+    public static Predicate<EntityItem> createPredicateItemEntity(String... names)
+    {
+        return input -> input.isEntityAlive() && createPredicateStack(names).test(input.getItem());
+    }
+
     private static Predicate<ItemStack> createPredicateStack(String... names)
     {
         return input -> {
@@ -94,11 +99,6 @@ public class OreDictionaryHelper
                     return true;
             return false;
         };
-    }
-
-    public static Predicate<EntityItem> createPredicateItemEntity(String... names)
-    {
-        return input -> input.isEntityAlive() && createPredicateStack(names).test(input.getItem());
     }
 
     private static void register(Thing thing, Object... parts)

@@ -17,14 +17,16 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
+import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 
 import static net.dries007.tfc.Constants.GSON;
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class OreSpawnData
 {
@@ -90,7 +92,7 @@ public class OreSpawnData
             final String name = entry.getKey();
             final OreJson json = entry.getValue();
 
-            Ore ore = Ore.get(json.ore);
+            Ore ore = TFCRegistries.ORES.getValue(json.ore);
             if (ore == null)
             {
                 TerraFirmaCraft.getLog().warn("Problem parsing ore entry '" + name + "'. Ore is not defined. Skipping.");
@@ -111,10 +113,10 @@ public class OreSpawnData
             List<Rock> blocks = new ArrayList<>();
             json.baseRocks.forEach(s ->
             {
-                Rock rock = Rock.get(s);
+                Rock rock = TFCRegistries.ROCKS.getValue(s);
                 if (rock == null)
                 {
-                    RockCategory category = RockCategory.get(s);
+                    RockCategory category = TFCRegistries.ROCK_CATEGORIES.getValue(s);
                     if (category == null)
                         TerraFirmaCraft.getLog().warn("Problem parsing ore entry '" + name + "'. Rock / Rock Category '" + s + "' is not defined. Skipping.");
                     else
@@ -204,9 +206,10 @@ public class OreSpawnData
     }
 
     @SuppressWarnings("unused")
-    private class OreJson
+    private final class OreJson
     {
-        private String ore;
+        // todo: replace with the actual enums, GSON can handle it fine IIRC
+        private ResourceLocation ore;
         private String size;
         private String shape;
 
@@ -218,6 +221,6 @@ public class OreSpawnData
         private int maxY;
 
         @SerializedName("base_rocks")
-        private List<String> baseRocks;
+        private List<ResourceLocation> baseRocks;
     }
 }

@@ -21,15 +21,15 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.util.IItemSize;
 import net.dries007.tfc.api.util.Size;
+import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.api.util.Weight;
 
 public class CapabilityItemSize
 {
     private static final CapabilityItemSize INSTANCE = new CapabilityItemSize();
-    private static final ResourceLocation ID = new ResourceLocation(Constants.MOD_ID, "item_size");
+    private static final ResourceLocation ID = new ResourceLocation(TFCConstants.MOD_ID, "item_size");
 
     @CapabilityInject(IItemSize.class)
     public static Capability<IItemSize> ITEM_SIZE_CAPABILITY = null;

@@ -18,7 +18,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.registries.ForgeRegistry;
 
+import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
@@ -158,29 +160,29 @@ public final class ChunkDataTFC
 
     public List<Tree> getValidTrees()
     {
-        return Tree.values()
-            .stream()
+        //todo: replace with efficient code (preferably cached?)
+        return TFCRegistries.TREES.getValuesCollection().stream()
             .filter(t -> t.isValidLocation(avgTemp, rainfall, floraDensity))
-            .sorted((s, t) -> (int) (t.dominance - s.dominance))
+            .sorted((s, t) -> (int) (t.getDominance() - s.getDominance()))
             .collect(Collectors.toList());
     }
 
     @Nullable
     public Tree getSparseGenTree()
     {
-        return Tree.values()
-            .stream()
+        //todo: replace with efficient, (preferably cached?)
+        return TFCRegistries.TREES.getValuesCollection().stream()
             .filter(t -> t.isValidLocation(0.5f * avgTemp + 10f, 0.5f * rainfall + 120f, 0.5f))
-            .min((s, t) -> (int) (t.dominance - s.dominance))
+            .min((s, t) -> (int) (t.getDominance() - s.getDominance()))
             .orElse(null);
     }
 
     // Directly accessing the DataLayer is discouraged (except for getting the name). It's easy to use the wrong value.
-    public Rock getRockLayer1(int x, int z) { return Rock.get(rockLayer1[z << 4 | x]); }
+    public Rock getRockLayer1(int x, int z) { return ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer1[z << 4 | x]); }
 
-    public Rock getRockLayer2(int x, int z) { return Rock.get(rockLayer2[z << 4 | x]); }
+    public Rock getRockLayer2(int x, int z) { return ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer2[z << 4 | x]); }
 
-    public Rock getRockLayer3(int x, int z) { return Rock.get(rockLayer3[z << 4 | x]); }
+    public Rock getRockLayer3(int x, int z) { return ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer3[z << 4 | x]); }
 
     public DataLayer getStabilityLayer(int x, int z) { return stabilityLayer[z << 4 | x]; }
 

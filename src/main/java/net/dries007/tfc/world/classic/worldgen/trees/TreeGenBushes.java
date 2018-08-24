@@ -27,7 +27,6 @@ import static net.minecraft.block.BlockLog.LOG_AXIS;
 
 public class TreeGenBushes implements ITreeGenerator
 {
-
     @Override
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {

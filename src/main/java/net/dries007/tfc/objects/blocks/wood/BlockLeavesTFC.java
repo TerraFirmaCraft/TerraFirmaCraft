@@ -50,7 +50,7 @@ public class BlockLeavesTFC extends BlockLeaves
         setDefaultState(blockState.getBaseState().withProperty(DECAYABLE, false)); // TFC leaves don't use CHECK_DECAY, so just don't use it
         leavesFancy = true; // Fast / Fancy graphics works correctly
         OreDictionaryHelper.register(this, "tree", "leaves");
-        OreDictionaryHelper.register(this, "tree", "leaves", wood.name());
+        OreDictionaryHelper.register(this, "tree", "leaves", wood.getRegistryName().getPath());
         Blocks.FIRE.setFireInfo(this, 30, 60);
         setTickRandomly(true);
     }
@@ -122,6 +122,20 @@ public class BlockLeavesTFC extends BlockLeaves
         return Item.getItemFromBlock(BlockSaplingTFC.get(wood));
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public BlockRenderLayer getRenderLayer()
+    {
+        /*
+         * This is a way to make sure the leave settings are updated.
+         * The result of this call is cached somewhere, so it's not that important, but:
+         * The alternative would be to use `Minecraft.getMinecraft().gameSettings.fancyGraphics` directly in the 2 relevant methods.
+         * It's better to do that than to refer to Blocks.LEAVES, for performance reasons.
+         */
+        leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
+        return super.getRenderLayer();
+    }
+
     @Override
     @Nonnull
     public BlockPlanks.EnumType getWoodType(int meta)
@@ -134,6 +148,18 @@ public class BlockLeavesTFC extends BlockLeaves
     public void beginLeavesDecay(IBlockState state, @Nonnull World world, @Nonnull BlockPos pos)
     {
         // Don't do vanilla decay
+    }
+
+    @SuppressWarnings("deprecation")
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
+        /*
+         * See comment on getRenderLayer()
+         */
+        leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
+        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 
     @Override
@@ -155,7 +181,7 @@ public class BlockLeavesTFC extends BlockLeaves
         IBlockState state1;
         paths.add(pos); // Center block
 
-        for (int i = 0; i < wood.maxDecayDistance; i++)
+        for (int i = 0; i < wood.getMaxDecayDistance(); i++)
         {
             pathsToAdd = new ArrayList<>();
             for (BlockPos p1 : paths)
@@ -177,31 +203,5 @@ public class BlockLeavesTFC extends BlockLeaves
         }
 
         world.setBlockToAir(pos);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public BlockRenderLayer getRenderLayer()
-    {
-        /*
-         * This is a way to make sure the leave settings are updated.
-         * The result of this call is cached somewhere, so it's not that important, but:
-         * The alternative would be to use `Minecraft.getMinecraft().gameSettings.fancyGraphics` directly in the 2 relevant methods.
-         * It's better to do that than to refer to Blocks.LEAVES, for performance reasons.
-         */
-        leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
-        return super.getRenderLayer();
-    }
-
-    @SuppressWarnings("deprecation")
-    @SideOnly(Side.CLIENT)
-    @Override
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-    {
-        /*
-         * See comment on getRenderLayer()
-         */
-        leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
-        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 }

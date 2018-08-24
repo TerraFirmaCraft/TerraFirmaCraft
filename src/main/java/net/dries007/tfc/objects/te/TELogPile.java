@@ -24,7 +24,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogPile;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
 import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 
