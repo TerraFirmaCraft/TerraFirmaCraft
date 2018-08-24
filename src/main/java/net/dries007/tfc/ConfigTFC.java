@@ -62,14 +62,22 @@ public class ConfigTFC
 
         @Config.Comment("Normal decay leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
-        public double leafStickDropChance = 0.1; // todo: lang key
+        @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChance")
+        public double leafStickDropChance = 0.1;
 
         @Config.Comment("Bonus decay leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
-        public double leafStickDropChanceBonus = 0.25; // todo: lang key
+        @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonus")
+        public double leafStickDropChanceBonus = 0.25;
 
         @Config.Comment("Bonus decay leaf drop chance for sticks tool classes")
-        public String[] leafStickDropChanceBonusClasses = new String[] {"knife", "scythe"}; // todo: lang key
+        @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonusClasses")
+        public String[] leafStickDropChanceBonusClasses = new String[] {"knife", "scythe"};
+
+        @Config.Comment("Modifier for how quickly item's lose heat. Smaller number = slower temperature changes")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.temperatureModifier")
+        public double temperatureModifier = 0.01;
     }
 
     public static class ClientCFG

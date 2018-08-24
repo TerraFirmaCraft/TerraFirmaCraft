@@ -16,7 +16,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.*;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.world.classic.CalenderTFC;
 
 public class CapabilityItemHeat
 {
@@ -37,6 +39,27 @@ public class CapabilityItemHeat
     public static IItemHeat getIItemHeat(@Nonnull ItemStack stack)
     {
         return stack.getCapability(ITEM_HEAT_CAPABILITY, null);
+    }
+
+    public static float getTempChange(float temp, float environmentTemp, long ticksSinceUpdate)
+    {
+        return getTempChange(temp, 1, environmentTemp, ticksSinceUpdate);
+    }
+
+    public static float getTempChange(float temp, float specificHeat, float enviromentTemp, long ticksSinceUpdate)
+    {
+        float tempMod = specificHeat * ticksSinceUpdate * (float) ConfigTFC.GENERAL.temperatureModifier;
+        if (tempMod > Math.abs(enviromentTemp - temp))
+        {
+            return enviromentTemp < 0 ? 0 : enviromentTemp;
+        }
+        else
+        {
+            if (enviromentTemp > temp)
+                return temp + tempMod;
+            else
+                return temp -= tempMod;
+        }
     }
 
     public ICapabilityProvider getCapability(ItemStack stack, NBTTagCompound nbt, float heatCapacity, float meltingPoint)
@@ -76,19 +99,9 @@ public class CapabilityItemHeat
         }
 
         @Override
-        public void updateTemperature(float enviromentTemperature, float weight)
+        public void updateTemperature(float enviromentTemperature, long ticks)
         {
-            if (heatCapacity * weight > Math.abs(enviromentTemperature - temperature))
-            {
-                this.temperature = enviromentTemperature;
-            }
-            else
-            {
-                if (enviromentTemperature > temperature)
-                    temperature += weight * heatCapacity;
-                else
-                    temperature -= weight * heatCapacity;
-            }
+            CapabilityItemHeat.getTempChange(temperature, heatCapacity, enviromentTemperature, ticks);
         }
 
         @Override
@@ -107,9 +120,7 @@ public class CapabilityItemHeat
         @Override
         public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
         {
-            if (capability != ITEM_HEAT_CAPABILITY)
-                return null;
-            return CapabilityItemHeat.ITEM_HEAT_CAPABILITY.cast(this);
+            return hasCapability(capability, facing) ? (T) this : null;
         }
 
         @Override
@@ -133,6 +144,7 @@ public class CapabilityItemHeat
         {
             NBTTagCompound nbt = new NBTTagCompound();
             nbt.setFloat("heat", instance.getTemperature());
+            nbt.setLong("ticks", CalenderTFC.getTotalTime());
             return nbt;
         }
 
@@ -145,7 +157,9 @@ public class CapabilityItemHeat
                 return;
             }
             NBTTagCompound nbt = (NBTTagCompound) base;
-            instance.setTemperature(nbt.getFloat("heat"));
+            final float oldTemp = nbt.getFloat("heat");
+            final long ticks = CalenderTFC.getTotalTime() - nbt.getLong("ticks");
+            instance.setTemperature(CapabilityItemHeat.getTempChange(oldTemp, 0, (int) ticks));
         }
     }
 

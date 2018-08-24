@@ -5,25 +5,32 @@
 
 package net.dries007.tfc.objects.items.ceramics;
 
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankPropertiesWrapper;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -31,13 +38,16 @@ import net.minecraftforge.items.ItemStackHandler;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.ISmallVesselHandler;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.fluids.FluidMetal;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IMetalObject;
+import net.dries007.tfc.world.classic.CalenderTFC;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -64,26 +74,21 @@ public class ItemSmallVessel extends ItemFiredPottery
     {
 
         ItemStack stack = player.getHeldItem(hand);
-        if (!world.isRemote)
+        if (!world.isRemote && !player.isSneaking())
         {
-            TerraFirmaCraft.getLog().info("Hand that this was called with: " + hand + " | " + (stack.getItem() == this));
-            int flag = 0;
-            NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt != null && nbt.hasKey("liquid"))
+            IFluidHandler cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+            if (cap instanceof ISmallVesselHandler)
             {
-                if (nbt.getBoolean("liquid"))
-                    flag = 1;
-            }
-
-            if (!player.isSneaking())
-            {
-                switch (flag)
+                ISmallVesselHandler.Mode mode = ((ISmallVesselHandler) cap).getFluidMode();
+                switch (mode)
                 {
-                    case 0:
+                    case INVENTORY:
                         player.openGui(TerraFirmaCraft.getInstance(), TFCGuiHandler.SMALL_VESSEL, world, 0, 0, 0);
                         break;
-                    case 1:
+                    case LIQUID_MOLTEN:
                         player.openGui(TerraFirmaCraft.getInstance(), TFCGuiHandler.SMALL_VESSEL_LIQUID, world, 0, 0, 0);
+                        break;
+                    case LIQUID_SOLID:
                         break;
                 }
             }
@@ -107,7 +112,7 @@ public class ItemSmallVessel extends ItemFiredPottery
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new SmallVesselCapability(stack, nbt, 1, Float.MAX_VALUE);
+        return new SmallVesselCapability(stack, nbt);
     }
 
     @Override
@@ -185,18 +190,20 @@ public class ItemSmallVessel extends ItemFiredPottery
         return input;
     }
 
-    public static class SmallVesselCapability extends ItemStackHandler implements ICapabilityProvider, ISmallVesselHandler
+    public class SmallVesselCapability extends ItemStackHandler implements ICapabilityProvider, ISmallVesselHandler
     {
         private final ItemStack container;
         private final FluidTank tank;
-        private final float heatCapacity;
-        private final float meltingTemp;
+
+        private float heatCapacity;
+        private float meltingTemp;
+        private float temperature;
+        private long ticksSinceUpdate;
 
         private boolean fluidMode; // Does the stack contain molten metal?
         private IFluidTankProperties fluidTankProperties[];
-        private float temperature;
 
-        public SmallVesselCapability(ItemStack stack, @Nullable NBTTagCompound nbt, float heatCapacity, float meltingTemp)
+        public SmallVesselCapability(ItemStack stack, @Nullable NBTTagCompound nbt)
         {
             super(4);
             this.container = stack;
@@ -217,6 +224,16 @@ public class ItemSmallVessel extends ItemFiredPottery
             this.fluidMode = fluidMode;
         }
 
+        @Override
+        public Mode getFluidMode()
+        {
+            if (fluidMode)
+            {
+                return temperature < meltingTemp ? Mode.LIQUID_SOLID : Mode.LIQUID_MOLTEN;
+            }
+            return Mode.INVENTORY;
+        }
+
         @Nullable
         @Override
         public Metal getMetal()
@@ -233,17 +250,20 @@ public class ItemSmallVessel extends ItemFiredPottery
         @Override
         public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
         {
-            return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+            return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+                || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+                || capability == CapabilityItemHeat.ITEM_HEAT_CAPABILITY;
         }
 
         @Nullable
         @Override
         public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
         {
-            if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
-            if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this);
+            if (hasCapability(capability, facing))
+            {
+                updateTemperature(0, CalenderTFC.getTotalTime() - ticksSinceUpdate);
+                return (T) this;
+            }
             return null;
         }
 
@@ -253,13 +273,17 @@ public class ItemSmallVessel extends ItemFiredPottery
             NBTTagCompound nbt = new NBTTagCompound();
             fluidMode = tank.getFluidAmount() > 0;
             nbt.setBoolean("liquid", fluidMode);
+
             nbt.setFloat("item_heat", temperature);
+            nbt.setLong("ticks", CalenderTFC.getTotalTime());
+
             if (fluidMode)
             {
                 // Save fluid data
                 NBTTagCompound fluidData = new NBTTagCompound();
                 tank.writeToNBT(fluidData);
                 nbt.setTag("fluids", fluidData);
+                updateFluidData(tank.getFluid().getFluid());
             }
             else
             {
@@ -273,6 +297,8 @@ public class ItemSmallVessel extends ItemFiredPottery
         public void deserializeNBT(NBTTagCompound nbt)
         {
             temperature = nbt.getFloat("item_heat");
+            ticksSinceUpdate = nbt.getLong("ticks");
+
             if (nbt.hasKey("liquid"))
             {
                 fluidMode = nbt.getBoolean("liquid");
@@ -303,8 +329,11 @@ public class ItemSmallVessel extends ItemFiredPottery
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            if (fluidMode && resource.getFluid() instanceof FluidMetal)
+            if (resource.getFluid() instanceof FluidMetal)
+            {
+                updateFluidData(resource.getFluid());
                 return tank.fill(resource, doFill);
+            }
             return 0;
         }
 
@@ -312,7 +341,7 @@ public class ItemSmallVessel extends ItemFiredPottery
         @Override
         public FluidStack drain(FluidStack resource, boolean doDrain)
         {
-            if (fluidMode && resource.getFluid() instanceof FluidMetal)
+            if (getFluidMode() == Mode.LIQUID_MOLTEN)
                 return tank.drain(resource, doDrain);
             return null;
         }
@@ -321,7 +350,7 @@ public class ItemSmallVessel extends ItemFiredPottery
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain)
         {
-            if (fluidMode)
+            if (getFluidMode() == Mode.LIQUID_MOLTEN)
                 return tank.drain(maxDrain, doDrain);
             return null;
         }
@@ -339,19 +368,35 @@ public class ItemSmallVessel extends ItemFiredPottery
         }
 
         @Override
-        public void updateTemperature(float enviromentTemperature, float weight)
+        public void updateTemperature(float enviromentTemperature, long ticks)
         {
-            if (heatCapacity * weight > Math.abs(enviromentTemperature - temperature))
+            this.temperature = CapabilityItemHeat.getTempChange(temperature, heatCapacity, enviromentTemperature, ticks);
+        }
+
+        @SideOnly(Side.CLIENT)
+        @Override
+        public void addHeatInfo(ItemStack stack, List<String> text)
+        {
+            Metal metal = getMetal();
+            if (metal != null)
+                text.add(TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount()));
+            ISmallVesselHandler.super.addHeatInfo(stack, text);
+        }
+
+        private void updateFluidData(Fluid fluid)
+        {
+            if (fluid instanceof FluidMetal)
             {
-                this.temperature = enviromentTemperature;
+                Metal metal = ((FluidMetal) fluid).getMetal();
+                this.meltingTemp = metal.meltTemp;
+                this.heatCapacity = metal.specificHeat;
             }
             else
             {
-                if (enviromentTemperature > temperature)
-                    temperature += weight * heatCapacity;
-                else
-                    temperature -= weight * heatCapacity;
+                this.meltingTemp = 1500;
+                this.heatCapacity = 1;
             }
+
         }
     }
 

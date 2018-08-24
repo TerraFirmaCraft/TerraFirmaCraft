@@ -37,67 +37,69 @@ public class ItemMetalTool extends ItemMetal
     public ItemMetalTool(Metal metal, MetalType type)
     {
         super(metal, type);
-        if (metal.toolMetal == null) throw new IllegalArgumentException("You can't make tools out of non tool metals.");
-        material = metal.toolMetal;
+        if (metal.getToolMetal() == null)
+            throw new IllegalArgumentException("You can't make tools out of non tool metals.");
+        material = metal.getToolMetal();
+        int harvestLevel = material.getHarvestLevel();
         float typeDamage;
         switch (type)
         {
             case PICK:
-                setHarvestLevel("pickaxe", metal.toolMetal.getHarvestLevel());
+                setHarvestLevel("pickaxe", harvestLevel);
                 typeDamage = 1.2f; // todo: use some central spot for this (config maybe?) and make the rock equivalents use the same numbers.
                 areaOfAttack = 1;
                 attackSpeed = -2.8f;
                 break;
             case SHOVEL:
-                setHarvestLevel("shovel", metal.toolMetal.getHarvestLevel());
+                setHarvestLevel("shovel", harvestLevel);
                 typeDamage = 1.3f;
                 areaOfAttack = 1;
                 attackSpeed = -3f;
                 break;
             case AXE:
-                setHarvestLevel("axe", metal.toolMetal.getHarvestLevel());
+                setHarvestLevel("axe", harvestLevel);
                 typeDamage = 1.5f;
                 areaOfAttack = 1;
                 attackSpeed = -3f;
                 break;
             case HOE:
-                setHarvestLevel("hoe", metal.toolMetal.getHarvestLevel());
+                setHarvestLevel("hoe", harvestLevel);
                 typeDamage = 0.7f;
                 areaOfAttack = 1;
                 attackSpeed = -3;
                 break;
             case CHISEL:
-                setHarvestLevel("chisel", metal.toolMetal.getHarvestLevel());
+                setHarvestLevel("chisel", harvestLevel);
                 typeDamage = 0.7f;
                 areaOfAttack = 1;
                 attackSpeed = 0;
                 break;
             case SAW:
-                setHarvestLevel("saw", metal.toolMetal.getHarvestLevel());
+                setHarvestLevel("saw", harvestLevel);
                 typeDamage = 0.5f;
                 areaOfAttack = 1;
                 attackSpeed = -1;
                 break;
             case PROPICK:
-                setHarvestLevel("pickaxe", metal.toolMetal.getHarvestLevel());
+                setHarvestLevel("pickaxe", harvestLevel);
                 typeDamage = 1f;
                 areaOfAttack = 1;
                 attackSpeed = -3.5f;
                 break;
             case SCYTHE:
-                setHarvestLevel("scythe", metal.toolMetal.getHarvestLevel());
+                setHarvestLevel("scythe", harvestLevel);
                 typeDamage = 1.5f;
                 areaOfAttack = 3;
                 attackSpeed = -3.5f;
                 break;
             case KNIFE:
-                setHarvestLevel("knife", metal.toolMetal.getHarvestLevel());
+                setHarvestLevel("knife", harvestLevel);
                 typeDamage = 0.5f;
                 areaOfAttack = 1;
                 attackSpeed = 3f;
                 break;
             case HAMMER:
-                setHarvestLevel("hammer", metal.toolMetal.getHarvestLevel());
+                setHarvestLevel("hammer", harvestLevel);
                 typeDamage = 2f;
                 areaOfAttack = 1;
                 attackSpeed = -3.5f;

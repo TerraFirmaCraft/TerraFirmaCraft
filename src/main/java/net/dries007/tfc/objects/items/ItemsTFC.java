@@ -215,8 +215,8 @@ public final class ItemsTFC
     public static void init()
     {
         for (Metal metal : Metal.values())
-            if (metal.toolMetal != null)
-                metal.toolMetal.setRepairItem(new ItemStack(ItemMetal.get(metal, MetalType.SCRAP)));
+            if (metal.getToolMetal() != null)
+                metal.getToolMetal().setRepairItem(new ItemStack(ItemMetal.get(metal, MetalType.SCRAP)));
     }
 
     private static void registerPottery(Builder<Item> items, IForgeRegistry<Item> r, String nameUnfired, String nameFired, ItemUnfiredPottery unfiredPottery)

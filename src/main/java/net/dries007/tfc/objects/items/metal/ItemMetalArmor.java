@@ -51,7 +51,7 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
     public ItemMetalArmor(Metal metal, MetalType type)
     {
         super(metal, type);
-        toolMaterial = metal.toolMetal;
+        toolMaterial = metal.getToolMetal();
         switch (type)
         {
             case HELMET:

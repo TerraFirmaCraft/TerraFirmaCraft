@@ -52,6 +52,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
     private final ResourceLocation name;
     // Used when growing a tree
     private final ITreeGenerator gen;
+
     /**
      * This is a registry object that will create a number of things:
      * 1. Wood logs, planks, and leaf blocks, and all the respective variants
@@ -79,9 +80,9 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      * @param hasBushes will the tree generate small bushes
      * @param minGrowthTime the amount of time (in in-game days) that this tree requires to grow
      */
-    private Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator gen,
-                 float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, float dominance,
-                 int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, boolean hasBushes, float minGrowthTime)
+    public Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator gen,
+                float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, float dominance,
+                int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, boolean hasBushes, float minGrowthTime)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
