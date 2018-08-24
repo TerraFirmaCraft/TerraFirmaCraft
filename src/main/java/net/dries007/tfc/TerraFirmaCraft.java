@@ -8,10 +8,7 @@ package net.dries007.tfc;
 import org.apache.logging.log4j.Logger;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.ICrashCallable;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ModMetadata;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -75,6 +72,16 @@ public class TerraFirmaCraft
     public static TerraFirmaCraft getInstance()
     {
         return instance;
+    }
+
+    public static LoaderState.ModState getState()
+    {
+        return Loader.instance().getModState(Loader.instance().getModObjectList().inverse().get(instance));
+    }
+
+    public static boolean pastState(LoaderState.ModState state)
+    {
+        return TerraFirmaCraft.getState().ordinal() >= state.ordinal();
     }
 
     private boolean isSignedBuild = true;
