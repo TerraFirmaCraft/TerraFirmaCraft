@@ -47,6 +47,7 @@ public class BlockAnvilTFC extends Block
     {
         return new ItemStack(MAP.get(metal), amount);
     }
+
     public final Metal metal;
 
     public BlockAnvilTFC(Metal metal)
@@ -77,6 +78,7 @@ public class BlockAnvilTFC extends Block
         return this.getDefaultState().withProperty(AXIS, meta == 0);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(AXIS) ? 0 : 1;

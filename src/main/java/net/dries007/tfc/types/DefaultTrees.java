@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.types;
@@ -12,15 +11,37 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.ITreeGenerator;
-import net.dries007.tfc.api.types.TFCRegistries;
+import net.dries007.tfc.api.registries.TFCRegistryEvent;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.world.classic.worldgen.trees.*;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class DefaultTrees
 {
+    /**
+     * Default tree ResourceLocations
+     */
+    public static final ResourceLocation ACACIA = new ResourceLocation(MOD_ID, "acacia");
+    public static final ResourceLocation ASH = new ResourceLocation(MOD_ID, "ash");
+    public static final ResourceLocation ASPEN = new ResourceLocation(MOD_ID, "aspen");
+    public static final ResourceLocation BIRCH = new ResourceLocation(MOD_ID, "birch");
+    public static final ResourceLocation BLACKWOOD = new ResourceLocation(MOD_ID, "blackwood");
+    public static final ResourceLocation CHESTNUT = new ResourceLocation(MOD_ID, "chestnut");
+    public static final ResourceLocation DOUGLAS_FIR = new ResourceLocation(MOD_ID, "douglas_fir");
+    public static final ResourceLocation HICKORY = new ResourceLocation(MOD_ID, "hickory");
+    public static final ResourceLocation MAPLE = new ResourceLocation(MOD_ID, "maple");
+    public static final ResourceLocation OAK = new ResourceLocation(MOD_ID, "oak");
+    public static final ResourceLocation PALM = new ResourceLocation(MOD_ID, "palm");
+    public static final ResourceLocation PINE = new ResourceLocation(MOD_ID, "pine");
+    public static final ResourceLocation ROSEWOOD = new ResourceLocation(MOD_ID, "rosewood");
+    public static final ResourceLocation SEQUOIA = new ResourceLocation(MOD_ID, "sequoia");
+    public static final ResourceLocation SPRUCE = new ResourceLocation(MOD_ID, "spruce");
+    public static final ResourceLocation SYCAMORE = new ResourceLocation(MOD_ID, "sycamore");
+    public static final ResourceLocation WHITE_CEDAR = new ResourceLocation(MOD_ID, "white_cedar");
+    public static final ResourceLocation WILLOW = new ResourceLocation(MOD_ID, "willow");
+    public static final ResourceLocation KAPOK = new ResourceLocation(MOD_ID, "kapok");
     /**
      * Simple ITreeGenerator instances.
      */
@@ -38,31 +59,8 @@ public class DefaultTrees
      */
     private static final ITreeGenerator GEN_KAPOK_COMPOSITE = new TreeGenComposite().add(0.4f, GEN_TALL).add(0.6f, GEN_KAPOK);
 
-    /**
-     * Default tree ResourceLocations
-     */
-    private static final ResourceLocation ACACIA = new ResourceLocation(MOD_ID, "acacia");
-    private static final ResourceLocation ASH = new ResourceLocation(MOD_ID, "ash");
-    private static final ResourceLocation ASPEN = new ResourceLocation(MOD_ID, "aspen");
-    private static final ResourceLocation BIRCH = new ResourceLocation(MOD_ID, "birch");
-    private static final ResourceLocation BLACKWOOD = new ResourceLocation(MOD_ID, "blackwood");
-    private static final ResourceLocation CHESTNUT = new ResourceLocation(MOD_ID, "chestnut");
-    private static final ResourceLocation DOUGLAS_FIR = new ResourceLocation(MOD_ID, "douglas_fir");
-    private static final ResourceLocation HICKORY = new ResourceLocation(MOD_ID, "hickory");
-    private static final ResourceLocation MAPLE = new ResourceLocation(MOD_ID, "maple");
-    private static final ResourceLocation OAK = new ResourceLocation(MOD_ID, "oak");
-    private static final ResourceLocation PALM = new ResourceLocation(MOD_ID, "palm");
-    private static final ResourceLocation PINE = new ResourceLocation(MOD_ID, "pine");
-    private static final ResourceLocation ROSEWOOD = new ResourceLocation(MOD_ID, "rosewood");
-    private static final ResourceLocation SEQUOIA = new ResourceLocation(MOD_ID, "sequoia");
-    private static final ResourceLocation SPRUCE = new ResourceLocation(MOD_ID, "spruce");
-    private static final ResourceLocation SYCAMORE = new ResourceLocation(MOD_ID, "sycamore");
-    private static final ResourceLocation WHITE_CEDAR = new ResourceLocation(MOD_ID, "white_cedar");
-    private static final ResourceLocation WILLOW = new ResourceLocation(MOD_ID, "willow");
-    private static final ResourceLocation KAPOK = new ResourceLocation(MOD_ID, "kapok");
-
     @SubscribeEvent
-    public static void onPreRegisterRockCategory(TFCRegistries.RegisterPreBlock<Tree> event)
+    public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<Tree> event)
     {
         IForgeRegistry<Tree> r = event.getRegistry();
         r.registerAll(

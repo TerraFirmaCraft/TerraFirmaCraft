@@ -24,8 +24,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
-import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.objects.blocks.BlockPeat;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -98,7 +98,7 @@ public final class Helpers
 
     public static String getEnumName(Enum<?> anEnum)
     {
-        return JOINER_DOT.join(Constants.MOD_ID, "enum", anEnum.getDeclaringClass().getSimpleName(), anEnum).toLowerCase();
+        return JOINER_DOT.join(TFCConstants.MOD_ID, "enum", anEnum.getDeclaringClass().getSimpleName(), anEnum).toLowerCase();
     }
 
     @Nonnull

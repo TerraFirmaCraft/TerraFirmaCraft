@@ -44,7 +44,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
         if (!veins.isEmpty())
         {
             veins.removeIf(v -> {
-                if (!v.oreSpawnData.ore.graded) return true;
+                if (!v.oreSpawnData.ore.isGraded()) return true;
 
                 int minScanY = (WorldTypeTFC.ROCKLAYER2 + WorldTypeTFC.ROCKLAYER3) / 2;
                 int maxScanY = WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos);

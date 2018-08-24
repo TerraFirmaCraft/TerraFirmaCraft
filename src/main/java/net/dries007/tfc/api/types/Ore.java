@@ -5,9 +5,6 @@
 
 package net.dries007.tfc.api.types;
 
-import java.util.Collection;
-import java.util.Collections;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.IStringSerializable;
@@ -21,35 +18,24 @@ import net.dries007.tfc.objects.Metal;
  */
 public class Ore extends IForgeRegistryEntry.Impl<Ore>
 {
-    @Nonnull
-    public static Collection<Ore> values()
-    {
-        return Collections.unmodifiableCollection(TFCRegistries.getOres().getValuesCollection());
-    }
+    private final boolean graded;
+    private final Metal metal;
 
-    @Nullable
-    public static Ore get(String name)
-    {
-        return values().stream().filter(x -> x.name().equals(name)).findFirst().orElse(null);
-    }
-
-    private final ResourceLocation name;
-
-    public final boolean graded;
-    public final Metal metal;
     public Ore(ResourceLocation name, @Nullable Metal metal)
     {
         this.graded = (metal != null);
         this.metal = metal;
-
-        this.name = name;
         setRegistryName(name);
     }
 
-    @Nonnull
-    public String name()
+    public boolean isGraded()
     {
-        return name.getPath();
+        return graded;
+    }
+
+    public Metal getMetal()
+    {
+        return metal;
     }
 
     public enum Grade implements IStringSerializable

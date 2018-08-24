@@ -18,5 +18,6 @@ public enum Powder
     LIMONITE_POWDER,
     MALACHITE_POWDER,
     SALT,
-    FERTILIZER,;
+    FERTILIZER,
+    ;
 }

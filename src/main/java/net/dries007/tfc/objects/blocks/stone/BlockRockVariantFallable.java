@@ -20,7 +20,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.util.IFallingBlock;
 
@@ -69,8 +68,8 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
     @Override
     public BlockPos getFallablePos(World world, BlockPos pos)
     {
-        for (EnumFacing f : EnumFacing.HORIZONTALS)
-            TerraFirmaCraft.getLog().info("Can it fall: " + f + "? " + shouldFall(world, pos.offset(f)));
+//        for (EnumFacing f : EnumFacing.HORIZONTALS)
+//            TerraFirmaCraft.getLog().info("Can it fall: " + f + "? " + shouldFall(world, pos.offset(f)));
         if (type.canFall() && shouldFall(world, pos))
             return pos;
         if (type.canFallHorizontal())
@@ -81,7 +80,7 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
                 .toArray(EnumFacing[]::new);
             if (faces.length >= 2)
             {
-                TerraFirmaCraft.getLog().info("Defeated by the supported blocks");
+//                TerraFirmaCraft.getLog().info("Defeated by the supported blocks");
                 return null;
             }
 

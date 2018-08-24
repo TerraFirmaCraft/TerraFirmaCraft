@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import net.dries007.tfc.TerraFirmaCraft;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class EntitiesTFC
 {

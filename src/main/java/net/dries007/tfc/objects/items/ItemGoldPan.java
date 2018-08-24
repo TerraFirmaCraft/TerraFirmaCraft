@@ -29,7 +29,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.util.Size;
 import net.dries007.tfc.api.util.Weight;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault

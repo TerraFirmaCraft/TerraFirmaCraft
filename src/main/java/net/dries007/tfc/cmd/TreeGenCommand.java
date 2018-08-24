@@ -13,12 +13,14 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Tree;
 
 @MethodsReturnNonnullByDefault
@@ -45,7 +47,7 @@ public class TreeGenCommand extends CommandBase
         if (args.length != 1)
             throw new WrongUsageException("1 argument required.");
 
-        Tree tree = Tree.get(args[0]);
+        Tree tree = TFCRegistries.TREES.getValue(new ResourceLocation(args[0]));
         if (tree == null) throw new WrongUsageException("Tree type " + args[0] + " not found");
 
         if (sender.getCommandSenderEntity() == null) return;
@@ -55,6 +57,5 @@ public class TreeGenCommand extends CommandBase
         final TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
 
         tree.makeTreeWithoutChecking(manager, world, center, random);
-
     }
 }
