@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.te;
@@ -25,7 +24,7 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.items.metal.ItemIngot;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault

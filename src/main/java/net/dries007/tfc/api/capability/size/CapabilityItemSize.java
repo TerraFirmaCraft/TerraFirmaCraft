@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.api.capability.size;
@@ -27,7 +26,7 @@ import net.dries007.tfc.Constants;
 public class CapabilityItemSize
 {
     private static final CapabilityItemSize INSTANCE = new CapabilityItemSize();
-    private static final ResourceLocation ID = new ResourceLocation(Constants.MOD_ID, "item_size");
+    private static final ResourceLocation ID = new ResourceLocation(TFCConstants.MOD_ID, "item_size");
 
     @CapabilityInject(IItemSize.class)
     public static Capability<IItemSize> ITEM_SIZE_CAPABILITY = null;

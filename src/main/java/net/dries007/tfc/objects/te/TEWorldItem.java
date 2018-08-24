@@ -23,7 +23,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

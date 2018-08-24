@@ -12,8 +12,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import static net.dries007.tfc.Constants.MOD_ID;
-import static net.dries007.tfc.Constants.MOD_NAME;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_NAME;
 
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = MOD_ID)

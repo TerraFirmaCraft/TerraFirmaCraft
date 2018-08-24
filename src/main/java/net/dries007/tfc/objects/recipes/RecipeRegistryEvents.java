@@ -13,7 +13,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.objects.MetalType;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class RecipeRegistryEvents

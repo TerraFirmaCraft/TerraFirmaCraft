@@ -35,13 +35,6 @@ public class WorldGenTrees implements IWorldGenerator
 
     private static final ITreeGenerator GEN_BUSHES = new TreeGenBushes();
 
-    private Tree getTree(List<Tree> trees, float density, Random random)
-    {
-        if (trees.size() == 1 || random.nextFloat() < 0.8f - density * 0.4f)
-            return trees.get(0);
-        return trees.get(1 + random.nextInt(trees.size() - 1));
-    }
-
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
@@ -53,7 +46,8 @@ public class WorldGenTrees implements IWorldGenerator
 
         final Biome b = world.getBiome(chunkBlockPos);
         //noinspection ConstantConditions
-        if(!(b instanceof BiomeTFC) || b == BiomesTFC.OCEAN || b == BiomesTFC.DEEP_OCEAN || b == BiomesTFC.LAKE || b == BiomesTFC.RIVER) return;
+        if (!(b instanceof BiomeTFC) || b == BiomesTFC.OCEAN || b == BiomesTFC.DEEP_OCEAN || b == BiomesTFC.LAKE || b == BiomesTFC.RIVER)
+            return;
 
         final TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
         final float diversity = chunkData.getFloraDiversity();
@@ -94,13 +88,13 @@ public class WorldGenTrees implements IWorldGenerator
         {
             final int x = chunkX * 16 + random.nextInt(16) + 8;
             final int z = chunkZ * 16 + random.nextInt(16) + 8;
-            final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x,0,z));
+            final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
             final Tree tree = getTree(trees, density, random);
 
             tree.makeTree(manager, world, pos, random);
         }
 
-        trees.removeIf(t -> !t.hasBushes);
+        trees.removeIf(t -> !t.isHasBushes());
         // Small bushes in high density areas
         if (density > 0.6f && !trees.isEmpty()) // Density requirement is the same for jungles (kapok trees) to generate
         {
@@ -115,6 +109,13 @@ public class WorldGenTrees implements IWorldGenerator
                     GEN_BUSHES.generateTree(manager, world, pos, tree, random);
             }
         }
+    }
+
+    private Tree getTree(List<Tree> trees, float density, Random random)
+    {
+        if (trees.size() == 1 || random.nextFloat() < 0.8f - density * 0.4f)
+            return trees.get(0);
+        return trees.get(1 + random.nextInt(trees.size() - 1));
     }
 
     private void generateLooseSticks(Random rand, int chunkX, int chunkZ, World world, int amount)

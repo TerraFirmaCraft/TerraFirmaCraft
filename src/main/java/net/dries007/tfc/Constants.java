@@ -7,14 +7,18 @@ package net.dries007.tfc;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.minecraft.util.ResourceLocation;
+
+import net.dries007.tfc.util.json.ResourceLocationJson;
 
 public final class Constants
 {
-    public static final String MOD_ID = "tfc";
-    public static final String MOD_NAME = "TerraFirmaCraft";
+    public static final Gson GSON = new GsonBuilder().disableHtmlEscaping()
+        .registerTypeAdapter(ResourceLocation.class, new ResourceLocationJson())
+        .create();
+    public static final Gson GSON_PP = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting()
+        .registerTypeAdapter(ResourceLocation.class, new ResourceLocationJson())
+        .create();
+
     public static final String GUI_FACTORY = "net.dries007.tfc.client.TFCModGuiFactory";
-    public static final String SIGNING_KEY = "ee4505933cd28f4b09a0bc91007935f61e7d786e";
-    public static final String TREEPATH = "/assets/tfc/schematics/trees/";
-    public static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
-    public static final Gson GSON_PP = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 }
