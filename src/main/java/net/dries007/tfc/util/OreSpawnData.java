@@ -95,19 +95,7 @@ public class OreSpawnData
             Ore ore = TFCRegistries.ORES.getValue(json.ore);
             if (ore == null)
             {
-                TerraFirmaCraft.getLog().warn("Problem parsing ore entry '" + name + "'. Ore is not defined. Skipping.");
-                return null;
-            }
-            SpawnSize size;
-            SpawnType shape;
-            try
-            {
-                size = SpawnSize.valueOf(json.size.toUpperCase());
-                shape = SpawnType.valueOf(json.shape.toUpperCase());
-            }
-            catch (IllegalArgumentException e)
-            {
-                TerraFirmaCraft.getLog().warn("Problem parsing ore entry '" + name + "'. Size / shape is not defined. Skipping.", e);
+                TerraFirmaCraft.getLog().warn("Problem parsing ore entry '{}'. Ore '{}' is not defined. Skipping.", name, json.ore);
                 return null;
             }
             List<Rock> blocks = new ArrayList<>();
@@ -118,7 +106,7 @@ public class OreSpawnData
                 {
                     RockCategory category = TFCRegistries.ROCK_CATEGORIES.getValue(s);
                     if (category == null)
-                        TerraFirmaCraft.getLog().warn("Problem parsing ore entry '" + name + "'. Rock / Rock Category '" + s + "' is not defined. Skipping.");
+                        TerraFirmaCraft.getLog().warn("Problem parsing ore entry '{}'. Rock / Rock Category '{}' is not defined. Skipping.", name, s);
                     else
                         blocks.addAll(category.getRocks());
                 }
@@ -128,7 +116,7 @@ public class OreSpawnData
                 }
             });
             totalWeight += 1.0D / (double) json.rarity;
-            return new OreEntry(ore, size, shape, blocks, json.rarity, json.minY, json.maxY, json.density);
+            return new OreEntry(ore, json.size, json.shape, blocks, json.rarity, json.minY, json.maxY, json.density);
         }).filter(Objects::nonNull).collect(Collectors.toList()));
     }
 
@@ -208,10 +196,9 @@ public class OreSpawnData
     @SuppressWarnings("unused")
     private final class OreJson
     {
-        // todo: replace with the actual enums, GSON can handle it fine IIRC
         private ResourceLocation ore;
-        private String size;
-        private String shape;
+        private SpawnSize size;
+        private SpawnType shape;
 
         private int rarity;
         private int density;

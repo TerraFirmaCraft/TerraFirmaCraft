@@ -6,14 +6,17 @@
 package net.dries007.tfc.api.types;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.registries.TFCRegistries;
 
 /**
@@ -28,6 +31,8 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
     private final boolean layer1;
     private final boolean layer2;
     private final boolean layer3;
+
+    private Collection<Rock> rocks;
 
     /**
      * A rock category.
@@ -56,8 +61,13 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
 
     public Collection<? extends Rock> getRocks()
     {
-        // todo: Change to cached list/collection and make sure we are past the point of registering new rocks.
-        return TFCRegistries.ROCKS.getValuesCollection().stream().filter(e -> e.getRockCategory() == this).collect(Collectors.toList());
+        if (rocks == null)
+        {
+            if (!TerraFirmaCraft.pastState(LoaderState.ModState.PREINITIALIZED))
+                throw new IllegalStateException("You can't call this before preinit is done!");
+            rocks = Collections.unmodifiableList(TFCRegistries.ROCKS.getValuesCollection().stream().filter(e -> e.getRockCategory() == this).collect(Collectors.toList()));
+        }
+        return rocks;
     }
 
     public float getCaveGenMod()
@@ -103,9 +113,12 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
 
         public Rock[] getRocks()
         {
-            // todo: make sure we are past the point of registering new rocks, since this doesn't update!
             if (rocks == null)
+            {
+                if (!TerraFirmaCraft.pastState(LoaderState.ModState.PREINITIALIZED))
+                    throw new IllegalStateException("You can't call this before preinit is done!");
                 rocks = TFCRegistries.ROCKS.getValuesCollection().stream().filter(filter).toArray(Rock[]::new);
+            }
             return rocks;
         }
     }
