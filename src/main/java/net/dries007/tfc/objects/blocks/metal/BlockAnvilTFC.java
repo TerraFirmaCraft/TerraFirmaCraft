@@ -80,6 +80,7 @@ public class BlockAnvilTFC extends Block
         return this.getDefaultState().withProperty(AXIS, meta == 0);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(AXIS) ? 0 : 1;

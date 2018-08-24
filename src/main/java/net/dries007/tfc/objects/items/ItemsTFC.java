@@ -18,11 +18,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import net.dries007.tfc.api.capability.size.Size;
-import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.api.types.*;
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.api.util.Size;
+import net.dries007.tfc.api.util.Weight;
 import net.dries007.tfc.objects.Gem;
-import net.dries007.tfc.objects.MetalType;
+import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.Powder;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -37,7 +41,7 @@ import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 import net.dries007.tfc.objects.items.wood.ItemLogTFC;
 import net.dries007.tfc.objects.items.wood.ItemLumberTFC;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.CreativeTabsTFC.*;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -88,21 +92,21 @@ public final class ItemsTFC
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
 
         {
-            for (Rock rock : Rock.values())
-                simpleItems.add(register(r, "rock/" + rock.name(), new ItemRock(rock), CT_ROCK_ITEMS));
-            for (Rock rock : Rock.values())
-                simpleItems.add(register(r, "brick/" + rock.name(), new ItemBrickTFC(rock), CT_ROCK_ITEMS));
+            for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
+                simpleItems.add(register(r, "rock/" + rock.getRegistryName().getPath().toLowerCase(), new ItemRock(rock), CT_ROCK_ITEMS));
+            for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
+                simpleItems.add(register(r, "brick/" + rock.getRegistryName().getPath().toLowerCase(), new ItemBrickTFC(rock), CT_ROCK_ITEMS));
         }
 
         {
             Builder<ItemOreTFC> b = new Builder<>();
-            for (Ore ore : Ore.values())
-            {
-                b.add(register(r, "ore/" + ore.name(), new ItemOreTFC(ore), CT_ROCK_ITEMS));
-                if (ore.graded)
-                    simpleItems.add(register(r, "ore/small/" + ore.name(), new ItemSmallOre(ore), CT_ROCK_ITEMS));
-            }
+            for (Ore ore : TFCRegistries.ORES.getValuesCollection())
+                b.add(register(r, "ore/" + ore.getRegistryName().getPath(), new ItemOreTFC(ore), CT_ROCK_ITEMS));
             allOreItems = b.build();
+
+            for (Ore ore : TFCRegistries.ORES.getValuesCollection())
+                if (ore.isGraded())
+                    simpleItems.add(register(r, "ore/small/" + ore.getRegistryName().getPath(), new ItemSmallOre(ore), CT_ROCK_ITEMS));
         }
 
         {
@@ -112,10 +116,14 @@ public final class ItemsTFC
             allGemItems = b.build();
         }
 
-        for (MetalType type : MetalType.values())
+        for (Metal.ItemType type : Metal.ItemType.values())
+        {
             for (Metal metal : Metal.values())
-                if (type.hasType(metal))
-                    simpleItems.add(register(r, ("metal/" + type.name() + "/" + metal.name()).toLowerCase(), MetalType.create(metal, type), CT_METAL));
+            {
+                if (!metal.hasType(type) || type.supplier == null) continue;
+                simpleItems.add(register(r, ("metal/" + type + "/" + metal).toLowerCase(), type.supplier.apply(metal, type), CT_METAL));
+            }
+        }
 
         BlocksTFC.getAllNormalItemBlocks().forEach((x, y) -> registerItemBlock(r, x, y));
         BlocksTFC.getAllInventoryItemBlocks().forEach((x, y) -> registerItemBlock(r, x, y));
@@ -129,25 +137,24 @@ public final class ItemsTFC
         for (BlockSlabTFC.Half slab : BlocksTFC.getAllSlabBlocks())
             simpleItems.add(register(r, slab.getRegistryName().getPath(), new ItemSlabTFC(slab, slab, slab.doubleSlab), CT_DECORATIONS));
 
-        for (Tree wood : Tree.values())
-            simpleItems.add(register(r, "wood/lumber/" + wood.name(), new ItemLumberTFC(wood), CT_WOOD));
+        for (Tree wood : TFCRegistries.TREES.getValuesCollection())
+            simpleItems.add(register(r, "wood/lumber/" + wood.getRegistryName().getPath(), new ItemLumberTFC(wood), CT_WOOD));
 
-        for (RockCategory cat : RockCategory.values())
+        for (RockCategory cat : TFCRegistries.ROCK_CATEGORIES.getValuesCollection())
         {
-            simpleItems.add(register(r, "stone/axe/" + cat.name(), new ItemRockAxe(cat), CT_ROCK_ITEMS));
-            simpleItems.add(register(r, "stone/shovel/" + cat.name(), new ItemRockShovel(cat), CT_ROCK_ITEMS));
-            simpleItems.add(register(r, "stone/hoe/" + cat.name(), new ItemRockHoe(cat), CT_ROCK_ITEMS));
-            simpleItems.add(register(r, "stone/knife/" + cat.name(), new ItemRockKnife(cat), CT_ROCK_ITEMS));
-            simpleItems.add(register(r, "stone/javelin/" + cat.name(), new ItemRockJavelin(cat), CT_ROCK_ITEMS));
-            simpleItems.add(register(r, "stone/hammer/" + cat.name(), new ItemRockHammer(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/axe/" + cat.getRegistryName().getPath(), new ItemRockAxe(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/shovel/" + cat.getRegistryName().getPath(), new ItemRockShovel(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/hoe/" + cat.getRegistryName().getPath(), new ItemRockHoe(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/knife/" + cat.getRegistryName().getPath(), new ItemRockKnife(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/javelin/" + cat.getRegistryName().getPath(), new ItemRockJavelin(cat), CT_ROCK_ITEMS));
+            simpleItems.add(register(r, "stone/hammer/" + cat.getRegistryName().getPath(), new ItemRockHammer(cat), CT_ROCK_ITEMS));
         }
 
         for (Powder powder : Powder.values())
             simpleItems.add(register(r, "powder/" + powder.name().toLowerCase(), new ItemPowder(powder), CT_MISC));
 
-        {
-            // POTTERY
-            for (MetalType type : MetalType.values())
+        { // POTTERY
+            for (Metal.ItemType type : Metal.ItemType.values())
             {
                 if (type.hasMold)
                 {
@@ -172,8 +179,8 @@ public final class ItemsTFC
         }
 
         // FLAT
-        for (Rock rock : Rock.values())
-            r.register(new ItemFlat(rock).setRegistryName(MOD_ID, "flat/" + rock.name()));
+        for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
+            r.register(new ItemFlat(rock).setRegistryName(MOD_ID, "flat/" + rock.getRegistryName().getPath().toLowerCase()));
         r.register(new ItemFlat().setRegistryName(MOD_ID, "flat/leather"));
         r.register(new ItemFlat().setRegistryName(MOD_ID, "flat/clay"));
         r.register(new ItemFlat().setRegistryName(MOD_ID, "flat/fire_clay"));

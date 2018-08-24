@@ -56,7 +56,7 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable, ITileEntity
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
         OreDictionaryHelper.register(this, "tree", "sapling");
-        OreDictionaryHelper.register(this, "tree", "sapling", wood.name());
+        OreDictionaryHelper.register(this, "tree", "sapling", wood.getRegistryName().getPath());
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
@@ -75,16 +75,16 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable, ITileEntity
     }
 
     @Override
-    public int damageDropped(IBlockState state)
-    {
-        return 0; // explicit override on default, because saplings should be reset when they are broken.
-    }
-
-    @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         TESaplingTFC te = Helpers.getTE(worldIn, pos, TESaplingTFC.class);
         if (te != null) te.onPlaced();
+    }
+
+    @Override
+    public int damageDropped(IBlockState state)
+    {
+        return 0; // explicit override on default, because saplings should be reset when they are broken.
     }
 
     @Override
@@ -105,7 +105,7 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable, ITileEntity
             if (te != null)
             {
                 long hours = te.getHoursSincePlaced();
-                if (hours > wood.minGrowthTime * CalenderTFC.HOURS_IN_DAY)
+                if (hours > wood.getMinGrowthTime() * CalenderTFC.HOURS_IN_DAY)
                 {
                     grow(world, random, pos, state);
                 }
@@ -120,6 +120,14 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable, ITileEntity
         }
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    @Nonnull
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return SAPLING_AABB;
+    }
+
     @Override
     public boolean canGrow(World world, BlockPos blockPos, IBlockState iBlockState, boolean b)
     {
@@ -131,13 +139,6 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable, ITileEntity
     {
         TerraFirmaCraft.getLog().info("canUseBoneMeal called");
         return true;
-    }
-
-    @Override
-    @Nonnull
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return SAPLING_AABB;
     }
 
     @Override

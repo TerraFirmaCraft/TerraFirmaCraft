@@ -45,7 +45,7 @@ import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.minecraft.util.text.TextFormatting.*;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)
@@ -113,7 +113,7 @@ public class ClientEvents
                     list.add(GRAY + "Flora Diversity: " + WHITE + data.getFloraDiversity());
 
                     list.add(GRAY + "Valid Trees: ");
-                    data.getValidTrees().forEach(t -> list.add(String.format("%s %s (%.1f)", WHITE, t.name(), t.dominance)));
+                    data.getValidTrees().forEach(t -> list.add(String.format("%s %s (%.1f)", WHITE, t.getRegistryName(), t.getDominance())));
 
                     //list.add(GRAY + "Rocks: " + WHITE + data.getRockLayer1(x, z).name + ", " + data.getRockLayer2(x, z).name + ", " + data.getRockLayer3(x, z).name);
                     //list.add(GRAY + "Stability: " + WHITE + data.getStabilityLayer(x, z).name);

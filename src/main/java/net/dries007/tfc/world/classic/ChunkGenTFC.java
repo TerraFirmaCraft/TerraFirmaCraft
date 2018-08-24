@@ -29,9 +29,11 @@ import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.layer.IntCache;
+import net.minecraftforge.registries.ForgeRegistry;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.objects.RockType;
@@ -524,9 +526,9 @@ public class ChunkGenTFC implements IChunkGenerator
             {
                 int colIndex = z << 4 | x;
                 Biome biome = getBiomeOffset(x, z);
-                Rock rock1 = Rock.get(rockLayer1[colIndex]);
-                Rock rock2 = Rock.get(rockLayer2[colIndex]);
-                Rock rock3 = Rock.get(rockLayer3[colIndex]);
+                Rock rock1 = ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer1[colIndex]);
+                Rock rock2 = ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer2[colIndex]);
+                Rock rock3 = ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer3[colIndex]);
                 DataLayer drainage = drainageLayer[colIndex];
                 DataLayer stability = stabilityLayer[colIndex];
                 int noise = (int) (noise4[colIndex] / 3.0D + 6.0D);

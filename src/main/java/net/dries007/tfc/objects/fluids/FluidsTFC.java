@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import net.dries007.tfc.api.types.Metal;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @SuppressWarnings("WeakerAccess")
 public class FluidsTFC

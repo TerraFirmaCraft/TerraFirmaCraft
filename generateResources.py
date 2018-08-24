@@ -775,7 +775,7 @@ for ore_type in ORE_TYPES:
             item(('ore', grade, ore_type), 'tfc:items/ore/%s/%s' % (grade, ore_type))
     item(('ore', 'normal', ore_type), 'tfc:items/ore/%s' % ore_type)
 
-# ROCKS
+# ROCK_CATEGORIES
 for rock_type in ROCK_TYPES:
     for item_type in ['rock', 'brick']:
         item((item_type, rock_type), 'tfc:items/stonetypes/%s/%s' % (item_type, rock_type))

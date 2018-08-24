@@ -6,37 +6,24 @@
 package net.dries007.tfc.api.types;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import net.dries007.tfc.api.registries.TFCRegistries;
 
 /**
  * todo: document API
  */
 public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
 {
-    @Nonnull
-    public static Collection<RockCategory> values()
-    {
-        return Collections.unmodifiableCollection(TFCRegistries.getRockCategories().getValuesCollection());
-    }
+    private final float caveGenMod;
+    private final float caveFreqMod;
 
-    @Nullable
-    public static RockCategory get(String name)
-    {
-        return values().stream().filter(x -> x.name().equals(name)).findFirst().orElse(null);
-    }
-
-    public final float caveGenMod;
-    public final float caveFreqMod;
-
-    private final ResourceLocation name;
     private final Item.ToolMaterial toolMaterial;
     private final boolean layer1;
     private final boolean layer2;
@@ -53,7 +40,6 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
     public RockCategory(@Nonnull ResourceLocation name, @Nonnull Item.ToolMaterial toolMaterial, boolean layer1, boolean layer2, boolean layer3, float caveGenMod, float caveFreqMod)
     {
         setRegistryName(name);
-        this.name = name;
         this.toolMaterial = toolMaterial;
         this.caveGenMod = caveGenMod;
         this.caveFreqMod = caveFreqMod;
@@ -62,36 +48,48 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
         this.layer3 = layer3;
     }
 
-    public String name()
-    {
-        return name.getPath();
-    }
-
     @Nonnull
     public Item.ToolMaterial getToolMaterial()
     {
         return toolMaterial;
     }
 
-    public Collection<Rock> getRocks()
+    public Collection<? extends Rock> getRocks()
     {
-        return Rock.values().stream().filter(x -> x.getRockCategory() == this).collect(Collectors.toList());
+        // todo: Change to cached list/collection and make sure we are past the point of registering new rocks.
+        return TFCRegistries.ROCKS.getValuesCollection().stream().filter(e -> e.getRockCategory() == this).collect(Collectors.toList());
+    }
+
+    public float getCaveGenMod()
+    {
+        return caveGenMod;
+    }
+
+    public float getCaveFreqMod()
+    {
+        return caveFreqMod;
+    }
+
+    public boolean isLayer1()
+    {
+        return layer1;
+    }
+
+    public boolean isLayer2()
+    {
+        return layer2;
+    }
+
+    public boolean isLayer3()
+    {
+        return layer3;
     }
 
     public enum Layer
     {
-        BOTTOM(3, x -> x.getRockCategory().layer3),
-        MIDDLE(2, x -> x.getRockCategory().layer2),
-        TOP(1, x -> x.getRockCategory().layer1);
-
-        private static boolean isInitialized = false;
-
-        public static void createLayers()
-        {
-            isInitialized = true;
-            for (Layer layer : Layer.values())
-                layer.rocks = Rock.values().stream().filter(layer.filter).toArray(Rock[]::new);
-        }
+        BOTTOM(3, x -> x.getRockCategory().isLayer3()),
+        MIDDLE(2, x -> x.getRockCategory().isLayer2()),
+        TOP(1, x -> x.getRockCategory().isLayer1());
 
         public final int layer;
         private final Predicate<? super Rock> filter;
@@ -105,8 +103,9 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
 
         public Rock[] getRocks()
         {
-            if (!isInitialized)
-                createLayers();
+            // todo: make sure we are past the point of registering new rocks, since this doesn't update!
+            if (rocks == null)
+                rocks = TFCRegistries.ROCKS.getValuesCollection().stream().filter(filter).toArray(Rock[]::new);
             return rocks;
         }
     }

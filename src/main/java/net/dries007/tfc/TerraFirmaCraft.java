@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
+import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.client.ClientEvents;
@@ -35,10 +36,8 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkCapabilityHandler;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataMessage;
 import net.dries007.tfc.world.classic.worldgen.*;
 
-import static net.dries007.tfc.Constants.*;
-
 @SuppressWarnings("DefaultAnnotationParam")
-@Mod(modid = MOD_ID, name = MOD_NAME, useMetadata = true, guiFactory = GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = SIGNING_KEY)
+@Mod(modid = TFCConstants.MOD_ID, name = TFCConstants.MOD_NAME, useMetadata = true, guiFactory = Constants.GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = TFCConstants.SIGNING_KEY)
 @Mod.EventBusSubscriber()
 public class TerraFirmaCraft
 {
@@ -93,7 +92,7 @@ public class TerraFirmaCraft
 
         // No need to sync config here, forge magic
 
-        network = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
+        network = NetworkRegistry.INSTANCE.newSimpleChannel(TFCConstants.MOD_ID);
         int id = 0;
         network.registerMessage(ChunkDataMessage.Handler.class, ChunkDataMessage.class, ++id, Side.CLIENT);
         ChunkCapabilityHandler.preInit();
@@ -171,7 +170,7 @@ public class TerraFirmaCraft
             @Override
             public String getLabel()
             {
-                return Constants.MOD_NAME;
+                return TFCConstants.MOD_NAME;
             }
 
             @Override

@@ -51,7 +51,7 @@ public class ItemSmallOre extends ItemTFC implements IMetalObject
     @Override
     public Metal getMetal(ItemStack stack)
     {
-        return ore.metal;
+        return ore.getMetal();
     }
 
     @Override
