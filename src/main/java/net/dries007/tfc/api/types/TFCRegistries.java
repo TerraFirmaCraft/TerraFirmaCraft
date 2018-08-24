@@ -27,13 +27,14 @@ import static net.dries007.tfc.api.types.TFCRegistries.MOD_ID;
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class TFCRegistries
 {
-    static final String MOD_ID = "tfc"; // This is here to avoid a import statement.
+    public static final String MOD_ID = "tfc"; // This is here to avoid a import statement.
 
     private static final ResourceLocation ROCK_TYPE = new ResourceLocation(MOD_ID, "rock_type");
     private static final ResourceLocation METAL = new ResourceLocation(MOD_ID, "metal");
     private static final ResourceLocation ROCK = new ResourceLocation(MOD_ID, "rock");
     private static final ResourceLocation ORE = new ResourceLocation(MOD_ID, "ore");
     private static final ResourceLocation TREE = new ResourceLocation(MOD_ID, "tree");
+    private static final ResourceLocation ALLOY = new ResourceLocation(MOD_ID, "alloy");
 
     private static final Map<ResourceLocation, IForgeRegistry<?>> preBlockRegistries = new LinkedHashMap<>();
 
@@ -42,6 +43,7 @@ public class TFCRegistries
     private static IForgeRegistry<Ore> oreRegistry;
     private static IForgeRegistry<Tree> treeRegistry;
     private static IForgeRegistry<Metal> metalRegistry;
+    private static IForgeRegistry<AlloyRecipe> alloyRegistry;
 
     @SubscribeEvent
     public static void onNewRegistryEvent(RegistryEvent.NewRegistry event)
@@ -51,6 +53,8 @@ public class TFCRegistries
         rockRegistry = newRegistry(ROCK, Rock.class, true);
         oreRegistry = newRegistry(ORE, Ore.class, true);
         treeRegistry = newRegistry(TREE, Tree.class, true);
+
+        alloyRegistry = newRegistry(ALLOY, AlloyRecipe.class, false);
     }
 
     /**
@@ -89,6 +93,8 @@ public class TFCRegistries
     }
 
     static IForgeRegistry<Metal> getMetals() { return metalRegistry; }
+
+    static IForgeRegistry<AlloyRecipe> getAlloys() { return alloyRegistry; }
 
     private static <T extends IForgeRegistryEntry<T>> IForgeRegistry<T> newRegistry(ResourceLocation name, Class<T> tClass, boolean isPreBlockRegistry)
     {

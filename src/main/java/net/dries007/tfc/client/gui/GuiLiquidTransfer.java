@@ -7,7 +7,7 @@
 package net.dries007.tfc.client.gui;
 
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -17,22 +17,24 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.api.capability.ISmallVesselHandler;
+import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.util.Helpers;
 
 @SideOnly(Side.CLIENT)
-public class GuiSmallVesselLiquid extends GuiContainerTFC
+public class GuiLiquidTransfer extends GuiContainerTFC
 {
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/small_vessel_liquid.png");
     private final int slotIdx;
 
-    public GuiSmallVesselLiquid(Container container, InventoryPlayer playerInv)
+    public GuiLiquidTransfer(Container container, EntityPlayer player, String translationKey, boolean offhand)
     {
-        super(container, playerInv, BG_TEXTURE, "");
+        super(container, player.inventory, BG_TEXTURE, translationKey);
 
-        slotIdx = playerInv.currentItem;
-        // todo: handle offhand usage?
+        if (offhand)
+            slotIdx = 40;
+        else
+            slotIdx = playerInv.currentItem;
     }
 
     @Override
@@ -40,13 +42,13 @@ public class GuiSmallVesselLiquid extends GuiContainerTFC
     {
         ItemStack stack = playerInv.getStackInSlot(slotIdx);
         IFluidHandler cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-        if (cap instanceof ISmallVesselHandler)
+        if (cap instanceof IMoldHandler)
         {
-            Metal metal = ((ISmallVesselHandler) cap).getMetal();
+            Metal metal = ((IMoldHandler) cap).getMetal();
             if (metal != null)
             {
                 String metalName = I18n.format(Helpers.getTypeName(metal));
-                String amountName = I18n.format("tfc.tooltip.units", ((ISmallVesselHandler) cap).getAmount());
+                String amountName = I18n.format("tfc.tooltip.units", ((IMoldHandler) cap).getAmount());
                 fontRenderer.drawString(metalName, xSize / 2 - fontRenderer.getStringWidth(metalName) / 2, 14, 0x404040);
                 fontRenderer.drawString(amountName, xSize / 2 - fontRenderer.getStringWidth(amountName) / 2, 23, 0x404040);
             }

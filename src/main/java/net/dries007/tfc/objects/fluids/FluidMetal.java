@@ -14,6 +14,7 @@ import net.dries007.tfc.objects.MetalType;
 
 public class FluidMetal extends Fluid
 {
+
     private final Metal metal;
 
     public FluidMetal(Metal metal, String fluidName, ResourceLocation still, ResourceLocation flowing, int color)
@@ -28,7 +29,6 @@ public class FluidMetal extends Fluid
         if (type == MetalType.INGOT || type == MetalType.UNSHAPED)
             return true;
         return type.hasMold && metal.isToolMetal() && (metal.tier == Metal.Tier.TIER_I || metal.tier == Metal.Tier.TIER_II);
-
     }
 
     public Metal getMetal()

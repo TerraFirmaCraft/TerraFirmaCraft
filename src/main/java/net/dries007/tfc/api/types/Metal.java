@@ -33,37 +33,37 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     }
 
     public final Tier tier;
-    public final double specificHeat;
+    public final float specificHeat;
     public final int meltTemp;
-    public final Item.ToolMaterial toolMetal;
     public final boolean usable;
     public final int color;
 
+    private final Item.ToolMaterial toolMetal;
     private final ResourceLocation name;
 
-    public Metal(ResourceLocation name, Tier tier, double sh, int melt, int color)
-    {
-        this(name, tier, true, sh, melt, color, null);
-    }
-
-    public Metal(ResourceLocation name, Tier tier, double sh, int melt, int color, Item.ToolMaterial toolMetal)
-    {
-        this(name, tier, true, sh, melt, color, toolMetal);
-    }
-
-    public Metal(ResourceLocation name, Tier tier, boolean usable, double sh, int melt, int color)
-    {
-        this(name, tier, usable, sh, melt, color, null);
-    }
-
-    public Metal(ResourceLocation name, Tier tier, boolean usable, double sh, int melt, int color, Item.ToolMaterial toolMetal)
+    /**
+     * This is a registry object that will create a number of things.
+     *
+     * Use the provided Builder to create your own metals
+     *
+     * @param name        the registry name of the object. The path must also be unique
+     * @param tier        the tier of the metal
+     * @param usable      is the metal usable to create basic metal items? (not tools)
+     * @param sh          specific heat capacity. Higher = harder to heat up / cool down. Most IRL metals are between 0.3 - 0.7
+     * @param melt        melting point. See @link Heat for temperature scale. Similar to IRL melting point in celcius.
+     * @param color       color of the metal when in fluid form. Used to autogenerate a fluid texture
+     * @param toolMetal   The tool material. Null if metal is not able to create tools
+     * @param alloyRecipe The alloy recipe. Null if the metal is not an alloy
+     */
+    public Metal(@Nonnull ResourceLocation name, Tier tier, boolean usable, float sh, int melt, int color, @Nullable Item.ToolMaterial toolMetal)
     {
         this.usable = usable;
         this.tier = tier;
         this.specificHeat = sh;
         this.meltTemp = melt;
-        this.toolMetal = toolMetal;
         this.color = color;
+
+        this.toolMetal = toolMetal;
 
         this.name = name;
         setRegistryName(name);

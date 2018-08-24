@@ -29,7 +29,6 @@ public abstract class ContainerItemStack extends Container
     ContainerItemStack(InventoryPlayer playerInv, ItemStack stack)
     {
         super();
-        TerraFirmaCraft.getLog().info("Slot opened from " + playerInv.currentItem);
         this.player = playerInv.player;
         this.stack = stack;
 
