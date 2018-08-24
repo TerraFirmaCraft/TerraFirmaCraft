@@ -10,11 +10,11 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.objects.te.TESidedInventory;
 
-public class ItemStackHandlerTFC extends ItemStackHandler
+public class ItemStackHandlerTE extends ItemStackHandler
 {
     private final TESidedInventory tile;
 
-    public ItemStackHandlerTFC(TESidedInventory tile, int size)
+    public ItemStackHandlerTE(TESidedInventory tile, int size)
     {
         super(size);
 

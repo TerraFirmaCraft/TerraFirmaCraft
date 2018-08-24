@@ -24,13 +24,13 @@ public class TestCommand extends CommandBase
     @Override
     public String getName()
     {
-        return "test";
+        return "heat";
     }
 
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "test command";
+        return "/heat <amount> -> sets the itemheat to amount";
     }
 
     @Override
@@ -49,6 +49,7 @@ public class TestCommand extends CommandBase
                 throw new WrongUsageException("The held item in mainhand does not have the item heat capability");
             h.setTemperature((float) heat);
             NBTTagCompound nbt = s.getTagCompound();
+            s.setTagCompound(h.serializeNBT());
         }
         else
         {

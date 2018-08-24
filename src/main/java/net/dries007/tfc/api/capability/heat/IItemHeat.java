@@ -12,20 +12,23 @@ import java.util.List;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.util.Helpers;
 
-public interface IItemHeat extends ICapabilitySerializable<NBTTagCompound>
+public interface IItemHeat extends INBTSerializable<NBTTagCompound>
 {
 
     float getTemperature();
 
     void setTemperature(float temperature);
 
-    void updateTemperature(float enviromentTemperature, float weight);
+    default void updateTemperature(float enviromentTemperature, long ticksSinceLastUpdate)
+    {
+        setTemperature(CapabilityItemHeat.getTempChange(getTemperature(), enviromentTemperature, ticksSinceLastUpdate));
+    }
 
     @SideOnly(Side.CLIENT)
     default void addHeatInfo(ItemStack stack, List<String> text)

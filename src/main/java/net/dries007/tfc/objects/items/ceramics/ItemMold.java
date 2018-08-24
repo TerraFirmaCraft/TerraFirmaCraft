@@ -6,12 +6,14 @@
 package net.dries007.tfc.objects.items.ceramics;
 
 import java.util.EnumMap;
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +21,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.Capability;
@@ -34,10 +37,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.IMoldHandler;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.fluids.FluidMetal;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.classic.CalenderTFC;
 
 public class ItemMold extends ItemFiredPottery
 {
@@ -127,24 +133,23 @@ public class ItemMold extends ItemFiredPottery
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new FilledMoldCapability(nbt, 1, Float.MAX_VALUE);
+        return new FilledMoldCapability(nbt);
     }
 
-    public static class FilledMoldCapability implements ICapabilityProvider, IMoldHandler
+    public class FilledMoldCapability implements ICapabilityProvider, IMoldHandler
     {
         private final FluidTank tank;
-        private final float heatCapacity;
-        private final float meltingPoint;
+        private float heatCapacity;
+        private float meltingPoint;
 
         private IFluidTankProperties fluidTankProperties[];
         private float temperature;
 
-        public FilledMoldCapability(@Nullable NBTTagCompound nbt, float heatCapacity, float meltingPoint)
+        private long lastUpdateTicks;
+
+        public FilledMoldCapability(@Nullable NBTTagCompound nbt)
         {
             tank = new FluidTank(100);
-
-            this.heatCapacity = heatCapacity;
-            this.meltingPoint = meltingPoint;
 
             if (nbt != null)
                 deserializeNBT(nbt);
@@ -170,6 +175,7 @@ public class ItemMold extends ItemFiredPottery
         {
             NBTTagCompound nbt = new NBTTagCompound();
             nbt.setFloat("item_heat", temperature);
+            nbt.setLong("ticks", CalenderTFC.getTotalTime());
             return tank.writeToNBT(nbt);
         }
 
@@ -178,20 +184,25 @@ public class ItemMold extends ItemFiredPottery
         {
             temperature = nbt.getFloat("item_heat");
             tank.readFromNBT(nbt);
+            updateFluidData(tank.getFluid());
         }
 
         @Override
         public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
         {
-            return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+            return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+                || capability == CapabilityItemHeat.ITEM_HEAT_CAPABILITY;
         }
 
         @Nullable
         @Override
         public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
         {
-            if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
+            if (hasCapability(capability, facing))
+            {
+                updateTemperature(0, CalenderTFC.getTotalTime() - lastUpdateTicks);
+                return (T) this;
+            }
             return null;
         }
 
@@ -208,8 +219,11 @@ public class ItemMold extends ItemFiredPottery
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            if (resource.getFluid() instanceof FluidMetal)
+            if (resource.getFluid() instanceof FluidMetal && ((FluidMetal) resource.getFluid()).doesFluidHaveMold(type))
+            {
+                updateFluidData(resource);
                 return tank.fill(resource, doFill);
+            }
             return 0;
         }
 
@@ -217,16 +231,14 @@ public class ItemMold extends ItemFiredPottery
         @Override
         public FluidStack drain(FluidStack resource, boolean doDrain)
         {
-            if (resource.getFluid() instanceof FluidMetal)
-                return tank.drain(resource, doDrain);
-            return null;
+            return temperature >= meltingPoint ? tank.drain(resource, doDrain) : null;
         }
 
         @Nullable
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain)
         {
-            return tank.drain(maxDrain, doDrain);
+            return temperature >= meltingPoint ? tank.drain(maxDrain, doDrain) : null;
         }
 
         @Override
@@ -241,19 +253,35 @@ public class ItemMold extends ItemFiredPottery
             this.temperature = temperature;
         }
 
-        @Override
-        public void updateTemperature(float enviromentTemperature, float weight)
+        public void updateTemperature(float enviromentTemperature, long ticks)
         {
-            if (heatCapacity * weight > Math.abs(enviromentTemperature - temperature))
+            temperature = CapabilityItemHeat.getTempChange(temperature, heatCapacity, enviromentTemperature, ticks);
+        }
+
+        @SideOnly(Side.CLIENT)
+        @Override
+        public void addHeatInfo(ItemStack stack, List<String> text)
+        {
+            Metal metal = getMetal();
+            if (metal != null)
+                text.add(TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount()));
+            IMoldHandler.super.addHeatInfo(stack, text);
+        }
+
+        private void updateFluidData(FluidStack fluid)
+        {
+            if (fluid == null)
+                return;
+            if (fluid.getFluid() instanceof FluidMetal)
             {
-                this.temperature = enviromentTemperature;
+                Metal metal = ((FluidMetal) fluid.getFluid()).getMetal();
+                this.meltingPoint = metal.meltTemp;
+                this.heatCapacity = metal.specificHeat;
             }
             else
             {
-                if (enviromentTemperature > temperature)
-                    temperature += weight * heatCapacity;
-                else
-                    temperature -= weight * heatCapacity;
+                this.meltingPoint = 1500;
+                this.heatCapacity = 1;
             }
         }
     }

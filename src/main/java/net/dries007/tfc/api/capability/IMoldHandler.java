@@ -33,4 +33,5 @@ public interface IMoldHandler extends IFluidHandler, INBTSerializable<NBTTagComp
      * @return The amount of metal, in mB / units
      */
     int getAmount();
+
 }

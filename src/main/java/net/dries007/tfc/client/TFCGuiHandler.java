@@ -17,12 +17,11 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.client.gui.GuiContainerTFC;
-import net.dries007.tfc.client.gui.GuiSmallVesselLiquid;
+import net.dries007.tfc.client.gui.GuiLiquidTransfer;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.container.ContainerLiquidTransfer;
 import net.dries007.tfc.objects.container.ContainerLogPile;
-import net.dries007.tfc.objects.container.ContainerMold;
 import net.dries007.tfc.objects.container.ContainerSmallVessel;
-import net.dries007.tfc.objects.container.ContainerSmallVesselLiquid;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemSmallVessel;
@@ -37,7 +36,6 @@ public class TFCGuiHandler implements IGuiHandler
     public static final int MOLD = 3;
 
     private static final ResourceLocation SMALL_INVENTORY_BACKGROUND = new ResourceLocation(Constants.MOD_ID, "textures/gui/small_inventory.png");
-    private static final ResourceLocation MOLD_BACKGROUND = new ResourceLocation(Constants.MOD_ID, "textures/gui/mold.png");
 
     @Override
     @Nullable
@@ -56,11 +54,11 @@ public class TFCGuiHandler implements IGuiHandler
                     stack : player.getHeldItemOffhand());
             case SMALL_VESSEL_LIQUID:
                 stack = player.getHeldItemMainhand();
-                return new ContainerSmallVesselLiquid(player.inventory, stack.getItem() instanceof ItemSmallVessel ?
+                return new ContainerLiquidTransfer(player.inventory, stack.getItem() instanceof ItemSmallVessel ?
                     stack : player.getHeldItemOffhand());
             case MOLD:
                 stack = player.getHeldItemMainhand();
-                return new ContainerMold(player.inventory, stack.getItem() instanceof ItemMold ?
+                return new ContainerLiquidTransfer(player.inventory, stack.getItem() instanceof ItemMold ?
                     stack : player.getHeldItemOffhand());
             default:
                 return null;
@@ -80,11 +78,9 @@ public class TFCGuiHandler implements IGuiHandler
             case SMALL_VESSEL:
                 return new GuiContainerTFC(container, player.inventory, SMALL_INVENTORY_BACKGROUND, ItemsTFC.CERAMICS_FIRED_VESSEL.getTranslationKey());
             case SMALL_VESSEL_LIQUID:
-                return new GuiSmallVesselLiquid(container, player.inventory);
+                return new GuiLiquidTransfer(container, player, "", player.getHeldItemMainhand().getItem() instanceof ItemSmallVessel);
             case MOLD:
-                stack = player.getHeldItemMainhand();
-                return new GuiContainerTFC(container, player.inventory, MOLD_BACKGROUND, stack.getItem() instanceof ItemMold ?
-                    stack.getTranslationKey() : player.getHeldItemOffhand().getTranslationKey());
+                return new GuiLiquidTransfer(container, player, "", player.getHeldItemMainhand().getItem() instanceof ItemMold);
             default:
                 return null;
         }
