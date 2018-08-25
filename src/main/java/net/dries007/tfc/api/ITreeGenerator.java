@@ -18,6 +18,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.*;
 
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 
 public interface ITreeGenerator
@@ -135,7 +136,7 @@ public interface ITreeGenerator
                 return false;
 
         // Check if there is a solid block beneath
-        if (!world.getBlockState(pos.down()).isNormalCube())
+        if (!BlocksTFC.isSoil(world.getBlockState(pos.down())))
             return false;
 
         // Check the position for liquids, etc.

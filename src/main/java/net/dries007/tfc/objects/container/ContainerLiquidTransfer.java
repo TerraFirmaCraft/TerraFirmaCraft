@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.objects.container;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,20 +20,18 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.api.capability.IMoldHandler;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.objects.inventory.SlotFluidTransfer;
 import net.dries007.tfc.util.Helpers;
 
 public class ContainerLiquidTransfer extends ContainerItemStack
 {
-    private final IItemHandlerModifiable inventory;
+    private IItemHandlerModifiable inventory;
 
     public ContainerLiquidTransfer(InventoryPlayer playerInv, ItemStack stack)
     {
         super(playerInv, stack);
-        this.inventory = new ItemStackHandler(1);
-
-        addContainerSlots();
-        addPlayerInventorySlots(playerInv);
         this.itemIndex += 1;
     }
 
@@ -81,9 +81,16 @@ public class ContainerLiquidTransfer extends ContainerItemStack
     }
 
     @Override
-    protected void addContainerSlots()
+    public boolean canInteractWith(@Nonnull EntityPlayer player)
     {
-        addSlotToContainer(new SlotFluidTransfer(inventory, 0, 80, 34));
+        IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+        return heat != null && heat.isMolten();
     }
 
+    @Override
+    protected void addContainerSlots()
+    {
+        this.inventory = new ItemStackHandler(1);
+        addSlotToContainer(new SlotFluidTransfer(inventory, 0, 80, 34));
+    }
 }

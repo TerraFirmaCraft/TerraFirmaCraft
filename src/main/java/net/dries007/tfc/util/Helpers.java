@@ -104,7 +104,7 @@ public final class Helpers
 
     public static String getTypeName(IForgeRegistryEntry<?> type)
     {
-        return JOINER_DOT.join(TFCConstants.MOD_ID, "types", type.getRegistryType().getSimpleName().toLowerCase(), type.getRegistryName().getPath()).toLowerCase();
+        return JOINER_DOT.join(TFCConstants.MOD_ID, "types", type.getRegistryType().getSimpleName(), type.getRegistryName().getPath()).toLowerCase();
     }
 
     @Nonnull

@@ -58,7 +58,7 @@ public class ConfigTFC
         @Config.Comment("Lengths of a month in in game days. Year length is this x12")
         @Config.LangKey("config." + MOD_ID + ".general.monthLength")
         @Config.RangeInt(min = 1, max = 1000)
-        public int monthLength = 96;
+        public int monthLength = 8;
 
         @Config.Comment("Normal decay leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
@@ -74,10 +74,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonusClasses")
         public String[] leafStickDropChanceBonusClasses = new String[] {"knife", "scythe"};
 
-        @Config.Comment("Modifier for how quickly item's lose heat. Smaller number = slower temperature changes")
-        @Config.RangeDouble(min = 0, max = 1)
+        @Config.Comment("Modifier for how quickly items gain and lose heat. Smaller number = slower temperature changes")
+        @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifier")
-        public double temperatureModifier = 0.01;
+        public double temperatureModifier = 0.5;
     }
 
     public static class ClientCFG

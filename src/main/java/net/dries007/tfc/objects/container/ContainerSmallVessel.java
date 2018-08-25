@@ -20,9 +20,6 @@ public class ContainerSmallVessel extends ContainerItemStack
     public ContainerSmallVessel(InventoryPlayer playerInv, ItemStack stack)
     {
         super(playerInv, stack);
-
-        addContainerSlots();
-        addPlayerInventorySlots(playerInv);
         this.itemIndex += 4;
     }
 

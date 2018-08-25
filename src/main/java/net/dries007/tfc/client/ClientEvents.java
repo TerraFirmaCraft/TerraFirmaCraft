@@ -144,18 +144,19 @@ public class ClientEvents
         {
             size.addSizeInfo(stack, tt);
         }
-        IItemHeat heat = CapabilityItemHeat.getIItemHeat(stack);
+        IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         if (heat != null)
         {
             heat.addHeatInfo(stack, tt);
         }
-        if (stack.hasTagCompound())
-        {
-            tt.add("NBT: " + stack.getTagCompound().toString());
-        }
 
         if (event.getFlags().isAdvanced())
         {
+            if (stack.hasTagCompound())
+            {
+                tt.add("NBT: " + stack.getTagCompound().toString());
+            }
+
             Set<String> toolClasses = item.getToolClasses(stack);
             if (!toolClasses.isEmpty())
             {

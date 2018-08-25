@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import net.dries007.tfc.api.registries.TFCRegistryEvent;
+import net.dries007.tfc.api.types.AlloyRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.ToolMaterialsTFC;
@@ -173,6 +174,22 @@ public class DefaultMetals
             new Metal(HIGH_CARBON_RED_STEEL, TIER_V, false, 0.35f, 1540, 0xFF33FF26, null),
             new Metal(HIGH_CARBON_BLACK_STEEL, TIER_V, false, 0.35f, 1540, 0xFF33FF27, null),
             new Metal(UNKNOWN, TIER_I, false, 0.5f, 1250, 0xFF33FF28, null)
+        );
+    }
+
+    @SubscribeEvent
+    public static void onRegisterAlloyRecipe(TFCRegistryEvent.RegisterPreBlock<AlloyRecipe> event)
+    {
+        event.getRegistry().registerAll(
+            new AlloyRecipe.Builder(BISMUTH_BRONZE).add(ZINC, 0.2f, 0.3f).add(COPPER, 0.5f, 0.65f).add(BISMUTH, 0.1f, 0.2f).build(),
+            new AlloyRecipe.Builder(BLACK_BRONZE).add(COPPER, 0.5f, 0.7f).add(SILVER, 0.1f, 0.25f).add(GOLD, 0.1f, 0.25f).build(),
+            new AlloyRecipe.Builder(BRONZE).add(COPPER, 0.88f, 0.92f).add(TIN, 0.08f, 0.12f).build(),
+            new AlloyRecipe.Builder(BRASS).add(COPPER, 0.88f, 0.92f).add(ZINC, 0.08f, 0.12f).build(),
+            new AlloyRecipe.Builder(ROSE_GOLD).add(COPPER, 0.15f, 0.3f).add(GOLD, 0.7f, 0.85f).build(),
+            new AlloyRecipe.Builder(STERLING_SILVER).add(COPPER, 0.2f, 0.4f).add(SILVER, 0.6f, 0.8f).build(),
+            new AlloyRecipe.Builder(WEAK_STEEL).add(STEEL, 0.5f, 0.7f).add(NICKEL, 0.15f, 0.25f).add(BLACK_BRONZE, 0.15f, 0.25f).build(),
+            new AlloyRecipe.Builder(WEAK_BLUE_STEEL).add(BLACK_STEEL, 0.5f, 0.55f).add(STEEL, 0.2f, 0.25f).add(BISMUTH_BRONZE, 0.1f, 0.15f).add(STERLING_SILVER, 0.1f, 0.15f).build(),
+            new AlloyRecipe.Builder(WEAK_RED_STEEL).add(BLACK_STEEL, 0.5f, 0.55f).add(STEEL, 0.2f, 0.25f).add(BRASS, 0.1f, 0.15f).add(ROSE_GOLD, 0.1f, 0.15f).build()
         );
     }
 }
