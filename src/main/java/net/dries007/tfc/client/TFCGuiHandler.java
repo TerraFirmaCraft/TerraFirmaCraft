@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
-import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.client.gui.GuiContainerTFC;
 import net.dries007.tfc.client.gui.GuiLiquidTransfer;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -35,7 +35,7 @@ public class TFCGuiHandler implements IGuiHandler
     public static final int SMALL_VESSEL_LIQUID = 2;
     public static final int MOLD = 3;
 
-    private static final ResourceLocation SMALL_INVENTORY_BACKGROUND = new ResourceLocation(Constants.MOD_ID, "textures/gui/small_inventory.png");
+    private static final ResourceLocation SMALL_INVENTORY_BACKGROUND = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/small_inventory.png");
 
     @Override
     @Nullable

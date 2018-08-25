@@ -15,7 +15,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
 import net.dries007.tfc.util.IPlacableItem;
 
@@ -23,7 +22,7 @@ import static net.dries007.tfc.objects.blocks.metal.BlockSheet.FACE;
 
 public class ItemSheet extends ItemMetal implements IPlacableItem
 {
-    public ItemSheet(Metal metal, MetalType type)
+    public ItemSheet(Metal metal, Metal.ItemType type)
     {
         super(metal, type);
     }

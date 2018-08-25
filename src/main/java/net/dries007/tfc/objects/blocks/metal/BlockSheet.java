@@ -31,7 +31,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.items.metal.ItemSheet;
 
 @MethodsReturnNonnullByDefault
@@ -139,14 +138,14 @@ public class BlockSheet extends Block
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return ItemSheet.get(metal, MetalType.SHEET);
+        return ItemSheet.get(metal, Metal.ItemType.SHEET);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
-        return new ItemStack(ItemSheet.get(metal, MetalType.SHEET));
+        return new ItemStack(ItemSheet.get(metal, Metal.ItemType.SHEET));
     }
 
     @Override
@@ -158,6 +157,6 @@ public class BlockSheet extends Block
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        return new ItemStack(ItemSheet.get(metal, MetalType.SHEET));
+        return new ItemStack(ItemSheet.get(metal, Metal.ItemType.SHEET));
     }
 }

@@ -14,7 +14,6 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -64,7 +63,7 @@ public class WorldGenLargeRocks implements IWorldGenerator
                 for (int y = -2; y <= 2; y++)
                 {
                     if (x * x + z * z + y * y > size * size) continue;
-                    world.setBlockState(start.add(x, y, z), BlockRockVariant.get(rock, RockType.RAW).getDefaultState());
+                    world.setBlockState(start.add(x, y, z), BlockRockVariant.get(rock, Rock.Type.RAW).getDefaultState());
                 }
             }
         }

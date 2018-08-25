@@ -5,13 +5,15 @@
 
 package net.dries007.tfc.api.types;
 
+import java.util.function.BiFunction;
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.objects.blocks.stone.*;
 
 import static net.dries007.tfc.api.types.Rock.FallingBlockType.*;
 
@@ -44,7 +46,7 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
 
     public enum Type
     {
-        RAW(Material.ROCK, NO_FALL, false), // Todo: add collapsing when broken
+        RAW(Material.ROCK, NO_FALL, false, BlockRockRaw::new), // Todo: add collapsing when broken
         SMOOTH(Material.ROCK, NO_FALL, false),
         COBBLE(Material.ROCK, FALL_HORIZONTAL, false),
         BRICKS(Material.ROCK, NO_FALL, false),
@@ -55,29 +57,43 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         DRY_GRASS(Material.GRASS, FALL_HORIZONTAL, true),
         CLAY(Material.GRASS, FALL_VERTICAL, false),
         CLAY_GRASS(Material.GRASS, FALL_VERTICAL, true),
-        FARMLAND(Material.GROUND, FALL_VERTICAL, false),
-        PATH(Material.GROUND, FALL_VERTICAL, false);
+        FARMLAND(Material.GROUND, FALL_VERTICAL, false, BlockFarmlandTFC::new),
+        PATH(Material.GROUND, FALL_VERTICAL, false, BlockPathTFC::new);
 
         public final Material material;
         public final boolean isGrass;
 
-        private final FallingBlockType gravityType;
+        private final FallingBlockType gravType;
+        private final BiFunction<Type, Rock, BlockRockVariant> supplier;
 
-        Type(Material material, FallingBlockType gravityType, boolean isGrass)
+        Type(Material material, FallingBlockType gravType, boolean isGrass)
+        {
+            // If no fall + no grass, then normal. If it can fall, then eiether fallable or fallable + connected (since grass always falls)
+            this(material, gravType, isGrass, (gravType == NO_FALL && !isGrass) ? BlockRockVariant::new :
+                (isGrass ? BlockRockVariantConnected::new : BlockRockVariantFallable::new));
+        }
+
+        Type(Material material, FallingBlockType gravType, boolean isGrass, BiFunction<Type, Rock, BlockRockVariant> supplier)
         {
             this.material = material;
-            this.gravityType = gravityType;
+            this.gravType = gravType;
             this.isGrass = isGrass;
+            this.supplier = supplier;
         }
 
         public boolean canFall()
         {
-            return gravityType != NO_FALL;
+            return gravType != NO_FALL;
         }
 
         public boolean canFallHorizontal()
         {
-            return gravityType == FALL_HORIZONTAL;
+            return gravType == FALL_HORIZONTAL;
+        }
+
+        public BlockRockVariant create(Rock rock)
+        {
+            return supplier.apply(this, rock);
         }
 
         public Type getNonGrassVersion()
@@ -109,7 +125,7 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         }
     }
 
-    protected enum FallingBlockType
+    public enum FallingBlockType
     {
         NO_FALL,
         FALL_VERTICAL,

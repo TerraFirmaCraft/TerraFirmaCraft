@@ -12,10 +12,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.api.types.RockCategory;
-import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.api.types.*;
 
 /**
  * Get Registry instances for standard TFC objects here.
@@ -26,6 +23,7 @@ public class TFCRegistries
     public static final IForgeRegistry<RockCategory> ROCK_CATEGORIES = GameRegistry.findRegistry(RockCategory.class);
     public static final IForgeRegistry<Ore> ORES = GameRegistry.findRegistry(Ore.class);
     public static final IForgeRegistry<Tree> TREES = GameRegistry.findRegistry(Tree.class);
+    public static final IForgeRegistry<Metal> METALS = GameRegistry.findRegistry(Metal.class);
 
     static
     {

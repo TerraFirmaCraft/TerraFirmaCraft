@@ -23,13 +23,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.MetalType;
-import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
@@ -43,9 +41,9 @@ import net.dries007.tfc.objects.items.ItemBlockTFC;
 import net.dries007.tfc.objects.items.ItemBlockTorchTFC;
 import net.dries007.tfc.objects.te.*;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.types.Rock.Type.*;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.CreativeTabsTFC.*;
-import static net.dries007.tfc.objects.RockType.*;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -250,10 +248,7 @@ public final class BlocksTFC
             Builder<BlockRockVariant> b = ImmutableList.builder();
             for (Rock.Type type : Rock.Type.values())
                 for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
-                    b.add(register(r, (type.name() + "/" + rock.getRegistryName().getPath()).toLowerCase(), BlockRockVariant.create(rock, type), CT_ROCK_BLOCKS));
-            for (RockType type : RockType.values())
-                for (Rock rock : Rock.values())
-                    b.add(register(r, (type.name() + "/" + rock.name()).toLowerCase(), type.create(rock), CT_ROCK_BLOCKS));
+                    b.add(register(r, type.name().toLowerCase() + "/" + rock.getRegistryName().getPath(), BlockRockVariant.create(rock, type), CT_ROCK_BLOCKS));
             allBlockRockVariants = b.build();
             allBlockRockVariants.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
         }
@@ -355,12 +350,12 @@ public final class BlocksTFC
             Builder<BlockAnvilTFC> anvils = ImmutableList.builder();
             Builder<BlockSheet> sheets = ImmutableList.builder();
 
-            for (Metal metal : Metal.values())
+            for (Metal metal : TFCRegistries.METALS.getValuesCollection())
             {
-                if (MetalType.ANVIL.hasType(metal))
-                    anvils.add(register(r, "anvil/" + metal.name().toLowerCase(), new BlockAnvilTFC(metal), CT_METAL));
-                if (MetalType.SHEET.hasType(metal))
-                    sheets.add(register(r, "sheet/" + metal.name().toLowerCase(), new BlockSheet(metal), CT_METAL));
+                if (Metal.ItemType.ANVIL.hasType(metal))
+                    anvils.add(register(r, "anvil/" + metal.getRegistryName().getPath(), new BlockAnvilTFC(metal), CT_METAL));
+                if (Metal.ItemType.SHEET.hasType(metal))
+                    sheets.add(register(r, "sheet/" + metal.getRegistryName().getPath(), new BlockSheet(metal), CT_METAL));
             }
 
             allAnvils = anvils.build();
