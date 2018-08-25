@@ -16,7 +16,8 @@ import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.types.Metal;
 
 /**
- * This is an interface wrapper for the capability provided by an ItemMold. You can safely cast to this
+ * This is an interface wrapper for the capability provided by an ItemMold. You can safely cast to this.
+ * Note Small Vessels also implement this interface, meaning you can cast both items to this.
  */
 public interface IMoldHandler extends IFluidHandler, INBTSerializable<NBTTagCompound>, IItemHeat
 {

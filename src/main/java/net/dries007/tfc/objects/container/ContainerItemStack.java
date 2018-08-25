@@ -36,6 +36,9 @@ public abstract class ContainerItemStack extends Container
             this.itemIndex = playerInv.currentItem + 27; // Mainhand opened inventory
         else
             this.itemIndex = -100; // Offhand, so ignore this rule
+
+        addContainerSlots();
+        addPlayerInventorySlots(playerInv);
     }
 
     @Override
