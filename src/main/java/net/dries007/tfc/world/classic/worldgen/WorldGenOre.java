@@ -18,7 +18,7 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.objects.RockType;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.util.OreSpawnData;
@@ -151,7 +151,7 @@ public class WorldGenOre implements IWorldGenerator
                         if (!(stateAt.getBlock() instanceof BlockRockVariant)) continue;
 
                         final BlockRockVariant blockAt = (BlockRockVariant) stateAt.getBlock();
-                        if (blockAt.type != RockType.RAW || !vein.oreSpawnData.baseRocks.contains(blockAt.rock))
+                        if (blockAt.type != Rock.Type.RAW || !vein.oreSpawnData.baseRocks.contains(blockAt.rock))
                             continue;
 
                         world.setBlockState(posAt, BlockOreTFC.get(vein.oreSpawnData.ore, blockAt.rock, vein.grade), 2);

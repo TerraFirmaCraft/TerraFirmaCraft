@@ -30,7 +30,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
@@ -40,14 +39,14 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class BlockRockVariant extends Block
 {
-    private static final Map<Rock, EnumMap<RockType, BlockRockVariant>> TABLE = new HashMap<>();
+    private static final Map<Rock, EnumMap<Rock.Type, BlockRockVariant>> TABLE = new HashMap<>();
 
-    public static BlockRockVariant get(Rock rock, RockType type)
+    public static BlockRockVariant get(Rock rock, Rock.Type type)
     {
         return TABLE.get(rock).get(type);
     }
 
-    public static BlockRockVariant create(Rock rock, RockType type)
+    public static BlockRockVariant create(Rock rock, Rock.Type type)
     {
         switch (type)
         {
@@ -72,15 +71,15 @@ public class BlockRockVariant extends Block
         }
     }
 
-    public final RockType type;
+    public final Rock.Type type;
     public final Rock rock;
 
-    public BlockRockVariant(RockType type, Rock rock)
+    public BlockRockVariant(Rock.Type type, Rock rock)
     {
         super(type.material);
 
         if (!TABLE.containsKey(rock))
-            TABLE.put(rock, new EnumMap<>(RockType.class));
+            TABLE.put(rock, new EnumMap<>(Rock.Type.class));
         TABLE.get(rock).put(type, this);
 
         this.type = type;
@@ -129,7 +128,7 @@ public class BlockRockVariant extends Block
         OreDictionaryHelper.registerRockType(this, type, rock);
     }
 
-    public BlockRockVariant getVariant(RockType t)
+    public BlockRockVariant getVariant(Rock.Type t)
     {
         return TABLE.get(rock).get(t);
     }
@@ -204,7 +203,7 @@ public class BlockRockVariant extends Block
             case GRASS:
             case DRY_GRASS:
             case PATH:
-                return Item.getItemFromBlock(get(rock, RockType.DIRT));
+                return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
         }
     }
 
@@ -243,18 +242,18 @@ public class BlockRockVariant extends Block
         switch (plantType)
         {
             case Plains:
-                return type == RockType.DIRT || type == RockType.GRASS || type == RockType.DRY_GRASS || type == RockType.CLAY_GRASS;
+                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY_GRASS;
             case Crop:
-                return type == RockType.DIRT || type == RockType.GRASS || type == RockType.FARMLAND || type == RockType.DRY_GRASS;
+                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.FARMLAND || type == Rock.Type.DRY_GRASS;
             case Desert:
-                return type == RockType.SAND;
+                return type == Rock.Type.SAND;
             case Cave:
                 return true;
             case Water:
                 return false;
             case Beach:
                 // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
-                return (type == RockType.DIRT || type == RockType.GRASS || type == RockType.SAND || type == RockType.DRY_GRASS) && // todo: dry grass?
+                return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && // todo: dry grass?
                     (BlocksTFC.isWater(world.getBlockState(pos.add(1, 0, 0))) ||
                         BlocksTFC.isWater(world.getBlockState(pos.add(-1, 0, 0))) ||
                         BlocksTFC.isWater(world.getBlockState(pos.add(0, 0, 1))) ||

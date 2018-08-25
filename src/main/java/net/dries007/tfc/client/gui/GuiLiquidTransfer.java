@@ -16,15 +16,15 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.util.Helpers;
 
 @SideOnly(Side.CLIENT)
 public class GuiLiquidTransfer extends GuiContainerTFC
 {
-    private static final ResourceLocation BG_TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/small_vessel_liquid.png");
+    private static final ResourceLocation BG_TEXTURE = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/small_vessel_liquid.png");
     private final int slotIdx;
 
     public GuiLiquidTransfer(Container container, EntityPlayer player, String translationKey, boolean offhand)

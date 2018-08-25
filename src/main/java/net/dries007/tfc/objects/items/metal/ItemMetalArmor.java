@@ -30,7 +30,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.MetalType;
 
 import static net.minecraft.entity.SharedMonsterAttributes.ARMOR;
 import static net.minecraft.entity.SharedMonsterAttributes.ARMOR_TOUGHNESS;
@@ -48,7 +47,7 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
     private final ToolMaterial toolMaterial;
     private final UUID uuid;
 
-    public ItemMetalArmor(Metal metal, MetalType type)
+    public ItemMetalArmor(Metal metal, Metal.ItemType type)
     {
         super(metal, type);
         toolMaterial = metal.getToolMetal();

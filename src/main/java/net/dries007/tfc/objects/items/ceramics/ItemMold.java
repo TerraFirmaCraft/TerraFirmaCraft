@@ -38,18 +38,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
-import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.fluids.FluidMetal;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.CalenderTFC;
 
 public class ItemMold extends ItemFiredPottery
 {
-    private static final EnumMap<MetalType, ItemMold> MAP = new EnumMap<>(MetalType.class);
+    private static final EnumMap<Metal.ItemType, ItemMold> MAP = new EnumMap<>(Metal.ItemType.class);
 
-    public static ItemMold get(MetalType category)
+    public static ItemMold get(Metal.ItemType category)
     {
         return MAP.get(category);
     }
@@ -72,7 +72,7 @@ public class ItemMold extends ItemFiredPottery
                         Metal metal = ((IMoldHandler) cap).getMetal();
                         if (metal != null)
                         {
-                            ModelResourceLocation loc = new ModelResourceLocation(stack.getItem().getRegistryName().toString() + "/" + metal.name());
+                            ModelResourceLocation loc = new ModelResourceLocation(stack.getItem().getRegistryName().toString() + "/" + metal.getRegistryName().getPath());
                             return loc;
                         }
                     }
@@ -81,17 +81,17 @@ public class ItemMold extends ItemFiredPottery
             });
 
             ModelBakery.registerItemVariants(item, new ModelResourceLocation(item.getRegistryName().toString() + "/empty"));
-            ModelBakery.registerItemVariants(item, Metal.values()
+            ModelBakery.registerItemVariants(item, TFCRegistries.METALS.getValuesCollection()
                 .stream()
                 .filter(x -> item.type.hasMold && x.isToolMetal() && (x.tier == Metal.Tier.TIER_I || x.tier == Metal.Tier.TIER_II))
-                .map(x -> new ModelResourceLocation(item.getRegistryName().toString() + "/" + x.name()))
+                .map(x -> new ModelResourceLocation(item.getRegistryName().toString() + "/" + x.getRegistryName().getPath()))
                 .toArray(ModelResourceLocation[]::new));
         }
     }
 
-    public final MetalType type;
+    public final Metal.ItemType type;
 
-    public ItemMold(MetalType type)
+    public ItemMold(Metal.ItemType type)
     {
         this.type = type;
         if (MAP.put(type, this) != null) throw new IllegalStateException("There can only be one.");
@@ -123,7 +123,7 @@ public class ItemMold extends ItemFiredPottery
             if (fs != null)
             {
                 Metal metal = ((FluidMetal) fs.getFluid()).getMetal();
-                return super.getTranslationKey(stack) + "." + metal.name();
+                return super.getTranslationKey(stack) + "." + metal.getRegistryName().getPath();
             }
         }
         return super.getTranslationKey(stack);

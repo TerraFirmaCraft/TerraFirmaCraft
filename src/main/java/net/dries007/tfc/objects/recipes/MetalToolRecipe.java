@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import net.dries007.tfc.objects.MetalType;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -22,10 +22,10 @@ public class MetalToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> implement
 {
     private static final NonNullList<ItemStack> STICKS = OreDictionary.getOres("stickWood");
 
-    private final MetalType inp;
-    private final MetalType outp;
+    private final Metal.ItemType inp;
+    private final Metal.ItemType outp;
 
-    public MetalToolRecipe(MetalType inp, MetalType outp)
+    public MetalToolRecipe(Metal.ItemType inp, Metal.ItemType outp)
     {
         this.inp = inp;
         this.outp = outp;

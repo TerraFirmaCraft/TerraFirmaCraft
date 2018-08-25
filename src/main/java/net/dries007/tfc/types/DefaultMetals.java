@@ -10,13 +10,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import net.dries007.tfc.api.registries.TFCRegistryEvent;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.api.types.TFCRegistries;
 import net.dries007.tfc.objects.ToolMaterialsTFC;
 
-import static net.dries007.tfc.Constants.MOD_ID;
 import static net.dries007.tfc.api.types.Metal.Tier.*;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class DefaultMetals
@@ -99,7 +99,7 @@ public class DefaultMetals
     private static final ResourceLocation LAPIS_LAZULI = new ResourceLocation(MOD_ID, "lapis_lazuli");
 
     @SubscribeEvent
-    public static void onPreRegisterOre(TFCRegistries.RegisterPreBlock<Ore> event)
+    public static void onPreRegisterOre(TFCRegistryEvent.RegisterPreBlock<Ore> event)
     {
         event.getRegistry().registerAll(
             new Ore(NATIVE_COPPER, COPPER),
@@ -141,7 +141,7 @@ public class DefaultMetals
     }
 
     @SubscribeEvent
-    public static void onPreRegisterMetal(TFCRegistries.RegisterPreBlock<Metal> event)
+    public static void onPreRegisterMetal(TFCRegistryEvent.RegisterPreBlock<Metal> event)
     {
         event.getRegistry().registerAll(
             new Metal(BISMUTH, TIER_I, true, 0.14f, 270, 0xFF33FF00, null),

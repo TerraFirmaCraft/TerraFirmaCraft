@@ -28,7 +28,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 
 @ParametersAreNonnullByDefault
@@ -118,7 +117,7 @@ public class BlockAnvilTFC extends Block
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return ItemAnvil.get(metal, MetalType.ANVIL);
+        return ItemAnvil.get(metal, Metal.ItemType.ANVIL);
     }
 
     @Override
@@ -136,6 +135,6 @@ public class BlockAnvilTFC extends Block
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        return new ItemStack(ItemAnvil.get(metal, MetalType.ANVIL));
+        return new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL));
     }
 }

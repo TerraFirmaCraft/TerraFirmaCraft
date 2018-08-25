@@ -21,7 +21,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.util.TFCConstants;
 
 public class CapabilityItemSize
 {

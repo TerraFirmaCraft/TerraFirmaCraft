@@ -16,15 +16,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.objects.RockType;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 //todo: actually by-pass the variant? or would it be worth adding a mossy texture for nice looking walls
 public class BlockWallTFC extends BlockWall
 {
-    private static final Map<Rock, EnumMap<RockType, BlockWallTFC>> TABLE = new HashMap<>();
+    private static final Map<Rock, EnumMap<Rock.Type, BlockWallTFC>> TABLE = new HashMap<>();
 
-    public static BlockWallTFC get(Rock rock, RockType type)
+    public static BlockWallTFC get(Rock rock, Rock.Type type)
     {
         return TABLE.get(rock).get(type);
     }
@@ -36,7 +35,7 @@ public class BlockWallTFC extends BlockWall
         super(modelBlock);
 
         if (!TABLE.containsKey(modelBlock.rock))
-            TABLE.put(modelBlock.rock, new EnumMap<>(RockType.class));
+            TABLE.put(modelBlock.rock, new EnumMap<>(Rock.Type.class));
         TABLE.get(modelBlock.rock).put(modelBlock.type, this);
 
         parent = modelBlock;

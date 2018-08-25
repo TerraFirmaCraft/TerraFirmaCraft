@@ -18,15 +18,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.api.types.RockCategory;
-import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.api.util.Size;
-import net.dries007.tfc.api.util.Weight;
+import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.Gem;
-import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.Powder;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -118,10 +114,10 @@ public final class ItemsTFC
 
         for (Metal.ItemType type : Metal.ItemType.values())
         {
-            for (Metal metal : Metal.values())
+            for (Metal metal : TFCRegistries.METALS.getValuesCollection())
             {
-                if (!metal.hasType(type) || type.supplier == null) continue;
-                simpleItems.add(register(r, ("metal/" + type + "/" + metal).toLowerCase(), type.supplier.apply(metal, type), CT_METAL));
+                if (!type.hasType(metal) || type.supplier == null) continue;
+                simpleItems.add(register(r, "metal/" + type + "/" + metal.getRegistryName().getPath(), type.supplier.apply(metal, type), CT_METAL));
             }
         }
 
@@ -221,9 +217,9 @@ public final class ItemsTFC
 
     public static void init()
     {
-        for (Metal metal : Metal.values())
+        for (Metal metal : TFCRegistries.METALS.getValuesCollection())
             if (metal.getToolMetal() != null)
-                metal.getToolMetal().setRepairItem(new ItemStack(ItemMetal.get(metal, MetalType.SCRAP)));
+                metal.getToolMetal().setRepairItem(new ItemStack(ItemMetal.get(metal, Metal.ItemType.SCRAP)));
     }
 
     private static void registerPottery(Builder<Item> items, IForgeRegistry<Item> r, String nameUnfired, String nameFired, ItemUnfiredPottery unfiredPottery)

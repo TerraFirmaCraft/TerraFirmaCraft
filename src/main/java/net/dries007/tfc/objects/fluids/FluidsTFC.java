@@ -18,6 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -105,8 +106,8 @@ public class FluidsTFC
         {
             ImmutableMap.Builder<Metal, Fluid> b = ImmutableMap.builder();
 
-            for (Metal metal : Metal.values())
-                registerFluid(b, metal, new FluidMetal(metal, metal.name(), STILL, FLOW, metal.color));
+            for (Metal metal : TFCRegistries.METALS.getValuesCollection())
+                registerFluid(b, metal, new FluidMetal(metal, metal.getRegistryName().getPath(), STILL, FLOW, metal.color));
 
             allMetalFluids = b.build();
         }

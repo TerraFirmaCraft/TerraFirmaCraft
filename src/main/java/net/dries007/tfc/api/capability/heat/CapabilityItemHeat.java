@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.*;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.world.classic.CalenderTFC;
 
 public class CapabilityItemHeat
@@ -25,7 +25,7 @@ public class CapabilityItemHeat
 
     public static final CapabilityItemHeat INSTANCE = new CapabilityItemHeat();
 
-    private static final ResourceLocation ID = new ResourceLocation(Constants.MOD_ID, "item_heat");
+    private static final ResourceLocation ID = new ResourceLocation(TFCConstants.MOD_ID, "item_heat");
 
     @CapabilityInject(IItemHeat.class)
     public static Capability<IItemHeat> ITEM_HEAT_CAPABILITY = null;
