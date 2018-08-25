@@ -13,7 +13,6 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
@@ -48,7 +47,6 @@ public class TestCommand extends CommandBase
             if (h == null)
                 throw new WrongUsageException("The held item in mainhand does not have the item heat capability");
             h.setTemperature((float) heat);
-            NBTTagCompound nbt = s.getTagCompound();
             s.setTagCompound(h.serializeNBT());
         }
         else

@@ -25,6 +25,8 @@ public class TFCRegistries
     public static final IForgeRegistry<Tree> TREES = GameRegistry.findRegistry(Tree.class);
     public static final IForgeRegistry<Metal> METALS = GameRegistry.findRegistry(Metal.class);
 
+    public static final IForgeRegistry<AlloyRecipe> ALLOYS = GameRegistry.findRegistry(AlloyRecipe.class);
+
     static
     {
         // Make sure all public static final fields have values, should stop people from prematurely loading this class.

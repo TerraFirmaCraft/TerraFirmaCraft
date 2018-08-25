@@ -31,6 +31,11 @@ public interface ISmallVesselHandler extends IItemHandler, IFluidHandler, INBTSe
      */
     Mode getFluidMode();
 
+    default boolean isMolten()
+    {
+        return getFluidMode() == Mode.LIQUID_MOLTEN;
+    }
+
     enum Mode
     {
         INVENTORY,

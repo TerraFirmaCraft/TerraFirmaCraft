@@ -38,6 +38,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
@@ -136,16 +137,13 @@ public class ItemMold extends ItemFiredPottery
         return new FilledMoldCapability(nbt);
     }
 
-    public class FilledMoldCapability implements ICapabilityProvider, IMoldHandler
+    // Extends ItemHeatHandler for ease of use
+    private class FilledMoldCapability extends ItemHeatHandler implements ICapabilityProvider, IMoldHandler
     {
         private final FluidTank tank;
-        private float heatCapacity;
-        private float meltingPoint;
-
         private IFluidTankProperties fluidTankProperties[];
-        private float temperature;
 
-        private long lastUpdateTicks;
+
 
         public FilledMoldCapability(@Nullable NBTTagCompound nbt)
         {
@@ -153,15 +151,15 @@ public class ItemMold extends ItemFiredPottery
 
             if (nbt != null)
                 deserializeNBT(nbt);
+
+            updateFluidData(tank.getFluid());
         }
 
         @Nullable
         @Override
         public Metal getMetal()
         {
-            if (tank.getFluidAmount() == 0)
-                return null;
-            return ((FluidMetal) tank.getFluid().getFluid()).getMetal();
+            return tank.getFluid() != null ? ((FluidMetal) tank.getFluid().getFluid()).getMetal() : null;
         }
 
         @Override
@@ -170,21 +168,20 @@ public class ItemMold extends ItemFiredPottery
             return tank.getFluidAmount();
         }
 
+        @Nullable
+        @Override
+        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
+        {
+            return hasCapability(capability, facing) ? (T) this : null;
+        }
+
         @Override
         public NBTTagCompound serializeNBT()
         {
             NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setFloat("item_heat", temperature);
+            nbt.setFloat("heat", getTemperature());
             nbt.setLong("ticks", CalenderTFC.getTotalTime());
             return tank.writeToNBT(nbt);
-        }
-
-        @Override
-        public void deserializeNBT(NBTTagCompound nbt)
-        {
-            temperature = nbt.getFloat("item_heat");
-            tank.readFromNBT(nbt);
-            updateFluidData(tank.getFluid());
         }
 
         @Override
@@ -194,16 +191,12 @@ public class ItemMold extends ItemFiredPottery
                 || capability == CapabilityItemHeat.ITEM_HEAT_CAPABILITY;
         }
 
-        @Nullable
         @Override
-        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
+        public void deserializeNBT(NBTTagCompound nbt)
         {
-            if (hasCapability(capability, facing))
-            {
-                updateTemperature(0, CalenderTFC.getTotalTime() - lastUpdateTicks);
-                return (T) this;
-            }
-            return null;
+            temperature = nbt.getFloat("heat");
+            lastUpdateTick = nbt.getLong("ticks");
+            tank.readFromNBT(nbt);
         }
 
         @Override
@@ -231,31 +224,14 @@ public class ItemMold extends ItemFiredPottery
         @Override
         public FluidStack drain(FluidStack resource, boolean doDrain)
         {
-            return temperature >= meltingPoint ? tank.drain(resource, doDrain) : null;
+            return getTemperature() >= meltingPoint ? tank.drain(resource, doDrain) : null;
         }
 
         @Nullable
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain)
         {
-            return temperature >= meltingPoint ? tank.drain(maxDrain, doDrain) : null;
-        }
-
-        @Override
-        public float getTemperature()
-        {
-            return temperature;
-        }
-
-        @Override
-        public void setTemperature(float temperature)
-        {
-            this.temperature = temperature;
-        }
-
-        public void updateTemperature(float enviromentTemperature, long ticks)
-        {
-            temperature = CapabilityItemHeat.getTempChange(temperature, heatCapacity, enviromentTemperature, ticks);
+            return getTemperature() >= meltingPoint ? tank.drain(maxDrain, doDrain) : null;
         }
 
         @SideOnly(Side.CLIENT)

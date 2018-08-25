@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEIngotPile;
@@ -117,6 +117,6 @@ public class ItemIngot extends ItemMetal implements IPlacableItem
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new CapabilityItemHeat.ItemHeat(nbt, 1, 1000);
+        return new ItemHeatHandler(nbt, 1, 1000);
     }
 }
