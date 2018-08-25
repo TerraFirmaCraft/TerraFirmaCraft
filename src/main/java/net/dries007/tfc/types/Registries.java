@@ -22,10 +22,7 @@ import net.minecraftforge.registries.RegistryBuilder;
 
 import net.dries007.tfc.api.registries.TFCRegistryEvent;
 import net.dries007.tfc.api.registries.TFCRegistryNames;
-import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.api.types.RockCategory;
-import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.api.types.*;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -41,6 +38,7 @@ public class Registries
         newRegistry(TFCRegistryNames.ROCK, Rock.class, true);
         newRegistry(TFCRegistryNames.ORE, Ore.class, true);
         newRegistry(TFCRegistryNames.TREE, Tree.class, true);
+        newRegistry(TFCRegistryNames.METAL, Metal.class, true);
     }
 
     /**

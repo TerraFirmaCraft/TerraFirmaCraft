@@ -44,8 +44,8 @@ public class ItemSmallOre extends ItemTFC implements IMetalObject
         if (MAP.put(ore, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
         OreDictionaryHelper.register(this, "ore");
-        OreDictionaryHelper.register(this, "ore", ore.name());
-        OreDictionaryHelper.register(this, "ore", ore.name(), "small");
+        OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath());
+        OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath(), "small");
     }
 
     @Override

@@ -6,31 +6,24 @@
 
 package net.dries007.tfc.api.types;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.function.BiFunction;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import net.dries007.tfc.objects.items.metal.*;
 
 /**
  * todo: document API
  */
 public class Metal extends IForgeRegistryEntry.Impl<Metal>
 {
-    @Nonnull
-    public static Collection<Metal> values()
-    {
-        return Collections.unmodifiableCollection(TFCRegistries.getMetals().getValuesCollection());
-    }
-
-    @Nullable
-    public static Metal get(String name)
-    {
-        return values().stream().filter(x -> x.name().equals(name)).findFirst().orElse(null);
-    }
+    @GameRegistry.ObjectHolder("tfc:unknown")
+    public static final Metal UNKNOWN = null;
 
     public final Tier tier;
     public final float specificHeat;
@@ -39,7 +32,6 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     public final int color;
 
     private final Item.ToolMaterial toolMetal;
-    private final ResourceLocation name;
 
     /**
      * This is a registry object that will create a number of things.
@@ -65,13 +57,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 
         this.toolMetal = toolMetal;
 
-        this.name = name;
         setRegistryName(name);
-    }
-
-    public String name()
-    {
-        return name.getPath();
     }
 
     @Nullable
@@ -94,4 +80,97 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         TIER_V
     }
 
+    public enum ItemType
+    {
+        UNSHAPED(false, 100, null), // Special case, because it's a pottery item
+        INGOT(false, 100, ItemIngot::new, true),
+        DOUBLE_INGOT(false, 200),
+        SCRAP(false, 100),
+        DUST(false, 100),
+        NUGGET(false, 10),
+        SHEET(false, 200, ItemSheet::new),
+        DOUBLE_SHEET(false, 400),
+        LAMP(false, 100, ItemLamp::new),
+
+        ANVIL(true, 1400, ItemAnvil::new),
+        TUYERE(true, 400),
+
+        PICK(true, 100, ItemMetalTool::new),
+        PICK_HEAD(true, 100, true),
+        SHOVEL(true, 100, ItemMetalTool::new),
+        SHOVEL_HEAD(true, 100, true),
+        AXE(true, 100, ItemMetalTool::new),
+        AXE_HEAD(true, 100, true),
+        HOE(true, 100, ItemMetalTool::new),
+        HOE_HEAD(true, 100, true),
+        CHISEL(true, 100, ItemMetalTool::new),
+        CHISEL_HEAD(true, 100, true),
+        SWORD(true, 200, ItemMetalTool::new),
+        SWORD_BLADE(true, 200, true),
+        MACE(true, 200, ItemMetalTool::new),
+        MACE_HEAD(true, 200, true),
+        SAW(true, 100, ItemMetalTool::new),
+        SAW_BLADE(true, 100, true),
+        JAVELIN(true, 100, ItemMetalTool::new), // todo: special class?
+        JAVELIN_HEAD(true, 100, true),
+        HAMMER(true, 100, ItemMetalTool::new),
+        HAMMER_HEAD(true, 100, true),
+        PROPICK(true, 100, ItemMetalTool::new),
+        PROPICK_HEAD(true, 100, true),
+        KNIFE(true, 100, ItemMetalTool::new),
+        KNIFE_BLADE(true, 100, true),
+        SCYTHE(true, 100, ItemMetalTool::new),
+        SCYTHE_BLADE(true, 100, true),
+
+        UNFINISHED_HELMET(true, 200),
+        HELMET(true, 400, ItemMetalArmor::new),
+        UNFINISHED_CHESTPLATE(true, 400),
+        CHESTPLATE(true, 800, ItemMetalArmor::new),
+        UNFINISHED_GREAVES(true, 400),
+        GREAVES(true, 600, ItemMetalArmor::new),
+        UNFINISHED_BOOTS(true, 200),
+        BOOTS(true, 200, ItemMetalArmor::new);
+
+        public static Item create(Metal metal, ItemType type)
+        {
+            return type.supplier.apply(metal, type);
+        }
+
+        public final boolean toolItem;
+        public final int smeltAmount;
+        public final boolean hasMold;
+        public final BiFunction<Metal, ItemType, Item> supplier;
+
+        ItemType(boolean toolItem, int smeltAmount, BiFunction<Metal, ItemType, Item> supplier, boolean hasMold)
+        {
+            this.toolItem = toolItem;
+            this.smeltAmount = smeltAmount;
+            this.supplier = supplier;
+            this.hasMold = hasMold;
+        }
+
+        ItemType(boolean toolItem, int smeltAmount, boolean hasMold)
+        {
+            this(toolItem, smeltAmount, ItemMetal::new, hasMold);
+        }
+
+        ItemType(boolean toolItem, int smeltAmount)
+        {
+            this(toolItem, smeltAmount, false);
+        }
+
+        ItemType(boolean toolItem, int smeltAmount, BiFunction<Metal, ItemType, Item> supplier)
+        {
+            this(toolItem, smeltAmount, supplier, false);
+        }
+
+        public boolean hasType(Metal metal)
+        {
+            if (supplier == null)
+                return false;
+            if (!metal.usable)
+                return this == ItemType.INGOT || this == ItemType.UNSHAPED;
+            return !this.toolItem || metal.getToolMetal() != null;
+        }
+    }
 }

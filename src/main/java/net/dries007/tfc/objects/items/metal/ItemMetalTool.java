@@ -22,7 +22,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.MetalType;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -34,7 +33,7 @@ public class ItemMetalTool extends ItemMetal
     private final int areaOfAttack; // todo: implement
     private final float attackSpeed;
 
-    public ItemMetalTool(Metal metal, MetalType type)
+    public ItemMetalTool(Metal metal, Metal.ItemType type)
     {
         super(metal, type);
         if (metal.getToolMetal() == null)

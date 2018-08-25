@@ -19,7 +19,6 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.items.ItemTFC;
-import net.dries007.tfc.types.DefaultOres;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
@@ -55,19 +54,19 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
         {
             setHasSubtypes(true);
             OreDictionaryHelper.register(this, "ore");
-            OreDictionaryHelper.register(this, "ore", ore.name());
+            OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath());
             for (Ore.Grade grade : Ore.Grade.values())
             {
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", grade);
-                OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore.name(), grade);
+                OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore.getRegistryName().getPath(), grade);
             }
         }
         else // Mineral
         {
             OreDictionaryHelper.register(this, "gem", ore);
-            if (DefaultOres.LAPIS_LAZULI.equals(ore.getRegistryName()))
+            if (ore.getRegistryName().getPath().equals("lapis_lazuli"))
                 OreDictionaryHelper.register(this, "gem", "lapis");
-            if (DefaultOres.BITUMINOUS_COAL.equals(ore.getRegistryName()))
+            if (ore.getRegistryName().getPath().equals("bituminous_coal"))
                 OreDictionaryHelper.register(this, "gem", "coal");
         }
     }

@@ -35,7 +35,7 @@ public class TESRIngotPile extends TileEntitySpecialRenderer<TEIngotPile>
 
             Metal metal = te.getMetal();
             int count = te.getCount();
-            this.bindTexture(new ResourceLocation(MOD_ID, "textures/blocks/metal/" + metal.name() + ".png"));
+            this.bindTexture(new ResourceLocation(MOD_ID, "textures/blocks/metal/" + metal.getRegistryName().getPath() + ".png"));
             GlStateManager.pushMatrix();
             GlStateManager.translate(x, y, z);
 

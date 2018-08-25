@@ -14,17 +14,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.api.util.TFCConstants;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
-
 @SideOnly(Side.CLIENT)
 public class GuiContainerTFC extends GuiContainer
 {
-    private static final ResourceLocation BG_TEXTURE = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/log_pile.png");
-    private InventoryPlayer playerInv;
     private final ResourceLocation background;
     private final String translationKey;
-
     protected InventoryPlayer playerInv;
 
     public GuiContainerTFC(Container container, InventoryPlayer playerInv, ResourceLocation background, String titleKey)

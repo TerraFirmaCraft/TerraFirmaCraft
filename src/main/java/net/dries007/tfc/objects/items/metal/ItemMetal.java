@@ -17,7 +17,6 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -26,28 +25,28 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class ItemMetal extends ItemTFC implements IMetalObject
 {
-    private static final Map<Metal, EnumMap<MetalType, ItemMetal>> TABLE = new HashMap<>();
+    private static final Map<Metal, EnumMap<Metal.ItemType, ItemMetal>> TABLE = new HashMap<>();
 
-    public static ItemMetal get(Metal metal, MetalType type)
+    public static ItemMetal get(Metal metal, Metal.ItemType type)
     {
         return TABLE.get(metal).get(type);
     }
 
     public final Metal metal;
-    public final MetalType type;
+    public final Metal.ItemType type;
 
-    public ItemMetal(Metal metal, MetalType type)
+    public ItemMetal(Metal metal, Metal.ItemType type)
     {
         this.metal = metal;
         this.type = type;
 
         if (!TABLE.containsKey(metal))
-            TABLE.put(metal, new EnumMap<>(MetalType.class));
+            TABLE.put(metal, new EnumMap<>(Metal.ItemType.class));
         TABLE.get(metal).put(type, this);
 
         setNoRepair();
         OreDictionaryHelper.register(this, type);
-        OreDictionaryHelper.register(this, type, metal.name());
+        OreDictionaryHelper.register(this, type, metal.getRegistryName().getPath());
     }
 
     @Override

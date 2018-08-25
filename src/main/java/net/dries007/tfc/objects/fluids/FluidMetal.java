@@ -10,7 +10,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.MetalType;
 
 public class FluidMetal extends Fluid
 {
@@ -24,9 +23,9 @@ public class FluidMetal extends Fluid
         this.metal = metal;
     }
 
-    public boolean doesFluidHaveMold(MetalType type)
+    public boolean doesFluidHaveMold(Metal.ItemType type)
     {
-        if (type == MetalType.INGOT || type == MetalType.UNSHAPED)
+        if (type == Metal.ItemType.INGOT || type == Metal.ItemType.UNSHAPED)
             return true;
         return type.hasMold && metal.isToolMetal() && (metal.tier == Metal.Tier.TIER_I || metal.tier == Metal.Tier.TIER_II);
     }

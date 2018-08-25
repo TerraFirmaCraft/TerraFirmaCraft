@@ -13,12 +13,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.MetalType;
 import net.dries007.tfc.util.IPlacableItem;
 
 public class ItemLamp extends ItemMetal implements IPlacableItem
 {
-    public ItemLamp(Metal metal, MetalType type)
+    public ItemLamp(Metal metal, Metal.ItemType type)
     {
         super(metal, type);
     }
