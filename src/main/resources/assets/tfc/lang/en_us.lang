@@ -6,6 +6,7 @@ tfc.tooltip.toolclass=Tool: %s
 tfc.tooltip.metal=Metal: %s
 tfc.tooltip.units=%d units
 tfc.tooltip.smelting=Smelt in %s
+tfc.tooltip.liquid=Liquid
 
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=Spawn Fuzzing Radius
@@ -56,6 +57,7 @@ generator.tfc_classic=TFC Classic
 # Enum types
 # todo: add other enums
 ## Metal related
+tfc.types.metal.unknown=Unknown Alloy
 tfc.types.metal.bismuth=Bismuth
 tfc.types.metal.bismuth_bronze=Bismuth Bronze
 tfc.types.metal.black_bronze=Black Bronze
@@ -118,7 +120,6 @@ tfc.enum.heat.yellow=Yellow
 tfc.enum.heat.yellow_white=Yellow White
 tfc.enum.heat.white=White
 tfc.enum.heat.brilliant_white=Brilliant White
-tfc.enum.heat.liquid=Liquid
 
 # Items
 item.tfc.wand.name=TFC Debug Wand
@@ -2598,6 +2599,7 @@ item.tfc.mold.ingot.high_carbon_blue_steel.name=Unshaped High Carbon Blue Steel
 item.tfc.mold.ingot.high_carbon_red_steel.name=Unshaped High Carbon Red Steel
 
 item.tfc.mold.ingot.name=Empty Ingot Mold
+item.tfc.mold.ingot.unknown.name=Unknown Alloy
 
 item.tfc.mold.pick_head.empty.name=Pick Head Mold
 item.tfc.mold.shovel_head.empty.name=Shovel Head Mold
