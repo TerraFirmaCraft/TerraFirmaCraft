@@ -65,14 +65,15 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
         if (heat == null)
             return;
 
-        String desc = I18n.format(Helpers.getEnumName(heat));
+        StringBuilder b = new StringBuilder();
+        b.append(I18n.format(Helpers.getEnumName(heat)));
         for (int i = 1; i <= 4; i++)
         {
             if (temperature <= heat.min + ((float) i * 0.2f) * (heat.max - heat.min))
                 continue;
-            desc += "\u2605";
+            b.append("\u2605");
         }
-        text.add(heat.format + desc);
+        text.add(heat.format + b.toString());
     }
 
 }

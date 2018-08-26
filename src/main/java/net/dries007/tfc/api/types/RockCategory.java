@@ -80,26 +80,11 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
         return caveFreqMod;
     }
 
-    public boolean isLayer1()
-    {
-        return layer1;
-    }
-
-    public boolean isLayer2()
-    {
-        return layer2;
-    }
-
-    public boolean isLayer3()
-    {
-        return layer3;
-    }
-
     public enum Layer
     {
-        BOTTOM(3, x -> x.getRockCategory().isLayer3()),
-        MIDDLE(2, x -> x.getRockCategory().isLayer2()),
-        TOP(1, x -> x.getRockCategory().isLayer1());
+        BOTTOM(3, x -> x.getRockCategory().layer3),
+        MIDDLE(2, x -> x.getRockCategory().layer2),
+        TOP(1, x -> x.getRockCategory().layer1);
 
         public final int layer;
         private final Predicate<? super Rock> filter;

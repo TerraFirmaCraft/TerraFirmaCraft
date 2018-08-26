@@ -17,11 +17,6 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 
 public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
 {
-    public static AlloyRecipe getFromMetal(Metal metal)
-    {
-        return TFCRegistries.ALLOYS.getValue(metal.getRegistryName());
-    }
-
     public final ImmutableMap<Metal, Predicate<Float>> MAP;
     private final Metal result;
 
@@ -69,11 +64,11 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
             this.builder = new ImmutableMap.Builder<>();
         }
 
-        public Builder(@Nonnull ResourceLocation result)
+        public Builder(@Nonnull ResourceLocation loc)
         {
-            this.result = TFCRegistries.METALS.getValue(result);
+            this.result = TFCRegistries.METALS.getValue(loc);
             if (result == null)
-                throw new IllegalArgumentException("Result metal is not allowed to be null. Missing metal for key: " + result.toString());
+                throw new IllegalArgumentException("Result metal is not allowed to be null. Missing metal for key: " + loc.toString());
             this.builder = new ImmutableMap.Builder<>();
         }
 

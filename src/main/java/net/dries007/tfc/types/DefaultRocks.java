@@ -48,6 +48,7 @@ public class DefaultRocks
     public static final ResourceLocation MARBLE = new ResourceLocation(MOD_ID, "marble");
 
     @SubscribeEvent
+    @SuppressWarnings("ConstantConditions")
     public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<RockCategory> event)
     {
         TerraFirmaCraft.getLog().debug("Registering Default Rock Categories");
