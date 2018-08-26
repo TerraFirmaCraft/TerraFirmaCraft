@@ -117,6 +117,6 @@ public class ItemIngot extends ItemMetal implements IPlacableItem
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new ItemHeatHandler(nbt, 1, 1000);
+        return new ItemHeatHandler(nbt, metal.specificHeat, metal.meltTemp);
     }
 }

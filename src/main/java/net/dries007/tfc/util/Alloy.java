@@ -77,6 +77,8 @@ public class Alloy
     @Nonnull
     public Metal getResult()
     {
+        if (MAP.size() == 1)
+            return MAP.keySet().iterator().next(); // Easy way to get the only metal in the alloy
         for (AlloyRecipe r : TFCRegistries.ALLOYS.getValuesCollection())
             if (matchesRecipe(r))
                 return r.getResult();
@@ -105,11 +107,14 @@ public class Alloy
 
     private boolean matchesRecipe(AlloyRecipe recipe)
     {
-        if (this.matchesRecipeExact(recipe)) return true;
-
-        Alloy alloy = new Alloy().add(this);
-        alloy.MAP.remove(recipe.getResult());
-        return alloy.matchesRecipeExact(recipe);
+        if (this.MAP.containsKey(recipe.getResult()))
+        {
+            Alloy other = new Alloy().add(this);
+            int resultAmount = other.MAP.remove(recipe.getResult());
+            other.totalAmount -= resultAmount;
+            return other.matchesRecipeExact(recipe);
+        }
+        return this.matchesRecipeExact(recipe);
     }
 
     private boolean matchesRecipeExact(AlloyRecipe recipe)

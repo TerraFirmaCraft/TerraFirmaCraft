@@ -25,9 +25,9 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
     public final ImmutableMap<Metal, Predicate<Float>> MAP;
     private final Metal result;
 
-    private AlloyRecipe(@Nonnull Metal result, ImmutableMap<Metal, Predicate<Float>> MAP)
+    private AlloyRecipe(@Nonnull Metal result, ImmutableMap<Metal, Predicate<Float>> alloyMap)
     {
-        this.MAP = MAP;
+        this.MAP = alloyMap;
         this.result = result;
 
         // This ensures that no metal result has more than one alloy recipe

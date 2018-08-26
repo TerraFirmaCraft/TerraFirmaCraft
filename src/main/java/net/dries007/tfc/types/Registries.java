@@ -37,9 +37,9 @@ public class Registries
         // Pre Block registries (dirty hack)
         newRegistry(TFCRegistryNames.ROCK_TYPE, RockCategory.class, true); // Required before: ROCK
         newRegistry(TFCRegistryNames.ROCK, Rock.class, true);
-        newRegistry(TFCRegistryNames.ORE, Ore.class, true); // Required before: METAL
+        newRegistry(TFCRegistryNames.METAL, Metal.class, true);// Required before: ORE, ALLOY_RECIPE
+        newRegistry(TFCRegistryNames.ORE, Ore.class, true);
         newRegistry(TFCRegistryNames.TREE, Tree.class, true);
-        newRegistry(TFCRegistryNames.METAL, Metal.class, true);
 
         // Normal registries
         newRegistry(TFCRegistryNames.ALLOY_RECIPE, AlloyRecipe.class, false);

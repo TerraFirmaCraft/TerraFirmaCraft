@@ -40,20 +40,10 @@ public class CapabilityItemHeat
         return stack.getCapability(ITEM_HEAT_CAPABILITY, null);
     }
 
-    public static float adjustTemp(float temp, float specificHeat, long ticksSinceUpdate)
+    public static float adjustTemp(float temp, float heatCapacity, long ticksSinceUpdate)
     {
-        float tempMod = 0.001f * specificHeat * ticksSinceUpdate * (float) ConfigTFC.GENERAL.temperatureModifier;
-        if (tempMod > Math.abs(0 - temp))
-        {
-            return 0;
-        }
-        else
-        {
-            if (0 > temp)
-                return temp + tempMod;
-            else
-                return temp -= tempMod;
-        }
+        float newTemp = temp - heatCapacity * (float) ticksSinceUpdate * (float) ConfigTFC.GENERAL.temperatureModifier;
+        return newTemp < 0 ? 0 : newTemp;
     }
 
     public static class ItemHeatStorage implements Capability.IStorage<IItemHeat>
