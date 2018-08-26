@@ -120,7 +120,7 @@ public final class ItemsTFC
             for (Metal metal : TFCRegistries.METALS.getValuesCollection())
             {
                 if (!type.hasType(metal) || type.supplier == null) continue;
-                simpleItems.add(register(r, "metal/" + type + "/" + metal.getRegistryName().getPath(), type.supplier.apply(metal, type), CT_METAL));
+                simpleItems.add(register(r, "metal/" + type.name().toLowerCase() + "/" + metal.getRegistryName().getPath(), type.supplier.apply(metal, type), CT_METAL));
             }
         }
 
