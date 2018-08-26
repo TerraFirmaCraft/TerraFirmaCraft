@@ -226,7 +226,7 @@ public class TEPitKiln extends TileEntity implements ITickable
     public void updateBlock()
     {
         IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 2); // sync TE
+        world.notifyBlockUpdate(pos, state, state, 3); // sync TE
         markDirty(); // make sure everything saves to disk
     }
 

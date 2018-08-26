@@ -6,6 +6,7 @@
 package net.dries007.tfc.util;
 
 import java.util.List;
+import javax.annotation.Nullable;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -30,6 +31,7 @@ public interface IMetalObject
         }
     }
 
+    @Nullable
     Metal getMetal(ItemStack stack);
 
     default boolean isSmeltable(ItemStack stack)

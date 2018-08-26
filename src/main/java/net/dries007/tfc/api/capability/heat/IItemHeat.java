@@ -51,29 +51,42 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
     /**
      * Adds the heat info tooltip when hovering over.
      * When overriding this to show additional information, fall back to IItemHeat.super.addHeatInfo()
+     * Note: if your object has multiple capabilities that write to NBT, make sure to fall back to super with clearStackNBT = false
+     * Otherwise, if heat ever turns to zero, this will clear the NBT of the stack whenever you hover over it (includes moving it / clicking, etc.)
+     *
      * @param stack The stack to add information to
      * @param text The list of tooltips
      */
     @SideOnly(Side.CLIENT)
-    default void addHeatInfo(ItemStack stack, List<String> text)
+    default void addHeatInfo(ItemStack stack, List<String> text, boolean clearStackNBT)
     {
         float temperature = getTemperature();
         Heat heat = Arrays.stream(Heat.values())
             .filter(x -> x.min < temperature && temperature <= x.max)
             .findFirst()
             .orElse(null);
-        if (heat == null)
-            return;
-
-        StringBuilder b = new StringBuilder();
-        b.append(I18n.format(Helpers.getEnumName(heat)));
-        for (int i = 1; i <= 4; i++)
+        if (heat != null)
         {
-            if (temperature <= heat.min + ((float) i * 0.2f) * (heat.max - heat.min))
-                continue;
-            b.append("\u2605");
+            StringBuilder b = new StringBuilder();
+            b.append(I18n.format(Helpers.getEnumName(heat)));
+            if (heat != Heat.BRILLIANT_WHITE)
+            {
+                for (int i = 1; i <= 4; i++)
+                {
+                    if (temperature <= heat.min + ((float) i * 0.2f) * (heat.max - heat.min))
+                        continue;
+                    b.append("\u2605");
+                }
+            }
+            text.add(heat.format + b.toString());
         }
-        text.add(heat.format + b.toString());
+        else if (clearStackNBT)
+        {
+            // If the heat = 0, update the stack. Only when the flag is set, to avoid overwriting stacks with other data
+            if (stack.hasTagCompound())
+                stack.setTagCompound(null);
+
+        }
     }
 
 }

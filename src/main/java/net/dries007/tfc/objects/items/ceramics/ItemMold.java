@@ -239,7 +239,7 @@ public class ItemMold extends ItemFiredPottery
 
         @SideOnly(Side.CLIENT)
         @Override
-        public void addHeatInfo(ItemStack stack, List<String> text)
+        public void addHeatInfo(ItemStack stack, List<String> text, boolean clearStackNBT)
         {
             Metal metal = getMetal();
             if (metal != null)
@@ -249,7 +249,7 @@ public class ItemMold extends ItemFiredPottery
                     desc += " - " + I18n.format("tfc.tooltip.liquid");
                 text.add(desc);
             }
-            IMoldHandler.super.addHeatInfo(stack, text);
+            IMoldHandler.super.addHeatInfo(stack, text, false); // Never clear the NBT based on heat alone
         }
 
         private void updateFluidData(FluidStack fluid)

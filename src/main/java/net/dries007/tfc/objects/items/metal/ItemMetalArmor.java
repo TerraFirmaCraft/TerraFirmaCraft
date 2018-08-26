@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.items.metal;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockDispenser;
@@ -28,15 +27,12 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Metal;
 
 import static net.minecraft.entity.SharedMonsterAttributes.ARMOR;
 import static net.minecraft.entity.SharedMonsterAttributes.ARMOR_TOUGHNESS;
 import static net.minecraft.item.ItemArmor.DISPENSER_BEHAVIOR;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
 {
     //todo: render items
@@ -80,7 +76,8 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn)
     {
         ItemStack heldItem = playerIn.getHeldItem(handIn);
         if (playerIn.getItemStackFromSlot(slot).isEmpty())
@@ -102,7 +99,8 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
     }
 
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack)
+    @Nonnull
+    public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot slot, ItemStack stack)
     {
         Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
         if (slot == this.slot)
@@ -155,7 +153,7 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
     }
 
     @Override
-    public boolean canStack(ItemStack stack)
+    public boolean canStack(@Nonnull ItemStack stack)
     {
         return false;
     }

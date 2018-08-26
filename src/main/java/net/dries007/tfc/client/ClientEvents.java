@@ -73,7 +73,6 @@ public class ClientEvents
     @SideOnly(Side.CLIENT)
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
     {
-        // todo: check if this is allowed to be displayed, debug/op only maybe?
         Minecraft mc = Minecraft.getMinecraft();
         List<String> list = event.getRight();
         if (ConfigTFC.GENERAL.debug && mc.gameSettings.showDebugInfo)
@@ -139,6 +138,7 @@ public class ClientEvents
         Item item = stack.getItem();
         List<String> tt = event.getToolTip();
 
+        // Stuff that should always be shown as part of the tooltip
         IItemSize size = CapabilityItemSize.getIItemSize(stack);
         if (size != null)
         {
@@ -147,10 +147,24 @@ public class ClientEvents
         IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         if (heat != null)
         {
-            heat.addHeatInfo(stack, tt);
+            heat.addHeatInfo(stack, tt, true);
         }
 
-        if (event.getFlags().isAdvanced())
+        if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
+        {
+            if (item instanceof IMetalObject)
+                ((IMetalObject) item).addMetalInfo(stack, tt);
+            if (item instanceof ItemBlock)
+            {
+                Block block = ((ItemBlock) item).getBlock();
+                if (block instanceof IMetalObject)
+                {
+                    ((IMetalObject) block).addMetalInfo(stack, tt);
+                }
+            }
+        }
+
+        if (ConfigTFC.GENERAL.debug) // Only added when debugging (data that the player should / does not need to see)
         {
             if (stack.hasTagCompound())
             {
@@ -164,16 +178,6 @@ public class ClientEvents
                 for (String toolClass : toolClasses)
                 {
                     tt.add(I18n.format("tfc.tooltip.toolclass", toolClass));
-                }
-            }
-            if (item instanceof IMetalObject)
-                ((IMetalObject) item).addMetalInfo(stack, tt);
-            if (item instanceof ItemBlock)
-            {
-                Block block = ((ItemBlock) item).getBlock();
-                if (block instanceof IMetalObject)
-                {
-                    ((IMetalObject) block).addMetalInfo(stack, tt);
                 }
             }
 
