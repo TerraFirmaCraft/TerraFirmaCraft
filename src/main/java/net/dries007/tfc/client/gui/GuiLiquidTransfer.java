@@ -27,14 +27,14 @@ public class GuiLiquidTransfer extends GuiContainerTFC
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/small_vessel_liquid.png");
     private final int slotIdx;
 
-    public GuiLiquidTransfer(Container container, EntityPlayer player, String translationKey, boolean offhand)
+    public GuiLiquidTransfer(Container container, EntityPlayer player, String translationKey, boolean mainhand)
     {
         super(container, player.inventory, BG_TEXTURE, translationKey);
 
-        if (offhand)
-            slotIdx = 40;
-        else
+        if (mainhand)
             slotIdx = playerInv.currentItem;
+        else
+            slotIdx = 40;
     }
 
     @Override

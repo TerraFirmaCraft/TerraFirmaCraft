@@ -833,9 +833,8 @@ for item_type in METAL_ITEMS:
     item(('mold', item_type, 'empty'), 'tfc:items/mold/%s/%s' % ('empty', item_type.split('_')[0]))
     for metal in ['copper', 'bronze', 'black_bronze', 'bismuth_bronze']:
         item(('mold', item_type, metal), 'tfc:items/mold/%s/%s' % (metal, item_type.split('_')[0]))
-
-item(('mold', 'ingot', 'empty'), 'tfc:items/mold/ingot/empty')
-item(('mold', 'ingot', 'unfired'), 'tfc:items/mold/ingot/unfired')
+for type in ['empty', 'unfired', 'unknown']:
+    item(('mold', 'ingot', type), 'tfc:items/mold/ingot/' + type)
 for metal in METAL_TYPES.keys():
     item(('mold', 'ingot', metal), 'tfc:items/mold/ingot/' + metal)
 del _heads

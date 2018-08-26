@@ -158,7 +158,7 @@ public class ItemSmallVessel extends ItemFiredPottery
         return input;
     }
 
-    // Extends ItemStackHandler for ease of use. Duplicates most of ItemHeatHandler anyway
+    // Extends ItemStackHandler for ease of use. Duplicates most of ItemHeatHandler functionality
     private class SmallVesselCapability extends ItemStackHandler implements ICapabilityProvider, ISmallVesselHandler
     {
         private final FluidTank tank;
@@ -198,6 +198,14 @@ public class ItemSmallVessel extends ItemFiredPottery
                 return getTemperature() < meltingPoint ? Mode.LIQUID_SOLID : Mode.LIQUID_MOLTEN;
             }
             return Mode.INVENTORY;
+        }
+
+        @Override
+        public float getTemperature()
+        {
+            return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalenderTFC.getTotalTime() - lastUpdateTick);
+            //TerraFirmaCraft.getLog().debug("Vals: {}, {}, {}, {}",temperature, heatCapacity, CalenderTFC.getTotalTime() - lastUpdateTick, s);
+            //return s;
         }
 
         @Nullable
@@ -313,15 +321,17 @@ public class ItemSmallVessel extends ItemFiredPottery
         }
 
         @Override
-        public float getTemperature()
-        {
-            return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalenderTFC.getTotalTime() - lastUpdateTick);
-        }
-
-        @Override
         public void setTemperature(float temperature)
         {
             this.temperature = temperature;
+            this.lastUpdateTick = CalenderTFC.getTotalTime();
+        }
+
+        @Override
+        public boolean isMolten()
+        {
+            TerraFirmaCraft.getLog().debug("Check Molten: {} >= {}", getTemperature(), meltingPoint);
+            return getTemperature() >= meltingPoint;
         }
 
         @SideOnly(Side.CLIENT)
@@ -330,15 +340,18 @@ public class ItemSmallVessel extends ItemFiredPottery
         {
             Metal metal = getMetal();
             if (metal != null)
-                text.add(TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount()));
+            {
+                String desc = TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount());
+                if (isMolten())
+                    desc += " - " + I18n.format("tfc.tooltip.liquid");
+                text.add(desc);
+            }
             ISmallVesselHandler.super.addHeatInfo(stack, text);
         }
 
         private void updateFluidData(FluidStack fluid)
         {
-            if (fluid == null)
-                return;
-            if (fluid.getFluid() instanceof FluidMetal)
+            if (fluid != null && fluid.getFluid() instanceof FluidMetal)
             {
                 Metal metal = ((FluidMetal) fluid.getFluid()).getMetal();
                 this.meltingPoint = metal.meltTemp;
@@ -346,7 +359,7 @@ public class ItemSmallVessel extends ItemFiredPottery
             }
             else
             {
-                this.meltingPoint = 1500;
+                this.meltingPoint = 1000;
                 this.heatCapacity = 1;
             }
 

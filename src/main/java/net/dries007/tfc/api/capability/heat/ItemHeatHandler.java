@@ -47,10 +47,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
             deserializeNBT(nbt);
     }
 
-    public ItemHeatHandler()
-    {
-        this(null, 0.35f, Float.MAX_VALUE);
-    }
+    public ItemHeatHandler() { } // This is here so you can do a custom implementation
 
     @Override
     public float getTemperature()

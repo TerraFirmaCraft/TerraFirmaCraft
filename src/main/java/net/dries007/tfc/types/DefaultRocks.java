@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.registries.TFCRegistryEvent;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
@@ -49,6 +50,7 @@ public class DefaultRocks
     @SubscribeEvent
     public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<RockCategory> event)
     {
+        TerraFirmaCraft.getLog().debug("Registering Default Rock Categories");
         event.getRegistry().registerAll(
             new RockCategory(IGNEOUS_INTRUSIVE, ToolMaterialsTFC.IG_IN, true, true, true, -0.4f, 0f),
             new RockCategory(IGNEOUS_EXTRUSIVE, ToolMaterialsTFC.IG_EX, true, true, true, -0.5f, 0f),
@@ -60,6 +62,7 @@ public class DefaultRocks
     @SubscribeEvent
     public static void onPreRegisterRock(TFCRegistryEvent.RegisterPreBlock<Rock> event)
     {
+        TerraFirmaCraft.getLog().debug("Registering Default Rocks");
         event.getRegistry().registerAll(
             new Rock(GRANITE, IGNEOUS_INTRUSIVE),
             new Rock(DIORITE, IGNEOUS_INTRUSIVE),
