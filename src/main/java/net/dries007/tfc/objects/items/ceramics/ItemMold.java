@@ -66,7 +66,8 @@ public class ItemMold extends ItemFiredPottery
                 private ModelResourceLocation FALLBACK = new ModelResourceLocation(item.getRegistryName().toString() + "/empty");
 
                 @Override
-                public ModelResourceLocation getModelLocation(ItemStack stack)
+                @Nonnull
+                public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack)
                 {
                     IFluidHandler cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
                     if (cap instanceof IMoldHandler)
@@ -74,8 +75,7 @@ public class ItemMold extends ItemFiredPottery
                         Metal metal = ((IMoldHandler) cap).getMetal();
                         if (metal != null)
                         {
-                            ModelResourceLocation loc = new ModelResourceLocation(stack.getItem().getRegistryName().toString() + "/" + metal.getRegistryName().getPath());
-                            return loc;
+                            return new ModelResourceLocation(stack.getItem().getRegistryName().toString() + "/" + metal.getRegistryName().getPath());
                         }
                     }
                     return FALLBACK;
@@ -86,7 +86,7 @@ public class ItemMold extends ItemFiredPottery
             ModelBakery.registerItemVariants(item, new ModelResourceLocation(item.getRegistryName().toString() + "/unknown"));
             ModelBakery.registerItemVariants(item, TFCRegistries.METALS.getValuesCollection()
                 .stream()
-                .filter(x -> item.type.hasMold && x.isToolMetal() && (x.tier == Metal.Tier.TIER_I || x.tier == Metal.Tier.TIER_II))
+                .filter(x -> item.type.hasMold && x.isToolMetal() && (x.getTier() == Metal.Tier.TIER_I || x.getTier() == Metal.Tier.TIER_II))
                 .map(x -> new ModelResourceLocation(item.getRegistryName().toString() + "/" + x.getRegistryName().getPath()))
                 .toArray(ModelResourceLocation[]::new));
         }
@@ -101,14 +101,15 @@ public class ItemMold extends ItemFiredPottery
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand)
     {
 
         ItemStack stack = player.getHeldItem(hand);
         if (!world.isRemote && !player.isSneaking())
         {
             IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-            if (cap.isMolten())
+            if (cap != null && cap.isMolten())
             {
                 player.openGui(TerraFirmaCraft.getInstance(), TFCGuiHandler.MOLD, world, 0, 0, 0);
             }
@@ -117,6 +118,7 @@ public class ItemMold extends ItemFiredPottery
     }
 
     @Override
+    @Nonnull
     public String getTranslationKey(ItemStack stack)
     {
         IFluidHandler capFluidHandler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
@@ -170,6 +172,7 @@ public class ItemMold extends ItemFiredPottery
 
         @Nullable
         @Override
+        @SuppressWarnings("unchecked")
         public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
         {
             return hasCapability(capability, facing) ? (T) this : null;
@@ -254,8 +257,8 @@ public class ItemMold extends ItemFiredPottery
             if (fluid != null && fluid.getFluid() instanceof FluidMetal)
             {
                 Metal metal = ((FluidMetal) fluid.getFluid()).getMetal();
-                this.meltingPoint = metal.meltTemp;
-                this.heatCapacity = metal.specificHeat;
+                this.meltingPoint = metal.getMeltTemp();
+                this.heatCapacity = metal.getSpecificHeat();
             }
             else
             {

@@ -11,8 +11,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -58,8 +56,8 @@ public class ContainerLiquidTransfer extends ContainerItemStack
                     ((IMoldHandler) outFluidHandler).setTemperature(((IMoldHandler) capFluidHandler).getTemperature());
 
                     // Save the NBT on both stacks
-                    stack.setTagCompound(((INBTSerializable<NBTTagCompound>) capFluidHandler).serializeNBT());
-                    outputStack.setTagCompound(((INBTSerializable<NBTTagCompound>) outFluidHandler).serializeNBT());
+                    stack.setTagCompound(((IMoldHandler) capFluidHandler).serializeNBT());
+                    outputStack.setTagCompound(((IMoldHandler) outFluidHandler).serializeNBT());
                 }
             }
         }

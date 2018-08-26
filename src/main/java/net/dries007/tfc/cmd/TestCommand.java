@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.cmd;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -15,9 +17,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class TestCommand extends CommandBase
 {
     @Override
@@ -36,7 +41,7 @@ public class TestCommand extends CommandBase
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         if (args.length != 1) throw new WrongUsageException("1 argument required.");
-        double heat = parseDouble(args[0], 0, 1500);
+        double heat = parseDouble(args[0], 0, 1600);
 
         Entity e = sender.getCommandSenderEntity();
         if (e instanceof EntityPlayer)

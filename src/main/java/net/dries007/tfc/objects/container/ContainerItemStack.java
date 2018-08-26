@@ -129,11 +129,6 @@ public abstract class ContainerItemStack extends Container
         return true;
     }
 
-    /**
-     * Add container slots
-     *
-     * @return The amount of slots added
-     */
     protected abstract void addContainerSlots();
 
     protected void addPlayerInventorySlots(InventoryPlayer playerInv)

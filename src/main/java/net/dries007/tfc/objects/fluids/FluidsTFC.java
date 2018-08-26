@@ -5,7 +5,7 @@
 
 package net.dries007.tfc.objects.fluids;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
@@ -58,7 +58,7 @@ public class FluidsTFC
         return allMetalFluids.values();
     }
 
-    @Nullable
+    @Nonnull
     public static Fluid getMetalFluid(Metal metal)
     {
         return allMetalFluids.get(metal);
@@ -107,7 +107,7 @@ public class FluidsTFC
             ImmutableMap.Builder<Metal, Fluid> b = ImmutableMap.builder();
 
             for (Metal metal : TFCRegistries.METALS.getValuesCollection())
-                registerFluid(b, metal, new FluidMetal(metal, metal.getRegistryName().getPath(), STILL, FLOW, metal.color));
+                registerFluid(b, metal, new FluidMetal(metal, metal.getRegistryName().getPath(), STILL, FLOW, metal.getColor()));
 
             allMetalFluids = b.build();
         }

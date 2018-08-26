@@ -20,7 +20,7 @@ public enum Heat
     YELLOW(1100f, 1300f, TextFormatting.YELLOW),
     YELLOW_WHITE(1300f, 1400f, TextFormatting.YELLOW),
     WHITE(1400f, 1500f, TextFormatting.WHITE),
-    BRILLIANT_WHITE(1500f, Float.MAX_VALUE, TextFormatting.WHITE);
+    BRILLIANT_WHITE(1500f, 1600f, TextFormatting.WHITE);
 
     final float min;
     final float max;

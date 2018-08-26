@@ -82,6 +82,7 @@ public class Alloy
         for (AlloyRecipe r : TFCRegistries.ALLOYS.getValuesCollection())
             if (matchesRecipe(r))
                 return r.getResult();
+        //noinspection ConstantConditions
         return Metal.UNKNOWN;
     }
 

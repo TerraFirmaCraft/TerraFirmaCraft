@@ -79,6 +79,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
 
     @Nullable
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
     {
         return hasCapability(capability, facing) ? (T) this : null;

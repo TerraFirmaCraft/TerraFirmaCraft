@@ -104,7 +104,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
 
     public boolean isValidLocation(float temp, float rain, float density)
     {
-        return getMinTemp() <= temp && getMaxTemp() >= temp && getMinRain() <= rain && getMaxRain() >= rain && density >= getMinDensity() && density <= getMaxDensity();
+        return minTemp <= temp && maxTemp >= temp && minRain <= rain && maxRain >= rain && minDensity <= density && maxDensity >= density;
     }
 
     public int getMaxGrowthRadius()
@@ -140,36 +140,6 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
     public float getMinGrowthTime()
     {
         return minGrowthTime;
-    }
-
-    public float getMinTemp()
-    {
-        return minTemp;
-    }
-
-    public float getMaxTemp()
-    {
-        return maxTemp;
-    }
-
-    public float getMinRain()
-    {
-        return minRain;
-    }
-
-    public float getMaxRain()
-    {
-        return maxRain;
-    }
-
-    public float getMinDensity()
-    {
-        return minDensity;
-    }
-
-    public float getMaxDensity()
-    {
-        return maxDensity;
     }
 
     public ITreeGenerator getGen()
