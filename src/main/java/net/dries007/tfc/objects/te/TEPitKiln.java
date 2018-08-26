@@ -45,7 +45,7 @@ public class TEPitKiln extends TileEntity implements ITickable
 
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
-    public static final int BURN_TICKS = 200;//8000; // 8 In-game Hours // todo: put back
+    public static final int BURN_TICKS = 8000; // 8 In-game Hours
     private final NonNullList<ItemStack> logs = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> straw = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);

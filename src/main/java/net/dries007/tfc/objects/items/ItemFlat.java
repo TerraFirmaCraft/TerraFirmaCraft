@@ -7,17 +7,14 @@ package net.dries007.tfc.objects.items;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Rock;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public final class ItemFlat extends ItemTFC
 {
     private static final Map<Rock, ItemFlat> ROCK_MAP = new HashMap<>();
@@ -36,13 +33,13 @@ public final class ItemFlat extends ItemTFC
     }
 
     @Override
-    public Size getSize(ItemStack stack)
+    public Size getSize(@Nonnull ItemStack stack)
     {
         return Size.NORMAL;
     }
 
     @Override
-    public Weight getWeight(ItemStack stack)
+    public Weight getWeight(@Nonnull ItemStack stack)
     {
         return Weight.MEDIUM;
     }
