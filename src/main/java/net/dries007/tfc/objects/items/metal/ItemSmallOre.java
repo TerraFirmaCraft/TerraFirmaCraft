@@ -7,11 +7,10 @@ package net.dries007.tfc.objects.items.metal;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
@@ -20,8 +19,6 @@ import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class ItemSmallOre extends ItemTFC implements IMetalObject
 {
     private static final Map<Ore, ItemSmallOre> MAP = new HashMap<>();
@@ -61,13 +58,13 @@ public class ItemSmallOre extends ItemTFC implements IMetalObject
     }
 
     @Override
-    public Size getSize(ItemStack stack)
+    public Size getSize(@Nonnull ItemStack stack)
     {
         return Size.SMALL;
     }
 
     @Override
-    public Weight getWeight(ItemStack stack)
+    public Weight getWeight(@Nonnull ItemStack stack)
     {
         return Weight.HEAVY;
     }

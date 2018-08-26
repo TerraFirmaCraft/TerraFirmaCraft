@@ -30,24 +30,6 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
         setRegistryName(result.getRegistryName());
     }
 
-    public AlloyRecipe add(@Nonnull Metal metal, float min)
-    {
-        return add(metal, x -> x >= min);
-    }
-
-    public AlloyRecipe add(@Nonnull Metal metal, float min, float max)
-    {
-        return add(metal, x -> x >= min && x <= max);
-    }
-
-    public AlloyRecipe add(@Nonnull Metal metal, @Nonnull Predicate<Float> condition)
-    {
-        if (MAP.containsKey(metal))
-            throw new IllegalArgumentException("The Alloy Recipe already contains an entry for that metal");
-        MAP.put(metal, condition);
-        return this;
-    }
-
     public Metal getResult()
     {
         return result;

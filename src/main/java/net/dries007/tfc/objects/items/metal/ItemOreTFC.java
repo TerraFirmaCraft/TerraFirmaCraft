@@ -7,13 +7,16 @@ package net.dries007.tfc.objects.items.metal;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
@@ -22,8 +25,6 @@ import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class ItemOreTFC extends ItemTFC implements IMetalObject
 {
     private static final Map<Ore, ItemOreTFC> MAP = new HashMap<>();
@@ -77,6 +78,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     }
 
     @Override
+    @Nonnull
     public String getTranslationKey(ItemStack stack)
     {
         Ore.Grade grade = getGradeFromStack(stack);
@@ -85,7 +87,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
     {
         if (!isInCreativeTab(tab)) return;
         if (ore.isGraded())
@@ -107,14 +109,21 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
         return getGradeFromStack(stack).smeltAmount;
     }
 
+    @Nullable
     @Override
-    public Size getSize(ItemStack stack)
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return ore.getMetal() != null ? new ItemHeatHandler(nbt, ore.getMetal().getSpecificHeat(), ore.getMetal().getMeltTemp()) : null;
+    }
+
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
     {
         return Size.SMALL;
     }
 
     @Override
-    public Weight getWeight(ItemStack stack)
+    public Weight getWeight(@Nonnull ItemStack stack)
     {
         return Weight.HEAVY;
     }

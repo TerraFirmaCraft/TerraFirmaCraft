@@ -8,15 +8,14 @@ package net.dries007.tfc.objects.items.metal;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -25,8 +24,6 @@ import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class ItemMetal extends ItemTFC implements IMetalObject
 {
     private static final Map<Metal, EnumMap<Metal.ItemType, ItemMetal>> TABLE = new HashMap<>();
@@ -68,7 +65,7 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     }
 
     @Override
-    public Size getSize(ItemStack stack)
+    public Size getSize(@Nonnull ItemStack stack)
     {
         switch (type)
         {
@@ -110,7 +107,7 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     }
 
     @Override
-    public Weight getWeight(ItemStack stack)
+    public Weight getWeight(@Nonnull ItemStack stack)
     {
         switch (type)
         {
@@ -137,7 +134,7 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     }
 
     @Override
-    public boolean canStack(ItemStack stack)
+    public boolean canStack(@Nonnull ItemStack stack)
     {
         switch (type)
         {

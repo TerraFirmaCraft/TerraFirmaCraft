@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.items.ceramics;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
@@ -34,7 +33,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.ISmallVesselHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
@@ -48,8 +46,6 @@ import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.CalenderTFC;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class ItemSmallVessel extends ItemFiredPottery
 {
     public final boolean glazed;
@@ -61,15 +57,8 @@ public class ItemSmallVessel extends ItemFiredPottery
     }
 
     @Override
-    public String getTranslationKey(ItemStack stack)
-    {
-        if (!glazed)
-            return super.getTranslationKey(stack);
-        return super.getTranslationKey(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
-    }
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand)
     {
 
         ItemStack stack = player.getHeldItem(hand);
@@ -96,7 +85,16 @@ public class ItemSmallVessel extends ItemFiredPottery
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    @Nonnull
+    public String getTranslationKey(ItemStack stack)
+    {
+        if (!glazed)
+            return super.getTranslationKey(stack);
+        return super.getTranslationKey(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
+    }
+
+    @Override
+    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
     {
         if (!isInCreativeTab(tab)) return;
 
@@ -115,19 +113,19 @@ public class ItemSmallVessel extends ItemFiredPottery
     }
 
     @Override
-    public boolean canStack(ItemStack stack)
+    public boolean canStack(@Nonnull ItemStack stack)
     {
         return false;
     }
 
     @Override
-    public Size getSize(ItemStack stack)
+    public Size getSize(@Nonnull ItemStack stack)
     {
         return Size.LARGE;
     }
 
     @Override
-    public Weight getWeight(ItemStack stack)
+    public Weight getWeight(@Nonnull ItemStack stack)
     {
         return Weight.HEAVY;
     }
@@ -229,6 +227,7 @@ public class ItemSmallVessel extends ItemFiredPottery
 
         @Nullable
         @Override
+        @SuppressWarnings("unchecked")
         public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
         {
             return hasCapability(capability, facing) ? (T) this : null;
@@ -334,7 +333,7 @@ public class ItemSmallVessel extends ItemFiredPottery
 
         @SideOnly(Side.CLIENT)
         @Override
-        public void addHeatInfo(ItemStack stack, List<String> text)
+        public void addHeatInfo(ItemStack stack, List<String> text, boolean clearStackNBT)
         {
             Metal metal = getMetal();
             if (metal != null)
@@ -344,10 +343,10 @@ public class ItemSmallVessel extends ItemFiredPottery
                     desc += " - " + I18n.format("tfc.tooltip.liquid");
                 text.add(desc);
             }
-            ISmallVesselHandler.super.addHeatInfo(stack, text);
+            ISmallVesselHandler.super.addHeatInfo(stack, text, false); // Never clear the NBT based on heat alone
         }
 
-        private void updateFluidData(FluidStack fluid)
+        private void updateFluidData(@Nullable FluidStack fluid)
         {
             if (fluid != null && fluid.getFluid() instanceof FluidMetal)
             {
