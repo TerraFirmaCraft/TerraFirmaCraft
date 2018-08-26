@@ -5,17 +5,13 @@
 
 package net.dries007.tfc.objects.items.ceramics;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nonnull;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-import mcp.MethodsReturnNonnullByDefault;
-
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class ItemUnfiredSmallVessel extends ItemUnfiredPottery
 {
     public final boolean glazed;
@@ -28,6 +24,7 @@ public class ItemUnfiredSmallVessel extends ItemUnfiredPottery
     }
 
     @Override
+    @Nonnull
     public String getTranslationKey(ItemStack stack)
     {
         if (!glazed)
@@ -36,7 +33,7 @@ public class ItemUnfiredSmallVessel extends ItemUnfiredPottery
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
     {
         if (!isInCreativeTab(tab)) return;
 
