@@ -30,7 +30,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.wood.ItemLogTFC;
@@ -226,7 +226,7 @@ public class TEPitKiln extends TileEntity implements ITickable
     public void updateBlock()
     {
         IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 2); // sync TE
+        world.notifyBlockUpdate(pos, state, state, 3); // sync TE
         markDirty(); // make sure everything saves to disk
     }
 

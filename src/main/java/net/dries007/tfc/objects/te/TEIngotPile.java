@@ -20,7 +20,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.items.metal.ItemIngot;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -43,15 +44,15 @@ public class TEIngotPile extends TileEntity
     @Override
     public void readFromNBT(NBTTagCompound tag)
     {
-        metal = tag.hasKey("metal") ? Metal.valueOf(tag.getString("metal")) : Metal.UNKNOWN;
-        count = tag.hasKey("count") ? tag.getInteger("count") : 1;
+        metal = TFCRegistries.METALS.getValue(new ResourceLocation(tag.getString("metal")));
+        count = tag.getInteger("count");
         super.readFromNBT(tag);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
-        tag.setString("metal", metal.name());
+        tag.setString("metal", (metal == null) ? Metal.UNKNOWN.toString() : metal.getRegistryName().toString());
         tag.setInteger("count", count);
         return super.writeToNBT(tag);
     }

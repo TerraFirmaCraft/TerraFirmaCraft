@@ -5,7 +5,8 @@
 
 package net.dries007.tfc.objects.blocks.metal;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -26,7 +27,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 
 @ParametersAreNonnullByDefault
@@ -34,7 +35,7 @@ import net.dries007.tfc.objects.items.metal.ItemAnvil;
 public class BlockAnvilTFC extends Block
 {
     public static final PropertyBool AXIS = PropertyBool.create("axis");
-    private static final EnumMap<Metal, BlockAnvilTFC> MAP = new EnumMap<>(Metal.class);
+    private static final Map<Metal, BlockAnvilTFC> MAP = new HashMap<>();
     private static final AxisAlignedBB AABB_Z = new AxisAlignedBB(0.1875, 0, 0, 0.8125, 0.625, 1);
     private static final AxisAlignedBB AABB_X = new AxisAlignedBB(0, 0, 0.1875, 1, 0.625, 0.8125);
 

@@ -183,12 +183,6 @@ public class BlockRockVariant extends Block
     }
 
     @Override
-    public int tickRate(World worldIn)
-    {
-        return 1; // todo: tickrate in vanilla is 2, in tfc1710 it's 10
-    }
-
-    @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         switch (type)

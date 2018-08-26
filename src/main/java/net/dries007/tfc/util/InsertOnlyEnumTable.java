@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Table;
 import com.google.common.collect.Tables;
 
+// todo: this isn't used anywhere anymore; remove?
 public class InsertOnlyEnumTable<R extends Enum<R>, C extends Enum<C>, T> implements Table<R, C, T>
 {
     private final EnumMap<R, EnumMap<C, T>> rowMap;

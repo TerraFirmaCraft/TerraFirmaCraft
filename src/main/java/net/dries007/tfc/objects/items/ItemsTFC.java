@@ -18,15 +18,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.api.types.RockCategory;
-import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.api.util.Size;
-import net.dries007.tfc.api.util.Weight;
+import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.Gem;
-import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.Powder;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -52,8 +49,9 @@ public final class ItemsTFC
     public static final ItemFireStarter FIRESTARTER = null;
     public static final ItemGoldPan GOLDPAN = null;
     public static final Item HAY = null;
-    @GameRegistry.ObjectHolder("mold/ingo/empty")
-    public static final ItemFiredPottery MOLD_INGOT_EMPTY = null;
+
+    @GameRegistry.ObjectHolder("mold/ingot")
+    public static final ItemMold MOLD_INGOT = null;
     @GameRegistry.ObjectHolder("ceramics/unfired/vessel")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_VERSSEL = null;
     @GameRegistry.ObjectHolder("ceramics/fired/vessel")
@@ -62,6 +60,7 @@ public final class ItemsTFC
     public static final ItemUnfiredSmallVessel CERAMICS_UNFIRED_VESSEL_GLAZED = null;
     @GameRegistry.ObjectHolder("ceramics/fired/vessel_glazed")
     public static final ItemSmallVessel CERAMICS_FIRED_VESSEL_GLAZED = null;
+
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
     private static ImmutableList<ItemGem> allGemItems;
@@ -118,10 +117,10 @@ public final class ItemsTFC
 
         for (Metal.ItemType type : Metal.ItemType.values())
         {
-            for (Metal metal : Metal.values())
+            for (Metal metal : TFCRegistries.METALS.getValuesCollection())
             {
-                if (!metal.hasType(type) || type.supplier == null) continue;
-                simpleItems.add(register(r, ("metal/" + type + "/" + metal).toLowerCase(), type.supplier.apply(metal, type), CT_METAL));
+                if (!type.hasType(metal) || type.supplier == null) continue;
+                simpleItems.add(register(r, "metal/" + type.name().toLowerCase() + "/" + metal.getRegistryName().getPath(), type.supplier.apply(metal, type), CT_METAL));
             }
         }
 
@@ -156,18 +155,16 @@ public final class ItemsTFC
         { // POTTERY
             for (Metal.ItemType type : Metal.ItemType.values())
             {
-                if (!type.hasMold) continue;
-                registerPottery(simpleItems, r, "mold/" + type.name().toLowerCase() + "/unfired", "mold/" + type.name().toLowerCase() + "/empty", new ItemUnfiredMold(new ItemMold(type), type));
-                for (Metal metal : Metal.values())
+                if (type.hasMold)
                 {
-                    if (!metal.hasType(type) || metal.tier != Metal.Tier.TIER_I) continue;
-                    simpleItems.add(register(r, ("mold/" + type.name() + "/" + metal.name()).toLowerCase(), new ItemFilledMold(type, metal), CT_POTTERY));
+                    // Not using registerPottery here because the ItemMold uses a custom ItemModelMesher, meaning it can't be in simpleItems
+                    ItemFiredPottery item = new ItemMold(type);
+                    register(r, "mold/" + type.name().toLowerCase(), item, CT_POTTERY);
+                    simpleItems.add(register(r, "mold/" + type.name().toLowerCase() + "/unfired", new ItemUnfiredMold(item, type), CT_POTTERY));
+                    //registerPottery(null, r, "mold/" + type.name().toLowerCase() + "/unfired", "mold/" + type.name().toLowerCase(), new ItemUnfiredMold(new ItemMold(type), type));
                 }
             }
-            for (Metal metal : Metal.values())
-                simpleItems.add(register(r, ("mold/ingot/" + metal.name()).toLowerCase(), new ItemFilledMold(Metal.ItemType.UNSHAPED, metal), CT_POTTERY));
 
-            registerPottery(simpleItems, r, "mold/ingot/unfired", "mold/ingot/empty", new ItemUnfiredPottery(new ItemFiredPottery()));
             registerPottery(simpleItems, r, "ceramics/unfired/vessel", "ceramics/fired/vessel", new ItemUnfiredSmallVessel(new ItemSmallVessel(false)));
             registerPottery(null, r, "ceramics/unfired/vessel_glazed", "ceramics/fired/vessel_glazed", new ItemUnfiredSmallVessel(new ItemSmallVessel(true)));
 
@@ -223,9 +220,9 @@ public final class ItemsTFC
 
     public static void init()
     {
-        for (Metal metal : Metal.values())
-            if (metal.toolMetal != null)
-                metal.toolMetal.setRepairItem(new ItemStack(ItemMetal.get(metal, Metal.ItemType.SCRAP)));
+        for (Metal metal : TFCRegistries.METALS.getValuesCollection())
+            if (metal.getToolMetal() != null)
+                metal.getToolMetal().setRepairItem(new ItemStack(ItemMetal.get(metal, Metal.ItemType.SCRAP)));
     }
 
     private static void registerPottery(Builder<Item> items, IForgeRegistry<Item> r, String nameUnfired, String nameFired, ItemUnfiredPottery unfiredPottery)
@@ -245,13 +242,8 @@ public final class ItemsTFC
         catch (Exception e)
         {
             // Problems
+            TerraFirmaCraft.getLog().warn("Unable to register an Item Block: No constructor was found with a parameter accepting a Block.", e);
         }
-    }
-
-    private static void registerItemBlock(IForgeRegistry<Item> r, Block block)
-    {
-        //noinspection ConstantConditions
-        r.register(new ItemBlock(block).setRegistryName(block.getRegistryName()).setCreativeTab(block.getCreativeTab()));
     }
 
     private static <T extends Item> T register(IForgeRegistry<Item> r, String name, T item, CreativeTabs ct)

@@ -5,13 +5,14 @@
 
 package net.dries007.tfc.api.types;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.registries.TFCRegistries;
 
 /**
  * todo: document API
@@ -26,6 +27,16 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
         this.graded = (metal != null);
         this.metal = metal;
         setRegistryName(name);
+    }
+
+    public Ore(ResourceLocation name, @Nonnull ResourceLocation metal)
+    {
+        this(name, TFCRegistries.METALS.getValue(metal));
+    }
+
+    public Ore(ResourceLocation name)
+    {
+        this(name, (Metal) null);
     }
 
     public boolean isGraded()

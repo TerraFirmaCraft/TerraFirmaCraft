@@ -62,9 +62,9 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      * @param hasBushes        will the tree generate small bushes
      * @param minGrowthTime    the amount of time (in in-game days) that this tree requires to grow
      */
-    private Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator gen,
-                 float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, float dominance,
-                 int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, boolean hasBushes, float minGrowthTime)
+    public Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator gen,
+                float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, float dominance,
+                int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, boolean hasBushes, float minGrowthTime)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -104,7 +104,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
 
     public boolean isValidLocation(float temp, float rain, float density)
     {
-        return getMinTemp() <= temp && getMaxTemp() >= temp && getMinRain() <= rain && getMaxRain() >= rain && density >= getMinDensity() && density <= getMaxDensity();
+        return minTemp <= temp && maxTemp >= temp && minRain <= rain && maxRain >= rain && minDensity <= density && maxDensity >= density;
     }
 
     public int getMaxGrowthRadius()
@@ -140,36 +140,6 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
     public float getMinGrowthTime()
     {
         return minGrowthTime;
-    }
-
-    public float getMinTemp()
-    {
-        return minTemp;
-    }
-
-    public float getMaxTemp()
-    {
-        return maxTemp;
-    }
-
-    public float getMinRain()
-    {
-        return minRain;
-    }
-
-    public float getMaxRain()
-    {
-        return maxRain;
-    }
-
-    public float getMinDensity()
-    {
-        return minDensity;
-    }
-
-    public float getMaxDensity()
-    {
-        return maxDensity;
     }
 
     public ITreeGenerator getGen()

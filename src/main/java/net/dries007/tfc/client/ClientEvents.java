@@ -33,10 +33,12 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.util.IItemSize;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
-import net.dries007.tfc.util.CapabilityItemSize;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
@@ -71,7 +73,6 @@ public class ClientEvents
     @SideOnly(Side.CLIENT)
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
     {
-        // todo: check if this is allowed to be displayed, debug/op only maybe?
         Minecraft mc = Minecraft.getMinecraft();
         List<String> list = event.getRight();
         if (ConfigTFC.GENERAL.debug && mc.gameSettings.showDebugInfo)
@@ -137,23 +138,20 @@ public class ClientEvents
         Item item = stack.getItem();
         List<String> tt = event.getToolTip();
 
+        // Stuff that should always be shown as part of the tooltip
         IItemSize size = CapabilityItemSize.getIItemSize(stack);
         if (size != null)
         {
             size.addSizeInfo(stack, tt);
         }
-
-        if (event.getFlags().isAdvanced())
+        IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+        if (heat != null)
         {
-            Set<String> toolClasses = item.getToolClasses(stack);
-            if (!toolClasses.isEmpty())
-            {
-                tt.add("");
-                for (String toolClass : toolClasses)
-                {
-                    tt.add(I18n.format("tfc.tooltip.toolclass", toolClass));
-                }
-            }
+            heat.addHeatInfo(stack, tt, true);
+        }
+
+        if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
+        {
             if (item instanceof IMetalObject)
                 ((IMetalObject) item).addMetalInfo(stack, tt);
             if (item instanceof ItemBlock)
@@ -162,6 +160,24 @@ public class ClientEvents
                 if (block instanceof IMetalObject)
                 {
                     ((IMetalObject) block).addMetalInfo(stack, tt);
+                }
+            }
+        }
+
+        if (ConfigTFC.GENERAL.debug) // Only added when debugging (data that the player should / does not need to see)
+        {
+            if (stack.hasTagCompound())
+            {
+                tt.add("NBT: " + stack.getTagCompound().toString());
+            }
+
+            Set<String> toolClasses = item.getToolClasses(stack);
+            if (!toolClasses.isEmpty())
+            {
+                tt.add("");
+                for (String toolClass : toolClasses)
+                {
+                    tt.add(I18n.format("tfc.tooltip.toolclass", toolClass));
                 }
             }
 
