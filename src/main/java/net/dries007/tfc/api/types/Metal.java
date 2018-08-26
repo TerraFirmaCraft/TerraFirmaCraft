@@ -25,11 +25,11 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     @GameRegistry.ObjectHolder("tfc:unknown")
     public static final Metal UNKNOWN = null;
 
-    public final Tier tier;
-    public final float specificHeat;
-    public final int meltTemp;
-    public final boolean usable;
-    public final int color;
+    private final Tier tier;
+    private final float specificHeat;
+    private final int meltTemp;
+    private final boolean usable;
+    private final int color;
 
     private final Item.ToolMaterial toolMetal;
 
@@ -45,7 +45,6 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
      * @param melt        melting point. See @link Heat for temperature scale. Similar to IRL melting point in celcius.
      * @param color       color of the metal when in fluid form. Used to autogenerate a fluid texture
      * @param toolMetal   The tool material. Null if metal is not able to create tools
-     * @param alloyRecipe The alloy recipe. Null if the metal is not an alloy
      */
     public Metal(@Nonnull ResourceLocation name, Tier tier, boolean usable, float sh, int melt, int color, @Nullable Item.ToolMaterial toolMetal)
     {
@@ -68,7 +67,27 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 
     public boolean isToolMetal()
     {
-        return toolMetal != null;
+        return getToolMetal() != null;
+    }
+
+    public Tier getTier()
+    {
+        return tier;
+    }
+
+    public float getSpecificHeat()
+    {
+        return specificHeat;
+    }
+
+    public int getMeltTemp()
+    {
+        return meltTemp;
+    }
+
+    public int getColor()
+    {
+        return color;
     }
 
     public enum Tier

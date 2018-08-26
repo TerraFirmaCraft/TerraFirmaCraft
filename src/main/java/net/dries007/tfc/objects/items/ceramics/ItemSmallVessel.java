@@ -138,7 +138,7 @@ public class ItemSmallVessel extends ItemFiredPottery
         NBTTagCompound nbt = input.getTagCompound();
         // Case 1: The input is a filled vessel
         IItemHandler capItemHandler = input.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (capItemHandler instanceof ISmallVesselHandler && capItemHandler != null)
+        if (capItemHandler instanceof ISmallVesselHandler)
         {
             ISmallVesselHandler cap = (ISmallVesselHandler) capItemHandler;
 
@@ -149,7 +149,7 @@ public class ItemSmallVessel extends ItemFiredPottery
                 // Fill with the liquid metal
                 cap.setFluidMode(true);
                 cap.fill(new FluidStack(FluidsTFC.getMetalFluid(alloy.getResult()), alloy.getAmount()), true);
-                cap.setTemperature(1500f);
+                cap.setTemperature(1600f);
                 nbt = cap.serializeNBT();
             }
 
@@ -204,8 +204,6 @@ public class ItemSmallVessel extends ItemFiredPottery
         public float getTemperature()
         {
             return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalenderTFC.getTotalTime() - lastUpdateTick);
-            //TerraFirmaCraft.getLog().debug("Vals: {}, {}, {}, {}",temperature, heatCapacity, CalenderTFC.getTotalTime() - lastUpdateTick, s);
-            //return s;
         }
 
         @Nullable
@@ -354,8 +352,8 @@ public class ItemSmallVessel extends ItemFiredPottery
             if (fluid != null && fluid.getFluid() instanceof FluidMetal)
             {
                 Metal metal = ((FluidMetal) fluid.getFluid()).getMetal();
-                this.meltingPoint = metal.meltTemp;
-                this.heatCapacity = metal.specificHeat;
+                this.meltingPoint = metal.getMeltTemp();
+                this.heatCapacity = metal.getSpecificHeat();
             }
             else
             {

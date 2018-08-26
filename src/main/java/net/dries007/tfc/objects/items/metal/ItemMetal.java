@@ -8,12 +8,16 @@ package net.dries007.tfc.objects.items.metal;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
@@ -142,5 +146,12 @@ public class ItemMetal extends ItemTFC implements IMetalObject
             default:
                 return true;
         }
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new ItemHeatHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
     }
 }

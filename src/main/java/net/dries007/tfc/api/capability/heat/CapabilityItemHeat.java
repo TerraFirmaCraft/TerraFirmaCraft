@@ -7,24 +7,18 @@
 package net.dries007.tfc.api.capability.heat;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.util.TFCConstants;
 
 public class CapabilityItemHeat
 {
-
-    private static final ResourceLocation ID = new ResourceLocation(TFCConstants.MOD_ID, "item_heat");
 
     @CapabilityInject(IItemHeat.class)
     public static Capability<IItemHeat> ITEM_HEAT_CAPABILITY = null;
@@ -32,12 +26,6 @@ public class CapabilityItemHeat
     public static void preInit()
     {
         CapabilityManager.INSTANCE.register(IItemHeat.class, new ItemHeatStorage(), ItemHeatHandler::new);
-    }
-
-    @Nullable
-    public static IItemHeat getIItemHeat(@Nonnull ItemStack stack)
-    {
-        return stack.getCapability(ITEM_HEAT_CAPABILITY, null);
     }
 
     public static float adjustTemp(float temp, float heatCapacity, long ticksSinceUpdate)

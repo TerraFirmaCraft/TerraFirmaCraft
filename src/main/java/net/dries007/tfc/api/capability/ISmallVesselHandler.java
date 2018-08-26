@@ -21,7 +21,7 @@ public interface ISmallVesselHandler extends IItemHandler, IFluidHandler, INBTSe
 
     /**
      * This sets the fluid mode. When fluid is empty, it defaults to item mode
-     * @param mode true = fluids, false = items
+     * @param fluidMode true = fluids, false = items
      */
     void setFluidMode(boolean fluidMode);
 

@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.registries.TFCRegistries;
@@ -48,8 +49,9 @@ public final class ItemsTFC
     public static final ItemFireStarter FIRESTARTER = null;
     public static final ItemGoldPan GOLDPAN = null;
     public static final Item HAY = null;
+
     @GameRegistry.ObjectHolder("mold/ingot")
-    public static final ItemFiredPottery MOLD_INGOT = null;
+    public static final ItemMold MOLD_INGOT = null;
     @GameRegistry.ObjectHolder("ceramics/unfired/vessel")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_VERSSEL = null;
     @GameRegistry.ObjectHolder("ceramics/fired/vessel")
@@ -58,6 +60,7 @@ public final class ItemsTFC
     public static final ItemUnfiredSmallVessel CERAMICS_UNFIRED_VESSEL_GLAZED = null;
     @GameRegistry.ObjectHolder("ceramics/fired/vessel_glazed")
     public static final ItemSmallVessel CERAMICS_FIRED_VESSEL_GLAZED = null;
+
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
     private static ImmutableList<ItemGem> allGemItems;
@@ -239,13 +242,8 @@ public final class ItemsTFC
         catch (Exception e)
         {
             // Problems
+            TerraFirmaCraft.getLog().warn("Unable to register an Item Block: No constructor was found with a parameter accepting a Block.", e);
         }
-    }
-
-    private static void registerItemBlock(IForgeRegistry<Item> r, Block block)
-    {
-        //noinspection ConstantConditions
-        r.register(new ItemBlock(block).setRegistryName(block.getRegistryName()).setCreativeTab(block.getCreativeTab()));
     }
 
     private static <T extends Item> T register(IForgeRegistry<Item> r, String name, T item, CreativeTabs ct)

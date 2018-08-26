@@ -18,8 +18,9 @@ import net.dries007.tfc.util.Helpers;
 
 /**
  * Interface for item size.
- * To implement this, you can (preffered) implement this interface on your Item / ItemBlock (preferred) or
+ * To implement this, you can (preferred) implement this interface on your Item / ItemBlock or
  * Expose this capability via Item#initCapabilities()
+ * Otherwise, your item will be assigned a default capability on creation
  */
 public interface IItemSize
 {
