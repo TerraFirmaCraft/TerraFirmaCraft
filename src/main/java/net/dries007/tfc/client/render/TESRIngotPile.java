@@ -11,8 +11,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.model.ModelIngotPile;
-import net.dries007.tfc.objects.Metal;
 import net.dries007.tfc.objects.te.TEIngotPile;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -35,7 +35,7 @@ public class TESRIngotPile extends TileEntitySpecialRenderer<TEIngotPile>
 
             Metal metal = te.getMetal();
             int count = te.getCount();
-            this.bindTexture(new ResourceLocation(MOD_ID, "textures/blocks/metal/" + metal.name() + ".png"));
+            this.bindTexture(new ResourceLocation(MOD_ID, "textures/blocks/metal/" + metal.getRegistryName().getPath() + ".png"));
             GlStateManager.pushMatrix();
             GlStateManager.translate(x, y, z);
 

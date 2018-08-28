@@ -8,8 +8,8 @@ package net.dries007.tfc.types;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.registries.TFCRegistryEvent;
 import net.dries007.tfc.api.types.Tree;
@@ -45,25 +45,25 @@ public class DefaultTrees
     /**
      * Simple ITreeGenerator instances.
      */
-    private static final ITreeGenerator GEN_NORMAL = new TreeGenNormal(1, 3);
-    private static final ITreeGenerator GEN_MEDIUM = new TreeGenNormal(2, 2);
-    private static final ITreeGenerator GEN_TALL = new TreeGenNormal(3, 3);
-    private static final ITreeGenerator GEN_CONIFER = new TreeGenVariants(false, 7);
-    private static final ITreeGenerator GEN_TROPICAL = new TreeGenVariants(true, 7);
-    private static final ITreeGenerator GEN_WILLOW = new TreeGenWillow();
-    private static final ITreeGenerator GEN_ACACIA = new TreeGenAcacia();
-    private static final ITreeGenerator GEN_KAPOK = new TreeGenKapok();
-    private static final ITreeGenerator GEN_SEQUOIA = new TreeGenSequoia();
+    public static final ITreeGenerator GEN_NORMAL = new TreeGenNormal(1, 3);
+    public static final ITreeGenerator GEN_MEDIUM = new TreeGenNormal(2, 2);
+    public static final ITreeGenerator GEN_TALL = new TreeGenNormal(3, 3);
+    public static final ITreeGenerator GEN_CONIFER = new TreeGenVariants(false, 7);
+    public static final ITreeGenerator GEN_TROPICAL = new TreeGenVariants(true, 7);
+    public static final ITreeGenerator GEN_WILLOW = new TreeGenWillow();
+    public static final ITreeGenerator GEN_ACACIA = new TreeGenAcacia();
+    public static final ITreeGenerator GEN_KAPOK = new TreeGenKapok();
+    public static final ITreeGenerator GEN_SEQUOIA = new TreeGenSequoia();
     /**
      * Composite ITreeGenerator (takes a weighted selection of multiple ITreeGenerators. Can be layered)
      */
-    private static final ITreeGenerator GEN_KAPOK_COMPOSITE = new TreeGenComposite().add(0.4f, GEN_TALL).add(0.6f, GEN_KAPOK);
+    public static final ITreeGenerator GEN_KAPOK_COMPOSITE = new TreeGenComposite().add(0.4f, GEN_TALL).add(0.6f, GEN_KAPOK);
 
     @SubscribeEvent
     public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<Tree> event)
     {
-        IForgeRegistry<Tree> r = event.getRegistry();
-        r.registerAll(
+        TerraFirmaCraft.getLog().debug("Registering Default Trees");
+        event.getRegistry().registerAll(
             new Tree.Builder(ACACIA, 30f, 210f, 19f, 31f, GEN_ACACIA).setRadius(3).setGrowthTime(11).setDensity(0.1f, 0.6f).build(),
             new Tree.Builder(ASH, 60f, 140f, -6f, 12f, GEN_NORMAL).build(),
             new Tree.Builder(ASPEN, 10f, 80f, -10f, 16f, GEN_MEDIUM).setGrowthTime(8).build(),

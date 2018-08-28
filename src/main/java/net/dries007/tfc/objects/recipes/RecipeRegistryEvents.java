@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.Metal;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 

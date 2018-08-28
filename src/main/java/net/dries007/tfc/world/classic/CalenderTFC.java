@@ -46,6 +46,11 @@ public class CalenderTFC
         return (int) (day - ((int) Math.floor(day / daysInMonth) * daysInMonth));
     }
 
+    public static long getTotalTime()
+    {
+        return time;
+    }
+
     public static long getTotalDays()
     {
         return time / TICKS_IN_DAY;

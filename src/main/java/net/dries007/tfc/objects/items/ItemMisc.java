@@ -6,17 +6,14 @@
 
 package net.dries007.tfc.objects.items;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 
-import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.util.IItemSize;
-import net.dries007.tfc.api.util.Size;
-import net.dries007.tfc.api.util.Weight;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class ItemMisc extends ItemTFC implements IItemSize
 {
     private final Size size;
@@ -30,13 +27,13 @@ public class ItemMisc extends ItemTFC implements IItemSize
     }
 
     @Override
-    public Size getSize(ItemStack stack)
+    public Size getSize(@Nonnull ItemStack stack)
     {
         return size;
     }
 
     @Override
-    public Weight getWeight(ItemStack stack)
+    public Weight getWeight(@Nonnull ItemStack stack)
     {
         return weight;
     }

@@ -5,7 +5,8 @@
 
 package net.dries007.tfc.objects.blocks.metal;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -29,7 +30,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.items.metal.ItemSheet;
 
 @MethodsReturnNonnullByDefault
@@ -37,7 +38,7 @@ import net.dries007.tfc.objects.items.metal.ItemSheet;
 public class BlockSheet extends Block
 {
     public static final PropertyDirection FACE = PropertyDirection.create("face");
-    private static final EnumMap<Metal, BlockSheet> MAP = new EnumMap<>(Metal.class);
+    private static final Map<Metal, BlockSheet> MAP = new HashMap<>();
     private static final AxisAlignedBB[] SHEET_AABB = new AxisAlignedBB[] {
         new AxisAlignedBB(0d, 0.9375d, 0d, 1d, 1d, 1d),
         new AxisAlignedBB(0d, 0d, 0d, 1d, 0.0625d, 1d),
