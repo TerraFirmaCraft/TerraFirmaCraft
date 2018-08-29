@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.api.capability.heat;
@@ -19,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.util.Helpers;
 
 /**
- * It is reccomended that if you extend ItemHeatHandler rather than implement this directly.
+ * It is recommended that if you extend ItemHeatHandler rather than implement this directly.
  * If you do extend this, look at ItemHeatHandler to observe how heat decays over time.
  */
 public interface IItemHeat extends INBTSerializable<NBTTagCompound>

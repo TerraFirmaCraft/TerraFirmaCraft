@@ -78,6 +78,11 @@ public class ConfigTFC
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifier")
         public double temperatureModifier = 0.5;
+
+        @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 ingame hour), default is 8 hours.")
+        @Config.RangeInt(min = 20)
+        @Config.LangKey("config." + MOD_ID + ".general.temperatureModifier")
+        public int pitKilnTime = 8000;
     }
 
     public static class ClientCFG

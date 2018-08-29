@@ -15,13 +15,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.cmd.HeatCommand;
 import net.dries007.tfc.cmd.StripWorldCommand;
-import net.dries007.tfc.cmd.TestCommand;
 import net.dries007.tfc.cmd.TreeGenCommand;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -159,7 +159,7 @@ public class TerraFirmaCraft
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
         event.registerServerCommand(new StripWorldCommand());
         event.registerServerCommand(new TreeGenCommand());
-        event.registerServerCommand(new TestCommand());
+        event.registerServerCommand(new HeatCommand());
     }
 
     @Mod.EventHandler

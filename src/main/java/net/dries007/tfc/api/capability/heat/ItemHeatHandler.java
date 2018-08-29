@@ -17,7 +17,7 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 
 /**
  * This is an implementation of ItemHeat that automatically cools down over time
- * Prefer extending or using this than implenting IItemHeat directly
+ * Prefer extending or using this than implementing IItemHeat directly
  * Exceptions if you want to extend another capability object (see SmallVessel) but you should still implement this functionality somewhere
  *
  * todo: make this into an interface with defaults?
