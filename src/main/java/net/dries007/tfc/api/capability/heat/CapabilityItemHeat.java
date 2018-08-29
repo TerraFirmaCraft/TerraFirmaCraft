@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.api.capability.heat;
@@ -19,7 +18,6 @@ import net.dries007.tfc.ConfigTFC;
 
 public class CapabilityItemHeat
 {
-
     @CapabilityInject(IItemHeat.class)
     public static Capability<IItemHeat> ITEM_HEAT_CAPABILITY = null;
 

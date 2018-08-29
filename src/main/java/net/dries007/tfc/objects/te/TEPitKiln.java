@@ -30,6 +30,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -45,7 +46,6 @@ public class TEPitKiln extends TileEntity implements ITickable
 
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
-    public static final int BURN_TICKS = 8000; // 8 In-game Hours
     private final NonNullList<ItemStack> logs = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> straw = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
@@ -261,7 +261,7 @@ public class TEPitKiln extends TileEntity implements ITickable
         {
             if (!world.isSideSolid(pos.offset(facing), facing.getOpposite())) return false;
         }
-        burnTicksToGo = BURN_TICKS;
+        burnTicksToGo = ConfigTFC.GENERAL.pitKilnTime;
         updateBlock();
         world.setBlockState(above, Blocks.FIRE.getDefaultState());
         return true;

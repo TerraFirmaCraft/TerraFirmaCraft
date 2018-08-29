@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.cmd;
@@ -23,7 +22,7 @@ import net.dries007.tfc.api.capability.heat.IItemHeat;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class TestCommand extends CommandBase
+public class HeatCommand extends CommandBase
 {
     @Override
     public String getName()
