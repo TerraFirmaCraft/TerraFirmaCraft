@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.api.capability.heat;
@@ -20,6 +19,8 @@ import net.dries007.tfc.world.classic.CalenderTFC;
  * This is an implementation of ItemHeat that automatically cools down over time
  * Prefer extending or using this than implenting IItemHeat directly
  * Exceptions if you want to extend another capability object (see SmallVessel) but you should still implement this functionality somewhere
+ *
+ * todo: make this into an interface with defaults?
  */
 public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>, IItemHeat
 {

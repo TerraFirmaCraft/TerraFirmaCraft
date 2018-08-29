@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.inventory;
@@ -42,6 +41,7 @@ public class SlotSized extends SlotItemHandler
     @Override
     public boolean isItemValid(@Nonnull ItemStack stack)
     {
+        // todo: check super
         IItemSize size = CapabilityItemSize.getIItemSize(stack);
         if (size == null)
             return false;

@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -46,8 +47,6 @@ public class OreSpawnData
 
     public static void preInit(File dir)
     {
-        TerraFirmaCraft.getLog().info("Loading or creating ore generation config file");
-
         File tfcDir = new File(dir, MOD_ID);
 
         if (!tfcDir.exists() && !tfcDir.mkdir()) throw new Error("Problem creating TFC config directory.");
@@ -69,13 +68,11 @@ public class OreSpawnData
                 throw new Error("Error reading config file.", e);
             }
         }
-        if (Strings.isNullOrEmpty(str))
+        else
         {
             try
             {
-                FileUtils.copyInputStreamToFile(OreSpawnData.class.getResourceAsStream("/assets/tfc/config/ore_spawn_data.json"), genFile);
-                str = FileUtils.readFileToString(genFile, Charset.defaultCharset());
-                if (Strings.isNullOrEmpty(str)) throw new RuntimeException("Default entry is empty... wut did u do");
+                str = IOUtils.toString(OreSpawnData.class.getResourceAsStream("/assets/tfc/config/ore_spawn_data.json"), Charset.defaultCharset());
             }
             catch (IOException e)
             {

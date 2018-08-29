@@ -137,7 +137,7 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable, ITileEntity
     @Override
     public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, IBlockState iBlockState)
     {
-        TerraFirmaCraft.getLog().info("canUseBoneMeal called");
+        TerraFirmaCraft.getLog().debug("canUseBoneMeal called");
         return true;
     }
 

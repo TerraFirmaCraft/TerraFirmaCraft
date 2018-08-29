@@ -43,6 +43,7 @@ public class TFCGuiHandler implements IGuiHandler
     {
         BlockPos pos = new BlockPos(x, y, z);
         ItemStack stack;
+        // todo: clean up, make the on-off hand selection happen once.
         switch (ID)
         {
             case LOG_PILE:

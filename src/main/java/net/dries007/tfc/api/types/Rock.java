@@ -44,6 +44,12 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         return rockCategory;
     }
 
+    @Override
+    public String toString()
+    {
+        return String.valueOf(getRegistryName());
+    }
+
     public enum Type
     {
         RAW(Material.ROCK, NO_FALL, false, BlockRockRaw::new), // Todo: add collapsing when broken

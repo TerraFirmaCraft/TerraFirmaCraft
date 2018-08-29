@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.types;
@@ -11,7 +10,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.registries.TFCRegistryEvent;
 import net.dries007.tfc.api.types.AlloyRecipe;
 import net.dries007.tfc.api.types.Metal;
@@ -104,7 +102,6 @@ public class DefaultMetals
     @SubscribeEvent
     public static void onPreRegisterOre(TFCRegistryEvent.RegisterPreBlock<Ore> event)
     {
-        TerraFirmaCraft.getLog().debug("Registering Default Ores");
         event.getRegistry().registerAll(
             new Ore(NATIVE_COPPER, COPPER),
             new Ore(NATIVE_GOLD, GOLD),
@@ -147,7 +144,6 @@ public class DefaultMetals
     @SubscribeEvent
     public static void onPreRegisterMetal(TFCRegistryEvent.RegisterPreBlock<Metal> event)
     {
-        TerraFirmaCraft.getLog().debug("Registering Default Metals");
         event.getRegistry().registerAll(
             new Metal(BISMUTH, TIER_I, true, 0.14f, 270, 0xFF486B72, null),
             new Metal(BISMUTH_BRONZE, TIER_I, true, 0.35f, 985, 0xFF418E4F, ToolMaterialsTFC.BISMUTH_BRONZE),
@@ -184,7 +180,6 @@ public class DefaultMetals
     @SubscribeEvent
     public static void onRegisterAlloyRecipe(RegistryEvent.Register<AlloyRecipe> event)
     {
-        TerraFirmaCraft.getLog().debug("Registering Default Alloys");
         event.getRegistry().registerAll(
             new AlloyRecipe.Builder(BISMUTH_BRONZE).add(ZINC, 0.2f, 0.3f).add(COPPER, 0.5f, 0.65f).add(BISMUTH, 0.1f, 0.2f).build(),
             new AlloyRecipe.Builder(BLACK_BRONZE).add(COPPER, 0.5f, 0.7f).add(SILVER, 0.1f, 0.25f).add(GOLD, 0.1f, 0.25f).build(),
