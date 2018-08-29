@@ -242,7 +242,7 @@ public final class ItemsTFC
         catch (Exception e)
         {
             // Problems
-            TerraFirmaCraft.getLog().warn("Unable to register an Item Block: No constructor was found with a parameter accepting a Block.", e);
+            TerraFirmaCraft.getLog().warn("[Please inform developers] Unable to register an Item Block: No constructor was found with a parameter accepting a Block.", e);
         }
     }
 

@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.api.types;
@@ -88,6 +87,12 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     public int getColor()
     {
         return color;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.valueOf(getRegistryName());
     }
 
     public enum Tier

@@ -25,7 +25,7 @@ public final class CreativeTabsTFC
     public static final CreativeTabs CT_DECORATIONS = new TFCCreativeTab("decorations", "tfc:wall/cobble/granite");
     public static final CreativeTabs CT_METAL = new TFCCreativeTab("metal", "tfc:metal/ingot/bronze");
     public static final CreativeTabs CT_GEMS = new TFCCreativeTab("gems", "tfc:gem/diamond");
-    public static final CreativeTabs CT_POTTERY = new TFCCreativeTab("pottery", "tfc:mold/axe_head/bronze");
+    public static final CreativeTabs CT_POTTERY = new TFCCreativeTab("pottery", "tfc:mold/ingot");
     public static final CreativeTabs CT_MISC = new TFCCreativeTab("misc", "tfc:wand");
 
     private static class TFCCreativeTab extends CreativeTabs
@@ -46,7 +46,7 @@ public final class CreativeTabsTFC
             ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(iconResourceLocation));
             if (!stack.isEmpty()) return stack;
 
-            TerraFirmaCraft.getLog().error("No icon stack for creative tab {}", getTabLabel());
+            TerraFirmaCraft.getLog().error("[Please inform developers] No icon stack for creative tab {}", getTabLabel());
             return new ItemStack(Items.STICK);
         }
     }

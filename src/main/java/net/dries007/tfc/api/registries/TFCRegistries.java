@@ -38,12 +38,12 @@ public class TFCRegistries
             {
                 if (!field.getType().isAssignableFrom(IForgeRegistry.class))
                 {
-                    TerraFirmaCraft.getLog().debug("Weird field? (Not a registry) {}", field);
+                    TerraFirmaCraft.getLog().warn("[Please inform developers] Weird field? (Not a registry) {}", field);
                     continue;
                 }
                 if ((field.getModifiers() & publicStaticFinal) != publicStaticFinal)
                 {
-                    TerraFirmaCraft.getLog().debug("Weird field? (not Public Static Final) {}", field);
+                    TerraFirmaCraft.getLog().warn("[Please inform developers] Weird field? (not Public Static Final) {}", field);
                     continue;
                 }
                 if (field.get(null) == null)

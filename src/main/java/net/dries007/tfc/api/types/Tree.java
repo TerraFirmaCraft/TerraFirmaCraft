@@ -147,6 +147,12 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         return gen;
     }
 
+    @Override
+    public String toString()
+    {
+        return String.valueOf(getRegistryName());
+    }
+
     public static class Builder
     {
         private float minTemp;

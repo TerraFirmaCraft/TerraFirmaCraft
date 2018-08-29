@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.container;
@@ -16,6 +15,7 @@ import net.dries007.tfc.objects.inventory.SlotSized;
 
 public class ContainerSmallVessel extends ContainerItemStack
 {
+    // todo: make cool slower, it's way to fast now.
 
     public ContainerSmallVessel(InventoryPlayer playerInv, ItemStack stack)
     {

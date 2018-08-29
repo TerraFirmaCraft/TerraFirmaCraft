@@ -49,6 +49,12 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
         return metal;
     }
 
+    @Override
+    public String toString()
+    {
+        return String.valueOf(getRegistryName());
+    }
+
     public enum Grade implements IStringSerializable
     {
         NORMAL(25), POOR(15), RICH(35);

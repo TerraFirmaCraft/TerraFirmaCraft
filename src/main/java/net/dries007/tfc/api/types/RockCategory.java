@@ -80,6 +80,12 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
         return caveFreqMod;
     }
 
+    @Override
+    public String toString()
+    {
+        return String.valueOf(getRegistryName());
+    }
+
     public enum Layer
     {
         BOTTOM(3, x -> x.getRockCategory().layer3),

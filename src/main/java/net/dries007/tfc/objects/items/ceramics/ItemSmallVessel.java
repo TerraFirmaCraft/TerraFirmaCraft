@@ -159,6 +159,8 @@ public class ItemSmallVessel extends ItemFiredPottery
     // Extends ItemStackHandler for ease of use. Duplicates most of ItemHeatHandler functionality
     private class SmallVesselCapability extends ItemStackHandler implements ICapabilityProvider, ISmallVesselHandler
     {
+        // todo: make cool slower.
+
         private final FluidTank tank;
 
         private float heatCapacity;

@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.api.types;
@@ -33,6 +32,12 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
     public Metal getResult()
     {
         return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.valueOf(getRegistryName());
     }
 
     public static class Builder

@@ -186,7 +186,7 @@ public class BlockLogTFC extends BlockLog
 
     private boolean removeTree(World world, BlockPos pos, @Nullable EntityPlayer player, ItemStack stack, int flags)
     {
-        TerraFirmaCraft.getLog().info("Natural log harvesting");
+        TerraFirmaCraft.getLog().debug("Natural log harvesting");
         int maxLogs = Integer.MAX_VALUE;
         if (!stack.isEmpty())
             maxLogs = 1 + stack.getMaxDamage() - stack.getItemDamage();
@@ -213,7 +213,7 @@ public class BlockLogTFC extends BlockLog
                 }
             }
         }
-        TerraFirmaCraft.getLog().info("Logs to break + " + maxLogs + " in: " + logs);
+        TerraFirmaCraft.getLog().debug("Logs to break + {} in: {}", maxLogs, logs);
         // sort the list in terms of max distance to the original tree
         logs.sort(Comparator.comparing(x -> x.distanceSq(pos)));
         Collections.reverse(logs);

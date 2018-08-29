@@ -9,7 +9,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.registries.TFCRegistryEvent;
 import net.dries007.tfc.api.types.Tree;
@@ -62,7 +61,6 @@ public class DefaultTrees
     @SubscribeEvent
     public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<Tree> event)
     {
-        TerraFirmaCraft.getLog().debug("Registering Default Trees");
         event.getRegistry().registerAll(
             new Tree.Builder(ACACIA, 30f, 210f, 19f, 31f, GEN_ACACIA).setRadius(3).setGrowthTime(11).setDensity(0.1f, 0.6f).build(),
             new Tree.Builder(ASH, 60f, 140f, -6f, 12f, GEN_NORMAL).build(),
