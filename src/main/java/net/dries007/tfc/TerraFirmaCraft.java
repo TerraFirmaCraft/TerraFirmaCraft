@@ -20,6 +20,7 @@ import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.client.TFCKeybindings;
 import net.dries007.tfc.cmd.HeatCommand;
 import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.cmd.TreeGenCommand;
@@ -126,6 +127,11 @@ public class TerraFirmaCraft
 
         OreDictionaryHelper.init();
         ItemsTFC.init();
+
+        if (event.getSide().isClient())
+        {
+            TFCKeybindings.init();
+        }
 
         worldTypeTFC = new WorldTypeTFC();
 //        TreeRegistry.loadTrees();
