@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
@@ -150,5 +151,23 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
         return new ItemHeatHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
+    }
+
+    @Override
+    public EnumRarity getRarity(ItemStack stack)
+    {
+        switch (metal.getTier())
+        {
+            case TIER_I:
+            case TIER_II:
+                return EnumRarity.COMMON;
+            case TIER_III:
+                return EnumRarity.UNCOMMON;
+            case TIER_IV:
+                return EnumRarity.RARE;
+            case TIER_V:
+                return EnumRarity.EPIC;
+        }
+        return super.getRarity(stack);
     }
 }

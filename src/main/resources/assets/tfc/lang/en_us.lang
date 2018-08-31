@@ -8,6 +8,10 @@ tfc.tooltip.units=%d units
 tfc.tooltip.smelting=Smelt in %s
 tfc.tooltip.liquid=Liquid
 
+## Keybindings
+
+tfc.key.craft=Crafting GUI
+
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=Spawn Fuzzing Radius
 createWorld.customize.custom.flatbedrock=Flat Bedrock
