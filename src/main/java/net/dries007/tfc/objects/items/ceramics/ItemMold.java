@@ -10,9 +10,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.client.renderer.ItemMeshDefinition;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,7 +20,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,7 +36,6 @@ import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
-import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.fluids.FluidMetal;
@@ -54,42 +49,6 @@ public class ItemMold extends ItemFiredPottery
     public static ItemMold get(Metal.ItemType category)
     {
         return MAP.get(category);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static void registerModels()
-    {
-        for (ItemMold item : MAP.values())
-        {
-            ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition()
-            {
-                private ModelResourceLocation FALLBACK = new ModelResourceLocation(item.getRegistryName().toString() + "/empty");
-
-                @Override
-                @Nonnull
-                public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack)
-                {
-                    IFluidHandler cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-                    if (cap instanceof IMoldHandler)
-                    {
-                        Metal metal = ((IMoldHandler) cap).getMetal();
-                        if (metal != null)
-                        {
-                            return new ModelResourceLocation(stack.getItem().getRegistryName().toString() + "/" + metal.getRegistryName().getPath());
-                        }
-                    }
-                    return FALLBACK;
-                }
-            });
-
-            ModelBakery.registerItemVariants(item, new ModelResourceLocation(item.getRegistryName().toString() + "/empty"));
-            ModelBakery.registerItemVariants(item, new ModelResourceLocation(item.getRegistryName().toString() + "/unknown"));
-            ModelBakery.registerItemVariants(item, TFCRegistries.METALS.getValuesCollection()
-                .stream()
-                .filter(x -> item.type.hasMold && x.isToolMetal() && (x.getTier() == Metal.Tier.TIER_I || x.getTier() == Metal.Tier.TIER_II))
-                .map(x -> new ModelResourceLocation(item.getRegistryName().toString() + "/" + x.getRegistryName().getPath()))
-                .toArray(ModelResourceLocation[]::new));
-        }
     }
 
     public final Metal.ItemType type;
@@ -138,6 +97,20 @@ public class ItemMold extends ItemFiredPottery
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
         return new FilledMoldCapability(nbt);
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack itemStack)
+    {
+        if (type.moldReturnRate >= 1)
+            return new ItemStack(itemStack.getItem(), itemStack.getCount(), itemStack.getMetadata());
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean hasContainerItem(ItemStack stack)
+    {
+        return type.moldReturnRate >= 1;
     }
 
     // Extends ItemHeatHandler for ease of use

@@ -5,6 +5,8 @@
 
 package net.dries007.tfc;
 
+import java.util.Random;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.util.ResourceLocation;
@@ -24,4 +26,6 @@ public final class Constants
         .create();
 
     public static final String GUI_FACTORY = "net.dries007.tfc.client.TFCModGuiFactory";
+
+    public static final Random RNG = new Random();
 }

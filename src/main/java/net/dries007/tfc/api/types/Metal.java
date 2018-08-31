@@ -106,8 +106,8 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 
     public enum ItemType
     {
-        UNSHAPED(false, 100, null), // Special case, because it's a pottery item
-        INGOT(false, 100, ItemIngot::new, true),
+        UNSHAPED(false, 100, null), // Special case, because it's a pottery item todo: why is this used? Isn't ingot good enough?
+        INGOT(false, 100, ItemIngot::new, true, 0.5f), // todo: change or make configurable.
         DOUBLE_INGOT(false, 200),
         SCRAP(false, 100),
         DUST(false, 100),
@@ -163,14 +163,21 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         public final boolean toolItem;
         public final int smeltAmount;
         public final boolean hasMold;
+        public final float moldReturnRate; // Used as 'if (Constants.RNG.nextFloat() > type.moldReturnRate) return Empty'
         public final BiFunction<Metal, ItemType, Item> supplier;
 
-        ItemType(boolean toolItem, int smeltAmount, BiFunction<Metal, ItemType, Item> supplier, boolean hasMold)
+        ItemType(boolean toolItem, int smeltAmount, BiFunction<Metal, ItemType, Item> supplier, boolean hasMold, float moldReturnRate)
         {
             this.toolItem = toolItem;
             this.smeltAmount = smeltAmount;
             this.supplier = supplier;
             this.hasMold = hasMold;
+            this.moldReturnRate = moldReturnRate;
+        }
+
+        ItemType(boolean toolItem, int smeltAmount, BiFunction<Metal, ItemType, Item> supplier, boolean hasMold)
+        {
+            this(toolItem, smeltAmount, supplier, hasMold, 0);
         }
 
         ItemType(boolean toolItem, int smeltAmount, boolean hasMold)

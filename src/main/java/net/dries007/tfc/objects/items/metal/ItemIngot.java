@@ -42,21 +42,22 @@ public class ItemIngot extends ItemMetal implements IPlacableItem
 
         ItemIngot item = (ItemIngot) stack.getItem();
         //noinspection ConstantConditions
-        if (!(world.getBlockState(pos).getBlock() == BlocksTFC.INGOT_PILE))
+        if (world.getBlockState(pos).getBlock() != BlocksTFC.INGOT_PILE)
         {
-            if (facing == EnumFacing.UP && world.getBlockState(pos).isNormalCube())
+            if (facing == EnumFacing.UP && world.getBlockState(pos).isSideSolid(world, pos.down(), EnumFacing.UP))
             {
                 if (!world.isRemote)
                 {
+                    BlockPos up = pos.up();
                     //noinspection ConstantConditions
-                    world.setBlockState(pos.up(), BlocksTFC.INGOT_PILE.getDefaultState());
-                    TEIngotPile te = Helpers.getTE(world, pos.up(), TEIngotPile.class);
+                    world.setBlockState(up, BlocksTFC.INGOT_PILE.getDefaultState());
+                    TEIngotPile te = Helpers.getTE(world, up, TEIngotPile.class);
                     if (te != null)
                     {
                         te.setMetal(item.metal);
                         te.setCount(1);
                     }
-                    world.playSound(null, pos.up(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.3F, 1.5F);
+                    world.playSound(null, up, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.3F, 1.5F);
 
                 }
                 return true;
@@ -75,10 +76,10 @@ public class ItemIngot extends ItemMetal implements IPlacableItem
                 if (stateTop.getBlock() == BlocksTFC.INGOT_PILE)
                 {
                     TEIngotPile te = Helpers.getTE(world, posTop, TEIngotPile.class);
-                    if (te.getCount() < 64)
+                    if (te.getCount() < 64 && (te.getMetal() == item.metal))
                     {
                         te.setCount(te.getCount() + 1);
-                        world.playSound(null, pos.up(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.3F, 1.5F);
+                        world.playSound(null, posTop, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.3F, 1.5F);
                         return true;
                     }
                 }
