@@ -77,6 +77,7 @@ public class EntityFallingBlockTFC extends Entity
         dataManager.register(BLOCK, Optional.absent());
     }
 
+    @Override
     public void onUpdate()
     {
         IBlockState state = getState();
@@ -191,10 +192,13 @@ public class EntityFallingBlockTFC extends Entity
     @Override
     protected void readEntityFromNBT(NBTTagCompound compound)
     {
+        IBlockState state = NBTUtil.readBlockState(compound.getCompoundTag("State"));
+        this.falling = (IFallingBlock) state.getBlock(); //todo: verify this (a block might have been changed not to fall anymore)
         if (compound.hasKey("State"))
-            dataManager.set(BLOCK, Optional.of(NBTUtil.readBlockState(compound.getCompoundTag("State"))));
+            dataManager.set(BLOCK, Optional.of(state));
         fallTime = compound.getInteger("FallTime");
         if (compound.hasKey("TileEntityData")) teData = compound.getCompoundTag("TileEntityData");
+
     }
 
     @Override

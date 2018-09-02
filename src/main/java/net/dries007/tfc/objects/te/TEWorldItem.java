@@ -5,56 +5,59 @@
 
 package net.dries007.tfc.objects.te;
 
+import java.util.Random;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class TEWorldItem extends TileEntity
 {
-    public ItemStackHandler inventory = new ItemStackHandler(1);
-
     public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "world_item");
+    public ItemStackHandler inventory = new ItemStackHandler(1);
+    private byte rotation;
 
     public TEWorldItem()
     {
-        super();
-
-        this.markDirty();
+        Random rand = new Random();
+        rotation = (byte) rand.nextInt(4);
     }
 
-    public void onBreakBlock()
+    public void onBreakBlock(BlockPos pos1)
     {
-        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(0));
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound compound)
-    {
-        inventory.deserializeNBT(compound.getCompoundTag("inventory"));
-        super.readFromNBT(compound);
+        Helpers.spawnItemStack(world, pos1, inventory.getStackInSlot(0));
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public void readFromNBT(NBTTagCompound tag)
     {
-        compound.setTag("inventory", inventory.serializeNBT());
-        return super.writeToNBT(compound);
+        inventory.deserializeNBT(tag.getCompoundTag("inventory"));
+        rotation = tag.hasKey("rotation") ? tag.getByte("rotation") : 0;
+        super.readFromNBT(tag);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag)
+    {
+        tag.setTag("inventory", inventory.serializeNBT());
+        tag.setByte("rotation", rotation);
+        return super.writeToNBT(tag);
     }
 
     @Override
@@ -65,6 +68,18 @@ public class TEWorldItem extends TileEntity
     }
 
     @Override
+    @Nullable
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        if (world != null)
+        {
+            return new SPacketUpdateTileEntity(this.getPos(), 0, this.writeToNBT(new NBTTagCompound()));
+        }
+
+        return null;
+    }
+
+    @Override
     public NBTTagCompound getUpdateTag()
     {
         // The tag from this method is used for the initial chunk packet, and it needs to have the TE position!
@@ -72,27 +87,8 @@ public class TEWorldItem extends TileEntity
         nbt.setInteger("x", this.getPos().getX());
         nbt.setInteger("y", this.getPos().getY());
         nbt.setInteger("z", this.getPos().getZ());
-        return getUpdatePacketTag(nbt);
+        return writeToNBT(nbt);
 
-    }
-
-    @Override
-    @Nullable
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
-        if (world != null)
-        {
-            return new SPacketUpdateTileEntity(this.getPos(), 0, this.getUpdatePacketTag(new NBTTagCompound()));
-        }
-
-        return null;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-        return new AxisAlignedBB(getPos(), getPos().add(1D, 1D, 1D));
     }
 
     @Override
@@ -104,15 +100,18 @@ public class TEWorldItem extends TileEntity
     @Override
     public void handleUpdateTag(NBTTagCompound tag)
     {
-        if (tag.hasKey("inventory"))
-        {
-            inventory.deserializeNBT(tag.getCompoundTag("inventory"));
-        }
+        readFromNBT(tag);
     }
 
-    private NBTTagCompound getUpdatePacketTag(NBTTagCompound nbt)
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
     {
-        nbt.setTag("inventory", inventory.serializeNBT());
-        return nbt;
+        return new AxisAlignedBB(getPos(), getPos().add(1D, 1D, 1D));
+    }
+
+    public byte getRotation()
+    {
+        return rotation;
     }
 }

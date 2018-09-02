@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import net.dries007.tfc.TerraFirmaCraft;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public final class ChunkCapabilityHandler
@@ -38,11 +38,12 @@ public final class ChunkCapabilityHandler
     @SubscribeEvent
     public static void onChunkWatchWatch(ChunkWatchEvent.Watch event)
     {
-        Chunk c = event.getPlayer().world.getChunkFromChunkCoords(event.getChunk().x, event.getChunk().z);
+        Chunk c = event.getChunkInstance();
+        if (c == null) return;
         ChunkDataTFC data = c.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
         if (data == null) return;
         //noinspection ConstantConditions
         NBTTagCompound nbt = (NBTTagCompound) ChunkDataProvider.CHUNK_DATA_CAPABILITY.writeNBT(data, null);
-        TerraFirmaCraft.getNetwork().sendTo(new ChunkDataMessage(event.getChunk(), nbt), event.getPlayer());
+        TerraFirmaCraft.getNetwork().sendTo(new ChunkDataMessage(event.getChunkInstance().getPos(), nbt), event.getPlayer());
     }
 }

@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.items.ceramics;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
@@ -22,15 +24,16 @@ public class ItemUnfiredSmallVessel extends ItemUnfiredPottery
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack)
+    @Nonnull
+    public String getTranslationKey(ItemStack stack)
     {
         if (!glazed)
-            return super.getUnlocalizedName(stack);
-        return super.getUnlocalizedName(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
+            return super.getTranslationKey(stack);
+        return super.getTranslationKey(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
     {
         if (!isInCreativeTab(tab)) return;
 

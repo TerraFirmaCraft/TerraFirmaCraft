@@ -5,28 +5,29 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 
-import net.dries007.tfc.objects.Wood;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockTrapDoorWoodTFC extends BlockTrapDoor
 {
-    private static final EnumMap<Wood, BlockTrapDoorWoodTFC> MAP = new EnumMap<>(Wood.class);
+    private static final Map<Tree, BlockTrapDoorWoodTFC> MAP = new HashMap<>();
 
-    public static BlockTrapDoorWoodTFC get(Wood wood)
+    public static BlockTrapDoorWoodTFC get(Tree wood)
     {
         return MAP.get(wood);
     }
 
-    public final Wood wood;
+    public final Tree wood;
 
-    public BlockTrapDoorWoodTFC(Wood wood)
+    public BlockTrapDoorWoodTFC(Tree wood)
     {
         super(Material.WOOD);
         this.wood = wood;

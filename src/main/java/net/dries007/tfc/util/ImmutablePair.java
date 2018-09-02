@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.util;
 
+// todo: this isn't used anywhere anymore, remove?
 public class ImmutablePair<A, B>
 {
     public final A a;

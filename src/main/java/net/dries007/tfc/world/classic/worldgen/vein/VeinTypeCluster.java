@@ -9,7 +9,7 @@ import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
 
-import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.util.OreSpawnData;
 
 public class VeinTypeCluster extends VeinType

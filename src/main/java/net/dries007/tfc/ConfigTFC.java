@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import net.dries007.tfc.world.classic.CalenderTFC;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
  * Top level items must be static, the subclasses' fields must not be static.
@@ -32,18 +32,16 @@ public class ConfigTFC
     @Config.LangKey("config." + MOD_ID + ".client")
     public static final ClientCFG CLIENT = new ClientCFG();
 
+    @Config.Comment("World gen settings")
+    @Config.LangKey("config." + MOD_ID + ".world")
+    public static final WorldCFG WORLD = new WorldCFG();
+
     @SubscribeEvent
     public static void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
     {
         if (event.getModID().equals(MOD_ID))
         {
             TerraFirmaCraft.getLog().warn("Config changed");
-
-            if (GENERAL.yearLength % 12 != 0)
-            {
-                TerraFirmaCraft.getLog().warn("Year lengths must be a multiple of 12! Changed from {} to {}!", GENERAL.yearLength, 12 * (GENERAL.yearLength / 12));
-                GENERAL.yearLength = 12 * (GENERAL.yearLength / 12);
-            }
 
             CalenderTFC.reload();
 
@@ -57,26 +55,34 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.debug")
         public boolean debug = Launch.blackboard.get("fml.deobfuscatedEnvironment") != null;
 
-        @Config.Comment("Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!")
-        @Config.LangKey("config." + MOD_ID + ".general.debugWorldGen")
-        @Config.RequiresWorldRestart
-        public boolean debugWorldGen = false;
-
-        @Config.Comment("Lengths of a year in in game days. MUST BE MULTIPLE OF 12!")
-        @Config.LangKey("config." + MOD_ID + ".general.yearLength")
-        @Config.RangeInt(min = 12, max = 12000)
-        public int yearLength = 96;
+        @Config.Comment("Lengths of a month in in game days. Year length is this x12")
+        @Config.LangKey("config." + MOD_ID + ".general.monthLength")
+        @Config.RangeInt(min = 1, max = 1000)
+        public int monthLength = 8;
 
         @Config.Comment("Normal decay leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
-        public double leafStickDropChance = 0.1; // todo: lang key
+        @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChance")
+        public double leafStickDropChance = 0.1;
 
         @Config.Comment("Bonus decay leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
-        public double leafStickDropChanceBonus = 0.25; // todo: lang key
+        @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonus")
+        public double leafStickDropChanceBonus = 0.25;
 
         @Config.Comment("Bonus decay leaf drop chance for sticks tool classes")
-        public String[] leafStickDropChanceBonusClasses = new String[] {"knife", "scythe"}; // todo: lang key
+        @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonusClasses")
+        public String[] leafStickDropChanceBonusClasses = new String[] {"knife", "scythe"};
+
+        @Config.Comment("Modifier for how quickly items gain and lose heat. Smaller number = slower temperature changes")
+        @Config.RangeDouble(min = 0, max = 10)
+        @Config.LangKey("config." + MOD_ID + ".general.temperatureModifier")
+        public double temperatureModifier = 0.5;
+
+        @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 ingame hour), default is 8 hours.")
+        @Config.RangeInt(min = 20)
+        @Config.LangKey("config." + MOD_ID + ".general.temperatureModifier")
+        public int pitKilnTime = 8000;
     }
 
     public static class ClientCFG
@@ -85,5 +91,30 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".client.makeWorldTypeClassicDefault")
         @Config.RequiresMcRestart
         public boolean makeWorldTypeClassicDefault = true;
+    }
+
+    public static class WorldCFG
+    {
+        @Config.Comment({"This controls how the temperature gradient appears near the equator.", "1: south of equator is hot, north of equator is cold", "-1: south of equator is cold, north of equator is hot"})
+        @Config.LangKey("config." + MOD_ID + ".world.hemisphereType")
+        @Config.RangeInt(min = -1, max = 1)
+        @Config.RequiresMcRestart
+        public int hemisphereType = 1;
+
+        @Config.Comment("This controls the appearance of cyclic temperature regions. If you want an endless north / south with a temperate equator, set this to false")
+        @Config.LangKey("config." + MOD_ID + ".world.cyclicTemperatureRegions")
+        @Config.RequiresMcRestart
+        public boolean cyclicTemperatureRegions = true;
+
+        @Config.Comment("Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!")
+        @Config.LangKey("config." + MOD_ID + ".world.debugWorldGen")
+        @Config.RequiresWorldRestart
+        public boolean debugMode = false;
+
+        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave.",
+            "The equation is roughly sin(pi * zCoord / (16 * zTemperatureModifier)). 2500 gives a total range of 40 km (peaks at +/- 20km)"})
+        @Config.RangeDouble(min = 100, max = 10000)
+        @Config.LangKey("config." + MOD_ID + ".world.zTemperatureModifier")
+        public double zTemperatureModifier = 2500f;
     }
 }

@@ -18,6 +18,9 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.world.classic.WorldGenSettings;
 import net.dries007.tfc.world.classic.WorldGenSettings.WorldGenSettingsBuilder;
 
+/**
+ * todo: remove, won't be supported in 1.13 by vanilla anyway, there will be something else in 1.14.
+ */
 @SideOnly(Side.CLIENT)
 public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelper, GuiPageButtonList.GuiResponder
 {
@@ -63,6 +66,12 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
         drawCenteredString(fontRenderer, title, width / 2, 8, 16777215);
         this.list.drawScreen(mouseX, mouseY, partialTicks);
         super.drawScreen(mouseX, mouseY, partialTicks);
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode)
+    {
+        list.onKeyPressed(typedChar, keyCode);
     }
 
     @Override
@@ -114,12 +123,6 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode)
-    {
-        list.onKeyPressed(typedChar, keyCode);
-    }
-
-    @Override
     protected void actionPerformed(GuiButton button) throws IOException
     {
         if (!button.enabled) return;
@@ -144,38 +147,6 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     }
 
     @Override
-    public void initGui()
-    {
-        super.initGui();
-
-        title = I18n.format("options.customizeTitle");
-
-        doneBtn = addButton(new GuiButton(ID_DONE, width / 2 - 155, height - 28, 150, 20, I18n.format("gui.done")));
-        cancelBtn = addButton(new GuiButton(ID_CANCEL, width / 2 + 5, height - 28, 150, 20, I18n.format("gui.cancel")));
-        defaultsBtn = addButton(new GuiButton(ID_DEFAULTS, 20, 5, 80, 20, I18n.format("createWorld.customize.custom.defaults")));
-
-        GuiPageButtonList.GuiListEntry[] page1 = new GuiPageButtonList.GuiListEntry[] {
-                new GuiPageButtonList.GuiSlideEntry(ID_SPAWN_FUZZ, I18n.format("createWorld.customize.custom.spawnfuzz"), true, this, 0, 2500, settings.spawnFuzz),
-                new GuiPageButtonList.GuiButtonEntry(ID_FLAT_BEDROCK, I18n.format("createWorld.customize.custom.flatbedrock"), true, settings.flatBedrock),
-
-                new GuiPageButtonList.GuiSlideEntry(ID_RAVINE_RARITY, I18n.format("createWorld.customize.custom.ravineRarity"), true, this, 0, 250, settings.ravineRarity),
-                new GuiPageButtonList.GuiSlideEntry(ID_RAVINE_HEIGHT, I18n.format("createWorld.customize.custom.ravineHeight"), true, this, 0, 50, settings.ravineHeight),
-                new GuiPageButtonList.GuiSlideEntry(ID_RAVINE_VARIABILITY, I18n.format("createWorld.customize.custom.ravineVariability"), true, this, 0, 100, settings.ravineVariability),
-
-                new GuiPageButtonList.GuiSlideEntry(ID_SURFACE_RAVINE_RARITY, I18n.format("createWorld.customize.custom.surfaceRavineRarity"), true, this, 0, 250, settings.surfaceRavineRarity),
-                new GuiPageButtonList.GuiSlideEntry(ID_SURFACE_RAVINE_HEIGHT, I18n.format("createWorld.customize.custom.surfaceRavineHeight"), true, this, 0, 250, settings.surfaceRavineHeight),
-                new GuiPageButtonList.GuiSlideEntry(ID_SURFACE_RAVINE_VARIABILITY, I18n.format("createWorld.customize.custom.surfaceRavineVariability"), true, this, 0, 100, settings.surfaceRavineVariability),
-
-                new GuiPageButtonList.GuiSlideEntry(ID_RIVER_RAVINE_RARITY, I18n.format("createWorld.customize.custom.riverRavineRarity"), true, this, 0, 500, settings.riverRavineRarity),
-        };
-        list = new GuiPageButtonList(mc, width, height, 32, height - 32, 25, this, new GuiPageButtonList.GuiListEntry[][] {
-                page1
-        });
-
-        update();
-    }
-
-    @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
         super.mouseClicked(mouseX, mouseY, mouseButton);
@@ -187,6 +158,38 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     {
         super.mouseReleased(mouseX, mouseY, state);
         list.mouseReleased(mouseX, mouseY, state);
+    }
+
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+
+        title = I18n.format("options.customizeTitle");
+
+        doneBtn = addButton(new GuiButton(ID_DONE, width / 2 - 155, height - 28, 150, 20, I18n.format("gui.done")));
+        cancelBtn = addButton(new GuiButton(ID_CANCEL, width / 2 + 5, height - 28, 150, 20, I18n.format("gui.cancel")));
+        defaultsBtn = addButton(new GuiButton(ID_DEFAULTS, 20, 5, 80, 20, I18n.format("createWorld.customize.custom.defaults")));
+
+        GuiPageButtonList.GuiListEntry[] page1 = new GuiPageButtonList.GuiListEntry[] {
+            new GuiPageButtonList.GuiSlideEntry(ID_SPAWN_FUZZ, I18n.format("createWorld.customize.custom.spawnfuzz"), true, this, 0, 2500, settings.spawnFuzz),
+            new GuiPageButtonList.GuiButtonEntry(ID_FLAT_BEDROCK, I18n.format("createWorld.customize.custom.flatbedrock"), true, settings.flatBedrock),
+
+            new GuiPageButtonList.GuiSlideEntry(ID_RAVINE_RARITY, I18n.format("createWorld.customize.custom.ravineRarity"), true, this, 0, 250, settings.ravineRarity),
+            new GuiPageButtonList.GuiSlideEntry(ID_RAVINE_HEIGHT, I18n.format("createWorld.customize.custom.ravineHeight"), true, this, 0, 50, settings.ravineHeight),
+            new GuiPageButtonList.GuiSlideEntry(ID_RAVINE_VARIABILITY, I18n.format("createWorld.customize.custom.ravineVariability"), true, this, 0, 100, settings.ravineVariability),
+
+            new GuiPageButtonList.GuiSlideEntry(ID_SURFACE_RAVINE_RARITY, I18n.format("createWorld.customize.custom.surfaceRavineRarity"), true, this, 0, 250, settings.surfaceRavineRarity),
+            new GuiPageButtonList.GuiSlideEntry(ID_SURFACE_RAVINE_HEIGHT, I18n.format("createWorld.customize.custom.surfaceRavineHeight"), true, this, 0, 250, settings.surfaceRavineHeight),
+            new GuiPageButtonList.GuiSlideEntry(ID_SURFACE_RAVINE_VARIABILITY, I18n.format("createWorld.customize.custom.surfaceRavineVariability"), true, this, 0, 100, settings.surfaceRavineVariability),
+
+            new GuiPageButtonList.GuiSlideEntry(ID_RIVER_RAVINE_RARITY, I18n.format("createWorld.customize.custom.riverRavineRarity"), true, this, 0, 500, settings.riverRavineRarity),
+        };
+        list = new GuiPageButtonList(mc, width, height, 32, height - 32, 25, this, new GuiPageButtonList.GuiListEntry[][] {
+            page1
+        });
+
+        update();
     }
 
     @Override

@@ -5,9 +5,11 @@
 
 package net.dries007.tfc.objects.items.rock;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemAxe;
@@ -16,26 +18,32 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.objects.Rock;
+import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemRockAxe extends ItemAxe
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class ItemRockAxe extends ItemAxe implements IItemSize
 {
-    private static final EnumMap<Rock.Category, ItemRockAxe> MAP = new EnumMap<>(Rock.Category.class);
+    private static final Map<RockCategory, ItemRockAxe> MAP = new HashMap<>();
 
-    public static ItemRockAxe get(Rock.Category category)
+    public static ItemRockAxe get(RockCategory category)
     {
         return MAP.get(category);
     }
 
-    public final Rock.Category category;
+    public final RockCategory category;
 
-    public ItemRockAxe(Rock.Category category)
+    public ItemRockAxe(RockCategory category)
     {
-        super(category.toolMaterial, 1.5f * category.toolMaterial.getAttackDamage(), -3);
+        super(category.getToolMaterial(), 1.5f * category.getToolMaterial().getAttackDamage(), -3);
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
-        setHarvestLevel("axe", category.toolMaterial.getHarvestLevel());
+        setHarvestLevel("axe", category.getToolMaterial().getHarvestLevel());
         OreDictionaryHelper.register(this, "axe");
         OreDictionaryHelper.register(this, "axe", "stone");
         OreDictionaryHelper.register(this, "axe", "stone", category);
@@ -46,5 +54,23 @@ public class ItemRockAxe extends ItemAxe
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
+    }
+
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.LARGE;
+    }
+
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.MEDIUM;
+    }
+
+    @Override
+    public boolean canStack(ItemStack stack)
+    {
+        return false;
     }
 }

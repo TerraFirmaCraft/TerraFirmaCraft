@@ -5,19 +5,23 @@
 
 package net.dries007.tfc.objects.items.metal;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Nonnull;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemSmallOre extends Item implements IMetalObject
+public class ItemSmallOre extends ItemTFC implements IMetalObject
 {
-    private static final EnumMap<Ore, ItemSmallOre> MAP = new EnumMap<>(Ore.class);
+    private static final Map<Ore, ItemSmallOre> MAP = new HashMap<>();
 
     public static ItemSmallOre get(Ore ore)
     {
@@ -37,19 +41,31 @@ public class ItemSmallOre extends Item implements IMetalObject
         if (MAP.put(ore, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
         OreDictionaryHelper.register(this, "ore");
-        OreDictionaryHelper.register(this, "ore", ore);
-        OreDictionaryHelper.register(this, "ore", ore, "small");
+        OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath());
+        OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath(), "small");
     }
 
     @Override
     public Metal getMetal(ItemStack stack)
     {
-        return ore.metal;
+        return ore.getMetal();
     }
 
     @Override
     public int getSmeltAmount(ItemStack stack)
     {
         return 10; //todo: config
+    }
+
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.SMALL;
+    }
+
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return Weight.HEAVY;
     }
 }

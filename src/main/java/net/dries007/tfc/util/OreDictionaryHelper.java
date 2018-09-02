@@ -20,7 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import net.dries007.tfc.objects.Rock;
+import net.dries007.tfc.api.types.Rock;
 
 import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
 
@@ -84,7 +84,12 @@ public class OreDictionaryHelper
         MAP.clear(); // No need to keep this stuff around
     }
 
-    public static Predicate<ItemStack> createPredicateStack(String... names)
+    public static Predicate<EntityItem> createPredicateItemEntity(String... names)
+    {
+        return input -> input.isEntityAlive() && createPredicateStack(names).test(input.getItem());
+    }
+
+    private static Predicate<ItemStack> createPredicateStack(String... names)
     {
         return input -> {
             if (input.isEmpty()) return false;
@@ -94,11 +99,6 @@ public class OreDictionaryHelper
                     return true;
             return false;
         };
-    }
-
-    public static Predicate<EntityItem> createPredicateItemEntity(String... names)
-    {
-        return input -> input.isEntityAlive() && createPredicateStack(names).test(input.getItem());
     }
 
     private static void register(Thing thing, Object... parts)
@@ -113,39 +113,39 @@ public class OreDictionaryHelper
         {
             case RAW:
                 MAP.put(thing, toString(prefixParts, "stone"));
-                MAP.put(thing, toString(prefixParts, "stone", rock));
-                MAP.put(thing, toString(prefixParts, "stone", rock.category));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRegistryName().getPath()));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().getRegistryName().getPath()));
                 break;
             case SMOOTH:
                 MAP.put(thing, toString(prefixParts, "stone"));
                 MAP.put(thing, toString(prefixParts, "stone", "polished"));
-                MAP.put(thing, toString(prefixParts, "stone", rock));
-                MAP.put(thing, toString(prefixParts, "stone", rock, "polished"));
-                MAP.put(thing, toString(prefixParts, "stone", rock.category));
-                MAP.put(thing, toString(prefixParts, "stone", rock.category, "polished"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRegistryName().getPath()));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRegistryName().getPath(), "polished"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().getRegistryName().getPath()));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().getRegistryName().getPath(), "polished"));
                 break;
             case COBBLE:
                 MAP.put(thing, toString(prefixParts, "cobblestone"));
-                MAP.put(thing, toString(prefixParts, "cobblestone", rock));
-                MAP.put(thing, toString(prefixParts, "cobblestone", rock.category));
+                MAP.put(thing, toString(prefixParts, "cobblestone", rock.getRegistryName().getPath()));
+                MAP.put(thing, toString(prefixParts, "cobblestone", rock.getRockCategory().getRegistryName().getPath()));
                 break;
             case BRICKS:
                 MAP.put(thing, toString(prefixParts, "stone", "brick"));
-                MAP.put(thing, toString(prefixParts, "stone", rock, "brick"));
-                MAP.put(thing, toString(prefixParts, "stone", rock.category, "brick"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRegistryName().getPath(), "brick"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().getRegistryName().getPath(), "brick"));
                 break;
             case CLAY_GRASS:
                 MAP.put(thing, toString(prefixParts, "clay"));
-                MAP.put(thing, toString(prefixParts, "clay", rock));
-                MAP.put(thing, toString(prefixParts, "clay", rock.category));
+                MAP.put(thing, toString(prefixParts, "clay", rock.getRegistryName().getPath()));
+                MAP.put(thing, toString(prefixParts, "clay", rock.getRockCategory().getRegistryName().getPath()));
                 MAP.put(thing, toString(prefixParts, "clay", "grass"));
-                MAP.put(thing, toString(prefixParts, "clay", rock, "grass"));
-                MAP.put(thing, toString(prefixParts, "clay", rock.category, "grass"));
+                MAP.put(thing, toString(prefixParts, "clay", rock.getRegistryName().getPath(), "grass"));
+                MAP.put(thing, toString(prefixParts, "clay", rock.getRockCategory().getRegistryName().getPath(), "grass"));
                 break;
             case DRY_GRASS:
                 MAP.put(thing, toString(prefixParts, type, "dry"));
-                MAP.put(thing, toString(prefixParts, type, rock, "dry"));
-                MAP.put(thing, toString(prefixParts, type, rock.category, "dry"));
+                MAP.put(thing, toString(prefixParts, type, rock.getRegistryName().getPath(), "dry"));
+                MAP.put(thing, toString(prefixParts, type, rock.getRockCategory().getRegistryName().getPath(), "dry"));
                 break;
             case SAND:
             case GRAVEL:
@@ -154,8 +154,8 @@ public class OreDictionaryHelper
             case CLAY:
             default:
                 MAP.put(thing, toString(prefixParts, type));
-                MAP.put(thing, toString(prefixParts, type, rock));
-                MAP.put(thing, toString(prefixParts, type, rock.category));
+                MAP.put(thing, toString(prefixParts, type, rock.getRegistryName().getPath()));
+                MAP.put(thing, toString(prefixParts, type, rock.getRockCategory().getRegistryName().getPath()));
         }
     }
 
@@ -186,7 +186,8 @@ public class OreDictionaryHelper
 
         private ItemStack toItemStack()
         {
-            return block == null ? new ItemStack(item, 1, meta) : new ItemStack(block, 1, meta);
+            //noinspection ConstantConditions
+            return (block == null) ? new ItemStack(item, 1, meta) : new ItemStack(block, 1, meta);
         }
     }
 }
