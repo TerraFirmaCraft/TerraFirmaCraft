@@ -58,7 +58,7 @@ public class ChunkDataMessage implements IMessage
             if (ctx.side.isClient())
             {
                 Minecraft.getMinecraft().addScheduledTask(() -> {
-                    Chunk c = Minecraft.getMinecraft().world.getChunkFromChunkCoords(message.x, message.z);
+                    Chunk c = Minecraft.getMinecraft().world.getChunk(message.x, message.z);
                     ChunkDataTFC data = c.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
                     if (data != null)
                         ChunkDataProvider.CHUNK_DATA_CAPABILITY.readNBT(data, null, message.data);

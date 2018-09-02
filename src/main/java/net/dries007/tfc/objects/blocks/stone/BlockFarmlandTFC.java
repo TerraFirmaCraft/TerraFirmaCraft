@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.blocks.stone;
 
 import java.util.Random;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -26,9 +27,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
-import net.dries007.tfc.objects.Rock;
+import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.types.Rock;
 
-public class BlockFarmlandTFC extends BlockRockVariant
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class BlockFarmlandTFC extends BlockRockVariantFallable
 {
     public static final int MAX_MOISTURE = 15;
     public static final PropertyInteger MOISTURE = PropertyInteger.create("moisture", 0, MAX_MOISTURE);
@@ -50,8 +54,8 @@ public class BlockFarmlandTFC extends BlockRockVariant
         0xff8f8f8f,
         0xff878787,
     };
-    protected static final AxisAlignedBB FARMLAND_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
-    protected static final AxisAlignedBB FLIPPED_AABB = new AxisAlignedBB(0.0D, 0.9375D, 0.0D, 1.0D, 1.0D, 1.0D);
+    private static final AxisAlignedBB FARMLAND_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
+    private static final AxisAlignedBB FLIPPED_AABB = new AxisAlignedBB(0.0D, 0.9375D, 0.0D, 1.0D, 1.0D, 1.0D);
 
     public BlockFarmlandTFC(Rock.Type type, Rock rock)
     {
@@ -103,6 +107,25 @@ public class BlockFarmlandTFC extends BlockRockVariant
     }
 
     @Override
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
+    {
+        int current = state.getValue(MOISTURE);
+        int target = world.isRainingAt(pos.up()) ? MAX_MOISTURE : getWaterScore(world, pos);
+
+        if (current < target)
+        {
+            if (current < MAX_MOISTURE) world.setBlockState(pos, state.withProperty(MOISTURE, current + 1), 2);
+        }
+        else if (current > target || target == 0)
+        {
+            if (current > 0) world.setBlockState(pos, state.withProperty(MOISTURE, current - 1), 2);
+            else if (!hasCrops(world, pos)) turnToDirt(world, pos);
+        }
+
+        super.updateTick(world, pos, state, rand);
+    }
+
+    @Override
     public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance)
     {
         if (!worldIn.isRemote && entityIn.canTrample(worldIn, this, pos, fallDistance)) // Forge: Move logic to Entity#canTrample
@@ -122,25 +145,6 @@ public class BlockFarmlandTFC extends BlockRockVariant
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(Item.getItemFromBlock(this));
-    }
-
-    @Override
-    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
-    {
-        int current = state.getValue(MOISTURE);
-        int target = world.isRainingAt(pos.up()) ? MAX_MOISTURE : getWaterScore(world, pos);
-
-        if (current < target)
-        {
-            if (current < MAX_MOISTURE) world.setBlockState(pos, state.withProperty(MOISTURE, current + 1), 2);
-        }
-        else if (current > target || target == 0)
-        {
-            if (current > 0) world.setBlockState(pos, state.withProperty(MOISTURE, current - 1), 2);
-            else if (!hasCrops(world, pos)) turnToDirt(world, pos);
-        }
-
-        super.updateTick(world, pos, state, rand);
     }
 
     @Override

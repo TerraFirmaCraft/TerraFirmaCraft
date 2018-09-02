@@ -5,22 +5,33 @@
 
 package net.dries007.tfc.objects.items.metal;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import net.dries007.tfc.objects.Metal;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+
+import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
-import net.dries007.tfc.util.InsertOnlyEnumTable;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemMetal extends Item implements IMetalObject
+public class ItemMetal extends ItemTFC implements IMetalObject
 {
-    private static final InsertOnlyEnumTable<Metal, Metal.ItemType, ItemMetal> TABLE = new InsertOnlyEnumTable<>(Metal.class, Metal.ItemType.class);
+    private static final Map<Metal, EnumMap<Metal.ItemType, ItemMetal>> TABLE = new HashMap<>();
 
     public static ItemMetal get(Metal metal, Metal.ItemType type)
     {
-        return TABLE.get(metal, type);
+        return TABLE.get(metal).get(type);
     }
 
     public final Metal metal;
@@ -30,10 +41,14 @@ public class ItemMetal extends Item implements IMetalObject
     {
         this.metal = metal;
         this.type = type;
-        TABLE.put(metal, type, this);
+
+        if (!TABLE.containsKey(metal))
+            TABLE.put(metal, new EnumMap<>(Metal.ItemType.class));
+        TABLE.get(metal).put(type, this);
+
         setNoRepair();
         OreDictionaryHelper.register(this, type);
-        OreDictionaryHelper.register(this, type, metal);
+        OreDictionaryHelper.register(this, type, metal.getRegistryName().getPath());
     }
 
     @Override
@@ -48,5 +63,111 @@ public class ItemMetal extends Item implements IMetalObject
         if (!isDamageable() || !stack.isItemDamaged()) return type.smeltAmount;
         double d = (stack.getMaxDamage() - stack.getItemDamage()) / (double) stack.getMaxDamage() - .10;
         return d < 0 ? 0 : MathHelper.floor(type.smeltAmount * d);
+    }
+
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        switch (type)
+        {
+            case HAMMER:
+            case INGOT:
+            case SCRAP:
+            case LAMP:
+            case TUYERE:
+            case PICK_HEAD:
+            case SHOVEL_HEAD:
+            case AXE_HEAD:
+            case HOE_HEAD:
+            case CHISEL:
+            case CHISEL_HEAD:
+            case SWORD_BLADE:
+            case MACE_HEAD:
+            case SAW_BLADE:
+            case JAVELIN_HEAD:
+            case HAMMER_HEAD:
+            case PROPICK:
+            case PROPICK_HEAD:
+            case KNIFE:
+            case KNIFE_BLADE:
+            case SCYTHE:
+                return Size.SMALL;
+            case SAW:
+            case SHEET:
+            case DOUBLE_SHEET:
+                return Size.NORMAL;
+            case ANVIL:
+                return Size.HUGE;
+            case DUST:
+                return Size.VERY_SMALL;
+            case NUGGET:
+                return Size.TINY;
+            default:
+                return Size.LARGE;
+        }
+    }
+
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        switch (type)
+        {
+            case DOUBLE_SHEET:
+            case ANVIL:
+            case HELMET:
+            case GREAVES:
+            case CHESTPLATE:
+            case BOOTS:
+                return Weight.HEAVY;
+            case HOE:
+            case DUST:
+            case NUGGET:
+            case LAMP:
+            case TUYERE:
+            case UNFINISHED_CHESTPLATE:
+            case UNFINISHED_GREAVES:
+            case UNFINISHED_HELMET:
+            case UNFINISHED_BOOTS:
+                return Weight.LIGHT;
+            default:
+                return Weight.MEDIUM;
+        }
+    }
+
+    @Override
+    public boolean canStack(@Nonnull ItemStack stack)
+    {
+        switch (type)
+        {
+            case TUYERE:
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new ItemHeatHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
+    }
+
+    @Override
+    public EnumRarity getRarity(ItemStack stack)
+    {
+        switch (metal.getTier())
+        {
+            case TIER_I:
+            case TIER_II:
+                return EnumRarity.COMMON;
+            case TIER_III:
+                return EnumRarity.UNCOMMON;
+            case TIER_IV:
+                return EnumRarity.RARE;
+            case TIER_V:
+                return EnumRarity.EPIC;
+        }
+        return super.getRarity(stack);
     }
 }

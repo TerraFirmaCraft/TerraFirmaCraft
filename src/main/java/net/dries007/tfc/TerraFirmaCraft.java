@@ -6,22 +6,25 @@
 package net.dries007.tfc;
 
 import org.apache.logging.log4j.Logger;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.ICrashCallable;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ModMetadata;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.client.ClientEvents;
+import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.client.TFCKeybindings;
+import net.dries007.tfc.cmd.HeatCommand;
 import net.dries007.tfc.cmd.StripWorldCommand;
-import net.dries007.tfc.objects.CreativeTabsTFC;
+import net.dries007.tfc.cmd.TreeGenCommand;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
-import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.OreSpawnData;
@@ -31,10 +34,8 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkCapabilityHandler;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataMessage;
 import net.dries007.tfc.world.classic.worldgen.*;
 
-import static net.dries007.tfc.Constants.*;
-
 @SuppressWarnings("DefaultAnnotationParam")
-@Mod(modid = MOD_ID, name = MOD_NAME, useMetadata = true, guiFactory = GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = SIGNING_KEY)
+@Mod(modid = TFCConstants.MOD_ID, name = TFCConstants.MOD_NAME, useMetadata = true, guiFactory = Constants.GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = TFCConstants.SIGNING_KEY)
 @Mod.EventBusSubscriber()
 public class TerraFirmaCraft
 {
@@ -74,6 +75,16 @@ public class TerraFirmaCraft
         return instance;
     }
 
+    public static LoaderState.ModState getState()
+    {
+        return Loader.instance().getModState(Loader.instance().getModObjectList().inverse().get(instance));
+    }
+
+    public static boolean pastState(LoaderState.ModState state)
+    {
+        return TerraFirmaCraft.getState().ordinal() >= state.ordinal();
+    }
+
     private boolean isSignedBuild = true;
     private Logger log;
     private WorldTypeTFC worldTypeTFC;
@@ -89,17 +100,21 @@ public class TerraFirmaCraft
 
         // No need to sync config here, forge magic
 
-        network = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
+        network = NetworkRegistry.INSTANCE.newSimpleChannel(TFCConstants.MOD_ID);
         int id = 0;
         network.registerMessage(ChunkDataMessage.Handler.class, ChunkDataMessage.class, ++id, Side.CLIENT);
         ChunkCapabilityHandler.preInit();
 
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new TFCGuiHandler());
+
         CalenderTFC.reload();
 
         EntitiesTFC.preInit();
-        FluidsTFC.preInit();
-
         OreSpawnData.preInit(event.getModConfigurationDirectory());
+        CapabilityItemSize.preInit();
+        CapabilityItemHeat.preInit();
+
+        MinecraftForge.EVENT_BUS.register(new CommonEventHandler());
 
         if (event.getSide().isClient()) ClientEvents.preInit();
     }
@@ -111,8 +126,12 @@ public class TerraFirmaCraft
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
 
         OreDictionaryHelper.init();
-        CreativeTabsTFC.init();
         ItemsTFC.init();
+
+        if (event.getSide().isClient())
+        {
+            TFCKeybindings.init();
+        }
 
         worldTypeTFC = new WorldTypeTFC();
 //        TreeRegistry.loadTrees();
@@ -123,8 +142,7 @@ public class TerraFirmaCraft
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureClusterRarity, new WorldGenSurfaceFissureCluster(false)), 1);
         GameRegistry.registerWorldGenerator(new WorldGenOre(), 2);
         //todo: add cave decorator
-        //todo: add forests
-        //todo: add loose rocks
+        GameRegistry.registerWorldGenerator(new WorldGenTrees(), 4);
         GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 5);
         GameRegistry.registerWorldGenerator(new WorldGenSoilPits(), 6);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 7);
@@ -146,6 +164,8 @@ public class TerraFirmaCraft
         if (!isSignedBuild)
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
         event.registerServerCommand(new StripWorldCommand());
+        event.registerServerCommand(new TreeGenCommand());
+        event.registerServerCommand(new HeatCommand());
     }
 
     @Mod.EventHandler
@@ -163,7 +183,7 @@ public class TerraFirmaCraft
             @Override
             public String getLabel()
             {
-                return Constants.MOD_NAME;
+                return TFCConstants.MOD_NAME;
             }
 
             @Override

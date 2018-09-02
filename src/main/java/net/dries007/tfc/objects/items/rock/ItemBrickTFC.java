@@ -5,17 +5,24 @@
 
 package net.dries007.tfc.objects.items.rock;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import net.dries007.tfc.objects.Rock;
+import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemBrickTFC extends Item
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class ItemBrickTFC extends ItemTFC
 {
-    private static final EnumMap<Rock, ItemBrickTFC> MAP = new EnumMap<>(Rock.class);
+    private static final Map<Rock, ItemBrickTFC> MAP = new HashMap<>();
 
     public static ItemBrickTFC get(Rock ore)
     {
@@ -36,6 +43,18 @@ public class ItemBrickTFC extends Item
         setMaxDamage(0);
         OreDictionaryHelper.register(this, "brick");
         OreDictionaryHelper.register(this, "brick", rock);
-        OreDictionaryHelper.register(this, "brick", rock.category);
+        OreDictionaryHelper.register(this, "brick", rock.getRockCategory());
+    }
+
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.TINY;
+    }
+
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.LIGHT;
     }
 }

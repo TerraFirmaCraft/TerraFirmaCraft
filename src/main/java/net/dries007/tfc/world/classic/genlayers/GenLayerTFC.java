@@ -23,26 +23,26 @@ public abstract class GenLayerTFC extends GenLayer
 {
     // Distinct colors for debug map gen
     private static Color[] COLORS = new Color[] {
-            new Color(0xFFB300),    // Vivid Yellow
-            new Color(0x803E75),    // Strong Purple
-            new Color(0xFF6800),    // Vivid Orange
-            new Color(0xA6BDD7),    // Very Light Blue
-            new Color(0xC10020),    // Vivid Red
-            new Color(0xCEA262),    // Grayish Yellow
-            new Color(0x817066),    // Medium Gray
-            new Color(0x007D34),    // Vivid Green
-            new Color(0xF6768E),    // Strong Purplish Pink
-            new Color(0x00538A),    // Strong Blue
-            new Color(0xFF7A5C),    // Strong Yellowish Pink
-            new Color(0x53377A),    // Strong Violet
-            new Color(0xFF8E00),    // Vivid Orange Yellow
-            new Color(0xB32851),    // Strong Purplish Red
-            new Color(0xF4C800),    // Vivid Greenish Yellow
-            new Color(0x7F180D),    // Strong Reddish Brown
-            new Color(0x93AA00),    // Vivid Yellowish Green
-            new Color(0x593315),    // Deep Yellowish Brown
-            new Color(0xF13A13),    // Vivid Reddish Orange
-            new Color(0x232C16),    // Dark Olive Green
+        new Color(0xFFB300),    // Vivid Yellow
+        new Color(0x803E75),    // Strong Purple
+        new Color(0xFF6800),    // Vivid Orange
+        new Color(0xA6BDD7),    // Very Light Blue
+        new Color(0xC10020),    // Vivid Red
+        new Color(0xCEA262),    // Grayish Yellow
+        new Color(0x817066),    // Medium Gray
+        new Color(0x007D34),    // Vivid Green
+        new Color(0xF6768E),    // Strong Purplish Pink
+        new Color(0x00538A),    // Strong Blue
+        new Color(0xFF7A5C),    // Strong Yellowish Pink
+        new Color(0x53377A),    // Strong Violet
+        new Color(0xFF8E00),    // Vivid Orange Yellow
+        new Color(0xB32851),    // Strong Purplish Red
+        new Color(0xF4C800),    // Vivid Greenish Yellow
+        new Color(0x7F180D),    // Strong Reddish Brown
+        new Color(0x93AA00),    // Vivid Yellowish Green
+        new Color(0x593315),    // Deep Yellowish Brown
+        new Color(0xF13A13),    // Vivid Reddish Orange
+        new Color(0x232C16),    // Dark Olive Green
     };
 
     public static GenLayerTFC[] initialize2(long seed)
@@ -126,7 +126,7 @@ public abstract class GenLayerTFC extends GenLayer
 
     public static void drawImage(int size, GenLayerTFC genlayer, String name)
     {
-        if (!ConfigTFC.GENERAL.debugWorldGen) return;
+        if (!ConfigTFC.WORLD.debugMode) return;
         try
         {
             File outFile = new File(name + ".bmp");

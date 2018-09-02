@@ -27,7 +27,7 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.Metal;
 
 import static net.minecraft.entity.SharedMonsterAttributes.ARMOR;
 import static net.minecraft.entity.SharedMonsterAttributes.ARMOR_TOUGHNESS;
@@ -46,7 +46,7 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
     public ItemMetalArmor(Metal metal, Metal.ItemType type)
     {
         super(metal, type);
-        toolMaterial = metal.toolMetal;
+        toolMaterial = metal.getToolMetal();
         switch (type)
         {
             case HELMET:
@@ -76,7 +76,8 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn)
     {
         ItemStack heldItem = playerIn.getHeldItem(handIn);
         if (playerIn.getItemStackFromSlot(slot).isEmpty())
@@ -98,7 +99,8 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
     }
 
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack)
+    @Nonnull
+    public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot slot, ItemStack stack)
     {
         Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
         if (slot == this.slot)
@@ -148,5 +150,11 @@ public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
     public void damageArmor(EntityLivingBase entity, @Nonnull ItemStack stack, DamageSource source, int damage, int slot)
     {
         //todo
+    }
+
+    @Override
+    public boolean canStack(@Nonnull ItemStack stack)
+    {
+        return false;
     }
 }

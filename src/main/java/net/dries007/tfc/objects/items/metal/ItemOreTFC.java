@@ -5,21 +5,29 @@
 
 package net.dries007.tfc.objects.items.metal;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import net.dries007.tfc.objects.Metal;
-import net.dries007.tfc.objects.Ore;
+import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemOreTFC extends Item implements IMetalObject
+public class ItemOreTFC extends ItemTFC implements IMetalObject
 {
-    private static final EnumMap<Ore, ItemOreTFC> MAP = new EnumMap<>(Ore.class);
+    private static final Map<Ore, ItemOreTFC> MAP = new HashMap<>();
 
     public static ItemOreTFC get(Ore ore)
     {
@@ -28,7 +36,7 @@ public class ItemOreTFC extends Item implements IMetalObject
 
     public static ItemStack get(Ore ore, Ore.Grade grade, int amount)
     {
-        return new ItemStack(MAP.get(ore), amount, ore.graded ? grade.getMeta() : 0);
+        return new ItemStack(MAP.get(ore), amount, ore.isGraded() ? grade.getMeta() : 0);
     }
 
     public static ItemStack get(Ore ore, int amount)
@@ -43,29 +51,24 @@ public class ItemOreTFC extends Item implements IMetalObject
         this.ore = ore;
         if (MAP.put(ore, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
-        if (ore.metal != null)
+        if (ore.getMetal() != null)
         {
             setHasSubtypes(true);
             OreDictionaryHelper.register(this, "ore");
-            OreDictionaryHelper.register(this, "ore", ore);
+            OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath());
             for (Ore.Grade grade : Ore.Grade.values())
             {
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", grade);
-                OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore, grade);
+                OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore.getRegistryName().getPath(), grade);
             }
         }
         else // Mineral
         {
             OreDictionaryHelper.register(this, "gem", ore);
-            switch (ore)
-            {
-                case LAPIS_LAZULI:
-                    OreDictionaryHelper.register(this, "gem", "lapis");
-                    break;
-                case BITUMINOUS_COAL:
-                    OreDictionaryHelper.register(this, "gem", "coal");
-                    break;
-            }
+            if (ore.getRegistryName().getPath().equals("lapis_lazuli"))
+                OreDictionaryHelper.register(this, "gem", "lapis");
+            if (ore.getRegistryName().getPath().equals("bituminous_coal"))
+                OreDictionaryHelper.register(this, "gem", "coal");
         }
     }
 
@@ -75,18 +78,19 @@ public class ItemOreTFC extends Item implements IMetalObject
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack)
+    @Nonnull
+    public String getTranslationKey(ItemStack stack)
     {
         Ore.Grade grade = getGradeFromStack(stack);
-        if (grade == Ore.Grade.NORMAL) return super.getUnlocalizedName(stack);
-        return super.getUnlocalizedName(stack) + "." + grade.getName();
+        if (grade == Ore.Grade.NORMAL) return super.getTranslationKey(stack);
+        return super.getTranslationKey(stack) + "." + grade.getName();
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
     {
         if (!isInCreativeTab(tab)) return;
-        if (ore.graded)
+        if (ore.isGraded())
             for (Ore.Grade grade : Ore.Grade.values())
                 items.add(new ItemStack(this, 1, grade.getMeta()));
         else
@@ -96,12 +100,31 @@ public class ItemOreTFC extends Item implements IMetalObject
     @Override
     public Metal getMetal(ItemStack stack)
     {
-        return ore.metal;
+        return ore.getMetal();
     }
 
     @Override
     public int getSmeltAmount(ItemStack stack)
     {
         return getGradeFromStack(stack).smeltAmount;
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return ore.getMetal() != null ? new ItemHeatHandler(nbt, ore.getMetal().getSpecificHeat(), ore.getMetal().getMeltTemp()) : null;
+    }
+
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.SMALL;
+    }
+
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return Weight.HEAVY;
     }
 }
