@@ -16,7 +16,7 @@ This project is the official port of TerraFirmaCraft (the original, also called 
 
 + As per the Github terms of service, you grant us the right to use your contribution
   under the same license as this project.
-+ In addition we request that you give use the right to changed the license in the future.
++ In addition we request that you give us the right to change the license in the future.
   Your pull request may not be accepted if you don't.
 + You can read the versioning rules in the build.gradle file.
 

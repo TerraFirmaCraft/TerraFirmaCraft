@@ -93,8 +93,8 @@ public class CalenderTFC
 
     public static void reload()
     {
-        daysInYear = ConfigTFC.GENERAL.monthLength;
-        daysInMonth = daysInYear / 12;
+        daysInMonth = ConfigTFC.GENERAL.monthLength;
+        daysInYear = daysInMonth * 12;
         ticksInMonth = daysInMonth * TICKS_IN_DAY;
         ticksInYear = daysInYear * TICKS_IN_DAY;
         startTime = ticksInMonth * 3;
