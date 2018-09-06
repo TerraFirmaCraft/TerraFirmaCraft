@@ -43,10 +43,7 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.client.render.TESRChestTFC;
-import net.dries007.tfc.client.render.TESRIngotPile;
-import net.dries007.tfc.client.render.TESRPitKiln;
-import net.dries007.tfc.client.render.TESRWorldItem;
+import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -61,10 +58,7 @@ import net.dries007.tfc.objects.items.ItemGoldPan;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
-import net.dries007.tfc.objects.te.TEChestTFC;
-import net.dries007.tfc.objects.te.TEIngotPile;
-import net.dries007.tfc.objects.te.TEPitKiln;
-import net.dries007.tfc.objects.te.TEWorldItem;
+import net.dries007.tfc.objects.te.*;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -179,11 +173,19 @@ public final class ClientRegisterEvents
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockChest.FACING).build());
         ClientRegistry.bindTileEntitySpecialRenderer(TEChestTFC.class, new TESRChestTFC());
 
+        for (Block block : BlocksTFC.getAllToolRackBlocks())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().build());
+        //ModelLoader.setCustomStateMapper(block, blockIn -> ImmutableMap.of(block.getDefaultState(), new ModelResourceLocation("tfc:wood/tool_rack/" + ((BlockToolRack)block).wood.toString())));
+        ClientRegistry.bindTileEntitySpecialRenderer(TEToolRack.class, new TESRToolRack());
+
         ModelLoader.setCustomStateMapper(BlocksTFC.PIT_KILN, blockIn -> ImmutableMap.of(BlocksTFC.PIT_KILN.getDefaultState(), new ModelResourceLocation("tfc:empty")));
         ClientRegistry.bindTileEntitySpecialRenderer(TEPitKiln.class, new TESRPitKiln());
 
         ModelLoader.setCustomStateMapper(BlocksTFC.WORLD_ITEM, blockIn -> ImmutableMap.of(BlocksTFC.WORLD_ITEM.getDefaultState(), new ModelResourceLocation("tfc:empty")));
         ClientRegistry.bindTileEntitySpecialRenderer(TEWorldItem.class, new TESRWorldItem());
+
+        ModelLoader.setCustomStateMapper(BlocksTFC.INGOT_PILE, blockIn -> ImmutableMap.of(BlocksTFC.INGOT_PILE.getDefaultState(), new ModelResourceLocation("tfc:empty")));
+        ClientRegistry.bindTileEntitySpecialRenderer(TEIngotPile.class, new TESRIngotPile());
 
         ModelLoader.setCustomStateMapper(BlocksTFC.INGOT_PILE, blockIn -> ImmutableMap.of(BlocksTFC.INGOT_PILE.getDefaultState(), new ModelResourceLocation("tfc:empty")));
         ClientRegistry.bindTileEntitySpecialRenderer(TEIngotPile.class, new TESRIngotPile());
