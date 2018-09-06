@@ -125,6 +125,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockChestTFC> allChestBlocks;
     private static ImmutableList<BlockAnvilTFC> allAnvils;
     private static ImmutableList<BlockSheet> allSheets;
+    private static ImmutableList<BlockToolRack> allToolRackBlocks;
 
     public static ImmutableListMultimap<Block, Class<? extends ItemBlock>> getAllNormalItemBlocks()
     {
@@ -211,6 +212,11 @@ public final class BlocksTFC
         return allSheets;
     }
 
+    public static ImmutableList<BlockToolRack> getAllToolRackBlocks()
+    {
+        return allToolRackBlocks;
+    }
+
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event)
     {
@@ -270,6 +276,7 @@ public final class BlocksTFC
             Builder<BlockDoorTFC> doors = ImmutableList.builder();
             Builder<BlockTrapDoorWoodTFC> trapdoorwood = ImmutableList.builder();
             Builder<BlockChestTFC> chests = ImmutableList.builder();
+            Builder<BlockToolRack> toolRacks = ImmutableList.builder();
 
             for (Tree wood : TFCRegistries.TREES.getValuesCollection())
             {
@@ -286,6 +293,7 @@ public final class BlocksTFC
                 chests.add(register(r, "wood/chest/" + wood.getRegistryName().getPath(), new BlockChestTFC(BlockChest.Type.BASIC, wood), CT_DECORATIONS));
                 chests.add(register(r, "wood/chest_trap/" + wood.getRegistryName().getPath(), new BlockChestTFC(BlockChest.Type.TRAP, wood), CT_DECORATIONS));
                 inventoryItemBlocks.put(register(r, "wood/button/" + wood.getRegistryName().getPath(), new BlockButtonWoodTFC(wood), CT_DECORATIONS), ItemBlockTFC.class);
+                toolRacks.add(register(r, "wood/tool_rack/" + wood.getRegistryName().getPath(), new BlockToolRack(wood), CT_DECORATIONS));
             }
             allLogBlocks = logs.build();
             allLeafBlocks = leaves.build();
@@ -294,6 +302,7 @@ public final class BlocksTFC
             allDoorBlocks = doors.build();
             allTrapDoorWoodBlocks = trapdoorwood.build();
             allChestBlocks = chests.build();
+            allToolRackBlocks = toolRacks.build();
 
             //logs are special
             allLeafBlocks.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
@@ -303,6 +312,7 @@ public final class BlocksTFC
             // doors are special
             allTrapDoorWoodBlocks.forEach(x -> inventoryItemBlocks.put(x, ItemBlockTFC.class));
             allChestBlocks.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
+            allToolRackBlocks.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
         }
 
         {
@@ -423,6 +433,7 @@ public final class BlocksTFC
         TileEntity.register(TEPitKiln.ID.toString(), TEPitKiln.class);
         TileEntity.register(TELogPile.ID.toString(), TELogPile.class);
         TileEntity.register(TEIngotPile.ID.toString(), TEIngotPile.class);
+        TileEntity.register(TEToolRack.ID.toString(), TEToolRack.class);
 
     }
 
