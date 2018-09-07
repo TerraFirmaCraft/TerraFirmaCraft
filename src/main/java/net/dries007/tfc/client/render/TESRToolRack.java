@@ -21,7 +21,9 @@ public class TESRToolRack extends TileEntitySpecialRenderer<TEToolRack>
 {
     //direction, slot, axis, that's the order.
     static final float[][][] location = new float[4][4][3];
-    static{
+
+    static
+    {
         //Config values for moving the item placement
         final float heightLow = .28125f;
         final float heightHigh = .78125f;
@@ -32,7 +34,7 @@ public class TESRToolRack extends TileEntitySpecialRenderer<TEToolRack>
         final float offsetInv = 1f - offset;
 
         //Hardcoding values so render doesn't have to calculate
-        for(int dir=0;dir<4;dir++)
+        for (int dir = 0; dir < 4; dir++)
         {
             for (int slot = 0; slot < 4; slot++)
             {

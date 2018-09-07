@@ -184,7 +184,8 @@ public final class Helpers
      *               e.g: a sign facing north also hangs on the north side of the support block
      * @return true if the side is solid, false otherwise.
      */
-    public static boolean canHangAt(World worldIn, BlockPos pos, EnumFacing facing){
+    public static boolean canHangAt(World worldIn, BlockPos pos, EnumFacing facing)
+    {
         return worldIn.isSideSolid(pos.offset(facing.getOpposite()), facing);
     }
 
@@ -196,14 +197,16 @@ public final class Helpers
      * @param prefferedFacing this facing is checked first. It can be invalid or null.
      * @return Found facing or null is none is found. This is the direction the block should be pointing and the side it stick TO, not the side it sticks WITH.
      */
-    public static EnumFacing getASolidFacing(World worldIn, BlockPos pos, EnumFacing[] possibleSides, @Nullable EnumFacing prefferedFacing) {
+    public static EnumFacing getASolidFacing(World worldIn, BlockPos pos, EnumFacing[] possibleSides, @Nullable EnumFacing prefferedFacing)
+    {
         return getASolidFacing(worldIn, pos, Arrays.asList(possibleSides), prefferedFacing);
     }
 
-    public static EnumFacing getASolidFacing(World worldIn, BlockPos pos, Collection<EnumFacing> possibleSides, @Nullable EnumFacing prefferedFacing) {
-        if(possibleSides.contains(prefferedFacing) && canHangAt(worldIn, pos, prefferedFacing)) return prefferedFacing;
-        for(EnumFacing side : possibleSides)
-            if(canHangAt(worldIn, pos, side)) return side;
+    public static EnumFacing getASolidFacing(World worldIn, BlockPos pos, Collection<EnumFacing> possibleSides, @Nullable EnumFacing prefferedFacing)
+    {
+        if (possibleSides.contains(prefferedFacing) && canHangAt(worldIn, pos, prefferedFacing)) return prefferedFacing;
+        for (EnumFacing side : possibleSides)
+            if (canHangAt(worldIn, pos, side)) return side;
         return null;
     }
 }
