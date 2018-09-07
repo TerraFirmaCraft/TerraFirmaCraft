@@ -27,7 +27,7 @@ public class TESRWorldItem extends TileEntitySpecialRenderer<TEWorldItem>
         //GlStateManager.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));
         //GlStateManager.rotate(timeD, 0, 1, 0);
         GlStateManager.translate(x + 0.5D, y + 0.03125D, z + 0.5D);
-        GlStateManager.scale(.5d, .5d, .5d); //I used doubles here because I think they will cast to that anyway
+        GlStateManager.scale(.5f, .5f, .5f);
         GlStateManager.rotate(90f, 1f, 0f, 0f);
         GlStateManager.rotate(90f * (float) rotation, 0f, 0f, 1f);
         Minecraft.getMinecraft().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.FIXED);

@@ -1543,6 +1543,26 @@ tile.tfc.wood.button.rosewood.name=Rosewood Button
 tile.tfc.wood.button.blackwood.name=Blackwood Button
 tile.tfc.wood.button.palm.name=Palm Button
 
+tile.tfc.wood.tool_rack.ash.name=Ash Tool Rack
+tile.tfc.wood.tool_rack.aspen.name=Aspen Tool Rack
+tile.tfc.wood.tool_rack.birch.name=Birch Tool Rack
+tile.tfc.wood.tool_rack.chestnut.name=Chestnut Tool Rack
+tile.tfc.wood.tool_rack.douglas_fir.name=Douglas Fir Tool Rack
+tile.tfc.wood.tool_rack.hickory.name=Hickory Tool Rack
+tile.tfc.wood.tool_rack.maple.name=Maple Tool Rack
+tile.tfc.wood.tool_rack.oak.name=Oak Tool Rack
+tile.tfc.wood.tool_rack.pine.name=Pine Tool Rack
+tile.tfc.wood.tool_rack.sequoia.name=Sequoia Tool Rack
+tile.tfc.wood.tool_rack.spruce.name=Spruce Tool Rack
+tile.tfc.wood.tool_rack.sycamore.name=Sycamore Tool Rack
+tile.tfc.wood.tool_rack.white_cedar.name=White Cedar Tool Rack
+tile.tfc.wood.tool_rack.willow.name=Willow Tool Rack
+tile.tfc.wood.tool_rack.kapok.name=Kapok Tool Rack
+tile.tfc.wood.tool_rack.acacia.name=Acacia Tool Rack
+tile.tfc.wood.tool_rack.rosewood.name=Rosewood Tool Rack
+tile.tfc.wood.tool_rack.blackwood.name=Blackwood Tool Rack
+tile.tfc.wood.tool_rack.palm.name=Palm Tool Rack
+
 tile.tfc.wall.cobble.granite.name=Granite Cobble Wall
 tile.tfc.wall.cobble.diorite.name=Diorite Cobble Wall
 tile.tfc.wall.cobble.gabbro.name=Gabbro Cobble Wall

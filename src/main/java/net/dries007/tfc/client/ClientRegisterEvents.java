@@ -43,7 +43,11 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.client.render.*;
+import net.dries007.tfc.client.render.TESRChestTFC;
+import net.dries007.tfc.client.render.TESRIngotPile;
+import net.dries007.tfc.client.render.TESRPitKiln;
+import net.dries007.tfc.client.render.TESRToolRack;
+import net.dries007.tfc.client.render.TESRWorldItem;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -58,7 +62,11 @@ import net.dries007.tfc.objects.items.ItemGoldPan;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
-import net.dries007.tfc.objects.te.*;
+import net.dries007.tfc.objects.te.TEChestTFC;
+import net.dries007.tfc.objects.te.TEIngotPile;
+import net.dries007.tfc.objects.te.TEPitKiln;
+import net.dries007.tfc.objects.te.TEToolRack;
+import net.dries007.tfc.objects.te.TEWorldItem;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 

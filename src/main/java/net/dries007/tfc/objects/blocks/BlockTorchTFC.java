@@ -61,6 +61,7 @@ public class BlockTorchTFC extends BlockTorch implements ITileEntityProvider
     public IBlockState getStateFromMeta(int meta)
     {
         IBlockState state = getDefaultState().withProperty(LIT, (meta & 0b1000) == 0b1000);
+        //TODO: I recommend to replace this with state.withProperty(FACING, EnumFacing.byIndex(meta & 0b0111)) - LS
         switch (meta & 0b0111)
         {
             default:
@@ -81,6 +82,7 @@ public class BlockTorchTFC extends BlockTorch implements ITileEntityProvider
     public int getMetaFromState(IBlockState state)
     {
         int meta = state.getValue(LIT) ? 0b1000 : 0;
+        //TODO: I recommend to replace this with state.getValue(FACING).getIndex() - LS
         switch (state.getValue(FACING))
         {
             default:

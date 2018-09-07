@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.google.common.base.Joiner;
 import net.minecraft.block.state.IBlockState;
@@ -18,6 +19,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -172,5 +174,36 @@ public final class Helpers
             return;
         EntityItem entityitem = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
         world.spawnEntity(entityitem);
+    }
+
+    /**
+     * Method for hanging blocks to check if they can hang. 11/10 description.
+     * NOTE: where applicable, remember to still check if the blockstate allows for the specified direction!
+     * @param pos position of the block that makes the check
+     * @param facing the direction the block is facing. This is the direction the block should be pointing and the side it hangs ON, not the side it sticks WITH.
+     *               e.g: a sign facing north also hangs on the north side of the support block
+     * @return true if the side is solid, false otherwise.
+     */
+    public static boolean canHangAt(World worldIn, BlockPos pos, EnumFacing facing){
+        return worldIn.isSideSolid(pos.offset(facing.getOpposite()), facing);
+    }
+
+    /**
+     * Primarily for use in placing checks. Determines a solid side for the block to attach to.
+     * @param pos position of the block/space to be checked.
+     * @param possibleSides a list/array of all sides the block can attach to. Enumfacing constants are recommended.
+     *                      This MUST NOT contain null!
+     * @param prefferedFacing this facing is checked first. It can be invalid or null.
+     * @return Found facing or null is none is found. This is the direction the block should be pointing and the side it stick TO, not the side it sticks WITH.
+     */
+    public static EnumFacing getASolidFacing(World worldIn, BlockPos pos, EnumFacing[] possibleSides, @Nullable EnumFacing prefferedFacing) {
+        return getASolidFacing(worldIn, pos, Arrays.asList(possibleSides), prefferedFacing);
+    }
+
+    public static EnumFacing getASolidFacing(World worldIn, BlockPos pos, Collection<EnumFacing> possibleSides, @Nullable EnumFacing prefferedFacing) {
+        if(possibleSides.contains(prefferedFacing) && canHangAt(worldIn, pos, prefferedFacing)) return prefferedFacing;
+        for(EnumFacing side : possibleSides)
+            if(canHangAt(worldIn, pos, side)) return side;
+        return null;
     }
 }

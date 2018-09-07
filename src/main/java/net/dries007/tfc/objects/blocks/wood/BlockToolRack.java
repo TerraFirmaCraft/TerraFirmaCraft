@@ -7,21 +7,27 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -33,7 +39,7 @@ import static net.minecraft.block.BlockHorizontal.FACING;
 import static net.minecraft.block.material.Material.WOOD;
 
 public class BlockToolRack extends BlockContainer
-{//Borrowed from signs, shall be resized
+{
     protected static final AxisAlignedBB RACK_EAST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.125D, 1.0D, 1.0D);
     protected static final AxisAlignedBB RACK_WEST_AABB = new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB RACK_SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D);
@@ -41,31 +47,40 @@ public class BlockToolRack extends BlockContainer
 
     public Tree wood;
 
+    public BlockToolRack(Tree wood, float hardness, float resistance){
+        this(wood);
+        setHardness(hardness);
+        setResistance(resistance);
+    }
+
     public BlockToolRack(Tree wood)
     {
-        super(WOOD);
+        super(WOOD, MapColor.AIR);
         this.wood = wood;
+        setSoundType(SoundType.WOOD);
+        setHarvestLevel("axe", 0);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
     {
         return new TEToolRack();
     }
 
     @Override
     @SuppressWarnings("deprecation")
+    @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(FACING).getIndex();
+        return state.getValue(FACING).getHorizontalIndex();
     }
 
     @Override
@@ -77,6 +92,7 @@ public class BlockToolRack extends BlockContainer
 
     @Override
     @SuppressWarnings("deprecation")
+    @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         switch (state.getValue(FACING))
@@ -95,6 +111,7 @@ public class BlockToolRack extends BlockContainer
 
     @Override
     @SuppressWarnings("deprecation")
+    @Nonnull
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
@@ -112,59 +129,57 @@ public class BlockToolRack extends BlockContainer
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        switch (state.getValue(FACING))
-        {
-            case SOUTH:
-            {
-                if (!worldIn.isSideSolid(pos.add(0, 0, -1), EnumFacing.SOUTH))
-                    pop(state, worldIn, pos);
-                break;
-            }
-            case NORTH:
-            {
-                if (!worldIn.isSideSolid(pos.add(0, 0, 1), EnumFacing.NORTH))
-                    pop(state, worldIn, pos);
-                break;
-            }
-            case EAST:
-            {
-                if (!worldIn.isSideSolid(pos.add(-1, 0, 0), EnumFacing.EAST))
-                    pop(state, worldIn, pos);
-                break;
-            }
-            case WEST:
-                if (!worldIn.isSideSolid(pos.add(1, 0, 0), EnumFacing.WEST))
-                    pop(state, worldIn, pos);
-        }
+        if(Helpers.canHangAt(worldIn, pos, state.getValue(FACING))) return;
+        dropBlockAsItem(worldIn, pos, state, 0);
+        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
+        if (te != null) te.onBreakBlock();
+        worldIn.setBlockToAir(pos);
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn,@Nonnull BlockPos pos)
+    {
+        return super.canPlaceBlockAt(worldIn, pos) && Helpers.getASolidFacing(worldIn, pos, EnumFacing.HORIZONTALS, null) != null;
+    }
+
+    public int getSlotFromPos(IBlockState state, float x, float y, float z){
+        int slot = 0;
+        if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f) slot += 1;
+        if (y < .5f) slot += 2;
+        return slot;
     }
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
         if (te == null) return true;
-        //TODO: this one rotates, I cannot get away w/ this
-        te.onRightClick(playerIn, playerIn.getHeldItem(hand), hitX < 0.5, hitZ < 0.5);
-        return true;
+        return te.onRightClick(playerIn, hand, getSlotFromPos(state, hitX, hitY, hitZ));
     }
 
-    /*@Nullable
     @Override
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    @Nonnull
+    public ItemStack getPickBlock(@Nonnull IBlockState state, RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, EntityPlayer player)
     {
-        return getBoundingBox(blockState,worldIn,pos);
-    }*/
+        Vec3d vec = target.hitVec.subtract(pos.getX(), pos.getY(), pos.getZ());
+        TEToolRack te = Helpers.getTE(world, pos, TEToolRack.class);
+        if (te == null) return new ItemStack(this);
+        ItemStack item = te.getItems().get(getSlotFromPos(state, (float)vec.x, (float)vec.y, (float)vec.z));
+        if(item == ItemStack.EMPTY) return new ItemStack(this);
+        return item;
+    }
 
     @Override
     @SuppressWarnings("deprecation")
+    @Nonnull
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         if (facing.getAxis() == EnumFacing.Axis.Y)
             facing = placer.getHorizontalFacing().getOpposite();
-        return this.getDefaultState().withProperty(FACING, facing);
+        return this.getDefaultState().withProperty(FACING, Helpers.getASolidFacing(worldIn, pos, EnumFacing.HORIZONTALS, facing));
     }
 
     @Override
+    @Nonnull
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACING);
@@ -172,17 +187,17 @@ public class BlockToolRack extends BlockContainer
 
     @Override
     @SuppressWarnings("deprecation")
+    @Nonnull
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
         return EnumBlockRenderType.MODEL;
     }
 
-    public void pop(IBlockState state, World worldIn, BlockPos pos)
+    @Override
+    public void breakBlock(World worldIn,@Nonnull  BlockPos pos,@Nonnull  IBlockState state)
     {
-        dropBlockAsItem(worldIn, pos, state, 0);
         TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
-        if (te != null)
-            te.onBreakBlock();
-        worldIn.setBlockToAir(pos);
+        if (te != null) te.onBreakBlock();
+        super.breakBlock(worldIn, pos, state);
     }
 }
