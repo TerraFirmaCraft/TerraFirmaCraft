@@ -46,14 +46,16 @@ public class TEToolRack extends TileEntity
      * @param item item to check
      * @return true if this item can be put on a tool rack, false otherwise
      */
-    public static boolean isItemEligible(Item item){
+    public static boolean isItemEligible(Item item)
+    {
         return item instanceof ItemMetalTool
             || item instanceof ItemTool
             || item instanceof ItemBow;
     }
 
-    public static boolean isItemEligible(@Nullable ItemStack item){
-        if(item == null) return false;
+    public static boolean isItemEligible(@Nullable ItemStack item)
+    {
+        if (item == null) return false;
         return isItemEligible(item.getItem());
     }
 
@@ -93,14 +95,15 @@ public class TEToolRack extends TileEntity
         if (!slotItem.isEmpty())
         {
             //TODO: pit kilns should be this smart too.
-            if(player.getHeldItem(hand).isEmpty())
+            if (player.getHeldItem(hand).isEmpty())
                 player.setHeldItem(hand, slotItem.splitStack(1));
-            else {
+            else
+            {
                 //check for the other hand
-                if(hand == EnumHand.MAIN_HAND)
+                if (hand == EnumHand.MAIN_HAND)
                     hand = EnumHand.OFF_HAND;
                 else hand = EnumHand.MAIN_HAND;
-                if(player.getHeldItem(hand).isEmpty())
+                if (player.getHeldItem(hand).isEmpty())
                     player.setHeldItem(hand, slotItem.splitStack(1));
                 else player.addItemStackToInventory(slotItem.splitStack(1));
             }
@@ -109,7 +112,8 @@ public class TEToolRack extends TileEntity
             return true;
         }
         //we put
-        if(isItemEligible(heldItem)){
+        if (isItemEligible(heldItem))
+        {
             items.set(slot, player.isCreative() ?
                 new ItemStack(heldItem.getItem(), 1, heldItem.getMetadata(), heldItem.getTagCompound())
                 : heldItem.splitStack(1));

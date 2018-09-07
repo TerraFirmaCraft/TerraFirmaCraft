@@ -47,7 +47,8 @@ public class BlockToolRack extends BlockContainer
 
     public Tree wood;
 
-    public BlockToolRack(Tree wood, float hardness, float resistance){
+    public BlockToolRack(Tree wood, float hardness, float resistance)
+    {
         this(wood);
         setHardness(hardness);
         setResistance(resistance);
@@ -129,7 +130,7 @@ public class BlockToolRack extends BlockContainer
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if(Helpers.canHangAt(worldIn, pos, state.getValue(FACING))) return;
+        if (Helpers.canHangAt(worldIn, pos, state.getValue(FACING))) return;
         dropBlockAsItem(worldIn, pos, state, 0);
         TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
         if (te != null) te.onBreakBlock();
@@ -137,12 +138,13 @@ public class BlockToolRack extends BlockContainer
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn,@Nonnull BlockPos pos)
+    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
     {
         return super.canPlaceBlockAt(worldIn, pos) && Helpers.getASolidFacing(worldIn, pos, EnumFacing.HORIZONTALS, null) != null;
     }
 
-    public int getSlotFromPos(IBlockState state, float x, float y, float z){
+    public int getSlotFromPos(IBlockState state, float x, float y, float z)
+    {
         int slot = 0;
         if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f) slot += 1;
         if (y < .5f) slot += 2;
@@ -163,8 +165,8 @@ public class BlockToolRack extends BlockContainer
         Vec3d vec = target.hitVec.subtract(pos.getX(), pos.getY(), pos.getZ());
         TEToolRack te = Helpers.getTE(world, pos, TEToolRack.class);
         if (te == null) return new ItemStack(this);
-        ItemStack item = te.getItems().get(getSlotFromPos(state, (float)vec.x, (float)vec.y, (float)vec.z));
-        if(item == ItemStack.EMPTY) return new ItemStack(this);
+        ItemStack item = te.getItems().get(getSlotFromPos(state, (float) vec.x, (float) vec.y, (float) vec.z));
+        if (item == ItemStack.EMPTY) return new ItemStack(this);
         return item;
     }
 
@@ -194,7 +196,7 @@ public class BlockToolRack extends BlockContainer
     }
 
     @Override
-    public void breakBlock(World worldIn,@Nonnull  BlockPos pos,@Nonnull  IBlockState state)
+    public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
     {
         TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
         if (te != null) te.onBreakBlock();
