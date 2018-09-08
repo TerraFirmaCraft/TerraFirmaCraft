@@ -13,7 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -23,13 +22,10 @@ import net.minecraftforge.items.ItemStackHandler;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class TEWorldItem extends TileEntity
 {
-    public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "world_item");
     public ItemStackHandler inventory = new ItemStackHandler(1);
     private byte rotation;
 

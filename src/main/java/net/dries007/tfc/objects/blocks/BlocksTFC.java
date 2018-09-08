@@ -416,13 +416,14 @@ public final class BlocksTFC
 
         // Register Tile Entities
         // Putting tile entity registration in the respective block calls it multiple times. Just put here to avoid duplicates
-        TileEntity.register(TESaplingTFC.ID.toString(), TESaplingTFC.class);
-        TileEntity.register(TEChestTFC.ID.toString(), TEChestTFC.class);
-        TileEntity.register(TEWorldItem.ID.toString(), TEWorldItem.class);
-        TileEntity.register(TETorchTFC.ID.toString(), TETorchTFC.class);
-        TileEntity.register(TEPitKiln.ID.toString(), TEPitKiln.class);
-        TileEntity.register(TELogPile.ID.toString(), TELogPile.class);
-        TileEntity.register(TEIngotPile.ID.toString(), TEIngotPile.class);
+        register(TESaplingTFC.class, "sapling");
+        register(TEChestTFC.class, "chest");
+        register(TEWorldItem.class, "world_item");
+        register(TETorchTFC.class, "torch");
+        register(TEPitKiln.class, "pit_kiln");
+        register(TELogPile.class, "log_pile");
+        register(TEIngotPile.class, "ingot_pile");
+        register(TEFirePit.class, "fire_pit");
 
     }
 
@@ -515,5 +516,10 @@ public final class BlocksTFC
         block.setTranslationKey(MOD_ID + "." + name.replace('/', '.'));
         r.register(block);
         return block;
+    }
+
+    private static <T extends TileEntity> void register(Class<T> te, String name)
+    {
+        TileEntity.register(MOD_ID + ":" + name, te);
     }
 }

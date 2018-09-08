@@ -33,7 +33,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.ISmallVesselHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.size.Size;
@@ -71,10 +70,10 @@ public class ItemSmallVessel extends ItemFiredPottery
                 switch (mode)
                 {
                     case INVENTORY:
-                        player.openGui(TerraFirmaCraft.getInstance(), TFCGuiHandler.SMALL_VESSEL, world, 0, 0, 0);
+                        TFCGuiHandler.openGui(world, player, TFCGuiHandler.Type.SMALL_VESSEL);
                         break;
                     case LIQUID_MOLTEN:
-                        player.openGui(TerraFirmaCraft.getInstance(), TFCGuiHandler.SMALL_VESSEL_LIQUID, world, 0, 0, 0);
+                        TFCGuiHandler.openGui(world, player, TFCGuiHandler.Type.SMALL_VESSEL_LIQUID);
                         break;
                     case LIQUID_SOLID:
                         break;
@@ -329,7 +328,6 @@ public class ItemSmallVessel extends ItemFiredPottery
         @Override
         public boolean isMolten()
         {
-            TerraFirmaCraft.getLog().debug("Check Molten: {} >= {}", getTemperature(), meltingPoint);
             return getTemperature() >= meltingPoint;
         }
 
