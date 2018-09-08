@@ -40,10 +40,10 @@ public class ContainerLogPile extends ContainerTE<TELogPile>
         IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (inventory != null)
         {
-            addSlotToContainer(new SlotTEInput(inventory, 0, 71, 23, tile, TELogPile::isStackValid));
-            addSlotToContainer(new SlotTEInput(inventory, 1, 89, 23, tile, TELogPile::isStackValid));
-            addSlotToContainer(new SlotTEInput(inventory, 2, 71, 41, tile, TELogPile::isStackValid));
-            addSlotToContainer(new SlotTEInput(inventory, 3, 89, 41, tile, TELogPile::isStackValid));
+            addSlotToContainer(new SlotTEInput(inventory, 0, 71, 23, tile));
+            addSlotToContainer(new SlotTEInput(inventory, 1, 89, 23, tile));
+            addSlotToContainer(new SlotTEInput(inventory, 2, 71, 41, tile));
+            addSlotToContainer(new SlotTEInput(inventory, 3, 89, 41, tile));
         }
     }
 }

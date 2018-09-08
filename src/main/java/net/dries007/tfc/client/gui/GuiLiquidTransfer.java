@@ -24,7 +24,7 @@ import net.dries007.tfc.util.Helpers;
 @SideOnly(Side.CLIENT)
 public class GuiLiquidTransfer extends GuiContainerTFC
 {
-    private static final ResourceLocation BG_TEXTURE = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/small_vessel_liquid.png");
+    private static final ResourceLocation BG_TEXTURE = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/single_inventory.png");
     private final int slotIdx;
 
     public GuiLiquidTransfer(Container container, EntityPlayer player, String translationKey, boolean mainhand)
