@@ -28,13 +28,16 @@ import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockLogTFC extends BlockLog
+public class BlockLogTFC extends BlockLog implements IItemSize
 {
     public static final PropertyBool PLACED = PropertyBool.create("placed");
     public static final PropertyBool SMALL = PropertyBool.create("small");
@@ -236,6 +239,18 @@ public class BlockLogTFC extends BlockLog
             world.setBlockToAir(pos1);
         }
         return maxLogs >= logs.size();
+    }
+
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.NORMAL;
+    }
+
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.MEDIUM;
     }
 
 }

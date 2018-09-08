@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.objects.items.wood.ItemLogTFC;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
 
@@ -28,7 +28,7 @@ public class TEFirePit extends TESidedInventory implements ITickable
 
     private static boolean isStackFuel(ItemStack stack)
     {
-        return stack.getItem() instanceof ItemLogTFC; // todo
+        return Helpers.doesStackMatchOre(stack, "logWood");
     }
 
     private static boolean isStackCookable(ItemStack stack)
