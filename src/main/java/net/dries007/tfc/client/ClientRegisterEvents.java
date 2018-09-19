@@ -43,11 +43,7 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.client.render.TESRChestTFC;
-import net.dries007.tfc.client.render.TESRIngotPile;
-import net.dries007.tfc.client.render.TESRPitKiln;
-import net.dries007.tfc.client.render.TESRToolRack;
-import net.dries007.tfc.client.render.TESRWorldItem;
+import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -183,7 +179,6 @@ public final class ClientRegisterEvents
 
         for (Block block : BlocksTFC.getAllToolRackBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().build());
-        //ModelLoader.setCustomStateMapper(block, blockIn -> ImmutableMap.of(block.getDefaultState(), new ModelResourceLocation("tfc:wood/tool_rack/" + ((BlockToolRack)block).wood.toString())));
         ClientRegistry.bindTileEntitySpecialRenderer(TEToolRack.class, new TESRToolRack());
 
         ModelLoader.setCustomStateMapper(BlocksTFC.PIT_KILN, blockIn -> ImmutableMap.of(BlocksTFC.PIT_KILN.getDefaultState(), new ModelResourceLocation("tfc:empty")));
@@ -195,15 +190,14 @@ public final class ClientRegisterEvents
         ModelLoader.setCustomStateMapper(BlocksTFC.INGOT_PILE, blockIn -> ImmutableMap.of(BlocksTFC.INGOT_PILE.getDefaultState(), new ModelResourceLocation("tfc:empty")));
         ClientRegistry.bindTileEntitySpecialRenderer(TEIngotPile.class, new TESRIngotPile());
 
-        ModelLoader.setCustomStateMapper(BlocksTFC.INGOT_PILE, blockIn -> ImmutableMap.of(BlocksTFC.INGOT_PILE.getDefaultState(), new ModelResourceLocation("tfc:empty")));
-        ClientRegistry.bindTileEntitySpecialRenderer(TEIngotPile.class, new TESRIngotPile());
-
         for (Block block : BlocksTFC.getAllNormalItemBlocks().keySet())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
 
         for (Block block : BlocksTFC.getAllInventoryItemBlocks().keySet())
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
 
+        //TODO: uncomment upon making bellows animation
+        //ClientRegistry.bindTileEntitySpecialRenderer(TEBellows.class, new TESRBellows());
     }
 
     @SubscribeEvent

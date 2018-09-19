@@ -73,12 +73,13 @@ public class TESaplingTFC extends TileEntity
     @Override
     public NBTTagCompound getUpdateTag()
     {
-        // The tag from this method is used for the initial chunk packet, and it needs to have the TE position!
+        /* The tag from this method is used for the initial chunk packet, and it needs to have the TE position!
+        but this should be already handled by writeToNBT, not tested tho
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("x", this.getPos().getX());
         nbt.setInteger("y", this.getPos().getY());
-        nbt.setInteger("z", this.getPos().getZ());
-        return writeToNBT(nbt);
+        nbt.setInteger("z", this.getPos().getZ());*/
+        return writeToNBT(/*nbt*/new NBTTagCompound());
     }
 
     @Override

@@ -396,7 +396,8 @@ public final class BlocksTFC
         // todo: sluice
         // todo: quern
         // todo: loom
-        // todo: bellows
+        inventoryItemBlocks.put(register(r, "bellows", new BlockBellows(), CT_MISC), ItemBlockTFC.class);
+        ;
         // todo: forge
         // todo: anvils (items exist already)
         // todo: bloomery
@@ -433,6 +434,7 @@ public final class BlocksTFC
         TileEntity.register(TELogPile.ID.toString(), TELogPile.class);
         TileEntity.register(TEIngotPile.ID.toString(), TEIngotPile.class);
         TileEntity.register(TEToolRack.ID.toString(), TEToolRack.class);
+        TileEntity.register(TEBellows.ID.toString(), TEBellows.class);
 
     }
 
