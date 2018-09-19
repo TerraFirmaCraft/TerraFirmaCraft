@@ -1,0 +1,27 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "__comment": "remove the _inventory part once animation will be worked on",
+    "model": "tfc:bellows_inventory"
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": {
+      "model": "tfc:bellows_inventory"
+    },
+    "facing": {
+      "south": {},
+      "west": {
+        "y": 90
+      },
+      "north": {
+        "y": 180
+      },
+      "east": {
+        "y": 270
+      }
+    }
+  }
+}

@@ -24,20 +24,30 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.capability.IBellowsHandler;
 import net.dries007.tfc.objects.items.ItemFireStarter;
+import net.dries007.tfc.objects.te.TEBellows;
 
 /**
  * todo: Needs more work in general
  */
-public class BlockFirePit extends Block implements ITileEntityProvider
+public class BlockFirePit extends Block implements ITileEntityProvider, IBellowsHandler
 {
     public static final PropertyBool LIT = PropertyBool.create("lit");
     protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.03125D, 0.9375D);
+
+    private static Vec3i bellowsOffset = new Vec3i(1, 0, 0);
+
+    static
+    {
+        TEBellows.offsets.add(bellowsOffset);
+    }
 
     public BlockFirePit()
     {
@@ -163,6 +173,19 @@ public class BlockFirePit extends Block implements ITileEntityProvider
 
         //todo: gui
         return true;
+    }
+
+    @Override
+    public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
+    {
+        return offset.equals(bellowsOffset);
+    }
+
+    @Override
+    public float onAirIntake(TEBellows te, BlockPos pos, float airAmount)
+    {
+        //TODO: Do stuff
+        return airAmount;
     }
 
     @Override
