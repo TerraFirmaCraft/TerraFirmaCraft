@@ -1,70 +1,62 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc.objects.te;
 
-import net.minecraft.block.state.IBlockState;
+import javax.annotation.Nonnull;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.objects.blocks.BlockTorchTFC;
+import net.dries007.tfc.world.classic.CalenderTFC;
 
-public class TETorchTFC extends TileEntity implements ITickable
+public class TETorchTFC extends TileEntity
 {
-    public static final long BURN_SECONDS = 600;
-    private long secondsleft = BURN_SECONDS;
+    private long lastLitTimestamp;
 
-    @Override
-    public void update()
+    public TETorchTFC()
     {
-        if (this.world.getTotalWorldTime() % 20 == 0L)
+        lastLitTimestamp = CalenderTFC.getTotalTime();
+    }
+
+    public void onRandomTick()
+    {
+        if (CalenderTFC.getTotalTime() - lastLitTimestamp > (long) ConfigTFC.GENERAL.torchTime && ConfigTFC.GENERAL.torchTime > 0)
         {
-            this.updateTimer();
+            extinguish();
         }
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
+        lastLitTimestamp = compound.getLong("ticks");
         super.readFromNBT(compound);
-        secondsleft = compound.getLong("secondsleft");
     }
 
     @Override
+    @Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        super.writeToNBT(compound);
-        compound.setLong("secondsleft", secondsleft);
-        return compound;
+        compound.setLong("ticks", lastLitTimestamp);
+        return super.writeToNBT(compound);
     }
 
-    public void toggle()
+    public void extinguish()
     {
-        IBlockState state = world.getBlockState(pos);
-        boolean lit = state.getValue(BlockTorchTFC.LIT);
-        if (lit)
-        {
-            world.setBlockState(pos, state.withProperty(BlockTorchTFC.LIT, false));
-            secondsleft = 0;
-        }
-        else
-        {
-            world.setBlockState(pos, state.withProperty(BlockTorchTFC.LIT, true));
-            secondsleft = BURN_SECONDS; // todo: adjust 600 seconds = 10 minutes
-        }
-        markDirty();
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockTorchTFC.LIT, false));
+        this.markDirty();
     }
 
-    private void updateTimer()
+    public void light()
     {
-        if (secondsleft > 0)
-        {
-            secondsleft--;
-            if (secondsleft == 0)
-                toggle();
-        }
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockTorchTFC.LIT, true));
+        lastLitTimestamp = CalenderTFC.getTotalTime();
+        this.markDirty();
     }
 }

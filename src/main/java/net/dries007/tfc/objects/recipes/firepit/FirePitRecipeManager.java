@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
 
-import net.minecraft.init.Items;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -25,9 +25,10 @@ public class FirePitRecipeManager
         recipes.clear();
 
         // todo: recipes here
-        recipes.add(new FirePitRecipe(new ItemStack(Items.STICK), new ItemStack(BlocksTFC.TORCH, 2)));
+        recipes.add(new FirePitRecipe(new ItemStack(BlocksTFC.TORCH, 2), "stickWood"));
+        recipes.add(new FirePitRecipe(new ItemStack(Blocks.GLASS), "sand"));
 
-        // todo: craft tweaker supported recipes
+        // todo: craft tweaker supported recipes (See NTP for a nice-ish way to do it)
     }
 
     public static boolean add(FirePitRecipe recipe)

@@ -37,8 +37,9 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockWallTFC;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
-import net.dries007.tfc.objects.items.ItemBlockTFC;
-import net.dries007.tfc.objects.items.ItemBlockTorchTFC;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockHeat;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockTorchTFC;
 import net.dries007.tfc.objects.te.*;
 
 import static net.dries007.tfc.api.types.Rock.Type.*;
@@ -253,7 +254,13 @@ public final class BlocksTFC
                 for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
                     b.add(register(r, type.name().toLowerCase() + "/" + rock.getRegistryName().getPath(), BlockRockVariant.create(rock, type), CT_ROCK_BLOCKS));
             allBlockRockVariants = b.build();
-            allBlockRockVariants.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
+            allBlockRockVariants.forEach(x ->
+            {
+                if (x.type == Rock.Type.SAND)
+                    normalItemBlocks.add(new ItemBlockHeat(x, 1, 600));
+                else
+                    normalItemBlocks.add(new ItemBlockTFC(x));
+            });
         }
 
         {
@@ -392,7 +399,6 @@ public final class BlocksTFC
         // todo: loom
         // todo: bellows
         // todo: forge
-        // todo: anvils (items exist already)
         // todo: bloomery
         // todo: bloom/molten blocks
         // todo: crusible
@@ -406,11 +412,8 @@ public final class BlocksTFC
 
         // todo: custom hopper or just a separate press block? I prefer the separate block, this will simplify things a lot.
 
-        // todo: placable items: pottery, metal sheets, (anvils are special because TE), tools?
         register(r, "world_item", new BlockWorldItem());
-        // todo: pitkiln (maybe not a seperate block but rather a variation on the TE from any placeable item)
         register(r, "charcoal_pile", new BlockCharcoalPile());
-        // todo: ingot pile
         register(r, "ingot_pile", new BlockIngotPile());
         register(r, "log_pile", new BlockLogPile());
 
