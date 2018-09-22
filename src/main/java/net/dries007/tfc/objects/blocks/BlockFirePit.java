@@ -172,7 +172,6 @@ public class BlockFirePit extends Block implements ITileEntityProvider
             }
 
         }
-        //todo: gui
         return true;
     }
 

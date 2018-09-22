@@ -17,6 +17,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.AlloyRecipe;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.util.IMetalObject;
 
 public class Alloy
 {
@@ -99,7 +100,7 @@ public class Alloy
     /**
      * Note: this is not a check if the alloy will turn into unknown metal
      *
-     * @return is the alloy valid (set if it was constructed via ItemStacks and one itemstack wasn't an IMetalObject)
+     * @return is the alloy valid (set if it was constructed via ItemStacks and one ItemStack wasn't an IMetalObject)
      */
     public boolean isValid()
     {

@@ -16,7 +16,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import net.dries007.tfc.api.ITreeGenerator;
+import net.dries007.tfc.api.util.ITreeGenerator;
 
 public class Tree extends IForgeRegistryEntry.Impl<Tree>
 {

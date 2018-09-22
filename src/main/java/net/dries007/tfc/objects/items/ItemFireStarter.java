@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.items;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -24,7 +23,8 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -38,7 +38,6 @@ import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
 import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
@@ -47,9 +46,6 @@ import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 @ParametersAreNonnullByDefault
 public class ItemFireStarter extends ItemTFC
 {
-    private static final Predicate<EntityItem> IS_STICK = OreDictionaryHelper.createPredicateItemEntity("stickWood");
-    private static final Predicate<EntityItem> IS_KINDLING = OreDictionaryHelper.createPredicateItemEntity("kindling", "paper", "hay");
-
     public static boolean canIgnite(ItemStack stack)
     {
         if (stack.isEmpty()) return false;
@@ -66,7 +62,7 @@ public class ItemFireStarter extends ItemTFC
         setNoRepair();
     }
 
-    @Override
+    /*@Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         //todo: move to public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
@@ -76,7 +72,7 @@ public class ItemFireStarter extends ItemTFC
         if (canStartFire(worldIn, playerIn) == null) return new ActionResult<>(EnumActionResult.FAIL, stack);
         playerIn.setActiveHand(handIn);
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-    }
+    }*/
 
     @Override
     public EnumAction getItemUseAction(ItemStack stack)
