@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc.objects.inventory;
@@ -27,17 +28,18 @@ public class SlotTEInput extends SlotItemHandler
     public void onSlotChanged()
     {
         te.setAndUpdateSlots(getSlotIndex());
+        super.onSlotChanged();
     }
 
     @Override
     public boolean isItemValid(@Nonnull ItemStack stack)
     {
-        return te.isItemValid(this.slotNumber, stack);
+        return te.isItemValid(this.slotNumber, stack) && super.isItemValid(stack);
     }
 
     @Override
     public int getSlotStackLimit()
     {
-        return te.getSlotLimit(getSlotIndex());
+        return Math.min(te.getSlotLimit(getSlotIndex()), super.getSlotStackLimit());
     }
 }

@@ -6,33 +6,31 @@
 
 package net.dries007.tfc.objects.te;
 
-import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
-import net.dries007.tfc.objects.recipes.firepit.FirePitRecipe;
-import net.dries007.tfc.objects.recipes.firepit.FirePitRecipeManager;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.objects.recipes.heat.HeatRecipe;
+import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
+import net.dries007.tfc.util.Fuel;
+import net.dries007.tfc.util.FuelManager;
 
 import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
 
 @ParametersAreNonnullByDefault
 public class TEFirePit extends TESidedInventory implements ITickable
 {
-    // To avoid "magic numbers"
+    // Slot 0 - 3 = fuel slots with 3 being input, 4 = normal input slot, 5 and 6 are output slots 1 + 2
     public static final int SLOT_FUEL_CONSUME = 0;
     public static final int SLOT_FUEL_INPUT = 3;
     public static final int SLOT_ITEM_INPUT = 4;
@@ -41,45 +39,7 @@ public class TEFirePit extends TESidedInventory implements ITickable
 
     // todo: adjust this to change how fast firepit heats up items (item_heating_mod) or how fast it heats up (temperature_modifier)
     private static final float TEMPERATURE_MODIFIER = 1f;
-    private static final float ITEM_HEATING_MODIFIER = 2f;
-
-    public static int getFuelAmount(ItemStack stack)
-    {
-        // todo: make this a proper registry or lookup somewhere
-        if (stack.getItem() instanceof ItemBlock)
-        {
-            Block block = ((ItemBlock) stack.getItem()).getBlock();
-            if (block instanceof BlockLogTFC)
-            {
-                return ((BlockLogTFC) block).getWood().getBurnTicks();
-            }
-        }
-        return 0;
-    }
-
-    public static float getFuelTemperature(ItemStack stack)
-    {
-        // todo: make this a proper registry or lookup somewhere
-        if (stack.getItem() instanceof ItemBlock)
-        {
-            Block block = ((ItemBlock) stack.getItem()).getBlock();
-            if (block instanceof BlockLogTFC)
-            {
-                return ((BlockLogTFC) block).getWood().getBurnTemp();
-            }
-        }
-        return 0f;
-    }
-
-    private static boolean isStackFuel(ItemStack stack)
-    {
-        return getFuelAmount(stack) != 0;
-    }
-
-    private static boolean isStackCookable(ItemStack stack)
-    {
-        return stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-    }
+    private static final float ITEM_HEATING_MODIFIER = 3f;
 
     private boolean requiresSlotUpdate = false;
     private float temperature; // Current Temperature
@@ -90,7 +50,6 @@ public class TEFirePit extends TESidedInventory implements ITickable
     public TEFirePit()
     {
         super(7);
-        // Slot 0 - 3 = fuel slots with 3 being input, 4 = normal input slot, 5 and 6 are output slots 1 + 2
 
         temperature = 0;
         burnTemperature = 0;
@@ -124,8 +83,9 @@ public class TEFirePit extends TESidedInventory implements ITickable
                 else
                 {
                     inventory.setStackInSlot(SLOT_FUEL_CONSUME, ItemStack.EMPTY);
-                    burnTicks += getFuelAmount(stack);
-                    burnTemperature = getFuelTemperature(stack);
+                    Fuel fuel = FuelManager.getFuel(stack);
+                    burnTicks += fuel.getAmount();
+                    burnTemperature = fuel.getTemperature();
                 }
             }
         }
@@ -158,21 +118,11 @@ public class TEFirePit extends TESidedInventory implements ITickable
                         stack.setTagCompound(cap.serializeNBT());
                     }
 
-                    // For now only check the input slot
+                    // This will melt + consume the input stack
+                    // Output stacks are assumed to not melt (see the case of ceramic molds in the output)
                     if (cap.isMolten() && i == SLOT_ITEM_INPUT)
                     {
-                        // todo: This is the bit that needs to be more advanced than this
-                        FirePitRecipe recipe = FirePitRecipeManager.get(stack);
-                        if (recipe != null)
-                        {
-                            inventory.setStackInSlot(SLOT_ITEM_INPUT, Helpers.consumeItem(stack, 1));
-                            ItemStack outStack = recipe.getOutput();
-                            outStack = inventory.insertItem(SLOT_OUTPUT_1, outStack, false);
-                            if (!outStack.isEmpty())
-                            {
-                                inventory.insertItem(SLOT_OUTPUT_2, outStack, false);
-                            }
-                        }
+                        handleInputMelting(stack);
                     }
                 }
             }
@@ -182,14 +132,6 @@ public class TEFirePit extends TESidedInventory implements ITickable
         if (requiresSlotUpdate)
         {
             cascadeFuelSlots();
-        }
-
-        // Pick up fuel items in the world
-        pickupTimer--;
-        if (pickupTimer <= 0)
-        {
-            if (pickupItemsFromWorld())
-                pickupTimer = 20;
         }
     }
 
@@ -211,10 +153,13 @@ public class TEFirePit extends TESidedInventory implements ITickable
     {
         switch (slot)
         {
-            case SLOT_FUEL_INPUT:
-                return isStackFuel(stack); // check if it is a log
-            case SLOT_ITEM_INPUT:
-                return isStackCookable(stack); // check if it has a fire pit recipe
+            case SLOT_FUEL_INPUT: // Valid fuel if it is registered correctly
+                return FuelManager.isItemFuel(stack);
+            case SLOT_ITEM_INPUT: // Valid input as long as it can be heated
+                return stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+            case SLOT_OUTPUT_1:
+            case SLOT_OUTPUT_2: // Valid insert into output as long as it can hold fluids and is heat-able
+                return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
             default: // Other fuel slots + output slots
                 return false;
         }
@@ -241,8 +186,9 @@ public class TEFirePit extends TESidedInventory implements ITickable
 
     public void onCreate(ItemStack log)
     {
-        burnTicks += getFuelAmount(log);
-        burnTemperature += getFuelTemperature(log);
+        Fuel fuel = FuelManager.getFuel(log);
+        burnTicks += fuel.getAmount();
+        burnTemperature += fuel.getTemperature();
     }
 
     private void cascadeFuelSlots()
@@ -273,25 +219,49 @@ public class TEFirePit extends TESidedInventory implements ITickable
         TerraFirmaCraft.getLog().debug("Burning? {}", world.getBlockState(pos).getValue(LIT));
     }
 
-    // Return false if it should not reset the count (AKA should it try and pick up next tick as well)
-    private boolean pickupItemsFromWorld()
+    private void handleInputMelting(ItemStack stack)
     {
-        final List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)));
-        for (EntityItem entity : items)
+        HeatRecipe recipe = HeatRecipeManager.get(stack);
+        if (recipe != null)
         {
-            if (isStackFuel(entity.getItem()) && inventory.getStackInSlot(SLOT_FUEL_INPUT).isEmpty())
+            // Handle possible metal output
+            FluidStack fluidStack = recipe.getOutputMetal(stack);
+            if (fluidStack != null)
             {
-                ItemStack toAdd = entity.getItem();
-                toAdd.setCount(1);
-                ItemStack leftover = inventory.insertItem(SLOT_FUEL_INPUT, toAdd, false);
-                if (leftover.isEmpty())
-                    entity.setDead();
-                else
-                    entity.setItem(leftover);
-                return false;
+                ItemStack output = inventory.getStackInSlot(SLOT_OUTPUT_1);
+                IFluidHandler fluidHandler = output.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+                if (fluidHandler != null)
+                {
+                    int amountFilled = fluidHandler.fill(fluidStack.copy(), true);
+                    fluidStack.amount -= amountFilled;
+                }
+                if (fluidStack.amount > 0)
+                {
+                    output = inventory.getStackInSlot(SLOT_OUTPUT_2);
+                    fluidHandler = output.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+
+                    if (fluidHandler != null)
+                    {
+                        fluidHandler.fill(fluidStack, true);
+                    }
+                }
             }
+
+            // Handle possible item output
+            ItemStack outputStack = recipe.getOutputStack();
+            if (outputStack != null)
+            {
+                outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);
+                if (!outputStack.isEmpty())
+                {
+                    inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
+                }
+            }
+
+            // Handle removal of input
+            ItemStack inputStack = recipe.consumeInput(stack);
+            inventory.setStackInSlot(SLOT_ITEM_INPUT, inputStack);
         }
-        return true;
     }
 
 }
