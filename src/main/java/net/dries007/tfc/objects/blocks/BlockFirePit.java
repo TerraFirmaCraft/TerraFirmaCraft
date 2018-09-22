@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc.objects.blocks;
@@ -157,14 +158,15 @@ public class BlockFirePit extends Block implements ITileEntityProvider
     {
         if (!worldIn.isRemote)
         {
-            ItemStack held = player.getHeldItem(hand);
-            if (state.getValue(LIT)) //todo: remove debug feature
-                worldIn.setBlockState(pos, state.withProperty(LIT, false));
-
-            if (ItemFireStarter.canIgnite(held))
-                worldIn.setBlockState(pos, state.withProperty(LIT, true));
-
-            if (!player.isSneaking())
+            if (player.isSneaking())
+            {
+                ItemStack held = player.getHeldItem(hand);
+                if (ItemFireStarter.canIgnite(held))
+                {
+                    worldIn.setBlockState(pos, state.withProperty(LIT, true));
+                }
+            }
+            else
             {
                 TFCGuiHandler.openGui(worldIn, pos, player, TFCGuiHandler.Type.FIRE_PIT);
             }

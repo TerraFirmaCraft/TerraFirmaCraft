@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc;
@@ -26,6 +27,7 @@ import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.cmd.TreeGenCommand;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.recipes.firepit.FirePitRecipeManager;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.CalenderTFC;
@@ -154,6 +156,8 @@ public class TerraFirmaCraft
     {
         if (!isSignedBuild)
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
+
+        FirePitRecipeManager.postInit();
 
         OreSpawnData.reloadOreGen();
     }

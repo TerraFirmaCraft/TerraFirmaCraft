@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc.objects.items;
@@ -82,7 +83,6 @@ public final class ItemsTFC
     public static void registerItems(RegistryEvent.Register<Item> event)
     {
         IForgeRegistry<Item> r = event.getRegistry();
-
         Builder<Item> simpleItems = ImmutableList.builder();
 
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
@@ -182,7 +182,7 @@ public final class ItemsTFC
         r.register(new ItemFlat().setRegistryName(MOD_ID, "flat/fire_clay"));
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
-        simpleItems.add(register(r, "hay", new ItemMisc(Size.SMALL, Weight.LIGHT), CT_MISC));
+        simpleItems.add(register(r, "hay", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "other", new String[] {"fancy", "kindling"}, new String[] {"extra", "fancy", "kindling"}), CT_MISC));
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
 
         // todo: Bow? Arrows?

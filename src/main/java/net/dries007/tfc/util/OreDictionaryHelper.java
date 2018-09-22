@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc.util;
@@ -103,7 +104,7 @@ public class OreDictionaryHelper
 
     private static void register(Thing thing, Object... parts)
     {
-        if (done) throw new IllegalStateException("Cannot use the helper to register after init has past.");
+        if (done) throw new IllegalStateException("Cannot use the helper to register after postInit has past.");
         MAP.put(thing, toString(parts));
     }
 

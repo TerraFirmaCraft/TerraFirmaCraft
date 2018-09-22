@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc.world.classic.worldgen;
@@ -94,7 +95,7 @@ public class WorldGenTrees implements IWorldGenerator
             tree.makeTree(manager, world, pos, random);
         }
 
-        trees.removeIf(t -> !t.isHasBushes());
+        trees.removeIf(t -> !t.hasBushes());
         // Small bushes in high density areas
         if (density > 0.6f && !trees.isEmpty()) // Density requirement is the same for jungles (kapok trees) to generate
         {

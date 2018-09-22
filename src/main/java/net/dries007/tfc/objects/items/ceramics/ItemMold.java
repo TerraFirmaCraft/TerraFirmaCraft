@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc.objects.items.ceramics;
@@ -222,6 +223,18 @@ public class ItemMold extends ItemFiredPottery
                 text.add(desc);
             }
             IMoldHandler.super.addHeatInfo(stack, text, false); // Never clear the NBT based on heat alone
+        }
+
+        @Override
+        public float getHeatCapacity()
+        {
+            return heatCapacity;
+        }
+
+        @Override
+        public float getMeltingPoint()
+        {
+            return meltingPoint;
         }
 
         private void updateFluidData(FluidStack fluid)

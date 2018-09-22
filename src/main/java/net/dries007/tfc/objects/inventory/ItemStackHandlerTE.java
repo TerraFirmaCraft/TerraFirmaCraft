@@ -17,7 +17,6 @@ public class ItemStackHandlerTE extends ItemStackHandler
     public ItemStackHandlerTE(TESidedInventory tile, int size)
     {
         super(size);
-
         this.tile = tile;
     }
 
