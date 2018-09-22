@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc;
@@ -79,10 +80,14 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifier")
         public double temperatureModifier = 0.5;
 
-        @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 ingame hour), default is 8 hours.")
+        @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour), default is 8 hours.")
         @Config.RangeInt(min = 20)
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifier")
         public int pitKilnTime = 8000;
+
+        @Config.Comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour), default is 72 hours. Set to -1 to disable torch burnout.")
+        @Config.RangeInt(min = 20)
+        public int torchTime = 200; // todo: change to 72000
     }
 
     public static class ClientCFG

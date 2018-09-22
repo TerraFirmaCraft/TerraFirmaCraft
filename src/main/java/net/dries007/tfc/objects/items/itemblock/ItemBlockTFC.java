@@ -4,7 +4,7 @@
  *
  */
 
-package net.dries007.tfc.objects.items;
+package net.dries007.tfc.objects.items.itemblock;
 
 import javax.annotation.Nonnull;
 
