@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc.objects.blocks;
@@ -104,6 +105,7 @@ public final class BlocksTFC
     public static final BlockCharcoalPile CHARCOAL_PILE = null;
     public static final BlockLogPile LOG_PILE = null;
     public static final BlockIngotPile INGOT_PILE = null;
+    public static final BlockTorchTFC TORCH = null;
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.

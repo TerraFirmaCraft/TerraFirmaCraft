@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc.api.capability.heat;
@@ -25,10 +26,25 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
 {
     /**
      * Gets the current temperature. Should call CapabilityItemHeat.adjustTemp() internally
-     *
      * @return the temperature. Between 0 - 1600
      */
     float getTemperature();
+
+    /**
+     * Gets the Heat capacity. (A measure of how fast this items heats up or cools down)
+     * Implementation is left up to the heating object. (See TEFirePit for example)
+     *
+     * @return a value between 0 and 1
+     */
+    float getHeatCapacity();
+
+    /**
+     * Gets the melting point of the item.
+     * Depending on the item, this may not mean anything.
+     *
+     * @return a temperature between 0 - 1600 that is the melting point
+     */
+    float getMeltingPoint();
 
     /**
      * Sets the temperature. Used for anything that modifies the temperature.
@@ -39,12 +55,11 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
     /**
      * If the object can melt / transform, return if it is transformed
      * This can mean many different things depending on the object
-     *
      * @return is the object transformed.
      */
     default boolean isMolten()
     {
-        return false;
+        return getTemperature() > getMeltingPoint();
     }
 
     /**

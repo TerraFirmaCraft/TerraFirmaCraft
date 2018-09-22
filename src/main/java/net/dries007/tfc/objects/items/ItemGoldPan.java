@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc.objects.items;
@@ -95,7 +96,7 @@ public class ItemGoldPan extends ItemTFC
         final int count = total - countLeft;
         final BlockPos pos = result.getBlockPos().add(0, 1, 0);
         final World world = player.world;
-        final float chance = world.rand.nextFloat();
+        final float chance = itemRand.nextFloat();
 
         //todo: this is a copypaste from firestarter, it needs to pan, not start fires.
     }
