@@ -195,8 +195,7 @@ public final class ClientRegisterEvents
         ClientRegistry.bindTileEntitySpecialRenderer(TEPitKiln.class, new TESRPitKiln());
         ClientRegistry.bindTileEntitySpecialRenderer(TEWorldItem.class, new TESRWorldItem());
         ClientRegistry.bindTileEntitySpecialRenderer(TEIngotPile.class, new TESRIngotPile());
-        //todo: make this work
-        //ClientRegistry.bindTileEntitySpecialRenderer(TEBellows.class, new TESRBellows());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEBellows.class, new TESRBellows());
     }
 
     @SubscribeEvent

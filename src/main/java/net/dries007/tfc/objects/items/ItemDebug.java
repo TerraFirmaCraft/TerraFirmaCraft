@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.objects.te.TEBellows;
 import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.util.Helpers;
 
@@ -79,10 +80,16 @@ public class ItemDebug extends Item
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        TEFirePit te = Helpers.getTE(worldIn, pos, TEFirePit.class);
+        // todo: make this modular? Or something? Or just remove it once it has served its purpose
+        TEBellows te = Helpers.getTE(worldIn, pos, TEBellows.class);
         if (te != null)
         {
             te.debug();
+        }
+        TEFirePit te2 = Helpers.getTE(worldIn, pos, TEFirePit.class);
+        if (te2 != null)
+        {
+            te2.debug();
         }
         return EnumActionResult.SUCCESS;
     }

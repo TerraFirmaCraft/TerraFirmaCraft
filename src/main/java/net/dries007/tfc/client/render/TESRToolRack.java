@@ -10,9 +10,12 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.te.TEToolRack;
 
+@SideOnly(Side.CLIENT)
 public class TESRToolRack extends TileEntitySpecialRenderer<TEToolRack>
 {
     //direction, slot, axis, that's the order.

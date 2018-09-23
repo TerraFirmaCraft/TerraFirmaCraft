@@ -50,7 +50,7 @@ public class TEToolRack extends TileEntity
 
     public static boolean isItemEligible(@Nullable ItemStack item)
     {
-        if (item == null) return false;
+        if (item == null || item.isEmpty()) return false;
         return isItemEligible(item.getItem());
     }
 
