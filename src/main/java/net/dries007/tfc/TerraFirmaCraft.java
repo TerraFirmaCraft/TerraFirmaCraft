@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc;
@@ -137,7 +136,6 @@ public class TerraFirmaCraft
         }
 
         worldTypeTFC = new WorldTypeTFC();
-//        TreeRegistry.loadTrees();
 
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true, 20)), 0);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureRarity, new WorldGenFissure(false, -1)), 0);
