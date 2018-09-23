@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.blocks;
@@ -406,7 +405,7 @@ public final class BlocksTFC
         // todo: sluice
         // todo: quern
         // todo: loom
-        // todo: bellows
+        inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bellows", new BlockBellows(), CT_MISC)));
         // todo: forge
         // todo: bloomery
         // todo: bloom/molten blocks
@@ -440,6 +439,7 @@ public final class BlocksTFC
         register(TEIngotPile.class, "ingot_pile");
         register(TEFirePit.class, "fire_pit");
         register(TEToolRack.class, "tool_rack");
+        register(TEBellows.class, "bellows");
 
     }
 
