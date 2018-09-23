@@ -29,5 +29,4 @@ public final class Constants
 
     public static final Random RNG = new Random();
 
-    public static final float[] META_TO_ANGLE = new float[] {180f, 90f, 0f, 270f};
 }

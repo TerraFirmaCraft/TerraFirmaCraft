@@ -13,12 +13,11 @@ import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.objects.te.TEToolRack;
 
-import static net.dries007.tfc.Constants.META_TO_ANGLE;
-
 public class TESRToolRack extends TileEntitySpecialRenderer<TEToolRack>
 {
     //direction, slot, axis, that's the order.
-    static final float[][][] location = new float[4][4][3];
+    private static final float[][][] ITEM_LOCATION = new float[4][4][3];
+    private static final float[] META_TO_ANGLE = new float[] {180f, 90f, 0f, 270f};
 
     static
     {
@@ -37,40 +36,40 @@ public class TESRToolRack extends TileEntitySpecialRenderer<TEToolRack>
             for (int slot = 0; slot < 4; slot++)
             {
                 if (slot < 2)
-                    location[dir][slot][1] = heightHigh;
+                    ITEM_LOCATION[dir][slot][1] = heightHigh;
                 else
-                    location[dir][slot][1] = heightLow;
+                    ITEM_LOCATION[dir][slot][1] = heightLow;
 
                 if (dir % 2 == 0)
                 {
                     if (slot % 2 == 0)
-                        location[dir][slot][0] = column1;
+                        ITEM_LOCATION[dir][slot][0] = column1;
                     else
-                        location[dir][slot][0] = column2;
+                        ITEM_LOCATION[dir][slot][0] = column2;
                 }
                 else
                 {
                     if (slot % 2 == 0)
-                        location[dir][slot][2] = column1;
+                        ITEM_LOCATION[dir][slot][2] = column1;
                     else
-                        location[dir][slot][2] = column2;
+                        ITEM_LOCATION[dir][slot][2] = column2;
                 }
 
                 if (dir == 0)
                 {
-                    location[dir][slot][2] = offset;
+                    ITEM_LOCATION[dir][slot][2] = offset;
                 }
                 else if (dir == 1)
                 {
-                    location[dir][slot][0] = offsetInv;
+                    ITEM_LOCATION[dir][slot][0] = offsetInv;
                 }
                 else if (dir == 2)
                 {
-                    location[dir][slot][2] = offsetInv;
+                    ITEM_LOCATION[dir][slot][2] = offsetInv;
                 }
                 else //if (dir == 3)
                 {
-                    location[dir][slot][0] = offset;
+                    ITEM_LOCATION[dir][slot][0] = offset;
                 }
             }
         }
@@ -88,7 +87,7 @@ public class TESRToolRack extends TileEntitySpecialRenderer<TEToolRack>
                 if (te.getItems().get(i) != ItemStack.EMPTY)
                 {
                     GlStateManager.pushMatrix();
-                    GlStateManager.translate(x + location[dir][i][0], y + location[dir][i][1], z + location[dir][i][2]);
+                    GlStateManager.translate(x + ITEM_LOCATION[dir][i][0], y + ITEM_LOCATION[dir][i][1], z + ITEM_LOCATION[dir][i][2]);
                     GlStateManager.rotate(META_TO_ANGLE[dir], 0.0F, 1.0F, 0.0F);
                     GlStateManager.scale(blockScale, blockScale, blockScale);
                     Minecraft.getMinecraft().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
