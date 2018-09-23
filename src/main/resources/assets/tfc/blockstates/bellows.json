@@ -1,8 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "__comment": "remove the _inventory part once animation will be worked on",
-    "model": "tfc:bellows_inventory"
+    "model": "tfc:bellows"
   },
   "variants": {
     "normal": [
