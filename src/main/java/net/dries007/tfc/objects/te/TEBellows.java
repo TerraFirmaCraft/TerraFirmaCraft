@@ -7,7 +7,6 @@ package net.dries007.tfc.objects.te;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
@@ -15,13 +14,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
 import net.dries007.tfc.api.capability.IBellowsHandler;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.minecraft.block.BlockHorizontal.FACING;
 
 public class TEBellows extends TileEntity
@@ -39,8 +36,6 @@ public class TEBellows extends TileEntity
      * then there is no need do do it anymore with yours.
      */
     public static final Set<Vec3i> offsets = new HashSet<>();
-
-    public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "tool_rack");
 
     private long lastPushed = 0L;
 

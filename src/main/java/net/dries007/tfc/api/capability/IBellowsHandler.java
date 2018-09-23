@@ -11,12 +11,9 @@ import net.minecraft.util.math.Vec3i;
 
 import net.dries007.tfc.objects.te.TEBellows;
 
-//This if here to help you implement, copy-paste and/or if you're on IJ, Ctrl+click
-import static net.dries007.tfc.objects.te.TEBellows.offsets;
-
 /**
  * Blocks(not TEs) must implement this interface in order to work with bellows
- * and must provide an offset for them to check. See unused static above.
+ * and must provide an offset for them to check by adding to @link TEBellows.offsets
  */
 public interface IBellowsHandler
 {
