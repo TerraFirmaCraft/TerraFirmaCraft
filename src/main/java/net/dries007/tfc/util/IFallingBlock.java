@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.util;
 
-import java.util.Arrays;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
@@ -13,13 +12,9 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
-
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 
 public interface IFallingBlock

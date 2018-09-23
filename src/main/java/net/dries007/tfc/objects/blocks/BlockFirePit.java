@@ -32,11 +32,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.api.capability.IBellowsHandler;
+import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.items.ItemFireStarter;
-import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.objects.te.TEBellows;
+import net.dries007.tfc.objects.te.TEFirePit;
 
 @ParametersAreNonnullByDefault
 public class BlockFirePit extends Block implements ITileEntityProvider, IBellowsHandler
