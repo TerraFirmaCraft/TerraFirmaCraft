@@ -695,6 +695,20 @@ for wood_type in WOOD_TYPES:
         'top': 'tfc:blocks/wood/door/upper/%s' % wood_type,
     }, variants=DOOR_VARIANTS)
 
+    # TOOL RACKS
+    # TODO: make sure I did this right, Dries - LS
+    blockstate(('wood', 'tool_rack', wood_type), 'tfc:tool_rack', textures={
+        'texture': 'tfc:blocks/wood/planks/%s' % wood_type,
+        'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
+    }, variants={
+        'facing': {
+            'south': {},
+            'west': {'y': 90},
+            'north': {'y': 180},
+            'east': {'y': 270},
+        }
+    })
+
     # (WOOD) STAIRS & SLABS
     blockstate(('stairs', 'wood', wood_type), None, textures={
         ('top', 'bottom', 'side'): 'tfc:blocks/wood/planks/%s' % wood_type,

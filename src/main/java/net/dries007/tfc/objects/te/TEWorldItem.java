@@ -78,11 +78,12 @@ public class TEWorldItem extends TileEntity
     @Override
     public NBTTagCompound getUpdateTag()
     {
-        // The tag from this method is used for the initial chunk packet, and it needs to have the TE position!
+        // The tag from this method is used for the initial chunk packet, and it needs to have the TE position! - Alcatraz
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("x", this.getPos().getX());
+        // Indeed it needs to, however writeToNBT already handles them. - LS
+        /*nbt.setInteger("x", this.getPos().getX());
         nbt.setInteger("y", this.getPos().getY());
-        nbt.setInteger("z", this.getPos().getZ());
+        nbt.setInteger("z", this.getPos().getZ());*/
         return writeToNBT(nbt);
 
     }
