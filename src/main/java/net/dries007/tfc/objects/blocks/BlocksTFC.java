@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.blocks;
@@ -128,6 +127,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockChestTFC> allChestBlocks;
     private static ImmutableList<BlockAnvilTFC> allAnvils;
     private static ImmutableList<BlockSheet> allSheets;
+    private static ImmutableList<BlockToolRack> allToolRackBlocks;
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
     {
@@ -214,6 +214,11 @@ public final class BlocksTFC
         return allSheets;
     }
 
+    public static ImmutableList<BlockToolRack> getAllToolRackBlocks()
+    {
+        return allToolRackBlocks;
+    }
+
     @SubscribeEvent
     @SuppressWarnings("ConstantConditions")
     public static void registerBlocks(RegistryEvent.Register<Block> event)
@@ -280,6 +285,7 @@ public final class BlocksTFC
             Builder<BlockDoorTFC> doors = ImmutableList.builder();
             Builder<BlockTrapDoorWoodTFC> trapdoorwood = ImmutableList.builder();
             Builder<BlockChestTFC> chests = ImmutableList.builder();
+            Builder<BlockToolRack> toolRacks = ImmutableList.builder();
 
             for (Tree wood : TFCRegistries.TREES.getValuesCollection())
             {
@@ -296,6 +302,7 @@ public final class BlocksTFC
                 chests.add(register(r, "wood/chest/" + wood.getRegistryName().getPath(), new BlockChestTFC(BlockChest.Type.BASIC, wood), CT_DECORATIONS));
                 chests.add(register(r, "wood/chest_trap/" + wood.getRegistryName().getPath(), new BlockChestTFC(BlockChest.Type.TRAP, wood), CT_DECORATIONS));
                 inventoryItemBlocks.add(new ItemBlockTFC(register(r, "wood/button/" + wood.getRegistryName().getPath(), new BlockButtonWoodTFC(wood), CT_DECORATIONS)));
+                toolRacks.add(register(r, "wood/tool_rack/" + wood.getRegistryName().getPath(), new BlockToolRack(wood, .5F, 3F), CT_DECORATIONS));
             }
             allLogBlocks = logs.build();
             allLeafBlocks = leaves.build();
@@ -304,6 +311,7 @@ public final class BlocksTFC
             allDoorBlocks = doors.build();
             allTrapDoorWoodBlocks = trapdoorwood.build();
             allChestBlocks = chests.build();
+            allToolRackBlocks = toolRacks.build();
 
             //logs are special
             allLeafBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
@@ -313,6 +321,7 @@ public final class BlocksTFC
             // doors are special
             allTrapDoorWoodBlocks.forEach(x -> inventoryItemBlocks.add(new ItemBlockTFC(x)));
             allChestBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
+            allToolRackBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
         }
 
         {
@@ -390,7 +399,6 @@ public final class BlocksTFC
         // todo: supports (h & v)
         // todo: farmland
         // todo: barrels
-        // todo: tool racks
         // todo: wood trap doors
 
         // todo: metal lamps (on/off with states)
@@ -430,6 +438,7 @@ public final class BlocksTFC
         register(TELogPile.class, "log_pile");
         register(TEIngotPile.class, "ingot_pile");
         register(TEFirePit.class, "fire_pit");
+        register(TEToolRack.class, "tool_rack");
 
     }
 
