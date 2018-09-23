@@ -1,7 +1,6 @@
 /*
- *
- *  * Work under Copyright. Licensed under the EUPL.
- *  * See the project README.md and LICENSE.txt for more information.
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  *
  */
 
@@ -47,19 +46,14 @@ public class BlockToolRack extends BlockContainer
 
     public Tree wood;
 
-    public BlockToolRack(Tree wood, float hardness, float resistance)
-    {
-        this(wood);
-        setHardness(hardness);
-        setResistance(resistance);
-    }
-
     public BlockToolRack(Tree wood)
     {
         super(WOOD, MapColor.AIR);
         this.wood = wood;
         setSoundType(SoundType.WOOD);
         setHarvestLevel("axe", 0);
+        setHardness(0.5f);
+        setResistance(3f);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 

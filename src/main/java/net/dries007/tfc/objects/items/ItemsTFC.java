@@ -117,8 +117,8 @@ public final class ItemsTFC
         {
             for (Metal metal : TFCRegistries.METALS.getValuesCollection())
             {
-                if (!type.hasType(metal) || type.supplier == null) continue;
-                simpleItems.add(register(r, "metal/" + type.name().toLowerCase() + "/" + metal.getRegistryName().getPath(), type.supplier.apply(metal, type), CT_METAL));
+                if (type.hasType(metal))
+                    simpleItems.add(register(r, "metal/" + type.name().toLowerCase() + "/" + metal.getRegistryName().getPath(), Metal.ItemType.create(metal, type), CT_METAL));
             }
         }
 
@@ -153,7 +153,7 @@ public final class ItemsTFC
         { // POTTERY
             for (Metal.ItemType type : Metal.ItemType.values())
             {
-                if (type.hasMold)
+                if (type.hasMold(null))
                 {
                     // Not using registerPottery here because the ItemMold uses a custom ItemModelMesher, meaning it can't be in simpleItems
                     ItemFiredPottery item = new ItemMold(type);

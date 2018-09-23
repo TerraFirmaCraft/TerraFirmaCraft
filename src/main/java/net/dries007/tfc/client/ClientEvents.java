@@ -78,6 +78,7 @@ public class ClientEvents
         List<String> list = event.getRight();
         if (ConfigTFC.GENERAL.debug && mc.gameSettings.showDebugInfo)
         {
+            //noinspection ConstantConditions
             BlockPos blockpos = new BlockPos(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().getEntityBoundingBox().minY, mc.getRenderViewEntity().posZ);
             Chunk chunk = mc.world.getChunk(blockpos);
             if (mc.world.isBlockLoaded(blockpos) && !chunk.isEmpty())

@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc.objects.blocks;
@@ -283,7 +284,7 @@ public final class BlocksTFC
             Builder<BlockFenceGateTFC> fenceGates = ImmutableList.builder();
             Builder<BlockSaplingTFC> saplings = ImmutableList.builder();
             Builder<BlockDoorTFC> doors = ImmutableList.builder();
-            Builder<BlockTrapDoorWoodTFC> trapdoorwood = ImmutableList.builder();
+            Builder<BlockTrapDoorWoodTFC> trapDoors = ImmutableList.builder();
             Builder<BlockChestTFC> chests = ImmutableList.builder();
             Builder<BlockToolRack> toolRacks = ImmutableList.builder();
 
@@ -298,18 +299,18 @@ public final class BlocksTFC
                 fenceGates.add(register(r, "wood/fence_gate/" + wood.getRegistryName().getPath(), new BlockFenceGateTFC(wood), CT_DECORATIONS));
                 saplings.add(register(r, "wood/sapling/" + wood.getRegistryName().getPath(), new BlockSaplingTFC(wood), CT_WOOD));
                 doors.add(register(r, "wood/door/" + wood.getRegistryName().getPath(), new BlockDoorTFC(wood), CT_DECORATIONS));
-                trapdoorwood.add(register(r, "wood/trapdoor/" + wood.getRegistryName().getPath(), new BlockTrapDoorWoodTFC(wood), CT_DECORATIONS));
+                trapDoors.add(register(r, "wood/trapdoor/" + wood.getRegistryName().getPath(), new BlockTrapDoorWoodTFC(wood), CT_DECORATIONS));
                 chests.add(register(r, "wood/chest/" + wood.getRegistryName().getPath(), new BlockChestTFC(BlockChest.Type.BASIC, wood), CT_DECORATIONS));
                 chests.add(register(r, "wood/chest_trap/" + wood.getRegistryName().getPath(), new BlockChestTFC(BlockChest.Type.TRAP, wood), CT_DECORATIONS));
                 inventoryItemBlocks.add(new ItemBlockTFC(register(r, "wood/button/" + wood.getRegistryName().getPath(), new BlockButtonWoodTFC(wood), CT_DECORATIONS)));
-                toolRacks.add(register(r, "wood/tool_rack/" + wood.getRegistryName().getPath(), new BlockToolRack(wood, .5F, 3F), CT_DECORATIONS));
+                toolRacks.add(register(r, "wood/tool_rack/" + wood.getRegistryName().getPath(), new BlockToolRack(wood), CT_DECORATIONS));
             }
             allLogBlocks = logs.build();
             allLeafBlocks = leaves.build();
             allFenceGateBlocks = fenceGates.build();
             allSaplingBlocks = saplings.build();
             allDoorBlocks = doors.build();
-            allTrapDoorWoodBlocks = trapdoorwood.build();
+            allTrapDoorWoodBlocks = trapDoors.build();
             allChestBlocks = chests.build();
             allToolRackBlocks = toolRacks.build();
 
