@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.api.capability;
@@ -21,12 +20,14 @@ public interface ISmallVesselHandler extends IItemHandler, IFluidHandler, INBTSe
 
     /**
      * This sets the fluid mode. When fluid is empty, it defaults to item mode
+     *
      * @param fluidMode true = fluids, false = items
      */
     void setFluidMode(boolean fluidMode);
 
     /**
      * This gets the fluid mode, including liquid temperature status
+     *
      * @return INVENTORY = items, LIQUID = fluids molten or solid based on temperature
      */
     Mode getFluidMode();

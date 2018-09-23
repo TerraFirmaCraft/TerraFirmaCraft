@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.api.capability.heat;
@@ -26,6 +25,7 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
 {
     /**
      * Gets the current temperature. Should call CapabilityItemHeat.adjustTemp() internally
+     *
      * @return the temperature. Between 0 - 1600
      */
     float getTemperature();
@@ -48,6 +48,7 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
 
     /**
      * Sets the temperature. Used for anything that modifies the temperature.
+     *
      * @param temperature the temperature to set. Between 0 - 1600
      */
     void setTemperature(float temperature);
@@ -55,6 +56,7 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
     /**
      * If the object can melt / transform, return if it is transformed
      * This can mean many different things depending on the object
+     *
      * @return is the object transformed.
      */
     default boolean isMolten()
@@ -69,7 +71,7 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
      * Otherwise, if heat ever turns to zero, this will clear the NBT of the stack whenever you hover over it (includes moving it / clicking, etc.)
      *
      * @param stack The stack to add information to
-     * @param text The list of tooltips
+     * @param text  The list of tooltips
      */
     @SideOnly(Side.CLIENT)
     default void addHeatInfo(ItemStack stack, List<String> text, boolean clearStackNBT)

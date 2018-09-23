@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.te;
@@ -38,6 +37,7 @@ public class TEToolRack extends TileEntity
     /**
      * Modify this method to register items that can be put on a tool rack.
      * TODO: an api for other mods to register their items
+     *
      * @param item item to check
      * @return true if this item can be put on a tool rack, false otherwise
      */
