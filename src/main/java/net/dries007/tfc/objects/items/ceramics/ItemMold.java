@@ -100,9 +100,10 @@ public class ItemMold extends ItemFiredPottery
     }
 
     @Override
-    public ItemStack getContainerItem(ItemStack itemStack)
+    @Nonnull
+    public ItemStack getContainerItem(@Nonnull ItemStack itemStack)
     {
-        if (type.moldReturnRate >= 1)
+        if (type.getMoldReturnRate() >= 1)
             return new ItemStack(itemStack.getItem(), itemStack.getCount(), itemStack.getMetadata());
         return ItemStack.EMPTY;
     }
@@ -110,7 +111,7 @@ public class ItemMold extends ItemFiredPottery
     @Override
     public boolean hasContainerItem(ItemStack stack)
     {
-        return type.moldReturnRate >= 1;
+        return type.getMoldReturnRate() >= 1;
     }
 
     // Extends ItemHeatHandler for ease of use
@@ -188,7 +189,7 @@ public class ItemMold extends ItemFiredPottery
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            if (resource.getFluid() instanceof FluidMetal && ((FluidMetal) resource.getFluid()).doesFluidHaveMold(type))
+            if (resource.getFluid() instanceof FluidMetal && type.hasMold(((FluidMetal) resource.getFluid()).getMetal()))
             {
                 updateFluidData(resource);
                 return tank.fill(resource, doFill);

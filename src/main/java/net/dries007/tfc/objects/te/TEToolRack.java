@@ -1,7 +1,6 @@
 /*
- *
- *  * Work under Copyright. Licensed under the EUPL.
- *  * See the project README.md and LICENSE.txt for more information.
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  *
  */
 
@@ -24,15 +23,11 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.objects.items.metal.ItemMetalTool;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-
 public class TEToolRack extends TileEntity
 {
-    public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "tool_rack");
     private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
 
     public NonNullList<ItemStack> getItems()
@@ -102,10 +97,12 @@ public class TEToolRack extends TileEntity
                 //check for the other hand
                 if (hand == EnumHand.MAIN_HAND)
                     hand = EnumHand.OFF_HAND;
-                else hand = EnumHand.MAIN_HAND;
+                else
+                    hand = EnumHand.MAIN_HAND;
                 if (player.getHeldItem(hand).isEmpty())
                     player.setHeldItem(hand, slotItem.splitStack(1));
-                else player.addItemStackToInventory(slotItem.splitStack(1));
+                else
+                    player.addItemStackToInventory(slotItem.splitStack(1));
             }
             items.set(slot, ItemStack.EMPTY);
             updateBlock();

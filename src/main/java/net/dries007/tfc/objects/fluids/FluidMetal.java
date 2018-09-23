@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc.objects.fluids;
@@ -19,13 +20,6 @@ public class FluidMetal extends Fluid
         super(fluidName, still, flowing, color);
 
         this.metal = metal;
-    }
-
-    public boolean doesFluidHaveMold(Metal.ItemType type)
-    {
-        if (type == Metal.ItemType.INGOT || type == Metal.ItemType.UNSHAPED)
-            return true;
-        return type.hasMold && metal.isToolMetal() && (metal.getTier() == Metal.Tier.TIER_I || metal.getTier() == Metal.Tier.TIER_II);
     }
 
     public Metal getMetal()

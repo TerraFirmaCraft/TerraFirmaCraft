@@ -1,6 +1,7 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
+ *
  */
 
 package net.dries007.tfc.api.types;
@@ -106,8 +107,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 
     public enum ItemType
     {
-        UNSHAPED(false, 100, null), // Special case, because it's a pottery item todo: why is this used? Isn't ingot good enough?
-        INGOT(false, 100, ItemIngot::new, true, 0.5f), // todo: change or make configurable.
+        INGOT(false, 100, ItemIngot::new, true, 0.5f),
         DOUBLE_INGOT(false, 200),
         SCRAP(false, 100),
         DUST(false, 100),
@@ -160,13 +160,13 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
             return type.supplier.apply(metal, type);
         }
 
-        public final boolean toolItem;
-        public final int smeltAmount;
-        public final boolean hasMold;
-        public final float moldReturnRate; // Used as 'if (Constants.RNG.nextFloat() > type.moldReturnRate) return Empty'
-        public final BiFunction<Metal, ItemType, Item> supplier;
+        private final boolean toolItem;
+        private final int smeltAmount;
+        private final boolean hasMold;
+        private final float moldReturnRate; // Used as 'if (Constants.RNG.nextFloat() > type.moldReturnRate) return Empty'
+        private final BiFunction<Metal, ItemType, Item> supplier;
 
-        ItemType(boolean toolItem, int smeltAmount, BiFunction<Metal, ItemType, Item> supplier, boolean hasMold, float moldReturnRate)
+        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier, boolean hasMold, float moldReturnRate)
         {
             this.toolItem = toolItem;
             this.smeltAmount = smeltAmount;
@@ -175,7 +175,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
             this.moldReturnRate = moldReturnRate;
         }
 
-        ItemType(boolean toolItem, int smeltAmount, BiFunction<Metal, ItemType, Item> supplier, boolean hasMold)
+        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier, boolean hasMold)
         {
             this(toolItem, smeltAmount, supplier, hasMold, 0);
         }
@@ -190,18 +190,48 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
             this(toolItem, smeltAmount, false);
         }
 
-        ItemType(boolean toolItem, int smeltAmount, BiFunction<Metal, ItemType, Item> supplier)
+        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier)
         {
             this(toolItem, smeltAmount, supplier, false);
         }
 
         public boolean hasType(Metal metal)
         {
-            if (supplier == null)
-                return false;
             if (!metal.usable)
-                return this == ItemType.INGOT || this == ItemType.UNSHAPED;
-            return !this.toolItem || metal.getToolMetal() != null;
+                return this == ItemType.INGOT;
+            return !this.isToolItem() || metal.getToolMetal() != null;
+        }
+
+        /**
+         * Used to find out if the type has a mold
+         *
+         * @param metal Null, if checking across all types. If present, checks if the metal is compatible with the mold type
+         * @return if the type + metal combo have a valid mold
+         */
+        public boolean hasMold(@Nullable Metal metal)
+        {
+            if (metal == null)
+                return hasMold;
+            if (this == ItemType.INGOT)
+                return metal.usable;
+            if (hasMold)
+                return metal.isToolMetal() && (metal.getTier() == Tier.TIER_I || metal.getTier() == Tier.TIER_II);
+            return false;
+        }
+
+        public boolean isToolItem()
+        {
+            return toolItem;
+        }
+
+        public int getSmeltAmount()
+        {
+            return smeltAmount;
+        }
+
+        public float getMoldReturnRate()
+        {
+            return moldReturnRate;
         }
     }
 }
