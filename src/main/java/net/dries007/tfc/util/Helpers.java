@@ -20,11 +20,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.types.Rock;
@@ -123,51 +121,9 @@ public final class Helpers
         return player.isCreative() ? stack : consumeItem(stack, amount);
     }
 
-    // Checks if an itemstack has the ore name 'name'
-    public static boolean doesStackMatchOre(@Nonnull ItemStack stack, String name)
-    {
-        if (stack.isEmpty()) return false;
-        int[] ids = OreDictionary.getOreIDs(stack);
-        for (int id : ids)
-        {
-            String oreName = OreDictionary.getOreName(id);
-            if (name.equals(oreName))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Checks is an ItemStack has ore names, which have a certain prefix
-    // used to search for all 'ingots' / all 'plates' etc.
-    public static boolean doesStackMatchOrePrefix(@Nonnull ItemStack stack, String prefix)
-    {
-        if (stack.isEmpty()) return false;
-        int[] ids = OreDictionary.getOreIDs(stack);
-        for (int id : ids)
-        {
-            String oreName = OreDictionary.getOreName(id);
-            if (oreName.length() >= prefix.length())
-            {
-                if (oreName.substring(0, prefix.length()).equals(prefix))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    // This both checks if an ore dictionary entry exists, and it it has at least one itemstack
-    public static boolean doesOreHaveStack(String ore)
-    {
-        if (!OreDictionary.doesOreNameExist(ore)) return false;
-        NonNullList<ItemStack> stacks = OreDictionary.getOres(ore);
-        return !stacks.isEmpty();
-    }
-
-    // Simple method to spawn items in the world at a precise location, rather than using InventoryHelper
+    /**
+     * Simple method to spawn items in the world at a precise location, rather than using InventoryHelper
+     */
     public static void spawnItemStack(World world, BlockPos pos, ItemStack stack)
     {
         if (stack.isEmpty())

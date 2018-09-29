@@ -6,6 +6,7 @@
 package net.dries007.tfc.util;
 
 import java.util.function.Predicate;
+import javax.annotation.Nonnull;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
@@ -20,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
 
 import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
@@ -87,6 +89,47 @@ public class OreDictionaryHelper
     public static Predicate<EntityItem> createPredicateItemEntity(String... names)
     {
         return input -> input.isEntityAlive() && createPredicateStack(names).test(input.getItem());
+    }
+
+    /**
+     * Checks if an ItemStack has an OreDictionary entry that matches 'name'.
+     */
+    public static boolean doesStackMatchOre(@Nonnull ItemStack stack, String name)
+    {
+        if (!OreDictionary.doesOreNameExist(name))
+        {
+            TerraFirmaCraft.getLog().warn("doesStackMatchOre called with non-existing name. stack: {} name: {}", stack, name);
+            return false;
+        }
+        if (stack.isEmpty()) return false;
+        int needle = OreDictionary.getOreID(name);
+        for (int id : OreDictionary.getOreIDs(stack))
+        {
+            if (id == needle) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks is an ItemStack has ore names, which have a certain prefix
+     * used to search for all 'ingots' / all 'plates' etc.
+     */
+    public static boolean doesStackMatchOrePrefix(@Nonnull ItemStack stack, String prefix)
+    {
+        if (stack.isEmpty()) return false;
+        int[] ids = OreDictionary.getOreIDs(stack);
+        for (int id : ids)
+        {
+            String oreName = OreDictionary.getOreName(id);
+            if (oreName.length() >= prefix.length())
+            {
+                if (oreName.substring(0, prefix.length()).equals(prefix))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private static Predicate<ItemStack> createPredicateStack(String... names)

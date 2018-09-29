@@ -27,7 +27,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -118,40 +117,29 @@ public class BlockLogTFC extends BlockLog
     @Override
     public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
     {
-        // The itemstack is a cheeky hack
-        if (!worldIn.isRemote)
-            removeTree(worldIn, pos, null, ItemStack.EMPTY, 1);
+        if (worldIn.isRemote) return;
+        removeTree(worldIn, pos, null, ItemStack.EMPTY, false);
     }
 
     @Override
-    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player)
     {
-        if (state.getValue(PLACED) || world.isRemote)
-            return super.removedByPlayer(state, world, pos, player, willHarvest);
-
-        // Check if player has a valid tool
-        ItemStack stack = player.getHeldItemMainhand();
-        int flags = 0;
-        if (Helpers.doesStackMatchOrePrefix(stack, "axe"))
-            flags += 1; // axe
-        if (Helpers.doesStackMatchOrePrefix(stack, "hammer"))
-            flags += 2; // hammer
-        if (Helpers.doesStackMatchOre(stack, "axeStone") || Helpers.doesStackMatchOre(stack, "hammerStone"))
-            flags += 4; // stone
-
-        if ((flags & 1) != 0) // bit 1 = is axe, bit 2 = is hammer, bit 3 is stone tool
+        if (world.isRemote || state.getValue(PLACED)) return;
+        final ItemStack stack = player.getHeldItemMainhand();
+        final Set<String> toolClasses = stack.getItem().getToolClasses(stack);
+        if (toolClasses.contains("axe"))
         {
-            // cut down the tree
-            return removeTree(world, pos, player, stack, flags);
+            removeTree(world, pos, player, stack,
+                OreDictionaryHelper.doesStackMatchOre(stack, "axeStone") ||
+                    OreDictionaryHelper.doesStackMatchOre(stack, "hammerStone")
+            );
         }
-        else if ((flags & 2) != 0)
+        else if (toolClasses.contains("hammer")) //
         {
             // Break log and spawn some sticks
             world.setBlockToAir(pos);
             Helpers.spawnItemStack(world, pos.add(0.5D, 0.5D, 0.5D), new ItemStack(Items.STICK, 1 + (int) (Math.random() * 3)));
-            return true;
         }
-        return super.removedByPlayer(state, world, pos, player, willHarvest);
     }
 
     @Override
@@ -184,20 +172,18 @@ public class BlockLogTFC extends BlockLog
         return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(PLACED, true).withProperty(SMALL, placer.isSneaking());
     }
 
-    private boolean removeTree(World world, BlockPos pos, @Nullable EntityPlayer player, ItemStack stack, int flags)
+    private boolean removeTree(World world, BlockPos pos, @Nullable EntityPlayer player, ItemStack stack, boolean stoneTool)
     {
-        TerraFirmaCraft.getLog().debug("Natural log harvesting");
-        int maxLogs = Integer.MAX_VALUE;
-        if (!stack.isEmpty())
-            maxLogs = 1 + stack.getMaxDamage() - stack.getItemDamage();
+        final boolean explosion = stack.isEmpty() || player == null;
+        final int maxLogs = explosion ? Integer.MAX_VALUE : 1 + stack.getMaxDamage() - stack.getItemDamage();
 
-        // find all logs and add them to a list
-        List<BlockPos> logs = new ArrayList<>();
-        BlockPos pos1, pos2;
+        // Find all logs and add them to a list
+        List<BlockPos> logs = new ArrayList<>(50);
+        List<BlockPos> checked = new ArrayList<>(50 * 3 * 3);
         logs.add(pos);
         for (int i = 0; i < logs.size(); i++)
         {
-            pos1 = logs.get(i);
+            final BlockPos pos1 = logs.get(i);
             // check for nearby logs
             for (int x = -1; x <= 1; x++)
             {
@@ -205,37 +191,37 @@ public class BlockLogTFC extends BlockLog
                 {
                     for (int z = -1; z <= 1; z++)
                     {
-                        pos2 = pos1.add(x, y, z);
+                        final BlockPos pos2 = pos1.add(x, y, z);
+                        if (checked.contains(pos2)) continue;
+                        checked.add(pos2);
                         IBlockState state = world.getBlockState(pos2);
-                        if (state.getBlock() == this && !state.getValue(PLACED) && !logs.contains(pos2))
+                        if (state.getBlock() == this && !state.getValue(PLACED))
                             logs.add(pos2);
                     }
                 }
             }
         }
-        TerraFirmaCraft.getLog().debug("Logs to break + {} in: {}", maxLogs, logs);
-        // sort the list in terms of max distance to the original tree
+        // Sort the list in terms of max distance to the original tree
         logs.sort(Comparator.comparing(x -> x.distanceSq(pos)));
-        Collections.reverse(logs);
-        // start removing logs*/
-        for (int i = 0; i < Math.min(logs.size(), maxLogs); i++)
+
+        // Start removing logs*/
+        for (final BlockPos pos1 : logs.subList(0, Math.min(logs.size(), maxLogs)))
         {
-            // Remove the top log of the list
-            pos1 = logs.get(i);
-            if (!stack.isEmpty() && player != null)
+            if (explosion)
             {
-                if ((flags & 4) == 0 || Math.random() < 0.6) // Stone tools are 60% efficient
-                    harvestBlock(world, player, pos1, world.getBlockState(pos1), null, stack);
-                stack.damageItem(1, player);
+                // Explosions are 30% Efficient: no TNT powered tree farms.
+                if (Math.random() < 0.3)
+                    Helpers.spawnItemStack(world, pos.add(0.5d, 0.5d, 0.5d), new ItemStack(Item.getItemFromBlock(this)));
             }
             else
             {
-                if (Math.random() < 0.3) // Explosions are 30% Efficient: no TNT powered tree farms.
-                    Helpers.spawnItemStack(world, pos.add(0.5d, 0.5d, 0.5d), new ItemStack(Item.getItemFromBlock(this)));
+                // Stone tools are 60% efficient
+                if (!stoneTool || Math.random() < 0.6)
+                    harvestBlock(world, player, pos1, world.getBlockState(pos1), null, stack);
+                stack.damageItem(1, player);
             }
             world.setBlockToAir(pos1);
         }
         return maxLogs >= logs.size();
     }
-
 }
