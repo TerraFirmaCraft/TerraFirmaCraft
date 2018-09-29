@@ -5,7 +5,7 @@
 
 package net.dries007.tfc.client;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -135,6 +134,11 @@ public class ClientEvents
     public static void onItemTooltip(ItemTooltipEvent event)
     {
         ItemStack stack = event.getItemStack();
+        if (stack.isEmpty())
+        {
+            TerraFirmaCraft.getLog().warn("ItemTooltipEvent with empty stack??", new Exception());
+            return;
+        }
         Item item = stack.getItem();
         List<String> tt = event.getToolTip();
 
@@ -153,7 +157,9 @@ public class ClientEvents
         if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
         {
             if (item instanceof IMetalObject)
+            {
                 ((IMetalObject) item).addMetalInfo(stack, tt);
+            }
             if (item instanceof ItemBlock)
             {
                 Block block = ((ItemBlock) item).getBlock();
@@ -162,31 +168,47 @@ public class ClientEvents
                     ((IMetalObject) block).addMetalInfo(stack, tt);
                 }
             }
-        }
-
-        if (ConfigTFC.GENERAL.debug) // Only added when debugging (data that the player should / does not need to see)
-        {
-            if (stack.hasTagCompound())
+            if (ConfigTFC.CLIENT.showToolClassTooltip)
             {
-                tt.add("NBT: " + stack.getTagCompound().toString());
-            }
-
-            Set<String> toolClasses = item.getToolClasses(stack);
-            if (!toolClasses.isEmpty())
-            {
-                tt.add("");
-                for (String toolClass : toolClasses)
+                Set<String> toolClasses = item.getToolClasses(stack);
+                if (toolClasses.size() == 1)
                 {
-                    tt.add(I18n.format("tfc.tooltip.toolclass", toolClass));
+                    tt.add(I18n.format("tfc.tooltip.toolclass", toolClasses.iterator().next()));
+                }
+                else if (toolClasses.size() > 1)
+                {
+                    tt.add(I18n.format("tfc.tooltip.toolclasses"));
+                    for (String toolClass : toolClasses)
+                    {
+                        tt.add("+ " + toolClass);
+                    }
                 }
             }
-
-            int[] ids = OreDictionary.getOreIDs(stack);
-            if (ids != null && ids.length != 0)
+            if (ConfigTFC.CLIENT.showOreDictionaryTooltip)
             {
-                tt.add("");
-                tt.add(TextFormatting.AQUA + "Ore Dictionary:");
-                Arrays.stream(ids).mapToObj(OreDictionary::getOreName).sorted().forEachOrdered(tt::add);
+                int[] ids = OreDictionary.getOreIDs(stack);
+                if (ids.length == 1)
+                {
+                    tt.add(I18n.format("tfc.tooltip.oredictionaryentry", OreDictionary.getOreName(ids[0])));
+                }
+                else if (ids.length > 1)
+                {
+                    tt.add(I18n.format("tfc.tooltip.oredictionaryentries"));
+                    ArrayList<String> names = new ArrayList<>(ids.length);
+                    for (int id : ids)
+                    {
+                        names.add("+ " + OreDictionary.getOreName(id));
+                    }
+                    names.sort(null); // Natural order (String.compare)
+                    tt.addAll(names);
+                }
+            }
+            if (ConfigTFC.CLIENT.showNBTTooltip)
+            {
+                if (stack.hasTagCompound())
+                {
+                    tt.add("NBT: " + stack.getTagCompound().toString());
+                }
             }
         }
     }

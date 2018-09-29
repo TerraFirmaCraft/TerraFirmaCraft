@@ -33,6 +33,7 @@ import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFireable;
 import net.dries007.tfc.util.IPlacableItem;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
@@ -88,7 +89,7 @@ public class CommonEventHandler
         {
             ItemStack mainStack = player.getHeldItem(EnumHand.MAIN_HAND);
             if ((mainStack.getItem() == Items.COAL && mainStack.getMetadata() == 1) ||
-                (Helpers.doesStackMatchOre(mainStack, "logWood") && player.isSneaking()) ||
+                (OreDictionaryHelper.doesStackMatchOre(mainStack, "logWood") && player.isSneaking()) ||
                 mainStack.getItem() instanceof IPlacableItem)
             {
                 event.setCanceled(true);
@@ -136,7 +137,7 @@ public class CommonEventHandler
                 }
             }
         }
-        if (Helpers.doesStackMatchOre(stack, "logWood") && player.isSneaking())
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "logWood") && player.isSneaking())
         {
             EnumFacing facing = event.getFace();
             if (facing != null)

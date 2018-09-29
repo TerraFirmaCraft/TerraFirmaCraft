@@ -2,14 +2,17 @@
 
 # Gui
 
-tfc.tooltip.toolclass=Tool: %s
-tfc.tooltip.metal=Metal: %s
+## Tooltips
+tfc.tooltip.toolclass=§fTool Class:§7 %s
+tfc.tooltip.toolclasses=§fTool Classes:
+tfc.tooltip.oredictionaryentry=§fOre Dictionary name:§7 %s
+tfc.tooltip.oredictionaryentries=§fOre Dictionary names:
+tfc.tooltip.metal=§fMetal:§7 %s
 tfc.tooltip.units=%d units
 tfc.tooltip.smelting=Smelt in %s
 tfc.tooltip.liquid=Liquid
 
 ## Keybindings
-
 tfc.key.craft=Crafting GUI
 
 ## Gui.World
@@ -141,6 +144,7 @@ tile.tfc.peat.name=Peat
 tile.tfc.peat.grass.name=Peat Grass
 tile.tfc.thatch.name=Thatch
 tile.tfc.firepit.name=Firepit
+tile.tfc.torch.name=Torch
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite

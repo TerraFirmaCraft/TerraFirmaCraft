@@ -23,6 +23,7 @@ import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogPile;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
@@ -38,7 +39,7 @@ public class TELogPile extends TESidedInventory implements ITickable
 
     public static boolean isStackValid(ItemStack stack)
     {
-        return (stack.isEmpty() || Helpers.doesStackMatchOre(stack, "logWood"));
+        return (stack.isEmpty() || OreDictionaryHelper.doesStackMatchOre(stack, "logWood"));
     }
 
     private final int maxBurnTicks = 8000; // 8 In-game Hours

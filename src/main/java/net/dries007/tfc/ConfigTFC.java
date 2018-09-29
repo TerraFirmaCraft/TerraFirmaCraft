@@ -91,6 +91,18 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".client.makeWorldTypeClassicDefault")
         @Config.RequiresMcRestart
         public boolean makeWorldTypeClassicDefault = true;
+
+        @Config.Comment({"Show ItemStack tool classes when advanced tooltips are enabled. (F3+H)"})
+        @Config.LangKey("config." + MOD_ID + ".client.showToolClassTooltip")
+        public boolean showToolClassTooltip = true;
+
+        @Config.Comment({"Show ItemStack OreDictionary matches when advanced tooltips are enabled. (F3+H)"})
+        @Config.LangKey("config." + MOD_ID + ".client.showOreDictionaryTooltip")
+        public boolean showOreDictionaryTooltip = true;
+
+        @Config.Comment({"Show ItemStack NBT on the tooltip when advanced tooltips are enabled. (F3+H)"})
+        @Config.LangKey("config." + MOD_ID + ".client.showNBTTooltip")
+        public boolean showNBTTooltip = false;
     }
 
     public static class WorldCFG
