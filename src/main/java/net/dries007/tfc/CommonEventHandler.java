@@ -34,7 +34,6 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFireable;
-import net.dries007.tfc.util.IPlacableItem;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;

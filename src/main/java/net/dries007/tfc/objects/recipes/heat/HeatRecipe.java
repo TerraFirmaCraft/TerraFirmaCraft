@@ -17,6 +17,7 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class HeatRecipe
 {
@@ -111,7 +112,7 @@ public class HeatRecipe
         }
         else
         {
-            return Helpers.doesStackMatchOre(stack, inputOre);
+            return OreDictionaryHelper.doesStackMatchOre(stack, inputOre);
         }
     }
 
