@@ -10,26 +10,24 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
-import net.dries007.tfc.objects.te.TESidedInventory;
+import net.dries007.tfc.objects.inventory.SlotOutput;
+import net.dries007.tfc.objects.inventory.SlotTEInput;
+import net.dries007.tfc.objects.te.TEFirePit;
 
-public abstract class ContainerTE<TE extends TESidedInventory> extends Container
+public class ContainerFirePit extends ContainerTE<TEFirePit>
 {
-    protected TE tile;
-
-    ContainerTE(InventoryPlayer playerInv, TE te)
+    public ContainerFirePit(InventoryPlayer playerInv, TEFirePit te)
     {
-        this.tile = te;
-
-        addContainerSlots();
-        addPlayerInventorySlots(playerInv);
+        super(playerInv, te);
     }
 
-    @Override
     @Nonnull
+    @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
         // Slot that was clicked
@@ -53,7 +51,8 @@ public abstract class ContainerTE<TE extends TESidedInventory> extends Container
         // Transfer into the container
         else
         {
-            if (!this.mergeItemStack(stack, 0, containerSlots, false))
+            // Merge into fuel slot -> item slot
+            if (!this.mergeItemStack(stack, TEFirePit.SLOT_FUEL_INPUT, TEFirePit.SLOT_ITEM_INPUT + 1, false))
             {
                 return ItemStack.EMPTY;
             }
@@ -76,27 +75,19 @@ public abstract class ContainerTE<TE extends TESidedInventory> extends Container
     }
 
     @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer player)
+    protected void addContainerSlots()
     {
-        return true;
-    }
-
-    protected abstract void addContainerSlots();
-
-    private void addPlayerInventorySlots(InventoryPlayer playerInv)
-    {
-        // Add Player Inventory Slots
-        for (int i = 0; i < 3; i++)
+        IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (inventory != null)
         {
-            for (int j = 0; j < 9; j++)
-            {
-                addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-            }
-        }
-
-        for (int k = 0; k < 9; k++)
-        {
-            addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142));
+            // fuel slots
+            for (int i = 0; i < 4; i++)
+                addSlotToContainer(new SlotTEInput(inventory, i, 8, 62 - 18 * i, tile));
+            // input slot
+            addSlotToContainer(new SlotTEInput(inventory, 4, 80, 20, tile));
+            // output slots
+            addSlotToContainer(new SlotOutput(inventory, 5, 71, 48));
+            addSlotToContainer(new SlotOutput(inventory, 6, 89, 48));
         }
     }
 }

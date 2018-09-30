@@ -29,7 +29,6 @@ import net.dries007.tfc.objects.inventory.ItemStackHandlerTE;
 @ParametersAreNonnullByDefault
 public abstract class TESidedInventory extends TileEntity
 {
-
     protected final ItemStackHandler inventory;
 
     /*
