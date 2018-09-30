@@ -326,9 +326,15 @@ public class ItemSmallVessel extends ItemFiredPottery
         }
 
         @Override
-        public boolean isMolten()
+        public float getHeatCapacity()
         {
-            return getTemperature() >= meltingPoint;
+            return heatCapacity;
+        }
+
+        @Override
+        public float getMeltingPoint()
+        {
+            return meltingPoint;
         }
 
         @SideOnly(Side.CLIENT)

@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.inventory;
@@ -17,7 +16,6 @@ public class ItemStackHandlerTE extends ItemStackHandler
     public ItemStackHandlerTE(TESidedInventory tile, int size)
     {
         super(size);
-
         this.tile = tile;
     }
 

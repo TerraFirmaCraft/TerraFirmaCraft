@@ -21,8 +21,8 @@ import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.objects.items.ItemTFC;
-import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class ItemMetal extends ItemTFC implements IMetalObject
@@ -60,9 +60,9 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     @Override
     public int getSmeltAmount(ItemStack stack)
     {
-        if (!isDamageable() || !stack.isItemDamaged()) return type.smeltAmount;
+        if (!isDamageable() || !stack.isItemDamaged()) return type.getSmeltAmount();
         double d = (stack.getMaxDamage() - stack.getItemDamage()) / (double) stack.getMaxDamage() - .10;
-        return d < 0 ? 0 : MathHelper.floor(type.smeltAmount * d);
+        return d < 0 ? 0 : MathHelper.floor(type.getSmeltAmount() * d);
     }
 
     @Override

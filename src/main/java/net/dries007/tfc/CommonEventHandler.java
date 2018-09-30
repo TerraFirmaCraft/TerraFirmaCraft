@@ -24,9 +24,11 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import net.dries007.tfc.api.capability.ItemStickCapability;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.util.IPlacableItem;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TELogPile;
@@ -58,7 +60,7 @@ public class CommonEventHandler
             double chance = ConfigTFC.GENERAL.leafStickDropChance;
             if (!heldItem.isEmpty() && Helpers.containsAnyOfCaseInsensitive(heldItem.getItem().getToolClasses(heldItem), ConfigTFC.GENERAL.leafStickDropChanceBonusClasses))
                 chance = ConfigTFC.GENERAL.leafStickDropChanceBonus;
-            if (event.getWorld().rand.nextFloat() < chance)
+            if (Constants.RNG.nextFloat() < chance)
                 event.getDrops().add(new ItemStack(Items.STICK));
         }
     }
@@ -235,7 +237,7 @@ public class CommonEventHandler
         if (item == Items.COAL)
             CapabilityItemSize.add(e, Items.COAL, Size.SMALL, Weight.MEDIUM, canStack);
         else if (item == Items.STICK)
-            CapabilityItemSize.add(e, Items.STICK, Size.SMALL, Weight.LIGHT, canStack);
+            e.addCapability(ItemStickCapability.KEY, new ItemStickCapability(e.getObject().getTagCompound()));
 
             // Final checks for general item types
         else if (item instanceof ItemTool)

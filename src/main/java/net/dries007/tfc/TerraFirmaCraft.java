@@ -26,6 +26,8 @@ import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.cmd.TreeGenCommand;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
+import net.dries007.tfc.util.FuelManager;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.CalenderTFC;
@@ -134,7 +136,6 @@ public class TerraFirmaCraft
         }
 
         worldTypeTFC = new WorldTypeTFC();
-//        TreeRegistry.loadTrees();
 
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true, 20)), 0);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureRarity, new WorldGenFissure(false, -1)), 0);
@@ -154,6 +155,9 @@ public class TerraFirmaCraft
     {
         if (!isSignedBuild)
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
+
+        HeatRecipeManager.postInit();
+        FuelManager.postInit();
 
         OreSpawnData.reloadOreGen();
     }

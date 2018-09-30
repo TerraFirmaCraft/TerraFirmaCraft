@@ -140,9 +140,9 @@ public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
             // Has to be server side due to sync issues. This function is also called on the client.
             // This is also the reason why it's done here as a drop instead of a retaining item.
             // todo: see if this can be done better, it might break for autocrafters.
-            if (mold.type.moldReturnRate < 1 || mold.type.moldReturnRate > 0)
+            if (mold.type.getMoldReturnRate() < 1 || mold.type.getMoldReturnRate() > 0)
             {
-                if (Constants.RNG.nextFloat() <= mold.type.moldReturnRate)
+                if (Constants.RNG.nextFloat() <= mold.type.getMoldReturnRate())
                 {
                     player.addItemStackToInventory(new ItemStack(mold));
                     //InventoryHelper.spawnItemStack(player.world, player.posX, player.posY, player.posZ, new ItemStack(mold));
