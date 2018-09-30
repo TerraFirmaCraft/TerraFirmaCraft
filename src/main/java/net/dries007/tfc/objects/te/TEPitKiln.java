@@ -33,8 +33,8 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFireable;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 public class TEPitKiln extends TileEntity implements ITickable
@@ -205,7 +205,7 @@ public class TEPitKiln extends TileEntity implements ITickable
         }
         if (count < STRAW_NEEDED) return;
         count = getLogCount();
-        if (Helpers.doesStackMatchOre(item, "logWood") && count < WOOD_NEEDED)
+        if (OreDictionaryHelper.doesStackMatchOre(item, "logWood") && count < WOOD_NEEDED)
         {
             addLog(item.splitStack(1));
             updateBlock();
