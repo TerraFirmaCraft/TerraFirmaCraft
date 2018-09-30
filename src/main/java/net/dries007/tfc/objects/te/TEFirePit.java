@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.te;
@@ -15,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
 
@@ -28,7 +27,7 @@ public class TEFirePit extends TESidedInventory implements ITickable
 
     private static boolean isStackFuel(ItemStack stack)
     {
-        return Helpers.doesStackMatchOre(stack, "logWood");
+        return OreDictionaryHelper.doesStackMatchOre(stack, "logWood");
     }
 
     private static boolean isStackCookable(ItemStack stack)

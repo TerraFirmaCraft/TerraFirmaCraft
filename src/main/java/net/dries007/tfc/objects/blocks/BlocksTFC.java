@@ -313,7 +313,7 @@ public final class BlocksTFC
             // doors are special
             allTrapDoorWoodBlocks.forEach(x -> inventoryItemBlocks.add(new ItemBlockTFC(x)));
             allChestBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
-            allToolRackBlocks.forEach(x -> normalItemBlocks.put(x, ItemBlockTFC.class));
+            allToolRackBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
         }
 
         {
