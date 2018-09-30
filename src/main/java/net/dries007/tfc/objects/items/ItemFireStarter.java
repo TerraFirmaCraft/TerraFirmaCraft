@@ -37,6 +37,7 @@ import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
 import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
@@ -147,17 +148,17 @@ public class ItemFireStarter extends ItemTFC
 
                 for (EntityItem entity : items)
                 {
-                    if (Helpers.doesStackMatchOre(entity.getItem(), "stickWood"))
+                    if (OreDictionaryHelper.doesStackMatchOre(entity.getItem(), "stickWood"))
                     {
                         sticks -= entity.getItem().getCount();
                         stuffToUse.add(entity);
                     }
-                    else if (Helpers.doesStackMatchOre(entity.getItem(), "kindling"))
+                    else if (OreDictionaryHelper.doesStackMatchOre(entity.getItem(), "kindling"))
                     {
                         kindling -= entity.getItem().getCount();
                         stuffToUse.add(entity);
                     }
-                    else if (log == null && Helpers.doesStackMatchOre(entity.getItem(), "logWood"))
+                    else if (log == null && OreDictionaryHelper.doesStackMatchOre(entity.getItem(), "logWood"))
                     {
                         log = entity;
                     }
