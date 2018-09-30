@@ -6,7 +6,9 @@
 package net.dries007.tfc.objects.blocks;
 
 import java.util.Random;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -29,15 +31,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.items.ItemFireStarter;
+import net.dries007.tfc.objects.te.TEFirePit;
 
-/**
- * todo: Needs more work in general
- */
+@ParametersAreNonnullByDefault
 public class BlockFirePit extends Block implements ITileEntityProvider
 {
     public static final PropertyBool LIT = PropertyBool.create("lit");
-    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.03125D, 0.9375D);
+    private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.03125D, 0.9375D);
 
     public BlockFirePit()
     {
@@ -50,6 +52,7 @@ public class BlockFirePit extends Block implements ITileEntityProvider
 
     @Override
     @SuppressWarnings("deprecation")
+    @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(LIT, meta == 1);
@@ -69,6 +72,7 @@ public class BlockFirePit extends Block implements ITileEntityProvider
     }
 
     @SuppressWarnings("deprecation")
+    @Nonnull
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
@@ -76,6 +80,7 @@ public class BlockFirePit extends Block implements ITileEntityProvider
     }
 
     @Override
+    @Nonnull
     @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
@@ -125,18 +130,14 @@ public class BlockFirePit extends Block implements ITileEntityProvider
     }
 
     @Override
-    public int tickRate(World worldIn)
-    {
-        return 30;
-    }
-
-    @Override
+    @Nonnull
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Items.AIR;
     }
 
     @Override
+    @Nonnull
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderLayer()
     {
@@ -152,20 +153,29 @@ public class BlockFirePit extends Block implements ITileEntityProvider
     // todo: override the fire stuff, see BlockPitKiln
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        ItemStack held = playerIn.getHeldItem(hand);
-        if (state.getValue(LIT)) //todo: remove debug feature
-            worldIn.setBlockState(pos, state.withProperty(LIT, false));
+        if (!worldIn.isRemote)
+        {
+            ItemStack held = player.getHeldItem(hand);
+            if (state.getValue(LIT)) //todo: remove debug feature
+                worldIn.setBlockState(pos, state.withProperty(LIT, false));
 
-        if (ItemFireStarter.canIgnite(held))
-            worldIn.setBlockState(pos, state.withProperty(LIT, true));
+            if (ItemFireStarter.canIgnite(held))
+                worldIn.setBlockState(pos, state.withProperty(LIT, true));
 
+            if (!player.isSneaking())
+            {
+                TFCGuiHandler.openGui(worldIn, pos, player, TFCGuiHandler.Type.FIRE_PIT);
+            }
+
+        }
         //todo: gui
         return true;
     }
 
     @Override
+    @Nonnull
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, LIT);
@@ -187,7 +197,7 @@ public class BlockFirePit extends Block implements ITileEntityProvider
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
-        return null; //todo
+        return new TEFirePit();
     }
 
     private boolean canBePlacedOn(World worldIn, BlockPos pos)

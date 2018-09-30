@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -25,7 +24,6 @@ import net.dries007.tfc.objects.blocks.wood.BlockLogPile;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
 import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 
@@ -33,8 +31,6 @@ import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 @MethodsReturnNonnullByDefault
 public class TELogPile extends TESidedInventory implements ITickable
 {
-    public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "log_pile");
-
     private static final int NUM_SLOTS = 4;
 
     public static boolean isStackValid(ItemStack stack)

@@ -31,7 +31,6 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
@@ -70,7 +69,7 @@ public class ItemMold extends ItemFiredPottery
             IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
             if (cap != null && cap.isMolten())
             {
-                player.openGui(TerraFirmaCraft.getInstance(), TFCGuiHandler.MOLD, world, 0, 0, 0);
+                TFCGuiHandler.openGui(world, player, TFCGuiHandler.Type.MOLD);
             }
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);

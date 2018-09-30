@@ -24,14 +24,10 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.items.metal.ItemIngot;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class TEIngotPile extends TileEntity
 {
-    public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "ingot_pile");
-
     private Metal metal;
     private int count;
 

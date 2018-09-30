@@ -7,7 +7,6 @@ package net.dries007.tfc.objects.items;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -18,7 +17,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.registries.TFCRegistries;
@@ -35,7 +33,6 @@ import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.objects.items.rock.*;
 import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
-import net.dries007.tfc.objects.items.wood.ItemLogTFC;
 import net.dries007.tfc.objects.items.wood.ItemLumberTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -124,11 +121,11 @@ public final class ItemsTFC
             }
         }
 
-        BlocksTFC.getAllNormalItemBlocks().forEach((x, y) -> registerItemBlock(r, x, y));
-        BlocksTFC.getAllInventoryItemBlocks().forEach((x, y) -> registerItemBlock(r, x, y));
+        BlocksTFC.getAllNormalItemBlocks().forEach(x -> registerItemBlock(r, x));
+        BlocksTFC.getAllInventoryItemBlocks().forEach(x -> registerItemBlock(r, x));
 
         for (BlockLogTFC log : BlocksTFC.getAllLogBlocks())
-            simpleItems.add(register(r, log.getRegistryName().getPath(), new ItemLogTFC(log), CT_WOOD));
+            simpleItems.add(register(r, log.getRegistryName().getPath(), new ItemBlockTFC(log), CT_WOOD));
 
         for (BlockDoorTFC door : BlocksTFC.getAllDoorBlocks())
             simpleItems.add(register(r, door.getRegistryName().getPath(), new ItemDoorTFC(door), CT_DECORATIONS));
@@ -232,18 +229,12 @@ public final class ItemsTFC
         if (items != null) items.add(unfiredPottery.firedVersion, unfiredPottery);
     }
 
-    private static <T extends ItemBlock> void registerItemBlock(IForgeRegistry<Item> r, Block block, Class<T> itemBlockClass)
+    @SuppressWarnings("ConstantConditions")
+    private static void registerItemBlock(IForgeRegistry<Item> r, ItemBlock item)
     {
-        try
-        {
-            //noinspection ConstantConditions
-            r.register(itemBlockClass.getDeclaredConstructor(Block.class).newInstance(block).setRegistryName(block.getRegistryName()).setCreativeTab(block.getCreativeTab()));
-        }
-        catch (Exception e)
-        {
-            // Problems
-            TerraFirmaCraft.getLog().warn("[Please inform developers] Unable to register an Item Block: No constructor was found with a parameter accepting a Block.", e);
-        }
+        item.setRegistryName(item.getBlock().getRegistryName());
+        item.setCreativeTab(item.getBlock().getCreativeTab());
+        r.register(item);
     }
 
     private static <T extends Item> T register(IForgeRegistry<Item> r, String name, T item, CreativeTabs ct)
