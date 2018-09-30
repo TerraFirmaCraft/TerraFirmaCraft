@@ -51,7 +51,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
         return MAP.get(wood);
     }
 
-    public final Tree wood;
+    private final Tree wood;
 
     public BlockLogTFC(Tree wood)
     {
@@ -156,6 +156,11 @@ public class BlockLogTFC extends BlockLog implements IItemSize
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(LOG_AXIS).ordinal() | (state.getValue(PLACED) ? 0b100 : 0) | (state.getValue(SMALL) ? 0b1000 : 0);
+    }
+
+    public Tree getWood()
+    {
+        return wood;
     }
 
     @Override

@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.container;
@@ -15,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import net.dries007.tfc.objects.inventory.SlotOutput;
 import net.dries007.tfc.objects.inventory.SlotTEInput;
 import net.dries007.tfc.objects.te.TEFirePit;
 
@@ -86,8 +84,8 @@ public class ContainerFirePit extends ContainerTE<TEFirePit>
             // input slot
             addSlotToContainer(new SlotTEInput(inventory, 4, 80, 20, tile));
             // output slots
-            addSlotToContainer(new SlotOutput(inventory, 5, 71, 48));
-            addSlotToContainer(new SlotOutput(inventory, 6, 89, 48));
+            addSlotToContainer(new SlotTEInput(inventory, 5, 71, 48, tile));
+            addSlotToContainer(new SlotTEInput(inventory, 6, 89, 48, tile));
         }
     }
 }

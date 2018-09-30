@@ -17,10 +17,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.util.IPlacableItem;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEIngotPile;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IPlacableItem;
 
 public class ItemIngot extends ItemMetal implements IPlacableItem
 {

@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api;
+package net.dries007.tfc.api.util;
 
 import java.util.Random;
 

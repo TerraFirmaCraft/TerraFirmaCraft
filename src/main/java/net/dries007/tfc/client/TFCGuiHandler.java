@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.client;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,7 +56,6 @@ public class TFCGuiHandler implements IGuiHandler
         BlockPos pos = new BlockPos(x, y, z);
         ItemStack stack = player.getHeldItemMainhand();
         Type type = Type.valueOf(ID);
-        if (type == null) return null;
         switch (type)
         {
             case LOG_PILE:
@@ -82,7 +82,6 @@ public class TFCGuiHandler implements IGuiHandler
     {
         Container container = getServerGuiElement(ID, player, world, x, y, z);
         Type type = Type.valueOf(ID);
-        if (type == null) return null;
         switch (type)
         {
             case LOG_PILE:
@@ -106,14 +105,15 @@ public class TFCGuiHandler implements IGuiHandler
         SMALL_VESSEL,
         SMALL_VESSEL_LIQUID,
         MOLD,
-        FIRE_PIT;
+        FIRE_PIT,
+        NULL;
 
         private static Type[] values = values();
 
-        @Nullable
+        @Nonnull
         private static Type valueOf(int id)
         {
-            return id < 0 || id >= values.length ? null : values[id];
+            return id < 0 || id >= values.length ? NULL : values[id];
         }
     }
 }

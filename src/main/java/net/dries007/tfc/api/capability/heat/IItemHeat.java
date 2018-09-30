@@ -31,7 +31,24 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
     float getTemperature();
 
     /**
+     * Gets the Heat capacity. (A measure of how fast this items heats up or cools down)
+     * Implementation is left up to the heating object. (See TEFirePit for example)
+     *
+     * @return a value between 0 and 1
+     */
+    float getHeatCapacity();
+
+    /**
+     * Gets the melting point of the item.
+     * Depending on the item, this may not mean anything.
+     *
+     * @return a temperature between 0 - 1600 that is the melting point
+     */
+    float getMeltingPoint();
+
+    /**
      * Sets the temperature. Used for anything that modifies the temperature.
+     *
      * @param temperature the temperature to set. Between 0 - 1600
      */
     void setTemperature(float temperature);
@@ -44,7 +61,7 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
      */
     default boolean isMolten()
     {
-        return false;
+        return getTemperature() > getMeltingPoint();
     }
 
     /**
@@ -54,7 +71,7 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
      * Otherwise, if heat ever turns to zero, this will clear the NBT of the stack whenever you hover over it (includes moving it / clicking, etc.)
      *
      * @param stack The stack to add information to
-     * @param text The list of tooltips
+     * @param text  The list of tooltips
      */
     @SideOnly(Side.CLIENT)
     default void addHeatInfo(ItemStack stack, List<String> text, boolean clearStackNBT)

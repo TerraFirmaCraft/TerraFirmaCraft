@@ -28,6 +28,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.ceramics.*;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
@@ -82,7 +83,6 @@ public final class ItemsTFC
     public static void registerItems(RegistryEvent.Register<Item> event)
     {
         IForgeRegistry<Item> r = event.getRegistry();
-
         Builder<Item> simpleItems = ImmutableList.builder();
 
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
@@ -116,8 +116,8 @@ public final class ItemsTFC
         {
             for (Metal metal : TFCRegistries.METALS.getValuesCollection())
             {
-                if (!type.hasType(metal) || type.supplier == null) continue;
-                simpleItems.add(register(r, "metal/" + type.name().toLowerCase() + "/" + metal.getRegistryName().getPath(), type.supplier.apply(metal, type), CT_METAL));
+                if (type.hasType(metal))
+                    simpleItems.add(register(r, "metal/" + type.name().toLowerCase() + "/" + metal.getRegistryName().getPath(), Metal.ItemType.create(metal, type), CT_METAL));
             }
         }
 
@@ -152,7 +152,7 @@ public final class ItemsTFC
         { // POTTERY
             for (Metal.ItemType type : Metal.ItemType.values())
             {
-                if (type.hasMold)
+                if (type.hasMold(null))
                 {
                     // Not using registerPottery here because the ItemMold uses a custom ItemModelMesher, meaning it can't be in simpleItems
                     ItemFiredPottery item = new ItemMold(type);
@@ -182,7 +182,7 @@ public final class ItemsTFC
         r.register(new ItemFlat().setRegistryName(MOD_ID, "flat/fire_clay"));
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
-        simpleItems.add(register(r, "hay", new ItemMisc(Size.SMALL, Weight.LIGHT), CT_MISC));
+        simpleItems.add(register(r, "hay", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "other", new String[] {"fancy", "kindling"}, new String[] {"extra", "fancy", "kindling"}), CT_MISC));
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
 
         // todo: Bow? Arrows?

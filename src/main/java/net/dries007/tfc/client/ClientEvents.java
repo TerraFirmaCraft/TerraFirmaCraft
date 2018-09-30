@@ -36,9 +36,9 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
-import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
@@ -76,6 +76,7 @@ public class ClientEvents
         List<String> list = event.getRight();
         if (ConfigTFC.GENERAL.debug && mc.gameSettings.showDebugInfo)
         {
+            //noinspection ConstantConditions
             BlockPos blockpos = new BlockPos(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().getEntityBoundingBox().minY, mc.getRenderViewEntity().posZ);
             Chunk chunk = mc.world.getChunk(blockpos);
             if (mc.world.isBlockLoaded(blockpos) && !chunk.isEmpty())

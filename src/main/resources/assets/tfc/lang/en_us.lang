@@ -144,7 +144,6 @@ tile.tfc.peat.name=Peat
 tile.tfc.peat.grass.name=Peat Grass
 tile.tfc.thatch.name=Thatch
 tile.tfc.firepit.name=Firepit
-tile.tfc.torch.name=Torch
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite

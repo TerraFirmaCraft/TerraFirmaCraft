@@ -43,11 +43,7 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.client.render.TESRChestTFC;
-import net.dries007.tfc.client.render.TESRIngotPile;
-import net.dries007.tfc.client.render.TESRPitKiln;
-import net.dries007.tfc.client.render.TESRToolRack;
-import net.dries007.tfc.client.render.TESRWorldItem;
+import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -62,11 +58,7 @@ import net.dries007.tfc.objects.items.ItemGoldPan;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
-import net.dries007.tfc.objects.te.TEChestTFC;
-import net.dries007.tfc.objects.te.TEIngotPile;
-import net.dries007.tfc.objects.te.TEPitKiln;
-import net.dries007.tfc.objects.te.TEToolRack;
-import net.dries007.tfc.objects.te.TEWorldItem;
+import net.dries007.tfc.objects.te.*;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -78,25 +70,51 @@ public final class ClientRegisterEvents
     @SuppressWarnings("ConstantConditions")
     public static void registerModels(ModelRegistryEvent event)
     {
+        // ITEMS //
+
+        // Simple Items
         for (Item item : ItemsTFC.getAllSimpleItems())
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName().toString()));
 
+        // Dye color Items
         for (EnumDyeColor color : EnumDyeColor.values())
         {
             ModelLoader.setCustomModelResourceLocation(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, color.getDyeDamage(), new ModelResourceLocation(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED.getRegistryName().toString()));
             ModelLoader.setCustomModelResourceLocation(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, color.getDyeDamage(), new ModelResourceLocation(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED.getRegistryName().toString()));
         }
 
+        // Gems
+        for (ItemGem item : ItemsTFC.getAllGemItems())
+            for (Gem.Grade grade : Gem.Grade.values())
+                registerEnumBasedMetaItems("gem", grade, item);
+
+        // Ore Items
+        for (ItemOreTFC item : ItemsTFC.getAllOreItems())
+            if (item.ore.isGraded())
+                for (Ore.Grade grade : Ore.Grade.values())
+                    registerEnumBasedMetaItems("ore", grade, item);
+            else
+                registerEnumBasedMetaItems("ore", Ore.Grade.NORMAL, item);
+
+        // Gold Pan
+        ModelLoader.registerItemVariants(ItemsTFC.GOLDPAN, Arrays.stream(ItemGoldPan.TYPES).map(e -> new ResourceLocation(MOD_ID, "goldpan/" + e)).toArray(ResourceLocation[]::new));
         for (int meta = 0; meta < ItemGoldPan.TYPES.length; meta++)
             ModelLoader.setCustomModelResourceLocation(ItemsTFC.GOLDPAN, meta, new ModelResourceLocation(MOD_ID + ":goldpan/" + ItemGoldPan.TYPES[meta]));
         ModelLoader.registerItemVariants(ItemsTFC.GOLDPAN, Arrays.stream(ItemGoldPan.TYPES).map(e -> new ResourceLocation(MOD_ID, "goldpan/" + e)).toArray(ResourceLocation[]::new));
 
+        // Ceramic Molds
         ModelBakery.registerItemVariants(ItemMold.get(Metal.ItemType.INGOT), new ModelResourceLocation(ItemMold.get(Metal.ItemType.INGOT).getRegistryName() + "/unknown"));
         for (Metal.ItemType value : Metal.ItemType.values())
         {
             ItemMold item = ItemMold.get(value);
             if (item == null) continue;
 
+            ModelBakery.registerItemVariants(item, new ModelResourceLocation(item.getRegistryName().toString() + "/empty"));
+            ModelBakery.registerItemVariants(item, TFCRegistries.METALS.getValuesCollection()
+                .stream()
+                .filter(value::hasMold)
+                .map(x -> new ModelResourceLocation(item.getRegistryName().toString() + "/" + x.getRegistryName().getPath()))
+                .toArray(ModelResourceLocation[]::new));
             ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition()
             {
                 private ModelResourceLocation FALLBACK = new ModelResourceLocation(item.getRegistryName().toString() + "/empty");
@@ -117,26 +135,18 @@ public final class ClientRegisterEvents
                     return FALLBACK;
                 }
             });
-
-            ModelBakery.registerItemVariants(item, new ModelResourceLocation(item.getRegistryName().toString() + "/empty"));
-            ModelBakery.registerItemVariants(item, TFCRegistries.METALS.getValuesCollection()
-                .stream()
-                .filter(x -> item.type.hasMold && x.isToolMetal() && (x.getTier() == Metal.Tier.TIER_I || x.getTier() == Metal.Tier.TIER_II))
-                .map(x -> new ModelResourceLocation(item.getRegistryName().toString() + "/" + x.getRegistryName().getPath()))
-                .toArray(ModelResourceLocation[]::new));
         }
 
-        for (ItemGem item : ItemsTFC.getAllGemItems())
-            for (Gem.Grade grade : Gem.Grade.values())
-                registerEnumBasedMetaItems("gem", grade, item);
+        // Item Blocks
+        for (ItemBlock item : BlocksTFC.getAllNormalItemBlocks())
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "normal"));
 
-        for (ItemOreTFC item : ItemsTFC.getAllOreItems())
-            if (item.ore.isGraded())
-                for (Ore.Grade grade : Ore.Grade.values())
-                    registerEnumBasedMetaItems("ore", grade, item);
-            else
-                registerEnumBasedMetaItems("ore", Ore.Grade.NORMAL, item);
+        for (ItemBlock item : BlocksTFC.getAllInventoryItemBlocks())
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 
+        // BLOCKS - STATE MAPPERS //
+
+        // Blocks with Ignored Properties
         for (Block block : BlocksTFC.getAllFluidBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());
 
@@ -161,11 +171,8 @@ public final class ClientRegisterEvents
         for (Block block : BlocksTFC.getAllDoorBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockDoor.POWERED).build());
 
-        for (Block block : BlocksTFC.getAllAnvils())
-            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().build());
-
-        for (Block block : BlocksTFC.getAllSheets())
-            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().build());
+        for (Block block : BlocksTFC.getAllChestBlocks())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockChest.FACING).build());
 
         for (BlockSlabTFC.Half block : BlocksTFC.getAllSlabBlocks())
         {
@@ -177,33 +184,19 @@ public final class ClientRegisterEvents
             ModelLoader.setCustomStateMapper(e, new StateMap.Builder().ignore(BlockFarmlandTFC.MOISTURE).build())
         );
 
-        for (Block block : BlocksTFC.getAllChestBlocks())
-            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockChest.FACING).build());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEChestTFC.class, new TESRChestTFC());
-
-        for (Block block : BlocksTFC.getAllToolRackBlocks())
-            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().build());
-        //ModelLoader.setCustomStateMapper(block, blockIn -> ImmutableMap.of(block.getDefaultState(), new ModelResourceLocation("tfc:wood/tool_rack/" + ((BlockToolRack)block).wood.toString())));
-        ClientRegistry.bindTileEntitySpecialRenderer(TEToolRack.class, new TESRToolRack());
-
+        // Empty Models
         ModelLoader.setCustomStateMapper(BlocksTFC.PIT_KILN, blockIn -> ImmutableMap.of(BlocksTFC.PIT_KILN.getDefaultState(), new ModelResourceLocation("tfc:empty")));
-        ClientRegistry.bindTileEntitySpecialRenderer(TEPitKiln.class, new TESRPitKiln());
-
         ModelLoader.setCustomStateMapper(BlocksTFC.WORLD_ITEM, blockIn -> ImmutableMap.of(BlocksTFC.WORLD_ITEM.getDefaultState(), new ModelResourceLocation("tfc:empty")));
+        ModelLoader.setCustomStateMapper(BlocksTFC.INGOT_PILE, blockIn -> ImmutableMap.of(BlocksTFC.INGOT_PILE.getDefaultState(), new ModelResourceLocation("tfc:empty")));
+
+        // TESRs //
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TEChestTFC.class, new TESRChestTFC());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEToolRack.class, new TESRToolRack());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEPitKiln.class, new TESRPitKiln());
         ClientRegistry.bindTileEntitySpecialRenderer(TEWorldItem.class, new TESRWorldItem());
-
-        ModelLoader.setCustomStateMapper(BlocksTFC.INGOT_PILE, blockIn -> ImmutableMap.of(BlocksTFC.INGOT_PILE.getDefaultState(), new ModelResourceLocation("tfc:empty")));
         ClientRegistry.bindTileEntitySpecialRenderer(TEIngotPile.class, new TESRIngotPile());
-
-        ModelLoader.setCustomStateMapper(BlocksTFC.INGOT_PILE, blockIn -> ImmutableMap.of(BlocksTFC.INGOT_PILE.getDefaultState(), new ModelResourceLocation("tfc:empty")));
-        ClientRegistry.bindTileEntitySpecialRenderer(TEIngotPile.class, new TESRIngotPile());
-
-        for (ItemBlock item : BlocksTFC.getAllNormalItemBlocks())
-            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "normal"));
-
-        for (ItemBlock item : BlocksTFC.getAllInventoryItemBlocks())
-            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
-
+        ClientRegistry.bindTileEntitySpecialRenderer(TEBellows.class, new TESRBellows());
     }
 
     @SubscribeEvent
@@ -249,7 +242,7 @@ public final class ClientRegisterEvents
 
         itemColors.registerItemColorHandler((stack, tintIndex) ->
                 event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
-            BlocksTFC.getAllLeafBlocks().stream().toArray(BlockLeavesTFC[]::new));
+            BlocksTFC.getAllLeafBlocks().toArray(new BlockLeavesTFC[0]));
 
         itemColors.registerItemColorHandler((stack, tintIndex) -> tintIndex == 1 ? EnumDyeColor.byDyeDamage(stack.getItemDamage()).getColorValue() : 0xFFFFFF,
             ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED);

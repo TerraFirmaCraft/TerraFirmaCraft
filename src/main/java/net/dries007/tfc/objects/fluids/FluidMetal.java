@@ -21,13 +21,6 @@ public class FluidMetal extends Fluid
         this.metal = metal;
     }
 
-    public boolean doesFluidHaveMold(Metal.ItemType type)
-    {
-        if (type == Metal.ItemType.INGOT || type == Metal.ItemType.UNSHAPED)
-            return true;
-        return type.hasMold && metal.isToolMetal() && (metal.getTier() == Metal.Tier.TIER_I || metal.getTier() == Metal.Tier.TIER_II);
-    }
-
     public Metal getMetal()
     {
         return metal;

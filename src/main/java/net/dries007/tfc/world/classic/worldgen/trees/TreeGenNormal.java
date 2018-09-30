@@ -16,8 +16,8 @@ import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.api.util.ITreeGenerator;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;

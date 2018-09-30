@@ -15,7 +15,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import net.dries007.tfc.api.ITreeGenerator;
+import net.dries007.tfc.api.util.ITreeGenerator;
 
 public class Tree extends IForgeRegistryEntry.Impl<Tree>
 {
@@ -32,6 +32,8 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
     private final float maxRain;
     private final float minDensity;
     private final float maxDensity;
+    private final float burnTemp;
+    private final int burnTicks;
     // Used when growing a tree
     private final ITreeGenerator gen;
 
@@ -58,13 +60,15 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      * @param maxGrowthRadius  used to check growth conditions
      * @param maxHeight        used to check growth conditions
      * @param maxDecayDistance maximum decay distance for leaves
-     * @param isConifer        todo
+     * @param isConifer        todo: make this do something
      * @param hasBushes        will the tree generate small bushes
      * @param minGrowthTime    the amount of time (in in-game days) that this tree requires to grow
+     * @param burnTemp         the temperature at which this will burn in a fire pit or similar
+     * @param burnTicks        the number of ticks that this will burn in a fire pit or similar
      */
     public Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator gen,
                 float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, float dominance,
-                int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, boolean hasBushes, float minGrowthTime)
+                int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, boolean hasBushes, float minGrowthTime, float burnTemp, int burnTicks)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -79,6 +83,8 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         this.minDensity = minDensity;
         this.maxDensity = maxDensity;
         this.hasBushes = hasBushes;
+        this.burnTemp = burnTemp;
+        this.burnTicks = burnTicks;
 
         this.gen = gen;
         setRegistryName(name);
@@ -86,12 +92,12 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
 
     public void makeTreeWithoutChecking(TemplateManager manager, World world, BlockPos pos, Random rand)
     {
-        getGen().generateTree(manager, world, pos, this, rand);
+        gen.generateTree(manager, world, pos, this, rand);
     }
 
     public void makeTree(TemplateManager manager, World world, BlockPos pos, Random rand)
     {
-        if (getGen().canGenerateTree(world, pos, this))
+        if (gen.canGenerateTree(world, pos, this))
             makeTreeWithoutChecking(manager, world, pos, rand);
     }
 
@@ -132,7 +138,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         return isConifer;
     }
 
-    public boolean isHasBushes()
+    public boolean hasBushes()
     {
         return hasBushes;
     }
@@ -142,9 +148,14 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         return minGrowthTime;
     }
 
-    public ITreeGenerator getGen()
+    public float getBurnTemp()
     {
-        return gen;
+        return burnTemp;
+    }
+
+    public int getBurnTicks()
+    {
+        return burnTicks;
     }
 
     @Override
@@ -168,6 +179,8 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         private boolean isConifer;
         private boolean canMakeBushes;
         private float minGrowthTime;
+        private float burnTemp;
+        private int burnTicks;
         private ITreeGenerator gen;
         private ResourceLocation name;
 
@@ -188,6 +201,8 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
             this.minGrowthTime = 7;
             this.minDensity = 0.1f;
             this.maxDensity = 2f;
+            this.burnTemp = 675;
+            this.burnTicks = 1500;
         }
 
         public Builder setRadius(int maxGrowthRadius)
@@ -239,9 +254,16 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
             return this;
         }
 
+        public Builder setBurnInfo(float burnTemp, int burnTicks)
+        {
+            this.burnTemp = burnTemp;
+            this.burnTicks = burnTicks;
+            return this;
+        }
+
         public Tree build()
         {
-            return new Tree(name, gen, minTemp, maxTemp, minRain, maxRain, minDensity, maxDensity, dominance, maxGrowthRadius, maxHeight, maxDecayDistance, isConifer, canMakeBushes, minGrowthTime);
+            return new Tree(name, gen, minTemp, maxTemp, minRain, maxRain, minDensity, maxDensity, dominance, maxGrowthRadius, maxHeight, maxDecayDistance, isConifer, canMakeBushes, minGrowthTime, burnTemp, burnTicks);
         }
     }
 }
