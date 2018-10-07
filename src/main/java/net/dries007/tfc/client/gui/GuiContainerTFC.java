@@ -7,7 +7,6 @@ package net.dries007.tfc.client.gui;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
@@ -51,8 +50,10 @@ public class GuiContainerTFC extends GuiContainer
 
     protected void drawSimpleForeground()
     {
-        String name = I18n.format(translationKey + ".name");
-        fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
+        // in some guis this causes collisions: graphics need to be redesigned.
+        // 1.7 never had 'inventory' or the gui name printed here, so we don't either, until further notice
+        //String name = I18n.format(translationKey + ".name");
+        //fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
         //fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
     }
 

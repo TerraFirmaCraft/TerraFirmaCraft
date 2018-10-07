@@ -17,8 +17,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.TerraFirmaCraft;
-
 public abstract class ContainerItemStack extends Container
 {
     protected final ItemStack stack;
@@ -102,7 +100,6 @@ public abstract class ContainerItemStack extends Container
     @Nonnull
     public ItemStack slotClick(int slotID, int dragType, ClickType clickType, EntityPlayer player)
     {
-        TerraFirmaCraft.getLog().debug("Clicked on slot " + slotID);
         if ((clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP || clickType == ClickType.SWAP) && slotID == itemIndex)
         {
             return ItemStack.EMPTY;

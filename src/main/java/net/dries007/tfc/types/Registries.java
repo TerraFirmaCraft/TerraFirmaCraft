@@ -43,6 +43,7 @@ public class Registries
 
         // Normal registries
         newRegistry(TFCRegistryNames.ALLOY_RECIPE, AlloyRecipe.class, false);
+        newRegistry(TFCRegistryNames.KNAPPING_RECIPE, KnappingRecipe.class, false);
     }
 
     /**
