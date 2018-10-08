@@ -37,7 +37,7 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
     @Override
     public String toString()
     {
-        return String.valueOf(getRegistryName());
+        return getRegistryName().getPath();
     }
 
     public static class Builder

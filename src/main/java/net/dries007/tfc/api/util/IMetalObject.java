@@ -17,7 +17,7 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.util.Helpers;
 
 /*
- * Must be on Item (I think?)
+ * Must be on Item or Block
  */
 public interface IMetalObject
 {

@@ -72,10 +72,10 @@ public class CommonEventHandler
     @SubscribeEvent
     public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
     {
-        World world = event.getWorld();
-        BlockPos pos = event.getPos();
-        ItemStack stack = event.getItemStack();
-        EntityPlayer player = event.getEntityPlayer();
+        final World world = event.getWorld();
+        final BlockPos pos = event.getPos();
+        final ItemStack stack = event.getItemStack();
+        final EntityPlayer player = event.getEntityPlayer();
 
         /*
          Note: This event handler is fired first with the main hand as event.getStack()
@@ -218,6 +218,11 @@ public class CommonEventHandler
                 event.setCancellationResult(EnumActionResult.SUCCESS);
                 event.setCanceled(true);
             }
+        }
+
+        if (stack.getItem() == Items.CLAY_BALL)
+        {
+            // todo: Knapping for clay + leather
         }
     }
 

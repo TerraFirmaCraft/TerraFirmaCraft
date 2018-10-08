@@ -22,6 +22,7 @@ public abstract class ContainerItemStack extends Container
     protected final ItemStack stack;
     protected final EntityPlayer player;
     protected int itemIndex;
+    protected boolean isOffhand;
 
     ContainerItemStack(InventoryPlayer playerInv, ItemStack stack)
     {
@@ -30,9 +31,15 @@ public abstract class ContainerItemStack extends Container
         this.stack = stack;
 
         if (stack == player.getHeldItemMainhand())
+        {
             this.itemIndex = playerInv.currentItem + 27; // Mainhand opened inventory
+            this.isOffhand = false;
+        }
         else
+        {
             this.itemIndex = -100; // Offhand, so ignore this rule
+            this.isOffhand = true;
+        }
 
         addContainerSlots();
         addPlayerInventorySlots(playerInv);

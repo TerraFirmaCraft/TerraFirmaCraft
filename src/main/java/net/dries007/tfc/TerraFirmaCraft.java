@@ -24,6 +24,8 @@ import net.dries007.tfc.client.TFCKeybindings;
 import net.dries007.tfc.cmd.HeatCommand;
 import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.cmd.TreeGenCommand;
+import net.dries007.tfc.network.PacketChunkData;
+import net.dries007.tfc.network.PacketKnappingUpdate;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
@@ -33,7 +35,6 @@ import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkCapabilityHandler;
-import net.dries007.tfc.world.classic.chunkdata.ChunkDataMessage;
 import net.dries007.tfc.world.classic.worldgen.*;
 
 @SuppressWarnings("DefaultAnnotationParam")
@@ -102,12 +103,12 @@ public class TerraFirmaCraft
 
         // No need to sync config here, forge magic
 
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new TFCGuiHandler());
         network = NetworkRegistry.INSTANCE.newSimpleChannel(TFCConstants.MOD_ID);
         int id = 0;
-        network.registerMessage(ChunkDataMessage.Handler.class, ChunkDataMessage.class, ++id, Side.CLIENT);
+        network.registerMessage(PacketKnappingUpdate.Handler.class, PacketKnappingUpdate.class, ++id, Side.SERVER);
+        network.registerMessage(PacketChunkData.Handler.class, PacketChunkData.class, ++id, Side.CLIENT);
         ChunkCapabilityHandler.preInit();
-
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, new TFCGuiHandler());
 
         CalenderTFC.reload();
 

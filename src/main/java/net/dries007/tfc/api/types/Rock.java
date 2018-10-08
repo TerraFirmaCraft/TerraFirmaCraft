@@ -6,14 +6,17 @@
 package net.dries007.tfc.api.types;
 
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.blocks.stone.*;
+import net.dries007.tfc.objects.items.rock.*;
 
 import static net.dries007.tfc.api.types.Rock.FallingBlockType.*;
 
@@ -47,7 +50,36 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
     @Override
     public String toString()
     {
-        return String.valueOf(getRegistryName());
+        return getRegistryName().getPath();
+    }
+
+    public enum ToolType
+    {
+        AXE(ItemRockAxe::new, " X   ", "XXXX ", "XXXXX", "XXXX ", " X   "),
+        SHOVEL(ItemRockShovel::new, "XXX", "XXX", "XXX", "XXX", " X "),
+        HOE(ItemRockHoe::new, "XXXXX", "   XX"),
+        KNIFE(ItemRockKnife::new, "X ", "XX", "XX", "XX", "XX"),
+        JAVELIN(ItemRockJavelin::new, "XXX  ", "XXXX ", "XXXXX", " XXX ", "  X  "),
+        HAMMER(ItemRockHammer::new, "XXXXX", "XXXXX", "  X  ");
+
+        private final Function<RockCategory, Item> supplier;
+        private final String[] pattern;
+
+        ToolType(@Nonnull Function<RockCategory, Item> supplier, String... pattern)
+        {
+            this.supplier = supplier;
+            this.pattern = pattern;
+        }
+
+        public Item create(RockCategory category)
+        {
+            return supplier.apply(category);
+        }
+
+        public String[] getPattern()
+        {
+            return pattern;
+        }
     }
 
     public enum Type

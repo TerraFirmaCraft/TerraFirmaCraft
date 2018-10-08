@@ -161,7 +161,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
     @Override
     public String toString()
     {
-        return String.valueOf(getRegistryName());
+        return getRegistryName().getPath();
     }
 
     public static class Builder

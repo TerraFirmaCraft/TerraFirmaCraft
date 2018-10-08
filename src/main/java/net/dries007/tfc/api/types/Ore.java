@@ -52,7 +52,7 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
     @Override
     public String toString()
     {
-        return String.valueOf(getRegistryName());
+        return getRegistryName().getPath();
     }
 
     public enum Grade implements IStringSerializable

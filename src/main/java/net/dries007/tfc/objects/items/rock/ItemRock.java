@@ -21,13 +21,15 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ItemRock extends ItemTFC
+public class ItemRock extends ItemTFC implements IRockObject
 {
     private static final Map<Rock, ItemRock> MAP = new HashMap<>();
 
@@ -41,16 +43,30 @@ public class ItemRock extends ItemTFC
         return new ItemStack(MAP.get(rock), amount);
     }
 
-    public final Rock ore;
+    private final Rock rock;
 
     public ItemRock(Rock rock)
     {
-        this.ore = rock;
+        this.rock = rock;
         if (MAP.put(rock, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
         OreDictionaryHelper.register(this, "rock");
         OreDictionaryHelper.register(this, "rock", rock);
         OreDictionaryHelper.register(this, "rock", rock.getRockCategory());
+    }
+
+    @Override
+    @Nonnull
+    public Rock getRock(ItemStack stack)
+    {
+        return rock;
+    }
+
+    @Override
+    @Nonnull
+    public RockCategory getRockCategory(ItemStack stack)
+    {
+        return rock.getRockCategory();
     }
 
     @Override
@@ -72,7 +88,7 @@ public class ItemRock extends ItemTFC
         ItemStack stack = player.getHeldItem(hand);
         if (!world.isRemote && !player.isSneaking())
         {
-            TFCGuiHandler.openGui(world, player.getPosition(), player, TFCGuiHandler.Type.KNAPPING);
+            TFCGuiHandler.openGui(world, player.getPosition(), player, TFCGuiHandler.Type.KNAPPING_STONE);
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }

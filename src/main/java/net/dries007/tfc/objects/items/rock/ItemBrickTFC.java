@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.items.rock;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
@@ -15,12 +16,14 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ItemBrickTFC extends ItemTFC
+public class ItemBrickTFC extends ItemTFC implements IRockObject
 {
     private static final Map<Rock, ItemBrickTFC> MAP = new HashMap<>();
 
@@ -34,11 +37,11 @@ public class ItemBrickTFC extends ItemTFC
         return new ItemStack(MAP.get(ore), amount);
     }
 
-    public final Rock ore;
+    private final Rock rock;
 
     public ItemBrickTFC(Rock rock)
     {
-        this.ore = rock;
+        this.rock = rock;
         if (MAP.put(rock, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
         OreDictionaryHelper.register(this, "brick");
@@ -56,5 +59,19 @@ public class ItemBrickTFC extends ItemTFC
     public Weight getWeight(ItemStack stack)
     {
         return Weight.LIGHT;
+    }
+
+    @Nonnull
+    @Override
+    public Rock getRock(ItemStack stack)
+    {
+        return rock;
+    }
+
+    @Nonnull
+    @Override
+    public RockCategory getRockCategory(ItemStack stack)
+    {
+        return rock.getRockCategory();
     }
 }

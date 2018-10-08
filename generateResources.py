@@ -825,10 +825,13 @@ for wood_type in WOOD_TYPES:
 # ROCK TOOLS
 for rock_cat in ROCK_CATEGORIES:
     for item_type in ['axe', 'shovel', 'hoe', 'knife', 'javelin', 'hammer']:
+        # tools
         parent = 'item/handheld'
         if item_type in ['knife', 'javelin']:
             parent = 'tfc:item/handheld_flipped'
         item(('stone', item_type, rock_cat), 'tfc:items/stone/%s' % item_type, parent=parent)
+        # tool heads
+        item(('stone', item_type + '_head', rock_cat), 'tfc:items/stone/%s_head' % item_type)
 
 # POWDERS
 for powder in POWDERS:
