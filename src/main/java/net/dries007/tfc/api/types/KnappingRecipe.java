@@ -18,9 +18,9 @@ public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRe
     private final Type type;
     private final SimpleCraftMatrix matrix;
 
-    public KnappingRecipe(Type type, String... pattern)
+    public KnappingRecipe(Type type, boolean outsideSlotRequired, String... pattern)
     {
-        this.matrix = new SimpleCraftMatrix(pattern);
+        this.matrix = new SimpleCraftMatrix(outsideSlotRequired, pattern);
         this.type = type;
     }
 
@@ -62,7 +62,7 @@ public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRe
 
         public Stone(Type type, Function<RockCategory, ItemStack> supplier, String... pattern)
         {
-            super(type, pattern);
+            super(type, false, pattern);
             this.supplier = supplier;
         }
 
@@ -81,9 +81,9 @@ public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRe
     {
         private final ItemStack output;
 
-        public Simple(Type type, ItemStack output, String... pattern)
+        public Simple(Type type, boolean inverted, ItemStack output, String... pattern)
         {
-            super(type, pattern);
+            super(type, inverted, pattern);
             this.output = output;
         }
 

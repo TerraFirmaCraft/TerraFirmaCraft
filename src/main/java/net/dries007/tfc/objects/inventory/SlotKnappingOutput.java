@@ -12,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-import net.dries007.tfc.TerraFirmaCraft;
-
 public class SlotKnappingOutput extends SlotItemHandler
 {
     private Runnable onSlotTake;
@@ -29,7 +27,6 @@ public class SlotKnappingOutput extends SlotItemHandler
     @Nonnull
     public ItemStack onTake(EntityPlayer thePlayer, @Nonnull ItemStack stack)
     {
-        TerraFirmaCraft.getLog().info("On slot take!");
         onSlotTake.run();
         return super.onTake(thePlayer, stack);
     }

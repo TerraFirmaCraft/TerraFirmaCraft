@@ -33,6 +33,7 @@ public class SimpleCraftMatrix
      * false = empty
      */
     private final boolean[] matrix;
+    private final boolean outsideSlot;
     private final int width;
     private final int height;
     private final int area;
@@ -46,6 +47,7 @@ public class SimpleCraftMatrix
         this.height = MAX_HEIGHT;
         this.area = MAX_AREA;
         this.matrix = new boolean[MAX_AREA];
+        this.outsideSlot = false;
         Arrays.fill(matrix, true);
     }
 
@@ -53,9 +55,12 @@ public class SimpleCraftMatrix
      * Create a patterned matrix based on a string pattern input.
      * See {@link net.dries007.tfc.types.DefaultRecipes} for usage of how to construct recipes
      *
+     * @param outsideSlotRequired If the recipe is smaller than MAX_WIDTH x MAX_HEIGHT, what is the slot outside of the recipe required to be?
+     *                            true = outside slots need to be full
+     *                            false = outside slots need to be empty
      * @param pattern A list of strings. Each string is a row, each character is an element. ' ' represents empty, anything else is full
      */
-    public SimpleCraftMatrix(String... pattern)
+    public SimpleCraftMatrix(boolean outsideSlotRequired, String... pattern)
     {
         if (pattern.length == 0 || pattern.length > MAX_HEIGHT)
             throw new IllegalArgumentException("Pattern height is invalid");
@@ -64,6 +69,7 @@ public class SimpleCraftMatrix
         this.width = pattern[0].length();
         this.area = width * height;
         this.matrix = new boolean[width * height];
+        this.outsideSlot = outsideSlotRequired;
         if (width > MAX_WIDTH)
             throw new IllegalArgumentException("Pattern width is invalid");
 
@@ -153,8 +159,8 @@ public class SimpleCraftMatrix
                 int patternIdx = y * width + x;
                 if (x < startX || y < startY || x - startX >= other.width || y - startY >= other.height)
                 {
-                    // If the current position in the matrix is outside the pattern, the value must be empty
-                    if (matrix[patternIdx])
+                    // If the current position in the matrix is outside the pattern, the value should be set by other.outsideSlot
+                    if (matrix[patternIdx] != other.outsideSlot)
                         return false;
                 }
                 else
