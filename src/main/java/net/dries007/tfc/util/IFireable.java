@@ -17,14 +17,14 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.IPlacableItem;
+import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEPitKiln;
 
 /**
  * Must be on Item or Block
  */
-public interface IFireable extends IPlacableItem
+public interface IFireable extends IPlaceableItem
 {
     static IFireable fromItem(Item item)
     {

@@ -106,7 +106,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 
     public enum ItemType
     {
-        INGOT(false, 100, ItemIngot::new, true, 0.5f),
+        INGOT(false, 100, ItemIngot::new, true, 0.5f, "XXXX", "X  X", "X  X", "X  X", "XXXX"),
         DOUBLE_INGOT(false, 200),
         SCRAP(false, 100),
         DUST(false, 100),
@@ -119,31 +119,31 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         TUYERE(true, 400),
 
         PICK(true, 100, ItemMetalTool::new),
-        PICK_HEAD(true, 100, true),
+        PICK_HEAD(true, 100, true, "XXXXX", "X   X", " XXX ", "XXXXX"),
         SHOVEL(true, 100, ItemMetalTool::new),
-        SHOVEL_HEAD(true, 100, true),
+        SHOVEL_HEAD(true, 100, true, "X   X", "X   X", "X   X", "X   X", "XX XX"),
         AXE(true, 100, ItemMetalTool::new),
-        AXE_HEAD(true, 100, true),
+        AXE_HEAD(true, 100, true, "X XXX", "    X", "     ", "    X", "X XXX"),
         HOE(true, 100, ItemMetalTool::new),
-        HOE_HEAD(true, 100, true),
+        HOE_HEAD(true, 100, true, "XXXXX", "     ", "  XXX", "XXXXX"),
         CHISEL(true, 100, ItemMetalTool::new),
-        CHISEL_HEAD(true, 100, true),
+        CHISEL_HEAD(true, 100, true, "X X", "X X", "X X", "X X", "X X"),
         SWORD(true, 200, ItemMetalTool::new),
-        SWORD_BLADE(true, 200, true),
+        SWORD_BLADE(true, 200, true, "XXX  ", "XX   ", "X   X", "X  XX", " XXXX"),
         MACE(true, 200, ItemMetalTool::new),
-        MACE_HEAD(true, 200, true),
+        MACE_HEAD(true, 200, true, "XX XX", "X   X", "X   X", "X   X", "XX XX"),
         SAW(true, 100, ItemMetalTool::new),
-        SAW_BLADE(true, 100, true),
+        SAW_BLADE(true, 100, true, "XXX  ", "XX   ", "X   X", "    X", "  XXX"),
         JAVELIN(true, 100, ItemMetalTool::new), // todo: special class?
-        JAVELIN_HEAD(true, 100, true),
+        JAVELIN_HEAD(true, 100, true, "XX   ", "X    ", "     ", "X   X", "XX XX"),
         HAMMER(true, 100, ItemMetalTool::new),
-        HAMMER_HEAD(true, 100, true),
+        HAMMER_HEAD(true, 100, true, "XXXXX", "     ", "     ", "XX XX", "XXXXX"),
         PROPICK(true, 100, ItemMetalTool::new),
-        PROPICK_HEAD(true, 100, true),
+        PROPICK_HEAD(true, 100, true, "XXXXX", "    X", " XXX ", " XXXX", "XXXXX"),
         KNIFE(true, 100, ItemMetalTool::new),
-        KNIFE_BLADE(true, 100, true),
+        KNIFE_BLADE(true, 100, true, "XX X", "X  X", "X  X", "X  X", "X  X"),
         SCYTHE(true, 100, ItemMetalTool::new),
-        SCYTHE_BLADE(true, 100, true),
+        SCYTHE_BLADE(true, 100, true, "XXXXX", "X    ", "    X", "  XXX", "XXXXX"),
 
         UNFINISHED_HELMET(true, 200),
         HELMET(true, 400, ItemMetalArmor::new),
@@ -164,24 +164,26 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         private final boolean hasMold;
         private final float moldReturnRate; // Used as 'if (Constants.RNG.nextFloat() > type.moldReturnRate) return Empty'
         private final BiFunction<Metal, ItemType, Item> supplier;
+        private final String[] pattern;
 
-        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier, boolean hasMold, float moldReturnRate)
+        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier, boolean hasMold, float moldReturnRate, String... moldPattern)
         {
             this.toolItem = toolItem;
             this.smeltAmount = smeltAmount;
             this.supplier = supplier;
             this.hasMold = hasMold;
             this.moldReturnRate = moldReturnRate;
+            this.pattern = moldPattern;
         }
 
-        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier, boolean hasMold)
+        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier, boolean hasMold, String... moldPattern)
         {
-            this(toolItem, smeltAmount, supplier, hasMold, 0);
+            this(toolItem, smeltAmount, supplier, hasMold, 0, moldPattern);
         }
 
-        ItemType(boolean toolItem, int smeltAmount, boolean hasMold)
+        ItemType(boolean toolItem, int smeltAmount, boolean hasMold, String... moldPattern)
         {
-            this(toolItem, smeltAmount, ItemMetal::new, hasMold);
+            this(toolItem, smeltAmount, ItemMetal::new, hasMold, moldPattern);
         }
 
         ItemType(boolean toolItem, int smeltAmount)
@@ -231,6 +233,11 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         public float getMoldReturnRate()
         {
             return moldReturnRate;
+        }
+
+        public String[] getPattern()
+        {
+            return pattern;
         }
     }
 }

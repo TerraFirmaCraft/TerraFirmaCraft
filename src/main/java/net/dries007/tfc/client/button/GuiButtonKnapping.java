@@ -15,34 +15,26 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.network.PacketKnappingUpdate;
-
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @SideOnly(Side.CLIENT)
 public class GuiButtonKnapping extends GuiButton
 {
-    private final ResourceLocation BG_TEXTURE;
+    private final ResourceLocation texture;
 
-    public GuiButtonKnapping(int id, int x, int y, int width, int height, Rock rockType)
+    public GuiButtonKnapping(int id, int x, int y, int width, int height, ResourceLocation texture)
     {
         super(id, x, y, width, height, "");
-
-        BG_TEXTURE = new ResourceLocation(MOD_ID, "textures/blocks/stonetypes/raw/" + rockType.getRegistryName().getPath() + ".png");
-    }
-
-    public GuiButtonKnapping(int id, int x, int y, int width, int height, String textureLocation)
-    {
-        super(id, x, y, width, height, "");
-
-        BG_TEXTURE = new ResourceLocation(MOD_ID, "textures/" + textureLocation + ".png");
+        this.texture = texture;
     }
 
     public void onClick()
     {
-        this.visible = false;
-        TerraFirmaCraft.getNetwork().sendToServer(new PacketKnappingUpdate(id));
+        if (this.enabled)
+        {
+            this.visible = false;
+            TerraFirmaCraft.getNetwork().sendToServer(new PacketKnappingUpdate(id));
+        }
     }
 
     @Override
@@ -51,7 +43,7 @@ public class GuiButtonKnapping extends GuiButton
         if (this.visible)
         {
             GlStateManager.color(1, 1, 1, 1);
-            mc.getTextureManager().bindTexture(BG_TEXTURE);
+            mc.getTextureManager().bindTexture(texture);
 
             hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 

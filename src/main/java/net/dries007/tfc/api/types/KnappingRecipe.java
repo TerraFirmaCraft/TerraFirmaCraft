@@ -18,7 +18,7 @@ public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRe
     private final Type type;
     private final SimpleCraftMatrix matrix;
 
-    public KnappingRecipe(Type type, String[] pattern)
+    public KnappingRecipe(Type type, String... pattern)
     {
         this.matrix = new SimpleCraftMatrix(pattern);
         this.type = type;
@@ -38,9 +38,22 @@ public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRe
 
     public enum Type
     {
-        STONE,
-        CLAY,
-        LEATHER
+        STONE(1),
+        CLAY(5),
+        FIRE_CLAY(5),
+        LEATHER(1);
+
+        private final int amountToConsume;
+
+        Type(int amountToConsume)
+        {
+            this.amountToConsume = amountToConsume;
+        }
+
+        public int getAmountToConsume()
+        {
+            return amountToConsume;
+        }
     }
 
     public static class Stone extends KnappingRecipe
@@ -68,7 +81,7 @@ public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRe
     {
         private final ItemStack output;
 
-        public Simple(Type type, ItemStack output, String[] pattern)
+        public Simple(Type type, ItemStack output, String... pattern)
         {
             super(type, pattern);
             this.output = output;

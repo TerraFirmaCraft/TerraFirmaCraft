@@ -51,6 +51,7 @@ public class SimpleCraftMatrix
 
     /**
      * Create a patterned matrix based on a string pattern input.
+     * See {@link net.dries007.tfc.types.DefaultRecipes} for usage of how to construct recipes
      *
      * @param pattern A list of strings. Each string is a row, each character is an element. ' ' represents empty, anything else is full
      */
@@ -119,8 +120,9 @@ public class SimpleCraftMatrix
     }
 
     /**
+     * Used to check if a craft matrix matches another one.
      * @param other Another craft matrix
-     * @return if 'other' is a subset of the current craft matrix (i.e. other is found somewhere within the current matrix), the amount of matches in the matrix
+     * @return if 'other' is a subset of the current craft matrix (i.e. other is found somewhere within the current matrix)
      */
     public boolean matches(SimpleCraftMatrix other)
     {
@@ -164,31 +166,6 @@ public class SimpleCraftMatrix
                     else
                         otherIdx = (y - startY) * other.width + (x - startX);
 
-                    if (matrix[patternIdx] != other.matrix[otherIdx])
-                        return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private boolean matchesMirror(SimpleCraftMatrix other, int startX, int startY)
-    {
-        for (int x = 0; x < this.width; x++)
-        {
-            for (int y = 0; y < this.height; y++)
-            {
-                int patternIdx = x * width + y;
-                if (x < startX || y < startY || x + startX >= other.width || y + startY >= other.height)
-                {
-                    // If the current position in the matrix is outside the pattern, the value must be empty
-                    if (matrix[patternIdx])
-                        return false;
-                }
-                else
-                {
-                    // Otherwise, the value must equal the value in the pattern
-                    int otherIdx = (other.width - (x - startX)) * other.width + (other.height - (y - startY));
                     if (matrix[patternIdx] != other.matrix[otherIdx])
                         return false;
                 }
