@@ -57,7 +57,6 @@ public class GuiKnapping extends GuiContainerTFC
                 if (button instanceof GuiButtonKnapping)
                 {
                     button.visible = false;
-                    button.playPressSound(mc.getSoundHandler());
                 }
             }
             ((ContainerKnapping) inventorySlots).requiresReset = false;
@@ -71,6 +70,7 @@ public class GuiKnapping extends GuiContainerTFC
         if (button instanceof GuiButtonKnapping)
         {
             ((GuiButtonKnapping) button).onClick();
+            button.playPressSound(mc.getSoundHandler());
         }
     }
 

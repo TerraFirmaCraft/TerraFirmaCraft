@@ -14,7 +14,7 @@ import net.dries007.tfc.api.types.KnappingRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.objects.items.ceramics.ItemMold;
+import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -49,18 +49,18 @@ public class DefaultRecipes
         {
             if (type.hasMold(null))
             {
-                event.getRegistry().register(new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, new ItemStack(ItemMold.get(type)), type.getPattern()).setRegistryName(MOD_ID, type.name().toLowerCase() + "_mold"));
+                event.getRegistry().register(new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemUnfiredMold.get(type)), type.getPattern()).setRegistryName(MOD_ID, type.name().toLowerCase() + "_mold"));
             }
         }
 
         // todo: uncomment these as more items / blocks are added
         event.getRegistry().registerAll(
-            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_VESSEL), " XXX ", "XXXXX", "XXXXX", "XXXXX", " XXX ").setRegistryName(MOD_ID, "clay_small_vessel"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_JUG), " X   ", "XXXX ", "XXX X", "XXXX ", "XXX  ").setRegistryName(MOD_ID, "clay_jug"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_POT), "X   X", "X   X", "X   X", "XXXXX", " XXX ").setRegistryName(MOD_ID, "clay_pot"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_BOWL, 2), "X   X", " XXX ").setRegistryName(MOD_ID, "clay_bowl"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_BOWL, 4), "X   X", " XXX ", "     ", "X   X", " XXX ").setRegistryName(MOD_ID, "clay_bowl_2")
-            //new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, new ItemStack(BlocksTFC.CERAMICS_LARGE_VESSEL), "XXXX", "X  X", "X  X", "X  X", "XXXX").setRegistryName(MOD_ID, "clay_large_vessel"),
+            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_VESSEL), " XXX ", "XXXXX", "XXXXX", "XXXXX", " XXX ").setRegistryName(MOD_ID, "clay_small_vessel"),
+            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_JUG), " X   ", "XXXX ", "XXX X", "XXXX ", "XXX  ").setRegistryName(MOD_ID, "clay_jug"),
+            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_POT), "X   X", "X   X", "X   X", "XXXXX", " XXX ").setRegistryName(MOD_ID, "clay_pot"),
+            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_BOWL, 2), "X   X", " XXX ").setRegistryName(MOD_ID, "clay_bowl"),
+            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_BOWL, 4), "X   X", " XXX ", "     ", "X   X", " XXX ").setRegistryName(MOD_ID, "clay_bowl_2")
+            //new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(BlocksTFC.CERAMICS_LARGE_VESSEL), "XXXX", "X  X", "X  X", "X  X", "XXXX").setRegistryName(MOD_ID, "clay_large_vessel"),
         );
 
         /* LEATHER ITEMS */
