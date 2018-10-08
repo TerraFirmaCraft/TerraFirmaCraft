@@ -17,8 +17,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.client.gui.GuiContainerKnapping;
+import net.dries007.tfc.api.types.KnappingRecipe;
 import net.dries007.tfc.client.gui.GuiContainerTFC;
+import net.dries007.tfc.client.gui.GuiKnapping;
 import net.dries007.tfc.client.gui.GuiLiquidTransfer;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.container.*;
@@ -69,8 +70,8 @@ public class TFCGuiHandler implements IGuiHandler
             case FIRE_PIT:
                 TEFirePit teFirePit = Helpers.getTE(world, pos, TEFirePit.class);
                 return new ContainerFirePit(player.inventory, teFirePit);
-            case KNAPPING:
-                return new ContainerKnapping(player.inventory, stack.getItem() instanceof ItemRock ? stack : player.getHeldItemOffhand());
+            case KNAPPING_STONE:
+                return new ContainerKnapping(KnappingRecipe.Type.STONE, player.inventory, stack.getItem() instanceof ItemRock ? stack : player.getHeldItemOffhand());
             default:
                 return null;
         }
@@ -95,8 +96,10 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiLiquidTransfer(container, player, "", player.getHeldItemMainhand().getItem() instanceof ItemMold);
             case FIRE_PIT:
                 return new GuiContainerTFC(container, player.inventory, FIRE_PIT_BACKGROUND, BlocksTFC.FIREPIT.getTranslationKey());
-            case KNAPPING:
-                return new GuiContainerKnapping(container, player);
+            case KNAPPING_STONE:
+            case KNAPPING_CLAY:
+            case KNAPPING_LEATHER:
+                return new GuiKnapping(container, player);
             default:
                 return null;
         }
@@ -109,7 +112,9 @@ public class TFCGuiHandler implements IGuiHandler
         SMALL_VESSEL_LIQUID,
         MOLD,
         FIRE_PIT,
-        KNAPPING,
+        KNAPPING_STONE,
+        KNAPPING_CLAY,
+        KNAPPING_LEATHER,
         NULL;
 
         private static Type[] values = values();

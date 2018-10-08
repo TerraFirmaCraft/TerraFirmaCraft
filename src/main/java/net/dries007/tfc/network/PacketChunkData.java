@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.world.classic.chunkdata;
+package net.dries007.tfc.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,19 +15,21 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-public class ChunkDataMessage implements IMessage
+public class PacketChunkData implements IMessage
 {
     private NBTTagCompound data;
     private int x, z;
 
     @SuppressWarnings("unused")
-    public ChunkDataMessage()
+    public PacketChunkData()
     {
 
     }
 
-    public ChunkDataMessage(ChunkPos chunk, NBTTagCompound data)
+    public PacketChunkData(ChunkPos chunk, NBTTagCompound data)
     {
         x = chunk.x;
         z = chunk.z;
@@ -50,10 +52,10 @@ public class ChunkDataMessage implements IMessage
         ByteBufUtils.writeTag(buf, data);
     }
 
-    public static class Handler implements IMessageHandler<ChunkDataMessage, IMessage>
+    public static class Handler implements IMessageHandler<PacketChunkData, IMessage>
     {
         @Override
-        public IMessage onMessage(ChunkDataMessage message, MessageContext ctx)
+        public IMessage onMessage(PacketChunkData message, MessageContext ctx)
         {
             if (ctx.side.isClient())
             {

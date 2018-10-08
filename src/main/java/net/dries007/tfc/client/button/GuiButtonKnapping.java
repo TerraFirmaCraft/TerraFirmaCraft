@@ -14,7 +14,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.network.PacketKnappingUpdate;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -30,9 +32,17 @@ public class GuiButtonKnapping extends GuiButton
         BG_TEXTURE = new ResourceLocation(MOD_ID, "textures/blocks/stonetypes/raw/" + rockType.getRegistryName().getPath() + ".png");
     }
 
+    public GuiButtonKnapping(int id, int x, int y, int width, int height, String textureLocation)
+    {
+        super(id, x, y, width, height, "");
+
+        BG_TEXTURE = new ResourceLocation(MOD_ID, "textures/" + textureLocation + ".png");
+    }
+
     public void onClick()
     {
         this.visible = false;
+        TerraFirmaCraft.getNetwork().sendToServer(new PacketKnappingUpdate(id));
     }
 
     @Override
@@ -50,7 +60,8 @@ public class GuiButtonKnapping extends GuiButton
             //GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             //GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
-            drawTexturedModalRect(x, y, 0, 0, width, height);
+            drawModalRectWithCustomSizedTexture(x, y, 0, 0, 16, 16, 16, 16);
+            //drawTexturedModalRect(x, y, 0, 0, width, height);
             //drawTexturedModalRect(this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
             //drawTexturedModalRect(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
             mouseDragged(mc, mouseX, mouseY);

@@ -5,69 +5,79 @@
 
 package net.dries007.tfc.api.types;
 
+import java.util.function.Function;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRecipe>
+import net.dries007.tfc.api.util.IRockObject;
+import net.dries007.tfc.util.SimpleCraftMatrix;
+
+public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRecipe>
 {
-    private final int width;
-    private final int height;
-    private final boolean[] pattern;
-    private final ItemStack output;
+    private final Type type;
+    private final SimpleCraftMatrix matrix;
 
-    public KnappingRecipe(ItemStack output, String... pattern)
+    public KnappingRecipe(Type type, String[] pattern)
     {
-        if (pattern.length == 0 || pattern.length > 5)
-            throw new IllegalArgumentException("Pattern length is invalid");
-
-        this.width = pattern[0].length();
-        this.height = pattern.length;
-        this.output = output;
-        this.pattern = new boolean[width * height];
-
-        for (int i = 0; i < height; i++)
-        {
-            String line = pattern[i];
-            if (line.length() != width)
-                throw new IllegalArgumentException("Line " + i + " in the pattern has the incorrect length");
-            for (int c = 0; c < width; c++)
-                this.pattern[i * height + c] = (line.charAt(c) == ' ');
-        }
+        this.matrix = new SimpleCraftMatrix(pattern);
+        this.type = type;
     }
 
-    // This will check if it matches a 5x5 boolean matrix, from a GuiContainerKnapping
-    public boolean matches(boolean[] matrix)
+    public SimpleCraftMatrix getMatrix()
     {
-        // Check all possible shifted positions
-        for (int xShift = 0; xShift <= 5 - width; xShift++)
+        return matrix;
+    }
+
+    public abstract ItemStack getOutput(ItemStack input);
+
+    public Type getType()
+    {
+        return this.type;
+    }
+
+    public enum Type
+    {
+        STONE,
+        CLAY,
+        LEATHER
+    }
+
+    public static class Stone extends KnappingRecipe
+    {
+        private final Function<RockCategory, ItemStack> supplier;
+
+        public Stone(Type type, Function<RockCategory, ItemStack> supplier, String... pattern)
         {
-            for (int yShift = 0; yShift <= 5 - height; yShift++)
+            super(type, pattern);
+            this.supplier = supplier;
+        }
+
+        @Override
+        public ItemStack getOutput(ItemStack input)
+        {
+            if (input.getItem() instanceof IRockObject)
             {
-                boolean flag = true;
-                // check if the matrix matches this orientation
-                for (int x = 0; x < width; x++)
-                {
-                    for (int y = 0; y < height; y++)
-                    {
-                        // Check the individual position
-                        int matrixIdx = (yShift + y) * 5 + xShift + x;
-                        int patternIdx = (yShift + y) * width + xShift + x;
-                        if (matrix[matrixIdx] != pattern[patternIdx])
-                        {
-                            flag = false;
-                            break;
-                        }
-                    }
-                }
-                if (flag)
-                    return true;
+                return supplier.apply(((IRockObject) input.getItem()).getRockCategory(input));
             }
+            return ItemStack.EMPTY;
         }
-        return false;
     }
 
-    public ItemStack getOutput()
+    public static class Simple extends KnappingRecipe
     {
-        return output.copy();
+        private final ItemStack output;
+
+        public Simple(Type type, ItemStack output, String[] pattern)
+        {
+            super(type, pattern);
+            this.output = output;
+        }
+
+        @Override
+        public ItemStack getOutput(ItemStack input)
+        {
+            return output.copy();
+        }
     }
 }

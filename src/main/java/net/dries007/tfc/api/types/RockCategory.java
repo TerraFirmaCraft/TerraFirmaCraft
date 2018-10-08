@@ -83,7 +83,7 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
     @Override
     public String toString()
     {
-        return String.valueOf(getRegistryName());
+        return getRegistryName().getPath();
     }
 
     public enum Layer

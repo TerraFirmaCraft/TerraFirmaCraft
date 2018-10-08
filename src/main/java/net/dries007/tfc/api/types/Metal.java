@@ -92,7 +92,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     @Override
     public String toString()
     {
-        return String.valueOf(getRegistryName());
+        return getRegistryName().getPath();
     }
 
     public enum Tier
