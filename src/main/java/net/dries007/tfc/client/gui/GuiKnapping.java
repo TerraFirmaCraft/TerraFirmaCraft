@@ -8,37 +8,26 @@ package net.dries007.tfc.client.gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 
-import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.api.util.TFCConstants;
+import net.dries007.tfc.api.types.KnappingRecipe;
 import net.dries007.tfc.client.button.GuiButtonKnapping;
-import net.dries007.tfc.objects.items.rock.ItemRock;
+import net.dries007.tfc.objects.container.ContainerKnapping;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class GuiKnapping extends GuiContainerTFC
 {
-    private static final ResourceLocation BG_TEXTURE = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/knapping.png");
-    private final int slotIdx;
-    private final Rock rock;
+    private static final ResourceLocation BG_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping.png");
+    private static final ResourceLocation ALT_BG_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping_clay.png");
+    private final ResourceLocation buttonTexture;
 
-    public GuiKnapping(Container container, EntityPlayer player)
+    public GuiKnapping(Container container, EntityPlayer player, KnappingRecipe.Type type, ResourceLocation buttonTexture)
     {
-        super(container, player.inventory, BG_TEXTURE, "");
-        ItemStack stack = player.getHeldItemMainhand();
-        if (stack.getItem() instanceof ItemRock)
-        {
-            slotIdx = playerInv.currentItem;
-        }
-        else
-        {
-            stack = player.getHeldItemOffhand();
-            slotIdx = 40;
-        }
-        rock = ((ItemRock) stack.getItem()).getRock(stack);
-
+        super(container, player.inventory, type == KnappingRecipe.Type.CLAY || type == KnappingRecipe.Type.FIRE_CLAY ? ALT_BG_TEXTURE : BG_TEXTURE, "");
+        this.buttonTexture = buttonTexture;
         ySize = 184; // Bigger than normal gui
     }
 
@@ -52,9 +41,28 @@ public class GuiKnapping extends GuiContainerTFC
             {
                 int bx = (width - xSize) / 2 + 12 + 16 * x;
                 int by = (height - ySize) / 2 + 12 + 16 * y;
-                addButton(new GuiButtonKnapping(x + 5 * y, bx, by, 16, 16, rock));
+                addButton(new GuiButtonKnapping(x + 5 * y, bx, by, 16, 16, buttonTexture));
             }
         }
+    }
+
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+    {
+        // Check if the container has been updated
+        if (inventorySlots instanceof ContainerKnapping && ((ContainerKnapping) inventorySlots).requiresReset)
+        {
+            for (GuiButton button : buttonList)
+            {
+                if (button instanceof GuiButtonKnapping)
+                {
+                    button.visible = false;
+                    button.playPressSound(mc.getSoundHandler());
+                }
+            }
+            ((ContainerKnapping) inventorySlots).requiresReset = false;
+        }
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
     }
 
     @Override

@@ -19,6 +19,7 @@ import net.dries007.tfc.objects.blocks.stone.*;
 import net.dries007.tfc.objects.items.rock.*;
 
 import static net.dries007.tfc.api.types.Rock.FallingBlockType.*;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
  * todo: document API
@@ -26,20 +27,28 @@ import static net.dries007.tfc.api.types.Rock.FallingBlockType.*;
 public class Rock extends IForgeRegistryEntry.Impl<Rock>
 {
     private final RockCategory rockCategory;
+    private final ResourceLocation textureLocation;
 
     public Rock(@Nonnull ResourceLocation name, @Nonnull RockCategory rockCategory)
     {
-        setRegistryName(name);
-        this.rockCategory = rockCategory;
         //noinspection ConstantConditions
         if (rockCategory == null)
             throw new IllegalArgumentException("Rock category is not allowed to be null (on rock " + name + ")");
+
+        setRegistryName(name);
+        this.rockCategory = rockCategory;
+        this.textureLocation = new ResourceLocation(MOD_ID, "textures/blocks/stonetypes/raw/" + name.getPath() + ".png");
     }
 
     public Rock(@Nonnull ResourceLocation name, @Nonnull ResourceLocation categoryName)
     {
         //noinspection ConstantConditions
         this(name, TFCRegistries.ROCK_CATEGORIES.getValue(categoryName));
+    }
+
+    public ResourceLocation getTexture()
+    {
+        return textureLocation;
     }
 
     public RockCategory getRockCategory()

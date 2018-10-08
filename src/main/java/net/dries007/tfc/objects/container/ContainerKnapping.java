@@ -25,6 +25,7 @@ public class ContainerKnapping extends ContainerItemStack
     private final ItemStack stackCopy;
 
     private boolean hasBeenModified;
+    public boolean requiresReset;
 
     public ContainerKnapping(KnappingRecipe.Type type, InventoryPlayer playerInv, ItemStack stack)
     {
@@ -35,6 +36,7 @@ public class ContainerKnapping extends ContainerItemStack
 
         matrix = new SimpleCraftMatrix();
         hasBeenModified = false;
+        requiresReset = false;
     }
 
     public void onUpdate(int slotIdx)
@@ -43,7 +45,7 @@ public class ContainerKnapping extends ContainerItemStack
 
         if (!hasBeenModified)
         {
-            ItemStack stack = Helpers.consumeItem(this.stack, 1);
+            ItemStack stack = Helpers.consumeItem(this.stack, type.getAmountToConsume());
             if (isOffhand)
                 player.setHeldItem(EnumHand.OFF_HAND, stack);
             else
@@ -88,6 +90,7 @@ public class ContainerKnapping extends ContainerItemStack
     private void resetMatrix()
     {
         matrix.setAll(false);
+        requiresReset = true;
     }
 
     private KnappingRecipe getMatchingRecipe()

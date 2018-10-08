@@ -10,12 +10,9 @@ import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -28,16 +25,10 @@ import net.dries007.tfc.api.capability.ItemStickCapability;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.api.util.IPlacableItem;
-import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.te.TELogPile;
+import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IFireable;
-import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class CommonEventHandler
@@ -89,140 +80,25 @@ public class CommonEventHandler
         if (event.getHand() == EnumHand.OFF_HAND)
         {
             ItemStack mainStack = player.getHeldItem(EnumHand.MAIN_HAND);
-            if ((mainStack.getItem() == Items.COAL && mainStack.getMetadata() == 1) ||
-                (OreDictionaryHelper.doesStackMatchOre(mainStack, "logWood") && player.isSneaking()) ||
-                mainStack.getItem() instanceof IPlacableItem)
-            {
-                event.setCanceled(true);
-                return;
-            }
-
-            IFireable fireable = IFireable.fromItem(event.getItemStack().getItem());
-            if (fireable != null && event.getEntityPlayer().isSneaking() && event.getFace() == EnumFacing.UP)
+            if (IPlaceableItem.Impl.isPlaceable(mainStack))
             {
                 event.setCanceled(true);
                 return;
             }
         }
 
-        if (stack.getItem() == Items.COAL && stack.getMetadata() == 1)
+        // To add a new IPlaceableItem:
+        // 1. Implement the interface on an item or
+        // 2. Add to the Map<Predicate<ItemStack>, IPlaceableItem> in IPlaceableItem.Impl
+        if (IPlaceableItem.Impl.isPlaceable(stack))
         {
-            EnumFacing facing = event.getFace();
-            if (facing != null)
+            IPlaceableItem placeable = IPlaceableItem.Impl.getPlaceable(stack);
+            if (placeable.placeItemInWorld(world, pos, stack, player, event.getFace(), event.getHitVec()))
             {
-                if (world.getBlockState(pos.down().offset(facing)).isNormalCube()
-                    && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing)))
-                {
-
-                    if (world.getBlockState(pos).getBlock() instanceof BlockCharcoalPile)
-                    {
-                        if (world.getBlockState(pos).getValue(LAYERS) != 8)
-                        {
-                            // Adding layers is handled in BlockCharcoalPile
-                            return;
-                        }
-                    }
-                    if (!world.isRemote)
-                    {
-                        // noinspection ConstantConditions
-                        world.setBlockState(pos.offset(facing), BlocksTFC.CHARCOAL_PILE.getDefaultState());
-
-                        if (!player.isCreative())
-                        {
-                            player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, 1));
-                        }
-                        world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0F, 0.5F);
-                        return;
-                    }
-
-                }
-            }
-        }
-        if (OreDictionaryHelper.doesStackMatchOre(stack, "logWood") && player.isSneaking())
-        {
-            EnumFacing facing = event.getFace();
-            if (facing != null)
-            {
-                //noinspection ConstantConditions
-                if (world.getBlockState(pos).getBlock() == BlocksTFC.LOG_PILE)
-                {
-                    if (!world.isRemote)
-                    {
-                        TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
-                        if (te != null)
-                        {
-                            if (te.insertLog(stack.copy()))
-                            {
-                                player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
-                                world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                            }
-                            else
-                            {
-                                // Insert log didn't work, see if trying to place another log pile
-                                if (facing == EnumFacing.UP && te.countLogs() == 16 || (facing != EnumFacing.UP && world.getBlockState(pos.down().offset(facing)).isNormalCube()
-                                    && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing))))
-                                {
-                                    // noinspection ConstantConditions
-                                    world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
-
-                                    TELogPile te2 = Helpers.getTE(world, pos.offset(facing), TELogPile.class);
-                                    if (te2 != null)
-                                    {
-                                        te2.insertLog(stack.copy());
-                                    }
-
-                                    player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
-                                    world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    if (world.getBlockState(pos.down().offset(facing)).isNormalCube()
-                        && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing)) &&
-                        player.isSneaking())
-                    {
-                        // Place log pile
-                        if (!world.isRemote)
-                        {
-                            // noinspection ConstantConditions
-                            world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
-
-                            TELogPile te = Helpers.getTE(world, pos.offset(facing), TELogPile.class);
-                            if (te != null)
-                            {
-                                te.insertLog(stack.copy());
-                            }
-
-                            player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
-                            world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                        }
-                    }
-                }
+                player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
             }
             event.setCancellationResult(EnumActionResult.SUCCESS);
             event.setCanceled(true);
-            return;
-        }
-
-        // All items that can should use this implementation instead of the other exceptions (which are for items that can't implement IPlacableItem)
-        if (stack.getItem() instanceof IPlacableItem)
-        {
-            IPlacableItem item = (IPlacableItem) stack.getItem();
-            if (item.placeItemInWorld(world, pos, stack, player, event.getFace(), event.getHitVec()))
-            {
-                player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
-
-                event.setCancellationResult(EnumActionResult.SUCCESS);
-                event.setCanceled(true);
-            }
-        }
-
-        if (stack.getItem() == Items.CLAY_BALL)
-        {
-            // todo: Knapping for clay + leather
         }
     }
 

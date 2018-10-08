@@ -49,17 +49,24 @@ public final class ItemsTFC
     public static final ItemFireStarter FIRESTARTER = null;
     public static final ItemGoldPan GOLDPAN = null;
     public static final Item HAY = null;
+    public static final Item FIRE_CLAY = null;
 
     @GameRegistry.ObjectHolder("mold/ingot")
     public static final ItemMold MOLD_INGOT = null;
     @GameRegistry.ObjectHolder("ceramics/unfired/vessel")
-    public static final ItemUnfiredPottery CERAMICS_UNFIRED_VERSSEL = null;
+    public static final ItemUnfiredPottery CERAMICS_UNFIRED_VESSEL = null;
     @GameRegistry.ObjectHolder("ceramics/fired/vessel")
     public static final ItemSmallVessel CERAMICS_FIRED_VESSEL = null;
     @GameRegistry.ObjectHolder("ceramics/unfired/vessel_glazed")
     public static final ItemUnfiredSmallVessel CERAMICS_UNFIRED_VESSEL_GLAZED = null;
     @GameRegistry.ObjectHolder("ceramics/fired/vessel_glazed")
     public static final ItemSmallVessel CERAMICS_FIRED_VESSEL_GLAZED = null;
+    @GameRegistry.ObjectHolder("ceramics/unfired/jug")
+    public static final ItemUnfiredPottery CERAMICS_UNFIRED_JUG = null;
+    @GameRegistry.ObjectHolder("ceramics/unfired/pot")
+    public static final ItemUnfiredPottery CERAMICS_UNFIRED_POT = null;
+    @GameRegistry.ObjectHolder("ceramics/unfired/bowl")
+    public static final ItemUnfiredPottery CERAMICS_UNFIRED_BOWL = null;
 
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
