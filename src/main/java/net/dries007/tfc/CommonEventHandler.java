@@ -102,6 +102,40 @@ public class CommonEventHandler
         }
     }
 
+    /**
+     * This is an extra handler for items that also have an active effect when right clicked in the air
+     */
+    @SubscribeEvent
+    public void onRightClickItem(PlayerInteractEvent.RightClickItem event)
+    {
+        final World world = event.getWorld();
+        final BlockPos pos = event.getPos();
+        final ItemStack stack = event.getItemStack();
+        final EntityPlayer player = event.getEntityPlayer();
+
+        if (event.getHand() == EnumHand.OFF_HAND)
+        {
+            ItemStack mainStack = player.getHeldItem(EnumHand.MAIN_HAND);
+            if (IPlaceableItem.Impl.isUsable(mainStack))
+            {
+                event.setCanceled(true);
+                return;
+            }
+        }
+
+        if (IPlaceableItem.Impl.isUsable(stack))
+        {
+            IPlaceableItem placeable = IPlaceableItem.Impl.getUsable(stack);
+            if (placeable.placeItemInWorld(world, pos, stack, player, event.getFace(), null))
+            {
+                player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
+            }
+            event.setCancellationResult(EnumActionResult.SUCCESS);
+            event.setCanceled(true);
+        }
+
+    }
+
     //Used for IItemSize capability. You can either implement the interface or use the capability
     @SubscribeEvent
     public void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> e)

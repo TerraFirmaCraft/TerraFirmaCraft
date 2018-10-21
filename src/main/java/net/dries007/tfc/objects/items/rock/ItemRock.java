@@ -86,7 +86,7 @@ public class ItemRock extends ItemTFC implements IRockObject
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        if (!world.isRemote && !player.isSneaking())
+        if (!world.isRemote && !player.isSneaking() && stack.getCount() >= 1)
         {
             TFCGuiHandler.openGui(world, player.getPosition(), player, TFCGuiHandler.Type.KNAPPING_STONE);
         }
