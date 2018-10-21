@@ -20,7 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -45,17 +44,20 @@ public interface IPlaceableItem
      * @param hitVec The hit vector
      * @return if the block was placed (will consume one item from the player's item)
      */
-    boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, @Nullable EnumFacing facing, Vec3d hitVec);
+    boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, @Nullable EnumFacing facing, @Nullable Vec3d hitVec);
 
 
     class Impl
     {
-        private static final Map<Predicate<ItemStack>, IPlaceableItem> placeables = new HashMap<>();
+        // Add to this map for things that fire when you right click a block
+        private static final Map<Predicate<ItemStack>, IPlaceableItem> placeableInstances = new HashMap<>();
+        // Add to this map for things that fire when you right click in the air OR when you right click a block
+        private static final Map<Predicate<ItemStack>, IPlaceableItem> usableInstances = new HashMap<>();
 
         static
         {
             // Charcoal -> charcoal piles
-            placeables.put(stack -> stack.getItem() == Items.COAL && stack.getMetadata() == 1, (world, pos, stack, player, facing, hitVec) ->
+            placeableInstances.put(stack -> stack.getItem() == Items.COAL && stack.getMetadata() == 1, (world, pos, stack, player, facing, hitVec) ->
             {
                 if (facing != null)
                 {
@@ -85,7 +87,7 @@ public interface IPlaceableItem
             });
 
             // Logs -> Log Piles (placement + insertion)
-            placeables.put(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "logWood"), (world, pos, stack, player, facing, hitVec) -> {
+            placeableInstances.put(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "logWood"), (world, pos, stack, player, facing, hitVec) -> {
                 if (player.isSneaking())
                 {
                     if (facing != null)
@@ -155,9 +157,8 @@ public interface IPlaceableItem
             });
 
             // Clay -> Knapping
-            placeables.put(stack -> stack.getItem() == Items.CLAY_BALL, (world, pos, stack, player, facing, hitVec) -> {
+            putBoth(stack -> stack.getItem() == Items.CLAY_BALL && stack.getCount() >= 5, (world, pos, stack, player, facing, hitVec) -> {
                 TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.KNAPPING_CLAY);
-                TerraFirmaCraft.getLog().debug("Opening Knapping Clay Gui");
                 return false;
             });
 
@@ -171,7 +172,7 @@ public interface IPlaceableItem
             {
                 return true;
             }
-            return placeables.keySet().stream().anyMatch(x -> x.test(stack));
+            return placeableInstances.keySet().stream().anyMatch(x -> x.test(stack));
         }
 
         public static IPlaceableItem getPlaceable(ItemStack stack)
@@ -180,7 +181,31 @@ public interface IPlaceableItem
             {
                 return (IPlaceableItem) stack.getItem();
             }
-            return placeables.entrySet().stream().filter(x -> x.getKey().test(stack)).map(Map.Entry::getValue).findFirst().orElse(null);
+            return placeableInstances.entrySet().stream().filter(x -> x.getKey().test(stack)).map(Map.Entry::getValue).findFirst().orElse(null);
+        }
+
+        public static boolean isUsable(ItemStack stack)
+        {
+            if (stack.getItem() instanceof IPlaceableItem)
+            {
+                return true;
+            }
+            return usableInstances.keySet().stream().anyMatch(x -> x.test(stack));
+        }
+
+        public static IPlaceableItem getUsable(ItemStack stack)
+        {
+            if (stack.getItem() instanceof IPlaceableItem)
+            {
+                return (IPlaceableItem) stack.getItem();
+            }
+            return usableInstances.entrySet().stream().filter(x -> x.getKey().test(stack)).map(Map.Entry::getValue).findFirst().orElse(null);
+        }
+
+        private static void putBoth(Predicate<ItemStack> predicate, IPlaceableItem placeable)
+        {
+            placeableInstances.put(predicate, placeable);
+            usableInstances.put(predicate, placeable);
         }
 
         private Impl() {}
