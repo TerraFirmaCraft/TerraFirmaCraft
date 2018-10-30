@@ -83,8 +83,8 @@ public class TFCGuiHandler implements IGuiHandler
             case KNAPPING_CLAY:
                 return new ContainerKnapping(KnappingRecipe.Type.CLAY, player.inventory, stack.getItem() == Items.CLAY_BALL ? stack : player.getHeldItemOffhand());
             case KNAPPING_LEATHER:
-                return new ContainerKnapping(KnappingRecipe.Type.LEATHER, player.inventory, stack.getItem() == Items.LEATHER ? stack : player.getHeldItemOffhand());
-            case KNAPPING_FIRE_CLAY: // todo: add fire clay item
+                return new ContainerKnapping(KnappingRecipe.Type.LEATHER, player.inventory, stack.getItem() == ItemsTFC.LEATHER ? stack : player.getHeldItemOffhand());
+            case KNAPPING_FIRE_CLAY:
                 return new ContainerKnapping(KnappingRecipe.Type.FIRE_CLAY, player.inventory, stack.getItem() == ItemsTFC.FIRE_CLAY ? stack : player.getHeldItemOffhand());
             default:
                 return null;

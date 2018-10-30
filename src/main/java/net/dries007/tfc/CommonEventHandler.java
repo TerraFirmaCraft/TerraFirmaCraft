@@ -56,9 +56,14 @@ public class CommonEventHandler
     }
 
     /**
-     * Place pit kiln block & add items
-     * Note: `onBlockActivate` doesn't get called when the player is sneaking, unless doesSneakBypassUse returns true.
-     * We have this event already, might as well use it.
+     * Handler for {@link IPlaceableItem}
+     * To add a new placeable item effect, eiether implement {@link IPlaceableItem} or see {@link IPlaceableItem.Impl} for vanilla item usages
+     *
+     * Notes:
+     * 1) `onBlockActivate` doesn't get called when the player is sneaking, unless doesSneakBypassUse returns true.
+     * 2) This event handler is fired first with the main hand as event.getStack()
+     *    If nothing happens (as per vanilla behavior, even if this event causes something to happen),
+     *    The event will fire AGAIN with the offhand and offhand stack.
      */
     @SubscribeEvent
     public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
@@ -68,15 +73,6 @@ public class CommonEventHandler
         final ItemStack stack = event.getItemStack();
         final EntityPlayer player = event.getEntityPlayer();
 
-        /*
-         Note: This event handler is fired first with the main hand as event.getStack()
-         If nothing happens (as per vanilla behavior, even if this event causes something to happen),
-         The event will fire AGAIN with the offhand and offhand stack.
-
-         This is to prevent that second firing of the event from causing duplicate actions
-         i.e. if you hold charcoal with main hand and a block of dirt with offhand, the dirt will try and place because
-         vanilla behavior doesn't do anything with charcoal in the main hand
-        */
         if (event.getHand() == EnumHand.OFF_HAND)
         {
             ItemStack mainStack = player.getHeldItem(EnumHand.MAIN_HAND);
@@ -87,9 +83,6 @@ public class CommonEventHandler
             }
         }
 
-        // To add a new IPlaceableItem:
-        // 1. Implement the interface on an item or
-        // 2. Add to the Map<Predicate<ItemStack>, IPlaceableItem> in IPlaceableItem.Impl
         if (IPlaceableItem.Impl.isPlaceable(stack))
         {
             IPlaceableItem placeable = IPlaceableItem.Impl.getPlaceable(stack);
@@ -104,6 +97,7 @@ public class CommonEventHandler
 
     /**
      * This is an extra handler for items that also have an active effect when right clicked in the air
+     * Note: If you have an item that needs an active effect, use onItemRightClick(), or attach this via {@link IPlaceableItem.Impl}
      */
     @SubscribeEvent
     public void onRightClickItem(PlayerInteractEvent.RightClickItem event)
@@ -145,13 +139,15 @@ public class CommonEventHandler
         if (CapabilityItemSize.getIItemSize(stack) != null) return;
 
         Item item = stack.getItem();
-        boolean canStack = stack.getMaxStackSize() > 1; // This is nessecary so it isn't accidentally overriden by a default implementation
+        boolean canStack = stack.getMaxStackSize() > 1; // This is necessary so it isn't accidentally overridden by a default implementation
 
         // todo: Add more items here
         if (item == Items.COAL)
             CapabilityItemSize.add(e, Items.COAL, Size.SMALL, Weight.MEDIUM, canStack);
         else if (item == Items.STICK)
             e.addCapability(ItemStickCapability.KEY, new ItemStickCapability(e.getObject().getTagCompound()));
+        else if (item == Items.CLAY_BALL)
+            CapabilityItemSize.add(e, item, Size.SMALL, Weight.MEDIUM, canStack);
 
             // Final checks for general item types
         else if (item instanceof ItemTool)

@@ -161,9 +161,6 @@ public interface IPlaceableItem
                 TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.KNAPPING_CLAY);
                 return false;
             });
-
-            // todo: TFC leather knapping
-            // todo: fire clay knapping
         }
 
         public static boolean isPlaceable(ItemStack stack)
@@ -186,19 +183,11 @@ public interface IPlaceableItem
 
         public static boolean isUsable(ItemStack stack)
         {
-            if (stack.getItem() instanceof IPlaceableItem)
-            {
-                return true;
-            }
             return usableInstances.keySet().stream().anyMatch(x -> x.test(stack));
         }
 
         public static IPlaceableItem getUsable(ItemStack stack)
         {
-            if (stack.getItem() instanceof IPlaceableItem)
-            {
-                return (IPlaceableItem) stack.getItem();
-            }
             return usableInstances.entrySet().stream().filter(x -> x.getKey().test(stack)).map(Map.Entry::getValue).findFirst().orElse(null);
         }
 

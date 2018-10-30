@@ -77,7 +77,7 @@ public class ConfigTFC
         @Config.Comment("Modifier for how quickly items gain and lose heat. Smaller number = slower temperature changes")
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifier")
-        public double temperatureModifier = 0.5;
+        public double temperatureModifier = 0.5; // todo: items cool too fast at 0.5, needs tweaking
 
         @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour), default is 8 hours.")
         @Config.RangeInt(min = 20)
