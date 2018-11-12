@@ -784,6 +784,18 @@ for wood_type in WOOD_TYPES:
         ('east', 'west'): 'tfc:blocks/wood/workbench_side',
     })
 
+    # BARREL
+    blockstate(('wood', 'barrel', wood_type), 'tfc:barrel', textures={
+        ('particle', 'planks'): 'tfc:blocks/wood/planks/%s' % wood_type,
+        'sheet': 'tfc:blocks/wood/sheets/%s' % wood_type,
+        'hoop': 'tfc:blocks/barrelhoop',
+    }, variants={
+        'sealed': {
+            'true': {'model': 'tfc:barrel_sealed'},
+            'false': {},
+        }
+    })
+
 #   _____ _
 #  |_   _| |
 #    | | | |_ ___ _ __ ___  ___
