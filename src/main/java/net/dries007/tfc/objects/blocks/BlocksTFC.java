@@ -106,6 +106,7 @@ public final class BlocksTFC
     public static final BlockLogPile LOG_PILE = null;
     public static final BlockIngotPile INGOT_PILE = null;
     public static final BlockTorchTFC TORCH = null;
+    public static final BlockBarrel BARREL = null;
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -237,6 +238,8 @@ public final class BlocksTFC
         normalItemBlocks.add(new ItemBlock(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_BLOCKS)));
 
         normalItemBlocks.add(new ItemBlock(register(r, "thatch", new BlockThatch(Material.PLANTS), CT_DECORATIONS)));
+
+        normalItemBlocks.add(new ItemBlock(register(r, "barrel", new BlockBarrel(), CT_WOOD)));
 
         register(r, "firepit", new BlockFirePit()); // No item or creative tab.
 
@@ -440,7 +443,7 @@ public final class BlocksTFC
         register(TEFirePit.class, "fire_pit");
         register(TEToolRack.class, "tool_rack");
         register(TEBellows.class, "bellows");
-
+        register(TEBarrel.class, "barrel");
     }
 
     public static boolean isWater(IBlockState current)
