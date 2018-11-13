@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.blocks.wood;
 
 import javax.annotation.Nullable;
@@ -9,16 +14,18 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidUtil;
@@ -36,6 +43,8 @@ public class BlockBarrel extends Block implements ITileEntityProvider
     {
         super(Material.WOOD);
         setSoundType(SoundType.WOOD);
+
+        setDefaultState(this.blockState.getBaseState().withProperty(SEALED, false));
     }
 
     @Override
@@ -73,30 +82,24 @@ public class BlockBarrel extends Block implements ITileEntityProvider
             return true;
         }
 
-            ItemStack heldItem = playerIn.getHeldItem(hand);
+        ItemStack heldItem = playerIn.getHeldItem(hand);
+        TEBarrel te = (TEBarrel) worldIn.getTileEntity(pos);
 
-            TEBarrel te = (TEBarrel)worldIn.getTileEntity(pos);
-
-            if (heldItem != ItemStack.EMPTY)
+        if (!heldItem.isEmpty())
+        {
+            if (!state.getValue(SEALED))
             {
                 FluidUtil.interactWithFluidHandler(playerIn, hand, te.tank);
                 te.markDirty();
                 worldIn.notifyBlockUpdate(pos, state, state, 3);
             }
-            else if (playerIn.isSneaking())
-            {
-                te.sealed = !te.sealed;
-                te.markDirty();
-                worldIn.notifyBlockUpdate(pos, state, state, 3);
+        }
+        else if (playerIn.isSneaking())
+        {
+            worldIn.setBlockState(pos, state.withProperty(SEALED, !state.getValue(SEALED)));
+        }
 
-                return false;
-            }
-            else
-            {
-                playerIn.sendMessage(new TextComponentString("Content: " + te.tank.getFluidAmount()));
-            }
-
-            return true;
+        return true;
     }
 
     @Nullable
@@ -104,6 +107,29 @@ public class BlockBarrel extends Block implements ITileEntityProvider
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
         return new TEBarrel();
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        if (worldIn.isRemote)
+        {
+            return;
+        }
+
+        if (stack.getMetadata() == 1)
+        {
+            NBTTagCompound compound = stack.getTagCompound();
+
+            if (compound != null)
+            {
+                TEBarrel te = (TEBarrel)worldIn.getTileEntity(pos);
+
+                te.tank.readFromNBT(compound.getCompoundTag("tank"));
+                te.markDirty();
+                worldIn.notifyBlockUpdate(pos, state, state, 3);
+            }
+        }
     }
 
     @Override
@@ -116,20 +142,60 @@ public class BlockBarrel extends Block implements ITileEntityProvider
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState();
+        return this.getDefaultState().withProperty(SEALED, meta == 1);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
+        if (state.getValue(SEALED))
+        {
+            return 1;
+        }
+
         return 0;
     }
 
+    /**
+     * Prevents removal of the Block & TileEntity before getDrops(...) is called.
+     * Using this we'll have to remove the block later, which happens in {@link #harvestBlock(World, EntityPlayer, BlockPos, IBlockState, TileEntity, ItemStack)}.
+     */
+    @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    {
+        return willHarvest || super.removedByPlayer(state, world, pos, player, false);
+    }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        return super.getActualState(state, worldIn, pos).withProperty(SEALED, ((TEBarrel)worldIn.getTileEntity(pos)).sealed);
+        if (state.getValue(SEALED))
+        {
+            TEBarrel te = (TEBarrel)world.getTileEntity(pos);
+            NBTTagCompound compound = new NBTTagCompound();
+            NBTTagCompound tankTag = new NBTTagCompound();
+
+            te.tank.writeToNBT(tankTag);
+            compound.setTag("tank", tankTag);
+
+            ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1, 1);
+            stack.setTagCompound(compound);
+
+            drops.add(stack);
+        }
+        else
+        {
+            drops.add(new ItemStack(Item.getItemFromBlock(this)));
+        }
+    }
+
+    /**
+     * The Block needs to be removed here since we prevented its removal earlier in {@link #removedByPlayer(IBlockState, World, BlockPos, EntityPlayer, boolean)}.
+     */
+    @Override
+    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack tool)
+    {
+        super.harvestBlock(world, player, pos, state, te, tool);
+        world.setBlockToAir(pos);
     }
 }

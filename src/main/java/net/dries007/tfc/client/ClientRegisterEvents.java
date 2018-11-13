@@ -144,6 +144,12 @@ public final class ClientRegisterEvents
         for (ItemBlock item : BlocksTFC.getAllInventoryItemBlocks())
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 
+        for (ItemBlock item : BlocksTFC.getAllBarrelItemBlocks())
+        {
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "sealed=false"));
+            ModelLoader.setCustomModelResourceLocation(item, 1, new ModelResourceLocation(item.getRegistryName(), "sealed=true"));
+        }
+
         // BLOCKS - STATE MAPPERS //
 
         // Blocks with Ignored Properties

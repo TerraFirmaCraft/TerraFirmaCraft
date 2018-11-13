@@ -2,10 +2,13 @@ package net.dries007.tfc.objects.te;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -14,7 +17,6 @@ public class TEBarrel extends TileEntity
     public double fillHeightForRender;
 
     public FluidTank tank = new FluidTank(10000);
-    public boolean sealed;
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
@@ -22,7 +24,6 @@ public class TEBarrel extends TileEntity
         super.readFromNBT(compound);
 
         tank.readFromNBT(compound.getCompoundTag("tank"));
-        sealed = compound.getBoolean("sealed");
     }
 
     @Override
@@ -32,7 +33,6 @@ public class TEBarrel extends TileEntity
 
         tank.writeToNBT(tankTag);
         compound.setTag("tank", tankTag);
-        compound.setBoolean("sealed", sealed);
 
         return super.writeToNBT(compound);
     }
@@ -70,5 +70,11 @@ public class TEBarrel extends TileEntity
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
     {
         this.handleUpdateTag(packet.getNbtCompound());
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return oldState.getBlock() != newSate.getBlock();
     }
 }
