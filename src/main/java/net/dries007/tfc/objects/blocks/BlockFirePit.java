@@ -167,15 +167,16 @@ public class BlockFirePit extends Block implements ITileEntityProvider, IBellows
     {
         if (!worldIn.isRemote)
         {
-            if (player.isSneaking())
+            if (!state.getValue(LIT))
             {
                 ItemStack held = player.getHeldItem(hand);
                 if (ItemFireStarter.canIgnite(held))
                 {
                     worldIn.setBlockState(pos, state.withProperty(LIT, true));
+                    return true;
                 }
             }
-            else
+            if (!player.isSneaking())
             {
                 TFCGuiHandler.openGui(worldIn, pos, player, TFCGuiHandler.Type.FIRE_PIT);
             }

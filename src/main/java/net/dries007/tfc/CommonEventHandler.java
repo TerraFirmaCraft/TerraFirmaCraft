@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -73,7 +72,8 @@ public class CommonEventHandler
         final ItemStack stack = event.getItemStack();
         final EntityPlayer player = event.getEntityPlayer();
 
-        if (event.getHand() == EnumHand.OFF_HAND)
+        // todo: I don't think this is nessecary - remove?
+        /*if (event.getHand() == EnumHand.OFF_HAND)
         {
             ItemStack mainStack = player.getHeldItem(EnumHand.MAIN_HAND);
             if (IPlaceableItem.Impl.isPlaceable(mainStack))
@@ -81,17 +81,18 @@ public class CommonEventHandler
                 event.setCanceled(true);
                 return;
             }
-        }
+        }*/
 
         if (IPlaceableItem.Impl.isPlaceable(stack))
         {
             IPlaceableItem placeable = IPlaceableItem.Impl.getPlaceable(stack);
             if (placeable.placeItemInWorld(world, pos, stack, player, event.getFace(), event.getHitVec()))
             {
-                player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
+                player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, placeable.consumeAmount()));
+
+                event.setCancellationResult(EnumActionResult.SUCCESS);
+                event.setCanceled(true);
             }
-            event.setCancellationResult(EnumActionResult.SUCCESS);
-            event.setCanceled(true);
         }
     }
 
@@ -107,7 +108,7 @@ public class CommonEventHandler
         final ItemStack stack = event.getItemStack();
         final EntityPlayer player = event.getEntityPlayer();
 
-        if (event.getHand() == EnumHand.OFF_HAND)
+        /*if (event.getHand() == EnumHand.OFF_HAND)
         {
             ItemStack mainStack = player.getHeldItem(EnumHand.MAIN_HAND);
             if (IPlaceableItem.Impl.isUsable(mainStack))
@@ -115,7 +116,7 @@ public class CommonEventHandler
                 event.setCanceled(true);
                 return;
             }
-        }
+        }*/
 
         if (IPlaceableItem.Impl.isUsable(stack))
         {

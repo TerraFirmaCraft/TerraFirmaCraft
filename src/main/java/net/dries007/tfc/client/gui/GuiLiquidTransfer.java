@@ -26,9 +26,9 @@ public class GuiLiquidTransfer extends GuiContainerTFC
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/single_inventory.png");
     private final int slotIdx;
 
-    public GuiLiquidTransfer(Container container, EntityPlayer player, String translationKey, boolean mainhand)
+    public GuiLiquidTransfer(Container container, EntityPlayer player, boolean mainhand)
     {
-        super(container, player.inventory, BG_TEXTURE, translationKey);
+        super(container, player.inventory, BG_TEXTURE);
 
         if (mainhand)
             slotIdx = playerInv.currentItem;

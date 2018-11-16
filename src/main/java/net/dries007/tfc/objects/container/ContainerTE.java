@@ -13,9 +13,9 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import net.dries007.tfc.objects.te.TESidedInventory;
+import net.dries007.tfc.objects.te.TEInventory;
 
-public abstract class ContainerTE<TE extends TESidedInventory> extends Container
+public abstract class ContainerTE<TE extends TEInventory> extends Container
 {
     protected TE tile;
 

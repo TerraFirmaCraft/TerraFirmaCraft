@@ -29,7 +29,7 @@ import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class TELogPile extends TESidedInventory implements ITickable
+public class TELogPile extends TEInventory implements ITickable
 {
     private static final int NUM_SLOTS = 4;
 

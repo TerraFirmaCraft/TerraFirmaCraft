@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.inventory;
+package net.dries007.tfc.objects.inventory.slot;
 
 import javax.annotation.Nonnull;
 
@@ -11,13 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-import net.dries007.tfc.objects.te.TESidedInventory;
+import net.dries007.tfc.objects.te.TEInventory;
 
 public class SlotTEInput extends SlotItemHandler
 {
-    private final TESidedInventory te;
+    private final TEInventory te;
 
-    public SlotTEInput(@Nonnull IItemHandler inventory, int idx, int x, int y, @Nonnull TESidedInventory te)
+    public SlotTEInput(@Nonnull IItemHandler inventory, int idx, int x, int y, @Nonnull TEInventory te)
     {
         super(inventory, idx, x, y);
         this.te = te;
