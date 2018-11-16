@@ -13,11 +13,19 @@ public final class Fuel
     private final int amount;
     private final float temperature;
 
+    private final boolean isForgeValid;
+
     public Fuel(ItemStack stack, int amount, float temperature)
+    {
+        this(stack, amount, temperature, false);
+    }
+
+    public Fuel(ItemStack stack, int amount, float temperature, boolean isForgeValid)
     {
         this.stack = stack;
         this.amount = amount;
         this.temperature = temperature;
+        this.isForgeValid = isForgeValid;
     }
 
     public boolean matchesInput(Fuel fuel)
@@ -38,5 +46,10 @@ public final class Fuel
     public float getTemperature()
     {
         return temperature;
+    }
+
+    public boolean isForgeFuel()
+    {
+        return isForgeValid;
     }
 }

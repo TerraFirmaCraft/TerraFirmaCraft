@@ -17,15 +17,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiContainerTFC extends GuiContainer
 {
     private final ResourceLocation background;
-    private final String translationKey;
     protected InventoryPlayer playerInv;
 
-    public GuiContainerTFC(Container container, InventoryPlayer playerInv, ResourceLocation background, String titleKey)
+    public GuiContainerTFC(Container container, InventoryPlayer playerInv, ResourceLocation background)
     {
         super(container);
         this.playerInv = playerInv;
         this.background = background;
-        this.translationKey = titleKey;
     }
 
     @Override
@@ -37,24 +35,9 @@ public class GuiContainerTFC extends GuiContainer
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-    {
-        drawSimpleForeground();
-    }
-
-    @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         drawSimpleBackground();
-    }
-
-    protected void drawSimpleForeground()
-    {
-        // in some guis this causes collisions: graphics need to be redesigned.
-        // 1.7 never had 'inventory' or the gui name printed here, so we don't either, until further notice
-        //String name = I18n.format(translationKey + ".name");
-        //fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
-        //fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
     }
 
     protected void drawSimpleBackground()

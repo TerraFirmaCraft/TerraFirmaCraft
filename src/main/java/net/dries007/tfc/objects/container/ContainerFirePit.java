@@ -14,8 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import net.dries007.tfc.objects.inventory.SlotTEInput;
+import net.dries007.tfc.objects.inventory.slot.SlotTEInput;
 import net.dries007.tfc.objects.te.TEFirePit;
+
+import static net.dries007.tfc.objects.te.TEFirePit.*;
 
 public class ContainerFirePit extends ContainerTE<TEFirePit>
 {
@@ -50,7 +52,7 @@ public class ContainerFirePit extends ContainerTE<TEFirePit>
         else
         {
             // Merge into fuel slot -> item slot
-            if (!this.mergeItemStack(stack, TEFirePit.SLOT_FUEL_INPUT, TEFirePit.SLOT_ITEM_INPUT + 1, false))
+            if (!this.mergeItemStack(stack, TEFirePit.SLOT_FUEL_INPUT, SLOT_ITEM_INPUT + 1, false))
             {
                 return ItemStack.EMPTY;
             }
@@ -82,10 +84,10 @@ public class ContainerFirePit extends ContainerTE<TEFirePit>
             for (int i = 0; i < 4; i++)
                 addSlotToContainer(new SlotTEInput(inventory, i, 8, 62 - 18 * i, tile));
             // input slot
-            addSlotToContainer(new SlotTEInput(inventory, 4, 80, 20, tile));
+            addSlotToContainer(new SlotTEInput(inventory, SLOT_ITEM_INPUT, 80, 20, tile));
             // output slots
-            addSlotToContainer(new SlotTEInput(inventory, 5, 71, 48, tile));
-            addSlotToContainer(new SlotTEInput(inventory, 6, 89, 48, tile));
+            addSlotToContainer(new SlotTEInput(inventory, SLOT_OUTPUT_1, 71, 48, tile));
+            addSlotToContainer(new SlotTEInput(inventory, SLOT_OUTPUT_2, 89, 48, tile));
         }
     }
 }

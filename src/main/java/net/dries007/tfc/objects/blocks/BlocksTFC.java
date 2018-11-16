@@ -106,6 +106,7 @@ public final class BlocksTFC
     public static final BlockLogPile LOG_PILE = null;
     public static final BlockIngotPile INGOT_PILE = null;
     public static final BlockTorchTFC TORCH = null;
+    public static final BlockCharcoalForge CHARCOAL_FORGE = null;
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -238,7 +239,13 @@ public final class BlocksTFC
 
         normalItemBlocks.add(new ItemBlock(register(r, "thatch", new BlockThatch(Material.PLANTS), CT_DECORATIONS)));
 
-        register(r, "firepit", new BlockFirePit()); // No item or creative tab.
+        // These have no ItemBlock or Creative Tab
+        register(r, "firepit", new BlockFirePit());
+        register(r, "charcoal_forge", new BlockCharcoalForge());
+        register(r, "world_item", new BlockWorldItem());
+        register(r, "charcoal_pile", new BlockCharcoalPile());
+        register(r, "ingot_pile", new BlockIngotPile());
+        register(r, "log_pile", new BlockLogPile());
 
         {
             Builder<BlockFluidBase> b = ImmutableList.builder();
@@ -406,7 +413,6 @@ public final class BlocksTFC
         // todo: quern
         // todo: loom
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bellows", new BlockBellows(), CT_MISC)));
-        // todo: forge
         // todo: bloomery
         // todo: bloom/molten blocks
         // todo: crusible
@@ -419,11 +425,6 @@ public final class BlocksTFC
         // todo: custom flower pot (TE based probably, unless we want to not care about the dirt in it)
 
         // todo: custom hopper or just a separate press block? I prefer the separate block, this will simplify things a lot.
-
-        register(r, "world_item", new BlockWorldItem());
-        register(r, "charcoal_pile", new BlockCharcoalPile());
-        register(r, "ingot_pile", new BlockIngotPile());
-        register(r, "log_pile", new BlockLogPile());
 
         allNormalItemBlocks = normalItemBlocks.build();
         allInventoryItemBlocks = inventoryItemBlocks.build();
@@ -440,6 +441,7 @@ public final class BlocksTFC
         register(TEFirePit.class, "fire_pit");
         register(TEToolRack.class, "tool_rack");
         register(TEBellows.class, "bellows");
+        register(TECharcoalForge.class, "charcoal_forge");
 
     }
 

@@ -26,7 +26,7 @@ public class GuiKnapping extends GuiContainerTFC
 
     public GuiKnapping(Container container, EntityPlayer player, KnappingRecipe.Type type, ResourceLocation buttonTexture)
     {
-        super(container, player.inventory, type == KnappingRecipe.Type.CLAY || type == KnappingRecipe.Type.FIRE_CLAY ? ALT_BG_TEXTURE : BG_TEXTURE, "");
+        super(container, player.inventory, type == KnappingRecipe.Type.CLAY || type == KnappingRecipe.Type.FIRE_CLAY ? ALT_BG_TEXTURE : BG_TEXTURE);
         this.buttonTexture = buttonTexture;
         ySize = 184; // Bigger than normal gui
     }
