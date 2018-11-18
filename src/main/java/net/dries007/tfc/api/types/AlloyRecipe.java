@@ -26,6 +26,7 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
 
         // This ensures that no metal result has more than one alloy recipe
         // Required so that we can search for alloys by result registry name
+        //noinspection ConstantConditions
         setRegistryName(result.getRegistryName());
     }
 

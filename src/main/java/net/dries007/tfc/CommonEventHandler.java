@@ -9,17 +9,21 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
+import net.dries007.tfc.api.capability.CapabilityContainerListener;
 import net.dries007.tfc.api.capability.ItemStickCapability;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
@@ -159,5 +163,41 @@ public class CommonEventHandler
             CapabilityItemSize.add(e, item, Size.SMALL, Weight.MEDIUM, canStack);
         else
             CapabilityItemSize.add(e, item, Size.VERY_SMALL, Weight.LIGHT, canStack);
+    }
+
+    @SubscribeEvent
+    public void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        TerraFirmaCraft.getLog().info("Player logged in!");
+        if (event.player instanceof EntityPlayerMP)
+        {
+            TerraFirmaCraft.getLog().debug("Listener Added!");
+            final EntityPlayerMP player = (EntityPlayerMP) event.player;
+            player.inventoryContainer.addListener(new CapabilityContainerListener(player));
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerCloneEvent(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
+    {
+        TerraFirmaCraft.getLog().info("Player was cloned");
+        if (event.getEntityPlayer() instanceof EntityPlayerMP)
+        {
+            TerraFirmaCraft.getLog().info("Listener added!");
+            final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
+            player.inventoryContainer.addListener(new CapabilityContainerListener(player));
+        }
+    }
+
+    @SubscribeEvent
+    public void onContainerOpenEvent(PlayerContainerEvent.Open event)
+    {
+        TerraFirmaCraft.getLog().info("Player opened a container");
+        if (event.getEntityPlayer() instanceof EntityPlayerMP)
+        {
+            TerraFirmaCraft.getLog().info("Listener added");
+            final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
+            event.getContainer().addListener(new CapabilityContainerListener(player));
+        }
     }
 }

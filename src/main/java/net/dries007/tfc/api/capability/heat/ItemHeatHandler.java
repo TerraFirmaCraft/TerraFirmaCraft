@@ -27,6 +27,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
     protected float meltingPoint;
 
     // These are the values from last point of update. They are updated when read from NBT, or when the temperature is set manually.
+    // Note that if temperature is == 0, lastUpdateTick should set itself to -1 to keep their capabilities compatible - i.e. stackable
     protected float temperature;
     protected long lastUpdateTick;
 
@@ -76,7 +77,6 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
         return meltingPoint;
     }
 
-    // Override for that 0.00001% efficiency
     @Override
     public boolean isMolten()
     {
@@ -101,8 +101,16 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setFloat("heat", getTemperature());
-        nbt.setLong("ticks", CalenderTFC.getTotalTime());
+        float temp = getTemperature();
+        nbt.setFloat("heat", temp);
+        if (temp <= 0)
+        {
+            nbt.setLong("ticks", -1);
+        }
+        else
+        {
+            nbt.setLong("ticks", CalenderTFC.getTotalTime());
+        }
         return nbt;
     }
 

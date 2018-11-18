@@ -8,9 +8,11 @@ package net.dries007.tfc.objects.blocks.metal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -18,6 +20,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -29,10 +32,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
+import net.dries007.tfc.objects.te.TEAnvilTFC;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlockAnvilTFC extends Block
+public class BlockAnvilTFC extends Block implements ITileEntityProvider
 {
     public static final PropertyBool AXIS = PropertyBool.create("axis");
     private static final Map<Metal, BlockAnvilTFC> MAP = new HashMap<>();
@@ -64,13 +68,6 @@ public class BlockAnvilTFC extends Block
 
         setDefaultState(this.blockState.getBaseState().withProperty(AXIS, false));
     }
-
-    /*@Override
-    @SuppressWarnings("deprecation")
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }*/
 
     @Override
     @SuppressWarnings("deprecation")
@@ -136,5 +133,12 @@ public class BlockAnvilTFC extends Block
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL));
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta)
+    {
+        return new TEAnvilTFC();
     }
 }

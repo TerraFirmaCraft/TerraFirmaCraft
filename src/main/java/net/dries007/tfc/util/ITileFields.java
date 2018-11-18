@@ -5,8 +5,11 @@
 
 package net.dries007.tfc.util;
 
-// For raw stone, because it collapses
-public interface ICollapsableBlock
+public interface ITileFields
 {
-    // todo: this
+    int getFieldCount();
+
+    void setField(int index, int value);
+
+    int getField(int index);
 }

@@ -8,12 +8,15 @@ package net.dries007.tfc.client.gui;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.te.TECharcoalForge;
 
 import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SideOnly(Side.CLIENT)
 public class GuiCharcoalForge extends GuiContainerTFC
 {
 
@@ -36,7 +39,7 @@ public class GuiCharcoalForge extends GuiContainerTFC
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
 
-        // Draw the fire / burn time indicator
+        // Draw the temperature indicator
         int temperature = (int) (51 * te.getTemperature() / MAX_TEMPERATURE);
         if (temperature > 0)
         {

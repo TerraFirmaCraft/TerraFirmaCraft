@@ -67,14 +67,12 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
     /**
      * Adds the heat info tooltip when hovering over.
      * When overriding this to show additional information, fall back to IItemHeat.super.addHeatInfo()
-     * Note: if your object has multiple capabilities that write to NBT, make sure to fall back to super with clearStackNBT = false
-     * Otherwise, if heat ever turns to zero, this will clear the NBT of the stack whenever you hover over it (includes moving it / clicking, etc.)
      *
      * @param stack The stack to add information to
      * @param text  The list of tooltips
      */
     @SideOnly(Side.CLIENT)
-    default void addHeatInfo(ItemStack stack, List<String> text, boolean clearStackNBT)
+    default void addHeatInfo(ItemStack stack, List<String> text)
     {
         float temperature = getTemperature();
         Heat heat = Arrays.stream(Heat.values())
@@ -95,13 +93,6 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
                 }
             }
             text.add(heat.format + b.toString());
-        }
-        else if (clearStackNBT)
-        {
-            // If the heat = 0, update the stack. Only when the flag is set, to avoid overwriting stacks with other data
-            if (stack.hasTagCompound())
-                stack.setTagCompound(null);
-
         }
     }
 

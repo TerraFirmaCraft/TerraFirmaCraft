@@ -162,8 +162,16 @@ public class ItemMold extends ItemFiredPottery
         public NBTTagCompound serializeNBT()
         {
             NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setFloat("heat", getTemperature());
-            nbt.setLong("ticks", CalenderTFC.getTotalTime());
+            float temp = getTemperature();
+            nbt.setFloat("heat", temp);
+            if (temp <= 0)
+            {
+                nbt.setLong("ticks", -1);
+            }
+            else
+            {
+                nbt.setLong("ticks", CalenderTFC.getTotalTime());
+            }
             return tank.writeToNBT(nbt);
         }
 
@@ -212,7 +220,7 @@ public class ItemMold extends ItemFiredPottery
 
         @SideOnly(Side.CLIENT)
         @Override
-        public void addHeatInfo(ItemStack stack, List<String> text, boolean clearStackNBT)
+        public void addHeatInfo(ItemStack stack, List<String> text)
         {
             Metal metal = getMetal();
             if (metal != null)
@@ -222,7 +230,7 @@ public class ItemMold extends ItemFiredPottery
                     desc += " - " + I18n.format("tfc.tooltip.liquid");
                 text.add(desc);
             }
-            IMoldHandler.super.addHeatInfo(stack, text, false); // Never clear the NBT based on heat alone
+            IMoldHandler.super.addHeatInfo(stack, text);
         }
 
         @Override

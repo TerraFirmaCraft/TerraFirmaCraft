@@ -10,14 +10,18 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.objects.te.TEInventory;
+import net.dries007.tfc.util.ITileFields;
 
 public abstract class ContainerTE<TE extends TEInventory> extends Container
 {
     protected TE tile;
+
+    private int[] cachedFields;
 
     ContainerTE(InventoryPlayer playerInv, TE te)
     {
@@ -96,6 +100,47 @@ public abstract class ContainerTE<TE extends TEInventory> extends Container
         for (int k = 0; k < 9; k++)
         {
             addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142));
+        }
+    }
+
+    @Override
+    public void detectAndSendChanges()
+    {
+        super.detectAndSendChanges();
+
+        if (tile instanceof ITileFields)
+        {
+            ITileFields tileFields = (ITileFields) tile;
+            boolean allFieldsHaveChanged = false;
+            boolean fieldHasChanged[] = new boolean[tileFields.getFieldCount()];
+
+            if (cachedFields == null)
+            {
+                cachedFields = new int[tileFields.getFieldCount()];
+                allFieldsHaveChanged = true;
+            }
+
+            for (int i = 0; i < cachedFields.length; ++i)
+            {
+                if (allFieldsHaveChanged || cachedFields[i] != tileFields.getField(i))
+                {
+                    cachedFields[i] = tileFields.getField(i);
+                    fieldHasChanged[i] = true;
+                }
+            }
+
+            // go through the list of listeners (players using this container) and update them if necessary
+            for (IContainerListener listener : this.listeners)
+            {
+                for (int fieldID = 0; fieldID < tileFields.getFieldCount(); ++fieldID)
+                {
+                    if (fieldHasChanged[fieldID])
+                    {
+                        // Note that although sendWindowProperty takes 2 ints on a server these are truncated to shorts
+                        listener.sendWindowProperty(this, fieldID, cachedFields[fieldID]);
+                    }
+                }
+            }
         }
     }
 }
