@@ -1,0 +1,26 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:bellows"
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": {
+      "model": "tfc:bellows_inventory"
+    },
+    "facing": {
+      "south": {},
+      "west": {
+        "y": 90
+      },
+      "north": {
+        "y": 180
+      },
+      "east": {
+        "y": 270
+      }
+    }
+  }
+}

@@ -2,10 +2,18 @@
 
 # Gui
 
-tfc.tooltip.toolclass=Tool: %s
-tfc.tooltip.metal=Metal: %s
+## Tooltips
+tfc.tooltip.toolclass=§fTool Class:§7 %s
+tfc.tooltip.toolclasses=§fTool Classes:
+tfc.tooltip.oredictionaryentry=§fOre Dictionary name:§7 %s
+tfc.tooltip.oredictionaryentries=§fOre Dictionary names:
+tfc.tooltip.metal=§fMetal:§7 %s
 tfc.tooltip.units=%d units
 tfc.tooltip.smelting=Smelt in %s
+tfc.tooltip.liquid=Liquid
+
+## Keybindings
+tfc.key.craft=Crafting GUI
 
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=Spawn Fuzzing Radius
@@ -56,35 +64,36 @@ generator.tfc_classic=TFC Classic
 # Enum types
 # todo: add other enums
 ## Metal related
-tfc.enum.metal.bismuth=Bismuth
-tfc.enum.metal.bismuth_bronze=Bismuth Bronze
-tfc.enum.metal.black_bronze=Black Bronze
-tfc.enum.metal.brass=Brass
-tfc.enum.metal.bronze=Bronze
-tfc.enum.metal.copper=Copper
-tfc.enum.metal.gold=Gold
-tfc.enum.metal.lead=Lead
-tfc.enum.metal.nickel=Nickel
-tfc.enum.metal.rose_gold=Rose Gold
-tfc.enum.metal.silver=Silver
-tfc.enum.metal.tin=Tin
-tfc.enum.metal.zinc=Zinc
-tfc.enum.metal.sterling_silver=Sterling Silver
-tfc.enum.metal.wrought_iron=Wrought Iron
-tfc.enum.metal.pig_iron=Pig Iron
-tfc.enum.metal.steel=Steel
-tfc.enum.metal.platinum=Platinum
-tfc.enum.metal.black_steel=Black Steel
-tfc.enum.metal.blue_steel=Blue Steel
-tfc.enum.metal.red_steel=Red Steel
-tfc.enum.metal.weak_steel=Weak Steel
-tfc.enum.metal.weak_black_steel=Black Weak Steel
-tfc.enum.metal.weak_blue_steel=Blue Weak Steel
-tfc.enum.metal.weak_red_steel=Red Weak Steel
-tfc.enum.metal.high_carbon_steel=High Carbon Steel
-tfc.enum.metal.high_carbon_black_steel=Black High Carbon Steel
-tfc.enum.metal.high_carbon_blue_steel=Blue High Carbon Steel
-tfc.enum.metal.high_carbon_red_steel=Red High Carbon Steel
+tfc.types.metal.unknown=Unknown Alloy
+tfc.types.metal.bismuth=Bismuth
+tfc.types.metal.bismuth_bronze=Bismuth Bronze
+tfc.types.metal.black_bronze=Black Bronze
+tfc.types.metal.brass=Brass
+tfc.types.metal.bronze=Bronze
+tfc.types.metal.copper=Copper
+tfc.types.metal.gold=Gold
+tfc.types.metal.lead=Lead
+tfc.types.metal.nickel=Nickel
+tfc.types.metal.rose_gold=Rose Gold
+tfc.types.metal.silver=Silver
+tfc.types.metal.tin=Tin
+tfc.types.metal.zinc=Zinc
+tfc.types.metal.sterling_silver=Sterling Silver
+tfc.types.metal.wrought_iron=Wrought Iron
+tfc.types.metal.pig_iron=Pig Iron
+tfc.types.metal.steel=Steel
+tfc.types.metal.platinum=Platinum
+tfc.types.metal.black_steel=Black Steel
+tfc.types.metal.blue_steel=Blue Steel
+tfc.types.metal.red_steel=Red Steel
+tfc.types.metal.weak_steel=Weak Steel
+tfc.types.metal.weak_black_steel=Black Weak Steel
+tfc.types.metal.weak_blue_steel=Blue Weak Steel
+tfc.types.metal.weak_red_steel=Red Weak Steel
+tfc.types.metal.high_carbon_steel=High Carbon Steel
+tfc.types.metal.high_carbon_black_steel=Black High Carbon Steel
+tfc.types.metal.high_carbon_blue_steel=Blue High Carbon Steel
+tfc.types.metal.high_carbon_red_steel=Red High Carbon Steel
 
 tfc.enum.tier.tier_i=Pit Kiln
 tfc.enum.tier.tier_ii=Beehive Kiln
@@ -105,6 +114,19 @@ tfc.enum.size.huge=Huge
 tfc.enum.weight.light=Light
 tfc.enum.weight.medium=Medium
 tfc.enum.weight.heavy=Heavy
+
+## Heat
+tfc.enum.heat.warming=Warming
+tfc.enum.heat.hot=Hot
+tfc.enum.heat.very_hot=Very Hot
+tfc.enum.heat.faint_red=Faint Red
+tfc.enum.heat.dark_red=Dark Red
+tfc.enum.heat.bright_red=Bright Red
+tfc.enum.heat.orange=Orange
+tfc.enum.heat.yellow=Yellow
+tfc.enum.heat.yellow_white=Yellow White
+tfc.enum.heat.white=White
+tfc.enum.heat.brilliant_white=Brilliant White
 
 # Items
 item.tfc.wand.name=TFC Debug Wand
@@ -1524,6 +1546,26 @@ tile.tfc.wood.button.rosewood.name=Rosewood Button
 tile.tfc.wood.button.blackwood.name=Blackwood Button
 tile.tfc.wood.button.palm.name=Palm Button
 
+tile.tfc.wood.tool_rack.ash.name=Ash Tool Rack
+tile.tfc.wood.tool_rack.aspen.name=Aspen Tool Rack
+tile.tfc.wood.tool_rack.birch.name=Birch Tool Rack
+tile.tfc.wood.tool_rack.chestnut.name=Chestnut Tool Rack
+tile.tfc.wood.tool_rack.douglas_fir.name=Douglas Fir Tool Rack
+tile.tfc.wood.tool_rack.hickory.name=Hickory Tool Rack
+tile.tfc.wood.tool_rack.maple.name=Maple Tool Rack
+tile.tfc.wood.tool_rack.oak.name=Oak Tool Rack
+tile.tfc.wood.tool_rack.pine.name=Pine Tool Rack
+tile.tfc.wood.tool_rack.sequoia.name=Sequoia Tool Rack
+tile.tfc.wood.tool_rack.spruce.name=Spruce Tool Rack
+tile.tfc.wood.tool_rack.sycamore.name=Sycamore Tool Rack
+tile.tfc.wood.tool_rack.white_cedar.name=White Cedar Tool Rack
+tile.tfc.wood.tool_rack.willow.name=Willow Tool Rack
+tile.tfc.wood.tool_rack.kapok.name=Kapok Tool Rack
+tile.tfc.wood.tool_rack.acacia.name=Acacia Tool Rack
+tile.tfc.wood.tool_rack.rosewood.name=Rosewood Tool Rack
+tile.tfc.wood.tool_rack.blackwood.name=Blackwood Tool Rack
+tile.tfc.wood.tool_rack.palm.name=Palm Tool Rack
+
 tile.tfc.wall.cobble.granite.name=Granite Cobble Wall
 tile.tfc.wall.cobble.diorite.name=Diorite Cobble Wall
 tile.tfc.wall.cobble.gabbro.name=Gabbro Cobble Wall
@@ -2583,21 +2625,22 @@ item.tfc.mold.ingot.high_carbon_black_steel.name=Unshaped High Carbon Black Stee
 item.tfc.mold.ingot.high_carbon_blue_steel.name=Unshaped High Carbon Blue Steel
 item.tfc.mold.ingot.high_carbon_red_steel.name=Unshaped High Carbon Red Steel
 
-item.tfc.mold.ingot.empty.name=Empty Ingot Mold
+item.tfc.mold.ingot.name=Empty Ingot Mold
+item.tfc.mold.ingot.unknown.name=Unknown Alloy
 
-item.tfc.mold.pick_head.empty.name=Pick Head Mold
-item.tfc.mold.shovel_head.empty.name=Shovel Head Mold
-item.tfc.mold.axe_head.empty.name=Axe Head Mold
-item.tfc.mold.hoe_head.empty.name=Hoe Head Mold
-item.tfc.mold.chisel_head.empty.name=Chisel Head Mold
-item.tfc.mold.sword_blade.empty.name=Sword Blade Mold
-item.tfc.mold.mace_head.empty.name=Mace Head Mold
-item.tfc.mold.saw_blade.empty.name=Saw Blade Mold
-item.tfc.mold.javelin_head.empty.name=Javelin Head Mold
-item.tfc.mold.hammer_head.empty.name=Hammer Head Mold
-item.tfc.mold.propick_head.empty.name=Prospectors Pickaxe Head Mold
-item.tfc.mold.knife_blade.empty.name=Knife Blade Mold
-item.tfc.mold.scythe_blade.empty.name=Scythe Blade Mold
+item.tfc.mold.pick_head.name=Pick Head Mold
+item.tfc.mold.shovel_head.name=Shovel Head Mold
+item.tfc.mold.axe_head.name=Axe Head Mold
+item.tfc.mold.hoe_head.name=Hoe Head Mold
+item.tfc.mold.chisel_head.name=Chisel Head Mold
+item.tfc.mold.sword_blade.name=Sword Blade Mold
+item.tfc.mold.mace_head.name=Mace Head Mold
+item.tfc.mold.saw_blade.name=Saw Blade Mold
+item.tfc.mold.javelin_head.name=Javelin Head Mold
+item.tfc.mold.hammer_head.name=Hammer Head Mold
+item.tfc.mold.propick_head.name=Prospectors Pickaxe Head Mold
+item.tfc.mold.knife_blade.name=Knife Blade Mold
+item.tfc.mold.scythe_blade.name=Scythe Blade Mold
 
 item.tfc.mold.pick_head.bronze.name=Bronze Pick Head Mold
 item.tfc.mold.shovel_head.bronze.name=Bronze Shovel Head Mold
