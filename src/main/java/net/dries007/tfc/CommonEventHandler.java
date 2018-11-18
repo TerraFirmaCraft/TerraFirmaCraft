@@ -24,17 +24,19 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import net.dries007.tfc.api.util.Size;
-import net.dries007.tfc.api.util.Weight;
+import net.dries007.tfc.api.capability.ItemStickCapability;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.util.IPlacableItem;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TELogPile;
-import net.dries007.tfc.util.CapabilityItemSize;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IFireable;
-import net.dries007.tfc.util.IPlacableItem;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -44,7 +46,7 @@ public class CommonEventHandler
      * Make leaves drop sticks
      */
     @SubscribeEvent
-    public static void onBlockHarvestDrops(BlockEvent.HarvestDropsEvent event)
+    public void onBlockHarvestDrops(BlockEvent.HarvestDropsEvent event)
     {
         final EntityPlayer harvester = event.getHarvester();
         final ItemStack heldItem = harvester == null ? ItemStack.EMPTY : harvester.getHeldItemMainhand();
@@ -57,7 +59,7 @@ public class CommonEventHandler
             double chance = ConfigTFC.GENERAL.leafStickDropChance;
             if (!heldItem.isEmpty() && Helpers.containsAnyOfCaseInsensitive(heldItem.getItem().getToolClasses(heldItem), ConfigTFC.GENERAL.leafStickDropChanceBonusClasses))
                 chance = ConfigTFC.GENERAL.leafStickDropChanceBonus;
-            if (event.getWorld().rand.nextFloat() < chance)
+            if (Constants.RNG.nextFloat() < chance)
                 event.getDrops().add(new ItemStack(Items.STICK));
         }
     }
@@ -68,7 +70,7 @@ public class CommonEventHandler
      * We have this event already, might as well use it.
      */
     @SubscribeEvent
-    public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
+    public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
     {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
@@ -88,7 +90,7 @@ public class CommonEventHandler
         {
             ItemStack mainStack = player.getHeldItem(EnumHand.MAIN_HAND);
             if ((mainStack.getItem() == Items.COAL && mainStack.getMetadata() == 1) ||
-                (Helpers.doesStackMatchOre(mainStack, "logWood") && player.isSneaking()) ||
+                (OreDictionaryHelper.doesStackMatchOre(mainStack, "logWood") && player.isSneaking()) ||
                 mainStack.getItem() instanceof IPlacableItem)
             {
                 event.setCanceled(true);
@@ -136,7 +138,7 @@ public class CommonEventHandler
                 }
             }
         }
-        if (Helpers.doesStackMatchOre(stack, "logWood") && player.isSneaking())
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "logWood") && player.isSneaking())
         {
             EnumFacing facing = event.getFace();
             if (facing != null)
@@ -234,7 +236,7 @@ public class CommonEventHandler
         if (item == Items.COAL)
             CapabilityItemSize.add(e, Items.COAL, Size.SMALL, Weight.MEDIUM, canStack);
         else if (item == Items.STICK)
-            CapabilityItemSize.add(e, Items.STICK, Size.SMALL, Weight.LIGHT, canStack);
+            e.addCapability(ItemStickCapability.KEY, new ItemStickCapability(e.getObject().getTagCompound()));
 
             // Final checks for general item types
         else if (item instanceof ItemTool)

@@ -6,14 +6,15 @@
 package net.dries007.tfc.world.classic.biomes;
 
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import static net.dries007.tfc.Constants.MOD_ID;
-import static net.dries007.tfc.Constants.MOD_NAME;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_NAME;
 
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -42,22 +43,23 @@ public final class BiomesTFC
     public static void registerBiomes(RegistryEvent.Register<Biome> event)
     {
         IForgeRegistry<Biome> r = event.getRegistry();
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Ocean").setBaseHeight(-3.6f).setHeightVariation(-2.69999f)));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " River").setBaseHeight(-3.2f).setHeightVariation(-3.0f)));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Beach").setBaseHeight(-2.69f).setHeightVariation(-2.68f)));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Gravel beach").setBaseHeight(-2.69f).setHeightVariation(-2.68f).setBaseBiome("tfc:beach")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High hills").setBaseHeight(-1.9000001f).setHeightVariation(-1.1f)));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Plains").setBaseHeight(-2.6000001f).setHeightVariation(-2.54f)));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Swampland").setBaseHeight(-2.8f).setHeightVariation(-2.6000001f), 8, 45));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High hills edge").setBaseHeight(-2.5f).setHeightVariation(-2.3f).setBaseBiome("tfc:high_hills")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Rolling hills").setBaseHeight(-2.6000001f).setHeightVariation(-2.3f)));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains").setBaseHeight(-1.9000001f).setHeightVariation(-1.1f)));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains edge").setBaseHeight(-2.3f).setHeightVariation(-1.9000001f).setBaseBiome("tfc:mountains")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High plains").setBaseHeight(-2.3f).setHeightVariation(-2.27f)));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Deep ocean").setBaseHeight(-4.2f).setHeightVariation(-2.69999f).setBaseBiome("tfc:ocean")));
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-3.2f).setHeightVariation(-2.6990001f).setBaseBiome("tfc:ocean"), 2, 5/*todo: was 0*/));
 
-//        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_hell").setRainDisabled().setTemperature(2.0F).setRainfall(0.0F)));
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Ocean").setBaseHeight(-3.6f).setHeightVariation(-2.69999f)), BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " River").setBaseHeight(-3.2f).setHeightVariation(-3f)), BiomeDictionary.Type.RIVER, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Beach").setBaseHeight(-2.69f).setHeightVariation(-2.68f)), BiomeDictionary.Type.BEACH);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Gravel Beach").setBaseHeight(-2.69f).setHeightVariation(-2.68f).setBaseBiome("tfc:beach")), BiomeDictionary.Type.BEACH);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High Hills").setBaseHeight(-1.9000001f).setHeightVariation(-1.1f)), BiomeDictionary.Type.HILLS);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Plains").setBaseHeight(-2.6000001f).setHeightVariation(-2.54f)), BiomeDictionary.Type.PLAINS);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Swampland").setBaseHeight(-2.8f).setHeightVariation(-2.6000001f), 8, 45), BiomeDictionary.Type.SWAMP);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High Hills Edge").setBaseHeight(-2.5f).setHeightVariation(-2.3f).setBaseBiome("tfc:high_hills")), BiomeDictionary.Type.HILLS, BiomeDictionary.Type.PLAINS);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Rolling Hills").setBaseHeight(-2.6000001f).setHeightVariation(-2.3f)), BiomeDictionary.Type.HILLS);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains").setBaseHeight(-1.9000001f).setHeightVariation(-1.1f)), BiomeDictionary.Type.MOUNTAIN);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains Edge").setBaseHeight(-2.3f).setHeightVariation(-1.9000001f).setBaseBiome("tfc:mountains")), BiomeDictionary.Type.MOUNTAIN);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High Plains").setBaseHeight(-2.3f).setHeightVariation(-2.27f)), BiomeDictionary.Type.HILLS, BiomeDictionary.Type.PLAINS);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Deep Ocean").setBaseHeight(-4.2f).setHeightVariation(-2.69999f).setBaseBiome("tfc:ocean")), BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-3.2f).setHeightVariation(-2.6990001f).setBaseBiome("tfc:ocean"), 2, 5), BiomeDictionary.Type.RIVER, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
+
+        //        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_hell").setRainDisabled().setTemperature(2.0F).setRainfall(0.0F)));
     }
 
     public static boolean isOceanicBiome(int id)
@@ -122,9 +124,10 @@ public final class BiomesTFC
         return OVERWORLD_GENERATE_BIOMES;
     }
 
-    private static void register(IForgeRegistry<Biome> r, Biome item)
+    private static void register(IForgeRegistry<Biome> r, Biome item, BiomeDictionary.Type... types)
     {
         r.register(item.setRegistryName(MOD_ID, item.biomeName.replace(MOD_NAME + " ", "").replace(' ', '_').toLowerCase()));
+        BiomeDictionary.addTypes(item, types);
     }
 
     private BiomesTFC() {}

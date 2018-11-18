@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import net.dries007.tfc.world.classic.CalenderTFC;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
  * Top level items must be static, the subclasses' fields must not be static.
@@ -58,18 +58,35 @@ public class ConfigTFC
         @Config.Comment("Lengths of a month in in game days. Year length is this x12")
         @Config.LangKey("config." + MOD_ID + ".general.monthLength")
         @Config.RangeInt(min = 1, max = 1000)
-        public int monthLength = 96;
+        public int monthLength = 8;
 
         @Config.Comment("Normal decay leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
-        public double leafStickDropChance = 0.1; // todo: lang key
+        @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChance")
+        public double leafStickDropChance = 0.1;
 
         @Config.Comment("Bonus decay leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
-        public double leafStickDropChanceBonus = 0.25; // todo: lang key
+        @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonus")
+        public double leafStickDropChanceBonus = 0.25;
 
         @Config.Comment("Bonus decay leaf drop chance for sticks tool classes")
-        public String[] leafStickDropChanceBonusClasses = new String[] {"knife", "scythe"}; // todo: lang key
+        @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonusClasses")
+        public String[] leafStickDropChanceBonusClasses = new String[] {"knife", "scythe"};
+
+        @Config.Comment("Modifier for how quickly items gain and lose heat. Smaller number = slower temperature changes")
+        @Config.RangeDouble(min = 0, max = 10)
+        @Config.LangKey("config." + MOD_ID + ".general.temperatureModifier")
+        public double temperatureModifier = 0.5;
+
+        @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour), default is 8 hours.")
+        @Config.RangeInt(min = 20)
+        @Config.LangKey("config." + MOD_ID + ".general.temperatureModifier")
+        public int pitKilnTime = 8000;
+
+        @Config.Comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour), default is 72 hours. Set to -1 to disable torch burnout.")
+        @Config.RangeInt(min = 20)
+        public int torchTime = 200; // todo: change to 72000
     }
 
     public static class ClientCFG
@@ -78,6 +95,18 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".client.makeWorldTypeClassicDefault")
         @Config.RequiresMcRestart
         public boolean makeWorldTypeClassicDefault = true;
+
+        @Config.Comment({"Show ItemStack tool classes when advanced tooltips are enabled. (F3+H)"})
+        @Config.LangKey("config." + MOD_ID + ".client.showToolClassTooltip")
+        public boolean showToolClassTooltip = true;
+
+        @Config.Comment({"Show ItemStack OreDictionary matches when advanced tooltips are enabled. (F3+H)"})
+        @Config.LangKey("config." + MOD_ID + ".client.showOreDictionaryTooltip")
+        public boolean showOreDictionaryTooltip = true;
+
+        @Config.Comment({"Show ItemStack NBT on the tooltip when advanced tooltips are enabled. (F3+H)"})
+        @Config.LangKey("config." + MOD_ID + ".client.showNBTTooltip")
+        public boolean showNBTTooltip = false;
     }
 
     public static class WorldCFG

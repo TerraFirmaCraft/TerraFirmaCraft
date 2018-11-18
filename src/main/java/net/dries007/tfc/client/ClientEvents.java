@@ -5,7 +5,7 @@
 
 package net.dries007.tfc.client;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -33,17 +32,19 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.util.IItemSize;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
-import net.dries007.tfc.util.CapabilityItemSize;
-import net.dries007.tfc.util.IMetalObject;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.minecraft.util.text.TextFormatting.*;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)
@@ -71,11 +72,11 @@ public class ClientEvents
     @SideOnly(Side.CLIENT)
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
     {
-        // todo: check if this is allowed to be displayed, debug/op only maybe?
         Minecraft mc = Minecraft.getMinecraft();
         List<String> list = event.getRight();
         if (ConfigTFC.GENERAL.debug && mc.gameSettings.showDebugInfo)
         {
+            //noinspection ConstantConditions
             BlockPos blockpos = new BlockPos(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().getEntityBoundingBox().minY, mc.getRenderViewEntity().posZ);
             Chunk chunk = mc.world.getChunk(blockpos);
             if (mc.world.isBlockLoaded(blockpos) && !chunk.isEmpty())
@@ -111,7 +112,7 @@ public class ClientEvents
                     list.add(GRAY + "Flora Diversity: " + WHITE + data.getFloraDiversity());
 
                     list.add(GRAY + "Valid Trees: ");
-                    data.getValidTrees().forEach(t -> list.add(String.format("%s %s (%.1f)", WHITE, t.name(), t.dominance)));
+                    data.getValidTrees().forEach(t -> list.add(String.format("%s %s (%.1f)", WHITE, t.getRegistryName(), t.getDominance())));
 
                     //list.add(GRAY + "Rocks: " + WHITE + data.getRockLayer1(x, z).name + ", " + data.getRockLayer2(x, z).name + ", " + data.getRockLayer3(x, z).name);
                     //list.add(GRAY + "Stability: " + WHITE + data.getStabilityLayer(x, z).name);
@@ -134,28 +135,32 @@ public class ClientEvents
     public static void onItemTooltip(ItemTooltipEvent event)
     {
         ItemStack stack = event.getItemStack();
+        if (stack.isEmpty())
+        {
+            TerraFirmaCraft.getLog().warn("ItemTooltipEvent with empty stack??", new Exception());
+            return;
+        }
         Item item = stack.getItem();
         List<String> tt = event.getToolTip();
 
+        // Stuff that should always be shown as part of the tooltip
         IItemSize size = CapabilityItemSize.getIItemSize(stack);
         if (size != null)
         {
             size.addSizeInfo(stack, tt);
         }
-
-        if (event.getFlags().isAdvanced())
+        IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+        if (heat != null)
         {
-            Set<String> toolClasses = item.getToolClasses(stack);
-            if (!toolClasses.isEmpty())
-            {
-                tt.add("");
-                for (String toolClass : toolClasses)
-                {
-                    tt.add(I18n.format("tfc.tooltip.toolclass", toolClass));
-                }
-            }
+            heat.addHeatInfo(stack, tt, true);
+        }
+
+        if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
+        {
             if (item instanceof IMetalObject)
+            {
                 ((IMetalObject) item).addMetalInfo(stack, tt);
+            }
             if (item instanceof ItemBlock)
             {
                 Block block = ((ItemBlock) item).getBlock();
@@ -164,13 +169,47 @@ public class ClientEvents
                     ((IMetalObject) block).addMetalInfo(stack, tt);
                 }
             }
-
-            int[] ids = OreDictionary.getOreIDs(stack);
-            if (ids != null && ids.length != 0)
+            if (ConfigTFC.CLIENT.showToolClassTooltip)
             {
-                tt.add("");
-                tt.add(TextFormatting.AQUA + "Ore Dictionary:");
-                Arrays.stream(ids).mapToObj(OreDictionary::getOreName).sorted().forEachOrdered(tt::add);
+                Set<String> toolClasses = item.getToolClasses(stack);
+                if (toolClasses.size() == 1)
+                {
+                    tt.add(I18n.format("tfc.tooltip.toolclass", toolClasses.iterator().next()));
+                }
+                else if (toolClasses.size() > 1)
+                {
+                    tt.add(I18n.format("tfc.tooltip.toolclasses"));
+                    for (String toolClass : toolClasses)
+                    {
+                        tt.add("+ " + toolClass);
+                    }
+                }
+            }
+            if (ConfigTFC.CLIENT.showOreDictionaryTooltip)
+            {
+                int[] ids = OreDictionary.getOreIDs(stack);
+                if (ids.length == 1)
+                {
+                    tt.add(I18n.format("tfc.tooltip.oredictionaryentry", OreDictionary.getOreName(ids[0])));
+                }
+                else if (ids.length > 1)
+                {
+                    tt.add(I18n.format("tfc.tooltip.oredictionaryentries"));
+                    ArrayList<String> names = new ArrayList<>(ids.length);
+                    for (int id : ids)
+                    {
+                        names.add("+ " + OreDictionary.getOreName(id));
+                    }
+                    names.sort(null); // Natural order (String.compare)
+                    tt.addAll(names);
+                }
+            }
+            if (ConfigTFC.CLIENT.showNBTTooltip)
+            {
+                if (stack.hasTagCompound())
+                {
+                    tt.add("NBT: " + stack.getTagCompound().toString());
+                }
             }
         }
     }

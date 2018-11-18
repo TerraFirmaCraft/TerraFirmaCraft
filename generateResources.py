@@ -464,6 +464,37 @@ for name, fluid in FLUIDS.items():
         }
     })
 
+# METAL FLUIDS
+for name in METAL_TYPES.keys():
+    blockstate(('fluid', name), 'forge:fluid', {}, {
+        'normal': {
+            'transform': "forge:default-item",
+            'custom': {
+                'fluid': name
+            }
+        }
+    })
+for name in STEEL:
+    for type in ['weak', 'high_carbon']:
+        if name == 'black_steel' and type == 'weak':
+            continue
+        blockstate(('fluid', type + "_" + name), 'forge:fluid', {}, {
+            'normal': {
+                'transform': "forge:default-item",
+                'custom': {
+                    'fluid': type + "_" + name
+                }
+            }
+        })
+blockstate(('fluid', 'unknown'), 'forge:fluid', {}, {
+    'normal': {
+        'transform': "forge:default-item",
+        'custom': {
+            'fluid': 'unknown'
+        }
+    }
+})
+
 # ANVILS
 for key in METAL_TYPES:
     if METAL_TYPES[key]:
@@ -664,6 +695,20 @@ for wood_type in WOOD_TYPES:
         'top': 'tfc:blocks/wood/door/upper/%s' % wood_type,
     }, variants=DOOR_VARIANTS)
 
+    # TOOL RACKS
+    # TODO: make sure I did this right, Dries - LS
+    blockstate(('wood', 'tool_rack', wood_type), 'tfc:tool_rack', textures={
+        'texture': 'tfc:blocks/wood/planks/%s' % wood_type,
+        'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
+    }, variants={
+        'facing': {
+            'south': {},
+            'west': {'y': 90},
+            'north': {'y': 180},
+            'east': {'y': 270},
+        }
+    })
+
     # (WOOD) STAIRS & SLABS
     blockstate(('stairs', 'wood', wood_type), None, textures={
         ('top', 'bottom', 'side'): 'tfc:blocks/wood/planks/%s' % wood_type,
@@ -744,7 +789,7 @@ for ore_type in ORE_TYPES:
             item(('ore', grade, ore_type), 'tfc:items/ore/%s/%s' % (grade, ore_type))
     item(('ore', 'normal', ore_type), 'tfc:items/ore/%s' % ore_type)
 
-# ROCKS
+# ROCK_CATEGORIES
 for rock_type in ROCK_TYPES:
     for item_type in ['rock', 'brick']:
         item((item_type, rock_type), 'tfc:items/stonetypes/%s/%s' % (item_type, rock_type))
@@ -795,18 +840,18 @@ for type in ['empty', 'sand', 'gravel', 'clay', 'dirt']:
 
 # CERAMICS
 _heads = [x + '_head' for x in TOOLS] + [x + '_blade' for x in TOOLS]
-for metal in ['empty', 'unfired', 'copper', 'bronze', 'black_bronze', 'bismuth_bronze']:
-    for item_type in METAL_ITEMS:
-        if item_type not in _heads:
-            continue
+for item_type in METAL_ITEMS:
+    if item_type not in _heads:
+        continue
+    item(('mold', item_type, 'unfired'), 'tfc:items/mold/%s/%s' % ('unfired', item_type.split('_')[0]))
+    item(('mold', item_type, 'empty'), 'tfc:items/mold/%s/%s' % ('empty', item_type.split('_')[0]))
+    for metal in ['copper', 'bronze', 'black_bronze', 'bismuth_bronze']:
         item(('mold', item_type, metal), 'tfc:items/mold/%s/%s' % (metal, item_type.split('_')[0]))
+for type in ['empty', 'unfired', 'unknown']:
+    item(('mold', 'ingot', type), 'tfc:items/mold/ingot/' + type)
+for metal in METAL_TYPES.keys():
+    item(('mold', 'ingot', metal), 'tfc:items/mold/ingot/' + metal)
 del _heads
-for metal in list(METAL_TYPES.keys()) + ['unfired', 'empty']:
-    item(('mold', 'ingot', metal), 'tfc:items/mold/ingot/%s' % metal)
-item(('mold', 'ingot', 'unknown'), 'tfc:items/mold/ingot/unknown')
-for metal in STEEL:
-    for type in ['high_carbon', 'weak']:
-        item(('mold', 'ingot', type + '_' + metal), 'tfc:items/mold/ingot/%s' % metal)
 
 item(('ceramics', 'unfired', 'vessel'), 'tfc:items/ceramics/unfired/vessel')
 item(('ceramics', 'fired', 'vessel'), 'tfc:items/ceramics/fired/vessel')
