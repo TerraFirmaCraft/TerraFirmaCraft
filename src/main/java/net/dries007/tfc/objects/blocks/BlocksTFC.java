@@ -388,11 +388,11 @@ public final class BlocksTFC
         {
             Builder<BlockCropsTFC> crops = ImmutableList.builder();
 
-            for (Crop crop : TFCRegistries.CROPS.getValuesCollection())
+            for (Crop type : TFCRegistries.CROPS.getValuesCollection())
             {
-                crops.add(register(r, "crop/" + crop.getRegistryName().getPath(), new BlockCropsTFC(crop), CT_PLANTS));
+                crops.add(register(r, "crops/" + type.getRegistryName().getPath(), new BlockCropsTFC(type), CT_PLANTS));
             }
-            allCropBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
+            allCropBlocks = crops.build();
         }
 
         inventoryItemBlocks.add(new ItemBlockTorchTFC(register(r, "torch", new BlockTorchTFC(), CT_MISC)));

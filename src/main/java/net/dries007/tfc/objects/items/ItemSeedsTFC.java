@@ -20,8 +20,6 @@ import net.minecraftforge.common.IPlantable;
 import net.dries007.tfc.api.types.Crop;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
 
-//import net.dries007.tfc.objects.Agriculture.Crop;
-
 public class ItemSeedsTFC extends Item implements IPlantable
 {
     private final Block crops;

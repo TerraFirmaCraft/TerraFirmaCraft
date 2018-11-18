@@ -67,12 +67,27 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
 
     public boolean isValidLocation(float temp, float rain, float density)
     {
-        return minGrowthTemp <= temp && maxGrowthTemp >= temp && minRain <= rain && maxRain >= rain && minDensity <= density && maxDensity >= density;
+        return minTemp <= temp && maxTemp >= temp && minRain <= rain && maxRain >= rain && minDensity <= density && maxDensity >= density;
     }
 
     public int getGrowthStages()
     {
         return growthStages;
+    }
+
+    public float getMinStageGrowthTime()
+    {
+        return minStageGrowthTime;
+    }
+
+    public float getMinGrowthTemp()
+    {
+        return minGrowthTemp;
+    }
+
+    public float getMaxGrowthTemp()
+    {
+        return maxGrowthTemp;
     }
 
     @Override

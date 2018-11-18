@@ -177,8 +177,8 @@ public final class ItemsTFC
             simpleItems.add(register(r, "ceramics/fire_clay", new Item(), CT_MISC));
         }
 
-        for (Crop seedbag : TFCRegistries.CROPS.getValuesCollection())
-            simpleItems.add(register(r, "crops/seedbag/" + seedbag.getRegistryName().getPath(), (new ItemSeedsTFC(seedbag, (BlockCropsTFC.get(seedbag)))), CT_PLANTS));
+        for (Crop type : TFCRegistries.CROPS.getValuesCollection())
+            simpleItems.add(register(r, "crops/seedbag/" + type.getRegistryName().getPath(), (new ItemSeedsTFC(type, BlockCropsTFC.get(type))), CT_PLANTS));
 
         for (Food food : Food.values())
             simpleItems.add(register(r, "food/" + food.name().toLowerCase(), (new ItemFoodTFC(food, food.heal, food.saturation)), CT_FOOD ));
