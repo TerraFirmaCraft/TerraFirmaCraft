@@ -23,13 +23,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
+import net.dries007.tfc.objects.blocks.plant.crops.BlockCropsTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -128,6 +126,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockAnvilTFC> allAnvils;
     private static ImmutableList<BlockSheet> allSheets;
     private static ImmutableList<BlockToolRack> allToolRackBlocks;
+    private static ImmutableList<BlockCropsTFC> allCropBlocks;
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
     {
@@ -217,6 +216,11 @@ public final class BlocksTFC
     public static ImmutableList<BlockToolRack> getAllToolRackBlocks()
     {
         return allToolRackBlocks;
+    }
+
+    public static ImmutableList<BlockCropsTFC> getAllCropBlocks()
+    {
+        return allCropBlocks;
     }
 
     @SubscribeEvent
@@ -379,6 +383,16 @@ public final class BlocksTFC
 
             allAnvils = anvils.build();
             allSheets = sheets.build();
+        }
+
+        {
+            Builder<BlockCropsTFC> crops = ImmutableList.builder();
+
+            for (Crop crop : TFCRegistries.CROPS.getValuesCollection())
+            {
+                crops.add(register(r, "crop/" + crop.getRegistryName().getPath(), new BlockCropsTFC(crop), CT_PLANTS));
+            }
+            allCropBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
         }
 
         inventoryItemBlocks.add(new ItemBlockTorchTFC(register(r, "torch", new BlockTorchTFC(), CT_MISC)));

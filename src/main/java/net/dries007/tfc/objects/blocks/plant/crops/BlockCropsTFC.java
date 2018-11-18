@@ -1,7 +1,9 @@
 package net.dries007.tfc.objects.blocks.plant.crops;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
@@ -18,8 +20,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.objects.Agriculture.Crop;
+import net.dries007.tfc.api.types.Crop;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
+
+@ParametersAreNonnullByDefault
 
 public class BlockCropsTFC extends BlockBush implements IGrowable
 {
@@ -27,8 +31,10 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
 
     private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.125D, 0.875D), new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.25D, 0.875D), new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.375D, 0.875D), new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.5D, 0.875D), new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.625D, 0.875D), new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.75D, 0.875D), new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.875D, 0.875D), new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D)};
 
+    private static final Map<Crop, BlockCropsTFC> MAP = new HashMap<>();
 
-    private static final EnumMap<Crop, BlockCropsTFC> MAP = new EnumMap<>(Crop.class);
+
+    //private static final EnumMap<Crop, BlockCropsTFC> MAP = new EnumMap<>(Crop.class);
 
     public static BlockCropsTFC get(Crop crop)
     {
@@ -66,14 +72,9 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
         return this.getDefaultState().withProperty(this.getStageProperty(), Integer.valueOf(stage));
     }
 
-    public int getMaxStage()
-    {
-        return crop.maxStage;
-    }
-
     public boolean isMaxStage(IBlockState state)
     {
-        return ((Integer)state.getValue(this.getStageProperty())).intValue() >= this.getMaxStage();
+        return ((Integer)state.getValue(this.getStageProperty())).intValue() >= crop.getGrowthStages();
     }
 
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
@@ -85,7 +86,7 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         int i = this.getStage(state) + 1;
-        int j = this.getMaxStage();
+        int j = crop.getGrowthStages();
 
         if (i > j)
         {
@@ -129,7 +130,7 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
         int stage = getStage(state);
         Random rand = world instanceof World ? ((World)world).rand : new Random();
 
-        if (stage >= getMaxStage())
+        if (stage >= crop.getGrowthStages())
         {
             TerraFirmaCraft.getLog().info("getDrops " + ItemSeedsTFC.get(crop));
 
@@ -137,9 +138,9 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
 
             for (int i = 0; i < 3 + fortune; ++i)
             {
-                if (rand.nextInt(2 * getMaxStage()) <= stage)
+                if (rand.nextInt(2 * crop.getGrowthStages()) <= stage)
                 {
-                    drops.add(new ItemStack(ItemSeedsTFC.get(crop), 1, 0));
+                   // drops.add(new ItemStack(ItemSeedsTFC.get(crop), 1, 0));
                 }
             }
         }
@@ -159,13 +160,13 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
 
             int i = this.getStage(state);
 
-            if (i >= this.getMaxStage())
+            if (i >= crop.getGrowthStages())
             {
                 int j = 3 + fortune;
 
                 for (int k = 0; k < j; ++k)
                 {
-                    if (worldIn.rand.nextInt(2 * this.getMaxStage()) <= i)
+                    if (worldIn.rand.nextInt(2 * crop.getGrowthStages()) <= i)
                     {
                         spawnAsEntity(worldIn, pos, new ItemStack(ItemSeedsTFC.get(crop)));
                     }

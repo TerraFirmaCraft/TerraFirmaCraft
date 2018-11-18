@@ -70,6 +70,11 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
         return minGrowthTemp <= temp && maxGrowthTemp >= temp && minRain <= rain && maxRain >= rain && minDensity <= density && maxDensity >= density;
     }
 
+    public int getGrowthStages()
+    {
+        return growthStages;
+    }
+
     @Override
     public String toString() { return String.valueOf(getRegistryName()); }
 

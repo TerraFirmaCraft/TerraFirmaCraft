@@ -2,46 +2,9 @@ package net.dries007.tfc.objects;
 
 public enum Agriculture
 {
-    CROP,
     FRUITTREE,
     BERRYBUSH,
     ;
-
-    public enum Crop
-    {
-        BARLEY(Temperature.TEMPERATE, 7, Soil.FARMLAND),
-        BEET(Temperature.TEMPERATE, 6, Soil.FARMLAND),
-        OAT(Temperature.TEMPERATE, 7, Soil.FARMLAND),
-        RICE(Temperature.TEMPERATE, 7, Soil.FARMLAND),
-        RYE(Temperature.TEMPERATE, 7, Soil.FARMLAND),
-        WHEAT(Temperature.TEMPERATE, 7, Soil.FARMLAND),
-        REDBELLPEPPER(Temperature.TEMPERATE, 6, Soil.FARMLAND),
-        YELLOWBELLPEPPER(Temperature.TEMPERATE, 6, Soil.FARMLAND),
-        CABBAGE(Temperature.TEMPERATE, 5, Soil.FARMLAND),
-        CARROT(Temperature.TEMPERATE, 4, Soil.FARMLAND),
-        GARLIC(Temperature.TEMPERATE, 4, Soil.FARMLAND),
-        GREENBEAN(Temperature.TEMPERATE, 6, Soil.FARMLAND),
-        MAIZE(Temperature.TEMPERATE, 5, Soil.FARMLAND),
-        ONION(Temperature.TEMPERATE, 6, Soil.FARMLAND),
-        POTATO(Temperature.TEMPERATE, 6, Soil.FARMLAND),
-        SOYBEAN(Temperature.TEMPERATE, 6, Soil.FARMLAND),
-        SQUASH(Temperature.TEMPERATE, 6, Soil.FARMLAND),
-        SUGARCANE(Temperature.WARM,7, Soil.FARMLAND),
-        TOMATO(Temperature.TEMPERATE, 7, Soil.FARMLAND),
-        JUTE(Temperature.TEMPERATE, 5, Soil.FARMLAND),
-        ;
-
-        public final Temperature temperature;
-        public final Soil soil;
-        public final int maxStage;
-
-        Crop(Agriculture.Temperature temperature, int maxStage, Soil soil)
-        {
-            this.temperature = temperature;
-            this.maxStage = maxStage;
-            this.soil = soil;
-        }
-    }
 
     public enum FruitTree {
         BANANA(Temperature.TEMPERATE),
@@ -92,12 +55,5 @@ public enum Agriculture
         HOT,
         ;
     }
-
-    public enum Soil {
-        FARMLAND,
-        ;
-    }
-
-    //public static Soil fromState(IBlockState state) { return ()[state]; }
-
+    
 }
