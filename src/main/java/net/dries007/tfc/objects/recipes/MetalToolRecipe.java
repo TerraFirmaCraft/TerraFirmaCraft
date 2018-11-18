@@ -13,10 +13,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class MetalToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {

@@ -5,46 +5,33 @@
 
 package net.dries007.tfc.objects.items;
 
-import java.util.Arrays;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.util.Size;
-import net.dries007.tfc.api.util.Weight;
-
-import static net.dries007.tfc.Constants.MOD_ID;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemGoldPan extends ItemTFC
 {
-    private static final String[] TYPES = new String[] {"empty", "sand", "gravel", "clay", "dirt"};
-
-    @SuppressWarnings("ConstantConditions")
-    @SideOnly(Side.CLIENT)
-    public static void registerModels()
-    {
-        for (int meta = 0; meta < TYPES.length; meta++)
-            ModelLoader.setCustomModelResourceLocation(ItemsTFC.GOLDPAN, meta, new ModelResourceLocation(MOD_ID + ":goldpan/" + TYPES[meta]));
-        ModelLoader.registerItemVariants(ItemsTFC.GOLDPAN, Arrays.stream(TYPES).map(e -> new ResourceLocation(MOD_ID, "goldpan/" + e)).toArray(ResourceLocation[]::new));
-    }
+    public static final String[] TYPES = new String[] {"empty", "sand", "gravel", "clay", "dirt"};
 
     public ItemGoldPan()
     {
@@ -108,7 +95,7 @@ public class ItemGoldPan extends ItemTFC
         final int count = total - countLeft;
         final BlockPos pos = result.getBlockPos().add(0, 1, 0);
         final World world = player.world;
-        final float chance = world.rand.nextFloat();
+        final float chance = itemRand.nextFloat();
 
         //todo: this is a copypaste from firestarter, it needs to pan, not start fires.
     }

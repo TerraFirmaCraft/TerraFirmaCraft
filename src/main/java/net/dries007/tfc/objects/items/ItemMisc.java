@@ -1,42 +1,51 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.items;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 
-import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.util.IItemSize;
-import net.dries007.tfc.api.util.Size;
-import net.dries007.tfc.api.util.Weight;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class ItemMisc extends ItemTFC implements IItemSize
 {
     private final Size size;
     private final Weight weight;
 
+    public ItemMisc(Size size, Weight weight, Object... oreNameParts)
+    {
+        this(size, weight);
+
+        for (Object obj : oreNameParts)
+        {
+            if (obj instanceof Object[])
+                OreDictionaryHelper.register(this, (Object[]) obj);
+            else
+                OreDictionaryHelper.register(this, obj);
+        }
+    }
+
     public ItemMisc(Size size, Weight weight)
     {
-        super();
         this.size = size;
         this.weight = weight;
     }
 
     @Override
-    public Size getSize(ItemStack stack)
+    public Size getSize(@Nonnull ItemStack stack)
     {
         return size;
     }
 
     @Override
-    public Weight getWeight(ItemStack stack)
+    public Weight getWeight(@Nonnull ItemStack stack)
     {
         return weight;
     }

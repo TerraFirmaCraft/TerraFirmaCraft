@@ -75,7 +75,7 @@ public class WorldGenOre implements IWorldGenerator
                 );
 
                 Ore.Grade grade = Ore.Grade.NORMAL;
-                if (oreType.ore != null && oreType.ore.graded)
+                if (oreType.ore != null && oreType.ore.isGraded())
                 {
                     int gradeInt = rand.nextInt(100);
                     if (gradeInt < 20) grade = Ore.Grade.RICH;

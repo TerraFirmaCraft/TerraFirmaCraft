@@ -33,7 +33,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.te.TELogPile;
@@ -120,8 +119,8 @@ public class BlockLogPile extends Block implements ITileEntityProvider
     {
         if (!world.isRemote)
         {
-            TELogPile te = (TELogPile) world.getTileEntity(pos);
-            if (te == null) { return true; }
+            TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
+            if (te == null) { return false; }
 
             // Special Interactions
             // 1. Try and put a log inside (happens on right click event)
@@ -142,7 +141,7 @@ public class BlockLogPile extends Block implements ITileEntityProvider
 
             if (!player.isSneaking() && !state.getValue(ONFIRE))
             {
-                player.openGui(TerraFirmaCraft.getInstance(), TFCGuiHandler.LOG_PILE, world, pos.getX(), pos.getY(), pos.getZ());
+                TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.LOG_PILE);
             }
         }
         return true;

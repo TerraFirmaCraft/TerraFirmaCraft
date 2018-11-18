@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.te.TEPitKiln;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @SideOnly(Side.CLIENT)
 public class TESRPitKiln extends TileEntitySpecialRenderer<TEPitKiln>

@@ -9,8 +9,10 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
+import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.util.OreSpawnData;
 
@@ -31,7 +33,7 @@ public class ChunkDataOreSpawned
 
     public ChunkDataOreSpawned(NBTTagCompound tag)
     {
-        ore = Ore.get(tag.getString("ore"));
+        ore = TFCRegistries.ORES.getValue(new ResourceLocation(tag.getString("ore")));
         grade = Ore.Grade.valueOf(tag.getString("grade").toUpperCase());
         size = OreSpawnData.SpawnSize.valueOf(tag.getString("size").toUpperCase());
         pos = NBTUtil.getPosFromTag(tag.getCompoundTag("pos"));
@@ -40,7 +42,7 @@ public class ChunkDataOreSpawned
     public NBTTagCompound serialize()
     {
         NBTTagCompound root = new NBTTagCompound();
-        root.setString("ore", ore.name());
+        root.setString("ore", ore.getRegistryName().toString());
         root.setString("grade", grade.name());
         root.setString("size", size.name());
         root.setTag("pos", NBTUtil.createPosTag(pos));

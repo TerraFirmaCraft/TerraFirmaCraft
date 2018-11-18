@@ -1,7 +1,6 @@
 /*
  * Work under Copyright. Licensed under the EUPL.
  * See the project README.md and LICENSE.txt for more information.
- *
  */
 
 package net.dries007.tfc.objects.te;
@@ -23,13 +22,12 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.inventory.ItemStackHandlerTFC;
+import net.dries007.tfc.objects.inventory.ItemStackHandlerTE;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public abstract class TESidedInventory extends TileEntity
 {
-
     protected final ItemStackHandler inventory;
 
     /*
@@ -42,7 +40,7 @@ public abstract class TESidedInventory extends TileEntity
     TESidedInventory(int inventorySize)
     {
         super();
-        inventory = new ItemStackHandlerTFC(this, inventorySize);
+        inventory = new ItemStackHandlerTE(this, inventorySize);
         this.markDirty();
     }
 
