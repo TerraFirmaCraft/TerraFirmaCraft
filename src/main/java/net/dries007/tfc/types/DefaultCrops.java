@@ -9,8 +9,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.registries.TFCRegistryEvent;
 import net.dries007.tfc.api.types.Crop;
-import net.dries007.tfc.api.types.TFCRegistries;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -43,7 +43,7 @@ public class DefaultCrops
     public static final ResourceLocation JUTE = new ResourceLocation(MOD_ID, "jute");
 
     @SubscribeEvent
-    public static void onPreRegisterRockCategory(TFCRegistries.RegisterPreBlock<Crop> event)
+    public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<Crop> event)
     {
         event.getRegistry().registerAll(
             new Crop.Builder(BARLEY, 0f, 40f, 4f, 35f, 20, 210, 8, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
