@@ -17,14 +17,17 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 
 import static net.dries007.tfc.Constants.GSON;
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class OreSpawnData
 {
@@ -44,8 +47,6 @@ public class OreSpawnData
 
     public static void preInit(File dir)
     {
-        TerraFirmaCraft.getLog().info("Loading or creating ore generation config file");
-
         File tfcDir = new File(dir, MOD_ID);
 
         if (!tfcDir.exists() && !tfcDir.mkdir()) throw new Error("Problem creating TFC config directory.");
@@ -67,13 +68,11 @@ public class OreSpawnData
                 throw new Error("Error reading config file.", e);
             }
         }
-        if (Strings.isNullOrEmpty(str))
+        else
         {
             try
             {
-                FileUtils.copyInputStreamToFile(OreSpawnData.class.getResourceAsStream("/assets/tfc/config/ore_spawn_data.json"), genFile);
-                str = FileUtils.readFileToString(genFile, Charset.defaultCharset());
-                if (Strings.isNullOrEmpty(str)) throw new RuntimeException("Default entry is empty... wut did u do");
+                str = IOUtils.toString(OreSpawnData.class.getResourceAsStream("/assets/tfc/config/ore_spawn_data.json"), Charset.defaultCharset());
             }
             catch (IOException e)
             {
@@ -90,33 +89,21 @@ public class OreSpawnData
             final String name = entry.getKey();
             final OreJson json = entry.getValue();
 
-            Ore ore = Ore.get(json.ore);
+            Ore ore = TFCRegistries.ORES.getValue(json.ore);
             if (ore == null)
             {
-                TerraFirmaCraft.getLog().warn("Problem parsing ore entry '" + name + "'. Ore is not defined. Skipping.");
-                return null;
-            }
-            SpawnSize size;
-            SpawnType shape;
-            try
-            {
-                size = SpawnSize.valueOf(json.size.toUpperCase());
-                shape = SpawnType.valueOf(json.shape.toUpperCase());
-            }
-            catch (IllegalArgumentException e)
-            {
-                TerraFirmaCraft.getLog().warn("Problem parsing ore entry '" + name + "'. Size / shape is not defined. Skipping.", e);
+                TerraFirmaCraft.getLog().warn("Problem parsing ore entry '{}'. Ore '{}' is not defined. Skipping.", name, json.ore);
                 return null;
             }
             List<Rock> blocks = new ArrayList<>();
             json.baseRocks.forEach(s ->
             {
-                Rock rock = Rock.get(s);
+                Rock rock = TFCRegistries.ROCKS.getValue(s);
                 if (rock == null)
                 {
-                    RockCategory category = RockCategory.get(s);
+                    RockCategory category = TFCRegistries.ROCK_CATEGORIES.getValue(s);
                     if (category == null)
-                        TerraFirmaCraft.getLog().warn("Problem parsing ore entry '" + name + "'. Rock / Rock Category '" + s + "' is not defined. Skipping.");
+                        TerraFirmaCraft.getLog().warn("Problem parsing ore entry '{}'. Rock / Rock Category '{}' is not defined. Skipping.", name, s);
                     else
                         blocks.addAll(category.getRocks());
                 }
@@ -126,7 +113,7 @@ public class OreSpawnData
                 }
             });
             totalWeight += 1.0D / (double) json.rarity;
-            return new OreEntry(ore, size, shape, blocks, json.rarity, json.minY, json.maxY, json.density);
+            return new OreEntry(ore, json.size, json.shape, blocks, json.rarity, json.minY, json.maxY, json.density);
         }).filter(Objects::nonNull).collect(Collectors.toList()));
     }
 
@@ -204,11 +191,11 @@ public class OreSpawnData
     }
 
     @SuppressWarnings("unused")
-    private class OreJson
+    private final class OreJson
     {
-        private String ore;
-        private String size;
-        private String shape;
+        private ResourceLocation ore;
+        private SpawnSize size;
+        private SpawnType shape;
 
         private int rarity;
         private int density;
@@ -218,6 +205,6 @@ public class OreSpawnData
         private int maxY;
 
         @SerializedName("base_rocks")
-        private List<String> baseRocks;
+        private List<ResourceLocation> baseRocks;
     }
 }

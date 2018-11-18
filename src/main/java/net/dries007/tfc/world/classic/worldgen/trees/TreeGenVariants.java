@@ -15,16 +15,15 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
-import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.api.util.ITreeGenerator;
 
 public class TreeGenVariants implements ITreeGenerator
 {
+    private static final PlacementSettings settings = ITreeGenerator.getDefaultSettings();
     private final String[] variants;
     private final boolean useRotation;
-    private static final PlacementSettings settings = ITreeGenerator.getDefaultSettings();
 
     /**
      * A tree generator which select a random structure to place. Can choose to use a random rotation as well
@@ -54,7 +53,7 @@ public class TreeGenVariants implements ITreeGenerator
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {
         String variant = variants[variants.length == 1 ? 0 : rand.nextInt(variants.length)];
-        ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree.name() + "/" + variant);
+        ResourceLocation base = new ResourceLocation(tree.getRegistryName() + "/" + variant);
 
         Template structureBase = manager.get(world.getMinecraftServer(), base);
         if (structureBase == null)

@@ -12,7 +12,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.MapGenBase;
+import net.minecraftforge.registries.ForgeRegistry;
 
+import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.world.classic.DataLayer;
@@ -54,8 +56,8 @@ public class MapGenCavesTFC extends MapGenBase
         double width = 1.5d + rainfall / 500d;
         int caveChance = 30 + (int) (rainfall / 50d);
 
-        width += Rock.get(rockLayer1[dlIndex]).getRockCategory().caveGenMod;
-        runs += Rock.get(rockLayer1[dlIndex]).getRockCategory().caveFreqMod;
+        width += ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer1[dlIndex]).getRockCategory().getCaveGenMod();
+        runs += ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer1[dlIndex]).getRockCategory().getCaveFreqMod();
 
         if (yCoord < 32) width *= 0.5;
         else if (yCoord < 64) width *= 0.65;

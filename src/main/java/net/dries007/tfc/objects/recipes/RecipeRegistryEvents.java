@@ -11,9 +11,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.objects.items.ceramics.ItemMold;
 
-import static net.dries007.tfc.Constants.MOD_ID;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class RecipeRegistryEvents
@@ -23,6 +24,7 @@ public class RecipeRegistryEvents
     {
         IForgeRegistry<IRecipe> r = event.getRegistry();
 
+        // TOOLHEAD + STICK -> TOOL
         r.register(new MetalToolRecipe(Metal.ItemType.PICK_HEAD, Metal.ItemType.PICK).setRegistryName(MOD_ID, "metal_pick"));
         r.register(new MetalToolRecipe(Metal.ItemType.SHOVEL_HEAD, Metal.ItemType.SHOVEL).setRegistryName(MOD_ID, "metal_shovel"));
         r.register(new MetalToolRecipe(Metal.ItemType.AXE_HEAD, Metal.ItemType.AXE).setRegistryName(MOD_ID, "metal_axe"));
@@ -36,5 +38,13 @@ public class RecipeRegistryEvents
         r.register(new MetalToolRecipe(Metal.ItemType.PROPICK_HEAD, Metal.ItemType.PROPICK).setRegistryName(MOD_ID, "metal_propick"));
         r.register(new MetalToolRecipe(Metal.ItemType.KNIFE_BLADE, Metal.ItemType.KNIFE).setRegistryName(MOD_ID, "metal_knife"));
         r.register(new MetalToolRecipe(Metal.ItemType.SCYTHE_BLADE, Metal.ItemType.SCYTHE).setRegistryName(MOD_ID, "metal_scythe"));
+
+        // MOLD -> ITEM + MOLD (left in grid)
+        for (Metal.ItemType type : Metal.ItemType.values())
+        {
+            ItemMold mold = ItemMold.get(type);
+            if (mold == null) continue; // Skip types that don't have mods.
+            r.register(new UnmoldRecipe(mold).setRegistryName(MOD_ID, "unmold_" + type.name().toLowerCase()));
+        }
     }
 }

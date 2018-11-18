@@ -5,8 +5,8 @@
 
 package net.dries007.tfc.objects.items;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -22,16 +22,18 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.util.Size;
-import net.dries007.tfc.api.util.Weight;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
@@ -44,13 +46,11 @@ import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 @ParametersAreNonnullByDefault
 public class ItemFireStarter extends ItemTFC
 {
-    private static final Predicate<EntityItem> IS_STICK = OreDictionaryHelper.createPredicateItemEntity("stickWood");
-    private static final Predicate<EntityItem> IS_KINDLING = OreDictionaryHelper.createPredicateItemEntity("kindling", "paper", "hay");
-
     public static boolean canIgnite(ItemStack stack)
     {
         if (stack.isEmpty()) return false;
         Item item = stack.getItem();
+
         //noinspection ConstantConditions
         return item == ItemsTFC.FIRESTARTER || item == Items.FLINT_AND_STEEL || item == Items.FIRE_CHARGE || item instanceof ItemFlintAndSteel;
     }
@@ -62,7 +62,7 @@ public class ItemFireStarter extends ItemTFC
         setNoRepair();
     }
 
-    @Override
+    /*@Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         //todo: move to public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
@@ -72,7 +72,7 @@ public class ItemFireStarter extends ItemTFC
         if (canStartFire(worldIn, playerIn) == null) return new ActionResult<>(EnumActionResult.FAIL, stack);
         playerIn.setActiveHand(handIn);
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-    }
+    }*/
 
     @Override
     public EnumAction getItemUseAction(ItemStack stack)
@@ -102,13 +102,13 @@ public class ItemFireStarter extends ItemTFC
         final int count = total - countLeft;
         final BlockPos pos = result.getBlockPos().add(0, 1, 0);
         final World world = player.world;
-        final float chance = world.rand.nextFloat(); // todo: raining etc?
+        final float chance = itemRand.nextFloat(); // todo: raining etc?
 
         if (world.isRemote) // Client
         {
-            if (chance > 0.7 && world.rand.nextFloat() < count / (double) total)
+            if (chance > 0.7 && itemRand.nextFloat() < count / (double) total)
                 world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, result.hitVec.x, result.hitVec.y, result.hitVec.z, 0.0F, 0.1F, 0.0F);
-            if (chance > 0.7 && countLeft < 10 && world.rand.nextFloat() < count / (double) total)
+            if (chance > 0.7 && countLeft < 10 && itemRand.nextFloat() < count / (double) total)
                 world.spawnParticle(EnumParticleTypes.FLAME, result.hitVec.x, result.hitVec.y, result.hitVec.z, 0.0F, 0.0F, 0.0F);
         }
         else if (countLeft == 1) // Server, and last tick of use
@@ -137,21 +137,55 @@ public class ItemFireStarter extends ItemTFC
             }
             else
             {
-                // Fire pit
+                // Try fire pit
                 stack.damageItem(1, player);
 
-                final List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 0.5, pos.getZ() + 1), i -> IS_KINDLING.test(i) || IS_STICK.test(i));
+                final List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 2, 1)));
+                final List<EntityItem> stuffToUse = new ArrayList<>();
 
-                int sticks = list.stream().filter(IS_STICK).mapToInt(e -> e.getItem().getCount()).sum();
-                int kindling = list.stream().filter(IS_KINDLING).mapToInt(e -> e.getItem().getCount()).sum();
+                int sticks = 3, kindling = 1;
+                EntityItem log = null;
 
-                if (sticks < 3) return;
-
-                if (world.rand.nextFloat() < chance + Math.min(kindling * 0.1, 0.5))
+                for (EntityItem entity : items)
                 {
-                    //noinspection ConstantConditions
-                    world.setBlockState(pos, BlocksTFC.FIREPIT.getDefaultState().withProperty(LIT, true), 11); //todo: fire
-                    list.forEach(Entity::setDead);
+                    if (OreDictionaryHelper.doesStackMatchOre(entity.getItem(), "stickWood"))
+                    {
+                        sticks -= entity.getItem().getCount();
+                        stuffToUse.add(entity);
+                    }
+                    else if (OreDictionaryHelper.doesStackMatchOre(entity.getItem(), "kindling"))
+                    {
+                        kindling -= entity.getItem().getCount();
+                        stuffToUse.add(entity);
+                    }
+                    else if (log == null && OreDictionaryHelper.doesStackMatchOre(entity.getItem(), "logWood"))
+                    {
+                        log = entity;
+                    }
+                }
+
+                if (sticks <= 0 && kindling <= 0 && log != null)
+                {
+                    final float kindlingModifier = Math.min(-0.1f * (float) kindling, 0.5f);
+                    if (itemRand.nextFloat() < chance + kindlingModifier)
+                    {
+                        //noinspection ConstantConditions
+                        world.setBlockState(pos, BlocksTFC.FIREPIT.getDefaultState().withProperty(LIT, true));
+                        TEFirePit te = Helpers.getTE(world, pos, TEFirePit.class);
+                        if (te != null)
+                        {
+                            te.onCreate(log.getItem());
+                        }
+                        stuffToUse.forEach(Entity::setDead);
+                        log.getItem().shrink(1);
+                        if (log.getItem().getCount() == 0)
+                            log.setDead();
+                    }
+                }
+                else
+                {
+                    // Else, start a fire
+                    // todo: start a fire
                 }
             }
         }

@@ -5,14 +5,15 @@
 
 package net.dries007.tfc.api.types;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.function.BiFunction;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.objects.blocks.stone.*;
 
 import static net.dries007.tfc.api.types.Rock.FallingBlockType.*;
 
@@ -21,57 +22,21 @@ import static net.dries007.tfc.api.types.Rock.FallingBlockType.*;
  */
 public class Rock extends IForgeRegistryEntry.Impl<Rock>
 {
-    @Nonnull
-    public static Collection<Rock> values()
-    {
-        return Collections.unmodifiableCollection(TFCRegistries.getRocks().getValuesCollection());
-    }
-
-    @Nullable
-    public static Rock get(String name)
-    {
-        return values().stream().filter(x -> x.name().equals(name)).findFirst().orElse(null);
-    }
-
-    private static int i = -1;
-
-    @Nullable
-    public static Rock get(int id)
-    {
-        return values().stream().filter(x -> x.id == id).findFirst().orElse(null);
-    }
-
-    private final ResourceLocation name;
     private final RockCategory rockCategory;
-    private final int id;
 
     public Rock(@Nonnull ResourceLocation name, @Nonnull RockCategory rockCategory)
     {
         setRegistryName(name);
-        this.id = ++i;
         this.rockCategory = rockCategory;
-        this.name = name;
+        //noinspection ConstantConditions
+        if (rockCategory == null)
+            throw new IllegalArgumentException("Rock category is not allowed to be null (on rock " + name + ")");
     }
 
     public Rock(@Nonnull ResourceLocation name, @Nonnull ResourceLocation categoryName)
     {
-        setRegistryName(name);
-        this.id = ++i;
-        this.name = name;
-        this.rockCategory = TFCRegistries.getRockCategories().getValue(categoryName);
-        if (rockCategory == null)
-            throw new IllegalStateException("Rock category '" + categoryName.toString() + "' is not allowed to be null");
-    }
-
-    @Nonnull
-    public String name()
-    {
-        return name.getPath();
-    }
-
-    public int getId()
-    {
-        return id;
+        //noinspection ConstantConditions
+        this(name, TFCRegistries.ROCK_CATEGORIES.getValue(categoryName));
     }
 
     public RockCategory getRockCategory()
@@ -79,9 +44,15 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         return rockCategory;
     }
 
+    @Override
+    public String toString()
+    {
+        return String.valueOf(getRegistryName());
+    }
+
     public enum Type
     {
-        RAW(Material.ROCK, NO_FALL, false), // Todo: add collapsing when broken
+        RAW(Material.ROCK, NO_FALL, false, BlockRockRaw::new), // Todo: add collapsing when broken
         SMOOTH(Material.ROCK, NO_FALL, false),
         COBBLE(Material.ROCK, FALL_HORIZONTAL, false),
         BRICKS(Material.ROCK, NO_FALL, false),
@@ -92,19 +63,28 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         DRY_GRASS(Material.GRASS, FALL_HORIZONTAL, true),
         CLAY(Material.GRASS, FALL_VERTICAL, false),
         CLAY_GRASS(Material.GRASS, FALL_VERTICAL, true),
-        FARMLAND(Material.GROUND, FALL_VERTICAL, false),
-        PATH(Material.GROUND, FALL_VERTICAL, false);
+        FARMLAND(Material.GROUND, FALL_VERTICAL, false, BlockFarmlandTFC::new),
+        PATH(Material.GROUND, FALL_VERTICAL, false, BlockPathTFC::new);
 
         public final Material material;
         public final boolean isGrass;
 
         private final FallingBlockType gravType;
+        private final BiFunction<Type, Rock, BlockRockVariant> supplier;
 
         Type(Material material, FallingBlockType gravType, boolean isGrass)
+        {
+            // If no fall + no grass, then normal. If it can fall, then eiether fallable or fallable + connected (since grass always falls)
+            this(material, gravType, isGrass, (gravType == NO_FALL && !isGrass) ? BlockRockVariant::new :
+                (isGrass ? BlockRockVariantConnected::new : BlockRockVariantFallable::new));
+        }
+
+        Type(Material material, FallingBlockType gravType, boolean isGrass, BiFunction<Type, Rock, BlockRockVariant> supplier)
         {
             this.material = material;
             this.gravType = gravType;
             this.isGrass = isGrass;
+            this.supplier = supplier;
         }
 
         public boolean canFall()
@@ -115,6 +95,11 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         public boolean canFallHorizontal()
         {
             return gravType == FALL_HORIZONTAL;
+        }
+
+        public BlockRockVariant create(Rock rock)
+        {
+            return supplier.apply(this, rock);
         }
 
         public Type getNonGrassVersion()
@@ -146,7 +131,7 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         }
     }
 
-    protected enum FallingBlockType
+    public enum FallingBlockType
     {
         NO_FALL,
         FALL_VERTICAL,

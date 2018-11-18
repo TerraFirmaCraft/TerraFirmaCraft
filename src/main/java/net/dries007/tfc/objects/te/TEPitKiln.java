@@ -23,29 +23,24 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.objects.items.wood.ItemLogTFC;
 import net.dries007.tfc.util.IFireable;
-
-import static net.dries007.tfc.Constants.MOD_ID;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 public class TEPitKiln extends TileEntity implements ITickable
 {
-    public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "pit_kiln");
-
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
-    public static final int BURN_TICKS = 8000; // 8 In-game Hours
     private final NonNullList<ItemStack> logs = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> straw = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
@@ -210,7 +205,7 @@ public class TEPitKiln extends TileEntity implements ITickable
         }
         if (count < STRAW_NEEDED) return;
         count = getLogCount();
-        if (item.getItem() instanceof ItemLogTFC && count < WOOD_NEEDED)
+        if (OreDictionaryHelper.doesStackMatchOre(item, "logWood") && count < WOOD_NEEDED)
         {
             addLog(item.splitStack(1));
             updateBlock();
@@ -226,7 +221,7 @@ public class TEPitKiln extends TileEntity implements ITickable
     public void updateBlock()
     {
         IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 2); // sync TE
+        world.notifyBlockUpdate(pos, state, state, 3); // sync TE
         markDirty(); // make sure everything saves to disk
     }
 
@@ -261,7 +256,7 @@ public class TEPitKiln extends TileEntity implements ITickable
         {
             if (!world.isSideSolid(pos.offset(facing), facing.getOpposite())) return false;
         }
-        burnTicksToGo = BURN_TICKS;
+        burnTicksToGo = ConfigTFC.GENERAL.pitKilnTime;
         updateBlock();
         world.setBlockState(above, Blocks.FIRE.getDefaultState());
         return true;

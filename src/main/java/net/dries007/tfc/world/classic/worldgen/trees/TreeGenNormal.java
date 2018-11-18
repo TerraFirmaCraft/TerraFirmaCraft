@@ -15,21 +15,19 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
-import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.api.util.ITreeGenerator;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 
 public class TreeGenNormal implements ITreeGenerator
 {
-    private final int heightMin;
-    private final int heightRange;
-
     private static final PlacementSettings settingsFull = ITreeGenerator.getDefaultSettings();
     private static final PlacementSettings settingsWeak = ITreeGenerator.getDefaultSettings().setIntegrity(0.5f);
+    private final int heightMin;
+    private final int heightRange;
 
     /**
      * A basic tree generator. It will generate a structure found in /assets/tfc/[TREE NAME]/base.nbt
@@ -47,8 +45,8 @@ public class TreeGenNormal implements ITreeGenerator
     @Override
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
     {
-        ResourceLocation base = new ResourceLocation(Constants.MOD_ID, tree.name() + "/base");
-        ResourceLocation overlay = new ResourceLocation(Constants.MOD_ID, tree.name() + "/overlay");
+        ResourceLocation base = new ResourceLocation(tree.getRegistryName() + "/base");
+        ResourceLocation overlay = new ResourceLocation(tree.getRegistryName() + "/overlay");
 
         Template structureBase = manager.get(world.getMinecraftServer(), base);
         Template structureOverlay = manager.get(world.getMinecraftServer(), overlay);
