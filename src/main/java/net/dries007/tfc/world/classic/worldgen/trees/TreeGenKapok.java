@@ -18,10 +18,9 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
-import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.api.util.ITreeGenerator;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
@@ -32,13 +31,12 @@ import static net.minecraft.block.BlockVine.*;
 
 public class TreeGenKapok implements ITreeGenerator
 {
-    private IBlockState trunk;
     private static final PlacementSettings settings = ITreeGenerator.getDefaultSettings();
-    private IBlockState bark;
-
     private static final BlockPos[] trunkPos = new BlockPos[] {
         new BlockPos(0, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 0, -1), new BlockPos(-1, 0, -1)
     };
+    private IBlockState trunk;
+    private IBlockState bark;
 
     @Override
     public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
@@ -64,13 +62,13 @@ public class TreeGenKapok implements ITreeGenerator
             if (z1 == 0 || z1 == -1)
                 z1 = z1 * 3 + 1;
             type = 1 + rand.nextInt(3);
-            placeBranch(manager, world, pos.add(x1, y1, z1), tree.name() + "/branch" + type);
+            placeBranch(manager, world, pos.add(x1, y1, z1), tree.getRegistryName() + "/branch" + type);
             checkAndPlace(world, pos.add(x1 - Math.abs(x1) / x1, y1 - 1, z1 - Math.abs(z1) / z1), true);
         }
 
         for (int i = -1; i < height; i++)
             placeTrunk(world, pos.add(0, i, 0));
-        placeBranch(manager, world, pos.add(0, height, 0), tree.name() + "/top");
+        placeBranch(manager, world, pos.add(0, height, 0), tree.getRegistryName() + "/top");
 
     }
 
@@ -96,7 +94,7 @@ public class TreeGenKapok implements ITreeGenerator
 
     private void placeBranch(TemplateManager manager, World world, BlockPos pos, String name)
     {
-        ResourceLocation base = new ResourceLocation(Constants.MOD_ID, name);
+        ResourceLocation base = new ResourceLocation(name);
         Template structureBase = manager.get(world.getMinecraftServer(), base);
 
         if (structureBase == null)

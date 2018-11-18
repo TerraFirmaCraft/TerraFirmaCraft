@@ -15,7 +15,6 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -29,7 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.Metal;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.te.TEIngotPile;
@@ -67,7 +66,7 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         TEIngotPile te = Helpers.getTE(source, pos, TEIngotPile.class);
-        double y = te != null ? 0.125 * (te.getCount() / 8) : 1;
+        double y = te != null ? 0.125 * (te.getCount() / 8.0) : 1;
         return new AxisAlignedBB(0d, 0d, 0d, 1d, y, 1d);
     }
 
@@ -83,7 +82,7 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
         TEIngotPile te = Helpers.getTE(worldIn, pos, TEIngotPile.class);
-        double y = te != null ? 0.125 * (te.getCount() / 8) : 1;
+        double y = te != null ? 0.125 * (te.getCount() / 8.0) : 1;
         return new AxisAlignedBB(0d, 0d, 0d, 1d, y, 1d);
     }
 
@@ -93,7 +92,7 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
         TEIngotPile te = Helpers.getTE(worldIn, pos, TEIngotPile.class);
-        double y = te != null ? 0.125 * (te.getCount() / 8) : 1;
+        double y = te != null ? 0.125 * (te.getCount() / 8.0) : 1;
         return new AxisAlignedBB(0d, 0d, 0d, 1d, y, 1d);
     }
 
@@ -146,8 +145,8 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
                     {
                         worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                     }
-                    InventoryHelper.spawnItemStack(worldIn, posTop.getX(), posTop.down().getY() + 0.125 * (te.getCount() / 8 + 2), posTop.getZ(), new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
-
+                    playerIn.addItemStackToInventory(new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
+//                    InventoryHelper.spawnItemStack(worldIn, posTop.getX(), posTop.down().getY() + 0.125 * (te.getCount() / 8 + 2), posTop.getZ(), );
                 }
                 return true;
             }
@@ -165,7 +164,8 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
                             {
                                 worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                             }
-                            InventoryHelper.spawnItemStack(worldIn, posTop.getX(), posTop.getY() + 0.125 * (te.getCount() / 8 + 2), posTop.getZ(), new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
+                            playerIn.addItemStackToInventory(new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
+                            //InventoryHelper.spawnItemStack(worldIn, posTop.getX(), posTop.getY() + 0.125 * (te.getCount() / 8 + 2), posTop.getZ(), new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
                         }
                         return true;
                     }
@@ -175,11 +175,13 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
         TEIngotPile te = Helpers.getTE(world, pos, TEIngotPile.class);
-        return new ItemStack(ItemMetal.get((te != null ? te.getMetal() : Metal.UNKNOWN), Metal.ItemType.INGOT));
+        if (te == null) return false;
+        return te.getCount() == 64;
     }
 
     private boolean collapseDown(World world, BlockPos pos)
@@ -207,5 +209,16 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
             return true;
         }
         return false;
+    }
+
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        TEIngotPile te = Helpers.getTE(world, pos, TEIngotPile.class);
+        if (te != null)
+        {
+            return new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT));
+        }
+        return ItemStack.EMPTY;
     }
 }

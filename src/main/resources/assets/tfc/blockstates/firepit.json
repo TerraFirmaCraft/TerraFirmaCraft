@@ -2,16 +2,29 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "particle": "tfc:blocks/devices/firepit_off",
-      "texture": "tfc:blocks/devices/firepit_off"
+      "particle": "tfc:blocks/devices/firepit/base",
+      "unlit": "tfc:blocks/devices/firepit/base",
+      "lit": "tfc:blocks/devices/firepit/base_lit"
     },
-    "model": "tfc:flat"
+    "model": "tfc:firepit/unlit"
   },
   "variants": {
-    "normal": [{}],
     "lit": {
-      "true": {"textures": {"texture": "tfc:blocks/devices/firepit_on"}},
-      "false": {}
-    }
+      "true": {
+        "model": "tfc:firepit/lit"
+      },
+      "false": {
+        "model": "tfc:firepit/unlit"
+      }
+    },
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
+    "normal": [
+      {}
+    ]
+
   }
 }

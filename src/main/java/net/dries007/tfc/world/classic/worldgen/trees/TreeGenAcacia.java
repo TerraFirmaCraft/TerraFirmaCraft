@@ -20,10 +20,10 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
-import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.ITreeGenerator;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.api.util.ITreeGenerator;
+import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 
@@ -54,7 +54,7 @@ public class TreeGenAcacia implements ITreeGenerator
         {
             y3 = rand.nextInt(3) + 2;
             side = sides.get(rand.nextInt(sides.size()));
-            placeBranch(manager, world, pos.offset(side).add(0, y3, 0), tree.name() + "/branch3");
+            placeBranch(manager, world, pos.offset(side).add(0, y3, 0), tree.getRegistryName() + "/branch3");
         }
         for (int i = 0; i < branches; i++)
         {
@@ -66,7 +66,7 @@ public class TreeGenAcacia implements ITreeGenerator
             for (int j = 1; j < x1; j++)
                 placeLog(world, pos.add(0, y1 - j, 0).offset(face, x1 - j), true);
             int branch = 1 + rand.nextInt(2);
-            placeBranch(manager, world, pos.add(0, y1, 0).offset(face, x1), tree.name() + "/branch" + branch);
+            placeBranch(manager, world, pos.add(0, y1, 0).offset(face, x1), tree.getRegistryName() + "/branch" + branch);
         }
         for (int i = 0; i < height; i++)
         {
@@ -79,12 +79,12 @@ public class TreeGenAcacia implements ITreeGenerator
             }
             placeLog(world, pos.add(0, i, 0), false);
         }
-        placeBranch(manager, world, pos.add(0, height, 0), tree.name() + "/branch3");
+        placeBranch(manager, world, pos.add(0, height, 0), tree.getRegistryName() + "/branch3");
     }
 
     private void placeBranch(TemplateManager manager, World world, BlockPos pos, String name)
     {
-        ResourceLocation base = new ResourceLocation(Constants.MOD_ID, name);
+        ResourceLocation base = new ResourceLocation(TFCConstants.MOD_ID, name);
         Template structureBase = manager.get(world.getMinecraftServer(), base);
 
         if (structureBase == null)

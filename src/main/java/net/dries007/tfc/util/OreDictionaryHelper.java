@@ -6,6 +6,7 @@
 package net.dries007.tfc.util;
 
 import java.util.function.Predicate;
+import javax.annotation.Nonnull;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
@@ -20,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
 
 import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
@@ -84,6 +86,52 @@ public class OreDictionaryHelper
         MAP.clear(); // No need to keep this stuff around
     }
 
+    public static Predicate<EntityItem> createPredicateItemEntity(String... names)
+    {
+        return input -> input.isEntityAlive() && createPredicateStack(names).test(input.getItem());
+    }
+
+    /**
+     * Checks if an ItemStack has an OreDictionary entry that matches 'name'.
+     */
+    public static boolean doesStackMatchOre(@Nonnull ItemStack stack, String name)
+    {
+        if (!OreDictionary.doesOreNameExist(name))
+        {
+            TerraFirmaCraft.getLog().warn("doesStackMatchOre called with non-existing name. stack: {} name: {}", stack, name);
+            return false;
+        }
+        if (stack.isEmpty()) return false;
+        int needle = OreDictionary.getOreID(name);
+        for (int id : OreDictionary.getOreIDs(stack))
+        {
+            if (id == needle) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks is an ItemStack has ore names, which have a certain prefix
+     * used to search for all 'ingots' / all 'plates' etc.
+     */
+    public static boolean doesStackMatchOrePrefix(@Nonnull ItemStack stack, String prefix)
+    {
+        if (stack.isEmpty()) return false;
+        int[] ids = OreDictionary.getOreIDs(stack);
+        for (int id : ids)
+        {
+            String oreName = OreDictionary.getOreName(id);
+            if (oreName.length() >= prefix.length())
+            {
+                if (oreName.substring(0, prefix.length()).equals(prefix))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private static Predicate<ItemStack> createPredicateStack(String... names)
     {
         return input -> {
@@ -96,14 +144,9 @@ public class OreDictionaryHelper
         };
     }
 
-    public static Predicate<EntityItem> createPredicateItemEntity(String... names)
-    {
-        return input -> input.isEntityAlive() && createPredicateStack(names).test(input.getItem());
-    }
-
     private static void register(Thing thing, Object... parts)
     {
-        if (done) throw new IllegalStateException("Cannot use the helper to register after init has past.");
+        if (done) throw new IllegalStateException("Cannot use the helper to register after postInit has past.");
         MAP.put(thing, toString(parts));
     }
 
@@ -113,39 +156,39 @@ public class OreDictionaryHelper
         {
             case RAW:
                 MAP.put(thing, toString(prefixParts, "stone"));
-                MAP.put(thing, toString(prefixParts, "stone", rock));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory()));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRegistryName().getPath()));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().getRegistryName().getPath()));
                 break;
             case SMOOTH:
                 MAP.put(thing, toString(prefixParts, "stone"));
                 MAP.put(thing, toString(prefixParts, "stone", "polished"));
-                MAP.put(thing, toString(prefixParts, "stone", rock));
-                MAP.put(thing, toString(prefixParts, "stone", rock, "polished"));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory()));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory(), "polished"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRegistryName().getPath()));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRegistryName().getPath(), "polished"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().getRegistryName().getPath()));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().getRegistryName().getPath(), "polished"));
                 break;
             case COBBLE:
                 MAP.put(thing, toString(prefixParts, "cobblestone"));
-                MAP.put(thing, toString(prefixParts, "cobblestone", rock));
-                MAP.put(thing, toString(prefixParts, "cobblestone", rock.getRockCategory()));
+                MAP.put(thing, toString(prefixParts, "cobblestone", rock.getRegistryName().getPath()));
+                MAP.put(thing, toString(prefixParts, "cobblestone", rock.getRockCategory().getRegistryName().getPath()));
                 break;
             case BRICKS:
                 MAP.put(thing, toString(prefixParts, "stone", "brick"));
-                MAP.put(thing, toString(prefixParts, "stone", rock, "brick"));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory(), "brick"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRegistryName().getPath(), "brick"));
+                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().getRegistryName().getPath(), "brick"));
                 break;
             case CLAY_GRASS:
                 MAP.put(thing, toString(prefixParts, "clay"));
-                MAP.put(thing, toString(prefixParts, "clay", rock));
-                MAP.put(thing, toString(prefixParts, "clay", rock.getRockCategory()));
+                MAP.put(thing, toString(prefixParts, "clay", rock.getRegistryName().getPath()));
+                MAP.put(thing, toString(prefixParts, "clay", rock.getRockCategory().getRegistryName().getPath()));
                 MAP.put(thing, toString(prefixParts, "clay", "grass"));
-                MAP.put(thing, toString(prefixParts, "clay", rock, "grass"));
-                MAP.put(thing, toString(prefixParts, "clay", rock.getRockCategory(), "grass"));
+                MAP.put(thing, toString(prefixParts, "clay", rock.getRegistryName().getPath(), "grass"));
+                MAP.put(thing, toString(prefixParts, "clay", rock.getRockCategory().getRegistryName().getPath(), "grass"));
                 break;
             case DRY_GRASS:
                 MAP.put(thing, toString(prefixParts, type, "dry"));
-                MAP.put(thing, toString(prefixParts, type, rock, "dry"));
-                MAP.put(thing, toString(prefixParts, type, rock.getRockCategory(), "dry"));
+                MAP.put(thing, toString(prefixParts, type, rock.getRegistryName().getPath(), "dry"));
+                MAP.put(thing, toString(prefixParts, type, rock.getRockCategory().getRegistryName().getPath(), "dry"));
                 break;
             case SAND:
             case GRAVEL:
@@ -154,8 +197,8 @@ public class OreDictionaryHelper
             case CLAY:
             default:
                 MAP.put(thing, toString(prefixParts, type));
-                MAP.put(thing, toString(prefixParts, type, rock));
-                MAP.put(thing, toString(prefixParts, type, rock.getRockCategory()));
+                MAP.put(thing, toString(prefixParts, type, rock.getRegistryName().getPath()));
+                MAP.put(thing, toString(prefixParts, type, rock.getRockCategory().getRegistryName().getPath()));
         }
     }
 
