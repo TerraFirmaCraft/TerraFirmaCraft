@@ -24,8 +24,7 @@ import net.dries007.tfc.client.TFCKeybindings;
 import net.dries007.tfc.cmd.HeatCommand;
 import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.cmd.TreeGenCommand;
-import net.dries007.tfc.network.PacketChunkData;
-import net.dries007.tfc.network.PacketKnappingUpdate;
+import net.dries007.tfc.network.*;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
@@ -34,7 +33,7 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
-import net.dries007.tfc.world.classic.chunkdata.ChunkCapabilityHandler;
+import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
 import net.dries007.tfc.world.classic.worldgen.*;
 
 @SuppressWarnings("DefaultAnnotationParam")
@@ -106,14 +105,20 @@ public class TerraFirmaCraft
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new TFCGuiHandler());
         network = NetworkRegistry.INSTANCE.newSimpleChannel(TFCConstants.MOD_ID);
         int id = 0;
-        network.registerMessage(PacketKnappingUpdate.Handler.class, PacketKnappingUpdate.class, ++id, Side.SERVER);
-        network.registerMessage(PacketChunkData.Handler.class, PacketChunkData.class, ++id, Side.CLIENT);
-        ChunkCapabilityHandler.preInit();
+        // Received on server
+        network.registerMessage(new PacketKnappingUpdate.Handler(), PacketKnappingUpdate.class, ++id, Side.SERVER);
+        network.registerMessage(new PacketAnvilButton.Handler(), PacketAnvilButton.class, ++id, Side.SERVER);
+        // Received on client
+        network.registerMessage(new PacketAnvilRecipe.Handler(), PacketAnvilRecipe.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketChunkData.Handler(), PacketChunkData.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketCapabilityContainerUpdate.Handler(), PacketCapabilityContainerUpdate.class, ++id, Side.CLIENT);
 
         CalenderTFC.reload();
 
         EntitiesTFC.preInit();
         OreSpawnData.preInit(event.getModConfigurationDirectory());
+
+        CapabilityChunkData.preInit();
         CapabilityItemSize.preInit();
         CapabilityItemHeat.preInit();
 

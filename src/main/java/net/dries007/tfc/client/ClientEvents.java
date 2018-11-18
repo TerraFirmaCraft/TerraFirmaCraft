@@ -153,7 +153,7 @@ public class ClientEvents
         IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         if (heat != null)
         {
-            heat.addHeatInfo(stack, tt, true);
+            heat.addHeatInfo(stack, tt);
         }
 
         if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode

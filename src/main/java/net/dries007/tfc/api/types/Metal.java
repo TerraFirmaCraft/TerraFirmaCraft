@@ -101,7 +101,15 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         TIER_II, // Not implemented, but presumed to be a more advanced, more capable version of the pit kiln.
         TIER_III,
         TIER_IV,
-        TIER_V
+        TIER_V;
+
+        private static Tier[] values = values();
+
+        @Nonnull
+        public static Tier valueOf(int tier)
+        {
+            return tier < 0 || tier > values.length ? TIER_I : values[tier];
+        }
     }
 
     public enum ItemType

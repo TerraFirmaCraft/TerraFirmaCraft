@@ -30,10 +30,7 @@ import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
-import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
-import net.dries007.tfc.objects.blocks.stone.BlockWallTFC;
+import net.dries007.tfc.objects.blocks.stone.*;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockHeat;
@@ -364,6 +361,11 @@ public final class BlocksTFC
             for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
                 inventoryItemBlocks.add(new ItemBlockTFC(register(r, "stone/button/" + rock.getRegistryName().getPath().toLowerCase(), new BlockButtonStoneTFC(rock), CT_DECORATIONS)));
 
+            // Anvils are special because they don't have an ItemBlock + they only exist for certian types
+            for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
+                if (rock.getRockCategory().hasAnvil())
+                    register(r, "anvil/" + rock.getRegistryName().getPath(), new BlockStoneAnvil(rock));
+
             allWallBlocks = b.build();
             allStairsBlocks = stairs.build();
             allSlabBlocks = slab.build();
@@ -442,6 +444,7 @@ public final class BlocksTFC
         register(TEToolRack.class, "tool_rack");
         register(TEBellows.class, "bellows");
         register(TECharcoalForge.class, "charcoal_forge");
+        register(TEAnvilTFC.class, "anvil");
 
     }
 

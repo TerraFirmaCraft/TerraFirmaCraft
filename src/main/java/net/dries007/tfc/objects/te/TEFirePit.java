@@ -12,6 +12,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -23,11 +25,12 @@ import net.dries007.tfc.objects.recipes.heat.HeatRecipe;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.FuelManager;
+import net.dries007.tfc.util.ITileFields;
 
 import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
 
 @ParametersAreNonnullByDefault
-public class TEFirePit extends TEInventory implements ITickable
+public class TEFirePit extends TEInventory implements ITickable, ITileFields
 {
     // Slot 0 - 3 = fuel slots with 3 being input, 4 = normal input slot, 5 and 6 are output slots 1 + 2
     public static final int SLOT_FUEL_CONSUME = 0;
@@ -35,6 +38,8 @@ public class TEFirePit extends TEInventory implements ITickable
     public static final int SLOT_ITEM_INPUT = 4;
     public static final int SLOT_OUTPUT_1 = 5;
     public static final int SLOT_OUTPUT_2 = 6;
+
+    public static final int FIELD_TEMPERATURE = 0;
 
     private boolean requiresSlotUpdate = false;
     private float temperature; // Current Temperature
@@ -114,7 +119,6 @@ public class TEFirePit extends TEInventory implements ITickable
                     if (temperature > itemTemp)
                     {
                         CapabilityItemHeat.addTemp(cap, CapabilityItemHeat.ITEM_HEATING_MODIFIER);
-                        stack.setTagCompound(cap.serializeNBT());
                     }
 
                     // This will melt + consume the input stack
@@ -283,4 +287,41 @@ public class TEFirePit extends TEInventory implements ITickable
         }
     }
 
+    @Override
+    public int getFieldCount()
+    {
+        return 1;
+    }
+
+    @Override
+    public void setField(int index, int value)
+    {
+        switch (index)
+        {
+            case FIELD_TEMPERATURE:
+                this.temperature = (float) value;
+                break;
+            default:
+                TerraFirmaCraft.getLog().warn("Invalid Field ID {} in TEFirePit#setField", index);
+        }
+    }
+
+    @Override
+    public int getField(int index)
+    {
+        switch (index)
+        {
+            case FIELD_TEMPERATURE:
+                return (int) temperature;
+            default:
+                TerraFirmaCraft.getLog().warn("Invalid Field ID {} in TEFirePit#getField", index);
+                return 0;
+        }
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return oldState.getBlock() != newSate.getBlock();
+    }
 }

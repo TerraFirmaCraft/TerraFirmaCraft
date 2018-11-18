@@ -40,6 +40,7 @@ public class CapabilityItemHeat
      */
     public static float adjustTemp(float temp, float heatCapacity, long ticksSinceUpdate)
     {
+        if (ticksSinceUpdate == -1) return 0;
         final float newTemp = temp - heatCapacity * (float) ticksSinceUpdate * (float) ConfigTFC.GENERAL.temperatureModifier;
         return newTemp < MIN_TEMPERATURE ? MIN_TEMPERATURE : newTemp;
     }
@@ -53,7 +54,6 @@ public class CapabilityItemHeat
         if (cap != null)
         {
             addTemp(cap, modifier);
-            stack.setTagCompound(cap.serializeNBT());
         }
     }
 

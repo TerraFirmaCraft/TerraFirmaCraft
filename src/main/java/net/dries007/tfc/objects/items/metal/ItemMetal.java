@@ -154,6 +154,7 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     }
 
     @Override
+    @Nonnull
     public EnumRarity getRarity(ItemStack stack)
     {
         switch (metal.getTier())

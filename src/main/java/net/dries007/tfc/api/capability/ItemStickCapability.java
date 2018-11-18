@@ -34,15 +34,12 @@ public class ItemStickCapability extends ItemHeatHandler
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addHeatInfo(ItemStack stack, List<String> text, boolean clearStackNBT)
+    public void addHeatInfo(ItemStack stack, List<String> text)
     {
         float temperature = getTemperature();
         if (temperature > MELTING_POINT * 0.9f)
             text.add(I18n.format("tfc.enum.heat.torch.lit"));
         else if (temperature > 1f)
-            text.add(I18n.format("tfc.enum.heat.torch.catchingFire"));
-
-        if (clearStackNBT && temperature <= 0 && stack.hasTagCompound())
-            stack.setTagCompound(null);
+            text.add(I18n.format("tfc.enum.heat.torch.catching_fire"));
     }
 }

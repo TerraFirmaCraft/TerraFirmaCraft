@@ -131,7 +131,6 @@ public class ItemSmallVessel extends ItemFiredPottery
     @Override
     public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
     {
-        NBTTagCompound nbt = input.getTagCompound();
         // Case 1: The input is a filled vessel
         IItemHandler capItemHandler = input.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (capItemHandler instanceof ISmallVesselHandler)
@@ -146,11 +145,9 @@ public class ItemSmallVessel extends ItemFiredPottery
                 cap.setFluidMode(true);
                 cap.fill(new FluidStack(FluidsTFC.getMetalFluid(alloy.getResult()), alloy.getAmount()), true);
                 cap.setTemperature(1600f);
-                nbt = cap.serializeNBT();
             }
 
         }
-        input.setTagCompound(nbt);
         return input;
     }
 
@@ -238,8 +235,16 @@ public class ItemSmallVessel extends ItemFiredPottery
             fluidMode = tank.getFluidAmount() > 0;
             nbt.setBoolean("fluidMode", fluidMode);
 
-            nbt.setFloat("heat", getTemperature());
-            nbt.setLong("ticks", CalenderTFC.getTotalTime());
+            float temp = getTemperature();
+            nbt.setFloat("heat", temp);
+            if (temp <= 0)
+            {
+                nbt.setLong("ticks", -1);
+            }
+            else
+            {
+                nbt.setLong("ticks", CalenderTFC.getTotalTime());
+            }
 
             if (fluidMode)
             {
@@ -336,7 +341,7 @@ public class ItemSmallVessel extends ItemFiredPottery
 
         @SideOnly(Side.CLIENT)
         @Override
-        public void addHeatInfo(ItemStack stack, List<String> text, boolean clearStackNBT)
+        public void addHeatInfo(ItemStack stack, List<String> text)
         {
             Metal metal = getMetal();
             if (metal != null)
@@ -346,7 +351,7 @@ public class ItemSmallVessel extends ItemFiredPottery
                     desc += " - " + I18n.format("tfc.tooltip.liquid");
                 text.add(desc);
             }
-            ISmallVesselHandler.super.addHeatInfo(stack, text, false); // Never clear the NBT based on heat alone
+            ISmallVesselHandler.super.addHeatInfo(stack, text);
         }
 
         private void updateFluidData(@Nullable FluidStack fluid)

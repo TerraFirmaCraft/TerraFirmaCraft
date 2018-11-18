@@ -26,13 +26,14 @@ import net.dries007.tfc.objects.recipes.heat.HeatRecipe;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.FuelManager;
+import net.dries007.tfc.util.ITileFields;
 
 import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.ITEM_HEATING_MODIFIER;
 import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.TEMPERATURE_MODIFIER;
 import static net.dries007.tfc.objects.blocks.BlockCharcoalForge.LIT;
 
 @ParametersAreNonnullByDefault
-public class TECharcoalForge extends TEInventory implements ITickable
+public class TECharcoalForge extends TEInventory implements ITickable, ITileFields
 {
     public static final int SLOT_FUEL_MIN = 0;
     public static final int SLOT_FUEL_MAX = 4;
@@ -40,6 +41,8 @@ public class TECharcoalForge extends TEInventory implements ITickable
     public static final int SLOT_INPUT_MAX = 9;
     public static final int SLOT_EXTRA_MIN = 10;
     public static final int SLOT_EXTRA_MAX = 13;
+
+    public static final int FIELD_TEMPERATURE = 0;
 
     private boolean requiresSlotUpdate = false;
     private float temperature; // Current Temperature
@@ -116,7 +119,6 @@ public class TECharcoalForge extends TEInventory implements ITickable
                     if (temperature > itemTemp)
                     {
                         CapabilityItemHeat.addTemp(cap, ITEM_HEATING_MODIFIER);
-                        stack.setTagCompound(cap.serializeNBT());
                     }
 
                     // This will melt + consume the input stack
@@ -295,5 +297,37 @@ public class TECharcoalForge extends TEInventory implements ITickable
             }
         }
         requiresSlotUpdate = false;
+    }
+
+    @Override
+    public int getFieldCount()
+    {
+        return 1;
+    }
+
+    @Override
+    public void setField(int index, int value)
+    {
+        switch (index)
+        {
+            case FIELD_TEMPERATURE:
+                this.temperature = (float) value;
+                break;
+            default:
+                TerraFirmaCraft.getLog().warn("Invalid field ID {} in TECharcoalForge#setField", index);
+        }
+    }
+
+    @Override
+    public int getField(int index)
+    {
+        switch (index)
+        {
+            case FIELD_TEMPERATURE:
+                return (int) temperature;
+            default:
+                TerraFirmaCraft.getLog().warn("Invalid field ID {} in TECharcoalForge#getField", index);
+                return 0;
+        }
     }
 }

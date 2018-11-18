@@ -625,6 +625,14 @@ for rock_type in ROCK_TYPES:
         }]
     })
 
+# STONE ANVILS - only igneous types
+for rock_type in ['granite', 'rhyolite', 'basalt', 'gabbro', 'diorite', 'andesite', 'dacite']:
+    if rock_type not in ROCK_TYPES:
+        raise Exception('The anvil rock types list has been modified, please fix this!')
+    blockstate(('anvil', rock_type), 'tfc:stone_anvil', textures={
+        ('all', 'particle'): 'tfc:blocks/stonetypes/raw/%s' % rock_type,
+    })
+
 
 # WOOD STUFF
 for wood_type in WOOD_TYPES:

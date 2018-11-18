@@ -27,6 +27,7 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemSmallVessel;
 import net.dries007.tfc.objects.items.rock.ItemRock;
+import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.objects.te.TECharcoalForge;
 import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.objects.te.TELogPile;
@@ -75,6 +76,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new ContainerFirePit(player.inventory, Helpers.getTE(world, pos, TEFirePit.class));
             case CHARCOAL_FORGE:
                 return new ContainerCharcoalForge(player.inventory, Helpers.getTE(world, pos, TECharcoalForge.class));
+            case ANVIL:
+                return new ContainerAnvilTFC(player.inventory, Helpers.getTE(world, pos, TEAnvilTFC.class));
             case KNAPPING_STONE:
                 return new ContainerKnapping(KnappingRecipe.Type.STONE, player.inventory, stack.getItem() instanceof ItemRock ? stack : player.getHeldItemOffhand());
             case KNAPPING_CLAY:
@@ -110,6 +113,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiFirePit(container, player.inventory, Helpers.getTE(world, pos, TEFirePit.class));
             case CHARCOAL_FORGE:
                 return new GuiCharcoalForge(container, player.inventory, Helpers.getTE(world, pos, TECharcoalForge.class));
+            case ANVIL:
+                return new GuiAnvilTFC(container, player.inventory, Helpers.getTE(world, pos, TEAnvilTFC.class));
             case KNAPPING_STONE:
                 ItemStack stack = player.getHeldItemMainhand();
                 Rock rock = stack.getItem() instanceof IRockObject ? ((IRockObject) stack.getItem()).getRock(stack) :
@@ -138,6 +143,7 @@ public class TFCGuiHandler implements IGuiHandler
         KNAPPING_FIRE_CLAY,
         KNAPPING_LEATHER,
         CHARCOAL_FORGE,
+        ANVIL,
         NULL;
 
         private static Type[] values = values();
