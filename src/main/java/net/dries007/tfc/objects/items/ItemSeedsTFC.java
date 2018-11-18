@@ -1,6 +1,7 @@
 package net.dries007.tfc.objects.items;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
@@ -16,8 +17,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 
-import net.dries007.tfc.objects.Agriculture.Crop;
+import net.dries007.tfc.api.types.Crop;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
+
+//import net.dries007.tfc.objects.Agriculture.Crop;
 
 public class ItemSeedsTFC extends Item implements IPlantable
 {
@@ -25,7 +28,7 @@ public class ItemSeedsTFC extends Item implements IPlantable
     /** BlockID of the block the seeds can be planted on. */
     public final Crop seedbag;
 
-    private static final EnumMap<Crop, ItemSeedsTFC> MAP = new EnumMap<>(Crop.class);
+    private static final Map<Crop, ItemSeedsTFC> MAP = new HashMap<>();
 
     public static ItemSeedsTFC get(Crop seedbag) { return MAP.get(seedbag); }
 

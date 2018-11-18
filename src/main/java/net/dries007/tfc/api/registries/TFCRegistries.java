@@ -24,6 +24,7 @@ public class TFCRegistries
     public static final IForgeRegistry<Ore> ORES = GameRegistry.findRegistry(Ore.class);
     public static final IForgeRegistry<Tree> TREES = GameRegistry.findRegistry(Tree.class);
     public static final IForgeRegistry<Metal> METALS = GameRegistry.findRegistry(Metal.class);
+    public static final IForgeRegistry<Crop> CROPS = GameRegistry.findRegistry(Crop.class);
 
     public static final IForgeRegistry<AlloyRecipe> ALLOYS = GameRegistry.findRegistry(AlloyRecipe.class);
 

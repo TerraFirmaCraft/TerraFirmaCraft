@@ -19,6 +19,7 @@ public class TFCRegistryNames
     public static final ResourceLocation ORE = new ResourceLocation(MOD_ID, "ore");
     public static final ResourceLocation TREE = new ResourceLocation(MOD_ID, "tree");
     public static final ResourceLocation METAL = new ResourceLocation(MOD_ID, "metal");
+    public static final ResourceLocation CROP = new ResourceLocation(MOD_ID, "crop");
 
     public static final ResourceLocation ALLOY_RECIPE = new ResourceLocation(MOD_ID, "alloy_recipe");
 }
