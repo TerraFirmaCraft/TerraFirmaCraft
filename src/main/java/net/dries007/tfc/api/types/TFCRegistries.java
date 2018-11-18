@@ -1,7 +1,6 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
- *
+ *  * Work under Copyright. Licensed under the EUPL.
+ *  * See the project README.md and LICENSE.txt for more information.
  */
 
 package net.dries007.tfc.api.types;
@@ -33,11 +32,13 @@ public class TFCRegistries
     private static final ResourceLocation ROCK = new ResourceLocation(MOD_ID, "rock");
     private static final ResourceLocation ORE = new ResourceLocation(MOD_ID, "ore");
     private static final ResourceLocation TREE = new ResourceLocation(MOD_ID, "tree");
+    private static final ResourceLocation CROP = new ResourceLocation(MOD_ID, "crop");
     private static final Map<ResourceLocation, IForgeRegistry<?>> preBlockRegistries = new HashMap<>();
     private static IForgeRegistry<RockCategory> rockCategoryRegistry;
     private static IForgeRegistry<Rock> rockRegistry;
     private static IForgeRegistry<Ore> oreRegistry;
     private static IForgeRegistry<Tree> treeRegistry;
+    private static IForgeRegistry<Crop> cropRegistry;
 
     @SubscribeEvent
     public static void onNewRegistryEvent(RegistryEvent.NewRegistry event)
@@ -46,6 +47,7 @@ public class TFCRegistries
         rockRegistry = newRegistry(ROCK, Rock.class, true);
         oreRegistry = newRegistry(ORE, Ore.class, true);
         treeRegistry = newRegistry(TREE, Tree.class, true);
+        cropRegistry = newRegistry(CROP, Crop.class, true);
     }
 
     /**
@@ -71,6 +73,8 @@ public class TFCRegistries
     {
         return treeRegistry;
     }
+
+    static IForgeRegistry<Crop> getCrops() {return cropRegistry; }
 
     static IForgeRegistry<RockCategory> getRockCategories()
     {

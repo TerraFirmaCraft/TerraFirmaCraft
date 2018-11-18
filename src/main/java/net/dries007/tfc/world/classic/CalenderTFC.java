@@ -1,6 +1,6 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ *  * Work under Copyright. Licensed under the EUPL.
+ *  * See the project README.md and LICENSE.txt for more information.
  */
 
 package net.dries007.tfc.world.classic;
@@ -90,8 +90,8 @@ public class CalenderTFC
 
     public static void reload()
     {
-        daysInYear = ConfigTFC.GENERAL.monthLength;
-        daysInMonth = daysInYear / 12;
+        daysInYear = daysInMonth * 12;
+        daysInMonth = ConfigTFC.GENERAL.monthLength;
         ticksInMonth = daysInMonth * TICKS_IN_DAY;
         ticksInYear = daysInYear * TICKS_IN_DAY;
         startTime = ticksInMonth * 3;
