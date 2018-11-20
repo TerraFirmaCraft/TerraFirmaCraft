@@ -131,6 +131,15 @@ tfc.enum.heat.brilliant_white=Brilliant White
 tfc.enum.heat.torch.catching_fire=Catching Fire
 tfc.enum.heat.torch.lit=Lit
 
+tfc.enum.forge_step.hit_light=Light Hit
+tfc.enum.forge_step.hit_medium=Medium Hit
+tfc.enum.forge_step.hit_hard=Hard Hit
+tfc.enum.forge_step.draw=Draw
+tfc.enum.forge_step.bend=Bend
+tfc.enum.forge_step.punch=Punch
+tfc.enum.forge_step.shrink=Shrink
+tfc.enum.forge_step.upset=Upset
+
 # Items
 item.tfc.wand.name=TFC Debug Wand
 item.tfc.firestarter.name=Firestarter
