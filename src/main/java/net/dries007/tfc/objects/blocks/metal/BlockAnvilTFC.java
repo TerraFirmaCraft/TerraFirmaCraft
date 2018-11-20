@@ -21,6 +21,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -31,6 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 
@@ -133,6 +136,21 @@ public class BlockAnvilTFC extends Block implements ITileEntityProvider
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL));
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        // todo: more conditions for placing items directly into the anvil
+        if (!playerIn.isSneaking())
+        {
+            if (!worldIn.isRemote)
+            {
+                TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.ANVIL);
+            }
+            return true;
+        }
+        return false;
     }
 
     @Nullable

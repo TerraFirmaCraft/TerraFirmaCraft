@@ -57,11 +57,6 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         pickupTimer = 0;
     }
 
-    public float getTemperature()
-    {
-        return temperature;
-    }
-
     @Override
     public void update()
     {

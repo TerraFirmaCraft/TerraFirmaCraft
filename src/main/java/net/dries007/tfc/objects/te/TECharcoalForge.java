@@ -53,7 +53,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     {
         // 0 - 4 are fuel slots: 0 being the lowest, 4 highest (in order of consumption)
         // 5 - 9 are the input slots. Same arrangement (0 lowest, then alternating L, R, L high, R high)
-        // 10 - 14 are the extra slots for molds and stuff. 10 at the top, 14 at the bottom. Iterate in that order
+        // 10 - 13 are the extra slots for molds and stuff. 10 at the top, 14 at the bottom. Iterate in that order
         super(14);
 
         temperature = 0;
@@ -199,20 +199,19 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
 
     public void debug()
     {
-        TerraFirmaCraft.getLog().debug("Debugging Fire pit:");
+        TerraFirmaCraft.getLog().debug("Debugging Charcoal Forge:");
         TerraFirmaCraft.getLog().debug("Temp {} | Burn Temp {} | Fuel Ticks {}", temperature, burnTemperature, burnTicks);
         TerraFirmaCraft.getLog().debug("Burning? {}", world.getBlockState(pos).getValue(LIT));
+        for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
+        {
+            TerraFirmaCraft.getLog().debug("Slot: {} - NBT: {}", i, inventory.getStackInSlot(i).serializeNBT().toString());
+        }
     }
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
     {
         return oldState.getBlock() != newSate.getBlock();
-    }
-
-    public float getTemperature()
-    {
-        return temperature;
     }
 
     private void handleInputMelting(ItemStack stack, int startIndex)

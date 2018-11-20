@@ -21,9 +21,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import io.netty.buffer.ByteBuf;
-import net.dries007.tfc.api.capability.CapabilityContainerListener;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.objects.container.CapabilityContainerListener;
 
 /**
  * This is a packet which is sent to the client to sync capability data
@@ -139,7 +140,12 @@ public class PacketCapabilityContainerUpdate implements IMessage
                     final IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
                     if (cap != null)
                     {
-                        final ItemStack newStack = stack.copy();
+                        if (!cap.serializeNBT().equals(nbt))
+                        {
+                            TerraFirmaCraft.getLog().debug("Capabilities have changed and been synced");
+                            cap.deserializeNBT(nbt);
+                        }
+                        /*final ItemStack newStack = stack.copy();
                         final IItemHeat newCap = newStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
                         if (newCap != null)
                         {
@@ -148,7 +154,7 @@ public class PacketCapabilityContainerUpdate implements IMessage
                             {
                                 container.putStackInSlot(index, newStack);
                             }
-                        }
+                        }*/
                     }
                     return true;
                 });

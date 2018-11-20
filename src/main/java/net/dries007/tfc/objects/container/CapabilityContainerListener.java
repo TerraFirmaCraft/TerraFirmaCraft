@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability;
+package net.dries007.tfc.objects.container;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -79,37 +79,14 @@ public class CapabilityContainerListener implements IContainerListener
         }
     }
 
-    /**
-     * This gets called every tick to send any property that has changed.
-     * This is where capability client data needs to be sent. Until further notice, to ensure capability data is updated on client, it must be sent every tick
-     */
     @Override
     public void sendWindowProperty(Container container, int ID, int value)
     {
-        TerraFirmaCraft.getLog().debug("Sending Window Property");
-        final NonNullList<ItemStack> items = NonNullList.withSize(container.inventorySlots.size(), ItemStack.EMPTY);
-        for (int i = 0; i < container.inventorySlots.size(); i++)
-        {
-            final ItemStack stack = container.inventorySlots.get(i).getStack();
-            if (shouldSyncItem(stack))
-            {
-                items.set(i, stack);
-            }
-        }
-        final PacketCapabilityContainerUpdate message = new PacketCapabilityContainerUpdate(container.windowId, items);
-        if (message.hasData())
-        {
-            TerraFirmaCraft.getNetwork().sendTo(message, player);
-        }
     }
 
-    /**
-     * This gets called once to send all window properties. It calls the above method to send any and all capability changes
-     */
     @Override
     public void sendAllWindowProperties(Container container, IInventory inventory)
     {
-        sendWindowProperty(container, -1, -1);
     }
 
     private boolean shouldSyncItem(ItemStack stack)

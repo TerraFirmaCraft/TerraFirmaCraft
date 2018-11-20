@@ -23,7 +23,7 @@ public class ContainerFirePit extends ContainerTE<TEFirePit>
 {
     public ContainerFirePit(InventoryPlayer playerInv, TEFirePit te)
     {
-        super(playerInv, te);
+        super(playerInv, te, true);
     }
 
     @Nonnull

@@ -40,7 +40,7 @@ public class GuiCharcoalForge extends GuiContainerTFC
         int y = (height - ySize) / 2;
 
         // Draw the temperature indicator
-        int temperature = (int) (51 * te.getTemperature() / MAX_TEMPERATURE);
+        int temperature = (int) (51 * te.getField(TECharcoalForge.FIELD_TEMPERATURE) / MAX_TEMPERATURE);
         if (temperature > 0)
         {
             drawTexturedModalRect(x + 8, y + 66 - temperature, 176, 0, 15, 5);
