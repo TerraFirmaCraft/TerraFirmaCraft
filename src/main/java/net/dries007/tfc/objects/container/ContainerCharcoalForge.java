@@ -18,7 +18,7 @@ public class ContainerCharcoalForge extends ContainerTE<TECharcoalForge>
 {
     public ContainerCharcoalForge(InventoryPlayer playerInv, TECharcoalForge te)
     {
-        super(playerInv, te);
+        super(playerInv, te, true);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ContainerCharcoalForge extends ContainerTE<TECharcoalForge>
             addSlotToContainer(new SlotTEInput(inventory, index, 44, 8, tile));
 
             // Extra slots (for ceramic molds)
-            for (int i = SLOT_EXTRA_MIN; i < SLOT_EXTRA_MAX; i++)
+            for (int i = SLOT_EXTRA_MIN; i <= SLOT_EXTRA_MAX; i++)
             {
                 addSlotToContainer(new SlotTEInput(inventory, i, 152, 8 + 18 * (i - SLOT_EXTRA_MIN), tile));
             }

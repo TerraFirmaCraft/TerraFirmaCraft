@@ -23,6 +23,8 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Tree;
 
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class TreeGenCommand extends CommandBase
@@ -44,10 +46,10 @@ public class TreeGenCommand extends CommandBase
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        if (args.length != 1)
-            throw new WrongUsageException("1 argument required.");
+        if (args.length != 1) throw new WrongUsageException("1 argument required.");
 
         Tree tree = TFCRegistries.TREES.getValue(new ResourceLocation(args[0]));
+        if (tree == null) tree = TFCRegistries.TREES.getValue(new ResourceLocation(MOD_ID, args[0]));
         if (tree == null) throw new WrongUsageException("Tree type " + args[0] + " not found");
 
         if (sender.getCommandSenderEntity() == null) return;

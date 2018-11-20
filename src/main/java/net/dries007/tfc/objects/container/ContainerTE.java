@@ -17,15 +17,37 @@ import net.minecraft.item.ItemStack;
 import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.util.ITileFields;
 
-public abstract class ContainerTE<TE extends TEInventory> extends Container
+/**
+ * This is the mother of all Container-with-a-Tile-Entity implementations
+ *
+ * @param <T> The Tile Entity class
+ */
+public abstract class ContainerTE<T extends TEInventory> extends Container
 {
-    protected TE tile;
+    protected final T tile;
+
+    private final boolean shouldSyncCaps;
+    private final boolean shouldSyncFields;
+    private final int yOffset; // The number of pixels higher than normal (If the gui is larger than normal, see Anvil)
 
     private int[] cachedFields;
 
-    ContainerTE(InventoryPlayer playerInv, TE te)
+    ContainerTE(InventoryPlayer playerInv, T tile)
     {
-        this.tile = te;
+        this(playerInv, tile, false, 0);
+    }
+
+    ContainerTE(InventoryPlayer playerInv, T tile, boolean shouldSyncCaps)
+    {
+        this(playerInv, tile, shouldSyncCaps, 0);
+    }
+
+    ContainerTE(InventoryPlayer playerInv, T tile, boolean shouldSyncCaps, int yOffset)
+    {
+        this.tile = tile;
+        this.shouldSyncCaps = shouldSyncCaps;
+        this.shouldSyncFields = tile instanceof ITileFields;
+        this.yOffset = yOffset;
 
         addContainerSlots();
         addPlayerInventorySlots(playerInv);
@@ -86,6 +108,78 @@ public abstract class ContainerTE<TE extends TEInventory> extends Container
 
     protected abstract void addContainerSlots();
 
+    @Override
+    public void detectAndSendChanges()
+    {
+        if (shouldSyncFields)
+        {
+            detectAndSendFieldChanges();
+        }
+        if (shouldSyncCaps)
+        {
+            detectAndSendAllChanges();
+        }
+        else
+        {
+            super.detectAndSendChanges();
+        }
+    }
+
+    protected void detectAndSendAllChanges()
+    {
+        for (int i = 0; i < inventorySlots.size(); ++i)
+        {
+            ItemStack stack = inventorySlots.get(i).getStack();
+            ItemStack newStack = inventoryItemStacks.get(i);
+
+            if (!ItemStack.areItemStacksEqual(newStack, stack))
+            {
+                newStack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+                inventoryItemStacks.set(i, newStack);
+
+                for (IContainerListener listener : listeners)
+                {
+                    listener.sendSlotContents(this, i, newStack);
+                }
+            }
+        }
+    }
+
+    protected void detectAndSendFieldChanges()
+    {
+        ITileFields tileFields = (ITileFields) tile;
+        boolean allFieldsHaveChanged = false;
+        boolean fieldHasChanged[] = new boolean[tileFields.getFieldCount()];
+
+        if (cachedFields == null)
+        {
+            cachedFields = new int[tileFields.getFieldCount()];
+            allFieldsHaveChanged = true;
+        }
+
+        for (int i = 0; i < cachedFields.length; ++i)
+        {
+            if (allFieldsHaveChanged || cachedFields[i] != tileFields.getField(i))
+            {
+                cachedFields[i] = tileFields.getField(i);
+                fieldHasChanged[i] = true;
+            }
+        }
+
+        // go through the list of listeners (players using this container) and update them if necessary
+        for (IContainerListener listener : this.listeners)
+        {
+            for (int fieldID = 0; fieldID < tileFields.getFieldCount(); ++fieldID)
+            {
+                if (fieldHasChanged[fieldID])
+                {
+                    // Note that although sendWindowProperty takes 2 ints on a server these are truncated to shorts
+                    listener.sendWindowProperty(this, fieldID, cachedFields[fieldID]);
+                }
+            }
+        }
+    }
+
     private void addPlayerInventorySlots(InventoryPlayer playerInv)
     {
         // Add Player Inventory Slots
@@ -93,54 +187,14 @@ public abstract class ContainerTE<TE extends TEInventory> extends Container
         {
             for (int j = 0; j < 9; j++)
             {
-                addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + yOffset));
             }
         }
 
         for (int k = 0; k < 9; k++)
         {
-            addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142));
+            addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142 + yOffset));
         }
     }
 
-    @Override
-    public void detectAndSendChanges()
-    {
-        super.detectAndSendChanges();
-
-        if (tile instanceof ITileFields)
-        {
-            ITileFields tileFields = (ITileFields) tile;
-            boolean allFieldsHaveChanged = false;
-            boolean fieldHasChanged[] = new boolean[tileFields.getFieldCount()];
-
-            if (cachedFields == null)
-            {
-                cachedFields = new int[tileFields.getFieldCount()];
-                allFieldsHaveChanged = true;
-            }
-
-            for (int i = 0; i < cachedFields.length; ++i)
-            {
-                if (allFieldsHaveChanged || cachedFields[i] != tileFields.getField(i))
-                {
-                    cachedFields[i] = tileFields.getField(i);
-                    fieldHasChanged[i] = true;
-                }
-            }
-
-            // go through the list of listeners (players using this container) and update them if necessary
-            for (IContainerListener listener : this.listeners)
-            {
-                for (int fieldID = 0; fieldID < tileFields.getFieldCount(); ++fieldID)
-                {
-                    if (fieldHasChanged[fieldID])
-                    {
-                        // Note that although sendWindowProperty takes 2 ints on a server these are truncated to shorts
-                        listener.sendWindowProperty(this, fieldID, cachedFields[fieldID]);
-                    }
-                }
-            }
-        }
-    }
 }

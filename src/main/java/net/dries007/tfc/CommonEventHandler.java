@@ -23,12 +23,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
-import net.dries007.tfc.api.capability.CapabilityContainerListener;
 import net.dries007.tfc.api.capability.ItemStickCapability;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.util.IPlaceableItem;
+import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -168,10 +168,8 @@ public class CommonEventHandler
     @SubscribeEvent
     public void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event)
     {
-        TerraFirmaCraft.getLog().info("Player logged in!");
         if (event.player instanceof EntityPlayerMP)
         {
-            TerraFirmaCraft.getLog().debug("Listener Added!");
             final EntityPlayerMP player = (EntityPlayerMP) event.player;
             player.inventoryContainer.addListener(new CapabilityContainerListener(player));
         }
@@ -180,10 +178,8 @@ public class CommonEventHandler
     @SubscribeEvent
     public void onPlayerCloneEvent(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
     {
-        TerraFirmaCraft.getLog().info("Player was cloned");
         if (event.getEntityPlayer() instanceof EntityPlayerMP)
         {
-            TerraFirmaCraft.getLog().info("Listener added!");
             final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
             player.inventoryContainer.addListener(new CapabilityContainerListener(player));
         }
@@ -192,10 +188,8 @@ public class CommonEventHandler
     @SubscribeEvent
     public void onContainerOpenEvent(PlayerContainerEvent.Open event)
     {
-        TerraFirmaCraft.getLog().info("Player opened a container");
         if (event.getEntityPlayer() instanceof EntityPlayerMP)
         {
-            TerraFirmaCraft.getLog().info("Listener added");
             final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
             event.getContainer().addListener(new CapabilityContainerListener(player));
         }

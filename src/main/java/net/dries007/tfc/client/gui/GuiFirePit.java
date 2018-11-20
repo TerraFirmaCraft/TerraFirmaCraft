@@ -36,7 +36,7 @@ public class GuiFirePit extends GuiContainerTFC
         int y = (height - ySize) / 2;
 
         // Draw the fire / burn time indicator
-        int temperature = (int) (51 * te.getTemperature() / MAX_TEMPERATURE);
+        int temperature = (int) (51 * te.getField(TEFirePit.FIELD_TEMPERATURE) / MAX_TEMPERATURE);
         if (temperature > 0)
         {
             drawTexturedModalRect(x + 30, y + 16 - temperature, 176, 0, 15, 5);

@@ -13,6 +13,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
+import static net.dries007.tfc.objects.te.TEAnvilTFC.*;
+
 @ParametersAreNonnullByDefault
 public class ForgeSteps implements INBTSerializable<NBTTagCompound>
 {
@@ -35,6 +37,34 @@ public class ForgeSteps implements INBTSerializable<NBTTagCompound>
         while (steps.size() > 3)
         {
             steps.remove();
+        }
+    }
+
+    public int getStepByID(int id)
+    {
+        switch (id)
+        {
+            case FIELD_LAST_STEP:
+                return getStepInt(0);
+            case FIELD_SECOND_STEP:
+                return getStepInt(1);
+            case FIELD_THIRD_STEP:
+                return getStepInt(2);
+            default:
+                return -1;
+        }
+    }
+
+    public void setStep(int position, int step)
+    {
+        switch (position)
+        {
+            case FIELD_LAST_STEP:
+                steps.set(0, ForgeStep.valueOf(step));
+            case FIELD_SECOND_STEP:
+                steps.set(1, ForgeStep.valueOf(step));
+            case FIELD_THIRD_STEP:
+                steps.set(2, ForgeStep.valueOf(step));
         }
     }
 
