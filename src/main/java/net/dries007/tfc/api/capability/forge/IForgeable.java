@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability;
+package net.dries007.tfc.api.capability.forge;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,10 +14,11 @@ import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
 /**
- * This is an advanced IItemHeat implementation that is used by items that can be forged
- * To get this capability, call getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null), then cast to IForgeableHandler if it is safe
+ * This is an advanced IItemHeat capability that is used by items that can be forged
+ * If you implement this capability, you MUST implement {@link net.dries007.tfc.api.capability.heat.CapabilityItemHeat} as well
+ * You should return the same instance from the getCapability calls
  */
-public interface IForgeableHandler extends IItemHeat
+public interface IForgeable extends IItemHeat
 {
     /**
      * Gets the current amount of work on the object
@@ -55,7 +56,7 @@ public interface IForgeableHandler extends IItemHeat
     void addStep(ForgeStep step);
 
     /**
-     * Resets the object's Forgeable componenets. Used if an item falls out of an anvil without getting worked
+     * Resets the object's {@link IForgeable} components. Used if an item falls out of an anvil without getting worked
      * Purpose is to preserve stackability on items that haven't been worked yet.
      */
     void reset();

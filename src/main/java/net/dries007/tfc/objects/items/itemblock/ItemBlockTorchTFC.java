@@ -33,7 +33,6 @@ public class ItemBlockTorchTFC extends ItemBlockTFC
         World world = entityItem.getEntityWorld();
         IBlockState state = entityItem.getEntityWorld().getBlockState(pos);
 
-        // noinspection ConstantConditions
         if (state.getBlock() == BlocksTFC.LOG_PILE || state.getBlock() == BlocksTFC.PIT_KILN)
         {
             int count = entityItem.getEntityData().getInteger("torchCount");

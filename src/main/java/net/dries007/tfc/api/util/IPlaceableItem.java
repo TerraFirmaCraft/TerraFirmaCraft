@@ -74,7 +74,6 @@ public interface IPlaceableItem
 
                 IBlockState state = world.getBlockState(pos);
 
-                //noinspection ConstantConditions
                 if (facing == EnumFacing.UP && state.getBlock() == BlocksTFC.CHARCOAL_PILE)
                 {
                     if (state.getValue(LAYERS) < 8)
@@ -108,7 +107,6 @@ public interface IPlaceableItem
                 {
                     if (facing != null)
                     {
-                        //noinspection ConstantConditions
                         if (world.getBlockState(pos).getBlock() == BlocksTFC.LOG_PILE)
                         {
                             if (!world.isRemote)
@@ -127,7 +125,6 @@ public interface IPlaceableItem
                                         if (facing == EnumFacing.UP && te.countLogs() == 16 || (facing != EnumFacing.UP && world.getBlockState(pos.down().offset(facing)).isNormalCube()
                                             && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing))))
                                         {
-                                            // noinspection ConstantConditions
                                             world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
 
                                             TELogPile te2 = Helpers.getTE(world, pos.offset(facing), TELogPile.class);
@@ -152,7 +149,6 @@ public interface IPlaceableItem
                                 // Place log pile
                                 if (!world.isRemote)
                                 {
-                                    // noinspection ConstantConditions
                                     world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
 
                                     TELogPile te = Helpers.getTE(world, pos.offset(facing), TELogPile.class);

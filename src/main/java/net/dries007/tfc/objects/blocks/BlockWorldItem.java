@@ -35,6 +35,9 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.te.TEWorldItem;
 import net.dries007.tfc.util.Helpers;
 
+/**
+ * todo: custom particles for walking / breaking?
+ */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class BlockWorldItem extends Block implements ITileEntityProvider
@@ -56,6 +59,34 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
 
     @Override
     @SuppressWarnings("deprecation")
+    public boolean isTopSolid(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isFullBlock(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isBlockNormalCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isNormalCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState state)
     {
         return false;
@@ -66,6 +97,12 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
         return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
+    {
+        return true;
     }
 
     @Override
@@ -128,16 +165,20 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     }
 
     @Override
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
     public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles)
     {
-        // todo: add custom particles
         return true;
     }
 
     @Override
     public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity)
     {
-        // todo: add custom particles
         return true;
     }
 
@@ -145,7 +186,6 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     @Override
     public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager)
     {
-        // todo: add custom particles
         return true;
     }
 
@@ -153,7 +193,6 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     @Override
     public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager)
     {
-        // todo: add custom particles
         return true;
     }
 }

@@ -50,14 +50,12 @@ public interface IFireable extends IPlaceableItem
 
             if (fireable.getFireableTiers().contains(Metal.Tier.TIER_I))
             {
-                //noinspection ConstantConditions
                 if (world.getBlockState(pos).getBlock() != BlocksTFC.PIT_KILN)
                 {
                     if (!world.isSideSolid(pos, EnumFacing.UP)) return false;
                     pos = pos.add(0, 1, 0); // also important for TE fetch
                     if (!world.getBlockState(pos).getMaterial().isReplaceable())
                         return false; // can't put down the block
-                    //noinspection ConstantConditions
                     world.setBlockState(pos, BlocksTFC.PIT_KILN.getDefaultState());
                 }
 

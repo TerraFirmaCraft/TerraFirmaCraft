@@ -23,7 +23,6 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 public class DefaultRecipes
 {
     @SubscribeEvent
-    @SuppressWarnings("ConstantConditions")
     public static void onRegisterKnappingRecipeEvent(RegistryEvent.Register<KnappingRecipe> event)
     {
         /* STONE TOOL HEADS */

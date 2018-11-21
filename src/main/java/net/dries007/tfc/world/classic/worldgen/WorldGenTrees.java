@@ -128,7 +128,6 @@ public class WorldGenTrees implements IWorldGenerator
 
             if (world.getBlockState(pos).getMaterial().isReplaceable() && !world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).isOpaqueCube())
             {
-                //noinspection ConstantConditions
                 world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState());
                 TEWorldItem tile = (TEWorldItem) world.getTileEntity(pos);
                 if (tile != null)

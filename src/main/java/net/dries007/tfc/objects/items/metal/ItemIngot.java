@@ -41,7 +41,6 @@ public class ItemIngot extends ItemMetal implements IPlaceableItem
         if (!player.isSneaking()) return false;
 
         ItemIngot item = (ItemIngot) stack.getItem();
-        //noinspection ConstantConditions
         if (world.getBlockState(pos).getBlock() != BlocksTFC.INGOT_PILE)
         {
             if (facing == EnumFacing.UP && world.getBlockState(pos).isSideSolid(world, pos.down(), EnumFacing.UP))
@@ -49,7 +48,6 @@ public class ItemIngot extends ItemMetal implements IPlaceableItem
                 if (!world.isRemote)
                 {
                     BlockPos up = pos.up();
-                    //noinspection ConstantConditions
                     world.setBlockState(up, BlocksTFC.INGOT_PILE.getDefaultState());
                     TEIngotPile te = Helpers.getTE(world, up, TEIngotPile.class);
                     if (te != null)
@@ -72,11 +70,10 @@ public class ItemIngot extends ItemMetal implements IPlaceableItem
             {
                 posTop = posTop.up();
                 stateTop = world.getBlockState(posTop);
-                //noinspection ConstantConditions
                 if (stateTop.getBlock() == BlocksTFC.INGOT_PILE)
                 {
                     TEIngotPile te = Helpers.getTE(world, posTop, TEIngotPile.class);
-                    if (te.getCount() < 64 && (te.getMetal() == item.metal))
+                    if (te != null && te.getCount() < 64 && (te.getMetal() == item.metal))
                     {
                         te.setCount(te.getCount() + 1);
                         world.playSound(null, posTop, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.3F, 1.5F);

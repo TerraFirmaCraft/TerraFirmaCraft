@@ -55,7 +55,6 @@ public class TFCGuiHandler implements IGuiHandler
 
     @Override
     @Nullable
-    @SuppressWarnings("ConstantConditions")
     public Container getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         BlockPos pos = new BlockPos(x, y, z);
@@ -93,7 +92,6 @@ public class TFCGuiHandler implements IGuiHandler
 
     @Override
     @Nullable
-    @SuppressWarnings("ConstantConditions")
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         Container container = getServerGuiElement(ID, player, world, x, y, z);

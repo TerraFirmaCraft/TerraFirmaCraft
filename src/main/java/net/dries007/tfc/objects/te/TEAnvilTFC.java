@@ -10,7 +10,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.IForgeableHandler;
+import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.objects.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.util.ITileFields;
@@ -70,7 +70,7 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
         {
             case SLOT_INPUT_1:
             case SLOT_INPUT_2:
-                return stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null) instanceof IForgeableHandler;
+                return stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null) && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
             case SLOT_FLUX:
                 return OreDictionaryHelper.doesStackMatchOre(stack, "dustFlux");
             case SLOT_HAMMER:

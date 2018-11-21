@@ -220,7 +220,7 @@ public class ItemMold extends ItemFiredPottery
 
         @SideOnly(Side.CLIENT)
         @Override
-        public void addHeatInfo(ItemStack stack, List<String> text)
+        public void addHeatInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
         {
             Metal metal = getMetal();
             if (metal != null)

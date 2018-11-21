@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
+import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.util.TFCConstants;
@@ -39,7 +40,7 @@ import net.dries007.tfc.world.classic.worldgen.*;
 @SuppressWarnings("DefaultAnnotationParam")
 @Mod(modid = TFCConstants.MOD_ID, name = TFCConstants.MOD_NAME, useMetadata = true, guiFactory = Constants.GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = TFCConstants.SIGNING_KEY)
 @Mod.EventBusSubscriber()
-public class TerraFirmaCraft
+public final class TerraFirmaCraft
 {
     @Mod.Instance()
     private static TerraFirmaCraft instance = null;
@@ -121,6 +122,7 @@ public class TerraFirmaCraft
         CapabilityChunkData.preInit();
         CapabilityItemSize.preInit();
         CapabilityItemHeat.preInit();
+        CapabilityForgeable.preInit();
 
         MinecraftForge.EVENT_BUS.register(new CommonEventHandler());
 

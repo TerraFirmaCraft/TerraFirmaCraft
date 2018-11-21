@@ -3,19 +3,21 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.heat;
+package net.dries007.tfc.api.capability.forge;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 
-import net.dries007.tfc.api.capability.IForgeableHandler;
+import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.objects.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
-public class ForgeableHandler extends ItemHeatHandler implements IForgeableHandler
+public class ForgeableHandler extends ItemHeatHandler implements IForgeable
 {
     private final ForgeSteps steps;
     private int work;
@@ -106,5 +108,19 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeableHandl
         }
 
         super.deserializeNBT(nbt);
+    }
+
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
+    {
+        return capability == CapabilityForgeable.FORGEABLE_CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Nullable
+    @Override
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        return super.getCapability(capability, facing);
     }
 }
