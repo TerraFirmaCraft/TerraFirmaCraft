@@ -20,7 +20,6 @@ public final class HeatRecipeManager
 {
     private static final List<HeatRecipe> recipes = new ArrayList<>();
 
-    @SuppressWarnings("ConstantConditions")
     public static void postInit()
     {
         recipes.clear();

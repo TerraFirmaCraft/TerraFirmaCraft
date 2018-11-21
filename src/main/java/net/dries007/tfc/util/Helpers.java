@@ -42,7 +42,6 @@ public final class Helpers
         {
             if (us.getBlock() instanceof BlockPeat)
             {
-                //noinspection ConstantConditions
                 world.setBlockState(pos, BlocksTFC.PEAT.getDefaultState());
             }
             else if (us.getBlock() instanceof BlockRockVariant)
@@ -68,7 +67,6 @@ public final class Helpers
 
                 if (current.getBlock() instanceof BlockPeat)
                 {
-                    //noinspection ConstantConditions
                     world.setBlockState(target, BlocksTFC.PEAT_GRASS.getDefaultState());
                 }
                 else if (current.getBlock() instanceof BlockRockVariant)
@@ -90,11 +88,11 @@ public final class Helpers
         return input.stream().map(String::toLowerCase).anyMatch(itemsSet::contains);
     }
 
+    @SuppressWarnings("unchecked")
     public static <T extends TileEntity> T getTE(IBlockAccess world, BlockPos pos, Class<T> aClass)
     {
         TileEntity te = world.getTileEntity(pos);
         if (!aClass.isInstance(te)) return null;
-        //noinspection unchecked
         return (T) te;
     }
 
@@ -192,6 +190,13 @@ public final class Helpers
         if (possibleSides.contains(prefferedFacing) && canHangAt(worldIn, pos, prefferedFacing)) return prefferedFacing;
         for (EnumFacing side : possibleSides)
             if (canHangAt(worldIn, pos, side)) return side;
+        return null;
+    }
+
+    @Nonnull
+    @SuppressWarnings("ConstantConditions")
+    public static <T> T getNull()
+    {
         return null;
     }
 }

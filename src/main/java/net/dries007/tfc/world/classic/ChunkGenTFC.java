@@ -56,7 +56,6 @@ import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER3;
 /**
  * todo: Find out how to make ocean bottoms not so super flat.
  */
-@SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ChunkGenTFC implements IChunkGenerator

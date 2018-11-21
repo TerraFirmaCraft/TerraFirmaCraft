@@ -5,22 +5,19 @@
 
 package net.dries007.tfc.api.capability.heat;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.capability.DumbStorage;
+import net.dries007.tfc.util.Helpers;
 
-public class CapabilityItemHeat
+public final class CapabilityItemHeat
 {
     @CapabilityInject(IItemHeat.class)
-    public static Capability<IItemHeat> ITEM_HEAT_CAPABILITY = null;
+    public static final Capability<IItemHeat> ITEM_HEAT_CAPABILITY = Helpers.getNull();
 
     public static final float MIN_TEMPERATURE = 0f;
     public static final float MAX_TEMPERATURE = 1600f;
@@ -32,7 +29,7 @@ public class CapabilityItemHeat
 
     public static void preInit()
     {
-        CapabilityManager.INSTANCE.register(IItemHeat.class, new ItemHeatStorage(), ItemHeatHandler::new);
+        CapabilityManager.INSTANCE.register(IItemHeat.class, new DumbStorage<>(), ItemHeatHandler::new);
     }
 
     /**
@@ -68,29 +65,4 @@ public class CapabilityItemHeat
         final float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * (float) ConfigTFC.GENERAL.temperatureModifier;
         instance.setTemperature(temp > MAX_TEMPERATURE ? MAX_TEMPERATURE : temp);
     }
-
-    public static class ItemHeatStorage implements Capability.IStorage<IItemHeat>
-    {
-        @Nonnull
-        @Override
-        public NBTBase writeNBT(Capability<IItemHeat> capability, IItemHeat instance, EnumFacing side)
-        {
-            NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setFloat("heat", instance.getTemperature());
-            return nbt;
-        }
-
-        @Override
-        public void readNBT(Capability<IItemHeat> capability, IItemHeat instance, EnumFacing side, NBTBase base)
-        {
-            if (base == null)
-            {
-                instance.setTemperature(0);
-                return;
-            }
-            NBTTagCompound nbt = (NBTTagCompound) base;
-            instance.setTemperature(nbt.getFloat("heat"));
-        }
-    }
-
 }

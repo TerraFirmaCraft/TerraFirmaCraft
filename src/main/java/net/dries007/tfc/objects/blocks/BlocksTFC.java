@@ -41,6 +41,7 @@ import net.dries007.tfc.objects.te.*;
 import static net.dries007.tfc.api.types.Rock.Type.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.CreativeTabsTFC.*;
+import static net.dries007.tfc.util.Helpers.getNull;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -48,62 +49,62 @@ import static net.dries007.tfc.objects.CreativeTabsTFC.*;
 public final class BlocksTFC
 {
     @GameRegistry.ObjectHolder("fluid/salt_water")
-    public static final BlockFluidBase FLUID_SALT_WATER = null;
+    public static final BlockFluidBase FLUID_SALT_WATER = getNull();
     @GameRegistry.ObjectHolder("fluid/fresh_water")
-    public static final BlockFluidBase FLUID_FRESH_WATER = null;
+    public static final BlockFluidBase FLUID_FRESH_WATER = getNull();
     @GameRegistry.ObjectHolder("fluid/hot_water")
-    public static final BlockFluidBase FLUID_HOT_WATER = null;
+    public static final BlockFluidBase FLUID_HOT_WATER = getNull();
     @GameRegistry.ObjectHolder("fluid/finite_salt_water")
-    public static final BlockFluidBase FLUID_FINITE_SALT_WATER = null;
+    public static final BlockFluidBase FLUID_FINITE_SALT_WATER = getNull();
     @GameRegistry.ObjectHolder("fluid/finite_fresh_water")
-    public static final BlockFluidBase FLUID_FINITE_FRESH_WATER = null;
+    public static final BlockFluidBase FLUID_FINITE_FRESH_WATER = getNull();
     @GameRegistry.ObjectHolder("fluid/finite_hot_water")
-    public static final BlockFluidBase FLUID_FINITE_HOT_WATER = null;
+    public static final BlockFluidBase FLUID_FINITE_HOT_WATER = getNull();
     @GameRegistry.ObjectHolder("fluid/rum")
-    public static final BlockFluidBase FLUID_RUM = null;
+    public static final BlockFluidBase FLUID_RUM = getNull();
     @GameRegistry.ObjectHolder("fluid/beer")
-    public static final BlockFluidBase FLUID_BEER = null;
+    public static final BlockFluidBase FLUID_BEER = getNull();
     @GameRegistry.ObjectHolder("fluid/whiskey")
-    public static final BlockFluidBase FLUID_WHISKEY = null;
+    public static final BlockFluidBase FLUID_WHISKEY = getNull();
     @GameRegistry.ObjectHolder("fluid/rye_whiskey")
-    public static final BlockFluidBase FLUID_RYE_WHISKEY = null;
+    public static final BlockFluidBase FLUID_RYE_WHISKEY = getNull();
     @GameRegistry.ObjectHolder("fluid/corn_whiskey")
-    public static final BlockFluidBase FLUID_CORN_WHISKEY = null;
+    public static final BlockFluidBase FLUID_CORN_WHISKEY = getNull();
     @GameRegistry.ObjectHolder("fluid/sake")
-    public static final BlockFluidBase FLUID_SAKE = null;
+    public static final BlockFluidBase FLUID_SAKE = getNull();
     @GameRegistry.ObjectHolder("fluid/vodka")
-    public static final BlockFluidBase FLUID_VODKA = null;
+    public static final BlockFluidBase FLUID_VODKA = getNull();
     @GameRegistry.ObjectHolder("fluid/cider")
-    public static final BlockFluidBase FLUID_CIDER = null;
+    public static final BlockFluidBase FLUID_CIDER = getNull();
     @GameRegistry.ObjectHolder("fluid/vinegar")
-    public static final BlockFluidBase FLUID_VINEGAR = null;
+    public static final BlockFluidBase FLUID_VINEGAR = getNull();
     @GameRegistry.ObjectHolder("fluid/brine")
-    public static final BlockFluidBase FLUID_BRINE = null;
+    public static final BlockFluidBase FLUID_BRINE = getNull();
     @GameRegistry.ObjectHolder("fluid/milk")
-    public static final BlockFluidBase FLUID_MILK = null;
+    public static final BlockFluidBase FLUID_MILK = getNull();
     @GameRegistry.ObjectHolder("fluid/olive_oil")
-    public static final BlockFluidBase FLUID_OLIVE_OIL = null;
+    public static final BlockFluidBase FLUID_OLIVE_OIL = getNull();
     @GameRegistry.ObjectHolder("fluid/tannin")
-    public static final BlockFluidBase FLUID_TANNIN = null;
+    public static final BlockFluidBase FLUID_TANNIN = getNull();
     @GameRegistry.ObjectHolder("fluid/limewater")
-    public static final BlockFluidBase FLUID_LIMEWATER = null;
+    public static final BlockFluidBase FLUID_LIMEWATER = getNull();
     @GameRegistry.ObjectHolder("fluid/milk_curdled")
-    public static final BlockFluidBase FLUID_MILK_CURDLED = null;
+    public static final BlockFluidBase FLUID_MILK_CURDLED = getNull();
     @GameRegistry.ObjectHolder("fluid/milk_vinegar")
-    public static final BlockFluidBase FLUID_MILK_VINEGAR = null;
+    public static final BlockFluidBase FLUID_MILK_VINEGAR = getNull();
 
-    public static final BlockDebug DEBUG = null;
-    public static final BlockPeat PEAT = null;
-    public static final BlockPeat PEAT_GRASS = null;
-    public static final BlockFirePit FIREPIT = null;
-    public static final BlockThatch THATCH = null;
-    public static final BlockPitKiln PIT_KILN = null;
-    public static final BlockWorldItem WORLD_ITEM = null;
-    public static final BlockCharcoalPile CHARCOAL_PILE = null;
-    public static final BlockLogPile LOG_PILE = null;
-    public static final BlockIngotPile INGOT_PILE = null;
-    public static final BlockTorchTFC TORCH = null;
-    public static final BlockCharcoalForge CHARCOAL_FORGE = null;
+    public static final BlockDebug DEBUG = getNull();
+    public static final BlockPeat PEAT = getNull();
+    public static final BlockPeat PEAT_GRASS = getNull();
+    public static final BlockFirePit FIREPIT = getNull();
+    public static final BlockThatch THATCH = getNull();
+    public static final BlockPitKiln PIT_KILN = getNull();
+    public static final BlockWorldItem WORLD_ITEM = getNull();
+    public static final BlockCharcoalPile CHARCOAL_PILE = getNull();
+    public static final BlockLogPile LOG_PILE = getNull();
+    public static final BlockIngotPile INGOT_PILE = getNull();
+    public static final BlockTorchTFC TORCH = getNull();
+    public static final BlockCharcoalForge CHARCOAL_FORGE = getNull();
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.

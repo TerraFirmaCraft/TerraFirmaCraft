@@ -179,7 +179,6 @@ public class BlockCharcoalPile extends Block
             {
                 if (state.getValue(LAYERS) == 7)
                 {
-                    //noinspection ConstantConditions
                     world.setBlockState(pos, BlocksTFC.CHARCOAL_FORGE.getDefaultState().withProperty(LIT, true));
                     TECharcoalForge te = Helpers.getTE(world, pos, TECharcoalForge.class);
                     if (te != null)

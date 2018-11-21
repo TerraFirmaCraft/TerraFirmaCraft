@@ -17,7 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
+import net.dries007.tfc.api.capability.forge.ForgeableHandler;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
@@ -150,7 +150,7 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new ItemHeatHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
+        return new ForgeableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
     }
 
     @Override

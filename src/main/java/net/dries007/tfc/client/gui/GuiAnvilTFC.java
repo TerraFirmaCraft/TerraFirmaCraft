@@ -5,13 +5,17 @@
 
 package net.dries007.tfc.client.gui;
 
+import java.io.IOException;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.button.GuiButtonAnvil;
+import net.dries007.tfc.network.PacketAnvilButton;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.forge.ForgeStep;
 
@@ -96,4 +100,16 @@ public class GuiAnvilTFC extends GuiContainerTFC
         drawTexturedModalRect(guiLeft + 13 + target, guiTop + 94, 181, 0, 5, 5);
 
     }
+
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException
+    {
+        // Handle gui buttons being clicked here
+        if (button instanceof GuiButtonAnvil)
+        {
+            TerraFirmaCraft.getNetwork().sendToServer(new PacketAnvilButton(button.id));
+        }
+        super.actionPerformed(button);
+    }
+
 }

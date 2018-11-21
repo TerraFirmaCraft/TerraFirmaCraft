@@ -7,6 +7,7 @@ package net.dries007.tfc.api.capability.heat;
 
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.Nonnull;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.util.Helpers;
 
 /**
- * It is recommended that if you extend ItemHeatHandler rather than implement this directly.
+ * It is recommended that if you extend {@link ItemHeatHandler} rather than implement this directly.
  * If you do extend this, look at ItemHeatHandler to observe how heat decays over time.
  */
 public interface IItemHeat extends INBTSerializable<NBTTagCompound>
@@ -34,7 +35,7 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
      * Gets the Heat capacity. (A measure of how fast this items heats up or cools down)
      * Implementation is left up to the heating object. (See TEFirePit for example)
      *
-     * @return a value between 0 and 1
+     * @return the heat capacity. Typically 0 - 1, can be outside this range, must be non-negative
      */
     float getHeatCapacity();
 
@@ -72,7 +73,7 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
      * @param text  The list of tooltips
      */
     @SideOnly(Side.CLIENT)
-    default void addHeatInfo(ItemStack stack, List<String> text)
+    default void addHeatInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
     {
         float temperature = getTemperature();
         Heat heat = Arrays.stream(Heat.values())
