@@ -25,8 +25,12 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
 
     public ForgeableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltingPoint)
     {
-        super(nbt, heatCapacity, meltingPoint);
+        this.heatCapacity = heatCapacity;
+        this.meltingPoint = meltingPoint;
+
         steps = new ForgeSteps();
+
+        deserializeNBT(nbt);
     }
 
     public ForgeableHandler()
@@ -83,6 +87,7 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
     }
 
     @Override
+    @Nonnull
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound nbt = super.serializeNBT();
@@ -106,7 +111,6 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
             recipeName = nbt.hasKey("recipe") ? nbt.getString("recipe") : null; // stops defaulting to empty string
             steps.deserializeNBT(nbt.getCompoundTag("steps"));
         }
-
         super.deserializeNBT(nbt);
     }
 

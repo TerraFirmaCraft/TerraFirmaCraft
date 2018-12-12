@@ -43,24 +43,30 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
         this.heatCapacity = heatCapacity;
         this.meltingPoint = meltingPoint;
 
-        if (nbt != null)
-            deserializeNBT(nbt);
+        deserializeNBT(nbt);
     }
 
     public ItemHeatHandler() { } // This is here so you can do a custom implementation
 
+    /**
+     * This gets the outwards facing temperature. It will differ from the internal temperature value or the value saved to NBT
+     * Note: if checking the temperature internally, DO NOT use temperature, use this instead, as temperature does not represent the current temperature
+     *
+     * @return The current temperature
+     */
     @Override
     public float getTemperature()
     {
-        // This gets the outwards facing temperature. It will differ from the internal temperature value or the value saved to NBT
-        // Note: if checking the temperature internally, DO NOT use temperature, use this instead, as temperature does not represent the current temperature
         return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalenderTFC.getTotalTime() - lastUpdateTick);
     }
 
+    /**
+     * Update the temperature, and save the timestamp of when it was updated
+     * @param temperature the temperature to set. Between 0 - 1600
+     */
     @Override
     public void setTemperature(float temperature)
     {
-        // Update the temperature, and save the timestamp of when it was updated
         this.temperature = temperature;
         this.lastUpdateTick = CalenderTFC.getTotalTime();
     }
@@ -98,6 +104,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
     }
 
     @Override
+    @Nonnull
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound nbt = new NBTTagCompound();
