@@ -13,6 +13,7 @@ import os
 import time
 import zipfile
 
+
 def zipfolder(zip_name, target_dir):
     zipobj = zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED)
     rootlen = len(target_dir) + 1
@@ -730,9 +731,10 @@ for wood_type in WOOD_TYPES:
     })
     cube_all(('slab', 'full', 'wood', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
 
-    # TRAPDOORS
+    # (WOOD) TRAPDOORS
     blockstate(('wood', 'trapdoor', wood_type), None, textures={
             'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type,
+        'all': 'tfc:blocks/wood/trapdoor/%s' % wood_type,
         }, variants=TRAPDOOR_VARIANTS)
 
     # CHESTS
@@ -805,7 +807,10 @@ for rock_type in ROCK_TYPES:
 for wood_type in WOOD_TYPES:
     item(('wood', 'log', wood_type), 'tfc:items/wood/log/%s' % wood_type)
     item(('wood', 'door', wood_type), 'tfc:items/wood/door/%s' % wood_type)
-    item(('wood', 'trapdoor', wood_type), 'tfc:blocks/wood/trapdoor/%s' % wood_type, parent='block/trapdoor_bottom')
+
+    # Trapdoors are special - their item model needs to reference the blockstate #texture
+    model(('item', 'wood', 'trapdoor', wood_type), 'block/trapdoor_bottom',
+          {'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type})
 
 # GEMS
 for gem in GEM_TYPES:
