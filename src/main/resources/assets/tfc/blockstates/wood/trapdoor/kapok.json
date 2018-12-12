@@ -3,7 +3,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "texture": "tfc:blocks/wood/trapdoor/kapok"
+      "texture": "tfc:blocks/wood/trapdoor/kapok",
+      "all": "tfc:blocks/wood/trapdoor/kapok"
     }
   },
   "variants": {
