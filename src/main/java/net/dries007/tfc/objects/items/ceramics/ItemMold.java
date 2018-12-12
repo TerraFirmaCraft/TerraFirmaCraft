@@ -159,6 +159,7 @@ public class ItemMold extends ItemFiredPottery
         }
 
         @Override
+        @Nonnull
         public NBTTagCompound serializeNBT()
         {
             NBTTagCompound nbt = new NBTTagCompound();
@@ -178,9 +179,12 @@ public class ItemMold extends ItemFiredPottery
         @Override
         public void deserializeNBT(NBTTagCompound nbt)
         {
-            temperature = nbt.getFloat("heat");
-            lastUpdateTick = nbt.getLong("ticks");
-            tank.readFromNBT(nbt);
+            if (nbt != null)
+            {
+                temperature = nbt.getFloat("heat");
+                lastUpdateTick = nbt.getLong("ticks");
+                tank.readFromNBT(nbt);
+            }
         }
 
         @Override
