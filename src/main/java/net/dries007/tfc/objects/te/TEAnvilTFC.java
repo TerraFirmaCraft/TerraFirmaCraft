@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.te;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
@@ -39,6 +40,7 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
     public static final int FIELD_SECOND_RULE = 6;
     public static final int FIELD_THIRD_RULE = 7;
 
+    private AnvilRecipe recipe;
     private ForgeSteps steps;
     private ForgeRule[] rules;
     private int workingProgress = 120; // Min = 0, Max = 145
@@ -50,11 +52,18 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
 
         steps = new ForgeSteps();
         rules = new ForgeRule[] {HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST};
+        recipe = null;
     }
 
+    @Nullable
     public AnvilRecipe getRecipe()
     {
-        return null;
+        return recipe;
+    }
+
+    public void setRecipe(@Nullable AnvilRecipe recipe)
+    {
+        this.recipe = recipe;
     }
 
     @Override

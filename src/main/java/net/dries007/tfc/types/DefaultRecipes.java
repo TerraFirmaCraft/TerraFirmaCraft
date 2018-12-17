@@ -6,19 +6,26 @@
 package net.dries007.tfc.types;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.api.recipes.KnappingRecipe;
+import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
+import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
+import net.dries007.tfc.util.forge.ForgeRule;
 
+import static net.dries007.tfc.api.types.Metal.ItemType.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.util.forge.ForgeRule.*;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public final class DefaultRecipes
@@ -75,7 +82,51 @@ public final class DefaultRecipes
     @SubscribeEvent
     public static void onRegisterAnvilRecipeEvent(RegistryEvent.Register<AnvilRecipe> event)
     {
-        // todo: anvil recipes
+        IForgeRegistry<AnvilRecipe> r = event.getRegistry();
+
+        // Basic Components
+        addAnvil(r, INGOT, SHEET, false, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST);
+        addAnvil(r, DOUBLE_INGOT, DOUBLE_SHEET, false, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST);
+
+        // Tools
+        addAnvil(r, INGOT, PICK_HEAD, true, PUNCH_LAST, BEND_NOT_LAST, DRAW_NOT_LAST);
+        addAnvil(r, INGOT, SHOVEL_HEAD, true, PUNCH_LAST, HIT_NOT_LAST);
+        addAnvil(r, INGOT, AXE_HEAD, true, PUNCH_LAST, HIT_SECOND_LAST, UPSET_THIRD_LAST);
+        addAnvil(r, INGOT, HOE_HEAD, true, PUNCH_LAST, HIT_NOT_LAST, BEND_NOT_LAST);
+        addAnvil(r, INGOT, HAMMER_HEAD, true, PUNCH_LAST, SHRINK_NOT_LAST);
+        addAnvil(r, INGOT, PROPICK_HEAD, true, PUNCH_LAST, DRAW_NOT_LAST, BEND_NOT_LAST);
+        addAnvil(r, INGOT, SAW_BLADE, true, HIT_LAST, HIT_SECOND_LAST);
+        addAnvil(r, INGOT, SWORD_BLADE, true, HIT_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
+        addAnvil(r, DOUBLE_INGOT, MACE_HEAD, true, HIT_LAST, SHRINK_NOT_LAST, BEND_NOT_LAST);
+        addAnvil(r, INGOT, SCYTHE_BLADE, true, HIT_LAST, DRAW_SECOND_LAST, BEND_THIRD_LAST);
+        addAnvil(r, INGOT, KNIFE_BLADE, true, HIT_LAST, DRAW_SECOND_LAST, DRAW_THIRD_LAST);
+        addAnvil(r, INGOT, JAVELIN_HEAD, true, HIT_LAST, HIT_SECOND_LAST, DRAW_THIRD_LAST);
+
+        // Armor
+        addAnvil(r, DOUBLE_SHEET, UNFINISHED_HELMET, true, HIT_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
+        addAnvil(r, DOUBLE_SHEET, UNFINISHED_CHESTPLATE, true, HIT_LAST, HIT_SECOND_LAST, UPSET_THIRD_LAST);
+        addAnvil(r, DOUBLE_SHEET, UNFINISHED_GREAVES, true, BEND_ANY, DRAW_ANY, HIT_ANY);
+        addAnvil(r, DOUBLE_SHEET, UNFINISHED_BOOTS, true, BEND_LAST, BEND_SECOND_LAST, SHRINK_THIRD_LAST);
+
+        // todo: more anvil recipes
+    }
+
+    private static void addAnvil(IForgeRegistry<AnvilRecipe> registry, Metal.ItemType inputType, Metal.ItemType outputType, boolean onlyToolMetals, ForgeRule... rules)
+    {
+        // Helper method for adding all recipes that take ItemType -> ItemType
+        for (Metal metal : TFCRegistries.METALS.getValuesCollection())
+        {
+            if (onlyToolMetals && !metal.isToolMetal())
+                continue;
+
+            // Create a recipe for each metal / item type combination
+            ItemStack input = new ItemStack(ItemMetal.get(metal, inputType));
+            ItemStack output = new ItemStack(ItemMetal.get(metal, outputType));
+            if (!input.isEmpty() && !output.isEmpty())
+            {
+                registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), input, output, metal.getTier(), rules));
+            }
+        }
     }
 
     @SubscribeEvent

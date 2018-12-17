@@ -29,6 +29,7 @@ import net.dries007.tfc.network.*;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
+import net.dries007.tfc.proxy.IProxy;
 import net.dries007.tfc.util.FuelManager;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.OreSpawnData;
@@ -37,8 +38,10 @@ import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
 import net.dries007.tfc.world.classic.worldgen.*;
 
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+
 @SuppressWarnings("DefaultAnnotationParam")
-@Mod(modid = TFCConstants.MOD_ID, name = TFCConstants.MOD_NAME, useMetadata = true, guiFactory = Constants.GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = TFCConstants.SIGNING_KEY)
+@Mod(modid = MOD_ID, name = TFCConstants.MOD_NAME, useMetadata = true, guiFactory = Constants.GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = TFCConstants.SIGNING_KEY)
 @Mod.EventBusSubscriber()
 public final class TerraFirmaCraft
 {
@@ -48,6 +51,9 @@ public final class TerraFirmaCraft
     @Mod.Metadata()
     private static ModMetadata metadata = null;
 
+    @SidedProxy(modId = MOD_ID, clientSide = "net.dries007.tfc.proxy.ClientProxy", serverSide = "net.dries007.tfc.proxy.ServerProxy")
+    private static IProxy proxy = null;
+
     static
     {
         FluidRegistry.enableUniversalBucket();
@@ -56,6 +62,11 @@ public final class TerraFirmaCraft
     public static Logger getLog()
     {
         return instance.log;
+    }
+
+    public static IProxy getProxy()
+    {
+        return proxy;
     }
 
     public static String getVersion()
@@ -104,11 +115,12 @@ public final class TerraFirmaCraft
         // No need to sync config here, forge magic
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new TFCGuiHandler());
-        network = NetworkRegistry.INSTANCE.newSimpleChannel(TFCConstants.MOD_ID);
+        network = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
         int id = 0;
         // Received on server
         network.registerMessage(new PacketKnappingUpdate.Handler(), PacketKnappingUpdate.class, ++id, Side.SERVER);
         network.registerMessage(new PacketAnvilButton.Handler(), PacketAnvilButton.class, ++id, Side.SERVER);
+        network.registerMessage(new PacketAnvilRecipe.Handler(), PacketAnvilRecipe.class, ++id, Side.SERVER);
         // Received on client
         network.registerMessage(new PacketAnvilRecipe.Handler(), PacketAnvilRecipe.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketChunkData.Handler(), PacketChunkData.class, ++id, Side.CLIENT);

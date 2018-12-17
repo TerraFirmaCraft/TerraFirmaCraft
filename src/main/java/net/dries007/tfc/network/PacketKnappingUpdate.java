@@ -5,12 +5,13 @@
 
 package net.dries007.tfc.network;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.container.ContainerKnapping;
 
 public class PacketKnappingUpdate implements IMessage
@@ -45,11 +46,11 @@ public class PacketKnappingUpdate implements IMessage
         @Override
         public IMessage onMessage(PacketKnappingUpdate message, MessageContext ctx)
         {
-            EntityPlayerMP serverPlayer = ctx.getServerHandler().player;
-            if (serverPlayer.openContainer instanceof ContainerKnapping)
+            EntityPlayer player = ctx.getServerHandler().player;
+            if (player.openContainer instanceof ContainerKnapping)
             {
-                ContainerKnapping container = (ContainerKnapping) serverPlayer.openContainer;
-                serverPlayer.getServerWorld().addScheduledTask(() ->
+                ContainerKnapping container = (ContainerKnapping) player.openContainer;
+                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() ->
                     container.onUpdate(message.slotIdx)
                 );
             }

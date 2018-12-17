@@ -8,7 +8,6 @@ package net.dries007.tfc.client.button;
 import javax.annotation.Nonnull;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,7 +18,7 @@ import net.dries007.tfc.util.forge.ForgeStep;
 import static net.dries007.tfc.client.gui.GuiAnvilTFC.ANVIL_BACKGROUND;
 
 @SideOnly(Side.CLIENT)
-public class GuiButtonAnvilStep extends GuiButton implements IButtonTooltip
+public class GuiButtonAnvilStep extends GuiButtonTFC implements IButtonTooltip
 {
     private final int textureU;
     private final int textureV;
@@ -32,16 +31,6 @@ public class GuiButtonAnvilStep extends GuiButton implements IButtonTooltip
         this.textureU = step.getU();
         this.textureV = step.getV();
         this.tooltip = I18n.format("tfc.enum.forge_step." + step.name().toLowerCase());
-    }
-
-    public GuiButtonAnvilStep(int id, int guiLeft, int guiTop)
-    {
-        // Plan Button
-        super(id, guiLeft + 97, guiTop + 49, 18, 18, "");
-
-        this.textureU = 218;
-        this.textureV = 0;
-        this.tooltip = I18n.format("tfc.tooltip.anvil_plan");
     }
 
     @Override

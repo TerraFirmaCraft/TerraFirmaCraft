@@ -7,7 +7,6 @@ package net.dries007.tfc.network;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -117,8 +116,8 @@ public class PacketCapabilityContainerUpdate implements IMessage
         {
             if (!message.hasData()) return null; // Don't do anything if no data was sent
 
-            Minecraft.getMinecraft().addScheduledTask(() -> {
-                final EntityPlayer player = Minecraft.getMinecraft().player;
+            TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
+                final EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
                 final Container container;
 
                 if (message.windowID == 0)
@@ -145,16 +144,6 @@ public class PacketCapabilityContainerUpdate implements IMessage
                             TerraFirmaCraft.getLog().debug("Capabilities have changed and been synced");
                             cap.deserializeNBT(nbt);
                         }
-                        /*final ItemStack newStack = stack.copy();
-                        final IItemHeat newCap = newStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                        if (newCap != null)
-                        {
-                            newCap.deserializeNBT(nbt);
-                            if (!cap.equals(newCap))
-                            {
-                                container.putStackInSlot(index, newStack);
-                            }
-                        }*/
                     }
                     return true;
                 });
