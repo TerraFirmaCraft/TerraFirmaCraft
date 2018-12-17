@@ -16,8 +16,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiContainerTFC extends GuiContainer
 {
-    private final ResourceLocation background;
-    protected InventoryPlayer playerInv;
+    protected final ResourceLocation background;
+    protected final InventoryPlayer playerInv;
 
     public GuiContainerTFC(Container container, InventoryPlayer playerInv, ResourceLocation background)
     {
@@ -40,12 +40,10 @@ public class GuiContainerTFC extends GuiContainer
         drawSimpleBackground();
     }
 
-    protected void drawSimpleBackground()
+    protected final void drawSimpleBackground()
     {
         GlStateManager.color(1, 1, 1, 1);
         mc.getTextureManager().bindTexture(background);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
-        drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     }
 }

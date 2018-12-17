@@ -16,8 +16,9 @@ import net.dries007.tfc.objects.ToolMaterialsTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SuppressWarnings("WeakerAccess")
 @Mod.EventBusSubscriber(modid = MOD_ID)
-public class DefaultRocks
+public final class DefaultRocks
 {
     public static final ResourceLocation SEDIMENTARY = new ResourceLocation(MOD_ID, "sedimentary");
     public static final ResourceLocation METAMORPHIC = new ResourceLocation(MOD_ID, "metamorphic");

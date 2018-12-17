@@ -14,8 +14,8 @@ import com.google.common.collect.Sets;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
+import net.dries007.tfc.api.recipes.AlloyRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.AlloyRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IMetalObject;
 

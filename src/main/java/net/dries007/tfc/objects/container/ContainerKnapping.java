@@ -12,8 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.api.recipes.KnappingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.KnappingRecipe;
 import net.dries007.tfc.objects.inventory.slot.SlotKnappingOutput;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.SimpleCraftMatrix;

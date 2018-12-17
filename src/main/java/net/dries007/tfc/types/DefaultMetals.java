@@ -10,8 +10,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import net.dries007.tfc.api.recipes.AlloyRecipe;
 import net.dries007.tfc.api.registries.TFCRegistryEvent;
-import net.dries007.tfc.api.types.AlloyRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.ToolMaterialsTFC;
@@ -19,8 +19,9 @@ import net.dries007.tfc.objects.ToolMaterialsTFC;
 import static net.dries007.tfc.api.types.Metal.Tier.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SuppressWarnings("WeakerAccess")
 @Mod.EventBusSubscriber(modid = MOD_ID)
-public class DefaultMetals
+public final class DefaultMetals
 {
     /*
      * Metals

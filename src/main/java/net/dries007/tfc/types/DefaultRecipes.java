@@ -10,7 +10,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import net.dries007.tfc.api.types.KnappingRecipe;
+import net.dries007.tfc.api.recipes.AnvilRecipe;
+import net.dries007.tfc.api.recipes.KnappingRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -20,7 +21,7 @@ import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
-public class DefaultRecipes
+public final class DefaultRecipes
 {
     @SubscribeEvent
     public static void onRegisterKnappingRecipeEvent(RegistryEvent.Register<KnappingRecipe> event)
@@ -69,5 +70,17 @@ public class DefaultRecipes
         /* FIRE CLAY ITEMS */
 
         // todo: fire clay recipes
+    }
+
+    @SubscribeEvent
+    public static void onRegisterAnvilRecipeEvent(RegistryEvent.Register<AnvilRecipe> event)
+    {
+        // todo: anvil recipes
+    }
+
+    @SubscribeEvent
+    public static void onRegisterWeldingRecipeEvent(RegistryEvent.Register<KnappingRecipe> event)
+    {
+        // todo: anvil welding recipes
     }
 }

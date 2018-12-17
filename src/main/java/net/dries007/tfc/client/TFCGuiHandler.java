@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.types.KnappingRecipe;
+import net.dries007.tfc.api.recipes.KnappingRecipe;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.gui.*;
@@ -77,6 +77,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new ContainerCharcoalForge(player.inventory, Helpers.getTE(world, pos, TECharcoalForge.class));
             case ANVIL:
                 return new ContainerAnvilTFC(player.inventory, Helpers.getTE(world, pos, TEAnvilTFC.class));
+            case ANVIL_PLAN:
+                return new ContainerAnvilPlan(player.inventory, Helpers.getTE(world, pos, TEAnvilTFC.class));
             case KNAPPING_STONE:
                 return new ContainerKnapping(KnappingRecipe.Type.STONE, player.inventory, stack.getItem() instanceof ItemRock ? stack : player.getHeldItemOffhand());
             case KNAPPING_CLAY:
@@ -113,6 +115,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiCharcoalForge(container, player.inventory, Helpers.getTE(world, pos, TECharcoalForge.class));
             case ANVIL:
                 return new GuiAnvilTFC(container, player.inventory, Helpers.getTE(world, pos, TEAnvilTFC.class));
+            case ANVIL_PLAN:
+                return new GuiAnvilPlan(container, player.inventory, Helpers.getTE(world, pos, TEAnvilTFC.class));
             case KNAPPING_STONE:
                 ItemStack stack = player.getHeldItemMainhand();
                 Rock rock = stack.getItem() instanceof IRockObject ? ((IRockObject) stack.getItem()).getRock(stack) :
@@ -142,6 +146,7 @@ public class TFCGuiHandler implements IGuiHandler
         KNAPPING_LEATHER,
         CHARCOAL_FORGE,
         ANVIL,
+        ANVIL_PLAN,
         NULL;
 
         private static Type[] values = values();

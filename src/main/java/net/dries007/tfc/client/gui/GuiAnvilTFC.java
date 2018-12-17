@@ -14,7 +14,9 @@ import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.client.button.GuiButtonAnvil;
+import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.client.button.GuiButtonAnvilStep;
+import net.dries007.tfc.client.button.IButtonTooltip;
 import net.dries007.tfc.network.PacketAnvilButton;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.forge.ForgeStep;
@@ -23,20 +25,17 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.te.TEAnvilTFC.FIELD_PROGRESS;
 import static net.dries007.tfc.objects.te.TEAnvilTFC.FIELD_TARGET;
 
-public class GuiAnvilTFC extends GuiContainerTFC
+public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
 {
     public static final ResourceLocation ANVIL_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/anvil.png");
-
-    private final TEAnvilTFC tile;
+    public static final int BUTTON_ID_STEP_MIN = 0;
+    public static final int BUTTON_ID_STEP_MAX = 7;
+    public static final int BUTTON_ID_PLAN = 8;
 
     public GuiAnvilTFC(Container container, InventoryPlayer playerInv, TEAnvilTFC tile)
     {
-        super(container, playerInv, ANVIL_BACKGROUND);
-
-        this.tile = tile;
-
+        super(container, playerInv, tile, ANVIL_BACKGROUND);
         ySize = 191;
-        // todo: everything
     }
 
     @Override
@@ -44,20 +43,19 @@ public class GuiAnvilTFC extends GuiContainerTFC
     {
         super.initGui();
 
-        // Progress buttons (left + right)
-        int buttonID = 0;
+        int buttonID = -1;
         for (ForgeStep step : ForgeStep.values())
         {
-            addButton(new GuiButtonAnvil(buttonID++, guiLeft, guiTop, step));
+            addButton(new GuiButtonAnvilStep(++buttonID, guiLeft, guiTop, step));
         }
+
+        addButton(new GuiButtonAnvilStep(++buttonID, guiLeft, guiTop));
     }
 
     @Override
     protected void renderHoveredToolTip(int mouseX, int mouseY)
     {
         // Rule tooltips
-        int x = (width - xSize) / 2 + 57;
-        int y = (height - ySize) / 2 + 42;
 
         /*for (int i = FIELD_FIRST_RULE; i <= FIELD_THIRD_RULE; i++)
         {
@@ -72,15 +70,15 @@ public class GuiAnvilTFC extends GuiContainerTFC
             x += 22;
         }*/
 
-        // Step Button Tooltips
+        // Button Tooltips
         for (GuiButton button : buttonList)
         {
-            if (button instanceof GuiButtonAnvil)
+            if (button instanceof IButtonTooltip && button.isMouseOver())
             {
-                GuiButtonAnvil buttonAnvil = (GuiButtonAnvil) button;
-                if (buttonAnvil.hasTooltip() && buttonAnvil.isMouseOver())
+                IButtonTooltip tooltip = (IButtonTooltip) button;
+                if (tooltip.hasTooltip())
                 {
-                    drawHoveringText(I18n.format(buttonAnvil.getTooltip()), mouseX, mouseY);
+                    drawHoveringText(I18n.format(tooltip.getTooltip()), mouseX, mouseY);
                 }
             }
         }
@@ -104,8 +102,11 @@ public class GuiAnvilTFC extends GuiContainerTFC
     @Override
     protected void actionPerformed(GuiButton button) throws IOException
     {
-        // Handle gui buttons being clicked here
-        if (button instanceof GuiButtonAnvil)
+        if (button.id == BUTTON_ID_PLAN)
+        {
+            TFCGuiHandler.openGui(tile.getWorld(), tile.getPos(), playerInv.player, TFCGuiHandler.Type.ANVIL_PLAN);
+        }
+        else if (button.id >= BUTTON_ID_STEP_MIN && button.id <= BUTTON_ID_STEP_MAX)
         {
             TerraFirmaCraft.getNetwork().sendToServer(new PacketAnvilButton(button.id));
         }
