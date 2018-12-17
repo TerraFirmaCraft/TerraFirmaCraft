@@ -19,19 +19,29 @@ import net.dries007.tfc.util.forge.ForgeStep;
 import static net.dries007.tfc.client.gui.GuiAnvilTFC.ANVIL_BACKGROUND;
 
 @SideOnly(Side.CLIENT)
-public class GuiButtonAnvil extends GuiButton
+public class GuiButtonAnvilStep extends GuiButton implements IButtonTooltip
 {
     private final int textureU;
     private final int textureV;
     private final String tooltip;
 
-    public GuiButtonAnvil(int id, int guiLeft, int guiTop, ForgeStep step)
+    public GuiButtonAnvilStep(int id, int guiLeft, int guiTop, ForgeStep step)
     {
         super(id, guiLeft + step.getX(), guiTop + step.getY(), 16, 16, "");
 
         this.textureU = step.getU();
         this.textureV = step.getV();
         this.tooltip = I18n.format("tfc.enum.forge_step." + step.name().toLowerCase());
+    }
+
+    public GuiButtonAnvilStep(int id, int guiLeft, int guiTop)
+    {
+        // Plan Button
+        super(id, guiLeft + 97, guiTop + 49, 18, 18, "");
+
+        this.textureU = 218;
+        this.textureV = 0;
+        this.tooltip = I18n.format("tfc.tooltip.anvil_plan");
     }
 
     @Override

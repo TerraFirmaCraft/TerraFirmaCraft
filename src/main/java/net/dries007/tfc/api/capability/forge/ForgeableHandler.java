@@ -10,10 +10,11 @@ import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
-import net.dries007.tfc.objects.recipes.anvil.AnvilRecipe;
+import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
@@ -21,7 +22,7 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
 {
     private final ForgeSteps steps;
     private int work;
-    private String recipeName;
+    private ResourceLocation recipeName;
 
     public ForgeableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltingPoint)
     {
@@ -53,7 +54,7 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
 
     @Override
     @Nullable
-    public String getRecipeName()
+    public ResourceLocation getRecipeName()
     {
         return recipeName;
     }
@@ -61,7 +62,7 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
     @Override
     public void setRecipe(@Nullable AnvilRecipe recipe)
     {
-        recipeName = (recipe == null ? null : recipe.getName());
+        recipeName = (recipe == null ? null : recipe.getRegistryName());
     }
 
     @Override
@@ -96,7 +97,7 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
         nbt.setTag("steps", steps.serializeNBT());
         if (recipeName != null)
         {
-            nbt.setString("recipe", recipeName);
+            nbt.setString("recipe", recipeName.toString());
         }
 
         return nbt;
@@ -108,7 +109,7 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
         if (nbt != null)
         {
             work = nbt.getInteger("work");
-            recipeName = nbt.hasKey("recipe") ? nbt.getString("recipe") : null; // stops defaulting to empty string
+            recipeName = nbt.hasKey("recipe") ? new ResourceLocation(nbt.getString("recipe")) : null; // stops defaulting to empty string
             steps.deserializeNBT(nbt.getCompoundTag("steps"));
         }
         super.deserializeNBT(nbt);

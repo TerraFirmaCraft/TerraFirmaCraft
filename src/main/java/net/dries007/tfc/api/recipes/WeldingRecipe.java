@@ -3,11 +3,11 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.recipes;
+package net.dries007.tfc.api.recipes;
 
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe>
 {
-
+    // todo: everything here
 }

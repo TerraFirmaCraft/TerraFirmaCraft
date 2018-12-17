@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.objects.recipes.anvil.AnvilRecipe;
+import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.util.ITileFields;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.forge.ForgeRule;

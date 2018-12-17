@@ -8,8 +8,10 @@ package net.dries007.tfc.api.capability.forge;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.util.ResourceLocation;
+
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.objects.recipes.anvil.AnvilRecipe;
+import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
@@ -31,12 +33,11 @@ public interface IForgeable extends IItemHeat
     void setWork(int work);
 
     /**
-     * Gets the current saved recipe name.
-     * This can be used with {@link net.dries007.tfc.objects.recipes.anvil.AnvilRecipeManager} to get the actual recipe on TE loading
+     * Gets the current saved recipe's registry name
      * Returns null if no recipe name is currently saved
      */
     @Nullable
-    String getRecipeName();
+    ResourceLocation getRecipeName();
 
     /**
      * Sets the recipe name from an {@link AnvilRecipe}. If null, sets the recipe name to null

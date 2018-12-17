@@ -3,12 +3,11 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.recipes.anvil;
+package net.dries007.tfc.api.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
@@ -29,17 +28,9 @@ public final class AnvilRecipeManager
         return recipes.stream().filter(x -> x.matches(input)).findFirst().orElse(null);
     }
 
-    public static boolean hasRecipe(ItemStack input)
-    {
-        return get(input) != null;
-    }
-
     public static void add(AnvilRecipe recipe)
     {
-        if (AnvilRecipe.assertValid(recipe))
-        {
-            recipes.add(recipe.withSeed(++workingSeed));
-        }
+        recipes.add(recipe.withSeed(++workingSeed));
     }
 
     public static void add(Metal.ItemType inputType, Metal.ItemType outputType, boolean onlyToolMetals, ForgeRule... rules)
@@ -55,7 +46,7 @@ public final class AnvilRecipeManager
             ItemStack output = new ItemStack(ItemMetal.get(metal, outputType));
             if (!input.isEmpty() && !output.isEmpty())
             {
-                add(new AnvilRecipe(input, output, metal.getTier(), rules));
+                add(new AnvilRecipe(output.getItem().getRegistryName(), input, output, metal.getTier(), rules));
             }
         }
     }
@@ -73,52 +64,10 @@ public final class AnvilRecipeManager
             ItemStack output = outputGenerator.apply(metal);
             if (!input.isEmpty() && output != null && !output.isEmpty())
             {
-                add(new AnvilRecipe(input, output, metal.getTier(), rules));
+                add(new AnvilRecipe(output.getItem().getRegistryName(), input, output, metal.getTier(), rules));
             }
         }
     }
 
-    @Nullable
-    public AnvilRecipe getByName(@Nullable String name)
-    {
-        return recipes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
-    }
-
-    @Nullable
-    public AnvilRecipe getPrevious(@Nullable AnvilRecipe recipe, ItemStack input)
-    {
-        List<AnvilRecipe> list = getAllMatching(input);
-        if (list.size() == 0)
-            return null;
-
-        int idx = list.indexOf(recipe);
-        if (idx == -1)
-            return recipe;
-        else if (idx == 0)
-            return list.get(list.size() - 1);
-        else
-            return list.get(idx - 1);
-    }
-
-    @Nullable
-    public AnvilRecipe getNext(@Nullable AnvilRecipe recipe, ItemStack input)
-    {
-        List<AnvilRecipe> list = getAllMatching(input);
-        if (list.size() == 0)
-            return null;
-
-        int idx = list.indexOf(recipe);
-        if (idx == -1)
-            return recipe;
-        else if (idx + 1 >= list.size())
-            return list.get(0);
-        else
-            return list.get(idx + 1);
-    }
-
-    private List<AnvilRecipe> getAllMatching(ItemStack input)
-    {
-        return recipes.stream().filter(x -> x.matches(input)).collect(Collectors.toList());
-    }
 
 }

@@ -26,6 +26,10 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC>
         switch (buttonID)
         {
             // todo: send stuff to the tile entity when a button is pressed
+            // case for a recipe button needs to
+            default:
+                // Step button pressed
+                // do something here
         }
     }
 
