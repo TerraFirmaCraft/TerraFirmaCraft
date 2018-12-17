@@ -8,22 +8,29 @@ package net.dries007.tfc.client.button;
 import javax.annotation.Nonnull;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static net.dries007.tfc.client.gui.GuiAnvilTFC.ANVIL_BACKGROUND;
+import net.dries007.tfc.api.recipes.AnvilRecipe;
 
-public class GuiButtonAnvilPlanIcon extends GuiButton implements IButtonTooltip
+import static net.dries007.tfc.client.gui.GuiAnvilPlan.PLAN_BACKGROUND;
+
+@SideOnly(Side.CLIENT)
+public class GuiButtonAnvilPlanIcon extends GuiButtonTFC implements IButtonTooltip
 {
     private final ItemStack displayItem;
+    private final ResourceLocation recipeName;
     private final String tooltip;
 
-    public GuiButtonAnvilPlanIcon(ItemStack displayItem, int id, int x, int y)
+    public GuiButtonAnvilPlanIcon(AnvilRecipe recipe, int id, int x, int y)
     {
-        super(id, x, y, "");
+        super(id, x, y, 18, 18, "");
 
-        this.displayItem = displayItem;
+        this.displayItem = recipe.getOutput();
+        this.recipeName = recipe.getRegistryName();
         this.tooltip = displayItem.getDisplayName();
     }
 
@@ -33,12 +40,17 @@ public class GuiButtonAnvilPlanIcon extends GuiButton implements IButtonTooltip
         if (this.visible)
         {
             GlStateManager.color(1, 1, 1, 1);
-            mc.getTextureManager().bindTexture(ANVIL_BACKGROUND);
+            mc.getTextureManager().bindTexture(PLAN_BACKGROUND);
             hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-            drawModalRectWithCustomSizedTexture(x, y, 176, 0, 16, 16, 256, 256);
-            // todo: draw item stack ontop of button
+            drawModalRectWithCustomSizedTexture(x, y, 176, 0, 18, 18, 256, 256);
+            drawItemStack(displayItem, x + 1, y + 1);
             mouseDragged(mc, mouseX, mouseY);
         }
+    }
+
+    public ResourceLocation getRecipeName()
+    {
+        return recipeName;
     }
 
     public String getTooltip()

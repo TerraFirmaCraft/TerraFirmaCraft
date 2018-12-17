@@ -5,16 +5,22 @@
 
 package net.dries007.tfc.network;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.AnvilRecipe;
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.objects.container.ContainerAnvilTFC;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
+import net.dries007.tfc.util.Helpers;
 
 public class PacketAnvilRecipe implements IMessage
 {
@@ -53,7 +59,19 @@ public class PacketAnvilRecipe implements IMessage
         @Override
         public IMessage onMessage(PacketAnvilRecipe message, MessageContext ctx)
         {
-            // todo: update recipe on client side
+            EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
+            World world = player.world;
+            if (player.openContainer instanceof ContainerAnvilTFC)
+            {
+                ContainerAnvilTFC container = (ContainerAnvilTFC) player.openContainer;
+                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
+                    TEAnvilTFC te = Helpers.getTE(world, message.pos, TEAnvilTFC.class);
+                    if (te != null)
+                    {
+                        te.setRecipe(TFCRegistries.ANVIL.getValue(message.recipe));
+                    }
+                });
+            }
             return null;
         }
     }

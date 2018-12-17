@@ -5,10 +5,12 @@
 
 package net.dries007.tfc.client.gui;
 
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -45,5 +47,17 @@ public class GuiContainerTFC extends GuiContainer
         GlStateManager.color(1, 1, 1, 1);
         mc.getTextureManager().bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+    }
+
+    protected void drawItemStack(ItemStack stack, int x, int y, String altText)
+    {
+        this.zLevel = 200.0F;
+        this.itemRender.zLevel = 200.0F;
+        FontRenderer font = stack.getItem().getFontRenderer(stack);
+        if (font == null) font = fontRenderer;
+        this.itemRender.renderItemAndEffectIntoGUI(stack, x, y);
+        this.itemRender.renderItemOverlayIntoGUI(font, stack, x, y, altText);
+        this.zLevel = 0.0F;
+        this.itemRender.zLevel = 0.0F;
     }
 }

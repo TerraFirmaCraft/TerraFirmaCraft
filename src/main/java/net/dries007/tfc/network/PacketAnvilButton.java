@@ -5,12 +5,13 @@
 
 package net.dries007.tfc.network;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.container.ContainerAnvilTFC;
 
 public class PacketAnvilButton implements IMessage
@@ -43,11 +44,11 @@ public class PacketAnvilButton implements IMessage
         @Override
         public IMessage onMessage(PacketAnvilButton message, MessageContext ctx)
         {
-            EntityPlayerMP serverPlayer = ctx.getServerHandler().player;
-            if (serverPlayer.openContainer instanceof ContainerAnvilTFC)
+            EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
+            if (player.openContainer instanceof ContainerAnvilTFC)
             {
-                ContainerAnvilTFC container = (ContainerAnvilTFC) serverPlayer.openContainer;
-                serverPlayer.getServerWorld().addScheduledTask(() ->
+                ContainerAnvilTFC container = (ContainerAnvilTFC) player.openContainer;
+                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() ->
                     container.onReceivePacket(message.buttonId)
                 );
             }
