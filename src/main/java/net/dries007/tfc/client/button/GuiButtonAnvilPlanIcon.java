@@ -53,11 +53,13 @@ public class GuiButtonAnvilPlanIcon extends GuiButtonTFC implements IButtonToolt
         return recipeName;
     }
 
+    @Override
     public String getTooltip()
     {
         return tooltip;
     }
 
+    @Override
     public boolean hasTooltip()
     {
         return tooltip != null;

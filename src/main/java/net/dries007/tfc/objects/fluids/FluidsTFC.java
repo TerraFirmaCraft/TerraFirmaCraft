@@ -32,6 +32,9 @@ public class FluidsTFC
     private static final ResourceLocation STILL = new ResourceLocation(MOD_ID, "blocks/fluid_still");
     private static final ResourceLocation FLOW = new ResourceLocation(MOD_ID, "blocks/fluid_flow");
 
+    private static final ResourceLocation LAVA_STILL = new ResourceLocation(MOD_ID, "blocks/lava_still");
+    private static final ResourceLocation LAVA_FLOW = new ResourceLocation(MOD_ID, "blocks/lava_flow");
+
     private static ImmutableSet<Fluid> allInfiniteFluids;
     private static ImmutableSet<Fluid> allAlcoholsFluids;
     private static ImmutableMap<Metal, Fluid> allMetalFluids;
@@ -106,7 +109,7 @@ public class FluidsTFC
             ImmutableMap.Builder<Metal, Fluid> b = ImmutableMap.builder();
 
             for (Metal metal : TFCRegistries.METALS.getValuesCollection())
-                registerFluid(b, metal, new FluidMetal(metal, metal.getRegistryName().getPath(), STILL, FLOW, metal.getColor()));
+                registerFluid(b, metal, new FluidMetal(metal, metal.getRegistryName().getPath(), LAVA_STILL, LAVA_FLOW, metal.getColor()));
 
             allMetalFluids = b.build();
         }
