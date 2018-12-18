@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.network.PacketChunkData;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -44,6 +45,6 @@ public final class ChunkCapabilityHandler
         if (data == null) return;
         //noinspection ConstantConditions
         NBTTagCompound nbt = (NBTTagCompound) ChunkDataProvider.CHUNK_DATA_CAPABILITY.writeNBT(data, null);
-        TerraFirmaCraft.getNetwork().sendTo(new ChunkDataMessage(event.getChunkInstance().getPos(), nbt), event.getPlayer());
+        TerraFirmaCraft.getNetwork().sendTo(new PacketChunkData(event.getChunkInstance().getPos(), nbt), event.getPlayer());
     }
 }

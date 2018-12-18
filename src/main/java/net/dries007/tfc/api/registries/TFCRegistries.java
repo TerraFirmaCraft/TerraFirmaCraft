@@ -26,6 +26,7 @@ public class TFCRegistries
     public static final IForgeRegistry<Metal> METALS = GameRegistry.findRegistry(Metal.class);
 
     public static final IForgeRegistry<AlloyRecipe> ALLOYS = GameRegistry.findRegistry(AlloyRecipe.class);
+    public static final IForgeRegistry<KnappingRecipe> KNAPPING = GameRegistry.findRegistry(KnappingRecipe.class);
 
     static
     {

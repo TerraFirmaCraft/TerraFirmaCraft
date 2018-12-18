@@ -37,6 +37,7 @@ import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.util.IMetalObject;
+import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.world.classic.CalenderTFC;
@@ -161,7 +162,7 @@ public class ClientEvents
             {
                 ((IMetalObject) item).addMetalInfo(stack, tt);
             }
-            if (item instanceof ItemBlock)
+            else if (item instanceof ItemBlock)
             {
                 Block block = ((ItemBlock) item).getBlock();
                 if (block instanceof IMetalObject)
@@ -169,6 +170,19 @@ public class ClientEvents
                     ((IMetalObject) block).addMetalInfo(stack, tt);
                 }
             }
+            if (item instanceof IRockObject)
+            {
+                ((IRockObject) item).addRockInfo(stack, tt);
+            }
+            else if (item instanceof ItemBlock)
+            {
+                Block block = ((ItemBlock) item).getBlock();
+                if (block instanceof IRockObject)
+                {
+                    ((IRockObject) block).addRockInfo(stack, tt);
+                }
+            }
+
             if (ConfigTFC.CLIENT.showToolClassTooltip)
             {
                 Set<String> toolClasses = item.getToolClasses(stack);

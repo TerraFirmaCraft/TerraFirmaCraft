@@ -17,6 +17,7 @@ import com.google.common.base.Joiner;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -105,6 +106,32 @@ public final class Helpers
     public static String getTypeName(IForgeRegistryEntry<?> type)
     {
         return JOINER_DOT.join(TFCConstants.MOD_ID, "types", type.getRegistryType().getSimpleName(), type.getRegistryName().getPath()).toLowerCase();
+    }
+
+    public static boolean playerHasItemMatchingOre(InventoryPlayer playerInv, String ore)
+    {
+        for (ItemStack stack : playerInv.mainInventory)
+        {
+            if (!stack.isEmpty() && OreDictionaryHelper.doesStackMatchOre(stack, ore))
+            {
+                return true;
+            }
+        }
+        for (ItemStack stack : playerInv.armorInventory)
+        {
+            if (!stack.isEmpty() && OreDictionaryHelper.doesStackMatchOre(stack, ore))
+            {
+                return true;
+            }
+        }
+        for (ItemStack stack : playerInv.offHandInventory)
+        {
+            if (!stack.isEmpty() && OreDictionaryHelper.doesStackMatchOre(stack, ore))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Nonnull

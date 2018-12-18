@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -17,16 +18,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.types.KnappingRecipe;
+import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.gui.GuiContainerTFC;
+import net.dries007.tfc.client.gui.GuiKnapping;
 import net.dries007.tfc.client.gui.GuiLiquidTransfer;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.container.ContainerFirePit;
-import net.dries007.tfc.objects.container.ContainerLiquidTransfer;
-import net.dries007.tfc.objects.container.ContainerLogPile;
-import net.dries007.tfc.objects.container.ContainerSmallVessel;
+import net.dries007.tfc.objects.container.*;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemSmallVessel;
+import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
@@ -37,6 +40,10 @@ public class TFCGuiHandler implements IGuiHandler
 {
     private static final ResourceLocation SMALL_INVENTORY_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/small_inventory.png");
     private static final ResourceLocation FIRE_PIT_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/fire_pit.png");
+
+    private static final ResourceLocation CLAY_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button.png");
+    private static final ResourceLocation FIRE_CLAY_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_fire.png");
+    private static final ResourceLocation LEATHER_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/leather_button.png");
 
     // use this instead of player.openGui() -> avoids magic numbers
     public static void openGui(World world, BlockPos pos, EntityPlayer player, Type type)
@@ -51,6 +58,7 @@ public class TFCGuiHandler implements IGuiHandler
 
     @Override
     @Nullable
+    @SuppressWarnings("ConstantConditions")
     public Container getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         BlockPos pos = new BlockPos(x, y, z);
@@ -70,6 +78,14 @@ public class TFCGuiHandler implements IGuiHandler
             case FIRE_PIT:
                 TEFirePit teFirePit = Helpers.getTE(world, pos, TEFirePit.class);
                 return new ContainerFirePit(player.inventory, teFirePit);
+            case KNAPPING_STONE:
+                return new ContainerKnapping(KnappingRecipe.Type.STONE, player.inventory, stack.getItem() instanceof ItemRock ? stack : player.getHeldItemOffhand());
+            case KNAPPING_CLAY:
+                return new ContainerKnapping(KnappingRecipe.Type.CLAY, player.inventory, stack.getItem() == Items.CLAY_BALL ? stack : player.getHeldItemOffhand());
+            case KNAPPING_LEATHER:
+                return new ContainerKnapping(KnappingRecipe.Type.LEATHER, player.inventory, stack.getItem() == ItemsTFC.LEATHER ? stack : player.getHeldItemOffhand());
+            case KNAPPING_FIRE_CLAY:
+                return new ContainerKnapping(KnappingRecipe.Type.FIRE_CLAY, player.inventory, stack.getItem() == ItemsTFC.FIRE_CLAY ? stack : player.getHeldItemOffhand());
             default:
                 return null;
         }
@@ -94,6 +110,17 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiLiquidTransfer(container, player, "", player.getHeldItemMainhand().getItem() instanceof ItemMold);
             case FIRE_PIT:
                 return new GuiContainerTFC(container, player.inventory, FIRE_PIT_BACKGROUND, BlocksTFC.FIREPIT.getTranslationKey());
+            case KNAPPING_STONE:
+                ItemStack stack = player.getHeldItemMainhand();
+                Rock rock = stack.getItem() instanceof IRockObject ? ((IRockObject) stack.getItem()).getRock(stack) :
+                    ((IRockObject) player.getHeldItemOffhand().getItem()).getRock(player.getHeldItemOffhand());
+                return new GuiKnapping(container, player, KnappingRecipe.Type.STONE, rock.getTexture());
+            case KNAPPING_CLAY:
+                return new GuiKnapping(container, player, KnappingRecipe.Type.CLAY, CLAY_TEXTURE);
+            case KNAPPING_LEATHER:
+                return new GuiKnapping(container, player, KnappingRecipe.Type.LEATHER, LEATHER_TEXTURE);
+            case KNAPPING_FIRE_CLAY:
+                return new GuiKnapping(container, player, KnappingRecipe.Type.FIRE_CLAY, FIRE_CLAY_TEXTURE);
             default:
                 return null;
         }
@@ -106,6 +133,10 @@ public class TFCGuiHandler implements IGuiHandler
         SMALL_VESSEL_LIQUID,
         MOLD,
         FIRE_PIT,
+        KNAPPING_STONE,
+        KNAPPING_CLAY,
+        KNAPPING_FIRE_CLAY,
+        KNAPPING_LEATHER,
         NULL;
 
         private static Type[] values = values();
