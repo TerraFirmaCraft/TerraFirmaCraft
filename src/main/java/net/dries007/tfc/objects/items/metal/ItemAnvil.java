@@ -21,14 +21,14 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.IPlacableItem;
+import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 
 import static net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC.AXIS;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ItemAnvil extends ItemMetal implements IPlacableItem
+public class ItemAnvil extends ItemMetal implements IPlaceableItem
 {
     public ItemAnvil(Metal metal, Metal.ItemType type)
     {

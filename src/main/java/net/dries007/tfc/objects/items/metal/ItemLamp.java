@@ -13,9 +13,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.IPlacableItem;
+import net.dries007.tfc.api.util.IPlaceableItem;
 
-public class ItemLamp extends ItemMetal implements IPlacableItem
+public class ItemLamp extends ItemMetal implements IPlaceableItem
 {
     public ItemLamp(Metal metal, Metal.ItemType type)
     {

@@ -21,7 +21,7 @@ public class TESRWorldItem extends TileEntitySpecialRenderer<TEWorldItem>
     @Override
     public void render(TEWorldItem te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
-        ItemStack stack = te.inventory.getStackInSlot(0);
+        ItemStack stack = te.inventory.getStackInSlot(0); //
         byte rotation = te.getRotation();
         GlStateManager.pushMatrix();
         //GlStateManager.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));

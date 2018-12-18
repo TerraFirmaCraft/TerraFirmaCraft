@@ -57,11 +57,10 @@ public class ItemSmallVessel extends ItemFiredPottery
 
     @Override
     @Nonnull
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn)
     {
-
-        ItemStack stack = player.getHeldItem(hand);
-        if (!world.isRemote && !player.isSneaking())
+        ItemStack stack = playerIn.getHeldItem(handIn);
+        if (!worldIn.isRemote && !playerIn.isSneaking())
         {
             IFluidHandler cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
             if (cap instanceof ISmallVesselHandler)
@@ -70,10 +69,10 @@ public class ItemSmallVessel extends ItemFiredPottery
                 switch (mode)
                 {
                     case INVENTORY:
-                        TFCGuiHandler.openGui(world, player, TFCGuiHandler.Type.SMALL_VESSEL);
+                        TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.SMALL_VESSEL);
                         break;
                     case LIQUID_MOLTEN:
-                        TFCGuiHandler.openGui(world, player, TFCGuiHandler.Type.SMALL_VESSEL_LIQUID);
+                        TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.SMALL_VESSEL_LIQUID);
                         break;
                     case LIQUID_SOLID:
                         break;
@@ -158,8 +157,6 @@ public class ItemSmallVessel extends ItemFiredPottery
     // Extends ItemStackHandler for ease of use. Duplicates most of ItemHeatHandler functionality
     private class SmallVesselCapability extends ItemStackHandler implements ICapabilityProvider, ISmallVesselHandler
     {
-        // todo: make cool slower.
-
         private final FluidTank tank;
 
         private float heatCapacity;
