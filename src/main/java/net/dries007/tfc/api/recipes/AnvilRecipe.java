@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
@@ -19,6 +20,7 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.forge.ForgeRule;
+import net.dries007.tfc.util.forge.ForgeSteps;
 
 @ParametersAreNonnullByDefault
 public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
@@ -27,6 +29,13 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
 
     private static final Random RNG = new Random();
 
+    @Nullable
+    public static AnvilRecipe getFirstFor(ItemStack stack)
+    {
+        return TFCRegistries.ANVIL.getValuesCollection().stream().filter(x -> x.matches(stack)).findFirst().orElse(null);
+    }
+
+    @Nonnull
     public static List<AnvilRecipe> getAllFor(ItemStack stack)
     {
         return TFCRegistries.ANVIL.getValuesCollection().stream().filter(x -> x.matches(stack)).collect(Collectors.toList());
@@ -60,6 +69,16 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
         return this.input.isItemEqual(input);
     }
 
+    public boolean matches(ForgeSteps steps)
+    {
+        for (ForgeRule rule : rules)
+        {
+            if (!rule.matches(steps))
+                return false;
+        }
+        return true;
+    }
+
     @Nonnull
     public ItemStack getOutput()
     {
@@ -76,6 +95,12 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
     public ForgeRule[] getRules()
     {
         return rules;
+    }
+
+    @Nonnull
+    public Metal.Tier getTier()
+    {
+        return minTier;
     }
 
     public int getTarget(long worldSeed)

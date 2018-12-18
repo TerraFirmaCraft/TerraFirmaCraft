@@ -26,7 +26,8 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 
     private final Tier tier;
     private final float specificHeat;
-    private final int meltTemp;
+    private final float workTemp;
+    private final float meltTemp;
     private final boolean usable;
     private final int color;
 
@@ -37,22 +38,22 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
      *
      * Use the provided Builder to create your own metals
      *
-     * @param name      the registry name of the object. The path must also be unique
-     * @param tier      the tier of the metal
-     * @param usable    is the metal usable to create basic metal items? (not tools)
-     * @param sh        specific heat capacity. Higher = harder to heat up / cool down. Most IRL metals are between 0.3 - 0.7
-     * @param melt      melting point. See @link Heat for temperature scale. Similar to IRL melting point in celcius.
-     * @param color     color of the metal when in fluid form. Used to autogenerate a fluid texture
-     * @param toolMetal The tool material. Null if metal is not able to create tools
+     * @param name          the registry name of the object. The path must also be unique
+     * @param tier          the tier of the metal
+     * @param usable        is the metal usable to create basic metal items? (not tools)
+     * @param specificHeat  specific heat capacity. Higher = harder to heat up / cool down. Most IRL metals are between 0.3 - 0.7
+     * @param meltTemp      melting point. See @link Heat for temperature scale. Similar to IRL melting point in celcius.
+     * @param color         color of the metal when in fluid form. Used to autogenerate a fluid texture
+     * @param toolMetal     The tool material. Null if metal is not able to create tools
      */
-    public Metal(@Nonnull ResourceLocation name, Tier tier, boolean usable, float sh, int melt, int color, @Nullable Item.ToolMaterial toolMetal)
+    public Metal(@Nonnull ResourceLocation name, Tier tier, boolean usable, float specificHeat, float meltTemp, int color, @Nullable Item.ToolMaterial toolMetal)
     {
         this.usable = usable;
         this.tier = tier;
-        this.specificHeat = sh;
-        this.meltTemp = melt;
+        this.specificHeat = specificHeat;
+        this.meltTemp = meltTemp;
+        this.workTemp = 0.6f * meltTemp;
         this.color = color;
-
         this.toolMetal = toolMetal;
 
         setRegistryName(name);
@@ -79,7 +80,12 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         return specificHeat;
     }
 
-    public int getMeltTemp()
+    public float getWorkTemp()
+    {
+        return workTemp;
+    }
+
+    public float getMeltTemp()
     {
         return meltTemp;
     }
@@ -97,11 +103,11 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 
     public enum Tier
     {
-        TIER_I,
+        TIER_I, // Pit Kiln
         TIER_II, // Not implemented, but presumed to be a more advanced, more capable version of the pit kiln.
-        TIER_III,
-        TIER_IV,
-        TIER_V;
+        TIER_III, // Iron
+        TIER_IV, // Steel
+        TIER_V; // Red / Blue / Black Steel
 
         private static Tier[] values = values();
 

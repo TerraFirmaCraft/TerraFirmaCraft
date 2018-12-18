@@ -150,7 +150,7 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new ForgeableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
+        return new ForgeableHandler(nbt, metal.getSpecificHeat(), metal.getWorkTemp(), metal.getMeltTemp());
     }
 
     @Override

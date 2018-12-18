@@ -11,7 +11,10 @@ tfc.tooltip.metal=§fMetal:§7 %s
 tfc.tooltip.units=%d units
 tfc.tooltip.smelting=Smelt in %s
 tfc.tooltip.liquid=Liquid
-tfc.tooltip.anvil_plan=Plan Selector
+tfc.tooltip.anvil_plan=Plans
+tfc.tooltip.anvil_tier_too_low=This Anvil is too low tier!
+tfc.tooltip.anvil_too_cold=The item is not hot enough to work!
+tfc.tooltip.anvil_no_hammer=There is no hammer in the anvil!
 
 ## Keybindings
 tfc.key.craft=Crafting GUI

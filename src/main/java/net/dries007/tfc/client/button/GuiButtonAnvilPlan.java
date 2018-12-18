@@ -10,9 +10,13 @@ import javax.annotation.Nonnull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import net.dries007.tfc.api.recipes.AnvilRecipe;
+import net.dries007.tfc.objects.te.TEAnvilTFC;
 
 import static net.dries007.tfc.client.gui.GuiAnvilTFC.ANVIL_BACKGROUND;
 
@@ -20,14 +24,14 @@ import static net.dries007.tfc.client.gui.GuiAnvilTFC.ANVIL_BACKGROUND;
 public class GuiButtonAnvilPlan extends GuiButtonTFC implements IButtonTooltip
 {
     private final String tooltip;
-    private final ItemStack planStack;
+    private final TEAnvilTFC tile;
 
-    public GuiButtonAnvilPlan(ItemStack stack, int id, int guiLeft, int guiTop)
+    public GuiButtonAnvilPlan(TEAnvilTFC tile, int id, int guiLeft, int guiTop)
     {
         // Plan Button
         super(id, guiLeft + 97, guiTop + 49, 18, 18, "");
         this.tooltip = I18n.format("tfc.tooltip.anvil_plan");
-        this.planStack = stack;
+        this.tile = tile;
     }
 
     @Override
@@ -39,16 +43,20 @@ public class GuiButtonAnvilPlan extends GuiButtonTFC implements IButtonTooltip
             mc.getTextureManager().bindTexture(ANVIL_BACKGROUND);
             hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             drawModalRectWithCustomSizedTexture(x, y, 218, 0, 18, 18, 256, 256);
-            drawItemStack(planStack, x + 1, y + 1);
+            AnvilRecipe recipe = tile.getRecipe();
+            ItemStack stack = recipe == null ? new ItemStack(Items.BOOK) : recipe.getOutput();
+            drawItemStack(stack, x + 1, y + 1);
             mouseDragged(mc, mouseX, mouseY);
         }
     }
 
+    @Override
     public String getTooltip()
     {
         return tooltip;
     }
 
+    @Override
     public boolean hasTooltip()
     {
         return tooltip != null;

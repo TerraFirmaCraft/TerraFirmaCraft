@@ -10,13 +10,10 @@ import java.io.IOException;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.button.GuiButtonAnvilPlan;
 import net.dries007.tfc.client.button.GuiButtonAnvilStep;
@@ -52,8 +49,7 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
         {
             addButton(new GuiButtonAnvilStep(++buttonID, guiLeft, guiTop, step));
         }
-        AnvilRecipe recipe = tile.getRecipe();
-        addButton(new GuiButtonAnvilPlan(recipe != null ? recipe.getOutput() : new ItemStack(Items.BOOK), ++buttonID, guiLeft, guiTop));
+        addButton(new GuiButtonAnvilPlan(tile, ++buttonID, guiLeft, guiTop));
     }
 
     @Override

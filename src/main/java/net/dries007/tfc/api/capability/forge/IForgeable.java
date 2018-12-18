@@ -61,4 +61,11 @@ public interface IForgeable extends IItemHeat
      * Purpose is to preserve stackability on items that haven't been worked yet.
      */
     void reset();
+
+    /**
+     * Checks if the item is hot enough to be worked
+     *
+     * @return true if the item is workable
+     */
+    boolean isWorkable();
 }

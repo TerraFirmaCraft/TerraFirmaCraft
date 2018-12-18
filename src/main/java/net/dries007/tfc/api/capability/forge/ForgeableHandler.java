@@ -23,10 +23,12 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
     private final ForgeSteps steps;
     private int work;
     private ResourceLocation recipeName;
+    private float workingPoint;
 
-    public ForgeableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltingPoint)
+    public ForgeableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float workingPoint, float meltingPoint)
     {
         this.heatCapacity = heatCapacity;
+        this.workingPoint = workingPoint;
         this.meltingPoint = meltingPoint;
 
         steps = new ForgeSteps();
@@ -85,6 +87,12 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
         steps.reset();
         recipeName = null;
         work = 0;
+    }
+
+    @Override
+    public boolean isWorkable()
+    {
+        return getTemperature() > workingPoint;
     }
 
     @Override

@@ -25,6 +25,7 @@ import net.dries007.tfc.util.ITileFields;
 public abstract class ContainerTE<T extends TEInventory> extends Container
 {
     protected final T tile;
+    protected final EntityPlayer player;
 
     private final boolean shouldSyncCaps;
     private final boolean shouldSyncFields;
@@ -45,6 +46,7 @@ public abstract class ContainerTE<T extends TEInventory> extends Container
     ContainerTE(InventoryPlayer playerInv, T tile, boolean shouldSyncCaps, int yOffset)
     {
         this.tile = tile;
+        this.player = playerInv.player;
         this.shouldSyncCaps = shouldSyncCaps;
         this.shouldSyncFields = tile instanceof ITileFields;
         this.yOffset = yOffset;

@@ -47,13 +47,15 @@ public class GuiButtonAnvilStep extends GuiButtonTFC implements IButtonTooltip
         }
     }
 
-    public boolean hasTooltip()
-    {
-        return tooltip != null;
-    }
-
+    @Override
     public String getTooltip()
     {
         return tooltip;
+    }
+
+    @Override
+    public boolean hasTooltip()
+    {
+        return tooltip != null;
     }
 }
