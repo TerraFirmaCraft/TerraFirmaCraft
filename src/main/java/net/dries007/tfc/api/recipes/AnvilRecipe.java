@@ -106,6 +106,6 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
     public int getTarget(long worldSeed)
     {
         RNG.setSeed(worldSeed + workingSeed);
-        return RNG.nextInt(TEAnvilTFC.WORK_MAX + 1);
+        return 40 + RNG.nextInt(TEAnvilTFC.WORK_MAX + -2 * 40);
     }
 }

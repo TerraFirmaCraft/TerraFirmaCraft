@@ -8,6 +8,9 @@ package net.dries007.tfc.util.forge;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import static net.dries007.tfc.util.forge.ForgeStep.*;
 
 public enum ForgeRule
@@ -62,7 +65,28 @@ public enum ForgeRule
     ForgeRule(@Nonnull Order order, @Nonnull ForgeStep type)
     {
         this.order = order;
-        this.type = type;
+        if (type == HIT_MEDIUM || type == HIT_HARD)
+            this.type = HIT_LIGHT;
+        else
+            this.type = type;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getU()
+    {
+        return this.type == HIT_LIGHT ? 218 : this.type.getU();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getV()
+    {
+        return this.type == HIT_LIGHT ? 18 : this.type.getV();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getW()
+    {
+        return order.v;
     }
 
     public boolean matches(@Nonnull ForgeSteps steps)
@@ -97,11 +121,18 @@ public enum ForgeRule
 
     private enum Order
     {
-        ANY,
-        LAST,
-        NOT_LAST,
-        SECOND_LAST,
-        THIRD_LAST;
+        ANY(88),
+        LAST(0),
+        NOT_LAST(66),
+        SECOND_LAST(22),
+        THIRD_LAST(44);
+
+        private final int v;
+
+        Order(int v)
+        {
+            this.v = v;
+        }
     }
 
 }

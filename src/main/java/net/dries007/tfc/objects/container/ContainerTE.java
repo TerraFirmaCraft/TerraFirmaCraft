@@ -13,6 +13,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.util.ITileFields;
@@ -147,11 +149,21 @@ public abstract class ContainerTE<T extends TEInventory> extends Container
         }
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void updateProgressBar(int id, int data)
+    {
+        if (shouldSyncFields)
+        {
+            ((ITileFields) tile).setField(id, data);
+        }
+    }
+
     protected void detectAndSendFieldChanges()
     {
         ITileFields tileFields = (ITileFields) tile;
         boolean allFieldsHaveChanged = false;
-        boolean fieldHasChanged[] = new boolean[tileFields.getFieldCount()];
+        boolean[] fieldHasChanged = new boolean[tileFields.getFieldCount()];
 
         if (cachedFields == null)
         {

@@ -20,11 +20,12 @@ import net.dries007.tfc.client.button.GuiButtonAnvilStep;
 import net.dries007.tfc.client.button.IButtonTooltip;
 import net.dries007.tfc.network.PacketAnvilButton;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
+import net.dries007.tfc.util.forge.ForgeRule;
 import net.dries007.tfc.util.forge.ForgeStep;
+import net.dries007.tfc.util.forge.ForgeSteps;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-import static net.dries007.tfc.objects.te.TEAnvilTFC.FIELD_PROGRESS;
-import static net.dries007.tfc.objects.te.TEAnvilTFC.FIELD_TARGET;
+import static net.dries007.tfc.objects.te.TEAnvilTFC.*;
 
 public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
 {
@@ -96,6 +97,34 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
 
         int target = tile.getField(FIELD_TARGET);
         drawTexturedModalRect(guiLeft + 13 + target, guiTop + 94, 181, 0, 5, 5);
+
+        // Draw rule icons
+        ForgeSteps steps = tile.getSteps();
+        for (int i = FIELD_FIRST_RULE; i <= FIELD_THIRD_RULE; i++)
+        {
+            ForgeRule rule = ForgeRule.valueOf(tile.getField(i));
+            if (rule != null)
+            {
+                int xOffset = (i - FIELD_FIRST_RULE) * 19;
+                // The rule icon
+                drawScaledCustomSizeModalRect(guiLeft + 64 + xOffset, guiTop + 10, rule.getU(), rule.getV(), 32, 32, 10, 10, 256, 256);
+
+                // The overlay
+                // todo: custom colors if it is valid rule
+                drawTexturedModalRect(guiLeft + 59 + xOffset, guiTop + 7, 198, rule.getW(), 20, 22);
+            }
+        }
+
+        // Draw step icons
+        for (int i = FIELD_LAST_STEP; i <= FIELD_THIRD_STEP; i++)
+        {
+            ForgeStep step = ForgeStep.valueOf(tile.getField(i));
+            if (step != null)
+            {
+                int xOffset = (i - FIELD_LAST_STEP) * 19;
+                drawScaledCustomSizeModalRect(guiLeft + 64 + xOffset, guiTop + 31, step.getU(), step.getV(), 32, 32, 10, 10, 256, 256);
+            }
+        }
 
     }
 

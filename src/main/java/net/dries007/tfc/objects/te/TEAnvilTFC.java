@@ -51,8 +51,8 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
     private AnvilRecipe recipe;
     private ForgeSteps steps;
     private ForgeRule[] rules;
-    private int workingProgress = 120; // Min = 0, Max = 145
-    private int workingTarget = 50;
+    private int workingProgress = 0; // Min = 0, Max = 145
+    private int workingTarget = 0;
     private final Metal.Tier tier;
 
     public TEAnvilTFC()
@@ -76,16 +76,25 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
         return tier;
     }
 
+    @Nonnull
+    public ForgeSteps getSteps()
+    {
+        return steps;
+    }
+
     @Nullable
     public AnvilRecipe getRecipe()
     {
         return recipe;
     }
 
+    public void debug()
+    {
+        TerraFirmaCraft.getLog().debug("Anvil Status: Work: {}, Target: {}", workingProgress, workingTarget);
+    }
+
     public void setRecipe(@Nullable AnvilRecipe recipe)
     {
-        this.recipe = recipe;
-
         if (recipe != null)
         {
             ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_1);
@@ -93,6 +102,7 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
             if (cap != null)
             {
                 cap.setRecipe(recipe);
+                this.recipe = recipe;
             }
         }
     }
@@ -227,9 +237,11 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
     @Override
     public void setField(int index, int value)
     {
+        TerraFirmaCraft.getLog().info("Received a field, {} {}", index, value);
         switch (index)
         {
             case FIELD_PROGRESS:
+                TerraFirmaCraft.getLog().info("Setting progress field {}", value);
                 workingProgress = value;
                 break;
             case FIELD_TARGET:
