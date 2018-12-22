@@ -43,8 +43,12 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
             if (!worldIn.isRemote)
             {
                 // Create a stone anvil
-                worldIn.setBlockState(pos, BlockStoneAnvil.get(this.rock).getDefaultState());
-                TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.ANVIL);
+                BlockStoneAnvil block = BlockStoneAnvil.get(this.rock);
+                if (block != null)
+                {
+                    worldIn.setBlockState(pos, block.getDefaultState());
+                    TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.ANVIL);
+                }
             }
             return true;
         }

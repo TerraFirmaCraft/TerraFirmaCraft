@@ -30,13 +30,18 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
+import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
 public class BlockStoneAnvil extends Block implements ITileEntityProvider, IRockObject
@@ -80,6 +85,30 @@ public class BlockStoneAnvil extends Block implements ITileEntityProvider, IRock
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
+        TEAnvilTFC te = Helpers.getTE(worldIn, pos, TEAnvilTFC.class);
+        if (te == null)
+        {
+            return false;
+        }
+        IItemHandler cap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (cap == null)
+        {
+            return false;
+        }
+        ItemStack stack = playerIn.getHeldItem(hand);
+        for (int i = 0; i < 4; i++)
+        {
+            if (te.isItemValid(i, stack) && cap.getStackInSlot(i).isEmpty())
+            {
+                if (!worldIn.isRemote)
+                {
+                    ItemStack result = cap.insertItem(i, stack, false);
+                    playerIn.setHeldItem(hand, result);
+                    TerraFirmaCraft.getLog().debug("Inserted {} into slot {}", stack.getDisplayName(), i);
+                }
+                return true;
+            }
+        }
         if (!playerIn.isSneaking())
         {
             if (!worldIn.isRemote)
@@ -116,7 +145,7 @@ public class BlockStoneAnvil extends Block implements ITileEntityProvider, IRock
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
-        return new TEAnvilTFC();
+        return new TEAnvilTFC(Metal.Tier.TIER_I);
     }
 
     @Override
