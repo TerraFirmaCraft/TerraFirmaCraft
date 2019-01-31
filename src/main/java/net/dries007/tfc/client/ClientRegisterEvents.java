@@ -47,7 +47,6 @@ import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.plant.crops.BlockCropsTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -182,7 +181,7 @@ public final class ClientRegisterEvents
         }
 
         for (Block block : BlocksTFC.getAllCropBlocks())
-            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockCropsTFC.STAGE).build());
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().build());
 
         BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type == Rock.Type.FARMLAND).forEach(e ->
             ModelLoader.setCustomStateMapper(e, new StateMap.Builder().ignore(BlockFarmlandTFC.MOISTURE).build())

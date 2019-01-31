@@ -46,31 +46,31 @@ public class DefaultCrops
     public static final ResourceLocation JUTE = new ResourceLocation(MOD_ID, "jute");
 
     @SubscribeEvent
-    public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<Crop> event)
+    public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<Crop> event) //todo Set temperatures, rainfall and lifespan of crops
     {
         event.getRegistry().registerAll(
-            new Crop.Builder(BARLEY, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(MAIZE, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(OAT, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(RICE, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(RYE, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(WHEAT, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(BARLEY, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(MAIZE, 0f, 40f, 4f, 35f, 20, 210,5, (ConfigTFC.GENERAL.monthLength / 2), true,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(OAT, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(RICE, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(RYE, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(WHEAT, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build(),
 
-            new Crop.Builder(BEET, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(CABBAGE, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(CARROT, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(GARLIC, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(GREENBEAN, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(ONION, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(POTATO, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(SOYBEAN, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(SQUASH, 0f, 40f, 4f, 35f, 20, 210, 7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(SUGARCANE, 0f, 40f, 4f, 35f, 20, 210, 7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(REDBELLPEPPER, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(TOMATO, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
-            new Crop.Builder(YELLOWBELLPEPPER, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(BEET, 0f, 40f, 4f, 35f, 20, 210,6, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(CABBAGE, 0f, 40f, 4f, 35f, 20, 210,5, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(CARROT, 0f, 40f, 4f, 35f, 20, 210,4, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(GARLIC, 0f, 40f, 4f, 35f, 20, 210,4, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(GREENBEAN, 0f, 40f, 4f, 35f, 20, 210,6, (ConfigTFC.GENERAL.monthLength / 2), true,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(ONION, 0f, 40f, 4f, 35f, 20, 210,6, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(POTATO, 0f, 40f, 4f, 35f, 20, 210,6, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(SOYBEAN, 0f, 40f, 4f, 35f, 20, 210,6, (ConfigTFC.GENERAL.monthLength / 2), true,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(SQUASH, 0f, 40f, 4f, 35f, 20, 210, 6, (ConfigTFC.GENERAL.monthLength / 2), true,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(SUGARCANE, 0f, 40f, 4f, 35f, 20, 210, 7, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(REDBELLPEPPER, 0f, 40f, 4f, 35f, 20, 210,6, (ConfigTFC.GENERAL.monthLength / 2), true,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(TOMATO, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2), true,6).setDensity(0.1f, 0.6f).build(),
+            new Crop.Builder(YELLOWBELLPEPPER, 0f, 40f, 4f, 35f, 20, 210,6, (ConfigTFC.GENERAL.monthLength / 2), true,6).setDensity(0.1f, 0.6f).build(),
 
-            new Crop.Builder(JUTE, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2)).setDensity(0.1f, 0.6f).build()
+            new Crop.Builder(JUTE, 0f, 40f, 4f, 35f, 20, 210,5, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build()
             );
     }
 }

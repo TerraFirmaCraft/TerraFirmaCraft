@@ -11,15 +11,19 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.common.util.FakePlayer;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Crop;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
 
@@ -77,6 +81,8 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
         return ((Integer)state.getValue(this.getStageProperty())).intValue() >= crop.getGrowthStages();
     }
 
+    //public boolean isPickable() { return crop.isPickable(); }
+
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     { return true; }
 
@@ -127,70 +133,45 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
     public void getDrops(net.minecraft.util.NonNullList<ItemStack> drops, net.minecraft.world.IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
         super.getDrops(drops, world, pos, state, 0);
-        int stage = getStage(state);
-        Random rand = world instanceof World ? ((World)world).rand : new Random();
 
-        if (stage >= crop.getGrowthStages())
+        if (isMaxStage(state))
         {
-            TerraFirmaCraft.getLog().info("getDrops " + ItemSeedsTFC.get(crop));
+            drops.add(new ItemStack(Items.EXPERIENCE_BOTTLE, 1, 0));
+        }
 
-            int k = 3 + fortune;
+        drops.add(new ItemStack(ItemSeedsTFC.get(crop), 1, 0));
 
-            for (int i = 0; i < 3 + fortune; ++i)
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if (crop.isPickable())
+        {
+
+            if (isMaxStage(state))
             {
-                if (rand.nextInt(2 * crop.getGrowthStages()) <= stage)
+                if (worldIn.isRemote)
                 {
-                   // drops.add(new ItemStack(ItemSeedsTFC.get(crop), 1, 0));
+                    return true;
                 }
+
+                worldIn.setBlockState(pos, this.getDefaultState().withProperty(STAGE, Integer.valueOf(crop.getGrowthStages() - 2)), 3);
+
+                EntityItem entityitem = new EntityItem(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, new ItemStack(ItemSeedsTFC.get(crop)));
+
+                worldIn.spawnEntity(entityitem);
+
+                if (!(playerIn instanceof FakePlayer))
+                {
+                    entityitem.onCollideWithPlayer(playerIn);
+                }
+                return true;
             }
         }
+
+        return false;
     }
 
-    /**
-     * Spawns this Block's drops into the World as EntityItems.
-     */
-    @Override
-    public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune)
-    {
-        super.dropBlockAsItemWithChance(worldIn, pos, state, chance, fortune);
 
-        if (false && !worldIn.isRemote) // Forge: NOP all this.
-        {
-            TerraFirmaCraft.getLog().info("dropBlockAsItemWithChance");
-
-            int i = this.getStage(state);
-
-            if (i >= crop.getGrowthStages())
-            {
-                int j = 3 + fortune;
-
-                for (int k = 0; k < j; ++k)
-                {
-                    if (worldIn.rand.nextInt(2 * crop.getGrowthStages()) <= i)
-                    {
-                        spawnAsEntity(worldIn, pos, new ItemStack(ItemSeedsTFC.get(crop)));
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Get the Item that this Block should drop when harvested.
-     */
-    @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        TerraFirmaCraft.getLog().info("getItemDropped " + ItemSeedsTFC.get(crop));
-        return this.isMaxStage(state) ? ItemSeedsTFC.get(crop) : ItemSeedsTFC.get(crop);
-
-    }
-
-    @Override
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TerraFirmaCraft.getLog().info("getItem");
-
-        return new ItemStack(ItemSeedsTFC.get(crop));
-    }
 }

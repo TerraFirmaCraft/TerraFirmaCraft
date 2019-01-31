@@ -10,6 +10,10 @@ import javax.annotation.Nonnull;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.world.classic.CalenderTFC;
+
+import static net.dries007.tfc.world.classic.CalenderTFC.TICKS_IN_DAY;
+
 public class Crop extends IForgeRegistryEntry.Impl<Crop>
 {
 
@@ -23,6 +27,8 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
     private final float minStageGrowthTime;
     private final float minDensity;
     private final float maxDensity;
+    private final boolean pickable;
+    private final float maxLifespan;
 
 
     /**
@@ -45,10 +51,12 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
      * @param minStageGrowthTime    the amount of time (in in-game days) that this crop requires to grow one stage
      * @param minDensity       min density. Use -1 to get all density values. 0.1 is the default, to create really low density regions of no crops
      * @param maxDensity       max density. Use 2 to get all density values
+     * @param pickable         crop can be picked with right click allowing multiple harvests
+     * @param lifespan         crops lifespan, after this many ticks it will die
 
      */
 
-    public Crop(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minGrowthTemp, float maxGrowthTemp, float minRain, float maxRain, float minDensity, float maxDensity, int growthStages, float minStageGrowthTime)
+    public Crop(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minGrowthTemp, float maxGrowthTemp, float minRain, float maxRain, float minDensity, float maxDensity, int growthStages, float minStageGrowthTime, boolean pickable, float lifespan)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -60,6 +68,8 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
         this.minStageGrowthTime = minStageGrowthTime;
         this.minDensity = minDensity;
         this.maxDensity = maxDensity;
+        this.pickable = pickable;
+        this.maxLifespan = lifespan;
 
 
         setRegistryName(name);
@@ -90,6 +100,16 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
         return maxGrowthTemp;
     }
 
+    public boolean isPickable()
+    {
+        return pickable;
+    }
+
+    public float getMaxLifespan()
+    {
+        return maxLifespan;
+    }
+
     @Override
     public String toString() { return String.valueOf(getRegistryName()); }
 
@@ -105,10 +125,12 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
         private float minStageGrowthTime;
         private float minDensity;
         private float maxDensity;
+        private boolean pickable;
+        private float maxLifespan;
 
         private ResourceLocation name;
 
-        public Builder(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minGrowthTemp, float maxGrowthTemp, float minRain, float maxRain, int growthStages, float minStageGrowthTime)
+        public Builder(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minGrowthTemp, float maxGrowthTemp, float minRain, float maxRain, int growthStages, float minStageGrowthTime, boolean pickable, float lifespan)
         {
             this.name = name;
             this.minTemp = minTemp; // required values
@@ -119,6 +141,8 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
             this.maxRain = maxRain;
             this.growthStages = growthStages;
             this.minStageGrowthTime = minStageGrowthTime;
+            this.pickable = pickable;
+            this.maxLifespan = (CalenderTFC.getDaysInMonth() * TICKS_IN_DAY) * lifespan;
             this.minDensity = 0.1f; // default values
             this.maxDensity = 2f;
 
@@ -133,7 +157,7 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
 
         public Crop build()
         {
-            return new Crop(name, minTemp, maxTemp, minGrowthTemp, maxGrowthTemp, minRain, maxRain, minDensity, maxDensity, growthStages, minStageGrowthTime);
+            return new Crop(name, minTemp, maxTemp, minGrowthTemp, maxGrowthTemp, minRain, maxRain, minDensity, maxDensity, growthStages, minStageGrowthTime, pickable, maxLifespan);
         }
 
     }
