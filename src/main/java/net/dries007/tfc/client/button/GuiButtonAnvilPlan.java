@@ -44,8 +44,17 @@ public class GuiButtonAnvilPlan extends GuiButtonTFC implements IButtonTooltip
             hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             drawModalRectWithCustomSizedTexture(x, y, 218, 0, 18, 18, 256, 256);
             AnvilRecipe recipe = tile.getRecipe();
-            ItemStack stack = recipe == null ? new ItemStack(Items.BOOK) : recipe.getOutput();
-            drawItemStack(stack, x + 1, y + 1);
+            if (recipe != null)
+            {
+                ItemStack stack = recipe.getOutput();
+                drawItemStack(stack, x + 1, y + 1);
+            }
+            else
+            {
+                // todo: replace this with the "plan" icon
+                ItemStack stack = new ItemStack(Items.BOOK);
+                drawItemStack(stack, x + 1, y + 1);
+            }
             mouseDragged(mc, mouseX, mouseY);
         }
     }

@@ -92,6 +92,12 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
                 }
             }
         }
+        else if (burnTemperature > 0)
+        {
+            // If not lit, stop burning
+            burnTemperature = 0;
+            burnTicks = 0;
+        }
 
         // Always update temperature / cooking, until the fire pit is not hot anymore
         if (temperature > 0 || burnTemperature > 0)

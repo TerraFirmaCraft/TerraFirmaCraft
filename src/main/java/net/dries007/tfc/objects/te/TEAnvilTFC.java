@@ -95,15 +95,12 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
 
     public void setRecipe(@Nullable AnvilRecipe recipe)
     {
-        if (recipe != null)
+        this.recipe = recipe;
+        ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_1);
+        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        if (cap != null)
         {
-            ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_1);
-            IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-            if (cap != null)
-            {
-                cap.setRecipe(recipe);
-                this.recipe = recipe;
-            }
+            cap.setRecipe(recipe);
         }
     }
 
@@ -138,6 +135,8 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
                 {
                     // no current recipe
                     resetFields();
+                    updateRecipe(null);
+
                     cap.reset();
                     return;
                 }
@@ -169,6 +168,7 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
 
         if (cap != null)
         {
+            TerraFirmaCraft.getLog().info("Adding step: cap {}", cap.serializeNBT());
             // Add step to stack + tile
             cap.addStep(step);
             steps = cap.getSteps().copy();
