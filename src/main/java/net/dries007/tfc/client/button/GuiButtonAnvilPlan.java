@@ -10,7 +10,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -51,9 +50,7 @@ public class GuiButtonAnvilPlan extends GuiButtonTFC implements IButtonTooltip
             }
             else
             {
-                // todo: replace this with the "plan" icon
-                ItemStack stack = new ItemStack(Items.BOOK);
-                drawItemStack(stack, x + 1, y + 1);
+                drawTexturedModalRect(x + 1, y + 1, 236, 0, 16, 16);
             }
             mouseDragged(mc, mouseX, mouseY);
         }
