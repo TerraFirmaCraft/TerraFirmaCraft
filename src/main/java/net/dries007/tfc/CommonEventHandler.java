@@ -76,17 +76,6 @@ public class CommonEventHandler
         final ItemStack stack = event.getItemStack();
         final EntityPlayer player = event.getEntityPlayer();
 
-        // todo: I don't think this is nessecary - remove?
-        /*if (event.getHand() == EnumHand.OFF_HAND)
-        {
-            ItemStack mainStack = player.getHeldItem(EnumHand.MAIN_HAND);
-            if (IPlaceableItem.Impl.isPlaceable(mainStack))
-            {
-                event.setCanceled(true);
-                return;
-            }
-        }*/
-
         if (IPlaceableItem.Impl.isPlaceable(stack))
         {
             IPlaceableItem placeable = IPlaceableItem.Impl.getPlaceable(stack);
@@ -111,16 +100,6 @@ public class CommonEventHandler
         final BlockPos pos = event.getPos();
         final ItemStack stack = event.getItemStack();
         final EntityPlayer player = event.getEntityPlayer();
-
-        /*if (event.getHand() == EnumHand.OFF_HAND)
-        {
-            ItemStack mainStack = player.getHeldItem(EnumHand.MAIN_HAND);
-            if (IPlaceableItem.Impl.isUsable(mainStack))
-            {
-                event.setCanceled(true);
-                return;
-            }
-        }*/
 
         if (IPlaceableItem.Impl.isUsable(stack))
         {

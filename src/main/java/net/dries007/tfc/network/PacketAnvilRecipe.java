@@ -24,7 +24,7 @@ import net.dries007.tfc.util.Helpers;
 
 public class PacketAnvilRecipe implements IMessage
 {
-    private static final ResourceLocation NULL = new ResourceLocation("null");
+    private static final ResourceLocation NULL = new ResourceLocation("");
 
     private BlockPos pos;
     private ResourceLocation recipe;
@@ -44,14 +44,25 @@ public class PacketAnvilRecipe implements IMessage
     public void fromBytes(ByteBuf buffer)
     {
         pos = BlockPos.fromLong(buffer.readLong());
-        recipe = new ResourceLocation(ByteBufUtils.readUTF8String(buffer));
+        if (buffer.readBoolean())
+        {
+            recipe = new ResourceLocation(ByteBufUtils.readUTF8String(buffer));
+        }
+        else
+        {
+            recipe = null;
+        }
     }
 
     @Override
     public void toBytes(ByteBuf buffer)
     {
         buffer.writeLong(pos.toLong());
-        ByteBufUtils.writeUTF8String(buffer, recipe.toString());
+        buffer.writeBoolean(recipe != null);
+        if (recipe != null)
+        {
+            ByteBufUtils.writeUTF8String(buffer, recipe.toString());
+        }
     }
 
     public static class Handler implements IMessageHandler<PacketAnvilRecipe, IMessage>
@@ -60,15 +71,21 @@ public class PacketAnvilRecipe implements IMessage
         public IMessage onMessage(PacketAnvilRecipe message, MessageContext ctx)
         {
             EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
-            World world = player.world;
+            World world = player.getEntityWorld();
             if (player.openContainer instanceof ContainerAnvilTFC)
             {
-                ContainerAnvilTFC container = (ContainerAnvilTFC) player.openContainer;
                 TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
                     TEAnvilTFC te = Helpers.getTE(world, message.pos, TEAnvilTFC.class);
                     if (te != null)
                     {
-                        te.setRecipe(TFCRegistries.ANVIL.getValue(message.recipe));
+                        if (message.recipe == null)
+                        {
+                            te.setRecipe(null);
+                        }
+                        else
+                        {
+                            te.setRecipe(TFCRegistries.ANVIL.getValue(message.recipe));
+                        }
                     }
                 });
             }
