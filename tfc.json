@@ -5,6 +5,6 @@
     "1.12.2-recommended": "0.1.0"
   },
   "1.12.2": {
-    "0.1.0": "Fixed charcoal forge not cooling down after extinguishing. Fixed anvil plan button not updating on client once the item was removed."
+    "0.1.0": "Replaced placeholder texture for anvil plan selector"
   }
 }
