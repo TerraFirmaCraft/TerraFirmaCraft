@@ -24,8 +24,6 @@ import net.dries007.tfc.util.Helpers;
 
 public class PacketAnvilRecipe implements IMessage
 {
-    private static final ResourceLocation NULL = new ResourceLocation("");
-
     private BlockPos pos;
     private ResourceLocation recipe;
 
@@ -37,7 +35,7 @@ public class PacketAnvilRecipe implements IMessage
     {
         this.pos = tile.getPos();
         AnvilRecipe recipe = tile.getRecipe();
-        this.recipe = recipe != null ? recipe.getRegistryName() : NULL;
+        this.recipe = recipe != null ? recipe.getRegistryName() : null;
     }
 
     @Override

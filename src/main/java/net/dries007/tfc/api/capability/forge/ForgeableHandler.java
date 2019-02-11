@@ -90,9 +90,9 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
     }
 
     @Override
-    public boolean isWorkable()
+    public float getWorkingPoint()
     {
-        return getTemperature() > workingPoint;
+        return workingPoint;
     }
 
     @Override
@@ -134,6 +134,6 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
     {
-        return super.getCapability(capability, facing);
+        return hasCapability(capability, facing) ? (T) this : null;
     }
 }

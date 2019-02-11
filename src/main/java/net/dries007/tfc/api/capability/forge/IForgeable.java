@@ -67,5 +67,15 @@ public interface IForgeable extends IItemHeat
      *
      * @return true if the item is workable
      */
-    boolean isWorkable();
+    default boolean isWorkable()
+    {
+        return getTemperature() > getWorkingPoint();
+    }
+
+    /**
+     * Gets the working temperature of the item
+     *
+     * @return a temperature
+     */
+    float getWorkingPoint();
 }
