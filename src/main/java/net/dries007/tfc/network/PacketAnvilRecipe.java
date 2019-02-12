@@ -18,7 +18,6 @@ import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.objects.container.ContainerAnvilTFC;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.Helpers;
 
@@ -70,23 +69,20 @@ public class PacketAnvilRecipe implements IMessage
         {
             EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
             World world = player.getEntityWorld();
-            if (player.openContainer instanceof ContainerAnvilTFC)
-            {
-                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
-                    TEAnvilTFC te = Helpers.getTE(world, message.pos, TEAnvilTFC.class);
-                    if (te != null)
+            TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
+                TEAnvilTFC te = Helpers.getTE(world, message.pos, TEAnvilTFC.class);
+                if (te != null)
+                {
+                    if (message.recipe == null)
                     {
-                        if (message.recipe == null)
-                        {
-                            te.setRecipe(null);
-                        }
-                        else
-                        {
-                            te.setRecipe(TFCRegistries.ANVIL.getValue(message.recipe));
-                        }
+                        te.setRecipe(null, false);
                     }
-                });
-            }
+                    else
+                    {
+                        te.setRecipe(TFCRegistries.ANVIL.getValue(message.recipe), false);
+                    }
+                }
+            });
             return null;
         }
     }

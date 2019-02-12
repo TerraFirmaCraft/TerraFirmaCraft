@@ -14,6 +14,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.recipes.AnvilRecipe;
@@ -41,7 +42,9 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC>
         {
             // Add a step to the anvil
             if (attemptWork())
+            {
                 tile.addStep(ForgeStep.valueOf(buttonID - BUTTON_ID_STEP_MIN));
+            }
         }
     }
 
@@ -80,15 +83,16 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC>
         {
             return false;
         }
-        if (tile.getTier().ordinal() < recipe.getTier().ordinal())
+        if (tile.getTier().ordinal() > recipe.getTier().ordinal())
         {
-            player.sendMessage(new TextComponentString("" + TextFormatting.RED).appendSibling(new TextComponentTranslation(MOD_ID + ".tooltip.anvil_tier_too_low")));
+            TerraFirmaCraft.getLog().debug("Anvil Tier: {} + Recipe Tier: {}", tile.getTier(), recipe.getTier());
+            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.anvil_tier_too_low"));
             return false;
         }
 
         if (!cap.isWorkable())
         {
-            player.sendMessage(new TextComponentString("" + TextFormatting.RED).appendSibling(new TextComponentTranslation(MOD_ID + ".tooltip.anvil_too_cold")));
+            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.anvil_too_cold"));
             return false;
         }
 

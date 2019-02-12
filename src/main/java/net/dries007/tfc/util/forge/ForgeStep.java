@@ -21,12 +21,12 @@ public enum ForgeStep
     UPSET(13, 126, 52, 192, 224),
     SHRINK(16, 144, 52, 224, 224);
 
-    private static final ForgeStep[] values = values();
+    private static final ForgeStep[] VALUES = values();
 
     @Nullable
     public static ForgeStep valueOf(int id)
     {
-        return id >= 0 && id < values.length ? values[id] : null;
+        return id >= 0 && id < VALUES.length ? VALUES[id] : null;
     }
 
     private final int stepAmount;

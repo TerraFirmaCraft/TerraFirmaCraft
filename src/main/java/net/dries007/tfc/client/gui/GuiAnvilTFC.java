@@ -8,12 +8,14 @@ package net.dries007.tfc.client.gui;
 import java.io.IOException;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.button.GuiButtonAnvilPlan;
 import net.dries007.tfc.client.button.GuiButtonAnvilStep;
@@ -56,21 +58,6 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
     @Override
     protected void renderHoveredToolTip(int mouseX, int mouseY)
     {
-        // Rule tooltips
-
-        /*for (int i = FIELD_FIRST_RULE; i <= FIELD_THIRD_RULE; i++)
-        {
-            if (mouseX >= x && mouseY >= y && mouseX < x + 18 && mouseY < y + 24)
-            {
-                ForgeRule rule = ForgeRule.valueOf(tile.getField(i));
-                if (rule != null)
-                {
-                    drawHoveringText(I18n.format(MOD_ID + ".tooltip." + rule.name().toLowerCase()), mouseX, mouseY);
-                }
-            }
-            x += 22;
-        }*/
-
         // Button Tooltips
         for (GuiButton button : buttonList)
         {
@@ -99,19 +86,25 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
         drawTexturedModalRect(guiLeft + 13 + target, guiTop + 94, 181, 0, 5, 5);
 
         // Draw rule icons
+        AnvilRecipe recipe = tile.getRecipe();
         ForgeSteps steps = tile.getSteps();
-        for (int i = FIELD_FIRST_RULE; i <= FIELD_THIRD_RULE; i++)
+        if (recipe != null)
         {
-            ForgeRule rule = ForgeRule.valueOf(tile.getField(i));
-            if (rule != null)
+            for (int i = 0; i < recipe.getRules().length; i++)
             {
-                int xOffset = (i - FIELD_FIRST_RULE) * 19;
-                // The rule icon
-                drawScaledCustomSizeModalRect(guiLeft + 64 + xOffset, guiTop + 10, rule.getU(), rule.getV(), 32, 32, 10, 10, 256, 256);
+                ForgeRule rule = recipe.getRules()[i];
+                if (rule != null)
+                {
+                    int xOffset = i * 19;
+                    // The rule icon
+                    drawScaledCustomSizeModalRect(guiLeft + 64 + xOffset, guiTop + 10, rule.getU(), rule.getV(), 32, 32, 10, 10, 256, 256);
 
-                // The overlay
-                // todo: custom colors if it is valid rule
-                drawTexturedModalRect(guiLeft + 59 + xOffset, guiTop + 7, 198, rule.getW(), 20, 22);
+                    // The overlay
+                    // todo: custom colors if it is valid rule, use steps from anvil
+                    GlStateManager.color(1f, 0, 0);
+                    drawTexturedModalRect(guiLeft + 59 + xOffset, guiTop + 7, 198, rule.getW(), 20, 22);
+                    GlStateManager.color(1f, 1f, 1f);
+                }
             }
         }
 
