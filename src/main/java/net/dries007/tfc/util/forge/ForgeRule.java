@@ -46,7 +46,7 @@ public enum ForgeRule
     SHRINK_SECOND_LAST(Order.SECOND_LAST, SHRINK),
     SHRINK_THIRD_LAST(Order.THIRD_LAST, SHRINK);
 
-    private static final ForgeRule[] values = values();
+    private static final ForgeRule[] VALUES = values();
 
     public static int getID(@Nullable ForgeRule rule)
     {
@@ -56,7 +56,7 @@ public enum ForgeRule
     @Nullable
     public static ForgeRule valueOf(int id)
     {
-        return id < 0 || id >= values.length ? null : values[id];
+        return id >= 0 && id < VALUES.length ? VALUES[id] : null;
     }
 
     private final Order order;

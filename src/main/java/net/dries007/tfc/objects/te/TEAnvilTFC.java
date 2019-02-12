@@ -11,6 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -23,14 +24,11 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.network.PacketAnvilRecipe;
 import net.dries007.tfc.util.ITileFields;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.dries007.tfc.util.forge.ForgeRule;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
-import static net.dries007.tfc.util.forge.ForgeRule.*;
-
 @ParametersAreNonnullByDefault
-public class TEAnvilTFC extends TEInventory implements ITileFields
+public class TEAnvilTFC extends TEInventory implements ITileFields, ITickable
 {
     public static final int WORK_MAX = 145;
 
@@ -39,18 +37,15 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
     public static final int SLOT_HAMMER = 2;
     public static final int SLOT_FLUX = 3;
 
+    public static final int FIELD_COUNT = 5;
     public static final int FIELD_PROGRESS = 0;
     public static final int FIELD_TARGET = 1;
     public static final int FIELD_LAST_STEP = 2;
     public static final int FIELD_SECOND_STEP = 3;
     public static final int FIELD_THIRD_STEP = 4;
-    public static final int FIELD_FIRST_RULE = 5;
-    public static final int FIELD_SECOND_RULE = 6;
-    public static final int FIELD_THIRD_RULE = 7;
 
     private AnvilRecipe recipe;
     private ForgeSteps steps;
-    private ForgeRule[] rules;
     private int workingProgress = 0; // Min = 0, Max = 145
     private int workingTarget = 0;
     private final Metal.Tier tier;
@@ -65,7 +60,6 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
         super(4);
 
         steps = new ForgeSteps();
-        rules = new ForgeRule[] {HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST};
         recipe = null;
         this.tier = tier;
     }
@@ -76,99 +70,105 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
         return tier;
     }
 
-    @Nonnull
-    public ForgeSteps getSteps()
-    {
-        return steps;
-    }
-
     @Nullable
     public AnvilRecipe getRecipe()
     {
         return recipe;
     }
 
-    public void debug()
+    @Override
+    public void update()
     {
-        TerraFirmaCraft.getLog().debug("Anvil Status: Work: {}, Target: {}", workingProgress, workingTarget);
+        // todo: remove
+        // This is just for testing
+        if (world.getTotalWorldTime() % 40 == 0)
+            TerraFirmaCraft.getLog().info("Anvil Status: Recipe: {} Work: {}, Target: {}, Steps: {}", recipe == null ? "NULL" : recipe.getInput() + " -> " + recipe.getOutput(), workingProgress, workingTarget, steps == null ? "NULL" : steps.serializeNBT());
     }
 
-    public void setRecipe(@Nullable AnvilRecipe recipe)
+    public ForgeSteps getSteps()
+    {
+        return steps;
+    }
+
+    public void setRecipeClient(@Nullable AnvilRecipe recipe)
     {
         this.recipe = recipe;
-        ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_1);
-        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-        if (cap != null)
-        {
-            cap.setRecipe(recipe);
-        }
+        TerraFirmaCraft.getNetwork().sendToServer(new PacketAnvilRecipe(this));
     }
 
-    @Override
-    public void setAndUpdateSlots(int slot)
+    /**
+     * Sets the anvil TE recipe, called after pressing the recipe button
+     * This is the ONLY place that should write to {@link this#recipe}
+     *
+     * @param recipe       the recipe to set to
+     * @param sendToClient should it send an update to client?
+     */
+    public void setRecipe(@Nullable AnvilRecipe recipe, boolean sendToClient)
     {
-        super.setAndUpdateSlots(slot);
-
-        if (world.isRemote)
-            return;
-
         ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_1);
         IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        boolean recipeChanged;
 
-        if (cap != null)
+        if (cap != null && recipe != null)
         {
-            if (recipe == null || !recipe.matches(stack))
-            {
-                // no current recipe or recipe exists but doesn't match input
-                // in both cases, reset the recipe based off the stack info
-                updateRecipe(TFCRegistries.ANVIL.getValue(cap.getRecipeName()));
-                if (recipe == null)
-                {
-                    // for some reason the stack has an invalid recipe name
-                    updateRecipe(AnvilRecipe.getFirstFor(stack));
-                    if (recipe != null)
-                    {
-                        cap.setRecipe(recipe);
-                    }
-                }
-                if (recipe == null)
-                {
-                    // no current recipe
-                    resetFields();
-                    updateRecipe(null);
+            // Update recipe in both
+            recipeChanged = this.recipe != recipe;
+            cap.setRecipe(recipe);
+            this.recipe = recipe;
 
-                    cap.reset();
-                    return;
-                }
-            }
-
-            // at this point, the recipe is valid, but may have changed
-            // update server side fields
+            // Update server side fields
             workingProgress = cap.getWork();
             steps = cap.getSteps().copy();
 
             workingTarget = recipe.getTarget(world.getSeed());
-            rules = recipe.getRules();
-
-            cap.setRecipe(recipe);
         }
         else
         {
-            // cap was null, most likely if the slot was empty
+            // Set recipe to null because either item is missing, or it was requested
+            recipeChanged = this.recipe != null;
+            this.recipe = null;
+            if (cap != null)
+            {
+                cap.reset();
+            }
             resetFields();
-            updateRecipe(null);
+        }
+
+        if (recipeChanged && sendToClient)
+        {
+            // Send the update to client
+            TerraFirmaCraft.getNetwork().sendToDimension(new PacketAnvilRecipe(this), world.provider.getDimension());
         }
     }
 
+    /**
+     * Slot updates only happen on server side, so update recipe when change is made
+     * @param slot a slot id, or -1 if triggered by other methods
+     */
+    @Override
+    public void setAndUpdateSlots(int slot)
+    {
+        super.setAndUpdateSlots(slot);
+        if (!world.isRemote)
+        {
+            checkRecipeUpdate();
+        }
+    }
+
+    /**
+     * Only occurs on server side
+     */
     public void addStep(@Nullable ForgeStep step)
     {
-        // This is only called on server
+        // Always check for update first
+        checkRecipeUpdate();
+
         ItemStack input = inventory.getStackInSlot(SLOT_INPUT_1);
         IForgeable cap = input.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
 
         if (cap != null)
         {
-            TerraFirmaCraft.getLog().info("Adding step: cap {}", cap.serializeNBT());
+            TerraFirmaCraft.getLog().info("Adding step: cap {}, recipe {}", cap.serializeNBT(), recipe);
             // Add step to stack + tile
             cap.addStep(step);
             steps = cap.getSteps().copy();
@@ -189,7 +189,7 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
 
                     // Reset forge stuff
                     resetFields();
-                    setRecipe(null);
+                    setRecipe(null, true);
                 }
                 else if (workingProgress < 0 || workingProgress >= 150)
                 {
@@ -202,6 +202,12 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
             // update recipe
             setAndUpdateSlots(0);
         }
+    }
+
+    @Override
+    public int getFieldCount()
+    {
+        return FIELD_COUNT;
     }
 
 
@@ -228,20 +234,32 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
         }
     }
 
-    @Override
-    public int getFieldCount()
+    private void checkRecipeUpdate()
     {
-        return 8;
+        ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_1);
+        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        if (cap == null && recipe != null)
+        {
+            // Check for item removed / broken
+            setRecipe(null, true);
+        }
+        else if (cap != null)
+        {
+            // Check for mismatched recipe
+            AnvilRecipe capRecipe = TFCRegistries.ANVIL.getValue(cap.getRecipeName());
+            if (capRecipe != recipe)
+            {
+                setRecipe(capRecipe, true);
+            }
+        }
     }
 
     @Override
     public void setField(int index, int value)
     {
-        TerraFirmaCraft.getLog().info("Received a field, {} {}", index, value);
         switch (index)
         {
             case FIELD_PROGRESS:
-                TerraFirmaCraft.getLog().info("Setting progress field {}", value);
                 workingProgress = value;
                 break;
             case FIELD_TARGET:
@@ -251,11 +269,6 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
             case FIELD_SECOND_STEP:
             case FIELD_THIRD_STEP:
                 steps.setStep(index, value);
-                break;
-            case FIELD_FIRST_RULE:
-            case FIELD_SECOND_RULE:
-            case FIELD_THIRD_RULE:
-                rules[index - FIELD_FIRST_RULE] = ForgeRule.valueOf(value);
                 break;
             default:
                 TerraFirmaCraft.getLog().warn("Invalid field id {}", index);
@@ -275,33 +288,16 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
             case FIELD_SECOND_STEP:
             case FIELD_THIRD_STEP:
                 return steps.getStepByID(index);
-            case FIELD_FIRST_RULE:
-            case FIELD_SECOND_RULE:
-            case FIELD_THIRD_RULE:
-                if (index - FIELD_FIRST_RULE >= rules.length)
-                    return -1;
-                return ForgeRule.getID(rules[index - FIELD_FIRST_RULE]);
             default:
                 TerraFirmaCraft.getLog().warn("Invalid field id {} in TEAnvilTFC#getField", index);
                 return 0;
         }
     }
 
-    private void updateRecipe(@Nullable AnvilRecipe recipe)
-    {
-        // Called on server
-        setRecipe(recipe);
-        TerraFirmaCraft.getNetwork().sendToDimension(new PacketAnvilRecipe(this), world.provider.getDimension());
-    }
-
     private void resetFields()
     {
-        if (!world.isRemote)
-        {
-            workingProgress = 0;
-            workingTarget = 0;
-            steps.reset();
-            rules = new ForgeRule[3];
-        }
+        workingProgress = 0;
+        workingTarget = 0;
+        steps.reset();
     }
 }
