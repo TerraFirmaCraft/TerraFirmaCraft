@@ -90,12 +90,6 @@ public class TEAnvilTFC extends TEInventory implements ITileFields, ITickable
         return steps;
     }
 
-    public void setRecipeClient(@Nullable AnvilRecipe recipe)
-    {
-        this.recipe = recipe;
-        TerraFirmaCraft.getNetwork().sendToServer(new PacketAnvilRecipe(this));
-    }
-
     /**
      * Sets the anvil TE recipe, called after pressing the recipe button
      * This is the ONLY place that should write to {@link this#recipe}

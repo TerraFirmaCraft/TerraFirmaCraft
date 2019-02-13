@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -30,11 +31,15 @@ public class PacketAnvilRecipe implements IMessage
     @SuppressWarnings("unused")
     public PacketAnvilRecipe() {}
 
-    public PacketAnvilRecipe(TEAnvilTFC tile)
+    public PacketAnvilRecipe(TEAnvilTFC tile, AnvilRecipe recipe)
     {
         this.pos = tile.getPos();
-        AnvilRecipe recipe = tile.getRecipe();
         this.recipe = recipe != null ? recipe.getRegistryName() : null;
+    }
+
+    public PacketAnvilRecipe(TEAnvilTFC tile)
+    {
+        this(tile, tile.getRecipe());
     }
 
     @Override
@@ -73,13 +78,15 @@ public class PacketAnvilRecipe implements IMessage
                 TEAnvilTFC te = Helpers.getTE(world, message.pos, TEAnvilTFC.class);
                 if (te != null)
                 {
+                    TerraFirmaCraft.getLog().info("Side: " + ctx.side);
                     if (message.recipe == null)
                     {
-                        te.setRecipe(null, false);
+                        // The TE will send a reply if necessary, but only when this arrives on the server side
+                        te.setRecipe(null, ctx.side == Side.SERVER);
                     }
                     else
                     {
-                        te.setRecipe(TFCRegistries.ANVIL.getValue(message.recipe), false);
+                        te.setRecipe(TFCRegistries.ANVIL.getValue(message.recipe), ctx.side == Side.SERVER);
                     }
                 }
             });

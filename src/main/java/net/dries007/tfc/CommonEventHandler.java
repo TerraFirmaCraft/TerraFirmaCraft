@@ -34,13 +34,13 @@ import net.dries007.tfc.util.Helpers;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
-public class CommonEventHandler
+public final class CommonEventHandler
 {
     /**
      * Make leaves drop sticks
      */
     @SubscribeEvent
-    public void onBlockHarvestDrops(BlockEvent.HarvestDropsEvent event)
+    public static void onBlockHarvestDrops(BlockEvent.HarvestDropsEvent event)
     {
         final EntityPlayer harvester = event.getHarvester();
         final ItemStack heldItem = harvester == null ? ItemStack.EMPTY : harvester.getHeldItemMainhand();
@@ -69,7 +69,7 @@ public class CommonEventHandler
      *    The event will fire AGAIN with the offhand and offhand stack.
      */
     @SubscribeEvent
-    public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
+    public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
     {
         final World world = event.getWorld();
         final BlockPos pos = event.getPos();
@@ -94,7 +94,7 @@ public class CommonEventHandler
      * Note: If you have an item that needs an active effect, use onItemRightClick(), or attach this via {@link IPlaceableItem.Impl}
      */
     @SubscribeEvent
-    public void onRightClickItem(PlayerInteractEvent.RightClickItem event)
+    public static void onRightClickItem(PlayerInteractEvent.RightClickItem event)
     {
         final World world = event.getWorld();
         final BlockPos pos = event.getPos();
@@ -116,7 +116,7 @@ public class CommonEventHandler
 
     //Used for IItemSize capability. You can either implement the interface or use the capability
     @SubscribeEvent
-    public void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> e)
+    public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> e)
     {
         ItemStack stack = e.getObject();
         // Skip items with existing capabilities
@@ -145,7 +145,7 @@ public class CommonEventHandler
     }
 
     @SubscribeEvent
-    public void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event)
+    public static void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event)
     {
         if (event.player instanceof EntityPlayerMP)
         {
@@ -155,7 +155,7 @@ public class CommonEventHandler
     }
 
     @SubscribeEvent
-    public void onPlayerCloneEvent(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
+    public static void onPlayerCloneEvent(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
     {
         if (event.getEntityPlayer() instanceof EntityPlayerMP)
         {
@@ -165,7 +165,7 @@ public class CommonEventHandler
     }
 
     @SubscribeEvent
-    public void onContainerOpenEvent(PlayerContainerEvent.Open event)
+    public static void onContainerOpenEvent(PlayerContainerEvent.Open event)
     {
         if (event.getEntityPlayer() instanceof EntityPlayerMP)
         {

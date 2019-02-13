@@ -28,7 +28,7 @@ public class GuiButtonAnvilPlan extends GuiButtonTFC implements IButtonTooltip
     public GuiButtonAnvilPlan(TEAnvilTFC tile, int id, int guiLeft, int guiTop)
     {
         // Plan Button
-        super(id, guiLeft + 97, guiTop + 49, 18, 18, "");
+        super(id, guiLeft + 21, guiTop + 40, 18, 18, "");
         this.tooltip = I18n.format("tfc.tooltip.anvil_plan");
         this.tile = tile;
     }
