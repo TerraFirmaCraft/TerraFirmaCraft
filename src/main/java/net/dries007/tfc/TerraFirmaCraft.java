@@ -6,7 +6,6 @@
 package net.dries007.tfc;
 
 import org.apache.logging.log4j.Logger;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
@@ -119,8 +118,8 @@ public final class TerraFirmaCraft
         int id = 0;
         // Received on server
         network.registerMessage(new PacketKnappingUpdate.Handler(), PacketKnappingUpdate.class, ++id, Side.SERVER);
-        network.registerMessage(new PacketAnvilButton.Handler(), PacketAnvilButton.class, ++id, Side.SERVER);
         network.registerMessage(new PacketAnvilRecipe.Handler(), PacketAnvilRecipe.class, ++id, Side.SERVER);
+        network.registerMessage(new PacketGuiButton.Handler(), PacketGuiButton.class, ++id, Side.SERVER);
         // Received on client
         network.registerMessage(new PacketAnvilRecipe.Handler(), PacketAnvilRecipe.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketChunkData.Handler(), PacketChunkData.class, ++id, Side.CLIENT);
@@ -135,8 +134,6 @@ public final class TerraFirmaCraft
         CapabilityItemSize.preInit();
         CapabilityItemHeat.preInit();
         CapabilityForgeable.preInit();
-
-        MinecraftForge.EVENT_BUS.register(new CommonEventHandler());
 
         if (event.getSide().isClient()) ClientEvents.preInit();
     }

@@ -16,11 +16,10 @@ import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.AnvilRecipe;
-import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.button.GuiButtonAnvilPlan;
 import net.dries007.tfc.client.button.GuiButtonAnvilStep;
 import net.dries007.tfc.client.button.IButtonTooltip;
-import net.dries007.tfc.network.PacketAnvilButton;
+import net.dries007.tfc.network.PacketGuiButton;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.forge.ForgeRule;
 import net.dries007.tfc.util.forge.ForgeStep;
@@ -124,14 +123,7 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
     @Override
     protected void actionPerformed(GuiButton button) throws IOException
     {
-        if (button.id == BUTTON_ID_PLAN)
-        {
-            TFCGuiHandler.openGui(tile.getWorld(), tile.getPos(), playerInv.player, TFCGuiHandler.Type.ANVIL_PLAN);
-        }
-        else if (button.id >= BUTTON_ID_STEP_MIN && button.id <= BUTTON_ID_STEP_MAX)
-        {
-            TerraFirmaCraft.getNetwork().sendToServer(new PacketAnvilButton(button.id));
-        }
+        TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id));
         super.actionPerformed(button);
     }
 

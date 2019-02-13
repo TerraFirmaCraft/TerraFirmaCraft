@@ -21,11 +21,11 @@ import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.AnvilRecipe;
-import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.button.GuiButtonAnvilPlanIcon;
 import net.dries007.tfc.client.button.IButtonTooltip;
+import net.dries007.tfc.network.PacketGuiButton;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
+import net.dries007.tfc.util.NBTBuilder;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_INPUT_1;
@@ -107,11 +107,8 @@ public class GuiAnvilPlan extends GuiContainerTE<TEAnvilTFC>
         {
             // This fires when you select a plan in the Plan GUI
             TerraFirmaCraft.getLog().info("Pressed the plan button");
-            TFCGuiHandler.openGui(tile.getWorld(), tile.getPos(), playerInv.player, TFCGuiHandler.Type.ANVIL);
             ResourceLocation recipeName = ((GuiButtonAnvilPlanIcon) button).getRecipeName();
-            tile.setRecipeClient(TFCRegistries.ANVIL.getValue(recipeName));
-            //TerraFirmaCraft.getNetwork().sendToServer(new PacketAnvilRecipe(tile));
-            //TerraFirmaCraft.getLog().info("Set the recipe after pressing plan to {}", tile.getRecipe());
+            TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id, new NBTBuilder().setString("recipe", recipeName.toString()).build()));
         }
         super.actionPerformed(button);
     }

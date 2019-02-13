@@ -5,9 +5,12 @@
 
 package net.dries007.tfc.objects.container;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -19,24 +22,26 @@ import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.inventory.slot.SlotTEInput;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
+import net.dries007.tfc.util.IButtonHandler;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.forge.ForgeStep;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-import static net.dries007.tfc.client.gui.GuiAnvilTFC.BUTTON_ID_STEP_MAX;
-import static net.dries007.tfc.client.gui.GuiAnvilTFC.BUTTON_ID_STEP_MIN;
+import static net.dries007.tfc.client.gui.GuiAnvilTFC.*;
 import static net.dries007.tfc.objects.te.TEAnvilTFC.*;
 
-public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC>
+public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC> implements IButtonHandler
 {
     public ContainerAnvilTFC(InventoryPlayer playerInv, TEAnvilTFC te)
     {
         super(playerInv, te, true, 25);
     }
 
-    public void onReceivePacket(int buttonID)
+    @Override
+    public void onButtonPress(int buttonID, @Nullable NBTTagCompound extraNBT)
     {
         if (buttonID >= BUTTON_ID_STEP_MIN && buttonID <= BUTTON_ID_STEP_MAX)
         {
@@ -44,6 +49,19 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC>
             if (attemptWork())
             {
                 tile.addStep(ForgeStep.valueOf(buttonID - BUTTON_ID_STEP_MIN));
+            }
+        }
+        else if (buttonID == BUTTON_ID_PLAN)
+        {
+            // Switch to anvil plan gui
+            Slot slotInput = inventorySlots.get(SLOT_INPUT_1);
+            if (slotInput != null)
+            {
+                ItemStack stack = slotInput.getStack();
+                if (!stack.isEmpty() && !AnvilRecipe.getAllFor(stack).isEmpty())
+                {
+                    TFCGuiHandler.openGui(player.world, tile.getPos(), player, TFCGuiHandler.Type.ANVIL_PLAN);
+                }
             }
         }
     }
@@ -54,10 +72,10 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC>
         IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (inventory != null)
         {
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_INPUT_1, 80, 50, tile));
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_INPUT_2, 62, 50, tile));
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_HAMMER, 16, 73, tile));
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_FLUX, 145, 73, tile));
+            addSlotToContainer(new SlotTEInput(inventory, SLOT_INPUT_1, 31, 68, tile));
+            addSlotToContainer(new SlotTEInput(inventory, SLOT_INPUT_2, 13, 68, tile));
+            addSlotToContainer(new SlotTEInput(inventory, SLOT_HAMMER, 129, 68, tile));
+            addSlotToContainer(new SlotTEInput(inventory, SLOT_FLUX, 174, 68, tile));
         }
     }
 

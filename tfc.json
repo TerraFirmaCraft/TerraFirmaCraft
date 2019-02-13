@@ -5,6 +5,6 @@
     "1.12.2-recommended": "0.1.0"
   },
   "1.12.2": {
-    "0.1.0": "Replaced placeholder texture for anvil plan selector"
+    "0.1.0": "Fixed some more anvil sync issues - still having a problem where opening the plan gui causes the anvil gui to become a false copy - nothing happens correctly until its closed and opened again. Might have to merge the two into one gui instead."
   }
 }
