@@ -157,14 +157,14 @@ public class ItemSmallVessel extends ItemFiredPottery
         private final FluidTank tank;
 
         private float heatCapacity;
-        private float meltingPoint;
+        private float meltTemp;
         private float temperature;
         private long lastUpdateTick;
 
         private boolean fluidMode; // Does the stack contain molten metal?
-        private IFluidTankProperties fluidTankProperties[];
+        private IFluidTankProperties[] fluidTankProperties;
 
-        public SmallVesselCapability(@Nullable NBTTagCompound nbt)
+        SmallVesselCapability(@Nullable NBTTagCompound nbt)
         {
             super(4);
 
@@ -188,7 +188,7 @@ public class ItemSmallVessel extends ItemFiredPottery
         {
             if (fluidMode)
             {
-                return getTemperature() < meltingPoint ? Mode.LIQUID_SOLID : Mode.LIQUID_MOLTEN;
+                return getTemperature() < meltTemp ? Mode.LIQUID_SOLID : Mode.LIQUID_MOLTEN;
             }
             return Mode.INVENTORY;
         }
@@ -334,9 +334,9 @@ public class ItemSmallVessel extends ItemFiredPottery
         }
 
         @Override
-        public float getMeltingPoint()
+        public float getMeltTemp()
         {
-            return meltingPoint;
+            return meltTemp;
         }
 
         @SideOnly(Side.CLIENT)
@@ -359,12 +359,12 @@ public class ItemSmallVessel extends ItemFiredPottery
             if (fluid != null && fluid.getFluid() instanceof FluidMetal)
             {
                 Metal metal = ((FluidMetal) fluid.getFluid()).getMetal();
-                this.meltingPoint = metal.getMeltTemp();
+                this.meltTemp = metal.getMeltTemp();
                 this.heatCapacity = metal.getSpecificHeat();
             }
             else
             {
-                this.meltingPoint = 1000;
+                this.meltTemp = 1000;
                 this.heatCapacity = 1;
             }
 

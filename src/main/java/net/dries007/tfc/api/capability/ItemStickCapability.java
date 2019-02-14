@@ -36,7 +36,7 @@ public class ItemStickCapability extends ItemHeatHandler
     public void addHeatInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
     {
         float temperature = getTemperature();
-        if (temperature > getMeltingPoint() * 0.9f)
+        if (temperature > getMeltTemp() * 0.9f)
             text.add(I18n.format("tfc.enum.heat.torch.lit"));
         else if (temperature > 1f)
             text.add(I18n.format("tfc.enum.heat.torch.catching_fire"));

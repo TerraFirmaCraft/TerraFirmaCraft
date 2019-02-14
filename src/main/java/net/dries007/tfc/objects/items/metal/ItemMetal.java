@@ -48,6 +48,7 @@ public class ItemMetal extends ItemTFC implements IMetalObject
 
         setNoRepair();
         OreDictionaryHelper.register(this, type);
+        //noinspection ConstantConditions
         OreDictionaryHelper.register(this, type, metal.getRegistryName().getPath());
     }
 
@@ -139,10 +140,31 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     {
         switch (type)
         {
-            case TUYERE:
-                return false;
-            default:
+            case DUST:
+            case LAMP:
+            case ANVIL:
+            case SCRAP:
+            case INGOT:
+            case SHEET:
+            case NUGGET:
+            case AXE_HEAD:
+            case HOE_HEAD:
+            case MACE_HEAD:
+            case PICK_HEAD:
+            case SAW_BLADE:
+            case CHISEL_HEAD:
+            case HAMMER_HEAD:
+            case KNIFE_BLADE:
+            case SHOVEL_HEAD:
+            case SWORD_BLADE:
+            case DOUBLE_INGOT:
+            case DOUBLE_SHEET:
+            case JAVELIN_HEAD:
+            case PROPICK_HEAD:
+            case SCYTHE_BLADE:
                 return true;
+            default:
+                return false;
         }
     }
 
@@ -150,7 +172,7 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new ForgeableHandler(nbt, metal.getSpecificHeat(), metal.getWorkTemp(), metal.getMeltTemp());
+        return new ForgeableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
     }
 
     @Override

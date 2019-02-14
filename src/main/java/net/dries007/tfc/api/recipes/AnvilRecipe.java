@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
@@ -22,18 +21,17 @@ import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.forge.ForgeRule;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
+/**
+ * Anvil Recipe
+ *
+ * They all take a single item input and will produce a single item output
+ */
 @ParametersAreNonnullByDefault
 public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
 {
     private static long SEED = 0;
 
     private static final Random RNG = new Random();
-
-    @Nullable
-    public static AnvilRecipe getFirstFor(ItemStack stack)
-    {
-        return TFCRegistries.ANVIL.getValuesCollection().stream().filter(x -> x.matches(stack)).findFirst().orElse(null);
-    }
 
     @Nonnull
     public static List<AnvilRecipe> getAllFor(ItemStack stack)
@@ -83,12 +81,6 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
     public ItemStack getOutput()
     {
         return output.copy();
-    }
-
-    @Nonnull
-    public ItemStack getInput()
-    {
-        return input.copy();
     }
 
     @Nonnull

@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.network;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -13,7 +15,6 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -21,31 +22,31 @@ import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.forge.ForgeSteps;
 
-public class PacketAnvilRecipe implements IMessage
+public class PacketAnvilUpdate implements IMessage
 {
     private BlockPos pos;
     private ResourceLocation recipe;
+    private ForgeSteps steps;
 
     // no args constructor required for forge
     @SuppressWarnings("unused")
-    public PacketAnvilRecipe() {}
+    public PacketAnvilUpdate() {}
 
-    public PacketAnvilRecipe(TEAnvilTFC tile, AnvilRecipe recipe)
+    public PacketAnvilUpdate(@Nonnull TEAnvilTFC tile)
     {
         this.pos = tile.getPos();
+        AnvilRecipe recipe = tile.getRecipe();
         this.recipe = recipe != null ? recipe.getRegistryName() : null;
-    }
-
-    public PacketAnvilRecipe(TEAnvilTFC tile)
-    {
-        this(tile, tile.getRecipe());
+        this.steps = tile.getSteps();
     }
 
     @Override
     public void fromBytes(ByteBuf buffer)
     {
         pos = BlockPos.fromLong(buffer.readLong());
+        steps = ForgeSteps.deserialize(buffer.readInt());
         if (buffer.readBoolean())
         {
             recipe = new ResourceLocation(ByteBufUtils.readUTF8String(buffer));
@@ -60,6 +61,7 @@ public class PacketAnvilRecipe implements IMessage
     public void toBytes(ByteBuf buffer)
     {
         buffer.writeLong(pos.toLong());
+        buffer.writeInt(steps.serialize());
         buffer.writeBoolean(recipe != null);
         if (recipe != null)
         {
@@ -67,10 +69,10 @@ public class PacketAnvilRecipe implements IMessage
         }
     }
 
-    public static class Handler implements IMessageHandler<PacketAnvilRecipe, IMessage>
+    public static class Handler implements IMessageHandler<PacketAnvilUpdate, IMessage>
     {
         @Override
-        public IMessage onMessage(PacketAnvilRecipe message, MessageContext ctx)
+        public IMessage onMessage(PacketAnvilUpdate message, MessageContext ctx)
         {
             EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
             World world = player.getEntityWorld();
@@ -78,16 +80,9 @@ public class PacketAnvilRecipe implements IMessage
                 TEAnvilTFC te = Helpers.getTE(world, message.pos, TEAnvilTFC.class);
                 if (te != null)
                 {
-                    TerraFirmaCraft.getLog().info("Side: " + ctx.side);
-                    if (message.recipe == null)
-                    {
-                        // The TE will send a reply if necessary, but only when this arrives on the server side
-                        te.setRecipe(null, ctx.side == Side.SERVER);
-                    }
-                    else
-                    {
-                        te.setRecipe(TFCRegistries.ANVIL.getValue(message.recipe), ctx.side == Side.SERVER);
-                    }
+                    AnvilRecipe recipe = message.recipe != null ? TFCRegistries.ANVIL.getValue(message.recipe) : null;
+                    te.setRecipe(recipe);
+                    te.setSteps(message.steps);
                 }
             });
             return null;

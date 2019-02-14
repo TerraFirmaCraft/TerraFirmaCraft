@@ -26,7 +26,6 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 
     private final Tier tier;
     private final float specificHeat;
-    private final float workTemp;
     private final float meltTemp;
     private final boolean usable;
     private final int color;
@@ -52,7 +51,6 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         this.tier = tier;
         this.specificHeat = specificHeat;
         this.meltTemp = meltTemp;
-        this.workTemp = 0.6f * meltTemp;
         this.color = color;
         this.toolMetal = toolMetal;
 
@@ -80,11 +78,6 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         return specificHeat;
     }
 
-    public float getWorkTemp()
-    {
-        return workTemp;
-    }
-
     public float getMeltTemp()
     {
         return meltTemp;
@@ -95,6 +88,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         return color;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public String toString()
     {

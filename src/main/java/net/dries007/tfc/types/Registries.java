@@ -40,7 +40,7 @@ public final class Registries
         // Pre Block registries (dirty hack)
         newRegistry(ROCK_TYPE, RockCategory.class, true); // Required before: ROCK
         newRegistry(ROCK, Rock.class, true);
-        newRegistry(METAL, Metal.class, true);// Required before: ORE, ALLOY_RECIPE
+        newRegistry(METAL, Metal.class, true);// Required before: ORE, ALLOY_RECIPE, WELDING_RECIPE
         newRegistry(ORE, Ore.class, true);
         newRegistry(TREE, Tree.class, true);
 

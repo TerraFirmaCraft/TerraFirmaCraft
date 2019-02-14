@@ -42,7 +42,17 @@ public interface IForgeable extends IItemHeat
     /**
      * Sets the recipe name from an {@link AnvilRecipe}. If null, sets the recipe name to null
      */
-    void setRecipe(@Nullable AnvilRecipe recipe);
+    default void setRecipe(@Nullable AnvilRecipe recipe)
+    {
+        setRecipe(recipe != null ? recipe.getRegistryName() : null);
+    }
+
+    /**
+     * Sets the recipe name from an {@link AnvilRecipe}'s registry name.
+     *
+     * @param recipeName a registry name of an anvil recipe
+     */
+    void setRecipe(@Nullable ResourceLocation recipeName);
 
     /**
      * Gets the last three steps, wrapped in a {@link ForgeSteps} instance.
@@ -53,8 +63,9 @@ public interface IForgeable extends IItemHeat
 
     /**
      * Adds a step to the object, shuffling the last three steps down
+     * @param step The step to add. In general this should not be null, although it is perfectly valid for it to be
      */
-    void addStep(ForgeStep step);
+    void addStep(@Nullable ForgeStep step);
 
     /**
      * Resets the object's {@link IForgeable} components. Used if an item falls out of an anvil without getting worked
@@ -63,19 +74,42 @@ public interface IForgeable extends IItemHeat
     void reset();
 
     /**
+     * Gets the working temperature of the item
+     *
+     * @return a temperature
+     */
+    default float getWorkTemp()
+    {
+        return getMeltTemp() * 0.6f;
+    }
+
+    /**
      * Checks if the item is hot enough to be worked
      *
      * @return true if the item is workable
      */
     default boolean isWorkable()
     {
-        return getTemperature() > getWorkingPoint();
+        return getTemperature() > getWorkTemp();
     }
 
     /**
-     * Gets the working temperature of the item
+     * Gets the welding temperature of the item
      *
      * @return a temperature
      */
-    float getWorkingPoint();
+    default float getWeldTemp()
+    {
+        return getMeltTemp() * 0.8f;
+    }
+
+    /**
+     * Checks if the item is hot enough to be worked
+     *
+     * @return true if the item is weldable
+     */
+    default boolean isWeldable()
+    {
+        return getTemperature() > getWeldTemp();
+    }
 }
