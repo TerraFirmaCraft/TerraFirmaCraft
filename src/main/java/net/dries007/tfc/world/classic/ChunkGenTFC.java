@@ -68,7 +68,7 @@ public class ChunkGenTFC implements IChunkGenerator
     public static final IBlockState LAVA = Blocks.LAVA.getDefaultState(); // todo: replace
     public static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
     public static final IBlockState SNOW = Blocks.SNOW_LAYER.getDefaultState().withProperty(BlockSnow.LAYERS, 2);
-    private final static float[] parabolicField = new float[25];
+    private static final float[] parabolicField = new float[25];
 
     static
     {

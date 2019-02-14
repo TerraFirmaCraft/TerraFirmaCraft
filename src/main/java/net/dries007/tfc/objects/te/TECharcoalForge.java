@@ -45,8 +45,9 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
 
     private boolean requiresSlotUpdate = false;
     private float temperature; // Current Temperature
-    private float burnTicks; // Ticks remaining on the current item of fuel
+    private int burnTicks; // Ticks remaining on the current item of fuel
     private float burnTemperature; // Temperature provided from the current item of fuel
+    private int airTicks; // Ticks of air provided by bellows
 
     public TECharcoalForge()
     {
@@ -58,6 +59,12 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
         temperature = 0;
         burnTemperature = 0;
         burnTicks = 0;
+        airTicks = 0;
+    }
+
+    public void onAirIntake(float amount)
+    {
+        airTicks += (int) (200 * amount);
     }
 
     @Override
@@ -70,9 +77,10 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
             // Update fuel
             if (burnTicks > 0)
             {
-                burnTicks--;
+                // Double fuel consumption if using bellows
+                burnTicks -= airTicks > 0 ? 2 : 1;
             }
-            if (burnTicks == 0)
+            if (burnTicks <= 0)
             {
                 // Consume fuel
                 ItemStack stack = inventory.getStackInSlot(SLOT_FUEL_MIN);
@@ -98,17 +106,29 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
             burnTicks = 0;
         }
 
+        // Update bellows air
+        if (airTicks > 0)
+        {
+            airTicks--;
+        }
+        else
+        {
+            airTicks = 0;
+        }
+
         // Always update temperature / cooking, until the fire pit is not hot anymore
         if (temperature > 0 || burnTemperature > 0)
         {
             // Update temperature
             if (temperature < burnTemperature)
             {
-                temperature += ConfigTFC.GENERAL.temperatureModifierHeating;
+                // Modifier for heating = 2x for bellows
+                temperature += (airTicks > 0 ? 2 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
             }
             else if (temperature > burnTemperature)
             {
-                temperature -= ConfigTFC.GENERAL.temperatureModifierHeating;
+                // Modifier for cooling = 0.5x for bellows
+                temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
             }
 
             // Update items in slots
@@ -187,7 +207,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     public void readFromNBT(NBTTagCompound nbt)
     {
         temperature = nbt.getFloat("temperature");
-        burnTicks = nbt.getFloat("burnTicks");
+        burnTicks = nbt.getInteger("burnTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
         super.readFromNBT(nbt);
     }
@@ -197,7 +217,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         nbt.setFloat("temperature", temperature);
-        nbt.setFloat("burnTicks", burnTicks);
+        nbt.setInteger("burnTicks", burnTicks);
         nbt.setFloat("burnTemperature", burnTemperature);
         return super.writeToNBT(nbt);
     }
@@ -312,26 +332,24 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     @Override
     public void setField(int index, int value)
     {
-        switch (index)
+        if (index == FIELD_TEMPERATURE)
         {
-            case FIELD_TEMPERATURE:
-                this.temperature = (float) value;
-                break;
-            default:
-                TerraFirmaCraft.getLog().warn("Invalid field ID {} in TECharcoalForge#setField", index);
+            this.temperature = (float) value;
+        }
+        else
+        {
+            TerraFirmaCraft.getLog().warn("Invalid field ID {} in TECharcoalForge#setField", index);
         }
     }
 
     @Override
     public int getField(int index)
     {
-        switch (index)
+        if (index == FIELD_TEMPERATURE)
         {
-            case FIELD_TEMPERATURE:
-                return (int) temperature;
-            default:
-                TerraFirmaCraft.getLog().warn("Invalid field ID {} in TECharcoalForge#getField", index);
-                return 0;
+            return (int) temperature;
         }
+        TerraFirmaCraft.getLog().warn("Invalid field ID {} in TECharcoalForge#getField", index);
+        return 0;
     }
 }

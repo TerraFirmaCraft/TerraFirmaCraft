@@ -302,6 +302,11 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         }
     }
 
+    public void onAirIntake(float amount)
+    {
+        // todo: air ticks here. See charcoal forge
+    }
+
     @Override
     public int getField(int index)
     {

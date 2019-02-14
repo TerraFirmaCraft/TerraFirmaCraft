@@ -161,7 +161,7 @@ public class BlockLogPile extends Block implements ITileEntityProvider
     @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
-        if (!worldIn.isRemote && te != null && te instanceof TEInventory)
+        if (!worldIn.isRemote && te instanceof TEInventory)
         {
             ((TEInventory) te).onBreakBlock(worldIn, pos);
         }

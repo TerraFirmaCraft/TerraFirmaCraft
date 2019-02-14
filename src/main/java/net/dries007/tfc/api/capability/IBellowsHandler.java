@@ -5,9 +5,12 @@
 
 package net.dries007.tfc.api.capability;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 
 import net.dries007.tfc.objects.te.TEBellows;
 
@@ -25,7 +28,7 @@ public interface IBellowsHandler
      * @param facing direction the bellows output to
      * @return self-explanatory
      */
-    boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing);
+    boolean canIntakeFrom(@Nonnull TEBellows te, @Nonnull Vec3i offset, @Nonnull EnumFacing facing);
 
     /**
      * @param te        the bellows that give the air intake.
@@ -33,5 +36,5 @@ public interface IBellowsHandler
      * @return the amount of air actually used, idk, I was thinking someone might make some custom bellows that use that.
      */
     @SuppressWarnings("UnusedReturnValue")
-    float onAirIntake(TEBellows te, BlockPos pos, float airAmount);
+    float onAirIntake(@Nonnull TEBellows te, @Nonnull World world, @Nonnull BlockPos pos, float airAmount);
 }
