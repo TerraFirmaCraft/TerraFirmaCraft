@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
@@ -28,8 +29,6 @@ import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.FuelManager;
 import net.dries007.tfc.util.ITileFields;
 
-import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.ITEM_HEATING_MODIFIER;
-import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.TEMPERATURE_MODIFIER;
 import static net.dries007.tfc.objects.blocks.BlockCharcoalForge.LIT;
 
 @ParametersAreNonnullByDefault
@@ -105,11 +104,11 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
             // Update temperature
             if (temperature < burnTemperature)
             {
-                temperature += TEMPERATURE_MODIFIER;
+                temperature += ConfigTFC.GENERAL.temperatureModifierHeating;
             }
             else if (temperature > burnTemperature)
             {
-                temperature -= TEMPERATURE_MODIFIER;
+                temperature -= ConfigTFC.GENERAL.temperatureModifierHeating;
             }
 
             // Update items in slots
@@ -124,7 +123,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
                     float itemTemp = cap.getTemperature();
                     if (temperature > itemTemp)
                     {
-                        CapabilityItemHeat.addTemp(cap, ITEM_HEATING_MODIFIER);
+                        CapabilityItemHeat.addTemp(cap, (float) ConfigTFC.GENERAL.temperatureModifierItemHeating);
                     }
 
                     // This will melt + consume the input stack

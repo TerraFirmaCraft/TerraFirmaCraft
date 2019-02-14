@@ -14,6 +14,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.api.recipes.KnappingRecipe;
+import net.dries007.tfc.api.recipes.WeldingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
@@ -60,7 +61,6 @@ public final class DefaultRecipes
             }
         }
 
-        // todo: uncomment these as more items / blocks are added
         event.getRegistry().registerAll(
             new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_VESSEL), " XXX ", "XXXXX", "XXXXX", "XXXXX", " XXX ").setRegistryName(MOD_ID, "clay_small_vessel"),
             new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_JUG), " X   ", "XXXX ", "XXX X", "XXXX ", "XXX  ").setRegistryName(MOD_ID, "clay_jug"),
@@ -85,8 +85,7 @@ public final class DefaultRecipes
         IForgeRegistry<AnvilRecipe> r = event.getRegistry();
 
         // Basic Components
-        addAnvil(r, INGOT, SHEET, false, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST);
-        addAnvil(r, DOUBLE_INGOT, DOUBLE_SHEET, false, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST);
+        addAnvil(r, DOUBLE_INGOT, SHEET, false, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST);
 
         // Tools
         addAnvil(r, INGOT, PICK_HEAD, true, PUNCH_LAST, BEND_NOT_LAST, DRAW_NOT_LAST);
@@ -111,6 +110,26 @@ public final class DefaultRecipes
         // todo: more anvil recipes
     }
 
+    @SubscribeEvent
+    public static void onRegisterWeldingRecipeEvent(RegistryEvent.Register<WeldingRecipe> event)
+    {
+        IForgeRegistry<WeldingRecipe> r = event.getRegistry();
+
+        // Welding Recipes
+        addWelding(r, INGOT, DOUBLE_INGOT);
+        addWelding(r, SHEET, DOUBLE_SHEET);
+
+        addWelding(r, UNFINISHED_HELMET, SHEET, HELMET, true);
+        addWelding(r, UNFINISHED_CHESTPLATE, DOUBLE_SHEET, CHESTPLATE, true);
+        addWelding(r, UNFINISHED_GREAVES, DOUBLE_SHEET, GREAVES, true);
+        addWelding(r, UNFINISHED_BOOTS, SHEET, BOOTS, true);
+
+        // Special Recipes
+
+        // todo: shears
+    }
+
+    @SuppressWarnings("ConstantConditions")
     private static void addAnvil(IForgeRegistry<AnvilRecipe> registry, Metal.ItemType inputType, Metal.ItemType outputType, boolean onlyToolMetals, ForgeRule... rules)
     {
         // Helper method for adding all recipes that take ItemType -> ItemType
@@ -129,9 +148,28 @@ public final class DefaultRecipes
         }
     }
 
-    @SubscribeEvent
-    public static void onRegisterWeldingRecipeEvent(RegistryEvent.Register<KnappingRecipe> event)
+    private static void addWelding(IForgeRegistry<WeldingRecipe> registry, Metal.ItemType inputType, Metal.ItemType outputType)
     {
-        // todo: anvil welding recipes
+        addWelding(registry, inputType, inputType, outputType, false);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private static void addWelding(IForgeRegistry<WeldingRecipe> registry, Metal.ItemType inputType1, Metal.ItemType inputType2, Metal.ItemType outputType, boolean onlyToolMetals)
+    {
+        // Helper method for adding all recipes that take ItemType -> ItemType
+        for (Metal metal : TFCRegistries.METALS.getValuesCollection())
+        {
+            if (onlyToolMetals && !metal.isToolMetal())
+                continue;
+
+            // Create a recipe for each metal / item type combination
+            ItemStack input1 = new ItemStack(ItemMetal.get(metal, inputType1));
+            ItemStack input2 = new ItemStack(ItemMetal.get(metal, inputType2));
+            ItemStack output = new ItemStack(ItemMetal.get(metal, outputType));
+            if (!input1.isEmpty() && !input2.isEmpty() && !output.isEmpty())
+            {
+                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), input1, input2, output, metal.getTier()));
+            }
+        }
     }
 }

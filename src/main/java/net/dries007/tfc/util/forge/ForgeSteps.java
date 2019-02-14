@@ -13,11 +13,21 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import static net.dries007.tfc.objects.te.TEAnvilTFC.*;
+import net.dries007.tfc.TerraFirmaCraft;
 
 @ParametersAreNonnullByDefault
 public class ForgeSteps implements INBTSerializable<NBTTagCompound>
 {
+    public static ForgeSteps deserialize(int serialized)
+    {
+        ForgeSteps steps = new ForgeSteps();
+        steps.setStepInt(0, (serialized & 0xFF));
+        steps.setStepInt(1, (serialized & 0xFFFF) >> 8);
+        steps.setStepInt(2, (serialized & 0xFFFFFF) >> 16);
+        TerraFirmaCraft.getLog().info("Deserialized: {} - {} {} {}", steps);
+        return steps;
+    }
+
     private final LinkedList<ForgeStep> steps;
 
     public ForgeSteps()
@@ -37,34 +47,6 @@ public class ForgeSteps implements INBTSerializable<NBTTagCompound>
         while (steps.size() > 3)
         {
             steps.remove();
-        }
-    }
-
-    public int getStepByID(int id)
-    {
-        switch (id)
-        {
-            case FIELD_LAST_STEP:
-                return getStepInt(0);
-            case FIELD_SECOND_STEP:
-                return getStepInt(1);
-            case FIELD_THIRD_STEP:
-                return getStepInt(2);
-            default:
-                return -1;
-        }
-    }
-
-    public void setStep(int position, int step)
-    {
-        switch (position)
-        {
-            case FIELD_LAST_STEP:
-                steps.set(0, ForgeStep.valueOf(step));
-            case FIELD_SECOND_STEP:
-                steps.set(1, ForgeStep.valueOf(step));
-            case FIELD_THIRD_STEP:
-                steps.set(2, ForgeStep.valueOf(step));
         }
     }
 
@@ -90,6 +72,7 @@ public class ForgeSteps implements INBTSerializable<NBTTagCompound>
         }
     }
 
+    @Nonnull
     public ForgeSteps copy()
     {
         ForgeSteps newSteps = new ForgeSteps();
@@ -99,14 +82,31 @@ public class ForgeSteps implements INBTSerializable<NBTTagCompound>
     }
 
     @Nullable
-    ForgeStep getStep(int idx)
+    public ForgeStep getStep(int idx)
     {
         return steps.get(idx);
+    }
+
+    public int serialize()
+    {
+        TerraFirmaCraft.getLog().info("Serializing: {}", steps);
+        return (getStepInt(0)) | (getStepInt(1) << 8) | (getStepInt(2) << 16);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "[" + getStep(0) + ", " + getStep(1) + ", " + getStep(2) + "]";
     }
 
     private int getStepInt(int idx)
     {
         ForgeStep step = steps.get(idx);
         return step == null ? -1 : step.ordinal();
+    }
+
+    private void setStepInt(int position, int step)
+    {
+        steps.set(position, ForgeStep.valueOf(step));
     }
 }

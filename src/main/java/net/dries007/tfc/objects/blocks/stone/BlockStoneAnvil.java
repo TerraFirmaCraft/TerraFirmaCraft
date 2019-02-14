@@ -145,7 +145,7 @@ public class BlockStoneAnvil extends Block implements ITileEntityProvider, IRock
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
-        return new TEAnvilTFC(Metal.Tier.TIER_I);
+        return new TEAnvilTFC(Metal.Tier.TIER_I, true);
     }
 
     @Override

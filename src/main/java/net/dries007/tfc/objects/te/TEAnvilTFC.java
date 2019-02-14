@@ -11,24 +11,25 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.AnvilRecipe;
+import net.dries007.tfc.api.recipes.WeldingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.network.PacketAnvilRecipe;
+import net.dries007.tfc.network.PacketAnvilUpdate;
 import net.dries007.tfc.util.ITileFields;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
 @ParametersAreNonnullByDefault
-public class TEAnvilTFC extends TEInventory implements ITileFields, ITickable
+public class TEAnvilTFC extends TEInventory implements ITileFields
 {
     public static final int WORK_MAX = 145;
 
@@ -37,31 +38,41 @@ public class TEAnvilTFC extends TEInventory implements ITileFields, ITickable
     public static final int SLOT_HAMMER = 2;
     public static final int SLOT_FLUX = 3;
 
-    public static final int FIELD_COUNT = 5;
     public static final int FIELD_PROGRESS = 0;
     public static final int FIELD_TARGET = 1;
-    public static final int FIELD_LAST_STEP = 2;
-    public static final int FIELD_SECOND_STEP = 3;
-    public static final int FIELD_THIRD_STEP = 4;
 
+    /*
+     Properties of the anvil
+     */
+    private final Metal.Tier tier;
+    private final boolean isStone;
+
+    /*
+     Instance variables
+     */
     private AnvilRecipe recipe;
     private ForgeSteps steps;
     private int workingProgress = 0; // Min = 0, Max = 145
     private int workingTarget = 0;
-    private final Metal.Tier tier;
 
     public TEAnvilTFC()
     {
-        this(Metal.Tier.TIER_I);
+        this(Metal.Tier.TIER_I, false);
     }
 
-    public TEAnvilTFC(Metal.Tier tier)
+    public TEAnvilTFC(Metal.Tier tier, boolean isStone)
     {
         super(4);
 
         steps = new ForgeSteps();
         recipe = null;
         this.tier = tier;
+        this.isStone = isStone;
+    }
+
+    public boolean isStone()
+    {
+        return isStone;
     }
 
     @Nonnull
@@ -76,18 +87,20 @@ public class TEAnvilTFC extends TEInventory implements ITileFields, ITickable
         return recipe;
     }
 
-    @Override
-    public void update()
-    {
-        // todo: remove
-        // This is just for testing
-        if (world.getTotalWorldTime() % 40 == 0)
-            TerraFirmaCraft.getLog().info("Anvil Status: Recipe: {} Work: {}, Target: {}, Steps: {}", recipe == null ? "NULL" : recipe.getInput() + " -> " + recipe.getOutput(), workingProgress, workingTarget, steps == null ? "NULL" : steps.serializeNBT());
-    }
-
+    @Nonnull
     public ForgeSteps getSteps()
     {
         return steps;
+    }
+
+    /**
+     * Sets the current steps on client side after recieving a {@link PacketAnvilUpdate}
+     *
+     * @param steps the new steps
+     */
+    public void setSteps(ForgeSteps steps)
+    {
+        this.steps = steps;
     }
 
     /**
@@ -95,9 +108,9 @@ public class TEAnvilTFC extends TEInventory implements ITileFields, ITickable
      * This is the ONLY place that should write to {@link this#recipe}
      *
      * @param recipe       the recipe to set to
-     * @param sendToClient should it send an update to client?
+     * @return true if a packet needs to be sent to the client for a recipe update
      */
-    public void setRecipe(@Nullable AnvilRecipe recipe, boolean sendToClient)
+    public boolean setRecipe(@Nullable AnvilRecipe recipe)
     {
         ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_1);
         IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
@@ -128,11 +141,7 @@ public class TEAnvilTFC extends TEInventory implements ITileFields, ITickable
             resetFields();
         }
 
-        if (recipeChanged && sendToClient)
-        {
-            // Send the update to client
-            TerraFirmaCraft.getNetwork().sendToDimension(new PacketAnvilRecipe(this), world.provider.getDimension());
-        }
+        return recipeChanged;
     }
 
     /**
@@ -145,7 +154,33 @@ public class TEAnvilTFC extends TEInventory implements ITileFields, ITickable
         super.setAndUpdateSlots(slot);
         if (!world.isRemote)
         {
-            checkRecipeUpdate();
+            if (checkRecipeUpdate())
+            {
+                TerraFirmaCraft.getNetwork().sendToDimension(new PacketAnvilUpdate(this), world.provider.getDimension());
+            }
+        }
+    }
+
+    @Override
+    public int getSlotLimit(int slot)
+    {
+        return slot == SLOT_FLUX ? super.getSlotLimit(slot) : 1;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        switch (slot)
+        {
+            case SLOT_INPUT_1:
+            case SLOT_INPUT_2:
+                return stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null) && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+            case SLOT_FLUX:
+                return OreDictionaryHelper.doesStackMatchOre(stack, "dustFlux");
+            case SLOT_HAMMER:
+                return OreDictionaryHelper.doesStackMatchOre(stack, "hammer");
+            default:
+                return false;
         }
     }
 
@@ -154,9 +189,6 @@ public class TEAnvilTFC extends TEInventory implements ITileFields, ITickable
      */
     public void addStep(@Nullable ForgeStep step)
     {
-        // Always check for update first
-        checkRecipeUpdate();
-
         ItemStack input = inventory.getStackInSlot(SLOT_INPUT_1);
         IForgeable cap = input.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
 
@@ -183,7 +215,7 @@ public class TEAnvilTFC extends TEInventory implements ITileFields, ITickable
 
                     // Reset forge stuff
                     resetFields();
-                    setRecipe(null, true);
+                    setRecipe(null);
                 }
                 else if (workingProgress < 0 || workingProgress >= 150)
                 {
@@ -193,59 +225,15 @@ public class TEAnvilTFC extends TEInventory implements ITileFields, ITickable
                 }
             }
 
-            // update recipe
-            setAndUpdateSlots(0);
+            // Step was added, so send update regardless
+            TerraFirmaCraft.getNetwork().sendToDimension(new PacketAnvilUpdate(this), world.provider.getDimension());
         }
     }
 
     @Override
     public int getFieldCount()
     {
-        return FIELD_COUNT;
-    }
-
-
-    @Override
-    public int getSlotLimit(int slot)
-    {
-        return slot == SLOT_FLUX ? super.getSlotLimit(slot) : 1;
-    }
-
-    @Override
-    public boolean isItemValid(int slot, ItemStack stack)
-    {
-        switch (slot)
-        {
-            case SLOT_INPUT_1:
-            case SLOT_INPUT_2:
-                return stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null) && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-            case SLOT_FLUX:
-                return OreDictionaryHelper.doesStackMatchOre(stack, "dustFlux");
-            case SLOT_HAMMER:
-                return OreDictionaryHelper.doesStackMatchOre(stack, "hammer");
-            default:
-                return false;
-        }
-    }
-
-    private void checkRecipeUpdate()
-    {
-        ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_1);
-        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-        if (cap == null && recipe != null)
-        {
-            // Check for item removed / broken
-            setRecipe(null, true);
-        }
-        else if (cap != null)
-        {
-            // Check for mismatched recipe
-            AnvilRecipe capRecipe = TFCRegistries.ANVIL.getValue(cap.getRecipeName());
-            if (capRecipe != recipe)
-            {
-                setRecipe(capRecipe, true);
-            }
-        }
+        return 2;
     }
 
     @Override
@@ -258,11 +246,6 @@ public class TEAnvilTFC extends TEInventory implements ITileFields, ITickable
                 break;
             case FIELD_TARGET:
                 workingTarget = value;
-                break;
-            case FIELD_LAST_STEP:
-            case FIELD_SECOND_STEP:
-            case FIELD_THIRD_STEP:
-                steps.setStep(index, value);
                 break;
             default:
                 TerraFirmaCraft.getLog().warn("Invalid field id {}", index);
@@ -278,14 +261,75 @@ public class TEAnvilTFC extends TEInventory implements ITileFields, ITickable
                 return workingProgress;
             case FIELD_TARGET:
                 return workingTarget;
-            case FIELD_LAST_STEP:
-            case FIELD_SECOND_STEP:
-            case FIELD_THIRD_STEP:
-                return steps.getStepByID(index);
             default:
                 TerraFirmaCraft.getLog().warn("Invalid field id {} in TEAnvilTFC#getField", index);
                 return 0;
         }
+    }
+
+    /**
+     * Attempts to weld the two items in the input slots.
+     *
+     * @return true if the weld was successful
+     */
+    public boolean attemptWelding()
+    {
+        ItemStack input1 = inventory.getStackInSlot(SLOT_INPUT_1), input2 = inventory.getStackInSlot(SLOT_INPUT_2);
+        if (input1.isEmpty() || input2.isEmpty())
+        {
+            return false;
+        }
+
+        // Find a matching welding recipe
+        WeldingRecipe recipe = TFCRegistries.WELDING.getValuesCollection().stream().filter(x -> x.matches(input1, input2)).findFirst().orElse(null);
+        if (recipe != null)
+        {
+            // Execute recipe!
+            IForgeable heat1 = input1.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+            IForgeable heat2 = input2.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+            if (heat1 == null || heat2 == null || !heat1.isWeldable() || !heat2.isWeldable())
+            {
+                // No heat capability or not hot enough
+                return false;
+            }
+            ItemStack result = recipe.getOutput();
+            IItemHeat heatResult = result.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+            float resultTemperature = Math.min(heat1.getTemperature(), heat2.getTemperature());
+            if (heatResult != null)
+            {
+                // Every welding result should have this capability, but don't fail if it doesn't
+                heatResult.setTemperature(resultTemperature);
+            }
+
+            // Set stacks in slots
+            inventory.setStackInSlot(SLOT_INPUT_1, result);
+            inventory.setStackInSlot(SLOT_INPUT_2, ItemStack.EMPTY);
+
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkRecipeUpdate()
+    {
+        ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_1);
+        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        boolean shouldSendUpdate = false;
+        if (cap == null && recipe != null)
+        {
+            // Check for item removed / broken
+            shouldSendUpdate = setRecipe(null);
+        }
+        else if (cap != null)
+        {
+            // Check for mismatched recipe
+            AnvilRecipe capRecipe = TFCRegistries.ANVIL.getValue(cap.getRecipeName());
+            if (capRecipe != recipe)
+            {
+                shouldSendUpdate = setRecipe(capRecipe);
+            }
+        }
+        return shouldSendUpdate;
     }
 
     private void resetFields()

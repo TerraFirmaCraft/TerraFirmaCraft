@@ -41,7 +41,7 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
      *
      * @return a temperature between 0 - 1600 that is the melting point
      */
-    float getMeltingPoint();
+    float getMeltTemp();
 
     /**
      * Sets the temperature. Used for anything that modifies the temperature.
@@ -58,7 +58,7 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
      */
     default boolean isMolten()
     {
-        return getTemperature() > getMeltingPoint();
+        return getTemperature() > getMeltTemp();
     }
 
     /**

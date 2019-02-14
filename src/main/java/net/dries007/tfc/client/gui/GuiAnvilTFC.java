@@ -26,7 +26,8 @@ import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-import static net.dries007.tfc.objects.te.TEAnvilTFC.*;
+import static net.dries007.tfc.objects.te.TEAnvilTFC.FIELD_PROGRESS;
+import static net.dries007.tfc.objects.te.TEAnvilTFC.FIELD_TARGET;
 
 public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
 {
@@ -99,8 +100,16 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
                     drawScaledCustomSizeModalRect(guiLeft + 64 + xOffset, guiTop + 10, rule.getU(), rule.getV(), 32, 32, 10, 10, 256, 256);
 
                     // The overlay
-                    // todo: custom colors if it is valid rule, use steps from anvil
-                    GlStateManager.color(1f, 0, 0);
+                    if (rule.matches(steps))
+                    {
+                        // GREEN
+                        GlStateManager.color(0f, 0.6f, 0.2f);
+                    }
+                    else
+                    {
+                        // RED
+                        GlStateManager.color(1f, 0.4f, 0);
+                    }
                     drawTexturedModalRect(guiLeft + 59 + xOffset, guiTop + 7, 198, rule.getW(), 20, 22);
                     GlStateManager.color(1f, 1f, 1f);
                 }
@@ -108,12 +117,12 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
         }
 
         // Draw step icons
-        for (int i = FIELD_LAST_STEP; i <= FIELD_THIRD_STEP; i++)
+        for (int i = 0; i < 3; i++)
         {
-            ForgeStep step = ForgeStep.valueOf(tile.getField(i));
+            ForgeStep step = steps.getStep(i);
             if (step != null)
             {
-                int xOffset = (i - FIELD_LAST_STEP) * 19;
+                int xOffset = i * 19;
                 drawScaledCustomSizeModalRect(guiLeft + 64 + xOffset, guiTop + 31, step.getU(), step.getV(), 32, 32, 10, 10, 256, 256);
             }
         }

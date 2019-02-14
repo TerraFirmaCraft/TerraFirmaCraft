@@ -24,7 +24,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
 {
     // These are "constants". Some implementations will want to change these based on other factors. (See ItemMold)
     protected float heatCapacity;
-    protected float meltingPoint;
+    protected float meltTemp;
 
     // These are the values from last point of update. They are updated when read from NBT, or when the temperature is set manually.
     // Note that if temperature is == 0, lastUpdateTick should set itself to -1 to keep their capabilities compatible - i.e. stackable
@@ -36,17 +36,17 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
      *
      * @param nbt          The NBT of the itemstack. (Provided in Item#initCapabilities())
      * @param heatCapacity The heat capacity
-     * @param meltingPoint The melting point
+     * @param meltTemp The melting point
      */
-    public ItemHeatHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltingPoint)
+    public ItemHeatHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltTemp)
     {
         this.heatCapacity = heatCapacity;
-        this.meltingPoint = meltingPoint;
+        this.meltTemp = meltTemp;
 
         deserializeNBT(nbt);
     }
 
-    public ItemHeatHandler() { } // This is here so you can do a custom implementation
+    public ItemHeatHandler() {} // This is here so you can do a custom implementation
 
     /**
      * This gets the outwards facing temperature. It will differ from the internal temperature value or the value saved to NBT
@@ -78,15 +78,15 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
     }
 
     @Override
-    public float getMeltingPoint()
+    public float getMeltTemp()
     {
-        return meltingPoint;
+        return meltTemp;
     }
 
     @Override
     public boolean isMolten()
     {
-        return getTemperature() >= meltingPoint;
+        return getTemperature() >= meltTemp;
     }
 
     @Override

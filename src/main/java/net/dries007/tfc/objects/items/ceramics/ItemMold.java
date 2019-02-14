@@ -85,6 +85,7 @@ public class ItemMold extends ItemFiredPottery
             Metal metal = ((IMoldHandler) capFluidHandler).getMetal();
             if (metal != null)
             {
+                //noinspection ConstantConditions
                 return super.getTranslationKey(stack) + "." + metal.getRegistryName().getPath();
             }
         }
@@ -117,9 +118,9 @@ public class ItemMold extends ItemFiredPottery
     private class FilledMoldCapability extends ItemHeatHandler implements ICapabilityProvider, IMoldHandler
     {
         private final FluidTank tank;
-        private IFluidTankProperties fluidTankProperties[];
+        private IFluidTankProperties[] fluidTankProperties;
 
-        public FilledMoldCapability(@Nullable NBTTagCompound nbt)
+        FilledMoldCapability(@Nullable NBTTagCompound nbt)
         {
             super();
             tank = new FluidTank(100);
@@ -212,14 +213,14 @@ public class ItemMold extends ItemFiredPottery
         @Override
         public FluidStack drain(FluidStack resource, boolean doDrain)
         {
-            return getTemperature() >= meltingPoint ? tank.drain(resource, doDrain) : null;
+            return getTemperature() >= meltTemp ? tank.drain(resource, doDrain) : null;
         }
 
         @Nullable
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain)
         {
-            return getTemperature() >= meltingPoint ? tank.drain(maxDrain, doDrain) : null;
+            return getTemperature() >= meltTemp ? tank.drain(maxDrain, doDrain) : null;
         }
 
         @SideOnly(Side.CLIENT)
@@ -244,9 +245,9 @@ public class ItemMold extends ItemFiredPottery
         }
 
         @Override
-        public float getMeltingPoint()
+        public float getMeltTemp()
         {
-            return meltingPoint;
+            return meltTemp;
         }
 
         private void updateFluidData(FluidStack fluid)
@@ -254,12 +255,12 @@ public class ItemMold extends ItemFiredPottery
             if (fluid != null && fluid.getFluid() instanceof FluidMetal)
             {
                 Metal metal = ((FluidMetal) fluid.getFluid()).getMetal();
-                this.meltingPoint = metal.getMeltTemp();
+                this.meltTemp = metal.getMeltTemp();
                 this.heatCapacity = metal.getSpecificHeat();
             }
             else
             {
-                this.meltingPoint = 1000;
+                this.meltTemp = 1000;
                 this.heatCapacity = 1;
             }
         }

@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
@@ -95,11 +96,11 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
             // Update temperature
             if (temperature < burnTemperature)
             {
-                temperature += CapabilityItemHeat.TEMPERATURE_MODIFIER;
+                temperature += ConfigTFC.GENERAL.temperatureModifierHeating;
             }
             else if (temperature > burnTemperature)
             {
-                temperature -= CapabilityItemHeat.TEMPERATURE_MODIFIER;
+                temperature -= ConfigTFC.GENERAL.temperatureModifierHeating;
             }
 
             // Update items in slots
@@ -113,7 +114,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
                     float itemTemp = cap.getTemperature();
                     if (temperature > itemTemp)
                     {
-                        CapabilityItemHeat.addTemp(cap, CapabilityItemHeat.ITEM_HEATING_MODIFIER);
+                        CapabilityItemHeat.addTemp(cap, (float) ConfigTFC.GENERAL.temperatureModifierItemHeating);
                     }
 
                     // This will melt + consume the input stack
@@ -291,27 +292,25 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
     @Override
     public void setField(int index, int value)
     {
-        switch (index)
+        if (index == FIELD_TEMPERATURE)
         {
-            case FIELD_TEMPERATURE:
-                this.temperature = (float) value;
-                break;
-            default:
-                TerraFirmaCraft.getLog().warn("Invalid Field ID {} in TEFirePit#setField", index);
+            this.temperature = (float) value;
+        }
+        else
+        {
+            TerraFirmaCraft.getLog().warn("Invalid Field ID {} in TEFirePit#setField", index);
         }
     }
 
     @Override
     public int getField(int index)
     {
-        switch (index)
+        if (index == FIELD_TEMPERATURE)
         {
-            case FIELD_TEMPERATURE:
-                return (int) temperature;
-            default:
-                TerraFirmaCraft.getLog().warn("Invalid Field ID {} in TEFirePit#getField", index);
-                return 0;
+            return (int) temperature;
         }
+        TerraFirmaCraft.getLog().warn("Invalid Field ID {} in TEFirePit#getField", index);
+        return 0;
     }
 
     @Override

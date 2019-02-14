@@ -118,10 +118,9 @@ public final class TerraFirmaCraft
         int id = 0;
         // Received on server
         network.registerMessage(new PacketKnappingUpdate.Handler(), PacketKnappingUpdate.class, ++id, Side.SERVER);
-        network.registerMessage(new PacketAnvilRecipe.Handler(), PacketAnvilRecipe.class, ++id, Side.SERVER);
         network.registerMessage(new PacketGuiButton.Handler(), PacketGuiButton.class, ++id, Side.SERVER);
         // Received on client
-        network.registerMessage(new PacketAnvilRecipe.Handler(), PacketAnvilRecipe.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketAnvilUpdate.Handler(), PacketAnvilUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketChunkData.Handler(), PacketChunkData.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketCapabilityContainerUpdate.Handler(), PacketCapabilityContainerUpdate.class, ++id, Side.CLIENT);
 

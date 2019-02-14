@@ -14,22 +14,19 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
-import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
 public class ForgeableHandler extends ItemHeatHandler implements IForgeable
 {
-    private final ForgeSteps steps;
-    private int work;
-    private ResourceLocation recipeName;
-    private float workingPoint;
+    protected final ForgeSteps steps;
+    protected int work;
+    protected ResourceLocation recipeName;
 
-    public ForgeableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float workingPoint, float meltingPoint)
+    public ForgeableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltTemp)
     {
         this.heatCapacity = heatCapacity;
-        this.workingPoint = workingPoint;
-        this.meltingPoint = meltingPoint;
+        this.meltTemp = meltTemp;
 
         steps = new ForgeSteps();
 
@@ -62,9 +59,9 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
     }
 
     @Override
-    public void setRecipe(@Nullable AnvilRecipe recipe)
+    public void setRecipe(@Nullable ResourceLocation recipeName)
     {
-        recipeName = (recipe == null ? null : recipe.getRegistryName());
+        this.recipeName = recipeName;
     }
 
     @Override
@@ -87,12 +84,6 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
         steps.reset();
         recipeName = null;
         work = 0;
-    }
-
-    @Override
-    public float getWorkingPoint()
-    {
-        return workingPoint;
     }
 
     @Override
