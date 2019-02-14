@@ -29,18 +29,29 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.api.capability.IBellowsHandler;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.items.ItemFireStarter;
+import net.dries007.tfc.objects.te.TEBellows;
 import net.dries007.tfc.objects.te.TECharcoalForge;
+import net.dries007.tfc.objects.te.TEInventory;
+import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
-public class BlockCharcoalForge extends Block implements ITileEntityProvider
+public class BlockCharcoalForge extends Block implements ITileEntityProvider, IBellowsHandler
 {
     public static final PropertyBool LIT = PropertyBool.create("lit");
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
+    private static final Vec3i BELLOWS_OFFSET = new Vec3i(1, -1, 0);
+
+    static
+    {
+        TEBellows.addBellowsOffset(BELLOWS_OFFSET);
+    }
 
     public static boolean hasValidSideBlocks(World world, BlockPos pos)
     {
@@ -49,9 +60,8 @@ public class BlockCharcoalForge extends Block implements ITileEntityProvider
             IBlockState state = world.getBlockState(pos.offset(face));
             if (face == EnumFacing.UP)
             {
-                // The block on top must be air
-                // todo: additional check for crucible
-                if (state.getBlock() != Blocks.AIR)
+                // The block on top must be non-solid
+                if (state.isNormalCube())
                 {
                     return false;
                 }
@@ -66,6 +76,23 @@ public class BlockCharcoalForge extends Block implements ITileEntityProvider
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
+    {
+        return offset.equals(BELLOWS_OFFSET);
+    }
+
+    @Override
+    public float onAirIntake(TEBellows te, World world, BlockPos pos, float airAmount)
+    {
+        TECharcoalForge teForge = Helpers.getTE(world, pos, TECharcoalForge.class);
+        if (teForge != null)
+        {
+            teForge.onAirIntake(airAmount);
+        }
+        return airAmount;
     }
 
     public static boolean hasValidChimney(World world, BlockPos pos)
@@ -168,6 +195,16 @@ public class BlockCharcoalForge extends Block implements ITileEntityProvider
     public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return AABB;
+    }
+
+    @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    {
+        if (!worldIn.isRemote && te instanceof TEInventory)
+        {
+            ((TEInventory) te).onBreakBlock(worldIn, pos);
+        }
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
     }
 
     @Override

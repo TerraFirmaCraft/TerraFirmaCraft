@@ -41,6 +41,7 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
+import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
@@ -225,5 +226,14 @@ public class BlockAnvilTFC extends Block implements ITileEntityProvider
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
         return new TEAnvilTFC(metal.getTier(), false);
+    }
+
+    @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    {
+        if (!worldIn.isRemote && te instanceof TEInventory)
+        {
+            ((TEInventory) te).onBreakBlock(worldIn, pos);
+        }
     }
 }
