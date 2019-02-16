@@ -5,6 +5,6 @@
     "1.12.2-recommended": "0.1.0"
   },
   "1.12.2": {
-    "0.1.0": "Anvil is now complete!"
+    "0.1.0": "Charcoal forge now responds to bellows. Tweaked the bellows integration so it is a bit more clean. See #22"
   }
 }

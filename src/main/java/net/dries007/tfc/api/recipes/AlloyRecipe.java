@@ -36,6 +36,7 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
         return result;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public String toString()
     {
@@ -70,7 +71,7 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
         {
             Metal metal = TFCRegistries.METALS.getValue(loc);
             if (metal == null)
-                throw new IllegalArgumentException("Result metal is not allowed to be null. Missing metal for key: " + result.toString());
+                throw new IllegalArgumentException("Result metal is not allowed to be null. Missing metal for key: " + loc.toString());
             return add(metal, condition);
         }
 

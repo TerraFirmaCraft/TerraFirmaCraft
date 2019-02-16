@@ -22,12 +22,12 @@ import net.dries007.tfc.api.types.Metal;
 @ParametersAreNonnullByDefault
 public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe>
 {
-    private final Metal.Tier tier;
+    private final Metal.Tier minTier;
     private final ItemStack input1;
     private final ItemStack input2;
     private final ItemStack output;
 
-    public WeldingRecipe(ResourceLocation name, ItemStack input1, ItemStack input2, ItemStack output, Metal.Tier tier)
+    public WeldingRecipe(ResourceLocation name, ItemStack input1, ItemStack input2, ItemStack output, Metal.Tier minTier)
     {
         this.input1 = input1;
         this.input2 = input2;
@@ -35,7 +35,7 @@ public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe>
         if (input1.isEmpty() || input2.isEmpty() || output.isEmpty())
             throw new IllegalArgumentException("Input and output are not allowed to be empty");
 
-        this.tier = tier;
+        this.minTier = minTier;
 
         setRegistryName(name);
     }
@@ -43,7 +43,7 @@ public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe>
     @Nonnull
     public Metal.Tier getTier()
     {
-        return tier;
+        return minTier;
     }
 
     @Nonnull

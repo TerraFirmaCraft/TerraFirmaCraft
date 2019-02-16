@@ -5,8 +5,6 @@
 
 package net.dries007.tfc.util;
 
-import java.util.EnumSet;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -34,11 +32,23 @@ public interface IFireable extends IPlaceableItem
         return null;
     }
 
-    default EnumSet<Metal.Tier> getFireableTiers()
+    /**
+     * Get the minimum required tier of the device for firing
+     * Pit Kiln placement requires this to be at most Tier I
+     *
+     * @return a tier
+     */
+    default Metal.Tier getTier()
     {
-        return EnumSet.of(Metal.Tier.TIER_I, Metal.Tier.TIER_II);
+        return Metal.Tier.TIER_I;
     }
 
+    /**
+     * Gets the result of the item after being fired
+     * @param stack The item in question
+     * @param tier The tier of the firing device (Pit Kiln is {@link Metal.Tier#TIER_I})
+     * @return a new item stack
+     */
     ItemStack getFiringResult(ItemStack stack, Metal.Tier tier);
 
     @Override
@@ -47,8 +57,7 @@ public interface IFireable extends IPlaceableItem
         IFireable fireable = fromItem(stack.getItem());
         if (fireable != null && player.isSneaking() && facing == EnumFacing.UP)
         {
-
-            if (fireable.getFireableTiers().contains(Metal.Tier.TIER_I))
+            if (fireable.getTier().isAtMost(Metal.Tier.TIER_I))
             {
                 if (world.getBlockState(pos).getBlock() != BlocksTFC.PIT_KILN)
                 {

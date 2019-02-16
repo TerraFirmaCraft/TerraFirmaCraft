@@ -103,7 +103,6 @@ public class TEBellows extends TileEntity
 
     public boolean onRightClick()
     {
-        TerraFirmaCraft.getLog().info("On right click! {} {}", world.getTotalWorldTime(), lastPushed);
         long time = world.getTotalWorldTime() - lastPushed;
         if (time < 20)
             return true;

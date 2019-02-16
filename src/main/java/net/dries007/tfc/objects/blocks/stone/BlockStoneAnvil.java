@@ -18,11 +18,13 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -34,14 +36,16 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
+import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.util.Helpers;
+
+import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
 
 @ParametersAreNonnullByDefault
 public class BlockStoneAnvil extends Block implements ITileEntityProvider, IRockObject
@@ -95,22 +99,62 @@ public class BlockStoneAnvil extends Block implements ITileEntityProvider, IRock
         {
             return false;
         }
-        ItemStack stack = playerIn.getHeldItem(hand);
-        for (int i = 0; i < 4; i++)
+        ItemStack heldItem = playerIn.getHeldItem(hand);
+        // First check for a possible recipe action (welding)
+        if (te.isItemValid(SLOT_HAMMER, heldItem))
         {
-            if (te.isItemValid(i, stack) && cap.getStackInSlot(i).isEmpty())
+            if (te.attemptWelding(playerIn))
             {
-                if (!worldIn.isRemote)
-                {
-                    ItemStack result = cap.insertItem(i, stack, false);
-                    playerIn.setHeldItem(hand, result);
-                    TerraFirmaCraft.getLog().debug("Inserted {} into slot {}", stack.getDisplayName(), i);
-                }
+                // Valid welding occurred.
+                worldIn.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.PLAYERS, 1.0f, 1.0f);
                 return true;
             }
         }
-        if (!playerIn.isSneaking())
+        if (playerIn.isSneaking())
         {
+            // Extract requires an empty hand
+            if (heldItem.isEmpty())
+            {
+                // Only check the input slots
+                for (int i = 0; i < 2; i++)
+                {
+                    ItemStack stack = cap.getStackInSlot(i);
+                    if (!stack.isEmpty())
+                    {
+                        // Give the item to player in the main hand
+                        ItemStack result = cap.extractItem(i, 1, false);
+                        playerIn.setHeldItem(hand, result);
+
+                    }
+                }
+            }
+        }
+        else
+        {
+            // Not sneaking = insert items
+            ItemStack stack = playerIn.getHeldItem(hand);
+            if (!stack.isEmpty())
+            {
+                for (int i = 0; i <= 4; i++)
+                {
+                    // Check the input slots and flux. Do NOT check the hammer slot
+                    if (i == SLOT_HAMMER) continue;
+                    // Try to insert an item
+                    // Do not insert hammers into the input slots
+                    if (te.isItemValid(i, stack) && cap.getStackInSlot(i).isEmpty() && !te.isItemValid(SLOT_HAMMER, stack))
+                    {
+                        if (!worldIn.isRemote)
+                        {
+                            ItemStack result = cap.insertItem(i, stack, false);
+                            playerIn.setHeldItem(hand, result);
+                            TerraFirmaCraft.getLog().info("Inserted {} into slot {}", stack.getDisplayName(), i);
+                        }
+                        return true;
+                    }
+                }
+            }
+
+            // No insertion happened, so try and open GUI
             if (!worldIn.isRemote)
             {
                 TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.ANVIL);
@@ -141,11 +185,13 @@ public class BlockStoneAnvil extends Block implements ITileEntityProvider, IRock
         return rock.getRockCategory();
     }
 
-    @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
-        return new TEAnvilTFC(Metal.Tier.TIER_I, true);
+        if (!worldIn.isRemote && te instanceof TEInventory)
+        {
+            ((TEInventory) te).onBreakBlock(worldIn, pos);
+        }
     }
 
     @Override
@@ -226,5 +272,12 @@ public class BlockStoneAnvil extends Block implements ITileEntityProvider, IRock
     public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
         return side == EnumFacing.DOWN;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta)
+    {
+        return new TEAnvilTFC();
     }
 }

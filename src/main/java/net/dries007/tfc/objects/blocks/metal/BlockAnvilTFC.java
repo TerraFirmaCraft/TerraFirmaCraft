@@ -52,8 +52,8 @@ public class BlockAnvilTFC extends Block implements ITileEntityProvider
 {
     public static final PropertyDirection AXIS = PropertyDirection.create("axis", EnumFacing.Plane.HORIZONTAL);
     private static final Map<Metal, BlockAnvilTFC> MAP = new HashMap<>();
-    private static final AxisAlignedBB AABB_Z = new AxisAlignedBB(0.1875, 0, 0, 0.8125, 0.625, 1);
-    private static final AxisAlignedBB AABB_X = new AxisAlignedBB(0, 0, 0.1875, 1, 0.625, 0.8125);
+    private static final AxisAlignedBB AABB_Z = new AxisAlignedBB(0.1875, 0, 0, 0.8125, 0.6875, 1);
+    private static final AxisAlignedBB AABB_X = new AxisAlignedBB(0, 0, 0.1875, 1, 0.6875, 0.8125);
 
     public static BlockAnvilTFC get(Metal metal)
     {
@@ -65,7 +65,7 @@ public class BlockAnvilTFC extends Block implements ITileEntityProvider
         return new ItemStack(MAP.get(metal), amount);
     }
 
-    public final Metal metal;
+    private final Metal metal;
 
     public BlockAnvilTFC(Metal metal)
     {
@@ -105,7 +105,7 @@ public class BlockAnvilTFC extends Block implements ITileEntityProvider
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return state.getValue(AXIS).getAxis() == EnumFacing.Axis.Z ? AABB_Z : AABB_X;
+        return state.getValue(AXIS).getAxis() == EnumFacing.Axis.X ? AABB_Z : AABB_X;
     }
 
     @SideOnly(Side.CLIENT)
@@ -130,24 +130,6 @@ public class BlockAnvilTFC extends Block implements ITileEntityProvider
     }
 
     @Override
-    public BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, AXIS);
-    }
-
-    @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return false;
-    }
-
-    @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        return new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL));
-    }
-
-    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         TEAnvilTFC te = Helpers.getTE(worldIn, pos, TEAnvilTFC.class);
@@ -161,16 +143,6 @@ public class BlockAnvilTFC extends Block implements ITileEntityProvider
             return false;
         }
         ItemStack heldItem = playerIn.getHeldItem(hand);
-        // First check for a possible recipe action (welding)
-        if (te.isItemValid(SLOT_HAMMER, heldItem))
-        {
-            if (te.attemptWelding())
-            {
-                // Valid welding occurred.
-                worldIn.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                return true;
-            }
-        }
         if (playerIn.isSneaking())
         {
             // Extract requires an empty hand
@@ -189,25 +161,36 @@ public class BlockAnvilTFC extends Block implements ITileEntityProvider
                     }
                 }
             }
+            // Welding requires a hammer
+            else if (te.isItemValid(SLOT_HAMMER, heldItem))
+            {
+                if (te.attemptWelding(playerIn))
+                {
+                    // Valid welding occurred.
+                    worldIn.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    return true;
+                }
+            }
         }
         else
         {
             // Not sneaking = insert items
             ItemStack stack = playerIn.getHeldItem(hand);
-            for (int i = 0; i <= 4; i++)
+            if (!stack.isEmpty())
             {
-                // Check the input slots and flux. Do NOT check the hammer slot
-                if (i == SLOT_HAMMER) continue;
-                // Try to insert an item
-                if (te.isItemValid(i, stack) && cap.getStackInSlot(i).isEmpty())
+                for (int i = 0; i <= 4; i++)
                 {
-                    if (!worldIn.isRemote)
+                    // Check the input slots and flux. Do NOT check the hammer slot
+                    if (i == SLOT_HAMMER) continue;
+                    // Try to insert an item
+                    // Do not insert hammers into the input slots
+                    if (te.isItemValid(i, stack) && cap.getStackInSlot(i).isEmpty() && !te.isItemValid(SLOT_HAMMER, stack))
                     {
                         ItemStack result = cap.insertItem(i, stack, false);
                         playerIn.setHeldItem(hand, result);
                         TerraFirmaCraft.getLog().info("Inserted {} into slot {}", stack.getDisplayName(), i);
+                        return true;
                     }
-                    return true;
                 }
             }
 
@@ -221,11 +204,29 @@ public class BlockAnvilTFC extends Block implements ITileEntityProvider
         return false;
     }
 
+    @Override
+    public BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, AXIS);
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        return new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL));
+    }
+
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
-        return new TEAnvilTFC(metal.getTier(), false);
+        return new TEAnvilTFC();
     }
 
     @Override
@@ -235,5 +236,10 @@ public class BlockAnvilTFC extends Block implements ITileEntityProvider
         {
             ((TEInventory) te).onBreakBlock(worldIn, pos);
         }
+    }
+
+    public Metal getMetal()
+    {
+        return metal;
     }
 }

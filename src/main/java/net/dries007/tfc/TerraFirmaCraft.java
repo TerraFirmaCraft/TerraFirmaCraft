@@ -24,7 +24,10 @@ import net.dries007.tfc.client.TFCKeybindings;
 import net.dries007.tfc.cmd.HeatCommand;
 import net.dries007.tfc.cmd.StripWorldCommand;
 import net.dries007.tfc.cmd.TreeGenCommand;
-import net.dries007.tfc.network.*;
+import net.dries007.tfc.network.PacketAnvilUpdate;
+import net.dries007.tfc.network.PacketCapabilityContainerUpdate;
+import net.dries007.tfc.network.PacketChunkData;
+import net.dries007.tfc.network.PacketGuiButton;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
@@ -117,7 +120,6 @@ public final class TerraFirmaCraft
         network = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
         int id = 0;
         // Received on server
-        network.registerMessage(new PacketKnappingUpdate.Handler(), PacketKnappingUpdate.class, ++id, Side.SERVER);
         network.registerMessage(new PacketGuiButton.Handler(), PacketGuiButton.class, ++id, Side.SERVER);
         // Received on client
         network.registerMessage(new PacketAnvilUpdate.Handler(), PacketAnvilUpdate.class, ++id, Side.CLIENT);

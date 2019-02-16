@@ -19,7 +19,11 @@ public final class CapabilityItemHeat
     public static final Capability<IItemHeat> ITEM_HEAT_CAPABILITY = Helpers.getNull();
 
     public static final float MIN_TEMPERATURE = 0f;
-    public static final float MAX_TEMPERATURE = 1600f;
+    /**
+     * For most practical purposes this is the max temperature than an item should reach.
+     * i.e. all metals should melt either before this, or never.
+     */
+    public static final float MAX_TEMPERATURE = 1800f;
 
     public static void preInit()
     {

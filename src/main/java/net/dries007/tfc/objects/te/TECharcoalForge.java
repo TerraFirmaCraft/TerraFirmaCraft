@@ -29,6 +29,7 @@ import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.FuelManager;
 import net.dries007.tfc.util.ITileFields;
 
+import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
 import static net.dries007.tfc.objects.blocks.BlockCharcoalForge.LIT;
 
 @ParametersAreNonnullByDefault
@@ -65,6 +66,10 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     public void onAirIntake(float amount)
     {
         airTicks += (int) (200 * amount);
+        if (airTicks > 600)
+        {
+            airTicks = 600;
+        }
     }
 
     @Override
@@ -120,12 +125,13 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
         if (temperature > 0 || burnTemperature > 0)
         {
             // Update temperature
-            if (temperature < burnTemperature)
+            float targetTemperature = Math.min(MAX_TEMPERATURE, burnTemperature + airTicks);
+            if (temperature < targetTemperature)
             {
                 // Modifier for heating = 2x for bellows
                 temperature += (airTicks > 0 ? 2 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
             }
-            else if (temperature > burnTemperature)
+            else if (temperature > targetTemperature)
             {
                 // Modifier for cooling = 0.5x for bellows
                 temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
@@ -148,7 +154,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
 
                     // This will melt + consume the input stack
                     // Output stacks are assumed to not melt (see the case of ceramic molds in the output)
-                    if (cap.isMolten() && i >= SLOT_EXTRA_MIN)
+                    if (cap.isMolten() && i <= SLOT_INPUT_MAX)
                     {
                         handleInputMelting(stack, i);
                     }
@@ -208,6 +214,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     {
         temperature = nbt.getFloat("temperature");
         burnTicks = nbt.getInteger("burnTicks");
+        airTicks = nbt.getInteger("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
         super.readFromNBT(nbt);
     }
@@ -218,6 +225,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     {
         nbt.setFloat("temperature", temperature);
         nbt.setInteger("burnTicks", burnTicks);
+        nbt.setInteger("airTicks", airTicks);
         nbt.setFloat("burnTemperature", burnTemperature);
         return super.writeToNBT(nbt);
     }
@@ -252,7 +260,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
             if (fluidStack != null)
             {
                 // Loop through all input slots
-                for (int i = SLOT_EXTRA_MAX; i <= SLOT_EXTRA_MAX; i++)
+                for (int i = SLOT_EXTRA_MIN; i <= SLOT_EXTRA_MAX; i++)
                 {
                     // While the fluid is still waiting
                     if (fluidStack.amount <= 0)

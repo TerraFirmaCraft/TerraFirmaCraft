@@ -28,6 +28,7 @@ import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.FuelManager;
 import net.dries007.tfc.util.ITileFields;
 
+import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
 import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
 
 @ParametersAreNonnullByDefault
@@ -44,9 +45,9 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
 
     private boolean requiresSlotUpdate = false;
     private float temperature; // Current Temperature
-    private float burnTicks; // Ticks remaining on the current item of fuel
+    private int burnTicks; // Ticks remaining on the current item of fuel
+    private int airTicks; // Ticks of bellows provided air remaining
     private float burnTemperature; // Temperature provided from the current item of fuel
-    private int pickupTimer;
 
     public TEFirePit()
     {
@@ -55,7 +56,6 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         temperature = 0;
         burnTemperature = 0;
         burnTicks = 0;
-        pickupTimer = 0;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
             // Update fuel
             if (burnTicks > 0)
             {
-                burnTicks--;
+                burnTicks -= airTicks > 0 ? 2 : 1;
             }
             if (burnTicks == 0)
             {
@@ -90,17 +90,28 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
             }
         }
 
+        // Update air ticks
+        if (airTicks > 0)
+        {
+            airTicks--;
+        }
+        else
+        {
+            airTicks = 0;
+        }
+
         // Always update temperature / cooking, until the fire pit is not hot anymore
         if (temperature > 0 || burnTemperature > 0)
         {
             // Update temperature
-            if (temperature < burnTemperature)
+            float targetTemp = Math.min(MAX_TEMPERATURE, burnTemperature + airTicks);
+            if (temperature < targetTemp)
             {
-                temperature += ConfigTFC.GENERAL.temperatureModifierHeating;
+                temperature += (airTicks > 0 ? 2 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
             }
-            else if (temperature > burnTemperature)
+            else if (temperature > targetTemp)
             {
-                temperature -= ConfigTFC.GENERAL.temperatureModifierHeating;
+                temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
             }
 
             // Update items in slots
@@ -168,7 +179,8 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
     public void readFromNBT(NBTTagCompound nbt)
     {
         temperature = nbt.getFloat("temperature");
-        burnTicks = nbt.getFloat("burnTicks");
+        burnTicks = nbt.getInteger("burnTicks");
+        airTicks = nbt.getInteger("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
         super.readFromNBT(nbt);
     }
@@ -178,7 +190,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         nbt.setFloat("temperature", temperature);
-        nbt.setFloat("burnTicks", burnTicks);
+        nbt.setInteger("burnTicks", burnTicks);
         nbt.setFloat("burnTemperature", burnTemperature);
         return super.writeToNBT(nbt);
     }
@@ -304,7 +316,11 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
 
     public void onAirIntake(float amount)
     {
-        // todo: air ticks here. See charcoal forge
+        airTicks += (int) (200 * amount);
+        if (airTicks > 600)
+        {
+            airTicks = 600;
+        }
     }
 
     @Override

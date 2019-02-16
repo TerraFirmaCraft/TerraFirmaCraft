@@ -35,6 +35,8 @@ import static net.dries007.tfc.objects.te.TEAnvilTFC.*;
 
 public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC> implements IButtonHandler
 {
+    private static final int[] SLOT_SHIFT_ORDER = {SLOT_FLUX, SLOT_HAMMER, SLOT_INPUT_1, SLOT_INPUT_2};
+
     public ContainerAnvilTFC(InventoryPlayer playerInv, TEAnvilTFC te)
     {
         super(playerInv, te, true, 25);
@@ -75,8 +77,14 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC> implements IButto
             addSlotToContainer(new SlotTEInput(inventory, SLOT_INPUT_1, 31, 68, tile));
             addSlotToContainer(new SlotTEInput(inventory, SLOT_INPUT_2, 13, 68, tile));
             addSlotToContainer(new SlotTEInput(inventory, SLOT_HAMMER, 129, 68, tile));
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_FLUX, 174, 68, tile));
+            addSlotToContainer(new SlotTEInput(inventory, SLOT_FLUX, 147, 68, tile));
         }
+    }
+
+    @Override
+    protected int[] getSlotShiftOrder(int containerSlots)
+    {
+        return SLOT_SHIFT_ORDER;
     }
 
     private boolean attemptWork()
@@ -101,9 +109,9 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC> implements IButto
         {
             return false;
         }
-        if (tile.getTier().ordinal() > recipe.getTier().ordinal())
+        if (!tile.getTier().isAtLeast(recipe.getTier()))
         {
-            TerraFirmaCraft.getLog().debug("Anvil Tier: {} + Recipe Tier: {}", tile.getTier(), recipe.getTier());
+            TerraFirmaCraft.getLog().info("Anvil Tier: {} + Recipe Tier: {}", tile.getTier(), recipe.getTier());
             player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.anvil_tier_too_low"));
             return false;
         }

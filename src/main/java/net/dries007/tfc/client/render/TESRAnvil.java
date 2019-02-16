@@ -16,6 +16,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 
 import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
+import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_INPUT_1;
 
 public class TESRAnvil extends TileEntitySpecialRenderer<TEAnvilTFC>
 {
@@ -30,19 +31,29 @@ public class TESRAnvil extends TileEntitySpecialRenderer<TEAnvilTFC>
             int rotation = te.getBlockMetadata();
             float yOffset = te.isStone() ? 0.875f : 0.6875f;
 
-            // Current Item
-            ItemStack stack = cap.getStackInSlot(SLOT_HAMMER);
-            if (!stack.isEmpty())
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(x + 0.5, y + 0.003125D + yOffset, z + 0.5);
+            GlStateManager.scale(0.3f, 0.3f, 0.3f);
+            GlStateManager.rotate(90f, 1f, 0f, 0f);
+            GlStateManager.rotate(90f * rotation, 0f, 0f, 1f);
+            GlStateManager.translate(1.1f, 0, 0);
+
+            // Hammer Item
+            ItemStack hammer = cap.getStackInSlot(SLOT_HAMMER);
+            if (!hammer.isEmpty())
             {
-                GlStateManager.pushMatrix();
-                GlStateManager.translate(x + 0.5, y + 0.003125D + yOffset, z + 0.5);
-                GlStateManager.scale(0.35f, 0.35f, 0.35f);
-                GlStateManager.rotate(90f, 1f, 0f, 0f);
-                GlStateManager.rotate(90f * (float) rotation, 0f, 0f, 1f);
-                GlStateManager.translate(-0.7, 0, 0);
-                Minecraft.getMinecraft().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
-                GlStateManager.popMatrix();
+                Minecraft.getMinecraft().getRenderItem().renderItem(hammer, ItemCameraTransforms.TransformType.FIXED);
             }
+
+            GlStateManager.translate(-1.2f, 0, 0);
+
+            ItemStack input1 = cap.getStackInSlot(SLOT_INPUT_1);
+            if (!input1.isEmpty())
+            {
+                Minecraft.getMinecraft().getRenderItem().renderItem(input1, ItemCameraTransforms.TransformType.FIXED);
+            }
+
+            GlStateManager.popMatrix();
         }
     }
 

@@ -503,10 +503,10 @@ for key in METAL_TYPES:
             ('all', 'particle'): 'tfc:blocks/metal/%s' % key
         }, variants={
             'axis': {
-                'north': {},
-                'east': {'y': 90},
-                'south': {'y': 180},
-                'west': {'y': 270}
+                'north': {'y': 180},
+                'east': {'y': 270},
+                'south': {},
+                'west': {'y': 90}
             }
         })
 

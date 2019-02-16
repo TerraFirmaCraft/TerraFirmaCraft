@@ -16,7 +16,7 @@ import net.dries007.tfc.objects.te.TEBellows;
 
 /**
  * Blocks(not TEs) must implement this interface in order to work with bellows
- * and must provide an offset for them to check by adding to @link TEBellows.offsets
+ * and must provide an offset for them to check by calling {@link TEBellows#addBellowsOffset(Vec3i)}
  */
 public interface IBellowsHandler
 {

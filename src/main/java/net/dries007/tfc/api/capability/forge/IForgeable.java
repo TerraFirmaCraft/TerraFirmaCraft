@@ -5,15 +5,24 @@
 
 package net.dries007.tfc.api.capability.forge;
 
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.capability.heat.Heat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
  * This is an advanced IItemHeat capability that is used by items that can be forged
@@ -111,5 +120,35 @@ public interface IForgeable extends IItemHeat
     default boolean isWeldable()
     {
         return getTemperature() > getWeldTemp();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    default void addHeatInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
+    {
+        float temperature = getTemperature();
+        String tooltip = Heat.getTooltip(temperature);
+        if (tooltip != null)
+        {
+            tooltip += TextFormatting.WHITE;
+            if (temperature > getMeltTemp())
+            {
+                tooltip += " - " + I18n.format(MOD_ID + ".tooltip.liquid");
+            }
+            else if (temperature > getWeldTemp())
+            {
+                tooltip += " - " + I18n.format(MOD_ID + ".tooltip.weldable");
+            }
+            else if (temperature > getWorkTemp())
+            {
+                tooltip += " - " + I18n.format(MOD_ID + ".tooltip.workable");
+            }
+
+            if (temperature > 0.9 * getMeltTemp())
+            {
+                tooltip += " (" + I18n.format(MOD_ID + ".tooltip.danger") + ")";
+            }
+            text.add(tooltip);
+        }
     }
 }

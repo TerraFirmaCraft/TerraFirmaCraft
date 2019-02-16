@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.container;
 
+import java.util.stream.IntStream;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -61,6 +62,8 @@ public abstract class ContainerTE<T extends TEInventory> extends Container
     @Nonnull
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
+        // Instead of overriding this, consider overriding transferIntoContainer if that is the only necessary change
+
         // Slot that was clicked
         Slot slot = inventorySlots.get(index);
         if (slot == null || !slot.getHasStack())
@@ -82,9 +85,12 @@ public abstract class ContainerTE<T extends TEInventory> extends Container
         // Transfer into the container
         else
         {
-            if (!this.mergeItemStack(stack, 0, containerSlots, false))
+            for (int i : getSlotShiftOrder(containerSlots))
             {
-                return ItemStack.EMPTY;
+                if (inventorySlots.get(i).isItemValid(stack))
+                {
+                    this.mergeItemStack(stack, i, i + 1, false);
+                }
             }
         }
 
@@ -209,6 +215,14 @@ public abstract class ContainerTE<T extends TEInventory> extends Container
         {
             addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142 + yOffset));
         }
+    }
+
+    /**
+     * Helper method for overriding just container insertion priority
+     */
+    protected int[] getSlotShiftOrder(int containerSlots)
+    {
+        return IntStream.range(0, containerSlots).toArray();
     }
 
 }
