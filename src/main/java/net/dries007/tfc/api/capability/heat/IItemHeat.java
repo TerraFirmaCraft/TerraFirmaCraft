@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface IItemHeat extends INBTSerializable<NBTTagCompound>
 {
     /**
-     * Gets the current temperature. Should call CapabilityItemHeat.adjustTemp() internally
+     * Gets the current temperature. Should call {@link CapabilityItemHeat#adjustTemp(float, float, long)} internally
      *
      * @return the temperature. Between 0 - 1600
      */
@@ -36,19 +36,19 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
     float getHeatCapacity();
 
     /**
+     * Sets the temperature. Used for anything that modifies the temperature.
+     *
+     * @param temperature the temperature to set.
+     */
+    void setTemperature(float temperature);
+
+    /**
      * Gets the melting point of the item.
      * Depending on the item, this may not mean anything.
      *
-     * @return a temperature between 0 - 1600 that is the melting point
+     * @return a temperature at which this item should melt at
      */
     float getMeltTemp();
-
-    /**
-     * Sets the temperature. Used for anything that modifies the temperature.
-     *
-     * @param temperature the temperature to set. Between 0 - 1600
-     */
-    void setTemperature(float temperature);
 
     /**
      * If the object can melt / transform, return if it is transformed

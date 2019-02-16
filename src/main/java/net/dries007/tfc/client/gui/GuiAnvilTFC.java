@@ -21,6 +21,7 @@ import net.dries007.tfc.client.button.GuiButtonAnvilStep;
 import net.dries007.tfc.client.button.IButtonTooltip;
 import net.dries007.tfc.network.PacketGuiButton;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.forge.ForgeRule;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
@@ -68,6 +69,23 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
                 {
                     drawHoveringText(I18n.format(tooltip.getTooltip()), mouseX, mouseY);
                 }
+            }
+        }
+        // Rule Tooltips
+        AnvilRecipe recipe = tile.getRecipe();
+        if (recipe != null)
+        {
+            int x = guiLeft + 61, y = guiTop + 7;
+            for (int i = 0; i < recipe.getRules().length; i++)
+            {
+                ForgeRule rule = recipe.getRules()[i];
+                if (rule != null && mouseX >= x && mouseY >= y && mouseX < x + 18 && mouseY < y + 22)
+                {
+                    // Hovering over rule area
+                    drawHoveringText(Helpers.getEnumName(rule), mouseX, mouseY);
+                    break;
+                }
+                x += 19;
             }
         }
         super.renderHoveredToolTip(mouseX, mouseY);
@@ -122,7 +140,8 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
             ForgeStep step = steps.getStep(i);
             if (step != null)
             {
-                int xOffset = i * 19;
+                // Reverses the placement of the steps to line up better with the rules
+                int xOffset = (2 - i) * 19;
                 drawScaledCustomSizeModalRect(guiLeft + 64 + xOffset, guiTop + 31, step.getU(), step.getV(), 32, 32, 10, 10, 256, 256);
             }
         }

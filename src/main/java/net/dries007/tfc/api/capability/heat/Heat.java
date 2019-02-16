@@ -12,6 +12,8 @@ import net.minecraft.util.text.TextFormatting;
 
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
+
 public enum Heat
 {
     WARMING(1f, 80f, TextFormatting.GRAY),
@@ -24,7 +26,7 @@ public enum Heat
     YELLOW(1100f, 1300f, TextFormatting.YELLOW),
     YELLOW_WHITE(1300f, 1400f, TextFormatting.YELLOW),
     WHITE(1400f, 1500f, TextFormatting.WHITE),
-    BRILLIANT_WHITE(1500f, 1600f, TextFormatting.WHITE);
+    BRILLIANT_WHITE(1500f, MAX_TEMPERATURE, TextFormatting.WHITE);
 
     private static final Heat[] VALUES = values();
 

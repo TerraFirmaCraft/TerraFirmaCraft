@@ -9,9 +9,15 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.StringUtils;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
@@ -23,10 +29,15 @@ import net.dries007.tfc.api.recipes.WeldingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.network.PacketAnvilUpdate;
+import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.ITileFields;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @ParametersAreNonnullByDefault
 public class TEAnvilTFC extends TEInventory implements ITileFields
@@ -42,12 +53,6 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
     public static final int FIELD_TARGET = 1;
 
     /*
-     Properties of the anvil
-     */
-    private final Metal.Tier tier;
-    private final boolean isStone;
-
-    /*
      Instance variables
      */
     private AnvilRecipe recipe;
@@ -55,30 +60,30 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
     private int workingProgress = 0; // Min = 0, Max = 145
     private int workingTarget = 0;
 
-    public TEAnvilTFC()
-    {
-        this(Metal.Tier.TIER_I, false);
-    }
 
-    public TEAnvilTFC(Metal.Tier tier, boolean isStone)
+    public TEAnvilTFC()
     {
         super(4);
 
         steps = new ForgeSteps();
         recipe = null;
-        this.tier = tier;
-        this.isStone = isStone;
     }
 
     public boolean isStone()
     {
-        return isStone;
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock() instanceof BlockStoneAnvil;
     }
 
     @Nonnull
     public Metal.Tier getTier()
     {
-        return tier;
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof BlockAnvilTFC)
+        {
+            return ((BlockAnvilTFC) state.getBlock()).getMetal().getTier();
+        }
+        return Metal.Tier.TIER_0;
     }
 
     @Nullable
@@ -184,6 +189,39 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
         }
     }
 
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        String recipe = nbt.getString("recipe");
+        if (StringUtils.isNullOrEmpty(recipe))
+        {
+            this.recipe = null;
+        }
+        else
+        {
+            this.recipe = TFCRegistries.ANVIL.getValue(new ResourceLocation(recipe));
+        }
+        this.steps.deserializeNBT(nbt.getCompoundTag("steps"));
+        this.workingProgress = nbt.getInteger("work");
+        this.workingTarget = nbt.getInteger("target");
+        super.readFromNBT(nbt);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Nonnull
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        if (recipe != null)
+        {
+            nbt.setString("recipe", this.recipe.getRegistryName().toString());
+        }
+        nbt.setTag("steps", this.steps.serializeNBT());
+        nbt.setInteger("work", this.workingProgress);
+        nbt.setInteger("target", this.workingTarget);
+        return super.writeToNBT(nbt);
+    }
+
     /**
      * Only occurs on server side
      */
@@ -270,13 +308,15 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
     /**
      * Attempts to weld the two items in the input slots.
      *
+     * @param player The player that clicked the anvil
      * @return true if the weld was successful
      */
-    public boolean attemptWelding()
+    public boolean attemptWelding(EntityPlayer player)
     {
         ItemStack input1 = inventory.getStackInSlot(SLOT_INPUT_1), input2 = inventory.getStackInSlot(SLOT_INPUT_2);
         if (input1.isEmpty() || input2.isEmpty())
         {
+            // No message as this will happen whenever the player clicks the anvil with a hammer
             return false;
         }
 
@@ -284,12 +324,21 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
         WeldingRecipe recipe = TFCRegistries.WELDING.getValuesCollection().stream().filter(x -> x.matches(input1, input2)).findFirst().orElse(null);
         if (recipe != null)
         {
-            // Execute recipe!
+            ItemStack fluxStack = inventory.getStackInSlot(SLOT_FLUX);
+            if (fluxStack.isEmpty())
+            {
+                // No flux
+                player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.anvil_no_flux"));
+                return false;
+            }
+
+            // Heat
             IForgeable heat1 = input1.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
             IForgeable heat2 = input2.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
             if (heat1 == null || heat2 == null || !heat1.isWeldable() || !heat2.isWeldable())
             {
                 // No heat capability or not hot enough
+                player.sendMessage(new TextComponentTranslation("tfc.tooltip.anvil_too_cold"));
                 return false;
             }
             ItemStack result = recipe.getOutput();
@@ -304,6 +353,7 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
             // Set stacks in slots
             inventory.setStackInSlot(SLOT_INPUT_1, result);
             inventory.setStackInSlot(SLOT_INPUT_2, ItemStack.EMPTY);
+            inventory.setStackInSlot(SLOT_FLUX, Helpers.consumeItem(fluxStack, 1));
 
             return true;
         }

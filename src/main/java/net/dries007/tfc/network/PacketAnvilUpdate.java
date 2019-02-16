@@ -24,6 +24,11 @@ import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
+/**
+ * Used to send an update from an {@link TEAnvilTFC} whenever a step is added or the recipe changes serverside
+ *
+ * @author AlcatrazEscapee
+ */
 public class PacketAnvilUpdate implements IMessage
 {
     private BlockPos pos;

@@ -168,7 +168,8 @@ public final class DefaultRecipes
             ItemStack output = new ItemStack(ItemMetal.get(metal, outputType));
             if (!input1.isEmpty() && !input2.isEmpty() && !output.isEmpty())
             {
-                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), input1, input2, output, metal.getTier()));
+                // Note: Welding recipes require one less than the tier of the metal
+                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), input1, input2, output, metal.getTier().previous()));
             }
         }
     }
