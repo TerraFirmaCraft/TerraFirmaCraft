@@ -274,6 +274,25 @@ FLUIDS = {
     'milk_curdled': 'milk_curdled',
     'milk_vinegar': 'milk_vinegar',
 }
+FLOWER_TYPES = [
+    'dandelion',
+    'nasturtium',
+    'meads_milkweed',
+    'tropical_milkweed',
+    'butterfly_milkweed',
+    'calendula',
+    'rose',
+    'blue_orchid',
+    'allium',
+    'houstonia',
+    'tulip_red',
+    'tulip_orange',
+    'tulip_white',
+    'tulip_pink',
+    'oxeye_daisy',
+    'paeonia',
+    'goldenrod',
+]
 
 # Special 'hardcoded' cases
 DOOR_VARIANTS = {
@@ -770,6 +789,17 @@ for wood_type in WOOD_TYPES:
         'top': 'tfc:blocks/wood/workbench_top',
         ('north', 'south'): 'tfc:blocks/wood/workbench_front',
         ('east', 'west'): 'tfc:blocks/wood/workbench_side',
+    })
+
+# FLOWERS
+for flower_type in FLOWER_TYPES:
+    blockstate(('plants', flower_type), 'cross', textures={
+        ('cross', 'layer0'): 'tfc:blocks/plants/%s' % flower_type
+    }, variants={
+        'inventory': {
+            'model': 'builtin/generated',
+            'transform': 'forge:default-item'
+        }
     })
 
 #   _____ _
