@@ -28,6 +28,8 @@ public class TFCRegistries
     public static final IForgeRegistry<AlloyRecipe> ALLOYS = GameRegistry.findRegistry(AlloyRecipe.class);
     public static final IForgeRegistry<KnappingRecipe> KNAPPING = GameRegistry.findRegistry(KnappingRecipe.class);
 
+    public static final IForgeRegistry<Flower> FLOWERS = GameRegistry.findRegistry(Flower.class);
+
     static
     {
         // Make sure all public static final fields have values, should stop people from prematurely loading this class.
