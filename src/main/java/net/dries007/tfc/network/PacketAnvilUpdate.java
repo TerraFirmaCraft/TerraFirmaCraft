@@ -34,6 +34,7 @@ public class PacketAnvilUpdate implements IMessage
     private BlockPos pos;
     private ResourceLocation recipe;
     private ForgeSteps steps;
+    private int workProgress, workTarget;
 
     // no args constructor required for forge
     @SuppressWarnings("unused")
@@ -45,11 +46,15 @@ public class PacketAnvilUpdate implements IMessage
         AnvilRecipe recipe = tile.getRecipe();
         this.recipe = recipe != null ? recipe.getRegistryName() : null;
         this.steps = tile.getSteps();
+        this.workProgress = tile.getWorkingProgress();
+        this.workTarget = tile.getWorkingTarget();
     }
 
     @Override
     public void fromBytes(ByteBuf buffer)
     {
+        workProgress = buffer.readInt();
+        workTarget = buffer.readInt();
         pos = BlockPos.fromLong(buffer.readLong());
         steps = ForgeSteps.deserialize(buffer.readInt());
         if (buffer.readBoolean())
@@ -65,6 +70,8 @@ public class PacketAnvilUpdate implements IMessage
     @Override
     public void toBytes(ByteBuf buffer)
     {
+        buffer.writeInt(workProgress);
+        buffer.writeInt(workTarget);
         buffer.writeLong(pos.toLong());
         buffer.writeInt(steps.serialize());
         buffer.writeBoolean(recipe != null);
@@ -86,8 +93,7 @@ public class PacketAnvilUpdate implements IMessage
                 if (te != null)
                 {
                     AnvilRecipe recipe = message.recipe != null ? TFCRegistries.ANVIL.getValue(message.recipe) : null;
-                    te.setRecipe(recipe);
-                    te.setSteps(message.steps);
+                    te.onReceivePacket(recipe, message.steps, message.workProgress, message.workTarget);
                 }
             });
             return null;

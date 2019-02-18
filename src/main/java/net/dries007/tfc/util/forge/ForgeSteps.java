@@ -13,8 +13,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import net.dries007.tfc.TerraFirmaCraft;
-
 @ParametersAreNonnullByDefault
 public class ForgeSteps implements INBTSerializable<NBTTagCompound>
 {
@@ -24,7 +22,6 @@ public class ForgeSteps implements INBTSerializable<NBTTagCompound>
         steps.setStepInt(0, (serialized & 0xFF));
         steps.setStepInt(1, (serialized & 0xFFFF) >> 8);
         steps.setStepInt(2, (serialized & 0xFFFFFF) >> 16);
-        TerraFirmaCraft.getLog().info("Deserialized: {} - {} {} {}", steps);
         return steps;
     }
 
@@ -89,7 +86,6 @@ public class ForgeSteps implements INBTSerializable<NBTTagCompound>
 
     public int serialize()
     {
-        TerraFirmaCraft.getLog().info("Serializing: {}", steps);
         return (getStepInt(0)) | (getStepInt(1) << 8) | (getStepInt(2) << 16);
     }
 

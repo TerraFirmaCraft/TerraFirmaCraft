@@ -157,7 +157,7 @@ public class BlockAnvilTFC extends Block implements ITileEntityProvider
                         // Give the item to player in the main hand
                         ItemStack result = cap.extractItem(i, 1, false);
                         playerIn.setHeldItem(hand, result);
-
+                        return true;
                     }
                 }
             }
