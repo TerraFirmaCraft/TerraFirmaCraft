@@ -26,7 +26,6 @@ public final class DefaultMetals
     /*
      * Metals
      */
-    // Tier I
     public static final ResourceLocation BISMUTH = new ResourceLocation(MOD_ID, "bismuth");
     public static final ResourceLocation BISMUTH_BRONZE = new ResourceLocation(MOD_ID, "bismuth_bronze");
     public static final ResourceLocation BLACK_BRONZE = new ResourceLocation(MOD_ID, "black_bronze");
@@ -41,12 +40,9 @@ public final class DefaultMetals
     public static final ResourceLocation TIN = new ResourceLocation(MOD_ID, "tin");
     public static final ResourceLocation ZINC = new ResourceLocation(MOD_ID, "zinc");
     public static final ResourceLocation STERLING_SILVER = new ResourceLocation(MOD_ID, "sterling_silver");
-    // Tier III
     public static final ResourceLocation WROUGHT_IRON = new ResourceLocation(MOD_ID, "wrought_iron");
     public static final ResourceLocation PIG_IRON = new ResourceLocation(MOD_ID, "pig_iron");
-    // Tier IV
     public static final ResourceLocation STEEL = new ResourceLocation(MOD_ID, "steel");
-    // Tier V
     public static final ResourceLocation PLATINUM = new ResourceLocation(MOD_ID, "platinum");
     public static final ResourceLocation BLACK_STEEL = new ResourceLocation(MOD_ID, "black_steel");
     public static final ResourceLocation BLUE_STEEL = new ResourceLocation(MOD_ID, "blue_steel");
@@ -58,7 +54,6 @@ public final class DefaultMetals
     public static final ResourceLocation HIGH_CARBON_BLUE_STEEL = new ResourceLocation(MOD_ID, "high_carbon_blue_steel");
     public static final ResourceLocation HIGH_CARBON_RED_STEEL = new ResourceLocation(MOD_ID, "high_carbon_red_steel");
     public static final ResourceLocation HIGH_CARBON_BLACK_STEEL = new ResourceLocation(MOD_ID, "high_carbon_black_steel");
-    // Tier I, Special
     public static final ResourceLocation UNKNOWN = new ResourceLocation(MOD_ID, "unknown");
 
     /*
@@ -161,18 +156,18 @@ public final class DefaultMetals
             new Metal(ZINC, TIER_I, true, 0.21f, 420, 0xFFBBB9C4, null),
             new Metal(STERLING_SILVER, TIER_I, true, 0.35f, 900, 0xFFAC927B, null),
             new Metal(WROUGHT_IRON, TIER_III, true, 0.35f, 1535, 0xFF989897, ToolMaterialsTFC.IRON),
-            new Metal(PIG_IRON, TIER_IV, true, 0.35f, 1535, 0xFF6A595C, null),
+            new Metal(PIG_IRON, TIER_III, true, 0.35f, 1535, 0xFF6A595C, null),
             new Metal(STEEL, TIER_IV, true, 0.35f, 1540, 0xFF5F5F5F, ToolMaterialsTFC.STEEL),
             new Metal(PLATINUM, TIER_V, true, 0.35f, 1730, 0xFF9DADC0, null),
             new Metal(BLACK_STEEL, TIER_V, true, 0.35f, 1485, 0xFF111111, ToolMaterialsTFC.BLACK_STEEL),
             new Metal(BLUE_STEEL, TIER_VI, true, 0.35f, 1540, 0xFF2D5596, ToolMaterialsTFC.BLUE_STEEL),
             new Metal(RED_STEEL, TIER_VI, true, 0.35f, 1540, 0xFF700503, ToolMaterialsTFC.RED_STEEL),
             new Metal(WEAK_STEEL, TIER_V, false, 0.35f, 1540, 0xFF111111, null),
-            new Metal(WEAK_BLUE_STEEL, TIER_VI, false, 0.35f, 1540, 0xFF2D5596, null),
-            new Metal(WEAK_RED_STEEL, TIER_VI, false, 0.35f, 1540, 0xFF700503, null),
-            new Metal(HIGH_CARBON_STEEL, TIER_V, false, 0.35f, 1540, 0xFF5F5F5F, null),
-            new Metal(HIGH_CARBON_BLUE_STEEL, TIER_VI, false, 0.35f, 1540, 0xFF2D5596, null),
-            new Metal(HIGH_CARBON_RED_STEEL, TIER_VI, false, 0.35f, 1540, 0xFF700503, null),
+            new Metal(WEAK_BLUE_STEEL, TIER_V, false, 0.35f, 1540, 0xFF2D5596, null),
+            new Metal(WEAK_RED_STEEL, TIER_V, false, 0.35f, 1540, 0xFF700503, null),
+            new Metal(HIGH_CARBON_STEEL, TIER_IV, false, 0.35f, 1540, 0xFF5F5F5F, null),
+            new Metal(HIGH_CARBON_BLUE_STEEL, TIER_V, false, 0.35f, 1540, 0xFF2D5596, null),
+            new Metal(HIGH_CARBON_RED_STEEL, TIER_V, false, 0.35f, 1540, 0xFF700503, null),
             new Metal(HIGH_CARBON_BLACK_STEEL, TIER_V, false, 0.35f, 1540, 0xFF111111, null),
             new Metal(UNKNOWN, TIER_I, false, 0.5f, 1250, 0xFF2F2B27, null)
         );

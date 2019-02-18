@@ -148,7 +148,7 @@ public class BlockToolRack extends BlockContainer implements IItemSize
     @Override
     public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
     {
-        return super.canPlaceBlockAt(worldIn, pos) && Helpers.getASolidFacing(worldIn, pos, EnumFacing.HORIZONTALS, null) != null;
+        return super.canPlaceBlockAt(worldIn, pos) && Helpers.getASolidFacing(worldIn, pos, null, EnumFacing.HORIZONTALS) != null;
     }
 
     public int getSlotFromPos(IBlockState state, float x, float y, float z)
@@ -185,7 +185,7 @@ public class BlockToolRack extends BlockContainer implements IItemSize
     {
         if (facing.getAxis() == EnumFacing.Axis.Y)
             facing = placer.getHorizontalFacing().getOpposite();
-        return this.getDefaultState().withProperty(FACING, Helpers.getASolidFacing(worldIn, pos, EnumFacing.HORIZONTALS, facing));
+        return this.getDefaultState().withProperty(FACING, Helpers.getASolidFacing(worldIn, pos, facing, EnumFacing.HORIZONTALS));
     }
 
     @Override

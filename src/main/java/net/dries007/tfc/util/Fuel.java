@@ -7,7 +7,7 @@ package net.dries007.tfc.util;
 
 import net.minecraft.item.ItemStack;
 
-public final class Fuel
+public class Fuel
 {
     private final ItemStack stack;
     private final int amount;

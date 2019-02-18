@@ -26,6 +26,7 @@ import net.dries007.tfc.util.forge.ForgeRule;
 
 import static net.dries007.tfc.api.types.Metal.ItemType.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.types.DefaultMetals.*;
 import static net.dries007.tfc.util.forge.ForgeRule.*;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -38,6 +39,7 @@ public final class DefaultRecipes
 
         for (Rock.ToolType type : Rock.ToolType.values())
         {
+            // This covers all stone -> single tool head recipes
             KnappingRecipe r = new KnappingRecipe.Stone(KnappingRecipe.Type.STONE, c -> new ItemStack(ItemRockToolHead.get(c, type)), type.getPattern());
             event.getRegistry().register(r.setRegistryName(MOD_ID, type.name().toLowerCase() + "_head"));
         }
@@ -107,7 +109,14 @@ public final class DefaultRecipes
         addAnvil(r, DOUBLE_SHEET, UNFINISHED_GREAVES, true, BEND_ANY, DRAW_ANY, HIT_ANY);
         addAnvil(r, DOUBLE_SHEET, UNFINISHED_BOOTS, true, BEND_LAST, BEND_SECOND_LAST, SHRINK_THIRD_LAST);
 
-        // todo: more anvil recipes
+        // todo: bloom -> iron ingot
+
+        // Steel Working
+        addAnvil(r, PIG_IRON, HIGH_CARBON_STEEL);
+        addAnvil(r, HIGH_CARBON_STEEL, STEEL);
+        addAnvil(r, HIGH_CARBON_BLACK_STEEL, BLACK_STEEL);
+        addAnvil(r, HIGH_CARBON_BLUE_STEEL, BLUE_STEEL);
+        addAnvil(r, HIGH_CARBON_RED_STEEL, RED_STEEL);
     }
 
     @SubscribeEvent
@@ -115,21 +124,26 @@ public final class DefaultRecipes
     {
         IForgeRegistry<WeldingRecipe> r = event.getRegistry();
 
-        // Welding Recipes
+        // Basic Parts
         addWelding(r, INGOT, DOUBLE_INGOT);
         addWelding(r, SHEET, DOUBLE_SHEET);
 
+        // Armor
         addWelding(r, UNFINISHED_HELMET, SHEET, HELMET, true);
         addWelding(r, UNFINISHED_CHESTPLATE, DOUBLE_SHEET, CHESTPLATE, true);
         addWelding(r, UNFINISHED_GREAVES, DOUBLE_SHEET, GREAVES, true);
         addWelding(r, UNFINISHED_BOOTS, SHEET, BOOTS, true);
+
+        // Steel Welding
+        addWelding(r, WEAK_STEEL, PIG_IRON, HIGH_CARBON_BLACK_STEEL);
+        addWelding(r, WEAK_BLUE_STEEL, BLACK_STEEL, HIGH_CARBON_BLUE_STEEL);
+        addWelding(r, WEAK_RED_STEEL, BLACK_STEEL, HIGH_CARBON_RED_STEEL);
 
         // Special Recipes
 
         // todo: shears
     }
 
-    @SuppressWarnings("ConstantConditions")
     private static void addAnvil(IForgeRegistry<AnvilRecipe> registry, Metal.ItemType inputType, Metal.ItemType outputType, boolean onlyToolMetals, ForgeRule... rules)
     {
         // Helper method for adding all recipes that take ItemType -> ItemType
@@ -143,7 +157,25 @@ public final class DefaultRecipes
             ItemStack output = new ItemStack(ItemMetal.get(metal, outputType));
             if (!input.isEmpty() && !output.isEmpty())
             {
+                //noinspection ConstantConditions
                 registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), input, output, metal.getTier(), rules));
+            }
+        }
+    }
+
+    private static void addAnvil(IForgeRegistry<AnvilRecipe> registry, ResourceLocation inputMetalLoc, ResourceLocation outputMetalLoc)
+    {
+        // Helper method for adding INGOT -> INGOT with different metal working
+        Metal inputMetal = TFCRegistries.METALS.getValue(inputMetalLoc);
+        Metal outputMetal = TFCRegistries.METALS.getValue(outputMetalLoc);
+        if (inputMetal != null && outputMetal != null)
+        {
+            ItemStack input = new ItemStack(ItemMetal.get(inputMetal, INGOT));
+            ItemStack output = new ItemStack(ItemMetal.get(outputMetal, INGOT));
+            if (!input.isEmpty() && !output.isEmpty())
+            {
+                //noinspection ConstantConditions
+                registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, ("ingot_" + outputMetal.getRegistryName().getPath()).toLowerCase()), input, output, outputMetal.getTier(), HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST));
             }
         }
     }
@@ -153,7 +185,6 @@ public final class DefaultRecipes
         addWelding(registry, inputType, inputType, outputType, false);
     }
 
-    @SuppressWarnings("ConstantConditions")
     private static void addWelding(IForgeRegistry<WeldingRecipe> registry, Metal.ItemType inputType1, Metal.ItemType inputType2, Metal.ItemType outputType, boolean onlyToolMetals)
     {
         // Helper method for adding all recipes that take ItemType -> ItemType
@@ -169,7 +200,28 @@ public final class DefaultRecipes
             if (!input1.isEmpty() && !input2.isEmpty() && !output.isEmpty())
             {
                 // Note: Welding recipes require one less than the tier of the metal
+                //noinspection ConstantConditions
                 registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), input1, input2, output, metal.getTier().previous()));
+            }
+        }
+    }
+
+    private static void addWelding(IForgeRegistry<WeldingRecipe> registry, ResourceLocation input1Loc, ResourceLocation input2Loc, ResourceLocation outputLoc)
+    {
+        Metal inputMetal1 = TFCRegistries.METALS.getValue(input1Loc);
+        Metal inputMetal2 = TFCRegistries.METALS.getValue(input2Loc);
+        Metal outputMetal = TFCRegistries.METALS.getValue(outputLoc);
+        if (inputMetal1 != null && inputMetal2 != null && outputMetal != null)
+        {
+            // Create a recipe for each metal / item type combination
+            ItemStack input1 = new ItemStack(ItemMetal.get(inputMetal1, INGOT));
+            ItemStack input2 = new ItemStack(ItemMetal.get(inputMetal2, INGOT));
+            ItemStack output = new ItemStack(ItemMetal.get(outputMetal, INGOT));
+            if (!input1.isEmpty() && !input2.isEmpty() && !output.isEmpty())
+            {
+                // Note: Welding recipes require one less than the tier of the metal
+                //noinspection ConstantConditions
+                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, ("ingot_" + outputMetal.getRegistryName().getPath()).toLowerCase()), input1, input2, output, outputMetal.getTier().previous()));
             }
         }
     }

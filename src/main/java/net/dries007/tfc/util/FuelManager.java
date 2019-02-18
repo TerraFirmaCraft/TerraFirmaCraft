@@ -18,7 +18,7 @@ import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.types.DefaultMetals;
 
-public class FuelManager
+public final class FuelManager
 {
     private static final List<Fuel> fuels = new ArrayList<>();
     private static final Fuel EMPTY = new Fuel(ItemStack.EMPTY, 0, 0);
