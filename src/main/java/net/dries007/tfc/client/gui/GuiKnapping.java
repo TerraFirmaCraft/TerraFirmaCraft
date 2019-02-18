@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 
-import net.dries007.tfc.api.types.KnappingRecipe;
+import net.dries007.tfc.api.recipes.KnappingRecipe;
 import net.dries007.tfc.client.button.GuiButtonKnapping;
 import net.dries007.tfc.objects.container.ContainerKnapping;
 
@@ -26,7 +26,7 @@ public class GuiKnapping extends GuiContainerTFC
 
     public GuiKnapping(Container container, EntityPlayer player, KnappingRecipe.Type type, ResourceLocation buttonTexture)
     {
-        super(container, player.inventory, type == KnappingRecipe.Type.CLAY || type == KnappingRecipe.Type.FIRE_CLAY ? ALT_BG_TEXTURE : BG_TEXTURE, "");
+        super(container, player.inventory, type == KnappingRecipe.Type.CLAY || type == KnappingRecipe.Type.FIRE_CLAY ? ALT_BG_TEXTURE : BG_TEXTURE);
         this.buttonTexture = buttonTexture;
         ySize = 184; // Bigger than normal gui
     }

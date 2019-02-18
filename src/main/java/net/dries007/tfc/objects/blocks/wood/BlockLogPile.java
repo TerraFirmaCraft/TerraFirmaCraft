@@ -35,8 +35,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
+import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.objects.te.TELogPile;
-import net.dries007.tfc.objects.te.TESidedInventory;
 import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
@@ -161,9 +161,9 @@ public class BlockLogPile extends Block implements ITileEntityProvider
     @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
-        if (!worldIn.isRemote && te != null && te instanceof TESidedInventory)
+        if (!worldIn.isRemote && te instanceof TEInventory)
         {
-            ((TESidedInventory) te).onBreakBlock(worldIn, pos);
+            ((TEInventory) te).onBreakBlock(worldIn, pos);
         }
         super.harvestBlock(worldIn, player, pos, state, te, stack);
     }

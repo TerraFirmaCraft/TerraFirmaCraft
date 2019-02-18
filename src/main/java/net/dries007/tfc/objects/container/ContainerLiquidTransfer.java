@@ -19,7 +19,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.objects.inventory.SlotFluidTransfer;
+import net.dries007.tfc.objects.inventory.slot.SlotFluidTransfer;
 import net.dries007.tfc.util.Helpers;
 
 public class ContainerLiquidTransfer extends ContainerItemStack

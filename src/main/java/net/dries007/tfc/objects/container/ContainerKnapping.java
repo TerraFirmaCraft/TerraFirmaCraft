@@ -5,20 +5,24 @@
 
 package net.dries007.tfc.objects.container;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.api.recipes.KnappingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.KnappingRecipe;
-import net.dries007.tfc.objects.inventory.SlotKnappingOutput;
+import net.dries007.tfc.objects.inventory.slot.SlotKnappingOutput;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.IButtonHandler;
 import net.dries007.tfc.util.SimpleCraftMatrix;
 
-public class ContainerKnapping extends ContainerItemStack
+public class ContainerKnapping extends ContainerItemStack implements IButtonHandler
 {
     private final SimpleCraftMatrix matrix;
     private final KnappingRecipe.Type type;
@@ -39,9 +43,10 @@ public class ContainerKnapping extends ContainerItemStack
         requiresReset = false;
     }
 
-    public void onUpdate(int slotIdx)
+    @Override
+    public void onButtonPress(int buttonID, @Nullable NBTTagCompound extraNBT)
     {
-        matrix.set(slotIdx, false);
+        matrix.set(buttonID, false);
 
         if (!hasBeenModified)
         {

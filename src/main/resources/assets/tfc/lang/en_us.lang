@@ -11,6 +11,14 @@ tfc.tooltip.metal=§fMetal:§7 %s
 tfc.tooltip.units=%d units
 tfc.tooltip.smelting=Smelt in %s
 tfc.tooltip.liquid=Liquid
+tfc.tooltip.weldable=Can Weld
+tfc.tooltip.workable=Can Work
+tfc.tooltip.danger=Danger!!
+tfc.tooltip.anvil_plan=Plans
+tfc.tooltip.anvil_tier_too_low=This Anvil is too low tier!
+tfc.tooltip.anvil_no_flux=There is no flux in the anvil!
+tfc.tooltip.anvil_too_cold=The item(s) are not hot enough to work!
+tfc.tooltip.anvil_no_hammer=There is no hammer in the anvil!
 
 ## Keybindings
 tfc.key.craft=Crafting GUI
@@ -127,6 +135,50 @@ tfc.enum.heat.yellow=Yellow
 tfc.enum.heat.yellow_white=Yellow White
 tfc.enum.heat.white=White
 tfc.enum.heat.brilliant_white=Brilliant White
+
+tfc.enum.heat.torch.catching_fire=Catching Fire
+tfc.enum.heat.torch.lit=Lit
+
+tfc.enum.forge_step.hit_light=Light Hit
+tfc.enum.forge_step.hit_medium=Medium Hit
+tfc.enum.forge_step.hit_hard=Hard Hit
+tfc.enum.forge_step.draw=Draw
+tfc.enum.forge_step.bend=Bend
+tfc.enum.forge_step.punch=Punch
+tfc.enum.forge_step.shrink=Shrink
+tfc.enum.forge_step.upset=Upset
+
+tfc.enum.forgerule.hit_any=Hit Any
+tfc.enum.forgerule.hit_not_last=Hit Not Last
+tfc.enum.forgerule.hit_last=Hit Last
+tfc.enum.forgerule.hit_second_last=Hit Second Last
+tfc.enum.forgerule.hit_third_last=Hit Third Last
+tfc.enum.forgerule.draw_any=Draw Any
+tfc.enum.forgerule.draw_last=Draw Last
+tfc.enum.forgerule.draw_not_last=Draw Not Last
+tfc.enum.forgerule.draw_second_last=Draw Second Last
+tfc.enum.forgerule.draw_third_last=Draw Third Last
+tfc.enum.forgerule.punch_any=Punch Any
+tfc.enum.forgerule.punch_last=Punch Last
+tfc.enum.forgerule.punch_not_last=Punch Not Last
+tfc.enum.forgerule.punch_second_last=Punch Second Last
+tfc.enum.forgerule.punch_third_last=Punch Third Last
+tfc.enum.forgerule.bend_any=Bend Any
+tfc.enum.forgerule.bend_last=Bend Last
+tfc.enum.forgerule.bend_not_last=Bend Not Last
+tfc.enum.forgerule.bend_second_last=Bend Second Last
+tfc.enum.forgerule.bend_third_last=Bend Third Last
+tfc.enum.forgerule.upset_any=Upset Any
+tfc.enum.forgerule.upset_last=Upset Last
+tfc.enum.forgerule.upset_not_last=Upset Not Last
+tfc.enum.forgerule.upset_second_last=Upset Second Last
+tfc.enum.forgerule.upset_third_last=Upset Third Last
+tfc.enum.forgerule.shrink_any=Shrink Any
+tfc.enum.forgerule.shrink_last=Shrink Last
+tfc.enum.forgerule.shrink_not_last=Shrink Not Last
+tfc.enum.forgerule.shrink_second_last=Shrink Second Last
+tfc.enum.forgerule.shrink_third_last=Shrink Third Last
+
 
 # Items
 item.tfc.wand.name=TFC Debug Wand

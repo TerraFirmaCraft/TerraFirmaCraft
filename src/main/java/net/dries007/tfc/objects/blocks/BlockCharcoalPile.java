@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.blocks;
 
 import java.util.Random;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -18,23 +19,23 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.te.TECharcoalForge;
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.objects.blocks.BlockCharcoalForge.LIT;
+
 @ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class BlockCharcoalPile extends Block
 {
     public static final PropertyInteger LAYERS = PropertyInteger.create("type", 1, 8);
@@ -67,6 +68,7 @@ public class BlockCharcoalPile extends Block
     }
 
     @Override
+    @Nonnull
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
@@ -87,6 +89,7 @@ public class BlockCharcoalPile extends Block
     }
 
     @Override
+    @Nonnull
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
@@ -94,20 +97,19 @@ public class BlockCharcoalPile extends Block
     }
 
     @Override
+    @Nonnull
     @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
-        return face == EnumFacing.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+        return face == EnumFacing.DOWN || state.getValue(LAYERS) == 8 ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
     }
 
     @Override
     @Nullable
     @SuppressWarnings("deprecation")
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        int i = blockState.getValue(LAYERS) - 1;
-        AxisAlignedBB axisalignedbb = blockState.getBoundingBox(worldIn, pos);
-        return new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.maxX, (double) ((float) i * 0.125F), axisalignedbb.maxZ);
+        return PILE_AABB[state.getValue(LAYERS)];
     }
 
     @Override
@@ -154,6 +156,7 @@ public class BlockCharcoalPile extends Block
     }
 
     @Override
+    @Nonnull
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Items.COAL;
@@ -170,21 +173,19 @@ public class BlockCharcoalPile extends Block
     {
         if (!world.isRemote)
         {
-
             ItemStack stack = player.getHeldItem(hand);
 
-            // Special Interactions
-            if (stack.getItem() == Items.COAL && stack.getMetadata() == 1)
+            if (stack.getItem() == ItemsTFC.FIRESTARTER || stack.getItem() == Items.FLINT_AND_STEEL)
             {
-                if (state.getValue(LAYERS) < 8)
+                if (state.getValue(LAYERS) == 7)
                 {
-                    world.setBlockState(pos, state.withProperty(LAYERS, state.getValue(LAYERS) + 1));
-                    if (!player.isCreative())
+                    world.setBlockState(pos, BlocksTFC.CHARCOAL_FORGE.getDefaultState().withProperty(LIT, true));
+                    TECharcoalForge te = Helpers.getTE(world, pos, TECharcoalForge.class);
+                    if (te != null)
                     {
-                        player.setHeldItem(hand, Helpers.consumeItem(stack, 1));
+                        te.onCreate();
+                        ;
                     }
-                    world.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0F, 0.3F);
-                    return true;
                 }
             }
             return false;
@@ -193,6 +194,7 @@ public class BlockCharcoalPile extends Block
     }
 
     @Override
+    @Nonnull
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, LAYERS);
@@ -225,6 +227,7 @@ public class BlockCharcoalPile extends Block
     }
 
     @Override
+    @Nonnull
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(Items.COAL, 1, 1);

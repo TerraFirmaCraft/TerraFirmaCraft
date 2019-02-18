@@ -40,7 +40,6 @@ public class BlockTorchTFC extends BlockTorch implements ITileEntityProvider, II
 {
     public static final PropertyBool LIT = PropertyBool.create("lit");
 
-    @SuppressWarnings("ConstantConditions")
     public static boolean canLight(ItemStack stack)
     {
         return stack.getItem() == Item.getItemFromBlock(BlocksTFC.TORCH) || ItemFireStarter.canIgnite(stack);

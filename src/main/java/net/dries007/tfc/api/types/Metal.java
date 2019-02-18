@@ -26,7 +26,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 
     private final Tier tier;
     private final float specificHeat;
-    private final int meltTemp;
+    private final float meltTemp;
     private final boolean usable;
     private final int color;
 
@@ -35,24 +35,21 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     /**
      * This is a registry object that will create a number of things.
      *
-     * Use the provided Builder to create your own metals
-     *
-     * @param name      the registry name of the object. The path must also be unique
-     * @param tier      the tier of the metal
-     * @param usable    is the metal usable to create basic metal items? (not tools)
-     * @param sh        specific heat capacity. Higher = harder to heat up / cool down. Most IRL metals are between 0.3 - 0.7
-     * @param melt      melting point. See @link Heat for temperature scale. Similar to IRL melting point in celcius.
-     * @param color     color of the metal when in fluid form. Used to autogenerate a fluid texture
-     * @param toolMetal The tool material. Null if metal is not able to create tools
+     * @param name         the registry name of the object. The path must also be unique
+     * @param tier         the tier of the metal
+     * @param usable       is the metal usable to create basic metal items? (not tools)
+     * @param specificHeat specific heat capacity. Higher = harder to heat up / cool down. Most IRL metals are between 0.3 - 0.7
+     * @param meltTemp     melting point. See @link Heat for temperature scale. Similar to IRL melting point in celsius.
+     * @param color        color of the metal when in fluid form. Used to auto generate a fluid texture. In future this may be used to color items as well
+     * @param toolMetal    The tool material. Null if metal is not able to create tools
      */
-    public Metal(@Nonnull ResourceLocation name, Tier tier, boolean usable, float sh, int melt, int color, @Nullable Item.ToolMaterial toolMetal)
+    public Metal(@Nonnull ResourceLocation name, Tier tier, boolean usable, float specificHeat, float meltTemp, int color, @Nullable Item.ToolMaterial toolMetal)
     {
         this.usable = usable;
         this.tier = tier;
-        this.specificHeat = sh;
-        this.meltTemp = melt;
+        this.specificHeat = specificHeat;
+        this.meltTemp = meltTemp;
         this.color = color;
-
         this.toolMetal = toolMetal;
 
         setRegistryName(name);
@@ -79,7 +76,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         return specificHeat;
     }
 
-    public int getMeltTemp()
+    public float getMeltTemp()
     {
         return meltTemp;
     }
@@ -89,19 +86,62 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         return color;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public String toString()
     {
         return getRegistryName().getPath();
     }
 
+    /**
+     * Metals:
+     * T0 - Stone - Work None, Weld T1
+     * T1 - Copper - Work T1, Weld T2
+     * T2 - Bronze / Bismuth Bronze / Black Bronze - Work T2, Weld T3
+     * T3 - Wrought Iron - Work T3, Weld T4
+     * T4 - Steel - Work T4, Weld T5
+     * T5 - Black Steel - Work T5, Weld T6
+     * T6 - Red Steel / Blue Steel - Work T6, Weld T6
+     *
+     * Devices:
+     * T0 - Stone Anvil
+     * T1 - Pit Kiln
+     * T3 - Bloomery
+     * T4 - Blast Furnace
+     */
     public enum Tier
     {
-        TIER_I,
-        TIER_II, // Not implemented, but presumed to be a more advanced, more capable version of the pit kiln.
-        TIER_III,
-        TIER_IV,
-        TIER_V
+        TIER_0, TIER_I, TIER_II, TIER_III, TIER_IV, TIER_V, TIER_VI;
+
+        private static final Tier[] VALUES = values();
+
+        @Nonnull
+        public static Tier valueOf(int tier)
+        {
+            return tier < 0 || tier > VALUES.length ? TIER_I : VALUES[tier];
+        }
+
+        @Nonnull
+        public Tier next()
+        {
+            return this == TIER_VI ? TIER_VI : VALUES[this.ordinal() + 1];
+        }
+
+        @Nonnull
+        public Tier previous()
+        {
+            return this == TIER_0 ? TIER_0 : VALUES[this.ordinal() - 1];
+        }
+
+        public boolean isAtLeast(@Nonnull Tier requiredInclusive)
+        {
+            return this.ordinal() >= requiredInclusive.ordinal();
+        }
+
+        public boolean isAtMost(@Nonnull Tier requiredInclusive)
+        {
+            return this.ordinal() <= requiredInclusive.ordinal();
+        }
     }
 
     public enum ItemType
@@ -138,11 +178,11 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         JAVELIN_HEAD(true, 100, true, "XX   ", "X    ", "     ", "X   X", "XX XX"),
         HAMMER(true, 100, ItemMetalTool::new),
         HAMMER_HEAD(true, 100, true, "XXXXX", "     ", "     ", "XX XX", "XXXXX"),
-        PROPICK(true, 100, ItemMetalTool::new),
+        PROPICK(true, 100, ItemMetalTool::new), // todo: special class + implementation
         PROPICK_HEAD(true, 100, true, "XXXXX", "    X", " XXX ", " XXXX", "XXXXX"),
         KNIFE(true, 100, ItemMetalTool::new),
         KNIFE_BLADE(true, 100, true, "XX X", "X  X", "X  X", "X  X", "X  X"),
-        SCYTHE(true, 100, ItemMetalTool::new),
+        SCYTHE(true, 100, ItemMetalTool::new), // todo: special class + implementation
         SCYTHE_BLADE(true, 100, true, "XXXXX", "X    ", "    X", "  XXX", "XXXXX"),
 
         UNFINISHED_HELMET(true, 200),
@@ -199,7 +239,9 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         public boolean hasType(Metal metal)
         {
             if (!metal.usable)
+            {
                 return this == ItemType.INGOT;
+            }
             return !this.isToolItem() || metal.getToolMetal() != null;
         }
 
@@ -216,10 +258,15 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
             if (this == ItemType.INGOT)
                 return metal.usable;
             if (hasMold)
-                return metal.isToolMetal() && (metal.getTier() == Tier.TIER_I || metal.getTier() == Tier.TIER_II);
+                return metal.isToolMetal() && metal.getTier().isAtMost(Tier.TIER_II);
             return false;
         }
 
+        /**
+         * Does this item type require a tool metal to be made
+         *
+         * @return true if this must be made from a tool item type
+         */
         public boolean isToolItem()
         {
             return toolItem;

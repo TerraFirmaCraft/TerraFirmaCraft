@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.types;
+package net.dries007.tfc.api.recipes;
 
 import java.util.function.Predicate;
 import javax.annotation.Nonnull;
@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Metal;
 
 public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
 {
@@ -26,6 +27,7 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
 
         // This ensures that no metal result has more than one alloy recipe
         // Required so that we can search for alloys by result registry name
+        //noinspection ConstantConditions
         setRegistryName(result.getRegistryName());
     }
 
@@ -34,6 +36,7 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
         return result;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public String toString()
     {
@@ -68,7 +71,7 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
         {
             Metal metal = TFCRegistries.METALS.getValue(loc);
             if (metal == null)
-                throw new IllegalArgumentException("Result metal is not allowed to be null. Missing metal for key: " + result.toString());
+                throw new IllegalArgumentException("Result metal is not allowed to be null. Missing metal for key: " + loc.toString());
             return add(metal, condition);
         }
 

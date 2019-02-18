@@ -12,10 +12,12 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Sets;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
 
+import net.dries007.tfc.api.recipes.AlloyRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.AlloyRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IMetalObject;
 
@@ -24,10 +26,10 @@ import net.dries007.tfc.api.util.IMetalObject;
  *
  * @author AlcatrazEscapee
  */
-public class Alloy
+public class Alloy implements INBTSerializable<NBTTagCompound>
 {
 
-    private final Map<Metal, Integer> MAP;
+    private final Map<Metal, Integer> metalMap;
     private int totalAmount;
     private boolean isValid;
 
@@ -36,7 +38,7 @@ public class Alloy
      */
     public Alloy()
     {
-        MAP = new HashMap<>();
+        metalMap = new HashMap<>();
         totalAmount = 0;
         isValid = true;
     }
@@ -85,7 +87,7 @@ public class Alloy
      */
     public Alloy add(@Nonnull Alloy other)
     {
-        for (Map.Entry<Metal, Integer> entry : other.MAP.entrySet())
+        for (Map.Entry<Metal, Integer> entry : other.metalMap.entrySet())
             add(entry.getKey(), entry.getValue());
         return this;
     }
@@ -101,7 +103,7 @@ public class Alloy
     {
         if (metal != null)
         {
-            MAP.merge(metal, amount, (x, y) -> x + y);
+            metalMap.merge(metal, amount, (x, y) -> x + y);
             totalAmount += amount;
         }
         else
@@ -118,8 +120,8 @@ public class Alloy
     @Nonnull
     public Metal getResult()
     {
-        if (MAP.size() == 1)
-            return MAP.keySet().iterator().next(); // Easy way to get the only metal in the alloy
+        if (metalMap.size() == 1)
+            return metalMap.keySet().iterator().next(); // Easy way to get the only metal in the alloy
         for (AlloyRecipe r : TFCRegistries.ALLOYS.getValuesCollection())
             if (matchesRecipe(r))
                 return r.getResult();
@@ -145,12 +147,47 @@ public class Alloy
         return isValid;
     }
 
+    @Override
+    public NBTTagCompound serializeNBT()
+    {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setBoolean("isValid", isValid);
+        for (Map.Entry<Metal, Integer> entry : this.metalMap.entrySet())
+        {
+            //noinspection ConstantConditions
+            nbt.setInteger(entry.getKey().getRegistryName().toString(), entry.getValue());
+        }
+        return nbt;
+    }
+
+    @Override
+    public void deserializeNBT(@Nullable NBTTagCompound nbt)
+    {
+        if (nbt != null)
+        {
+            this.totalAmount = 0;
+            this.isValid = nbt.getBoolean("isValid");
+            this.metalMap.clear();
+            for (Metal metal : TFCRegistries.METALS.getValuesCollection())
+            {
+                //noinspection ConstantConditions
+                String key = metal.getRegistryName().toString();
+                if (nbt.hasKey(key))
+                {
+                    int amount = nbt.getInteger(key);
+                    this.metalMap.put(metal, amount);
+                    this.totalAmount += amount;
+                }
+            }
+        }
+    }
+
     private boolean matchesRecipe(AlloyRecipe recipe)
     {
-        if (this.MAP.containsKey(recipe.getResult()))
+        if (this.metalMap.containsKey(recipe.getResult()))
         {
             Alloy other = new Alloy().add(this);
-            int resultAmount = other.MAP.remove(recipe.getResult());
+            int resultAmount = other.metalMap.remove(recipe.getResult());
             other.totalAmount -= resultAmount;
             return other.matchesRecipeExact(recipe);
         }
@@ -161,11 +198,11 @@ public class Alloy
     {
         // for each metal in the alloy, it needs to satisfy an ingredient
         // for each metal in the recipe, it needs to match with an alloy
-        for (Metal metal : Sets.union(recipe.MAP.keySet(), MAP.keySet()))
+        for (Metal metal : Sets.union(recipe.MAP.keySet(), metalMap.keySet()))
         {
-            if (!MAP.containsKey(metal) ||
+            if (!metalMap.containsKey(metal) ||
                 !recipe.MAP.containsKey(metal) ||
-                !recipe.MAP.get(metal).test(MAP.get(metal).floatValue() / totalAmount))
+                !recipe.MAP.get(metal).test(metalMap.get(metal).floatValue() / totalAmount))
                 return false;
         }
         return true;

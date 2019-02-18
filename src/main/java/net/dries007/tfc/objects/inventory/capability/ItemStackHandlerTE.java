@@ -3,17 +3,17 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.inventory;
+package net.dries007.tfc.objects.inventory.capability;
 
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.objects.te.TESidedInventory;
+import net.dries007.tfc.objects.te.TEInventory;
 
 public class ItemStackHandlerTE extends ItemStackHandler
 {
-    private final TESidedInventory tile;
+    private final TEInventory tile;
 
-    public ItemStackHandlerTE(TESidedInventory tile, int size)
+    public ItemStackHandlerTE(TEInventory tile, int size)
     {
         super(size);
         this.tile = tile;

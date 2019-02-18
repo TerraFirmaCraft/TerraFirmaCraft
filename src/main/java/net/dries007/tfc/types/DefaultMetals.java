@@ -10,8 +10,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import net.dries007.tfc.api.recipes.AlloyRecipe;
 import net.dries007.tfc.api.registries.TFCRegistryEvent;
-import net.dries007.tfc.api.types.AlloyRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.ToolMaterialsTFC;
@@ -19,13 +19,13 @@ import net.dries007.tfc.objects.ToolMaterialsTFC;
 import static net.dries007.tfc.api.types.Metal.Tier.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SuppressWarnings("WeakerAccess")
 @Mod.EventBusSubscriber(modid = MOD_ID)
-public class DefaultMetals
+public final class DefaultMetals
 {
     /*
      * Metals
      */
-    // Tier I
     public static final ResourceLocation BISMUTH = new ResourceLocation(MOD_ID, "bismuth");
     public static final ResourceLocation BISMUTH_BRONZE = new ResourceLocation(MOD_ID, "bismuth_bronze");
     public static final ResourceLocation BLACK_BRONZE = new ResourceLocation(MOD_ID, "black_bronze");
@@ -40,12 +40,9 @@ public class DefaultMetals
     public static final ResourceLocation TIN = new ResourceLocation(MOD_ID, "tin");
     public static final ResourceLocation ZINC = new ResourceLocation(MOD_ID, "zinc");
     public static final ResourceLocation STERLING_SILVER = new ResourceLocation(MOD_ID, "sterling_silver");
-    // Tier III
     public static final ResourceLocation WROUGHT_IRON = new ResourceLocation(MOD_ID, "wrought_iron");
     public static final ResourceLocation PIG_IRON = new ResourceLocation(MOD_ID, "pig_iron");
-    // Tier IV
     public static final ResourceLocation STEEL = new ResourceLocation(MOD_ID, "steel");
-    // Tier V
     public static final ResourceLocation PLATINUM = new ResourceLocation(MOD_ID, "platinum");
     public static final ResourceLocation BLACK_STEEL = new ResourceLocation(MOD_ID, "black_steel");
     public static final ResourceLocation BLUE_STEEL = new ResourceLocation(MOD_ID, "blue_steel");
@@ -57,7 +54,6 @@ public class DefaultMetals
     public static final ResourceLocation HIGH_CARBON_BLUE_STEEL = new ResourceLocation(MOD_ID, "high_carbon_blue_steel");
     public static final ResourceLocation HIGH_CARBON_RED_STEEL = new ResourceLocation(MOD_ID, "high_carbon_red_steel");
     public static final ResourceLocation HIGH_CARBON_BLACK_STEEL = new ResourceLocation(MOD_ID, "high_carbon_black_steel");
-    // Tier I, Special
     public static final ResourceLocation UNKNOWN = new ResourceLocation(MOD_ID, "unknown");
 
     /*
@@ -146,10 +142,10 @@ public class DefaultMetals
     {
         event.getRegistry().registerAll(
             new Metal(BISMUTH, TIER_I, true, 0.14f, 270, 0xFF486B72, null),
-            new Metal(BISMUTH_BRONZE, TIER_I, true, 0.35f, 985, 0xFF418E4F, ToolMaterialsTFC.BISMUTH_BRONZE),
-            new Metal(BLACK_BRONZE, TIER_I, true, 0.35f, 1070, 0xFF3B2636, ToolMaterialsTFC.BLACK_BRONZE),
+            new Metal(BISMUTH_BRONZE, TIER_II, true, 0.35f, 985, 0xFF418E4F, ToolMaterialsTFC.BISMUTH_BRONZE),
+            new Metal(BLACK_BRONZE, TIER_II, true, 0.35f, 1070, 0xFF3B2636, ToolMaterialsTFC.BLACK_BRONZE),
             new Metal(BRASS, TIER_I, true, 0.35f, 930, 0xFF96892E, null),
-            new Metal(BRONZE, TIER_I, true, 0.35f, 950, 0xFF7C5E33, ToolMaterialsTFC.BRONZE),
+            new Metal(BRONZE, TIER_II, true, 0.35f, 950, 0xFF7C5E33, ToolMaterialsTFC.BRONZE),
             new Metal(COPPER, TIER_I, true, 0.35f, 1080, 0xFFB64027, ToolMaterialsTFC.COPPER),
             new Metal(GOLD, TIER_I, true, 0.6f, 1060, 0xFFDCBF1B, null),
             new Metal(LEAD, TIER_I, true, 0.22f, 328, 0xFF40494D, null),
@@ -160,16 +156,16 @@ public class DefaultMetals
             new Metal(ZINC, TIER_I, true, 0.21f, 420, 0xFFBBB9C4, null),
             new Metal(STERLING_SILVER, TIER_I, true, 0.35f, 900, 0xFFAC927B, null),
             new Metal(WROUGHT_IRON, TIER_III, true, 0.35f, 1535, 0xFF989897, ToolMaterialsTFC.IRON),
-            new Metal(PIG_IRON, TIER_IV, true, 0.35f, 1535, 0xFF6A595C, null),
+            new Metal(PIG_IRON, TIER_III, true, 0.35f, 1535, 0xFF6A595C, null),
             new Metal(STEEL, TIER_IV, true, 0.35f, 1540, 0xFF5F5F5F, ToolMaterialsTFC.STEEL),
             new Metal(PLATINUM, TIER_V, true, 0.35f, 1730, 0xFF9DADC0, null),
             new Metal(BLACK_STEEL, TIER_V, true, 0.35f, 1485, 0xFF111111, ToolMaterialsTFC.BLACK_STEEL),
-            new Metal(BLUE_STEEL, TIER_V, true, 0.35f, 1540, 0xFF2D5596, ToolMaterialsTFC.BLUE_STEEL),
-            new Metal(RED_STEEL, TIER_V, true, 0.35f, 1540, 0xFF700503, ToolMaterialsTFC.RED_STEEL),
+            new Metal(BLUE_STEEL, TIER_VI, true, 0.35f, 1540, 0xFF2D5596, ToolMaterialsTFC.BLUE_STEEL),
+            new Metal(RED_STEEL, TIER_VI, true, 0.35f, 1540, 0xFF700503, ToolMaterialsTFC.RED_STEEL),
             new Metal(WEAK_STEEL, TIER_V, false, 0.35f, 1540, 0xFF111111, null),
             new Metal(WEAK_BLUE_STEEL, TIER_V, false, 0.35f, 1540, 0xFF2D5596, null),
             new Metal(WEAK_RED_STEEL, TIER_V, false, 0.35f, 1540, 0xFF700503, null),
-            new Metal(HIGH_CARBON_STEEL, TIER_V, false, 0.35f, 1540, 0xFF5F5F5F, null),
+            new Metal(HIGH_CARBON_STEEL, TIER_IV, false, 0.35f, 1540, 0xFF5F5F5F, null),
             new Metal(HIGH_CARBON_BLUE_STEEL, TIER_V, false, 0.35f, 1540, 0xFF2D5596, null),
             new Metal(HIGH_CARBON_RED_STEEL, TIER_V, false, 0.35f, 1540, 0xFF700503, null),
             new Metal(HIGH_CARBON_BLACK_STEEL, TIER_V, false, 0.35f, 1540, 0xFF111111, null),

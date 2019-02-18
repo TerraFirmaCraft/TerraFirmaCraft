@@ -56,7 +56,6 @@ import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER3;
 /**
  * todo: Find out how to make ocean bottoms not so super flat.
  */
-@SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ChunkGenTFC implements IChunkGenerator
@@ -69,7 +68,7 @@ public class ChunkGenTFC implements IChunkGenerator
     public static final IBlockState LAVA = Blocks.LAVA.getDefaultState(); // todo: replace
     public static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
     public static final IBlockState SNOW = Blocks.SNOW_LAYER.getDefaultState().withProperty(BlockSnow.LAYERS, 2);
-    private final static float[] parabolicField = new float[25];
+    private static final float[] parabolicField = new float[25];
 
     static
     {
