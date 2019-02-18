@@ -32,7 +32,6 @@ import net.dries007.tfc.network.PacketAnvilUpdate;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.ITileFields;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
@@ -40,7 +39,7 @@ import net.dries007.tfc.util.forge.ForgeSteps;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class TEAnvilTFC extends TEInventory implements ITileFields
+public class TEAnvilTFC extends TEInventory
 {
     public static final int WORK_MAX = 145;
 
@@ -49,17 +48,10 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
     public static final int SLOT_HAMMER = 2;
     public static final int SLOT_FLUX = 3;
 
-    public static final int FIELD_PROGRESS = 0;
-    public static final int FIELD_TARGET = 1;
-
-    /*
-     Instance variables
-     */
     private AnvilRecipe recipe;
     private ForgeSteps steps;
-    private int workingProgress = 0; // Min = 0, Max = 145
+    private int workingProgress = 0;
     private int workingTarget = 0;
-
 
     public TEAnvilTFC()
     {
@@ -96,16 +88,6 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
     public ForgeSteps getSteps()
     {
         return steps;
-    }
-
-    /**
-     * Sets the current steps on client side after recieving a {@link PacketAnvilUpdate}
-     *
-     * @param steps the new steps
-     */
-    public void setSteps(ForgeSteps steps)
-    {
-        this.steps = steps;
     }
 
     /**
@@ -189,6 +171,22 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
         }
     }
 
+    /**
+     * Used to set all server-side only fields on the client, for rendering purposes
+     *
+     * @param recipe          The current recipe
+     * @param steps           The current steps
+     * @param workingProgress The working progress
+     * @param workingTarget   The working target
+     */
+    public void onReceivePacket(@Nullable AnvilRecipe recipe, @Nonnull ForgeSteps steps, int workingProgress, int workingTarget)
+    {
+        this.recipe = recipe;
+        this.steps = steps;
+        this.workingProgress = workingProgress;
+        this.workingTarget = workingTarget;
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
@@ -232,12 +230,11 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
 
         if (cap != null)
         {
-            TerraFirmaCraft.getLog().info("Adding step: cap {}, recipe {}", cap.serializeNBT(), recipe);
             // Add step to stack + tile
-            cap.addStep(step);
-            steps = cap.getSteps().copy();
             if (step != null)
             {
+                cap.addStep(step);
+                steps = cap.getSteps().copy();
                 workingProgress += step.getStepAmount();
             }
 
@@ -248,6 +245,14 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
                 {
                     // Consume input + produce output / throw it in the world
                     ItemStack stack = recipe.getOutput();
+
+                    // Set output item temperature
+                    IItemHeat outputCap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                    if (outputCap != null)
+                    {
+                        outputCap.setTemperature(cap.getTemperature());
+                    }
+
                     inventory.setStackInSlot(SLOT_INPUT_1, stack);
                     world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.PLAYERS, 1.0f, 1.0f);
 
@@ -255,7 +260,7 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
                     resetFields();
                     setRecipe(null);
                 }
-                else if (workingProgress < 0 || workingProgress >= 150)
+                else if (workingProgress < 0 || workingProgress > WORK_MAX)
                 {
                     // Consume input, produce no output
                     inventory.setStackInSlot(SLOT_INPUT_1, ItemStack.EMPTY);
@@ -265,43 +270,7 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
 
             // Step was added, so send update regardless
             TerraFirmaCraft.getNetwork().sendToDimension(new PacketAnvilUpdate(this), world.provider.getDimension());
-        }
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 2;
-    }
-
-    @Override
-    public void setField(int index, int value)
-    {
-        switch (index)
-        {
-            case FIELD_PROGRESS:
-                workingProgress = value;
-                break;
-            case FIELD_TARGET:
-                workingTarget = value;
-                break;
-            default:
-                TerraFirmaCraft.getLog().warn("Invalid field id {}", index);
-        }
-    }
-
-    @Override
-    public int getField(int index)
-    {
-        switch (index)
-        {
-            case FIELD_PROGRESS:
-                return workingProgress;
-            case FIELD_TARGET:
-                return workingTarget;
-            default:
-                TerraFirmaCraft.getLog().warn("Invalid field id {} in TEAnvilTFC#getField", index);
-                return 0;
+            markDirty();
         }
     }
 
@@ -358,6 +327,16 @@ public class TEAnvilTFC extends TEInventory implements ITileFields
             return true;
         }
         return false;
+    }
+
+    public int getWorkingProgress()
+    {
+        return workingProgress;
+    }
+
+    public int getWorkingTarget()
+    {
+        return workingTarget;
     }
 
     private boolean checkRecipeUpdate()
