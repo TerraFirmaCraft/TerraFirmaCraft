@@ -13,29 +13,30 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.util.Helpers;
+
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_NAME;
 
-@SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = MOD_ID)
 @GameRegistry.ObjectHolder(MOD_ID)
 public final class BiomesTFC
 {
-    public static final BiomeTFC OCEAN = null;
-    public static final BiomeTFC RIVER = null;
+    public static final BiomeTFC OCEAN = Helpers.getNull();
+    public static final BiomeTFC RIVER = Helpers.getNull();
     //    public static final BiomeTFC HELL = null;
-    public static final BiomeTFC BEACH = null;
-    public static final BiomeTFC GRAVEL_BEACH = null;
-    public static final BiomeTFC HIGH_HILLS = null;
-    public static final BiomeTFC PLAINS = null;
-    public static final BiomeTFC SWAMPLAND = null;
-    public static final BiomeTFC HIGH_HILLS_EDGE = null;
-    public static final BiomeTFC ROLLING_HILLS = null;
-    public static final BiomeTFC MOUNTAINS = null;
-    public static final BiomeTFC MOUNTAINS_EDGE = null;
-    public static final BiomeTFC HIGH_PLAINS = null;
-    public static final BiomeTFC DEEP_OCEAN = null;
-    public static final BiomeTFC LAKE = null;
+    public static final BiomeTFC BEACH = Helpers.getNull();
+    public static final BiomeTFC GRAVEL_BEACH = Helpers.getNull();
+    public static final BiomeTFC HIGH_HILLS = Helpers.getNull();
+    public static final BiomeTFC PLAINS = Helpers.getNull();
+    public static final BiomeTFC SWAMPLAND = Helpers.getNull();
+    public static final BiomeTFC HIGH_HILLS_EDGE = Helpers.getNull();
+    public static final BiomeTFC ROLLING_HILLS = Helpers.getNull();
+    public static final BiomeTFC MOUNTAINS = Helpers.getNull();
+    public static final BiomeTFC MOUNTAINS_EDGE = Helpers.getNull();
+    public static final BiomeTFC HIGH_PLAINS = Helpers.getNull();
+    public static final BiomeTFC DEEP_OCEAN = Helpers.getNull();
+    public static final BiomeTFC LAKE = Helpers.getNull();
     private static BiomeTFC[] PLAYER_SPAWN_BIOMES;
     private static BiomeTFC[] OVERWORLD_GENERATE_BIOMES;
 

@@ -33,7 +33,7 @@ public class HeatRecipe
     {
         IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         if (cap == null)
-            throw new IllegalArgumentException("The input stack must implement IItemHeat capability for it to be used in a fire pit recipe!");
+            throw new IllegalArgumentException("The input stack must implement IItemHeat capability for it to be used in a heat recipe!");
 
         this.outputStack = outputStack;
         this.inputStack = inputStack;
@@ -57,7 +57,7 @@ public class HeatRecipe
     {
         IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         if (cap == null)
-            throw new IllegalArgumentException("The input stack must implement IItemHeat capability for it to be used in a fire pit recipe!");
+            throw new IllegalArgumentException("The input stack must implement IItemHeat capability for it to be used in a heat recipe!");
 
         this.outputMetal = outputMetal;
         this.inputStack = inputStack;
@@ -71,7 +71,7 @@ public class HeatRecipe
     {
         IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         if (cap == null)
-            throw new IllegalArgumentException("The input stack must implement IItemHeat capability for it to be used in a fire pit recipe!");
+            throw new IllegalArgumentException("The input stack must implement IItemHeat capability for it to be used in a heat recipe!");
 
         this.outputMetal = outputMetal;
         this.outputStack = outputStack;

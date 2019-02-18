@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.network.PacketKnappingUpdate;
+import net.dries007.tfc.network.PacketGuiButton;
 
 @SideOnly(Side.CLIENT)
 public class GuiButtonKnapping extends GuiButton
@@ -33,7 +33,7 @@ public class GuiButtonKnapping extends GuiButton
         if (this.enabled)
         {
             this.visible = false;
-            TerraFirmaCraft.getNetwork().sendToServer(new PacketKnappingUpdate(id));
+            TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(this.id));
         }
     }
 

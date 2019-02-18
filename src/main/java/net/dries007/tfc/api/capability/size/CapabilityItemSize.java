@@ -9,26 +9,26 @@ import javax.annotation.Nullable;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 
+import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.api.util.TFCConstants;
+import net.dries007.tfc.util.Helpers;
 
-public class CapabilityItemSize
+public final class CapabilityItemSize
 {
     private static final ResourceLocation ID = new ResourceLocation(TFCConstants.MOD_ID, "item_size");
 
     @CapabilityInject(IItemSize.class)
-    public static Capability<IItemSize> ITEM_SIZE_CAPABILITY = null;
+    public static final Capability<IItemSize> ITEM_SIZE_CAPABILITY = Helpers.getNull();
 
     public static void preInit()
     {
-        CapabilityManager.INSTANCE.register(IItemSize.class, new ItemSizeStorage(), ItemSizeHandler::new);
+        CapabilityManager.INSTANCE.register(IItemSize.class, new DumbStorage<>(), ItemSizeHandler::new);
     }
 
     /**
@@ -62,21 +62,4 @@ public class CapabilityItemSize
         }
         return stack.getCapability(ITEM_SIZE_CAPABILITY, null);
     }
-
-    private static class ItemSizeStorage implements Capability.IStorage<IItemSize>
-    {
-        @Nullable
-        @Override
-        public NBTBase writeNBT(Capability<IItemSize> capability, IItemSize instance, EnumFacing side)
-        {
-            return null;
-        }
-
-        @Override
-        public void readNBT(Capability<IItemSize> capability, IItemSize instance, EnumFacing side, NBTBase nbt)
-        {
-
-        }
-    }
-
 }

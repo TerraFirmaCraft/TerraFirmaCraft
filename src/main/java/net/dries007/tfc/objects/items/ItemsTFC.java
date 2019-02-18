@@ -40,35 +40,36 @@ import net.dries007.tfc.objects.items.wood.ItemLumberTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.CreativeTabsTFC.*;
+import static net.dries007.tfc.util.Helpers.getNull;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 @GameRegistry.ObjectHolder(MOD_ID)
 public final class ItemsTFC
 {
-    public static final ItemDebug WAND = null;
-    public static final ItemFireStarter FIRESTARTER = null;
-    public static final ItemGoldPan GOLDPAN = null;
-    public static final ItemMisc HAY = null;
-    public static final ItemLeatherTFC LEATHER = null;
+    public static final ItemDebug WAND = getNull();
+    public static final ItemFireStarter FIRESTARTER = getNull();
+    public static final ItemGoldPan GOLDPAN = getNull();
+    public static final ItemMisc HAY = getNull();
+    public static final ItemLeatherTFC LEATHER = getNull();
 
     @GameRegistry.ObjectHolder("ceramics/fire_clay")
-    public static final ItemFireClay FIRE_CLAY = null;
+    public static final ItemFireClay FIRE_CLAY = getNull();
     @GameRegistry.ObjectHolder("mold/ingot")
-    public static final ItemMold MOLD_INGOT = null;
+    public static final ItemMold MOLD_INGOT = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/vessel")
-    public static final ItemUnfiredPottery CERAMICS_UNFIRED_VESSEL = null;
+    public static final ItemUnfiredPottery CERAMICS_UNFIRED_VESSEL = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/vessel")
-    public static final ItemSmallVessel CERAMICS_FIRED_VESSEL = null;
+    public static final ItemSmallVessel CERAMICS_FIRED_VESSEL = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/vessel_glazed")
-    public static final ItemUnfiredSmallVessel CERAMICS_UNFIRED_VESSEL_GLAZED = null;
+    public static final ItemUnfiredSmallVessel CERAMICS_UNFIRED_VESSEL_GLAZED = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/vessel_glazed")
-    public static final ItemSmallVessel CERAMICS_FIRED_VESSEL_GLAZED = null;
+    public static final ItemSmallVessel CERAMICS_FIRED_VESSEL_GLAZED = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/jug")
-    public static final ItemUnfiredPottery CERAMICS_UNFIRED_JUG = null;
+    public static final ItemUnfiredPottery CERAMICS_UNFIRED_JUG = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/pot")
-    public static final ItemUnfiredPottery CERAMICS_UNFIRED_POT = null;
+    public static final ItemUnfiredPottery CERAMICS_UNFIRED_POT = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/bowl")
-    public static final ItemUnfiredPottery CERAMICS_UNFIRED_BOWL = null;
+    public static final ItemUnfiredPottery CERAMICS_UNFIRED_BOWL = getNull();
 
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;

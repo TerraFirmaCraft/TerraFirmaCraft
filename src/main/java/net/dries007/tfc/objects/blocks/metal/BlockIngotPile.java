@@ -135,7 +135,6 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
         {
             posTop = posTop.up();
             stateTop = worldIn.getBlockState(posTop);
-            //noinspection ConstantConditions
             if (stateTop.getBlock() != BlocksTFC.INGOT_PILE)
             {
                 te.setCount(te.getCount() - 1);
@@ -146,7 +145,6 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
                         worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                     }
                     playerIn.addItemStackToInventory(new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
-//                    InventoryHelper.spawnItemStack(worldIn, posTop.getX(), posTop.down().getY() + 0.125 * (te.getCount() / 8 + 2), posTop.getZ(), );
                 }
                 return true;
             }
@@ -165,7 +163,6 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
                                 worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                             }
                             playerIn.addItemStackToInventory(new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
-                            //InventoryHelper.spawnItemStack(worldIn, posTop.getX(), posTop.getY() + 0.125 * (te.getCount() / 8 + 2), posTop.getZ(), new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
                         }
                         return true;
                     }
@@ -187,7 +184,6 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
     private boolean collapseDown(World world, BlockPos pos)
     {
         IBlockState stateDown = world.getBlockState(pos.down());
-        //noinspection ConstantConditions
         if (stateDown.getBlock() == BlocksTFC.INGOT_PILE)
         {
 

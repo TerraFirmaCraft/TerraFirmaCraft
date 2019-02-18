@@ -32,6 +32,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
+import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
@@ -153,7 +155,7 @@ public class ClientEvents
         IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         if (heat != null)
         {
-            heat.addHeatInfo(stack, tt, true);
+            heat.addHeatInfo(stack, tt);
         }
 
         if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
@@ -181,6 +183,14 @@ public class ClientEvents
                 {
                     ((IRockObject) block).addRockInfo(stack, tt);
                 }
+            }
+
+            // todo: remove this debug tooltip
+            if (stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null))
+            {
+                IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+                assert cap != null;
+                tt.add("Forge Stuff: " + cap.serializeNBT());
             }
 
             if (ConfigTFC.CLIENT.showToolClassTooltip)
@@ -222,7 +232,7 @@ public class ClientEvents
             {
                 if (stack.hasTagCompound())
                 {
-                    tt.add("NBT: " + stack.getTagCompound().toString());
+                    tt.add("NBT: " + stack.getTagCompound());
                 }
             }
         }

@@ -11,7 +11,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.capability.size.Size;
-import net.dries007.tfc.objects.inventory.SlotSized;
+import net.dries007.tfc.objects.inventory.slot.SlotSized;
 
 public class ContainerSmallVessel extends ContainerItemStack
 {

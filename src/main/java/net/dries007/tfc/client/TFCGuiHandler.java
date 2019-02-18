@@ -18,18 +18,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.types.KnappingRecipe;
+import net.dries007.tfc.api.recipes.KnappingRecipe;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IRockObject;
-import net.dries007.tfc.client.gui.GuiContainerTFC;
-import net.dries007.tfc.client.gui.GuiKnapping;
-import net.dries007.tfc.client.gui.GuiLiquidTransfer;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.client.gui.*;
 import net.dries007.tfc.objects.container.*;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemSmallVessel;
 import net.dries007.tfc.objects.items.rock.ItemRock;
+import net.dries007.tfc.objects.te.TEAnvilTFC;
+import net.dries007.tfc.objects.te.TECharcoalForge;
 import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
@@ -39,8 +38,6 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 public class TFCGuiHandler implements IGuiHandler
 {
     private static final ResourceLocation SMALL_INVENTORY_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/small_inventory.png");
-    private static final ResourceLocation FIRE_PIT_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/fire_pit.png");
-
     private static final ResourceLocation CLAY_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button.png");
     private static final ResourceLocation FIRE_CLAY_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_fire.png");
     private static final ResourceLocation LEATHER_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/leather_button.png");
@@ -58,7 +55,6 @@ public class TFCGuiHandler implements IGuiHandler
 
     @Override
     @Nullable
-    @SuppressWarnings("ConstantConditions")
     public Container getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         BlockPos pos = new BlockPos(x, y, z);
@@ -76,8 +72,13 @@ public class TFCGuiHandler implements IGuiHandler
             case MOLD:
                 return new ContainerLiquidTransfer(player.inventory, stack.getItem() instanceof ItemMold ? stack : player.getHeldItemOffhand());
             case FIRE_PIT:
-                TEFirePit teFirePit = Helpers.getTE(world, pos, TEFirePit.class);
-                return new ContainerFirePit(player.inventory, teFirePit);
+                return new ContainerFirePit(player.inventory, Helpers.getTE(world, pos, TEFirePit.class));
+            case CHARCOAL_FORGE:
+                return new ContainerCharcoalForge(player.inventory, Helpers.getTE(world, pos, TECharcoalForge.class));
+            case ANVIL:
+                return new ContainerAnvilTFC(player.inventory, Helpers.getTE(world, pos, TEAnvilTFC.class));
+            case ANVIL_PLAN:
+                return new ContainerAnvilPlan(player.inventory, Helpers.getTE(world, pos, TEAnvilTFC.class));
             case KNAPPING_STONE:
                 return new ContainerKnapping(KnappingRecipe.Type.STONE, player.inventory, stack.getItem() instanceof ItemRock ? stack : player.getHeldItemOffhand());
             case KNAPPING_CLAY:
@@ -93,23 +94,29 @@ public class TFCGuiHandler implements IGuiHandler
 
     @Override
     @Nullable
-    @SuppressWarnings("ConstantConditions")
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         Container container = getServerGuiElement(ID, player, world, x, y, z);
         Type type = Type.valueOf(ID);
+        BlockPos pos = new BlockPos(x, y, z);
         switch (type)
         {
             case LOG_PILE:
-                return new GuiContainerTFC(container, player.inventory, SMALL_INVENTORY_BACKGROUND, BlocksTFC.LOG_PILE.getTranslationKey());
+                return new GuiContainerTFC(container, player.inventory, SMALL_INVENTORY_BACKGROUND);
             case SMALL_VESSEL:
-                return new GuiContainerTFC(container, player.inventory, SMALL_INVENTORY_BACKGROUND, ItemsTFC.CERAMICS_FIRED_VESSEL.getTranslationKey());
+                return new GuiContainerTFC(container, player.inventory, SMALL_INVENTORY_BACKGROUND);
             case SMALL_VESSEL_LIQUID:
-                return new GuiLiquidTransfer(container, player, "", player.getHeldItemMainhand().getItem() instanceof ItemSmallVessel);
+                return new GuiLiquidTransfer(container, player, player.getHeldItemMainhand().getItem() instanceof ItemSmallVessel);
             case MOLD:
-                return new GuiLiquidTransfer(container, player, "", player.getHeldItemMainhand().getItem() instanceof ItemMold);
+                return new GuiLiquidTransfer(container, player, player.getHeldItemMainhand().getItem() instanceof ItemMold);
             case FIRE_PIT:
-                return new GuiContainerTFC(container, player.inventory, FIRE_PIT_BACKGROUND, BlocksTFC.FIREPIT.getTranslationKey());
+                return new GuiFirePit(container, player.inventory, Helpers.getTE(world, pos, TEFirePit.class));
+            case CHARCOAL_FORGE:
+                return new GuiCharcoalForge(container, player.inventory, Helpers.getTE(world, pos, TECharcoalForge.class));
+            case ANVIL:
+                return new GuiAnvilTFC(container, player.inventory, Helpers.getTE(world, pos, TEAnvilTFC.class));
+            case ANVIL_PLAN:
+                return new GuiAnvilPlan(container, player.inventory, Helpers.getTE(world, pos, TEAnvilTFC.class));
             case KNAPPING_STONE:
                 ItemStack stack = player.getHeldItemMainhand();
                 Rock rock = stack.getItem() instanceof IRockObject ? ((IRockObject) stack.getItem()).getRock(stack) :
@@ -137,6 +144,9 @@ public class TFCGuiHandler implements IGuiHandler
         KNAPPING_CLAY,
         KNAPPING_FIRE_CLAY,
         KNAPPING_LEATHER,
+        CHARCOAL_FORGE,
+        ANVIL,
+        ANVIL_PLAN,
         NULL;
 
         private static Type[] values = values();

@@ -85,6 +85,7 @@ public class ItemMold extends ItemFiredPottery
             Metal metal = ((IMoldHandler) capFluidHandler).getMetal();
             if (metal != null)
             {
+                //noinspection ConstantConditions
                 return super.getTranslationKey(stack) + "." + metal.getRegistryName().getPath();
             }
         }
@@ -117,9 +118,9 @@ public class ItemMold extends ItemFiredPottery
     private class FilledMoldCapability extends ItemHeatHandler implements ICapabilityProvider, IMoldHandler
     {
         private final FluidTank tank;
-        private IFluidTankProperties fluidTankProperties[];
+        private IFluidTankProperties[] fluidTankProperties;
 
-        public FilledMoldCapability(@Nullable NBTTagCompound nbt)
+        FilledMoldCapability(@Nullable NBTTagCompound nbt)
         {
             super();
             tank = new FluidTank(100);
@@ -159,20 +160,32 @@ public class ItemMold extends ItemFiredPottery
         }
 
         @Override
+        @Nonnull
         public NBTTagCompound serializeNBT()
         {
             NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setFloat("heat", getTemperature());
-            nbt.setLong("ticks", CalenderTFC.getTotalTime());
+            float temp = getTemperature();
+            nbt.setFloat("heat", temp);
+            if (temp <= 0)
+            {
+                nbt.setLong("ticks", -1);
+            }
+            else
+            {
+                nbt.setLong("ticks", CalenderTFC.getTotalTime());
+            }
             return tank.writeToNBT(nbt);
         }
 
         @Override
         public void deserializeNBT(NBTTagCompound nbt)
         {
-            temperature = nbt.getFloat("heat");
-            lastUpdateTick = nbt.getLong("ticks");
-            tank.readFromNBT(nbt);
+            if (nbt != null)
+            {
+                temperature = nbt.getFloat("heat");
+                lastUpdateTick = nbt.getLong("ticks");
+                tank.readFromNBT(nbt);
+            }
         }
 
         @Override
@@ -200,19 +213,19 @@ public class ItemMold extends ItemFiredPottery
         @Override
         public FluidStack drain(FluidStack resource, boolean doDrain)
         {
-            return getTemperature() >= meltingPoint ? tank.drain(resource, doDrain) : null;
+            return getTemperature() >= meltTemp ? tank.drain(resource, doDrain) : null;
         }
 
         @Nullable
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain)
         {
-            return getTemperature() >= meltingPoint ? tank.drain(maxDrain, doDrain) : null;
+            return getTemperature() >= meltTemp ? tank.drain(maxDrain, doDrain) : null;
         }
 
         @SideOnly(Side.CLIENT)
         @Override
-        public void addHeatInfo(ItemStack stack, List<String> text, boolean clearStackNBT)
+        public void addHeatInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
         {
             Metal metal = getMetal();
             if (metal != null)
@@ -222,7 +235,7 @@ public class ItemMold extends ItemFiredPottery
                     desc += " - " + I18n.format("tfc.tooltip.liquid");
                 text.add(desc);
             }
-            IMoldHandler.super.addHeatInfo(stack, text, false); // Never clear the NBT based on heat alone
+            IMoldHandler.super.addHeatInfo(stack, text);
         }
 
         @Override
@@ -232,9 +245,9 @@ public class ItemMold extends ItemFiredPottery
         }
 
         @Override
-        public float getMeltingPoint()
+        public float getMeltTemp()
         {
-            return meltingPoint;
+            return meltTemp;
         }
 
         private void updateFluidData(FluidStack fluid)
@@ -242,12 +255,12 @@ public class ItemMold extends ItemFiredPottery
             if (fluid != null && fluid.getFluid() instanceof FluidMetal)
             {
                 Metal metal = ((FluidMetal) fluid.getFluid()).getMetal();
-                this.meltingPoint = metal.getMeltTemp();
+                this.meltTemp = metal.getMeltTemp();
                 this.heatCapacity = metal.getSpecificHeat();
             }
             else
             {
-                this.meltingPoint = 1000;
+                this.meltTemp = 1000;
                 this.heatCapacity = 1;
             }
         }

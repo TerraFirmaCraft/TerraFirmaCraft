@@ -15,6 +15,11 @@ import net.dries007.tfc.ConfigTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+/**
+ * todo: this class likley has a lot of problems that will become aparent on server vs client operation
+ * There needs to be syncronization between server and client getTotalWorldTime (it is not naturally synced)
+ * Probably an event listener for client ticks - see how it was implemented and fixed in Tinkers Forging (ask AlcatrazEscapee)
+ */
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class CalenderTFC
 {

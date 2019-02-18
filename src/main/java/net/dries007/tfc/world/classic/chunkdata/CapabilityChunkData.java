@@ -20,7 +20,7 @@ import net.dries007.tfc.network.PacketChunkData;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
-public final class ChunkCapabilityHandler
+public final class CapabilityChunkData
 {
     public static final ResourceLocation CHUNK_DATA = new ResourceLocation(MOD_ID, "chunkdata");
 

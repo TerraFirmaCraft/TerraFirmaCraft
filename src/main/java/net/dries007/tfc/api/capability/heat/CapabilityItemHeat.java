@@ -5,84 +5,49 @@
 
 package net.dries007.tfc.api.capability.heat;
 
-import javax.annotation.Nonnull;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.capability.DumbStorage;
+import net.dries007.tfc.util.Helpers;
 
-public class CapabilityItemHeat
+public final class CapabilityItemHeat
 {
     @CapabilityInject(IItemHeat.class)
-    public static Capability<IItemHeat> ITEM_HEAT_CAPABILITY = null;
+    public static final Capability<IItemHeat> ITEM_HEAT_CAPABILITY = Helpers.getNull();
+
+    public static final float MIN_TEMPERATURE = 0f;
+    /**
+     * For most practical purposes this is the max temperature than an item should reach.
+     * i.e. all metals should melt either before this, or never.
+     */
+    public static final float MAX_TEMPERATURE = 1800f;
 
     public static void preInit()
     {
-        CapabilityManager.INSTANCE.register(IItemHeat.class, new ItemHeatStorage(), ItemHeatHandler::new);
+        CapabilityManager.INSTANCE.register(IItemHeat.class, new DumbStorage<>(), ItemHeatHandler::new);
     }
 
     /**
-     * Call this from within IItemHeat#getTemperature();
+     * Call this from within {@link IItemHeat#getTemperature()}
      */
     public static float adjustTemp(float temp, float heatCapacity, long ticksSinceUpdate)
     {
-        final float newTemp = temp - heatCapacity * (float) ticksSinceUpdate * (float) ConfigTFC.GENERAL.temperatureModifier;
-        return newTemp < 0 ? 0 : newTemp;
-    }
-
-    /**
-     * Use this to increase the heat on an item stack
-     */
-    public static void addTemp(ItemStack stack, float modifier)
-    {
-        final IItemHeat cap = stack.getCapability(ITEM_HEAT_CAPABILITY, null);
-        if (cap != null)
-        {
-            addTemp(cap, modifier);
-            stack.setTagCompound(cap.serializeNBT());
-        }
+        if (ticksSinceUpdate == -1) return MIN_TEMPERATURE;
+        final float newTemp = temp - heatCapacity * (float) ticksSinceUpdate * (float) ConfigTFC.GENERAL.temperatureModifierGlobal;
+        return newTemp < MIN_TEMPERATURE ? MIN_TEMPERATURE : newTemp;
     }
 
     /**
      * Use this to increase the heat on an IItemHeat instance.
-     * Note: to save the change you will need to still call stack.setTagCompound(cap.serializeNBT());
      *
-     * @param modifier the modifier for how much this will heat up: 0 - 1 slows down cooling, 1 = no heating or cooling, > 1 heats, 2 heats at the same rate it cools
+     * @param modifier the modifier for how much this will heat up: 0 - 1 slows down cooling, 1 = no heating or cooling, > 1 heats, 2 heats at the same rate of normal cooling, 2+ heats faster
      */
     public static void addTemp(IItemHeat instance, float modifier)
     {
-        final float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * (float) ConfigTFC.GENERAL.temperatureModifier;
-        instance.setTemperature(temp > 1600f ? 1600f : temp);
+        final float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * (float) ConfigTFC.GENERAL.temperatureModifierGlobal;
+        instance.setTemperature(temp > MAX_TEMPERATURE ? MAX_TEMPERATURE : temp);
     }
-
-    public static class ItemHeatStorage implements Capability.IStorage<IItemHeat>
-    {
-        @Nonnull
-        @Override
-        public NBTBase writeNBT(Capability<IItemHeat> capability, IItemHeat instance, EnumFacing side)
-        {
-            NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setFloat("heat", instance.getTemperature());
-            return nbt;
-        }
-
-        @Override
-        public void readNBT(Capability<IItemHeat> capability, IItemHeat instance, EnumFacing side, NBTBase base)
-        {
-            if (base == null)
-            {
-                instance.setTemperature(0);
-                return;
-            }
-            NBTTagCompound nbt = (NBTTagCompound) base;
-            instance.setTemperature(nbt.getFloat("heat"));
-        }
-    }
-
 }

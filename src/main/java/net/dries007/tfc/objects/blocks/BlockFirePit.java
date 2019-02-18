@@ -37,21 +37,22 @@ import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEBellows;
 import net.dries007.tfc.objects.te.TEFirePit;
+import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
 public class BlockFirePit extends Block implements ITileEntityProvider, IBellowsHandler
 {
     public static final PropertyBool LIT = PropertyBool.create("lit");
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.03125D, 0.9375D);
-
-    private static Vec3i bellowsOffset = new Vec3i(1, 0, 0);
+    private static final Vec3i BELLOWS_OFFSET = new Vec3i(1, 0, 0);
 
     static
     {
-        TEBellows.offsets.add(bellowsOffset);
+        TEBellows.addBellowsOffset(BELLOWS_OFFSET);
     }
 
-    public BlockFirePit()
+
+    BlockFirePit()
     {
         super(Material.FIRE);
         setDefaultState(blockState.getBaseState().withProperty(LIT, false));
@@ -167,15 +168,16 @@ public class BlockFirePit extends Block implements ITileEntityProvider, IBellows
     {
         if (!worldIn.isRemote)
         {
-            if (player.isSneaking())
+            if (!state.getValue(LIT))
             {
                 ItemStack held = player.getHeldItem(hand);
                 if (ItemFireStarter.canIgnite(held))
                 {
                     worldIn.setBlockState(pos, state.withProperty(LIT, true));
+                    return true;
                 }
             }
-            else
+            if (!player.isSneaking())
             {
                 TFCGuiHandler.openGui(worldIn, pos, player, TFCGuiHandler.Type.FIRE_PIT);
             }
@@ -187,13 +189,17 @@ public class BlockFirePit extends Block implements ITileEntityProvider, IBellows
     @Override
     public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
     {
-        return offset.equals(bellowsOffset);
+        return offset.equals(BELLOWS_OFFSET);
     }
 
     @Override
-    public float onAirIntake(TEBellows te, BlockPos pos, float airAmount)
+    public float onAirIntake(TEBellows te, World world, BlockPos pos, float airAmount)
     {
-        //TODO: Do stuff
+        TEFirePit teFirePit = Helpers.getTE(world, pos, TEFirePit.class);
+        if (teFirePit != null)
+        {
+            teFirePit.onAirIntake(airAmount);
+        }
         return airAmount;
     }
 
