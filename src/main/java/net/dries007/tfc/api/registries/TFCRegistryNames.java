@@ -20,6 +20,7 @@ public final class TFCRegistryNames
     public static final ResourceLocation TREE = new ResourceLocation(MOD_ID, "tree");
     public static final ResourceLocation METAL = new ResourceLocation(MOD_ID, "metal");
     public static final ResourceLocation FLOWER = new ResourceLocation(MOD_ID, "flower");
+    public static final ResourceLocation DOUBLEFLOWER = new ResourceLocation(MOD_ID, "double_flower");
 
     public static final ResourceLocation ALLOY_RECIPE = new ResourceLocation(MOD_ID, "alloy_recipe");
     public static final ResourceLocation KNAPPING_RECIPE = new ResourceLocation(MOD_ID, "knapping_recipe");

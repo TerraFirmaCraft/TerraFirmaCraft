@@ -281,7 +281,7 @@ FLOWER_TYPES = [
     'tropical_milkweed',
     'butterfly_milkweed',
     'calendula',
-    'rose',
+    'poppy',
     'blue_orchid',
     'allium',
     'houstonia',
@@ -292,6 +292,10 @@ FLOWER_TYPES = [
     'oxeye_daisy',
     'paeonia',
     'goldenrod',
+]
+
+DOUBLE_FLOWER_TYPES = [
+    'rose',
 ]
 
 # Special 'hardcoded' cases
@@ -800,6 +804,31 @@ for flower_type in FLOWER_TYPES:
             'model': 'builtin/generated',
             'transform': 'forge:default-item'
         }
+    })
+
+# DOUBLE FLOWERS
+for flower_type in DOUBLE_FLOWER_TYPES:
+    blockstate(('plants', flower_type), 'cross', textures={
+        ('cross', 'layer0'): 'tfc:blocks/plants/%s_top' % flower_type
+    }, variants={
+		'half=lower': {
+			'model': 'cross',
+			'textures': {
+				'cross': 'tfc:blocks/plants/%s_bottom' % flower_type,
+				'layer0': 'tfc:blocks/plants/%s_bottom' % flower_type
+			}
+		},
+		'half=upper': {
+			'model': 'cross',
+			'textures': {
+				'cross': 'tfc:blocks/plants/%s_top' % flower_type,
+				'layer0': 'tfc:blocks/plants/%s_top' % flower_type
+			}
+		},
+		'inventory': {
+			'model': 'builtin/generated',
+			'transform': 'forge:default-item'
+		}
     })
 
 #   _____ _

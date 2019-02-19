@@ -26,7 +26,7 @@ public class DefaultFlowers
     public static final ResourceLocation FLOWER_TROPICAL_MILKWEED = new ResourceLocation(MOD_ID, "tropical_milkweed");
     public static final ResourceLocation FLOWER_BUTTERFLY_MILKWEED = new ResourceLocation(MOD_ID, "butterfly_milkweed");
     public static final ResourceLocation FLOWER_CALENDULA = new ResourceLocation(MOD_ID, "calendula");
-    public static final ResourceLocation FLOWER_ROSE = new ResourceLocation(MOD_ID, "rose");
+    public static final ResourceLocation FLOWER_POPPY = new ResourceLocation(MOD_ID, "poppy");
     public static final ResourceLocation FLOWER_BLUE_ORCHID = new ResourceLocation(MOD_ID, "blue_orchid");
     public static final ResourceLocation FLOWER_ALLIUM = new ResourceLocation(MOD_ID, "allium");
     public static final ResourceLocation FLOWER_HOUSTONIA = new ResourceLocation(MOD_ID, "houstonia");
@@ -48,7 +48,7 @@ public class DefaultFlowers
             new Flower.Builder(FLOWER_TROPICAL_MILKWEED, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
             new Flower.Builder(FLOWER_BUTTERFLY_MILKWEED, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
             new Flower.Builder(FLOWER_CALENDULA, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_ROSE, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Flower.Builder(FLOWER_POPPY, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
             new Flower.Builder(FLOWER_BLUE_ORCHID, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
             new Flower.Builder(FLOWER_ALLIUM, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
             new Flower.Builder(FLOWER_HOUSTONIA, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
