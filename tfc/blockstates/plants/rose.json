@@ -4,14 +4,28 @@
   "defaults": {
     "model": "cross",
     "textures": {
-      "cross": "tfc:blocks/plants/rose",
-      "layer0": "tfc:blocks/plants/rose"
+      "cross": "tfc:blocks/plants/rose_top",
+      "layer0": "tfc:blocks/plants/rose_top"
     }
   },
   "variants": {
     "normal": [
       {}
     ],
+    "half=lower": {
+      "model": "cross",
+      "textures": {
+        "cross": "tfc:blocks/plants/rose_bottom",
+        "layer0": "tfc:blocks/plants/rose_bottom"
+      }
+    },
+    "half=upper": {
+      "model": "cross",
+      "textures": {
+        "cross": "tfc:blocks/plants/rose_top",
+        "layer0": "tfc:blocks/plants/rose_top"
+      }
+    },
     "inventory": {
       "model": "builtin/generated",
       "transform": "forge:default-item"
