@@ -29,6 +29,7 @@ public class TFCRegistries
     public static final IForgeRegistry<KnappingRecipe> KNAPPING = GameRegistry.findRegistry(KnappingRecipe.class);
 
     public static final IForgeRegistry<Flower> FLOWERS = GameRegistry.findRegistry(Flower.class);
+    public static final IForgeRegistry<DoubleFlower> DOUBLEFLOWERS = GameRegistry.findRegistry(DoubleFlower.class);
 
     static
     {

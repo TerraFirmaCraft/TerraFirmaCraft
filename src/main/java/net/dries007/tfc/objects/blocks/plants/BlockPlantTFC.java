@@ -17,15 +17,20 @@ import net.minecraft.world.IBlockAccess;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class BlockFlowerTFC extends BlockBush
+public class BlockPlantTFC extends BlockBush
 {
-    public BlockFlowerTFC()
+    public BlockPlantTFC()
     {
         super();
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
-        OreDictionaryHelper.register(this, "flower");
         Blocks.FIRE.setFireInfo(this, 5, 20);
+    }
+
+    @Override
+    public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
+    {
+        return true;
     }
 
     @Override

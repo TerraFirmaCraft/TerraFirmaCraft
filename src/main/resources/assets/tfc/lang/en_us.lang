@@ -146,13 +146,13 @@ tile.tfc.thatch.name=Thatch
 tile.tfc.firepit.name=Firepit
 
 # Flowers
-tile.tfc.plants.dandelion.name=Dsndelion
+tile.tfc.plants.dandelion.name=Dandelion
 tile.tfc.plants.nasturtium.name=Nasturtium
 tile.tfc.plants.meads_milkweed.name=Meads Milkweed
 tile.tfc.plants.tropical_milkweed.name=Tropical Milkweed
 tile.tfc.plants.butterfly_milkweed.name=Butterfly Milkweed
 tile.tfc.plants.calendula.name=Calendula
-tile.tfc.plants.rose.name=Rose
+tile.tfc.plants.poppy.name=Poppy
 tile.tfc.plants.blue_orchid.name=Blue Orchid
 tile.tfc.plants.allium.name=Allium
 tile.tfc.plants.houstonia.name=Houstonia
@@ -160,9 +160,10 @@ tile.tfc.plants.tulip_red.name=Red Tulip
 tile.tfc.plants.tulip_orange.name=Orange Tulip
 tile.tfc.plants.tulip_white.name=White Tulip
 tile.tfc.plants.tulip_pink.name=Pink Tulip
-tile.tfc.plants.oxeye_daisy.name=Oxeye Daisy
-tile.tfc.plants.paeonia.name=Paeonia
+tile.tfc.plants.oxeye_daisy.name=Daisy
+tile.tfc.plants.paeonia.name=Peony
 tile.tfc.plants.goldenrod.name=Goldenrod
+tile.tfc.plants.rose.name=Rose Bush
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite
