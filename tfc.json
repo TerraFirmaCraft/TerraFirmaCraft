@@ -5,6 +5,6 @@
     "1.12.2-recommended": "0.1.0"
   },
   "1.12.2": {
-    "0.1.0": "Commit message of the century: Fixed a number of issues and added a whole bunch of little things:\n - Better shift-click integration for various GUIs\n - Forgeable item heat tooltips (workable, weldable, danger)\n - Anvil tooltips, GUI cleanup, rendering, and bugfixes\n - Migrated knapping packet to PacketGuiButton\n - Firepit bellows integration\n - Fixes involving incorrectly specified metal tiers / missing tiers.\n - IFireable cleanup involving tiers\nAnd lots of javadoc comments everywhere"
+    "0.1.0": "Merge pull request #25 from alcatrazEscapee/forge-stuff\nMetalworking Stuff"
   }
 }
