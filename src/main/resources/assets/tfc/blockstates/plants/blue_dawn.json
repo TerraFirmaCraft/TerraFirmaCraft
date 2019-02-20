@@ -1,0 +1,38 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:empty",
+    "textures": {
+      "particle": "tfc:blocks/plants/blue_dawn_bottom",
+      "top": "tfc:blocks/plants/blue_dawn_top",
+      "middle": "tfc:blocks/plants/blue_dawn_middle",
+      "bottom": "tfc:blocks/plants/blue_dawn_bottom"
+    }
+  },
+  "variants": {
+    "down": {
+      "true":  { "submodel": "tfc:creeping_plant" },
+      "false": {}
+    },
+    "east": {
+      "true":  { "submodel": "tfc:creeping_plant", "x": 270, "y": 90 },
+      "false": {}
+    },
+    "north": {
+      "true":  { "submodel": "tfc:creeping_plant", "x": 270 },
+      "false": {}
+    },
+    "south": {
+      "true":  { "submodel": "tfc:creeping_plant", "x": 270, "y": 180 },
+      "false": {}
+    },
+    "up": {
+      "true":  { "submodel": "tfc:creeping_plant", "x": 180 },
+      "false": {}
+    },
+    "west": {
+      "true":  { "submodel": "tfc:creeping_plant", "x": 270, "y": 270 },
+      "false": {}
+    }
+  }
+}

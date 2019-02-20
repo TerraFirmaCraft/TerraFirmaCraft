@@ -10,15 +10,15 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import net.dries007.tfc.api.registries.TFCRegistryEvent;
-import net.dries007.tfc.api.types.Flower;
+import net.dries007.tfc.api.types.Plant;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
-public class DefaultFlowers
+public class DefaultPlants
 {
     /**
-     * Default Flower ResourceLocations
+     * Default Plant ResourceLocations
      */
     public static final ResourceLocation FLOWER_DANDELION = new ResourceLocation(MOD_ID, "dandelion");
     public static final ResourceLocation FLOWER_NASTURTIUM = new ResourceLocation(MOD_ID, "nasturtium");
@@ -39,26 +39,26 @@ public class DefaultFlowers
     public static final ResourceLocation FLOWER_GOLDENROD = new ResourceLocation(MOD_ID, "goldenrod");
 
     @SubscribeEvent
-    public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<Flower> event)
+    public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<Plant> event)
     {
         event.getRegistry().registerAll(
-            new Flower.Builder(FLOWER_DANDELION, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_NASTURTIUM, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_MEADS_MILKWEED, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_TROPICAL_MILKWEED, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_BUTTERFLY_MILKWEED, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_CALENDULA, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_POPPY, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_BLUE_ORCHID, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_ALLIUM, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_HOUSTONIA, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_TULIP_RED, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_TULIP_ORANGE, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_TULIP_WHITE, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_TULIP_PINK, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_OXEYE_DAISY, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_PAEONIA, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new Flower.Builder(FLOWER_GOLDENROD, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build()
+            new Plant.Builder(FLOWER_DANDELION, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_NASTURTIUM, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_MEADS_MILKWEED, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_TROPICAL_MILKWEED, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_BUTTERFLY_MILKWEED, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_CALENDULA, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_POPPY, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_BLUE_ORCHID, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_ALLIUM, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_HOUSTONIA, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_TULIP_RED, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_TULIP_ORANGE, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_TULIP_WHITE, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_TULIP_PINK, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_OXEYE_DAISY, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_PAEONIA, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
+            new Plant.Builder(FLOWER_GOLDENROD, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build()
         );
     }
 }

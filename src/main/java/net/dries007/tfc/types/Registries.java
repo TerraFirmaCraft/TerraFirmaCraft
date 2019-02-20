@@ -40,8 +40,9 @@ public class Registries
         newRegistry(TFCRegistryNames.METAL, Metal.class, true);// Required before: ORE, ALLOY_RECIPE
         newRegistry(TFCRegistryNames.ORE, Ore.class, true);
         newRegistry(TFCRegistryNames.TREE, Tree.class, true);
-        newRegistry(TFCRegistryNames.FLOWER, Flower.class, true);
-        newRegistry(TFCRegistryNames.DOUBLEFLOWER, DoubleFlower.class, true);
+        newRegistry(TFCRegistryNames.PLANT, Plant.class, true);
+        newRegistry(TFCRegistryNames.DOUBLEPLANT, DoublePlant.class, true);
+        newRegistry(TFCRegistryNames.CREEPINGPLANT, CreepingPlant.class, true);
 
         // Normal registries
         newRegistry(TFCRegistryNames.ALLOY_RECIPE, AlloyRecipe.class, false);

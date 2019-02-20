@@ -38,11 +38,13 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
         this.setDefaultState(this.blockState.getBaseState().withProperty(HALF, EnumBlockHalf.LOWER));
     }
 
+    @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         return super.canPlaceBlockAt(worldIn, pos) && worldIn.isAirBlock(pos.up());
     }
 
+    @Override
     protected void checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         if (!this.canBlockStay(worldIn, pos, state))
@@ -67,6 +69,7 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
         }
     }
 
+    @Override
     public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
     {
         if (state.getBlock() != this) return super.canBlockStay(worldIn, pos, state);
@@ -87,16 +90,19 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
         return FULL_BLOCK_AABB;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         return (meta & 8) > 0 ? this.getDefaultState().withProperty(HALF, EnumBlockHalf.UPPER) : this.getDefaultState().withProperty(HALF, EnumBlockHalf.LOWER);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(HALF) == EnumBlockHalf.UPPER ? 8 : 0;
     }
 
+    @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         if (state.getValue(HALF) == EnumBlockHalf.UPPER)
@@ -107,6 +113,7 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
         return state;
     }
 
+    @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         if (state.getValue(HALF) == BlockDoublePlantTFC.EnumBlockHalf.UPPER)
@@ -119,6 +126,7 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
         }
     }
 
+    @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
         {
@@ -126,16 +134,19 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
         }
     }
 
+    @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(HALF, EnumBlockHalf.UPPER), 2);
     }
 
+    @Override
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
         return new ItemStack(this, 1);
     }
 
+    @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
     {
         if (state.getValue(HALF) == EnumBlockHalf.UPPER)
@@ -160,6 +171,7 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
         super.onBlockHarvested(worldIn, pos, state, player);
     }
 
+    @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {HALF});
