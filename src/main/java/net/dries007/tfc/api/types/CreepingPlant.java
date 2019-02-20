@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class DoubleFlower extends IForgeRegistryEntry.Impl<DoubleFlower>
+public class CreepingPlant extends IForgeRegistryEntry.Impl<CreepingPlant>
 {
     private final float dominance;
     private final float minTemp;
@@ -38,7 +38,7 @@ public class DoubleFlower extends IForgeRegistryEntry.Impl<DoubleFlower>
      * @param maxDensity max density. Use 2 to get all density values
      * @param dominance  how much this flower is chosen over other flowers. Range 0 <> 10 with 10 being the most common
      */
-    public DoubleFlower(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, float dominance)
+    public CreepingPlant(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, float dominance)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -90,22 +90,22 @@ public class DoubleFlower extends IForgeRegistryEntry.Impl<DoubleFlower>
             this.maxDensity = 2f;
         }
 
-        public DoubleFlower.Builder setDensity(float min, float max)
+        public CreepingPlant.Builder setDensity(float min, float max)
         {
             this.minDensity = min;
             this.maxDensity = max;
             return this;
         }
 
-        public DoubleFlower.Builder setDominance(float dom)
+        public CreepingPlant.Builder setDominance(float dom)
         {
             this.dominance = dom;
             return this;
         }
 
-        public DoubleFlower build()
+        public CreepingPlant build()
         {
-            return new DoubleFlower(name, minTemp, maxTemp, minRain, maxRain, minDensity, maxDensity, dominance);
+            return new CreepingPlant(name, minTemp, maxTemp, minRain, maxRain, minDensity, maxDensity, dominance);
         }
     }
 }

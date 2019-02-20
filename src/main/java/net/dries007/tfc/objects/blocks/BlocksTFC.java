@@ -27,6 +27,7 @@ import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
+import net.dries007.tfc.objects.blocks.plants.BlockCreepingPlantTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockDoublePlantTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
@@ -127,8 +128,9 @@ public final class BlocksTFC
     private static ImmutableList<BlockAnvilTFC> allAnvils;
     private static ImmutableList<BlockSheet> allSheets;
     private static ImmutableList<BlockToolRack> allToolRackBlocks;
-    private static ImmutableList<BlockPlantTFC> allFlowerBlocks;
-    private static ImmutableList<BlockDoublePlantTFC> allDoubleFlowerBlocks;
+    private static ImmutableList<BlockPlantTFC> allPlantBlocks;
+    private static ImmutableList<BlockDoublePlantTFC> allDoublePlantBlocks;
+    private static ImmutableList<BlockCreepingPlantTFC> allCreepingPlantBlocks;
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
     {
@@ -220,14 +222,19 @@ public final class BlocksTFC
         return allToolRackBlocks;
     }
 
-    public static ImmutableList<BlockPlantTFC> getAllFlowerBlocks()
+    public static ImmutableList<BlockPlantTFC> getAllPlantBlocks()
     {
-        return allFlowerBlocks;
+        return allPlantBlocks;
     }
 
-    public static ImmutableList<BlockDoublePlantTFC> getAllDoubleFlowerBlocks()
+    public static ImmutableList<BlockDoublePlantTFC> getAllDoublePlantBlocks()
     {
-        return allDoubleFlowerBlocks;
+        return allDoublePlantBlocks;
+    }
+
+    public static ImmutableList<BlockCreepingPlantTFC> getAllCreepingPlantBlocks()
+    {
+        return allCreepingPlantBlocks;
     }
 
     @SubscribeEvent
@@ -297,8 +304,9 @@ public final class BlocksTFC
             Builder<BlockTrapDoorWoodTFC> trapDoors = ImmutableList.builder();
             Builder<BlockChestTFC> chests = ImmutableList.builder();
             Builder<BlockToolRack> toolRacks = ImmutableList.builder();
-            Builder<BlockPlantTFC> flowers = ImmutableList.builder();
-            Builder<BlockDoublePlantTFC> doubleFlowers = ImmutableList.builder();
+            Builder<BlockPlantTFC> plants = ImmutableList.builder();
+            Builder<BlockDoublePlantTFC> doublePlants = ImmutableList.builder();
+            Builder<BlockCreepingPlantTFC> creepingPlants = ImmutableList.builder();
 
             for (Tree wood : TFCRegistries.TREES.getValuesCollection())
             {
@@ -396,18 +404,26 @@ public final class BlocksTFC
 
         {
             Builder<BlockPlantTFC> b = ImmutableList.builder();
-            for (Flower flower : TFCRegistries.FLOWERS.getValuesCollection())
-                b.add(register(r, "plants/" + flower.getRegistryName().getPath(), new BlockPlantTFC(), CT_DECORATIONS));
-            allFlowerBlocks = b.build();
-            allFlowerBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+                b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockPlantTFC(), CT_DECORATIONS));
+            allPlantBlocks = b.build();
+            allPlantBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
         }
 
         {
             Builder<BlockDoublePlantTFC> b = ImmutableList.builder();
-            for (DoubleFlower doubleFlower : TFCRegistries.DOUBLEFLOWERS.getValuesCollection())
-                b.add(register(r, "plants/" + doubleFlower.getRegistryName().getPath(), new BlockDoublePlantTFC(), CT_DECORATIONS));
-            allDoubleFlowerBlocks = b.build();
-            allDoubleFlowerBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
+            for (DoublePlant doublePlant : TFCRegistries.DOUBLEPLANTS.getValuesCollection())
+                b.add(register(r, "plants/" + doublePlant.getRegistryName().getPath(), new BlockDoublePlantTFC(), CT_DECORATIONS));
+            allDoublePlantBlocks = b.build();
+            allDoublePlantBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
+        }
+
+        {
+            Builder<BlockCreepingPlantTFC> b = ImmutableList.builder();
+            for (CreepingPlant creepingPlant : TFCRegistries.CREEPINGPLANTS.getValuesCollection())
+                b.add(register(r, "plants/" + creepingPlant.getRegistryName().getPath(), new BlockCreepingPlantTFC(), CT_DECORATIONS));
+            allCreepingPlantBlocks = b.build();
+            allCreepingPlantBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
         }
 
         inventoryItemBlocks.add(new ItemBlockTorchTFC(register(r, "torch", new BlockTorchTFC(), CT_MISC)));
@@ -420,8 +436,6 @@ public final class BlocksTFC
         // todo: pumpkin/melon ?
         // todo: waterplants
         // todo: varied lilypads?
-        // todo: plants
-        // todo: moss? (It's unused in tfc1710, but it's like a retextured vine that spawns on trees, might be nice to have)
         // todo: fruit tree stuff (leaves, saplings, logs)
 
         // todo: supports (h & v)
