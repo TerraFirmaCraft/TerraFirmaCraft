@@ -20,7 +20,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 public class DefaultCrops
 {
     /**
-     * Default tree ResourceLocations
+     * Default crop ResourceLocations
      */
     public static final ResourceLocation BARLEY = new ResourceLocation(MOD_ID, "barley");
     public static final ResourceLocation MAIZE = new ResourceLocation(MOD_ID, "maize");
@@ -46,7 +46,7 @@ public class DefaultCrops
     public static final ResourceLocation JUTE = new ResourceLocation(MOD_ID, "jute");
 
     @SubscribeEvent
-    public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<Crop> event) //todo Set temperatures, rainfall and lifespan of crops
+    public static void onPreRegisterCropCategory(TFCRegistryEvent.RegisterPreBlock<Crop> event) //todo Set temperatures, rainfall and lifespan of crops
     {
         event.getRegistry().registerAll(
             new Crop.Builder(BARLEY, 0f, 40f, 4f, 35f, 20, 210,7, (ConfigTFC.GENERAL.monthLength / 2), false,6).setDensity(0.1f, 0.6f).build(),
