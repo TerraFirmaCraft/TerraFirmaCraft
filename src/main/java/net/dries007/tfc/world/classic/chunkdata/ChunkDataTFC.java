@@ -221,6 +221,7 @@ public final class ChunkDataTFC
                 return new NBTBuilder().setBoolean("valid", false).build();
             }
             NBTTagCompound root = new NBTTagCompound();
+            root.setBoolean("valid", true);
 
             root.setTag("rockLayer1", new NBTTagIntArray(instance.rockLayer1));
             root.setTag("rockLayer2", new NBTTagIntArray(instance.rockLayer2));
