@@ -112,7 +112,7 @@ public class DefaultFood
     public static final ResourceLocation SUGARCANE = new ResourceLocation(MOD_ID, "sugarcane");
 
     @SubscribeEvent
-    public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<Food> event) //todo Set all the nutrient and decay values
+    public static void onPreRegisterFoodCategory(TFCRegistryEvent.RegisterPreBlock<Food> event) //todo Set all the nutrient and decay values
     {
         event.getRegistry().registerAll(
             new Food.Builder(BANANA,1, 1, 1, 1, 1, 1, 1, 1, true, 1).build(),

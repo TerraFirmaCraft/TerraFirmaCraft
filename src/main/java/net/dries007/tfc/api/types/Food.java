@@ -18,7 +18,7 @@ public class Food extends IForgeRegistryEntry.Impl<Food>
     private final float protein;
     private final float vitamin;
     private final float waterContent;
-    private final float heal;
+    private final int calories;
     private final float saturation;
     private boolean edible;
     private final float decayRate;
@@ -39,7 +39,7 @@ public class Food extends IForgeRegistryEntry.Impl<Food>
      * @param protein          Protein content of this food
      * @param vitamin          Vitamin content of this food
      * @param waterContent     Water content of this food, can be negative(will contribute to filling thirst bar)
-     * @param heal             A vanilla parameter for how much food haunches
+     * @param calories         A value of 1 fills half haunch. All food will fill stomach same amount, but this determines how much food bar fills.
      * @param saturation       How much the food contributes to saturation, only meals will contribute
      * @param edible           Can it be eaten
      * @param decayRate        Rate of decay
@@ -47,7 +47,7 @@ public class Food extends IForgeRegistryEntry.Impl<Food>
      */
 
 
-    public Food(@Nonnull ResourceLocation name, float mineral, float carb, float fat, float protein, float vitamin, float waterContent, float heal, float saturation, boolean edible, float decayRate)
+    public Food(@Nonnull ResourceLocation name, float mineral, float carb, float fat, float protein, float vitamin, float waterContent, int calories, float saturation, boolean edible, float decayRate)
     {
         this.mineral = mineral;
         this.carb = carb;
@@ -55,7 +55,7 @@ public class Food extends IForgeRegistryEntry.Impl<Food>
         this.protein = protein;
         this.vitamin = vitamin;
         this.waterContent = waterContent;
-        this.heal = heal;
+        this.calories = calories;
         this.saturation = saturation;
         this.edible = edible;
         this.decayRate = decayRate;
@@ -76,7 +76,7 @@ public class Food extends IForgeRegistryEntry.Impl<Food>
 
     public float getWaterContent() { return waterContent; }
 
-    public float getHeal() { return heal; }
+    public int getCalories() { return calories; }
 
     public float getSaturation() { return saturation; }
 
@@ -97,14 +97,14 @@ public class Food extends IForgeRegistryEntry.Impl<Food>
         private float protein;
         private float vitamin;
         private float waterContent;
-        private float heal;
+        private int calories;
         private float saturation;
         private boolean edible;
         private float decayRate;
 
         private ResourceLocation name;
 
-        public Builder(@Nonnull ResourceLocation name, float mineral, float carb, float fat, float protein, float vitamin, float waterContent, float heal, float saturation, boolean edible, float decayRate)
+        public Builder(@Nonnull ResourceLocation name, float mineral, float carb, float fat, float protein, float vitamin, float waterContent, int calories, float saturation, boolean edible, float decayRate)
         {
             this.name = name;
             this.mineral = mineral;
@@ -113,7 +113,7 @@ public class Food extends IForgeRegistryEntry.Impl<Food>
             this.protein = protein;
             this.vitamin = vitamin;
             this.waterContent = waterContent;
-            this.heal = heal;
+            this.calories = calories;
             this.saturation = saturation;
             this.edible = edible;
             this.decayRate = decayRate;
@@ -122,7 +122,7 @@ public class Food extends IForgeRegistryEntry.Impl<Food>
 
         public Food build()
         {
-            return new Food(name, mineral, carb, fat, protein, vitamin, waterContent, heal, saturation, edible, decayRate);
+            return new Food(name, mineral, carb, fat, protein, vitamin, waterContent, calories, saturation, edible, decayRate);
         }
     }
 }
