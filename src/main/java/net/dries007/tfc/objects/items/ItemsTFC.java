@@ -21,7 +21,6 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.*;
-import net.dries007.tfc.objects.Food;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.Powder;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
@@ -180,8 +179,8 @@ public final class ItemsTFC
         for (Crop type : TFCRegistries.CROPS.getValuesCollection())
             simpleItems.add(register(r, "crops/seedbag/" + type.getRegistryName().getPath(), (new ItemSeedsTFC(type, BlockCropsTFC.get(type))), CT_PLANTS));
 
-        for (Food food : Food.values())
-            simpleItems.add(register(r, "food/" + food.name().toLowerCase(), (new ItemFoodTFC(food, food.heal, food.saturation)), CT_FOOD ));
+        for (Food food : TFCRegistries.FOODS.getValuesCollection())
+            simpleItems.add(register(r, "food/" + food.getRegistryName().getPath(), (new ItemFoodTFC(food, food.getCalories(), food.getSaturation(), false)), CT_FOOD ));
 
         // FLAT
         for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
