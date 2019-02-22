@@ -16,50 +16,50 @@
     },
         "half=lower,type=desert_grass": 
         [
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_desert_bottom"} , "weight": 3 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_desert_bottom"} , "weight": 4 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortgrass_desert_bottom"} , "weight": 2 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/double_grass_desert_bottom"} , "weight": 1 }
 		],
         "half=lower,type=lush_grass": 
         [
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_lush_bottom"} , "weight": 1 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_lush_bottom"} , "weight": 4 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortgrass_lush_bottom"} , "weight": 2 },
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_grass_lush_bottom"} , "weight": 3 }
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_grass_lush_bottom"} , "weight": 1 }
 		],
         "half=lower,type=sparse_grass": 
         [
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_sparse_bottom"} , "weight": 2 },
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortgrass_sparse_bottom"} , "weight": 1 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_sparse_bottom"} , "weight": 4 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortgrass_sparse_bottom"} , "weight": 2 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/double_grass_sparse_bottom"} , "weight": 1 }
 		],
         "half=lower,type=standard_grass": 
         [
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_bottom"} , "weight": 1 },
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortgrass_bottom"} , "weight": 1 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_bottom"} , "weight": 4 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortgrass_bottom"} , "weight": 2 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/double_grass_bottom"} , "weight": 1 }
 		],
         "half=upper,type=desert_grass": 
         [
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_desert_top"} , "weight": 3 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_desert_top"} , "weight": 4 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortgrass_desert_top"} , "weight": 2 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/double_grass_desert_top"} , "weight": 1 }
 		],
         "half=upper,type=lush_grass": 
         [
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_lush_top"} , "weight": 1 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_lush_top"} , "weight": 4 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortgrass_lush_top"} , "weight": 2 },
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_grass_lush_top"} , "weight": 3 }
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_grass_lush_top"} , "weight": 1 }
 		],
         "half=upper,type=sparse_grass": 
         [
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_sparse_top"} , "weight": 2 },
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortgrass_sparse_top"} , "weight": 1 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_sparse_top"} , "weight": 4 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortgrass_sparse_top"} , "weight": 2 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/double_grass_sparse_top"} , "weight": 1 }
 		],
         "half=upper,type=standard_grass": 
         [
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_top"} , "weight": 1 },
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortgrass_top"} , "weight": 1 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortergrass_top"} , "weight": 4 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/double_shortgrass_top"} , "weight": 2 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/double_grass_top"} , "weight": 1 }
 		]
 	}
