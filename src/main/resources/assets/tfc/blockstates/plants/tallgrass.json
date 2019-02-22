@@ -16,26 +16,26 @@
     },
         "type=desert_grass": 
         [
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/shortergrass_desert"} , "weight": 3 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/shortergrass_desert"} , "weight": 4 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/shortgrass_desert"} , "weight": 2 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/tallgrass_desert"} , "weight": 1 }
 		],
         "type=lush_grass": 
         [
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/shortergrass_lush"} , "weight": 1 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/shortergrass_lush"} , "weight": 4 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/shortgrass_lush"} , "weight": 2 },
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/tallgrass_lush"} , "weight": 3 }
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/tallgrass_lush"} , "weight": 1 }
 		],
         "type=sparse_grass": 
         [
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/shortergrass_sparse"} , "weight": 2 },
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/shortgrass_sparse"} , "weight": 1 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/shortergrass_sparse"} , "weight": 4 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/shortgrass_sparse"} , "weight": 2 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/tallgrass_sparse"} , "weight": 1 }
 		],
         "type=standard_grass": 
         [
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/shortergrass"} , "weight": 1 },
-            { "textures":{ "cross" : "tfc:blocks/plants/grass/shortgrass"} , "weight": 1 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/shortergrass"} , "weight": 4 },
+            { "textures":{ "cross" : "tfc:blocks/plants/grass/shortgrass"} , "weight": 2 },
             { "textures":{ "cross" : "tfc:blocks/plants/grass/tallgrass"} , "weight": 1 }
 		]
 	}

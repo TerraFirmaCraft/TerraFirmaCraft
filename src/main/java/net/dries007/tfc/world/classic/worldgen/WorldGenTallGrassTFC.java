@@ -32,7 +32,7 @@ public class WorldGenTallGrassTFC extends WorldGenerator
 
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        int maxPlantGen = 0;
+        int maxPlantGen;
         for (IBlockState iblockstate = worldIn.getBlockState(position); (iblockstate.getBlock().isAir(iblockstate, worldIn, position) || iblockstate.getBlock().isLeaves(iblockstate, worldIn, position)) && position.getY() > 0; iblockstate = worldIn.getBlockState(position))
         {
             position = position.down();
@@ -41,16 +41,16 @@ public class WorldGenTallGrassTFC extends WorldGenerator
         switch (this.plantType.getName())
         {
             case "desert_grass":
-                maxPlantGen = 8;
+                maxPlantGen = 2;
                 break;
             case "lush_grass":
-                maxPlantGen = 80;
+                maxPlantGen = 160;
                 break;
             case "sparse_grass":
-                maxPlantGen = 52;
+                maxPlantGen = 64;
                 break;
             default:
-                maxPlantGen = 64;
+                maxPlantGen = 128;
                 break;
         }
 

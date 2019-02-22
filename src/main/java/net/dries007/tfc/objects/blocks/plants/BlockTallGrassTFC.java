@@ -75,6 +75,12 @@ public class BlockTallGrassTFC extends BlockPlantTFC implements IGrowable, net.m
         return (state.getValue(TYPE)).getMeta();
     }
 
+    @Override
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
+    {
+        world.setBlockState(pos, this.blockState.getBaseState().withProperty(TYPE, getBiomePlantType(world, pos)));
+    }
+
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return null;
@@ -118,9 +124,29 @@ public class BlockTallGrassTFC extends BlockPlantTFC implements IGrowable, net.m
         return Block.EnumOffsetType.XYZ;
     }
 
+    @Override
+    protected boolean canSustainBush(IBlockState state)
+    {
+        return BlocksTFC.isSoil(state) || BlocksTFC.isSand(state);
+    }
+
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return TALL_GRASS_AABB;
+    }
+
+    @Override
+    public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    {
+        IBlockState iblockstate = world.getBlockState(pos.down());
+        if (BlocksTFC.isSand(iblockstate))
+        {
+            return EnumPlantType.Desert;
+        }
+        else
+        {
+            return EnumPlantType.Plains;
+        }
     }
 
     @Override
@@ -132,7 +158,40 @@ public class BlockTallGrassTFC extends BlockPlantTFC implements IGrowable, net.m
         return NonNullList.withSize(1, new ItemStack(new BlockTallGrassTFC(), 1, (world.getBlockState(pos).getValue(TYPE)).getMeta()));
     }
 
-    public static enum EnumType implements IStringSerializable
+    @Override
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
+    {
+        world.setBlockState(pos, this.blockState.getBaseState().withProperty(TYPE, getBiomePlantType(world, pos)));
+        this.checkAndDropBlock(world, pos, state);
+    }
+
+    public EnumType getBiomePlantType(World world, BlockPos pos)
+    {
+        ChunkDataTFC data = ChunkDataTFC.get(world, pos);
+        if (data == null || !data.isInitialized()) return EnumType.STANDARD;
+
+        final float temperature = ClimateTFC.getHeightAdjustedBiomeTemp(world, pos);
+        final float rainfall = ChunkDataTFC.getRainfall(world, pos);
+
+        if ((temperature > 15f && rainfall < 75f) || BlocksTFC.isSand(world.getBlockState(pos.down())))
+        {
+            return EnumType.DESERT;
+        }
+        else if (temperature > 20f)
+        {
+            if (rainfall > 300f)
+            {
+                return EnumType.LUSH;
+            }
+            else if (rainfall > 150f)
+            {
+                return EnumType.STANDARD;
+            }
+        }
+        return EnumType.SPARSE;
+    }
+
+    public enum EnumType implements IStringSerializable
     {
         SPARSE(0, "sparse_grass"),
         STANDARD(1, "standard_grass"),
@@ -181,65 +240,6 @@ public class BlockTallGrassTFC extends BlockPlantTFC implements IGrowable, net.m
         public String getName()
         {
             return this.name;
-        }
-    }
-
-    @Override
-    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
-    {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(TYPE, getBiomePlantType(world, pos)));
-        this.checkAndDropBlock(world, pos, state);
-    }
-
-    @Override
-    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
-    {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(TYPE, getBiomePlantType(world, pos)));
-    }
-
-    public EnumType getBiomePlantType(World world, BlockPos pos)
-    {
-        ChunkDataTFC data = ChunkDataTFC.get(world, pos);
-        if (data == null || !data.isInitialized()) return EnumType.STANDARD;
-
-        final float temperature = ClimateTFC.getHeightAdjustedBiomeTemp(world, pos);
-        final float rainfall = ChunkDataTFC.getRainfall(world, pos);
-
-        if (temperature > 15f && rainfall < 75f)
-        {
-            return EnumType.DESERT;
-        }
-        else if (temperature > 20f)
-        {
-            if (rainfall > 300f)
-            {
-                return EnumType.LUSH;
-            }
-            else if (rainfall > 150f)
-            {
-                return EnumType.STANDARD;
-            }
-        }
-        return EnumType.SPARSE;
-    }
-
-    @Override
-    protected boolean canSustainBush(IBlockState state)
-    {
-        return BlocksTFC.isSoil(state) || BlocksTFC.isSand(state);
-    }
-
-    @Override
-    public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
-    {
-        IBlockState iblockstate = world.getBlockState(pos.down());
-        if (BlocksTFC.isSand(iblockstate))
-        {
-            return EnumPlantType.Desert;
-        }
-        else
-        {
-            return EnumPlantType.Plains;
         }
     }
 }
