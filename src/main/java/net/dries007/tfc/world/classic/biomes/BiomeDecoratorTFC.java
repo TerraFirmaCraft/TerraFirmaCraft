@@ -8,14 +8,14 @@ package net.dries007.tfc.world.classic.biomes;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.BlockTallGrass;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.gen.feature.WorldGenTallGrass;
+import net.minecraftforge.common.BiomeDictionary;
 
+import net.dries007.tfc.objects.blocks.plants.BlockTallGrassTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.worldgen.*;
@@ -28,9 +28,10 @@ public class BiomeDecoratorTFC extends BiomeDecorator
     private final WorldGenPumpkinTFC pumpkinGen;
     private final WorldGenWaterPlants waterplantGen;
 
-    private final WorldGenTallGrass grassGen;
-    private final WorldGenTallGrass fernGen;
-    private final WorldGenTallGrass deadBushGen;
+    private final WorldGenTallGrassTFC sparseGrassGen;
+    private final WorldGenTallGrassTFC standardGrassGen;
+    private final WorldGenTallGrassTFC lushGrassGen;
+    private final WorldGenTallGrassTFC desertGrassGen;
 
     public BiomeDecoratorTFC(int lilyPadPerChunk, int waterPlantsPerChunk)
     {
@@ -47,9 +48,10 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         this.reedGen = null;
         this.waterlilyGen = null;
 
-        grassGen = new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
-        fernGen = new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
-        deadBushGen = new WorldGenTallGrass(BlockTallGrass.EnumType.DEAD_BUSH);
+        sparseGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumType.SPARSE);
+        standardGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumType.STANDARD);
+        lushGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumType.LUSH);
+        desertGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumType.DESERT);
 
         reedGen = new WorldGenTallPlant(Blocks.REEDS); // todo: replace block?
         sandGen = new WorldGenSandTFC(7);
@@ -108,10 +110,11 @@ public class BiomeDecoratorTFC extends BiomeDecorator
             if (ClimateTFC.getHeightAdjustedBiomeTemp(world, p2) >= 7)
                 waterplantGen.generate(world, rng, p2);
         }
+
         if (rainfall < 75f && temperature > 15f)
         {
             final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-            deadBushGen.generate(world, rng, p2);
+            sparseGrassGen.generate(world, rng, p2);
         }
         else
         {
@@ -120,13 +123,15 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                 for (int i = 0; i < 3 + floraDensity * 5; i++)
                 {
                     final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                    fernGen.generate(world, rng, p2);
+                    if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH))
+                        lushGrassGen.generate(world, rng, p2);
                 }
             }
             for (int i = 0; i < 1 + floraDensity * 5; i++)
             {
                 final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                grassGen.generate(world, rng, p2);
+                if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH))
+                    standardGrassGen.generate(world, rng, p2);
             }
         }
     }

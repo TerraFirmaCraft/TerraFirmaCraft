@@ -8,6 +8,7 @@
 package net.dries007.tfc.objects.blocks.plants;
 
 import java.util.Random;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -27,6 +28,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 
 public class BlockDoublePlantTFC extends BlockPlantTFC
 {
@@ -82,12 +86,6 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
             IBlockState iblockstate = worldIn.getBlockState(pos.up());
             return iblockstate.getBlock() == this && super.canBlockStay(worldIn, pos, iblockstate);
         }
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return FULL_BLOCK_AABB;
     }
 
     @Override
@@ -175,6 +173,24 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {HALF});
+    }
+
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.NORMAL;
+    }
+
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return Weight.MEDIUM;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return FULL_BLOCK_AABB;
     }
 
     private boolean onHarvest(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
