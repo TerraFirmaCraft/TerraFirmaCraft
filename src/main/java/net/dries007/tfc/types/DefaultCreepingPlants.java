@@ -26,11 +26,11 @@ public class DefaultCreepingPlants
     public static final ResourceLocation BLUE_DAWN = new ResourceLocation(MOD_ID, "blue_dawn");
 
     @SubscribeEvent
-    public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<CreepingPlant> event)
+    public static void onPreRegisterPlantCategory(TFCRegistryEvent.RegisterPreBlock<CreepingPlant> event)
     {
         event.getRegistry().registerAll(
-            new CreepingPlant.Builder(MOSS, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build(),
-            new CreepingPlant.Builder(BLUE_DAWN, 0f, 500f, 0f, 40f).setDominance(8.5f).setDensity(0.6f, 2f).build()
+            new CreepingPlant.Builder(MOSS, 0f, 500f, 0f, 40f).build(),
+            new CreepingPlant.Builder(BLUE_DAWN, 0f, 500f, 0f, 40f).build()
         );
     }
 }

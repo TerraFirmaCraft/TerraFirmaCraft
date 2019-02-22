@@ -29,8 +29,8 @@ public class TFCRegistries
     public static final IForgeRegistry<KnappingRecipe> KNAPPING = GameRegistry.findRegistry(KnappingRecipe.class);
 
     public static final IForgeRegistry<Plant> PLANTS = GameRegistry.findRegistry(Plant.class);
-    public static final IForgeRegistry<DoublePlant> DOUBLEPLANTS = GameRegistry.findRegistry(DoublePlant.class);
-    public static final IForgeRegistry<CreepingPlant> CREEPINGPLANTS = GameRegistry.findRegistry(CreepingPlant.class);
+    public static final IForgeRegistry<DoublePlant> DOUBLE_PLANTS = GameRegistry.findRegistry(DoublePlant.class);
+    public static final IForgeRegistry<CreepingPlant> CREEPING_PLANTS = GameRegistry.findRegistry(CreepingPlant.class);
 
     static
     {

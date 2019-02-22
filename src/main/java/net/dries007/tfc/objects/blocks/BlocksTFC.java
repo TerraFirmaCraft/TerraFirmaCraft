@@ -27,9 +27,7 @@ import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
-import net.dries007.tfc.objects.blocks.plants.BlockCreepingPlantTFC;
-import net.dries007.tfc.objects.blocks.plants.BlockDoublePlantTFC;
-import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
+import net.dries007.tfc.objects.blocks.plants.*;
 import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -106,6 +104,8 @@ public final class BlocksTFC
     public static final BlockLogPile LOG_PILE = null;
     public static final BlockIngotPile INGOT_PILE = null;
     public static final BlockTorchTFC TORCH = null;
+    public static final BlockTallGrassTFC TALL_GRASS = new BlockTallGrassTFC();
+    public static final BlockDoubleTallGrassTFC DOUBLE_TALL_GRASS = new BlockDoubleTallGrassTFC();
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -255,6 +255,9 @@ public final class BlocksTFC
         normalItemBlocks.add(new ItemBlock(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_BLOCKS)));
 
         normalItemBlocks.add(new ItemBlock(register(r, "thatch", new BlockThatch(Material.PLANTS), CT_DECORATIONS)));
+
+        normalItemBlocks.add(new ItemBlock(register(r, "plants/tallgrass", TALL_GRASS, CT_DECORATIONS)));
+        normalItemBlocks.add(new ItemBlock(register(r, "plants/double_grass", DOUBLE_TALL_GRASS, CT_DECORATIONS)));
 
         register(r, "firepit", new BlockFirePit()); // No item or creative tab.
 
@@ -412,7 +415,7 @@ public final class BlocksTFC
 
         {
             Builder<BlockDoublePlantTFC> b = ImmutableList.builder();
-            for (DoublePlant doublePlant : TFCRegistries.DOUBLEPLANTS.getValuesCollection())
+            for (DoublePlant doublePlant : TFCRegistries.DOUBLE_PLANTS.getValuesCollection())
                 b.add(register(r, "plants/" + doublePlant.getRegistryName().getPath(), new BlockDoublePlantTFC(), CT_DECORATIONS));
             allDoublePlantBlocks = b.build();
             allDoublePlantBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
@@ -420,7 +423,7 @@ public final class BlocksTFC
 
         {
             Builder<BlockCreepingPlantTFC> b = ImmutableList.builder();
-            for (CreepingPlant creepingPlant : TFCRegistries.CREEPINGPLANTS.getValuesCollection())
+            for (CreepingPlant creepingPlant : TFCRegistries.CREEPING_PLANTS.getValuesCollection())
                 b.add(register(r, "plants/" + creepingPlant.getRegistryName().getPath(), new BlockCreepingPlantTFC(), CT_DECORATIONS));
             allCreepingPlantBlocks = b.build();
             allCreepingPlantBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
