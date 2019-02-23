@@ -104,8 +104,11 @@ public final class BlocksTFC
     public static final BlockLogPile LOG_PILE = null;
     public static final BlockIngotPile INGOT_PILE = null;
     public static final BlockTorchTFC TORCH = null;
-    public static final BlockTallGrassTFC TALL_GRASS = new BlockTallGrassTFC();
-    public static final BlockDoubleTallGrassTFC DOUBLE_TALL_GRASS = new BlockDoubleTallGrassTFC();
+
+    @GameRegistry.ObjectHolder("plants/tallgrass")
+    public static final BlockTallGrassTFC TALL_GRASS = null;
+    @GameRegistry.ObjectHolder("plants/double_grass")
+    public static final BlockDoubleTallGrassTFC DOUBLE_TALL_GRASS = null;
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -222,6 +225,7 @@ public final class BlocksTFC
         return allToolRackBlocks;
     }
 
+
     public static ImmutableList<BlockPlantTFC> getAllPlantBlocks()
     {
         return allPlantBlocks;
@@ -236,6 +240,7 @@ public final class BlocksTFC
     {
         return allCreepingPlantBlocks;
     }
+
 
     @SubscribeEvent
     @SuppressWarnings("ConstantConditions")
@@ -256,8 +261,8 @@ public final class BlocksTFC
 
         normalItemBlocks.add(new ItemBlock(register(r, "thatch", new BlockThatch(Material.PLANTS), CT_DECORATIONS)));
 
-        normalItemBlocks.add(new ItemBlock(register(r, "plants/tallgrass", TALL_GRASS, CT_DECORATIONS)));
-        normalItemBlocks.add(new ItemBlock(register(r, "plants/double_grass", DOUBLE_TALL_GRASS, CT_DECORATIONS)));
+        normalItemBlocks.add(new ItemBlock(register(r, "plants/tallgrass", new BlockTallGrassTFC(), CT_DECORATIONS)));
+        normalItemBlocks.add(new ItemBlock(register(r, "plants/double_grass", new BlockDoubleTallGrassTFC(), CT_DECORATIONS)));
 
         register(r, "firepit", new BlockFirePit()); // No item or creative tab.
 
@@ -428,6 +433,7 @@ public final class BlocksTFC
             allCreepingPlantBlocks = b.build();
             allCreepingPlantBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
         }
+
 
         inventoryItemBlocks.add(new ItemBlockTorchTFC(register(r, "torch", new BlockTorchTFC(), CT_MISC)));
 

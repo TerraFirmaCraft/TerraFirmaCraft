@@ -31,6 +31,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.world.classic.CalenderTFC;
 
 public class BlockDoublePlantTFC extends BlockPlantTFC
 {
@@ -39,7 +40,7 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
     public BlockDoublePlantTFC()
     {
         super();
-        this.setDefaultState(this.blockState.getBaseState().withProperty(HALF, EnumBlockHalf.LOWER));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(HALF, EnumBlockHalf.LOWER).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
     }
 
     @Override
@@ -89,23 +90,16 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return (meta & 8) > 0 ? this.getDefaultState().withProperty(HALF, EnumBlockHalf.UPPER) : this.getDefaultState().withProperty(HALF, EnumBlockHalf.LOWER);
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(HALF) == EnumBlockHalf.UPPER ? 8 : 0;
-    }
-
-    @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         if (state.getValue(HALF) == EnumBlockHalf.UPPER)
         {
             IBlockState iblockstate = worldIn.getBlockState(pos.down());
+
+            if (iblockstate.getBlock() == this)
+            {
+                state = state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+            }
         }
 
         return state;
@@ -135,7 +129,7 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(HALF, EnumBlockHalf.UPPER), 2);
+        worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(HALF, EnumBlockHalf.UPPER).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()), 2);
     }
 
     @Override
@@ -170,9 +164,21 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
     }
 
     @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return (meta & 8) > 0 ? this.getDefaultState().withProperty(HALF, EnumBlockHalf.UPPER).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()) : this.getDefaultState().withProperty(HALF, EnumBlockHalf.LOWER).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(HALF) == EnumBlockHalf.UPPER ? 8 : 0;
+    }
+
+    @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {HALF});
+        return new BlockStateContainer(this, new IProperty[] {HALF, GROWTHSTAGE});
     }
 
     @Override
@@ -191,6 +197,12 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return FULL_BLOCK_AABB;
+    }
+
+    @Override
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
+    {
+        world.setBlockState(pos, this.blockState.getBaseState().withProperty(HALF, state.getValue(HALF)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
     }
 
     private boolean onHarvest(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)

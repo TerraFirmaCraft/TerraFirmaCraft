@@ -22,14 +22,12 @@ public class DefaultDoublePlants
     /**
      * Default Double Plant ResourceLocations
      */
-    public static final ResourceLocation ROSE = new ResourceLocation(MOD_ID, "rose");
     public static final ResourceLocation DOUBLE_FERN = new ResourceLocation(MOD_ID, "double_fern");
 
     @SubscribeEvent
     public static void onPreRegisterPlantCategory(TFCRegistryEvent.RegisterPreBlock<DoublePlant> event)
     {
         event.getRegistry().registerAll(
-            new DoublePlant.Builder(ROSE, 0f, 500f, 0f, 40f).build(),
             new DoublePlant.Builder(DOUBLE_FERN, 0f, 500f, 0f, 40f).build()
         );
     }

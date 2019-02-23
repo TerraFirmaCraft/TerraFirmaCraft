@@ -274,29 +274,6 @@ FLUIDS = {
     'milk_curdled': 'milk_curdled',
     'milk_vinegar': 'milk_vinegar',
 }
-FLOWER_TYPES = [
-    'dandelion',
-    'nasturtium',
-    'meads_milkweed',
-    'tropical_milkweed',
-    'butterfly_milkweed',
-    'calendula',
-    'poppy',
-    'blue_orchid',
-    'allium',
-    'houstonia',
-    'tulip_red',
-    'tulip_orange',
-    'tulip_white',
-    'tulip_pink',
-    'oxeye_daisy',
-    'paeonia',
-    'goldenrod',
-]
-
-DOUBLE_FLOWER_TYPES = [
-    'rose',
-]
 
 # Special 'hardcoded' cases
 DOOR_VARIANTS = {
@@ -793,42 +770,6 @@ for wood_type in WOOD_TYPES:
         'top': 'tfc:blocks/wood/workbench_top',
         ('north', 'south'): 'tfc:blocks/wood/workbench_front',
         ('east', 'west'): 'tfc:blocks/wood/workbench_side',
-    })
-
-# FLOWERS
-for flower_type in FLOWER_TYPES:
-    blockstate(('plants', flower_type), 'cross', textures={
-        ('cross', 'layer0'): 'tfc:blocks/plants/%s' % flower_type
-    }, variants={
-        'inventory': {
-            'model': 'builtin/generated',
-            'transform': 'forge:default-item'
-        }
-    })
-
-# DOUBLE FLOWERS
-for flower_type in DOUBLE_FLOWER_TYPES:
-    blockstate(('plants', flower_type), 'cross', textures={
-        ('cross', 'layer0'): 'tfc:blocks/plants/%s_top' % flower_type
-    }, variants={
-		'half=lower': {
-			'model': 'cross',
-			'textures': {
-				'cross': 'tfc:blocks/plants/%s_bottom' % flower_type,
-				'layer0': 'tfc:blocks/plants/%s_bottom' % flower_type
-			}
-		},
-		'half=upper': {
-			'model': 'cross',
-			'textures': {
-				'cross': 'tfc:blocks/plants/%s_top' % flower_type,
-				'layer0': 'tfc:blocks/plants/%s_top' % flower_type
-			}
-		},
-		'inventory': {
-			'model': 'builtin/generated',
-			'transform': 'forge:default-item'
-		}
     })
 
 #   _____ _
