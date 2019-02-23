@@ -5,11 +5,15 @@
 
 package net.dries007.tfc.objects.blocks.plants;
 
+import java.util.Random;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -23,9 +27,12 @@ import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.world.classic.CalenderTFC;
 
 public class BlockPlantTFC extends BlockBush implements IItemSize
 {
+    public final static PropertyInteger GROWTHSTAGE = PropertyInteger.create("stage", 0, 11);
+
     public BlockPlantTFC()
     {
         super();
@@ -33,6 +40,25 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
         Blocks.FIRE.setFireInfo(this, 5, 20);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return (state.getValue(GROWTHSTAGE));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this,  new IProperty[] {GROWTHSTAGE});
     }
 
     @Override
@@ -81,5 +107,26 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
         return EnumPlantType.Plains;
+    }
+
+    @Override
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
+    {
+        super.randomTick(worldIn, pos, state, random);
+        // Check the current time against the current stage
+        int currentStage = state.getValue(GROWTHSTAGE);
+        int expectedStage = CalenderTFC.getMonthOfYear().id();
+        // If it is late and should grow, and some randomness
+        if (currentStage != expectedStage && random.nextDouble() < 0.5)
+        {
+            // Update to the next stage
+            worldIn.setBlockState(pos, state.withProperty(GROWTHSTAGE, expectedStage));
+        }
+    }
+
+    @Override
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
+    {
+        world.setBlockState(pos, this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
     }
 }

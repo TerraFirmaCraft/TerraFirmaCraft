@@ -48,10 +48,10 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         this.reedGen = null;
         this.waterlilyGen = null;
 
-        sparseGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumType.SPARSE);
-        standardGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumType.STANDARD);
-        lushGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumType.LUSH);
-        desertGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumType.DESERT);
+        sparseGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumGrassType.SPARSE);
+        standardGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumGrassType.STANDARD);
+        lushGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumGrassType.LUSH);
+        desertGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumGrassType.DESERT);
 
         reedGen = new WorldGenTallPlant(Blocks.REEDS); // todo: replace block?
         sandGen = new WorldGenSandTFC(7);
@@ -110,28 +110,46 @@ public class BiomeDecoratorTFC extends BiomeDecorator
             if (ClimateTFC.getHeightAdjustedBiomeTemp(world, p2) >= 7)
                 waterplantGen.generate(world, rng, p2);
         }
-
-        if (rainfall < 75f && temperature > 15f)
+/*
+          if (rainfall < 75f || BlocksTFC.isSand(world.getBlockState(pos.down()))) return EnumGrassType.DESERT;
+        else if (temperature > 20f && rainfall > 300f) return EnumGrassType.LUSH;
+        else if (temperature > 15f && rainfall > 150f) return EnumGrassType.STANDARD;
+        else return EnumGrassType.SPARSE;
+*/
+        if (rainfall < 75f)
         {
-            final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-            sparseGrassGen.generate(world, rng, p2);
-        }
-        else
-        {
-            if (temperature > 20f && rainfall > 300f)
+            for (int i = 0; i < floraDensity * 5; i++)
             {
-                for (int i = 0; i < 3 + floraDensity * 5; i++)
-                {
-                    final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                    if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH))
-                        lushGrassGen.generate(world, rng, p2);
-                }
+                final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                if (!BiomeDictionary.hasType(world.getBiome(p2), BiomeDictionary.Type.BEACH))
+                    desertGrassGen.generate(world, rng, p2);
             }
+        }
+        else if (temperature > 20f && rainfall > 300f)
+        {
+            for (int i = 0; i < 3 + floraDensity * 5; i++)
+            {
+                final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                if (!BiomeDictionary.hasType(world.getBiome(p2), BiomeDictionary.Type.BEACH))
+                    lushGrassGen.generate(world, rng, p2);
+            }
+        }
+        else if (temperature > 15f && rainfall > 150f)
+        {
             for (int i = 0; i < 1 + floraDensity * 5; i++)
             {
                 final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH))
+                if (!BiomeDictionary.hasType(world.getBiome(p2), BiomeDictionary.Type.BEACH))
                     standardGrassGen.generate(world, rng, p2);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < floraDensity * 5; i++)
+            {
+                final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                if (!BiomeDictionary.hasType(world.getBiome(p2), BiomeDictionary.Type.BEACH))
+                    sparseGrassGen.generate(world, rng, p2);
             }
         }
     }

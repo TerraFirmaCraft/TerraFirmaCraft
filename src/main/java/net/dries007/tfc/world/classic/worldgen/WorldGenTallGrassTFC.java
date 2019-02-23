@@ -22,9 +22,9 @@ import net.dries007.tfc.objects.blocks.plants.BlockTallGrassTFC;
 public class WorldGenTallGrassTFC extends WorldGenerator
 {
     private final IBlockState tallGrassState;
-    private BlockTallGrassTFC.EnumType plantType;
+    private BlockTallGrassTFC.EnumGrassType plantType;
 
-    public WorldGenTallGrassTFC(BlockTallGrassTFC.EnumType type)
+    public WorldGenTallGrassTFC(BlockTallGrassTFC.EnumGrassType type)
     {
         this.plantType = type;
         this.tallGrassState = BlocksTFC.TALL_GRASS.getDefaultState().withProperty(BlockTallGrassTFC.TYPE, type);
@@ -54,7 +54,7 @@ public class WorldGenTallGrassTFC extends WorldGenerator
                 break;
         }
 
-        for (int i = 0; i < maxPlantGen; ++i)
+        for (int i = 0; i < 128; ++i)
         {
             BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
@@ -64,7 +64,7 @@ public class WorldGenTallGrassTFC extends WorldGenerator
             }
         }
 
-        for (int i = 0; i < Math.floorDiv(maxPlantGen, 2); ++i)
+        for (int i = 0; i < 64; ++i)
         {
             BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 

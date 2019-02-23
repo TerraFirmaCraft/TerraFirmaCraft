@@ -42,7 +42,7 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
     {
         super();
         this.setTickRandomly(true);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumType.STANDARD).withProperty(HALF, EnumBlockHalf.LOWER));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumGrassType.STANDARD).withProperty(HALF, EnumBlockHalf.LOWER));
         this.setTranslationKey("doubleTallGrass");
     }
 
@@ -62,7 +62,7 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return (meta & 8) > 0 ? this.getDefaultState().withProperty(HALF, EnumBlockHalf.UPPER) : this.getDefaultState().withProperty(HALF, EnumBlockHalf.LOWER).withProperty(TYPE, EnumType.byMetadata(meta & 7));
+        return (meta & 8) > 0 ? this.getDefaultState().withProperty(HALF, EnumBlockHalf.UPPER) : this.getDefaultState().withProperty(HALF, EnumBlockHalf.LOWER).withProperty(TYPE, EnumGrassType.byMetadata(meta & 7));
     }
 
     public int getMetaFromState(IBlockState state)
@@ -161,7 +161,7 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
         }
     }
 
-    public void placeAt(World worldIn, BlockPos lowerPos, BlockTallGrassTFC.EnumType type, int flags)
+    public void placeAt(World worldIn, BlockPos lowerPos, EnumGrassType type, int flags)
     {
         worldIn.setBlockState(lowerPos, this.getDefaultState().withProperty(HALF, EnumBlockHalf.LOWER).withProperty(TYPE, type), flags);
         worldIn.setBlockState(lowerPos.up(), this.getDefaultState().withProperty(HALF, EnumBlockHalf.UPPER), flags);
@@ -221,10 +221,10 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
     }
 
     @Override
-    public void updateTick(World world, BlockPos chunkPos, IBlockState state, Random rng)
+    public void randomTick(World world, BlockPos pos, IBlockState state, Random random)
     {
-        world.setBlockState(chunkPos, this.blockState.getBaseState().withProperty(TYPE, getBiomePlantType(world, chunkPos)).withProperty(HALF, state.getValue(HALF)));
-        this.checkAndDropBlock(world, chunkPos, state);
+        world.setBlockState(pos, this.blockState.getBaseState().withProperty(TYPE, getBiomePlantType(world, pos)).withProperty(HALF, state.getValue(HALF)));
+        this.checkAndDropBlock(world, pos, state);
     }
 
     @Override

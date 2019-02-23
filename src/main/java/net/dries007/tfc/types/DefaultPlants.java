@@ -35,7 +35,7 @@ public class DefaultPlants
     public static final ResourceLocation TULIP_WHITE = new ResourceLocation(MOD_ID, "tulip_white");
     public static final ResourceLocation TULIP_PINK = new ResourceLocation(MOD_ID, "tulip_pink");
     public static final ResourceLocation OXEYE_DAISY = new ResourceLocation(MOD_ID, "oxeye_daisy");
-    public static final ResourceLocation PAEONIA = new ResourceLocation(MOD_ID, "paeonia");
+    //    public static final ResourceLocation PAEONIA = new ResourceLocation(MOD_ID, "paeonia");
     public static final ResourceLocation GOLDENROD = new ResourceLocation(MOD_ID, "goldenrod");
     public static final ResourceLocation FERN = new ResourceLocation(MOD_ID, "fern");
 
@@ -58,7 +58,7 @@ public class DefaultPlants
             new Plant.Builder(TULIP_WHITE, 0f, 500f, 0f, 40f).build(),
             new Plant.Builder(TULIP_PINK, 0f, 500f, 0f, 40f).build(),
             new Plant.Builder(OXEYE_DAISY, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(PAEONIA, 0f, 500f, 0f, 40f).build(),
+//            new Plant.Builder(PAEONIA, 0f, 500f, 0f, 40f).build(),
             new Plant.Builder(GOLDENROD, 0f, 500f, 0f, 40f).build(),
             new Plant.Builder(FERN, 200f, 500f, 20f, 40f).build()
         );
