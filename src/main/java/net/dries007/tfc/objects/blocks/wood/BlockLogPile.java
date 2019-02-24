@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -34,14 +33,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.client.TFCGuiHandler;
-import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlockLogPile extends Block implements ITileEntityProvider
+public class BlockLogPile extends Block
 {
     public static final PropertyBool ONFIRE = PropertyBool.create("onfire");
     private static final PropertyBool AXIS = PropertyBool.create("axis");
@@ -58,7 +57,14 @@ public class BlockLogPile extends Block implements ITileEntityProvider
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TELogPile();
     }
@@ -206,8 +212,14 @@ public class BlockLogPile extends Block implements ITileEntityProvider
     private boolean isValidCoverBlock(World world, BlockPos pos)
     {
         IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() instanceof BlockLogPile || state.getBlock() instanceof BlockCharcoalPile) { return true; }
-        if (state.getMaterial().getCanBurn()) { return false; }
+        if (state.getBlock() == BlocksTFC.LOG_PILE || state.getBlock() == BlocksTFC.CHARCOAL_PILE)
+        {
+            return true;
+        }
+        if (state.getMaterial().getCanBurn())
+        {
+            return false;
+        }
         return state.isNormalCube();
     }
 

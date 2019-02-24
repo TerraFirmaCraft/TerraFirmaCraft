@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -32,11 +31,12 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.te.TEIngotPile;
+import net.dries007.tfc.objects.te.TEWorldItem;
 import net.dries007.tfc.util.Helpers;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockIngotPile extends Block implements ITileEntityProvider
+public class BlockIngotPile extends Block
 {
     public BlockIngotPile()
     {
@@ -47,11 +47,17 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
         setHarvestLevel("pickaxe", 0);
     }
 
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
-        return new TEIngotPile();
+        return new TEWorldItem();
     }
 
     @Override

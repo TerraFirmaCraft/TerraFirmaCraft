@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -48,7 +47,7 @@ import net.dries007.tfc.util.Helpers;
 import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
 
 @ParametersAreNonnullByDefault
-public class BlockStoneAnvil extends Block implements ITileEntityProvider, IRockObject
+public class BlockStoneAnvil extends Block implements IRockObject
 {
     private static final Map<Rock, BlockStoneAnvil> MAP = new HashMap<>();
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 0.875, 1);
@@ -274,9 +273,15 @@ public class BlockStoneAnvil extends Block implements ITileEntityProvider, IRock
         return side == EnumFacing.DOWN;
     }
 
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEAnvilTFC();
     }

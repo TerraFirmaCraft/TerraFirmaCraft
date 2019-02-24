@@ -3,13 +3,12 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks;
+package net.dries007.tfc.objects.blocks.devices;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
@@ -32,7 +31,7 @@ import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlockPitKiln extends Block implements ITileEntityProvider
+public class BlockPitKiln extends Block
 {
     public static final PropertyBool FULL = PropertyBool.create("full");
     public static final PropertyBool LIT = PropertyBool.create("lit");
@@ -45,9 +44,15 @@ public class BlockPitKiln extends Block implements ITileEntityProvider
         setDefaultState(blockState.getBaseState().withProperty(FULL, false).withProperty(LIT, false));
     }
 
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEPitKiln();
     }

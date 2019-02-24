@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -48,7 +47,7 @@ import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlockAnvilTFC extends Block implements ITileEntityProvider
+public class BlockAnvilTFC extends Block
 {
     public static final PropertyDirection AXIS = PropertyDirection.create("axis", EnumFacing.Plane.HORIZONTAL);
     private static final Map<Metal, BlockAnvilTFC> MAP = new HashMap<>();
@@ -222,9 +221,15 @@ public class BlockAnvilTFC extends Block implements ITileEntityProvider
         return new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL));
     }
 
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEAnvilTFC();
     }

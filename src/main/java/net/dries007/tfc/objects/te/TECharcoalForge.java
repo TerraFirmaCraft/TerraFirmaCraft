@@ -22,7 +22,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.objects.blocks.BlockFirePit;
+import net.dries007.tfc.objects.blocks.devices.BlockFirePit;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipe;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
 import net.dries007.tfc.util.Fuel;
@@ -30,7 +30,7 @@ import net.dries007.tfc.util.FuelManager;
 import net.dries007.tfc.util.ITileFields;
 
 import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
-import static net.dries007.tfc.objects.blocks.BlockCharcoalForge.LIT;
+import static net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge.LIT;
 
 @ParametersAreNonnullByDefault
 public class TECharcoalForge extends TEInventory implements ITickable, ITileFields
@@ -61,6 +61,16 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
         burnTemperature = 0;
         burnTicks = 0;
         airTicks = 0;
+    }
+
+    /**
+     * Used by {@link net.dries007.tfc.util.IHeatProviderBlock}
+     *
+     * @return the current temperature
+     */
+    public float getTemperature()
+    {
+        return temperature;
     }
 
     public void onAirIntake(float amount)
@@ -149,7 +159,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
                     float itemTemp = cap.getTemperature();
                     if (temperature > itemTemp)
                     {
-                        CapabilityItemHeat.addTemp(cap, (float) ConfigTFC.GENERAL.temperatureModifierItemHeating);
+                        CapabilityItemHeat.addTemp(cap);
                     }
 
                     // This will melt + consume the input stack
