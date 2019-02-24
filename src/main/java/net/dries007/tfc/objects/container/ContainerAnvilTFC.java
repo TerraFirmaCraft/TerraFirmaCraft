@@ -39,7 +39,7 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC> implements IButto
 
     public ContainerAnvilTFC(InventoryPlayer playerInv, TEAnvilTFC te)
     {
-        super(playerInv, te, true, 25);
+        super(playerInv, te, true, 26);
     }
 
     @Override

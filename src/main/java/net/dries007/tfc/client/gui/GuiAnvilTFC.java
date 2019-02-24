@@ -38,7 +38,7 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
     public GuiAnvilTFC(Container container, InventoryPlayer playerInv, TEAnvilTFC tile)
     {
         super(container, playerInv, tile, ANVIL_BACKGROUND);
-        ySize = 191;
+        ySize = 192;
     }
 
     @Override
