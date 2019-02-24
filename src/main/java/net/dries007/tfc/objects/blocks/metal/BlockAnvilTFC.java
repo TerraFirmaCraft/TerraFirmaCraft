@@ -241,6 +241,7 @@ public class BlockAnvilTFC extends Block
         {
             ((TEInventory) te).onBreakBlock(worldIn, pos);
         }
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
     }
 
     public Metal getMetal()

@@ -32,8 +32,10 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
 
     public static final int FIELD_TEMPERATURE = 0;
 
-    private static final int CRUCIBLE_MAX_METAL_FLUID = 128_000; // = 128 Ingots worth
+    public static final int CRUCIBLE_MAX_METAL_FLUID = 3000; // = 30 Ingots worth
+
     private final Alloy alloy;
+    private Metal alloyResult;
     private float temperature;
     private float targetTemperature;
 
@@ -66,10 +68,6 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
             temperature -= (float) ConfigTFC.GENERAL.temperatureModifierHeating;
         }
 
-        // todo: remove log statement
-        if (world.getTotalWorldTime() % 20 == 0)
-            TerraFirmaCraft.getLog().info("Crucible Alloy: " + alloy.serializeNBT());
-
         // Input draining
         ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
         IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
@@ -78,16 +76,20 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         if (cap instanceof IMoldHandler)
         {
             // Try and drain fluid
-            IMoldHandler moldCap = (IMoldHandler) cap;
-            if (moldCap.isMolten())
+            IMoldHandler mold = (IMoldHandler) cap;
+            TerraFirmaCraft.getLog().info("Before Fill: {} / {}", mold.getAmount(), alloy.getAmount());
+            if (mold.isMolten())
             {
-                FluidStack fluidStack = moldCap.drain(1, true);
+                // At this point we assume that ((FluidMetal) fluidStack.getFluid()).getMetal() == mold.getMetal()
+                // Anything that breaks this contract is a bug and should be reported
+                // This also happens here to avoid off-by-one errors as it will report null after the mold has been emptied
+                Metal metal = mold.getMetal();
+                FluidStack fluidStack = mold.drain(1, true);
                 if (fluidStack != null && fluidStack.amount > 0)
                 {
-                    // At this point we assume that ((FluidMetal) fluidStack.getFluid()).getMetal() == moldCap.getMetal()
-                    // Anything that breaks this contract is a bug and should be reported
-                    alloy.add(moldCap.getMetal(), fluidStack.amount);
+                    alloy.add(metal, fluidStack.amount);
                     needsClientUpdate = true;
+                    TerraFirmaCraft.getLog().info("After fill: {} / {}", mold.getAmount(), alloy.getAmount());
                 }
             }
             else if (cap.getTemperature() < temperature)
@@ -123,7 +125,6 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
             Metal alloyMetal = alloy.getResult();
             if (temperature > alloyMetal.getMeltTemp())
             {
-
                 // Fill from the current alloy
                 int amountToFill = alloy.removeAlloy(1, true);
                 if (amountToFill > 0)
@@ -132,7 +133,6 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
                     Fluid metalFluid = FluidsTFC.getMetalFluid(alloyMetal);
                     FluidStack fluidStack = new FluidStack(metalFluid, amountToFill);
                     int amountFilled = mold.fill(fluidStack, true);
-                    TerraFirmaCraft.getLog().info("Filling: {}: {} -> {}", alloyMetal.getRegistryName(), amountToFill, amountFilled);
 
                     if (amountFilled > 0)
                     {
@@ -149,7 +149,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
 
         if (needsClientUpdate)
         {
-            TerraFirmaCraft.getLog().info("Sending packet to client!");
+            TerraFirmaCraft.getLog().info("Crucible Alloy: " + alloy.serializeNBT());
             TerraFirmaCraft.getNetwork().sendToAllTracking(new PacketCrucibleUpdate(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
         }
     }
@@ -169,6 +169,9 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
     {
         alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
         temperature = nbt.getFloat("temp");
+
+        // Also set the cached alloyResult:
+        alloyResult = alloy.getResult();
 
         super.readFromNBT(nbt);
     }
@@ -222,13 +225,27 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         return alloy;
     }
 
+
+    /**
+     * Used on CLIENT for quicker rendering - doesn't have to calculate the alloy every render tick
+     *
+     * @return the current result of getAlloy().getResult()
+     */
+    @Nonnull
+    public Metal getAlloyResult()
+    {
+        return alloyResult;
+    }
+
     /**
      * Used on CLIENT to update the alloy contents
+     * Also updates cached alloy result
      *
      * @param nbt the nbt from the packet
      */
     public void setAlloy(@Nonnull NBTTagCompound nbt)
     {
         alloy.deserializeNBT(nbt);
+        alloyResult = alloy.getResult();
     }
 }

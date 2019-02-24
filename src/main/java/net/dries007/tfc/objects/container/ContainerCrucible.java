@@ -14,7 +14,7 @@ public class ContainerCrucible extends ContainerTE<TECrucible>
 {
     public ContainerCrucible(InventoryPlayer playerInv, TECrucible tile)
     {
-        super(playerInv, tile, true);
+        super(playerInv, tile, true, 26);
     }
 
     @Override
@@ -23,8 +23,8 @@ public class ContainerCrucible extends ContainerTE<TECrucible>
         IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (inventory != null)
         {
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_INPUT, 144, 12, tile));
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_OUTPUT, 144, 56, tile));
+            addSlotToContainer(new SlotTEInput(inventory, SLOT_INPUT, 152, 7, tile));
+            addSlotToContainer(new SlotTEInput(inventory, SLOT_OUTPUT, 152, 90, tile));
         }
     }
 }
