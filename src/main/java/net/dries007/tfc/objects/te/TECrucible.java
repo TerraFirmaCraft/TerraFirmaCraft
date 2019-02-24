@@ -77,7 +77,6 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         {
             // Try and drain fluid
             IMoldHandler mold = (IMoldHandler) cap;
-            TerraFirmaCraft.getLog().info("Before Fill: {} / {}", mold.getAmount(), alloy.getAmount());
             if (mold.isMolten())
             {
                 // At this point we assume that ((FluidMetal) fluidStack.getFluid()).getMetal() == mold.getMetal()
@@ -89,7 +88,6 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
                 {
                     alloy.add(metal, fluidStack.amount);
                     needsClientUpdate = true;
-                    TerraFirmaCraft.getLog().info("After fill: {} / {}", mold.getAmount(), alloy.getAmount());
                 }
             }
             else if (cap.getTemperature() < temperature)
@@ -149,7 +147,6 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
 
         if (needsClientUpdate)
         {
-            TerraFirmaCraft.getLog().info("Crucible Alloy: " + alloy.serializeNBT());
             TerraFirmaCraft.getNetwork().sendToAllTracking(new PacketCrucibleUpdate(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
         }
     }

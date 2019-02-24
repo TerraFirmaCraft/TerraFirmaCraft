@@ -31,7 +31,6 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEBellows;
@@ -106,7 +105,6 @@ public class BlockCharcoalForge extends Block implements IBellowsHandler, IHeatP
     @Override
     public float onAirIntake(TEBellows te, World world, BlockPos pos, float airAmount)
     {
-        TerraFirmaCraft.getLog().info("Making bellows stuff!");
         TECharcoalForge teForge = Helpers.getTE(world, pos, TECharcoalForge.class);
         if (teForge != null)
         {
