@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,11 +25,15 @@ import net.dries007.tfc.objects.te.TECrucible;
 @ParametersAreNonnullByDefault
 public class BlockCrucible extends Block
 {
-    private static final AxisAlignedBB CRUCIBLE_AABB = new AxisAlignedBB(0.2, 0, 0.2, 0.8, 0.9, 0.8);
+    private static final AxisAlignedBB CRUCIBLE_AABB = new AxisAlignedBB(0.0625, 0, 0.0625, 0.9375, 0.9375, 0.9375);
 
     public BlockCrucible()
     {
         super(Material.IRON);
+
+        setHardness(3.0f);
+        setHarvestLevel("pickaxe", 0);
+        setSoundType(SoundType.METAL);
     }
 
     @SuppressWarnings("deprecation")
@@ -118,5 +123,19 @@ public class BlockCrucible extends Block
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TECrucible();
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isTopSolid(IBlockState state)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
     }
 }

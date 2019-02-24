@@ -32,7 +32,7 @@ public class GuiFirePit extends GuiContainerTE<TEFirePit>
         int temperature = (int) (51 * tile.getField(TEFirePit.FIELD_TEMPERATURE) / MAX_TEMPERATURE);
         if (temperature > 0)
         {
-            drawTexturedModalRect(guiLeft + 8, guiTop + 16 - temperature, 176, 0, 15, 5);
+            drawTexturedModalRect(guiLeft + 30, guiTop + 66 - temperature, 176, 0, 15, 5);
         }
     }
 }
