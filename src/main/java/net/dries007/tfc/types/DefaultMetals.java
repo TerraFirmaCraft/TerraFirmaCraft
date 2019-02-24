@@ -177,15 +177,15 @@ public final class DefaultMetals
     public static void onRegisterAlloyRecipe(RegistryEvent.Register<AlloyRecipe> event)
     {
         event.getRegistry().registerAll(
-            new AlloyRecipe.Builder(BISMUTH_BRONZE).add(ZINC, 0.2f, 0.3f).add(COPPER, 0.5f, 0.65f).add(BISMUTH, 0.1f, 0.2f).build(),
-            new AlloyRecipe.Builder(BLACK_BRONZE).add(COPPER, 0.5f, 0.7f).add(SILVER, 0.1f, 0.25f).add(GOLD, 0.1f, 0.25f).build(),
-            new AlloyRecipe.Builder(BRONZE).add(COPPER, 0.88f, 0.92f).add(TIN, 0.08f, 0.12f).build(),
-            new AlloyRecipe.Builder(BRASS).add(COPPER, 0.88f, 0.92f).add(ZINC, 0.08f, 0.12f).build(),
-            new AlloyRecipe.Builder(ROSE_GOLD).add(COPPER, 0.15f, 0.3f).add(GOLD, 0.7f, 0.85f).build(),
-            new AlloyRecipe.Builder(STERLING_SILVER).add(COPPER, 0.2f, 0.4f).add(SILVER, 0.6f, 0.8f).build(),
-            new AlloyRecipe.Builder(WEAK_STEEL).add(STEEL, 0.5f, 0.7f).add(NICKEL, 0.15f, 0.25f).add(BLACK_BRONZE, 0.15f, 0.25f).build(),
-            new AlloyRecipe.Builder(WEAK_BLUE_STEEL).add(BLACK_STEEL, 0.5f, 0.55f).add(STEEL, 0.2f, 0.25f).add(BISMUTH_BRONZE, 0.1f, 0.15f).add(STERLING_SILVER, 0.1f, 0.15f).build(),
-            new AlloyRecipe.Builder(WEAK_RED_STEEL).add(BLACK_STEEL, 0.5f, 0.55f).add(STEEL, 0.2f, 0.25f).add(BRASS, 0.1f, 0.15f).add(ROSE_GOLD, 0.1f, 0.15f).build()
+            new AlloyRecipe.Builder(BISMUTH_BRONZE).add(ZINC, 0.2, 0.3).add(COPPER, 0.5, 0.65).add(BISMUTH, 0.1, 0.2).build(),
+            new AlloyRecipe.Builder(BLACK_BRONZE).add(COPPER, 0.5, 0.7).add(SILVER, 0.1, 0.25).add(GOLD, 0.1, 0.25).build(),
+            new AlloyRecipe.Builder(BRONZE).add(COPPER, 0.88, 0.92).add(TIN, 0.08, 0.12).build(),
+            new AlloyRecipe.Builder(BRASS).add(COPPER, 0.88, 0.92).add(ZINC, 0.08, 0.12).build(),
+            new AlloyRecipe.Builder(ROSE_GOLD).add(COPPER, 0.15, 0.3).add(GOLD, 0.7, 0.85).build(),
+            new AlloyRecipe.Builder(STERLING_SILVER).add(COPPER, 0.2, 0.4).add(SILVER, 0.6, 0.8).build(),
+            new AlloyRecipe.Builder(WEAK_STEEL).add(STEEL, 0.5, 0.7).add(NICKEL, 0.15, 0.25).add(BLACK_BRONZE, 0.15, 0.25).build(),
+            new AlloyRecipe.Builder(WEAK_BLUE_STEEL).add(BLACK_STEEL, 0.5, 0.55).add(STEEL, 0.2, 0.25).add(BISMUTH_BRONZE, 0.1, 0.15).add(STERLING_SILVER, 0.1, 0.15).build(),
+            new AlloyRecipe.Builder(WEAK_RED_STEEL).add(BLACK_STEEL, 0.5, 0.55).add(STEEL, 0.2, 0.25).add(BRASS, 0.1, 0.15).add(ROSE_GOLD, 0.1, 0.15).build()
         );
     }
 }

@@ -7,10 +7,10 @@ package net.dries007.tfc.objects.blocks;
 
 import java.util.Random;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockTorch;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -36,7 +36,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
-public class BlockTorchTFC extends BlockTorch implements ITileEntityProvider, IItemSize
+public class BlockTorchTFC extends BlockTorch implements IItemSize
 {
     public static final PropertyBool LIT = PropertyBool.create("lit");
 
@@ -68,8 +68,9 @@ public class BlockTorchTFC extends BlockTorch implements ITileEntityProvider, II
         return Weight.LIGHT;
     }
 
+    @Nullable
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TETorchTFC();
     }

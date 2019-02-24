@@ -15,6 +15,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.objects.items.metal.*;
+import net.dries007.tfc.util.Helpers;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
  * todo: document API
@@ -22,7 +25,7 @@ import net.dries007.tfc.objects.items.metal.*;
 public class Metal extends IForgeRegistryEntry.Impl<Metal>
 {
     @GameRegistry.ObjectHolder("tfc:unknown")
-    public static final Metal UNKNOWN = null;
+    public static final Metal UNKNOWN = Helpers.getNull();
 
     private final Tier tier;
     private final float specificHeat;
@@ -84,6 +87,12 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     public int getColor()
     {
         return color;
+    }
+
+    public String getTranslationKey()
+    {
+        //noinspection ConstantConditions
+        return MOD_ID + ".types.metal." + getRegistryName().getPath();
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -256,7 +265,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
             if (metal == null)
                 return hasMold;
             if (this == ItemType.INGOT)
-                return metal.usable;
+                return metal.usable || metal == Metal.UNKNOWN;
             if (hasMold)
                 return metal.isToolMetal() && metal.getTier().isAtMost(Tier.TIER_II);
             return false;

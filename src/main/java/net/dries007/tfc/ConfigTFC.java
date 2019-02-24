@@ -85,11 +85,6 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierHeating")
         public double temperatureModifierHeating = 1;
 
-        @Config.Comment("Modifier for how quickly devices (i.e. charcoal forge, firepit) transfer heat to items. Smaller number = slower temperature changes.")
-        @Config.RangeDouble(min = 0, max = 10)
-        @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierItemHeating")
-        public double temperatureModifierItemHeating = 3;
-
         @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.")
         @Config.RangeInt(min = 20)
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierGlobal")

@@ -5,11 +5,15 @@
 
 package net.dries007.tfc.objects.fluids;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
 import net.dries007.tfc.api.types.Metal;
 
+@ParametersAreNonnullByDefault
 public class FluidMetal extends Fluid
 {
     private final Metal metal;
@@ -21,6 +25,7 @@ public class FluidMetal extends Fluid
         this.metal = metal;
     }
 
+    @Nonnull
     public Metal getMetal()
     {
         return metal;

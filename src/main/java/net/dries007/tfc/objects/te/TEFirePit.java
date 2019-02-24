@@ -29,7 +29,7 @@ import net.dries007.tfc.util.FuelManager;
 import net.dries007.tfc.util.ITileFields;
 
 import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
-import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
+import static net.dries007.tfc.objects.blocks.devices.BlockFirePit.LIT;
 
 @ParametersAreNonnullByDefault
 public class TEFirePit extends TEInventory implements ITickable, ITileFields
@@ -56,6 +56,16 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         temperature = 0;
         burnTemperature = 0;
         burnTicks = 0;
+    }
+
+    /**
+     * Used by {@link net.dries007.tfc.util.IHeatProviderBlock}
+     *
+     * @return the temperature
+     */
+    public float getTemperature()
+    {
+        return temperature;
     }
 
     @Override
@@ -125,7 +135,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
                     float itemTemp = cap.getTemperature();
                     if (temperature > itemTemp)
                     {
-                        CapabilityItemHeat.addTemp(cap, (float) ConfigTFC.GENERAL.temperatureModifierItemHeating);
+                        CapabilityItemHeat.addTemp(cap);
                     }
 
                     // This will melt + consume the input stack

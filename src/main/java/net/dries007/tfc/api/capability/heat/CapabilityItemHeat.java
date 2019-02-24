@@ -23,7 +23,7 @@ public final class CapabilityItemHeat
      * For most practical purposes this is the max temperature than an item should reach.
      * i.e. all metals should melt either before this, or never.
      */
-    public static final float MAX_TEMPERATURE = 1800f;
+    public static final float MAX_TEMPERATURE = 1601f;
 
     public static void preInit()
     {
@@ -38,6 +38,12 @@ public final class CapabilityItemHeat
         if (ticksSinceUpdate == -1) return MIN_TEMPERATURE;
         final float newTemp = temp - heatCapacity * (float) ticksSinceUpdate * (float) ConfigTFC.GENERAL.temperatureModifierGlobal;
         return newTemp < MIN_TEMPERATURE ? MIN_TEMPERATURE : newTemp;
+    }
+
+    public static void addTemp(IItemHeat instance)
+    {
+        // Default modifier = 3 (2x normal cooling)
+        addTemp(instance, 3);
     }
 
     /**
