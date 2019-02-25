@@ -228,6 +228,7 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
         world.setBlockState(pos, this.blockState.getBaseState().withProperty(HALF, state.getValue(HALF)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        this.checkAndDropBlock(world, pos, state);
     }
 
     private boolean onHarvest(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
@@ -248,6 +249,36 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
         public String getName()
         {
             return this == UPPER ? "upper" : "lower";
+        }
+    }
+
+    @Override
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
+    {
+        int currentStage = state.getValue(GROWTHSTAGE);
+        int expectedStage = CalenderTFC.getMonthOfYear().id();
+
+        if (currentStage != expectedStage && random.nextDouble() < 0.5)
+        {
+            worldIn.setBlockState(pos, state.withProperty(GROWTHSTAGE, expectedStage));
+        }
+        this.updateTick(worldIn, pos, state, random);
+    }
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        if (!canBlockStay(worldIn, pos, state))
+        {
+            worldIn.setBlockToAir(pos);
+            if (state.getValue(HALF) == EnumBlockHalf.UPPER)
+            {
+                worldIn.setBlockToAir(pos.down());
+            }
+            else
+            {
+                worldIn.setBlockToAir(pos.up());
+            }
         }
     }
 }

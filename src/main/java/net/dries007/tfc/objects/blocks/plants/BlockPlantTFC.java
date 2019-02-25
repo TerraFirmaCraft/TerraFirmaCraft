@@ -32,6 +32,8 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class BlockPlantTFC extends BlockBush implements IItemSize
 {
@@ -132,21 +134,41 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-        super.randomTick(worldIn, pos, state, random);
-        // Check the current time against the current stage
         int currentStage = state.getValue(GROWTHSTAGE);
         int expectedStage = CalenderTFC.getMonthOfYear().id();
-        // If it is late and should grow, and some randomness
+
         if (currentStage != expectedStage && random.nextDouble() < 0.5)
         {
-            // Update to the next stage
             worldIn.setBlockState(pos, state.withProperty(GROWTHSTAGE, expectedStage));
         }
+
+        this.updateTick(worldIn, pos, state, random);
     }
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
         world.setBlockState(pos, this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        this.checkAndDropBlock(world, pos, state);
+    }
+
+    @Override
+    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if (state.getBlock() == this)
+        {
+            IBlockState soil = worldIn.getBlockState(pos.down());
+            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
+        }
+        return this.canSustainBush(worldIn.getBlockState(pos.down()));
+    }
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        if (!canBlockStay(worldIn, pos, state))
+        {
+            worldIn.setBlockToAir(pos);
+        }
     }
 }

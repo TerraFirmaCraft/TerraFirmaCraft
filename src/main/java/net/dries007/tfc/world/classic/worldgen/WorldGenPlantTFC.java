@@ -21,6 +21,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockCreepingPlantTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockDoublePlantTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
 
 public class WorldGenPlantTFC extends WorldGenerator
 {
@@ -33,7 +34,6 @@ public class WorldGenPlantTFC extends WorldGenerator
 
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-
         if (plant.getPlantType() == Plant.PlantType.CREEPINGPLANT)
         {
             BlockCreepingPlantTFC plantBlock = BlockCreepingPlantTFC.get(plant, plant.getPlantType());

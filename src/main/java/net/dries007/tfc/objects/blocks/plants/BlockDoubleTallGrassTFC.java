@@ -21,7 +21,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
@@ -34,6 +33,7 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
 
 public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.minecraftforge.common.IShearable
 {
@@ -44,14 +44,15 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
         super();
         this.setTickRandomly(true);
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumGrassType.STANDARD).withProperty(HALF, EnumBlockHalf.LOWER));
-        this.setTranslationKey("doubleTallGrass");
     }
 
+    @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         return super.canPlaceBlockAt(worldIn, pos) && worldIn.isAirBlock(pos.up());
     }
 
+    @Override
     protected void checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         if (!this.canBlockStay(worldIn, pos, state))
@@ -71,11 +72,12 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
 
             if (block1 == this)
             {
-                worldIn.setBlockState(blockpos1, Blocks.AIR.getDefaultState(), 3);
+                worldIn.setBlockState(blockpos1, BlocksTFC.TALL_GRASS.getBlockState().getBaseState().withProperty(TYPE, getBiomePlantType(worldIn, blockpos1)));
             }
         }
     }
 
+    @Override
     public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
     {
         if (state.getBlock() != this)
@@ -97,6 +99,7 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
         worldIn.setBlockState(lowerPos.up(), this.getDefaultState().withProperty(HALF, EnumBlockHalf.UPPER), flags);
     }
 
+    @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         if (state.getValue(HALF) == EnumBlockHalf.UPPER)
@@ -113,17 +116,12 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
     }
 
     @Override
-    public void randomTick(World world, BlockPos pos, IBlockState state, Random random)
-    {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(TYPE, getBiomePlantType(world, pos)).withProperty(HALF, state.getValue(HALF)));
-        this.checkAndDropBlock(world, pos, state);
-    }
-
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(HALF, EnumBlockHalf.UPPER), 2);
     }
 
+    @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
     {
         super.onBlockHarvested(worldIn, pos, state, player);
@@ -141,61 +139,114 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
         return Weight.MEDIUM;
     }
 
+    @Override
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
         return false;
     }
 
+    @Override
+    public boolean canShrink(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
+    {
+        return ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < 20 || ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 35;
+    }
+
+    @Override
     public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         return false;
     }
 
+    @Override
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
     }
 
+    @Override
+    public void shrink(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    {
+        if (state.getValue(HALF) == EnumBlockHalf.UPPER)
+        {
+            worldIn.setBlockToAir(pos);
+        }
+        else if (BlocksTFC.TALL_GRASS.canPlaceBlockAt(worldIn, pos))
+        {
+            worldIn.setBlockState(pos, BlocksTFC.TALL_GRASS.getBlockState().getBaseState().withProperty(TYPE, getBiomePlantType(worldIn, pos)));
+        }
+    }
+
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         return (meta & 8) > 0 ? this.getDefaultState().withProperty(HALF, EnumBlockHalf.UPPER) : this.getDefaultState().withProperty(HALF, EnumBlockHalf.LOWER).withProperty(TYPE, EnumGrassType.byMetadata(meta & 7));
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(HALF) == EnumBlockHalf.UPPER ? 8 : (state.getValue(TYPE)).getMeta();
     }
 
     @Override
-    public void onBlockAdded(World world, BlockPos chunkPos, IBlockState state)
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-        world.setBlockState(chunkPos, this.blockState.getBaseState().withProperty(TYPE, getBiomePlantType(world, chunkPos)).withProperty(HALF, state.getValue(HALF)));
+        if (canShrink(worldIn, pos, state, worldIn.isRemote) && random.nextDouble() < getGrowthRate())
+        {
+            shrink(worldIn, random, pos, state);
+        }
+        else
+        {
+            worldIn.setBlockState(pos, this.blockState.getBaseState().withProperty(TYPE, getBiomePlantType(worldIn, pos)).withProperty(HALF, state.getValue(HALF)));
+        }
+
+        this.updateTick(worldIn, pos, state, random);
     }
 
+    @Override
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
+    {
+        world.setBlockState(pos, this.blockState.getBaseState().withProperty(TYPE, getBiomePlantType(world, pos)).withProperty(HALF, state.getValue(HALF)));
+        this.checkAndDropBlock(world, pos, state);
+    }
+
+    @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
+        if (!worldIn.isRemote && stack.getItem() == Items.SHEARS)
         {
-            if (!worldIn.isRemote && stack.getItem() == Items.SHEARS)
+            if (state.getValue(HALF) == EnumBlockHalf.UPPER)
             {
-                player.addStat(StatList.getBlockStats(this));
-                spawnAsEntity(worldIn, pos, new ItemStack(BlocksTFC.DOUBLE_TALL_GRASS, 1, (state.getValue(TYPE)).getMeta()));
+                spawnAsEntity(worldIn, pos, new ItemStack(BlocksTFC.TALL_GRASS, 1));
             }
-            else if (!worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
+            else
             {
-                player.addStat(StatList.getBlockStats(this));
+                spawnAsEntity(worldIn, pos, new ItemStack(BlocksTFC.DOUBLE_TALL_GRASS, 1));
+            }
+        }
+        else if (!worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
+        {
+            if (state.getValue(HALF) == EnumBlockHalf.UPPER)
+            {
                 spawnAsEntity(worldIn, pos, new ItemStack(ItemsTFC.HAY, 1));
             }
             else
             {
-                super.harvestBlock(worldIn, player, pos, state, te, stack);
+                spawnAsEntity(worldIn, pos, new ItemStack(ItemsTFC.HAY, 2));
             }
+        }
+        else
+        {
+            super.harvestBlock(worldIn, player, pos, state, te, stack);
         }
     }
 
+    @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {HALF, TYPE});
     }
 
+    @Override
     public Block.EnumOffsetType getOffsetType()
     {
         return Block.EnumOffsetType.XZ;
@@ -210,9 +261,17 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
     @Override
     public NonNullList<ItemStack> onSheared(ItemStack item, net.minecraft.world.IBlockAccess world, BlockPos pos, int fortune)
     {
-        return NonNullList.withSize(1, new ItemStack(BlocksTFC.DOUBLE_TALL_GRASS, 1));
+        if (world.getBlockState(pos).getValue(HALF) == EnumBlockHalf.UPPER)
+        {
+            return NonNullList.withSize(1, new ItemStack(BlocksTFC.TALL_GRASS, 1));
+        }
+        else
+        {
+            return NonNullList.withSize(1, new ItemStack(BlocksTFC.DOUBLE_TALL_GRASS, 1));
+        }
     }
 
+    @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return FULL_BLOCK_AABB;
