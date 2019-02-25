@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.objects.blocks.plants;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nonnull;
 
@@ -26,21 +29,38 @@ import net.minecraftforge.common.EnumPlantType;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.world.classic.CalenderTFC;
 
 public class BlockPlantTFC extends BlockBush implements IItemSize
 {
     public final static PropertyInteger GROWTHSTAGE = PropertyInteger.create("stage", 0, 11);
+    private static final Map<Plant, EnumMap<Plant.PlantType, BlockPlantTFC>> TABLE = new HashMap<>();
 
-    public BlockPlantTFC()
+    public final Plant plant;
+    public final Plant.PlantType type;
+
+    public BlockPlantTFC(Plant plant, Plant.PlantType type)
     {
         super();
+
+        if (!TABLE.containsKey(plant))
+            TABLE.put(plant, new EnumMap<>(Plant.PlantType.class));
+        TABLE.get(plant).put(type, this);
+
+        this.plant = plant;
+        this.type = type;
         this.setTickRandomly(true);
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
         Blocks.FIRE.setFireInfo(this, 5, 20);
         this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+    }
+
+    public static BlockPlantTFC get(Plant plant, Plant.PlantType type)
+    {
+        return TABLE.get(plant).get(type);
     }
 
     @Override

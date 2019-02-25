@@ -38,29 +38,44 @@ public class DefaultPlants
     //    public static final ResourceLocation PAEONIA = new ResourceLocation(MOD_ID, "paeonia");
     public static final ResourceLocation GOLDENROD = new ResourceLocation(MOD_ID, "goldenrod");
     public static final ResourceLocation FERN = new ResourceLocation(MOD_ID, "fern");
+    public static final ResourceLocation PETROVSKIA = new ResourceLocation(MOD_ID, "petrovskia");
+
+    public static final ResourceLocation DOUBLE_FERN = new ResourceLocation(MOD_ID, "double_fern");
+//    public static final ResourceLocation DOUBLE_PAEONIA = new ResourceLocation(MOD_ID, "double_paeonia");
+
+    public static final ResourceLocation MOSS = new ResourceLocation(MOD_ID, "moss");
+    public static final ResourceLocation BLUE_DAWN = new ResourceLocation(MOD_ID, "blue_dawn");
 
     @SubscribeEvent
     public static void onPreRegisterPlantCategory(TFCRegistryEvent.RegisterPreBlock<Plant> event)
     {
         event.getRegistry().registerAll(
-            new Plant.Builder(DANDELION, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(NASTURTIUM, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(MEADS_MILKWEED, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(TROPICAL_MILKWEED, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(BUTTERFLY_MILKWEED, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(CALENDULA, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(POPPY, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(BLUE_ORCHID, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(ALLIUM, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(HOUSTONIA, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(TULIP_RED, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(TULIP_ORANGE, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(TULIP_WHITE, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(TULIP_PINK, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(OXEYE_DAISY, 0f, 500f, 0f, 40f).build(),
-//            new Plant.Builder(PAEONIA, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(GOLDENROD, 0f, 500f, 0f, 40f).build(),
-            new Plant.Builder(FERN, 200f, 500f, 20f, 40f).build()
+            new Plant(DANDELION, -40f, 40f, 75f, 500, Plant.PlantType.PLANT),
+            new Plant(NASTURTIUM, -46f, 38f, 150f, 500, Plant.PlantType.PLANT),
+            new Plant(MEADS_MILKWEED, -23f, 31f, 130f, 500f, Plant.PlantType.PLANT),
+            new Plant(TROPICAL_MILKWEED, -6f, 36f, 120f, 300f, Plant.PlantType.PLANT),
+            new Plant(BUTTERFLY_MILKWEED, -40f, 32f, 75f, 300f, Plant.PlantType.PLANT),
+            new Plant(CALENDULA, -46f, 30f, 130f, 300f, Plant.PlantType.PLANT),
+            new Plant(POPPY, -40f, 36f, 150f, 250f, Plant.PlantType.PLANT),
+            new Plant(BLUE_ORCHID, 18f, 50f, 300f, 10000f, Plant.PlantType.PLANT),
+            new Plant(ALLIUM, -40f, 33f, 150f, 500f, Plant.PlantType.PLANT),
+            new Plant(HOUSTONIA, -46f, 36f, 150f, 500f, Plant.PlantType.PLANT),
+            new Plant(TULIP_RED, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
+            new Plant(TULIP_ORANGE, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
+            new Plant(TULIP_WHITE, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
+            new Plant(TULIP_PINK, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
+            new Plant(OXEYE_DAISY, -40f, 33f, 120f, 500f, Plant.PlantType.PLANT),
+//            new Plant(PAEONIA, -40f, 33f, 150f, 500f, Plant.PlantType.PLANT),
+            new Plant(GOLDENROD, -29f, 32f, 75f, 300f, Plant.PlantType.PLANT),
+            new Plant(FERN, -40f, 33f, 300f, 10000f, Plant.PlantType.PLANT),
+            new Plant(PETROVSKIA, -29f, 32f, 0f, 200f, Plant.PlantType.PLANT),
+
+//            new Plant(DOUBLE_PAEONIA, -40f, 33f, 150f, 500f, Plant.PlantType.DOUBLEPLANT),
+            new Plant(DOUBLE_FERN, -40f, 33f, 300f, 10000f, Plant.PlantType.DOUBLEPLANT),
+
+            new Plant(MOSS, -7f, 36f, 0f, 10000f, Plant.PlantType.CREEPINGPLANT),
+            new Plant(BLUE_DAWN, -40f, 25f, 250f, 500f, Plant.PlantType.CREEPINGPLANT)
+
         );
     }
 }

@@ -15,6 +15,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraftforge.common.BiomeDictionary;
 
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.plants.BlockTallGrassTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -32,6 +34,8 @@ public class BiomeDecoratorTFC extends BiomeDecorator
     private final WorldGenTallGrassTFC standardGrassGen;
     private final WorldGenTallGrassTFC lushGrassGen;
     private final WorldGenTallGrassTFC desertGrassGen;
+
+    private final WorldGenPlantTFC plantGen;
 
     public BiomeDecoratorTFC(int lilyPadPerChunk, int waterPlantsPerChunk)
     {
@@ -52,6 +56,8 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         standardGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumGrassType.STANDARD);
         lushGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumGrassType.LUSH);
         desertGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumGrassType.DESERT);
+
+        plantGen = new WorldGenPlantTFC();
 
         reedGen = new WorldGenTallPlant(Blocks.REEDS); // todo: replace block?
         sandGen = new WorldGenSandTFC(7);
@@ -110,12 +116,20 @@ public class BiomeDecoratorTFC extends BiomeDecorator
             if (ClimateTFC.getHeightAdjustedBiomeTemp(world, p2) >= 7)
                 waterplantGen.generate(world, rng, p2);
         }
-/*
-          if (rainfall < 75f || BlocksTFC.isSand(world.getBlockState(pos.down()))) return EnumGrassType.DESERT;
-        else if (temperature > 20f && rainfall > 300f) return EnumGrassType.LUSH;
-        else if (temperature > 15f && rainfall > 150f) return EnumGrassType.STANDARD;
-        else return EnumGrassType.SPARSE;
-*/
+
+        for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+        {
+            if (plant.isValidLocation(temperature, rainfall))
+            {
+                plantGen.setGeneratedPlant(plant);
+                for (float i = rng.nextInt(16); i < 1 + floraDensity * 5; i++)
+                {
+                    final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                    plantGen.generate(world, rng, p2);
+                }
+            }
+        }
+
         if (rainfall < 75f)
         {
             for (int i = 0; i < floraDensity * 5; i++)

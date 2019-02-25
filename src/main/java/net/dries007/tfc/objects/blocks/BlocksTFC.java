@@ -132,8 +132,6 @@ public final class BlocksTFC
     private static ImmutableList<BlockSheet> allSheets;
     private static ImmutableList<BlockToolRack> allToolRackBlocks;
     private static ImmutableList<BlockPlantTFC> allPlantBlocks;
-    private static ImmutableList<BlockDoublePlantTFC> allDoublePlantBlocks;
-    private static ImmutableList<BlockCreepingPlantTFC> allCreepingPlantBlocks;
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
     {
@@ -225,22 +223,10 @@ public final class BlocksTFC
         return allToolRackBlocks;
     }
 
-
     public static ImmutableList<BlockPlantTFC> getAllPlantBlocks()
     {
         return allPlantBlocks;
     }
-
-    public static ImmutableList<BlockDoublePlantTFC> getAllDoublePlantBlocks()
-    {
-        return allDoublePlantBlocks;
-    }
-
-    public static ImmutableList<BlockCreepingPlantTFC> getAllCreepingPlantBlocks()
-    {
-        return allCreepingPlantBlocks;
-    }
-
 
     @SubscribeEvent
     @SuppressWarnings("ConstantConditions")
@@ -413,27 +399,23 @@ public final class BlocksTFC
         {
             Builder<BlockPlantTFC> b = ImmutableList.builder();
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
-                b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockPlantTFC(), CT_DECORATIONS));
+            {
+                if (plant.getPlantType() == Plant.PlantType.PLANT)
+                {
+                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockPlantTFC(plant, Plant.PlantType.PLANT), CT_DECORATIONS));
+                }
+                else if (plant.getPlantType() == Plant.PlantType.DOUBLEPLANT)
+                {
+                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockDoublePlantTFC(plant, Plant.PlantType.DOUBLEPLANT), CT_DECORATIONS));
+                }
+                else if (plant.getPlantType() == Plant.PlantType.CREEPINGPLANT)
+                {
+                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockCreepingPlantTFC(plant, Plant.PlantType.CREEPINGPLANT), CT_DECORATIONS));
+                }
+            }
             allPlantBlocks = b.build();
             allPlantBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
         }
-
-        {
-            Builder<BlockDoublePlantTFC> b = ImmutableList.builder();
-            for (DoublePlant doublePlant : TFCRegistries.DOUBLE_PLANTS.getValuesCollection())
-                b.add(register(r, "plants/" + doublePlant.getRegistryName().getPath(), new BlockDoublePlantTFC(), CT_DECORATIONS));
-            allDoublePlantBlocks = b.build();
-            allDoublePlantBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
-        }
-
-        {
-            Builder<BlockCreepingPlantTFC> b = ImmutableList.builder();
-            for (CreepingPlant creepingPlant : TFCRegistries.CREEPING_PLANTS.getValuesCollection())
-                b.add(register(r, "plants/" + creepingPlant.getRegistryName().getPath(), new BlockCreepingPlantTFC(), CT_DECORATIONS));
-            allCreepingPlantBlocks = b.build();
-            allCreepingPlantBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
-        }
-
 
         inventoryItemBlocks.add(new ItemBlockTorchTFC(register(r, "torch", new BlockTorchTFC(), CT_MISC)));
 

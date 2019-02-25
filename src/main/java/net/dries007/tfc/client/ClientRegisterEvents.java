@@ -47,7 +47,6 @@ import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.plants.BlockDoublePlantTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
@@ -237,10 +236,6 @@ public final class ClientRegisterEvents
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
                 worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic(),
             BlocksTFC.getAllPlantBlocks().toArray(new Block[0]));
-
-        blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
-                worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic(),
-            BlocksTFC.getAllDoublePlantBlocks().toArray(new Block[0]));
     }
 
     @SubscribeEvent
@@ -276,10 +271,6 @@ public final class ClientRegisterEvents
         itemColors.registerItemColorHandler((stack, tintIndex) ->
                 event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
             BlocksTFC.getAllPlantBlocks().toArray(new BlockPlantTFC[0]));
-
-        itemColors.registerItemColorHandler((stack, tintIndex) ->
-                event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
-            BlocksTFC.getAllDoublePlantBlocks().toArray(new BlockDoublePlantTFC[0]));
     }
 
     /**
