@@ -31,6 +31,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class BlockCreepingPlantTFC extends BlockPlantTFC
 {
@@ -53,6 +55,7 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     {
         return BlockCreepingPlantTFC.TABLE.get(plant).get(type);
     }
+
     public final Plant plant;
     public final Plant.PlantType type;
 
@@ -147,6 +150,20 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     }
 
     @Override
+    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
+    {
+        for (EnumFacing face : EnumFacing.values())
+        {
+            IBlockState blockState = worldIn.getBlockState(pos.offset(face));
+            if (blockState.getBlockFaceShape(worldIn, pos.offset(face), face.getOpposite()) == BlockFaceShape.SOLID || blockState.getBlock() instanceof BlockFence)
+            {
+                return plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
+            }
+        }
+        return false;
+    }
+
+    @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id())
@@ -225,23 +242,6 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
                 worldIn.setBlockToAir(pos);
             }
         }
-    }
-
-    @Override
-    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
-    {
-        return worldIn.getBlockState(pos.down()).getBlockFaceShape(worldIn, pos, EnumFacing.UP) == BlockFaceShape.SOLID ||
-            worldIn.getBlockState(pos.up()).getBlockFaceShape(worldIn, pos, EnumFacing.DOWN) == BlockFaceShape.SOLID ||
-            worldIn.getBlockState(pos.north()).getBlockFaceShape(worldIn, pos, EnumFacing.SOUTH) == BlockFaceShape.SOLID ||
-            worldIn.getBlockState(pos.east()).getBlockFaceShape(worldIn, pos, EnumFacing.WEST) == BlockFaceShape.SOLID ||
-            worldIn.getBlockState(pos.south()).getBlockFaceShape(worldIn, pos, EnumFacing.NORTH) == BlockFaceShape.SOLID ||
-            worldIn.getBlockState(pos.west()).getBlockFaceShape(worldIn, pos, EnumFacing.EAST) == BlockFaceShape.SOLID ||
-            worldIn.getBlockState(pos.down()).getBlock() instanceof BlockFence ||
-            worldIn.getBlockState(pos.up()).getBlock() instanceof BlockFence ||
-            worldIn.getBlockState(pos.north()).getBlock() instanceof BlockFence ||
-            worldIn.getBlockState(pos.east()).getBlock() instanceof BlockFence ||
-            worldIn.getBlockState(pos.south()).getBlock() instanceof BlockFence ||
-            worldIn.getBlockState(pos.west()).getBlock() instanceof BlockFence;
     }
 
     @Override

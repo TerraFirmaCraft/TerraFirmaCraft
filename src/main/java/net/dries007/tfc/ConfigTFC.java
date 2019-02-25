@@ -87,6 +87,11 @@ public class ConfigTFC
         @Config.Comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour), default is 72 hours. Set to -1 to disable torch burnout.")
         @Config.RangeInt(min = 20)
         public int torchTime = 200; // todo: change to 72000
+
+        @Config.Comment("Growth rate for tallgrass")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.grassGrowthRate")
+        public double grassGrowthRate = 0.01;
     }
 
     public static class ClientCFG

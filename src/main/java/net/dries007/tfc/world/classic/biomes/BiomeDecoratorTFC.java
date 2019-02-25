@@ -17,7 +17,6 @@ import net.minecraftforge.common.BiomeDictionary;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Plant;
-import net.dries007.tfc.objects.blocks.plants.BlockTallGrassTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.worldgen.*;
@@ -30,11 +29,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
     private final WorldGenPumpkinTFC pumpkinGen;
     private final WorldGenWaterPlants waterplantGen;
 
-    private final WorldGenTallGrassTFC sparseGrassGen;
-    private final WorldGenTallGrassTFC standardGrassGen;
-    private final WorldGenTallGrassTFC lushGrassGen;
-    private final WorldGenTallGrassTFC desertGrassGen;
-
+    private final WorldGenTallGrassTFC grassGen;
     private final WorldGenPlantTFC plantGen;
 
     public BiomeDecoratorTFC(int lilyPadPerChunk, int waterPlantsPerChunk)
@@ -52,11 +47,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         this.reedGen = null;
         this.waterlilyGen = null;
 
-        sparseGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumGrassType.SPARSE);
-        standardGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumGrassType.STANDARD);
-        lushGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumGrassType.LUSH);
-        desertGrassGen = new WorldGenTallGrassTFC(BlockTallGrassTFC.EnumGrassType.DESERT);
-
+        grassGen = new WorldGenTallGrassTFC();
         plantGen = new WorldGenPlantTFC();
 
         reedGen = new WorldGenTallPlant(Blocks.REEDS); // todo: replace block?
@@ -122,7 +113,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
             if (plant.isValidLocation(temperature, rainfall))
             {
                 plantGen.setGeneratedPlant(plant);
-                for (float i = rng.nextInt(16); i < 1 + floraDensity * 5; i++)
+                for (float i = rng.nextInt(64); i < 1 + floraDensity * 5; i++)
                 {
                     final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                     plantGen.generate(world, rng, p2);
@@ -130,40 +121,40 @@ public class BiomeDecoratorTFC extends BiomeDecorator
             }
         }
 
-        if (rainfall < 75f)
-        {
-            for (int i = 0; i < floraDensity * 5; i++)
-            {
-                final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                if (!BiomeDictionary.hasType(world.getBiome(p2), BiomeDictionary.Type.BEACH))
-                    desertGrassGen.generate(world, rng, p2);
-            }
-        }
-        else if (temperature > 20f && rainfall > 300f)
+        if (rainfall > 300f)
         {
             for (int i = 0; i < 3 + floraDensity * 5; i++)
             {
                 final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                 if (!BiomeDictionary.hasType(world.getBiome(p2), BiomeDictionary.Type.BEACH))
-                    lushGrassGen.generate(world, rng, p2);
+                    grassGen.generate(world, rng, p2);
             }
         }
-        else if (temperature > 15f && rainfall > 150f)
+        else if (rainfall > 150f)
         {
             for (int i = 0; i < 1 + floraDensity * 5; i++)
             {
                 final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                 if (!BiomeDictionary.hasType(world.getBiome(p2), BiomeDictionary.Type.BEACH))
-                    standardGrassGen.generate(world, rng, p2);
+                    grassGen.generate(world, rng, p2);
+            }
+        }
+        else if (rainfall > 75f)
+        {
+            for (int i = 0; i < 0.5f + floraDensity * 3; i++)
+            {
+                final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                if (!BiomeDictionary.hasType(world.getBiome(p2), BiomeDictionary.Type.BEACH))
+                    grassGen.generate(world, rng, p2);
             }
         }
         else
         {
-            for (int i = 0; i < floraDensity * 5; i++)
+            for (int i = 0; i < floraDensity * 3; i++)
             {
                 final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                 if (!BiomeDictionary.hasType(world.getBiome(p2), BiomeDictionary.Type.BEACH))
-                    sparseGrassGen.generate(world, rng, p2);
+                    grassGen.generate(world, rng, p2);
             }
         }
     }

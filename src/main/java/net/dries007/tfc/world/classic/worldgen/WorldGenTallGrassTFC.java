@@ -18,59 +18,42 @@ import net.minecraftforge.common.BiomeDictionary;
 
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockTallGrassTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class WorldGenTallGrassTFC extends WorldGenerator
 {
-    private final IBlockState tallGrassState;
-    private BlockTallGrassTFC.EnumGrassType plantType;
-
-    public WorldGenTallGrassTFC(BlockTallGrassTFC.EnumGrassType type)
-    {
-        this.plantType = type;
-        this.tallGrassState = BlocksTFC.TALL_GRASS.getDefaultState().withProperty(BlockTallGrassTFC.TYPE, type);
-    }
-
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        int maxPlantGen;
+        if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, position) < 0) return false;
+
+        IBlockState tallGrassState = BlocksTFC.TALL_GRASS.getDefaultState().withProperty(BlockTallGrassTFC.TYPE, BlocksTFC.TALL_GRASS.getBiomePlantType(worldIn, position));
+
         for (IBlockState iblockstate = worldIn.getBlockState(position); (iblockstate.getBlock().isAir(iblockstate, worldIn, position) || iblockstate.getBlock().isLeaves(iblockstate, worldIn, position)) && position.getY() > 0; iblockstate = worldIn.getBlockState(position))
         {
             position = position.down();
         }
 
-        switch (this.plantType.getName())
-        {
-            case "desert_grass":
-                maxPlantGen = 2;
-                break;
-            case "lush_grass":
-                maxPlantGen = 160;
-                break;
-            case "sparse_grass":
-                maxPlantGen = 64;
-                break;
-            default:
-                maxPlantGen = 128;
-                break;
-        }
-
-        for (int i = 0; i < 128; ++i)
+        for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 4; ++i)
         {
             BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
-            if (worldIn.isAirBlock(blockpos) && BlocksTFC.TALL_GRASS.canBlockStay(worldIn, blockpos, this.tallGrassState) && !BiomeDictionary.hasType(worldIn.getBiome(blockpos), BiomeDictionary.Type.BEACH))
+            if (worldIn.isAirBlock(blockpos) && BlocksTFC.TALL_GRASS.canBlockStay(worldIn, blockpos, tallGrassState) && !BiomeDictionary.hasType(worldIn.getBiome(blockpos), BiomeDictionary.Type.BEACH))
             {
-                worldIn.setBlockState(blockpos, this.tallGrassState, 2);
+                worldIn.setBlockState(blockpos, tallGrassState, 2);
             }
         }
 
-        for (int i = 0; i < 64; ++i)
+        if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, position) > 20)
         {
-            BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
-
-            if (worldIn.isAirBlock(blockpos) && (!worldIn.provider.isNether() || blockpos.getY() < 254) && Blocks.DOUBLE_PLANT.canPlaceBlockAt(worldIn, blockpos) && !BiomeDictionary.hasType(worldIn.getBiome(blockpos), BiomeDictionary.Type.BEACH))
+            for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 8; ++i)
             {
-                BlocksTFC.DOUBLE_TALL_GRASS.placeAt(worldIn, blockpos, this.plantType, 2);
+                BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+                if (worldIn.isAirBlock(blockpos) && (!worldIn.provider.isNether() || blockpos.getY() < 254) && Blocks.DOUBLE_PLANT.canPlaceBlockAt(worldIn, blockpos) && !BiomeDictionary.hasType(worldIn.getBiome(blockpos), BiomeDictionary.Type.BEACH))
+                {
+                    BlocksTFC.DOUBLE_TALL_GRASS.placeAt(worldIn, blockpos, BlocksTFC.DOUBLE_TALL_GRASS.getBiomePlantType(worldIn, position), 2);
+                }
             }
         }
 
