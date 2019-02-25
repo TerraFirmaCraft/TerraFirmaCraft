@@ -81,9 +81,9 @@ public class BlockTallGrassTFC extends BlockBush implements IGrowable, net.minec
 
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
-        if (new BlockTallGrassTFC().canPlaceBlockAt(worldIn, pos))
+        if (BlocksTFC.TALL_GRASS.canPlaceBlockAt(worldIn, pos))
         {
-            new BlockDoubleTallGrassTFC().placeAt(worldIn, pos, state.getValue(TYPE), 2);
+            BlocksTFC.DOUBLE_TALL_GRASS.placeAt(worldIn, pos, state.getValue(TYPE), 2);
         }
     }
 
@@ -125,7 +125,7 @@ public class BlockTallGrassTFC extends BlockBush implements IGrowable, net.minec
         if (!worldIn.isRemote && stack.getItem() == Items.SHEARS)
         {
             player.addStat(StatList.getBlockStats(this));
-            spawnAsEntity(worldIn, pos, new ItemStack(new BlockTallGrassTFC(), 1, (state.getValue(TYPE)).getMeta()));
+            spawnAsEntity(worldIn, pos, new ItemStack(BlocksTFC.TALL_GRASS, 1, (state.getValue(TYPE)).getMeta()));
         }
         else if (!worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
         {
@@ -164,7 +164,7 @@ public class BlockTallGrassTFC extends BlockBush implements IGrowable, net.minec
     @Override
     public NonNullList<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
-        return NonNullList.withSize(1, new ItemStack(new BlockTallGrassTFC(), 1, (world.getBlockState(pos).getValue(TYPE)).getMeta()));
+        return NonNullList.withSize(1, new ItemStack(BlocksTFC.TALL_GRASS, 1, (world.getBlockState(pos).getValue(TYPE)).getMeta()));
     }
 
     public EnumGrassType getBiomePlantType(World world, BlockPos pos)

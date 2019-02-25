@@ -7,10 +7,16 @@
 
 package net.dries007.tfc.api.types;
 
+import java.util.function.BiFunction;
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import net.dries007.tfc.objects.blocks.plants.BlockCreepingPlantTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockDoublePlantTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 
 public class Plant extends IForgeRegistryEntry.Impl<Plant>
 {
@@ -18,6 +24,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     private final float maxTemp;
     private final float minRain;
     private final float maxRain;
+
+    private final PlantType plantType;
 
     /**
      * Addon mods that want to add flowers should subscribe to the registry event for this class
@@ -32,12 +40,14 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      * @param minRain min rainfall
      * @param maxRain max rainfall
      */
-    public Plant(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minRain, float maxRain)
+    public Plant(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minRain, float maxRain, PlantType plantType)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
         this.minRain = minRain;
         this.maxRain = maxRain;
+
+        this.plantType = plantType;
 
         setRegistryName(name);
     }
@@ -53,26 +63,27 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return getRegistryName().getPath();
     }
 
-    public static class Builder
+    public PlantType getPlantType()
     {
-        private float minTemp;
-        private float maxTemp;
-        private float minRain;
-        private float maxRain;
-        private ResourceLocation name;
+        return plantType;
+    }
 
-        public Builder(@Nonnull ResourceLocation name, float minRain, float maxRain, float minTemp, float maxTemp)
+    public enum PlantType
+    {
+        PLANT(BlockPlantTFC::new),
+        DOUBLEPLANT(BlockDoublePlantTFC::new),
+        CREEPINGPLANT(BlockCreepingPlantTFC::new);
+
+        public static Block create(Plant plant, PlantType type)
         {
-            this.minTemp = minTemp; // required values
-            this.maxTemp = maxTemp;
-            this.minRain = minRain;
-            this.maxRain = maxRain;
-            this.name = name;
+            return type.supplier.apply(plant, type);
         }
 
-        public Plant build()
+        private final BiFunction<Plant, PlantType, Block> supplier;
+
+        PlantType(@Nonnull BiFunction<Plant, PlantType, Block> supplier)
         {
-            return new Plant(name, minTemp, maxTemp, minRain, maxRain);
+            this.supplier = supplier;
         }
     }
 }

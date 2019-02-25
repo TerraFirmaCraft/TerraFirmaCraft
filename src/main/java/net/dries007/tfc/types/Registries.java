@@ -41,8 +41,6 @@ public class Registries
         newRegistry(TFCRegistryNames.ORE, Ore.class, true);
         newRegistry(TFCRegistryNames.TREE, Tree.class, true);
         newRegistry(TFCRegistryNames.PLANT, Plant.class, true);
-        newRegistry(TFCRegistryNames.DOUBLE_PLANT, DoublePlant.class, true);
-        newRegistry(TFCRegistryNames.CREEPING_PLANT, CreepingPlant.class, true);
 
         // Normal registries
         newRegistry(TFCRegistryNames.ALLOY_RECIPE, AlloyRecipe.class, false);

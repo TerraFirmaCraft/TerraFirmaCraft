@@ -7,6 +7,9 @@
 
 package net.dries007.tfc.objects.blocks.plants;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,16 +34,38 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.world.classic.CalenderTFC;
 
 public class BlockDoublePlantTFC extends BlockPlantTFC
 {
     public static final PropertyEnum<EnumBlockHalf> HALF = PropertyEnum.<EnumBlockHalf>create("half", EnumBlockHalf.class);
+    private static final Map<Plant, EnumMap<Plant.PlantType, BlockDoublePlantTFC>> TABLE = new HashMap<>();
 
-    public BlockDoublePlantTFC()
+    public static BlockDoublePlantTFC get(Plant plant, Plant.PlantType type)
     {
-        super();
+        return BlockDoublePlantTFC.TABLE.get(plant).get(type);
+    }
+    public final Plant plant;
+    public final Plant.PlantType type;
+
+
+    public BlockDoublePlantTFC(Plant plant, Plant.PlantType type)
+    {
+        super(plant, type);
+        if (!TABLE.containsKey(plant))
+            TABLE.put(plant, new EnumMap<>(Plant.PlantType.class));
+        TABLE.get(plant).put(type, this);
+
+        this.plant = plant;
+        this.type = type;
         this.setDefaultState(this.blockState.getBaseState().withProperty(HALF, EnumBlockHalf.LOWER).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+    }
+
+    public void placeAt(World worldIn, BlockPos lowerPos, int flags)
+    {
+        worldIn.setBlockState(lowerPos, this.getDefaultState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(HALF, BlockDoublePlantTFC.EnumBlockHalf.LOWER), flags);
+        worldIn.setBlockState(lowerPos.up(), this.getDefaultState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(HALF, BlockDoublePlantTFC.EnumBlockHalf.UPPER), flags);
     }
 
     @Override
