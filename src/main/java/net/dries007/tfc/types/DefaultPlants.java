@@ -46,36 +46,39 @@ public class DefaultPlants
     public static final ResourceLocation MOSS = new ResourceLocation(MOD_ID, "moss");
     public static final ResourceLocation BLUE_DAWN = new ResourceLocation(MOD_ID, "blue_dawn");
 
+    public static final ResourceLocation LILYPAD = new ResourceLocation(MOD_ID, "lilypad");
+
     @SubscribeEvent
     public static void onPreRegisterPlantCategory(TFCRegistryEvent.RegisterPreBlock<Plant> event)
     {
         event.getRegistry().registerAll(
-            new Plant(DANDELION, -40f, 40f, 75f, 500, Plant.PlantType.PLANT),
+            new Plant(DANDELION, -40f, 40f, 75f, 400, Plant.PlantType.PLANT),
             new Plant(NASTURTIUM, -46f, 38f, 150f, 500, Plant.PlantType.PLANT),
             new Plant(MEADS_MILKWEED, -23f, 31f, 130f, 500f, Plant.PlantType.PLANT),
             new Plant(TROPICAL_MILKWEED, -6f, 36f, 120f, 300f, Plant.PlantType.PLANT),
             new Plant(BUTTERFLY_MILKWEED, -40f, 32f, 75f, 300f, Plant.PlantType.PLANT),
             new Plant(CALENDULA, -46f, 30f, 130f, 300f, Plant.PlantType.PLANT),
             new Plant(POPPY, -40f, 36f, 150f, 250f, Plant.PlantType.PLANT),
-            new Plant(BLUE_ORCHID, 18f, 50f, 300f, 10000f, Plant.PlantType.PLANT),
+            new Plant(BLUE_ORCHID, 18f, 50f, 300f, 500f, Plant.PlantType.PLANT),
             new Plant(ALLIUM, -40f, 33f, 150f, 500f, Plant.PlantType.PLANT),
             new Plant(HOUSTONIA, -46f, 36f, 150f, 500f, Plant.PlantType.PLANT),
             new Plant(TULIP_RED, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
             new Plant(TULIP_ORANGE, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
             new Plant(TULIP_WHITE, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
             new Plant(TULIP_PINK, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
-            new Plant(OXEYE_DAISY, -40f, 33f, 120f, 500f, Plant.PlantType.PLANT),
+            new Plant(OXEYE_DAISY, -40f, 33f, 120f, 300f, Plant.PlantType.PLANT),
 //            new Plant(PAEONIA, -40f, 33f, 150f, 500f, Plant.PlantType.PLANT),
             new Plant(GOLDENROD, -29f, 32f, 75f, 300f, Plant.PlantType.PLANT),
-            new Plant(FERN, -40f, 33f, 300f, 10000f, Plant.PlantType.PLANT),
+            new Plant(FERN, -40f, 33f, 300f, 500f, Plant.PlantType.PLANT),
             new Plant(PETROVSKIA, -29f, 32f, 0f, 200f, Plant.PlantType.PLANT),
 
 //            new Plant(DOUBLE_PAEONIA, -40f, 33f, 150f, 500f, Plant.PlantType.DOUBLEPLANT),
-            new Plant(DOUBLE_FERN, -40f, 33f, 300f, 10000f, Plant.PlantType.DOUBLEPLANT),
+            new Plant(DOUBLE_FERN, -40f, 33f, 300f, 500f, Plant.PlantType.DOUBLEPLANT),
 
-            new Plant(MOSS, -7f, 36f, 0f, 10000f, Plant.PlantType.CREEPINGPLANT),
-            new Plant(BLUE_DAWN, -40f, 25f, 250f, 500f, Plant.PlantType.CREEPINGPLANT)
+            new Plant(MOSS, -7f, 36f, 250f, 500f, Plant.PlantType.CREEPINGPLANT),
+            new Plant(BLUE_DAWN, -40f, 25f, 150f, 500f, Plant.PlantType.CREEPINGPLANT),
 
+            new Plant(LILYPAD, -34f, 38f, 0f, 500f, Plant.PlantType.LILYPAD)
         );
     }
 }
