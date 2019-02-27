@@ -102,7 +102,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
 
                 if (plant.getPlantType() == Plant.PlantType.LILYPAD)
                 {
-                    for (int i = 0; i < waterPlantsPerChunk * floraDensity; i++)
+                    for (int i = 0; i < lilyPadPerChunk * floraDensity; i++)
                     {
                         final BlockPos p2 = world.getPrecipitationHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                         if (ClimateTFC.getHeightAdjustedBiomeTemp(world, p2) >= 7)
