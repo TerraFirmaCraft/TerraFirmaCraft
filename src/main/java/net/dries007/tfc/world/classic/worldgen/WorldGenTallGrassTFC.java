@@ -50,9 +50,9 @@ public class WorldGenTallGrassTFC extends WorldGenerator
             {
                 BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
-                if (worldIn.isAirBlock(blockpos) && (!worldIn.provider.isNether() || blockpos.getY() < 254) && Blocks.DOUBLE_PLANT.canPlaceBlockAt(worldIn, blockpos) && !BiomeDictionary.hasType(worldIn.getBiome(blockpos), BiomeDictionary.Type.BEACH))
+                if (worldIn.isAirBlock(blockpos) && (!worldIn.provider.isNether() || blockpos.getY() < 254) && Blocks.DOUBLE_PLANT.canPlaceBlockAt(worldIn, blockpos) && !BiomeDictionary.hasType(worldIn.getBiome(blockpos), BiomeDictionary.Type.BEACH) && worldIn.canSeeSky(blockpos))
                 {
-                    BlocksTFC.DOUBLE_TALL_GRASS.placeAt(worldIn, blockpos, BlocksTFC.DOUBLE_TALL_GRASS.getBiomePlantType(worldIn, position), 2);
+                    BlocksTFC.DOUBLE_TALL_GRASS.placeAt(worldIn, blockpos, BlocksTFC.DOUBLE_TALL_GRASS.getBiomePlantType(worldIn, blockpos), 2);
                 }
             }
         }

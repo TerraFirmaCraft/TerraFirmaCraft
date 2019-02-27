@@ -87,7 +87,8 @@ public final class Helpers
             if (BlocksTFC.TALL_GRASS.canPlaceBlockAt(world, pos.up()) &&
                 ClimateTFC.getHeightAdjustedBiomeTemp(world, pos.up()) > 20 &&
                 ClimateTFC.getHeightAdjustedBiomeTemp(world, pos.up()) < 35 &&
-                rand.nextDouble() < BlocksTFC.TALL_GRASS.getGrowthRate())
+                world.isDaytime() &&
+                rand.nextDouble() < BlocksTFC.TALL_GRASS.getGrowthRate(world))
             {
                 world.setBlockState(pos.up(), BlocksTFC.TALL_GRASS.getDefaultState().withProperty(BlockTallGrassTFC.TYPE, BlocksTFC.TALL_GRASS.getBiomePlantType(world, pos.up())), 2);
             }
