@@ -46,9 +46,9 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
     {
         return BlockDoublePlantTFC.TABLE.get(plant).get(type);
     }
+
     public final Plant plant;
     public final Plant.PlantType type;
-
 
     public BlockDoublePlantTFC(Plant plant, Plant.PlantType type)
     {
@@ -96,21 +96,6 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
             {
                 worldIn.setBlockState(blockpos1, Blocks.AIR.getDefaultState(), 3);
             }
-        }
-    }
-
-    @Override
-    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if (state.getBlock() != this) return super.canBlockStay(worldIn, pos, state);
-        if (state.getValue(HALF) == BlockDoublePlantTFC.EnumBlockHalf.UPPER)
-        {
-            return worldIn.getBlockState(pos.down()).getBlock() == this;
-        }
-        else
-        {
-            IBlockState iblockstate = worldIn.getBlockState(pos.up());
-            return iblockstate.getBlock() == this && super.canBlockStay(worldIn, pos, iblockstate);
         }
     }
 
@@ -225,10 +210,55 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
     }
 
     @Override
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
+    {
+        int currentStage = state.getValue(GROWTHSTAGE);
+        int expectedStage = CalenderTFC.getMonthOfYear().id();
+
+        if (currentStage != expectedStage && random.nextDouble() < 0.5)
+        {
+            worldIn.setBlockState(pos, state.withProperty(GROWTHSTAGE, expectedStage));
+        }
+        this.updateTick(worldIn, pos, state, random);
+    }
+
+    @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
         world.setBlockState(pos, this.blockState.getBaseState().withProperty(HALF, state.getValue(HALF)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
         this.checkAndDropBlock(world, pos, state);
+    }
+
+    @Override
+    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if (state.getBlock() != this) return super.canBlockStay(worldIn, pos, state);
+        if (state.getValue(HALF) == BlockDoublePlantTFC.EnumBlockHalf.UPPER)
+        {
+            return worldIn.getBlockState(pos.down()).getBlock() == this;
+        }
+        else
+        {
+            IBlockState iblockstate = worldIn.getBlockState(pos.up());
+            return iblockstate.getBlock() == this && super.canBlockStay(worldIn, pos, iblockstate);
+        }
+    }
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        if (!canBlockStay(worldIn, pos, state))
+        {
+            worldIn.setBlockToAir(pos);
+            if (state.getValue(HALF) == EnumBlockHalf.UPPER)
+            {
+                worldIn.setBlockToAir(pos.down());
+            }
+            else
+            {
+                worldIn.setBlockToAir(pos.up());
+            }
+        }
     }
 
     private boolean onHarvest(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
@@ -249,36 +279,6 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
         public String getName()
         {
             return this == UPPER ? "upper" : "lower";
-        }
-    }
-
-    @Override
-    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
-    {
-        int currentStage = state.getValue(GROWTHSTAGE);
-        int expectedStage = CalenderTFC.getMonthOfYear().id();
-
-        if (currentStage != expectedStage && random.nextDouble() < 0.5)
-        {
-            worldIn.setBlockState(pos, state.withProperty(GROWTHSTAGE, expectedStage));
-        }
-        this.updateTick(worldIn, pos, state, random);
-    }
-
-    @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
-        if (!canBlockStay(worldIn, pos, state))
-        {
-            worldIn.setBlockToAir(pos);
-            if (state.getValue(HALF) == EnumBlockHalf.UPPER)
-            {
-                worldIn.setBlockToAir(pos.down());
-            }
-            else
-            {
-                worldIn.setBlockToAir(pos.up());
-            }
         }
     }
 }

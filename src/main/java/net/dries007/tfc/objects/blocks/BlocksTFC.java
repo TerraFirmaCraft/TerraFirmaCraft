@@ -35,6 +35,7 @@ import net.dries007.tfc.objects.blocks.stone.BlockWallTFC;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockHeat;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockLilyPadTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTorchTFC;
 import net.dries007.tfc.objects.te.*;
@@ -299,8 +300,6 @@ public final class BlocksTFC
             Builder<BlockChestTFC> chests = ImmutableList.builder();
             Builder<BlockToolRack> toolRacks = ImmutableList.builder();
             Builder<BlockPlantTFC> plants = ImmutableList.builder();
-            Builder<BlockDoublePlantTFC> doublePlants = ImmutableList.builder();
-            Builder<BlockCreepingPlantTFC> creepingPlants = ImmutableList.builder();
 
             for (Tree wood : TFCRegistries.TREES.getValuesCollection())
             {
@@ -412,9 +411,23 @@ public final class BlocksTFC
                 {
                     b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockCreepingPlantTFC(plant, Plant.PlantType.CREEPINGPLANT), CT_DECORATIONS));
                 }
+                else if (plant.getPlantType() == Plant.PlantType.LILYPAD)
+                {
+                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockLilyPadTFC(plant, Plant.PlantType.LILYPAD), CT_DECORATIONS));
+                }
             }
             allPlantBlocks = b.build();
-            allPlantBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
+            for (BlockPlantTFC blockPlant : allPlantBlocks)
+            {
+                if (blockPlant.type == Plant.PlantType.LILYPAD)
+                {
+                    inventoryItemBlocks.add(new ItemBlockLilyPadTFC(blockPlant));
+                }
+                else
+                {
+                    normalItemBlocks.add(new ItemBlockTFC(blockPlant));
+                }
+            }
         }
 
         inventoryItemBlocks.add(new ItemBlockTorchTFC(register(r, "torch", new BlockTorchTFC(), CT_MISC)));

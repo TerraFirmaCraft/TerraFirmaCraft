@@ -20,8 +20,11 @@ import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockCreepingPlantTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockDoublePlantTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockLilyPadTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
+
+import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
 
 public class WorldGenPlantTFC extends WorldGenerator
 {
@@ -90,6 +93,22 @@ public class WorldGenPlantTFC extends WorldGenerator
             }
 
             return flag;
+        }
+        else if (plant.getPlantType() == Plant.PlantType.LILYPAD)
+        {
+            for (int i = 0; i < 32; ++i)
+            {
+                final BlockPos p2 = position.add(rand.nextInt(8) - rand.nextInt(8),
+                    rand.nextInt(4) - rand.nextInt(4),
+                    rand.nextInt(8) - rand.nextInt(8));
+
+                if (worldIn.isAirBlock(p2) && BlockLilyPadTFC.get(plant, plant.getPlantType()).canPlaceBlockAt(worldIn, p2) &&
+                    worldIn.getBlockState(p2.add(0, -1, 0)) == FRESH_WATER &&
+                    worldIn.getBlockState(p2.add(0, -2, 0)) != FRESH_WATER) // todo: make this a little less harsh
+                {
+                    worldIn.setBlockState(p2, BlockLilyPadTFC.get(plant, plant.getPlantType()).getDefaultState(), 0x02);
+                }
+            }
         }
 
         return true;

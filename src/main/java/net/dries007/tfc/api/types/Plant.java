@@ -16,6 +16,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.objects.blocks.plants.BlockCreepingPlantTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockDoublePlantTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockLilyPadTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 
 public class Plant extends IForgeRegistryEntry.Impl<Plant>
@@ -72,7 +73,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     {
         PLANT(BlockPlantTFC::new),
         DOUBLEPLANT(BlockDoublePlantTFC::new),
-        CREEPINGPLANT(BlockCreepingPlantTFC::new);
+        CREEPINGPLANT(BlockCreepingPlantTFC::new),
+        LILYPAD(BlockLilyPadTFC::new);
 
         public static Block create(Plant plant, PlantType type)
         {

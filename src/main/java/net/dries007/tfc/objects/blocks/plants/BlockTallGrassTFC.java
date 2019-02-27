@@ -15,6 +15,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -49,7 +50,7 @@ public class BlockTallGrassTFC extends BlockBush implements IGrowable, net.minec
 
     public BlockTallGrassTFC()
     {
-        super();
+        super(Material.VINE);
         this.setTickRandomly(true);
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
