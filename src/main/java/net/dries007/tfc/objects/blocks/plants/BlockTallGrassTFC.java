@@ -58,9 +58,10 @@ public class BlockTallGrassTFC extends BlockBush implements IGrowable, net.minec
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumGrassType.STANDARD));
     }
 
-    public double getGrowthRate()
+    public double getGrowthRate(World world)
     {
-        return ConfigTFC.GENERAL.grassGrowthRate;
+        if (world.isRaining())return ConfigTFC.GENERAL.grassGrowthRate * 2;
+        else return ConfigTFC.GENERAL.grassGrowthRate;
     }
 
     @Override
@@ -78,7 +79,7 @@ public class BlockTallGrassTFC extends BlockBush implements IGrowable, net.minec
     @Override
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
-        return BlocksTFC.DOUBLE_TALL_GRASS.canPlaceBlockAt(worldIn, pos) && ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 20 && ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < 35;
+        return BlocksTFC.DOUBLE_TALL_GRASS.canPlaceBlockAt(worldIn, pos) && ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 20 && ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < 35 && worldIn.canSeeSky(pos) && worldIn.isDaytime();
     }
 
     @Override
@@ -124,11 +125,11 @@ public class BlockTallGrassTFC extends BlockBush implements IGrowable, net.minec
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-        if (canGrow(worldIn, pos, state, worldIn.isRemote) && random.nextDouble() < getGrowthRate())
+        if (canGrow(worldIn, pos, state, worldIn.isRemote) && random.nextDouble() < getGrowthRate(worldIn))
         {
             grow(worldIn, random, pos, state);
         }
-        else if (canShrink(worldIn, pos, state, worldIn.isRemote) && random.nextDouble() < getGrowthRate())
+        else if (canShrink(worldIn, pos, state, worldIn.isRemote) && random.nextDouble() < getGrowthRate(worldIn))
         {
             shrink(worldIn, random, pos, state);
         }

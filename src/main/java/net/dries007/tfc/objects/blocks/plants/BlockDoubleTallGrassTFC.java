@@ -148,7 +148,7 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
     @Override
     public boolean canShrink(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
-        return ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < 20 || ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 35;
+        return ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < 15 || ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 35 || !worldIn.canSeeSky(pos);
     }
 
     @Override
@@ -190,7 +190,7 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-        if (canShrink(worldIn, pos, state, worldIn.isRemote) && random.nextDouble() < getGrowthRate())
+        if (canShrink(worldIn, pos, state, worldIn.isRemote) && random.nextDouble() < getGrowthRate(worldIn))
         {
             shrink(worldIn, random, pos, state);
         }
