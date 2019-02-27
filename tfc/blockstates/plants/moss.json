@@ -3,13 +3,20 @@
   "defaults": {
     "model": "tfc:empty",
     "textures": {
-      "particle": "tfc:blocks/plants/moss_bottom",
-      "top": "tfc:blocks/plants/moss_top",
-      "middle": "tfc:blocks/plants/moss_middle",
-      "bottom": "tfc:blocks/plants/moss_bottom"
+      "layer0": "tfc:blocks/plants/moss/moss_layer0",
+      "layer1": "tfc:blocks/plants/moss/moss_layer1",
+      "layer2": "tfc:blocks/plants/moss/moss_layer2",
+      "particle": "tfc:blocks/plants/moss/moss_layer0"
     }
   },
   "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": {
+      "model": "tfc:creeping_plant",
+      "transform": "forge:default-item"
+    },
     "down": {
       "true":  { "submodel": "tfc:creeping_plant" },
       "false": {}

@@ -1,5 +1,5 @@
 {
-    "ambientocclusion": true,
+    "ambientocclusion": false,
     "textures": {
         "particle": "#cross"
     },
