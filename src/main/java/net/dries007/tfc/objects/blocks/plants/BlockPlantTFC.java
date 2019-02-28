@@ -40,12 +40,16 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public final static PropertyInteger GROWTHSTAGE = PropertyInteger.create("stage", 0, 11);
     private static final Map<Plant, EnumMap<Plant.PlantType, BlockPlantTFC>> TABLE = new HashMap<>();
 
+    public static BlockPlantTFC get(Plant plant, Plant.PlantType type)
+    {
+        return TABLE.get(plant).get(type);
+    }
     public final Plant plant;
     public final Plant.PlantType type;
 
     public BlockPlantTFC(Plant plant, Plant.PlantType type)
     {
-        super();
+        super(plant.getMaterial());
 
         if (!TABLE.containsKey(plant))
             TABLE.put(plant, new EnumMap<>(Plant.PlantType.class));
@@ -58,11 +62,6 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         setHardness(0.0F);
         Blocks.FIRE.setFireInfo(this, 5, 20);
         this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
-    }
-
-    public static BlockPlantTFC get(Plant plant, Plant.PlantType type)
-    {
-        return TABLE.get(plant).get(type);
     }
 
     @Override
@@ -78,21 +77,43 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this,  new IProperty[] {GROWTHSTAGE});
-    }
-
-    @Override
     public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
     {
         return true;
     }
 
     @Override
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
+    {
+        if (!worldIn.isAreaLoaded(pos, 1)) return;
+        int currentStage = state.getValue(GROWTHSTAGE);
+        int expectedStage = CalenderTFC.getMonthOfYear().id();
+
+        if (currentStage != expectedStage && random.nextDouble() < 0.5)
+        {
+            worldIn.setBlockState(pos, state.withProperty(GROWTHSTAGE, expectedStage));
+        }
+
+        this.updateTick(worldIn, pos, state, random);
+    }
+
+    @Override
     public int tickRate(World worldIn)
     {
         return 3;
+    }
+
+    @Override
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
+    {
+        world.setBlockState(pos, this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        this.checkAndDropBlock(world, pos, state);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE});
     }
 
     @Override
@@ -116,40 +137,18 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     protected boolean canSustainBush(IBlockState state)
     {
+        if (plant.getPlantType() == Plant.PlantType.DESERTPLANT) return BlocksTFC.isSand(state);
         return BlocksTFC.isSoil(state);
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        return super.getBoundingBox(state, source, pos).offset(state.getOffset(source, pos));
-    }
-
-    @Override
-    public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
-    {
-        return EnumPlantType.Plains;
-    }
-
-    @Override
-    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
-    {
-        int currentStage = state.getValue(GROWTHSTAGE);
-        int expectedStage = CalenderTFC.getMonthOfYear().id();
-
-        if (currentStage != expectedStage && random.nextDouble() < 0.5)
+        if (!worldIn.isAreaLoaded(pos, 1)) return;
+        if (!canBlockStay(worldIn, pos, state))
         {
-            worldIn.setBlockState(pos, state.withProperty(GROWTHSTAGE, expectedStage));
+            worldIn.setBlockToAir(pos);
         }
-
-        this.updateTick(worldIn, pos, state, random);
-    }
-
-    @Override
-    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
-    {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
-        this.checkAndDropBlock(world, pos, state);
     }
 
     @Override
@@ -164,11 +163,23 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        if (!canBlockStay(worldIn, pos, state))
+        return super.getBoundingBox(state, source, pos).offset(state.getOffset(source, pos));
+    }
+
+    @Override
+    public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    {
+        IBlockState iblockstate = world.getBlockState(pos.down());
+        if (plant.getPlantType() == Plant.PlantType.DESERTPLANT && BlocksTFC.isSand(iblockstate))
         {
-            worldIn.setBlockToAir(pos);
+            return EnumPlantType.Desert;
         }
+        else
+        {
+            return EnumPlantType.Plains;
+        }
+
     }
 }

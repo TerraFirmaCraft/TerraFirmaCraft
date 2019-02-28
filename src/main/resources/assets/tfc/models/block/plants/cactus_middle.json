@@ -1,0 +1,99 @@
+{
+    "textures": {
+        "particle": "tfc:blocks/plants/cactus/cactus_barrel_sides",
+        "side": "tfc:blocks/plants/cactus/cactus_barrel_sides",
+        "top": "tfc:blocks/plants/cactus/cactus_barrel_top",
+        "spike": "tfc:blocks/plants/cactus/spikes_middle"
+    },
+    "elements": [
+        {
+            "name": "Middle",
+            "from": [ 0.0, 0.0, 0.0 ], 
+            "to": [ 16.0, 16.0, 16.0 ], 
+            "faces": {
+                "north": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "east": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "south": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "west": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "up": { "texture": "#top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "#top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesN",
+            "from": [ 8.0, 1.0, -2.0 ], 
+            "to": [ 8.0, 16.0, 3.0 ], 
+            "faces": {
+                "east": { "texture": "#spike", "uv": [ 11.0, 0.0, 16.0, 16.0 ] },
+                "west": { "texture": "#spike", "uv": [ 0.0, 0.0, 5.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesE",
+            "from": [ 13.0, 1.0, 8.0 ], 
+            "to": [ 18.0, 16.0, 8.0 ], 
+            "faces": {
+                "north": { "texture": "#spike", "uv": [ 0.0, 1.0, 5.0, 16.0 ] },
+                "south": { "texture": "#spike", "uv": [ 11.0, 1.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesS",
+            "from": [ 8.0, 1.0, 13.0 ], 
+            "to": [ 8.0, 16.0, 18.0 ], 
+            "faces": {
+                "east": { "texture": "#spike", "uv": [ 0.0, 1.0, 5.0, 16.0 ] },
+                "west": { "texture": "#spike", "uv": [ 11.0, 1.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesW",
+            "from": [ -2.0, 1.0, 8.0 ], 
+            "to": [ 3.0, 16.0, 8.0 ], 
+            "faces": {
+                "north": { "texture": "#spike", "uv": [ 11.0, 1.0, 16.0, 16.0 ] },
+                "south": { "texture": "#spike", "uv": [ 0.0, 1.0, 5.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesNW",
+            "from": [ 8.0, 1.0, -5.0 ], 
+            "to": [ 8.0, 16.0, 0.0 ], 
+            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 45.0 },
+            "faces": {
+                "east": { "texture": "#spike", "uv": [ 11.0, 1.0, 16.0, 16.0 ] },
+                "west": { "texture": "#spike", "uv": [ 0.0, 1.0, 5.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesSW",
+            "from": [ -5.0, 1.0, 8.0 ], 
+            "to": [ 0.0, 16.0, 8.0 ], 
+            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 45.0 },
+            "faces": {
+                "north": { "texture": "#spike", "uv": [ 11.0, 1.0, 16.0, 16.0 ] },
+                "south": { "texture": "#spike", "uv": [ 0.0, 1.0, 5.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesSE",
+            "from": [ 8.0, 1.0, 16.0 ], 
+            "to": [ 8.0, 16.0, 21.0 ], 
+            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 45.0 },
+            "faces": {
+                "east": { "texture": "#spike", "uv": [ 0.0, 1.0, 5.0, 16.0 ] },
+                "west": { "texture": "#spike", "uv": [ 11.0, 1.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesNE",
+            "from": [ 16.0, 1.0, 8.0 ], 
+            "to": [ 21.0, 16.0, 8.0 ], 
+            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 45.0 },
+            "faces": {
+                "north": { "texture": "#spike", "uv": [ 0.0, 1.0, 5.0, 16.0 ] },
+                "south": { "texture": "#spike", "uv": [ 11.0, 1.0, 16.0, 16.0 ] }
+            }
+        }
+    ]
+}

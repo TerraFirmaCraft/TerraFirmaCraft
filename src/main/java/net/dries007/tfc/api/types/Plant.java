@@ -11,6 +11,7 @@ import java.util.function.BiFunction;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -27,6 +28,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     private final float maxRain;
 
     private final PlantType plantType;
+    private final Material material;
 
     /**
      * Addon mods that want to add flowers should subscribe to the registry event for this class
@@ -49,6 +51,20 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         this.maxRain = maxRain;
 
         this.plantType = plantType;
+        this.material = Material.PLANTS;
+
+        setRegistryName(name);
+    }
+
+    public Plant(@Nonnull ResourceLocation name, Material material, float minTemp, float maxTemp, float minRain, float maxRain, PlantType plantType)
+    {
+        this.minTemp = minTemp;
+        this.maxTemp = maxTemp;
+        this.minRain = minRain;
+        this.maxRain = maxRain;
+
+        this.plantType = plantType;
+        this.material = material;
 
         setRegistryName(name);
     }
@@ -69,12 +85,20 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return plantType;
     }
 
+    public Material getMaterial()
+    {
+        return material;
+    }
+
     public enum PlantType
     {
         PLANT(BlockPlantTFC::new),
         DOUBLEPLANT(BlockDoublePlantTFC::new),
         CREEPINGPLANT(BlockCreepingPlantTFC::new),
-        LILYPAD(BlockLilyPadTFC::new);
+        LILYPAD(BlockLilyPadTFC::new),
+        DESERTPLANT(BlockPlantTFC::new),
+        STACKPLANT(BlockPlantTFC::new),
+        CACTUS(BlockPlantTFC::new);
 
         public static Block create(Plant plant, PlantType type)
         {

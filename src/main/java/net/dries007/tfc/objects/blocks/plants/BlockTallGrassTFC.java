@@ -46,7 +46,7 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 public class BlockTallGrassTFC extends BlockBush implements IGrowable, net.minecraftforge.common.IShearable, IItemSize
 {
     public static final PropertyEnum<EnumGrassType> TYPE = PropertyEnum.<EnumGrassType>create("type", EnumGrassType.class);
-    protected static final AxisAlignedBB TALL_GRASS_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
+    protected static final AxisAlignedBB TALL_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
     public BlockTallGrassTFC()
     {
@@ -60,7 +60,7 @@ public class BlockTallGrassTFC extends BlockBush implements IGrowable, net.minec
 
     public double getGrowthRate(World world)
     {
-        if (world.isRaining())return ConfigTFC.GENERAL.grassGrowthRate * 2;
+        if (world.isRaining()) return ConfigTFC.GENERAL.grassGrowthRate * 2;
         else return ConfigTFC.GENERAL.grassGrowthRate;
     }
 
@@ -125,6 +125,7 @@ public class BlockTallGrassTFC extends BlockBush implements IGrowable, net.minec
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
+        if (!worldIn.isAreaLoaded(pos, 1)) return;
         if (canGrow(worldIn, pos, state, worldIn.isRemote) && random.nextDouble() < getGrowthRate(worldIn))
         {
             grow(worldIn, random, pos, state);
@@ -242,7 +243,7 @@ public class BlockTallGrassTFC extends BlockBush implements IGrowable, net.minec
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return TALL_GRASS_AABB;
+        return TALL_GRASS_AABB.offset(state.getOffset(source, pos));
     }
 
     @Override

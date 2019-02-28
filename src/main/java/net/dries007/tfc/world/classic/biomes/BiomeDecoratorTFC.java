@@ -88,12 +88,6 @@ public class BiomeDecoratorTFC extends BiomeDecorator
             pumpkinGen.generate(world, rng, world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8)));
         }
 
-        if (temperature > 15f && rainfall < 75f && rng.nextBoolean())
-        {
-            final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-            cactusGen.generate(world, rng, p2);
-        }
-
         for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
         {
             if (plant.isValidLocation(temperature, rainfall))
@@ -107,6 +101,14 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                         final BlockPos p2 = world.getPrecipitationHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                         if (ClimateTFC.getHeightAdjustedBiomeTemp(world, p2) >= 7)
                             plantGen.generate(world, rng, p2);
+                    }
+                }
+                else if (plant.getPlantType() == Plant.PlantType.CACTUS)
+                {
+                    if (rng.nextFloat() < floraDensity)
+                    {
+                        final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                        plantGen.generate(world, rng, p2);
                     }
                 }
                 else
