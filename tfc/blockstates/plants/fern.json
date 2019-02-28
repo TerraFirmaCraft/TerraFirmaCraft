@@ -3,8 +3,9 @@
   "defaults": {
     "model": "tinted_cross",
     "textures": {
-      "cross": "tfc:blocks/plants/fern",
-      "layer0": "tfc:blocks/plants/fern"
+      "cross": "tfc:blocks/plants/fern/fern_2",
+      "particle": "tfc:blocks/plants/fern/fern_2",
+      "layer0": "tfc:blocks/plants/fern/fern_2"
     }
   },
   "variants": {
@@ -15,17 +16,96 @@
       "model": "builtin/generated",
       "transform": "forge:default-item"
     },
-    "stage=0": [ { "textures": { "cross" : "tfc:blocks/plants/fern" } } ],
-    "stage=1": [ { "textures": { "cross" : "tfc:blocks/plants/fern" } } ],
-    "stage=2": [ { "textures": { "cross" : "tfc:blocks/plants/fern" } } ],
-    "stage=3": [ { "textures": { "cross" : "tfc:blocks/plants/fern" } } ],
-    "stage=4": [ { "textures": { "cross" : "tfc:blocks/plants/fern" } } ],
-    "stage=5": [ { "textures": { "cross" : "tfc:blocks/plants/fern" } } ],
-    "stage=6": [ { "textures": { "cross" : "tfc:blocks/plants/fern" } } ],
-    "stage=7": [ { "textures": { "cross" : "tfc:blocks/plants/fern" } } ],
-    "stage=8": [ { "textures": { "cross" : "tfc:blocks/plants/fern" } } ],
-    "stage=9": [ { "textures": { "cross" : "tfc:blocks/plants/fern" } } ],
-    "stage=10": [ { "textures": { "cross" : "tfc:blocks/plants/fern" } } ],
-    "stage=11": [ { "textures": { "cross" : "tfc:blocks/plants/fern" } } ]
+    "stage=0": [
+      { "model": "tfc:fern", "textures": { "crossnotint" : "tfc:blocks/plants/fern/fern_0" } }
+	],
+    "stage=1": [
+      {
+        "textures": { "cross" : "tfc:blocks/plants/fern/fern_1" }
+      }
+	],
+    "stage=2": [
+      {
+        "textures": { "fernhigh" : "tfc:blocks/plants/fern/fern_2" },
+        "submodel": {
+          "0": { "model": "tfc:fern"},
+          "90": { "model": "tfc:fern", "y": 90 },
+          "180": { "model": "tfc:fern", "y": 180 },
+          "270": { "model": "tfc:fern", "y": 270 }
+        }
+      }
+	],
+    "stage=3": [
+      {
+        "textures": { "fernlow" : "tfc:blocks/plants/fern/fern_2", "fernhigh" : "tfc:blocks/plants/fern/fern_2" },
+        "submodel": {
+          "0": { "model": "tfc:fern"},
+          "90": { "model": "tfc:fern", "y": 90 },
+          "180": { "model": "tfc:fern", "y": 180 },
+          "270": { "model": "tfc:fern", "y": 270 }
+        }
+      }
+	],
+    "stage=4": [
+      {
+        "textures": { "fernlow" : "tfc:blocks/plants/fern/fern_2", "fernhigh" : "tfc:blocks/plants/fern/fern_2" },
+        "submodel": {
+          "0": { "model": "tfc:fern"},
+          "90": { "model": "tfc:fern", "y": 90 },
+          "180": { "model": "tfc:fern", "y": 180 },
+          "270": { "model": "tfc:fern", "y": 270 }
+        }
+      }
+    ],
+    "stage=5": [
+      {
+        "textures": { "fernlow" : "tfc:blocks/plants/fern/fern_2", "fernhigh" : "tfc:blocks/plants/fern/fern_2" },
+        "submodel": {
+          "0": { "model": "tfc:fern"},
+          "90": { "model": "tfc:fern", "y": 90 },
+          "180": { "model": "tfc:fern", "y": 180 },
+          "270": { "model": "tfc:fern", "y": 270 }
+        }
+      }
+    ],
+    "stage=6": [
+      {
+        "textures": { "fernlow" : "tfc:blocks/plants/fern/fern_2", "fernhigh" : "tfc:blocks/plants/fern/fern_2" },
+        "submodel": {
+          "0": { "model": "tfc:fern"},
+          "90": { "model": "tfc:fern", "y": 90 },
+          "180": { "model": "tfc:fern", "y": 180 },
+          "270": { "model": "tfc:fern", "y": 270 }
+        }
+      }
+    ],
+    "stage=7": [
+      {
+        "textures": {
+          "cross" : "tfc:blocks/empty",
+          "crossnotint" : "tfc:blocks/plants/fern/fern_3",
+          "fernlownotint" : "tfc:blocks/plants/fern/fern_3",
+          "fernhighnotint" : "tfc:blocks/plants/fern/fern_3"
+        },
+        "submodel": {
+          "0": { "model": "tfc:fern"},
+          "90": { "model": "tfc:fern", "y": 90 },
+          "180": { "model": "tfc:fern", "y": 180 },
+          "270": { "model": "tfc:fern", "y": 270 }
+        }
+      }
+	],
+    "stage=8": [
+      { "model": "tfc:fern", "textures": { "crossnotint" : "tfc:blocks/plants/fern/fern_0" } }
+	],
+    "stage=9": [
+      { "model": "tfc:fern", "textures": { "crossnotint" : "tfc:blocks/plants/fern/fern_0" } }
+	],
+    "stage=10": [
+      { "model": "tfc:fern", "textures": { "crossnotint" : "tfc:blocks/plants/fern/fern_0" } }
+	],
+    "stage=11": [
+      { "model": "tfc:fern", "textures": { "crossnotint" : "tfc:blocks/plants/fern/fern_0" } }
+	]
   }
 }
