@@ -415,6 +415,14 @@ public final class BlocksTFC
                 {
                     b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockLilyPadTFC(plant, Plant.PlantType.LILYPAD), CT_DECORATIONS));
                 }
+                else if (plant.getPlantType() == Plant.PlantType.DESERTPLANT)
+                {
+                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockPlantTFC(plant, Plant.PlantType.DESERTPLANT), CT_DECORATIONS));
+                }
+                else if (plant.getPlantType() == Plant.PlantType.CACTUS)
+                {
+                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockCactusTFC(plant, Plant.PlantType.CACTUS), CT_DECORATIONS));
+                }
             }
             allPlantBlocks = b.build();
             for (BlockPlantTFC blockPlant : allPlantBlocks)

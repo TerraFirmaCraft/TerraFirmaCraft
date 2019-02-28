@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.types;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -35,13 +36,14 @@ public class DefaultPlants
     public static final ResourceLocation TULIP_WHITE = new ResourceLocation(MOD_ID, "tulip_white");
     public static final ResourceLocation TULIP_PINK = new ResourceLocation(MOD_ID, "tulip_pink");
     public static final ResourceLocation OXEYE_DAISY = new ResourceLocation(MOD_ID, "oxeye_daisy");
-    //    public static final ResourceLocation PAEONIA = new ResourceLocation(MOD_ID, "paeonia");
     public static final ResourceLocation GOLDENROD = new ResourceLocation(MOD_ID, "goldenrod");
     public static final ResourceLocation FERN = new ResourceLocation(MOD_ID, "fern");
     public static final ResourceLocation PETROVSKIA = new ResourceLocation(MOD_ID, "petrovskia");
+    public static final ResourceLocation SAGEBRUSH = new ResourceLocation(MOD_ID, "sagebrush");
+
+    public static final ResourceLocation CACTUS = new ResourceLocation(MOD_ID, "cactus");
 
     public static final ResourceLocation DOUBLE_FERN = new ResourceLocation(MOD_ID, "double_fern");
-//    public static final ResourceLocation DOUBLE_PAEONIA = new ResourceLocation(MOD_ID, "double_paeonia");
 
     public static final ResourceLocation MOSS = new ResourceLocation(MOD_ID, "moss");
     public static final ResourceLocation BLUE_DAWN = new ResourceLocation(MOD_ID, "blue_dawn");
@@ -67,12 +69,13 @@ public class DefaultPlants
             new Plant(TULIP_WHITE, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
             new Plant(TULIP_PINK, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
             new Plant(OXEYE_DAISY, -40f, 33f, 120f, 300f, Plant.PlantType.PLANT),
-//            new Plant(PAEONIA, -40f, 33f, 150f, 500f, Plant.PlantType.PLANT),
             new Plant(GOLDENROD, -29f, 32f, 75f, 300f, Plant.PlantType.PLANT),
             new Plant(FERN, -40f, 33f, 300f, 500f, Plant.PlantType.PLANT),
             new Plant(PETROVSKIA, -29f, 32f, 0f, 200f, Plant.PlantType.PLANT),
+            new Plant(SAGEBRUSH, -34f, 50f, 0f, 100f, Plant.PlantType.DESERTPLANT),
 
-//            new Plant(DOUBLE_PAEONIA, -40f, 33f, 150f, 500f, Plant.PlantType.DOUBLEPLANT),
+            new Plant(CACTUS, Material.CACTUS, -6f, 50f, 0f, 75f, Plant.PlantType.CACTUS),
+
             new Plant(DOUBLE_FERN, -40f, 33f, 300f, 500f, Plant.PlantType.DOUBLEPLANT),
 
             new Plant(MOSS, -7f, 36f, 250f, 500f, Plant.PlantType.CREEPINGPLANT),

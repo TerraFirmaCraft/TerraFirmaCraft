@@ -1,0 +1,62 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:sagebrush",
+    "textures": {
+      "cross": "tfc:blocks/plants/sagebrush/sagebrush01",
+      "layer0": "tfc:blocks/plants/sagebrush/sagebrush01"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": {
+      "model": "builtin/generated",
+      "transform": "forge:default-item"
+    },
+    "stage=0": [
+      {"textures": {"cross": "tfc:blocks/plants/sagebrush/sagebrush01"}, "weight" : 2},
+      {"textures": {"cross": "tfc:blocks/plants/sagebrush/sagebrush02"}, "weight" : 2},
+      {"textures": {"cross": "tfc:blocks/plants/sagebrush/sagebrush03"}, "weight" : 2},
+      {"textures": {"cross": "tfc:blocks/plants/sagebrush/sagebrush04"}, "weight" : 2},
+      {"textures": {"cross": "tfc:blocks/plants/sagebrush/sagebrush05"}, "weight" : 2},
+      {"textures": {"cross": "tfc:blocks/plants/sagebrush/sagebrush06"}, "weight" : 2},
+      {"textures": {"cross": "tfc:blocks/plants/sagebrush/sagebrush07"}, "weight" : 1},
+      {"textures": {"cross": "tfc:blocks/plants/sagebrush/sagebrush08"}, "weight" : 1}
+    ],
+    "stage=1": [
+      {}
+    ],
+    "stage=2": [
+      {}
+    ],
+    "stage=3": [
+      {}
+    ],
+    "stage=4": [
+      {}
+    ],
+    "stage=5": [
+      {}
+    ],
+    "stage=6": [
+      {}
+    ],
+    "stage=7": [
+      {}
+    ],
+    "stage=8": [
+      {}
+    ],
+    "stage=9": [
+      {}
+    ],
+    "stage=10": [
+      {}
+    ],
+    "stage=11": [
+      {}
+    ]
+  }
+}

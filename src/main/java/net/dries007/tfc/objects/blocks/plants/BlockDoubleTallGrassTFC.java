@@ -146,12 +146,6 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
     }
 
     @Override
-    public boolean canShrink(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
-    {
-        return ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < 15 || ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 35 || !worldIn.canSeeSky(pos);
-    }
-
-    @Override
     public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         return false;
@@ -160,6 +154,12 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
     @Override
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
+    }
+
+    @Override
+    public boolean canShrink(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
+    {
+        return ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < 15 || ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 35 || !worldIn.canSeeSky(pos);
     }
 
     @Override
@@ -190,6 +190,7 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
+        if (!worldIn.isAreaLoaded(pos, 1)) return;
         if (canShrink(worldIn, pos, state, worldIn.isRemote) && random.nextDouble() < getGrowthRate(worldIn))
         {
             shrink(worldIn, random, pos, state);
@@ -249,7 +250,7 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
     @Override
     public Block.EnumOffsetType getOffsetType()
     {
-        return Block.EnumOffsetType.XZ;
+        return Block.EnumOffsetType.XYZ;
     }
 
     @Override
@@ -274,7 +275,7 @@ public class BlockDoubleTallGrassTFC extends BlockTallGrassTFC implements net.mi
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return FULL_BLOCK_AABB;
+        return TALL_GRASS_AABB.offset(state.getOffset(source, pos));
     }
 
     public static enum EnumBlockHalf implements IStringSerializable

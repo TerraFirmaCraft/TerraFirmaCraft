@@ -212,6 +212,7 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
+        if (!worldIn.isAreaLoaded(pos, 1)) return;
         int currentStage = state.getValue(GROWTHSTAGE);
         int expectedStage = CalenderTFC.getMonthOfYear().id();
 
@@ -247,6 +248,7 @@ public class BlockDoublePlantTFC extends BlockPlantTFC
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
+        if (!worldIn.isAreaLoaded(pos, 1)) return;
         if (!canBlockStay(worldIn, pos, state))
         {
             worldIn.setBlockToAir(pos);

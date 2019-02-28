@@ -14,15 +14,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-import net.minecraftforge.common.BiomeDictionary;
-
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.plants.BlockCreepingPlantTFC;
-import net.dries007.tfc.objects.blocks.plants.BlockDoublePlantTFC;
-import net.dries007.tfc.objects.blocks.plants.BlockLilyPadTFC;
-import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
-import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.objects.blocks.plants.*;
 
 import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
 
@@ -60,7 +54,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.PLANT)
+        else if (plant.getPlantType() == Plant.PlantType.PLANT || plant.getPlantType() == Plant.PlantType.DESERTPLANT)
         {
             BlockPlantTFC plantBlock = BlockPlantTFC.get(plant, plant.getPlantType());
             IBlockState state = plantBlock.getDefaultState();
@@ -107,6 +101,29 @@ public class WorldGenPlantTFC extends WorldGenerator
                     worldIn.getBlockState(p2.add(0, -2, 0)) != FRESH_WATER) // todo: make this a little less harsh
                 {
                     worldIn.setBlockState(p2, BlockLilyPadTFC.get(plant, plant.getPlantType()).getDefaultState(), 0x02);
+                }
+            }
+        }
+        else if (plant.getPlantType() == Plant.PlantType.CACTUS)
+        {
+            BlockCactusTFC plantBlock = BlockCactusTFC.get(plant, plant.getPlantType());
+            IBlockState state = plantBlock.getDefaultState();
+
+            for (int i = 0; i < 10; ++i)
+            {
+                BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+                if (worldIn.isAirBlock(blockpos))
+                {
+                    int j = 1 + rand.nextInt(rand.nextInt(3) + 1);
+
+                    for (int k = 0; k < j; ++k)
+                    {
+                        if (plantBlock.canBlockStay(worldIn, blockpos, state))
+                        {
+                            worldIn.setBlockState(blockpos.up(k), plantBlock.getDefaultState(), 2);
+                        }
+                    }
                 }
             }
         }
