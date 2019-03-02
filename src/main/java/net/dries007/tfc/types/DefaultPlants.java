@@ -21,67 +21,70 @@ public class DefaultPlants
     /**
      * Default Plant ResourceLocations
      */
-    public static final ResourceLocation DANDELION = new ResourceLocation(MOD_ID, "dandelion");
-    public static final ResourceLocation NASTURTIUM = new ResourceLocation(MOD_ID, "nasturtium");
-    public static final ResourceLocation MEADS_MILKWEED = new ResourceLocation(MOD_ID, "meads_milkweed");
-    public static final ResourceLocation TROPICAL_MILKWEED = new ResourceLocation(MOD_ID, "tropical_milkweed");
-    public static final ResourceLocation BUTTERFLY_MILKWEED = new ResourceLocation(MOD_ID, "butterfly_milkweed");
-    public static final ResourceLocation CALENDULA = new ResourceLocation(MOD_ID, "calendula");
-    public static final ResourceLocation POPPY = new ResourceLocation(MOD_ID, "poppy");
-    public static final ResourceLocation BLUE_ORCHID = new ResourceLocation(MOD_ID, "blue_orchid");
     public static final ResourceLocation ALLIUM = new ResourceLocation(MOD_ID, "allium");
-    public static final ResourceLocation HOUSTONIA = new ResourceLocation(MOD_ID, "houstonia");
-    public static final ResourceLocation TULIP_RED = new ResourceLocation(MOD_ID, "tulip_red");
-    public static final ResourceLocation TULIP_ORANGE = new ResourceLocation(MOD_ID, "tulip_orange");
-    public static final ResourceLocation TULIP_WHITE = new ResourceLocation(MOD_ID, "tulip_white");
-    public static final ResourceLocation TULIP_PINK = new ResourceLocation(MOD_ID, "tulip_pink");
-    public static final ResourceLocation OXEYE_DAISY = new ResourceLocation(MOD_ID, "oxeye_daisy");
-    public static final ResourceLocation GOLDENROD = new ResourceLocation(MOD_ID, "goldenrod");
-    public static final ResourceLocation FERN = new ResourceLocation(MOD_ID, "fern");
-    public static final ResourceLocation PETROVSKIA = new ResourceLocation(MOD_ID, "petrovskia");
-    public static final ResourceLocation SAGEBRUSH = new ResourceLocation(MOD_ID, "sagebrush");
-
-    public static final ResourceLocation CACTUS = new ResourceLocation(MOD_ID, "cactus");
-
-    public static final ResourceLocation DOUBLE_FERN = new ResourceLocation(MOD_ID, "double_fern");
-
-    public static final ResourceLocation MOSS = new ResourceLocation(MOD_ID, "moss");
     public static final ResourceLocation BLUE_DAWN = new ResourceLocation(MOD_ID, "blue_dawn");
-
+    public static final ResourceLocation BLUE_ORCHID = new ResourceLocation(MOD_ID, "blue_orchid");
+    public static final ResourceLocation BUTTERFLY_MILKWEED = new ResourceLocation(MOD_ID, "butterfly_milkweed");
+    public static final ResourceLocation CACTUS = new ResourceLocation(MOD_ID, "cactus");
+    public static final ResourceLocation CALENDULA = new ResourceLocation(MOD_ID, "calendula");
+    public static final ResourceLocation DANDELION = new ResourceLocation(MOD_ID, "dandelion");
+    public static final ResourceLocation DOUBLE_FERN = new ResourceLocation(MOD_ID, "double_fern");
+    public static final ResourceLocation FERN = new ResourceLocation(MOD_ID, "fern");
+    public static final ResourceLocation GOLDENROD = new ResourceLocation(MOD_ID, "goldenrod");
+    public static final ResourceLocation HOUSTONIA = new ResourceLocation(MOD_ID, "houstonia");
     public static final ResourceLocation LILYPAD = new ResourceLocation(MOD_ID, "lilypad");
+    public static final ResourceLocation MEADS_MILKWEED = new ResourceLocation(MOD_ID, "meads_milkweed");
+    public static final ResourceLocation MOSS = new ResourceLocation(MOD_ID, "moss");
+    public static final ResourceLocation NASTURTIUM = new ResourceLocation(MOD_ID, "nasturtium");
+    public static final ResourceLocation OXEYE_DAISY = new ResourceLocation(MOD_ID, "oxeye_daisy");
+    public static final ResourceLocation PETROVSKIA = new ResourceLocation(MOD_ID, "petrovskia");
+    public static final ResourceLocation POPPY = new ResourceLocation(MOD_ID, "poppy");
+    public static final ResourceLocation SAGEBRUSH = new ResourceLocation(MOD_ID, "sagebrush");
+    public static final ResourceLocation TROPICAL_MILKWEED = new ResourceLocation(MOD_ID, "tropical_milkweed");
+    public static final ResourceLocation TULIP_ORANGE = new ResourceLocation(MOD_ID, "tulip_orange");
+    public static final ResourceLocation TULIP_PINK = new ResourceLocation(MOD_ID, "tulip_pink");
+    public static final ResourceLocation TULIP_RED = new ResourceLocation(MOD_ID, "tulip_red");
+    public static final ResourceLocation TULIP_WHITE = new ResourceLocation(MOD_ID, "tulip_white");
 
     @SubscribeEvent
     public static void onPreRegisterPlantCategory(TFCRegistryEvent.RegisterPreBlock<Plant> event)
     {
         event.getRegistry().registerAll(
-            new Plant(DANDELION, -40f, 40f, 75f, 400, Plant.PlantType.PLANT),
-            new Plant(NASTURTIUM, -46f, 38f, 150f, 500, Plant.PlantType.PLANT),
-            new Plant(MEADS_MILKWEED, -23f, 31f, 130f, 500f, Plant.PlantType.PLANT),
-            new Plant(TROPICAL_MILKWEED, -6f, 36f, 120f, 300f, Plant.PlantType.PLANT),
-            new Plant(BUTTERFLY_MILKWEED, -40f, 32f, 75f, 300f, Plant.PlantType.PLANT),
-            new Plant(CALENDULA, -46f, 30f, 130f, 300f, Plant.PlantType.PLANT),
-            new Plant(POPPY, -40f, 36f, 150f, 250f, Plant.PlantType.PLANT),
-            new Plant(BLUE_ORCHID, 18f, 50f, 300f, 500f, Plant.PlantType.PLANT),
-            new Plant(ALLIUM, -40f, 33f, 150f, 500f, Plant.PlantType.PLANT),
-            new Plant(HOUSTONIA, -46f, 36f, 150f, 500f, Plant.PlantType.PLANT),
-            new Plant(TULIP_RED, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
-            new Plant(TULIP_ORANGE, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
-            new Plant(TULIP_WHITE, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
-            new Plant(TULIP_PINK, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT),
-            new Plant(OXEYE_DAISY, -40f, 33f, 120f, 300f, Plant.PlantType.PLANT),
-            new Plant(GOLDENROD, -29f, 32f, 75f, 300f, Plant.PlantType.PLANT),
-            new Plant(FERN, -40f, 33f, 300f, 500f, Plant.PlantType.PLANT),
-            new Plant(PETROVSKIA, -29f, 32f, 0f, 200f, Plant.PlantType.PLANT),
-            new Plant(SAGEBRUSH, -34f, 50f, 0f, 100f, Plant.PlantType.DESERTPLANT),
+            // Standard Plants
+            new Plant(DANDELION, -40f, 40f, 75f, 400, Plant.PlantType.PLANT, 10, 15),
+            new Plant(NASTURTIUM, -46f, 38f, 150f, 500, Plant.PlantType.PLANT, 12, 15),
+            new Plant(MEADS_MILKWEED, -23f, 31f, 130f, 500f, Plant.PlantType.PLANT, 12, 15),
+            new Plant(TROPICAL_MILKWEED, -6f, 36f, 120f, 300f, Plant.PlantType.PLANT, 12, 15),
+            new Plant(BUTTERFLY_MILKWEED, -40f, 32f, 75f, 300f, Plant.PlantType.PLANT, 12, 15),
+            new Plant(CALENDULA, -46f, 30f, 130f, 300f, Plant.PlantType.PLANT, 9, 15),
+            new Plant(POPPY, -40f, 36f, 150f, 250f, Plant.PlantType.PLANT, 12, 15),
+            new Plant(BLUE_ORCHID, 18f, 50f, 300f, 500f, Plant.PlantType.PLANT, 12, 15),
+            new Plant(ALLIUM, -40f, 33f, 150f, 500f, Plant.PlantType.PLANT, 12, 15),
+            new Plant(HOUSTONIA, -46f, 36f, 150f, 500f, Plant.PlantType.PLANT, 9, 15),
+            new Plant(TULIP_RED, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT, 9, 15),
+            new Plant(TULIP_ORANGE, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT, 9, 15),
+            new Plant(TULIP_WHITE, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT, 9, 15),
+            new Plant(TULIP_PINK, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT, 9, 15),
+            new Plant(OXEYE_DAISY, -40f, 33f, 120f, 300f, Plant.PlantType.PLANT, 9, 15),
+            new Plant(GOLDENROD, -29f, 32f, 75f, 300f, Plant.PlantType.PLANT, 12, 15),
+            new Plant(FERN, -40f, 33f, 300f, 500f, Plant.PlantType.PLANT, 4, 11),
+            new Plant(PETROVSKIA, -29f, 32f, 0f, 200f, Plant.PlantType.PLANT, 12, 15),
 
-            new Plant(CACTUS, Material.CACTUS, -6f, 50f, 0f, 75f, Plant.PlantType.CACTUS),
+            // Desert Plants
+            new Plant(SAGEBRUSH, -34f, 50f, 0f, 100f, Plant.PlantType.DESERTPLANT, 12, 15),
 
-            new Plant(DOUBLE_FERN, -40f, 33f, 300f, 500f, Plant.PlantType.DOUBLEPLANT),
+            // Cactus Plants
+            new Plant(CACTUS, Material.CACTUS, -6f, 50f, 0f, 75f, Plant.PlantType.CACTUS, 12, 15),
 
-            new Plant(MOSS, -7f, 36f, 250f, 500f, Plant.PlantType.CREEPINGPLANT),
-            new Plant(BLUE_DAWN, -40f, 25f, 150f, 500f, Plant.PlantType.CREEPINGPLANT),
+            // Double Plants
+            new Plant(DOUBLE_FERN, -40f, 33f, 300f, 500f, Plant.PlantType.DOUBLEPLANT, 4, 11),
 
-            new Plant(LILYPAD, -34f, 38f, 0f, 500f, Plant.PlantType.LILYPAD)
+            // Creeping Plants
+            new Plant(MOSS, -7f, 36f, 250f, 500f, Plant.PlantType.CREEPINGPLANT, 0, 11),
+            new Plant(BLUE_DAWN, -40f, 25f, 150f, 500f, Plant.PlantType.CREEPINGPLANT, 12, 15),
+
+            // Floating Water Plants
+            new Plant(LILYPAD, -34f, 38f, 0f, 500f, Plant.PlantType.LILYPAD, 0, 15)
         );
     }
 }

@@ -26,6 +26,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     private final float maxTemp;
     private final float minRain;
     private final float maxRain;
+    private final int minSun;
+    private final int maxSun;
 
     private final PlantType plantType;
     private final Material material;
@@ -37,36 +39,38 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      * When using this class, use the provided Builder to create your flowers. This will require all the default values, as well as
      * provide optional values that you can change
      *
-     * @param name    the ResourceLocation registry name of this flower
-     * @param minTemp min temperature
-     * @param maxTemp max temperature
-     * @param minRain min rainfall
-     * @param maxRain max rainfall
+     * @param name     the ResourceLocation registry name of this flower
+     * @param material the Material of this flower, defaults to Material.PLANTS if not present
+     * @param minTemp  min temperature
+     * @param maxTemp  max temperature
+     * @param minRain  min rainfall
+     * @param maxRain  max rainfall
+     * @param minSun   min light level
+     * @param maxSun   max light level
      */
-    public Plant(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minRain, float maxRain, PlantType plantType)
+    public Plant(@Nonnull ResourceLocation name, Material material, float minTemp, float maxTemp, float minRain, float maxRain, PlantType plantType, int minSun, int maxSun)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
         this.minRain = minRain;
         this.maxRain = maxRain;
-
-        this.plantType = plantType;
-        this.material = Material.PLANTS;
-
-        setRegistryName(name);
-    }
-
-    public Plant(@Nonnull ResourceLocation name, Material material, float minTemp, float maxTemp, float minRain, float maxRain, PlantType plantType)
-    {
-        this.minTemp = minTemp;
-        this.maxTemp = maxTemp;
-        this.minRain = minRain;
-        this.maxRain = maxRain;
+        this.minSun = minSun;
+        this.maxSun = maxSun;
 
         this.plantType = plantType;
         this.material = material;
 
         setRegistryName(name);
+    }
+
+    public Plant(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minRain, float maxRain, PlantType plantType, int minSun, int maxSun)
+    {
+        this(name, Material.PLANTS, minTemp, maxTemp, minRain, maxRain, plantType, minSun, maxSun);
+    }
+
+    public boolean isValidLocation(float temp, float rain, int sunlight)
+    {
+        return minTemp <= temp && maxTemp >= temp && minRain <= rain && maxRain >= rain && minSun <= sunlight && maxSun >= sunlight;
     }
 
     public boolean isValidLocation(float temp, float rain)

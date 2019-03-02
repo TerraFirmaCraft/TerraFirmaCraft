@@ -8,25 +8,33 @@
 package net.dries007.tfc.objects.blocks.plants;
 
 import java.util.*;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class BlockCactusTFC extends BlockStackPlantTFC
 {
@@ -54,13 +62,13 @@ public class BlockCactusTFC extends BlockStackPlantTFC
 
         setSoundType(SoundType.GROUND);
         setHardness(0.25F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, EnumBlockPart.SINGLE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
     {
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, CACTUS_COLLISION_AABB);
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, CACTUS_COLLISION_AABB.offset(state.getOffset(worldIn, pos)));
     }
 
     @Override
@@ -70,33 +78,9 @@ public class BlockCactusTFC extends BlockStackPlantTFC
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        return CACTUS_COLLISION_AABB;
-    }
-
-    @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AGE, Integer.valueOf(meta)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
-    }
-
-    @Override
-    public Block.EnumOffsetType getOffsetType()
-    {
-        return Block.EnumOffsetType.NONE;
-    }
-
-    @Override
-    protected boolean canSustainBush(IBlockState state)
-    {
-        return BlocksTFC.isSand(state);
-    }
-
-    @Override
-    public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
-    {
-        return EnumPlantType.Desert;
+        return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
     }
 
     @Override
@@ -108,9 +92,33 @@ public class BlockCactusTFC extends BlockStackPlantTFC
 
         if (currentStage != expectedStage && random.nextDouble() < 0.5)
         {
-            worldIn.setBlockState(pos, state.withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, expectedStage));
+            worldIn.setBlockState(pos, state.withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, state.getValue(PART)));
         }
         this.updateTick(worldIn, pos, state, random);
+    }
+
+    @Override
+    public Block.EnumOffsetType getOffsetType()
+    {
+        return EnumOffsetType.XYZ;
+    }
+
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.NORMAL;
+    }
+
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return Weight.HEAVY;
+    }
+
+    @Override
+    protected boolean canSustainBush(IBlockState state)
+    {
+        return BlocksTFC.isSand(state);
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
@@ -129,20 +137,20 @@ public class BlockCactusTFC extends BlockStackPlantTFC
 
             if (i < 3)
             {
-                int j = ((Integer) state.getValue(AGE)).intValue();
+                int j = state.getValue(AGE);
 
                 if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, blockpos, state, true))
                 {
                     if (j == 15)
                     {
                         worldIn.setBlockState(blockpos, this.getDefaultState());
-                        IBlockState iblockstate = state.withProperty(AGE, Integer.valueOf(0)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
-                        worldIn.setBlockState(pos, iblockstate, 4);
+                        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, state.getValue(PART));
+                        worldIn.setBlockState(pos, iblockstate);
                         iblockstate.neighborChanged(worldIn, blockpos, this, pos);
                     }
                     else
                     {
-                        worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(j + 1)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)), 4);
+                        worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, state.getValue(PART)));
                     }
                     net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
                 }
@@ -156,9 +164,37 @@ public class BlockCactusTFC extends BlockStackPlantTFC
     }
 
     @Override
+    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
+    {
+        IBlockState soil = worldIn.getBlockState(pos.down());
+        if (state.getBlock() == this)
+        {
+            for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
+            {
+                IBlockState blockState = worldIn.getBlockState(pos.offset(enumfacing));
+                Material material = blockState.getMaterial();
+
+                if (material.isSolid() || material == Material.LAVA)
+                {
+                    return blockState.getBlock() == this;
+                }
+            }
+
+            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
+        }
+        return this.canSustainBush(soil);
+    }
+
+    @Override
+    public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    {
+        return EnumPlantType.Desert;
+    }
+
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer) state.getValue(AGE)).intValue();
+        return state.getValue(AGE);
     }
 
     @Override
@@ -170,6 +206,27 @@ public class BlockCactusTFC extends BlockStackPlantTFC
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return FULL_BLOCK_AABB;
+        return FULL_BLOCK_AABB.offset(state.getOffset(source, pos));
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos)) : false;
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        if (!this.canBlockStay(worldIn, pos, state))
+        {
+            worldIn.destroyBlock(pos, true);
+        }
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return CACTUS_COLLISION_AABB.offset(blockState.getOffset(worldIn, pos));
     }
 }

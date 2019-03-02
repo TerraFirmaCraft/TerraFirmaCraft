@@ -44,6 +44,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     {
         return TABLE.get(plant).get(type);
     }
+
     public final Plant plant;
     public final Plant.PlantType type;
 
@@ -154,12 +155,12 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
     {
+        IBlockState soil = worldIn.getBlockState(pos.down());
         if (state.getBlock() == this)
         {
-            IBlockState soil = worldIn.getBlockState(pos.down());
             return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
         }
-        return this.canSustainBush(worldIn.getBlockState(pos.down()));
+        return this.canSustainBush(soil);
     }
 
     @Override
