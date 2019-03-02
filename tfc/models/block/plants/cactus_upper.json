@@ -1,8 +1,8 @@
 {
     "textures": {
-        "particle": "tfc:blocks/plants/cactus/cactus_barrel_sides",
-        "side": "tfc:blocks/plants/cactus/cactus_barrel_sides",
-        "top": "tfc:blocks/plants/cactus/cactus_barrel_top",
+        "particle": "tfc:blocks/plants/cactus/side",
+        "side": "tfc:blocks/plants/cactus/side",
+        "top": "tfc:blocks/plants/cactus/top",
         "spike": "tfc:blocks/plants/cactus/spikes_upper"
     },
     "elements": [
@@ -33,59 +33,191 @@
             }
         },
         {
-            "name": "SpikesTopSW-NE",
-            "from": [ 0.0, 16.0, 8.0 ], 
-            "to": [ 16.0, 18.0, 8.0 ], 
+            "name": "SpikesTopSW-NE1",
+            "from": [ -0.5, 16.0, 8.0 ], 
+            "to": [ 15.5, 18.0, 8.0 ], 
+            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 45 },
+            "faces": {
+                "north": { "texture": "#spike", "uv": [ 0.0, 0.0, 16.0, 2.0 ] },
+                "south": { "texture": "#spike", "uv": [ 16.0, 2.0, 0.0, 0.0 ] }
+            }
+        },
+        {
+            "name": "SpikesTopSW-NE2",
+            "from": [ 1.5, 16.0, 8.0 ], 
+            "to": [ 13.5, 18.0, 8.0 ], 
+            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 22.5 },
+            "faces": {
+                "north": { "texture": "#spike", "uv": [ 2.0, 0.0, 14.0, 2.0 ] },
+                "south": { "texture": "#spike", "uv": [ 14.0, 2.0, 2.0, 0.0 ] }
+            }
+        },
+        {
+            "name": "SpikesTopSW-NE3",
+            "from": [ 1.5, 16.0, 8.0 ], 
+            "to": [ 13.5, 18.0, 8.0 ], 
+            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": -22.5 },
+            "faces": {
+                "north": { "texture": "#spike", "uv": [ 2.0, 0.0, 14.0, 2.0 ] },
+                "south": { "texture": "#spike", "uv": [ 14.0, 2.0, 2.0, 0.0 ] }
+            }
+        },
+        {
+            "name": "SpikesTopSW-NE4",
+            "from": [ -0.5, 16.0, 8.0 ], 
+            "to": [ 15.5, 18.0, 8.0 ], 
             "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 45.0 },
             "faces": {
                 "north": { "texture": "#spike", "uv": [ 0.0, 0.0, 16.0, 2.0 ] },
-                "south": { "texture": "#spike", "uv": [ 0.0, 0.0, 16.0, 2.0 ] }
+                "south": { "texture": "#spike", "uv": [ 16.0, 2.0, 0.0, 0.0 ] }
             }
         },
         {
-            "name": "SpikesTopNW-SE",
-            "from": [ 0.0, 16.0, 8.0 ], 
-            "to": [ 16.0, 18.0, 8.0 ], 
-            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": -45.0 },
+            "name": "SpikesTopNW-SE1",
+            "from": [ 8.0, 16.0, -0.5 ], 
+            "to": [ 8.0, 18.0, 15.5 ], 
+            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 45 },
             "faces": {
-                "north": { "texture": "#spike", "uv": [ 0.0, 0.0, 16.0, 2.0 ] },
-                "south": { "texture": "#spike", "uv": [ 0.0, 0.0, 16.0, 2.0 ] }
+                "east": { "texture": "#spike", "uv": [ 0.0, 0.0, 16.0, 2.0 ] },
+                "west": { "texture": "#spike", "uv": [ 16.0, 2.0, 0.0, 0.0 ] }
             }
         },
         {
-            "name": "SpikesN",
+            "name": "SpikesTopNW-SE2",
+            "from": [ 8.0, 16.0, 1.5 ], 
+            "to": [ 8.0, 18.0, 13.5 ], 
+            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 22.5 },
+            "faces": {
+                "east": { "texture": "#spike", "uv": [ 2.0, 0.0, 14.0, 2.0 ] },
+                "west": { "texture": "#spike", "uv": [ 14.0, 2.0, 2.0, 0.0 ] }
+            }
+        },
+        {
+            "name": "SpikesTopNW-SE3",
+            "from": [ 8.0, 16.0, 1.5 ], 
+            "to": [ 8.0, 18.0, 13.5 ], 
+            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": -22.5 },
+            "faces": {
+                "east": { "texture": "#spike", "uv": [ 2.0, 0.0, 14.0, 2.0 ] },
+                "west": { "texture": "#spike", "uv": [ 14.0, 2.0, 2.0, 0.0 ] }
+            }
+        },
+        {
+            "name": "SpikesTopNW-SE4",
+            "from": [ 8.0, 16.0, -0.5 ], 
+            "to": [ 8.0, 18.0, 15.5 ], 
+            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 45.0 },
+            "faces": {
+                "east": { "texture": "#spike", "uv": [ 0.0, 0.0, 16.0, 2.0 ] },
+                "west": { "texture": "#spike", "uv": [ 16.0, 2.0, 0.0, 0.0 ] }
+            }
+        },
+        {
+            "name": "SpikesN1",
+            "from": [ 4.0, 0.5, -2.0 ], 
+            "to": [ 4.0, 14.5, 3.0 ], 
+            "faces": {
+                "east": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] },
+                "west": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesN2",
             "from": [ 8.0, 1.0, -2.0 ], 
             "to": [ 8.0, 15.0, 3.0 ], 
             "faces": {
-                "east": { "texture": "#spike", "uv": [ 11.0, 2.0, 16.0, 16.0 ] },
-                "west": { "texture": "#spike", "uv": [ 0.0, 2.0, 5.0, 16.0 ] }
+                "east": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] },
+                "west": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] }
             }
         },
         {
-            "name": "SpikesE",
+            "name": "SpikesN3",
+            "from": [ 12.0, 0.5, -2.0 ], 
+            "to": [ 12.0, 14.5, 3.0 ], 
+            "faces": {
+                "east": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] },
+                "west": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesE1",
+            "from": [ 13.0, 0.5, 4.0 ], 
+            "to": [ 18.0, 14.5, 4.0 ], 
+            "faces": {
+                "north": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] },
+                "south": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesE2",
             "from": [ 13.0, 1.0, 8.0 ], 
             "to": [ 18.0, 15.0, 8.0 ], 
             "faces": {
-                "north": { "texture": "#spike", "uv": [ 0.0, 2.0, 5.0, 16.0 ] },
-                "south": { "texture": "#spike", "uv": [ 11.0, 2.0, 16.0, 16.0 ] }
+                "north": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] },
+                "south": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] }
             }
         },
         {
-            "name": "SpikesS",
+            "name": "SpikesE3",
+            "from": [ 13.0, 0.5, 12.0 ], 
+            "to": [ 18.0, 14.5, 12.0 ], 
+            "faces": {
+                "north": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] },
+                "south": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesS1",
+            "from": [ 4.0, 0.5, 13.0 ], 
+            "to": [ 4.0, 14.5, 18.0 ], 
+            "faces": {
+                "east": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] },
+                "west": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesS2",
             "from": [ 8.0, 1.0, 13.0 ], 
             "to": [ 8.0, 15.0, 18.0 ], 
             "faces": {
-                "east": { "texture": "#spike", "uv": [ 0.0, 2.0, 5.0, 16.0 ] },
-                "west": { "texture": "#spike", "uv": [ 11.0, 2.0, 16.0, 16.0 ] }
+                "east": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] },
+                "west": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] }
             }
         },
         {
-            "name": "SpikesW",
+            "name": "SpikesS3",
+            "from": [ 12.0, 0.5, 13.0 ], 
+            "to": [ 12.0, 14.5, 18.0 ], 
+            "faces": {
+                "east": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] },
+                "west": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesW1",
+            "from": [ -2.0, 0.5, 4.0 ], 
+            "to": [ 3.0, 14.5, 4.0 ], 
+            "faces": {
+                "north": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] },
+                "south": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesW2",
             "from": [ -2.0, 1.0, 8.0 ], 
             "to": [ 3.0, 15.0, 8.0 ], 
             "faces": {
-                "north": { "texture": "#spike", "uv": [ 11.0, 2.0, 16.0, 16.0 ] },
-                "south": { "texture": "#spike", "uv": [ 0.0, 2.0, 5.0, 16.0 ] }
+                "north": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] },
+                "south": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "SpikesW3",
+            "from": [ -2.0, 0.5, 12.0 ], 
+            "to": [ 3.0, 14.5, 12.0 ], 
+            "faces": {
+                "north": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] },
+                "south": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] }
             }
         },
         {
@@ -94,8 +226,8 @@
             "to": [ 8.0, 15.0, 0.0 ], 
             "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 45.0 },
             "faces": {
-                "east": { "texture": "#spike", "uv": [ 11.0, 2.0, 16.0, 16.0 ] },
-                "west": { "texture": "#spike", "uv": [ 0.0, 2.0, 5.0, 16.0 ] }
+                "east": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] },
+                "west": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] }
             }
         },
         {
@@ -104,8 +236,8 @@
             "to": [ 0.0, 15.0, 8.0 ], 
             "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 45.0 },
             "faces": {
-                "north": { "texture": "#spike", "uv": [ 11.0, 2.0, 16.0, 16.0 ] },
-                "south": { "texture": "#spike", "uv": [ 0.0, 2.0, 5.0, 16.0 ] }
+                "north": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] },
+                "south": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] }
             }
         },
         {
@@ -114,8 +246,8 @@
             "to": [ 8.0, 15.0, 21.0 ], 
             "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 45.0 },
             "faces": {
-                "east": { "texture": "#spike", "uv": [ 0.0, 2.0, 5.0, 16.0 ] },
-                "west": { "texture": "#spike", "uv": [ 11.0, 2.0, 16.0, 16.0 ] }
+                "east": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] },
+                "west": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] }
             }
         },
         {
@@ -124,8 +256,8 @@
             "to": [ 21.0, 15.0, 8.0 ], 
             "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 45.0 },
             "faces": {
-                "north": { "texture": "#spike", "uv": [ 0.0, 2.0, 5.0, 16.0 ] },
-                "south": { "texture": "#spike", "uv": [ 11.0, 2.0, 16.0, 16.0 ] }
+                "north": { "texture": "#spike", "uv": [ 0.0, 3.0, 5.0, 16.0 ] },
+                "south": { "texture": "#spike", "uv": [ 11.0, 3.0, 16.0, 16.0 ] }
             }
         }
     ]
