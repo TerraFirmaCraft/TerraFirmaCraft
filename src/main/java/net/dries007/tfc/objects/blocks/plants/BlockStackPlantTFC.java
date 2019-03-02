@@ -26,7 +26,7 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 
 public class BlockStackPlantTFC extends BlockPlantTFC
 {
-    public static final PropertyEnum<BlockStackPlantTFC.EnumBlockPart> PART = PropertyEnum.<BlockStackPlantTFC.EnumBlockPart>create("part", BlockStackPlantTFC.EnumBlockPart.class);
+    protected static final PropertyEnum<BlockStackPlantTFC.EnumBlockPart> PART = PropertyEnum.<BlockStackPlantTFC.EnumBlockPart>create("part", BlockStackPlantTFC.EnumBlockPart.class);
     protected static final AxisAlignedBB STACKPLANT_AABB = new AxisAlignedBB(0.30000001192092896D, 0.0D, 0.30000001192092896D, 0.699999988079071D, 1.0D, 0.699999988079071D);
     private static final Map<Plant, EnumMap<Plant.PlantType, BlockStackPlantTFC>> TABLE = new HashMap<>();
 
@@ -93,7 +93,7 @@ public class BlockStackPlantTFC extends BlockPlantTFC
         return STACKPLANT_AABB;
     }
 
-    private EnumBlockPart getPlantPart(IBlockAccess world, BlockPos pos)
+    protected EnumBlockPart getPlantPart(IBlockAccess world, BlockPos pos)
     {
         if (world.getBlockState(pos.down()).getBlock() != this && world.getBlockState(pos.up()).getBlock() == this)
         {
