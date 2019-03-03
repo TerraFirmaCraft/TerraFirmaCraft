@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cross",
+    "model": "tfc:cross",
     "textures": {
       "cross": "tfc:blocks/plants/poppy/poppy_may-jun",
       "layer0": "tfc:blocks/plants/poppy/poppy_may-jun"

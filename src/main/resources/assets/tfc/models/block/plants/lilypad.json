@@ -25,7 +25,7 @@
 			"to": [14, 1.5, 1],
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#flower"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#flower"}
+				"south": {"uv": [16, 0, 0, 16], "texture": "#flower"}
 			},
 			"rotation": {
 				"origin": [8, 8, 1],
@@ -38,7 +38,7 @@
 			"to": [14, 1.5, 1],
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#flower"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#flower"}
+				"south": {"uv": [16, 0, 0, 16], "texture": "#flower"}
 			},
 			"rotation": {
 				"origin": [8, 8, 1],
@@ -51,7 +51,7 @@
 			"to": [14, 8.9, 6],
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#stem"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#stem"}
+				"south": {"uv": [16, 0, 0, 16], "texture": "#stem"}
 			},
 			"rotation": {
 				"origin": [8, 8, 6],
@@ -64,7 +64,7 @@
 			"to": [14, 8.9, 6],
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#stem"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#stem"}
+				"south": {"uv": [16, 0, 0, 16], "texture": "#stem"}
 			},
 			"rotation": {
 				"origin": [8, 8, 6],

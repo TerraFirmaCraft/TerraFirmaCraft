@@ -11,23 +11,23 @@
       {}
     ],
     "inventory": {
-      "model": "tfc:creeping_plant",
+      "model": "tfc:plants/creeping_plant",
       "transform": "forge:default-item"
     },
     "down": {
-      "true":  { "submodel": "tfc:creeping_plant" },
+      "true":  { "submodel": "tfc:plants/creeping_plant" },
       "false": {}
     },
     "east": {
-      "true":  { "submodel": "tfc:creeping_plant", "x": 270, "y": 90 },
+      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 270, "y": 90 },
       "false": {}
     },
     "north": {
-      "true":  { "submodel": "tfc:creeping_plant", "x": 270 },
+      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 270 },
       "false": {}
     },
     "south": {
-      "true":  { "submodel": "tfc:creeping_plant", "x": 270, "y": 180 },
+      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 270, "y": 180 },
       "false": {}
     },
     "stage": {
@@ -116,11 +116,11 @@
       }
     },
     "up": {
-      "true":  { "submodel": "tfc:creeping_plant", "x": 180 },
+      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 180 },
       "false": {}
     },
     "west": {
-      "true":  { "submodel": "tfc:creeping_plant", "x": 270, "y": 270 },
+      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 270, "y": 270 },
       "false": {}
     }
   }
