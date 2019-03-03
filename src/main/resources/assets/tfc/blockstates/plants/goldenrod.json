@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cross",
+    "model": "tfc:cross",
     "textures": {
       "cross": "tfc:blocks/plants/goldenrod/goldenrod_jul-oct",
       "layer0": "tfc:blocks/plants/goldenrod/goldenrod_jul-oct"

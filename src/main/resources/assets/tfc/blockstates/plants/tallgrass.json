@@ -1,7 +1,7 @@
 {
 	"forge_marker": 1,
 	"defaults": {
-		"model": "tfc:tallgrass",
+		"model": "tfc:plants/tallgrass",
 		"textures": {
 			"cross": "tfc:blocks/plants/grass/tallgrass"
 		}

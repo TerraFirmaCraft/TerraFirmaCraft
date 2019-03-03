@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cross",
+    "model": "tfc:cross",
     "textures": {
       "cross": "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_jun-oct",
       "layer0": "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_jun-oct"

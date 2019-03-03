@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cross",
+    "model": "tfc:cross",
     "textures": {
       "cross": "tfc:blocks/plants/tulip/tulip_white_apr-may",
       "layer0": "tfc:blocks/plants/tulip/tulip_white_apr-may"

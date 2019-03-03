@@ -60,7 +60,6 @@ public class DefaultPlants
             new Plant(MEADS_MILKWEED, -23f, 31f, 130f, 500f, Plant.PlantType.PLANT, 12, 15),
             new Plant(NASTURTIUM, -46f, 38f, 150f, 500, Plant.PlantType.PLANT, 12, 15),
             new Plant(OXEYE_DAISY, -40f, 33f, 120f, 300f, Plant.PlantType.PLANT, 9, 15),
-            new Plant(PETROVSKIA, -29f, 32f, 0f, 200f, Plant.PlantType.PLANT, 12, 15),
             new Plant(POPPY, -40f, 36f, 150f, 250f, Plant.PlantType.PLANT, 12, 15),
             new Plant(TROPICAL_MILKWEED, -6f, 36f, 120f, 300f, Plant.PlantType.PLANT, 12, 15),
             new Plant(TULIP_ORANGE, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT, 9, 15),
@@ -69,6 +68,7 @@ public class DefaultPlants
             new Plant(TULIP_WHITE, -34f, 33f, 100f, 200f, Plant.PlantType.PLANT, 9, 15),
 
             // Desert Plants
+            new Plant(PETROVSKIA, -29f, 32f, 0f, 200f, Plant.PlantType.DESERTPLANT, 12, 15),
             new Plant(SAGEBRUSH, -34f, 50f, 0f, 100f, Plant.PlantType.DESERTPLANT, 12, 15),
 
             // Cactus Plants
@@ -82,7 +82,7 @@ public class DefaultPlants
             new Plant(MOSS, -7f, 36f, 250f, 500f, Plant.PlantType.CREEPINGPLANT, 0, 11),
 
             // Floating Water Plants
-            new Plant(LILYPAD, -34f, 38f, 0f, 500f, Plant.PlantType.LILYPAD, 0, 15)
+            new Plant(LILYPAD, -34f, 38f, 0f, 500f, Plant.PlantType.LILYPAD, 4, 15)
         );
     }
 }

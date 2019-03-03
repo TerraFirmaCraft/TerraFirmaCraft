@@ -9,8 +9,8 @@
             "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
             "shade": false,
             "faces": {
-                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 },
-                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 }
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross" },
+                "south": { "uv": [ 16, 0, 0, 16 ], "texture": "#cross" }
             }
         },
         {   "from": [ 8, 0, 0.8 ],
@@ -18,8 +18,8 @@
             "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
             "shade": false,
             "faces": {
-                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 },
-                "east": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 }
+                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross" },
+                "east": { "uv": [ 16, 0, 0, 16 ], "texture": "#cross" }
             }
         }
     ]
