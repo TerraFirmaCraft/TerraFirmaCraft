@@ -78,6 +78,30 @@ public class BlockCactusTFC extends BlockStackPlantTFC
     }
 
     @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        return state.withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(AGE);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, new IProperty[] {AGE, GROWTHSTAGE, PART});
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return FULL_BLOCK_AABB.offset(state.getOffset(source, pos));
+    }
+
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
@@ -189,24 +213,6 @@ public class BlockCactusTFC extends BlockStackPlantTFC
     public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
         return EnumPlantType.Desert;
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(AGE);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, new IProperty[] {AGE, GROWTHSTAGE, PART});
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return FULL_BLOCK_AABB.offset(state.getOffset(source, pos));
     }
 
     @Override

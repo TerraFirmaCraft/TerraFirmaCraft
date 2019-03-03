@@ -53,7 +53,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.PLANT || plant.getPlantType() == Plant.PlantType.DESERTPLANT)
+        else if (plant.getPlantType() == Plant.PlantType.PLANT)
         {
             BlockPlantTFC plantBlock = BlockPlantTFC.get(plant, plant.getPlantType());
             IBlockState state = plantBlock.getDefaultState();
@@ -71,27 +71,46 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.DOUBLEPLANT)
+        else if (plant.getPlantType() == Plant.PlantType.DESERTPLANT)
         {
-            BlockDoublePlantTFC plantBlock = BlockDoublePlantTFC.get(plant, plant.getPlantType());
+            BlockPlantTFC plantBlock = BlockPlantTFC.get(plant, plant.getPlantType());
+            IBlockState state = plantBlock.getDefaultState();
 
-            boolean flag = false;
-
-            for (int i = 0; i < 16; ++i)
+            for (int i = 0; i < 32; ++i)
             {
-                BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
+                BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
                 if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos), ChunkDataTFC.getRainfall(worldIn, blockpos), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
                     worldIn.isAirBlock(blockpos) &&
-                    (!worldIn.provider.isNether() || blockpos.getY() < 254) &&
-                    plantBlock.canPlaceBlockAt(worldIn, blockpos))
+                    (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
+                    plantBlock.canBlockStay(worldIn, blockpos, state))
                 {
-                    plantBlock.placeAt(worldIn, blockpos, 2);
-                    flag = true;
+                    worldIn.setBlockState(blockpos, state, 2);
                 }
             }
+        }
+        else if (plant.getPlantType() == Plant.PlantType.DOUBLEPLANT)
+        {
+            BlockDoublePlantTFC plantBlock = BlockDoublePlantTFC.get(plant, plant.getPlantType());
+            IBlockState state = plantBlock.getDefaultState();
 
-            return flag;
+            for (int i = 0; i < 32; ++i)
+            {
+                BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
+
+                int j = 1 + rand.nextInt(rand.nextInt(3) + 1);
+
+                for (int k = 0; k < j; ++k)
+                {
+                    if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos.up(k)), ChunkDataTFC.getRainfall(worldIn, blockpos.up(k)), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
+                        worldIn.isAirBlock(blockpos.up(k)) &&
+                        (!worldIn.provider.isNether() || blockpos.up(k).getY() < 254) &&
+                        plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
+                    {
+                        worldIn.setBlockState(blockpos.up(k), state, 2);
+                    }
+                }
+            }
         }
         else if (plant.getPlantType() == Plant.PlantType.LILYPAD)
         {
