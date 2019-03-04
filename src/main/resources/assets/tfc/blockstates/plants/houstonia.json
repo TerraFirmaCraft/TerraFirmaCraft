@@ -15,17 +15,25 @@
       "model": "builtin/generated",
       "transform": "forge:default-item"
     },
-    "stage=0": [ { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_mar" } } ],
-    "stage=1": [ { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_apr-jun" } } ],
-    "stage=2": [ { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_apr-jun" } } ],
-    "stage=3": [ { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_apr-jun" } } ],
-    "stage=4": [ { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } } ],
-    "stage=5": [ { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } } ],
-    "stage=6": [ { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } } ],
-    "stage=7": [ { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } } ],
-    "stage=8": [ { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } } ],
-    "stage=9": [ { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } } ],
-    "stage=10": [ { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } } ],
-    "stage=11": [ { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } } ]
+    "stage": {
+      "0": { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_mar" } },
+      "1": { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_apr-jun" } },
+      "2": { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_apr-jun" } },
+      "3": { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_apr-jun" } },
+      "4": { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } },
+      "5": { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } },
+      "6": { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } },
+      "7": { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } },
+      "8": { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } },
+      "9": { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } },
+      "10": { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } },
+      "11": { "textures": { "cross" : "tfc:blocks/plants/houstonia/houstonia_jul-feb" } }
+    },
+    "time": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {}
+    }
   }
 }

@@ -53,7 +53,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC
 
         this.plant = plant;
         this.type = type;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, EnumBlockPart.SINGLE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
@@ -99,7 +99,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
+        return state.withProperty(TIME, state.getValue(TIME)).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
@@ -111,7 +111,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE, GROWTHSTAGE, PART});
+        return new BlockStateContainer(this, new IProperty[] {AGE, GROWTHSTAGE, PART, TIME});
     }
 
     @Override
@@ -132,10 +132,16 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC
         if (!worldIn.isAreaLoaded(pos, 1)) return;
         int currentStage = state.getValue(GROWTHSTAGE);
         int expectedStage = CalenderTFC.getMonthOfYear().id();
+        int currentTime = state.getValue(TIME);
+        int expectedTime = getCurrentTime(worldIn);
 
+        if (currentTime != expectedTime)
+        {
+            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, currentStage).withProperty(PART, state.getValue(PART)));
+        }
         if (currentStage != expectedStage && random.nextDouble() < 0.5)
         {
-            worldIn.setBlockState(pos, state.withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, state.getValue(PART)));
+            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, state.getValue(PART)));
         }
         this.updateTick(worldIn, pos, state, random);
     }
@@ -158,7 +164,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC
 
             if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
             {
-                if (j <= 15)
+                if (j == 15)
                 {
                     worldIn.setBlockToAir(pos);
                     worldIn.getBlockState(pos).neighborChanged(worldIn, pos.down(), this, pos);

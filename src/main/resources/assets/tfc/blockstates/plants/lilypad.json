@@ -1,180 +1,104 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "tfc:plants/lilypad",
-    "textures": {
-      "layer0": "tfc:blocks/plants/lilypad/lilypad",
-      "particle": "tfc:blocks/plants/lilypad/lilypad"
-    }
-  },
-  "variants": {
-    "normal": [
-      {}
-    ],
-    "inventory": {
-      "model": "builtin/generated",
-      "transform": "forge:default-item"
-    },
-    "stage=0": [
-		{ "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 90, "textures": {  "layer0": "tfc:blocks/empty","flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 180, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 270, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 }
-	],
-    "stage=1": [
-		{ "textures": { "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_1" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_1" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_1" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_1" }, "weight": 1 }
-	],
-    "stage=2": [
-		{ "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 }
-	],
-    "stage=3": [
-		{ "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 }
-	],
-    "stage=4": [
-		{ "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 }
-	],
-    "stage=5": [
-		{ "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 9 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 }
-	],
-    "stage=6": [
-		{ "textures": { "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_purple" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_white" }, "weight": 1 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_2_yellow" }, "weight": 1 },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 2 },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 2 },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 2 },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 2 }
-	],
-    "stage=7": [
-		{ "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" } },
-		{ "y": 90, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" } },
-		{ "y": 180, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" } },
-		{ "y": 270, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" } },
-		{ "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_0" } },
-		{ "y": 90, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_0" } },
-		{ "y": 180, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_0" } },
-		{ "y": 270, "textures": { "flower" : "tfc:blocks/plants/lilypad/lilypad_0" } }
-	],
-    "stage=8": [
-		{ "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 90, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 180, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 270, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 90, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 180, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 270, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 }
-	],
-    "stage=9": [
-		{ "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 90, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 180, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 270, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 90, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 180, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 270, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 }
-	],
-    "stage=10": [
-		{ "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 90, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 180, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 270, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 90, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 180, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 270, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 }
-	],
-    "stage=11": [
-		{ "textures": { "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 90, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 180, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "y": 270, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/empty" }, "weight": 3 },
-		{ "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 90, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 180, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 },
-		{ "y": 270, "textures": { "layer0": "tfc:blocks/empty", "flower" : "tfc:blocks/plants/lilypad/lilypad_0" }, "weight": 1 }
+	"multipart": [
+		{ "when": { "stage": "0" },
+			"apply": [
+				{ "model": "tfc:plants/lilypad_0", "weight": 3 },
+				{ "model": "tfc:plants/lilypad_0", "weight": 3, "y": 90 },
+				{ "model": "tfc:plants/lilypad_0", "weight": 3, "y": 180 },
+				{ "model": "tfc:plants/lilypad_0", "weight": 3, "y": 270 },
+				{ "model": "tfc:plants/lilypad", "weight": 1 },
+				{ "model": "tfc:plants/lilypad", "weight": 1, "y": 90 },
+				{ "model": "tfc:plants/lilypad", "weight": 1, "y": 180 },
+				{ "model": "tfc:plants/lilypad", "weight": 1, "y": 270 }
+			]
+		},
+		{ "when": { "stage": "1" },
+			"apply": [
+				{ "model": "tfc:plants/lilypad", "weight": 3 },
+				{ "model": "tfc:plants/lilypad", "weight": 3, "y": 90 },
+				{ "model": "tfc:plants/lilypad", "weight": 3, "y": 180 },
+				{ "model": "tfc:plants/lilypad", "weight": 3, "y": 270 },
+				{ "model": "tfc:plants/lilypad_1", "weight": 1 },
+				{ "model": "tfc:plants/lilypad_1", "weight": 1, "y": 90 },
+				{ "model": "tfc:plants/lilypad_1", "weight": 1, "y": 180 },
+				{ "model": "tfc:plants/lilypad_1", "weight": 1, "y": 270 }
+			]
+		},
+		{ "when": { "stage": "2|3|4|5" },
+			"apply": [
+				{ "model": "tfc:plants/lilypad", "weight": 9 },
+				{ "model": "tfc:plants/lilypad", "weight": 9, "y": 90 },
+				{ "model": "tfc:plants/lilypad", "weight": 9, "y": 180 },
+				{ "model": "tfc:plants/lilypad", "weight": 9, "y": 270 },
+				{ "model": "tfc:plants/lilypad_2_purple", "weight": 1 },
+				{ "model": "tfc:plants/lilypad_2_purple", "weight": 1, "y": 90 },
+				{ "model": "tfc:plants/lilypad_2_purple", "weight": 1, "y": 180 },
+				{ "model": "tfc:plants/lilypad_2_purple", "weight": 1, "y": 270 },
+				{ "model": "tfc:plants/lilypad_2_white", "white": 1 },
+				{ "model": "tfc:plants/lilypad_2_white", "white": 1, "y": 90 },
+				{ "model": "tfc:plants/lilypad_2_white", "white": 1, "y": 180 },
+				{ "model": "tfc:plants/lilypad_2_white", "white": 1, "y": 270 },
+				{ "model": "tfc:plants/lilypad_2_white", "yellow": 1 },
+				{ "model": "tfc:plants/lilypad_2_white", "yellow": 1, "y": 90 },
+				{ "model": "tfc:plants/lilypad_2_white", "yellow": 1, "y": 180 },
+				{ "model": "tfc:plants/lilypad_2_white", "yellow": 1, "y": 270 }
+			]
+		},
+		{ "when": { "stage": "6" },
+			"apply": [
+				{ "model": "tfc:plants/lilypad", "weight": 12 },
+				{ "model": "tfc:plants/lilypad", "weight": 12, "y": 90 },
+				{ "model": "tfc:plants/lilypad", "weight": 12, "y": 180 },
+				{ "model": "tfc:plants/lilypad", "weight": 12, "y": 270 },
+				{ "model": "tfc:plants/lilypad_2", "weight": 3 },
+				{ "model": "tfc:plants/lilypad_2", "weight": 3, "y": 90 },
+				{ "model": "tfc:plants/lilypad_2", "weight": 3, "y": 180 },
+				{ "model": "tfc:plants/lilypad_2", "weight": 3, "y": 270 },
+				{ "model": "tfc:plants/lilypad_2_purple", "weight": 1 },
+				{ "model": "tfc:plants/lilypad_2_purple", "weight": 1, "y": 90 },
+				{ "model": "tfc:plants/lilypad_2_purple", "weight": 1, "y": 180 },
+				{ "model": "tfc:plants/lilypad_2_purple", "weight": 1, "y": 270 },
+				{ "model": "tfc:plants/lilypad_2_white", "white": 1 },
+				{ "model": "tfc:plants/lilypad_2_white", "white": 1, "y": 90 },
+				{ "model": "tfc:plants/lilypad_2_white", "white": 1, "y": 180 },
+				{ "model": "tfc:plants/lilypad_2_white", "white": 1, "y": 270 },
+				{ "model": "tfc:plants/lilypad_2_white", "yellow": 1 },
+				{ "model": "tfc:plants/lilypad_2_white", "yellow": 1, "y": 90 },
+				{ "model": "tfc:plants/lilypad_2_white", "yellow": 1, "y": 180 },
+				{ "model": "tfc:plants/lilypad_2_white", "yellow": 1, "y": 270 }
+			]
+		},
+		{ "when": { "stage": "7" },
+			"apply": [
+				{ "model": "tfc:plants/lilypad" },
+				{ "model": "tfc:plants/lilypad", "y": 90 },
+				{ "model": "tfc:plants/lilypad", "y": 180 },
+				{ "model": "tfc:plants/lilypad", "y": 270 },
+				{ "model": "tfc:plants/lilypad_0" },
+				{ "model": "tfc:plants/lilypad_0", "y": 90 },
+				{ "model": "tfc:plants/lilypad_0", "y": 180 },
+				{ "model": "tfc:plants/lilypad_0", "y": 270 }
+			]
+		},
+		{ "when": { "stage": "8|9|10|" },
+			"apply": [
+				{ "model": "tfc:plants/lilypad_0" },
+				{ "model": "tfc:plants/lilypad_0", "y": 90 },
+				{ "model": "tfc:plants/lilypad_0", "y": 180 },
+				{ "model": "tfc:plants/lilypad_0", "y": 270 }
+			]
+		},
+		{ "when": { "stage": "11" },
+			"apply": [
+				{ "model": "tfc:plants/lilypad", "weight": 3 },
+				{ "model": "tfc:plants/lilypad", "weight": 3, "y": 90 },
+				{ "model": "tfc:plants/lilypad", "weight": 3, "y": 180 },
+				{ "model": "tfc:plants/lilypad", "weight": 3, "y": 270 },
+				{ "model": "tfc:plants/lilypad_0", "weight": 1 },
+				{ "model": "tfc:plants/lilypad_0", "weight": 1, "y": 90 },
+				{ "model": "tfc:plants/lilypad_0", "weight": 1, "y": 180 },
+				{ "model": "tfc:plants/lilypad_0", "weight": 1, "y": 270 }
+			]
+		}
 	]
-  }
 }

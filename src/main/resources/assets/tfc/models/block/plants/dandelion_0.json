@@ -1,7 +1,9 @@
 {
     "ambientocclusion": false,
     "textures": {
-        "particle": "#cross"
+		"cross": "tfc:blocks/plants/dandelion/dandelion_0",
+		"layer0": "tfc:blocks/plants/dandelion/dandelion_0",
+        "particle": "tfc:blocks/plants/dandelion/dandelion_0"
     },
     "elements": [
         {   "from": [ 0.8, 0, 8 ],
@@ -18,8 +20,8 @@
             "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
             "shade": false,
             "faces": {
-                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross1" },
-                "east": { "uv": [ 16, 0, 0, 16 ], "texture": "#cross1" }
+                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross" },
+                "east": { "uv": [ 16, 0, 0, 16 ], "texture": "#cross" }
             }
         }
     ]

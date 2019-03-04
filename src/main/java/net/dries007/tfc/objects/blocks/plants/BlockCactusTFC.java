@@ -62,7 +62,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC
 
         setSoundType(SoundType.GROUND);
         setHardness(0.25F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, EnumBlockPart.SINGLE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
@@ -74,13 +74,13 @@ public class BlockCactusTFC extends BlockStackPlantTFC
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        entityIn.attackEntityFrom(DamageSource.CACTUS, 0.5F);
+        entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
     }
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
+        return state.withProperty(TIME, state.getValue(TIME)).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
@@ -92,7 +92,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE, GROWTHSTAGE, PART});
+        return new BlockStateContainer(this, new IProperty[] {AGE, GROWTHSTAGE, PART, TIME});
     }
 
     @Override
@@ -113,10 +113,16 @@ public class BlockCactusTFC extends BlockStackPlantTFC
         if (!worldIn.isAreaLoaded(pos, 1)) return;
         int currentStage = state.getValue(GROWTHSTAGE);
         int expectedStage = CalenderTFC.getMonthOfYear().id();
+        int currentTime = state.getValue(TIME);
+        int expectedTime = getCurrentTime(worldIn);
 
+        if (currentTime != expectedTime)
+        {
+            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, currentStage).withProperty(PART, state.getValue(PART)));
+        }
         if (currentStage != expectedStage && random.nextDouble() < 0.5)
         {
-            worldIn.setBlockState(pos, state.withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, state.getValue(PART)));
+            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, state.getValue(PART)));
         }
         this.updateTick(worldIn, pos, state, random);
     }
@@ -168,13 +174,13 @@ public class BlockCactusTFC extends BlockStackPlantTFC
                     if (j == 15)
                     {
                         worldIn.setBlockState(blockpos, this.getDefaultState());
-                        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, state.getValue(PART));
+                        IBlockState iblockstate = state.withProperty(TIME, getCurrentTime(worldIn)).withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, state.getValue(PART));
                         worldIn.setBlockState(pos, iblockstate);
                         iblockstate.neighborChanged(worldIn, blockpos, this, pos);
                     }
                     else
                     {
-                        worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, state.getValue(PART)));
+                        worldIn.setBlockState(pos, state.withProperty(TIME, getCurrentTime(worldIn)).withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, state.getValue(PART)));
                     }
                     net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
                 }
