@@ -1,5 +1,6 @@
 package net.dries007.tfc.objects.blocks.devices;
 
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -7,7 +8,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -26,6 +29,11 @@ import net.dries007.tfc.objects.te.TECrucible;
 public class BlockCrucible extends Block
 {
     private static final AxisAlignedBB CRUCIBLE_AABB = new AxisAlignedBB(0.0625, 0, 0.0625, 0.9375, 0.9375, 0.9375);
+    private static final AxisAlignedBB AABB_LEGS = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.9375D, 0.125D, 0.9375D);
+    private static final AxisAlignedBB AABB_WALL_NORTH = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.1875D);
+    private static final AxisAlignedBB AABB_WALL_SOUTH = new AxisAlignedBB(0.0625D, 0.0D, 0.8125D, 0.9375D, 0.9375D, 0.9375D);
+    private static final AxisAlignedBB AABB_WALL_EAST = new AxisAlignedBB(0.8125D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D);
+    private static final AxisAlignedBB AABB_WALL_WEST = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.1875D, 0.9375D, 0.9375D);
 
     public BlockCrucible()
     {
@@ -87,6 +95,29 @@ public class BlockCrucible extends Block
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
         return CRUCIBLE_AABB;
+    }
+
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        if (face == EnumFacing.UP)
+        {
+            return BlockFaceShape.BOWL;
+        }
+        return BlockFaceShape.UNDEFINED;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
+    {
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_LEGS);
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_WEST);
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_NORTH);
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_EAST);
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_SOUTH);
     }
 
     @Override

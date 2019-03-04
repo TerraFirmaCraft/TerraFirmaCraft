@@ -31,7 +31,7 @@ import net.dries007.tfc.objects.fluids.FluidMetal;
 public class Alloy implements INBTSerializable<NBTTagCompound>
 {
     private final Map<Metal, Double> metalMap;
-    private double totalAmount;
+    private int totalAmount;
     private int maxAmount;
     private boolean isValid;
 
@@ -221,26 +221,24 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     {
         if (simulate)
         {
-            return totalAmount < removeAmount ? (int) totalAmount : removeAmount;
+            return totalAmount < removeAmount ? totalAmount : removeAmount;
         }
-        int amount;
         if (removeAmount >= totalAmount)
         {
-            amount = (int) totalAmount;
             clear();
+            return totalAmount;
         }
         else
         {
-            amount = removeAmount;
             for (Map.Entry<Metal, Double> entry : metalMap.entrySet())
             {
                 // Remove the amount of metal from each component
                 double remove = removeAmount * entry.getValue() / totalAmount;
                 metalMap.put(entry.getKey(), entry.getValue() - remove);
             }
-            totalAmount -= amount;
+            totalAmount -= removeAmount;
+            return removeAmount;
         }
-        return amount;
     }
 
     /**
@@ -249,7 +247,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
      */
     public int getAmount()
     {
-        return (int) totalAmount;
+        return totalAmount;
     }
 
     /**
@@ -272,11 +270,14 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setBoolean("isValid", isValid);
         nbt.setInteger("maxAmount", maxAmount);
+        nbt.setInteger("totalAmount", totalAmount);
+        NBTTagCompound alloys = new NBTTagCompound();
         for (Map.Entry<Metal, Double> entry : this.metalMap.entrySet())
         {
             //noinspection ConstantConditions
-            nbt.setDouble(entry.getKey().getRegistryName().toString(), entry.getValue());
+            alloys.setDouble(entry.getKey().getRegistryName().toString(), entry.getValue());
         }
+        nbt.setTag("contents", alloys);
         return nbt;
     }
 
@@ -288,16 +289,17 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
             clear();
             isValid = nbt.getBoolean("isValid");
             maxAmount = nbt.getInteger("maxAmount");
+            totalAmount = nbt.getInteger("totalAmount");
 
+            NBTTagCompound alloys = nbt.getCompoundTag("contents");
             for (Metal metal : TFCRegistries.METALS.getValuesCollection())
             {
                 //noinspection ConstantConditions
                 String key = metal.getRegistryName().toString();
-                if (nbt.hasKey(key))
+                if (alloys.hasKey(key))
                 {
-                    double amount = nbt.getDouble(key);
+                    double amount = alloys.getDouble(key);
                     this.metalMap.put(metal, amount);
-                    this.totalAmount += amount;
                 }
             }
         }

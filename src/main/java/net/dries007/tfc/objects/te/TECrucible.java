@@ -38,12 +38,14 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
     private Metal alloyResult;
     private float temperature;
     private float targetTemperature;
+    private int lastFillTimer;
 
     public TECrucible()
     {
         super(2);
         this.temperature = 0;
         this.alloy = new Alloy(CRUCIBLE_MAX_METAL_FLUID);
+        this.lastFillTimer = 0;
     }
 
     @Override
@@ -77,20 +79,29 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         {
             // Try and drain fluid
             IMoldHandler mold = (IMoldHandler) cap;
-            if (mold.isMolten())
+            if (lastFillTimer <= 0)
             {
-                // At this point we assume that ((FluidMetal) fluidStack.getFluid()).getMetal() == mold.getMetal()
-                // Anything that breaks this contract is a bug and should be reported
-                // This also happens here to avoid off-by-one errors as it will report null after the mold has been emptied
-                Metal metal = mold.getMetal();
-                FluidStack fluidStack = mold.drain(1, true);
-                if (fluidStack != null && fluidStack.amount > 0)
+                if (mold.isMolten())
                 {
-                    alloy.add(metal, fluidStack.amount);
-                    needsClientUpdate = true;
+                    // At this point we assume that ((FluidMetal) fluidStack.getFluid()).getMetal() == mold.getMetal()
+                    // Anything that breaks this contract is a bug and should be reported
+                    // This also happens here to avoid off-by-one errors as it will report null after the mold has been emptied
+                    Metal metal = mold.getMetal();
+                    FluidStack fluidStack = mold.drain(1, true);
+                    if (fluidStack != null && fluidStack.amount > 0)
+                    {
+                        alloy.add(metal, fluidStack.amount);
+                        needsClientUpdate = true;
+                    }
                 }
+                lastFillTimer = 5;
             }
-            else if (cap.getTemperature() < temperature)
+            else
+            {
+                lastFillTimer--;
+            }
+            // Always heat up the item regardless if it is melting or not
+            if (cap.getTemperature() < temperature)
             {
                 CapabilityItemHeat.addTemp(cap);
             }

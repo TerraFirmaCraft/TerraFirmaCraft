@@ -421,7 +421,6 @@ public final class BlocksTFC
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bellows", new BlockBellows(), CT_MISC)));
         // todo: bloomery
         // todo: bloom/molten blocks
-        // todo: crusible
         // todo: large vessels
         // todo: nestbox
         // todo: leather rack
