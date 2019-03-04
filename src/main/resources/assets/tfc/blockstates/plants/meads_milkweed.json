@@ -15,17 +15,25 @@
       "model": "builtin/generated",
       "transform": "forge:default-item"
     },
-    "stage=0": [ { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_mar" } } ],
-    "stage=1": [ { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_apr" } } ],
-    "stage=2": [ { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_may" } } ],
-    "stage=3": [ { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_jun-sep" } } ],
-    "stage=4": [ { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_jun-sep" } } ],
-    "stage=5": [ { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_jun-sep" } } ],
-    "stage=6": [ { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_jun-sep" } } ],
-    "stage=7": [ { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_oct" } } ],
-    "stage=8": [ { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_nov" } } ],
-    "stage=9": [ { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_dec-feb" } } ],
-    "stage=10": [ { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_dec-feb" } } ],
-    "stage=11": [ { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_dec-feb" } } ]
+    "stage": {
+      "0": { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_mar" } },
+      "1": { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_apr" } },
+      "2": { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_may" } },
+      "3": { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_jun-sep" } },
+      "4": { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_jun-sep" } },
+      "5": { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_jun-sep" } },
+      "6": { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_jun-sep" } },
+      "7": { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_oct" } },
+      "8": { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_nov" } },
+      "9": { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_dec-feb" } },
+      "10": { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_dec-feb" } },
+      "11": { "textures": { "cross" : "tfc:blocks/plants/meads_milkweed/meads_milkweed_dec-feb" } }
+    },
+    "time": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {}
+    }
   }
 }

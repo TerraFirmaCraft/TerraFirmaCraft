@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -34,7 +35,7 @@ import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
 
 public class BlockLilyPadTFC extends BlockPlantTFC
 {
-    protected static final AxisAlignedBB LILY_PAD_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.09375D, 0.875D);
+    protected static final AxisAlignedBB LILY_PAD_AABB = new AxisAlignedBB(0.125D, -0.125D, 0.125D, 0.875D, 0.0625D, 0.875D);
     private static final Map<Plant, EnumMap<Plant.PlantType, BlockLilyPadTFC>> TABLE = new HashMap<>();
 
     public static BlockLilyPadTFC get(Plant plant, Plant.PlantType type)
@@ -74,34 +75,34 @@ public class BlockLilyPadTFC extends BlockPlantTFC
     }
 
     @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        return state.withProperty(TIME, state.getValue(TIME)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE));
+    }
+
+    @Override
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
+    {
+        world.setBlockState(pos, this.blockState.getBaseState().withProperty(TIME, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        this.checkAndDropBlock(world, pos, state);
+    }
+
+    @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE});
+        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, TIME});
+    }
+
+    @Override
+    public Block.EnumOffsetType getOffsetType()
+    {
+        return Block.EnumOffsetType.NONE;
     }
 
     @Override
     protected boolean canSustainBush(IBlockState state)
     {
         return BlocksTFC.isWater(state) || state.getMaterial() == Material.ICE && state == FRESH_WATER;
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return LILY_PAD_AABB.offset(state.getOffset(source, pos));
-    }
-
-    @Override
-    public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
-    {
-        return EnumPlantType.Water;
-    }
-
-    @Override
-    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
-    {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
-        this.checkAndDropBlock(world, pos, state);
     }
 
     @Override
@@ -117,5 +118,17 @@ public class BlockLilyPadTFC extends BlockPlantTFC
         {
             return false;
         }
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return LILY_PAD_AABB.offset(state.getOffset(source, pos));
+    }
+
+    @Override
+    public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    {
+        return EnumPlantType.Water;
     }
 }

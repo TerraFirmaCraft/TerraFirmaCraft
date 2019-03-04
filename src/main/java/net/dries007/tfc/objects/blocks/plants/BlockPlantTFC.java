@@ -38,6 +38,7 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 public class BlockPlantTFC extends BlockBush implements IItemSize
 {
     public final static PropertyInteger GROWTHSTAGE = PropertyInteger.create("stage", 0, 11);
+    public final static PropertyInteger TIME = PropertyInteger.create("time", 0, 3);
     private static final Map<Plant, EnumMap<Plant.PlantType, BlockPlantTFC>> TABLE = new HashMap<>();
 
     public static BlockPlantTFC get(Plant plant, Plant.PlantType type)
@@ -65,6 +66,25 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
     }
 
+/*
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if (state.getValue(GROWTHSTAGE) < 11)
+        {
+            worldIn.setBlockState(pos, state.withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)+1));
+        }
+        else worldIn.setBlockState(pos, state.withProperty(GROWTHSTAGE, 0));
+        return true;
+    }
+*/
+
+
+    public int getCurrentTime(World world)
+    {
+        return Math.floorDiv(Math.toIntExact(world.getWorldTime() % 24000), 6000);
+    }
+
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
@@ -75,6 +95,12 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public int getMetaFromState(IBlockState state)
     {
         return (state.getValue(GROWTHSTAGE));
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        return state.withProperty(TIME, state.getValue(TIME)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE));
     }
 
     @Override
@@ -89,10 +115,16 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         if (!worldIn.isAreaLoaded(pos, 1)) return;
         int currentStage = state.getValue(GROWTHSTAGE);
         int expectedStage = CalenderTFC.getMonthOfYear().id();
+        int currentTime = state.getValue(TIME);
+        int expectedTime = getCurrentTime(worldIn);
 
+        if (currentTime != expectedTime)
+        {
+            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(GROWTHSTAGE, currentStage));
+        }
         if (currentStage != expectedStage && random.nextDouble() < 0.5)
         {
-            worldIn.setBlockState(pos, state.withProperty(GROWTHSTAGE, expectedStage));
+            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(GROWTHSTAGE, expectedStage));
         }
 
         this.updateTick(worldIn, pos, state, random);
@@ -107,20 +139,20 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, this.blockState.getBaseState().withProperty(TIME, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
         this.checkAndDropBlock(world, pos, state);
     }
 
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE});
+        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, TIME});
     }
 
     @Override
     public Block.EnumOffsetType getOffsetType()
     {
-        return Block.EnumOffsetType.XZ;
+        return Block.EnumOffsetType.XYZ;
     }
 
     @Override

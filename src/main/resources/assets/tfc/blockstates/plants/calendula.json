@@ -15,17 +15,25 @@
       "model": "builtin/generated",
       "transform": "forge:default-item"
     },
-    "stage=0": [ { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_mar" } } ],
-    "stage=1": [ { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_apr" } } ],
-    "stage=2": [ { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_may" } } ],
-    "stage=3": [ { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_jun-jul" } } ],
-    "stage=4": [ { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_jun-jul" } } ],
-    "stage=5": [ { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_may" } } ],
-    "stage=6": [ { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_jun-jul" } } ],
-    "stage=7": [ { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_jun-jul" } } ],
-    "stage=8": [ { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_nov" } } ],
-    "stage=9": [ { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_dec-feb" } } ],
-    "stage=10": [ { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_dec-feb" } } ],
-    "stage=11": [ { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_dec-feb" } } ]
+    "stage": {
+      "0": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_mar" } },
+      "1": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_apr" } },
+      "2": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_may" } },
+      "3": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_jun-jul" } },
+      "4": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_jun-jul" } },
+      "5": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_may" } },
+      "6": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_jun-jul" } },
+      "7": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_jun-jul" } },
+      "8": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_nov" } },
+      "9": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_dec-feb" } },
+      "10": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_dec-feb" } },
+      "11": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_dec-feb" } }
+    },
+    "time": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {}
+    }
   }
 }

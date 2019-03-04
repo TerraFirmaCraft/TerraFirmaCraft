@@ -53,12 +53,6 @@ public class BlockStackPlantTFC extends BlockPlantTFC
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
-    {
-        return state.withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
-    }
-
-    @Override
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, net.minecraftforge.common.IPlantable plantable)
     {
         IBlockState plant = plantable.getPlant(world, pos.offset(direction));
@@ -77,6 +71,12 @@ public class BlockStackPlantTFC extends BlockPlantTFC
     }
 
     @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        return state.withProperty(TIME, state.getValue(TIME)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
+    }
+
+    @Override
     public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
     {
         return false;
@@ -84,7 +84,7 @@ public class BlockStackPlantTFC extends BlockPlantTFC
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, PART});
+        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, PART, TIME});
     }
 
     @Override

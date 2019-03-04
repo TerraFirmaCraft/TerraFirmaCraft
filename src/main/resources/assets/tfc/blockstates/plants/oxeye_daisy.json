@@ -15,17 +15,25 @@
       "model": "builtin/generated",
       "transform": "forge:default-item"
     },
-    "stage=0": [ { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_mar" } } ],
-    "stage=1": [ { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_apr" } } ],
-    "stage=2": [ { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_may" } } ],
-    "stage=3": [ { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_jun-aug" } } ],
-    "stage=4": [ { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_jun-aug" } } ],
-    "stage=5": [ { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_jun-aug" } } ],
-    "stage=6": [ { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_sep-oct" } } ],
-    "stage=7": [ { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_sep-oct" } } ],
-    "stage=8": [ { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } } ],
-    "stage=9": [ { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } } ],
-    "stage=10": [ { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } } ],
-    "stage=11": [ { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } } ]
+    "stage": {
+      "0": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_mar" } },
+      "1": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_apr" } },
+      "2": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_may" } },
+      "3": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_jun-aug" } },
+      "4": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_jun-aug" } },
+      "5": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_jun-aug" } },
+      "6": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_sep-oct" } },
+      "7": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_sep-oct" } },
+      "8": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } },
+      "9": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } },
+      "10": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } },
+      "11": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } }
+    },
+    "time": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {}
+    }
   }
 }

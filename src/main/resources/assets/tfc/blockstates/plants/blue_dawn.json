@@ -1,127 +1,76 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "tfc:empty",
-    "textures": {
-      "particle": "tfc:blocks/plants/blue_dawn/blue_dawn_layer0"
-    }
-  },
-  "variants": {
-    "normal": [
-      {}
-    ],
-    "inventory": {
-      "model": "tfc:plants/creeping_plant",
-      "transform": "forge:default-item"
-    },
-    "down": {
-      "true":  { "submodel": "tfc:plants/creeping_plant" },
-      "false": {}
-    },
-    "east": {
-      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 270, "y": 90 },
-      "false": {}
-    },
-    "north": {
-      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 270 },
-      "false": {}
-    },
-    "south": {
-      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 270, "y": 180 },
-      "false": {}
-    },
-    "stage": {
-      "0": { "textures":
-        {
-          "layer0": "tfc:blocks/plants/blue_dawn/blue_dawn_layer0",
-          "layer1": "tfc:blocks/plants/blue_dawn/blue_dawn_layer1"
-        }
-      },
-      "1": { "textures":
-        {
-          "layer0": "tfc:blocks/plants/blue_dawn/blue_dawn_layer0",
-          "layer1": "tfc:blocks/plants/blue_dawn/blue_dawn_layer1",
-	      "middle": "tfc:blocks/plants/blue_dawn/blue_dawn_middle_0",
-	      "top": "tfc:blocks/plants/blue_dawn/blue_dawn_top_0"
-        }
-      },
-      "2": { "textures":
-        {
-          "layer0": "tfc:blocks/plants/blue_dawn/blue_dawn_layer0",
-          "layer1": "tfc:blocks/plants/blue_dawn/blue_dawn_layer1",
-	      "middle": "tfc:blocks/plants/blue_dawn/blue_dawn_middle_1",
-	      "top": "tfc:blocks/plants/blue_dawn/blue_dawn_top_1"
-        }
-      },
-      "3": { "textures":
-        {
-          "layer0": "tfc:blocks/plants/blue_dawn/blue_dawn_layer0",
-          "layer1": "tfc:blocks/plants/blue_dawn/blue_dawn_layer1",
-          "middle": "tfc:blocks/plants/blue_dawn/blue_dawn_middle_1",
-          "top": "tfc:blocks/plants/blue_dawn/blue_dawn_top_1"
-        }
-      },
-      "4": { "textures":
-        {
-          "layer0": "tfc:blocks/plants/blue_dawn/blue_dawn_layer0",
-          "layer1": "tfc:blocks/plants/blue_dawn/blue_dawn_layer1",
-          "middle": "tfc:blocks/plants/blue_dawn/blue_dawn_middle_1",
-          "top": "tfc:blocks/plants/blue_dawn/blue_dawn_top_1"
-        }
-      },
-      "5": { "textures":
-        {
-          "layer0": "tfc:blocks/plants/blue_dawn/blue_dawn_layer0",
-          "layer1": "tfc:blocks/plants/blue_dawn/blue_dawn_layer1",
-          "middle": "tfc:blocks/plants/blue_dawn/blue_dawn_middle_1",
-          "top": "tfc:blocks/plants/blue_dawn/blue_dawn_top_1"
-        }
-      },
-      "6": { "textures":
-        {
-          "layer0": "tfc:blocks/plants/blue_dawn/blue_dawn_layer0",
-          "layer1": "tfc:blocks/plants/blue_dawn/blue_dawn_layer1",
-          "middle": "tfc:blocks/plants/blue_dawn/blue_dawn_middle_1",
-          "top": "tfc:blocks/plants/blue_dawn/blue_dawn_top_1"
-        }
-      },
-      "7": { "textures":
-        {
-		  "bottom": "tfc:blocks/plants/blue_dawn/blue_dawn_bottom_2",
-	      "middle": "tfc:blocks/plants/blue_dawn/blue_dawn_middle_2",
-	      "top": "tfc:blocks/plants/blue_dawn/blue_dawn_top_2"
-        }
-      },
-      "8": { "textures":
-        {
-		  "bottom": "tfc:blocks/plants/blue_dawn/blue_dawn_bottom_2",
-	      "middle": "tfc:blocks/plants/blue_dawn/blue_dawn_middle_2"
-        }
-      },
-      "9": { "textures":
-        {
-		  "bottom": "tfc:blocks/plants/blue_dawn/blue_dawn_bottom_2",
-	      "middle": "tfc:blocks/plants/blue_dawn/blue_dawn_middle_2"
-        }
-      },
-      "10": { "textures":
-        {
-		  "bottom": "tfc:blocks/plants/blue_dawn/blue_dawn_bottom_2"
-        }
-      },
-      "11": { "textures":
-        {
-		  "bottom": "tfc:blocks/plants/blue_dawn/blue_dawn_middle_2"
-        }
-      }
-    },
-    "up": {
-      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 180 },
-      "false": {}
-    },
-    "west": {
-      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 270, "y": 270 },
-      "false": {}
-    }
-  }
+   "multipart": [
+       {   "when": { "down": "true", "stage": "0|1|2|3|4|5|6" },
+           "apply": { "model": "tfc:plants/blue_dawn" }
+       },
+       {   "when": { "east": "true", "stage": "0|1|2|3|4|5|6" },
+           "apply": { "model": "tfc:plants/blue_dawn", "x": 270, "y": 90 }
+       },
+       {   "when": { "north": "true", "stage": "0|1|2|3|4|5|6" },
+           "apply": { "model": "tfc:plants/blue_dawn", "x": 270 }
+       },
+       {   "when": { "south": "true", "stage": "0|1|2|3|4|5|6" },
+           "apply": { "model": "tfc:plants/blue_dawn", "x": 270, "y": 180 }
+       },
+       {   "when": { "up": "true", "stage": "0|1|2|3|4|5|6" },
+           "apply": { "model": "tfc:plants/blue_dawn", "x": 180 }
+       },
+       {   "when": { "west": "true", "stage": "0|1|2|3|4|5|6" },
+           "apply": { "model": "tfc:plants/blue_dawn", "x": 270, "y": 270 }
+       },
+       {   "when": { "down": "true", "stage": "2|3|4|5|6", "time": "0" },
+           "apply": { "model": "tfc:plants/blue_dawn_1" }
+       },
+       {   "when": { "east": "true", "stage": "2|3|4|5|6", "time": "0" },
+           "apply": { "model": "tfc:plants/blue_dawn_1", "x": 270, "y": 90 }
+       },
+       {   "when": { "north": "true", "stage": "2|3|4|5|6", "time": "0" },
+           "apply": { "model": "tfc:plants/blue_dawn_1", "x": 270 }
+       },
+       {   "when": { "south": "true", "stage": "2|3|4|5|6", "time": "0" },
+           "apply": { "model": "tfc:plants/blue_dawn_1", "x": 270, "y": 180 }
+       },
+       {   "when": { "up": "true", "stage": "2|3|4|5|6", "time": "0" },
+           "apply": { "model": "tfc:plants/blue_dawn_1", "x": 180 }
+       },
+       {   "when": { "west": "true", "stage": "2|3|4|5|6", "time": "0" },
+           "apply": { "model": "tfc:plants/blue_dawn_1", "x": 270, "y": 270 }
+       },
+       {   "when": { "down": "true", "stage": "2|3|4|5|6", "time": "1|2|3" },
+           "apply": { "model": "tfc:plants/blue_dawn_0" }
+       },
+       {   "when": { "east": "true", "stage": "2|3|4|5|6", "time": "1|2|3" },
+           "apply": { "model": "tfc:plants/blue_dawn_0", "x": 270, "y": 90 }
+       },
+       {   "when": { "north": "true", "stage": "2|3|4|5|6", "time": "1|2|3" },
+           "apply": { "model": "tfc:plants/blue_dawn_0", "x": 270 }
+       },
+       {   "when": { "south": "true", "stage": "2|3|4|5|6", "time": "1|2|3" },
+           "apply": { "model": "tfc:plants/blue_dawn_0", "x": 270, "y": 180 }
+       },
+       {   "when": { "up": "true", "stage": "2|3|4|5|6", "time": "1|2|3" },
+           "apply": { "model": "tfc:plants/blue_dawn_0", "x": 180 }
+       },
+       {   "when": { "west": "true", "stage": "2|3|4|5|6", "time": "1|2|3" },
+           "apply": { "model": "tfc:plants/blue_dawn_0", "x": 270, "y": 270 }
+       },
+       {   "when": { "down": "true", "stage": "7|8|9|10|11" },
+           "apply": { "model": "tfc:plants/blue_dawn_2" }
+       },
+       {   "when": { "east": "true", "stage": "7|8|9|10|11" },
+           "apply": { "model": "tfc:plants/blue_dawn_2", "x": 270, "y": 90 }
+       },
+       {   "when": { "north": "true", "stage": "7|8|9|10|11" },
+           "apply": { "model": "tfc:plants/blue_dawn_2", "x": 270 }
+       },
+       {   "when": { "south": "true", "stage": "7|8|9|10|11" },
+           "apply": { "model": "tfc:plants/blue_dawn_2", "x": 270, "y": 180 }
+       },
+       {   "when": { "up": "true", "stage": "7|8|9|10|11" },
+           "apply": { "model": "tfc:plants/blue_dawn_2", "x": 180 }
+       },
+       {   "when": { "west": "true", "stage": "7|8|9|10|11" },
+           "apply": { "model": "tfc:plants/blue_dawn_2", "x": 270, "y": 270 }
+       }
+   ]
 }

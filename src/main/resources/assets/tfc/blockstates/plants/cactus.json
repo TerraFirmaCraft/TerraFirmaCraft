@@ -92,13 +92,28 @@
       "10": {},
       "11": {}
     },
+    "time": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {}
+    },
     "part": {
       "lower":  { "model": "tfc:plants/cactus_lower" },
       "middle":  { "model": "tfc:plants/cactus_middle" },
       "single": { "model": "tfc:plants/cactus_single" },
       "upper": { "model": "tfc:plants/cactus_upper" }
     },
-    "age=0,part=single,stage=0": [
+    "age=0,part=single,stage=0,time=0": [
+      { "model": "tfc:plants/cactus_small", "textures":{"flower": "tfc:blocks/empty"} }
+    ],
+    "age=0,part=single,stage=0,time=1": [
+      { "model": "tfc:plants/cactus_small", "textures":{"flower": "tfc:blocks/empty"} }
+    ],
+    "age=0,part=single,stage=0,time=2": [
+      { "model": "tfc:plants/cactus_small", "textures":{"flower": "tfc:blocks/empty"} }
+    ],
+    "age=0,part=single,stage=0,time=3": [
       { "model": "tfc:plants/cactus_small", "textures":{"flower": "tfc:blocks/empty"} }
     ]
   }

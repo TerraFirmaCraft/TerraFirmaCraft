@@ -15,17 +15,25 @@
       "model": "builtin/generated",
       "transform": "forge:default-item"
     },
-    "stage=0": [ { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_feb-mar" } } ],
-    "stage=1": [ { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_apr" } } ],
-    "stage=2": [ { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_may-jun" } } ],
-    "stage=3": [ { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_may-jun" } } ],
-    "stage=4": [ { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_jul-oct" } } ],
-    "stage=5": [ { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_jul-oct" } } ],
-    "stage=6": [ { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_jul-oct" } } ],
-    "stage=7": [ { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_jul-oct" } } ],
-    "stage=8": [ { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_nov" } } ],
-    "stage=9": [ { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_dec-jan" } } ],
-    "stage=10": [ { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_dec-jan" } } ],
-    "stage=11": [ { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_feb-mar" } } ]
+    "stage": {
+      "0": { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_feb-mar" } },
+      "1": { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_apr" } },
+      "2": { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_may-jun" } },
+      "3": { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_may-jun" } },
+      "4": { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_jul-oct" } },
+      "5": { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_jul-oct" } },
+      "6": { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_jul-oct" } },
+      "7": { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_jul-oct" } },
+      "8": { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_nov" } },
+      "9": { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_dec-jan" } },
+      "10": { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_dec-jan" } },
+      "11": { "textures": { "cross" : "tfc:blocks/plants/perovskia/perovskia_feb-mar" } }
+    },
+    "time": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {}
+    }
   }
 }

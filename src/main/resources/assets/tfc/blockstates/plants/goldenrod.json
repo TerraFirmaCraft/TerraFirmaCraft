@@ -15,17 +15,25 @@
       "model": "builtin/generated",
       "transform": "forge:default-item"
     },
-    "stage=0": [ { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_mar-may" } } ],
-    "stage=1": [ { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_mar-may" } } ],
-    "stage=2": [ { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_mar-may" } } ],
-    "stage=3": [ { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_jun" } } ],
-    "stage=4": [ { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_jul-oct" } } ],
-    "stage=5": [ { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_jul-oct" } } ],
-    "stage=6": [ { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_jul-oct" } } ],
-    "stage=7": [ { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_jul-oct" } } ],
-    "stage=8": [ { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_nov" } } ],
-    "stage=9": [ { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_dec-feb" } } ],
-    "stage=10": [ { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_dec-feb" } } ],
-    "stage=11": [ { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_dec-feb" } } ]
+    "stage": {
+      "0": { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_mar-may" } },
+      "1": { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_mar-may" } },
+      "2": { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_mar-may" } },
+      "3": { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_jun" } },
+      "4": { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_jul-oct" } },
+      "5": { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_jul-oct" } },
+      "6": { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_jul-oct" } },
+      "7": { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_jul-oct" } },
+      "8": { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_nov" } },
+      "9": { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_dec-feb" } },
+      "10": { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_dec-feb" } },
+      "11": { "textures": { "cross" : "tfc:blocks/plants/goldenrod/goldenrod_dec-feb" } }
+    },
+    "time": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {}
+    }
   }
 }
