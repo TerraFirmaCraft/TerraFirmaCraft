@@ -1,5 +1,5 @@
 {
-    "parent": "tfc:block/creeping_plant",
+    "parent": "tfc:block/plants/creeping_plant",
     "textures": {
 		"layer0": "tfc:blocks/plants/moss/moss_layer0",
 		"layer1": "tfc:blocks/plants/moss/moss_layer1",

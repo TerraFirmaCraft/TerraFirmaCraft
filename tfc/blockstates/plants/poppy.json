@@ -15,17 +15,25 @@
       "model": "builtin/generated",
       "transform": "forge:default-item"
     },
-    "stage=0": [ { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_mar" } } ],
-    "stage=1": [ { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_apr" } } ],
-    "stage=2": [ { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_may-jun" } } ],
-    "stage=3": [ { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_may-jun" } } ],
-    "stage=4": [ { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_jul-oct" } } ],
-    "stage=5": [ { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_jul-oct" } } ],
-    "stage=6": [ { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_jul-oct" } } ],
-    "stage=7": [ { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_jul-oct" } } ],
-    "stage=8": [ { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_nov-feb" } } ],
-    "stage=9": [ { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_nov-feb" } } ],
-    "stage=10": [ { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_nov-feb" } } ],
-    "stage=11": [ { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_nov-feb" } } ]
+    "stage": {
+      "0": { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_mar" } },
+      "1": { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_apr" } },
+      "2": { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_may-jun" } },
+      "3": { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_may-jun" } },
+      "4": { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_jul-oct" } },
+      "5": { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_jul-oct" } },
+      "6": { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_jul-oct" } },
+      "7": { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_jul-oct" } },
+      "8": { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_nov-feb" } },
+      "9": { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_nov-feb" } },
+      "10": { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_nov-feb" } },
+      "11": { "textures": { "cross" : "tfc:blocks/plants/poppy/poppy_nov-feb" } }
+    },
+    "time": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {}
+    }
   }
 }

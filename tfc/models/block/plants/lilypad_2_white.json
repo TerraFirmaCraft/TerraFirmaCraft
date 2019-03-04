@@ -1,8 +1,9 @@
 {
 	"ambientocclusion": false,
     "textures": {
-      "layer0": "tfc:blocks/plants/lilypad/lilypad",
       "particle": "tfc:blocks/plants/lilypad/lilypad",
+      "flower": "tfc:blocks/plants/lilypad/lilypad_2_white",
+      "layer0": "tfc:blocks/plants/lilypad/lilypad",
       "stem": "tfc:blocks/plants/lilypad/lilypad_0"
     },
 	"elements": [
@@ -44,6 +45,32 @@
 			},
 			"rotation": {
 				"origin": [8, 8, 6],
+				"axis": "y",
+				"angle": 45
+			}
+		},
+		{
+			"from": [2, -6.5, 1],
+			"to": [14, 1.5, 1],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#flower"},
+				"south": {"uv": [16, 0, 0, 16], "texture": "#flower"}
+			},
+			"rotation": {
+				"origin": [8, 8, 1],
+				"axis": "y",
+				"angle": -45
+			}
+		},
+		{
+			"from": [2, -6.5, 1],
+			"to": [14, 1.5, 1],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#flower"},
+				"south": {"uv": [16, 0, 0, 16], "texture": "#flower"}
+			},
+			"rotation": {
+				"origin": [8, 8, 1],
 				"axis": "y",
 				"angle": 45
 			}
