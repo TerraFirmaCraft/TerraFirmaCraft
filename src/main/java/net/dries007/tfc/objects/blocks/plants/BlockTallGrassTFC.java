@@ -60,8 +60,8 @@ public class BlockTallGrassTFC extends BlockBush implements IGrowable, net.minec
 
     public double getGrowthRate(World world)
     {
-        if (world.isRaining()) return ConfigTFC.GENERAL.grassGrowthRate * 2;
-        else return ConfigTFC.GENERAL.grassGrowthRate;
+        if (world.isRaining()) return ConfigTFC.GENERAL.plantGrowthRate * 2;
+        else return ConfigTFC.GENERAL.plantGrowthRate;
     }
 
     @Override

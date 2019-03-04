@@ -88,10 +88,10 @@ public class ConfigTFC
         @Config.RangeInt(min = 20)
         public int torchTime = 200; // todo: change to 72000
 
-        @Config.Comment("Growth rate for tallgrass")
+        @Config.Comment("Modifier for how quickly plants grow. Smaller number = slower")
         @Config.RangeDouble(min = 0, max = 1)
-        @Config.LangKey("config." + MOD_ID + ".general.grassGrowthRate")
-        public double grassGrowthRate = 0.01;
+        @Config.LangKey("config." + MOD_ID + ".general.plantGrowthRate")
+        public double plantGrowthRate = 0.5;
     }
 
     public static class ClientCFG
