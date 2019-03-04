@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -36,7 +37,7 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-public class BlockCactusTFC extends BlockStackPlantTFC
+public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
 {
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
     protected static final AxisAlignedBB CACTUS_COLLISION_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D);
@@ -66,6 +67,29 @@ public class BlockCactusTFC extends BlockStackPlantTFC
     }
 
     @Override
+    public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
+    {
+        int i;
+        for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i) {}
+        return i < 3 && worldIn.isAirBlock(pos.up()) && canBlockStay(worldIn, pos.up(), state);
+    }
+
+    @Override
+    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    {
+        return true;
+    }
+
+    @Override
+    public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    {
+        worldIn.setBlockState(pos.up(), this.getDefaultState());
+        IBlockState iblockstate = state.withProperty(TIME, getCurrentTime(worldIn)).withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, state.getValue(PART));
+        worldIn.setBlockState(pos, iblockstate);
+        iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
+    }
+
+    @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
     {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, CACTUS_COLLISION_AABB.offset(state.getOffset(worldIn, pos)));
@@ -78,15 +102,15 @@ public class BlockCactusTFC extends BlockStackPlantTFC
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
-    {
-        return state.withProperty(TIME, state.getValue(TIME)).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
-    }
-
-    @Override
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(AGE);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        return state.withProperty(TIME, state.getValue(TIME)).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
@@ -154,36 +178,22 @@ public class BlockCactusTFC extends BlockStackPlantTFC
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
-        BlockPos blockpos = pos.up();
 
-        if (worldIn.isAirBlock(blockpos))
+        if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 20 && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
         {
-            int i;
+            int j = state.getValue(AGE);
 
-            for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i)
+            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
             {
-                ;
-            }
-
-            if (i < 3)
-            {
-                int j = state.getValue(AGE);
-
-                if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, blockpos, state, true))
+                if (j == 15)
                 {
-                    if (j == 15)
-                    {
-                        worldIn.setBlockState(blockpos, this.getDefaultState());
-                        IBlockState iblockstate = state.withProperty(TIME, getCurrentTime(worldIn)).withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, state.getValue(PART));
-                        worldIn.setBlockState(pos, iblockstate);
-                        iblockstate.neighborChanged(worldIn, blockpos, this, pos);
-                    }
-                    else
-                    {
-                        worldIn.setBlockState(pos, state.withProperty(TIME, getCurrentTime(worldIn)).withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, state.getValue(PART)));
-                    }
-                    net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+                    grow(worldIn, rand, pos, state);
                 }
+                else
+                {
+                    worldIn.setBlockState(pos, state.withProperty(TIME, getCurrentTime(worldIn)).withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, state.getValue(PART)));
+                }
+                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
         }
 

@@ -26,6 +26,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -78,7 +79,6 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         return true;
     }
 */
-
 
     public int getCurrentTime(World world)
     {
@@ -165,6 +165,12 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public Weight getWeight(@Nonnull ItemStack stack)
     {
         return Weight.LIGHT;
+    }
+
+    public double getGrowthRate(World world, BlockPos pos)
+    {
+        if (world.isRainingAt(pos)) return ConfigTFC.GENERAL.plantGrowthRate * 2;
+        else return ConfigTFC.GENERAL.plantGrowthRate;
     }
 
     @Override

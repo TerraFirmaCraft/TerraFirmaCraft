@@ -13,13 +13,13 @@ import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.IGrowable;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -30,7 +30,7 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-public class BlockDoublePlantTFC extends BlockStackPlantTFC
+public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
 {
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
     protected static final AxisAlignedBB PLANT_AABB = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 1.0D, 0.8125D);
@@ -57,6 +57,40 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC
     }
 
     @Override
+    public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
+    {
+        int i;
+        for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i) {}
+        return i < 2 && worldIn.isAirBlock(pos.up()) && canBlockStay(worldIn, pos.up(), state);
+    }
+
+    @Override
+    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    {
+        return true;
+    }
+
+    @Override
+    public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    {
+        worldIn.setBlockState(pos.up(), this.getDefaultState());
+        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, state.getValue(PART));
+        worldIn.setBlockState(pos, iblockstate);
+        iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
+    }
+
+    public boolean canShrink(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
+    {
+        return worldIn.getBlockState(pos.down()).getBlock() == this;
+    }
+
+    public void shrink(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    {
+        worldIn.setBlockToAir(pos);
+        worldIn.getBlockState(pos).neighborChanged(worldIn, pos.down(), this, pos);
+    }
+
+    @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos)) : false;
@@ -67,6 +101,10 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC
     {
         if (!this.canBlockStay(worldIn, pos, state))
         {
+            if (getPlantPart(worldIn, pos) == EnumBlockPart.LOWER)
+            {
+                worldIn.setBlockState(pos.up(), Blocks.AIR.getDefaultState());
+            }
             worldIn.destroyBlock(pos, true);
         }
     }
@@ -76,36 +114,39 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC
     {
         if (!this.canBlockStay(worldIn, pos, state))
         {
-            boolean flag = state.getValue(PART) == EnumBlockPart.UPPER;
-            BlockPos blockpos = flag ? pos : pos.up();
-            BlockPos blockpos1 = flag ? pos.down() : pos;
-            Block block = (Block) (flag ? this : worldIn.getBlockState(blockpos).getBlock());
-            Block block1 = (Block) (flag ? worldIn.getBlockState(blockpos1).getBlock() : this);
-
-            if (!flag) this.dropBlockAsItem(worldIn, pos, state, 0);
-
-            if (block == this)
+            if (getPlantPart(worldIn, pos) != EnumBlockPart.UPPER)
             {
-                worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 2);
+                this.dropBlockAsItem(worldIn, pos, state, 0);
             }
-
-            if (block1 == this)
-            {
-                worldIn.setBlockState(blockpos1, Blocks.AIR.getDefaultState(), 3);
-            }
+            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
         }
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
     {
-        return state.withProperty(TIME, state.getValue(TIME)).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
+        if (getPlantPart(worldIn, pos) == EnumBlockPart.LOWER)
+        {
+            worldIn.setBlockToAir(pos.up());
+        }
+        if (getPlantPart(worldIn, pos) == EnumBlockPart.UPPER)
+        {
+            worldIn.setBlockToAir(pos);
+        }
+
+        super.onBlockHarvested(worldIn, pos, state, player);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(AGE);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        return state.withProperty(TIME, state.getValue(TIME)).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
@@ -156,18 +197,16 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
-        BlockPos blockPos = pos.up();
 
-        if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < 15 && worldIn.getBlockState(pos.down()).getBlock() == this)
+        if ((ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < 15 || !plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up()))) && canShrink(worldIn, pos, state, worldIn.isRemote))
         {
             int j = state.getValue(AGE);
 
-            if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
+            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
             {
                 if (j == 15)
                 {
-                    worldIn.setBlockToAir(pos);
-                    worldIn.getBlockState(pos).neighborChanged(worldIn, pos.down(), this, pos);
+                    shrink(worldIn, rand, pos, state);
                 }
                 else
                 {
@@ -176,34 +215,21 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
         }
-        else if (worldIn.isAirBlock(blockPos) && ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 15)
+        else if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 20 && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
         {
-            int i;
+            int j = state.getValue(AGE);
 
-            for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i)
+            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
             {
-                ;
-            }
-
-            if (i < 2)
-            {
-                int j = state.getValue(AGE);
-
-                if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, blockPos, state, true))
+                if (j == 15)
                 {
-                    if (j == 15)
-                    {
-                        worldIn.setBlockState(blockPos, this.getDefaultState());
-                        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, state.getValue(PART));
-                        worldIn.setBlockState(pos, iblockstate);
-                        iblockstate.neighborChanged(worldIn, blockPos, this, pos);
-                    }
-                    else
-                    {
-                        worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, state.getValue(PART)));
-                    }
-                    net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+                    grow(worldIn, rand, pos, state);
                 }
+                else
+                {
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, state.getValue(PART)));
+                }
+                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
         }
 
@@ -221,17 +247,6 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC
         if (worldIn.getBlockState(pos.down(2)).getBlock() == this) return false;
         if (state.getBlock() == this)
         {
-            for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
-            {
-                IBlockState blockState = worldIn.getBlockState(pos.offset(enumfacing));
-                Material material = blockState.getMaterial();
-
-                if (material.isSolid() || material == Material.LAVA)
-                {
-                    return blockState.getBlock() == this;
-                }
-            }
-
             return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);

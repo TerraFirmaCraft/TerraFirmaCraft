@@ -78,6 +78,11 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return minTemp <= temp && maxTemp >= temp && minRain <= rain && maxRain >= rain;
     }
 
+    public boolean isValidSunlight(int sunlight)
+    {
+        return minSun <= sunlight && maxSun >= sunlight;
+    }
+
     @Override
     public String toString()
     {
