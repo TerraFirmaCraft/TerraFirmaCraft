@@ -51,19 +51,6 @@ public class BlockWorldItem extends Block
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TEWorldItem();
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
     public boolean isTopSolid(IBlockState state)
     {
@@ -174,6 +161,19 @@ public class BlockWorldItem extends Block
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return false;
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TEWorldItem();
     }
 
     @Override

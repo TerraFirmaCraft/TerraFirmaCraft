@@ -35,6 +35,30 @@ public class ItemDebug extends Item
     }
 
     @Override
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        // Block
+        try
+        {
+            Block block = worldIn.getBlockState(pos).getBlock();
+            block.getClass().getMethod("debug").invoke(block);
+        }
+        catch (Throwable t) { /* Nothing Burger */ }
+
+        // Tile Entity
+        try
+        {
+            TileEntity tile = worldIn.getTileEntity(pos);
+            if (tile != null)
+            {
+                tile.getClass().getMethod("debug").invoke(tile);
+            }
+        }
+        catch (Throwable t) { /* Nothing Burger */ }
+        return EnumActionResult.SUCCESS;
+    }
+
+    @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
         return false;
@@ -74,29 +98,5 @@ public class ItemDebug extends Item
     public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
     {
         return false;
-    }
-
-    @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        // Block
-        try
-        {
-            Block block = worldIn.getBlockState(pos).getBlock();
-            block.getClass().getMethod("debug").invoke(block);
-        }
-        catch (Throwable t) { /* Nothing Burger */ }
-
-        // Tile Entity
-        try
-        {
-            TileEntity tile = worldIn.getTileEntity(pos);
-            if (tile != null)
-            {
-                tile.getClass().getMethod("debug").invoke(tile);
-            }
-        }
-        catch (Throwable t) { /* Nothing Burger */ }
-        return EnumActionResult.SUCCESS;
     }
 }

@@ -27,9 +27,8 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
     private final SimpleCraftMatrix matrix;
     private final KnappingRecipe.Type type;
     private final ItemStack stackCopy;
-
-    private boolean hasBeenModified;
     public boolean requiresReset;
+    private boolean hasBeenModified;
 
     public ContainerKnapping(KnappingRecipe.Type type, InventoryPlayer playerInv, ItemStack stack)
     {
@@ -92,21 +91,6 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
         addSlotToContainer(new SlotKnappingOutput(new ItemStackHandler(1), 0, 128, 44, this::resetMatrix));
     }
 
-    private void resetMatrix()
-    {
-        matrix.setAll(false);
-        requiresReset = true;
-    }
-
-    private KnappingRecipe getMatchingRecipe()
-    {
-        return TFCRegistries.KNAPPING.getValuesCollection()
-            .stream()
-            .filter(x -> x.getType() == type && matrix.matches(x.getMatrix()))
-            .findFirst()
-            .orElse(null);
-    }
-
     @Override
     protected void addPlayerInventorySlots(InventoryPlayer playerInv)
     {
@@ -123,5 +107,20 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
         {
             addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142 + 18));
         }
+    }
+
+    private void resetMatrix()
+    {
+        matrix.setAll(false);
+        requiresReset = true;
+    }
+
+    private KnappingRecipe getMatchingRecipe()
+    {
+        return TFCRegistries.KNAPPING.getValuesCollection()
+            .stream()
+            .filter(x -> x.getType() == type && matrix.matches(x.getMatrix()))
+            .findFirst()
+            .orElse(null);
     }
 }

@@ -168,13 +168,6 @@ public class ItemMetal extends ItemTFC implements IMetalObject
         }
     }
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        return new ForgeableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
-    }
-
     @Override
     @Nonnull
     public EnumRarity getRarity(ItemStack stack)
@@ -192,5 +185,12 @@ public class ItemMetal extends ItemTFC implements IMetalObject
                 return EnumRarity.EPIC;
         }
         return super.getRarity(stack);
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new ForgeableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
     }
 }

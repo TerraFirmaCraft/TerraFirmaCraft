@@ -59,6 +59,23 @@ public abstract class ContainerTE<T extends TEInventory> extends Container
     }
 
     @Override
+    public void detectAndSendChanges()
+    {
+        if (shouldSyncFields)
+        {
+            detectAndSendFieldChanges();
+        }
+        if (shouldSyncCaps)
+        {
+            detectAndSendAllChanges();
+        }
+        else
+        {
+            super.detectAndSendChanges();
+        }
+    }
+
+    @Override
     @Nonnull
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
@@ -111,29 +128,22 @@ public abstract class ContainerTE<T extends TEInventory> extends Container
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public void updateProgressBar(int id, int data)
+    {
+        if (shouldSyncFields)
+        {
+            ((ITileFields) tile).setField(id, data);
+        }
+    }
+
+    @Override
     public boolean canInteractWith(@Nonnull EntityPlayer player)
     {
         return true;
     }
 
     protected abstract void addContainerSlots();
-
-    @Override
-    public void detectAndSendChanges()
-    {
-        if (shouldSyncFields)
-        {
-            detectAndSendFieldChanges();
-        }
-        if (shouldSyncCaps)
-        {
-            detectAndSendAllChanges();
-        }
-        else
-        {
-            super.detectAndSendChanges();
-        }
-    }
 
     protected void detectAndSendAllChanges()
     {
@@ -152,16 +162,6 @@ public abstract class ContainerTE<T extends TEInventory> extends Container
                     listener.sendSlotContents(this, i, newStack);
                 }
             }
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int id, int data)
-    {
-        if (shouldSyncFields)
-        {
-            ((ITileFields) tile).setField(id, data);
         }
     }
 
@@ -200,6 +200,16 @@ public abstract class ContainerTE<T extends TEInventory> extends Container
         }
     }
 
+    /**
+     * Helper method for overriding just container insertion priority
+     * The method {@link ContainerTE#transferStackInSlot(EntityPlayer, int)} will search through slots given by this order.
+     * Slots with constrained input should be first, general purpose slots later in order to have the best shift-click experience
+     */
+    protected int[] getSlotShiftOrder(int containerSlots)
+    {
+        return IntStream.range(0, containerSlots).toArray();
+    }
+
     private void addPlayerInventorySlots(InventoryPlayer playerInv)
     {
         // Add Player Inventory Slots
@@ -215,16 +225,6 @@ public abstract class ContainerTE<T extends TEInventory> extends Container
         {
             addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142 + yOffset));
         }
-    }
-
-    /**
-     * Helper method for overriding just container insertion priority
-     * The method {@link ContainerTE#transferStackInSlot(EntityPlayer, int)} will search through slots given by this order.
-     * Slots with constrained input should be first, general purpose slots later in order to have the best shift-click experience
-     */
-    protected int[] getSlotShiftOrder(int containerSlots)
-    {
-        return IntStream.range(0, containerSlots).toArray();
     }
 
 }

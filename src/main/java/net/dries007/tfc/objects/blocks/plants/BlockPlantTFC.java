@@ -49,7 +49,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         return MAP.get(plant);
     }
 
-    public final Plant plant;
+    protected final Plant plant;
 
     public BlockPlantTFC(Plant plant)
     {
@@ -135,7 +135,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, DAYPERIOD});
+        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD);
     }
 
     @Override
@@ -143,6 +143,11 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public Block.EnumOffsetType getOffsetType()
     {
         return Block.EnumOffsetType.XYZ;
+    }
+
+    public Plant getPlant()
+    {
+        return plant;
     }
 
     @Override
@@ -161,11 +166,6 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     {
         if (world.isRainingAt(pos)) return ConfigTFC.GENERAL.plantGrowthRate * 2;
         else return ConfigTFC.GENERAL.plantGrowthRate;
-    }
-
-    public Plant.PlantType getType()
-    {
-        return plant.getPlantType();
     }
 
     @Override

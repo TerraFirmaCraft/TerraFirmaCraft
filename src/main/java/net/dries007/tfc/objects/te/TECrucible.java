@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.te;
 
 import javax.annotation.Nonnull;
@@ -233,18 +238,6 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         return alloy;
     }
 
-
-    /**
-     * Used on CLIENT for quicker rendering - doesn't have to calculate the alloy every render tick
-     *
-     * @return the current result of getAlloy().getResult()
-     */
-    @Nonnull
-    public Metal getAlloyResult()
-    {
-        return alloyResult;
-    }
-
     /**
      * Used on CLIENT to update the alloy contents
      * Also updates cached alloy result
@@ -255,5 +248,16 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
     {
         alloy.deserializeNBT(nbt);
         alloyResult = alloy.getResult();
+    }
+
+    /**
+     * Used on CLIENT for quicker rendering - doesn't have to calculate the alloy every render tick
+     *
+     * @return the current result of getAlloy().getResult()
+     */
+    @Nonnull
+    public Metal getAlloyResult()
+    {
+        return alloyResult;
     }
 }

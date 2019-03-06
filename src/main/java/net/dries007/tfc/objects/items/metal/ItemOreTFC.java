@@ -97,6 +97,13 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
             items.add(new ItemStack(this));
     }
 
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return ore.getMetal() != null ? new ItemHeatHandler(nbt, ore.getMetal().getSpecificHeat(), ore.getMetal().getMeltTemp()) : null;
+    }
+
     @Override
     public Metal getMetal(ItemStack stack)
     {
@@ -107,13 +114,6 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     public int getSmeltAmount(ItemStack stack)
     {
         return getGradeFromStack(stack).smeltAmount;
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        return ore.getMetal() != null ? new ItemHeatHandler(nbt, ore.getMetal().getSpecificHeat(), ore.getMetal().getMeltTemp()) : null;
     }
 
     @Override

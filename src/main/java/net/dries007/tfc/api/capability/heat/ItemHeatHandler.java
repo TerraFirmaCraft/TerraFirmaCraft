@@ -36,7 +36,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
      *
      * @param nbt          The NBT of the itemstack. (Provided in Item#initCapabilities())
      * @param heatCapacity The heat capacity
-     * @param meltTemp The melting point
+     * @param meltTemp     The melting point
      */
     public ItemHeatHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltTemp)
     {
@@ -62,6 +62,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
 
     /**
      * Update the temperature, and save the timestamp of when it was updated
+     *
      * @param temperature the temperature to set. Between 0 - 1600
      */
     @Override

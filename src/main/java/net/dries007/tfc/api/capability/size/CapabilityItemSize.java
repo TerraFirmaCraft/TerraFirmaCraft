@@ -21,10 +21,9 @@ import net.dries007.tfc.util.Helpers;
 
 public final class CapabilityItemSize
 {
-    private static final ResourceLocation ID = new ResourceLocation(TFCConstants.MOD_ID, "item_size");
-
     @CapabilityInject(IItemSize.class)
     public static final Capability<IItemSize> ITEM_SIZE_CAPABILITY = Helpers.getNull();
+    private static final ResourceLocation ID = new ResourceLocation(TFCConstants.MOD_ID, "item_size");
 
     public static void preInit()
     {

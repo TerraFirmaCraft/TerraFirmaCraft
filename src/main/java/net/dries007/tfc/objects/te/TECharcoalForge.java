@@ -257,6 +257,36 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
         return oldState.getBlock() != newSate.getBlock();
     }
 
+    @Override
+    public int getFieldCount()
+    {
+        return 1;
+    }
+
+    @Override
+    public void setField(int index, int value)
+    {
+        if (index == FIELD_TEMPERATURE)
+        {
+            this.temperature = (float) value;
+        }
+        else
+        {
+            TerraFirmaCraft.getLog().warn("Invalid field ID {} in TECharcoalForge#setField", index);
+        }
+    }
+
+    @Override
+    public int getField(int index)
+    {
+        if (index == FIELD_TEMPERATURE)
+        {
+            return (int) temperature;
+        }
+        TerraFirmaCraft.getLog().warn("Invalid field ID {} in TECharcoalForge#getField", index);
+        return 0;
+    }
+
     private void handleInputMelting(ItemStack stack, int startIndex)
     {
         HeatRecipe recipe = HeatRecipeManager.get(stack);
@@ -339,35 +369,5 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
             }
         }
         requiresSlotUpdate = false;
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 1;
-    }
-
-    @Override
-    public void setField(int index, int value)
-    {
-        if (index == FIELD_TEMPERATURE)
-        {
-            this.temperature = (float) value;
-        }
-        else
-        {
-            TerraFirmaCraft.getLog().warn("Invalid field ID {} in TECharcoalForge#setField", index);
-        }
-    }
-
-    @Override
-    public int getField(int index)
-    {
-        if (index == FIELD_TEMPERATURE)
-        {
-            return (int) temperature;
-        }
-        TerraFirmaCraft.getLog().warn("Invalid field ID {} in TECharcoalForge#getField", index);
-        return 0;
     }
 }

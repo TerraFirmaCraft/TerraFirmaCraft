@@ -26,15 +26,11 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 public class FluidsTFC
 {
     public static final Material MATERIAL_ALCOHOL = new MaterialLiquid(MapColor.WATER);
-
-    public static Fluid HOT_WATER;
-
     private static final ResourceLocation STILL = new ResourceLocation(MOD_ID, "blocks/fluid_still");
     private static final ResourceLocation FLOW = new ResourceLocation(MOD_ID, "blocks/fluid_flow");
-
     private static final ResourceLocation LAVA_STILL = new ResourceLocation(MOD_ID, "blocks/lava_still");
     private static final ResourceLocation LAVA_FLOW = new ResourceLocation(MOD_ID, "blocks/lava_flow");
-
+    public static Fluid HOT_WATER;
     private static ImmutableSet<Fluid> allInfiniteFluids;
     private static ImmutableSet<Fluid> allAlcoholsFluids;
     private static ImmutableMap<Metal, Fluid> allMetalFluids;

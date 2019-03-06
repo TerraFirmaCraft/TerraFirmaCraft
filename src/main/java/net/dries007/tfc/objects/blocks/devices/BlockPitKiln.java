@@ -45,19 +45,6 @@ public class BlockPitKiln extends Block
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TEPitKiln();
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
     public boolean isTopSolid(IBlockState state)
     {
@@ -189,5 +176,18 @@ public class BlockPitKiln extends Block
     public boolean isFireSource(World world, BlockPos pos, EnumFacing side)
     {
         return world.getBlockState(pos).getActualState(world, pos).getValue(LIT);
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TEPitKiln();
     }
 }

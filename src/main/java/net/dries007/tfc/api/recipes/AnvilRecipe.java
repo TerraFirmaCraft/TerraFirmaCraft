@@ -29,9 +29,8 @@ import net.dries007.tfc.util.forge.ForgeSteps;
 @ParametersAreNonnullByDefault
 public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
 {
-    private static long SEED = 0;
-
     private static final Random RNG = new Random();
+    private static long SEED = 0;
 
     @Nonnull
     public static List<AnvilRecipe> getAllFor(ItemStack stack)

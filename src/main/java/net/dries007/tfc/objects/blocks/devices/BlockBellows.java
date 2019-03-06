@@ -41,19 +41,6 @@ public class BlockBellows extends Block
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TEBellows();
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
@@ -108,12 +95,24 @@ public class BlockBellows extends Block
         return this.getDefaultState().withProperty(FACING, facing);
     }
 
-
     @Override
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACING);
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TEBellows();
     }
 
 }

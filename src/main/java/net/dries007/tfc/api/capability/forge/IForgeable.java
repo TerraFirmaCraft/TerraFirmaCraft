@@ -72,6 +72,7 @@ public interface IForgeable extends IItemHeat
 
     /**
      * Adds a step to the object, shuffling the last three steps down
+     *
      * @param step The step to add. In general this should not be null, although it is perfectly valid for it to be
      */
     void addStep(@Nullable ForgeStep step);

@@ -72,6 +72,87 @@ public class BlockStoneAnvil extends Block implements IRockObject
         MAP.put(rock, this);
     }
 
+    @Nonnull
+    @Override
+    public Rock getRock(ItemStack stack)
+    {
+        return rock;
+    }
+
+    @Nonnull
+    @Override
+    public RockCategory getRockCategory(ItemStack stack)
+    {
+        return rock.getRockCategory();
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isTopSolid(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isFullBlock(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isBlockNormalCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isNormalCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return AABB;
+    }
+
+    @Nullable
+    @Override
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return AABB;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
+    {
+        return AABB;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
     @Override
     public int quantityDropped(Random random)
     {
@@ -164,100 +245,12 @@ public class BlockStoneAnvil extends Block implements IRockObject
     }
 
     @Override
-    @Nonnull
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        return new ItemStack(BlockRockRaw.get(rock, Rock.Type.RAW));
-    }
-
-    @Nonnull
-    @Override
-    public Rock getRock(ItemStack stack)
-    {
-        return rock;
-    }
-
-    @Nonnull
-    @Override
-    public RockCategory getRockCategory(ItemStack stack)
-    {
-        return rock.getRockCategory();
-    }
-
-    @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
         if (!worldIn.isRemote && te instanceof TEInventory)
         {
             ((TEInventory) te).onBreakBlock(worldIn, pos);
         }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isTopSolid(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isFullBlock(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isBlockNormalCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isNormalCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return AABB;
-    }
-
-    @Nullable
-    @Override
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        return AABB;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
-    {
-        return AABB;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
     }
 
     @Override
@@ -284,5 +277,12 @@ public class BlockStoneAnvil extends Block implements IRockObject
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEAnvilTFC();
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        return new ItemStack(BlockRockRaw.get(rock, Rock.Type.RAW));
     }
 }

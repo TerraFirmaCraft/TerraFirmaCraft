@@ -94,7 +94,7 @@ public class TEAnvilTFC extends TEInventory
      * Sets the anvil TE recipe, called after pressing the recipe button
      * This is the ONLY place that should write to {@link this#recipe}
      *
-     * @param recipe       the recipe to set to
+     * @param recipe the recipe to set to
      * @return true if a packet needs to be sent to the client for a recipe update
      */
     public boolean setRecipe(@Nullable AnvilRecipe recipe)
@@ -133,6 +133,7 @@ public class TEAnvilTFC extends TEInventory
 
     /**
      * Slot updates only happen on server side, so update recipe when change is made
+     *
      * @param slot a slot id, or -1 if triggered by other methods
      */
     @Override
@@ -171,22 +172,6 @@ public class TEAnvilTFC extends TEInventory
         }
     }
 
-    /**
-     * Used to set all server-side only fields on the client, for rendering purposes
-     *
-     * @param recipe          The current recipe
-     * @param steps           The current steps
-     * @param workingProgress The working progress
-     * @param workingTarget   The working target
-     */
-    public void onReceivePacket(@Nullable AnvilRecipe recipe, @Nonnull ForgeSteps steps, int workingProgress, int workingTarget)
-    {
-        this.recipe = recipe;
-        this.steps = steps;
-        this.workingProgress = workingProgress;
-        this.workingTarget = workingTarget;
-    }
-
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
@@ -218,6 +203,22 @@ public class TEAnvilTFC extends TEInventory
         nbt.setInteger("work", this.workingProgress);
         nbt.setInteger("target", this.workingTarget);
         return super.writeToNBT(nbt);
+    }
+
+    /**
+     * Used to set all server-side only fields on the client, for rendering purposes
+     *
+     * @param recipe          The current recipe
+     * @param steps           The current steps
+     * @param workingProgress The working progress
+     * @param workingTarget   The working target
+     */
+    public void onReceivePacket(@Nullable AnvilRecipe recipe, @Nonnull ForgeSteps steps, int workingProgress, int workingTarget)
+    {
+        this.recipe = recipe;
+        this.steps = steps;
+        this.workingProgress = workingProgress;
+        this.workingTarget = workingTarget;
     }
 
     /**

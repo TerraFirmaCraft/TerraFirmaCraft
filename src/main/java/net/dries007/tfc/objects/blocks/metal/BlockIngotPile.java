@@ -48,19 +48,6 @@ public class BlockIngotPile extends Block
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TEWorldItem();
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState state)
     {
@@ -187,6 +174,30 @@ public class BlockIngotPile extends Block
         return te.getCount() == 64;
     }
 
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TEWorldItem();
+    }
+
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        TEIngotPile te = Helpers.getTE(world, pos, TEIngotPile.class);
+        if (te != null)
+        {
+            return new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT));
+        }
+        return ItemStack.EMPTY;
+    }
+
     private boolean collapseDown(World world, BlockPos pos)
     {
         IBlockState stateDown = world.getBlockState(pos.down());
@@ -211,16 +222,5 @@ public class BlockIngotPile extends Block
             return true;
         }
         return false;
-    }
-
-    @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        TEIngotPile te = Helpers.getTE(world, pos, TEIngotPile.class);
-        if (te != null)
-        {
-            return new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT));
-        }
-        return ItemStack.EMPTY;
     }
 }

@@ -94,6 +94,19 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     }
 
     @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TESaplingTFC();
+    }
+
+    @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
     {
         super.updateTick(world, pos, state, random);
@@ -137,18 +150,5 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
     {
         wood.makeTree(world, blockPos, random);
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TESaplingTFC();
     }
 }
