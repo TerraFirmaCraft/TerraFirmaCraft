@@ -54,7 +54,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.plant = plant;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTH_STAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
     }
 
     @Override
@@ -77,7 +77,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
             {
                 if (j > 0)
                 {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(GROWTH_STAGE, state.getValue(GROWTH_STAGE)));
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)));
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
@@ -91,7 +91,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
             {
                 if ((j >= 8 && j < 15) || (j < 8 && worldIn.isAirBlock(pos.up())))
                 {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(GROWTH_STAGE, state.getValue(GROWTH_STAGE)));
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)));
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
@@ -170,6 +170,6 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     @Override
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
-        worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, 15).withProperty(GROWTH_STAGE, CalenderTFC.getMonthOfYear().id()));
+        worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, 15).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
     }
 }

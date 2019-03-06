@@ -42,7 +42,7 @@ public class CalenderTFC
     /**
      * Total time for the world, directly from world#getTotalTime
      * Synced via two event handlers, one on Client Tick, one on World Tick
-     * Usage: Anything that requires TOTAL TIME_OF_DAY PASSED, i.e. temperature change, tree growth, etc.
+     * Usage: Anything that requires TOTAL DAYPERIOD PASSED, i.e. temperature change, tree growth, etc.
      */
     private static long totalTime;
     /**

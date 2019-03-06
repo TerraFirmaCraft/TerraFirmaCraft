@@ -59,14 +59,14 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.plant = plant;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTH_STAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
     }
 
     @Override
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTH_STAGE, CalenderTFC.Month.MARCH.id());
+        return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id());
     }
 
     @Override
@@ -79,7 +79,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, AGE, GROWTH_STAGE, TIME_OF_DAY);
+        return new BlockStateContainer(this, AGE, GROWTHSTAGE, DAYPERIOD);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
             {
                 if (j > 0)
                 {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(GROWTH_STAGE, state.getValue(GROWTH_STAGE)));
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)));
                 }
                 else
                 {
@@ -119,7 +119,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
             {
                 if (j < 15)
                 {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(GROWTH_STAGE, state.getValue(GROWTH_STAGE)));
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)));
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
