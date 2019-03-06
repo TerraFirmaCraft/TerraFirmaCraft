@@ -45,7 +45,7 @@ public class BlockStackPlantTFC extends BlockPlantTFC
 
         this.plant = plant;
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTH_STAGE, CalenderTFC.Month.MARCH.id()).withProperty(PART, EnumBlockPart.SINGLE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
@@ -70,14 +70,14 @@ public class BlockStackPlantTFC extends BlockPlantTFC
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(TIME_OF_DAY, state.getValue(TIME_OF_DAY)).withProperty(GROWTH_STAGE, state.getValue(GROWTH_STAGE)).withProperty(PART, getPlantPart(worldIn, pos));
+        return state.withProperty(DAYPERIOD, state.getValue(DAYPERIOD)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Nonnull
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, GROWTH_STAGE, PART, TIME_OF_DAY);
+        return new BlockStateContainer(this, GROWTHSTAGE, PART, DAYPERIOD);
     }
 
     @Override
