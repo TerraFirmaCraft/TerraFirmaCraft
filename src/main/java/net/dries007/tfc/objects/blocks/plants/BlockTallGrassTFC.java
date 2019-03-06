@@ -7,7 +7,6 @@
 
 package net.dries007.tfc.objects.blocks.plants;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -74,7 +73,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
             {
                 if (j > 0)
                 {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)));
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1));
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
@@ -88,7 +87,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
             {
                 if ((j >= 8 && j < 15) || (j < 8 && worldIn.isAirBlock(pos.up())))
                 {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)));
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1));
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }

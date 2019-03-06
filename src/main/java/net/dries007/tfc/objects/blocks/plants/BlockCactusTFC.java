@@ -7,7 +7,10 @@
 
 package net.dries007.tfc.objects.blocks.plants;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -80,7 +83,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         worldIn.setBlockState(pos.up(), this.getDefaultState());
-        IBlockState iblockstate = state.withProperty(TIME, getCurrentTime(worldIn)).withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, state.getValue(PART));
+        IBlockState iblockstate = state.withProperty(TIME, getCurrentTime(worldIn)).withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
@@ -106,7 +109,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(TIME, state.getValue(TIME)).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
+        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
@@ -144,11 +147,11 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
 
         if (currentTime != expectedTime)
         {
-            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, currentStage).withProperty(PART, state.getValue(PART)));
+            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(GROWTHSTAGE, currentStage).withProperty(PART, getPlantPart(worldIn, pos)));
         }
         if (currentStage != expectedStage && random.nextDouble() < 0.5)
         {
-            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, state.getValue(PART)));
+            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, getPlantPart(worldIn, pos)));
         }
         this.updateTick(worldIn, pos, state, random);
     }
@@ -193,7 +196,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
                 }
                 else
                 {
-                    worldIn.setBlockState(pos, state.withProperty(TIME, getCurrentTime(worldIn)).withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, state.getValue(PART)));
+                    worldIn.setBlockState(pos, state.withProperty(TIME, getCurrentTime(worldIn)).withProperty(AGE, j + 1).withProperty(PART, getPlantPart(worldIn, pos)));
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
@@ -222,7 +225,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
                 }
             }
 
-            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
+            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTempRain(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);
     }

@@ -7,7 +7,6 @@
 
 package net.dries007.tfc.objects.blocks.plants;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,19 +32,19 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 
 import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
 
-public class BlockLilyPadTFC extends BlockPlantTFC
+public class BlockFloatingWaterTFC extends BlockPlantTFC
 {
     protected static final AxisAlignedBB LILY_PAD_AABB = new AxisAlignedBB(0.125D, -0.125D, 0.125D, 0.875D, 0.0625D, 0.875D);
-    private static final Map<Plant, BlockLilyPadTFC> MAP = new HashMap<>();
+    private static final Map<Plant, BlockFloatingWaterTFC> MAP = new HashMap<>();
 
-    public static BlockLilyPadTFC get(Plant plant)
+    public static BlockFloatingWaterTFC get(Plant plant)
     {
-        return BlockLilyPadTFC.MAP.get(plant);
+        return BlockFloatingWaterTFC.MAP.get(plant);
     }
 
     public final Plant plant;
 
-    public BlockLilyPadTFC(Plant plant)
+    public BlockFloatingWaterTFC(Plant plant)
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
@@ -73,7 +72,7 @@ public class BlockLilyPadTFC extends BlockPlantTFC
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(TIME, state.getValue(TIME)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE));
+        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
     }
 
     @Override
