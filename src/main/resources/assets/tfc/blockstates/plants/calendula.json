@@ -29,7 +29,7 @@
       "10": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_dec-feb" } },
       "11": { "textures": { "cross" : "tfc:blocks/plants/calendula/calendula_dec-feb" } }
     },
-    "time": {
+    "dayperiod": {
       "0": {},
       "1": {},
       "2": {},

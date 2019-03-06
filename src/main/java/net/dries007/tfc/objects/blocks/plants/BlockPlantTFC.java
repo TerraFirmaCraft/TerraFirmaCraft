@@ -38,7 +38,7 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 public class BlockPlantTFC extends BlockBush implements IItemSize
 {
     public final static PropertyInteger GROWTHSTAGE = PropertyInteger.create("stage", 0, 11);
-    public final static PropertyInteger TIME = PropertyInteger.create("time", 0, 3);
+    public final static PropertyInteger DAYPERIOD = PropertyInteger.create("dayperiod", 0, 3);
     private static final Map<Plant, BlockPlantTFC> MAP = new HashMap<>();
 
     public static BlockPlantTFC get(Plant plant)
@@ -96,16 +96,16 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         if (!worldIn.isAreaLoaded(pos, 1)) return;
         int currentStage = state.getValue(GROWTHSTAGE);
         int expectedStage = CalenderTFC.getMonthOfYear().id();
-        int currentTime = state.getValue(TIME);
+        int currentTime = state.getValue(DAYPERIOD);
         int expectedTime = getCurrentTime(worldIn);
 
         if (currentTime != expectedTime)
         {
-            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(GROWTHSTAGE, currentStage));
+            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, currentStage));
         }
         if (currentStage != expectedStage && random.nextDouble() < 0.5)
         {
-            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(GROWTHSTAGE, expectedStage));
+            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, expectedStage));
         }
 
         this.updateTick(worldIn, pos, state, random);
@@ -120,14 +120,14 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(TIME, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, this.blockState.getBaseState().withProperty(DAYPERIOD, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
         this.checkAndDropBlock(world, pos, state);
     }
 
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, TIME});
+        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, DAYPERIOD});
     }
 
     @Override

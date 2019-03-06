@@ -92,7 +92,7 @@
       "10": {},
       "11": {}
     },
-    "time": {
+    "dayperiod": {
       "0": {},
       "1": {},
       "2": {},
@@ -104,16 +104,16 @@
       "single": { "model": "tfc:plants/cactus_single" },
       "upper": { "model": "tfc:plants/cactus_upper" }
     },
-    "age=0,part=single,stage=0,time=0": [
+    "age=0,part=single,stage=0,dayperiod=0": [
       { "model": "tfc:plants/cactus_small", "textures":{"flower": "tfc:blocks/empty"} }
     ],
-    "age=0,part=single,stage=0,time=1": [
+    "age=0,part=single,stage=0,dayperiod=1": [
       { "model": "tfc:plants/cactus_small", "textures":{"flower": "tfc:blocks/empty"} }
     ],
-    "age=0,part=single,stage=0,time=2": [
+    "age=0,part=single,stage=0,dayperiod=2": [
       { "model": "tfc:plants/cactus_small", "textures":{"flower": "tfc:blocks/empty"} }
     ],
-    "age=0,part=single,stage=0,time=3": [
+    "age=0,part=single,stage=0,dayperiod=3": [
       { "model": "tfc:plants/cactus_small", "textures":{"flower": "tfc:blocks/empty"} }
     ]
   }
