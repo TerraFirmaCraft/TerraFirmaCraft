@@ -79,17 +79,20 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return minSun <= sunlight && maxSun >= sunlight;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public String toString()
     {
         return getRegistryName().getPath();
     }
 
+    @Nonnull
     public PlantType getPlantType()
     {
         return plantType;
     }
 
+    @Nonnull
     public Material getMaterial()
     {
         return material;

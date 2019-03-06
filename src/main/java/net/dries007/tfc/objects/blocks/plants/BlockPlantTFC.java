@@ -9,11 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -35,6 +35,7 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
+@ParametersAreNonnullByDefault
 public class BlockPlantTFC extends BlockBush implements IItemSize
 {
     public final static PropertyInteger GROWTHSTAGE = PropertyInteger.create("stage", 0, 11);
@@ -66,7 +67,9 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         return Math.floorDiv(Math.toIntExact(world.getWorldTime() % 24000), 6000);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
+    @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
@@ -78,7 +81,9 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         return (state.getValue(GROWTHSTAGE));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
+    @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return state.withProperty(TIME, state.getValue(TIME)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE));
@@ -125,25 +130,27 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     }
 
     @Override
+    @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, TIME});
+        return new BlockStateContainer(this, GROWTHSTAGE, TIME);
     }
 
     @Override
+    @Nonnull
     public Block.EnumOffsetType getOffsetType()
     {
         return Block.EnumOffsetType.XYZ;
     }
 
     @Override
-    public Size getSize(@Nonnull ItemStack stack)
+    public Size getSize(ItemStack stack)
     {
         return Size.SMALL;
     }
 
     @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
+    public Weight getWeight(ItemStack stack)
     {
         return Weight.LIGHT;
     }
@@ -152,6 +159,11 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     {
         if (world.isRainingAt(pos)) return ConfigTFC.GENERAL.plantGrowthRate * 2;
         else return ConfigTFC.GENERAL.plantGrowthRate;
+    }
+
+    public Plant.PlantType getType()
+    {
+        return plant.getPlantType();
     }
 
     @Override
@@ -182,18 +194,16 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         return this.canSustainBush(soil);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
+    @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return super.getBoundingBox(state, source, pos).offset(state.getOffset(source, pos));
     }
 
-    public Plant.PlantType getType()
-    {
-        return plant.getPlantType();
-    }
-
     @Override
+    @Nonnull
     public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
         IBlockState iblockstate = world.getBlockState(pos.down());
