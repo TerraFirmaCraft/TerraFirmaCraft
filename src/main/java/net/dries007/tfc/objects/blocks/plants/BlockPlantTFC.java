@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.objects.blocks.plants;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -40,26 +39,21 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
 {
     public final static PropertyInteger GROWTHSTAGE = PropertyInteger.create("stage", 0, 11);
     public final static PropertyInteger TIME = PropertyInteger.create("time", 0, 3);
-    private static final Map<Plant, EnumMap<Plant.PlantType, BlockPlantTFC>> TABLE = new HashMap<>();
+    private static final Map<Plant, BlockPlantTFC> MAP = new HashMap<>();
 
-    public static BlockPlantTFC get(Plant plant, Plant.PlantType type)
+    public static BlockPlantTFC get(Plant plant)
     {
-        return TABLE.get(plant).get(type);
+        return MAP.get(plant);
     }
 
     public final Plant plant;
-    public final Plant.PlantType type;
 
-    public BlockPlantTFC(Plant plant, Plant.PlantType type)
+    public BlockPlantTFC(Plant plant)
     {
         super(plant.getMaterial());
-
-        if (!TABLE.containsKey(plant))
-            TABLE.put(plant, new EnumMap<>(Plant.PlantType.class));
-        TABLE.get(plant).put(type, this);
+        if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.plant = plant;
-        this.type = type;
         this.setTickRandomly(true);
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
@@ -163,7 +157,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     protected boolean canSustainBush(IBlockState state)
     {
-        if (plant.getPlantType() == Plant.PlantType.DESERTPLANT) return BlocksTFC.isSand(state);
+        if (plant.getPlantType() == Plant.PlantType.DESERT) return BlocksTFC.isSand(state);
         return BlocksTFC.isSoil(state);
     }
 
@@ -194,11 +188,16 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         return super.getBoundingBox(state, source, pos).offset(state.getOffset(source, pos));
     }
 
+    public Plant.PlantType getType()
+    {
+        return plant.getPlantType();
+    }
+
     @Override
     public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
         IBlockState iblockstate = world.getBlockState(pos.down());
-        if (plant.getPlantType() == Plant.PlantType.DESERTPLANT && BlocksTFC.isSand(iblockstate))
+        if (plant.getPlantType() == Plant.PlantType.DESERT && BlocksTFC.isSand(iblockstate))
         {
             return EnumPlantType.Desert;
         }

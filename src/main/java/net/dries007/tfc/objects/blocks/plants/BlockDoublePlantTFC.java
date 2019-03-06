@@ -34,25 +34,21 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
 {
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
     protected static final AxisAlignedBB PLANT_AABB = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 1.0D, 0.8125D);
-    private static final Map<Plant, EnumMap<Plant.PlantType, BlockDoublePlantTFC>> TABLE = new HashMap<>();
+    private static final Map<Plant, BlockDoublePlantTFC> MAP = new HashMap<>();
 
-    public static BlockDoublePlantTFC get(Plant plant, Plant.PlantType type)
+    public static BlockDoublePlantTFC get(Plant plant)
     {
-        return BlockDoublePlantTFC.TABLE.get(plant).get(type);
+        return BlockDoublePlantTFC.MAP.get(plant);
     }
 
     public final Plant plant;
-    public final Plant.PlantType type;
 
-    public BlockDoublePlantTFC(Plant plant, Plant.PlantType type)
+    public BlockDoublePlantTFC(Plant plant)
     {
-        super(plant, type);
-        if (!TABLE.containsKey(plant))
-            TABLE.put(plant, new EnumMap<>(Plant.PlantType.class));
-        TABLE.get(plant).put(type, this);
+        super(plant);
+        if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.plant = plant;
-        this.type = type;
         this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, EnumBlockPart.SINGLE));
     }
 

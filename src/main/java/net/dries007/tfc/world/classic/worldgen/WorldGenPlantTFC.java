@@ -35,9 +35,9 @@ public class WorldGenPlantTFC extends WorldGenerator
 
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        if (plant.getPlantType() == Plant.PlantType.CREEPINGPLANT)
+        if (plant.getPlantType() == Plant.PlantType.CREEPING)
         {
-            BlockCreepingPlantTFC plantBlock = BlockCreepingPlantTFC.get(plant, plant.getPlantType());
+            BlockCreepingPlantTFC plantBlock = BlockCreepingPlantTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
 
             for (int i = 0; i < 64; ++i)
@@ -54,9 +54,9 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.PLANT)
+        else if (plant.getPlantType() == Plant.PlantType.STANDARD)
         {
-            BlockPlantTFC plantBlock = BlockPlantTFC.get(plant, plant.getPlantType());
+            BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
 
             for (int i = 0; i < 32; ++i)
@@ -72,9 +72,9 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.DESERTPLANT)
+        else if (plant.getPlantType() == Plant.PlantType.DESERT)
         {
-            BlockPlantTFC plantBlock = BlockPlantTFC.get(plant, plant.getPlantType());
+            BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
 
             for (int i = 0; i < 128; ++i)
@@ -91,9 +91,9 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.DOUBLEPLANT)
+        else if (plant.getPlantType() == Plant.PlantType.DOUBLE)
         {
-            BlockDoublePlantTFC plantBlock = BlockDoublePlantTFC.get(plant, plant.getPlantType());
+            BlockDoublePlantTFC plantBlock = BlockDoublePlantTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
 
             for (int i = 0; i < 32; ++i)
@@ -117,7 +117,7 @@ public class WorldGenPlantTFC extends WorldGenerator
         }
         else if (plant.getPlantType() == Plant.PlantType.LILYPAD)
         {
-            BlockLilyPadTFC plantBlock = BlockLilyPadTFC.get(plant, plant.getPlantType());
+            BlockLilyPadTFC plantBlock = BlockLilyPadTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
 
             for (int i = 0; i < 32; ++i)
@@ -139,7 +139,7 @@ public class WorldGenPlantTFC extends WorldGenerator
         }
         else if (plant.getPlantType() == Plant.PlantType.CACTUS)
         {
-            BlockCactusTFC plantBlock = BlockCactusTFC.get(plant, plant.getPlantType());
+            BlockCactusTFC plantBlock = BlockCactusTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
 
             for (int i = 0; i < 10; ++i)
@@ -160,9 +160,9 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.SHORTGRASS)
+        else if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS)
         {
-            BlockShortGrassTFC plantBlock = BlockShortGrassTFC.get(plant, plant.getPlantType());
+            BlockShortGrassTFC plantBlock = BlockShortGrassTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
 
             for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 4; ++i)
@@ -179,9 +179,9 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.TALLGRASS)
+        else if (plant.getPlantType() == Plant.PlantType.TALL_GRASS)
         {
-            BlockTallGrassTFC plantBlock = BlockTallGrassTFC.get(plant, plant.getPlantType());
+            BlockTallGrassTFC plantBlock = BlockTallGrassTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
 
             for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 8; ++i)

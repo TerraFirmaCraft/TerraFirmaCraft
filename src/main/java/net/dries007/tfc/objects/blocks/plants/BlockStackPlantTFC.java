@@ -27,26 +27,22 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 public class BlockStackPlantTFC extends BlockPlantTFC
 {
     protected static final PropertyEnum<BlockStackPlantTFC.EnumBlockPart> PART = PropertyEnum.<BlockStackPlantTFC.EnumBlockPart>create("part", BlockStackPlantTFC.EnumBlockPart.class);
-    private static final Map<Plant, EnumMap<Plant.PlantType, BlockStackPlantTFC>> TABLE = new HashMap<>();
+    private static final Map<Plant, BlockStackPlantTFC> MAP = new HashMap<>();
 
-    public static BlockStackPlantTFC get(Plant plant, Plant.PlantType type)
+    public static BlockStackPlantTFC get(Plant plant)
     {
-        return TABLE.get(plant).get(type);
+        return MAP.get(plant);
     }
 
     public final Plant plant;
-    public final Plant.PlantType type;
 
-    public BlockStackPlantTFC(Plant plant, Plant.PlantType type)
+    public BlockStackPlantTFC(Plant plant)
     {
-        super(plant, type);
+        super(plant);
 
-        if (!TABLE.containsKey(plant))
-            TABLE.put(plant, new EnumMap<>(Plant.PlantType.class));
-        TABLE.get(plant).put(type, this);
+        if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.plant = plant;
-        this.type = type;
 
         this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, EnumBlockPart.SINGLE));
     }

@@ -108,7 +108,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                         plantGen.generate(world, rng, p2);
                     }
                 }
-                else if (plant.getPlantType() == Plant.PlantType.SHORTGRASS)
+                else if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS)
                 {
                     // todo: will need to lower how many times this is run if more grasses are added
                     for (int i = 0; i < 1 + floraDensity * 5; i++)
@@ -117,7 +117,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                         plantGen.generate(world, rng, p2);
                     }
                 }
-                else if (plant.getPlantType() == Plant.PlantType.TALLGRASS)
+                else if (plant.getPlantType() == Plant.PlantType.TALL_GRASS)
                 {
                     for (int i = rng.nextInt(16); i < 1 + floraDensity * 5; i++)
                     {

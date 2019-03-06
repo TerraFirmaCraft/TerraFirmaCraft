@@ -19,6 +19,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -49,25 +50,21 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D);
     protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.875D, 1.0D, 1.0D, 1.0D);
-    private static final Map<Plant, EnumMap<Plant.PlantType, BlockCreepingPlantTFC>> TABLE = new HashMap<>();
+    private static final Map<Plant, BlockCreepingPlantTFC> MAP = new HashMap<>();
 
-    public static BlockCreepingPlantTFC get(Plant plant, Plant.PlantType type)
+    public static BlockCreepingPlantTFC get(Plant plant)
     {
-        return BlockCreepingPlantTFC.TABLE.get(plant).get(type);
+        return BlockCreepingPlantTFC.MAP.get(plant);
     }
 
     public final Plant plant;
-    public final Plant.PlantType type;
 
-    public BlockCreepingPlantTFC(Plant plant, Plant.PlantType type)
+    public BlockCreepingPlantTFC(Plant plant)
     {
-        super(plant, type);
-        if (!TABLE.containsKey(plant))
-            TABLE.put(plant, new EnumMap<>(Plant.PlantType.class));
-        TABLE.get(plant).put(type, this);
+        super(plant);
+        if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.plant = plant;
-        this.type = type;
         this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(DOWN, Boolean.valueOf(false)).withProperty(UP, Boolean.valueOf(false)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)));
     }
 
@@ -134,43 +131,44 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         state = state.getActualState(source, pos);
+
         int i = 0;
         AxisAlignedBB axisalignedbb = FULL_BLOCK_AABB;
 
-        if (((Boolean) state.getValue(DOWN)).booleanValue())
+        for (PropertyBool propertybool : ALL_FACES)
         {
-            axisalignedbb = DOWN_AABB;
-            ++i;
-        }
-
-        if (((Boolean) state.getValue(UP)).booleanValue())
-        {
-            axisalignedbb = UP_AABB;
-            ++i;
-        }
-
-        if (((Boolean) state.getValue(NORTH)).booleanValue())
-        {
-            axisalignedbb = NORTH_AABB;
-            ++i;
-        }
-
-        if (((Boolean) state.getValue(EAST)).booleanValue())
-        {
-            axisalignedbb = EAST_AABB;
-            ++i;
-        }
-
-        if (((Boolean) state.getValue(SOUTH)).booleanValue())
-        {
-            axisalignedbb = SOUTH_AABB;
-            ++i;
-        }
-
-        if (((Boolean) state.getValue(WEST)).booleanValue())
-        {
-            axisalignedbb = WEST_AABB;
-            ++i;
+            if ((state.getValue(propertybool)))
+            {
+                switch (propertybool.getName())
+                {
+                    case "down":
+                        axisalignedbb = DOWN_AABB;
+                        ++i;
+                        break;
+                    case "up":
+                        axisalignedbb = UP_AABB;
+                        ++i;
+                        break;
+                    case "north":
+                        axisalignedbb = NORTH_AABB;
+                        ++i;
+                        break;
+                    case "south":
+                        axisalignedbb = SOUTH_AABB;
+                        ++i;
+                        break;
+                    case "west":
+                        axisalignedbb = WEST_AABB;
+                        ++i;
+                        break;
+                    case "east":
+                        axisalignedbb = EAST_AABB;
+                        ++i;
+                        break;
+                    default:
+                        axisalignedbb = FULL_BLOCK_AABB;
+                }
+            }
         }
 
         return i == 1 ? axisalignedbb : FULL_BLOCK_AABB;
