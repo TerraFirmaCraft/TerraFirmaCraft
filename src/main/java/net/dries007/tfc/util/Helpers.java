@@ -26,11 +26,16 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.objects.blocks.BlockPeat;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockShortGrassTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public final class Helpers
 {
@@ -77,6 +82,20 @@ public final class Helpers
 
                     BlockRockVariant block = ((BlockRockVariant) current.getBlock());
                     world.setBlockState(target, block.getVariant(block.type.getGrassVersion(spreader)).getDefaultState());
+                }
+            }
+
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+            {
+                float temp = ClimateTFC.getHeightAdjustedBiomeTemp(world, pos.up());
+
+                if (world.isAirBlock(pos.up()) &&
+                    plant.getPlantType() == Plant.PlantType.SHORT_GRASS &&
+                    plant.isValidLocation(temp, ChunkDataTFC.getRainfall(world, pos.up()), world.getLightFromNeighbors(pos.up())) &&
+                    temp > 15 &&
+                    rand.nextFloat() < BlockShortGrassTFC.get(plant).getGrowthRate(world, pos.up()))
+                {
+                    world.setBlockState(pos.up(), BlockShortGrassTFC.get(plant).getDefaultState());
                 }
             }
         }
