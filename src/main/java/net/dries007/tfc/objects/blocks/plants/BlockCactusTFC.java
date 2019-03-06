@@ -41,25 +41,21 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
 {
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
     protected static final AxisAlignedBB CACTUS_COLLISION_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D);
-    private static final Map<Plant, EnumMap<Plant.PlantType, BlockCactusTFC>> TABLE = new HashMap<>();
+    private static final Map<Plant, BlockCactusTFC> MAP = new HashMap<>();
 
-    public static BlockCactusTFC get(Plant plant, Plant.PlantType type)
+    public static BlockCactusTFC get(Plant plant)
     {
-        return TABLE.get(plant).get(type);
+        return MAP.get(plant);
     }
 
     public final Plant plant;
-    public final Plant.PlantType type;
 
-    public BlockCactusTFC(Plant plant, Plant.PlantType type)
+    public BlockCactusTFC(Plant plant)
     {
-        super(plant, type);
-        if (!TABLE.containsKey(plant))
-            TABLE.put(plant, new EnumMap<>(Plant.PlantType.class));
-        TABLE.get(plant).put(type, this);
+        super(plant);
+        if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.plant = plant;
-        this.type = type;
 
         setSoundType(SoundType.GROUND);
         setHardness(0.25F);

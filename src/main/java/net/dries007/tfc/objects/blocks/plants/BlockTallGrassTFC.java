@@ -37,25 +37,21 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     protected static final AxisAlignedBB SHORT_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.5D, 0.875D);
     protected static final AxisAlignedBB SHORTER_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
     protected static final AxisAlignedBB SHORTEST_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.5D, 0.875D);
-    private static final Map<Plant, EnumMap<Plant.PlantType, BlockTallGrassTFC>> TABLE = new HashMap<>();
+    private static final Map<Plant, BlockTallGrassTFC> MAP = new HashMap<>();
 
-    public static BlockTallGrassTFC get(Plant plant, Plant.PlantType type)
+    public static BlockTallGrassTFC get(Plant plant)
     {
-        return BlockTallGrassTFC.TABLE.get(plant).get(type);
+        return BlockTallGrassTFC.MAP.get(plant);
     }
 
     public final Plant plant;
-    public final Plant.PlantType type;
 
-    public BlockTallGrassTFC(Plant plant, Plant.PlantType type)
+    public BlockTallGrassTFC(Plant plant)
     {
-        super(plant, type);
-        if (!TABLE.containsKey(plant))
-            TABLE.put(plant, new EnumMap<>(Plant.PlantType.class));
-        TABLE.get(plant).put(type, this);
+        super(plant);
+        if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.plant = plant;
-        this.type = type;
         this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
     }
 

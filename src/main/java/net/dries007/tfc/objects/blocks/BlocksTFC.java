@@ -27,7 +27,7 @@ import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
-import net.dries007.tfc.objects.blocks.plants.*;
+import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -391,43 +391,12 @@ public final class BlocksTFC
             Builder<BlockPlantTFC> b = ImmutableList.builder();
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {
-                if (plant.getPlantType() == Plant.PlantType.PLANT)
-                {
-                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockPlantTFC(plant, Plant.PlantType.PLANT), CT_DECORATIONS));
-                }
-                else if (plant.getPlantType() == Plant.PlantType.DOUBLEPLANT)
-                {
-                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockDoublePlantTFC(plant, Plant.PlantType.DOUBLEPLANT), CT_DECORATIONS));
-                }
-                else if (plant.getPlantType() == Plant.PlantType.CREEPINGPLANT)
-                {
-                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockCreepingPlantTFC(plant, Plant.PlantType.CREEPINGPLANT), CT_DECORATIONS));
-                }
-                else if (plant.getPlantType() == Plant.PlantType.LILYPAD)
-                {
-                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockLilyPadTFC(plant, Plant.PlantType.LILYPAD), CT_DECORATIONS));
-                }
-                else if (plant.getPlantType() == Plant.PlantType.DESERTPLANT)
-                {
-                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockPlantTFC(plant, Plant.PlantType.DESERTPLANT), CT_DECORATIONS));
-                }
-                else if (plant.getPlantType() == Plant.PlantType.CACTUS)
-                {
-                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockCactusTFC(plant, Plant.PlantType.CACTUS), CT_DECORATIONS));
-                }
-                else if (plant.getPlantType() == Plant.PlantType.SHORTGRASS)
-                {
-                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockShortGrassTFC(plant, Plant.PlantType.SHORTGRASS), CT_DECORATIONS));
-                }
-                else if (plant.getPlantType() == Plant.PlantType.TALLGRASS)
-                {
-                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockTallGrassTFC(plant, Plant.PlantType.TALLGRASS), CT_DECORATIONS));
-                }
+                b.add(register(r, "plants/" + plant.getRegistryName().getPath(), plant.getPlantType().create(plant), CT_DECORATIONS));
             }
             allPlantBlocks = b.build();
             for (BlockPlantTFC blockPlant : allPlantBlocks)
             {
-                if (blockPlant.type == Plant.PlantType.LILYPAD)
+                if (blockPlant.getType() == Plant.PlantType.LILYPAD)
                 {
                     inventoryItemBlocks.add(new ItemBlockLilyPadTFC(blockPlant));
                 }
@@ -443,11 +412,9 @@ public final class BlocksTFC
         // technical blocks
         register(r, "pit_kiln", new BlockPitKiln());
 
-        // todo: cactus ?
         // todo: reeds/sugarcane ?
         // todo: pumpkin/melon ?
         // todo: waterplants
-        // todo: varied lilypads?
         // todo: fruit tree stuff (leaves, saplings, logs)
 
         // todo: supports (h & v)

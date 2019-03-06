@@ -7,10 +7,9 @@
 
 package net.dries007.tfc.api.types;
 
-import java.util.function.BiFunction;
+import java.util.function.Function;
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -98,25 +97,25 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public enum PlantType
     {
-        PLANT(BlockPlantTFC::new),
-        DOUBLEPLANT(BlockDoublePlantTFC::new),
-        CREEPINGPLANT(BlockCreepingPlantTFC::new),
+        STANDARD(BlockPlantTFC::new),
+        DOUBLE(BlockDoublePlantTFC::new),
+        CREEPING(BlockCreepingPlantTFC::new),
         LILYPAD(BlockLilyPadTFC::new),
-        DESERTPLANT(BlockPlantTFC::new),
+        DESERT(BlockPlantTFC::new),
         CACTUS(BlockCactusTFC::new),
-        SHORTGRASS(BlockShortGrassTFC::new),
-        TALLGRASS(BlockTallGrassTFC::new);
+        SHORT_GRASS(BlockShortGrassTFC::new),
+        TALL_GRASS(BlockTallGrassTFC::new);
 
-        public static Block create(Plant plant, PlantType type)
-        {
-            return type.supplier.apply(plant, type);
-        }
+        private final Function<Plant, BlockPlantTFC> supplier;
 
-        private final BiFunction<Plant, PlantType, Block> supplier;
-
-        PlantType(@Nonnull BiFunction<Plant, PlantType, Block> supplier)
+        PlantType(@Nonnull Function<Plant, BlockPlantTFC> supplier)
         {
             this.supplier = supplier;
+        }
+
+        public BlockPlantTFC create(Plant plant)
+        {
+            return supplier.apply(plant);
         }
     }
 }

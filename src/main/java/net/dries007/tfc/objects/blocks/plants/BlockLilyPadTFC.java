@@ -36,25 +36,21 @@ import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
 public class BlockLilyPadTFC extends BlockPlantTFC
 {
     protected static final AxisAlignedBB LILY_PAD_AABB = new AxisAlignedBB(0.125D, -0.125D, 0.125D, 0.875D, 0.0625D, 0.875D);
-    private static final Map<Plant, EnumMap<Plant.PlantType, BlockLilyPadTFC>> TABLE = new HashMap<>();
+    private static final Map<Plant, BlockLilyPadTFC> MAP = new HashMap<>();
 
-    public static BlockLilyPadTFC get(Plant plant, Plant.PlantType type)
+    public static BlockLilyPadTFC get(Plant plant)
     {
-        return BlockLilyPadTFC.TABLE.get(plant).get(type);
+        return BlockLilyPadTFC.MAP.get(plant);
     }
 
     public final Plant plant;
-    public final Plant.PlantType type;
 
-    public BlockLilyPadTFC(Plant plant, Plant.PlantType type)
+    public BlockLilyPadTFC(Plant plant)
     {
-        super(plant, type);
-        if (!TABLE.containsKey(plant))
-            TABLE.put(plant, new EnumMap<>(Plant.PlantType.class));
-        TABLE.get(plant).put(type, this);
+        super(plant);
+        if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.plant = plant;
-        this.type = type;
         this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
     }
 
