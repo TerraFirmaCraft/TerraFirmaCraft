@@ -4,7 +4,17 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class NBTBuilder
 {
-    private final NBTTagCompound nbt = new NBTTagCompound();
+    private final NBTTagCompound nbt;
+
+    public NBTBuilder()
+    {
+        this(new NBTTagCompound());
+    }
+
+    public NBTBuilder(NBTTagCompound nbt)
+    {
+        this.nbt = nbt;
+    }
 
     public NBTBuilder setString(String key, String value)
     {

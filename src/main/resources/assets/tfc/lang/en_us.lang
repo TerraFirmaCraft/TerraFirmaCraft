@@ -19,6 +19,7 @@ tfc.tooltip.anvil_tier_too_low=This Anvil is too low tier!
 tfc.tooltip.anvil_no_flux=There is no flux in the anvil!
 tfc.tooltip.anvil_too_cold=The item(s) are not hot enough to work!
 tfc.tooltip.anvil_no_hammer=There is no hammer in the anvil!
+tfc.tooltip.crucible_result=Result:
 
 ## Keybindings
 tfc.key.craft=Crafting GUI
@@ -196,6 +197,8 @@ tile.tfc.peat.name=Peat
 tile.tfc.peat.grass.name=Peat Grass
 tile.tfc.thatch.name=Thatch
 tile.tfc.firepit.name=Firepit
+tile.tfc.bellows.name=Bellows
+tile.tfc.crucible.name=Crucible
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite

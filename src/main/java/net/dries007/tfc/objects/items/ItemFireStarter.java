@@ -41,7 +41,7 @@ import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
+import static net.dries007.tfc.objects.blocks.devices.BlockFirePit.LIT;
 import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 
 @MethodsReturnNonnullByDefault

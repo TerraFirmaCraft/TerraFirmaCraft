@@ -33,7 +33,7 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.te.TECharcoalForge;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.objects.blocks.BlockCharcoalForge.LIT;
+import static net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge.LIT;
 
 @ParametersAreNonnullByDefault
 public class BlockCharcoalPile extends Block
@@ -184,7 +184,6 @@ public class BlockCharcoalPile extends Block
                     if (te != null)
                     {
                         te.onCreate();
-                        ;
                     }
                 }
             }

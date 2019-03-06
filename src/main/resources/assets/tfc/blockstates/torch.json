@@ -19,11 +19,19 @@
       }
     },
     "facing": {
-      "up": {"model": "torch"},
+      "up": {
+        "model": "torch"
+      },
       "east": {},
-      "south": {"y": 90},
-      "west": {"y": 180},
-      "north": {"y": 270}
+      "south": {
+        "y": 90
+      },
+      "west": {
+        "y": 180
+      },
+      "north": {
+        "y": 270
+      }
     },
     "inventory": [
       {}

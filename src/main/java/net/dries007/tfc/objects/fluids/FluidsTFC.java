@@ -109,8 +109,10 @@ public class FluidsTFC
             ImmutableMap.Builder<Metal, Fluid> b = ImmutableMap.builder();
 
             for (Metal metal : TFCRegistries.METALS.getValuesCollection())
+            {
+                //noinspection ConstantConditions
                 registerFluid(b, metal, new FluidMetal(metal, metal.getRegistryName().getPath(), LAVA_STILL, LAVA_FLOW, metal.getColor()));
-
+            }
             allMetalFluids = b.build();
         }
     }

@@ -17,12 +17,12 @@ import net.dries007.tfc.api.types.Metal;
 
 public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
 {
-    public final ImmutableMap<Metal, Predicate<Float>> MAP;
+    private final ImmutableMap<Metal, Predicate<Double>> metalMap;
     private final Metal result;
 
-    private AlloyRecipe(@Nonnull Metal result, ImmutableMap<Metal, Predicate<Float>> alloyMap)
+    private AlloyRecipe(@Nonnull Metal result, ImmutableMap<Metal, Predicate<Double>> alloyMap)
     {
-        this.MAP = alloyMap;
+        this.metalMap = alloyMap;
         this.result = result;
 
         // This ensures that no metal result has more than one alloy recipe
@@ -43,10 +43,15 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
         return getRegistryName().getPath();
     }
 
+    public ImmutableMap<Metal, Predicate<Double>> getMetals()
+    {
+        return metalMap;
+    }
+
     public static class Builder
     {
         private final Metal result;
-        private final ImmutableMap.Builder<Metal, Predicate<Float>> builder;
+        private final ImmutableMap.Builder<Metal, Predicate<Double>> builder;
 
         public Builder(@Nonnull Metal result)
         {
@@ -62,12 +67,12 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
             this.builder = new ImmutableMap.Builder<>();
         }
 
-        public Builder add(@Nonnull ResourceLocation loc, float min, float max)
+        public Builder add(@Nonnull ResourceLocation loc, double min, double max)
         {
             return add(loc, x -> x >= min && x <= max);
         }
 
-        public Builder add(@Nonnull ResourceLocation loc, @Nonnull Predicate<Float> condition)
+        public Builder add(@Nonnull ResourceLocation loc, @Nonnull Predicate<Double> condition)
         {
             Metal metal = TFCRegistries.METALS.getValue(loc);
             if (metal == null)
@@ -80,7 +85,7 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
             return add(metal, x -> x >= min && x <= max);
         }
 
-        public Builder add(@Nonnull Metal metal, @Nonnull Predicate<Float> condition)
+        public Builder add(@Nonnull Metal metal, @Nonnull Predicate<Double> condition)
         {
             builder.put(metal, condition);
             return this;

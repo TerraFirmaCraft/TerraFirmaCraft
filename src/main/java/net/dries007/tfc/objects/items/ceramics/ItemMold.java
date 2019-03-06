@@ -122,13 +122,10 @@ public class ItemMold extends ItemFiredPottery
 
         FilledMoldCapability(@Nullable NBTTagCompound nbt)
         {
-            super();
             tank = new FluidTank(100);
 
             if (nbt != null)
                 deserializeNBT(nbt);
-
-            updateFluidData(tank.getFluid());
         }
 
         @Nullable
@@ -186,6 +183,7 @@ public class ItemMold extends ItemFiredPottery
                 lastUpdateTick = nbt.getLong("ticks");
                 tank.readFromNBT(nbt);
             }
+            updateFluidData();
         }
 
         @Override
@@ -203,8 +201,12 @@ public class ItemMold extends ItemFiredPottery
         {
             if (resource.getFluid() instanceof FluidMetal && type.hasMold(((FluidMetal) resource.getFluid()).getMetal()))
             {
-                updateFluidData(resource);
-                return tank.fill(resource, doFill);
+                int fillAmount = tank.fill(resource, doFill);
+                if (fillAmount == tank.getFluidAmount())
+                {
+                    updateFluidData();
+                }
+                return fillAmount;
             }
             return 0;
         }
@@ -220,7 +222,16 @@ public class ItemMold extends ItemFiredPottery
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain)
         {
-            return getTemperature() >= meltTemp ? tank.drain(maxDrain, doDrain) : null;
+            if (getTemperature() > meltTemp)
+            {
+                FluidStack stack = tank.drain(maxDrain, doDrain);
+                if (tank.getFluidAmount() == 0)
+                {
+                    updateFluidData();
+                }
+                return stack;
+            }
+            return null;
         }
 
         @SideOnly(Side.CLIENT)
@@ -250,6 +261,11 @@ public class ItemMold extends ItemFiredPottery
             return meltTemp;
         }
 
+        private void updateFluidData()
+        {
+            updateFluidData(tank.getFluid());
+        }
+
         private void updateFluidData(FluidStack fluid)
         {
             if (fluid != null && fluid.getFluid() instanceof FluidMetal)
@@ -260,7 +276,7 @@ public class ItemMold extends ItemFiredPottery
             }
             else
             {
-                this.meltTemp = 1000;
+                this.meltTemp = CapabilityItemHeat.MAX_TEMPERATURE;
                 this.heatCapacity = 1;
             }
         }
