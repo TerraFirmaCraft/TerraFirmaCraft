@@ -22,8 +22,6 @@ import net.dries007.tfc.objects.blocks.plants.*;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
-
 public class WorldGenPlantTFC extends WorldGenerator
 {
     private Plant plant;
@@ -115,9 +113,9 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.LILYPAD)
+        else if (plant.getPlantType() == Plant.PlantType.FLOATING || plant.getPlantType() == Plant.PlantType.FLOATING_SEA)
         {
-            BlockLilyPadTFC plantBlock = BlockLilyPadTFC.get(plant);
+            BlockFloatingWaterTFC plantBlock = BlockFloatingWaterTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
 
             for (int i = 0; i < 32; ++i)
@@ -130,8 +128,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                     worldIn.isAirBlock(blockpos) &&
                     (!worldIn.provider.isNether() || blockpos.getY() < 254) &&
                     plantBlock.canPlaceBlockAt(worldIn, blockpos) &&
-                    worldIn.getBlockState(blockpos.add(0, -1, 0)) == FRESH_WATER &&
-                    worldIn.getBlockState(blockpos.add(0, -2, 0)) != FRESH_WATER) // todo: make this a little less harsh
+                    plant.isValidFloatingWaterDepth(worldIn, blockpos, plant.getWaterType()))
                 {
                     worldIn.setBlockState(blockpos, state, 2);
                 }

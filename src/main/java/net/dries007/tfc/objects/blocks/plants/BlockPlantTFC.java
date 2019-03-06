@@ -81,7 +81,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(TIME, state.getValue(TIME)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE));
+        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
     }
 
     @Override
@@ -154,6 +154,11 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         else return ConfigTFC.GENERAL.plantGrowthRate;
     }
 
+    public Plant.PlantType getType()
+    {
+        return plant.getPlantType();
+    }
+
     @Override
     protected boolean canSustainBush(IBlockState state)
     {
@@ -177,7 +182,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         IBlockState soil = worldIn.getBlockState(pos.down());
         if (state.getBlock() == this)
         {
-            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
+            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTempRain(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);
     }
@@ -186,11 +191,6 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return super.getBoundingBox(state, source, pos).offset(state.getOffset(source, pos));
-    }
-
-    public Plant.PlantType getType()
-    {
-        return plant.getPlantType();
     }
 
     @Override

@@ -34,8 +34,8 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockWallTFC;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockFloatingWaterTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockHeat;
-import net.dries007.tfc.objects.items.itemblock.ItemBlockLilyPadTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTorchTFC;
 import net.dries007.tfc.objects.te.*;
@@ -396,9 +396,9 @@ public final class BlocksTFC
             allPlantBlocks = b.build();
             for (BlockPlantTFC blockPlant : allPlantBlocks)
             {
-                if (blockPlant.getType() == Plant.PlantType.LILYPAD)
+                if (blockPlant.getType() == Plant.PlantType.FLOATING || blockPlant.getType() == Plant.PlantType.FLOATING_SEA)
                 {
-                    inventoryItemBlocks.add(new ItemBlockLilyPadTFC(blockPlant));
+                    inventoryItemBlocks.add(new ItemBlockFloatingWaterTFC(blockPlant));
                 }
                 else
                 {

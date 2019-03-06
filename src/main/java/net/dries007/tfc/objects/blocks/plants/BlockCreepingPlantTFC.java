@@ -7,7 +7,6 @@
 
 package net.dries007.tfc.objects.blocks.plants;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -19,7 +18,6 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -77,22 +75,21 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     }
 
     @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return 0;
+    }
+
+    @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(TIME, state.getValue(TIME))
-            .withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id())
+        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id())
             .withProperty(DOWN, canPlantConnectTo(worldIn, pos, EnumFacing.DOWN))
             .withProperty(UP, canPlantConnectTo(worldIn, pos, EnumFacing.UP))
             .withProperty(NORTH, canPlantConnectTo(worldIn, pos, EnumFacing.NORTH))
             .withProperty(EAST, canPlantConnectTo(worldIn, pos, EnumFacing.EAST))
             .withProperty(SOUTH, canPlantConnectTo(worldIn, pos, EnumFacing.SOUTH))
             .withProperty(WEST, canPlantConnectTo(worldIn, pos, EnumFacing.WEST));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return 0;
     }
 
     @Override
@@ -121,7 +118,7 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
             IBlockState blockState = worldIn.getBlockState(pos.offset(face));
             if (blockState.getBlockFaceShape(worldIn, pos.offset(face), face.getOpposite()) == BlockFaceShape.SOLID || blockState.getBlock() instanceof BlockFence)
             {
-                return plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
+                return plant.isValidTempRain(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
             }
         }
         return false;
