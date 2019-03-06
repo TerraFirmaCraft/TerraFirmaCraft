@@ -29,7 +29,7 @@
       "10": { "textures": { "cross" : "tfc:blocks/plants/blue_orchid/blue_orchid_jul-feb" } },
       "11": { "textures": { "cross" : "tfc:blocks/plants/blue_orchid/blue_orchid_jul-feb" } }
     },
-    "time": {
+    "dayperiod": {
       "0": {},
       "1": {},
       "2": {},
