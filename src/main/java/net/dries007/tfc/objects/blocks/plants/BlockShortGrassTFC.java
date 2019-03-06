@@ -74,7 +74,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE, GROWTHSTAGE, TIME});
+        return new BlockStateContainer(this, new IProperty[] {AGE, GROWTHSTAGE, DAYPERIOD});
     }
 
     @Override

@@ -72,7 +72,7 @@ public class BlockStackPlantTFC extends BlockPlantTFC
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, PART, TIME});
+        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, PART, DAYPERIOD});
     }
 
     @Override
