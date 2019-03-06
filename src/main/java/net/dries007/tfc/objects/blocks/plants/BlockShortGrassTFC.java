@@ -14,9 +14,13 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.IGrowable;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
@@ -24,30 +28,31 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IShearable;
 
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 
-public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
+public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
 {
-    // todo: in 1.13 we will be able to save blockstates instead of relying on metadata, so will probably rewrite this as 2 blocks with part=upper and part=lower
-    protected static final AxisAlignedBB GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 2.0D, 0.875D);
-    protected static final AxisAlignedBB SHORT_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.5D, 0.875D);
-    protected static final AxisAlignedBB SHORTER_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
-    protected static final AxisAlignedBB SHORTEST_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.5D, 0.875D);
-    private static final Map<Plant, EnumMap<Plant.PlantType, BlockTallGrassTFC>> TABLE = new HashMap<>();
+    public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
+    protected static final AxisAlignedBB GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
+    protected static final AxisAlignedBB SHORT_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.75D, 0.875D);
+    protected static final AxisAlignedBB SHORTER_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.5D, 0.875D);
+    protected static final AxisAlignedBB SHORTEST_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.25D, 0.875D);
+    private static final Map<Plant, EnumMap<Plant.PlantType, BlockShortGrassTFC>> TABLE = new HashMap<>();
 
-    public static BlockTallGrassTFC get(Plant plant, Plant.PlantType type)
+    public static BlockShortGrassTFC get(Plant plant, Plant.PlantType type)
     {
-        return BlockTallGrassTFC.TABLE.get(plant).get(type);
+        return BlockShortGrassTFC.TABLE.get(plant).get(type);
     }
 
     public final Plant plant;
     public final Plant.PlantType type;
 
-    public BlockTallGrassTFC(Plant plant, Plant.PlantType type)
+    public BlockShortGrassTFC(Plant plant, Plant.PlantType type)
     {
         super(plant, type);
         if (!TABLE.containsKey(plant))
@@ -57,6 +62,24 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
         this.plant = plant;
         this.type = type;
         this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(AGE);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, new IProperty[] {AGE, GROWTHSTAGE, TIME});
     }
 
     @Override
@@ -80,9 +103,12 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)));
                 }
+                else
+                {
+                    worldIn.setBlockToAir(pos);
+                }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
-
         }
         else if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 20 && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
         {
@@ -90,7 +116,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
 
             if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
             {
-                if ((j >= 8 && j < 15) || (j < 8 && worldIn.isAirBlock(pos.up())))
+                if (j < 15)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)));
                 }
@@ -133,16 +159,38 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     }
 
     @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return null;
+    }
+
+    @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
-        if (!worldIn.isRemote && state.getValue(AGE) > 7 && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
+        if (!worldIn.isRemote && stack.getItem() == Items.SHEARS)
         {
-            spawnAsEntity(worldIn, pos, new ItemStack(ItemsTFC.HAY, 2));
+            spawnAsEntity(worldIn, pos, new ItemStack(this, 1));
+        }
+        else if (!worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
+        {
+            spawnAsEntity(worldIn, pos, new ItemStack(ItemsTFC.HAY, 1));
         }
         else
         {
             super.harvestBlock(worldIn, player, pos, state, te, stack);
         }
+    }
+
+    @Override
+    public int quantityDroppedWithBonus(int fortune, Random random)
+    {
+        return 1 + random.nextInt(fortune * 2 + 1);
+    }
+
+    @Override
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
+    {
+        return new ItemStack(this, 1);
     }
 
     @Override
@@ -152,23 +200,5 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     public NonNullList<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
         return NonNullList.withSize(1, new ItemStack(this, 1));
-    }
-
-    @Override
-    public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
-    {
-        return state.getValue(AGE) < 8 && worldIn.isAirBlock(pos.up());
-    }
-
-    @Override
-    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
-    {
-        worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, 15).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
     }
 }

@@ -38,7 +38,9 @@ public class DefaultPlants
     public static final ResourceLocation OXEYE_DAISY = new ResourceLocation(MOD_ID, "oxeye_daisy");
     public static final ResourceLocation PETROVSKIA = new ResourceLocation(MOD_ID, "petrovskia");
     public static final ResourceLocation POPPY = new ResourceLocation(MOD_ID, "poppy");
+    public static final ResourceLocation RYEGRASS = new ResourceLocation(MOD_ID, "ryegrass");
     public static final ResourceLocation SAGEBRUSH = new ResourceLocation(MOD_ID, "sagebrush");
+    public static final ResourceLocation SWITCHGRASS = new ResourceLocation(MOD_ID, "switchgrass");
     public static final ResourceLocation TROPICAL_MILKWEED = new ResourceLocation(MOD_ID, "tropical_milkweed");
     public static final ResourceLocation TULIP_ORANGE = new ResourceLocation(MOD_ID, "tulip_orange");
     public static final ResourceLocation TULIP_PINK = new ResourceLocation(MOD_ID, "tulip_pink");
@@ -82,7 +84,11 @@ public class DefaultPlants
             new Plant(MOSS, -7f, 36f, 250f, 500f, Plant.PlantType.CREEPINGPLANT, 0, 11),
 
             // Floating Water Plants
-            new Plant(LILYPAD, -34f, 38f, 0f, 500f, Plant.PlantType.LILYPAD, 4, 15)
+            new Plant(LILYPAD, -34f, 38f, 0f, 500f, Plant.PlantType.LILYPAD, 4, 15),
+
+            // Grass
+            new Plant(RYEGRASS, Material.VINE, -46f, 32f, 150f, 500f, Plant.PlantType.SHORTGRASS, 12, 15),
+            new Plant(SWITCHGRASS, Material.VINE, -29f, 32f, 100f, 300f, Plant.PlantType.TALLGRASS, 9, 15)
         );
     }
 }

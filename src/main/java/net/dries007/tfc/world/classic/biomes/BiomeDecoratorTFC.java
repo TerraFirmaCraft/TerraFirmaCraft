@@ -13,7 +13,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraftforge.common.BiomeDictionary;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Plant;
@@ -29,7 +28,6 @@ public class BiomeDecoratorTFC extends BiomeDecorator
     private final WorldGenPumpkinTFC pumpkinGen;
     private final WorldGenWaterPlants waterplantGen;
 
-    private final WorldGenTallGrassTFC grassGen;
     private final WorldGenPlantTFC plantGen;
 
     public BiomeDecoratorTFC(int lilyPadPerChunk, int waterPlantsPerChunk)
@@ -46,7 +44,6 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         this.bigMushroomGen = null;
         this.reedGen = null;
 
-        grassGen = new WorldGenTallGrassTFC();
         plantGen = new WorldGenPlantTFC();
 
         reedGen = new WorldGenTallPlant(Blocks.REEDS); // todo: replace block?
@@ -111,6 +108,23 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                         plantGen.generate(world, rng, p2);
                     }
                 }
+                else if (plant.getPlantType() == Plant.PlantType.SHORTGRASS)
+                {
+                    // todo: will need to lower how many times this is run if more grasses are added
+                    for (int i = 0; i < 1 + floraDensity * 5; i++)
+                    {
+                        final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                        plantGen.generate(world, rng, p2);
+                    }
+                }
+                else if (plant.getPlantType() == Plant.PlantType.TALLGRASS)
+                {
+                    for (int i = rng.nextInt(16); i < 1 + floraDensity * 5; i++)
+                    {
+                        final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                        plantGen.generate(world, rng, p2);
+                    }
+                }
                 else
                 {
                     for (float i = rng.nextInt(64); i < 1 + floraDensity * 5; i++)
@@ -119,43 +133,6 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                         plantGen.generate(world, rng, p2);
                     }
                 }
-            }
-        }
-
-        if (rainfall > 300f)
-        {
-            for (int i = 0; i < 3 + floraDensity * 5; i++)
-            {
-                final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                if (!BiomeDictionary.hasType(world.getBiome(p2), BiomeDictionary.Type.BEACH))
-                    grassGen.generate(world, rng, p2);
-            }
-        }
-        else if (rainfall > 150f)
-        {
-            for (int i = 0; i < 1 + floraDensity * 5; i++)
-            {
-                final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                if (!BiomeDictionary.hasType(world.getBiome(p2), BiomeDictionary.Type.BEACH))
-                    grassGen.generate(world, rng, p2);
-            }
-        }
-        else if (rainfall > 75f)
-        {
-            for (int i = 0; i < 0.5f + floraDensity * 3; i++)
-            {
-                final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                if (!BiomeDictionary.hasType(world.getBiome(p2), BiomeDictionary.Type.BEACH))
-                    grassGen.generate(world, rng, p2);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < floraDensity * 3; i++)
-            {
-                final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                if (!BiomeDictionary.hasType(world.getBiome(p2), BiomeDictionary.Type.BEACH))
-                    grassGen.generate(world, rng, p2);
             }
         }
     }

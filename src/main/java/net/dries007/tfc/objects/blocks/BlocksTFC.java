@@ -106,11 +106,6 @@ public final class BlocksTFC
     public static final BlockIngotPile INGOT_PILE = null;
     public static final BlockTorchTFC TORCH = null;
 
-    @GameRegistry.ObjectHolder("plants/tallgrass")
-    public static final BlockTallGrassTFC TALL_GRASS = null;
-    @GameRegistry.ObjectHolder("plants/double_grass")
-    public static final BlockDoubleTallGrassTFC DOUBLE_TALL_GRASS = null;
-
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
     private static ImmutableList<ItemBlock> allNormalItemBlocks;
@@ -247,9 +242,6 @@ public final class BlocksTFC
         normalItemBlocks.add(new ItemBlock(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_BLOCKS)));
 
         normalItemBlocks.add(new ItemBlock(register(r, "thatch", new BlockThatch(Material.PLANTS), CT_DECORATIONS)));
-
-        normalItemBlocks.add(new ItemBlock(register(r, "plants/tallgrass", new BlockTallGrassTFC(), CT_DECORATIONS)));
-        normalItemBlocks.add(new ItemBlock(register(r, "plants/double_grass", new BlockDoubleTallGrassTFC(), CT_DECORATIONS)));
 
         register(r, "firepit", new BlockFirePit()); // No item or creative tab.
 
@@ -422,6 +414,14 @@ public final class BlocksTFC
                 else if (plant.getPlantType() == Plant.PlantType.CACTUS)
                 {
                     b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockCactusTFC(plant, Plant.PlantType.CACTUS), CT_DECORATIONS));
+                }
+                else if (plant.getPlantType() == Plant.PlantType.SHORTGRASS)
+                {
+                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockShortGrassTFC(plant, Plant.PlantType.SHORTGRASS), CT_DECORATIONS));
+                }
+                else if (plant.getPlantType() == Plant.PlantType.TALLGRASS)
+                {
+                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), new BlockTallGrassTFC(plant, Plant.PlantType.TALLGRASS), CT_DECORATIONS));
                 }
             }
             allPlantBlocks = b.build();

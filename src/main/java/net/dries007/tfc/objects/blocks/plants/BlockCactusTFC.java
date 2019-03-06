@@ -132,6 +132,12 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     }
 
     @Override
+    public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;

@@ -15,10 +15,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import net.dries007.tfc.objects.blocks.plants.BlockCreepingPlantTFC;
-import net.dries007.tfc.objects.blocks.plants.BlockDoublePlantTFC;
-import net.dries007.tfc.objects.blocks.plants.BlockLilyPadTFC;
-import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
+import net.dries007.tfc.objects.blocks.plants.*;
 
 public class Plant extends IForgeRegistryEntry.Impl<Plant>
 {
@@ -106,8 +103,9 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         CREEPINGPLANT(BlockCreepingPlantTFC::new),
         LILYPAD(BlockLilyPadTFC::new),
         DESERTPLANT(BlockPlantTFC::new),
-        STACKPLANT(BlockPlantTFC::new),
-        CACTUS(BlockPlantTFC::new);
+        CACTUS(BlockCactusTFC::new),
+        SHORTGRASS(BlockShortGrassTFC::new),
+        TALLGRASS(BlockTallGrassTFC::new);
 
         public static Block create(Plant plant, PlantType type)
         {

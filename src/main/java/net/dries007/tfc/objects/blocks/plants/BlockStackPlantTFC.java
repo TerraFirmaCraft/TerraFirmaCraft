@@ -27,7 +27,6 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 public class BlockStackPlantTFC extends BlockPlantTFC
 {
     protected static final PropertyEnum<BlockStackPlantTFC.EnumBlockPart> PART = PropertyEnum.<BlockStackPlantTFC.EnumBlockPart>create("part", BlockStackPlantTFC.EnumBlockPart.class);
-    protected static final AxisAlignedBB STACKPLANT_AABB = new AxisAlignedBB(0.30000001192092896D, 0.0D, 0.30000001192092896D, 0.699999988079071D, 1.0D, 0.699999988079071D);
     private static final Map<Plant, EnumMap<Plant.PlantType, BlockStackPlantTFC>> TABLE = new HashMap<>();
 
     public static BlockStackPlantTFC get(Plant plant, Plant.PlantType type)
@@ -76,12 +75,6 @@ public class BlockStackPlantTFC extends BlockPlantTFC
         return state.withProperty(TIME, state.getValue(TIME)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
-    @Override
-    public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
-    {
-        return false;
-    }
-
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, PART, TIME});
@@ -90,7 +83,7 @@ public class BlockStackPlantTFC extends BlockPlantTFC
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return STACKPLANT_AABB;
+        return FULL_BLOCK_AABB.offset(state.getOffset(source, pos));
     }
 
     protected EnumBlockPart getPlantPart(IBlockAccess world, BlockPos pos)
