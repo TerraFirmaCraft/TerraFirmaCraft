@@ -16,7 +16,6 @@
       ],
       "faces": {
         "down": {
-          "texture": "tfc:blocks/empty"
           "uv": [0, 0, 1, 1],
           "texture": "#texture"
         }
