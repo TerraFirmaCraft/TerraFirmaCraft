@@ -27,7 +27,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class TreeGenCommand extends CommandBase
+public class CommandGenTree extends CommandBase
 {
     private static final Random random = new Random();
 

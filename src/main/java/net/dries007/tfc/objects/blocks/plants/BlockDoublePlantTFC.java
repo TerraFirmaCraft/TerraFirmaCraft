@@ -50,7 +50,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.plant = plant;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, EnumBlockPart.SINGLE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTH_STAGE, CalenderTFC.Month.MARCH.id()).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
@@ -71,7 +71,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         worldIn.setBlockState(pos.up(), this.getDefaultState());
-        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, state.getValue(PART));
+        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTH_STAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, state.getValue(PART));
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
@@ -144,14 +144,14 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(TIME, state.getValue(TIME)).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
+        return state.withProperty(TIME_OF_DAY, state.getValue(TIME_OF_DAY)).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTH_STAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, AGE, GROWTHSTAGE, PART, TIME);
+        return new BlockStateContainer(this, AGE, GROWTH_STAGE, PART, TIME_OF_DAY);
     }
 
     @Override
@@ -165,25 +165,25 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTH_STAGE, CalenderTFC.getMonthOfYear().id());
     }
 
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
-        int currentStage = state.getValue(GROWTHSTAGE);
+        int currentStage = state.getValue(GROWTH_STAGE);
         int expectedStage = CalenderTFC.getMonthOfYear().id();
-        int currentTime = state.getValue(TIME);
+        int currentTime = state.getValue(TIME_OF_DAY);
         int expectedTime = getCurrentTime(worldIn);
 
         if (currentTime != expectedTime)
         {
-            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, currentStage).withProperty(PART, state.getValue(PART)));
+            worldIn.setBlockState(pos, state.withProperty(TIME_OF_DAY, expectedTime).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTH_STAGE, currentStage).withProperty(PART, state.getValue(PART)));
         }
         if (currentStage != expectedStage && random.nextDouble() < 0.5)
         {
-            worldIn.setBlockState(pos, state.withProperty(TIME, expectedTime).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, state.getValue(PART)));
+            worldIn.setBlockState(pos, state.withProperty(TIME_OF_DAY, expectedTime).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTH_STAGE, expectedStage).withProperty(PART, state.getValue(PART)));
         }
         this.updateTick(worldIn, pos, state, random);
     }
@@ -212,7 +212,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
                 }
                 else
                 {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, state.getValue(PART)));
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(GROWTH_STAGE, state.getValue(GROWTH_STAGE)).withProperty(PART, state.getValue(PART)));
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
@@ -229,7 +229,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
                 }
                 else
                 {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, state.getValue(PART)));
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(GROWTH_STAGE, state.getValue(GROWTH_STAGE)).withProperty(PART, state.getValue(PART)));
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }

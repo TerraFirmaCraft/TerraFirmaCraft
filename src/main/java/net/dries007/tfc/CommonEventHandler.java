@@ -19,6 +19,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -28,8 +29,10 @@ import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.util.IPlaceableItem;
+import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.classic.CalenderTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -145,18 +148,24 @@ public final class CommonEventHandler
     }
 
     @SubscribeEvent
-    public static void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event)
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
         if (event.player instanceof EntityPlayerMP)
         {
+            // Capability Sync Handler
             final EntityPlayerMP player = (EntityPlayerMP) event.player;
             player.inventoryContainer.addListener(new CapabilityContainerListener(player));
+
+            // World Data (Calendar) Sync Handler
+            TerraFirmaCraft.getLog().info("Syncing calendar!");
+            TerraFirmaCraft.getNetwork().sendTo(new PacketCalendarUpdate(), player);
         }
     }
 
     @SubscribeEvent
-    public static void onPlayerCloneEvent(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
+    public static void onPlayerClone(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
     {
+        // Capability Sync Handler
         if (event.getEntityPlayer() instanceof EntityPlayerMP)
         {
             final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
@@ -165,12 +174,19 @@ public final class CommonEventHandler
     }
 
     @SubscribeEvent
-    public static void onContainerOpenEvent(PlayerContainerEvent.Open event)
+    public static void onContainerOpen(PlayerContainerEvent.Open event)
     {
+        // Capability Sync Handler
         if (event.getEntityPlayer() instanceof EntityPlayerMP)
         {
             final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
             event.getContainer().addListener(new CapabilityContainerListener(player));
         }
+    }
+
+    @SubscribeEvent
+    public static void onWorldLoad(WorldEvent.Load event)
+    {
+        CalenderTFC.CalendarWorldData.onLoad(event.getWorld());
     }
 }
