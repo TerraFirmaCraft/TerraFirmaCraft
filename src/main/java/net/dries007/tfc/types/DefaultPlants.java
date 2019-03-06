@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.types;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -53,43 +52,43 @@ public final class DefaultPlants
     {
         event.getRegistry().registerAll(
             // Standard Plants
-            new Plant(ALLIUM, -40f, 33f, 150f, 500f, Plant.PlantType.STANDARD, 12, 15),
-            new Plant(BLUE_ORCHID, 18f, 50f, 300f, 500f, Plant.PlantType.STANDARD, 12, 15),
-            new Plant(BUTTERFLY_MILKWEED, -40f, 32f, 75f, 300f, Plant.PlantType.STANDARD, 12, 15),
-            new Plant(CALENDULA, -46f, 30f, 130f, 300f, Plant.PlantType.STANDARD, 9, 15),
-            new Plant(DANDELION, -40f, 40f, 75f, 400, Plant.PlantType.STANDARD, 10, 15),
-            new Plant(GOLDENROD, -29f, 32f, 75f, 300f, Plant.PlantType.STANDARD, 12, 15),
-            new Plant(HOUSTONIA, -46f, 36f, 150f, 500f, Plant.PlantType.STANDARD, 9, 15),
-            new Plant(MEADS_MILKWEED, -23f, 31f, 130f, 500f, Plant.PlantType.STANDARD, 12, 15),
-            new Plant(NASTURTIUM, -46f, 38f, 150f, 500, Plant.PlantType.STANDARD, 12, 15),
-            new Plant(OXEYE_DAISY, -40f, 33f, 120f, 300f, Plant.PlantType.STANDARD, 9, 15),
-            new Plant(POPPY, -40f, 36f, 150f, 250f, Plant.PlantType.STANDARD, 12, 15),
-            new Plant(TROPICAL_MILKWEED, -6f, 36f, 120f, 300f, Plant.PlantType.STANDARD, 12, 15),
-            new Plant(TULIP_ORANGE, -34f, 33f, 100f, 200f, Plant.PlantType.STANDARD, 9, 15),
-            new Plant(TULIP_PINK, -34f, 33f, 100f, 200f, Plant.PlantType.STANDARD, 9, 15),
-            new Plant(TULIP_RED, -34f, 33f, 100f, 200f, Plant.PlantType.STANDARD, 9, 15),
-            new Plant(TULIP_WHITE, -34f, 33f, 100f, 200f, Plant.PlantType.STANDARD, 9, 15),
+            new Plant(ALLIUM, Plant.PlantType.STANDARD, -40f, 33f, 150f, 500f, 12, 15),
+            new Plant(BLUE_ORCHID, Plant.PlantType.STANDARD, 18f, 50f, 300f, 500f, 12, 15),
+            new Plant(BUTTERFLY_MILKWEED, Plant.PlantType.STANDARD, -40f, 32f, 75f, 300f, 12, 15),
+            new Plant(CALENDULA, Plant.PlantType.STANDARD, -46f, 30f, 130f, 300f, 9, 15),
+            new Plant(DANDELION, Plant.PlantType.STANDARD, -40f, 40f, 75f, 400, 10, 15),
+            new Plant(GOLDENROD, Plant.PlantType.STANDARD, -29f, 32f, 75f, 300f, 12, 15),
+            new Plant(HOUSTONIA, Plant.PlantType.STANDARD, -46f, 36f, 150f, 500f, 9, 15),
+            new Plant(MEADS_MILKWEED, Plant.PlantType.STANDARD, -23f, 31f, 130f, 500f, 12, 15),
+            new Plant(NASTURTIUM, Plant.PlantType.STANDARD, -46f, 38f, 150f, 500, 12, 15),
+            new Plant(OXEYE_DAISY, Plant.PlantType.STANDARD, -40f, 33f, 120f, 300f, 9, 15),
+            new Plant(POPPY, Plant.PlantType.STANDARD, -40f, 36f, 150f, 250f, 12, 15),
+            new Plant(TROPICAL_MILKWEED, Plant.PlantType.STANDARD, -6f, 36f, 120f, 300f, 12, 15),
+            new Plant(TULIP_ORANGE, Plant.PlantType.STANDARD, -34f, 33f, 100f, 200f, 9, 15),
+            new Plant(TULIP_PINK, Plant.PlantType.STANDARD, -34f, 33f, 100f, 200f, 9, 15),
+            new Plant(TULIP_RED, Plant.PlantType.STANDARD, -34f, 33f, 100f, 200f, 9, 15),
+            new Plant(TULIP_WHITE, Plant.PlantType.STANDARD, -34f, 33f, 100f, 200f, 9, 15),
 
             // Desert Plants
-            new Plant(PETROVSKIA, -29f, 32f, 0f, 200f, Plant.PlantType.DESERT, 12, 15),
-            new Plant(SAGEBRUSH, -34f, 50f, 0f, 100f, Plant.PlantType.DESERT, 12, 15),
+            new Plant(PETROVSKIA, Plant.PlantType.DESERT, -29f, 32f, 0f, 200f, 12, 15),
+            new Plant(SAGEBRUSH, Plant.PlantType.DESERT, -34f, 50f, 0f, 100f, 12, 15),
 
             // Cactus Plants
-            new Plant(CACTUS, Material.CACTUS, -6f, 50f, 0f, 75f, Plant.PlantType.CACTUS, 12, 15),
+            new Plant(CACTUS, Plant.PlantType.CACTUS, -6f, 50f, 0f, 75f, 12, 15),
 
             // Double Plants
-            new Plant(FERN, -40f, 33f, 300f, 500f, Plant.PlantType.DOUBLE, 4, 11),
+            new Plant(FERN, Plant.PlantType.DOUBLE, -40f, 33f, 300f, 500f, 4, 11),
 
             // Creeping Plants
-            new Plant(BLUE_DAWN, -40f, 25f, 150f, 500f, Plant.PlantType.CREEPING, 12, 15),
-            new Plant(MOSS, -7f, 36f, 250f, 500f, Plant.PlantType.CREEPING, 0, 11),
+            new Plant(BLUE_DAWN, Plant.PlantType.CREEPING, -40f, 25f, 150f, 500f, 12, 15),
+            new Plant(MOSS, Plant.PlantType.CREEPING, -7f, 36f, 250f, 500f, 0, 11),
 
             // Floating Water Plants
-            new Plant(LILYPAD, -34f, 38f, 0f, 500f, Plant.PlantType.LILYPAD, 4, 15),
+            new Plant(LILYPAD, Plant.PlantType.FLOATING, -34f, 38f, 0f, 500f, 4, 15, 1, 1),
 
             // Grass
-            new Plant(RYEGRASS, Material.VINE, -46f, 32f, 150f, 500f, Plant.PlantType.SHORT_GRASS, 12, 15),
-            new Plant(SWITCHGRASS, Material.VINE, -29f, 32f, 100f, 300f, Plant.PlantType.TALL_GRASS, 9, 15)
+            new Plant(RYEGRASS, Plant.PlantType.SHORT_GRASS, -46f, 32f, 150f, 500f, 12, 15),
+            new Plant(SWITCHGRASS, Plant.PlantType.TALL_GRASS, -29f, 32f, 100f, 300f, 9, 15)
         );
     }
 }

@@ -29,7 +29,7 @@
       "10": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_nov-mar" } },
       "11": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_nov-mar" } }
     },
-    "time": {
+    "dayperiod": {
       "0": {},
       "1": {},
       "2": {},

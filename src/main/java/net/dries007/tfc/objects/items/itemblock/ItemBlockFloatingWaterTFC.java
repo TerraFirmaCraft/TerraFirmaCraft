@@ -29,18 +29,16 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.objects.blocks.plants.BlockLilyPadTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockFloatingWaterTFC;
 
-import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
-
-public class ItemBlockLilyPadTFC extends ItemBlockTFC
+public class ItemBlockFloatingWaterTFC extends ItemBlockTFC
 {
-    private BlockLilyPadTFC blockLilyPadTFC;
+    private BlockFloatingWaterTFC blockFloatingWaterTFC;
 
-    public ItemBlockLilyPadTFC(Block block)
+    public ItemBlockFloatingWaterTFC(Block block)
     {
         super(block);
-        blockLilyPadTFC = (BlockLilyPadTFC) block;
+        blockFloatingWaterTFC = (BlockFloatingWaterTFC) block;
     }
 
     @Override
@@ -79,18 +77,18 @@ public class ItemBlockLilyPadTFC extends ItemBlockTFC
                 BlockPos blockpos1 = blockpos.up();
                 IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-                if (iblockstate.getMaterial() == Material.WATER && ((Integer) iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0 && worldIn.isAirBlock(blockpos1) && iblockstate == FRESH_WATER)
+                if (iblockstate.getMaterial() == Material.WATER && ((Integer) iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0 && worldIn.isAirBlock(blockpos1) && iblockstate == blockFloatingWaterTFC.plant.getWaterType())
                 {
                     // special case for handling block placement with water lilies
                     net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(worldIn, blockpos1);
-                    worldIn.setBlockState(blockpos1, blockLilyPadTFC.getDefaultState());
+                    worldIn.setBlockState(blockpos1, blockFloatingWaterTFC.getDefaultState());
                     if (net.minecraftforge.event.ForgeEventFactory.onPlayerBlockPlace(playerIn, blocksnapshot, net.minecraft.util.EnumFacing.UP, handIn).isCanceled())
                     {
                         blocksnapshot.restore(true, false);
                         return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
                     }
 
-                    worldIn.setBlockState(blockpos1, blockLilyPadTFC.getDefaultState(), 11);
+                    worldIn.setBlockState(blockpos1, blockFloatingWaterTFC.getDefaultState(), 11);
 
                     if (playerIn instanceof EntityPlayerMP)
                     {
