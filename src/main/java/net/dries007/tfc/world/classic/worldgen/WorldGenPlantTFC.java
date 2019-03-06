@@ -8,6 +8,7 @@
 package net.dries007.tfc.world.classic.worldgen;
 
 import java.util.Random;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
@@ -24,6 +25,7 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
 
+@ParametersAreNonnullByDefault
 public class WorldGenPlantTFC extends WorldGenerator
 {
     private Plant plant;
@@ -110,7 +112,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                         (!worldIn.provider.isNether() || blockpos.up(k).getY() < 254) &&
                         plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
                     {
-                        worldIn.setBlockState(blockpos.up(k), state.withProperty(plantBlock.AGE, rand.nextInt(Math.max(1, Math.min(rand.nextInt(Math.round(10f + ((temp - 15) / (3.75f)))), 16)))), 2);
+                        worldIn.setBlockState(blockpos.up(k), state.withProperty(BlockDoublePlantTFC.AGE, rand.nextInt(Math.max(1, Math.min(rand.nextInt(Math.round(10f + ((temp - 15) / (3.75f)))), 16)))), 2);
                     }
                 }
             }
@@ -175,7 +177,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                     (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
                     plantBlock.canBlockStay(worldIn, blockpos, state))
                 {
-                    worldIn.setBlockState(blockpos, state.withProperty(plantBlock.AGE, rand.nextInt(Math.max(1, Math.min(rand.nextInt(Math.round(10f + ((temp - 15) / (3.75f)))), 16)))), 2);
+                    worldIn.setBlockState(blockpos, state.withProperty(BlockShortGrassTFC.AGE, rand.nextInt(Math.max(1, Math.min(rand.nextInt(Math.round(10f + ((temp - 15) / (3.75f)))), 16)))), 2);
                 }
             }
         }

@@ -7,11 +7,11 @@
 
 package net.dries007.tfc.objects.blocks.plants;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -24,9 +24,10 @@ import net.minecraft.world.IBlockAccess;
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.world.classic.CalenderTFC;
 
+@ParametersAreNonnullByDefault
 public class BlockStackPlantTFC extends BlockPlantTFC
 {
-    protected static final PropertyEnum<BlockStackPlantTFC.EnumBlockPart> PART = PropertyEnum.<BlockStackPlantTFC.EnumBlockPart>create("part", BlockStackPlantTFC.EnumBlockPart.class);
+    protected static final PropertyEnum<BlockStackPlantTFC.EnumBlockPart> PART = PropertyEnum.create("part", BlockStackPlantTFC.EnumBlockPart.class);
     private static final Map<Plant, BlockStackPlantTFC> MAP = new HashMap<>();
 
     public static BlockStackPlantTFC get(Plant plant)
@@ -66,17 +67,21 @@ public class BlockStackPlantTFC extends BlockPlantTFC
     }
 
     @Override
+    @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return state.withProperty(TIME, state.getValue(TIME)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
+    @Nonnull
+    @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, PART, TIME});
+        return new BlockStateContainer(this, GROWTHSTAGE, PART, TIME);
     }
 
     @Override
+    @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return FULL_BLOCK_AABB.offset(state.getOffset(source, pos));
@@ -99,7 +104,7 @@ public class BlockStackPlantTFC extends BlockPlantTFC
         return EnumBlockPart.SINGLE;
     }
 
-    public static enum EnumBlockPart implements IStringSerializable
+    public enum EnumBlockPart implements IStringSerializable
     {
         UPPER,
         MIDDLE,
@@ -113,10 +118,7 @@ public class BlockStackPlantTFC extends BlockPlantTFC
 
         public String getName()
         {
-            if (this == UPPER) return "upper";
-            if (this == MIDDLE) return "middle";
-            if (this == LOWER) return "lower";
-            return "single";
+            return name().toLowerCase();
         }
     }
 }

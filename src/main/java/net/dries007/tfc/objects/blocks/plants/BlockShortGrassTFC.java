@@ -7,14 +7,14 @@
 
 package net.dries007.tfc.objects.blocks.plants;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -26,6 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
@@ -35,6 +36,7 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 
+@ParametersAreNonnullByDefault
 public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
 {
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
@@ -61,6 +63,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
     }
 
     @Override
+    @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
@@ -73,12 +76,14 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
     }
 
     @Override
+    @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE, GROWTHSTAGE, TIME});
+        return new BlockStateContainer(this, AGE, GROWTHSTAGE, TIME);
     }
 
     @Override
+    @Nonnull
     public Block.EnumOffsetType getOffsetType()
     {
         return Block.EnumOffsetType.XZ;
@@ -127,6 +132,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
     }
 
     @Override
+    @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         switch (state.getValue(AGE))
@@ -155,9 +161,10 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
     }
 
     @Override
+    @Nonnull
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return null;
+        return Items.AIR;
     }
 
     @Override
@@ -183,8 +190,17 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
         return 1 + random.nextInt(fortune * 2 + 1);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
+    @Nonnull
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
+    {
+        return new ItemStack(this, 1);
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(this, 1);
     }
@@ -193,6 +209,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
     public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos) { return true; }
 
     @Override
+    @Nonnull
     public NonNullList<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
         return NonNullList.withSize(1, new ItemStack(this, 1));

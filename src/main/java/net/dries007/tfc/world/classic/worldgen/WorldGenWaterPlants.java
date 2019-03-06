@@ -18,6 +18,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 
 import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
 
+// todo: merge with other plant stuffs
 public class WorldGenWaterPlants extends WorldGenerator
 {
     @Override
