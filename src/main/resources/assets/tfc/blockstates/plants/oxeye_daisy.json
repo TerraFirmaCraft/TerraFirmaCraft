@@ -29,7 +29,7 @@
       "10": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } },
       "11": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } }
     },
-    "time": {
+    "dayperiod": {
       "0": {},
       "1": {},
       "2": {},

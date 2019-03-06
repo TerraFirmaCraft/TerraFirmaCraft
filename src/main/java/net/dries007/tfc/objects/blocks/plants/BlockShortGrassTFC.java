@@ -79,7 +79,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, AGE, GROWTHSTAGE, DAYPERIOD);
+        return new BlockStateContainer(this, new IProperty[] {AGE, GROWTHSTAGE, DAYPERIOD});
     }
 
     @Override
@@ -102,7 +102,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
             {
                 if (j > 0)
                 {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)));
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1));
                 }
                 else
                 {
@@ -119,7 +119,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
             {
                 if (j < 15)
                 {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)));
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1));
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }

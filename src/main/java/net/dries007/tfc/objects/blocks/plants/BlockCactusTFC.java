@@ -19,6 +19,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -63,7 +64,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
 
         setSoundType(SoundType.GROUND);
         setHardness(0.25F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, 0).withProperty(PART, EnumBlockPart.SINGLE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalendarTFC.Month.MARCH.id()).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
@@ -84,7 +85,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         worldIn.setBlockState(pos.up(), this.getDefaultState());
-        IBlockState iblockstate = state.withProperty(DAYPERIOD, getCurrentTime(worldIn)).withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, state.getValue(PART));
+        IBlockState iblockstate = state.withProperty(DAYPERIOD, getCurrentTime(worldIn)).withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
@@ -112,7 +113,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, state.getValue(DAYPERIOD)).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
+        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
@@ -133,7 +134,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id());
+        return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
     }
 
     @Override
@@ -153,11 +154,11 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
 
         if (currentTime != expectedTime)
         {
-            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, currentStage).withProperty(PART, state.getValue(PART)));
+            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, currentStage).withProperty(PART, getPlantPart(worldIn, pos)));
         }
         if (currentStage != expectedStage && random.nextDouble() < 0.5)
         {
-            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(AGE, state.getValue(AGE)).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, state.getValue(PART)));
+            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, getPlantPart(worldIn, pos)));
         }
         this.updateTick(worldIn, pos, state, random);
     }
@@ -203,7 +204,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
                 }
                 else
                 {
-                    worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, getCurrentTime(worldIn)).withProperty(AGE, j + 1).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, state.getValue(PART)));
+                    worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, getCurrentTime(worldIn)).withProperty(AGE, j + 1).withProperty(PART, getPlantPart(worldIn, pos)));
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
@@ -232,7 +233,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
                 }
             }
 
-            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
+            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTempRain(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);
     }

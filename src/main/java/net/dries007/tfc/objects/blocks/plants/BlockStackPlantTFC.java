@@ -70,14 +70,14 @@ public class BlockStackPlantTFC extends BlockPlantTFC
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, state.getValue(DAYPERIOD)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)).withProperty(PART, getPlantPart(worldIn, pos));
+        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Nonnull
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, GROWTHSTAGE, PART, DAYPERIOD);
+        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, PART, DAYPERIOD});
     }
 
     @Override

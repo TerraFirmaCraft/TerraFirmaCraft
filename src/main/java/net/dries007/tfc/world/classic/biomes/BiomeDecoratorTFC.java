@@ -87,11 +87,11 @@ public class BiomeDecoratorTFC extends BiomeDecorator
 
         for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
         {
-            if (plant.isValidLocation(temperature, rainfall))
+            if (plant.isValidTempRain(temperature, rainfall))
             {
                 plantGen.setGeneratedPlant(plant);
 
-                if (plant.getPlantType() == Plant.PlantType.LILYPAD)
+                if (plant.getPlantType() == Plant.PlantType.FLOATING || plant.getPlantType() == Plant.PlantType.FLOATING_SEA)
                 {
                     for (int i = 0; i < lilyPadPerChunk * floraDensity; i++)
                     {

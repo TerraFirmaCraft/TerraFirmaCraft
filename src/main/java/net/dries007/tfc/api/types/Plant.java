@@ -11,10 +11,16 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.objects.blocks.plants.*;
+
+import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
+import static net.dries007.tfc.world.classic.ChunkGenTFC.SALT_WATER;
 
 public class Plant extends IForgeRegistryEntry.Impl<Plant>
 {
@@ -24,6 +30,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     private final float maxRain;
     private final int minSun;
     private final int maxSun;
+    private final int minWaterDepth;
+    private final int maxWaterDepth;
 
     private final PlantType plantType;
     private final Material material;
@@ -35,16 +43,18 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      * When using this class, use the provided Builder to create your flowers. This will require all the default values, as well as
      * provide optional values that you can change
      *
-     * @param name     the ResourceLocation registry name of this flower
-     * @param material the Material of this flower, defaults to Material.PLANTS if not present
-     * @param minTemp  min temperature
-     * @param maxTemp  max temperature
-     * @param minRain  min rainfall
-     * @param maxRain  max rainfall
-     * @param minSun   min light level
-     * @param maxSun   max light level
+     * @param name          the ResourceLocation registry name of this flower
+     * @param plantType     the type of plant
+     * @param minTemp       min temperature
+     * @param maxTemp       max temperature
+     * @param minRain       min rainfall
+     * @param maxRain       max rainfall
+     * @param minSun        min light level
+     * @param maxSun        max light level
+     * @param minWaterDepth min water depth for water plants
+     * @param maxWaterDepth max water depth for water plants
      */
-    public Plant(@Nonnull ResourceLocation name, Material material, float minTemp, float maxTemp, float minRain, float maxRain, PlantType plantType, int minSun, int maxSun)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int minWaterDepth, int maxWaterDepth)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -52,24 +62,26 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         this.maxRain = maxRain;
         this.minSun = minSun;
         this.maxSun = maxSun;
+        this.minWaterDepth = minWaterDepth;
+        this.maxWaterDepth = maxWaterDepth;
 
         this.plantType = plantType;
-        this.material = material;
+        this.material = plantType.getPlantMaterial();
 
         setRegistryName(name);
     }
 
-    public Plant(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minRain, float maxRain, PlantType plantType, int minSun, int maxSun)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun)
     {
-        this(name, Material.PLANTS, minTemp, maxTemp, minRain, maxRain, plantType, minSun, maxSun);
+        this(name, plantType, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, 0, 0);
     }
 
     public boolean isValidLocation(float temp, float rain, int sunlight)
     {
-        return minTemp <= temp && maxTemp >= temp && minRain <= rain && maxRain >= rain && minSun <= sunlight && maxSun >= sunlight;
+        return isValidTempRain(temp, rain) && isValidSunlight(sunlight);
     }
 
-    public boolean isValidLocation(float temp, float rain)
+    public boolean isValidTempRain(float temp, float rain)
     {
         return minTemp <= temp && maxTemp >= temp && minRain <= rain && maxRain >= rain;
     }
@@ -77,6 +89,33 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     public boolean isValidSunlight(int sunlight)
     {
         return minSun <= sunlight && maxSun >= sunlight;
+    }
+
+    public boolean isValidFloatingWaterDepth(World world, BlockPos pos, IBlockState water)
+    {
+        int depthCounter = getMinWaterDepth();
+        int maxDepth = getMaxWaterDepth();
+
+        for (int i = 1; i <= depthCounter; ++i)
+        {
+            if (world.getBlockState(pos.down(i)) != water) return false;
+        }
+
+        while (world.getBlockState(pos.down(depthCounter)) == water)
+        {
+            depthCounter++;
+        }
+        return (maxDepth > 0) ? depthCounter <= maxDepth + 1 : false;
+    }
+
+    public int getMinWaterDepth()
+    {
+        return minWaterDepth;
+    }
+
+    public int getMaxWaterDepth()
+    {
+        return maxWaterDepth;
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -98,12 +137,25 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return material;
     }
 
+    public IBlockState getWaterType()
+    {
+        if (plantType == PlantType.FLOATING_SEA)
+        {
+            return SALT_WATER;
+        }
+        else
+        {
+            return FRESH_WATER;
+        }
+    }
+
     public enum PlantType
     {
         STANDARD(BlockPlantTFC::new),
         DOUBLE(BlockDoublePlantTFC::new),
         CREEPING(BlockCreepingPlantTFC::new),
-        LILYPAD(BlockLilyPadTFC::new),
+        FLOATING(BlockFloatingWaterTFC::new),
+        FLOATING_SEA(BlockFloatingWaterTFC::new),
         DESERT(BlockPlantTFC::new),
         CACTUS(BlockCactusTFC::new),
         SHORT_GRASS(BlockShortGrassTFC::new),
@@ -119,6 +171,20 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         public BlockPlantTFC create(Plant plant)
         {
             return supplier.apply(plant);
+        }
+
+        public final Material getPlantMaterial()
+        {
+            switch (this)
+            {
+                case CACTUS:
+                    return Material.CACTUS;
+                case SHORT_GRASS:
+                case TALL_GRASS:
+                    return Material.VINE;
+                default:
+                    return Material.PLANTS;
+            }
         }
     }
 }

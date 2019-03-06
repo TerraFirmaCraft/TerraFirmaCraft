@@ -41,7 +41,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     /* Growth Stage of the plant, tied to the month of year */
     public final static PropertyInteger GROWTHSTAGE = PropertyInteger.create("stage", 0, 11);
     /* Time of day, used for rendering plants that bloom at different times */
-    public final static PropertyInteger DAYPERIOD = PropertyInteger.create("time", 0, 3);
+    public final static PropertyInteger DAYPERIOD = PropertyInteger.create("dayperiod", 0, 3);
     private static final Map<Plant, BlockPlantTFC> MAP = new HashMap<>();
 
     public static BlockPlantTFC get(Plant plant)
@@ -88,7 +88,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, state.getValue(DAYPERIOD)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE));
+        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
     }
 
     @Override
@@ -135,7 +135,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD);
+        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, DAYPERIOD});
     }
 
     @Override
@@ -191,7 +191,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         IBlockState soil = worldIn.getBlockState(pos.down());
         if (state.getBlock() == this)
         {
-            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
+            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTempRain(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);
     }
