@@ -58,7 +58,7 @@ public class SimpleCraftMatrix
      * @param outsideSlotRequired If the recipe is smaller than MAX_WIDTH x MAX_HEIGHT, what is the slot outside of the recipe required to be?
      *                            true = outside slots need to be full
      *                            false = outside slots need to be empty
-     * @param pattern A list of strings. Each string is a row, each character is an element. ' ' represents empty, anything else is full
+     * @param pattern             A list of strings. Each string is a row, each character is an element. ' ' represents empty, anything else is full
      */
     public SimpleCraftMatrix(boolean outsideSlotRequired, String... pattern)
     {
@@ -127,6 +127,7 @@ public class SimpleCraftMatrix
 
     /**
      * Used to check if a craft matrix matches another one.
+     *
      * @param other Another craft matrix
      * @return if 'other' is a subset of the current craft matrix (i.e. other is found somewhere within the current matrix)
      */

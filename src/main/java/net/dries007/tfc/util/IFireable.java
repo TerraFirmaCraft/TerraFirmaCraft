@@ -45,8 +45,9 @@ public interface IFireable extends IPlaceableItem
 
     /**
      * Gets the result of the item after being fired
+     *
      * @param stack The item in question
-     * @param tier The tier of the firing device (Pit Kiln is {@link Metal.Tier#TIER_I})
+     * @param tier  The tier of the firing device (Pit Kiln is {@link Metal.Tier#TIER_I})
      * @return a new item stack
      */
     ItemStack getFiringResult(ItemStack stack, Metal.Tier tier);

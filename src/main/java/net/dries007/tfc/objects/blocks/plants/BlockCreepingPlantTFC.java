@@ -1,8 +1,6 @@
 /*
- *
- *  * Work under Copyright. Licensed under the EUPL.
- *  * See the project README.md and LICENSE.txt for more information.
- *
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  */
 
 package net.dries007.tfc.objects.blocks.plants;
@@ -59,14 +57,11 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         return BlockCreepingPlantTFC.MAP.get(plant);
     }
 
-    public final Plant plant;
-
     public BlockCreepingPlantTFC(Plant plant)
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.plant = plant;
         this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()).withProperty(DOWN, false).withProperty(UP, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(SOUTH, false).withProperty(WEST, false));
     }
 
@@ -85,6 +80,7 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     }
 
     @Override
+    @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id())
@@ -97,9 +93,10 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     }
 
     @Override
+    @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {DOWN, UP, NORTH, EAST, WEST, SOUTH, GROWTHSTAGE, DAYPERIOD});
+        return new BlockStateContainer(this, DOWN, UP, NORTH, EAST, WEST, SOUTH, GROWTHSTAGE, DAYPERIOD);
     }
 
     @Override

@@ -97,6 +97,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     /**
      * Add metal to an alloy from an item stack
      * Note if the an item doesn't implement {@link IMetalObject} it will be ignored, and {@link Alloy#isValid} will be set to false
+     *
      * @param stack an item stack
      * @return the alloy, for method chaining
      */
@@ -119,6 +120,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     /**
      * Copy the contents of one alloy into another
      * Does not modify the other alloy
+     *
      * @param other The other alloy
      * @return The alloy, for method chaining
      */
@@ -165,6 +167,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
 
     /**
      * Gets the result of mixing the alloy right now
+     *
      * @return the result metal. Unknown if it doesn't match any recipe
      */
     @Nonnull
@@ -243,6 +246,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
 
     /**
      * Gets the total amount of alloy created
+     *
      * @return The amount, rounded to the closest integer
      */
     public int getAmount()
@@ -252,6 +256,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
 
     /**
      * Note: this is not a check if the alloy will turn into unknown metal
+     *
      * @return is the alloy valid (set if it was constructed via ItemStacks and one ItemStack wasn't an IMetalObject)
      */
     public boolean isValid()

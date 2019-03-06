@@ -92,13 +92,6 @@ public class ItemMold extends ItemFiredPottery
         return super.getTranslationKey(stack);
     }
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        return new FilledMoldCapability(nbt);
-    }
-
     @Override
     @Nonnull
     public ItemStack getContainerItem(@Nonnull ItemStack itemStack)
@@ -112,6 +105,13 @@ public class ItemMold extends ItemFiredPottery
     public boolean hasContainerItem(ItemStack stack)
     {
         return type.getMoldReturnRate() >= 1;
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new FilledMoldCapability(nbt);
     }
 
     // Extends ItemHeatHandler for ease of use
@@ -139,51 +139,6 @@ public class ItemMold extends ItemFiredPottery
         public int getAmount()
         {
             return tank.getFluidAmount();
-        }
-
-        @Nullable
-        @Override
-        @SuppressWarnings("unchecked")
-        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-        {
-            return hasCapability(capability, facing) ? (T) this : null;
-        }
-
-        @Override
-        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-        {
-            return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
-                || capability == CapabilityItemHeat.ITEM_HEAT_CAPABILITY;
-        }
-
-        @Override
-        @Nonnull
-        public NBTTagCompound serializeNBT()
-        {
-            NBTTagCompound nbt = new NBTTagCompound();
-            float temp = getTemperature();
-            nbt.setFloat("heat", temp);
-            if (temp <= 0)
-            {
-                nbt.setLong("ticks", -1);
-            }
-            else
-            {
-                nbt.setLong("ticks", CalenderTFC.getTotalTime());
-            }
-            return tank.writeToNBT(nbt);
-        }
-
-        @Override
-        public void deserializeNBT(NBTTagCompound nbt)
-        {
-            if (nbt != null)
-            {
-                temperature = nbt.getFloat("heat");
-                lastUpdateTick = nbt.getLong("ticks");
-                tank.readFromNBT(nbt);
-            }
-            updateFluidData();
         }
 
         @Override
@@ -259,6 +214,51 @@ public class ItemMold extends ItemFiredPottery
         public float getMeltTemp()
         {
             return meltTemp;
+        }
+
+        @Override
+        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
+        {
+            return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+                || capability == CapabilityItemHeat.ITEM_HEAT_CAPABILITY;
+        }
+
+        @Nullable
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
+        {
+            return hasCapability(capability, facing) ? (T) this : null;
+        }
+
+        @Override
+        @Nonnull
+        public NBTTagCompound serializeNBT()
+        {
+            NBTTagCompound nbt = new NBTTagCompound();
+            float temp = getTemperature();
+            nbt.setFloat("heat", temp);
+            if (temp <= 0)
+            {
+                nbt.setLong("ticks", -1);
+            }
+            else
+            {
+                nbt.setLong("ticks", CalenderTFC.getTotalTime());
+            }
+            return tank.writeToNBT(nbt);
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt)
+        {
+            if (nbt != null)
+            {
+                temperature = nbt.getFloat("heat");
+                lastUpdateTick = nbt.getLong("ticks");
+                tank.readFromNBT(nbt);
+            }
+            updateFluidData();
         }
 
         private void updateFluidData()

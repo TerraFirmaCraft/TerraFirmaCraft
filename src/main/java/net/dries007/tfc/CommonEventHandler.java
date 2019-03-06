@@ -68,8 +68,8 @@ public final class CommonEventHandler
      * Notes:
      * 1) `onBlockActivate` doesn't get called when the player is sneaking, unless doesSneakBypassUse returns true.
      * 2) This event handler is fired first with the main hand as event.getStack()
-     *    If nothing happens (as per vanilla behavior, even if this event causes something to happen),
-     *    The event will fire AGAIN with the offhand and offhand stack.
+     * If nothing happens (as per vanilla behavior, even if this event causes something to happen),
+     * The event will fire AGAIN with the offhand and offhand stack.
      */
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)

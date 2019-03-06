@@ -68,19 +68,32 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize
         return Weight.LIGHT;
     }
 
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TETorchTFC();
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         if (!stateIn.getValue(LIT)) return;
         super.randomDisplayTick(stateIn, worldIn, pos, rand);
+    }
+
+    @Override
+    @Nonnull
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(LIT, meta >= 8).withProperty(FACING, EnumFacing.byIndex(meta & 0b111));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return (state.getValue(LIT) ? 8 : 0) + state.getValue(FACING).getIndex();
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, FACING, LIT);
     }
 
     @Override
@@ -109,28 +122,15 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize
     }
 
     @Override
-    @Nonnull
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return getDefaultState().withProperty(LIT, meta >= 8).withProperty(FACING, EnumFacing.byIndex(meta & 0b111));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return (state.getValue(LIT) ? 8 : 0) + state.getValue(FACING).getIndex();
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING, LIT);
-    }
-
-    @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TETorchTFC();
     }
 }

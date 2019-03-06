@@ -23,21 +23,13 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.blocks.devices.*;
 import net.dries007.tfc.api.types.*;
+import net.dries007.tfc.objects.blocks.devices.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
-import net.dries007.tfc.objects.blocks.stone.*;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
-import net.dries007.tfc.objects.blocks.stone.BlockWallTFC;
+import net.dries007.tfc.objects.blocks.stone.*;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockFloatingWaterTFC;
@@ -410,7 +402,7 @@ public final class BlocksTFC
             allPlantBlocks = b.build();
             for (BlockPlantTFC blockPlant : allPlantBlocks)
             {
-                if (blockPlant.getType() == Plant.PlantType.FLOATING || blockPlant.getType() == Plant.PlantType.FLOATING_SEA)
+                if (blockPlant.getPlant().getPlantType() == Plant.PlantType.FLOATING || blockPlant.getPlant().getPlantType() == Plant.PlantType.FLOATING_SEA)
                 {
                     inventoryItemBlocks.add(new ItemBlockFloatingWaterTFC(blockPlant));
                 }

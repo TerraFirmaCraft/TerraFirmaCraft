@@ -87,6 +87,20 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
     }
 
     @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
+    {
+        return capability == CapabilityForgeable.FORGEABLE_CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Nullable
+    @Override
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        return hasCapability(capability, facing) ? (T) this : null;
+    }
+
+    @Override
     @Nonnull
     public NBTTagCompound serializeNBT()
     {
@@ -112,19 +126,5 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
             steps.deserializeNBT(nbt.getCompoundTag("steps"));
         }
         super.deserializeNBT(nbt);
-    }
-
-    @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        return capability == CapabilityForgeable.FORGEABLE_CAPABILITY || super.hasCapability(capability, facing);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Nullable
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        return hasCapability(capability, facing) ? (T) this : null;
     }
 }

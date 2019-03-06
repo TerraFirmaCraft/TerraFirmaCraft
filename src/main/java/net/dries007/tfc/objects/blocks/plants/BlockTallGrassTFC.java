@@ -1,8 +1,6 @@
 /*
- *
- *  * Work under Copyright. Licensed under the EUPL.
- *  * See the project README.md and LICENSE.txt for more information.
- *
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  */
 
 package net.dries007.tfc.objects.blocks.plants;
@@ -46,14 +44,11 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
         return BlockTallGrassTFC.MAP.get(plant);
     }
 
-    public final Plant plant;
-
     public BlockTallGrassTFC(Plant plant)
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.plant = plant;
         this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
     }
 

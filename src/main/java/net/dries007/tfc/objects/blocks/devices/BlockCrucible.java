@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.blocks.devices;
 
 import java.util.List;
@@ -46,6 +51,13 @@ public class BlockCrucible extends Block
 
     @SuppressWarnings("deprecation")
     @Override
+    public boolean isTopSolid(IBlockState state)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
     public boolean isFullBlock(IBlockState state)
     {
         return false;
@@ -80,23 +92,6 @@ public class BlockCrucible extends Block
         return CRUCIBLE_AABB;
     }
 
-    @SuppressWarnings("deprecation")
-    @Nullable
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        return CRUCIBLE_AABB;
-    }
-
-    @SuppressWarnings("deprecation")
-    @SideOnly(Side.CLIENT)
-    @Override
-    @Nonnull
-    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
-    {
-        return CRUCIBLE_AABB;
-    }
-
     @Override
     @Nonnull
     @SuppressWarnings("deprecation")
@@ -118,6 +113,30 @@ public class BlockCrucible extends Block
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_NORTH);
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_EAST);
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_SOUTH);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Nullable
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return CRUCIBLE_AABB;
+    }
+
+    @SuppressWarnings("deprecation")
+    @SideOnly(Side.CLIENT)
+    @Override
+    @Nonnull
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
+    {
+        return CRUCIBLE_AABB;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
     }
 
     @Override
@@ -154,19 +173,5 @@ public class BlockCrucible extends Block
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TECrucible();
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isTopSolid(IBlockState state)
-    {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
     }
 }

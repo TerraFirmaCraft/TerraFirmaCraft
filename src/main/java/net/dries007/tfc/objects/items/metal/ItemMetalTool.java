@@ -223,15 +223,15 @@ public class ItemMetalTool extends ItemMetal
     }
 
     @Override
-    public boolean canStack(ItemStack stack)
-    {
-        return false;
-    }
-
-    @Override
     public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
     {
         // Hammers need to activate anvils for welding
         return this.type == Metal.ItemType.HAMMER || super.doesSneakBypassUse(stack, world, pos, player);
+    }
+
+    @Override
+    public boolean canStack(ItemStack stack)
+    {
+        return false;
     }
 }

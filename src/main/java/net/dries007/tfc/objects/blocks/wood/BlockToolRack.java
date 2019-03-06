@@ -151,31 +151,11 @@ public class BlockToolRack extends BlockContainer implements IItemSize
         return super.canPlaceBlockAt(worldIn, pos) && Helpers.getASolidFacing(worldIn, pos, null, EnumFacing.HORIZONTALS) != null;
     }
 
-    public int getSlotFromPos(IBlockState state, float x, float y, float z)
-    {
-        int slot = 0;
-        if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f) slot += 1;
-        if (y < .5f) slot += 2;
-        return slot;
-    }
-
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
         if (te == null) return true;
         return te.onRightClick(playerIn, hand, getSlotFromPos(state, hitX, hitY, hitZ));
-    }
-
-    @Override
-    @Nonnull
-    public ItemStack getPickBlock(@Nonnull IBlockState state, RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, EntityPlayer player)
-    {
-        Vec3d vec = target.hitVec.subtract(pos.getX(), pos.getY(), pos.getZ());
-        TEToolRack te = Helpers.getTE(world, pos, TEToolRack.class);
-        if (te == null) return new ItemStack(this);
-        ItemStack item = te.getItems().get(getSlotFromPos(state, (float) vec.x, (float) vec.y, (float) vec.z));
-        if (item == ItemStack.EMPTY) return new ItemStack(this);
-        return item;
     }
 
     @Override
@@ -193,6 +173,26 @@ public class BlockToolRack extends BlockContainer implements IItemSize
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACING);
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getPickBlock(@Nonnull IBlockState state, RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, EntityPlayer player)
+    {
+        Vec3d vec = target.hitVec.subtract(pos.getX(), pos.getY(), pos.getZ());
+        TEToolRack te = Helpers.getTE(world, pos, TEToolRack.class);
+        if (te == null) return new ItemStack(this);
+        ItemStack item = te.getItems().get(getSlotFromPos(state, (float) vec.x, (float) vec.y, (float) vec.z));
+        if (item == ItemStack.EMPTY) return new ItemStack(this);
+        return item;
+    }
+
+    public int getSlotFromPos(IBlockState state, float x, float y, float z)
+    {
+        int slot = 0;
+        if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f) slot += 1;
+        if (y < .5f) slot += 2;
+        return slot;
     }
 
     @Override

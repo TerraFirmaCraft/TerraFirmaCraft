@@ -24,12 +24,6 @@ public class ContainerFirePit extends ContainerTE<TEFirePit>
     }
 
     @Override
-    protected int[] getSlotShiftOrder(int containerSlots)
-    {
-        return SLOT_SHIFT_ORDER;
-    }
-
-    @Override
     protected void addContainerSlots()
     {
         IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -44,5 +38,11 @@ public class ContainerFirePit extends ContainerTE<TEFirePit>
             addSlotToContainer(new SlotTEInput(inventory, SLOT_OUTPUT_1, 71, 48, tile));
             addSlotToContainer(new SlotTEInput(inventory, SLOT_OUTPUT_2, 89, 48, tile));
         }
+    }
+
+    @Override
+    protected int[] getSlotShiftOrder(int containerSlots)
+    {
+        return SLOT_SHIFT_ORDER;
     }
 }

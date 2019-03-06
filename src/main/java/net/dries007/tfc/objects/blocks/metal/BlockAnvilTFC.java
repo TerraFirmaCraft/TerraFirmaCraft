@@ -204,6 +204,16 @@ public class BlockAnvilTFC extends Block
     }
 
     @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    {
+        if (!worldIn.isRemote && te instanceof TEInventory)
+        {
+            ((TEInventory) te).onBreakBlock(worldIn, pos);
+        }
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
+    }
+
+    @Override
     public BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, AXIS);
@@ -213,12 +223,6 @@ public class BlockAnvilTFC extends Block
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return false;
-    }
-
-    @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        return new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL));
     }
 
     @Override
@@ -235,13 +239,9 @@ public class BlockAnvilTFC extends Block
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        if (!worldIn.isRemote && te instanceof TEInventory)
-        {
-            ((TEInventory) te).onBreakBlock(worldIn, pos);
-        }
-        super.harvestBlock(worldIn, player, pos, state, te, stack);
+        return new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL));
     }
 
     public Metal getMetal()

@@ -47,6 +47,31 @@ public class GuiKnapping extends GuiContainerTFC
     }
 
     @Override
+    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick)
+    {
+        if (clickedMouseButton == 0)
+        {
+            for (GuiButton button : this.buttonList)
+            {
+                if (button instanceof GuiButtonKnapping && button.mousePressed(mc, mouseX, mouseY))
+                {
+                    GuiScreenEvent.ActionPerformedEvent.Pre event = new GuiScreenEvent.ActionPerformedEvent.Pre(this, button, buttonList);
+                    if (MinecraftForge.EVENT_BUS.post(event))
+                        break;
+                    else if (selectedButton == event.getButton())
+                        continue;
+
+                    selectedButton = event.getButton();
+                    event.getButton().mousePressed(mc, mouseX, mouseY);
+                    actionPerformed(event.getButton());
+
+                    MinecraftForge.EVENT_BUS.post(new GuiScreenEvent.ActionPerformedEvent.Post(this, event.getButton(), buttonList));
+                }
+            }
+        }
+    }
+
+    @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         // Check if the container has been updated
@@ -71,31 +96,6 @@ public class GuiKnapping extends GuiContainerTFC
         {
             ((GuiButtonKnapping) button).onClick();
             button.playPressSound(mc.getSoundHandler());
-        }
-    }
-
-    @Override
-    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick)
-    {
-        if (clickedMouseButton == 0)
-        {
-            for (GuiButton button : this.buttonList)
-            {
-                if (button instanceof GuiButtonKnapping && button.mousePressed(mc, mouseX, mouseY))
-                {
-                    GuiScreenEvent.ActionPerformedEvent.Pre event = new GuiScreenEvent.ActionPerformedEvent.Pre(this, button, buttonList);
-                    if (MinecraftForge.EVENT_BUS.post(event))
-                        break;
-                    else if (selectedButton == event.getButton())
-                        continue;
-
-                    selectedButton = event.getButton();
-                    event.getButton().mousePressed(mc, mouseX, mouseY);
-                    actionPerformed(event.getButton());
-
-                    MinecraftForge.EVENT_BUS.post(new GuiScreenEvent.ActionPerformedEvent.Post(this, event.getButton(), buttonList));
-                }
-            }
         }
     }
 }

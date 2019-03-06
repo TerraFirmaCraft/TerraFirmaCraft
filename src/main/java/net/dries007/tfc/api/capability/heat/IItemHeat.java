@@ -28,19 +28,19 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
     float getTemperature();
 
     /**
+     * Sets the temperature. Used for anything that modifies the temperature.
+     *
+     * @param temperature the temperature to set.
+     */
+    void setTemperature(float temperature);
+
+    /**
      * Gets the Heat capacity. (A measure of how fast this items heats up or cools down)
      * Implementation is left up to the heating object. (See TEFirePit for example)
      *
      * @return the heat capacity. Typically 0 - 1, can be outside this range, must be non-negative
      */
     float getHeatCapacity();
-
-    /**
-     * Sets the temperature. Used for anything that modifies the temperature.
-     *
-     * @param temperature the temperature to set.
-     */
-    void setTemperature(float temperature);
 
     /**
      * Gets the melting point of the item.

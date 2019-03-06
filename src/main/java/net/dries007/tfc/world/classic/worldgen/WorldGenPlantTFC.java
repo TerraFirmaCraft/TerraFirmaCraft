@@ -1,8 +1,6 @@
 /*
- *
- *  * Work under Copyright. Licensed under the EUPL.
- *  * See the project README.md and LICENSE.txt for more information.
- *
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  */
 
 package net.dries007.tfc.world.classic.worldgen;
@@ -22,8 +20,6 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.plants.*;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
-
-import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
 
 @ParametersAreNonnullByDefault
 public class WorldGenPlantTFC extends WorldGenerator
