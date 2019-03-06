@@ -67,19 +67,6 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
     }
 
-/*
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        if (state.getValue(GROWTHSTAGE) < 11)
-        {
-            worldIn.setBlockState(pos, state.withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE)+1));
-        }
-        else worldIn.setBlockState(pos, state.withProperty(GROWTHSTAGE, 0));
-        return true;
-    }
-*/
-
     public int getCurrentTime(World world)
     {
         return Math.floorDiv(Math.toIntExact(world.getWorldTime() % 24000), 6000);
@@ -106,7 +93,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
     {
-        return true;
+        return worldIn.getBlockState(pos).getBlock() != this;
     }
 
     @Override

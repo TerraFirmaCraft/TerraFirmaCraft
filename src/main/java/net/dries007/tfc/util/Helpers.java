@@ -26,13 +26,16 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.objects.blocks.BlockPeat;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.plants.BlockTallGrassTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockShortGrassTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public final class Helpers
 {
@@ -84,13 +87,18 @@ public final class Helpers
                 }
             }
 
-            if (BlocksTFC.TALL_GRASS.canPlaceBlockAt(world, pos.up()) &&
-                ClimateTFC.getHeightAdjustedBiomeTemp(world, pos.up()) > 20 &&
-                ClimateTFC.getHeightAdjustedBiomeTemp(world, pos.up()) < 35 &&
-                world.isDaytime() &&
-                rand.nextDouble() < BlocksTFC.TALL_GRASS.getGrowthRate(world))
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {
-                world.setBlockState(pos.up(), BlocksTFC.TALL_GRASS.getDefaultState().withProperty(BlockTallGrassTFC.TYPE, BlocksTFC.TALL_GRASS.getBiomePlantType(world, pos.up())), 2);
+                float temp = ClimateTFC.getHeightAdjustedBiomeTemp(world, pos.up());
+
+                if (world.isAirBlock(pos.up()) &&
+                    plant.getPlantType() == Plant.PlantType.SHORTGRASS &&
+                    plant.isValidLocation(temp, ChunkDataTFC.getRainfall(world, pos.up()), world.getLightFromNeighbors(pos.up())) &&
+                    temp > 15 &&
+                    rand.nextFloat() < BlockShortGrassTFC.get(plant, plant.getPlantType()).getGrowthRate(world, pos.up()))
+                {
+                    world.setBlockState(pos.up(), BlockShortGrassTFC.get(plant, plant.getPlantType()).getDefaultState());
+                }
             }
         }
     }
