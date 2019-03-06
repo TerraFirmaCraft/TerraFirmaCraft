@@ -12,8 +12,6 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import net.dries007.tfc.world.classic.CalenderTFC;
-
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
@@ -43,9 +41,6 @@ public class ConfigTFC
         if (event.getModID().equals(MOD_ID))
         {
             TerraFirmaCraft.getLog().warn("Config changed");
-
-            CalenderTFC.reload();
-
             ConfigManager.sync(MOD_ID, Config.Type.INSTANCE);
         }
     }

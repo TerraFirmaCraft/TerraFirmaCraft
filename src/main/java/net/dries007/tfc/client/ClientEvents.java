@@ -98,7 +98,7 @@ public class ClientEvents
                         WHITE, data.getAverageTemp(), GRAY,
                         WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)
                     ));
-                    list.add(String.format("%sTime: %s%02d:%02d %04d/%02d/%02d",
+                    list.add(CalenderTFC.getTimeAndDate());/*String.format("%sTime: %s%02d:%02d %04d/%02d/%02d",
                         GRAY, WHITE,
                         CalenderTFC.getHourOfDay(),
                         CalenderTFC.getMinuteOfHour(),
@@ -106,7 +106,7 @@ public class ClientEvents
                         CalenderTFC.getMonthOfYear().id(),
                         CalenderTFC.getDayOfMonth()
                         )
-                    );
+                    );*/
 
                     list.add(GRAY + "Biome: " + WHITE + mc.world.getBiome(blockpos).getBiomeName());
 

@@ -52,7 +52,7 @@ public class BlockLilyPadTFC extends BlockPlantTFC
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.plant = plant;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTH_STAGE, CalenderTFC.Month.MARCH.id()));
     }
 
     @SuppressWarnings("deprecation")
@@ -76,13 +76,13 @@ public class BlockLilyPadTFC extends BlockPlantTFC
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(TIME, state.getValue(TIME)).withProperty(GROWTHSTAGE, state.getValue(GROWTHSTAGE));
+        return state.withProperty(TIME_OF_DAY, state.getValue(TIME_OF_DAY)).withProperty(GROWTH_STAGE, state.getValue(GROWTH_STAGE));
     }
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(TIME, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, this.blockState.getBaseState().withProperty(TIME_OF_DAY, getCurrentTime(world)).withProperty(GROWTH_STAGE, CalenderTFC.getMonthOfYear().id()));
         this.checkAndDropBlock(world, pos, state);
     }
 
@@ -90,7 +90,7 @@ public class BlockLilyPadTFC extends BlockPlantTFC
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, GROWTHSTAGE, TIME);
+        return new BlockStateContainer(this, GROWTH_STAGE, TIME_OF_DAY);
     }
 
     @Override

@@ -22,7 +22,7 @@ import net.dries007.tfc.api.capability.heat.IItemHeat;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class HeatCommand extends CommandBase
+public class CommandHeat extends CommandBase
 {
     @Override
     public String getName()

@@ -21,9 +21,10 @@ import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCKeybindings;
-import net.dries007.tfc.cmd.HeatCommand;
-import net.dries007.tfc.cmd.StripWorldCommand;
-import net.dries007.tfc.cmd.TreeGenCommand;
+import net.dries007.tfc.cmd.CommandGenTree;
+import net.dries007.tfc.cmd.CommandHeat;
+import net.dries007.tfc.cmd.CommandStripWorld;
+import net.dries007.tfc.cmd.CommandTimeTFC;
 import net.dries007.tfc.network.*;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -123,10 +124,10 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketCrucibleUpdate.Handler(), PacketCrucibleUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketChunkData.Handler(), PacketChunkData.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketCapabilityContainerUpdate.Handler(), PacketCapabilityContainerUpdate.class, ++id, Side.CLIENT);
-
-        CalenderTFC.reload();
+        network.registerMessage(new PacketCalendarUpdate.Handler(), PacketCalendarUpdate.class, ++id, Side.CLIENT);
 
         EntitiesTFC.preInit();
+        CalenderTFC.preInit();
         OreSpawnData.preInit(event.getModConfigurationDirectory());
 
         CapabilityChunkData.preInit();
@@ -183,9 +184,10 @@ public final class TerraFirmaCraft
     {
         if (!isSignedBuild)
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
-        event.registerServerCommand(new StripWorldCommand());
-        event.registerServerCommand(new TreeGenCommand());
-        event.registerServerCommand(new HeatCommand());
+        event.registerServerCommand(new CommandStripWorld());
+        event.registerServerCommand(new CommandGenTree());
+        event.registerServerCommand(new CommandHeat());
+        event.registerServerCommand(new CommandTimeTFC());
     }
 
     @Mod.EventHandler

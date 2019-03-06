@@ -22,7 +22,7 @@ import net.minecraftforge.fluids.BlockFluidBase;
 
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 
-public class StripWorldCommand extends CommandBase
+public class CommandStripWorld extends CommandBase
 {
     @Override
     public String getName()
