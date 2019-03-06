@@ -56,7 +56,12 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.plant = plant;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+    }
+
+    public void setAge(World world, BlockPos pos, int age)
+    {
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(AGE, age), 2);
     }
 
     @Override
