@@ -43,6 +43,7 @@ public final class Registries
         newRegistry(METAL, Metal.class, true);// Required before: ORE, ALLOY_RECIPE, WELDING_RECIPE
         newRegistry(ORE, Ore.class, true);
         newRegistry(TREE, Tree.class, true);
+        newRegistry(PLANT, Plant.class, true);
 
         // Normal registries
         newRegistry(ALLOY_RECIPE, AlloyRecipe.class, false);

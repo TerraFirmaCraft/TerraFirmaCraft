@@ -34,6 +34,8 @@ public class TFCRegistries
     public static final IForgeRegistry<AnvilRecipe> ANVIL = GameRegistry.findRegistry(AnvilRecipe.class);
     public static final IForgeRegistry<WeldingRecipe> WELDING = GameRegistry.findRegistry(WeldingRecipe.class);
 
+    public static final IForgeRegistry<Plant> PLANTS = GameRegistry.findRegistry(Plant.class);
+
     static
     {
         // Make sure all public static final fields have values, should stop people from prematurely loading this class.

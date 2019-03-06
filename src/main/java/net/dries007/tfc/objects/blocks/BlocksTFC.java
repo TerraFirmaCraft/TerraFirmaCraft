@@ -28,13 +28,20 @@ import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.devices.*;
+import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
 import net.dries007.tfc.objects.blocks.stone.*;
+import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.stone.BlockWallTFC;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockHeat;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockLilyPadTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTorchTFC;
 import net.dries007.tfc.objects.te.*;
@@ -129,6 +136,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockAnvilTFC> allAnvils;
     private static ImmutableList<BlockSheet> allSheets;
     private static ImmutableList<BlockToolRack> allToolRackBlocks;
+    private static ImmutableList<BlockPlantTFC> allPlantBlocks;
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
     {
@@ -220,6 +228,11 @@ public final class BlocksTFC
         return allToolRackBlocks;
     }
 
+    public static ImmutableList<BlockPlantTFC> getAllPlantBlocks()
+    {
+        return allPlantBlocks;
+    }
+
     @SubscribeEvent
     @SuppressWarnings("ConstantConditions")
     public static void registerBlocks(RegistryEvent.Register<Block> event)
@@ -287,6 +300,7 @@ public final class BlocksTFC
             Builder<BlockTrapDoorWoodTFC> trapDoors = ImmutableList.builder();
             Builder<BlockChestTFC> chests = ImmutableList.builder();
             Builder<BlockToolRack> toolRacks = ImmutableList.builder();
+            Builder<BlockPlantTFC> plants = ImmutableList.builder();
 
             for (Tree wood : TFCRegistries.TREES.getValuesCollection())
             {
@@ -387,6 +401,26 @@ public final class BlocksTFC
             allSheets = sheets.build();
         }
 
+        {
+            Builder<BlockPlantTFC> b = ImmutableList.builder();
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+            {
+                b.add(register(r, "plants/" + plant.getRegistryName().getPath(), plant.getPlantType().create(plant), CT_DECORATIONS));
+            }
+            allPlantBlocks = b.build();
+            for (BlockPlantTFC blockPlant : allPlantBlocks)
+            {
+                if (blockPlant.getType() == Plant.PlantType.LILYPAD)
+                {
+                    inventoryItemBlocks.add(new ItemBlockLilyPadTFC(blockPlant));
+                }
+                else
+                {
+                    normalItemBlocks.add(new ItemBlockTFC(blockPlant));
+                }
+            }
+        }
+
         inventoryItemBlocks.add(new ItemBlockTorchTFC(register(r, "torch", new BlockTorchTFC(), CT_MISC)));
 
         // technical blocks
@@ -399,14 +433,9 @@ public final class BlocksTFC
         register(r, "log_pile", new BlockLogPile());
         register(r, "pit_kiln", new BlockPitKiln());
 
-        // todo: cactus ?
         // todo: reeds/sugarcane ?
         // todo: pumpkin/melon ?
         // todo: waterplants
-        // todo: varied lilypads?
-        // todo: plants
-        // todo: flowers
-        // todo: moss? (It's unused in tfc1710, but it's like a retextured vine that spawns on trees, might be nice to have)
         // todo: fruit tree stuff (leaves, saplings, logs)
 
         // todo: supports (h & v)
