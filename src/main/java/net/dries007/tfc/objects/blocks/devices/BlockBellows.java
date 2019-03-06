@@ -3,13 +3,13 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks;
+package net.dries007.tfc.objects.blocks.devices;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -30,7 +30,8 @@ import net.dries007.tfc.util.Helpers;
 
 import static net.minecraft.block.BlockHorizontal.FACING;
 
-public class BlockBellows extends Block implements ITileEntityProvider
+@ParametersAreNonnullByDefault
+public class BlockBellows extends Block
 {
     public BlockBellows()
     {
@@ -39,9 +40,15 @@ public class BlockBellows extends Block implements ITileEntityProvider
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(@Nullable World worldIn, int meta)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEBellows();
     }

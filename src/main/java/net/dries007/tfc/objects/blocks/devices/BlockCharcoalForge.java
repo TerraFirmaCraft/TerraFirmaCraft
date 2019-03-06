@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks;
+package net.dries007.tfc.objects.blocks.devices;
 
 import java.util.Random;
 import javax.annotation.Nonnull;
@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -19,7 +18,6 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,17 +31,17 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.IBellowsHandler;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEBellows;
 import net.dries007.tfc.objects.te.TECharcoalForge;
 import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.IBellowsHandler;
+import net.dries007.tfc.util.IHeatProviderBlock;
 
 @ParametersAreNonnullByDefault
-public class BlockCharcoalForge extends Block implements ITileEntityProvider, IBellowsHandler
+public class BlockCharcoalForge extends Block implements IBellowsHandler, IHeatProviderBlock
 {
     public static final PropertyBool LIT = PropertyBool.create("lit");
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
@@ -79,57 +77,15 @@ public class BlockCharcoalForge extends Block implements ITileEntityProvider, IB
         return true;
     }
 
-    @Override
-    public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
-    {
-        return offset.equals(BELLOWS_OFFSET);
-    }
-
-    @Override
-    public float onAirIntake(TEBellows te, World world, BlockPos pos, float airAmount)
-    {
-        TerraFirmaCraft.getLog().info("Making bellows stuff!");
-        TECharcoalForge teForge = Helpers.getTE(world, pos, TECharcoalForge.class);
-        if (teForge != null)
-        {
-            teForge.onAirIntake(airAmount);
-        }
-        return airAmount;
-    }
-
     public static boolean hasValidChimney(World world, BlockPos pos)
     {
-        if (world.canBlockSeeSky(pos))
-        {
-            // Trivial case, chimney above the forge
-            return true;
-        }
-        for (EnumFacing face : EnumFacing.HORIZONTALS)
-        {
-            // Chimney is offset by one
-            BlockPos pos1 = pos.offset(face);
-            if (world.getBlockState(pos1.up()).getBlock() != Blocks.AIR)
-            {
-                // If the block one up, one to the side is not air, no valid chimneys appear in this direction
-                continue;
-            }
-
-            if (world.canBlockSeeSky(pos1))
-            {
-                // Chimney one block away
-                return true;
-            }
-
-            if (world.canBlockSeeSky(pos1.offset(face)) && world.getBlockState(pos.offset(face).up()).getBlock() == Blocks.AIR)
-            {
-                // Chimney two blocks away
-                return true;
-            }
-        }
-        return false;
+        BlockPos posUp = pos.up();
+        IBlockState stateUp = world.getBlockState(posUp);
+        // todo: better checks for this involving air and crucible
+        return true;
     }
 
-    BlockCharcoalForge()
+    public BlockCharcoalForge()
     {
         super(Material.GROUND);
 
@@ -140,11 +96,32 @@ public class BlockCharcoalForge extends Block implements ITileEntityProvider, IB
         this.setDefaultState(this.blockState.getBaseState().withProperty(LIT, false));
     }
 
-    @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
     {
-        return new TECharcoalForge();
+        return offset.equals(BELLOWS_OFFSET);
+    }
+
+    @Override
+    public float onAirIntake(TEBellows te, World world, BlockPos pos, float airAmount)
+    {
+        TECharcoalForge teForge = Helpers.getTE(world, pos, TECharcoalForge.class);
+        if (teForge != null)
+        {
+            teForge.onAirIntake(airAmount);
+        }
+        return airAmount;
+    }
+
+    @Override
+    public float getTemperature(World world, BlockPos pos)
+    {
+        TECharcoalForge te = Helpers.getTE(world, pos, TECharcoalForge.class);
+        if (te != null)
+        {
+            return te.getTemperature();
+        }
+        return 0;
     }
 
     @Override
@@ -197,16 +174,6 @@ public class BlockCharcoalForge extends Block implements ITileEntityProvider, IB
     public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return AABB;
-    }
-
-    @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
-    {
-        if (!worldIn.isRemote && te instanceof TEInventory)
-        {
-            ((TEInventory) te).onBreakBlock(worldIn, pos);
-        }
-        super.harvestBlock(worldIn, player, pos, state, te, stack);
     }
 
     @Override
@@ -281,10 +248,33 @@ public class BlockCharcoalForge extends Block implements ITileEntityProvider, IB
     }
 
     @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    {
+        if (!worldIn.isRemote && te instanceof TEInventory)
+        {
+            ((TEInventory) te).onBreakBlock(worldIn, pos);
+        }
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
+    }
+
+    @Override
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, LIT);
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TECharcoalForge();
     }
 
     @Override

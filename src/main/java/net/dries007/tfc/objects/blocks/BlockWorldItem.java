@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -40,7 +39,7 @@ import net.dries007.tfc.util.Helpers;
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlockWorldItem extends Block implements ITileEntityProvider
+public class BlockWorldItem extends Block
 {
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.25D, 0D, 0.25D, 0.75D, 0.0625D, 0.75D);
 
@@ -52,7 +51,14 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEWorldItem();
     }

@@ -219,6 +219,8 @@ public abstract class ContainerTE<T extends TEInventory> extends Container
 
     /**
      * Helper method for overriding just container insertion priority
+     * The method {@link ContainerTE#transferStackInSlot(EntityPlayer, int)} will search through slots given by this order.
+     * Slots with constrained input should be first, general purpose slots later in order to have the best shift-click experience
      */
     protected int[] getSlotShiftOrder(int containerSlots)
     {

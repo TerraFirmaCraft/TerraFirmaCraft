@@ -14,7 +14,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -34,10 +33,10 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.world.classic.CalenderTFC;
 
 @ParametersAreNonnullByDefault
-public class BlockSaplingTFC extends BlockBush implements IGrowable, ITileEntityProvider
+public class BlockSaplingTFC extends BlockBush implements IGrowable
 {
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 4);
-    protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
+    protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0, 0.1, 0.9, 0., 0.9);
     private static final Map<Tree, BlockSaplingTFC> MAP = new HashMap<>();
 
     public static BlockSaplingTFC get(Tree wood)
@@ -49,13 +48,13 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable, ITileEntity
 
     public BlockSaplingTFC(Tree wood)
     {
-        super();
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         this.wood = wood;
         setDefaultState(blockState.getBaseState().withProperty(STAGE, 0));
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
         OreDictionaryHelper.register(this, "tree", "sapling");
+        //noinspection ConstantConditions
         OreDictionaryHelper.register(this, "tree", "sapling", wood.getRegistryName().getPath());
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
@@ -109,13 +108,6 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable, ITileEntity
                 {
                     grow(world, random, pos, state);
                 }
-                // This is a hack to make saplings grow faster if the block underneath the dirt is glass. Useful for testing
-                /*if (world.getBlockState(pos.down(2)) == Blocks.GLASS.getDefaultState())
-                {
-                    te.timer -= 10;
-                    te.markDirty();
-                    TerraFirmaCraft.getLog().info("Hacking the timer! New time:" + te.getHoursSincePlaced());
-                }*/
             }
         }
     }
@@ -147,9 +139,15 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable, ITileEntity
         wood.makeTree(world, blockPos, random);
     }
 
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TESaplingTFC();
     }

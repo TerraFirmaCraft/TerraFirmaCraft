@@ -46,6 +46,11 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         this(name, TFCRegistries.ROCK_CATEGORIES.getValue(categoryName));
     }
 
+    /**
+     * Used for knapping GUI
+     *
+     * @return a texture resource location
+     */
     public ResourceLocation getTexture()
     {
         return textureLocation;

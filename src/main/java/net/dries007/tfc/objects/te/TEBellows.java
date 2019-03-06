@@ -24,7 +24,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.IBellowsHandler;
+import net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge;
+import net.dries007.tfc.objects.blocks.devices.BlockFirePit;
+import net.dries007.tfc.util.IBellowsHandler;
 
 import static net.minecraft.block.BlockHorizontal.FACING;
 
@@ -38,9 +40,9 @@ public class TEBellows extends TileEntity
      * Z: X but rotated 90 degrees clockwise, positive values go right. in most cases you want this to be 0
      *
      * For example: a block that must sit right in front of the bellows(like fire pits) must register {@code Vec3i(1,0,0)},
-     * {@link net.dries007.tfc.objects.blocks.BlockFirePit}
+     * {@link BlockFirePit}
      * meanwhile, block that sink into ground(like forges) might want to register {@code Vec3i(1,-1,0)}.
-     * {@link net.dries007.tfc.objects.blocks.BlockCharcoalForge}
+     * {@link BlockCharcoalForge}
      * If there is a guarantee for another block to register that position,
      * then there is no need do do it anymore with yours.
      */

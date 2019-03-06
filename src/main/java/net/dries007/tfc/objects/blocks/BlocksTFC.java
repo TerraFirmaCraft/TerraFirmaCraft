@@ -27,6 +27,7 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.blocks.devices.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
@@ -105,6 +106,7 @@ public final class BlocksTFC
     public static final BlockIngotPile INGOT_PILE = getNull();
     public static final BlockTorchTFC TORCH = getNull();
     public static final BlockCharcoalForge CHARCOAL_FORGE = getNull();
+    public static final BlockCrucible CRUCIBLE = getNull();
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -237,13 +239,7 @@ public final class BlocksTFC
 
         normalItemBlocks.add(new ItemBlock(register(r, "thatch", new BlockThatch(Material.PLANTS), CT_DECORATIONS)));
 
-        // These have no ItemBlock or Creative Tab
-        register(r, "firepit", new BlockFirePit());
-        register(r, "charcoal_forge", new BlockCharcoalForge());
-        register(r, "world_item", new BlockWorldItem());
-        register(r, "charcoal_pile", new BlockCharcoalPile());
-        register(r, "ingot_pile", new BlockIngotPile());
-        register(r, "log_pile", new BlockLogPile());
+        normalItemBlocks.add(new ItemBlock(register(r, "crucible", new BlockCrucible(), CT_MISC)));
 
         {
             Builder<BlockFluidBase> b = ImmutableList.builder();
@@ -394,6 +390,13 @@ public final class BlocksTFC
         inventoryItemBlocks.add(new ItemBlockTorchTFC(register(r, "torch", new BlockTorchTFC(), CT_MISC)));
 
         // technical blocks
+        // These have no ItemBlock or Creative Tab
+        register(r, "firepit", new BlockFirePit());
+        register(r, "charcoal_forge", new BlockCharcoalForge());
+        register(r, "world_item", new BlockWorldItem());
+        register(r, "charcoal_pile", new BlockCharcoalPile());
+        register(r, "ingot_pile", new BlockIngotPile());
+        register(r, "log_pile", new BlockLogPile());
         register(r, "pit_kiln", new BlockPitKiln());
 
         // todo: cactus ?
@@ -418,7 +421,6 @@ public final class BlocksTFC
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bellows", new BlockBellows(), CT_MISC)));
         // todo: bloomery
         // todo: bloom/molten blocks
-        // todo: crusible
         // todo: large vessels
         // todo: nestbox
         // todo: leather rack
@@ -433,7 +435,7 @@ public final class BlocksTFC
         allInventoryItemBlocks = inventoryItemBlocks.build();
 
         // Register Tile Entities
-        // Putting tile entity registration in the respective block calls it multiple times. Just put here to avoid duplicates
+        // Putting tile entity registration in the respective block can call it multiple times. Just put here to avoid duplicates
         register(TESaplingTFC.class, "sapling");
         register(TEChestTFC.class, "chest");
         register(TEWorldItem.class, "world_item");
@@ -446,6 +448,7 @@ public final class BlocksTFC
         register(TEBellows.class, "bellows");
         register(TECharcoalForge.class, "charcoal_forge");
         register(TEAnvilTFC.class, "anvil");
+        register(TECrucible.class, "crucible");
 
     }
 

@@ -27,10 +27,7 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemSmallVessel;
 import net.dries007.tfc.objects.items.rock.ItemRock;
-import net.dries007.tfc.objects.te.TEAnvilTFC;
-import net.dries007.tfc.objects.te.TECharcoalForge;
-import net.dries007.tfc.objects.te.TEFirePit;
-import net.dries007.tfc.objects.te.TELogPile;
+import net.dries007.tfc.objects.te.*;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -48,6 +45,7 @@ public class TFCGuiHandler implements IGuiHandler
         player.openGui(TerraFirmaCraft.getInstance(), type.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
     }
 
+    // Only use this for things that don't need a BlockPos to identify TE's!!!
     public static void openGui(World world, EntityPlayer player, Type type)
     {
         player.openGui(TerraFirmaCraft.getInstance(), type.ordinal(), world, 0, 0, 0);
@@ -87,6 +85,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new ContainerKnapping(KnappingRecipe.Type.LEATHER, player.inventory, stack.getItem() == ItemsTFC.LEATHER ? stack : player.getHeldItemOffhand());
             case KNAPPING_FIRE_CLAY:
                 return new ContainerKnapping(KnappingRecipe.Type.FIRE_CLAY, player.inventory, stack.getItem() == ItemsTFC.FIRE_CLAY ? stack : player.getHeldItemOffhand());
+            case CRUCIBLE:
+                return new ContainerCrucible(player.inventory, Helpers.getTE(world, pos, TECrucible.class));
             default:
                 return null;
         }
@@ -128,6 +128,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiKnapping(container, player, KnappingRecipe.Type.LEATHER, LEATHER_TEXTURE);
             case KNAPPING_FIRE_CLAY:
                 return new GuiKnapping(container, player, KnappingRecipe.Type.FIRE_CLAY, FIRE_CLAY_TEXTURE);
+            case CRUCIBLE:
+                return new GuiCrucible(container, player.inventory, Helpers.getTE(world, pos, TECrucible.class));
             default:
                 return null;
         }
@@ -147,6 +149,7 @@ public class TFCGuiHandler implements IGuiHandler
         CHARCOAL_FORGE,
         ANVIL,
         ANVIL_PLAN,
+        CRUCIBLE,
         NULL;
 
         private static Type[] values = values();

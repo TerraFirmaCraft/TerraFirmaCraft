@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks;
+package net.dries007.tfc.objects.blocks.devices;
 
 import java.util.Random;
 import javax.annotation.Nonnull;
@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
@@ -32,15 +31,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.api.capability.IBellowsHandler;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEBellows;
 import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.IBellowsHandler;
+import net.dries007.tfc.util.IHeatProviderBlock;
 
 @ParametersAreNonnullByDefault
-public class BlockFirePit extends Block implements ITileEntityProvider, IBellowsHandler
+public class BlockFirePit extends Block implements IBellowsHandler, IHeatProviderBlock
 {
     public static final PropertyBool LIT = PropertyBool.create("lit");
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.03125D, 0.9375D);
@@ -52,13 +52,24 @@ public class BlockFirePit extends Block implements ITileEntityProvider, IBellows
     }
 
 
-    BlockFirePit()
+    public BlockFirePit()
     {
         super(Material.FIRE);
         setDefaultState(blockState.getBaseState().withProperty(LIT, false));
         disableStats();
         setTickRandomly(true);
         setLightLevel(1F);
+    }
+
+    @Override
+    public float getTemperature(World world, BlockPos pos)
+    {
+        TEFirePit te = Helpers.getTE(world, pos, TEFirePit.class);
+        if (te != null)
+        {
+            return te.getTemperature();
+        }
+        return 0;
     }
 
     @Override
@@ -222,9 +233,15 @@ public class BlockFirePit extends Block implements ITileEntityProvider, IBellows
         return world.getBlockState(pos).getValue(LIT);
     }
 
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEFirePit();
     }
