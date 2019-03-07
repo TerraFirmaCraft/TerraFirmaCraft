@@ -29,7 +29,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
  * Info: For those wanting to use this class:
  * There are two main accessors:
  * {@link CalenderTFC#getTotalTime()} will always return you the result of world#getTotalTime
- * Any other method will return you the CALENDAR TIME (which can be offset from the total world time)
+ * Any other method will return you the CALENDAR TIME (which can be offset / changed from the total world time)
  */
 @SuppressWarnings("WeakerAccess")
 public class CalenderTFC
@@ -42,7 +42,7 @@ public class CalenderTFC
     /**
      * Total time for the world, directly from world#getTotalTime
      * Synced via two event handlers, one on Client Tick, one on World Tick
-     * Usage: Anything that requires TOTAL DAYPERIOD PASSED, i.e. temperature change, tree growth, etc.
+     * Usage: Anything that requires TOTAL TIME PASSED, i.e. temperature change, tree growth, etc.
      */
     private static long totalTime;
     /**
@@ -284,10 +284,15 @@ public class CalenderTFC
             CalenderTFC.daysInYear = data.daysInMonth * 12;
             CalenderTFC.ticksInMonth = data.daysInMonth * TICKS_IN_DAY;
             CalenderTFC.ticksInYear = data.daysInMonth * 12 * TICKS_IN_DAY;
+
+            if (!world.isRemote)
+            {
+                TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalenderTFC.calendarOffset, CalenderTFC.daysInMonth));
+            }
         }
 
         @Nonnull
-        public static CalendarWorldData get(World world)
+        public static CalendarWorldData get(@Nonnull World world)
         {
             MapStorage mapStorage = world.getMapStorage();
             if (mapStorage != null)
@@ -299,7 +304,7 @@ public class CalenderTFC
                     TerraFirmaCraft.getLog().info("Initializing Default Calendar Data for world.");
                     data = new CalendarWorldData();
                     data.daysInMonth = 8;
-                    data.calendarOffset = data.daysInMonth * 3 * TICKS_IN_DAY;
+                    data.calendarOffset = 0;
                     mapStorage.setData(NAME, data);
                 }
                 return data;

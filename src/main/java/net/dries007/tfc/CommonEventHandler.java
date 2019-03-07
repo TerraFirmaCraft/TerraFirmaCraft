@@ -187,6 +187,11 @@ public final class CommonEventHandler
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event)
     {
-        CalenderTFC.CalendarWorldData.onLoad(event.getWorld());
+        // Calendar Sync / Initialization
+        final World world = event.getWorld();
+        if (world.provider.getDimension() == 0)
+        {
+            CalenderTFC.CalendarWorldData.onLoad(event.getWorld());
+        }
     }
 }

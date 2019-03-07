@@ -57,11 +57,6 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
         this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
     }
 
-    public void setAge(World world, BlockPos pos, int age)
-    {
-        world.setBlockState(pos, world.getBlockState(pos).withProperty(AGE, age), 2);
-    }
-
     @Override
     @Nonnull
     public IBlockState getStateFromMeta(int meta)

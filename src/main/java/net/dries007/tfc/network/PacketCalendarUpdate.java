@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.network;
 
 import net.minecraft.world.World;
@@ -42,10 +47,13 @@ public class PacketCalendarUpdate implements IMessage
         @Override
         public IMessage onMessage(PacketCalendarUpdate message, MessageContext ctx)
         {
-            World world = TerraFirmaCraft.getProxy().getPlayer(ctx).getEntityWorld();
-            TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
-                CalenderTFC.CalendarWorldData.update(world, message.calendarOffset, message.daysInMonth);
-            });
+            World world = TerraFirmaCraft.getProxy().getWorld(ctx);
+            if (world != null)
+            {
+                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
+                    CalenderTFC.CalendarWorldData.update(world, message.calendarOffset, message.daysInMonth);
+                });
+            }
             return null;
         }
     }
