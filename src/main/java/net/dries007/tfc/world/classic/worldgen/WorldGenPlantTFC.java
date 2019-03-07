@@ -48,7 +48,9 @@ public class WorldGenPlantTFC extends WorldGenerator
                     (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
                     plantBlock.canBlockStay(worldIn, blockpos, state))
                 {
-                    int plantAge = rand.nextInt(Math.max(1, Math.min(rand.nextInt(Math.round(10f + ((temp - 15) / (3.75f)))), 16)));
+                    int plantAge = rand.nextInt(Math.max(1, Math.min(Math.round(10f + ((temp - 15f) / (3.75f))), 16)));
+                    // wtf? this literally only works if I setBlockState twice...
+                    worldIn.setBlockState(blockpos, state.withProperty(BlockShortGrassTFC.AGE, plantAge), 2);
                     worldIn.setBlockState(blockpos, state.withProperty(BlockShortGrassTFC.AGE, plantAge), 2);
                 }
             }
@@ -66,12 +68,16 @@ public class WorldGenPlantTFC extends WorldGenerator
 
                 for (int k = 0; k < j; ++k)
                 {
-                    if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos.up(k)), ChunkDataTFC.getRainfall(worldIn, blockpos.up(k)), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
+                    float temp = ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos.up(k));
+                    if (plant.isValidLocation(temp, ChunkDataTFC.getRainfall(worldIn, blockpos.up(k)), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
                         worldIn.isAirBlock(blockpos.up(k)) &&
                         (!worldIn.provider.isNether() || blockpos.up(k).getY() < 254) &&
                         plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
                     {
-                        worldIn.setBlockState(blockpos.up(k), state, 2);
+                        int plantAge = rand.nextInt(Math.max(1, Math.min(Math.round(10f + ((temp - 15f) / (3.75f))), 16)));
+                        // wtf? this literally only works if I setBlockState twice...
+                        worldIn.setBlockState(blockpos.up(k), state.withProperty(BlockTallGrassTFC.AGE, plantAge), 2);
+                        worldIn.setBlockState(blockpos.up(k), state.withProperty(BlockTallGrassTFC.AGE, plantAge), 2);
                     }
                 }
             }
