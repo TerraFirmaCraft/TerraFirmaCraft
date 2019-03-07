@@ -227,7 +227,7 @@ public final class Helpers
         return null;
     }
 
-    @Nonnull
+    @Nullable
     @SuppressWarnings("ConstantConditions")
     public static <T> T getNull()
     {

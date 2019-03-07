@@ -11,8 +11,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import net.dries007.tfc.objects.inventory.SlotOutput;
-import net.dries007.tfc.objects.inventory.SlotTEInput;
+import net.dries007.tfc.objects.inventory.slot.SlotOutput;
+import net.dries007.tfc.objects.inventory.slot.SlotTEInput;
 import net.dries007.tfc.objects.te.TEBarrel;
 
 import static net.dries007.tfc.objects.te.TEBarrel.*;

@@ -32,10 +32,13 @@ import net.dries007.tfc.objects.container.ContainerBarrel;
 public class GuiBarrel extends GuiContainerTFC
 {
     private static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/barrel.png");
+    private final String translationKey;
 
     public GuiBarrel(Container container, InventoryPlayer playerInv, String translationKey)
     {
-        super(container, playerInv, RESOURCE_LOCATION, translationKey);
+        super(container, playerInv, RESOURCE_LOCATION);
+
+        this.translationKey = translationKey;
     }
 
     @Override
@@ -132,5 +135,12 @@ public class GuiBarrel extends GuiContainerTFC
         }
 
         drawTexturedModalRect(guiLeft + 7, guiTop + 19, 176, 0, 18, 52);
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+        String name = I18n.format(translationKey + ".name");
+        fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
     }
 }
