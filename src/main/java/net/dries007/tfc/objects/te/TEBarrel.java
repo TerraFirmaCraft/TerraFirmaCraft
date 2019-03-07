@@ -27,7 +27,7 @@ import net.dries007.tfc.objects.fluids.LockableFluidHandler;
 import net.dries007.tfc.objects.inventory.LockableItemHandler;
 import net.dries007.tfc.util.Helpers;
 
-public class TEBarrel extends TESidedInventory implements ITickable
+public class TEBarrel extends TEInventory implements ITickable
 {
     public static final int SLOT_FLUID_CONTAINER_IN = 0;
     public static final int SLOT_FLUID_CONTAINER_OUT = 1;
