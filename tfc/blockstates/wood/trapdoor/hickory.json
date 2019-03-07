@@ -3,7 +3,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "texture": "tfc:blocks/wood/trapdoor/hickory"
+      "texture": "tfc:blocks/wood/trapdoor/hickory",
+      "all": "tfc:blocks/wood/trapdoor/hickory"
     }
   },
   "variants": {
