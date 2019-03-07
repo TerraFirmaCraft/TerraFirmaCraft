@@ -31,6 +31,7 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
     private final boolean layer1;
     private final boolean layer2;
     private final boolean layer3;
+    private final boolean hasAnvil;
 
     private Collection<Rock> rocks;
 
@@ -41,8 +42,9 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
      * @param toolMaterial The tool material used for stone tools made of this rock
      * @param caveGenMod   a modifier for cave generation. Default 0, range -0.5 <> 0.5
      * @param caveFreqMod  another modifier for cave generation. Default 0, sedimentary uses +5
+     * @param hasAnvil     if this rock should be able to create a stone anvil
      */
-    public RockCategory(@Nonnull ResourceLocation name, @Nonnull Item.ToolMaterial toolMaterial, boolean layer1, boolean layer2, boolean layer3, float caveGenMod, float caveFreqMod)
+    public RockCategory(@Nonnull ResourceLocation name, @Nonnull Item.ToolMaterial toolMaterial, boolean layer1, boolean layer2, boolean layer3, float caveGenMod, float caveFreqMod, boolean hasAnvil)
     {
         setRegistryName(name);
         this.toolMaterial = toolMaterial;
@@ -51,6 +53,7 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
         this.layer1 = layer1;
         this.layer2 = layer2;
         this.layer3 = layer3;
+        this.hasAnvil = hasAnvil;
     }
 
     @Nonnull
@@ -78,6 +81,11 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
     public float getCaveFreqMod()
     {
         return caveFreqMod;
+    }
+
+    public boolean hasAnvil()
+    {
+        return hasAnvil;
     }
 
     @Override

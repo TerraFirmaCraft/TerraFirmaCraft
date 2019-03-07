@@ -1,8 +1,6 @@
 /*
- *
- *  * Work under Copyright. Licensed under the EUPL.
- *  * See the project README.md and LICENSE.txt for more information.
- *
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  */
 
 package net.dries007.tfc.objects.blocks.plants;
@@ -10,10 +8,11 @@ package net.dries007.tfc.objects.blocks.plants;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -29,10 +28,11 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
+@ParametersAreNonnullByDefault
 public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
 {
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
-    protected static final AxisAlignedBB PLANT_AABB = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 1.0D, 0.8125D);
+    private static final AxisAlignedBB PLANT_AABB = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 1.0D, 0.8125D);
     private static final Map<Plant, BlockDoublePlantTFC> MAP = new HashMap<>();
 
     public static BlockDoublePlantTFC get(Plant plant)
@@ -40,15 +40,12 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
         return BlockDoublePlantTFC.MAP.get(plant);
     }
 
-    public final Plant plant;
-
     public BlockDoublePlantTFC(Plant plant)
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.plant = plant;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, EnumBlockPart.SINGLE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
@@ -88,7 +85,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos)) : false;
+        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
     }
 
     @Override
@@ -139,24 +136,28 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     }
 
     @Override
+    @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
+    @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE, GROWTHSTAGE, PART, DAYPERIOD});
+        return new BlockStateContainer(this, AGE, GROWTHSTAGE, PART, DAYPERIOD);
     }
 
     @Override
+    @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return PLANT_AABB.offset(state.getOffset(source, pos));
     }
 
     @Override
+    @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
@@ -183,6 +184,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     }
 
     @Override
+    @Nonnull
     public Block.EnumOffsetType getOffsetType()
     {
         return EnumOffsetType.XYZ;

@@ -1,8 +1,6 @@
 /*
- *
- *  * Work under Copyright. Licensed under the EUPL.
- *  * See the project README.md and LICENSE.txt for more information.
- *
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  */
 
 package net.dries007.tfc.objects.blocks.plants;
@@ -10,7 +8,9 @@ package net.dries007.tfc.objects.blocks.plants;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
@@ -29,6 +29,7 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 
+@ParametersAreNonnullByDefault
 public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
 {
     // todo: in 1.13 we will be able to save blockstates instead of relying on metadata, so will probably rewrite this as 2 blocks with part=upper and part=lower
@@ -43,18 +44,16 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
         return BlockTallGrassTFC.MAP.get(plant);
     }
 
-    public final Plant plant;
-
     public BlockTallGrassTFC(Plant plant)
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.plant = plant;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
     }
 
     @Override
+    @Nonnull
     public Block.EnumOffsetType getOffsetType()
     {
         return Block.EnumOffsetType.XZ;
@@ -100,6 +99,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     }
 
     @Override
+    @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         switch (state.getValue(AGE))
@@ -144,6 +144,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos) { return true; }
 
     @Override
+    @Nonnull
     public NonNullList<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
         return NonNullList.withSize(1, new ItemStack(this, 1));

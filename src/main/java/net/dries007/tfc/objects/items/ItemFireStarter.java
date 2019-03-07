@@ -41,7 +41,7 @@ import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
+import static net.dries007.tfc.objects.blocks.devices.BlockFirePit.LIT;
 import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 
 @MethodsReturnNonnullByDefault
@@ -53,7 +53,6 @@ public class ItemFireStarter extends ItemTFC
         if (stack.isEmpty()) return false;
         Item item = stack.getItem();
 
-        //noinspection ConstantConditions
         return item == ItemsTFC.FIRESTARTER || item == Items.FLINT_AND_STEEL || item == Items.FIRE_CHARGE || item instanceof ItemFlintAndSteel;
     }
 
@@ -87,7 +86,6 @@ public class ItemFireStarter extends ItemTFC
     }
 
     @Override
-    @SuppressWarnings("ConstantConditions")
     public void onUsingTick(ItemStack stack, EntityLivingBase entityLivingBase, int countLeft)
     {
         if (!(entityLivingBase instanceof EntityPlayer)) return;
@@ -169,7 +167,6 @@ public class ItemFireStarter extends ItemTFC
                     final float kindlingModifier = Math.min(-0.1f * (float) kindling, 0.5f);
                     if (itemRand.nextFloat() < chance + kindlingModifier)
                     {
-                        //noinspection ConstantConditions
                         world.setBlockState(pos, BlocksTFC.FIREPIT.getDefaultState().withProperty(LIT, true));
                         TEFirePit te = Helpers.getTE(world, pos, TEFirePit.class);
                         if (te != null)

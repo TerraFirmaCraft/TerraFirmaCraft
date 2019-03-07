@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.items.metal;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
@@ -54,7 +55,7 @@ public class ItemAnvil extends ItemMetal implements IPlaceableItem
     }
 
     @Override
-    public boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, EnumFacing facing, Vec3d hitVec)
+    public boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, @Nullable EnumFacing facing, @Nullable Vec3d hitVec)
     {
         if (!(stack.getItem() instanceof ItemAnvil))
         {
@@ -66,7 +67,7 @@ public class ItemAnvil extends ItemMetal implements IPlaceableItem
             if (!world.isRemote)
             {
                 ItemAnvil anvil = (ItemAnvil) stack.getItem();
-                world.setBlockState(pos.offset(facing), BlockAnvilTFC.get(anvil.metal).getDefaultState().withProperty(AXIS, player.getHorizontalFacing().getAxis() == EnumFacing.Axis.X));
+                world.setBlockState(pos.offset(facing), BlockAnvilTFC.get(anvil.metal).getDefaultState().withProperty(AXIS, player.getHorizontalFacing()));
 
                 world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }

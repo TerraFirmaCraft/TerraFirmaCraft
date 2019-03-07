@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.IPlantable;
 
+// todo: merge with other plant stuffs
 @ParametersAreNonnullByDefault
 public class WorldGenTallPlant extends WorldGenerator
 {

@@ -1,8 +1,6 @@
 /*
- *
- *  * Work under Copyright. Licensed under the EUPL.
- *  * See the project README.md and LICENSE.txt for more information.
- *
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  */
 
 package net.dries007.tfc.objects.blocks.plants;
@@ -10,12 +8,13 @@ package net.dries007.tfc.objects.blocks.plants;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -32,6 +31,7 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 
 import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
 
+@ParametersAreNonnullByDefault
 public class BlockFloatingWaterTFC extends BlockPlantTFC
 {
     protected static final AxisAlignedBB LILY_PAD_AABB = new AxisAlignedBB(0.125D, -0.125D, 0.125D, 0.875D, 0.0625D, 0.875D);
@@ -42,17 +42,15 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
         return BlockFloatingWaterTFC.MAP.get(plant);
     }
 
-    public final Plant plant;
-
     public BlockFloatingWaterTFC(Plant plant)
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.plant = plant;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
     {
@@ -70,6 +68,7 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     }
 
     @Override
+    @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
@@ -83,12 +82,14 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     }
 
     @Override
+    @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {GROWTHSTAGE, DAYPERIOD});
+        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD);
     }
 
     @Override
+    @Nonnull
     public Block.EnumOffsetType getOffsetType()
     {
         return Block.EnumOffsetType.NONE;
@@ -105,9 +106,9 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     {
         if (pos.getY() >= 0 && pos.getY() < 256)
         {
-            IBlockState iblockstate = worldIn.getBlockState(pos.down());
-            Material material = iblockstate.getMaterial();
-            return (material == Material.WATER && ((Integer) iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0 && iblockstate == FRESH_WATER) || material == Material.ICE;
+            IBlockState stateDown = worldIn.getBlockState(pos.down());
+            Material material = stateDown.getMaterial();
+            return (material == Material.WATER && stateDown.getValue(BlockLiquid.LEVEL) == 0 && stateDown == FRESH_WATER) || material == Material.ICE;
         }
         else
         {
@@ -116,13 +117,15 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     }
 
     @Override
+    @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return LILY_PAD_AABB.offset(state.getOffset(source, pos));
     }
 
     @Override
-    public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    @Nonnull
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
     {
         return EnumPlantType.Water;
     }

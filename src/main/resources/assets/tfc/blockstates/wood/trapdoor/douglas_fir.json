@@ -3,7 +3,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "texture": "tfc:blocks/wood/trapdoor/douglas_fir"
+      "texture": "tfc:blocks/wood/trapdoor/douglas_fir",
+      "all": "tfc:blocks/wood/trapdoor/douglas_fir"
     }
   },
   "variants": {

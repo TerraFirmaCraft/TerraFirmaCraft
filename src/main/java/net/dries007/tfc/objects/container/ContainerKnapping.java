@@ -5,27 +5,30 @@
 
 package net.dries007.tfc.objects.container;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.api.recipes.KnappingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.KnappingRecipe;
-import net.dries007.tfc.objects.inventory.SlotKnappingOutput;
+import net.dries007.tfc.objects.inventory.slot.SlotKnappingOutput;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.IButtonHandler;
 import net.dries007.tfc.util.SimpleCraftMatrix;
 
-public class ContainerKnapping extends ContainerItemStack
+public class ContainerKnapping extends ContainerItemStack implements IButtonHandler
 {
     private final SimpleCraftMatrix matrix;
     private final KnappingRecipe.Type type;
     private final ItemStack stackCopy;
-
-    private boolean hasBeenModified;
     public boolean requiresReset;
+    private boolean hasBeenModified;
 
     public ContainerKnapping(KnappingRecipe.Type type, InventoryPlayer playerInv, ItemStack stack)
     {
@@ -39,9 +42,10 @@ public class ContainerKnapping extends ContainerItemStack
         requiresReset = false;
     }
 
-    public void onUpdate(int slotIdx)
+    @Override
+    public void onButtonPress(int buttonID, @Nullable NBTTagCompound extraNBT)
     {
-        matrix.set(slotIdx, false);
+        matrix.set(buttonID, false);
 
         if (!hasBeenModified)
         {
@@ -87,21 +91,6 @@ public class ContainerKnapping extends ContainerItemStack
         addSlotToContainer(new SlotKnappingOutput(new ItemStackHandler(1), 0, 128, 44, this::resetMatrix));
     }
 
-    private void resetMatrix()
-    {
-        matrix.setAll(false);
-        requiresReset = true;
-    }
-
-    private KnappingRecipe getMatchingRecipe()
-    {
-        return TFCRegistries.KNAPPING.getValuesCollection()
-            .stream()
-            .filter(x -> x.getType() == type && matrix.matches(x.getMatrix()))
-            .findFirst()
-            .orElse(null);
-    }
-
     @Override
     protected void addPlayerInventorySlots(InventoryPlayer playerInv)
     {
@@ -118,5 +107,20 @@ public class ContainerKnapping extends ContainerItemStack
         {
             addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142 + 18));
         }
+    }
+
+    private void resetMatrix()
+    {
+        matrix.setAll(false);
+        requiresReset = true;
+    }
+
+    private KnappingRecipe getMatchingRecipe()
+    {
+        return TFCRegistries.KNAPPING.getValuesCollection()
+            .stream()
+            .filter(x -> x.getType() == type && matrix.matches(x.getMatrix()))
+            .findFirst()
+            .orElse(null);
     }
 }

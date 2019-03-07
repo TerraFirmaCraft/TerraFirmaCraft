@@ -143,7 +143,6 @@ public class TEPitKiln extends TileEntity implements ITickable
         return !(logs.stream().anyMatch(ItemStack::isEmpty) || straw.stream().anyMatch(ItemStack::isEmpty));
     }
 
-    @SuppressWarnings("ConstantConditions")
     public void onRightClick(EntityPlayer player, ItemStack item, boolean x, boolean z)
     {
         if (isLit()) return;
