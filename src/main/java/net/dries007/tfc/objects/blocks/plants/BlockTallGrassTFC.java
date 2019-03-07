@@ -49,7 +49,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
     }
 
     @Override
@@ -165,6 +165,6 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     @Override
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
-        worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, 15).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        worldIn.setBlockState(pos, this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, 15).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
     }
 }

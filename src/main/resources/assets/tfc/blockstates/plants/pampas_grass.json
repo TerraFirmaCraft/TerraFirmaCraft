@@ -1,0 +1,57 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:plants/pampas_grass",
+    "textures": {
+      "cross": "tfc:blocks/plants/pampas_grass/placeholder",
+      "layer0": "tfc:blocks/plants/pampas_grass/placeholder"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": {
+      "model": "builtin/generated",
+      "transform": "forge:default-item"
+    },
+    "age": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {},
+      "4": {},
+      "5": {},
+      "6": {},
+      "7": {},
+      "8": {},
+      "9": {},
+      "10": {},
+      "11": {},
+      "12": {},
+      "13": {},
+      "14": {},
+      "15": {}
+    },
+    "stage": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {},
+      "4": {},
+      "5": {},
+      "6": {},
+      "7": {},
+      "8": {},
+      "9": {},
+      "10": {},
+      "11": {}
+    },
+    "dayperiod": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {}
+    }
+  }
+}

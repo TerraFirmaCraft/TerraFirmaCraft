@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import org.lwjgl.Sys;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.BlockGrassPath;
@@ -29,8 +30,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -232,12 +235,25 @@ public class BlockRockVariant extends Block
     @Override
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
     {
+        if (plantable instanceof BlockPlantTFC)
+        {
+            BlockPlantTFC plant = (BlockPlantTFC)plantable;
+            Plant.EnumPlantTypeTFC plantTypeTFC = plant.getPlantTypeTFC(world, pos.offset(direction));
+
+            switch (plantTypeTFC)
+            {
+                case Clay:
+                    return type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
+                case Dry:
+                    return type == Rock.Type.DRY_GRASS;
+            }
+        }
         EnumPlantType plantType = plantable.getPlantType(world, pos.offset(direction));
 
         switch (plantType)
         {
             case Plains:
-                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY_GRASS;
+                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS;
             case Crop:
                 return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.FARMLAND || type == Rock.Type.DRY_GRASS;
             case Desert:

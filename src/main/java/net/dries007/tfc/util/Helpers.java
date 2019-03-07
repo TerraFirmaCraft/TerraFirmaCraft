@@ -89,7 +89,8 @@ public final class Helpers
             {
                 float temp = ClimateTFC.getHeightAdjustedBiomeTemp(world, pos.up());
 
-                if (world.isAirBlock(pos.up()) &&
+                if (rand.nextFloat() < 0.01f &&
+                    world.isAirBlock(pos.up()) &&
                     plant.getPlantType() == Plant.PlantType.SHORT_GRASS &&
                     plant.isValidLocation(temp, ChunkDataTFC.getRainfall(world, pos.up()), world.getLightFromNeighbors(pos.up())) &&
                     temp > 15 &&
