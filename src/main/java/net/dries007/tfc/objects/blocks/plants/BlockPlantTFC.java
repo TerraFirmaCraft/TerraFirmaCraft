@@ -61,12 +61,12 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
         Blocks.FIRE.setFireInfo(this, 5, 20);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
     }
 
-    public int getCurrentTime(World world)
+    public int getDayPeriod()
     {
-        return Math.floorDiv(Math.toIntExact(world.getWorldTime() % 24000), 6000);
+        return Math.floorDiv(CalenderTFC.getHourOfDay(), CalenderTFC.HOURS_IN_DAY / 4);
     }
 
     @SuppressWarnings("deprecation")
@@ -74,7 +74,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
     }
 
     @Override
@@ -88,7 +88,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
     }
 
     @Override
@@ -104,7 +104,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         int currentStage = state.getValue(GROWTHSTAGE);
         int expectedStage = CalenderTFC.getMonthOfYear().id();
         int currentTime = state.getValue(DAYPERIOD);
-        int expectedTime = getCurrentTime(worldIn);
+        int expectedTime = getDayPeriod();
 
         if (currentTime != expectedTime)
         {
@@ -127,7 +127,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(DAYPERIOD, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
         this.checkAndDropBlock(world, pos, state);
     }
 
@@ -169,8 +169,16 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     }
 
     @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        IBlockState soil = worldIn.getBlockState(pos.down());
+        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && this.canSustainBush(soil);
+    }
+
+    @Override
     protected boolean canSustainBush(IBlockState state)
     {
+        if (plant.getIsClayMarking()) return BlocksTFC.isClay(state);
         if (plant.getPlantType() == Plant.PlantType.DESERT) return BlocksTFC.isSand(state);
         return BlocksTFC.isSoil(state);
     }
@@ -191,7 +199,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         IBlockState soil = worldIn.getBlockState(pos.down());
         if (state.getBlock() == this)
         {
-            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTempRain(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
+            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);
     }
@@ -208,15 +216,17 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
-        IBlockState iblockstate = world.getBlockState(pos.down());
-        if (plant.getPlantType() == Plant.PlantType.DESERT && BlocksTFC.isSand(iblockstate))
-        {
-            return EnumPlantType.Desert;
-        }
-        else
-        {
-            return EnumPlantType.Plains;
-        }
+        if (plant.getPlantType() == Plant.PlantType.DESERT) return EnumPlantType.Desert;
+        if (plant.getPlantType() == Plant.PlantType.CACTUS) return EnumPlantType.Desert;
+        if (plant.getPlantType() == Plant.PlantType.FLOATING) return EnumPlantType.Water;
+        if (plant.getPlantType() == Plant.PlantType.FLOATING_SEA) return EnumPlantType.Water;
+        return EnumPlantType.Plains;
+    }
 
+    @Nonnull
+    public Plant.EnumPlantTypeTFC getPlantTypeTFC(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    {
+        if (plant.getIsClayMarking()) return Plant.EnumPlantTypeTFC.Clay;
+        return Plant.EnumPlantTypeTFC.None;
     }
 }

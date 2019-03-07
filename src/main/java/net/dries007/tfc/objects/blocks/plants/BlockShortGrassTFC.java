@@ -54,14 +54,14 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
     }
 
     @Override
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id());
+        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id());
     }
 
     @Override

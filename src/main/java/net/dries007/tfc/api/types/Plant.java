@@ -33,6 +33,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     private final PlantType plantType;
     private final Material material;
+    private final Boolean isClayMarking;
 
     /**
      * Addon mods that want to add flowers should subscribe to the registry event for this class
@@ -52,7 +53,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      * @param minWaterDepth min water depth for water plants
      * @param maxWaterDepth max water depth for water plants
      */
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int minWaterDepth, int maxWaterDepth)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int minWaterDepth, int maxWaterDepth)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -65,23 +66,39 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
         this.plantType = plantType;
         this.material = plantType.getPlantMaterial();
+        this.isClayMarking = isClayMarking;
 
         setRegistryName(name);
     }
 
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun)
     {
-        this(name, plantType, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, 0, 0);
+        this(name, plantType, isClayMarking, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, 0, 0);
+    }
+
+    public boolean getIsClayMarking()
+    {
+        return isClayMarking;
     }
 
     public boolean isValidLocation(float temp, float rain, int sunlight)
     {
-        return isValidTempRain(temp, rain) && isValidSunlight(sunlight);
+        return isValidTemp(temp) && isValidRain(rain) && isValidSunlight(sunlight);
     }
 
-    public boolean isValidTempRain(float temp, float rain)
+    public boolean isValidTemp(float temp)
     {
-        return minTemp <= temp && maxTemp >= temp && minRain <= rain && maxRain >= rain;
+        return minTemp <= temp && maxTemp >= temp;
+    }
+
+    public boolean isValidAvgTemp(float temp)
+    {
+        return Math.abs(temp - ((minTemp + maxTemp) / 2)) < 10;
+    }
+
+    public boolean isValidRain(float rain)
+    {
+        return minRain <= rain && maxRain >= rain;
     }
 
     public boolean isValidSunlight(int sunlight)
@@ -183,6 +200,18 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
                 default:
                     return Material.PLANTS;
             }
+        }
+    }
+
+    public enum EnumPlantTypeTFC
+    {
+        Clay,
+        Dry,
+        None;
+
+        public String toString()
+        {
+            return name();
         }
     }
 }

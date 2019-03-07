@@ -59,6 +59,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         if (data == null || !data.isInitialized()) return;
 
         final float temperature = ClimateTFC.getHeightAdjustedBiomeTemp(world, chunkPos);
+        final float avgTemperature = ClimateTFC.getAverageBiomeTemp(world, chunkPos);
         final float rainfall = ChunkDataTFC.getRainfall(world, chunkPos);
         final float floraDensity = data.getFloraDensity(); // Use for various plant based decoration (tall grass, those vanilla jungle shrub things, etc.)
 
@@ -87,7 +88,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
 
         for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
         {
-            if (plant.isValidTempRain(temperature, rainfall))
+            if (plant.isValidAvgTemp(avgTemperature) && plant.isValidRain(rainfall))
             {
                 plantGen.setGeneratedPlant(plant);
 
@@ -110,7 +111,6 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                 }
                 else if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS)
                 {
-                    // todo: will need to lower how many times this is run if more grasses are added
                     for (int i = 0; i < 1 + floraDensity * 5; i++)
                     {
                         final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
