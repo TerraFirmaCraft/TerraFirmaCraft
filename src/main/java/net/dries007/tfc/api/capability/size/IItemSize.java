@@ -17,8 +17,10 @@ import net.dries007.tfc.util.Helpers;
 
 /**
  * Interface for item size.
- * To implement this, you can (preferred) implement this interface on your Item / ItemBlock or
+ * To implement this, you can (preferred) implement this interface on your Item / Block and return the size or
  * Expose this capability via Item#initCapabilities()
+ * Note: if you implement this via an interface, you must also change the stack-size of the item to agree with {@link IItemSize#getStackSize}
+ * If you implement the capability, the game will try and auto-adjust the max stacksize of the item for you
  * Otherwise, your item will be assigned a default capability on creation
  */
 public interface IItemSize

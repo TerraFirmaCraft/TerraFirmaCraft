@@ -120,18 +120,6 @@ public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
     }
 
     @Override
-    public boolean isDynamic()
-    {
-        return true;
-    }
-
-    @Override
-    public String getGroup()
-    {
-        return MOD_ID + ":unmold_" + mold.type.name().toLowerCase();
-    }
-
-    @Override
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
     {
         EntityPlayer player = ForgeHooks.getCraftingPlayer();
@@ -150,5 +138,17 @@ public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
             }
         }
         return net.minecraftforge.common.ForgeHooks.defaultRecipeGetRemainingItems(inv);
+    }
+
+    @Override
+    public boolean isDynamic()
+    {
+        return true;
+    }
+
+    @Override
+    public String getGroup()
+    {
+        return MOD_ID + ":unmold_" + mold.type.name().toLowerCase();
     }
 }

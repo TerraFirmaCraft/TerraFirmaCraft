@@ -148,15 +148,7 @@ public class BlockToolRack extends BlockContainer implements IItemSize
     @Override
     public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
     {
-        return super.canPlaceBlockAt(worldIn, pos) && Helpers.getASolidFacing(worldIn, pos, EnumFacing.HORIZONTALS, null) != null;
-    }
-
-    public int getSlotFromPos(IBlockState state, float x, float y, float z)
-    {
-        int slot = 0;
-        if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f) slot += 1;
-        if (y < .5f) slot += 2;
-        return slot;
+        return super.canPlaceBlockAt(worldIn, pos) && Helpers.getASolidFacing(worldIn, pos, null, EnumFacing.HORIZONTALS) != null;
     }
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
@@ -164,6 +156,23 @@ public class BlockToolRack extends BlockContainer implements IItemSize
         TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
         if (te == null) return true;
         return te.onRightClick(playerIn, hand, getSlotFromPos(state, hitX, hitY, hitZ));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
+        if (facing.getAxis() == EnumFacing.Axis.Y)
+            facing = placer.getHorizontalFacing().getOpposite();
+        return this.getDefaultState().withProperty(FACING, Helpers.getASolidFacing(worldIn, pos, facing, EnumFacing.HORIZONTALS));
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, FACING);
     }
 
     @Override
@@ -178,21 +187,12 @@ public class BlockToolRack extends BlockContainer implements IItemSize
         return item;
     }
 
-    @Override
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public int getSlotFromPos(IBlockState state, float x, float y, float z)
     {
-        if (facing.getAxis() == EnumFacing.Axis.Y)
-            facing = placer.getHorizontalFacing().getOpposite();
-        return this.getDefaultState().withProperty(FACING, Helpers.getASolidFacing(worldIn, pos, EnumFacing.HORIZONTALS, facing));
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING);
+        int slot = 0;
+        if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f) slot += 1;
+        if (y < .5f) slot += 2;
+        return slot;
     }
 
     @Override

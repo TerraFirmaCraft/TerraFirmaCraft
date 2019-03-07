@@ -3,7 +3,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "texture": "tfc:blocks/wood/trapdoor/white_cedar"
+      "texture": "tfc:blocks/wood/trapdoor/white_cedar",
+      "all": "tfc:blocks/wood/trapdoor/white_cedar"
     }
   },
   "variants": {
