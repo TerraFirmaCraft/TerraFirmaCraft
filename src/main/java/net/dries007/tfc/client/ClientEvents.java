@@ -220,6 +220,6 @@ public class ClientEvents
     @SideOnly(Side.CLIENT)
     public static void textureStitched(TextureStitchEvent.Post event)
     {
-        TESRBarrel.clearFluidSpriteCache();
+        FluidSpriteCache.clear();
     }
 }

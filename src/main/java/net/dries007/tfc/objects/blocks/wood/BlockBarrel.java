@@ -16,23 +16,27 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
+import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.te.TEBarrel;
+import net.dries007.tfc.util.Helpers;
 
 public class BlockBarrel extends Block implements ITileEntityProvider
 {
@@ -43,6 +47,7 @@ public class BlockBarrel extends Block implements ITileEntityProvider
     {
         super(Material.WOOD);
         setSoundType(SoundType.WOOD);
+        setHardness(2F);
 
         setDefaultState(this.blockState.getBaseState().withProperty(SEALED, false));
     }
@@ -83,20 +88,34 @@ public class BlockBarrel extends Block implements ITileEntityProvider
         }
 
         ItemStack heldItem = playerIn.getHeldItem(hand);
-        TEBarrel te = (TEBarrel) worldIn.getTileEntity(pos);
 
-        if (!heldItem.isEmpty())
+        if (heldItem.isEmpty() && playerIn.isSneaking())
+        {
+            worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 0.85F);
+            worldIn.setBlockState(pos, state.withProperty(SEALED, !state.getValue(SEALED)));
+        }
+        else if (heldItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
         {
             if (!state.getValue(SEALED))
             {
-                FluidUtil.interactWithFluidHandler(playerIn, hand, te.tank);
-                te.markDirty();
-                worldIn.notifyBlockUpdate(pos, state, state, 3);
+                TEBarrel te = Helpers.getTE(worldIn, pos, TEBarrel.class);
+
+                if (te != null)
+                {
+                    IFluidHandler fluidHandler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+
+                    if (fluidHandler != null)
+                    {
+                        FluidUtil.interactWithFluidHandler(playerIn, hand, fluidHandler);
+                        te.markDirty();
+                        worldIn.notifyBlockUpdate(pos, state, state, 3);
+                    }
+                }
             }
         }
-        else if (playerIn.isSneaking())
+        else
         {
-            worldIn.setBlockState(pos, state.withProperty(SEALED, !state.getValue(SEALED)));
+            TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.BARREL);
         }
 
         return true;
@@ -123,11 +142,13 @@ public class BlockBarrel extends Block implements ITileEntityProvider
 
             if (compound != null)
             {
-                TEBarrel te = (TEBarrel)worldIn.getTileEntity(pos);
+                TEBarrel te = Helpers.getTE(worldIn, pos, TEBarrel.class);
 
-                te.tank.readFromNBT(compound.getCompoundTag("tank"));
-                te.markDirty();
-                worldIn.notifyBlockUpdate(pos, state, state, 3);
+                if (te != null)
+                {
+                    te.readFromItemTag(compound);
+                    //worldIn.notifyBlockUpdate(pos, state, state, 3);
+                }
             }
         }
     }
@@ -169,23 +190,36 @@ public class BlockBarrel extends Block implements ITileEntityProvider
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        if (state.getValue(SEALED))
+        TEBarrel te = Helpers.getTE(world, pos, TEBarrel.class);
+
+        if (te != null)
         {
-            TEBarrel te = (TEBarrel)world.getTileEntity(pos);
-            NBTTagCompound compound = new NBTTagCompound();
-            NBTTagCompound tankTag = new NBTTagCompound();
+            if (state.getValue(SEALED))
+            {
+                ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1, 1);
+                stack.setTagCompound(te.getItemTag());
 
-            te.tank.writeToNBT(tankTag);
-            compound.setTag("tank", tankTag);
+                drops.add(stack);
+            }
+            else
+            {
+                drops.add(new ItemStack(Item.getItemFromBlock(this)));
 
-            ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1, 1);
-            stack.setTagCompound(compound);
+                IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
-            drops.add(stack);
-        }
-        else
-        {
-            drops.add(new ItemStack(Item.getItemFromBlock(this)));
+                if (inventory != null)
+                {
+                    for (int slot = 0; slot < inventory.getSlots(); slot++)
+                    {
+                        ItemStack stack = inventory.getStackInSlot(slot);
+
+                        if (!stack.isEmpty())
+                        {
+                            drops.add(stack);
+                        }
+                    }
+                }
+            }
         }
     }
 

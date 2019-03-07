@@ -107,7 +107,6 @@ public final class BlocksTFC
     public static final BlockLogPile LOG_PILE = null;
     public static final BlockIngotPile INGOT_PILE = null;
     public static final BlockTorchTFC TORCH = null;
-    public static final BlockBarrel BARREL = null;
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -332,8 +331,6 @@ public final class BlocksTFC
             allTrapDoorWoodBlocks.forEach(x -> inventoryItemBlocks.add(new ItemBlockTFC(x)));
             allChestBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
             allToolRackBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
-
-            // barrels are special
         }
 
         {
