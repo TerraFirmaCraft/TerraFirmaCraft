@@ -1,8 +1,6 @@
 /*
- *
- *  * Work under Copyright. Licensed under the EUPL.
- *  * See the project README.md and LICENSE.txt for more information.
- *
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  */
 
 package net.dries007.tfc.objects.blocks.plants;
@@ -13,12 +11,12 @@ import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -40,10 +38,11 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
+@ParametersAreNonnullByDefault
 public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
 {
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
-    protected static final AxisAlignedBB CACTUS_COLLISION_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D);
+    private static final AxisAlignedBB CACTUS_COLLISION_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D);
     private static final Map<Plant, BlockCactusTFC> MAP = new HashMap<>();
 
     public static BlockCactusTFC get(Plant plant)
@@ -51,18 +50,14 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
         return MAP.get(plant);
     }
 
-    public final Plant plant;
-
     public BlockCactusTFC(Plant plant)
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.plant = plant;
-
         setSoundType(SoundType.GROUND);
         setHardness(0.25F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, EnumBlockPart.SINGLE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
@@ -88,6 +83,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
     {
@@ -107,24 +103,28 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     }
 
     @Override
+    @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
+    @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE, GROWTHSTAGE, PART, DAYPERIOD});
+        return new BlockStateContainer(this, AGE, GROWTHSTAGE, PART, DAYPERIOD);
     }
 
     @Override
+    @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return FULL_BLOCK_AABB.offset(state.getOffset(source, pos));
     }
 
     @Override
+    @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
@@ -157,19 +157,20 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     }
 
     @Override
+    @Nonnull
     public Block.EnumOffsetType getOffsetType()
     {
         return EnumOffsetType.XYZ;
     }
 
     @Override
-    public Size getSize(@Nonnull ItemStack stack)
+    public Size getSize(ItemStack stack)
     {
         return Size.NORMAL;
     }
 
     @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
+    public Weight getWeight(ItemStack stack)
     {
         return Weight.HEAVY;
     }
@@ -231,7 +232,8 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     }
 
     @Override
-    public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    @Nonnull
+    public EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
         return EnumPlantType.Desert;
     }
@@ -239,7 +241,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos)) : false;
+        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
     }
 
     @Override
@@ -251,6 +253,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {

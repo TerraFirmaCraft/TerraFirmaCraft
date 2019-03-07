@@ -1,13 +1,12 @@
 /*
- *
- *  * Work under Copyright. Licensed under the EUPL.
- *  * See the project README.md and LICENSE.txt for more information.
- *
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  */
 
 package net.dries007.tfc.objects.items.itemblock;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
@@ -31,6 +30,7 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.blocks.plants.BlockFloatingWaterTFC;
 
+@ParametersAreNonnullByDefault
 public class ItemBlockFloatingWaterTFC extends ItemBlockTFC
 {
     private BlockFloatingWaterTFC blockFloatingWaterTFC;
@@ -42,26 +42,28 @@ public class ItemBlockFloatingWaterTFC extends ItemBlockTFC
     }
 
     @Override
-    public Size getSize(@Nonnull ItemStack stack)
+    public Size getSize(ItemStack stack)
     {
         return Size.SMALL;
     }
 
     @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
+    public Weight getWeight(ItemStack stack)
     {
         return Weight.LIGHT;
     }
 
     @Override
+    @Nonnull
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
         RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, true);
 
+        //noinspection ConstantConditions
         if (raytraceresult == null)
         {
-            return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+            return new ActionResult<>(EnumActionResult.PASS, itemstack);
         }
         else
         {
@@ -71,13 +73,13 @@ public class ItemBlockFloatingWaterTFC extends ItemBlockTFC
 
                 if (!worldIn.isBlockModifiable(playerIn, blockpos) || !playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemstack))
                 {
-                    return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+                    return new ActionResult<>(EnumActionResult.FAIL, itemstack);
                 }
 
                 BlockPos blockpos1 = blockpos.up();
                 IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-                if (iblockstate.getMaterial() == Material.WATER && ((Integer) iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0 && worldIn.isAirBlock(blockpos1) && iblockstate == blockFloatingWaterTFC.plant.getWaterType())
+                if (iblockstate.getMaterial() == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0 && worldIn.isAirBlock(blockpos1) && iblockstate == blockFloatingWaterTFC.getPlant().getWaterType())
                 {
                     // special case for handling block placement with water lilies
                     net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(worldIn, blockpos1);
@@ -85,7 +87,7 @@ public class ItemBlockFloatingWaterTFC extends ItemBlockTFC
                     if (net.minecraftforge.event.ForgeEventFactory.onPlayerBlockPlace(playerIn, blocksnapshot, net.minecraft.util.EnumFacing.UP, handIn).isCanceled())
                     {
                         blocksnapshot.restore(true, false);
-                        return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+                        return new ActionResult<>(EnumActionResult.FAIL, itemstack);
                     }
 
                     worldIn.setBlockState(blockpos1, blockFloatingWaterTFC.getDefaultState(), 11);
@@ -100,13 +102,14 @@ public class ItemBlockFloatingWaterTFC extends ItemBlockTFC
                         itemstack.shrink(1);
                     }
 
+                    //noinspection ConstantConditions
                     playerIn.addStat(StatList.getObjectUseStats(this));
                     worldIn.playSound(playerIn, blockpos, SoundEvents.BLOCK_WATERLILY_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+                    return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
                 }
             }
 
-            return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+            return new ActionResult<>(EnumActionResult.FAIL, itemstack);
         }
     }
 }

@@ -14,8 +14,9 @@ import net.dries007.tfc.api.types.Plant;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SuppressWarnings("WeakerAccess")
 @Mod.EventBusSubscriber(modid = MOD_ID)
-public class DefaultPlants
+public final class DefaultPlants
 {
     /**
      * Default Plant ResourceLocations
@@ -47,7 +48,7 @@ public class DefaultPlants
     public static final ResourceLocation TULIP_WHITE = new ResourceLocation(MOD_ID, "tulip_white");
 
     @SubscribeEvent
-    public static void onPreRegisterPlantCategory(TFCRegistryEvent.RegisterPreBlock<Plant> event)
+    public static void onPreRegisterPlant(TFCRegistryEvent.RegisterPreBlock<Plant> event)
     {
         event.getRegistry().registerAll(
             // Standard Plants

@@ -1,8 +1,6 @@
 /*
- *
- *  * Work under Copyright. Licensed under the EUPL.
- *  * See the project README.md and LICENSE.txt for more information.
- *
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  */
 
 package net.dries007.tfc.api.types;
@@ -105,7 +103,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         {
             depthCounter++;
         }
-        return (maxDepth > 0) ? depthCounter <= maxDepth + 1 : false;
+        return (maxDepth > 0) && depthCounter <= maxDepth + 1;
     }
 
     public int getMinWaterDepth()
@@ -118,17 +116,20 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return maxWaterDepth;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public String toString()
     {
         return getRegistryName().getPath();
     }
 
+    @Nonnull
     public PlantType getPlantType()
     {
         return plantType;
     }
 
+    @Nonnull
     public Material getMaterial()
     {
         return material;

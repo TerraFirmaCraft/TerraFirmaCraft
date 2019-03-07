@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -21,7 +22,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.client.TFCGuiHandler;
-import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
@@ -46,6 +46,16 @@ public interface IPlaceableItem
      */
     boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, @Nullable EnumFacing facing, @Nullable Vec3d hitVec);
 
+    /**
+     * This will be called after a sucessful placement. If this is nonzero, the player will consume that amount from their held item.
+     *
+     * @return the amount to consume
+     */
+    default int consumeAmount()
+    {
+        return 1;
+    }
+
 
     class Impl
     {
@@ -57,32 +67,37 @@ public interface IPlaceableItem
         static
         {
             // Charcoal -> charcoal piles
+            // This is also where charcoal piles grow
             placeableInstances.put(stack -> stack.getItem() == Items.COAL && stack.getMetadata() == 1, (world, pos, stack, player, facing, hitVec) ->
             {
-                if (facing != null)
+                if (facing == null) return false;
+
+                IBlockState state = world.getBlockState(pos);
+
+                if (facing == EnumFacing.UP && state.getBlock() == BlocksTFC.CHARCOAL_PILE)
                 {
-                    if (world.getBlockState(pos.down().offset(facing)).isNormalCube()
-                        && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing)))
+                    if (state.getValue(LAYERS) < 8)
                     {
+                        world.setBlockState(pos, state.withProperty(LAYERS, state.getValue(LAYERS) + 1));
+                        world.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0f, 0.5f);
 
-                        if (world.getBlockState(pos).getBlock() instanceof BlockCharcoalPile)
-                        {
-                            if (world.getBlockState(pos).getValue(LAYERS) != 8)
-                            {
-                                // Adding layers is handled in BlockCharcoalPile
-                                return false;
-                            }
-                        }
-                        if (!world.isRemote)
-                        {
-                            // noinspection ConstantConditions
-                            world.setBlockState(pos.offset(facing), BlocksTFC.CHARCOAL_PILE.getDefaultState());
-                            world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0F, 0.5F);
-                            return true;
-                        }
-
+                        return true;
                     }
                 }
+
+                if (world.getBlockState(pos.down().offset(facing)).isNormalCube() && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing)))
+                {
+                    // Create a new charcoal pile
+                    if (!world.isRemote)
+                    {
+                        world.setBlockState(pos.offset(facing), BlocksTFC.CHARCOAL_PILE.getDefaultState());
+
+                        world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0f, 0.5f);
+
+                        return true;
+                    }
+                }
+
                 return false;
             });
 
@@ -92,7 +107,6 @@ public interface IPlaceableItem
                 {
                     if (facing != null)
                     {
-                        //noinspection ConstantConditions
                         if (world.getBlockState(pos).getBlock() == BlocksTFC.LOG_PILE)
                         {
                             if (!world.isRemote)
@@ -111,7 +125,6 @@ public interface IPlaceableItem
                                         if (facing == EnumFacing.UP && te.countLogs() == 16 || (facing != EnumFacing.UP && world.getBlockState(pos.down().offset(facing)).isNormalCube()
                                             && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing))))
                                         {
-                                            // noinspection ConstantConditions
                                             world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
 
                                             TELogPile te2 = Helpers.getTE(world, pos.offset(facing), TELogPile.class);
@@ -136,7 +149,6 @@ public interface IPlaceableItem
                                 // Place log pile
                                 if (!world.isRemote)
                                 {
-                                    // noinspection ConstantConditions
                                     world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
 
                                     TELogPile te = Helpers.getTE(world, pos.offset(facing), TELogPile.class);

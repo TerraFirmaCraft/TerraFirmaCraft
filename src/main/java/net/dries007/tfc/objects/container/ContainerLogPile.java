@@ -14,7 +14,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.inventory.SlotTEInput;
+import net.dries007.tfc.objects.inventory.slot.SlotTEInput;
 import net.dries007.tfc.objects.te.TELogPile;
 
 @ParametersAreNonnullByDefault

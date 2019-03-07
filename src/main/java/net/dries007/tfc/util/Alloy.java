@@ -12,23 +12,27 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Sets;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandler;
 
+import net.dries007.tfc.api.recipes.AlloyRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.AlloyRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IMetalObject;
+import net.dries007.tfc.objects.fluids.FluidMetal;
 
 /**
  * A helper class for working with alloys
  *
  * @author AlcatrazEscapee
  */
-public class Alloy
+public class Alloy implements INBTSerializable<NBTTagCompound>
 {
-
-    private final Map<Metal, Integer> MAP;
+    private final Map<Metal, Double> metalMap;
     private int totalAmount;
+    private int maxAmount;
     private boolean isValid;
 
     /**
@@ -36,9 +40,20 @@ public class Alloy
      */
     public Alloy()
     {
-        MAP = new HashMap<>();
-        totalAmount = 0;
-        isValid = true;
+        this(Integer.MAX_VALUE);
+    }
+
+    /**
+     * Constructs an alloy with a maximum limit. Anything added over this limit will do nothing
+     *
+     * @param maxAmount The maximum alloy amount (in units)
+     */
+    public Alloy(int maxAmount)
+    {
+        this.metalMap = new HashMap<>();
+        this.totalAmount = 0;
+        this.isValid = true;
+        this.maxAmount = maxAmount;
     }
 
 
@@ -52,13 +67,37 @@ public class Alloy
     public Alloy add(@Nonnull IItemHandler inventory)
     {
         for (int i = 0; i < inventory.getSlots(); i++)
+        {
             add(inventory.getStackInSlot(i));
+        }
+        return this;
+    }
+
+    /**
+     * Adds metal to an alloy from a fluid stack
+     * Note if the fluid is not an instance of {@link net.dries007.tfc.objects.fluids.FluidMetal} then it will be ignored, and {@link Alloy#isValid} will be set to false
+     *
+     * @param stack a fluid stack
+     * @return the alloy, for method chaining
+     */
+    public Alloy add(@Nonnull FluidStack stack)
+    {
+        if (stack.getFluid() instanceof FluidMetal)
+        {
+            Metal metal = ((FluidMetal) stack.getFluid()).getMetal();
+            add(metal, stack.amount);
+        }
+        else
+        {
+            isValid = false;
+        }
         return this;
     }
 
     /**
      * Add metal to an alloy from an item stack
-     * Note if the an item doesn't implement {@link IMetalObject} it will be ignored, and {@param isValid} will be set to false
+     * Note if the an item doesn't implement {@link IMetalObject} it will be ignored, and {@link Alloy#isValid} will be set to false
+     *
      * @param stack an item stack
      * @return the alloy, for method chaining
      */
@@ -80,13 +119,17 @@ public class Alloy
 
     /**
      * Copy the contents of one alloy into another
+     * Does not modify the other alloy
+     *
      * @param other The other alloy
      * @return The alloy, for method chaining
      */
     public Alloy add(@Nonnull Alloy other)
     {
-        for (Map.Entry<Metal, Integer> entry : other.MAP.entrySet())
+        for (Map.Entry<Metal, Double> entry : other.metalMap.entrySet())
+        {
             add(entry.getKey(), entry.getValue());
+        }
         return this;
     }
 
@@ -97,11 +140,22 @@ public class Alloy
      * @param amount The amount to add
      * @return The alloy, for method chaining
      */
-    public Alloy add(@Nullable Metal metal, int amount)
+    public Alloy add(@Nullable Metal metal, double amount)
     {
         if (metal != null)
         {
-            MAP.merge(metal, amount, (x, y) -> x + y);
+            // Account for alloy limits
+            if (totalAmount + amount >= maxAmount)
+            {
+                // Find the amount that can be added
+                amount = maxAmount - totalAmount;
+                if (amount <= 0)
+                {
+                    // No more, i.e. totalAmount >= maxAmount
+                    return this;
+                }
+            }
+            metalMap.merge(metal, amount, (x, y) -> x + y);
             totalAmount += amount;
         }
         else
@@ -113,23 +167,87 @@ public class Alloy
 
     /**
      * Gets the result of mixing the alloy right now
+     *
      * @return the result metal. Unknown if it doesn't match any recipe
      */
     @Nonnull
     public Metal getResult()
     {
-        if (MAP.size() == 1)
-            return MAP.keySet().iterator().next(); // Easy way to get the only metal in the alloy
+        if (metalMap.size() == 1)
+        {
+            return metalMap.keySet().iterator().next(); // Easy way to get the only metal in the alloy
+        }
         for (AlloyRecipe r : TFCRegistries.ALLOYS.getValuesCollection())
+        {
             if (matchesRecipe(r))
+            {
                 return r.getResult();
-        //noinspection ConstantConditions
+            }
+        }
         return Metal.UNKNOWN;
     }
 
     /**
+     * Removes an amount of metal from the alloy.
+     *
+     * @param metalToRemove the metal component to remove
+     * @param removeAmount  the amount to remove
+     * @return the amount that was actually removed
+     */
+    public int remove(Metal metalToRemove, int removeAmount)
+    {
+        if (metalMap.containsKey(metalToRemove))
+        {
+            double currentAmount = metalMap.get(metalToRemove);
+            if (currentAmount > removeAmount)
+            {
+                metalMap.put(metalToRemove, currentAmount - removeAmount);
+                return removeAmount;
+            }
+            else
+            {
+                return (int) metalMap.remove(metalToRemove).doubleValue();
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Removes an amount of the current result from the alloy
+     * Use {@link Alloy#getResult()} to see what alloy has been removed / returned
+     *
+     * @param removeAmount the amount to remove
+     * @param simulate     if true, no actual changes will be made to the alloy
+     * @return the amount that was actually removed
+     */
+    public int removeAlloy(int removeAmount, boolean simulate)
+    {
+        if (simulate)
+        {
+            return totalAmount < removeAmount ? totalAmount : removeAmount;
+        }
+        if (removeAmount >= totalAmount)
+        {
+            clear();
+            return totalAmount;
+        }
+        else
+        {
+            for (Map.Entry<Metal, Double> entry : metalMap.entrySet())
+            {
+                // Remove the amount of metal from each component
+                double remove = removeAmount * entry.getValue() / totalAmount;
+                metalMap.put(entry.getKey(), entry.getValue() - remove);
+            }
+            totalAmount -= removeAmount;
+            return removeAmount;
+        }
+    }
+
+    /**
      * Gets the total amount of alloy created
-     * @return The amount
+     *
+     * @return The amount, rounded to the closest integer
      */
     public int getAmount()
     {
@@ -138,6 +256,7 @@ public class Alloy
 
     /**
      * Note: this is not a check if the alloy will turn into unknown metal
+     *
      * @return is the alloy valid (set if it was constructed via ItemStacks and one ItemStack wasn't an IMetalObject)
      */
     public boolean isValid()
@@ -145,12 +264,68 @@ public class Alloy
         return isValid;
     }
 
+    public Map<Metal, Double> getMetals()
+    {
+        return metalMap;
+    }
+
+    @Override
+    public NBTTagCompound serializeNBT()
+    {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setBoolean("isValid", isValid);
+        nbt.setInteger("maxAmount", maxAmount);
+        nbt.setInteger("totalAmount", totalAmount);
+        NBTTagCompound alloys = new NBTTagCompound();
+        for (Map.Entry<Metal, Double> entry : this.metalMap.entrySet())
+        {
+            //noinspection ConstantConditions
+            alloys.setDouble(entry.getKey().getRegistryName().toString(), entry.getValue());
+        }
+        nbt.setTag("contents", alloys);
+        return nbt;
+    }
+
+    @Override
+    public void deserializeNBT(@Nullable NBTTagCompound nbt)
+    {
+        if (nbt != null)
+        {
+            clear();
+            isValid = nbt.getBoolean("isValid");
+            maxAmount = nbt.getInteger("maxAmount");
+            totalAmount = nbt.getInteger("totalAmount");
+
+            NBTTagCompound alloys = nbt.getCompoundTag("contents");
+            for (Metal metal : TFCRegistries.METALS.getValuesCollection())
+            {
+                //noinspection ConstantConditions
+                String key = metal.getRegistryName().toString();
+                if (alloys.hasKey(key))
+                {
+                    double amount = alloys.getDouble(key);
+                    this.metalMap.put(metal, amount);
+                }
+            }
+        }
+    }
+
+    /**
+     * Resets the alloy
+     */
+    private void clear()
+    {
+        metalMap.clear();
+        totalAmount = 0;
+        isValid = true;
+    }
+
     private boolean matchesRecipe(AlloyRecipe recipe)
     {
-        if (this.MAP.containsKey(recipe.getResult()))
+        if (this.metalMap.containsKey(recipe.getResult()))
         {
             Alloy other = new Alloy().add(this);
-            int resultAmount = other.MAP.remove(recipe.getResult());
+            double resultAmount = other.metalMap.remove(recipe.getResult());
             other.totalAmount -= resultAmount;
             return other.matchesRecipeExact(recipe);
         }
@@ -161,11 +336,11 @@ public class Alloy
     {
         // for each metal in the alloy, it needs to satisfy an ingredient
         // for each metal in the recipe, it needs to match with an alloy
-        for (Metal metal : Sets.union(recipe.MAP.keySet(), MAP.keySet()))
+        for (Metal metal : Sets.union(recipe.getMetals().keySet(), metalMap.keySet()))
         {
-            if (!MAP.containsKey(metal) ||
-                !recipe.MAP.containsKey(metal) ||
-                !recipe.MAP.get(metal).test(MAP.get(metal).floatValue() / totalAmount))
+            if (!metalMap.containsKey(metal) ||
+                !recipe.getMetals().containsKey(metal) ||
+                !recipe.getMetals().get(metal).test(metalMap.get(metal) / totalAmount))
                 return false;
         }
         return true;

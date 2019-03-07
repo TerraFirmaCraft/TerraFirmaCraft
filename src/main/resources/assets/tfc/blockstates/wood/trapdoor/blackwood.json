@@ -3,7 +3,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "texture": "tfc:blocks/wood/trapdoor/blackwood"
+      "texture": "tfc:blocks/wood/trapdoor/blackwood",
+      "all": "tfc:blocks/wood/trapdoor/blackwood"
     }
   },
   "variants": {

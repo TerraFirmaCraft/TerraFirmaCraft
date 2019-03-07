@@ -46,6 +46,12 @@ public class WorldGenSettings
         riverRavineRarity = b.riverRavineRarity;
     }
 
+    @Override
+    public String toString()
+    {
+        return Constants.GSON.toJson(this);
+    }
+
     public static class WorldGenSettingsBuilder
     {
         public int spawnFuzz = 250;
@@ -84,11 +90,5 @@ public class WorldGenSettings
         {
             return Constants.GSON.toJson(this);
         }
-    }
-
-    @Override
-    public String toString()
-    {
-        return Constants.GSON.toJson(this);
     }
 }
