@@ -61,12 +61,12 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
         Blocks.FIRE.setFireInfo(this, 5, 20);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
     }
 
-    public int getCurrentTime(World world)
+    public int getDayPeriod()
     {
-        return Math.floorDiv(Math.toIntExact(world.getWorldTime() % 24000), 6000);
+        return Math.floorDiv(CalenderTFC.getHourOfDay(), CalenderTFC.HOURS_IN_DAY / 4);
     }
 
     @SuppressWarnings("deprecation")
@@ -74,7 +74,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
     }
 
     @Override
@@ -88,7 +88,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
     }
 
     @Override
@@ -104,7 +104,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         int currentStage = state.getValue(GROWTHSTAGE);
         int expectedStage = CalenderTFC.getMonthOfYear().id();
         int currentTime = state.getValue(DAYPERIOD);
-        int expectedTime = getCurrentTime(worldIn);
+        int expectedTime = getDayPeriod();
 
         if (currentTime != expectedTime)
         {
@@ -127,7 +127,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(DAYPERIOD, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
         this.checkAndDropBlock(world, pos, state);
     }
 
