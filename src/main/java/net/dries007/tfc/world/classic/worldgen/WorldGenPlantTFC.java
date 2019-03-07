@@ -48,8 +48,8 @@ public class WorldGenPlantTFC extends WorldGenerator
                     (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
                     plantBlock.canBlockStay(worldIn, blockpos, state))
                 {
-                    worldIn.setBlockState(blockpos, state, 2);
-                    plantBlock.setAge(worldIn, blockpos, rand.nextInt(Math.max(1, Math.min(rand.nextInt(Math.round(10f + ((temp - 15) / (3.75f)))), 16))));
+                    int plantAge = rand.nextInt(Math.max(1, Math.min(rand.nextInt(Math.round(10f + ((temp - 15) / (3.75f)))), 16)));
+                    worldIn.setBlockState(blockpos, state.withProperty(BlockShortGrassTFC.AGE, plantAge), 2);
                 }
             }
         }
