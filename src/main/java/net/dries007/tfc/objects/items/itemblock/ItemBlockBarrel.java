@@ -18,10 +18,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.util.TFCConstants;
+import net.dries007.tfc.objects.te.TEBarrel;
 
 public class ItemBlockBarrel extends ItemBlockTFC
 {
@@ -77,14 +79,29 @@ public class ItemBlockBarrel extends ItemBlockTFC
             if (compound != null)
             {
                 FluidTank tank = new FluidTank(0).readFromNBT(compound.getCompoundTag("tank"));
+                ItemStackHandler stackHandler = new ItemStackHandler();
+                stackHandler.deserializeNBT(compound.getCompoundTag("inventory"));
+                ItemStack inventory = stackHandler.getStackInSlot(TEBarrel.SLOT_ITEM);
 
                 if (tank.getFluid() == null || tank.getFluidAmount() == 0)
                 {
-                    tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_empty"));
+                    if (inventory.isEmpty())
+                    {
+                        tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_empty"));
+                    }
+                    else
+                    {
+                        tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_item", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
+                    }
                 }
                 else
                 {
-                    tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_content", tank.getFluidAmount(), tank.getFluid().getLocalizedName()));
+                    tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_fluid", tank.getFluidAmount(), tank.getFluid().getLocalizedName()));
+
+                    if (!inventory.isEmpty())
+                    {
+                        tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_item_in_fluid", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
+                    }
                 }
             }
         }

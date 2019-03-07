@@ -12,7 +12,10 @@ tfc.tooltip.units=%d units
 tfc.tooltip.smelting=Smelt in %s
 tfc.tooltip.liquid=Liquid
 tfc.tooltip.barrel_empty=Empty
-tfc.tooltip.barrel_content=Contains %1$d mB of %2$s
+tfc.tooltip.barrel_fluid=Contains %1$d mB of %2$s
+tfc.tooltip.barrel_fluid_amount=%d mB
+tfc.tooltip.barrel_item=Contains %1$dx %2$s
+tfc.tooltip.barrel_item_in_fluid= and %1$dx %2$s
 
 ## Keybindings
 tfc.key.craft=Crafting GUI

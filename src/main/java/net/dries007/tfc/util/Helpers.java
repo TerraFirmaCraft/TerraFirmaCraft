@@ -23,6 +23,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidActionResult;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.types.Rock;
@@ -166,5 +170,81 @@ public final class Helpers
         for (EnumFacing side : possibleSides)
             if (canHangAt(worldIn, pos, side)) return side;
         return null;
+    }
+
+    /**
+     * Tries to empty a fluid container item into the fluid handler, then stores the remainder in the given inventory.
+     * If the fluid can't be transferred into the tank or the remainder can't fit into the return inventory, the action will be aborted.
+     *
+     * @param container        The filled fluid container ItemStack to empty.
+     *                         Will not be modified directly, if modifications are necessary a modified copy is returned in the result.
+     * @param fluidDestination The fluid destination to fill from the fluid container.
+     * @param returnInventory  An inventory where empty containers are put.
+     * @param returnSlot       The slot id into which the empty containers are inserted.
+     * @param maxAmount        Maximum amount of fluid to take from the container.
+     * @return A {@link FluidActionResult} holding the result and the resulting container. The resulting container is empty on failure.
+     */
+    @Nonnull
+    public static FluidActionResult emptyContainerIntoTank(@Nonnull ItemStack container, IFluidHandler fluidDestination, IItemHandler returnInventory, int returnSlot, int maxAmount)
+    {
+        if (!container.isEmpty())
+        {
+            FluidActionResult emptiedSimulated = FluidUtil.tryEmptyContainer(container, fluidDestination, maxAmount, null, false);
+
+            if (emptiedSimulated.isSuccess())
+            {
+                // check if we can give the itemStack to the inventory
+                ItemStack remainder = returnInventory.insertItem(returnSlot, emptiedSimulated.getResult(), true);
+
+                if (remainder.isEmpty())
+                {
+                    FluidActionResult emptiedReal = FluidUtil.tryEmptyContainer(container, fluidDestination, maxAmount, null, true);
+                    returnInventory.insertItem(returnSlot, emptiedReal.getResult(), false);
+
+                    ItemStack containerCopy = container.copy();
+                    containerCopy.shrink(1);
+
+                    return new FluidActionResult(containerCopy);
+                }
+            }
+        }
+
+        return FluidActionResult.FAILURE;
+    }
+
+    /**
+     * Tries to fill a fluid container item from the fluid handler, then stores the result in the given inventory.
+     * If the fluid can't be transferred into the container or the result can't fit into the return inventory, the action will be aborted.
+     *
+     * @param container       The fluid container ItemStack to fill.
+     *                        Will not be modified directly, if modifications are necessary a modified copy is returned in the result.
+     * @param fluidSource     The fluid source to fill from.
+     * @param returnInventory An inventory where filled containers are put.
+     * @param returnSlot      The slot id into which the filled containers are inserted.
+     * @param maxAmount       Maximum amount of fluid to put into the container.
+     * @return A {@link FluidActionResult} holding the result and the resulting container. The resulting container is empty on failure.
+     */
+    @Nonnull
+    public static FluidActionResult fillContainerFromTank(@Nonnull ItemStack container, IFluidHandler fluidSource, IItemHandler returnInventory, int returnSlot, int maxAmount)
+    {
+        FluidActionResult filledSimulated = FluidUtil.tryFillContainer(container, fluidSource, maxAmount, null, false);
+
+        if (filledSimulated.isSuccess())
+        {
+            // check if we can give the itemStack to the inventory
+            ItemStack remainder = returnInventory.insertItem(returnSlot, filledSimulated.getResult(), true);
+
+            if (remainder.isEmpty())
+            {
+                FluidActionResult filledReal = FluidUtil.tryFillContainer(container, fluidSource, maxAmount, null, true);
+                returnInventory.insertItem(returnSlot, filledReal.getResult(), false);
+
+                ItemStack containerCopy = container.copy();
+                containerCopy.shrink(1);
+                return new FluidActionResult(containerCopy);
+            }
+        }
+
+        return FluidActionResult.FAILURE;
     }
 }
