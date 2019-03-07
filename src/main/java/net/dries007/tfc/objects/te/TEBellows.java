@@ -24,7 +24,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.IBellowsHandler;
+import net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge;
+import net.dries007.tfc.objects.blocks.devices.BlockFirePit;
+import net.dries007.tfc.util.IBellowsHandler;
 
 import static net.minecraft.block.BlockHorizontal.FACING;
 
@@ -37,12 +39,19 @@ public class TEBellows extends TileEntity
      * Y: vertical, self-explanatory, negative is below.
      * Z: X but rotated 90 degrees clockwise, positive values go right. in most cases you want this to be 0
      *
-     * For example: a block that must sit right in front of the bellows(like fire pits) must register Vec3i(1,0,0),
-     * meanwhile, block that sink into ground(like forges) might want to register Vec3i(1,-1,0).
+     * For example: a block that must sit right in front of the bellows(like fire pits) must register {@code Vec3i(1,0,0)},
+     * {@link BlockFirePit}
+     * meanwhile, block that sink into ground(like forges) might want to register {@code Vec3i(1,-1,0)}.
+     * {@link BlockCharcoalForge}
      * If there is a guarantee for another block to register that position,
      * then there is no need do do it anymore with yours.
      */
-    public static final Set<Vec3i> offsets = new HashSet<>();
+    private static final Set<Vec3i> offsets = new HashSet<>();
+
+    public static void addBellowsOffset(Vec3i offset)
+    {
+        offsets.add(offset);
+    }
 
     private long lastPushed = 0L;
 
@@ -94,23 +103,8 @@ public class TEBellows extends TileEntity
         updateBlock();
     }
 
-    public void updateBlock()
-    {
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3); // sync TE
-        markDirty(); // make sure everything saves to disk
-    }
-
-    public void debug()
-    {
-        TerraFirmaCraft.getLog().debug("Debugging Bellows");
-        TerraFirmaCraft.getLog().debug("Now: {} | Then: {} | Difference: {}", world.getTotalWorldTime(), lastPushed, (world.getTotalWorldTime() - lastPushed));
-        TerraFirmaCraft.getLog().debug("Total Height: {}", getHeight());
-    }
-
     public boolean onRightClick()
     {
-        TerraFirmaCraft.getLog().info("On right click! {} {}", world.getTotalWorldTime(), lastPushed);
         long time = world.getTotalWorldTime() - lastPushed;
         if (time < 20)
             return true;
@@ -124,7 +118,7 @@ public class TEBellows extends TileEntity
             Block block = world.getBlockState(posx).getBlock();
             if (block instanceof IBellowsHandler && ((IBellowsHandler) block).canIntakeFrom(this, offset, direction))
             {
-                ((IBellowsHandler) block).onAirIntake(this, posx, 1f);
+                ((IBellowsHandler) block).onAirIntake(this, world, posx, 1f);
                 if (world.isRemote)
                 {
                     //TODO: actual sound, better particles and animation
@@ -136,5 +130,19 @@ public class TEBellows extends TileEntity
             }
         }
         return false;
+    }
+
+    public void debug()
+    {
+        TerraFirmaCraft.getLog().debug("Debugging Bellows");
+        TerraFirmaCraft.getLog().debug("Now: {} | Then: {} | Difference: {}", world.getTotalWorldTime(), lastPushed, (world.getTotalWorldTime() - lastPushed));
+        TerraFirmaCraft.getLog().debug("Total Height: {}", getHeight());
+    }
+
+    private void updateBlock()
+    {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3); // sync TE
+        markDirty(); // make sure everything saves to disk
     }
 }

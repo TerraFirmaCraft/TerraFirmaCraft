@@ -8,7 +8,6 @@ package net.dries007.tfc.objects;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.util.EnumHelper;
 
-@SuppressWarnings("WeakerAccess")
 public final class ToolMaterialsTFC
 {
     public static final Item.ToolMaterial IG_IN = EnumHelper.addToolMaterial("IgIn", 1, 60, 7, 2.0f, 5); //Tier 0

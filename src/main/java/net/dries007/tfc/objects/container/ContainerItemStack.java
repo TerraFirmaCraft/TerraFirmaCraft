@@ -17,13 +17,12 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.TerraFirmaCraft;
-
 public abstract class ContainerItemStack extends Container
 {
     protected final ItemStack stack;
     protected final EntityPlayer player;
     protected int itemIndex;
+    protected boolean isOffhand;
 
     ContainerItemStack(InventoryPlayer playerInv, ItemStack stack)
     {
@@ -32,9 +31,15 @@ public abstract class ContainerItemStack extends Container
         this.stack = stack;
 
         if (stack == player.getHeldItemMainhand())
+        {
             this.itemIndex = playerInv.currentItem + 27; // Mainhand opened inventory
+            this.isOffhand = false;
+        }
         else
+        {
             this.itemIndex = -100; // Offhand, so ignore this rule
+            this.isOffhand = true;
+        }
 
         addContainerSlots();
         addPlayerInventorySlots(playerInv);
@@ -102,7 +107,6 @@ public abstract class ContainerItemStack extends Container
     @Nonnull
     public ItemStack slotClick(int slotID, int dragType, ClickType clickType, EntityPlayer player)
     {
-        TerraFirmaCraft.getLog().debug("Clicked on slot " + slotID);
         if ((clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP || clickType == ClickType.SWAP) && slotID == itemIndex)
         {
             return ItemStack.EMPTY;

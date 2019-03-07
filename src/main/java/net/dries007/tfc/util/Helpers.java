@@ -17,6 +17,7 @@ import com.google.common.base.Joiner;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -29,11 +30,16 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.objects.blocks.BlockPeat;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockShortGrassTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public final class Helpers
 {
@@ -45,7 +51,6 @@ public final class Helpers
         {
             if (us.getBlock() instanceof BlockPeat)
             {
-                //noinspection ConstantConditions
                 world.setBlockState(pos, BlocksTFC.PEAT.getDefaultState());
             }
             else if (us.getBlock() instanceof BlockRockVariant)
@@ -71,7 +76,6 @@ public final class Helpers
 
                 if (current.getBlock() instanceof BlockPeat)
                 {
-                    //noinspection ConstantConditions
                     world.setBlockState(target, BlocksTFC.PEAT_GRASS.getDefaultState());
                 }
                 else if (current.getBlock() instanceof BlockRockVariant)
@@ -84,6 +88,20 @@ public final class Helpers
                     world.setBlockState(target, block.getVariant(block.type.getGrassVersion(spreader)).getDefaultState());
                 }
             }
+
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+            {
+                float temp = ClimateTFC.getHeightAdjustedBiomeTemp(world, pos.up());
+
+                if (world.isAirBlock(pos.up()) &&
+                    plant.getPlantType() == Plant.PlantType.SHORT_GRASS &&
+                    plant.isValidLocation(temp, ChunkDataTFC.getRainfall(world, pos.up()), world.getLightFromNeighbors(pos.up())) &&
+                    temp > 15 &&
+                    rand.nextFloat() < BlockShortGrassTFC.get(plant).getGrowthRate(world, pos.up()))
+                {
+                    world.setBlockState(pos.up(), BlockShortGrassTFC.get(plant).getDefaultState());
+                }
+            }
         }
     }
 
@@ -93,11 +111,11 @@ public final class Helpers
         return input.stream().map(String::toLowerCase).anyMatch(itemsSet::contains);
     }
 
+    @SuppressWarnings("unchecked")
     public static <T extends TileEntity> T getTE(IBlockAccess world, BlockPos pos, Class<T> aClass)
     {
         TileEntity te = world.getTileEntity(pos);
         if (!aClass.isInstance(te)) return null;
-        //noinspection unchecked
         return (T) te;
     }
 
@@ -108,13 +126,43 @@ public final class Helpers
 
     public static String getTypeName(IForgeRegistryEntry<?> type)
     {
+        //noinspection ConstantConditions
         return JOINER_DOT.join(TFCConstants.MOD_ID, "types", type.getRegistryType().getSimpleName(), type.getRegistryName().getPath()).toLowerCase();
+    }
+
+    public static boolean playerHasItemMatchingOre(InventoryPlayer playerInv, String ore)
+    {
+        for (ItemStack stack : playerInv.mainInventory)
+        {
+            if (!stack.isEmpty() && OreDictionaryHelper.doesStackMatchOre(stack, ore))
+            {
+                return true;
+            }
+        }
+        for (ItemStack stack : playerInv.armorInventory)
+        {
+            if (!stack.isEmpty() && OreDictionaryHelper.doesStackMatchOre(stack, ore))
+            {
+                return true;
+            }
+        }
+        for (ItemStack stack : playerInv.offHandInventory)
+        {
+            if (!stack.isEmpty() && OreDictionaryHelper.doesStackMatchOre(stack, ore))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Nonnull
     public static ItemStack consumeItem(ItemStack stack, int amount)
     {
-        if (stack.getCount() <= amount) return ItemStack.EMPTY;
+        if (stack.getCount() <= amount)
+        {
+            return ItemStack.EMPTY;
+        }
         stack.shrink(amount);
         return stack;
     }
@@ -154,21 +202,35 @@ public final class Helpers
      * Primarily for use in placing checks. Determines a solid side for the block to attach to.
      *
      * @param pos             position of the block/space to be checked.
-     * @param possibleSides   a list/array of all sides the block can attach to. Enumfacing constants are recommended.
-     *                        This MUST NOT contain null!
-     * @param prefferedFacing this facing is checked first. It can be invalid or null.
+     * @param possibleSides   a list/array of all sides the block can attach to.
+     * @param preferredFacing this facing is checked first. It can be invalid or null.
      * @return Found facing or null is none is found. This is the direction the block should be pointing and the side it stick TO, not the side it sticks WITH.
      */
-    public static EnumFacing getASolidFacing(World worldIn, BlockPos pos, EnumFacing[] possibleSides, @Nullable EnumFacing prefferedFacing)
+    public static EnumFacing getASolidFacing(World worldIn, BlockPos pos, @Nullable EnumFacing preferredFacing, EnumFacing... possibleSides)
     {
-        return getASolidFacing(worldIn, pos, Arrays.asList(possibleSides), prefferedFacing);
+        return getASolidFacing(worldIn, pos, preferredFacing, Arrays.asList(possibleSides));
     }
 
-    public static EnumFacing getASolidFacing(World worldIn, BlockPos pos, Collection<EnumFacing> possibleSides, @Nullable EnumFacing prefferedFacing)
+    public static EnumFacing getASolidFacing(World worldIn, BlockPos pos, @Nullable EnumFacing preferredFacing, Collection<EnumFacing> possibleSides)
     {
-        if (possibleSides.contains(prefferedFacing) && canHangAt(worldIn, pos, prefferedFacing)) return prefferedFacing;
+        if (preferredFacing != null && possibleSides.contains(preferredFacing) && canHangAt(worldIn, pos, preferredFacing))
+        {
+            return preferredFacing;
+        }
         for (EnumFacing side : possibleSides)
-            if (canHangAt(worldIn, pos, side)) return side;
+        {
+            if (side != null && canHangAt(worldIn, pos, side))
+            {
+                return side;
+            }
+        }
+        return null;
+    }
+
+    @Nonnull
+    @SuppressWarnings("ConstantConditions")
+    public static <T> T getNull()
+    {
         return null;
     }
 

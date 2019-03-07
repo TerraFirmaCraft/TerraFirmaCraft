@@ -45,7 +45,6 @@ public class WorldGenTrees implements IWorldGenerator
         if (!chunkData.isInitialized()) return;
 
         final Biome b = world.getBiome(chunkBlockPos);
-        //noinspection ConstantConditions
         if (!(b instanceof BiomeTFC) || b == BiomesTFC.OCEAN || b == BiomesTFC.DEEP_OCEAN || b == BiomesTFC.LAKE || b == BiomesTFC.RIVER)
             return;
 
@@ -80,7 +79,7 @@ public class WorldGenTrees implements IWorldGenerator
             return;
         }
 
-        final int spawnTries = 2 + (int) (density * 16f);
+        final int spawnTries = (int) (density * density * 20f);
         final int maxTrees = Math.min(trees.size(), Math.min(5, (int) (1 + (density + diversity) * 2.5f)));
         trees = trees.subList(0, maxTrees);
 
@@ -128,7 +127,6 @@ public class WorldGenTrees implements IWorldGenerator
 
             if (world.getBlockState(pos).getMaterial().isReplaceable() && !world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).isOpaqueCube())
             {
-                //noinspection ConstantConditions
                 world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState());
                 TEWorldItem tile = (TEWorldItem) world.getTileEntity(pos);
                 if (tile != null)
