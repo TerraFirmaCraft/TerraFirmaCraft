@@ -1,0 +1,39 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:cross",
+    "textures": {
+      "cross": "tfc:blocks/plants/sacred_datura/sacred_datura_3",
+      "layer0": "tfc:blocks/plants/sacred_datura/sacred_datura_3"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": {
+      "model": "builtin/generated",
+      "transform": "forge:default-item"
+    },
+    "stage": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {},
+      "4": {},
+      "5": {},
+      "6": {},
+      "7": {},
+      "8": {},
+      "9": {},
+      "10": {},
+      "11": {}
+    },
+    "dayperiod": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {}
+    }
+  }
+}
