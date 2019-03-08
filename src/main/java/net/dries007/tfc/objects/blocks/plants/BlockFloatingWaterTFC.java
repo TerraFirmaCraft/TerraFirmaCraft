@@ -27,7 +27,7 @@ import net.minecraftforge.common.EnumPlantType;
 
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
 
@@ -47,7 +47,7 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalendarTFC.Month.MARCH.id()));
     }
 
     @SuppressWarnings("deprecation")
@@ -71,13 +71,13 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return state.withProperty(GROWTHSTAGE, CalendarTFC.getMonthOfYear().id());
     }
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(DAYPERIOD, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, this.blockState.getBaseState().withProperty(DAYPERIOD, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalendarTFC.getMonthOfYear().id()));
         this.checkAndDropBlock(world, pos, state);
     }
 

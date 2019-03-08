@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 public class PacketCalendarUpdate implements IMessage
 {
@@ -51,7 +51,7 @@ public class PacketCalendarUpdate implements IMessage
             if (world != null)
             {
                 TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
-                    CalenderTFC.CalendarWorldData.update(world, message.calendarOffset, message.daysInMonth);
+                    CalendarTFC.CalendarWorldData.update(world, message.calendarOffset, message.daysInMonth);
                 });
             }
             return null;

@@ -14,7 +14,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -29,12 +29,12 @@ public class TESaplingTFC extends TileEntity
 
     public long getHoursSincePlaced()
     {
-        return (CalenderTFC.getTotalTime() - timer) / CalenderTFC.TICKS_IN_HOUR;
+        return (CalendarTFC.getTotalTime() - timer) / CalendarTFC.TICKS_IN_HOUR;
     }
 
     public void onPlaced()
     {
-        timer = CalenderTFC.getTotalTime();
+        timer = CalendarTFC.getTotalTime();
         this.markDirty();
     }
 

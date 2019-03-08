@@ -28,7 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.Plant;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -62,7 +62,7 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()).withProperty(DOWN, false).withProperty(UP, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(SOUTH, false).withProperty(WEST, false));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalendarTFC.Month.MARCH.id()).withProperty(DOWN, false).withProperty(UP, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(SOUTH, false).withProperty(WEST, false));
     }
 
     public boolean canConnectTo(IBlockAccess worldIn, BlockPos pos, EnumFacing facing)
@@ -83,7 +83,7 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id())
+        return state.withProperty(GROWTHSTAGE, CalendarTFC.getMonthOfYear().id())
             .withProperty(DOWN, canPlantConnectTo(worldIn, pos, EnumFacing.DOWN))
             .withProperty(UP, canPlantConnectTo(worldIn, pos, EnumFacing.UP))
             .withProperty(NORTH, canPlantConnectTo(worldIn, pos, EnumFacing.NORTH))
@@ -182,13 +182,13 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         switch (rot)
         {
             case CLOCKWISE_180:
-                return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(NORTH, state.getValue(SOUTH)).withProperty(EAST, state.getValue(WEST)).withProperty(SOUTH, state.getValue(NORTH)).withProperty(WEST, state.getValue(EAST));
+                return state.withProperty(GROWTHSTAGE, CalendarTFC.getMonthOfYear().id()).withProperty(NORTH, state.getValue(SOUTH)).withProperty(EAST, state.getValue(WEST)).withProperty(SOUTH, state.getValue(NORTH)).withProperty(WEST, state.getValue(EAST));
             case COUNTERCLOCKWISE_90:
-                return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(NORTH, state.getValue(EAST)).withProperty(EAST, state.getValue(SOUTH)).withProperty(SOUTH, state.getValue(WEST)).withProperty(WEST, state.getValue(NORTH));
+                return state.withProperty(GROWTHSTAGE, CalendarTFC.getMonthOfYear().id()).withProperty(NORTH, state.getValue(EAST)).withProperty(EAST, state.getValue(SOUTH)).withProperty(SOUTH, state.getValue(WEST)).withProperty(WEST, state.getValue(NORTH));
             case CLOCKWISE_90:
-                return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(NORTH, state.getValue(WEST)).withProperty(EAST, state.getValue(NORTH)).withProperty(SOUTH, state.getValue(EAST)).withProperty(WEST, state.getValue(SOUTH));
+                return state.withProperty(GROWTHSTAGE, CalendarTFC.getMonthOfYear().id()).withProperty(NORTH, state.getValue(WEST)).withProperty(EAST, state.getValue(NORTH)).withProperty(SOUTH, state.getValue(EAST)).withProperty(WEST, state.getValue(SOUTH));
             default:
-                return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+                return state.withProperty(GROWTHSTAGE, CalendarTFC.getMonthOfYear().id());
         }
     }
 
@@ -200,9 +200,9 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         switch (mirrorIn)
         {
             case LEFT_RIGHT:
-                return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(NORTH, state.getValue(SOUTH)).withProperty(SOUTH, state.getValue(NORTH));
+                return state.withProperty(GROWTHSTAGE, CalendarTFC.getMonthOfYear().id()).withProperty(NORTH, state.getValue(SOUTH)).withProperty(SOUTH, state.getValue(NORTH));
             case FRONT_BACK:
-                return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(EAST, state.getValue(WEST)).withProperty(WEST, state.getValue(EAST));
+                return state.withProperty(GROWTHSTAGE, CalendarTFC.getMonthOfYear().id()).withProperty(EAST, state.getValue(WEST)).withProperty(WEST, state.getValue(EAST));
             default:
                 return super.withMirror(state, mirrorIn);
         }

@@ -31,7 +31,7 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -61,7 +61,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
         Blocks.FIRE.setFireInfo(this, 5, 20);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalendarTFC.Month.MARCH.id()));
     }
 
     public int getCurrentTime(World world)
@@ -74,7 +74,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return this.getDefaultState().withProperty(GROWTHSTAGE, CalendarTFC.getMonthOfYear().id());
     }
 
     @Override
@@ -88,7 +88,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return state.withProperty(GROWTHSTAGE, CalendarTFC.getMonthOfYear().id());
     }
 
     @Override
@@ -102,7 +102,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
         int currentStage = state.getValue(GROWTHSTAGE);
-        int expectedStage = CalenderTFC.getMonthOfYear().id();
+        int expectedStage = CalendarTFC.getMonthOfYear().id();
         int currentTime = state.getValue(DAYPERIOD);
         int expectedTime = getCurrentTime(worldIn);
 
@@ -127,7 +127,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, state.withProperty(DAYPERIOD, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalendarTFC.getMonthOfYear().id()));
         this.checkAndDropBlock(world, pos, state);
     }
 
