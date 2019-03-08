@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 
 @ParametersAreNonnullByDefault
@@ -49,7 +49,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalendarTFC.Month.MARCH.id()));
     }
 
     @Override
@@ -165,6 +165,6 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     @Override
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
-        worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, 15).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, 15).withProperty(GROWTHSTAGE, CalendarTFC.getMonthOfYear().id()));
     }
 }

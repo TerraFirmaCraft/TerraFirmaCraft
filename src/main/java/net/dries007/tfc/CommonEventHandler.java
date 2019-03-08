@@ -32,7 +32,7 @@ import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -191,8 +191,7 @@ public final class CommonEventHandler
         final World world = event.getWorld();
         if (world.provider.getDimension() == 0 && !world.isRemote)
         {
-            TerraFirmaCraft.getLog().info("On Load Baby!");
-            CalenderTFC.CalendarWorldData.onLoad(event.getWorld());
+            CalendarTFC.CalendarWorldData.onLoad(event.getWorld());
         }
     }
 }

@@ -30,7 +30,7 @@ import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.te.TESaplingTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 @ParametersAreNonnullByDefault
 public class BlockSaplingTFC extends BlockBush implements IGrowable
@@ -117,7 +117,7 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
             if (te != null)
             {
                 long hours = te.getHoursSincePlaced();
-                if (hours > wood.getMinGrowthTime() * CalenderTFC.HOURS_IN_DAY)
+                if (hours > wood.getMinGrowthTime() * CalendarTFC.HOURS_IN_DAY)
                 {
                     grow(world, random, pos, state);
                 }

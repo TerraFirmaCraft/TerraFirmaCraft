@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.cmd;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -11,7 +16,7 @@ import net.minecraft.util.text.TextComponentString;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -35,23 +40,23 @@ public class CommandTimeTFC extends CommandBase
         TerraFirmaCraft.getLog().info("Executing command TFC");
         if (args.length != 3) throw new WrongUsageException("Requires three arguments");
 
-        long time = CalenderTFC.TICKS_IN_DAY;
+        long time = CalendarTFC.TICKS_IN_DAY;
         switch (args[1].toLowerCase())
         {
             case "month":
-                time *= CalenderTFC.getDaysInMonth();
+                time *= CalendarTFC.getDaysInMonth();
                 time *= parseInt(args[2], 0, 12 * 1000);
                 break;
             case "year":
-                time *= CalenderTFC.getDaysInMonth() * 12;
+                time *= CalendarTFC.getDaysInMonth() * 12;
                 time *= parseInt(args[2], 0, 1000);
                 break;
             case "day":
-                time *= parseInt(args[2], 0, CalenderTFC.getDaysInMonth() * 12 * 1000);
+                time *= parseInt(args[2], 0, CalendarTFC.getDaysInMonth() * 12 * 1000);
                 break;
             case "monthlength":
                 int value = parseInt(args[2], 1, 1000);
-                CalenderTFC.setMonthLength(server.getEntityWorld(), value);
+                CalendarTFC.setMonthLength(server.getEntityWorld(), value);
                 sender.sendMessage(new TextComponentString("Set Month Length to " + value));
                 return;
             default:
@@ -60,14 +65,14 @@ public class CommandTimeTFC extends CommandBase
 
         if (args[0].equals("add"))
         {
-            time += CalenderTFC.getCalendarTime();
+            time += CalendarTFC.getCalendarTime();
         }
         else if (!args[0].equals("set"))
         {
             throw new WrongUsageException("First argument must be [add|set]");
         }
 
-        CalenderTFC.setCalendarTime(server.getEntityWorld(), time);
+        CalendarTFC.setCalendarTime(server.getEntityWorld(), time);
         sender.sendMessage(new TextComponentString("Set Calendar Time to: " + time));
     }
 }

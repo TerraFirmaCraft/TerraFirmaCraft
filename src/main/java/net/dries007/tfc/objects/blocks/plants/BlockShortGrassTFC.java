@@ -31,7 +31,7 @@ import net.minecraftforge.common.IShearable;
 
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 
 @ParametersAreNonnullByDefault
@@ -54,14 +54,14 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalendarTFC.Month.MARCH.id()));
     }
 
     @Override
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id());
+        return this.getDefaultState().withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalendarTFC.Month.MARCH.id());
     }
 
     @Override

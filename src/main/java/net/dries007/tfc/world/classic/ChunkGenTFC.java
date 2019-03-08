@@ -195,7 +195,7 @@ public class ChunkGenTFC implements IChunkGenerator
         rockLayer3 = rocksGenLayer3.getInts(chunkX * 16, chunkZ * 16, 16, 16);
 
         final float latitudeFactor = ClimateTFC.latitudeFactor(chunkZ); // Range 0 - 1
-        final float monthFactor = 41f - 1.1f * CalenderTFC.Month.getAverageTempMod() * (1f - 0.8f * latitudeFactor);
+        final float monthFactor = 41f - 1.1f * CalendarTFC.Month.getAverageTempMod() * (1f - 0.8f * latitudeFactor);
         final float regionalFactor = 15f * 0.09f * (float) noiseGen10.getValue(chunkX * 0.005, chunkZ * 0.005); // Range -15 <> 15
 
         baseTemp = 45f * latitudeFactor - 25f + regionalFactor; // Latitude + Regional Temp
@@ -339,7 +339,7 @@ public class ChunkGenTFC implements IChunkGenerator
         if (!world.isAirBlock(pos) && !world.isAirBlock(pos.add(0, -1, 0)) && !SNOW.getBlock().canPlaceBlockAt(world, pos))
             return false;
         if (ClimateTFC.getHeightAdjustedTemp(world, pos) >= 0F) return false;
-        if (world.getLightFor(EnumSkyBlock.BLOCK, pos) < 10 /* todo: why? && CalenderTFC.getTotalMonths() < 1*/)
+        if (world.getLightFor(EnumSkyBlock.BLOCK, pos) < 10 /* todo: why? && CalendarTFC.getTotalMonths() < 1*/)
             return false;
         return world.getBlockState(pos.add(0, -1, 0)).getMaterial().blocksMovement();
     }

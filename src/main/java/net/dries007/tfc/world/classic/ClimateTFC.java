@@ -92,7 +92,7 @@ public final class ClimateTFC
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (data == null || !data.isInitialized()) return Float.NaN;
-        return getTemp(data.getBaseTemp(), world.getSeed(), CalenderTFC.getTotalDays(), CalenderTFC.getTotalHours());
+        return getTemp(data.getBaseTemp(), world.getSeed(), CalendarTFC.getTotalDays(), CalendarTFC.getTotalHours());
     }
 
     public static float getHeightAdjustedTemp(World world, BlockPos pos)
@@ -138,7 +138,7 @@ public final class ClimateTFC
      * @param month    The month (from CalendarTFC)
      * @return the month factor for temp calculation
      */
-    public static float monthFactor(float baseTemp, CalenderTFC.Month month)
+    public static float monthFactor(float baseTemp, CalendarTFC.Month month)
     {
         return 41f - month.getTempMod() - 1.1f * (1 - 0.8f * baseTemp);
     }
@@ -151,10 +151,10 @@ public final class ClimateTFC
      */
     public static float getMonthAdjTemp(float baseTemp)
     {
-        final float currentMonthFactor = monthFactor(baseTemp, CalenderTFC.getMonthOfYear());
-        final float nextMonthFactor = monthFactor(baseTemp, CalenderTFC.getMonthOfYear().next());
+        final float currentMonthFactor = monthFactor(baseTemp, CalendarTFC.getMonthOfYear());
+        final float nextMonthFactor = monthFactor(baseTemp, CalendarTFC.getMonthOfYear().next());
 
-        final float delta = (float) CalenderTFC.getDayOfMonth() / CalenderTFC.getDaysInMonth();
+        final float delta = (float) CalendarTFC.getDayOfMonth() / CalendarTFC.getDaysInMonth();
         // Affine combination to smooth temperature transition
         return currentMonthFactor * (1 - delta) + nextMonthFactor * delta;
     }
@@ -176,14 +176,14 @@ public final class ClimateTFC
      *
      * @param baseTemp The base temperature, either from {@link ChunkDataTFC} or {@link ClimateRenderHelper}
      * @param seed     The world seed
-     * @param day      The current day, from {@link CalenderTFC}
+     * @param day      The current day, from {@link CalendarTFC}
      * @param hour     The current hour of the day
      * @return A temperature, in the approximate range -35 to 35
      */
     private static float getTemp(float baseTemp, long seed, long day, long hour)
     {
-        int h = (int) ((hour - 6) % CalenderTFC.HOURS_IN_DAY);
-        if (h < 0) h += CalenderTFC.HOURS_IN_DAY;
+        int h = (int) ((hour - 6) % CalendarTFC.HOURS_IN_DAY);
+        if (h < 0) h += CalendarTFC.HOURS_IN_DAY;
 
         float hourMod;
         if (h < 12) hourMod = ((float) h / 11) * 0.3f;
@@ -192,10 +192,10 @@ public final class ClimateTFC
         rng.setSeed(seed + day);
         final float dailyTemp = (rng.nextInt(200) - 100) / 20f;
 
-        final float monthMod = 41f - CalenderTFC.getMonthOfYear().getTempMod() * 1.1f * (1 - 0.8f * baseTemp);
-        final float nextMonthMod = 41f - CalenderTFC.getMonthOfYear().next().getTempMod() * 1.1f * (1 - 0.8f * baseTemp);
+        final float monthMod = 41f - CalendarTFC.getMonthOfYear().getTempMod() * 1.1f * (1 - 0.8f * baseTemp);
+        final float nextMonthMod = 41f - CalendarTFC.getMonthOfYear().next().getTempMod() * 1.1f * (1 - 0.8f * baseTemp);
 
-        final float monthDelta = (float) CalenderTFC.getDayOfMonthFromDayOfYear(day) / CalenderTFC.getDaysInMonth();
+        final float monthDelta = (float) CalendarTFC.getDayOfMonthFromDayOfYear(day) / CalendarTFC.getDaysInMonth();
 
         return monthMod * (1 - monthDelta) + nextMonthMod * (monthDelta) + dailyTemp + (hourMod * (baseTemp + dailyTemp));
     }

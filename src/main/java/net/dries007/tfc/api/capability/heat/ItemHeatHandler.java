@@ -13,7 +13,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 /**
  * This is an implementation of ItemHeat that automatically cools down over time
@@ -57,7 +57,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
     @Override
     public float getTemperature()
     {
-        return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalenderTFC.getTotalTime() - lastUpdateTick);
+        return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.getTotalTime() - lastUpdateTick);
     }
 
     /**
@@ -69,7 +69,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
     public void setTemperature(float temperature)
     {
         this.temperature = temperature;
-        this.lastUpdateTick = CalenderTFC.getTotalTime();
+        this.lastUpdateTick = CalendarTFC.getTotalTime();
     }
 
     @Override
@@ -117,7 +117,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
         }
         else
         {
-            nbt.setLong("ticks", CalenderTFC.getTotalTime());
+            nbt.setLong("ticks", CalendarTFC.getTotalTime());
         }
         return nbt;
     }
