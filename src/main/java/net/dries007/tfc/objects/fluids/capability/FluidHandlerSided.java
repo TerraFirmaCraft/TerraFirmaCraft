@@ -3,27 +3,26 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.fluids;
+package net.dries007.tfc.objects.fluids.capability;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class LockableFluidHandler implements IFluidHandler
+public class FluidHandlerSided implements IFluidHandler
 {
-    private boolean locked;
+    private IFluidHandlerSidedCallback callback;
     private IFluidHandler handler;
+    private EnumFacing side;
 
-    public LockableFluidHandler(IFluidHandler handler)
+    public FluidHandlerSided(IFluidHandlerSidedCallback callback, IFluidHandler handler, EnumFacing side)
     {
+        this.callback = callback;
         this.handler = handler;
-    }
-
-    public void setLockStatus(boolean locked)
-    {
-        this.locked = locked;
+        this.side = side;
     }
 
     @Override
@@ -35,35 +34,35 @@ public class LockableFluidHandler implements IFluidHandler
     @Override
     public int fill(FluidStack resource, boolean doFill)
     {
-        if (locked)
+        if (callback.canFill(resource, side))
         {
-            return 0;
+            return handler.fill(resource, doFill);
         }
 
-        return handler.fill(resource, doFill);
+        return 0;
     }
 
-    @Nullable
     @Override
+    @Nullable
     public FluidStack drain(FluidStack resource, boolean doDrain)
     {
-        if (locked)
+        if (callback.canDrain(side))
         {
-            return null;
+            return handler.drain(resource, doDrain);
         }
 
-        return handler.drain(resource, doDrain);
+        return null;
     }
 
-    @Nullable
     @Override
+    @Nullable
     public FluidStack drain(int maxDrain, boolean doDrain)
     {
-        if (locked)
+        if (callback.canDrain(side))
         {
-            return null;
+            return handler.drain(maxDrain, doDrain);
         }
 
-        return handler.drain(maxDrain, doDrain);
+        return null;
     }
 }
