@@ -77,7 +77,7 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
         this.checkAndDropBlock(world, pos, state);
     }
 

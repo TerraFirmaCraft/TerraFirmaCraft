@@ -29,8 +29,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -234,10 +236,26 @@ public class BlockRockVariant extends Block
     {
         EnumPlantType plantType = plantable.getPlantType(world, pos.offset(direction));
 
+        if (plantable instanceof BlockPlantTFC)
+        {
+            BlockPlantTFC plant = (BlockPlantTFC)plantable;
+            Plant.EnumPlantTypeTFC plantTypeTFC = plant.getPlantTypeTFC(world, pos.offset(direction));
+
+            switch (plantTypeTFC)
+            {
+                case Clay:
+                    return type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
+                case Dry:
+                    return type == Rock.Type.DRY_GRASS;
+                case Stone:
+                    return type == Rock.Type.RAW;
+            }
+        }
+
         switch (plantType)
         {
             case Plains:
-                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY_GRASS;
+                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS;
             case Crop:
                 return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.FARMLAND || type == Rock.Type.DRY_GRASS;
             case Desert:

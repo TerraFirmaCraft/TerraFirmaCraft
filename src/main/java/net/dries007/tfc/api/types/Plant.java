@@ -13,6 +13,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.objects.blocks.plants.*;
@@ -33,6 +34,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     private final PlantType plantType;
     private final Material material;
+    private final Boolean isClayMarking;
 
     /**
      * Addon mods that want to add flowers should subscribe to the registry event for this class
@@ -52,7 +54,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      * @param minWaterDepth min water depth for water plants
      * @param maxWaterDepth max water depth for water plants
      */
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int minWaterDepth, int maxWaterDepth)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int minWaterDepth, int maxWaterDepth)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -65,13 +67,19 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
         this.plantType = plantType;
         this.material = plantType.getPlantMaterial();
+        this.isClayMarking = isClayMarking;
 
         setRegistryName(name);
     }
 
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun)
     {
-        this(name, plantType, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, 0, 0);
+        this(name, plantType, isClayMarking, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, 0, 0);
+    }
+
+    public boolean getIsClayMarking()
+    {
+        return isClayMarking;
     }
 
     public boolean isValidLocation(float temp, float rain, int sunlight)
@@ -184,5 +192,13 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
                     return Material.PLANTS;
             }
         }
+    }
+
+    public enum EnumPlantTypeTFC
+    {
+        Clay,
+        Dry,
+        Stone,
+        None;
     }
 }

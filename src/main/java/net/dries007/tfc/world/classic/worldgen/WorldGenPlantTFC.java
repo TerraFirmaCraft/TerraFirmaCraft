@@ -33,6 +33,7 @@ public class WorldGenPlantTFC extends WorldGenerator
 
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
+        if (plant.getIsClayMarking()) return false;
         if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS)
         {
             BlockShortGrassTFC plantBlock = BlockShortGrassTFC.get(plant);
@@ -48,9 +49,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                     (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
                     plantBlock.canBlockStay(worldIn, blockpos, state))
                 {
-                    int plantAge = rand.nextInt(Math.max(1, Math.min(Math.round(10f + ((temp - 15f) / (3.75f))), 16)));
-                    // wtf? this literally only works if I setBlockState twice...
-                    worldIn.setBlockState(blockpos, state.withProperty(BlockShortGrassTFC.AGE, plantAge), 2);
+                    int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - 15f) / (3.75f)))), 15));
                     worldIn.setBlockState(blockpos, state.withProperty(BlockShortGrassTFC.AGE, plantAge), 2);
                 }
             }
@@ -74,9 +73,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                         (!worldIn.provider.isNether() || blockpos.up(k).getY() < 254) &&
                         plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
                     {
-                        int plantAge = rand.nextInt(Math.max(1, Math.min(Math.round(10f + ((temp - 15f) / (3.75f))), 16)));
-                        // wtf? this literally only works if I setBlockState twice...
-                        worldIn.setBlockState(blockpos.up(k), state.withProperty(BlockTallGrassTFC.AGE, plantAge), 2);
+                        int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - 15f) / (3.75f)))), 15));
                         worldIn.setBlockState(blockpos.up(k), state.withProperty(BlockTallGrassTFC.AGE, plantAge), 2);
                     }
                 }
@@ -126,7 +123,7 @@ public class WorldGenPlantTFC extends WorldGenerator
 
             for (int i = 0; i < 128; ++i)
             {
-                BlockPos blockpos = position.add(rand.nextInt(16) - rand.nextInt(16), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(16) - rand.nextInt(16));
+                BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
                 if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos), ChunkDataTFC.getRainfall(worldIn, blockpos), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
                     worldIn.isAirBlock(blockpos) &&
@@ -157,7 +154,8 @@ public class WorldGenPlantTFC extends WorldGenerator
                         (!worldIn.provider.isNether() || blockpos.up(k).getY() < 254) &&
                         plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
                     {
-                        worldIn.setBlockState(blockpos.up(k), state.withProperty(BlockDoublePlantTFC.AGE, rand.nextInt(Math.max(1, Math.min(rand.nextInt(Math.round(10f + ((temp - 15) / (3.75f)))), 16)))), 2);
+                        int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - 15f) / (3.75f)))), 15));
+                        worldIn.setBlockState(blockpos.up(k), state.withProperty(BlockDoublePlantTFC.AGE, plantAge), 2);
                     }
                 }
             }

@@ -13,6 +13,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
+import net.minecraft.block.BlockReed;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -127,7 +128,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
         this.checkAndDropBlock(world, pos, state);
     }
 
@@ -171,6 +172,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     protected boolean canSustainBush(IBlockState state)
     {
+        if (plant.getIsClayMarking()) return BlocksTFC.isClay(state);
         if (plant.getPlantType() == Plant.PlantType.DESERT) return BlocksTFC.isSand(state);
         return BlocksTFC.isSoil(state);
     }
@@ -208,15 +210,19 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
-        IBlockState iblockstate = world.getBlockState(pos.down());
-        if (plant.getPlantType() == Plant.PlantType.DESERT && BlocksTFC.isSand(iblockstate))
-        {
-            return EnumPlantType.Desert;
-        }
-        else
-        {
-            return EnumPlantType.Plains;
-        }
+        return EnumPlantType.Plains;
+    }
 
+    @Nonnull
+    public static Plant.EnumPlantTypeTFC getPlantTypeTFC(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    {
+        if (world.getBlockState(pos).getBlock() instanceof BlockPlantTFC)
+        {
+            Plant plant = ((BlockPlantTFC)world.getBlockState(pos).getBlock()).plant;
+
+            if (plant.getIsClayMarking())
+                return Plant.EnumPlantTypeTFC.Clay;
+        }
+        return Plant.EnumPlantTypeTFC.None;
     }
 }
