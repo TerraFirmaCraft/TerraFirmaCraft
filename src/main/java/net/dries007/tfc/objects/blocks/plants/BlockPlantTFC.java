@@ -94,7 +94,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos).getBlock() != this;
+        return true;
     }
 
     @Override
@@ -127,7 +127,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(DAYPERIOD, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
         this.checkAndDropBlock(world, pos, state);
     }
 
@@ -206,7 +206,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
 
     @Override
     @Nonnull
-    public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    public EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
         IBlockState iblockstate = world.getBlockState(pos.down());
         if (plant.getPlantType() == Plant.PlantType.DESERT && BlocksTFC.isSand(iblockstate))
