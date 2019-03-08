@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.container;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -37,8 +39,20 @@ public class ContainerBarrel extends ContainerTE<TEBarrel>
         }
     }
 
-    public IFluidHandler getFluidTank()
+    @Nullable
+    public IFluidHandler getBarrelTank()
     {
         return tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+    }
+
+    @Nullable
+    public IItemHandler getBarrelInventory()
+    {
+        return tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+    }
+
+    public boolean isBarrelSealed()
+    {
+        return tile.isSealed();
     }
 }

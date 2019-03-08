@@ -16,18 +16,18 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.FluidActionResult;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
-import net.dries007.tfc.objects.fluids.LockableFluidHandler;
-import net.dries007.tfc.objects.inventory.LockableItemHandler;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.objects.fluids.capability.FluidHandlerSided;
+import net.dries007.tfc.objects.fluids.capability.IFluidHandlerSidedCallback;
+import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
+import net.dries007.tfc.objects.inventory.capability.ItemHandlerSided;
+import net.dries007.tfc.util.FluidTransferHelper;
 
-public class TEBarrel extends TEInventory implements ITickable
+public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback
 {
     public static final int SLOT_FLUID_CONTAINER_IN = 0;
     public static final int SLOT_FLUID_CONTAINER_OUT = 1;
@@ -36,15 +36,12 @@ public class TEBarrel extends TEInventory implements ITickable
     public static final int TANK_CAPACITY = 10000;
 
     private FluidTank tank = new FluidTank(TANK_CAPACITY);
-    private LockableFluidHandler fluidHandler;
-    private LockableItemHandler itemHandler;
+    private boolean sealed;
+    private int tickCounter;
 
     public TEBarrel()
     {
         super(3);
-
-        fluidHandler = new LockableFluidHandler(tank);
-        itemHandler = new LockableItemHandler(inventory);
     }
 
     @Override
@@ -148,6 +145,30 @@ public class TEBarrel extends TEInventory implements ITickable
     }
 
     @Override
+    public boolean canInsert(int slot, ItemStack stack, EnumFacing side)
+    {
+        return !sealed && (isItemValid(slot, stack) || side == null && slot == SLOT_FLUID_CONTAINER_OUT);
+    }
+
+    @Override
+    public boolean canExtract(int slot, EnumFacing side)
+    {
+        return !sealed && (side == null || slot != SLOT_FLUID_CONTAINER_IN);
+    }
+
+    @Override
+    public boolean canFill(FluidStack resource, EnumFacing side)
+    {
+        return !sealed;
+    }
+
+    @Override
+    public boolean canDrain(EnumFacing side)
+    {
+        return !sealed;
+    }
+
+    @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
     {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
@@ -159,12 +180,12 @@ public class TEBarrel extends TEInventory implements ITickable
     {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
-            return (T) itemHandler;
+            return (T) new ItemHandlerSided(this, inventory, facing);
         }
 
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
         {
-            return (T) fluidHandler;
+            return (T) new FluidHandlerSided(this, tank, facing);
         }
 
         return super.getCapability(capability, facing);
@@ -173,7 +194,6 @@ public class TEBarrel extends TEInventory implements ITickable
     @Override
     public void update()
     {
-        //TODO: tick only when needed
         //TODO: recipes
 
         if (world.isRemote)
@@ -181,12 +201,21 @@ public class TEBarrel extends TEInventory implements ITickable
             return;
         }
 
+        tickCounter++;
+
+        if (tickCounter != 10)
+        {
+            return;
+        }
+
+        tickCounter = 0;
+
         ItemStack fluidContainerIn = inventory.getStackInSlot(SLOT_FLUID_CONTAINER_IN);
-        FluidActionResult result = Helpers.emptyContainerIntoTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, TANK_CAPACITY);
+        FluidActionResult result = FluidTransferHelper.emptyContainerIntoTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, TANK_CAPACITY, world, pos);
 
         if (!result.isSuccess())
         {
-            result = Helpers.fillContainerFromTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, TANK_CAPACITY);
+            result = FluidTransferHelper.fillContainerFromTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, TANK_CAPACITY, world, pos);
         }
 
         if (result.isSuccess())
@@ -196,13 +225,24 @@ public class TEBarrel extends TEInventory implements ITickable
             IBlockState state = world.getBlockState(pos);
             world.notifyBlockUpdate(pos, state, state, 3);
         }
+
+        Fluid freshWater = FluidRegistry.getFluid("fresh_water");
+
+        if (!sealed && world.isRainingAt(pos.up()) && (tank.getFluid() == null || tank.getFluid().getFluid() == freshWater))
+        {
+            tank.fill(new FluidStack(freshWater, 10), true);
+            IBlockState state = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos, state, state, 3);
+        }
+    }
+
+    public boolean isSealed()
+    {
+        return sealed;
     }
 
     private void updateLockStatus()
     {
-        boolean sealed = world.getBlockState(pos).getValue(BlockBarrel.SEALED);
-
-        fluidHandler.setLockStatus(sealed);
-        itemHandler.setLockStatus(sealed);
+        sealed = world.getBlockState(pos).getValue(BlockBarrel.SEALED);
     }
 }

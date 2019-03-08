@@ -3,26 +3,25 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.inventory;
+package net.dries007.tfc.objects.inventory.capability;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-public class LockableItemHandler implements IItemHandlerModifiable
+public class ItemHandlerSided implements IItemHandlerModifiable
 {
-    private boolean locked;
+    private IItemHandlerSidedCallback callback;
     private IItemHandlerModifiable handler;
+    private EnumFacing side;
 
-    public LockableItemHandler(IItemHandlerModifiable handler)
+    public ItemHandlerSided(IItemHandlerSidedCallback callback, IItemHandlerModifiable handler, EnumFacing side)
     {
+        this.callback = callback;
         this.handler = handler;
-    }
-
-    public void setLockStatus(boolean locked)
-    {
-        this.locked = locked;
+        this.side = side;
     }
 
     @Override
@@ -48,24 +47,24 @@ public class LockableItemHandler implements IItemHandlerModifiable
     @Override
     public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
     {
-        if (locked)
+        if (callback.canInsert(slot, stack, side))
         {
-            return stack;
+            return handler.insertItem(slot, stack, simulate);
         }
 
-        return handler.insertItem(slot, stack, simulate);
+        return stack;
     }
 
     @Nonnull
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate)
     {
-        if (locked)
+        if (callback.canExtract(slot, side))
         {
-            return ItemStack.EMPTY;
+            return handler.extractItem(slot, amount, simulate);
         }
 
-        return handler.extractItem(slot, amount, simulate);
+        return ItemStack.EMPTY;
     }
 
     @Override

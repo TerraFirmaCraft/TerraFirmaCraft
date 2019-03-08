@@ -49,7 +49,7 @@ public class BlockBarrel extends Block implements ITileEntityProvider
         setSoundType(SoundType.WOOD);
         setHardness(2F);
 
-        setDefaultState(this.blockState.getBaseState().withProperty(SEALED, false));
+        setDefaultState(blockState.getBaseState().withProperty(SEALED, false));
     }
 
     @Override
