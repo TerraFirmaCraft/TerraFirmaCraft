@@ -189,8 +189,9 @@ public final class CommonEventHandler
     {
         // Calendar Sync / Initialization
         final World world = event.getWorld();
-        if (world.provider.getDimension() == 0)
+        if (world.provider.getDimension() == 0 && !world.isRemote)
         {
+            TerraFirmaCraft.getLog().info("On Load Baby!");
             CalenderTFC.CalendarWorldData.onLoad(event.getWorld());
         }
     }

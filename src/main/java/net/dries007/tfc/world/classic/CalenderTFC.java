@@ -131,7 +131,8 @@ public class CalenderTFC
 
     public static long getTotalYears()
     {
-        return calendarTime / ticksInYear;
+        // Years start at 1000, and begin at Jan, but month is indexed starting at March
+        return 1000 + (calendarTime + 2 * ticksInMonth) / ticksInYear;
     }
 
     public static int getMinuteOfHour()
@@ -166,6 +167,7 @@ public class CalenderTFC
 
     public enum Month
     {
+        // todo: make tfc.enum.month.march=Early Spring a translation key
         JANUARY(10, 66.5f, "Jan"),
         FEBRUARY(11, 65.5f, "Feb"),
         MARCH(0, 56f, "Mar"),
@@ -263,11 +265,13 @@ public class CalenderTFC
         public static void update(World world, long calendarOffset, int daysInMonth)
         {
             // Updates world data and sends changes to client if this is run on server
+            TerraFirmaCraft.getLog().info("Updating!!!");
             CalendarWorldData data = get(world);
             data.calendarOffset = calendarOffset;
             data.daysInMonth = daysInMonth;
             data.markDirty();
 
+            TerraFirmaCraft.getLog().info("Checkpoint B: {} {}", CalenderTFC.calendarOffset, CalenderTFC.daysInMonth);
             if (!world.isRemote)
             {
                 TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(calendarOffset, daysInMonth));
@@ -276,6 +280,7 @@ public class CalenderTFC
 
         public static void onLoad(World world)
         {
+            TerraFirmaCraft.getLog().info("On Load-ing");
             CalendarWorldData data = get(world);
             CalenderTFC.calendarOffset = data.calendarOffset;
             CalenderTFC.daysInMonth = data.daysInMonth;
@@ -285,6 +290,7 @@ public class CalenderTFC
             CalenderTFC.ticksInMonth = data.daysInMonth * TICKS_IN_DAY;
             CalenderTFC.ticksInYear = data.daysInMonth * 12 * TICKS_IN_DAY;
 
+            TerraFirmaCraft.getLog().info("Checkpoint A: {} {}", CalenderTFC.calendarOffset, CalenderTFC.daysInMonth);
             if (!world.isRemote)
             {
                 TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalenderTFC.calendarOffset, CalenderTFC.daysInMonth));
@@ -294,6 +300,7 @@ public class CalenderTFC
         @Nonnull
         public static CalendarWorldData get(@Nonnull World world)
         {
+            TerraFirmaCraft.getLog().info("Getting!");
             MapStorage mapStorage = world.getMapStorage();
             if (mapStorage != null)
             {
@@ -305,6 +312,7 @@ public class CalenderTFC
                     data = new CalendarWorldData();
                     data.daysInMonth = 8;
                     data.calendarOffset = 0;
+                    data.markDirty();
                     mapStorage.setData(NAME, data);
                 }
                 return data;
@@ -315,9 +323,15 @@ public class CalenderTFC
         private long calendarOffset;
         private int daysInMonth;
 
-        CalendarWorldData()
+        public CalendarWorldData()
         {
             super(NAME);
+        }
+
+        @SuppressWarnings("unused")
+        public CalendarWorldData(String name)
+        {
+            super(name);
         }
 
         @Override
@@ -325,6 +339,8 @@ public class CalenderTFC
         {
             this.calendarOffset = nbt.getLong("calendarOffset");
             this.daysInMonth = nbt.getInteger("daysInMonth");
+            TerraFirmaCraft.getLog().info("Checkpoint C: {} {}", calendarOffset, daysInMonth);
+            TerraFirmaCraft.getLog().info("Readin from NBT");
         }
 
         @Override
@@ -333,6 +349,7 @@ public class CalenderTFC
         {
             nbt.setLong("calendarOffset", calendarOffset);
             nbt.setInteger("daysInMonth", daysInMonth);
+            TerraFirmaCraft.getLog().info("Writing to NBT");
             return nbt;
         }
     }
