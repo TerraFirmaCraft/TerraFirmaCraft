@@ -13,7 +13,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.objects.blocks.plants.*;
@@ -84,12 +83,22 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public boolean isValidLocation(float temp, float rain, int sunlight)
     {
-        return isValidTempRain(temp, rain) && isValidSunlight(sunlight);
+        return isValidTemp(temp) && isValidRain(rain) && isValidSunlight(sunlight);
     }
 
-    public boolean isValidTempRain(float temp, float rain)
+    public boolean isValidTemp(float temp)
     {
-        return minTemp <= temp && maxTemp >= temp && minRain <= rain && maxRain >= rain;
+        return minTemp <= temp && maxTemp >= temp;
+    }
+
+    public boolean isValidAvgTemp(float temp)
+    {
+        return Math.abs(temp - ((minTemp + maxTemp) / 2)) < 10;
+    }
+
+    public boolean isValidRain(float rain)
+    {
+        return minRain <= rain && maxRain >= rain;
     }
 
     public boolean isValidSunlight(int sunlight)
@@ -198,7 +207,11 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     {
         Clay,
         Dry,
-        Stone,
         None;
+
+        public String toString()
+        {
+            return name();
+        }
     }
 }

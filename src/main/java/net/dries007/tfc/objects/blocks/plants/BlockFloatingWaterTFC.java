@@ -98,7 +98,7 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     @Override
     protected boolean canSustainBush(IBlockState state)
     {
-        return BlocksTFC.isWater(state) || state.getMaterial() == Material.ICE && state == FRESH_WATER;
+        return BlocksTFC.isWater(state) || state.getMaterial() == Material.ICE && state == plant.getWaterType();
     }
 
     @Override
@@ -108,7 +108,7 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
         {
             IBlockState stateDown = worldIn.getBlockState(pos.down());
             Material material = stateDown.getMaterial();
-            return (material == Material.WATER && stateDown.getValue(BlockLiquid.LEVEL) == 0 && stateDown == FRESH_WATER) || material == Material.ICE;
+            return (material == Material.WATER && stateDown.getValue(BlockLiquid.LEVEL) == 0 && stateDown == plant.getWaterType()) || material == Material.ICE;
         }
         else
         {

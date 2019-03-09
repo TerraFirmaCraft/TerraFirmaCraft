@@ -13,7 +13,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockReed;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -170,6 +169,13 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     }
 
     @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        IBlockState soil = worldIn.getBlockState(pos.down());
+        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && this.canSustainBush(soil);
+    }
+
+    @Override
     protected boolean canSustainBush(IBlockState state)
     {
         if (plant.getIsClayMarking()) return BlocksTFC.isClay(state);
@@ -193,7 +199,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         IBlockState soil = worldIn.getBlockState(pos.down());
         if (state.getBlock() == this)
         {
-            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTempRain(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos), ChunkDataTFC.getRainfall(worldIn, pos));
+            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);
     }
@@ -210,19 +216,17 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
+        if (plant.getPlantType() == Plant.PlantType.DESERT) return EnumPlantType.Desert;
+        if (plant.getPlantType() == Plant.PlantType.CACTUS) return EnumPlantType.Desert;
+        if (plant.getPlantType() == Plant.PlantType.FLOATING) return EnumPlantType.Water;
+        if (plant.getPlantType() == Plant.PlantType.FLOATING_SEA) return EnumPlantType.Water;
         return EnumPlantType.Plains;
     }
 
     @Nonnull
-    public static Plant.EnumPlantTypeTFC getPlantTypeTFC(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    public Plant.EnumPlantTypeTFC getPlantTypeTFC(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
-        if (world.getBlockState(pos).getBlock() instanceof BlockPlantTFC)
-        {
-            Plant plant = ((BlockPlantTFC)world.getBlockState(pos).getBlock()).plant;
-
-            if (plant.getIsClayMarking())
-                return Plant.EnumPlantTypeTFC.Clay;
-        }
+        if (plant.getIsClayMarking()) return Plant.EnumPlantTypeTFC.Clay;
         return Plant.EnumPlantTypeTFC.None;
     }
 }

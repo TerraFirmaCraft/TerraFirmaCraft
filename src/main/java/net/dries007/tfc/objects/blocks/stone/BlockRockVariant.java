@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import org.lwjgl.Sys;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.BlockGrassPath;
@@ -234,8 +235,6 @@ public class BlockRockVariant extends Block
     @Override
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
     {
-        EnumPlantType plantType = plantable.getPlantType(world, pos.offset(direction));
-
         if (plantable instanceof BlockPlantTFC)
         {
             BlockPlantTFC plant = (BlockPlantTFC)plantable;
@@ -247,10 +246,9 @@ public class BlockRockVariant extends Block
                     return type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
                 case Dry:
                     return type == Rock.Type.DRY_GRASS;
-                case Stone:
-                    return type == Rock.Type.RAW;
             }
         }
+        EnumPlantType plantType = plantable.getPlantType(world, pos.offset(direction));
 
         switch (plantType)
         {
