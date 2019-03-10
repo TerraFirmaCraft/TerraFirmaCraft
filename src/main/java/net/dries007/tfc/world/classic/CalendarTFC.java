@@ -266,13 +266,11 @@ public class CalendarTFC
         public static void update(World world, long calendarOffset, int daysInMonth)
         {
             // Updates world data and sends changes to client if this is run on server
-            TerraFirmaCraft.getLog().info("Updating!!!");
             CalendarWorldData data = get(world);
             data.calendarOffset = calendarOffset;
             data.daysInMonth = daysInMonth;
             data.markDirty();
 
-            TerraFirmaCraft.getLog().info("Checkpoint B: {} {}", CalendarTFC.calendarOffset, CalendarTFC.daysInMonth);
             if (!world.isRemote)
             {
                 TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(calendarOffset, daysInMonth));
@@ -299,7 +297,6 @@ public class CalendarTFC
         @Nonnull
         public static CalendarWorldData get(@Nonnull World world)
         {
-            TerraFirmaCraft.getLog().info("Getting!");
             MapStorage mapStorage = world.getMapStorage();
             if (mapStorage != null)
             {
@@ -307,7 +304,6 @@ public class CalendarTFC
                 if (data == null)
                 {
                     // Unable to load data, so assign default values
-                    TerraFirmaCraft.getLog().info("Initializing Default Calendar Data for world.");
                     data = new CalendarWorldData();
                     data.daysInMonth = 8;
                     data.calendarOffset = 0;

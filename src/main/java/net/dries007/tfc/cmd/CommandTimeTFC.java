@@ -73,6 +73,6 @@ public class CommandTimeTFC extends CommandBase
         }
 
         CalendarTFC.setCalendarTime(server.getEntityWorld(), time);
-        sender.sendMessage(new TextComponentString("Set Calendar Time to: " + time));
+        sender.sendMessage(new TextComponentString("Set Time to: " + CalendarTFC.getTimeAndDate()));
     }
 }
