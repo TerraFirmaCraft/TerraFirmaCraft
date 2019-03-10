@@ -1,8 +1,5 @@
 {
-    "parent": "block/cross",
-    "textures": {
-      "cross": "tfc:blocks/plants/dandelion/dandelion_2"
-    },
+    "parent": "tfc:block/plants/dandelion_2",
     "display": {
         "ground": {
             "rotation": [ 0, 0, 0 ],

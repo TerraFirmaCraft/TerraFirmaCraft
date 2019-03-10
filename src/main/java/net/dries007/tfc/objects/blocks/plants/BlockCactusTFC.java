@@ -17,31 +17,30 @@ import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.EnumPlantType;
 
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Plant;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
-public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
+public class BlockCactusTFC extends BlockPlantTFC implements IGrowable
 {
-    public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
+    private static final PropertyEnum<EnumBlockPart> PART = PropertyEnum.create("part", EnumBlockPart.class);
     private static final AxisAlignedBB CACTUS_COLLISION_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D);
     private static final Map<Plant, BlockCactusTFC> MAP = new HashMap<>();
 
@@ -57,28 +56,29 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
 
         setSoundType(SoundType.GROUND);
         setHardness(0.25F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()).withProperty(PART, EnumBlockPart.SINGLE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
         int i;
-        for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i) {}
-        return i < 3 && worldIn.isAirBlock(pos.up()) && canBlockStay(worldIn, pos.up(), state);
+        //noinspection StatementWithEmptyBody
+        for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i) ;
+        return i < plant.getMaxHeight() && worldIn.isAirBlock(pos.up()) && canBlockStay(worldIn, pos.up(), state);
     }
 
     @Override
     public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
-        return true;
+        return false;
     }
 
     @Override
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         worldIn.setBlockState(pos.up(), this.getDefaultState());
-        IBlockState iblockstate = state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
+        IBlockState iblockstate = state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, 15).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
@@ -97,6 +97,25 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     }
 
     @Override
+    public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, net.minecraftforge.common.IPlantable plantable)
+    {
+        IBlockState plant = plantable.getPlant(world, pos.offset(direction));
+
+        if (plant.getBlock() == this)
+        {
+            return true;
+        }
+        return super.canSustainPlant(state, world, pos, direction, plantable);
+    }
+
+    @Override
+    @Nonnull
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]);
+    }
+
+    @Override
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(AGE);
@@ -106,54 +125,13 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, AGE, GROWTHSTAGE, PART, DAYPERIOD);
-    }
-
-    @Override
-    @Nonnull
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return FULL_BLOCK_AABB.offset(state.getOffset(source, pos));
-    }
-
-    @Override
-    @Nonnull
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
     public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
     {
         return false;
-    }
-
-    @Override
-    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
-    {
-        if (!worldIn.isAreaLoaded(pos, 1)) return;
-        int currentStage = state.getValue(GROWTHSTAGE);
-        int expectedStage = CalenderTFC.getMonthOfYear().id();
-        int currentTime = state.getValue(DAYPERIOD);
-        int expectedTime = getDayPeriod();
-
-        if (currentTime != expectedTime)
-        {
-            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, currentStage).withProperty(PART, getPlantPart(worldIn, pos)));
-        }
-        if (currentStage != expectedStage && random.nextDouble() < 0.5)
-        {
-            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, getPlantPart(worldIn, pos)));
-        }
-        this.updateTick(worldIn, pos, state, random);
     }
 
     @Override
@@ -176,16 +154,16 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     }
 
     @Override
-    protected boolean canSustainBush(IBlockState state)
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return BlocksTFC.isSand(state);
+        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 20 && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
+        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
         {
             int j = state.getValue(AGE);
 
@@ -203,45 +181,47 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
             }
         }
 
-        if (!canBlockStay(worldIn, pos, state))
-        {
-            worldIn.setBlockToAir(pos);
-        }
+        checkAndDropBlock(worldIn, pos, state);
     }
 
     @Override
     public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
     {
         IBlockState soil = worldIn.getBlockState(pos.down());
+
+        if (worldIn.getBlockState(pos.down(plant.getMaxHeight())).getBlock() == this) return false;
         if (state.getBlock() == this)
         {
+            boolean flag = true;
             for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
             {
                 IBlockState blockState = worldIn.getBlockState(pos.offset(enumfacing));
                 Material material = blockState.getMaterial();
 
                 if (material.isSolid() || material == Material.LAVA)
-                {
-                    return blockState.getBlock() == this;
-                }
+                    flag = blockState.getBlock() == this;
             }
 
-            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
+            return flag &&
+                soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) &&
+                plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) &&
+                plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);
     }
 
     @Override
     @Nonnull
-    public EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return EnumPlantType.Desert;
+        return FULL_BLOCK_AABB.offset(state.getOffset(source, pos));
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    @Nonnull
+    protected BlockStateContainer createPlantBlockState()
     {
-        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
+        return new BlockStateContainer(this, AGE, GROWTHSTAGE, PART, DAYPERIOD);
     }
 
     @Override
@@ -258,5 +238,40 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
         return CACTUS_COLLISION_AABB.offset(blockState.getOffset(worldIn, pos));
+    }
+
+    private EnumBlockPart getPlantPart(IBlockAccess world, BlockPos pos)
+    {
+        if (world.getBlockState(pos.down()).getBlock() != this && world.getBlockState(pos.up()).getBlock() == this)
+        {
+            return EnumBlockPart.LOWER;
+        }
+        if (world.getBlockState(pos.down()).getBlock() == this && world.getBlockState(pos.up()).getBlock() == this)
+        {
+            return EnumBlockPart.MIDDLE;
+        }
+        if (world.getBlockState(pos.down()).getBlock() == this && world.getBlockState(pos.up()).getBlock() != this)
+        {
+            return EnumBlockPart.UPPER;
+        }
+        return EnumBlockPart.SINGLE;
+    }
+
+    public enum EnumBlockPart implements IStringSerializable
+    {
+        UPPER,
+        MIDDLE,
+        LOWER,
+        SINGLE;
+
+        public String toString()
+        {
+            return this.getName();
+        }
+
+        public String getName()
+        {
+            return name().toLowerCase();
+        }
     }
 }

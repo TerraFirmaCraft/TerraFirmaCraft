@@ -54,7 +54,7 @@
 				{ "model": "tfc:plants/dandelion_3", "weight": 1 }
 			]
 		},
-		{ "when": { "stage": "9|10|11" },
+		{ "when": { "stage": "9" },
 			"apply": [
 				{ "model": "tfc:plants/dandelion_0", "weight": 1 }
 			]
