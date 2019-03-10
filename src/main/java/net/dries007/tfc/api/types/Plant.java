@@ -174,7 +174,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         DESERT(BlockPlantTFC::new),
         CACTUS(BlockCactusTFC::new),
         SHORT_GRASS(BlockShortGrassTFC::new),
-        TALL_GRASS(BlockTallGrassTFC::new);
+        TALL_GRASS(BlockTallGrassTFC::new),
+        EPIPHYTE(BlockEpiphyteTFC::new);
 
         private final Function<Plant, BlockPlantTFC> supplier;
 

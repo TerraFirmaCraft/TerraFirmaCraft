@@ -107,6 +107,13 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     }
 
     @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+
+        return worldIn.getBlockState(pos).getBlock() != this && canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
+    }
+
+    @Override
     protected boolean canSustainBush(IBlockState state)
     {
         return true;
@@ -226,13 +233,6 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing)
     {
         return canConnectTo(world, pos.offset(facing), facing.getOpposite()) && !(world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockFence);
-    }
-
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-    {
-
-        return worldIn.getBlockState(pos).getBlock() != this && canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
     }
 
     @Override

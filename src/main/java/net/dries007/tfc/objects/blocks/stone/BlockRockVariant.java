@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import org.lwjgl.Sys;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.BlockGrassPath;
@@ -237,7 +236,7 @@ public class BlockRockVariant extends Block
     {
         if (plantable instanceof BlockPlantTFC)
         {
-            BlockPlantTFC plant = (BlockPlantTFC)plantable;
+            BlockPlantTFC plant = (BlockPlantTFC) plantable;
             Plant.EnumPlantTypeTFC plantTypeTFC = plant.getPlantTypeTFC(world, pos.offset(direction));
 
             switch (plantTypeTFC)

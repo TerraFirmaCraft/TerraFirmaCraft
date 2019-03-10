@@ -29,8 +29,6 @@ import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.world.classic.CalenderTFC;
 
-import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
-
 @ParametersAreNonnullByDefault
 public class BlockFloatingWaterTFC extends BlockPlantTFC
 {

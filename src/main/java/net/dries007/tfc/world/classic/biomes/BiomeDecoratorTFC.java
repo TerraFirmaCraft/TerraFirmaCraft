@@ -109,6 +109,14 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                         plantGen.generate(world, rng, p2);
                     }
                 }
+                else if (plant.getPlantType() == Plant.PlantType.EPIPHYTE)
+                {
+                    for (float i = 0; i < 3 + floraDensity * 5; i++)
+                    {
+                        final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                        plantGen.generate(world, rng, p2);
+                    }
+                }
                 else if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS)
                 {
                     for (int i = 0; i < 1 + floraDensity * 5; i++)

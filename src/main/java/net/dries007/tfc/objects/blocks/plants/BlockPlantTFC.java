@@ -94,7 +94,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos).getBlock() != this;
+        return true;
     }
 
     @Override

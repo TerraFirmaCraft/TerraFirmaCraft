@@ -83,12 +83,6 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-    {
-        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
-    }
-
-    @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         if (!this.canBlockStay(worldIn, pos, state))
@@ -188,6 +182,12 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     public Block.EnumOffsetType getOffsetType()
     {
         return EnumOffsetType.XYZ;
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
     }
 
     @Override

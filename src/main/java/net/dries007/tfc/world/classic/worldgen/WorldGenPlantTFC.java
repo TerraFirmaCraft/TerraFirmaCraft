@@ -204,6 +204,23 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
+        else if (plant.getPlantType() == Plant.PlantType.EPIPHYTE)
+        {
+            BlockEpiphyteTFC plantBlock = BlockEpiphyteTFC.get(plant);
+
+            for (int i = 0; i < 128; ++i)
+            {
+                BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(16), rand.nextInt(8) - rand.nextInt(8));
+
+                if ((!worldIn.provider.isNether() || blockpos.getY() < 255) &&
+                    plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos), ChunkDataTFC.getRainfall(worldIn, blockpos), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                    worldIn.getBlockState(blockpos).getBlock().isReplaceable(worldIn, blockpos) &&
+                    plantBlock.canPlaceBlockAt(worldIn, blockpos))
+                {
+                    worldIn.setBlockState(blockpos, plantBlock.getStateForWorldGen(worldIn, blockpos), 2);
+                }
+            }
+        }
 
         return true;
     }

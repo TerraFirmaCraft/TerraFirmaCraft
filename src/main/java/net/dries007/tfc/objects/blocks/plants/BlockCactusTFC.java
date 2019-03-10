@@ -176,6 +176,12 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     }
 
     @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
+    }
+
+    @Override
     protected boolean canSustainBush(IBlockState state)
     {
         return BlocksTFC.isSand(state);
@@ -236,12 +242,6 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     public EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
         return EnumPlantType.Desert;
-    }
-
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-    {
-        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
     }
 
     @Override
