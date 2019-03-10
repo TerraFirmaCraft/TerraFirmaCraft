@@ -1,39 +1,39 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "tfc:cross",
-    "textures": {
-      "cross": "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_jun-sep",
-      "layer0": "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_jun-sep"
-    }
-  },
-  "variants": {
-    "normal": [
-      {}
-    ],
-    "inventory": {
-      "model": "builtin/generated",
-      "transform": "forge:default-item"
-    },
-    "stage": {
-      "0": { "textures": { "cross" : "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_mar" } },
-      "1": { "textures": { "cross" : "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_apr" } },
-      "2": { "textures": { "cross" : "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_may" } },
-      "3": { "textures": { "cross" : "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_jun-sep" } },
-      "4": { "textures": { "cross" : "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_jun-sep" } },
-      "5": { "textures": { "cross" : "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_jun-sep" } },
-      "6": { "textures": { "cross" : "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_jun-sep" } },
-      "7": { "textures": { "cross" : "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_oct" } },
-      "8": { "textures": { "cross" : "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_nov" } },
-      "9": { "textures": { "cross" : "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_dec-feb" } },
-      "10": { "textures": { "cross" : "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_dec-feb" } },
-      "11": { "textures": { "cross" : "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_dec-feb" } }
-    },
-    "dayperiod": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {}
-    }
-  }
+	"multipart": [
+		{ "when": { "stage": "0" },
+			"apply": [
+				{ "model": "tfc:plants/butterfly_milkweed_0" }
+			]
+		},
+		{ "when": { "stage": "1" },
+			"apply": [
+				{ "model": "tfc:plants/butterfly_milkweed_1" }
+			]
+		},
+		{ "when": { "stage": "2" },
+			"apply": [
+				{ "model": "tfc:plants/butterfly_milkweed_2" }
+			]
+		},
+		{ "when": { "stage": "3" },
+			"apply": [
+				{ "model": "tfc:plants/butterfly_milkweed_3" }
+			]
+		},
+		{ "when": { "stage": "4" },
+			"apply": [
+				{ "model": "tfc:plants/butterfly_milkweed_4" }
+			]
+		},
+		{ "when": { "stage": "5" },
+			"apply": [
+				{ "model": "tfc:plants/butterfly_milkweed_5" }
+			]
+		},
+		{ "when": { "stage": "6" },
+			"apply": [
+				{ "model": "tfc:plants/butterfly_milkweed_6" }
+			]
+		}
+	]
 }

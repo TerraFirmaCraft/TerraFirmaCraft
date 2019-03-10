@@ -35,14 +35,14 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @ParametersAreNonnullByDefault
 public class BlockCreepingPlantTFC extends BlockPlantTFC
 {
-    public static final PropertyBool DOWN = PropertyBool.create("down");
-    public static final PropertyBool UP = PropertyBool.create("up");
-    public static final PropertyBool NORTH = PropertyBool.create("north");
-    public static final PropertyBool EAST = PropertyBool.create("east");
-    public static final PropertyBool SOUTH = PropertyBool.create("south");
-    public static final PropertyBool WEST = PropertyBool.create("west");
+    private static final PropertyBool DOWN = PropertyBool.create("down");
+    private static final PropertyBool UP = PropertyBool.create("up");
+    private static final PropertyBool NORTH = PropertyBool.create("north");
+    private static final PropertyBool EAST = PropertyBool.create("east");
+    private static final PropertyBool SOUTH = PropertyBool.create("south");
+    private static final PropertyBool WEST = PropertyBool.create("west");
 
-    public static final PropertyBool[] ALL_FACES = new PropertyBool[] {DOWN, UP, NORTH, SOUTH, WEST, EAST};
+    private static final PropertyBool[] ALL_FACES = new PropertyBool[] {DOWN, UP, NORTH, SOUTH, WEST, EAST};
 
     private static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
     private static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.0D, 0.875D, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -62,28 +62,14 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()).withProperty(DOWN, false).withProperty(UP, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(SOUTH, false).withProperty(WEST, false));
-    }
-
-    public boolean canConnectTo(IBlockAccess worldIn, BlockPos pos, EnumFacing facing)
-    {
-        IBlockState iblockstate = worldIn.getBlockState(pos);
-        BlockFaceShape blockfaceshape = iblockstate.getBlockFaceShape(worldIn, pos, facing);
-        Block block = iblockstate.getBlock();
-        return blockfaceshape == BlockFaceShape.SOLID || block instanceof BlockFence;
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return 0;
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]).withProperty(DOWN, false).withProperty(UP, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(SOUTH, false).withProperty(WEST, false));
     }
 
     @Override
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id())
+        return state.withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()])
             .withProperty(DOWN, canPlantConnectTo(worldIn, pos, EnumFacing.DOWN))
             .withProperty(UP, canPlantConnectTo(worldIn, pos, EnumFacing.UP))
             .withProperty(NORTH, canPlantConnectTo(worldIn, pos, EnumFacing.NORTH))
@@ -94,16 +80,16 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
 
     @Override
     @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, DOWN, UP, NORTH, EAST, WEST, SOUTH, GROWTHSTAGE, DAYPERIOD);
-    }
-
-    @Override
-    @Nonnull
     public Block.EnumOffsetType getOffsetType()
     {
         return EnumOffsetType.NONE;
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+
+        return worldIn.getBlockState(pos).getBlock() != this && canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
     }
 
     @Override
@@ -174,6 +160,13 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         return i == 1 ? axisalignedbb : FULL_BLOCK_AABB;
     }
 
+    @Override
+    @Nonnull
+    protected BlockStateContainer createPlantBlockState()
+    {
+        return new BlockStateContainer(this, DOWN, UP, NORTH, EAST, WEST, SOUTH, GROWTHSTAGE, DAYPERIOD, AGE);
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     @Nonnull
@@ -182,13 +175,13 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         switch (rot)
         {
             case CLOCKWISE_180:
-                return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(NORTH, state.getValue(SOUTH)).withProperty(EAST, state.getValue(WEST)).withProperty(SOUTH, state.getValue(NORTH)).withProperty(WEST, state.getValue(EAST));
+                return state.withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(NORTH, state.getValue(SOUTH)).withProperty(EAST, state.getValue(WEST)).withProperty(SOUTH, state.getValue(NORTH)).withProperty(WEST, state.getValue(EAST));
             case COUNTERCLOCKWISE_90:
-                return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(NORTH, state.getValue(EAST)).withProperty(EAST, state.getValue(SOUTH)).withProperty(SOUTH, state.getValue(WEST)).withProperty(WEST, state.getValue(NORTH));
+                return state.withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(NORTH, state.getValue(EAST)).withProperty(EAST, state.getValue(SOUTH)).withProperty(SOUTH, state.getValue(WEST)).withProperty(WEST, state.getValue(NORTH));
             case CLOCKWISE_90:
-                return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(NORTH, state.getValue(WEST)).withProperty(EAST, state.getValue(NORTH)).withProperty(SOUTH, state.getValue(EAST)).withProperty(WEST, state.getValue(SOUTH));
+                return state.withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(NORTH, state.getValue(WEST)).withProperty(EAST, state.getValue(NORTH)).withProperty(SOUTH, state.getValue(EAST)).withProperty(WEST, state.getValue(SOUTH));
             default:
-                return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+                return state.withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]);
         }
     }
 
@@ -200,9 +193,9 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         switch (mirrorIn)
         {
             case LEFT_RIGHT:
-                return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(NORTH, state.getValue(SOUTH)).withProperty(SOUTH, state.getValue(NORTH));
+                return state.withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(NORTH, state.getValue(SOUTH)).withProperty(SOUTH, state.getValue(NORTH));
             case FRONT_BACK:
-                return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(EAST, state.getValue(WEST)).withProperty(WEST, state.getValue(EAST));
+                return state.withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(EAST, state.getValue(WEST)).withProperty(WEST, state.getValue(EAST));
             default:
                 return super.withMirror(state, mirrorIn);
         }
@@ -229,21 +222,13 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-    {
-
-        return worldIn.getBlockState(pos).getBlock() != this && canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
-    }
-
-    @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         if (!worldIn.isRemote)
         {
             if (!canBlockStay(worldIn, pos, state))
             {
-                this.dropBlockAsItem(worldIn, pos, state, 0);
-                worldIn.setBlockToAir(pos);
+                worldIn.destroyBlock(pos, true);
             }
         }
     }
@@ -276,6 +261,14 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
+    }
+
+    private boolean canConnectTo(IBlockAccess worldIn, BlockPos pos, EnumFacing facing)
+    {
+        IBlockState iblockstate = worldIn.getBlockState(pos);
+        BlockFaceShape blockfaceshape = iblockstate.getBlockFaceShape(worldIn, pos, facing);
+        Block block = iblockstate.getBlock();
+        return blockfaceshape == BlockFaceShape.SOLID || block instanceof BlockFence;
     }
 
     private boolean canPlantConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing)
