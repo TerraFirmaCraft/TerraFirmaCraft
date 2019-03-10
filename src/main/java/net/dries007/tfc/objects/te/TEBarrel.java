@@ -5,7 +5,9 @@
 
 package net.dries007.tfc.objects.te;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -27,6 +29,7 @@ import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSided;
 import net.dries007.tfc.util.FluidTransferHelper;
 
+@ParametersAreNonnullByDefault
 public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback
 {
     public static final int SLOT_FLUID_CONTAINER_IN = 0;
@@ -67,6 +70,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     }
 
     @Override
+    @Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
