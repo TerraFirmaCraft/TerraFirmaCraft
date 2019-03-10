@@ -1,39 +1,24 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "tfc:cross",
-    "textures": {
-      "cross": "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_jun-oct",
-      "layer0": "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_jun-oct"
-    }
-  },
-  "variants": {
-    "normal": [
-      {}
-    ],
-    "inventory": {
-      "model": "builtin/generated",
-      "transform": "forge:default-item"
-    },
-    "stage": {
-      "0": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_nov-mar" } },
-      "1": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_apr" } },
-      "2": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_may" } },
-      "3": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_jun-oct" } },
-      "4": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_jun-oct" } },
-      "5": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_jun-oct" } },
-      "6": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_jun-oct" } },
-      "7": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_jun-oct" } },
-      "8": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_nov-mar" } },
-      "9": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_nov-mar" } },
-      "10": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_nov-mar" } },
-      "11": { "textures": { "cross" : "tfc:blocks/plants/tropical_milkweed/tropical_milkweed_nov-mar" } }
-    },
-    "dayperiod": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {}
-    }
-  }
+	"multipart": [
+		{ "when": { "stage": "0" },
+			"apply": [
+				{ "model": "tfc:plants/tropical_milkweed_0" }
+			]
+		},
+		{ "when": { "stage": "1" },
+			"apply": [
+				{ "model": "tfc:plants/tropical_milkweed_1" }
+			]
+		},
+		{ "when": { "stage": "2" },
+			"apply": [
+				{ "model": "tfc:plants/tropical_milkweed_2" }
+			]
+		},
+		{ "when": { "stage": "3" },
+			"apply": [
+				{ "model": "tfc:plants/tropical_milkweed_3" }
+			]
+		}
+	]
 }

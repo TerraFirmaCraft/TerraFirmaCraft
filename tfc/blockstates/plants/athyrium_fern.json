@@ -1,39 +1,8 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "tfc:plants/athyrium_fern",
-    "textures": {
-      "cross": "tfc:blocks/plants/athyrium_fern/fern2",
-      "layer0": "tfc:blocks/plants/athyrium_fern/fern2"
-    }
-  },
-  "variants": {
-    "normal": [
-      {}
-    ],
-    "inventory": {
-      "model": "builtin/generated",
-      "transform": "forge:default-item"
-    },
-    "stage": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {},
-      "4": {},
-      "5": {},
-      "6": {},
-      "7": {},
-      "8": {},
-      "9": {},
-      "10": {},
-      "11": {}
-    },
-    "dayperiod": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {}
-    }
-  }
+	"multipart": [
+		{ "apply": [
+				{ "model": "tfc:plants/athyrium_fern" }
+			]
+		}
+	]
 }
