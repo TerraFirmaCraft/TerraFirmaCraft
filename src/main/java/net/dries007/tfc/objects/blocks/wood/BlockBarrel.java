@@ -5,10 +5,11 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -38,10 +39,11 @@ import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.Helpers;
 
-public class BlockBarrel extends Block implements ITileEntityProvider
+@ParametersAreNonnullByDefault
+public class BlockBarrel extends Block
 {
     public static final PropertyBool SEALED = PropertyBool.create("sealed");
-    private static final AxisAlignedBB bounds = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
+    private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
     public BlockBarrel()
     {
@@ -67,16 +69,18 @@ public class BlockBarrel extends Block implements ITileEntityProvider
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer()
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public IBlockState getStateFromMeta(int meta)
     {
-        return BlockRenderLayer.CUTOUT;
+        return this.getDefaultState().withProperty(SEALED, meta == 1);
     }
 
+    @Nonnull
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return bounds;
+        return BOUNDING_BOX;
     }
 
     @Override
@@ -121,11 +125,19 @@ public class BlockBarrel extends Block implements ITileEntityProvider
         return true;
     }
 
-    @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    @Nonnull
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getRenderLayer()
     {
-        return new TEBarrel();
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    @Nonnull
+    public BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, SEALED);
     }
 
     @Override
@@ -154,16 +166,16 @@ public class BlockBarrel extends Block implements ITileEntityProvider
     }
 
     @Override
-    public BlockStateContainer createBlockState()
+    public boolean hasTileEntity(IBlockState state)
     {
-        return new BlockStateContainer(this, SEALED);
+        return true;
     }
 
+    @Nullable
     @Override
-    @SuppressWarnings("deprecation")
-    public IBlockState getStateFromMeta(int meta)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
-        return this.getDefaultState().withProperty(SEALED, meta == 1);
+        return new TEBarrel();
     }
 
     @Override
