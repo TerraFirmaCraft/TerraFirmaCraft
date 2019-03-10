@@ -157,7 +157,6 @@ public final class CommonEventHandler
             player.inventoryContainer.addListener(new CapabilityContainerListener(player));
 
             // World Data (Calendar) Sync Handler
-            TerraFirmaCraft.getLog().info("Syncing calendar!");
             TerraFirmaCraft.getNetwork().sendTo(new PacketCalendarUpdate(), player);
         }
     }

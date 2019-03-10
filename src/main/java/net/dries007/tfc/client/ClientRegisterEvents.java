@@ -25,7 +25,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -222,7 +221,7 @@ public final class ClientRegisterEvents
                 double rain = MathHelper.clamp((data.getRainfall() - 50) / 400, 0, 1);
                 return ColorizerGrass.getGrassColor(temp, rain);
             }
-            return 0;
+            return ColorizerGrass.getGrassColor(0.5, 0.5);
         };
 
         // Foliage Color
@@ -235,9 +234,9 @@ public final class ClientRegisterEvents
                 double temp = MathHelper.clamp((data.getTemperature() + 30) / 30, 0, 1);
                 // Rainfall is in <0, 500>, although 99% of the time it is within a smaller range of <50, 450>, so trim and clamp as necessary
                 double rain = MathHelper.clamp((data.getRainfall() - 50) / 400, 0, 1);
-                return ColorizerFoliage.getFoliageColor(temp, rain);
+                return ColorizerGrass.getGrassColor(temp, rain);
             }
-            return 0;
+            return ColorizerGrass.getGrassColor(0.5, 0.5);
         };
 
         blockcolors.registerBlockColorHandler(grassColor, BlocksTFC.PEAT_GRASS);

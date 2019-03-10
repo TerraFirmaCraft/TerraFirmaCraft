@@ -92,7 +92,7 @@ public final class ClimateTFC
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (data == null || !data.isInitialized()) return Float.NaN;
-        return getTemp(data.getBaseTemp(), world.getSeed(), CalendarTFC.getTotalDays(), CalendarTFC.getTotalHours());
+        return getTemp(data.getBaseTemp(), world.getSeed(), pos.getZ());
     }
 
     public static float getHeightAdjustedTemp(World world, BlockPos pos)
@@ -138,21 +138,23 @@ public final class ClimateTFC
      * @param month    The month (from CalendarTFC)
      * @return the month factor for temp calculation
      */
-    public static float monthFactor(float baseTemp, CalendarTFC.Month month)
+    public static float monthTemp(float baseTemp, CalendarTFC.Month month, int z)
     {
-        return 41f - month.getTempMod() - 1.1f * (1 - 0.8f * baseTemp);
+        //return month.getTempMod() + 0.2 * baseTemp;
+        return (41f - month.getTempMod() * 1.1f * (1 - 0.8f * latitudeFactor(z))) + 0.2f * baseTemp;
     }
 
     /**
      * Range -40 to 40
      *
      * @param baseTemp The base temp for the current location
+     * @param z The z-coordinate of the location that is being queried
      * @return The month adjusted temperature. This gets the base temperature, before daily / hourly changes
      */
-    public static float getMonthAdjTemp(float baseTemp)
+    public static float getMonthAdjTemp(float baseTemp, int z)
     {
-        final float currentMonthFactor = monthFactor(baseTemp, CalendarTFC.getMonthOfYear());
-        final float nextMonthFactor = monthFactor(baseTemp, CalendarTFC.getMonthOfYear().next());
+        final float currentMonthFactor = monthTemp(baseTemp, CalendarTFC.getMonthOfYear(), z);
+        final float nextMonthFactor = monthTemp(baseTemp, CalendarTFC.getMonthOfYear().next(), z);
 
         final float delta = (float) CalendarTFC.getDayOfMonth() / CalendarTFC.getDaysInMonth();
         // Affine combination to smooth temperature transition
@@ -160,44 +162,27 @@ public final class ClimateTFC
     }
 
     /**
-     * Range -42 to 42
-     *
-     * @param baseTemp The base temp for the current location
-     * @return The temperature, adjusted for current month, day, and hour
-     */
-    public static float getExactAdjTemp(float baseTemp)
-    {
-        // todo: rethink daily temperature - its only really necessary if we add body heat, which isn't happening any time soon
-        return getMonthAdjTemp(baseTemp);
-    }
-
-    /**
      * Get the exact temperature for a location, including day + hour variation
      *
      * @param baseTemp The base temperature, either from {@link ChunkDataTFC} or {@link ClimateRenderHelper}
      * @param seed     The world seed
-     * @param day      The current day, from {@link CalendarTFC}
-     * @param hour     The current hour of the day
+     * @param z the z-coordinate
      * @return A temperature, in the approximate range -35 to 35
      */
-    private static float getTemp(float baseTemp, long seed, long day, long hour)
+    private static float getTemp(float baseTemp, long seed, int z)
     {
-        int h = (int) ((hour - 6) % CalendarTFC.HOURS_IN_DAY);
+        int h = (int) ((CalendarTFC.getTotalHours() - 6) % CalendarTFC.HOURS_IN_DAY);
         if (h < 0) h += CalendarTFC.HOURS_IN_DAY;
 
         float hourMod;
         if (h < 12) hourMod = ((float) h / 11) * 0.3f;
         else hourMod = 0.3f - ((((float) h - 12) / 11) * 0.3f);
 
+        long day = CalendarTFC.getTotalDays();
         rng.setSeed(seed + day);
         final float dailyTemp = (rng.nextInt(200) - 100) / 20f;
 
-        final float monthMod = 41f - CalendarTFC.getMonthOfYear().getTempMod() * 1.1f * (1 - 0.8f * baseTemp);
-        final float nextMonthMod = 41f - CalendarTFC.getMonthOfYear().next().getTempMod() * 1.1f * (1 - 0.8f * baseTemp);
-
-        final float monthDelta = (float) CalendarTFC.getDayOfMonthFromDayOfYear(day) / CalendarTFC.getDaysInMonth();
-
-        return monthMod * (1 - monthDelta) + nextMonthMod * (monthDelta) + dailyTemp + (hourMod * (baseTemp + dailyTemp));
+        return getMonthAdjTemp(baseTemp, z) + dailyTemp + (hourMod * (baseTemp + dailyTemp));
     }
 
     private ClimateTFC() {}
