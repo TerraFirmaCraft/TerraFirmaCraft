@@ -1,6 +1,8 @@
 {
+    "ambientocclusion": false,
     "textures": {
-        "particle": "tfc:blocks/plants/cactus/flower_1"
+        "flower": "tfc:blocks/plants/cactus/flower_0",
+        "particle": "tfc:blocks/plants/cactus/flower_0"
     },
     "elements": [
         {

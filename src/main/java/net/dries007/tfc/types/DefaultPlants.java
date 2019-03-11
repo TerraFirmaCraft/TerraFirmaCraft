@@ -36,7 +36,7 @@ public final class DefaultPlants
     public static final ResourceLocation NASTURTIUM = new ResourceLocation(MOD_ID, "nasturtium");
     public static final ResourceLocation OSTRICH_FERN = new ResourceLocation(MOD_ID, "ostrich_fern");
     public static final ResourceLocation OXEYE_DAISY = new ResourceLocation(MOD_ID, "oxeye_daisy");
-    public static final ResourceLocation PETROVSKIA = new ResourceLocation(MOD_ID, "petrovskia");
+    public static final ResourceLocation PEROVSKIA = new ResourceLocation(MOD_ID, "perovskia");
     public static final ResourceLocation POPPY = new ResourceLocation(MOD_ID, "poppy");
     public static final ResourceLocation RYEGRASS = new ResourceLocation(MOD_ID, "ryegrass");
     public static final ResourceLocation SAGEBRUSH = new ResourceLocation(MOD_ID, "sagebrush");
@@ -55,12 +55,14 @@ public final class DefaultPlants
     public static final ResourceLocation GUZMANIA = new ResourceLocation(MOD_ID, "guzmania");
     public static final ResourceLocation HORSETAIL = new ResourceLocation(MOD_ID, "horsetail");
     public static final ResourceLocation LICORICE_FERN = new ResourceLocation(MOD_ID, "licorice_fern");
+    public static final ResourceLocation LOTUS = new ResourceLocation(MOD_ID, "lotus");
     public static final ResourceLocation ORCHARD_GRASS = new ResourceLocation(MOD_ID, "orchard_grass");
     public static final ResourceLocation PAMPAS_GRASS = new ResourceLocation(MOD_ID, "pampas_grass");
     public static final ResourceLocation PRIMROSE = new ResourceLocation(MOD_ID, "primrose");
     public static final ResourceLocation ROSE = new ResourceLocation(MOD_ID, "rose");
     public static final ResourceLocation SACRED_DATURA = new ResourceLocation(MOD_ID, "sacred_datura");
     public static final ResourceLocation SCUTCH_GRASS = new ResourceLocation(MOD_ID, "scutch_grass");
+    public static final ResourceLocation SUGAR_CANE = new ResourceLocation(MOD_ID, "sugar_cane");
     public static final ResourceLocation SWORD_FERN = new ResourceLocation(MOD_ID, "sword_fern");
     public static final ResourceLocation TALL_FESCUE_GRASS = new ResourceLocation(MOD_ID, "tall_fescue_grass");
     public static final ResourceLocation TIMOTHY_GRASS = new ResourceLocation(MOD_ID, "timothy_grass");
@@ -91,7 +93,7 @@ public final class DefaultPlants
             new Plant(TULIP_WHITE, Plant.PlantType.STANDARD, false, -34f, 33f, 100f, 200f, 9, 15),
 
             // Desert Plants
-            new Plant(PETROVSKIA, Plant.PlantType.DESERT, true, -29f, 32f, 0f, 200f, 9, 15),
+            new Plant(PEROVSKIA, Plant.PlantType.DESERT, true, -29f, 32f, 0f, 200f, 9, 15),
             new Plant(SAGEBRUSH, Plant.PlantType.DESERT, false, -34f, 50f, 0f, 100f, 12, 15),
 
             // Cactus Plants
@@ -120,15 +122,17 @@ public final class DefaultPlants
             new Plant(FOXGLOVE, Plant.PlantType.STANDARD, false, -34f, 34f, 150f, 300f, 9, 15),
             new Plant(GUZMANIA, Plant.PlantType.EPIPHYTE, false, -1f, 50f, 200f, 500f, 4, 11),
             new Plant(LICORICE_FERN, Plant.PlantType.EPIPHYTE, false, -29f, 25f, 300f, 500f, 4, 11),
-            new Plant(HORSETAIL, Plant.PlantType.STANDARD, false, -40f, 33f, 300f, 500f, 9, 15),
+            new Plant(LOTUS, Plant.PlantType.FLOATING, false, 10f, 40f, 0f, 500f, 4, 15, 1, 1),
+            new Plant(HORSETAIL, Plant.PlantType.REED, false, -40f, 33f, 300f, 500f, 9, 15),
             new Plant(ORCHARD_GRASS, Plant.PlantType.SHORT_GRASS, false, -29f, 30f, 75f, 300f, 9, 15),
             new Plant(PAMPAS_GRASS, Plant.PlantType.TALL_GRASS, true, -12f, 36f, 75f, 200f, 9, 15),
             new Plant(PRIMROSE, Plant.PlantType.STANDARD, false, -34f, 33f, 150f, 300f, 9, 11),
             new Plant(ROSE, Plant.PlantType.DOUBLE, true, -29f, 34f, 150f, 300f, 9, 15),
             new Plant(SACRED_DATURA, Plant.PlantType.STANDARD, false, -12f, 33f, 300f, 500f, 12, 15),
             new Plant(SCUTCH_GRASS, Plant.PlantType.SHORT_GRASS, false, -17f, 40f, 150f, 500f, 12, 15),
+            new Plant(SUGAR_CANE, Plant.PlantType.DOUBLE_REED, false, 10f, 40f, 300f, 500f, 12, 15),
             new Plant(SWORD_FERN, Plant.PlantType.STANDARD, false, -40f, 30f, 100f, 200f, 4, 11),
-            new Plant(TALL_FESCUE_GRASS, Plant.PlantType.SHORT_GRASS, false, -29f, 30f, 300f, 500f, 12, 15),
+            new Plant(TALL_FESCUE_GRASS, Plant.PlantType.TALL_GRASS, false, -29f, 30f, 300f, 500f, 12, 15),
             new Plant(TIMOTHY_GRASS, Plant.PlantType.SHORT_GRASS, false, -46f, 30f, 300f, 500f, 12, 15),
             new Plant(TOQUILLA_PALM, Plant.PlantType.DOUBLE, false, -1f, 50f, 250f, 500f, 9, 15),
             new Plant(TRILLIUM, Plant.PlantType.STANDARD, false, -34f, 33f, 150f, 300f, 4, 11),

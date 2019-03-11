@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -113,6 +114,49 @@ public class WorldGenPlantTFC extends WorldGenerator
                     plantBlock.canBlockStay(worldIn, blockpos, state))
                 {
                     worldIn.setBlockState(blockpos, state, 2);
+                }
+            }
+        }
+        else if (plant.getPlantType() == Plant.PlantType.REED)
+        {
+            BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
+            IBlockState state = plantBlock.getDefaultState();
+
+            for (int i = 0; i < 32; ++i)
+            {
+                BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
+
+                if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos), ChunkDataTFC.getRainfall(worldIn, blockpos), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                    worldIn.isAirBlock(blockpos) &&
+                    (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
+                    worldIn.getBlockState(blockpos.down()).getBlock().canSustainPlant(state, worldIn, blockpos.down(), EnumFacing.UP, plantBlock))
+                {
+                    worldIn.setBlockState(blockpos, state, 2);
+                }
+            }
+        }
+        else if (plant.getPlantType() == Plant.PlantType.DOUBLE_REED)
+        {
+            BlockPlantTFC plantBlock = BlockDoublePlantTFC.get(plant);
+            IBlockState state = plantBlock.getDefaultState();
+
+            for (int i = 0; i < 32; ++i)
+            {
+                BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
+
+                int j = 1 + rand.nextInt(rand.nextInt(3) + 1);
+
+                for (int k = 0; k < j; ++k)
+                {
+                    float temp = ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos.up(k));
+                    if (plant.isValidLocation(temp, ChunkDataTFC.getRainfall(worldIn, blockpos.up(k)), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
+                        worldIn.isAirBlock(blockpos.up(k)) &&
+                        (!worldIn.provider.isNether() || blockpos.up(k).getY() < 254) &&
+                        plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
+                    {
+                        int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - 15f) / (3.75f)))), 15));
+                        worldIn.setBlockState(blockpos.up(k), state.withProperty(BlockDoublePlantTFC.AGE, plantAge), 2);
+                    }
                 }
             }
         }

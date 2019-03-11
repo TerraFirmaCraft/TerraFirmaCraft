@@ -1,6 +1,7 @@
 {
     "ambientocclusion": false,
     "textures": {
+      "particle": "tfc:blocks/plants/ostrich_fern/ostrich_fern_2",
       "single": "tfc:blocks/empty",
       "singlenotint": "tfc:blocks/empty",
       "fernlow": "tfc:blocks/empty",

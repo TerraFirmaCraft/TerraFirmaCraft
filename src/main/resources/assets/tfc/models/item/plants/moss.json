@@ -1,10 +1,5 @@
 {
-    "parent": "tfc:block/plants/creeping_plant",
-    "textures": {
-		"layer0": "tfc:blocks/plants/moss/moss_layer0",
-		"layer1": "tfc:blocks/plants/moss/moss_layer1",
-		"layer2": "tfc:blocks/plants/moss/moss_layer2"
-    },
+    "parent": "tfc:block/plants/moss",
     "display": {
         "ground": {
             "rotation": [ 0, 0, 0 ],

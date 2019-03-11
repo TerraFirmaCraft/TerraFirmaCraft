@@ -1,63 +1,9 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "tfc:plants/rose",
-    "textures": {
-      "cross": "tfc:blocks/plants/rose/placeholder",
-      "layer0": "tfc:blocks/plants/rose/placeholder"
-    }
-  },
-  "variants": {
-    "normal": [
-      {}
-    ],
-    "inventory": {
-      "model": "builtin/generated",
-      "transform": "forge:default-item"
-    },
-    "age": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {},
-      "4": {},
-      "5": {},
-      "6": {},
-      "7": {},
-      "8": {},
-      "9": {},
-      "10": {},
-      "11": {},
-      "12": {},
-      "13": {},
-      "14": {},
-      "15": {}
-    },
-    "stage": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {},
-      "4": {},
-      "5": {},
-      "6": {},
-      "7": {},
-      "8": {},
-      "9": {},
-      "10": {},
-      "11": {}
-    },
-    "dayperiod": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {}
-    },
-    "part": {
-      "lower": {},
-      "middle": {},
-      "single": {},
-      "upper": { "textures": { "cross": "tfc:blocks/empty" } }
-    }
-  }
+	"multipart": [
+		{ "when": { "part": "lower|single" },
+			"apply": [
+				{ "model": "tfc:plants/rose" }
+			]
+		}
+	]
 }

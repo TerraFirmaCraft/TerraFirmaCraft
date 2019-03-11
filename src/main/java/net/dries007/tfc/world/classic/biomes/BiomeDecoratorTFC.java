@@ -71,16 +71,6 @@ public class BiomeDecoratorTFC extends BiomeDecorator
 //        TerraFirmaCraft.getLog().info("decorate {} ({}) {} {}", chunkPos, biome.getBiomeName(), lilyPadPerChunk, waterPlantsPerChunk);
         // todo: crops
 
-        for (int i = 0; i < 10; i++)
-        {
-            if (rng.nextInt(100) >= 10) continue;
-
-            final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-
-            if (temperature >= 15f + rng.nextFloat() * 5f && rainfall > 75f)
-                reedGen.generate(world, rng, p2);
-        }
-
         if (rng.nextInt(300) == 0)
         {
             pumpkinGen.generate(world, rng, world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8)));
@@ -99,6 +89,15 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                         final BlockPos p2 = world.getPrecipitationHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                         if (ClimateTFC.getHeightAdjustedBiomeTemp(world, p2) >= 7)
                             plantGen.generate(world, rng, p2);
+                    }
+                }
+                else if (plant.getPlantType() == Plant.PlantType.REED || plant.getPlantType() == Plant.PlantType.DOUBLE_REED)
+                {
+                    for (int i = rng.nextInt(16); i < 1 + floraDensity * 5; i++)
+                    {
+                        final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+
+                        plantGen.generate(world, rng, p2);
                     }
                 }
                 else if (plant.getPlantType() == Plant.PlantType.CACTUS)

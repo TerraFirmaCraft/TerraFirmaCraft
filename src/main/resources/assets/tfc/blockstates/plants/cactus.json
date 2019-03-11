@@ -1,120 +1,54 @@
 {
-  "forge_marker" : 1,
-  "defaults": {
-    "model": "tfc:plants/cactus_small"
-  },
-  "variants": {
-    "normal": [
-      {}
-    ],
-    "inventory": {
-      "model": "builtin/generated",
-      "transform": "forge:default-item"
-    },
-    "age": {
-      "0": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_1" }
-      },
-      "1": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_1" }
-      },
-      "2": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_1" }
-      },
-      "3": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_1" }
-      },
-      "4": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_1" }
-      },
-      "5": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_1" }
-      },
-      "6": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_1" }
-      },
-      "7": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_1" }
-      },
-      "8": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_2" }
-      },
-      "9": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_2" }
-      },
-      "10": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_2" }
-      },
-      "11": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_2" }
-      },
-      "12": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_2" }
-      },
-      "13": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_2" }
-      },
-      "14": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_2" }
-      },
-      "15": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_2" }
-      }
-    },
-    "stage": {
-      "0": {},
-      "1": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_0" },
-        "submodel":"tfc:plants/cactus_flower"
-      },
-      "2": {
-        "submodel":"tfc:plants/cactus_flower"
-      },
-      "3": {
-        "submodel":"tfc:plants/cactus_flower"
-      },
-      "4": {
-        "submodel":"tfc:plants/cactus_flower"
-      },
-      "5": {
-        "submodel":"tfc:plants/cactus_flower"
-      },
-      "6": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_3" },
-        "submodel":"tfc:plants/cactus_flower"
-      },
-      "7": {
-        "textures": { "flower": "tfc:blocks/plants/cactus/flower_3" },
-        "submodel":"tfc:plants/cactus_flower"
-      },
-      "8": {},
-      "9": {},
-      "10": {},
-      "11": {}
-    },
-    "dayperiod": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {}
-    },
-    "part": {
-      "lower":  { "model": "tfc:plants/cactus_lower" },
-      "middle":  { "model": "tfc:plants/cactus_middle" },
-      "single": { "model": "tfc:plants/cactus_single" },
-      "upper": { "model": "tfc:plants/cactus_upper" }
-    },
-    "age=0,part=single,stage=0,dayperiod=0": [
-      { "model": "tfc:plants/cactus_small", "textures":{"flower": "tfc:blocks/empty"} }
-    ],
-    "age=0,part=single,stage=0,dayperiod=1": [
-      { "model": "tfc:plants/cactus_small", "textures":{"flower": "tfc:blocks/empty"} }
-    ],
-    "age=0,part=single,stage=0,dayperiod=2": [
-      { "model": "tfc:plants/cactus_small", "textures":{"flower": "tfc:blocks/empty"} }
-    ],
-    "age=0,part=single,stage=0,dayperiod=3": [
-      { "model": "tfc:plants/cactus_small", "textures":{"flower": "tfc:blocks/empty"} }
-    ]
-  }
+	"multipart": [
+		{ "when": { "age": "0", "part": "single" },
+			"apply": [
+				{ "model": "tfc:plants/cactus_small" }
+			]
+		},
+		{ "when": { "age": "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "lower" },
+			"apply": [
+				{ "model": "tfc:plants/cactus_lower" }
+			]
+		},
+		{ "when": { "age": "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "middle" },
+			"apply": [
+				{ "model": "tfc:plants/cactus_middle" }
+			]
+		},
+		{ "when": { "age": "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "single" },
+			"apply": [
+				{ "model": "tfc:plants/cactus_small" }
+			]
+		},
+		{ "when": { "age": "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "upper" },
+			"apply": [
+				{ "model": "tfc:plants/cactus_upper" }
+			]
+		},
+		{ "when": { "part": "upper", "stage": "1" },
+			"apply": [
+				{ "model": "tfc:plants/cactus_flower_0" }
+			]
+		},
+		{ "when": { "age": "1|2|3|4|5|6|7", "part": "single" , "stage": "2|3|4|5" },
+			"apply": [
+				{ "model": "tfc:plants/cactus_flower_1" }
+			]
+		},
+		{ "when": { "age": "0|1|2|3|4|5|6|7", "part": "upper" , "stage": "2|3|4|5" },
+			"apply": [
+				{ "model": "tfc:plants/cactus_flower_1" }
+			]
+		},
+		{ "when": { "age": "8|9|10|11|12|13|14|15", "part": "single|upper" , "stage": "2|3|4|5" },
+			"apply": [
+				{ "model": "tfc:plants/cactus_flower_2" }
+			]
+		},
+		{ "when": { "part": "single|upper" , "stage": "6|7" },
+			"apply": [
+				{ "model": "tfc:plants/cactus_flower_3" }
+			]
+		}
+	]
 }

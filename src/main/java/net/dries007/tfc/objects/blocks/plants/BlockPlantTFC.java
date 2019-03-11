@@ -180,6 +180,9 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     {
         if (plant.getIsClayMarking()) return BlocksTFC.isClay(state);
         if (plant.getPlantType() == Plant.PlantType.DESERT) return BlocksTFC.isSand(state);
+        if (plant.getPlantType() == Plant.PlantType.REED) return BlocksTFC.isSand(state) || BlocksTFC.isSoil(state);
+        if (plant.getPlantType() == Plant.PlantType.DOUBLE_REED)
+            return BlocksTFC.isSand(state) || BlocksTFC.isSoil(state);
         return BlocksTFC.isSoil(state);
     }
 
@@ -220,6 +223,8 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         if (plant.getPlantType() == Plant.PlantType.CACTUS) return EnumPlantType.Desert;
         if (plant.getPlantType() == Plant.PlantType.FLOATING) return EnumPlantType.Water;
         if (plant.getPlantType() == Plant.PlantType.FLOATING_SEA) return EnumPlantType.Water;
+        if (plant.getPlantType() == Plant.PlantType.REED) return EnumPlantType.Beach;
+        if (plant.getPlantType() == Plant.PlantType.DOUBLE_REED) return EnumPlantType.Beach;
         return EnumPlantType.Plains;
     }
 
@@ -229,4 +234,6 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         if (plant.getIsClayMarking()) return Plant.EnumPlantTypeTFC.Clay;
         return Plant.EnumPlantTypeTFC.None;
     }
+
+
 }

@@ -1,0 +1,7 @@
+{
+    "parent": "tfc:block/plants/cactus_flower_0",
+    "textures": {
+        "flower": "tfc:blocks/plants/cactus/flower_1",
+        "particle": "tfc:blocks/plants/cactus/flower_1"
+    }
+}
