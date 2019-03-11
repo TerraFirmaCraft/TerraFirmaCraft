@@ -32,7 +32,7 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 @ParametersAreNonnullByDefault
 public class BlockFloatingWaterTFC extends BlockPlantTFC
 {
-    protected static final AxisAlignedBB LILY_PAD_AABB = new AxisAlignedBB(0.125D, -0.125D, 0.125D, 0.875D, 0.0625D, 0.875D);
+    protected static final AxisAlignedBB LILY_PAD_AABB = new AxisAlignedBB(0.0D, -0.125D, 0.0D, 1.0D, 0.0625D, 1.0D);
     private static final Map<Plant, BlockFloatingWaterTFC> MAP = new HashMap<>();
 
     public static BlockFloatingWaterTFC get(Plant plant)
