@@ -64,7 +64,8 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if ((ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < 15 || !plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up()))))
+        if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()) &&
+            (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < plant.getGrowthTemp() - 5 || !plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up()))))
         {
             int j = state.getValue(AGE);
 
@@ -78,7 +79,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
             }
 
         }
-        else if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 20 && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
+        else if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > plant.getGrowthTemp() && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
         {
             int j = state.getValue(AGE);
 

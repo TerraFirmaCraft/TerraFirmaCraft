@@ -1,5 +1,5 @@
 {
-    "parent": "tfc:block/plants/cactus_single",
+    "parent": "tfc:block/plants/barrel_cactus_small",
     "display": {
         "ground": {
             "rotation": [ 0, 0, 0 ],

@@ -191,7 +191,7 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 20 && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
+        if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > plant.getGrowthTemp() && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
         {
             int j = state.getValue(AGE);
 

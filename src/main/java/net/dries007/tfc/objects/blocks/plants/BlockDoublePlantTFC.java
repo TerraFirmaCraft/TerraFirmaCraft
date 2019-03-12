@@ -24,7 +24,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Plant;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -46,7 +45,6 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        if (plant.toString().equals("sugar_cane")) OreDictionaryHelper.register(this, "sugarcane");
         this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
@@ -68,7 +66,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         worldIn.setBlockState(pos.up(), this.getDefaultState());
-        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
+        IBlockState iblockstate = state.withProperty(AGE, 15).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
@@ -113,11 +111,11 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
     {
-        if (getPlantPart(worldIn, pos) == EnumBlockPart.LOWER)
+        if (getPlantPart(worldIn, pos) == EnumBlockPart.LOWER && plant.getOreDictName() == null)
         {
             worldIn.setBlockToAir(pos.up());
         }
-        if (getPlantPart(worldIn, pos) == EnumBlockPart.UPPER)
+        if (getPlantPart(worldIn, pos) == EnumBlockPart.UPPER && plant.getOreDictName() == null)
         {
             worldIn.setBlockToAir(pos);
         }
@@ -197,13 +195,14 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if ((ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < 15 || !plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up()))) && canShrink(worldIn, pos, state, worldIn.isRemote))
+        if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()) &&
+            (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < plant.getGrowthTemp() - 5 || !plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up()))))
         {
             int j = state.getValue(AGE);
 
             if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
             {
-                if (j == 0)
+                if (j == 0 && canShrink(worldIn, pos, state, worldIn.isRemote))
                 {
                     shrink(worldIn, rand, pos, state);
                 }
@@ -214,7 +213,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
         }
-        else if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 20 && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
+        else if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > plant.getGrowthTemp() && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
         {
             int j = state.getValue(AGE);
 

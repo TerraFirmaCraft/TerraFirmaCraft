@@ -31,6 +31,7 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -55,6 +56,11 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     {
         super(plant.getMaterial());
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
+
+        if (plant.getOreDictName() != null)
+        {
+            OreDictionaryHelper.register(this, plant.getOreDictName());
+        }
 
         this.plant = plant;
         this.setTickRandomly(true);

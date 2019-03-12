@@ -2841,10 +2841,10 @@ tile.tfc.stone.button.ranite.name=Granite Button
 
 # Plants
 tile.tfc.plants.allium.name=Allium
+tile.tfc.plants.barrel_cactus.name=Barrel Cactus
 tile.tfc.plants.blue_dawn.name=Morning Glory
 tile.tfc.plants.blue_orchid.name=Blue Orchid
 tile.tfc.plants.butterfly_milkweed.name=Butterfly Milkweed
-tile.tfc.plants.cactus.name=Barrel Cactus
 tile.tfc.plants.calendula.name=Marigold
 tile.tfc.plants.dandelion.name=Dandelion
 tile.tfc.plants.ostrich_fern.name=Ostrich Fern

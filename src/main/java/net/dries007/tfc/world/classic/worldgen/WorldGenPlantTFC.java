@@ -51,7 +51,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                     plantBlock.canBlockStay(worldIn, blockpos, state))
                 {
                     int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - 15f) / (3.75f)))), 15));
-                    worldIn.setBlockState(blockpos, state.withProperty(BlockShortGrassTFC.AGE, plantAge), 2);
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockShortGrassTFC.AGE, plantAge));
                 }
             }
         }
@@ -75,7 +75,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                         plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
                     {
                         int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - 15f) / (3.75f)))), 15));
-                        worldIn.setBlockState(blockpos.up(k), state.withProperty(BlockTallGrassTFC.AGE, plantAge), 2);
+                        setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockShortGrassTFC.AGE, plantAge));
                     }
                 }
             }
@@ -95,7 +95,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                     plantBlock.canBlockStay(worldIn, blockpos, state) &&
                     rand.nextInt() < 10 && !BlocksTFC.isSand(worldIn.getBlockState(blockpos.down())))
                 {
-                    worldIn.setBlockState(blockpos, state, 2);
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state);
                 }
             }
         }
@@ -113,7 +113,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                     (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
                     plantBlock.canBlockStay(worldIn, blockpos, state))
                 {
-                    worldIn.setBlockState(blockpos, state, 2);
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state);
                 }
             }
         }
@@ -131,7 +131,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                     (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
                     worldIn.getBlockState(blockpos.down()).getBlock().canSustainPlant(state, worldIn, blockpos.down(), EnumFacing.UP, plantBlock))
                 {
-                    worldIn.setBlockState(blockpos, state, 2);
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state);
                 }
             }
         }
@@ -155,7 +155,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                         plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
                     {
                         int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - 15f) / (3.75f)))), 15));
-                        worldIn.setBlockState(blockpos.up(k), state.withProperty(BlockDoublePlantTFC.AGE, plantAge), 2);
+                        setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockDoublePlantTFC.AGE, plantAge));
                     }
                 }
             }
@@ -175,7 +175,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                     (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
                     plantBlock.canBlockStay(worldIn, blockpos, state))
                 {
-                    worldIn.setBlockState(blockpos, state, 2);
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state);
                 }
             }
         }
@@ -199,7 +199,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                         plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
                     {
                         int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - 15f) / (3.75f)))), 15));
-                        worldIn.setBlockState(blockpos.up(k), state.withProperty(BlockDoublePlantTFC.AGE, plantAge), 2);
+                        setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockDoublePlantTFC.AGE, plantAge));
                     }
                 }
             }
@@ -221,7 +221,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                     plantBlock.canPlaceBlockAt(worldIn, blockpos) &&
                     plant.isValidFloatingWaterDepth(worldIn, blockpos, plant.getWaterType()))
                 {
-                    worldIn.setBlockState(blockpos, state, 2);
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state);
                 }
             }
         }
@@ -243,7 +243,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                         (!worldIn.provider.isNether() || blockpos.up(k).getY() < 254) &&
                         plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
                     {
-                        worldIn.setBlockState(blockpos.up(k), state, 2);
+                        setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state);
                     }
                 }
             }
@@ -261,7 +261,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                     worldIn.getBlockState(blockpos).getBlock().isReplaceable(worldIn, blockpos) &&
                     plantBlock.canPlaceBlockAt(worldIn, blockpos))
                 {
-                    worldIn.setBlockState(blockpos, plantBlock.getStateForWorldGen(worldIn, blockpos), 2);
+                    setBlockAndNotifyAdequately(worldIn, blockpos, plantBlock.getStateForWorldGen(worldIn, blockpos));
                 }
             }
         }

@@ -18,7 +18,10 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
-import net.dries007.tfc.world.classic.worldgen.*;
+import net.dries007.tfc.world.classic.worldgen.WorldGenPlantTFC;
+import net.dries007.tfc.world.classic.worldgen.WorldGenPumpkinTFC;
+import net.dries007.tfc.world.classic.worldgen.WorldGenSandTFC;
+import net.dries007.tfc.world.classic.worldgen.WorldGenWaterPlants;
 
 @ParametersAreNonnullByDefault
 public class BiomeDecoratorTFC extends BiomeDecorator
@@ -42,11 +45,9 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         this.mushroomBrownGen = null;
         this.mushroomRedGen = null;
         this.bigMushroomGen = null;
-        this.reedGen = null;
 
         plantGen = new WorldGenPlantTFC();
 
-        reedGen = new WorldGenTallPlant(Blocks.REEDS); // todo: replace block?
         sandGen = new WorldGenSandTFC(7);
         pumpkinGen = new WorldGenPumpkinTFC(Blocks.PUMPKIN); // todo: replace block?
         waterplantGen = new WorldGenWaterPlants(); // todo: replace block
@@ -78,7 +79,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
 
         for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
         {
-            if (plant.isValidAvgTemp(avgTemperature) && plant.isValidRain(rainfall))
+            if (plant.isValidTempForWorldGen(avgTemperature) && plant.isValidRain(rainfall))
             {
                 plantGen.setGeneratedPlant(plant);
 
@@ -118,7 +119,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                 }
                 else if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS)
                 {
-                    for (int i = 0; i < 1 + floraDensity * 5; i++)
+                    for (int i = rng.nextInt(8); i < 1 + floraDensity * 5; i++)
                     {
                         final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                         plantGen.generate(world, rng, p2);

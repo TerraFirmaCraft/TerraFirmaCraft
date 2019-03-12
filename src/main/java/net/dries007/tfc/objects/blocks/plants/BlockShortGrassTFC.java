@@ -89,7 +89,8 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if ((ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < 15 || !plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up()))))
+        if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()) &&
+            (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < plant.getGrowthTemp() - 5 || !plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up()))))
         {
             int j = state.getValue(AGE);
 
@@ -106,7 +107,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
         }
-        else if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > 20 && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
+        else if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > plant.getGrowthTemp() && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
         {
             int j = state.getValue(AGE);
 
