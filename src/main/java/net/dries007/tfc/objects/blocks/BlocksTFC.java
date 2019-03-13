@@ -478,6 +478,16 @@ public final class BlocksTFC
         return current.getMaterial() == Material.WATER;
     }
 
+    public static boolean isFreshWater(IBlockState current)
+    {
+        return current == FLUID_FRESH_WATER.getDefaultState();
+    }
+
+    public static boolean isSaltWater(IBlockState current)
+    {
+        return current == FLUID_SALT_WATER.getDefaultState();
+    }
+
     public static boolean isRawStone(IBlockState current)
     {
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;

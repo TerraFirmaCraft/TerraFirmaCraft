@@ -23,7 +23,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.EnumPlantType;
 
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -119,12 +118,5 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return LILY_PAD_AABB.offset(state.getOffset(source, pos));
-    }
-
-    @Override
-    @Nonnull
-    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
-    {
-        return EnumPlantType.Water;
     }
 }

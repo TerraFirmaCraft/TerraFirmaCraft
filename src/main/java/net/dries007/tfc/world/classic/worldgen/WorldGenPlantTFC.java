@@ -50,7 +50,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                     (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
                     plantBlock.canBlockStay(worldIn, blockpos, state))
                 {
-                    int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - 15f) / (3.75f)))), 15));
+                    int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - plant.getGrowthTemp()) / (3.75f)))), 15));
                     setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockShortGrassTFC.AGE, plantAge));
                 }
             }
@@ -74,7 +74,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                         (!worldIn.provider.isNether() || blockpos.up(k).getY() < 254) &&
                         plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
                     {
-                        int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - 15f) / (3.75f)))), 15));
+                        int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - plant.getGrowthTemp()) / (3.75f)))), 15));
                         setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockShortGrassTFC.AGE, plantAge));
                     }
                 }
@@ -154,7 +154,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                         (!worldIn.provider.isNether() || blockpos.up(k).getY() < 254) &&
                         plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
                     {
-                        int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - 15f) / (3.75f)))), 15));
+                        int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - plant.getGrowthTemp()) / (3.75f)))), 15));
                         setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockDoublePlantTFC.AGE, plantAge));
                     }
                 }
@@ -198,13 +198,13 @@ public class WorldGenPlantTFC extends WorldGenerator
                         (!worldIn.provider.isNether() || blockpos.up(k).getY() < 254) &&
                         plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
                     {
-                        int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - 15f) / (3.75f)))), 15));
+                        int plantAge = Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - plant.getGrowthTemp()) / (3.75f)))), 15));
                         setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockDoublePlantTFC.AGE, plantAge));
                     }
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.FLOATING || plant.getPlantType() == Plant.PlantType.FLOATING_SEA)
+        else if (plant.getPlantType() == Plant.PlantType.FLOATING)
         {
             BlockFloatingWaterTFC plantBlock = BlockFloatingWaterTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
@@ -214,6 +214,25 @@ public class WorldGenPlantTFC extends WorldGenerator
                 final BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8),
                     rand.nextInt(4) - rand.nextInt(4),
                     rand.nextInt(8) - rand.nextInt(8));
+
+                if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos), ChunkDataTFC.getRainfall(worldIn, blockpos), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                    worldIn.isAirBlock(blockpos) &&
+                    (!worldIn.provider.isNether() || blockpos.getY() < 254) &&
+                    plantBlock.canPlaceBlockAt(worldIn, blockpos) &&
+                    plant.isValidFloatingWaterDepth(worldIn, blockpos, plant.getWaterType()))
+                {
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state);
+                }
+            }
+        }
+        else if (plant.getPlantType() == Plant.PlantType.FLOATING_SEA)
+        {
+            BlockFloatingWaterTFC plantBlock = BlockFloatingWaterTFC.get(plant);
+            IBlockState state = plantBlock.getDefaultState();
+
+            for (int i = 0; i < 128; ++i)
+            {
+                final BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), 0, rand.nextInt(8) - rand.nextInt(8));
 
                 if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos), ChunkDataTFC.getRainfall(worldIn, blockpos), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
                     worldIn.isAirBlock(blockpos) &&

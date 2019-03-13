@@ -1,5 +1,5 @@
 {
-    "parent": "tfc:block/cross",
+    "parent": "tfc:block/tinted_cross",
     "textures": {
 		"cross": "tfc:blocks/plants/horsetail/placeholder",
         "particle": "tfc:blocks/plants/horsetail/placeholder"

@@ -28,7 +28,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.EnumPlantType;
 
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -235,13 +234,6 @@ public class BlockCactusTFC extends BlockStackPlantTFC implements IGrowable
             return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);
-    }
-
-    @Override
-    @Nonnull
-    public EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
-    {
-        return EnumPlantType.Desert;
     }
 
     @Override

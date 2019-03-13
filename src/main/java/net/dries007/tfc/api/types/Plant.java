@@ -232,6 +232,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     {
         Clay,
         Dry,
+        FreshBeach,
+        SaltBeach,
         None;
 
         public String toString()

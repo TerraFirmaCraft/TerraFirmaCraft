@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "tfc:blocks/plants/pistia/pistia_0",
+        "layer1": "tfc:blocks/plants/pistia/pistia_1"
+    }
+}

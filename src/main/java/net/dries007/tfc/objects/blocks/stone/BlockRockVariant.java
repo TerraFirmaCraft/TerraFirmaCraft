@@ -245,6 +245,20 @@ public class BlockRockVariant extends Block
                     return type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
                 case Dry:
                     return type == Rock.Type.DRY_GRASS;
+                case FreshBeach:
+                    // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
+                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && // todo: dry grass?
+                        (BlocksTFC.isFreshWater(world.getBlockState(pos.add(1, 0, 0))) ||
+                            BlocksTFC.isFreshWater(world.getBlockState(pos.add(-1, 0, 0))) ||
+                            BlocksTFC.isFreshWater(world.getBlockState(pos.add(0, 0, 1))) ||
+                            BlocksTFC.isFreshWater(world.getBlockState(pos.add(0, 0, -1))));
+                case SaltBeach:
+                    // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
+                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && // todo: dry grass?
+                        (BlocksTFC.isSaltWater(world.getBlockState(pos.add(1, 0, 0))) ||
+                            BlocksTFC.isSaltWater(world.getBlockState(pos.add(-1, 0, 0))) ||
+                            BlocksTFC.isSaltWater(world.getBlockState(pos.add(0, 0, 1))) ||
+                            BlocksTFC.isSaltWater(world.getBlockState(pos.add(0, 0, -1))));
             }
         }
         EnumPlantType plantType = plantable.getPlantType(world, pos.offset(direction));

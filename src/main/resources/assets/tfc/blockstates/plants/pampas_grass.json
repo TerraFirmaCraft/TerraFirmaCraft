@@ -1,8 +1,7 @@
 {
 	"multipart": [
-		{ "apply": [
-				{ "model": "tfc:plants/pampas_grass" }
-			]
-		}
+       {   "when": { "part": "single|lower" },
+           "apply": { "model": "tfc:plants/pampas_grass" }
+       }
 	]
 }

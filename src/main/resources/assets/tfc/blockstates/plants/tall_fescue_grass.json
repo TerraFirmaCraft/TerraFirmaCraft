@@ -1,8 +1,7 @@
 {
 	"multipart": [
-		{ "apply": [
-				{ "model": "tfc:plants/tall_fescue_grass" }
-			]
-		}
+       {   "when": { "part": "single|lower" },
+           "apply": { "model": "tfc:plants/tall_fescue_grass" }
+       }
 	]
 }

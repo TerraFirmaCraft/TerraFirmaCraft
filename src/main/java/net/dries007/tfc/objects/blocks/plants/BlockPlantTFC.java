@@ -229,8 +229,6 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         if (plant.getPlantType() == Plant.PlantType.CACTUS) return EnumPlantType.Desert;
         if (plant.getPlantType() == Plant.PlantType.FLOATING) return EnumPlantType.Water;
         if (plant.getPlantType() == Plant.PlantType.FLOATING_SEA) return EnumPlantType.Water;
-        if (plant.getPlantType() == Plant.PlantType.REED) return EnumPlantType.Beach;
-        if (plant.getPlantType() == Plant.PlantType.DOUBLE_REED) return EnumPlantType.Beach;
         return EnumPlantType.Plains;
     }
 
@@ -238,8 +236,8 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public Plant.EnumPlantTypeTFC getPlantTypeTFC(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
         if (plant.getIsClayMarking()) return Plant.EnumPlantTypeTFC.Clay;
+        if (plant.getPlantType() == Plant.PlantType.REED) return Plant.EnumPlantTypeTFC.FreshBeach;
+        if (plant.getPlantType() == Plant.PlantType.DOUBLE_REED) return Plant.EnumPlantTypeTFC.FreshBeach;
         return Plant.EnumPlantTypeTFC.None;
     }
-
-
 }

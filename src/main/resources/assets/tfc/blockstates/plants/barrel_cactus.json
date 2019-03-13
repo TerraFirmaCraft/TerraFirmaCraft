@@ -5,12 +5,12 @@
 				{ "model": "tfc:plants/barrel_cactus_small" }
 			]
 		},
-		{ "when": { "age": "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "lower" },
+		{ "when": { "age": "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "lower" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_lower" }
 			]
 		},
-		{ "when": { "age": "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "middle" },
+		{ "when": { "age": "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "middle" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_middle" }
 			]
@@ -20,7 +20,7 @@
 				{ "model": "tfc:plants/barrel_cactus_small" }
 			]
 		},
-		{ "when": { "age": "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "upper" },
+		{ "when": { "age": "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "upper" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_upper" }
 			]

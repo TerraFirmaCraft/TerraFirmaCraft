@@ -58,9 +58,11 @@ public final class DefaultPlants
     public static final ResourceLocation LOTUS = new ResourceLocation(MOD_ID, "lotus");
     public static final ResourceLocation ORCHARD_GRASS = new ResourceLocation(MOD_ID, "orchard_grass");
     public static final ResourceLocation PAMPAS_GRASS = new ResourceLocation(MOD_ID, "pampas_grass");
+    public static final ResourceLocation PISTIA = new ResourceLocation(MOD_ID, "pistia");
     public static final ResourceLocation PRIMROSE = new ResourceLocation(MOD_ID, "primrose");
     public static final ResourceLocation ROSE = new ResourceLocation(MOD_ID, "rose");
     public static final ResourceLocation SACRED_DATURA = new ResourceLocation(MOD_ID, "sacred_datura");
+    public static final ResourceLocation SARGASSUM = new ResourceLocation(MOD_ID, "sargassum");
     public static final ResourceLocation SCUTCH_GRASS = new ResourceLocation(MOD_ID, "scutch_grass");
     public static final ResourceLocation SUGAR_CANE = new ResourceLocation(MOD_ID, "sugar_cane");
     public static final ResourceLocation SWORD_FERN = new ResourceLocation(MOD_ID, "sword_fern");
@@ -126,9 +128,11 @@ public final class DefaultPlants
             new Plant(HORSETAIL, Plant.PlantType.REED, false, 5f, -40f, 33f, 300f, 500f, 9, 15, null),
             new Plant(ORCHARD_GRASS, Plant.PlantType.SHORT_GRASS, false, 15f, -29f, 30f, 75f, 300f, 9, 15, null),
             new Plant(PAMPAS_GRASS, Plant.PlantType.TALL_GRASS, true, 20f, -12f, 36f, 75f, 200f, 9, 15, null),
+            new Plant(PISTIA, Plant.PlantType.FLOATING, false, 22f, 15f, 35f, 0f, 500f, 4, 15, 2, 32, null),
             new Plant(PRIMROSE, Plant.PlantType.STANDARD, false, 15f, -34f, 33f, 150f, 300f, 9, 11, null),
             new Plant(ROSE, Plant.PlantType.DOUBLE, true, 11f, -29f, 34f, 150f, 300f, 9, 15, null),
             new Plant(SACRED_DATURA, Plant.PlantType.STANDARD, false, 20f, -12f, 33f, 300f, 500f, 12, 15, null),
+            new Plant(SARGASSUM, Plant.PlantType.FLOATING_SEA, false, 24f, 0f, 38f, 0f, 500f, 12, 15, 5, 256, "seaweed"),
             new Plant(SCUTCH_GRASS, Plant.PlantType.SHORT_GRASS, false, 23f, -17f, 40f, 150f, 500f, 12, 15, null),
             new Plant(SUGAR_CANE, Plant.PlantType.DOUBLE_REED, false, 25f, 10f, 40f, 300f, 500f, 12, 15, "sugarcane"),
             new Plant(SWORD_FERN, Plant.PlantType.STANDARD, false, 18f, -40f, 30f, 100f, 200f, 4, 11, null),

@@ -148,9 +148,6 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
             case 10:
             case 11:
                 return SHORT_GRASS_AABB.offset(state.getOffset(source, pos));
-            case 12:
-            case 13:
-            case 14:
             default:
                 return GRASS_AABB.offset(state.getOffset(source, pos));
         }
