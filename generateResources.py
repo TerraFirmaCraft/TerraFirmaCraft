@@ -839,7 +839,10 @@ for item_type, tool_item in METAL_ITEMS.items():
         parent = 'item/handheld' if item_type in TOOLS else 'item/generated'
         if item_type in ['knife', 'javelin']:
             parent = 'tfc:item/handheld_flipped'
-        item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal), parent=parent)
+        if item_type == 'anvil':
+            model(('item', 'metal', 'anvil', metal), 'tfc:item/metal/anvil/transformations', {'all': 'tfc:blocks/metal/%s' % metal})
+        else:
+            item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal), parent=parent)
 for metal in STEEL:
     for type in ['high_carbon', 'weak']:
         item(('metal', 'ingot', type + '_' + metal), 'tfc:items/metal/ingot/%s' % metal)
