@@ -13,11 +13,13 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -29,18 +31,18 @@ import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
-public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
+public class BlockTallPlantTFC extends BlockPlantTFC implements IGrowable
 {
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
-    private static final AxisAlignedBB PLANT_AABB = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 1.0D, 0.8125D);
-    private static final Map<Plant, BlockDoublePlantTFC> MAP = new HashMap<>();
+    private static final PropertyEnum<EnumBlockPart> PART = PropertyEnum.create("part", EnumBlockPart.class);
+    private static final Map<Plant, BlockTallPlantTFC> MAP = new HashMap<>();
 
-    public static BlockDoublePlantTFC get(Plant plant)
+    public static BlockTallPlantTFC get(Plant plant)
     {
-        return BlockDoublePlantTFC.MAP.get(plant);
+        return BlockTallPlantTFC.MAP.get(plant);
     }
 
-    public BlockDoublePlantTFC(Plant plant)
+    public BlockTallPlantTFC(Plant plant)
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
@@ -52,14 +54,15 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
         int i;
-        for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i) {}
-        return i < 2 && worldIn.isAirBlock(pos.up()) && canBlockStay(worldIn, pos.up(), state);
+        //noinspection StatementWithEmptyBody
+        for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i) ;
+        return i < plant.getMaxHeight() && worldIn.isAirBlock(pos.up()) && canBlockStay(worldIn, pos.up(), state);
     }
 
     @Override
     public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
-        return true;
+        return false;
     }
 
     @Override
@@ -71,56 +74,35 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
 
-    public boolean canShrink(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
-    {
-        return worldIn.getBlockState(pos.down()).getBlock() == this;
-    }
-
-    public void shrink(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    public void shrink(World worldIn, BlockPos pos)
     {
         worldIn.setBlockToAir(pos);
         worldIn.getBlockState(pos).neighborChanged(worldIn, pos.down(), this, pos);
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-        if (!this.canBlockStay(worldIn, pos, state))
-        {
-            if (getPlantPart(worldIn, pos) == EnumBlockPart.LOWER)
-            {
-                worldIn.setBlockState(pos.up(), Blocks.AIR.getDefaultState());
-            }
-            worldIn.destroyBlock(pos, true);
-        }
-    }
-
-    @Override
-    protected void checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if (!this.canBlockStay(worldIn, pos, state))
-        {
-            if (getPlantPart(worldIn, pos) != EnumBlockPart.UPPER)
-            {
-                this.dropBlockAsItem(worldIn, pos, state, 0);
-            }
-            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
-        }
-    }
-
-    @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
     {
-        if (getPlantPart(worldIn, pos) == EnumBlockPart.LOWER && plant.getOreDictName() == null)
-        {
-            worldIn.setBlockToAir(pos.up());
-        }
-        if (getPlantPart(worldIn, pos) == EnumBlockPart.UPPER && plant.getOreDictName() == null)
-        {
-            worldIn.setBlockToAir(pos);
-        }
-
         super.onBlockHarvested(worldIn, pos, state, player);
+    }
+
+    @Override
+    public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, net.minecraftforge.common.IPlantable plantable)
+    {
+        IBlockState plant = plantable.getPlant(world, pos.offset(direction));
+
+        if (plant.getBlock() == this)
+        {
+            return true;
+        }
+        return super.canSustainPlant(state, world, pos, direction, plantable);
+    }
+
+    @Override
+    @Nonnull
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
     }
 
     @Override
@@ -134,27 +116,6 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, AGE, GROWTHSTAGE, PART, DAYPERIOD);
-    }
-
-    @Override
-    @Nonnull
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return PLANT_AABB.offset(state.getOffset(source, pos));
-    }
-
-    @Override
-    @Nonnull
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
     }
 
     @Override
@@ -175,6 +136,13 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
             worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, getPlantPart(worldIn, pos)));
         }
         this.updateTick(worldIn, pos, state, random);
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, AGE, GROWTHSTAGE, PART, DAYPERIOD);
     }
 
     @Override
@@ -202,11 +170,11 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
 
             if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
             {
-                if (j == 0 && canShrink(worldIn, pos, state, worldIn.isRemote))
+                if (j == 0 && canShrink(worldIn, pos))
                 {
-                    shrink(worldIn, rand, pos, state);
+                    shrink(worldIn, pos);
                 }
-                else
+                else if (j > 0)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(PART, getPlantPart(worldIn, pos)));
                 }
@@ -223,7 +191,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
                 {
                     grow(worldIn, rand, pos, state);
                 }
-                else
+                else if (j < 15)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(PART, getPlantPart(worldIn, pos)));
                 }
@@ -231,10 +199,7 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
             }
         }
 
-        if (!canBlockStay(worldIn, pos, state))
-        {
-            worldIn.setBlockToAir(pos);
-        }
+        checkAndDropBlock(worldIn, pos, state);
     }
 
     @Override
@@ -242,11 +207,58 @@ public class BlockDoublePlantTFC extends BlockStackPlantTFC implements IGrowable
     {
         IBlockState soil = worldIn.getBlockState(pos.down());
 
-        if (worldIn.getBlockState(pos.down(2)).getBlock() == this) return false;
+        if (worldIn.getBlockState(pos.down(plant.getMaxHeight())).getBlock() == this) return false;
         if (state.getBlock() == this)
         {
             return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);
+    }
+
+    @Override
+    @Nonnull
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return PLANT_AABB.offset(state.getOffset(source, pos));
+    }
+
+    private boolean canShrink(World worldIn, BlockPos pos)
+    {
+        return worldIn.getBlockState(pos.down()).getBlock() == this;
+    }
+
+    private EnumBlockPart getPlantPart(IBlockAccess world, BlockPos pos)
+    {
+        if (world.getBlockState(pos.down()).getBlock() != this && world.getBlockState(pos.up()).getBlock() == this)
+        {
+            return EnumBlockPart.LOWER;
+        }
+        if (world.getBlockState(pos.down()).getBlock() == this && world.getBlockState(pos.up()).getBlock() == this)
+        {
+            return EnumBlockPart.MIDDLE;
+        }
+        if (world.getBlockState(pos.down()).getBlock() == this && world.getBlockState(pos.up()).getBlock() != this)
+        {
+            return EnumBlockPart.UPPER;
+        }
+        return EnumBlockPart.SINGLE;
+    }
+
+    public enum EnumBlockPart implements IStringSerializable
+    {
+        UPPER,
+        MIDDLE,
+        LOWER,
+        SINGLE;
+
+        public String toString()
+        {
+            return this.getName();
+        }
+
+        public String getName()
+        {
+            return name().toLowerCase();
+        }
     }
 }

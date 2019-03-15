@@ -35,14 +35,14 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @ParametersAreNonnullByDefault
 public class BlockCreepingPlantTFC extends BlockPlantTFC
 {
-    public static final PropertyBool DOWN = PropertyBool.create("down");
-    public static final PropertyBool UP = PropertyBool.create("up");
-    public static final PropertyBool NORTH = PropertyBool.create("north");
-    public static final PropertyBool EAST = PropertyBool.create("east");
-    public static final PropertyBool SOUTH = PropertyBool.create("south");
-    public static final PropertyBool WEST = PropertyBool.create("west");
+    private static final PropertyBool DOWN = PropertyBool.create("down");
+    private static final PropertyBool UP = PropertyBool.create("up");
+    private static final PropertyBool NORTH = PropertyBool.create("north");
+    private static final PropertyBool EAST = PropertyBool.create("east");
+    private static final PropertyBool SOUTH = PropertyBool.create("south");
+    private static final PropertyBool WEST = PropertyBool.create("west");
 
-    public static final PropertyBool[] ALL_FACES = new PropertyBool[] {DOWN, UP, NORTH, SOUTH, WEST, EAST};
+    private static final PropertyBool[] ALL_FACES = new PropertyBool[] {DOWN, UP, NORTH, SOUTH, WEST, EAST};
 
     private static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
     private static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.0D, 0.875D, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -63,14 +63,6 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()).withProperty(DOWN, false).withProperty(UP, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(SOUTH, false).withProperty(WEST, false));
-    }
-
-    public boolean canConnectTo(IBlockAccess worldIn, BlockPos pos, EnumFacing facing)
-    {
-        IBlockState iblockstate = worldIn.getBlockState(pos);
-        BlockFaceShape blockfaceshape = iblockstate.getBlockFaceShape(worldIn, pos, facing);
-        Block block = iblockstate.getBlock();
-        return blockfaceshape == BlockFaceShape.SOLID || block instanceof BlockFence;
     }
 
     @Override
@@ -242,8 +234,7 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         {
             if (!canBlockStay(worldIn, pos, state))
             {
-                this.dropBlockAsItem(worldIn, pos, state, 0);
-                worldIn.setBlockToAir(pos);
+                worldIn.destroyBlock(pos, true);
             }
         }
     }
@@ -276,6 +267,14 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
+    }
+
+    private boolean canConnectTo(IBlockAccess worldIn, BlockPos pos, EnumFacing facing)
+    {
+        IBlockState iblockstate = worldIn.getBlockState(pos);
+        BlockFaceShape blockfaceshape = iblockstate.getBlockFaceShape(worldIn, pos, facing);
+        Block block = iblockstate.getBlock();
+        return blockfaceshape == BlockFaceShape.SOLID || block instanceof BlockFence;
     }
 
     private boolean canPlantConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing)

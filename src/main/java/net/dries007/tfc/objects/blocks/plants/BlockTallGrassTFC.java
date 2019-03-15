@@ -38,7 +38,7 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @ParametersAreNonnullByDefault
 public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
 {
-    protected static final PropertyEnum<BlockTallGrassTFC.EnumBlockPart> PART = PropertyEnum.create("part", BlockTallGrassTFC.EnumBlockPart.class);
+    private static final PropertyEnum<BlockTallGrassTFC.EnumBlockPart> PART = PropertyEnum.create("part", BlockTallGrassTFC.EnumBlockPart.class);
     private static final Map<Plant, BlockTallGrassTFC> MAP = new HashMap<>();
 
     public static BlockTallGrassTFC get(Plant plant)
@@ -92,7 +92,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     {
         IBlockState soil = worldIn.getBlockState(pos.down());
 
-        if (worldIn.getBlockState(pos.down(2)).getBlock() == this) return false;
+        if (worldIn.getBlockState(pos.down(plant.getMaxHeight())).getBlock() == this) return false;
         if (state.getBlock() == this)
         {
             return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
@@ -110,10 +110,6 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
 
         if (!this.canBlockStay(worldIn, pos, state))
         {
-            if (getPlantPart(worldIn, pos) == EnumBlockPart.LOWER)
-            {
-                worldIn.setBlockState(pos.up(), Blocks.AIR.getDefaultState());
-            }
             worldIn.destroyBlock(pos, true);
         }
     }
@@ -135,31 +131,27 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
         int i;
-        for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i) {}
-        return i < 2 && worldIn.isAirBlock(pos.up()) && canBlockStay(worldIn, pos.up(), state);
+        //noinspection StatementWithEmptyBody
+        for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i) ;
+        return i < plant.getMaxHeight() && worldIn.isAirBlock(pos.up()) && canBlockStay(worldIn, pos.up(), state);
     }
 
     @Override
     public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
-        return true;
+        return false;
     }
 
     @Override
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
-        worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(AGE, 15));
+        worldIn.setBlockState(pos.up(), this.getDefaultState());
         IBlockState iblockstate = state.withProperty(AGE, 15).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
 
-    public boolean canShrink(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
-    {
-        return worldIn.getBlockState(pos.down()).getBlock() == this;
-    }
-
-    public void shrink(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    public void shrink(World worldIn, BlockPos pos)
     {
         worldIn.setBlockToAir(pos);
         worldIn.getBlockState(pos).neighborChanged(worldIn, pos.down(), this, pos);
@@ -209,11 +201,11 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
 
             if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
             {
-                if (j == 0 && canShrink(worldIn, pos, state, worldIn.isRemote))
+                if (j == 0 && canShrink(worldIn, pos))
                 {
-                    shrink(worldIn, rand, pos, state);
+                    shrink(worldIn, pos);
                 }
-                else
+                else if (j > 0)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(PART, getPlantPart(worldIn, pos)));
                 }
@@ -230,7 +222,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
                 {
                     grow(worldIn, rand, pos, state);
                 }
-                else
+                else if (j < 15)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(PART, getPlantPart(worldIn, pos)));
                 }
@@ -238,10 +230,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
             }
         }
 
-        if (!canBlockStay(worldIn, pos, state))
-        {
-            worldIn.setBlockToAir(pos);
-        }
+        checkAndDropBlock(worldIn, pos, state);
     }
 
     @Override
@@ -288,7 +277,12 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
         return NonNullList.withSize(1, new ItemStack(this, 1));
     }
 
-    protected EnumBlockPart getPlantPart(IBlockAccess world, BlockPos pos)
+    private boolean canShrink(World worldIn, BlockPos pos)
+    {
+        return worldIn.getBlockState(pos.down()).getBlock() == this;
+    }
+
+    private EnumBlockPart getPlantPart(IBlockAccess world, BlockPos pos)
     {
         if (world.getBlockState(pos.down()).getBlock() != this && world.getBlockState(pos.up()).getBlock() == this)
         {

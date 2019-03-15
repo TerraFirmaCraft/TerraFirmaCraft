@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
@@ -17,8 +18,12 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -43,6 +48,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public final static PropertyInteger GROWTHSTAGE = PropertyInteger.create("stage", 0, 11);
     /* Time of day, used for rendering plants that bloom at different times */
     public final static PropertyInteger DAYPERIOD = PropertyInteger.create("dayperiod", 0, 3);
+    static final AxisAlignedBB PLANT_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
     private static final Map<Plant, BlockPlantTFC> MAP = new HashMap<>();
 
     public static BlockPlantTFC get(Plant plant)
@@ -134,7 +140,28 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
         world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
-        this.checkAndDropBlock(world, pos, state);
+        checkAndDropBlock(world, pos, state);
+    }
+
+    @Override
+    @Nonnull
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        if (plant.getOreDictName() == null) return Items.AIR;
+        return Item.getItemFromBlock(this);
+    }
+
+    @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    {
+        if (plant.getOreDictName() == null && !worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
+        {
+            spawnAsEntity(worldIn, pos, new ItemStack(this, 1));
+        }
+        else
+        {
+            super.harvestBlock(worldIn, player, pos, state, te, stack);
+        }
     }
 
     @Override
@@ -185,10 +212,19 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     protected boolean canSustainBush(IBlockState state)
     {
         if (plant.getIsClayMarking()) return BlocksTFC.isClay(state);
+        if (plant.getPlantType() == Plant.PlantType.CACTUS) return BlocksTFC.isSand(state);
         if (plant.getPlantType() == Plant.PlantType.DESERT) return BlocksTFC.isSand(state);
+        if (plant.getPlantType() == Plant.PlantType.DESERT_TALL_PLANT) return BlocksTFC.isSand(state);
+        if (plant.getPlantType() == Plant.PlantType.DRY) return BlocksTFC.isSand(state) || BlocksTFC.isDryGrass(state);
+        if (plant.getPlantType() == Plant.PlantType.DRY_TALL_PLANT) return BlocksTFC.isSand(state) || BlocksTFC.isDryGrass(state);
         if (plant.getPlantType() == Plant.PlantType.REED) return BlocksTFC.isSand(state) || BlocksTFC.isSoil(state);
-        if (plant.getPlantType() == Plant.PlantType.DOUBLE_REED)
-            return BlocksTFC.isSand(state) || BlocksTFC.isSoil(state);
+        if (plant.getPlantType() == Plant.PlantType.TALL_REED) return BlocksTFC.isSand(state) || BlocksTFC.isSoil(state);
+        if (plant.getPlantType() == Plant.PlantType.WATER_SEA) return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
+        if (plant.getPlantType() == Plant.PlantType.WATER) return BlocksTFC.isSoilOrGravel(state);
+        if (plant.getPlantType() == Plant.PlantType.TALL_WATER_SEA) return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
+        if (plant.getPlantType() == Plant.PlantType.TALL_WATER) return BlocksTFC.isSoilOrGravel(state);
+        if (plant.getPlantType() == Plant.PlantType.EMERGENT_TALL_WATER_SEA) return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
+        if (plant.getPlantType() == Plant.PlantType.EMERGENT_TALL_WATER) return BlocksTFC.isSoilOrGravel(state);
         return BlocksTFC.isSoil(state);
     }
 
@@ -196,10 +232,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
-        if (!canBlockStay(worldIn, pos, state))
-        {
-            worldIn.setBlockToAir(pos);
-        }
+        checkAndDropBlock(worldIn, pos, state);
     }
 
     @Override
@@ -218,7 +251,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return super.getBoundingBox(state, source, pos).offset(state.getOffset(source, pos));
+        return PLANT_AABB.offset(state.getOffset(source, pos));
     }
 
     @Override
@@ -226,6 +259,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
         if (plant.getPlantType() == Plant.PlantType.DESERT) return EnumPlantType.Desert;
+        if (plant.getPlantType() == Plant.PlantType.DESERT_TALL_PLANT) return EnumPlantType.Desert;
         if (plant.getPlantType() == Plant.PlantType.CACTUS) return EnumPlantType.Desert;
         if (plant.getPlantType() == Plant.PlantType.FLOATING) return EnumPlantType.Water;
         if (plant.getPlantType() == Plant.PlantType.FLOATING_SEA) return EnumPlantType.Water;
@@ -233,11 +267,21 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     }
 
     @Nonnull
-    public Plant.EnumPlantTypeTFC getPlantTypeTFC(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    public Plant.EnumPlantTypeTFC getPlantTypeTFC()
     {
         if (plant.getIsClayMarking()) return Plant.EnumPlantTypeTFC.Clay;
+        if (plant.getPlantType() == Plant.PlantType.DRY) return Plant.EnumPlantTypeTFC.Dry;
+        if (plant.getPlantType() == Plant.PlantType.DRY_TALL_PLANT) return Plant.EnumPlantTypeTFC.Dry;
         if (plant.getPlantType() == Plant.PlantType.REED) return Plant.EnumPlantTypeTFC.FreshBeach;
-        if (plant.getPlantType() == Plant.PlantType.DOUBLE_REED) return Plant.EnumPlantTypeTFC.FreshBeach;
+        if (plant.getPlantType() == Plant.PlantType.REED_SEA) return Plant.EnumPlantTypeTFC.SaltBeach;
+        if (plant.getPlantType() == Plant.PlantType.TALL_REED) return Plant.EnumPlantTypeTFC.FreshBeach;
+        if (plant.getPlantType() == Plant.PlantType.TALL_REED_SEA) return Plant.EnumPlantTypeTFC.SaltBeach;
+        if (plant.getPlantType() == Plant.PlantType.WATER) return Plant.EnumPlantTypeTFC.FreshWater;
+        if (plant.getPlantType() == Plant.PlantType.WATER_SEA) return Plant.EnumPlantTypeTFC.SaltWater;
+        if (plant.getPlantType() == Plant.PlantType.TALL_WATER) return Plant.EnumPlantTypeTFC.FreshWater;
+        if (plant.getPlantType() == Plant.PlantType.TALL_WATER_SEA) return Plant.EnumPlantTypeTFC.SaltWater;
+        if (plant.getPlantType() == Plant.PlantType.EMERGENT_TALL_WATER) return Plant.EnumPlantTypeTFC.FreshWater;
+        if (plant.getPlantType() == Plant.PlantType.EMERGENT_TALL_WATER_SEA) return Plant.EnumPlantTypeTFC.SaltWater;
         return Plant.EnumPlantTypeTFC.None;
     }
 }

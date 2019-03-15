@@ -30,6 +30,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     private final float maxRain;
     private final int minSun;
     private final int maxSun;
+    private final int maxHeight;
     private final int minWaterDepth;
     private final int maxWaterDepth;
 
@@ -42,8 +43,17 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      * Addon mods that want to add plants should subscribe to the registry event for this class
      * They also must put (in their mod) the required resources in /assets/tfc/...
      *
-     * When using this class, use the provided Builder to create your plants. This will require all the default values, as well as
-     * provide optional values that you can change
+     * Plant world generation is determined dynamically based on valid temperature and rainfall values
+     *
+     * Valid average biome temperatures are those that fall within the range
+     * plus or minus one quarter of the plants full temperature range
+     *
+     * Example: Lotus
+     * Full temperature range: 10-50
+     * Average temp: 30 ( (10+50)/2 )
+     * Difference between max and min temps: 40 (50-10)
+     * One quarter of this range: 10 (40/4)
+     * Worldgen temp range: 20-40 (30 +- 10)
      *
      * @param name          the ResourceLocation registry name of this plant
      * @param plantType     the type of plant
@@ -54,11 +64,12 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      * @param maxRain       max rainfall
      * @param minSun        min light level on worldgen
      * @param maxSun        max light level on worldgen
+     * @param maxHeight     max height for double+ plants
      * @param minWaterDepth min water depth for water plants on worldgen
      * @param maxWaterDepth max water depth for water plants on worldgen
      * @param oreDictName   if not null, the Ore Dictionary entry for this plant
      */
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float growthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int minWaterDepth, int maxWaterDepth, @Nullable String oreDictName)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float growthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, int minWaterDepth, int maxWaterDepth, @Nullable String oreDictName)
     {
         this.growthTemp = growthTemp;
         this.minTemp = minTemp;
@@ -67,6 +78,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         this.maxRain = maxRain;
         this.minSun = minSun;
         this.maxSun = maxSun;
+        this.maxHeight = maxHeight;
         this.minWaterDepth = minWaterDepth;
         this.maxWaterDepth = maxWaterDepth;
 
@@ -78,9 +90,9 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         setRegistryName(name);
     }
 
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float growthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, @Nullable String oreDictName)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float growthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, @Nullable String oreDictName)
     {
-        this(name, plantType, isClayMarking, growthTemp, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, 0, 0, oreDictName);
+        this(name, plantType, isClayMarking, growthTemp, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, maxHeight, 0, 0, oreDictName);
     }
 
     public boolean getIsClayMarking()
@@ -100,7 +112,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public boolean isValidTempForWorldGen(float temp)
     {
-        return Math.abs(temp - getAvgTemp()) < 10;
+        return Math.abs(temp - getAvgTemp()) < Float.sum(maxTemp, -minTemp) / 4f;
     }
 
     public boolean isValidRain(float rain)
@@ -120,19 +132,35 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
         for (int i = 1; i <= depthCounter; ++i)
         {
-            if (world.getBlockState(pos.down(i)) != water) return false;
+            if (world.getBlockState(pos.down(i)) != water && world.getBlockState(pos.down(i)).getMaterial() != Material.CORAL)
+                return false;
         }
 
-        while (world.getBlockState(pos.down(depthCounter)) == water)
+        while (world.getBlockState(pos.down(depthCounter)) == water || world.getBlockState(pos.down(depthCounter)).getMaterial() == Material.CORAL)
         {
             depthCounter++;
         }
         return (maxDepth > 0) && depthCounter <= maxDepth + 1;
     }
 
-    public float getAvgTemp()
+    public int getValidWaterDepth(World world, BlockPos pos, IBlockState water)
     {
-        return Float.sum(minTemp, maxTemp) / 2f;
+        int depthCounter = getMinWaterDepth();
+        int maxDepth = getMaxWaterDepth();
+
+        if (maxDepth == 0) return -1;
+
+        for (int i = 1; i <= depthCounter; ++i)
+        {
+            if (world.getBlockState(pos.down(i)) != water) return -1;
+        }
+
+        while (world.getBlockState(pos.down(depthCounter)) == water)
+        {
+            depthCounter++;
+            if (depthCounter > maxDepth + 1) return -1;
+        }
+        return depthCounter;
     }
 
     public float getGrowthTemp()
@@ -140,14 +168,9 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return growthTemp;
     }
 
-    public int getMinWaterDepth()
+    public int getMaxHeight()
     {
-        return minWaterDepth;
-    }
-
-    public int getMaxWaterDepth()
-    {
-        return maxWaterDepth;
+        return maxHeight;
     }
 
     public String getOreDictName()
@@ -176,7 +199,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public IBlockState getWaterType()
     {
-        if (plantType == PlantType.FLOATING_SEA)
+        if (plantType == PlantType.FLOATING_SEA || plantType == PlantType.WATER_SEA || plantType == PlantType.TALL_WATER_SEA)
         {
             return SALT_WATER;
         }
@@ -186,20 +209,46 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         }
     }
 
+    private float getAvgTemp()
+    {
+        return Float.sum(minTemp, maxTemp) / 2f;
+    }
+
+    private int getMinWaterDepth()
+    {
+        return minWaterDepth;
+    }
+
+    private int getMaxWaterDepth()
+    {
+        return maxWaterDepth;
+    }
+
     public enum PlantType
     {
         STANDARD(BlockPlantTFC::new),
-        DOUBLE(BlockDoublePlantTFC::new),
+        TALL_PLANT(BlockTallPlantTFC::new),
         CREEPING(BlockCreepingPlantTFC::new),
         FLOATING(BlockFloatingWaterTFC::new),
         FLOATING_SEA(BlockFloatingWaterTFC::new),
         DESERT(BlockPlantTFC::new),
+        DESERT_TALL_PLANT(BlockTallPlantTFC::new),
+        DRY(BlockPlantTFC::new),
+        DRY_TALL_PLANT(BlockTallPlantTFC::new),
         CACTUS(BlockCactusTFC::new),
         SHORT_GRASS(BlockShortGrassTFC::new),
         TALL_GRASS(BlockTallGrassTFC::new),
         EPIPHYTE(BlockEpiphyteTFC::new),
         REED(BlockPlantTFC::new),
-        DOUBLE_REED(BlockDoublePlantTFC::new);
+        REED_SEA(BlockPlantTFC::new),
+        TALL_REED(BlockTallPlantTFC::new),
+        TALL_REED_SEA(BlockTallPlantTFC::new),
+        WATER(BlockWaterPlantTFC::new),
+        WATER_SEA(BlockWaterPlantTFC::new),
+        TALL_WATER(BlockTallWaterPlantTFC::new),
+        TALL_WATER_SEA(BlockTallWaterPlantTFC::new),
+        EMERGENT_TALL_WATER(BlockEmergentTallWaterPlantTFC::new),
+        EMERGENT_TALL_WATER_SEA(BlockEmergentTallWaterPlantTFC::new);
 
         private final Function<Plant, BlockPlantTFC> supplier;
 
@@ -222,6 +271,13 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
                 case SHORT_GRASS:
                 case TALL_GRASS:
                     return Material.VINE;
+                case WATER:
+                case WATER_SEA:
+                case TALL_WATER:
+                case TALL_WATER_SEA:
+                case EMERGENT_TALL_WATER:
+                case EMERGENT_TALL_WATER_SEA:
+                    return Material.CORAL;
                 default:
                     return Material.PLANTS;
             }
@@ -234,6 +290,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         Dry,
         FreshBeach,
         SaltBeach,
+        FreshWater,
+        SaltWater,
         None;
 
         public String toString()

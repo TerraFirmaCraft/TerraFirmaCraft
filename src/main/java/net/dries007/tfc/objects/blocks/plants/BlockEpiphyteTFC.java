@@ -10,6 +10,7 @@ package net.dries007.tfc.objects.blocks.plants;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyDirection;
@@ -31,15 +32,16 @@ import net.dries007.tfc.world.classic.CalenderTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
+@ParametersAreNonnullByDefault
 public class BlockEpiphyteTFC extends BlockPlantTFC
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing");
-    protected static final AxisAlignedBB PLANT_UP_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.75D, 0.75D);
-    protected static final AxisAlignedBB PLANT_DOWN_AABB = new AxisAlignedBB(0.25D, 0.25D, 0.25D, 0.75D, 1.0D, 0.75D);
-    protected static final AxisAlignedBB PLANT_NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB PLANT_SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D);
-    protected static final AxisAlignedBB PLANT_WEST_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB PLANT_EAST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D);
+    private static final PropertyDirection FACING = PropertyDirection.create("facing");
+    private static final AxisAlignedBB PLANT_UP_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.75D, 0.75D);
+    private static final AxisAlignedBB PLANT_DOWN_AABB = new AxisAlignedBB(0.25D, 0.25D, 0.25D, 0.75D, 1.0D, 0.75D);
+    private static final AxisAlignedBB PLANT_NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D);
+    private static final AxisAlignedBB PLANT_SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D);
+    private static final AxisAlignedBB PLANT_WEST_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+    private static final AxisAlignedBB PLANT_EAST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D);
 
     private static final Map<Plant, BlockEpiphyteTFC> MAP = new HashMap<>();
 
@@ -65,6 +67,7 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
         this.onNeighborChangeInternal(worldIn, pos, state);
     }
 
+    @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
@@ -132,6 +135,7 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
         this.checkForDrop(world, pos, state);
     }
 
+    @Nonnull
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACING, GROWTHSTAGE, DAYPERIOD);
@@ -174,7 +178,6 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
         return false;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
@@ -196,18 +199,24 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
         }
     }
 
+    @SuppressWarnings("deprecation")
+    @Nonnull
     @Override
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
         return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
+    @SuppressWarnings("deprecation")
+    @Nonnull
     @Override
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
         return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
+    @SuppressWarnings("deprecation")
+    @Nonnull
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
@@ -249,13 +258,9 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
         return this.getDefaultState();
     }
 
-    protected boolean onNeighborChangeInternal(World worldIn, BlockPos pos, IBlockState state)
+    private void onNeighborChangeInternal(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (!this.checkForDrop(worldIn, pos, state))
-        {
-            return true;
-        }
-        else
+        if (this.checkForDrop(worldIn, pos, state))
         {
             EnumFacing enumfacing = state.getValue(FACING);
             EnumFacing.Axis enumfacing$axis = enumfacing.getAxis();
@@ -274,18 +279,12 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
 
             if (flag)
             {
-                this.dropBlockAsItem(worldIn, pos, state, 0);
-                worldIn.setBlockToAir(pos);
-                return true;
-            }
-            else
-            {
-                return false;
+                worldIn.destroyBlock(pos, true);
             }
         }
     }
 
-    protected boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
+    private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
     {
         if (state.getBlock() == this && this.canPlaceAt(worldIn, pos, state.getValue(FACING)))
         {
@@ -295,8 +294,7 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
         {
             if (worldIn.getBlockState(pos).getBlock() == this)
             {
-                this.dropBlockAsItem(worldIn, pos, state, 0);
-                worldIn.setBlockToAir(pos);
+                checkAndDropBlock(worldIn, pos, state);
             }
 
             return false;

@@ -397,7 +397,7 @@ public final class BlocksTFC
             Builder<BlockPlantTFC> b = ImmutableList.builder();
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {
-                b.add(register(r, "plants/" + plant.getRegistryName().getPath(), plant.getPlantType().create(plant), CT_DECORATIONS));
+                b.add(register(r, "plants/" + plant.getRegistryName().getPath(), plant.getPlantType().create(plant), CT_FLORA));
             }
             allPlantBlocks = b.build();
             for (BlockPlantTFC blockPlant : allPlantBlocks)
@@ -425,9 +425,7 @@ public final class BlocksTFC
         register(r, "log_pile", new BlockLogPile());
         register(r, "pit_kiln", new BlockPitKiln());
 
-        // todo: reeds/sugarcane ?
         // todo: pumpkin/melon ?
-        // todo: waterplants
         // todo: fruit tree stuff (leaves, saplings, logs)
 
         // todo: supports (h & v)
@@ -540,6 +538,13 @@ public final class BlocksTFC
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
         Rock.Type type = ((BlockRockVariant) current.getBlock()).type;
         return type.isGrass;
+    }
+
+    public static boolean isDryGrass(IBlockState current)
+    {
+        if (!(current.getBlock() instanceof BlockRockVariant)) return false;
+        Rock.Type type = ((BlockRockVariant) current.getBlock()).type;
+        return type == DRY_GRASS;
     }
 
     public static boolean isGround(IBlockState current)

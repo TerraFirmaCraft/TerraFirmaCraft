@@ -237,14 +237,18 @@ public class BlockRockVariant extends Block
         if (plantable instanceof BlockPlantTFC)
         {
             BlockPlantTFC plant = (BlockPlantTFC) plantable;
-            Plant.EnumPlantTypeTFC plantTypeTFC = plant.getPlantTypeTFC(world, pos.offset(direction));
+            Plant.EnumPlantTypeTFC plantTypeTFC = plant.getPlantTypeTFC();
 
             switch (plantTypeTFC)
             {
                 case Clay:
                     return type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
                 case Dry:
-                    return type == Rock.Type.DRY_GRASS;
+                    return type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND;
+                case FreshWater:
+                    return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.GRAVEL; // todo: gravel?
+                case SaltWater:
+                    return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND || type == Rock.Type.GRAVEL; // todo: gravel?
                 case FreshBeach:
                     // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
                     return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && // todo: dry grass?

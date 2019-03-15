@@ -3,13 +3,12 @@
     "textures": {
       "particle": "tfc:blocks/plants/lotus/lotus",
       "flower": "tfc:blocks/plants/lotus/lotus_0",
-      "layer0": "tfc:blocks/plants/lotus/lotus",
-      "stem": "tfc:blocks/plants/lotus/lotus_0"
+      "layer0": "tfc:blocks/plants/lotus/lotus"
     },
 	"elements": [
 		{
-			"from": [1, -1.95, 1],
-			"to": [17, -1.95, 17],
+			"from": [0, -1.95, 0],
+			"to": [16, -1.95, 16],
 			"faces": {
 				"up": {
 					"uv": [16, 0, 0, 16],
@@ -17,36 +16,10 @@
 					"tintindex": 0
 				},
 				"down": {
-					"uv": [16, 16, 0, 0],
+					"uv": [16, 0, 0, 16],
 					"texture": "#layer0",
 					"tintindex": 0
 				}
-			}
-		},
-		{
-			"from": [2, -16, 6],
-			"to": [14, 8.9, 6],
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#stem"},
-				"south": {"uv": [16, 0, 0, 16], "texture": "#stem"}
-			},
-			"rotation": {
-				"origin": [8, 8, 6],
-				"axis": "y",
-				"angle": -45
-			}
-		},
-		{
-			"from": [2, -16, 6],
-			"to": [14, 8.9, 6],
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#stem"},
-				"south": {"uv": [16, 0, 0, 16], "texture": "#stem"}
-			},
-			"rotation": {
-				"origin": [8, 8, 6],
-				"axis": "y",
-				"angle": 45
 			}
 		},
 		{

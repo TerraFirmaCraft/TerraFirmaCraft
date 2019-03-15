@@ -1,5 +1,5 @@
 {
-    "parent": "tfc:block/plants/creeping_plant",
+    "parent": "tfc:block/plants/blue_dawn",
     "textures": {
       "layer0": "tfc:blocks/plants/blue_dawn/blue_dawn_layer0",
       "layer1": "tfc:blocks/plants/blue_dawn/blue_dawn_layer1",

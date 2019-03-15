@@ -18,7 +18,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
@@ -38,10 +37,10 @@ import net.dries007.tfc.world.classic.ClimateTFC;
 public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
 {
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
-    protected static final AxisAlignedBB GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
-    protected static final AxisAlignedBB SHORT_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.75D, 0.875D);
-    protected static final AxisAlignedBB SHORTER_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.5D, 0.875D);
-    protected static final AxisAlignedBB SHORTEST_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.25D, 0.875D);
+    static final AxisAlignedBB GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
+    static final AxisAlignedBB SHORTER_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.5D, 0.875D);
+    private static final AxisAlignedBB SHORT_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.75D, 0.875D);
+    private static final AxisAlignedBB SHORTEST_GRASS_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.25D, 0.875D);
     private static final Map<Plant, BlockShortGrassTFC> MAP = new HashMap<>();
 
     public static BlockShortGrassTFC get(Plant plant)
@@ -68,6 +67,23 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(AGE);
+    }
+
+    @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    {
+        if (!worldIn.isRemote && stack.getItem() == Items.SHEARS)
+        {
+            spawnAsEntity(worldIn, pos, new ItemStack(this, 1));
+        }
+        else if (!worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
+        {
+            spawnAsEntity(worldIn, pos, new ItemStack(ItemsTFC.HAY, 1));
+        }
+        else
+        {
+            super.harvestBlock(worldIn, player, pos, state, te, stack);
+        }
     }
 
     @Override
@@ -121,10 +137,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
             }
         }
 
-        if (!canBlockStay(worldIn, pos, state))
-        {
-            worldIn.setBlockToAir(pos);
-        }
+        checkAndDropBlock(worldIn, pos, state);
     }
 
     @Override
@@ -150,30 +163,6 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
                 return SHORT_GRASS_AABB.offset(state.getOffset(source, pos));
             default:
                 return GRASS_AABB.offset(state.getOffset(source, pos));
-        }
-    }
-
-    @Override
-    @Nonnull
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return Items.AIR;
-    }
-
-    @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
-    {
-        if (!worldIn.isRemote && stack.getItem() == Items.SHEARS)
-        {
-            spawnAsEntity(worldIn, pos, new ItemStack(this, 1));
-        }
-        else if (!worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
-        {
-            spawnAsEntity(worldIn, pos, new ItemStack(ItemsTFC.HAY, 1));
-        }
-        else
-        {
-            super.harvestBlock(worldIn, player, pos, state, te, stack);
         }
     }
 

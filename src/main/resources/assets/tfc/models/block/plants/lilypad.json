@@ -16,7 +16,7 @@
 					"tintindex": 0
 				},
 				"down": {
-					"uv": [16, 16, 1, 0],
+					"uv": [16, 0, 1, 16],
 					"texture": "#layer0",
 					"tintindex": 0
 				}
