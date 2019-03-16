@@ -1,9 +1,0 @@
-{
-    "parent": "tfc:block/plants/blue_dawn",
-	"textures": {
-		"particle": "tfc:blocks/plants/blue_dawn/blue_dawn_layer0",
-		"layer1": "tfc:blocks/empty",
-		"middle": "tfc:blocks/plants/blue_dawn/blue_dawn_middle_1",
-		"top": "tfc:blocks/plants/blue_dawn/blue_dawn_top_1"
-	}
-}

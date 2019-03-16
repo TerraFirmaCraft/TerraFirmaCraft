@@ -5,9 +5,11 @@
 
 package net.dries007.tfc.api.types;
 
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.Random;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -21,6 +23,7 @@ import net.dries007.tfc.objects.blocks.plants.*;
 import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
 import static net.dries007.tfc.world.classic.ChunkGenTFC.SALT_WATER;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class Plant extends IForgeRegistryEntry.Impl<Plant>
 {
     private final float growthTemp;
@@ -37,7 +40,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     private final PlantType plantType;
     private final Material material;
     private final Boolean isClayMarking;
-    private final String oreDictName;
+    private final Optional<String> oreDictName;
 
     /**
      * Addon mods that want to add plants should subscribe to the registry event for this class
@@ -67,9 +70,9 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      * @param maxHeight     max height for double+ plants
      * @param minWaterDepth min water depth for water plants on worldgen
      * @param maxWaterDepth max water depth for water plants on worldgen
-     * @param oreDictName   if not null, the Ore Dictionary entry for this plant
+     * @param oreDictName   if not empty, the Ore Dictionary entry for this plant
      */
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float growthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, int minWaterDepth, int maxWaterDepth, @Nullable String oreDictName)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float growthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, int minWaterDepth, int maxWaterDepth, String oreDictName)
     {
         this.growthTemp = growthTemp;
         this.minTemp = minTemp;
@@ -85,12 +88,12 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         this.plantType = plantType;
         this.isClayMarking = isClayMarking;
         this.material = plantType.getPlantMaterial();
-        this.oreDictName = oreDictName;
+        this.oreDictName = Optional.ofNullable(oreDictName);
 
         setRegistryName(name);
     }
 
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float growthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, @Nullable String oreDictName)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float growthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, String oreDictName)
     {
         this(name, plantType, isClayMarking, growthTemp, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, maxHeight, 0, 0, oreDictName);
     }
@@ -173,7 +176,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return maxHeight;
     }
 
-    public String getOreDictName()
+    public Optional<String> getOreDictName()
     {
         return oreDictName;
     }
@@ -207,6 +210,11 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         {
             return FRESH_WATER;
         }
+    }
+
+    public int getAgeForWorldgen(Random rand, float temp)
+    {
+        return Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - getGrowthTemp()) / (3.75f)))), 15));
     }
 
     private float getAvgTemp()

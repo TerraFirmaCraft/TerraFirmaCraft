@@ -44,6 +44,7 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @ParametersAreNonnullByDefault
 public class BlockPlantTFC extends BlockBush implements IItemSize
 {
+    public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
     /* Growth Stage of the plant, tied to the month of year */
     public final static PropertyInteger GROWTHSTAGE = PropertyInteger.create("stage", 0, 11);
     /* Time of day, used for rendering plants that bloom at different times */
@@ -63,10 +64,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         super(plant.getMaterial());
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        if (plant.getOreDictName() != null)
-        {
-            OreDictionaryHelper.register(this, plant.getOreDictName());
-        }
+        plant.getOreDictName().ifPresent(name -> OreDictionaryHelper.register(this, name));
 
         this.plant = plant;
         this.setTickRandomly(true);
@@ -86,13 +84,13 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id());
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return (state.getValue(GROWTHSTAGE));
+        return state.getValue(AGE);
     }
 
     @SuppressWarnings("deprecation")
@@ -147,14 +145,14 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        if (plant.getOreDictName() == null) return Items.AIR;
+        if (!plant.getOreDictName().isPresent()) return Items.AIR;
         return Item.getItemFromBlock(this);
     }
 
     @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
-        if (plant.getOreDictName() == null && !worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
+        if (!plant.getOreDictName().isPresent() && !worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
         {
             spawnAsEntity(worldIn, pos, new ItemStack(this, 1));
         }
@@ -168,7 +166,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD);
+        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD, AGE);
     }
 
     @Override
@@ -232,6 +230,35 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
+
+        if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()) &&
+            (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < plant.getGrowthTemp() - 5 || !plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up()))))
+        {
+            int j = state.getValue(AGE);
+
+            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
+            {
+                if (j > 0)
+                {
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1));
+                }
+                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+            }
+        }
+        else if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > plant.getGrowthTemp() && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
+        {
+            int j = state.getValue(AGE);
+
+            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
+            {
+                if (j < 15)
+                {
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1));
+                }
+                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+            }
+        }
+
         checkAndDropBlock(worldIn, pos, state);
     }
 

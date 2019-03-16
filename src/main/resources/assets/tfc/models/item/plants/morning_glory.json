@@ -1,10 +1,10 @@
 {
-    "parent": "tfc:block/plants/blue_dawn",
+    "parent": "tfc:block/plants/morning_glory",
     "textures": {
-      "layer0": "tfc:blocks/plants/blue_dawn/blue_dawn_layer0",
-      "layer1": "tfc:blocks/plants/blue_dawn/blue_dawn_layer1",
-      "middle": "tfc:blocks/plants/blue_dawn/blue_dawn_middle_1",
-      "top": "tfc:blocks/plants/blue_dawn/blue_dawn_top_1"
+      "layer0": "tfc:blocks/plants/morning_glory/morning_glory_layer0",
+      "layer1": "tfc:blocks/plants/morning_glory/morning_glory_layer1",
+      "middle": "tfc:blocks/plants/morning_glory/morning_glory_middle_1",
+      "top": "tfc:blocks/plants/morning_glory/morning_glory_top_1"
     },
     "display": {
         "ground": {

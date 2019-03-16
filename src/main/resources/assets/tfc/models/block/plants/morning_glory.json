@@ -1,9 +1,9 @@
 {
     "ambientocclusion": false,
 	"textures": {
-		"particle": "tfc:blocks/plants/blue_dawn/blue_dawn_layer0",
-		"layer0": "tfc:blocks/plants/blue_dawn/blue_dawn_layer0",
-		"layer1": "tfc:blocks/plants/blue_dawn/blue_dawn_layer1",
+		"particle": "tfc:blocks/plants/morning_glory/morning_glory_layer0",
+		"layer0": "tfc:blocks/plants/morning_glory/morning_glory_layer0",
+		"layer1": "tfc:blocks/plants/morning_glory/morning_glory_layer1",
 		"bottom": "tfc:blocks/empty",
 		"middle": "tfc:blocks/empty",
 		"top": "tfc:blocks/empty"

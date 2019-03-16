@@ -138,7 +138,7 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, FACING, GROWTHSTAGE, DAYPERIOD);
+        return new BlockStateContainer(this, FACING, GROWTHSTAGE, DAYPERIOD, AGE);
     }
 
     @Override

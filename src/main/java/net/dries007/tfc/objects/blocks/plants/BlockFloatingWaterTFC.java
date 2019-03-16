@@ -74,7 +74,7 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD);
+        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD, AGE);
     }
 
     @Override

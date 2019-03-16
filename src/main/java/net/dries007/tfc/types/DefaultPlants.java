@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.types;
 
+import java.util.OptionalInt;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -23,7 +25,6 @@ public final class DefaultPlants
      */
     public static final ResourceLocation ALLIUM = new ResourceLocation(MOD_ID, "allium");
     public static final ResourceLocation BARREL_CACTUS = new ResourceLocation(MOD_ID, "barrel_cactus");
-    public static final ResourceLocation BLUE_DAWN = new ResourceLocation(MOD_ID, "blue_dawn");
     public static final ResourceLocation BLUE_ORCHID = new ResourceLocation(MOD_ID, "blue_orchid");
     public static final ResourceLocation BUTTERFLY_MILKWEED = new ResourceLocation(MOD_ID, "butterfly_milkweed");
     public static final ResourceLocation CALENDULA = new ResourceLocation(MOD_ID, "calendula");
@@ -32,6 +33,7 @@ public final class DefaultPlants
     public static final ResourceLocation HOUSTONIA = new ResourceLocation(MOD_ID, "houstonia");
     public static final ResourceLocation LILYPAD = new ResourceLocation(MOD_ID, "lilypad");
     public static final ResourceLocation MEADS_MILKWEED = new ResourceLocation(MOD_ID, "meads_milkweed");
+    public static final ResourceLocation MORNING_GLORY = new ResourceLocation(MOD_ID, "morning_glory");
     public static final ResourceLocation MOSS = new ResourceLocation(MOD_ID, "moss");
     public static final ResourceLocation NASTURTIUM = new ResourceLocation(MOD_ID, "nasturtium");
     public static final ResourceLocation OSTRICH_FERN = new ResourceLocation(MOD_ID, "ostrich_fern");
@@ -84,11 +86,11 @@ public final class DefaultPlants
             new Plant(BLUE_ORCHID, Plant.PlantType.STANDARD, false, 20f, 10f, 50f, 300f, 500f, 12, 15, 1, null),
             new Plant(BUTTERFLY_MILKWEED, Plant.PlantType.STANDARD, false, 13f, -40f, 32f, 75f, 300f, 12, 15, 1, null),
             new Plant(CALENDULA, Plant.PlantType.STANDARD, false, 10f, -46f, 30f, 130f, 300f, 9, 15, 1, null),
-            new Plant(DANDELION, Plant.PlantType.STANDARD, false, 15f, -40f, 40f, 75f, 400, 10, 15, 1, null),
+            new Plant(DANDELION, Plant.PlantType.STANDARD, false, 15f, -40f, 40f, 75f, 400f, 10, 15, 1, null),
             new Plant(GOLDENROD, Plant.PlantType.STANDARD, true, 15f, -29f, 32f, 75f, 300f, 9, 15, 1, null),
             new Plant(HOUSTONIA, Plant.PlantType.STANDARD, false, 15f, -46f, 36f, 150f, 500f, 9, 15, 1, null),
             new Plant(MEADS_MILKWEED, Plant.PlantType.STANDARD, false, 13f, -23f, 31f, 130f, 500f, 12, 15, 1, null),
-            new Plant(NASTURTIUM, Plant.PlantType.STANDARD, false, 18f, -46f, 38f, 150f, 500, 12, 15, 1, null),
+            new Plant(NASTURTIUM, Plant.PlantType.STANDARD, false, 18f, -46f, 38f, 150f, 500f, 12, 15, 1, null),
             new Plant(OXEYE_DAISY, Plant.PlantType.STANDARD, false, 18f, -40f, 33f, 120f, 300f, 9, 15, 1, null),
             new Plant(POPPY, Plant.PlantType.STANDARD, false, 17f, -40f, 36f, 150f, 250f, 12, 15, 1, null),
             new Plant(TROPICAL_MILKWEED, Plant.PlantType.STANDARD, false, 20f, -6f, 36f, 120f, 300f, 12, 15, 1, null),
@@ -108,7 +110,7 @@ public final class DefaultPlants
             new Plant(OSTRICH_FERN, Plant.PlantType.TALL_PLANT, false, 10f, -40f, 33f, 300f, 500f, 4, 11, 2, null),
 
             // Creeping Plants
-            new Plant(BLUE_DAWN, Plant.PlantType.CREEPING, false, 18f, -40f, 31f, 150f, 500f, 12, 15, 1, null),
+            new Plant(MORNING_GLORY, Plant.PlantType.CREEPING, false, 18f, -40f, 31f, 150f, 500f, 12, 15, 1, null),
             new Plant(MOSS, Plant.PlantType.CREEPING, false, -2f, -7f, 36f, 250f, 500f, 0, 11, 1, null),
 
             // Floating Water Plants
@@ -146,7 +148,7 @@ public final class DefaultPlants
             new Plant(TIMOTHY_GRASS, Plant.PlantType.SHORT_GRASS, false, 15f, -46f, 30f, 300f, 500f, 12, 15, 1, null),
             new Plant(TOQUILLA_PALM, Plant.PlantType.TALL_PLANT, false, 20f, -1f, 50f, 250f, 500f, 9, 15, 2, null),
             new Plant(TRILLIUM, Plant.PlantType.STANDARD, false, 15f, -34f, 33f, 150f, 300f, 4, 11, 1, null),
-            new Plant(YUCCA, Plant.PlantType.DESERT, true, 20f, -34f, 36f, 0f, 75, 9, 15, 1, null)
+            new Plant(YUCCA, Plant.PlantType.DESERT, true, 20f, -34f, 36f, 0f, 75f, 9, 15, 1, null)
 
         );
     }

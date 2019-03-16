@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.blocks.plants;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -66,9 +67,16 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     }
 
     @Override
+    @Nonnull
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, meta);
+    }
+
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return 0;
+        return state.getValue(GROWTHSTAGE);
     }
 
     @Override
@@ -109,6 +117,13 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     protected boolean canSustainBush(IBlockState state)
     {
         return true;
+    }
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        if (!worldIn.isAreaLoaded(pos, 1)) return;
+        checkAndDropBlock(worldIn, pos, state);
     }
 
     @Override
