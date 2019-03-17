@@ -45,8 +45,6 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 public class BlockPlantTFC extends BlockBush implements IItemSize
 {
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
-    /* Growth Stage of the plant, tied to the month of year */
-    public final static PropertyInteger GROWTHSTAGE = PropertyInteger.create("stage", 0, 11);
     /* Time of day, used for rendering plants that bloom at different times */
     public final static PropertyInteger DAYPERIOD = PropertyInteger.create("dayperiod", 0, 3);
     static final AxisAlignedBB PLANT_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
@@ -57,7 +55,10 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         return MAP.get(plant);
     }
 
+    /* Growth Stage of the plant, tied to the month of year */
+    public final PropertyInteger GROWTHSTAGE;
     protected final Plant plant;
+    protected final BlockStateContainer blockState;
 
     public BlockPlantTFC(Plant plant)
     {
@@ -67,11 +68,13 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         plant.getOreDictName().ifPresent(name -> OreDictionaryHelper.register(this, name));
 
         this.plant = plant;
+        GROWTHSTAGE = PropertyInteger.create("stage", 0, plant.getNumStages());
         this.setTickRandomly(true);
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
         Blocks.FIRE.setFireInfo(this, 5, 20);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
+        blockState = this.createPlantBlockState();
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]));
     }
 
     public int getDayPeriod()
@@ -84,7 +87,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id());
+        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]);
     }
 
     @Override
@@ -98,7 +101,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]);
     }
 
     @Override
@@ -111,8 +114,9 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
+        CalenderTFC.Month currentMonth = CalenderTFC.getMonthOfYear();
         int currentStage = state.getValue(GROWTHSTAGE);
-        int expectedStage = CalenderTFC.getMonthOfYear().id();
+        int expectedStage = plant.getStages()[currentMonth.id()];
         int currentTime = state.getValue(DAYPERIOD);
         int expectedTime = getDayPeriod();
 
@@ -137,7 +141,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]));
         checkAndDropBlock(world, pos, state);
     }
 
@@ -163,10 +167,9 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     }
 
     @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
+    public BlockStateContainer getBlockState()
     {
-        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD, AGE);
+        return this.blockState;
     }
 
     @Override
@@ -214,14 +217,19 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         if (plant.getPlantType() == Plant.PlantType.DESERT) return BlocksTFC.isSand(state);
         if (plant.getPlantType() == Plant.PlantType.DESERT_TALL_PLANT) return BlocksTFC.isSand(state);
         if (plant.getPlantType() == Plant.PlantType.DRY) return BlocksTFC.isSand(state) || BlocksTFC.isDryGrass(state);
-        if (plant.getPlantType() == Plant.PlantType.DRY_TALL_PLANT) return BlocksTFC.isSand(state) || BlocksTFC.isDryGrass(state);
+        if (plant.getPlantType() == Plant.PlantType.DRY_TALL_PLANT)
+            return BlocksTFC.isSand(state) || BlocksTFC.isDryGrass(state);
         if (plant.getPlantType() == Plant.PlantType.REED) return BlocksTFC.isSand(state) || BlocksTFC.isSoil(state);
-        if (plant.getPlantType() == Plant.PlantType.TALL_REED) return BlocksTFC.isSand(state) || BlocksTFC.isSoil(state);
-        if (plant.getPlantType() == Plant.PlantType.WATER_SEA) return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
+        if (plant.getPlantType() == Plant.PlantType.TALL_REED)
+            return BlocksTFC.isSand(state) || BlocksTFC.isSoil(state);
+        if (plant.getPlantType() == Plant.PlantType.WATER_SEA)
+            return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
         if (plant.getPlantType() == Plant.PlantType.WATER) return BlocksTFC.isSoilOrGravel(state);
-        if (plant.getPlantType() == Plant.PlantType.TALL_WATER_SEA) return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
+        if (plant.getPlantType() == Plant.PlantType.TALL_WATER_SEA)
+            return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
         if (plant.getPlantType() == Plant.PlantType.TALL_WATER) return BlocksTFC.isSoilOrGravel(state);
-        if (plant.getPlantType() == Plant.PlantType.EMERGENT_TALL_WATER_SEA) return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
+        if (plant.getPlantType() == Plant.PlantType.EMERGENT_TALL_WATER_SEA)
+            return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
         if (plant.getPlantType() == Plant.PlantType.EMERGENT_TALL_WATER) return BlocksTFC.isSoilOrGravel(state);
         return BlocksTFC.isSoil(state);
     }
@@ -231,21 +239,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()) &&
-            (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < plant.getGrowthTemp() - 5 || !plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up()))))
-        {
-            int j = state.getValue(AGE);
-
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
-            {
-                if (j > 0)
-                {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1));
-                }
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
-            }
-        }
-        else if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > plant.getGrowthTemp() && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
+        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
         {
             int j = state.getValue(AGE);
 
@@ -254,6 +248,19 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
                 if (j < 15)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j + 1));
+                }
+                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+            }
+        }
+        else if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()))
+        {
+            int j = state.getValue(AGE);
+
+            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
+            {
+                if (j > 0)
+                {
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1));
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
@@ -310,5 +317,14 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         if (plant.getPlantType() == Plant.PlantType.EMERGENT_TALL_WATER) return Plant.EnumPlantTypeTFC.FreshWater;
         if (plant.getPlantType() == Plant.PlantType.EMERGENT_TALL_WATER_SEA) return Plant.EnumPlantTypeTFC.SaltWater;
         return Plant.EnumPlantTypeTFC.None;
+    }
+
+    /*
+        @Override
+    */
+    @Nonnull
+    protected BlockStateContainer createPlantBlockState()
+    {
+        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD, AGE);
     }
 }

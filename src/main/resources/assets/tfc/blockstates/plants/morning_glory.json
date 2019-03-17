@@ -1,75 +1,75 @@
 {
    "multipart": [
-       {   "when": { "down": "true", "stage": "0|1|2|3|4|5|6" },
+       {   "when": { "down": "true", "stage": "0|1" },
            "apply": { "model": "tfc:plants/morning_glory" }
        },
-       {   "when": { "east": "true", "stage": "0|1|2|3|4|5|6" },
+       {   "when": { "east": "true", "stage": "0|1" },
            "apply": { "model": "tfc:plants/morning_glory", "x": 270, "y": 90 }
        },
-       {   "when": { "north": "true", "stage": "0|1|2|3|4|5|6" },
+       {   "when": { "north": "true", "stage": "0|1" },
            "apply": { "model": "tfc:plants/morning_glory", "x": 270 }
        },
-       {   "when": { "south": "true", "stage": "0|1|2|3|4|5|6" },
+       {   "when": { "south": "true", "stage": "0|1" },
            "apply": { "model": "tfc:plants/morning_glory", "x": 270, "y": 180 }
        },
-       {   "when": { "up": "true", "stage": "0|1|2|3|4|5|6" },
+       {   "when": { "up": "true", "stage": "0|1" },
            "apply": { "model": "tfc:plants/morning_glory", "x": 180 }
        },
-       {   "when": { "west": "true", "stage": "0|1|2|3|4|5|6" },
+       {   "when": { "west": "true", "stage": "0|1" },
            "apply": { "model": "tfc:plants/morning_glory", "x": 270, "y": 270 }
        },
-       {   "when": { "down": "true", "stage": "2|3|4|5|6", "dayperiod": "0" },
+       {   "when": { "down": "true", "stage": "1", "dayperiod": "0" },
            "apply": { "model": "tfc:plants/morning_glory_1" }
        },
-       {   "when": { "east": "true", "stage": "2|3|4|5|6", "dayperiod": "0" },
+       {   "when": { "east": "true", "stage": "1", "dayperiod": "0" },
            "apply": { "model": "tfc:plants/morning_glory_1", "x": 270, "y": 90 }
        },
-       {   "when": { "north": "true", "stage": "2|3|4|5|6", "dayperiod": "0" },
+       {   "when": { "north": "true", "stage": "1", "dayperiod": "0" },
            "apply": { "model": "tfc:plants/morning_glory_1", "x": 270 }
        },
-       {   "when": { "south": "true", "stage": "2|3|4|5|6", "dayperiod": "0" },
+       {   "when": { "south": "true", "stage": "1", "dayperiod": "0" },
            "apply": { "model": "tfc:plants/morning_glory_1", "x": 270, "y": 180 }
        },
-       {   "when": { "up": "true", "stage": "2|3|4|5|6", "dayperiod": "0" },
+       {   "when": { "up": "true", "stage": "1", "dayperiod": "0" },
            "apply": { "model": "tfc:plants/morning_glory_1", "x": 180 }
        },
-       {   "when": { "west": "true", "stage": "2|3|4|5|6", "dayperiod": "0" },
+       {   "when": { "west": "true", "stage": "1", "dayperiod": "0" },
            "apply": { "model": "tfc:plants/morning_glory_1", "x": 270, "y": 270 }
        },
-       {   "when": { "down": "true", "stage": "2|3|4|5|6", "dayperiod": "1|2|3" },
+       {   "when": { "down": "true", "stage": "1", "dayperiod": "1|2|3" },
            "apply": { "model": "tfc:plants/morning_glory_0" }
        },
-       {   "when": { "east": "true", "stage": "2|3|4|5|6", "dayperiod": "1|2|3" },
+       {   "when": { "east": "true", "stage": "1", "dayperiod": "1|2|3" },
            "apply": { "model": "tfc:plants/morning_glory_0", "x": 270, "y": 90 }
        },
-       {   "when": { "north": "true", "stage": "2|3|4|5|6", "dayperiod": "1|2|3" },
+       {   "when": { "north": "true", "stage": "1", "dayperiod": "1|2|3" },
            "apply": { "model": "tfc:plants/morning_glory_0", "x": 270 }
        },
-       {   "when": { "south": "true", "stage": "2|3|4|5|6", "dayperiod": "1|2|3" },
+       {   "when": { "south": "true", "stage": "1", "dayperiod": "1|2|3" },
            "apply": { "model": "tfc:plants/morning_glory_0", "x": 270, "y": 180 }
        },
-       {   "when": { "up": "true", "stage": "2|3|4|5|6", "dayperiod": "1|2|3" },
+       {   "when": { "up": "true", "stage": "1", "dayperiod": "1|2|3" },
            "apply": { "model": "tfc:plants/morning_glory_0", "x": 180 }
        },
-       {   "when": { "west": "true", "stage": "2|3|4|5|6", "dayperiod": "1|2|3" },
+       {   "when": { "west": "true", "stage": "1", "dayperiod": "1|2|3" },
            "apply": { "model": "tfc:plants/morning_glory_0", "x": 270, "y": 270 }
        },
-       {   "when": { "down": "true", "stage": "7|8|9|10|11" },
+       {   "when": { "down": "true", "stage": "2" },
            "apply": { "model": "tfc:plants/morning_glory_2" }
        },
-       {   "when": { "east": "true", "stage": "7|8|9|10|11" },
+       {   "when": { "east": "true", "stage": "2" },
            "apply": { "model": "tfc:plants/morning_glory_2", "x": 270, "y": 90 }
        },
-       {   "when": { "north": "true", "stage": "7|8|9|10|11" },
+       {   "when": { "north": "true", "stage": "2" },
            "apply": { "model": "tfc:plants/morning_glory_2", "x": 270 }
        },
-       {   "when": { "south": "true", "stage": "7|8|9|10|11" },
+       {   "when": { "south": "true", "stage": "2" },
            "apply": { "model": "tfc:plants/morning_glory_2", "x": 270, "y": 180 }
        },
-       {   "when": { "up": "true", "stage": "7|8|9|10|11" },
+       {   "when": { "up": "true", "stage": "2" },
            "apply": { "model": "tfc:plants/morning_glory_2", "x": 180 }
        },
-       {   "when": { "west": "true", "stage": "7|8|9|10|11" },
+       {   "when": { "west": "true", "stage": "2" },
            "apply": { "model": "tfc:plants/morning_glory_2", "x": 270, "y": 270 }
        }
    ]

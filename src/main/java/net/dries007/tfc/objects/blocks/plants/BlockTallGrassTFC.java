@@ -51,34 +51,14 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()).withProperty(PART, EnumBlockPart.SINGLE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
-    }
-
-    @Override
-    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
-    {
-        if (!worldIn.isAreaLoaded(pos, 1)) return;
-        int currentStage = state.getValue(GROWTHSTAGE);
-        int expectedStage = CalenderTFC.getMonthOfYear().id();
-        int currentTime = state.getValue(DAYPERIOD);
-        int expectedTime = getDayPeriod();
-
-        if (currentTime != expectedTime)
-        {
-            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, currentStage).withProperty(PART, getPlantPart(worldIn, pos)));
-        }
-        if (currentStage != expectedStage && random.nextDouble() < 0.5)
-        {
-            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, getPlantPart(worldIn, pos)));
-        }
-        this.updateTick(worldIn, pos, state, random);
+        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
@@ -146,7 +126,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         worldIn.setBlockState(pos.up(), this.getDefaultState());
-        IBlockState iblockstate = state.withProperty(AGE, 15).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
+        IBlockState iblockstate = state.withProperty(AGE, 15).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
@@ -176,8 +156,21 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     }
 
     @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    {
+        if (!worldIn.isRemote && state.getValue(PART) == EnumBlockPart.LOWER && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
+        {
+            spawnAsEntity(worldIn, pos, new ItemStack(ItemsTFC.HAY, 2));
+        }
+        else
+        {
+            super.harvestBlock(worldIn, player, pos, state, te, stack);
+        }
+    }
+
+    @Override
     @Nonnull
-    protected BlockStateContainer createBlockState()
+    protected BlockStateContainer createPlantBlockState()
     {
         return new BlockStateContainer(this, AGE, GROWTHSTAGE, DAYPERIOD, PART);
     }
@@ -194,25 +187,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()) &&
-            (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < plant.getGrowthTemp() - 5 || !plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up()))))
-        {
-            int j = state.getValue(AGE);
-
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
-            {
-                if (j == 0 && canShrink(worldIn, pos))
-                {
-                    shrink(worldIn, pos);
-                }
-                else if (j > 0)
-                {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(PART, getPlantPart(worldIn, pos)));
-                }
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
-            }
-        }
-        else if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > plant.getGrowthTemp() && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
+        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
         {
             int j = state.getValue(AGE);
 
@@ -225,6 +200,23 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
                 else if (j < 15)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(PART, getPlantPart(worldIn, pos)));
+                }
+                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+            }
+        }
+        else if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()))
+        {
+            int j = state.getValue(AGE);
+
+            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
+            {
+                if (j == 0 && canShrink(worldIn, pos))
+                {
+                    shrink(worldIn, pos);
+                }
+                else if (j > 0)
+                {
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(PART, getPlantPart(worldIn, pos)));
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
@@ -251,19 +243,6 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
                 return SHORTER_GRASS_AABB.offset(state.getOffset(source, pos));
             default:
                 return GRASS_AABB.offset(state.getOffset(source, pos));
-        }
-    }
-
-    @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
-    {
-        if (!worldIn.isRemote && state.getValue(PART) == EnumBlockPart.LOWER && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
-        {
-            spawnAsEntity(worldIn, pos, new ItemStack(ItemsTFC.HAY, 2));
-        }
-        else
-        {
-            super.harvestBlock(worldIn, player, pos, state, te, stack);
         }
     }
 

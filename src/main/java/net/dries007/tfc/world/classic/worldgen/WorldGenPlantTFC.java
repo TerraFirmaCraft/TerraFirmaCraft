@@ -88,17 +88,19 @@ public class WorldGenPlantTFC extends WorldGenerator
             BlockCreepingPlantTFC plantBlock = BlockCreepingPlantTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
 
-            for (int i = 0; i < 64; ++i)
+            for (int i = 0; i < 32; ++i)
             {
                 BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
+                float temp = ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos);
 
                 if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
                     plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
                     worldIn.isAirBlock(blockpos) &&
                     plantBlock.canBlockStay(worldIn, blockpos, state) &&
-                    rand.nextInt() < 10 && !BlocksTFC.isSand(worldIn.getBlockState(blockpos.down())))
+                    !BlocksTFC.isSand(worldIn.getBlockState(blockpos.down())))
                 {
-                    setBlockAndNotifyAdequately(worldIn, blockpos, state);
+                    int plantAge = plant.getAgeForWorldgen(rand, temp);
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockCreepingPlantTFC.AGE, plantAge));
                 }
             }
         }

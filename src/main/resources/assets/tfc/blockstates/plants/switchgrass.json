@@ -12,16 +12,16 @@
        {   "when": { "part": "lower", "age": "8|9|10|11|12|13|14|15" },
            "apply": { "model": "tfc:plants/switchgrass_double_0" }
        },
-       {   "when": { "part": "single", "age": "0|1|2|3|4|5|6|7", "stage": "5|6|7" },
+       {   "when": { "part": "single", "age": "0|1|2|3|4|5|6|7", "stage": "1" },
            "apply": { "model": "tfc:plants/switchgrass_shortest_0b" }
        },
-       {   "when": { "part": "single", "age": "8|9|10|11|12|13|14|15", "stage": "5|6|7" },
+       {   "when": { "part": "single", "age": "8|9|10|11|12|13|14|15", "stage": "1" },
            "apply": { "model": "tfc:plants/switchgrass_shorter_0b" }
        },
-       {   "when": { "part": "lower", "age": "0|1|2|3|4|5|6|7", "stage": "5|6|7" },
+       {   "when": { "part": "lower", "age": "0|1|2|3|4|5|6|7", "stage": "1" },
            "apply": { "model": "tfc:plants/switchgrass_double_short_0b" }
        },
-       {   "when": { "part": "lower", "age": "8|9|10|11|12|13|14|15", "stage": "5|6|7" },
+       {   "when": { "part": "lower", "age": "8|9|10|11|12|13|14|15", "stage": "1" },
            "apply": { "model": "tfc:plants/switchgrass_double_0b" }
        }
    ]

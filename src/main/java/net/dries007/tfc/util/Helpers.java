@@ -94,7 +94,7 @@ public final class Helpers
 
                     if (world.isAirBlock(pos.up()) &&
                         plant.isValidLocation(temp, ChunkDataTFC.getRainfall(world, pos.up()), world.getLightFromNeighbors(pos.up())) &&
-                        temp > plant.getGrowthTemp() &&
+                        plant.isValidGrowthTemp(temp) &&
                         rand.nextFloat() < plantBlock.getGrowthRate(world, pos.up()))
                     {
                         world.setBlockState(pos.up(), plantBlock.getDefaultState());

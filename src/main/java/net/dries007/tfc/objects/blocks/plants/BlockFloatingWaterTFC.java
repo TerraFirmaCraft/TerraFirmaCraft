@@ -42,7 +42,7 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]));
     }
 
     @Override
@@ -60,21 +60,14 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return state.withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]);
     }
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]));
         this.checkAndDropBlock(world, pos, state);
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD, AGE);
     }
 
     @Override
@@ -110,5 +103,12 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return LILY_PAD_AABB.offset(state.getOffset(source, pos));
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createPlantBlockState()
+    {
+        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD, AGE);
     }
 }

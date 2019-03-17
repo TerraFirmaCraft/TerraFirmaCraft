@@ -51,14 +51,14 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, 0).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]));
     }
 
     @Override
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id());
+        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
 
     @Override
     @Nonnull
-    protected BlockStateContainer createBlockState()
+    protected BlockStateContainer createPlantBlockState()
     {
         return new BlockStateContainer(this, AGE, GROWTHSTAGE, DAYPERIOD);
     }
@@ -103,8 +103,20 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()) &&
-            (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < plant.getGrowthTemp() - 5 || !plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up()))))
+        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
+        {
+            int j = state.getValue(AGE);
+
+            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
+            {
+                if (j < 15)
+                {
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1));
+                }
+                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+            }
+        }
+        else if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()))
         {
             int j = state.getValue(AGE);
 
@@ -117,19 +129,6 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
                 else
                 {
                     worldIn.setBlockToAir(pos);
-                }
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
-            }
-        }
-        else if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > plant.getGrowthTemp() && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
-        {
-            int j = state.getValue(AGE);
-
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
-            {
-                if (j < 15)
-                {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1));
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }

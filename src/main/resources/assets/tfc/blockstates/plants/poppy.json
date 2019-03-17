@@ -10,17 +10,17 @@
 				{ "model": "tfc:plants/poppy_1" }
 			]
 		},
-		{ "when": { "stage": "2|3" },
+		{ "when": { "stage": "2" },
 			"apply": [
 				{ "model": "tfc:plants/poppy_2" }
 			]
 		},
-		{ "when": { "stage": "4|5|6|7" },
+		{ "when": { "stage": "3" },
 			"apply": [
 				{ "model": "tfc:plants/poppy_3" }
 			]
 		},
-		{ "when": { "stage": "8|9|10|11" },
+		{ "when": { "stage": "4" },
 			"apply": [
 				{ "model": "tfc:plants/poppy_4" }
 			]

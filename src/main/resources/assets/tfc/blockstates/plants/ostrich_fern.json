@@ -1,16 +1,16 @@
 {
 	"multipart": [
-		{ "when": { "part": "single", "stage": "0|8|9|10|11" },
+		{ "when": { "part": "single", "stage": "0" },
 			"apply": [
 				{ "model": "tfc:plants/ostrich_fern_single_0" }
 			]
 		},
-		{ "when": { "part": "lower", "stage": "0|8|9|10|11" },
+		{ "when": { "part": "lower", "stage": "0" },
 			"apply": [
 				{ "model": "tfc:plants/ostrich_fern_lower_0" }
 			]
 		},
-		{ "when": { "part": "upper", "stage": "0|8|9|10|11" },
+		{ "when": { "part": "upper", "stage": "0" },
 			"apply": [
 				{ "model": "tfc:plants/ostrich_fern_upper_0" }
 			]
@@ -45,32 +45,32 @@
 				{ "model": "tfc:plants/ostrich_fern_upper_2" }
 			]
 		},
-		{ "when": { "part": "single", "stage": "3|4|5|6" },
+		{ "when": { "part": "single", "stage": "3" },
 			"apply": [
 				{ "model": "tfc:plants/ostrich_fern_single_3" }
 			]
 		},
-		{ "when": { "part": "lower", "stage": "3|4|5|6" },
+		{ "when": { "part": "lower", "stage": "3" },
 			"apply": [
 				{ "model": "tfc:plants/ostrich_fern_lower_3" }
 			]
 		},
-		{ "when": { "part": "upper", "stage": "3|4|5|6" },
+		{ "when": { "part": "upper", "stage": "3" },
 			"apply": [
 				{ "model": "tfc:plants/ostrich_fern_upper_2" }
 			]
 		},
-		{ "when": { "part": "single", "stage": "7" },
+		{ "when": { "part": "single", "stage": "4" },
 			"apply": [
 				{ "model": "tfc:plants/ostrich_fern_single_4" }
 			]
 		},
-		{ "when": { "part": "lower", "stage": "7" },
+		{ "when": { "part": "lower", "stage": "4" },
 			"apply": [
 				{ "model": "tfc:plants/ostrich_fern_lower_4" }
 			]
 		},
-		{ "when": { "part": "upper", "stage": "7" },
+		{ "when": { "part": "upper", "stage": "4" },
 			"apply": [
 				{ "model": "tfc:plants/ostrich_fern_upper_4" }
 			]

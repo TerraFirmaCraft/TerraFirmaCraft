@@ -5,8 +5,8 @@
 
 package net.dries007.tfc.api.types;
 
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.OptionalInt;
 import java.util.Random;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
@@ -26,7 +26,10 @@ import static net.dries007.tfc.world.classic.ChunkGenTFC.SALT_WATER;
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class Plant extends IForgeRegistryEntry.Impl<Plant>
 {
-    private final float growthTemp;
+    private final int[] stages;
+    private final int numStages;
+    private final float minGrowthTemp;
+    private final float maxGrowthTemp;
     private final float minTemp;
     private final float maxTemp;
     private final float minRain;
@@ -60,7 +63,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      *
      * @param name          the ResourceLocation registry name of this plant
      * @param plantType     the type of plant
-     * @param growthTemp    growing temperature
+     * @param minGrowthTemp min growing temperature
+     * @param maxGrowthTemp max growing temperature
      * @param minTemp       min temperature
      * @param maxTemp       max temperature
      * @param minRain       min rainfall
@@ -72,9 +76,11 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      * @param maxWaterDepth max water depth for water plants on worldgen
      * @param oreDictName   if not empty, the Ore Dictionary entry for this plant
      */
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float growthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, int minWaterDepth, int maxWaterDepth, String oreDictName)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, int[] stages, Boolean isClayMarking, float minGrowthTemp, float maxGrowthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, int minWaterDepth, int maxWaterDepth, String oreDictName)
     {
-        this.growthTemp = growthTemp;
+        this.stages = stages;
+        this.minGrowthTemp = minGrowthTemp;
+        this.maxGrowthTemp = maxGrowthTemp;
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
         this.minRain = minRain;
@@ -90,12 +96,16 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         this.material = plantType.getPlantMaterial();
         this.oreDictName = Optional.ofNullable(oreDictName);
 
+        HashSet<Integer> hashSet = new HashSet<>();
+        for (int i = 0; i < stages.length; i++) { hashSet.add(stages[i]); }
+        this.numStages = hashSet.size() <= 1 ? 1 : hashSet.size() - 1;
+
         setRegistryName(name);
     }
 
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, Boolean isClayMarking, float growthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, String oreDictName)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, int[] stages, Boolean isClayMarking, float minGrowthTemp, float maxGrowthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, String oreDictName)
     {
-        this(name, plantType, isClayMarking, growthTemp, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, maxHeight, 0, 0, oreDictName);
+        this(name, plantType, stages, isClayMarking, minGrowthTemp, maxGrowthTemp, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, maxHeight, 0, 0, oreDictName);
     }
 
     public boolean getIsClayMarking()
@@ -130,8 +140,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public boolean isValidFloatingWaterDepth(World world, BlockPos pos, IBlockState water)
     {
-        int depthCounter = getMinWaterDepth();
-        int maxDepth = getMaxWaterDepth();
+        int depthCounter = minWaterDepth;
+        int maxDepth = maxWaterDepth;
 
         for (int i = 1; i <= depthCounter; ++i)
         {
@@ -148,8 +158,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public int getValidWaterDepth(World world, BlockPos pos, IBlockState water)
     {
-        int depthCounter = getMinWaterDepth();
-        int maxDepth = getMaxWaterDepth();
+        int depthCounter = minWaterDepth;
+        int maxDepth = maxWaterDepth;
 
         if (maxDepth == 0) return -1;
 
@@ -166,9 +176,29 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return depthCounter;
     }
 
-    public float getGrowthTemp()
+    public float getMinGrowthTemp()
     {
-        return growthTemp;
+        return minGrowthTemp;
+    }
+
+    public float getMaxGrowthTemp()
+    {
+        return maxGrowthTemp;
+    }
+
+    public int[] getStages()
+    {
+        return stages;
+    }
+
+    public int getNumStages()
+    {
+        return numStages;
+    }
+
+    public boolean isValidGrowthTemp(float temp)
+    {
+        return minGrowthTemp <= temp && maxGrowthTemp >= temp;
     }
 
     public int getMaxHeight()
@@ -214,22 +244,12 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public int getAgeForWorldgen(Random rand, float temp)
     {
-        return Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - getGrowthTemp()) / (3.75f)))), 15));
+        return Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - minGrowthTemp) / (3.75f)))), 15));
     }
 
     private float getAvgTemp()
     {
         return Float.sum(minTemp, maxTemp) / 2f;
-    }
-
-    private int getMinWaterDepth()
-    {
-        return minWaterDepth;
-    }
-
-    private int getMaxWaterDepth()
-    {
-        return maxWaterDepth;
     }
 
     public enum PlantType

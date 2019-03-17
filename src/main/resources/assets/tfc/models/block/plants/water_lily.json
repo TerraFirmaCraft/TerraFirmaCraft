@@ -1,8 +1,9 @@
 {
 	"ambientocclusion": false,
     "textures": {
-      "layer0": "tfc:blocks/plants/lotus/lotus",
-      "particle": "tfc:blocks/plants/lotus/lotus"
+      "layer0": "tfc:blocks/plants/water_lily/water_lily",
+      "particle": "tfc:blocks/plants/water_lily/water_lily",
+      "stem": "tfc:blocks/plants/water_lily/water_lily_0"
     },
 	"elements": [
 		{

@@ -1,6 +1,6 @@
 {
 	"multipart": [
-		{ "when": { "stage": "0|8|9|10|11" },
+		{ "when": { "stage": "0" },
 			"apply": [
 				{ "model": "tfc:plants/tropical_milkweed_0" }
 			]
@@ -15,7 +15,7 @@
 				{ "model": "tfc:plants/tropical_milkweed_2" }
 			]
 		},
-		{ "when": { "stage": "3|4|5|6|7" },
+		{ "when": { "stage": "3" },
 			"apply": [
 				{ "model": "tfc:plants/tropical_milkweed_3" }
 			]

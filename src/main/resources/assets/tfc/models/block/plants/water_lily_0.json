@@ -1,27 +1,10 @@
 {
 	"ambientocclusion": false,
     "textures": {
-      "layer0": "tfc:blocks/plants/lilypad/lilypad",
-      "particle": "tfc:blocks/plants/lilypad/lilypad",
-      "stem": "tfc:blocks/plants/lilypad/lilypad_0"
+      "particle": "tfc:blocks/plants/water_lily/water_lily",
+      "stem": "tfc:blocks/plants/water_lily/water_lily_0"
     },
 	"elements": [
-		{
-			"from": [3, -1.95, 3],
-			"to": [15, -1.95, 15],
-			"faces": {
-				"up": {
-					"uv": [16, 0, 1, 16],
-					"texture": "#layer0",
-					"tintindex": 0
-				},
-				"down": {
-					"uv": [16, 0, 1, 16],
-					"texture": "#layer0",
-					"tintindex": 0
-				}
-			}
-		},
 		{
 			"from": [3, -16, 6],
 			"to": [15, 8.9, 6],

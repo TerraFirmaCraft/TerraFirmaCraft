@@ -1,6 +1,6 @@
 {
 	"multipart": [
-		{ "when": { "stage": "0|1|2|3|4|7|8|9|10|11" },
+		{ "when": { "stage": "0" },
 			"apply": [
 				{ "model": "tfc:plants/sagebrush_0", "weight": 5 },
 				{ "model": "tfc:plants/sagebrush_1", "weight": 5 },
@@ -12,7 +12,7 @@
 				{ "model": "tfc:plants/sagebrush_7", "weight": 1 }
 			]
 		},
-		{ "when": { "stage": "5|6" },
+		{ "when": { "stage": "1" },
 			"apply": [
 				{ "model": "tfc:plants/sagebrush_0b", "weight": 5 },
 				{ "model": "tfc:plants/sagebrush_1b", "weight": 5 },

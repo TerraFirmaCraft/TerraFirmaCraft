@@ -15,17 +15,17 @@
 				{ "model": "tfc:plants/oxeye_daisy_2" }
 			]
 		},
-		{ "when": { "stage": "3|4|5" },
+		{ "when": { "stage": "3" },
 			"apply": [
 				{ "model": "tfc:plants/oxeye_daisy_3" }
 			]
 		},
-		{ "when": { "stage": "6|7" },
+		{ "when": { "stage": "4" },
 			"apply": [
 				{ "model": "tfc:plants/oxeye_daisy_4" }
 			]
 		},
-		{ "when": { "stage": "8|9|10|11" },
+		{ "when": { "stage": "5" },
 			"apply": [
 				{ "model": "tfc:plants/oxeye_daisy_5" }
 			]

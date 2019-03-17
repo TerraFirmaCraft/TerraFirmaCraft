@@ -15,23 +15,23 @@
 				{ "model": "tfc:plants/calendula_2" }
 			]
 		},
-		{ "when": { "stage": "3|4|6|7" },
+		{ "when": { "stage": "3" },
 			"apply": [
 				{ "model": "tfc:plants/calendula_3" }
 			]
 		},
-		{ "when": { "stage": "5" },
+		{ "when": { "stage": "4" },
 			"apply": [
 				{ "model": "tfc:plants/calendula_2" },
 				{ "model": "tfc:plants/calendula_3" }
 			]
 		},
-		{ "when": { "stage": "8" },
+		{ "when": { "stage": "5" },
 			"apply": [
 				{ "model": "tfc:plants/calendula_4" }
 			]
 		},
-		{ "when": { "stage": "9|10|11" },
+		{ "when": { "stage": "6" },
 			"apply": [
 				{ "model": "tfc:plants/calendula_5" }
 			]

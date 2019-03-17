@@ -48,7 +48,7 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()).withProperty(PART, EnumBlockPart.SINGLE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
@@ -74,7 +74,7 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         worldIn.setBlockState(pos.up(), this.getDefaultState());
-        IBlockState iblockstate = state.withProperty(AGE, 15).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
+        IBlockState iblockstate = state.withProperty(AGE, 15).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
@@ -107,7 +107,7 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]);
     }
 
     @Override
@@ -120,34 +120,7 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
-    }
-
-    @Override
-    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
-    {
-        if (!worldIn.isAreaLoaded(pos, 1)) return;
-        int currentStage = state.getValue(GROWTHSTAGE);
-        int expectedStage = CalenderTFC.getMonthOfYear().id();
-        int currentTime = state.getValue(DAYPERIOD);
-        int expectedTime = getDayPeriod();
-
-        if (currentTime != expectedTime)
-        {
-            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, currentStage).withProperty(PART, getPlantPart(worldIn, pos)));
-        }
-        if (currentStage != expectedStage && random.nextDouble() < 0.5)
-        {
-            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, getPlantPart(worldIn, pos)));
-        }
-        this.updateTick(worldIn, pos, state, random);
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, AGE, GROWTHSTAGE, PART, DAYPERIOD);
+        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
@@ -155,6 +128,49 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
     public Block.EnumOffsetType getOffsetType()
     {
         return EnumOffsetType.XYZ;
+    }
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        if (!worldIn.isAreaLoaded(pos, 1)) return;
+
+        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
+        {
+            int j = state.getValue(AGE);
+
+            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
+            {
+                if (j == 15)
+                {
+                    grow(worldIn, rand, pos, state);
+                }
+                else if (j < 15)
+                {
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(PART, getPlantPart(worldIn, pos)));
+                }
+                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+            }
+        }
+        else if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()))
+        {
+            int j = state.getValue(AGE);
+
+            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
+            {
+                if (j == 0 && canShrink(worldIn, pos))
+                {
+                    shrink(worldIn, pos);
+                }
+                else if (j > 0)
+                {
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(PART, getPlantPart(worldIn, pos)));
+                }
+                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+            }
+        }
+
+        checkAndDropBlock(worldIn, pos, state);
     }
 
     @Override
@@ -178,53 +194,16 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    @Nonnull
+    protected BlockStateContainer createPlantBlockState()
     {
-        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
+        return new BlockStateContainer(this, AGE, GROWTHSTAGE, PART, DAYPERIOD);
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        if (!worldIn.isAreaLoaded(pos, 1)) return;
-
-        if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()) &&
-            (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) < plant.getGrowthTemp() - 5 || !plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up()))))
-        {
-            int j = state.getValue(AGE);
-
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
-            {
-                if (j == 0 && canShrink(worldIn, pos))
-                {
-                    shrink(worldIn, pos);
-                }
-                else if (j > 0)
-                {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j - 1).withProperty(PART, getPlantPart(worldIn, pos)));
-                }
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
-            }
-        }
-        else if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > plant.getGrowthTemp() && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
-        {
-            int j = state.getValue(AGE);
-
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
-            {
-                if (j == 15)
-                {
-                    grow(worldIn, rand, pos, state);
-                }
-                else if (j < 15)
-                {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(PART, getPlantPart(worldIn, pos)));
-                }
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
-            }
-        }
-
-        checkAndDropBlock(worldIn, pos, state);
+        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
     }
 
     private boolean canShrink(World worldIn, BlockPos pos)

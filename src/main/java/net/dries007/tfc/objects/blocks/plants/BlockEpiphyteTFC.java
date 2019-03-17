@@ -58,7 +58,7 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
         this.plant = plant;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]));
     }
 
     @Override
@@ -131,12 +131,12 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]));
         this.checkForDrop(world, pos, state);
     }
 
     @Nonnull
-    protected BlockStateContainer createBlockState()
+    protected BlockStateContainer createPlantBlockState()
     {
         return new BlockStateContainer(this, FACING, GROWTHSTAGE, DAYPERIOD, AGE);
     }

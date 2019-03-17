@@ -10,17 +10,17 @@
 				{ "model": "tfc:plants/nasturtium_1" }
 			]
 		},
-		{ "when": { "stage": "2|3|4|5|6" },
+		{ "when": { "stage": "2" },
 			"apply": [
 				{ "model": "tfc:plants/nasturtium_2" }
 			]
 		},
-		{ "when": { "stage": "7|8" },
+		{ "when": { "stage": "3" },
 			"apply": [
 				{ "model": "tfc:plants/nasturtium_3" }
 			]
 		},
-		{ "when": { "stage": "9|10|11" },
+		{ "when": { "stage": "4" },
 			"apply": [
 				{ "model": "tfc:plants/nasturtium_4" }
 			]

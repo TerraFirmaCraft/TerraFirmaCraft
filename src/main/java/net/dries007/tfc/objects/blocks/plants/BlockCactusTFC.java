@@ -56,7 +56,7 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable
 
         setSoundType(SoundType.GROUND);
         setHardness(0.25F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()).withProperty(PART, EnumBlockPart.SINGLE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         worldIn.setBlockState(pos.up(), this.getDefaultState());
-        IBlockState iblockstate = state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, 15).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
+        IBlockState iblockstate = state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, 15).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
@@ -112,7 +112,7 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]);
     }
 
     @Override
@@ -125,40 +125,13 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()).withProperty(PART, getPlantPart(worldIn, pos));
+        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
     public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
     {
         return false;
-    }
-
-    @Override
-    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
-    {
-        if (!worldIn.isAreaLoaded(pos, 1)) return;
-        int currentStage = state.getValue(GROWTHSTAGE);
-        int expectedStage = CalenderTFC.getMonthOfYear().id();
-        int currentTime = state.getValue(DAYPERIOD);
-        int expectedTime = getDayPeriod();
-
-        if (currentTime != expectedTime)
-        {
-            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, currentStage).withProperty(PART, getPlantPart(worldIn, pos)));
-        }
-        if (currentStage != expectedStage && random.nextDouble() < 0.5)
-        {
-            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, expectedStage).withProperty(PART, getPlantPart(worldIn, pos)));
-        }
-        this.updateTick(worldIn, pos, state, random);
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, AGE, GROWTHSTAGE, PART, DAYPERIOD);
     }
 
     @Override
@@ -190,7 +163,7 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if (ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos) > plant.getGrowthTemp() && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
+        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
         {
             int j = state.getValue(AGE);
 
@@ -242,6 +215,13 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return FULL_BLOCK_AABB.offset(state.getOffset(source, pos));
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createPlantBlockState()
+    {
+        return new BlockStateContainer(this, AGE, GROWTHSTAGE, PART, DAYPERIOD);
     }
 
     @Override

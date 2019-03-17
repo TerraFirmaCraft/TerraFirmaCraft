@@ -30,22 +30,22 @@
 				{ "model": "tfc:plants/barrel_cactus_flower_0" }
 			]
 		},
-		{ "when": { "age": "1|2|3|4|5|6|7", "part": "single" , "stage": "2|3|4|5" },
+		{ "when": { "age": "1|2|3|4|5|6|7", "part": "single" , "stage": "2" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_flower_1" }
 			]
 		},
-		{ "when": { "age": "0|1|2|3|4|5|6|7", "part": "upper" , "stage": "2|3|4|5" },
+		{ "when": { "age": "0|1|2|3|4|5|6|7", "part": "upper" , "stage": "2" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_flower_1" }
 			]
 		},
-		{ "when": { "age": "8|9|10|11|12|13|14|15", "part": "single|upper" , "stage": "2|3|4|5" },
+		{ "when": { "age": "8|9|10|11|12|13|14|15", "part": "single|upper" , "stage": "2" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_flower_2" }
 			]
 		},
-		{ "when": { "part": "single|upper" , "stage": "6|7" },
+		{ "when": { "part": "single|upper" , "stage": "1" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_flower_3" }
 			]

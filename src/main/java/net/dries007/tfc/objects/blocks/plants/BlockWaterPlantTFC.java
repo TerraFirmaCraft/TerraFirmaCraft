@@ -9,7 +9,6 @@ package net.dries007.tfc.objects.blocks.plants;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
@@ -38,7 +37,7 @@ public class BlockWaterPlantTFC extends BlockPlantTFC
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]));
     }
 
     @Override
@@ -48,13 +47,6 @@ public class BlockWaterPlantTFC extends BlockPlantTFC
         if (plant.getWaterType() == SALT_WATER)
             return BlocksTFC.isSaltWater(worldIn.getBlockState(pos)) && this.canSustainBush(soil);
         return BlocksTFC.isFreshWater(worldIn.getBlockState(pos)) && this.canSustainBush(soil);
-    }
-
-    @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
-        if (!worldIn.isAreaLoaded(pos, 1)) return;
-        checkAndDropBlock(worldIn, pos, state);
     }
 
     @Override
