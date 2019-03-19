@@ -47,80 +47,6 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
         this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]).withProperty(BOTTOM, false).withProperty(DOWN, false).withProperty(UP, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(SOUTH, false).withProperty(WEST, false));
     }
 
-    public boolean canGrowDiagonally(World worldIn, BlockPos pos, IBlockState state)
-    {
-        boolean flag = false;
-        if (!state.getValue(BOTTOM))
-        {
-            for (EnumFacing face : EnumFacing.Plane.HORIZONTAL.facings())
-            {
-                BlockPos sidePos = pos.offset(face);
-                IBlockState sideState = worldIn.getBlockState(sidePos.down(2));
-                Material sideMaterial = sideState.getMaterial();
-
-                if (worldIn.isAirBlock(sidePos) && worldIn.isAirBlock(sidePos.down()) && (!sideMaterial.isSolid() || sideMaterial == Material.LEAVES) && canBlockStay(worldIn, sidePos.down(), state))
-                {
-                    flag = true;
-                }
-            }
-        }
-        return flag;
-    }
-
-    public void growDiagonally(World worldIn, Random rand, BlockPos pos, IBlockState state)
-    {
-        if (!state.getValue(BOTTOM))
-        {
-            for (EnumFacing face : EnumFacing.Plane.HORIZONTAL.facings())
-            {
-                BlockPos sidePos = pos.offset(face);
-
-                if (rand.nextDouble() < 0.5D && worldIn.isAirBlock(sidePos) && worldIn.isAirBlock(sidePos.down()))
-                {
-                    worldIn.setBlockState(sidePos.down(), this.getDefaultState());
-                    IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]);
-                    worldIn.setBlockState(pos, iblockstate);
-                    iblockstate.neighborChanged(worldIn, sidePos.down(), this, pos);
-                    break;
-                }
-            }
-        }
-    }
-
-    public boolean canGrowHorizontally(World worldIn, BlockPos pos, IBlockState state)
-    {
-        boolean flag = false;
-        for (EnumFacing face : EnumFacing.Plane.HORIZONTAL.facings())
-        {
-            BlockPos sidePos = pos.offset(face);
-            IBlockState sideState = worldIn.getBlockState(sidePos.down());
-            Material sideMaterial = sideState.getMaterial();
-
-            if (worldIn.isAirBlock(sidePos) && (!sideMaterial.isSolid() || sideMaterial == Material.LEAVES) && canBlockStay(worldIn, sidePos, state))
-            {
-                flag = true;
-            }
-        }
-        return flag;
-    }
-
-    public void growHorizontally(World worldIn, Random rand, BlockPos pos, IBlockState state)
-    {
-        for (EnumFacing face : EnumFacing.Plane.HORIZONTAL.facings())
-        {
-            BlockPos sidePos = pos.offset(face);
-
-            if (rand.nextDouble() < 0.01D && worldIn.isAirBlock(sidePos))
-            {
-                worldIn.setBlockState(sidePos, this.getDefaultState());
-                IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]);
-                worldIn.setBlockState(pos, iblockstate);
-                iblockstate.neighborChanged(worldIn, sidePos, this, pos);
-                break;
-            }
-        }
-    }
-
     @Override
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
@@ -152,16 +78,6 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
     {
         worldIn.setBlockToAir(pos);
         worldIn.getBlockState(pos).neighborChanged(worldIn, pos.up(), this, pos);
-    }
-
-    public void shrinkHorizontally(World worldIn, BlockPos pos)
-    {
-        worldIn.setBlockToAir(pos);
-        IBlockState state = worldIn.getBlockState(pos);
-        state.neighborChanged(worldIn, pos.east(), this, pos);
-        state.neighborChanged(worldIn, pos.west(), this, pos);
-        state.neighborChanged(worldIn, pos.north(), this, pos);
-        state.neighborChanged(worldIn, pos.south(), this, pos);
     }
 
     @Override
@@ -274,6 +190,90 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
         }
 
         checkAndDropBlock(worldIn, pos, state);
+    }
+
+    private boolean canGrowDiagonally(World worldIn, BlockPos pos, IBlockState state)
+    {
+        boolean flag = false;
+        if (!state.getValue(BOTTOM))
+        {
+            for (EnumFacing face : EnumFacing.Plane.HORIZONTAL.facings())
+            {
+                BlockPos sidePos = pos.offset(face);
+                IBlockState sideState = worldIn.getBlockState(sidePos.down(2));
+                Material sideMaterial = sideState.getMaterial();
+
+                if (worldIn.isAirBlock(sidePos) && worldIn.isAirBlock(sidePos.down()) && (!sideMaterial.isSolid() || sideMaterial == Material.LEAVES) && canBlockStay(worldIn, sidePos.down(), state))
+                {
+                    flag = true;
+                }
+            }
+        }
+        return flag;
+    }
+
+    private void growDiagonally(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    {
+        if (!state.getValue(BOTTOM))
+        {
+            for (EnumFacing face : EnumFacing.Plane.HORIZONTAL.facings())
+            {
+                BlockPos sidePos = pos.offset(face);
+
+                if (rand.nextDouble() < 0.5D && worldIn.isAirBlock(sidePos) && worldIn.isAirBlock(sidePos.down()))
+                {
+                    worldIn.setBlockState(sidePos.down(), this.getDefaultState());
+                    IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]);
+                    worldIn.setBlockState(pos, iblockstate);
+                    iblockstate.neighborChanged(worldIn, sidePos.down(), this, pos);
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean canGrowHorizontally(World worldIn, BlockPos pos, IBlockState state)
+    {
+        boolean flag = false;
+        for (EnumFacing face : EnumFacing.Plane.HORIZONTAL.facings())
+        {
+            BlockPos sidePos = pos.offset(face);
+            IBlockState sideState = worldIn.getBlockState(sidePos.down());
+            Material sideMaterial = sideState.getMaterial();
+
+            if (worldIn.isAirBlock(sidePos) && (!sideMaterial.isSolid() || sideMaterial == Material.LEAVES) && canBlockStay(worldIn, sidePos, state))
+            {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+    private void growHorizontally(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    {
+        for (EnumFacing face : EnumFacing.Plane.HORIZONTAL.facings())
+        {
+            BlockPos sidePos = pos.offset(face);
+
+            if (rand.nextDouble() < 0.01D && worldIn.isAirBlock(sidePos))
+            {
+                worldIn.setBlockState(sidePos, this.getDefaultState());
+                IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]);
+                worldIn.setBlockState(pos, iblockstate);
+                iblockstate.neighborChanged(worldIn, sidePos, this, pos);
+                break;
+            }
+        }
+    }
+
+    private void shrinkHorizontally(World worldIn, BlockPos pos)
+    {
+        worldIn.setBlockToAir(pos);
+        IBlockState state = worldIn.getBlockState(pos);
+        state.neighborChanged(worldIn, pos.east(), this, pos);
+        state.neighborChanged(worldIn, pos.west(), this, pos);
+        state.neighborChanged(worldIn, pos.north(), this, pos);
+        state.neighborChanged(worldIn, pos.south(), this, pos);
     }
 
     private boolean canShrink(World worldIn, BlockPos pos)

@@ -101,7 +101,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         this.oreDictName = Optional.ofNullable(oreDictName);
 
         HashSet<Integer> hashSet = new HashSet<>();
-        for (int i = 0; i < stages.length; i++) { hashSet.add(stages[i]); }
+        for (int stage : stages) { hashSet.add(stage); }
         this.numStages = hashSet.size() <= 1 ? 1 : hashSet.size() - 1;
 
         setRegistryName(name);
