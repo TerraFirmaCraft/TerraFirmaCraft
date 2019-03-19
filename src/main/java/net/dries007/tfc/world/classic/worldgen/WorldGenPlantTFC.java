@@ -38,7 +38,29 @@ public class WorldGenPlantTFC extends WorldGenerator
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
         if (plant.getIsClayMarking()) return false;
-        if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS)
+        if (plant.getIsSwampPlant() && (/*!ClimateTFC.isSwamp(worldIn, position) ||*/ !BiomeDictionary.hasType(worldIn.getBiome(position), BiomeDictionary.Type.SWAMP)))
+            return false;
+        if (plant.getPlantType() == Plant.PlantType.MUSHROOM)
+        {
+            BlockMushroomTFC plantBlock = BlockMushroomTFC.get(plant);
+            IBlockState state = plantBlock.getDefaultState();
+
+            for (int i = 0; i < 32; ++i)
+            {
+                BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
+                float temp = ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos);
+
+                if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                    plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                    worldIn.isAirBlock(blockpos) &&
+                    plantBlock.canPlaceBlockAt(worldIn, blockpos))
+                {
+                    int plantAge = plant.getAgeForWorldgen(rand, temp);
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockPlantTFC.AGE, plantAge));
+                }
+            }
+        }
+        else if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS)
         {
             BlockShortGrassTFC plantBlock = BlockShortGrassTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
@@ -104,6 +126,26 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
+        else if (plant.getPlantType() == Plant.PlantType.HANGING)
+        {
+            BlockHangingPlantTFC plantBlock = BlockHangingPlantTFC.get(plant);
+            IBlockState state = plantBlock.getDefaultState();
+
+            for (int i = 0; i < 128; ++i)
+            {
+                BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(16), rand.nextInt(8) - rand.nextInt(8));
+                float temp = ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos);
+
+                if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                    plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                    worldIn.isAirBlock(blockpos) &&
+                    plantBlock.canBlockStay(worldIn, blockpos, state))
+                {
+                    int plantAge = plant.getAgeForWorldgen(rand, temp);
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockHangingPlantTFC.AGE, plantAge));
+                }
+            }
+        }
         else if (plant.getPlantType() == Plant.PlantType.STANDARD)
         {
             BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
@@ -124,7 +166,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.REED)
+        else if (plant.getPlantType() == Plant.PlantType.REED || plant.getPlantType() == Plant.PlantType.REED_SEA)
         {
             BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
@@ -144,7 +186,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.TALL_REED)
+        else if (plant.getPlantType() == Plant.PlantType.TALL_REED || plant.getPlantType() == Plant.PlantType.TALL_REED_SEA)
         {
             BlockTallPlantTFC plantBlock = BlockTallPlantTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
@@ -268,7 +310,7 @@ public class WorldGenPlantTFC extends WorldGenerator
 
             for (int i = 0; i < 32; ++i)
             {
-                BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
+                BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
                 int j = 1 + rand.nextInt(rand.nextInt(3) + 1);
 
@@ -347,29 +389,24 @@ public class WorldGenPlantTFC extends WorldGenerator
             IBlockState state = plantBlock.getDefaultState();
             IBlockState water = plant.getWaterType();
 
-            if ((water == SALT_WATER && !BlocksTFC.isSaltWater(worldIn.getBlockState(position.add(0, -1, 0)))) || !worldIn.isAirBlock(position))
+            if (water == SALT_WATER && !BlocksTFC.isSaltWater(worldIn.getBlockState(position.add(0, -1, 0))))
                 return false;
-            if ((water == FRESH_WATER && !BlocksTFC.isFreshWater(worldIn.getBlockState(position.add(0, -1, 0)))) || !worldIn.isAirBlock(position))
+            if (water == FRESH_WATER && !BlocksTFC.isFreshWater(worldIn.getBlockState(position.add(0, -1, 0))))
                 return false;
-
 
             int depth = plant.getValidWaterDepth(worldIn, position, water);
             if (depth == -1) return false;
             BlockPos blockpos = position.add(0, -depth + 1, 0);
 
-            int j = 1 + rand.nextInt(rand.nextInt(3) + 1);
-
-            for (int k = 0; k < j; ++k)
+            float temp = ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos);
+            if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                plantBlock.canPlaceBlockAt(worldIn, blockpos))
             {
-                float temp = ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos.up(k));
-                if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos.up(k)) &&
-                    plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
-                    plantBlock.canPlaceBlockAt(worldIn, blockpos.up(k)))
-                {
-                    int plantAge = plant.getAgeForWorldgen(rand, temp);
-                    if (k > 0 && !worldIn.isAirBlock(blockpos.up(k))) return true;
-                    setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockTallPlantTFC.AGE, plantAge));
-                }
+                int plantAge = plant.getAgeForWorldgen(rand, temp);
+                setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockTallPlantTFC.AGE, plantAge));
+                if (rand.nextInt(15) < plantAge && plantBlock.canGrow(worldIn, blockpos, state, worldIn.isRemote))
+                    setBlockAndNotifyAdequately(worldIn, blockpos.up(), state);
             }
         }
         else if (plant.getPlantType() == Plant.PlantType.FLOATING)

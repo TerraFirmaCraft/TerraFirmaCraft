@@ -86,13 +86,6 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
 
     @Override
     @Nonnull
-    protected BlockStateContainer createPlantBlockState()
-    {
-        return new BlockStateContainer(this, AGE, GROWTHSTAGE, DAYPERIOD);
-    }
-
-    @Override
-    @Nonnull
     public Block.EnumOffsetType getOffsetType()
     {
         return Block.EnumOffsetType.XZ;
@@ -161,6 +154,13 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
             default:
                 return GRASS_AABB.offset(state.getOffset(source, pos));
         }
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createPlantBlockState()
+    {
+        return new BlockStateContainer(this, AGE, GROWTHSTAGE, DAYPERIOD);
     }
 
     @Override

@@ -35,14 +35,14 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @ParametersAreNonnullByDefault
 public class BlockCreepingPlantTFC extends BlockPlantTFC
 {
-    private static final PropertyBool DOWN = PropertyBool.create("down");
-    private static final PropertyBool UP = PropertyBool.create("up");
-    private static final PropertyBool NORTH = PropertyBool.create("north");
-    private static final PropertyBool EAST = PropertyBool.create("east");
-    private static final PropertyBool SOUTH = PropertyBool.create("south");
-    private static final PropertyBool WEST = PropertyBool.create("west");
+    protected static final PropertyBool DOWN = PropertyBool.create("down");
+    protected static final PropertyBool UP = PropertyBool.create("up");
+    protected static final PropertyBool NORTH = PropertyBool.create("north");
+    protected static final PropertyBool EAST = PropertyBool.create("east");
+    protected static final PropertyBool SOUTH = PropertyBool.create("south");
+    protected static final PropertyBool WEST = PropertyBool.create("west");
 
-    private static final PropertyBool[] ALL_FACES = new PropertyBool[] {DOWN, UP, NORTH, SOUTH, WEST, EAST};
+    protected static final PropertyBool[] ALL_FACES = new PropertyBool[] {DOWN, UP, NORTH, SOUTH, WEST, EAST};
 
     private static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
     private static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.0D, 0.875D, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -263,7 +263,7 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         return BlockFaceShape.UNDEFINED;
     }
 
-    private boolean canConnectTo(IBlockAccess worldIn, BlockPos pos, EnumFacing facing)
+    protected boolean canConnectTo(IBlockAccess worldIn, BlockPos pos, EnumFacing facing)
     {
         IBlockState iblockstate = worldIn.getBlockState(pos);
         BlockFaceShape blockfaceshape = iblockstate.getBlockFaceShape(worldIn, pos, facing);
@@ -271,7 +271,7 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         return blockfaceshape == BlockFaceShape.SOLID || block instanceof BlockFence;
     }
 
-    private boolean canPlantConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing)
+    protected boolean canPlantConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing)
     {
         BlockPos other = pos.offset(facing);
         Block block = world.getBlockState(other).getBlock();
