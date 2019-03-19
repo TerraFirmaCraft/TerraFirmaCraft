@@ -1,7 +1,27 @@
 {
-    "parent": "tfc:block/tinted_cross",
+    "ambientocclusion": false,
     "textures": {
         "cross": "tfc:blocks/plants/gutweed/gutweed",
         "particle": "tfc:blocks/plants/gutweed/gutweed"
-    }
+    },
+    "elements": [
+        {   "from": [ 8, -1, -4.8 ],
+            "to": [ 8, 32, 20.8 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": -22.5, "rescale": true },
+            "shade": false,
+            "faces": {
+                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 },
+                "east": { "uv": [ 16, 0, 0, 16 ], "texture": "#cross", "tintindex": 0 }
+            }
+        },
+        {   "from": [ 8, -1, -4.8 ],
+            "to": [ 8, 32, 20.8 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 22.5, "rescale": true },
+            "shade": false,
+            "faces": {
+                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 },
+                "east": { "uv": [ 16, 0, 0, 16 ], "texture": "#cross", "tintindex": 0 }
+            }
+        }
+    ]
 }
