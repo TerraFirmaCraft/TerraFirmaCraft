@@ -1,8 +1,13 @@
 {
 	"multipart": [
-		{ "when": { "part": "lower|single" },
+		{ "when": { "part": "lower" },
 			"apply": [
-				{ "model": "tfc:plants/rose" }
+				{ "model": "tfc:plants/rose_lower" }
+			]
+		},
+		{ "when": { "part": "upper|single" },
+			"apply": [
+				{ "model": "tfc:plants/rose_upper" }
 			]
 		}
 	]
