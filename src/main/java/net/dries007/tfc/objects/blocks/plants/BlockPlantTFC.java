@@ -166,6 +166,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         }
     }
 
+    @Nonnull
     @Override
     public BlockStateContainer getBlockState()
     {

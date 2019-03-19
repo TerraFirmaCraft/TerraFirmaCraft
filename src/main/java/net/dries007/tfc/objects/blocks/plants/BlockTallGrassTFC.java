@@ -126,7 +126,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         worldIn.setBlockState(pos.up(), this.getDefaultState());
-        IBlockState iblockstate = state.withProperty(AGE, 15).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
+        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
@@ -187,13 +187,13 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())) && canGrow(worldIn, pos, state, worldIn.isRemote))
+        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
         {
             int j = state.getValue(AGE);
 
             if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
             {
-                if (j == 15)
+                if (j == 15 && canGrow(worldIn, pos, state, worldIn.isRemote))
                 {
                     grow(worldIn, rand, pos, state);
                 }
@@ -258,7 +258,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
 
     private boolean canShrink(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).getBlock() == this;
+        return worldIn.getBlockState(pos.down()).getBlock() == this && worldIn.getBlockState(pos.up()).getBlock() != this;
     }
 
     private EnumBlockPart getPlantPart(IBlockAccess world, BlockPos pos)

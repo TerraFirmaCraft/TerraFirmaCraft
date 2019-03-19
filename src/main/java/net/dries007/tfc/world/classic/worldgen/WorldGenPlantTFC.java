@@ -38,6 +38,8 @@ public class WorldGenPlantTFC extends WorldGenerator
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
         if (plant.getIsClayMarking()) return false;
+        if (plant.getIsSwampPlant() && (/*!ClimateTFC.isSwamp(worldIn, position) ||*/ !BiomeDictionary.hasType(worldIn.getBiome(position), BiomeDictionary.Type.SWAMP)))
+            return false;
         if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS)
         {
             BlockShortGrassTFC plantBlock = BlockShortGrassTFC.get(plant);
@@ -104,6 +106,26 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
+        else if (plant.getPlantType() == Plant.PlantType.HANGING)
+        {
+            BlockHangingPlantTFC plantBlock = BlockHangingPlantTFC.get(plant);
+            IBlockState state = plantBlock.getDefaultState();
+
+            for (int i = 0; i < 128; ++i)
+            {
+                BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(16), rand.nextInt(8) - rand.nextInt(8));
+                float temp = ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos);
+
+                if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                    plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                    worldIn.isAirBlock(blockpos) &&
+                    plantBlock.canBlockStay(worldIn, blockpos, state))
+                {
+                    int plantAge = plant.getAgeForWorldgen(rand, temp);
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockHangingPlantTFC.AGE, plantAge));
+                }
+            }
+        }
         else if (plant.getPlantType() == Plant.PlantType.STANDARD)
         {
             BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
@@ -124,7 +146,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.REED)
+        else if (plant.getPlantType() == Plant.PlantType.REED || plant.getPlantType() == Plant.PlantType.REED_SEA)
         {
             BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
@@ -144,7 +166,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.TALL_REED)
+        else if (plant.getPlantType() == Plant.PlantType.TALL_REED || plant.getPlantType() == Plant.PlantType.TALL_REED_SEA)
         {
             BlockTallPlantTFC plantBlock = BlockTallPlantTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();

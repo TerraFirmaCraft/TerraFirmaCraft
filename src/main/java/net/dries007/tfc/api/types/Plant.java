@@ -43,6 +43,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     private final PlantType plantType;
     private final Material material;
     private final Boolean isClayMarking;
+    private final Boolean isSwampPlant;
     private final Optional<String> oreDictName;
 
     /**
@@ -63,6 +64,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      *
      * @param name          the ResourceLocation registry name of this plant
      * @param plantType     the type of plant
+     * @param isClayMarking if this plant marks clay deposits
+     * @param isSwampPlant  if this plant only spawns in swamps
      * @param minGrowthTemp min growing temperature
      * @param maxGrowthTemp max growing temperature
      * @param minTemp       min temperature
@@ -76,7 +79,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      * @param maxWaterDepth max water depth for water plants on worldgen
      * @param oreDictName   if not empty, the Ore Dictionary entry for this plant
      */
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, int[] stages, Boolean isClayMarking, float minGrowthTemp, float maxGrowthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, int minWaterDepth, int maxWaterDepth, String oreDictName)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, int[] stages, Boolean isClayMarking, Boolean isSwampPlant, float minGrowthTemp, float maxGrowthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, int minWaterDepth, int maxWaterDepth, String oreDictName)
     {
         this.stages = stages;
         this.minGrowthTemp = minGrowthTemp;
@@ -93,6 +96,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
         this.plantType = plantType;
         this.isClayMarking = isClayMarking;
+        this.isSwampPlant = isSwampPlant;
         this.material = plantType.getPlantMaterial();
         this.oreDictName = Optional.ofNullable(oreDictName);
 
@@ -103,14 +107,19 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         setRegistryName(name);
     }
 
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, int[] stages, Boolean isClayMarking, float minGrowthTemp, float maxGrowthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, String oreDictName)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, int[] stages, Boolean isClayMarking, Boolean isSwampPlant, float minGrowthTemp, float maxGrowthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, String oreDictName)
     {
-        this(name, plantType, stages, isClayMarking, minGrowthTemp, maxGrowthTemp, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, maxHeight, 0, 0, oreDictName);
+        this(name, plantType, stages, isClayMarking, isSwampPlant, minGrowthTemp, maxGrowthTemp, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, maxHeight, 0, 0, oreDictName);
     }
 
     public boolean getIsClayMarking()
     {
         return isClayMarking;
+    }
+
+    public boolean getIsSwampPlant()
+    {
+        return isSwampPlant;
     }
 
     public boolean isValidLocation(float temp, float rain, int sunlight)
@@ -244,7 +253,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public int getAgeForWorldgen(Random rand, float temp)
     {
-        return Math.max(0, Math.min(rand.nextInt(Math.round(10f + ((temp - minGrowthTemp) / (3.75f)))), 15));
+        return rand.nextInt(Math.max(1, Math.min(Math.round(10f + ((temp - minGrowthTemp) / (3.75f))), 16)));
     }
 
     private float getAvgTemp()
@@ -257,6 +266,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         STANDARD(BlockPlantTFC::new),
         TALL_PLANT(BlockTallPlantTFC::new),
         CREEPING(BlockCreepingPlantTFC::new),
+        HANGING(BlockHangingPlantTFC::new),
         FLOATING(BlockFloatingWaterTFC::new),
         FLOATING_SEA(BlockFloatingWaterTFC::new),
         DESERT(BlockPlantTFC::new),
@@ -296,6 +306,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
             {
                 case CACTUS:
                     return Material.CACTUS;
+                case HANGING:
                 case SHORT_GRASS:
                 case TALL_GRASS:
                     return Material.VINE;
