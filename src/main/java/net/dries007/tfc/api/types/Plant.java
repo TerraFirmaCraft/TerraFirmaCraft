@@ -286,7 +286,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         TALL_WATER(BlockTallWaterPlantTFC::new),
         TALL_WATER_SEA(BlockTallWaterPlantTFC::new),
         EMERGENT_TALL_WATER(BlockEmergentTallWaterPlantTFC::new),
-        EMERGENT_TALL_WATER_SEA(BlockEmergentTallWaterPlantTFC::new);
+        EMERGENT_TALL_WATER_SEA(BlockEmergentTallWaterPlantTFC::new),
+        MUSHROOM(BlockMushroomTFC::new);
 
         private final Function<Plant, BlockPlantTFC> supplier;
 

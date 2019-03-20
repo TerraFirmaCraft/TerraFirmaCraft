@@ -46,6 +46,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
     private int reedSeaCount = 0;
     private int waterCount = 0;
     private int waterSeaCount = 0;
+    private int mushroomCount = 0;
 
 
     public BiomeDecoratorTFC(int lilyPadPerChunk, int waterPlantsPerChunk)
@@ -125,6 +126,8 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                 case "TALL_WATER_SEA":
                 case "EMERGENT_TALL_WATER_SEA":
                     waterSeaCount++;
+                case "MUSHROOM":
+                    mushroomCount++;
                     break;
             }
         }
@@ -277,6 +280,14 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                 else if (plant.getPlantType() == Plant.PlantType.TALL_PLANT)
                 {
                     for (float i = rng.nextInt(tallCount * 5); i < (floraDensity + floraDiversity) * 5; i++)
+                    {
+                        final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                        plantGen.generate(world, rng, p2);
+                    }
+                }
+                else if (plant.getPlantType() == Plant.PlantType.MUSHROOM)
+                {
+                    for (float i = rng.nextInt(mushroomCount * 5); i < (floraDensity + floraDiversity) * 5; i++)
                     {
                         final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                         plantGen.generate(world, rng, p2);

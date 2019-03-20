@@ -63,6 +63,7 @@ public final class DefaultPlants
     public static final ResourceLocation ORCHARD_GRASS = new ResourceLocation(MOD_ID, "orchard_grass");
     public static final ResourceLocation PAMPAS_GRASS = new ResourceLocation(MOD_ID, "pampas_grass");
     public static final ResourceLocation PISTIA = new ResourceLocation(MOD_ID, "pistia");
+    public static final ResourceLocation PORCINI = new ResourceLocation(MOD_ID, "porcini");
     public static final ResourceLocation PRIMROSE = new ResourceLocation(MOD_ID, "primrose");
     //    public static final ResourceLocation RATTAN = new ResourceLocation(MOD_ID, "rattan");
     public static final ResourceLocation ROSE = new ResourceLocation(MOD_ID, "rose");
@@ -141,6 +142,7 @@ public final class DefaultPlants
             new Plant(ORCHARD_GRASS, Plant.PlantType.SHORT_GRASS, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 13f, 20f, -29f, 30f, 75f, 300f, 9, 15, 1, null),
             new Plant(PAMPAS_GRASS, Plant.PlantType.TALL_GRASS, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, true, false, 20f, 30f, -12f, 36f, 75f, 200f, 9, 15, 2, null),
             new Plant(PISTIA, Plant.PlantType.FLOATING, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 20f, 40f, 10f, 50f, 0f, 500f, 4, 15, 1, 2, 32, null),
+            new Plant(PORCINI, Plant.PlantType.MUSHROOM, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 13f, 20f, 0f, 25f, 300f, 500f, 0, 12, 1, "mushroomEdible"),
             new Plant(PRIMROSE, Plant.PlantType.STANDARD, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 15f, 25f, -34f, 33f, 150f, 300f, 9, 11, 1, null),
 //            new Plant(RATTAN, Plant.PlantType.HANGING, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 20f, 40f, 10f, 40f, 300f, 500f, 0, 15, 200, null),
             new Plant(ROSE, Plant.PlantType.TALL_PLANT, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, true, false, 11f, 21f, -29f, 34f, 150f, 300f, 9, 15, 2, null),

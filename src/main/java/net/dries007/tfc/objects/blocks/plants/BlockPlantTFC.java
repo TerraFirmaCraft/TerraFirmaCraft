@@ -298,6 +298,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         if (plant.getPlantType() == Plant.PlantType.CACTUS) return EnumPlantType.Desert;
         if (plant.getPlantType() == Plant.PlantType.FLOATING) return EnumPlantType.Water;
         if (plant.getPlantType() == Plant.PlantType.FLOATING_SEA) return EnumPlantType.Water;
+        if (plant.getPlantType() == Plant.PlantType.MUSHROOM) return EnumPlantType.Cave;
         return EnumPlantType.Plains;
     }
 

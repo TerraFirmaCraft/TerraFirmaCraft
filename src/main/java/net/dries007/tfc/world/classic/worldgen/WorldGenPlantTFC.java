@@ -40,7 +40,27 @@ public class WorldGenPlantTFC extends WorldGenerator
         if (plant.getIsClayMarking()) return false;
         if (plant.getIsSwampPlant() && (/*!ClimateTFC.isSwamp(worldIn, position) ||*/ !BiomeDictionary.hasType(worldIn.getBiome(position), BiomeDictionary.Type.SWAMP)))
             return false;
-        if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS)
+        if (plant.getPlantType() == Plant.PlantType.MUSHROOM)
+        {
+            BlockMushroomTFC plantBlock = BlockMushroomTFC.get(plant);
+            IBlockState state = plantBlock.getDefaultState();
+
+            for (int i = 0; i < 32; ++i)
+            {
+                BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
+                float temp = ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos);
+
+                if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                    plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                    worldIn.isAirBlock(blockpos) &&
+                    plantBlock.canPlaceBlockAt(worldIn, blockpos))
+                {
+                    int plantAge = plant.getAgeForWorldgen(rand, temp);
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockPlantTFC.AGE, plantAge));
+                }
+            }
+        }
+        else if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS)
         {
             BlockShortGrassTFC plantBlock = BlockShortGrassTFC.get(plant);
             IBlockState state = plantBlock.getDefaultState();
