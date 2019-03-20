@@ -135,6 +135,7 @@ public final class ItemsTFC
 
         BlocksTFC.getAllNormalItemBlocks().forEach(x -> registerItemBlock(r, x));
         BlocksTFC.getAllInventoryItemBlocks().forEach(x -> registerItemBlock(r, x));
+        BlocksTFC.getAllBarrelItemBlocks().forEach(x -> registerItemBlock(r, x));
 
         for (BlockLogTFC log : BlocksTFC.getAllLogBlocks())
             simpleItems.add(register(r, log.getRegistryName().getPath(), new ItemBlockTFC(log), CT_WOOD));

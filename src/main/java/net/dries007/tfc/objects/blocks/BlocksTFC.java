@@ -32,6 +32,7 @@ import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.*;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockBarrel;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockFloatingWaterTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockHeat;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
@@ -111,6 +112,7 @@ public final class BlocksTFC
     // Use the static get methods in the classes instead.
     private static ImmutableList<ItemBlock> allNormalItemBlocks;
     private static ImmutableList<ItemBlock> allInventoryItemBlocks;
+    private static ImmutableList<ItemBlockBarrel> allBarrelItemBlocks;
 
     private static ImmutableList<BlockFluidBase> allFluidBlocks;
     private static ImmutableList<BlockRockVariant> allBlockRockVariants;
@@ -139,6 +141,8 @@ public final class BlocksTFC
     {
         return allInventoryItemBlocks;
     }
+
+    public static ImmutableList<ItemBlockBarrel> getAllBarrelItemBlocks() { return allBarrelItemBlocks; }
 
     public static ImmutableList<BlockFluidBase> getAllFluidBlocks()
     {
@@ -292,6 +296,7 @@ public final class BlocksTFC
             Builder<BlockTrapDoorWoodTFC> trapDoors = ImmutableList.builder();
             Builder<BlockChestTFC> chests = ImmutableList.builder();
             Builder<BlockToolRack> toolRacks = ImmutableList.builder();
+            Builder<ItemBlockBarrel> barrelItems = ImmutableList.builder();
             Builder<BlockPlantTFC> plants = ImmutableList.builder();
 
             for (Tree wood : TFCRegistries.TREES.getValuesCollection())
@@ -310,7 +315,9 @@ public final class BlocksTFC
                 chests.add(register(r, "wood/chest_trap/" + wood.getRegistryName().getPath(), new BlockChestTFC(BlockChest.Type.TRAP, wood), CT_DECORATIONS));
                 inventoryItemBlocks.add(new ItemBlockTFC(register(r, "wood/button/" + wood.getRegistryName().getPath(), new BlockButtonWoodTFC(wood), CT_DECORATIONS)));
                 toolRacks.add(register(r, "wood/tool_rack/" + wood.getRegistryName().getPath(), new BlockToolRack(wood), CT_DECORATIONS));
+                barrelItems.add(new ItemBlockBarrel(register(r, "wood/barrel/" + wood.getRegistryName().getPath(), new BlockBarrel(), CT_DECORATIONS)));
             }
+
             allLogBlocks = logs.build();
             allLeafBlocks = leaves.build();
             allFenceGateBlocks = fenceGates.build();
@@ -319,6 +326,8 @@ public final class BlocksTFC
             allTrapDoorWoodBlocks = trapDoors.build();
             allChestBlocks = chests.build();
             allToolRackBlocks = toolRacks.build();
+
+            allBarrelItemBlocks = barrelItems.build();
 
             //logs are special
             allLeafBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
@@ -415,6 +424,7 @@ public final class BlocksTFC
 
         inventoryItemBlocks.add(new ItemBlockTorchTFC(register(r, "torch", new BlockTorchTFC(), CT_MISC)));
 
+
         // technical blocks
         // These have no ItemBlock or Creative Tab
         register(r, "firepit", new BlockFirePit());
@@ -465,10 +475,10 @@ public final class BlocksTFC
         register(TEFirePit.class, "fire_pit");
         register(TEToolRack.class, "tool_rack");
         register(TEBellows.class, "bellows");
+        register(TEBarrel.class, "barrel");
         register(TECharcoalForge.class, "charcoal_forge");
         register(TEAnvilTFC.class, "anvil");
         register(TECrucible.class, "crucible");
-
     }
 
     public static boolean isWater(IBlockState current)

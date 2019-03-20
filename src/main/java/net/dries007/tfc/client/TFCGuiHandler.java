@@ -18,6 +18,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.client.gui.GuiBarrel;
+import net.dries007.tfc.client.gui.GuiContainerTFC;
+import net.dries007.tfc.client.gui.GuiLiquidTransfer;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.api.recipes.KnappingRecipe;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IRockObject;
@@ -71,6 +75,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new ContainerLiquidTransfer(player.inventory, stack.getItem() instanceof ItemMold ? stack : player.getHeldItemOffhand());
             case FIRE_PIT:
                 return new ContainerFirePit(player.inventory, Helpers.getTE(world, pos, TEFirePit.class));
+            case BARREL:
+                return new ContainerBarrel(player.inventory, Helpers.getTE(world, pos, TEBarrel.class));
             case CHARCOAL_FORGE:
                 return new ContainerCharcoalForge(player.inventory, Helpers.getTE(world, pos, TECharcoalForge.class));
             case ANVIL:
@@ -111,6 +117,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiLiquidTransfer(container, player, player.getHeldItemMainhand().getItem() instanceof ItemMold);
             case FIRE_PIT:
                 return new GuiFirePit(container, player.inventory, Helpers.getTE(world, pos, TEFirePit.class));
+            case BARREL:
+                return new GuiBarrel(container, player.inventory, world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
             case CHARCOAL_FORGE:
                 return new GuiCharcoalForge(container, player.inventory, Helpers.getTE(world, pos, TECharcoalForge.class));
             case ANVIL:
@@ -142,6 +150,7 @@ public class TFCGuiHandler implements IGuiHandler
         SMALL_VESSEL_LIQUID,
         MOLD,
         FIRE_PIT,
+        BARREL,
         KNAPPING_STONE,
         KNAPPING_CLAY,
         KNAPPING_FIRE_CLAY,
