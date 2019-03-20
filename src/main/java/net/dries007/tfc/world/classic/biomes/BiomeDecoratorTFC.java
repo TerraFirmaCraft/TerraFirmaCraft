@@ -276,7 +276,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                 }
                 else if (plant.getPlantType() == Plant.PlantType.TALL_PLANT)
                 {
-                    for (float i = rng.nextInt(tallCount * 2); i < (floraDensity + floraDiversity) * 5; i++)
+                    for (float i = rng.nextInt(tallCount * 5); i < (floraDensity + floraDiversity) * 5; i++)
                     {
                         final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                         plantGen.generate(world, rng, p2);

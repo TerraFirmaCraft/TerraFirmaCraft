@@ -48,6 +48,8 @@ public final class DefaultPlants
     public static final ResourceLocation TULIP_WHITE = new ResourceLocation(MOD_ID, "tulip_white");
 
     public static final ResourceLocation ATHYRIUM_FERN = new ResourceLocation(MOD_ID, "athyrium_fern");
+    public static final ResourceLocation BADDERLOCKS = new ResourceLocation(MOD_ID, "badderlocks");
+    public static final ResourceLocation BLOOD_LILY = new ResourceLocation(MOD_ID, "blood_lily");
     public static final ResourceLocation CANNA = new ResourceLocation(MOD_ID, "canna");
     public static final ResourceLocation CATTAIL = new ResourceLocation(MOD_ID, "cattail");
     public static final ResourceLocation DUCKWEED = new ResourceLocation(MOD_ID, "duckweed");
@@ -74,6 +76,7 @@ public final class DefaultPlants
     public static final ResourceLocation TALL_FESCUE_GRASS = new ResourceLocation(MOD_ID, "tall_fescue_grass");
     public static final ResourceLocation TIMOTHY_GRASS = new ResourceLocation(MOD_ID, "timothy_grass");
     public static final ResourceLocation TOQUILLA_PALM = new ResourceLocation(MOD_ID, "toquilla_palm");
+    public static final ResourceLocation TREE_FERN = new ResourceLocation(MOD_ID, "tree_fern");
     public static final ResourceLocation TRILLIUM = new ResourceLocation(MOD_ID, "trillium");
     public static final ResourceLocation YUCCA = new ResourceLocation(MOD_ID, "yucca");
 
@@ -123,8 +126,10 @@ public final class DefaultPlants
             // Placeholder plants
             // todo: replace textures, models, and/or add seasonal varieties
             new Plant(ATHYRIUM_FERN, Plant.PlantType.STANDARD, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, true, false, 13f, 25f, -34f, 32f, 200f, 500f, 9, 15, 1, null),
+            new Plant(BADDERLOCKS, Plant.PlantType.TALL_WATER_SEA, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 0f, 12f, -20f, 16f, 0f, 500f, 9, 15, 2, 3, 14, "seaweed"),
+            new Plant(BLOOD_LILY, Plant.PlantType.STANDARD, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 18f, 30f, 10f, 50f, 200f, 500f, 9, 15, 1, null),
             new Plant(CANNA, Plant.PlantType.STANDARD, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, true, false, 18f, 30f, -12f, 36f, 150f, 500f, 9, 15, 1, null),
-            new Plant(CATTAIL, Plant.PlantType.EMERGENT_TALL_WATER, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 13f, 30f, -36f, 40f, 0f, 500f, 4, 15, 2, 1, 1, null),
+            new Plant(CATTAIL, Plant.PlantType.EMERGENT_TALL_WATER, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 13f, 30f, -36f, 40f, 0f, 500f, 9, 15, 2, 1, 1, null),
             new Plant(DUCKWEED, Plant.PlantType.FLOATING, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 11f, 20f, -34f, 38f, 0f, 500f, 4, 15, 1, 2, 32, null),
             new Plant(FOUNTAIN_GRASS, Plant.PlantType.SHORT_GRASS, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 15f, 35f, -12f, 40f, 75f, 150f, 12, 15, 1, null),
             new Plant(FOXGLOVE, Plant.PlantType.STANDARD, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 15f, 25f, -34f, 34f, 150f, 300f, 9, 15, 1, null),
@@ -148,7 +153,8 @@ public final class DefaultPlants
             new Plant(SWORD_FERN, Plant.PlantType.STANDARD, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 18f, 25f, -40f, 30f, 100f, 200f, 4, 11, 1, null),
             new Plant(TALL_FESCUE_GRASS, Plant.PlantType.TALL_GRASS, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 15f, 25f, -29f, 30f, 300f, 500f, 12, 15, 2, null),
             new Plant(TIMOTHY_GRASS, Plant.PlantType.SHORT_GRASS, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 15f, 25f, -46f, 30f, 300f, 500f, 12, 15, 1, null),
-            new Plant(TOQUILLA_PALM, Plant.PlantType.TALL_PLANT, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 20f, 40f, -1f, 50f, 250f, 500f, 9, 15, 2, null),
+            new Plant(TOQUILLA_PALM, Plant.PlantType.TALL_PLANT, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 20f, 40f, 10f, 50f, 250f, 500f, 9, 15, 2, null),
+            new Plant(TREE_FERN, Plant.PlantType.TALL_PLANT, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 20f, 40f, 10f, 50f, 300f, 500f, 9, 15, 3, null),
             new Plant(TRILLIUM, Plant.PlantType.STANDARD, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 15f, 25f, -34f, 33f, 150f, 300f, 4, 11, 1, null),
             new Plant(YUCCA, Plant.PlantType.DESERT, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, true, false, 20f, 30f, -34f, 36f, 0f, 75f, 9, 15, 1, null)
 

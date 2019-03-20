@@ -241,7 +241,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public IBlockState getWaterType()
     {
-        if (plantType == PlantType.FLOATING_SEA || plantType == PlantType.WATER_SEA || plantType == PlantType.TALL_WATER_SEA)
+        if (plantType == PlantType.FLOATING_SEA || plantType == PlantType.WATER_SEA || plantType == PlantType.TALL_WATER_SEA || plantType == PlantType.EMERGENT_TALL_WATER_SEA)
         {
             return SALT_WATER;
         }

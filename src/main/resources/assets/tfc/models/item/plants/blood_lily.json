@@ -1,5 +1,5 @@
 {
-    "parent": "tfc:block/plants/rose_upper",
+    "parent": "tfc:block/plants/blood_lily",
     "display": {
         "ground": {
             "rotation": [ 0, 0, 0 ],

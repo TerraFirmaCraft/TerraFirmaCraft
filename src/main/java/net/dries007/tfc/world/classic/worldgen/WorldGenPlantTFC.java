@@ -290,7 +290,7 @@ public class WorldGenPlantTFC extends WorldGenerator
 
             for (int i = 0; i < 32; ++i)
             {
-                BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
+                BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
                 int j = 1 + rand.nextInt(rand.nextInt(3) + 1);
 
@@ -369,29 +369,24 @@ public class WorldGenPlantTFC extends WorldGenerator
             IBlockState state = plantBlock.getDefaultState();
             IBlockState water = plant.getWaterType();
 
-            if ((water == SALT_WATER && !BlocksTFC.isSaltWater(worldIn.getBlockState(position.add(0, -1, 0)))) || !worldIn.isAirBlock(position))
+            if (water == SALT_WATER && !BlocksTFC.isSaltWater(worldIn.getBlockState(position.add(0, -1, 0))))
                 return false;
-            if ((water == FRESH_WATER && !BlocksTFC.isFreshWater(worldIn.getBlockState(position.add(0, -1, 0)))) || !worldIn.isAirBlock(position))
+            if (water == FRESH_WATER && !BlocksTFC.isFreshWater(worldIn.getBlockState(position.add(0, -1, 0))))
                 return false;
-
 
             int depth = plant.getValidWaterDepth(worldIn, position, water);
             if (depth == -1) return false;
             BlockPos blockpos = position.add(0, -depth + 1, 0);
 
-            int j = 1 + rand.nextInt(rand.nextInt(3) + 1);
-
-            for (int k = 0; k < j; ++k)
+            float temp = ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos);
+            if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                plantBlock.canPlaceBlockAt(worldIn, blockpos))
             {
-                float temp = ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos.up(k));
-                if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos.up(k)) &&
-                    plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
-                    plantBlock.canPlaceBlockAt(worldIn, blockpos.up(k)))
-                {
-                    int plantAge = plant.getAgeForWorldgen(rand, temp);
-                    if (k > 0 && !worldIn.isAirBlock(blockpos.up(k))) return true;
-                    setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockTallPlantTFC.AGE, plantAge));
-                }
+                int plantAge = plant.getAgeForWorldgen(rand, temp);
+                setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockTallPlantTFC.AGE, plantAge));
+                if (rand.nextInt(15) < plantAge && plantBlock.canGrow(worldIn, blockpos, state, worldIn.isRemote))
+                    setBlockAndNotifyAdequately(worldIn, blockpos.up(), state);
             }
         }
         else if (plant.getPlantType() == Plant.PlantType.FLOATING)
