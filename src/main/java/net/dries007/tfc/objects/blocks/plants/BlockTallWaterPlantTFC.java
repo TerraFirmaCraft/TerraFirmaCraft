@@ -18,7 +18,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -33,9 +32,9 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import static net.dries007.tfc.world.classic.ChunkGenTFC.SALT_WATER;
 
 @ParametersAreNonnullByDefault
-public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowable
+public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowable, ITallPlant
 {
-    static final PropertyEnum<EnumBlockPart> PART = PropertyEnum.create("part", EnumBlockPart.class);
+    private static final PropertyEnum<EnumBlockPart> PART = PropertyEnum.create("part", EnumBlockPart.class);
     private static final Map<Plant, BlockTallWaterPlantTFC> MAP = new HashMap<>();
 
     public static BlockTallWaterPlantTFC get(Plant plant)
@@ -47,8 +46,6 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
-
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
@@ -139,13 +136,13 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
             {
-                if (j == 15 && canGrow(worldIn, pos, state, worldIn.isRemote))
+                if (j == 3 && canGrow(worldIn, pos, state, worldIn.isRemote))
                 {
                     grow(worldIn, rand, pos, state);
                 }
-                else if (j < 15)
+                else if (j < 3)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(PART, getPlantPart(worldIn, pos)));
                 }
@@ -156,7 +153,7 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
             {
                 if (j == 0 && canShrink(worldIn, pos))
                 {
@@ -190,7 +187,7 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
     @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return PLANT_AABB.offset(state.getOffset(source, pos));
+        return getTallBoundingBax(state.getValue(AGE), state, source, pos);
     }
 
     @Override
@@ -209,40 +206,5 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
     private boolean canShrink(World worldIn, BlockPos pos)
     {
         return worldIn.getBlockState(pos.down()).getBlock() == this && worldIn.getBlockState(pos.up()).getBlock() != this;
-    }
-
-    private EnumBlockPart getPlantPart(IBlockAccess world, BlockPos pos)
-    {
-        if (world.getBlockState(pos.down()).getBlock() != this && world.getBlockState(pos.up()).getBlock() == this)
-        {
-            return EnumBlockPart.LOWER;
-        }
-        if (world.getBlockState(pos.down()).getBlock() == this && world.getBlockState(pos.up()).getBlock() == this)
-        {
-            return EnumBlockPart.MIDDLE;
-        }
-        if (world.getBlockState(pos.down()).getBlock() == this && world.getBlockState(pos.up()).getBlock() != this)
-        {
-            return EnumBlockPart.UPPER;
-        }
-        return EnumBlockPart.SINGLE;
-    }
-
-    public enum EnumBlockPart implements IStringSerializable
-    {
-        UPPER,
-        MIDDLE,
-        LOWER,
-        SINGLE;
-
-        public String toString()
-        {
-            return this.getName();
-        }
-
-        public String getName()
-        {
-            return name().toLowerCase();
-        }
     }
 }

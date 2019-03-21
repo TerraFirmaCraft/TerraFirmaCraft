@@ -1,12 +1,12 @@
 {
     "ambientocclusion": false,
     "textures": {
-        "cross": "tfc:blocks/plants/pampas_grass/placeholder",
-        "particle": "tfc:blocks/plants/pampas_grass/placeholder"
+		"cross": "tfc:blocks/plants/water_canna/water_canna_3",
+        "particle": "tfc:blocks/plants/water_canna/water_canna_3"
     },
     "elements": [
-        {   "from": [ -7.2, 0, 8 ],
-            "to": [ 23.2, 32, 8 ],
+        {   "from": [ 0.8, -16, 8 ],
+            "to": [ 15.2, 16, 8 ],
             "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
             "shade": false,
             "faces": {
@@ -14,8 +14,8 @@
                 "south": { "uv": [ 16, 0, 0, 16 ], "texture": "#cross" }
             }
         },
-        {   "from": [ 8, 0, -7.2 ],
-            "to": [ 8, 32, 23.2 ],
+        {   "from": [ 8, -16, 0.8 ],
+            "to": [ 8, 16, 15.2 ],
             "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
             "shade": false,
             "faces": {

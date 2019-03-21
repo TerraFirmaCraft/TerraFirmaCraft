@@ -20,39 +20,39 @@
             }
         },
         {
-            "from": [ -8, 5, 0 ], 
-            "to": [ 24, 5, 32 ], 
+            "from": [ 0, 5, 8 ], 
+            "to": [ 16, 5, 32 ], 
             "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
             "faces": {
-                "up": { "texture": "#frond", "uv": [ 0, 16, 16, 0 ], "tintindex": 0 },
-                "down": { "texture": "#frond", "uv": [ 0, 0, 16, 16 ], "tintindex": 0 }
+                "up": { "texture": "#frond", "uv": [ 4, 12, 12, 0 ], "tintindex": 0 },
+                "down": { "texture": "#frond", "uv": [ 4, 0, 12, 12 ], "tintindex": 0 }
             }
         },
         {
-            "from": [ 0, 4.5, -8 ], 
-            "to": [ 32, 4.5, 24 ], 
+            "from": [ 8, 4.5, 0 ], 
+            "to": [ 32, 4.5, 16 ], 
             "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
             "faces": {
-                "up": { "texture": "#frond", "uv": [ 0, 16, 16, 0 ], "rotation": 270, "tintindex": 0 },
-                "down": { "texture": "#frond", "uv": [ 0, 0, 16, 16 ], "rotation": 90, "tintindex": 0 }
+                "up": { "texture": "#frond", "uv": [ 4, 12, 12, 0 ], "rotation": 270, "tintindex": 0 },
+                "down": { "texture": "#frond", "uv": [ 4, 0, 12, 12 ], "rotation": 90, "tintindex": 0 }
             }
         },
         {
-            "from": [ -8, 4.5, 0 ], 
-            "to": [ 24, 4.5, 32 ], 
+            "from": [ 0, 4.5, 8 ], 
+            "to": [ 16, 4.5, 32 ], 
             "rotation": { "origin": [ 8, 8, 8 ], "axis": "x", "angle": -22.5, "rescale": true },
             "faces": {
-                "up": { "texture": "#frond", "uv": [ 0, 16, 16, 0 ], "tintindex": 0 },
-                "down": { "texture": "#frond", "uv": [ 0, 0, 16, 16 ], "tintindex": 0 }
+                "up": { "texture": "#frond", "uv": [ 4, 12, 12, 0 ], "tintindex": 0 },
+                "down": { "texture": "#frond", "uv": [ 4, 0, 12, 12 ], "tintindex": 0 }
             }
         },
         {
-            "from": [ 0, 4.5, -8 ], 
-            "to": [ 32, 4.5, 24 ], 
+            "from": [ 8, 4.5, 0 ], 
+            "to": [ 32, 4.5, 16 ], 
             "rotation": { "origin": [ 8, 8, 8 ], "axis": "z", "angle": 22.5, "rescale": true },
             "faces": {
-                "up": { "texture": "#frond", "uv": [ 0, 16, 16, 0 ], "rotation": 270, "tintindex": 0 },
-                "down": { "texture": "#frond", "uv": [ 0, 0, 16, 16 ], "rotation": 90, "tintindex": 0 }
+                "up": { "texture": "#frond", "uv": [ 4, 12, 12, 0 ], "rotation": 270, "tintindex": 0 },
+                "down": { "texture": "#frond", "uv": [ 4, 0, 12, 12 ], "rotation": 90, "tintindex": 0 }
             }
         }
     ]

@@ -5,8 +5,8 @@
         "particle": "tfc:blocks/plants/gutweed/gutweed"
     },
     "elements": [
-        {   "from": [ 8, -1, -4.8 ],
-            "to": [ 8, 32, 20.8 ],
+        {   "from": [ 8, 0, 0.2 ],
+            "to": [ 8, 16, 15.8 ],
             "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": -22.5, "rescale": true },
             "shade": false,
             "faces": {
@@ -14,8 +14,8 @@
                 "east": { "uv": [ 16, 0, 0, 16 ], "texture": "#cross", "tintindex": 0 }
             }
         },
-        {   "from": [ 8, -1, -4.8 ],
-            "to": [ 8, 32, 20.8 ],
+        {   "from": [ 8, 0, 0.2 ],
+            "to": [ 8, 16, 15.8 ],
             "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 22.5, "rescale": true },
             "shade": false,
             "faces": {

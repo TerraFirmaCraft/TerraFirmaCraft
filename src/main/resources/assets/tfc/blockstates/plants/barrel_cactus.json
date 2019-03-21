@@ -5,22 +5,22 @@
 				{ "model": "tfc:plants/barrel_cactus_small" }
 			]
 		},
-		{ "when": { "age": "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "lower" },
+		{ "when": { "part": "lower" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_lower" }
 			]
 		},
-		{ "when": { "age": "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "middle" },
+		{ "when": { "part": "middle" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_middle" }
 			]
 		},
-		{ "when": { "age": "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "single" },
+		{ "when": { "age": "1|2|3", "part": "single" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_single" }
 			]
 		},
-		{ "when": { "age": "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "part": "upper" },
+		{ "when": { "part": "upper" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_upper" }
 			]
@@ -30,22 +30,27 @@
 				{ "model": "tfc:plants/barrel_cactus_flower_0" }
 			]
 		},
-		{ "when": { "age": "1|2|3|4|5|6|7", "part": "single" , "stage": "2" },
+		{ "when": { "age": "1", "part": "single" , "stage": "2" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_flower_1" }
 			]
 		},
-		{ "when": { "age": "0|1|2|3|4|5|6|7", "part": "upper" , "stage": "2" },
+		{ "when": { "age": "0|1", "part": "upper" , "stage": "2" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_flower_1" }
 			]
 		},
-		{ "when": { "age": "8|9|10|11|12|13|14|15", "part": "single|upper" , "stage": "2" },
+		{ "when": { "age": "2|3", "part": "single|upper" , "stage": "2" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_flower_2" }
 			]
 		},
-		{ "when": { "part": "single|upper" , "stage": "1" },
+		{ "when": { "age": "1|2|3", "part": "single" , "stage": "3" },
+			"apply": [
+				{ "model": "tfc:plants/barrel_cactus_flower_3" }
+			]
+		},
+		{ "when": { "part": "upper" , "stage": "3" },
 			"apply": [
 				{ "model": "tfc:plants/barrel_cactus_flower_3" }
 			]

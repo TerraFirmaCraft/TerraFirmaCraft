@@ -35,14 +35,14 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @ParametersAreNonnullByDefault
 public class BlockCreepingPlantTFC extends BlockPlantTFC
 {
-    protected static final PropertyBool DOWN = PropertyBool.create("down");
-    protected static final PropertyBool UP = PropertyBool.create("up");
-    protected static final PropertyBool NORTH = PropertyBool.create("north");
-    protected static final PropertyBool EAST = PropertyBool.create("east");
-    protected static final PropertyBool SOUTH = PropertyBool.create("south");
-    protected static final PropertyBool WEST = PropertyBool.create("west");
+    static final PropertyBool DOWN = PropertyBool.create("down");
+    static final PropertyBool UP = PropertyBool.create("up");
+    static final PropertyBool NORTH = PropertyBool.create("north");
+    static final PropertyBool EAST = PropertyBool.create("east");
+    static final PropertyBool SOUTH = PropertyBool.create("south");
+    static final PropertyBool WEST = PropertyBool.create("west");
 
-    protected static final PropertyBool[] ALL_FACES = new PropertyBool[] {DOWN, UP, NORTH, SOUTH, WEST, EAST};
+    private static final PropertyBool[] ALL_FACES = new PropertyBool[] {DOWN, UP, NORTH, SOUTH, WEST, EAST};
 
     private static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
     private static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.0D, 0.875D, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -61,8 +61,6 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
-
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]).withProperty(DOWN, false).withProperty(UP, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(SOUTH, false).withProperty(WEST, false));
     }
 
     @Override

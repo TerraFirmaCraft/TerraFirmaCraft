@@ -44,7 +44,7 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @ParametersAreNonnullByDefault
 public class BlockPlantTFC extends BlockBush implements IItemSize
 {
-    public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
+    public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 3);
     /* Time of day, used for rendering plants that bloom at different times */
     public final static PropertyInteger DAYPERIOD = PropertyInteger.create("dayperiod", 0, 3);
     static final AxisAlignedBB PLANT_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
@@ -74,12 +74,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         setHardness(0.0F);
         Blocks.FIRE.setFireInfo(this, 5, 20);
         blockState = this.createPlantBlockState();
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]));
-    }
-
-    public int getDayPeriod()
-    {
-        return Math.floorDiv(CalenderTFC.getHourOfDay(), CalenderTFC.HOURS_IN_DAY / 4);
+        this.setDefaultState(this.blockState.getBaseState());
     }
 
     @SuppressWarnings("deprecation")
@@ -135,7 +130,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public int tickRate(World worldIn)
     {
-        return 3;
+        return 10;
     }
 
     @Override
@@ -199,7 +194,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
 
     public double getGrowthRate(World world, BlockPos pos)
     {
-        if (world.isRainingAt(pos)) return ConfigTFC.GENERAL.plantGrowthRate * 2;
+        if (world.isRainingAt(pos)) return ConfigTFC.GENERAL.plantGrowthRate * 5d;
         else return ConfigTFC.GENERAL.plantGrowthRate;
     }
 
@@ -213,26 +208,8 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     protected boolean canSustainBush(IBlockState state)
     {
-        if (plant.getIsClayMarking()) return BlocksTFC.isClay(state);
-        if (plant.getPlantType() == Plant.PlantType.CACTUS) return BlocksTFC.isSand(state);
-        if (plant.getPlantType() == Plant.PlantType.DESERT) return BlocksTFC.isSand(state);
-        if (plant.getPlantType() == Plant.PlantType.DESERT_TALL_PLANT) return BlocksTFC.isSand(state);
-        if (plant.getPlantType() == Plant.PlantType.DRY) return BlocksTFC.isSand(state) || BlocksTFC.isDryGrass(state);
-        if (plant.getPlantType() == Plant.PlantType.DRY_TALL_PLANT)
-            return BlocksTFC.isSand(state) || BlocksTFC.isDryGrass(state);
-        if (plant.getPlantType() == Plant.PlantType.REED) return BlocksTFC.isSand(state) || BlocksTFC.isSoil(state);
-        if (plant.getPlantType() == Plant.PlantType.TALL_REED)
-            return BlocksTFC.isSand(state) || BlocksTFC.isSoil(state);
-        if (plant.getPlantType() == Plant.PlantType.WATER_SEA)
-            return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
-        if (plant.getPlantType() == Plant.PlantType.WATER) return BlocksTFC.isSoilOrGravel(state);
-        if (plant.getPlantType() == Plant.PlantType.TALL_WATER_SEA)
-            return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
-        if (plant.getPlantType() == Plant.PlantType.TALL_WATER) return BlocksTFC.isSoilOrGravel(state);
-        if (plant.getPlantType() == Plant.PlantType.EMERGENT_TALL_WATER_SEA)
-            return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
-        if (plant.getPlantType() == Plant.PlantType.EMERGENT_TALL_WATER) return BlocksTFC.isSoilOrGravel(state);
-        return BlocksTFC.isSoil(state);
+        if (plant.getIsClayMarking()) return BlocksTFC.isClay(state) || isValidSoil(state);
+        else return isValidSoil(state);
     }
 
     @Override
@@ -244,9 +221,9 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
             {
-                if (j < 15)
+                if (j < 3)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j + 1));
                 }
@@ -257,7 +234,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
             {
                 if (j > 0)
                 {
@@ -293,40 +270,65 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
-        if (plant.getPlantType() == Plant.PlantType.DESERT) return EnumPlantType.Desert;
-        if (plant.getPlantType() == Plant.PlantType.DESERT_TALL_PLANT) return EnumPlantType.Desert;
-        if (plant.getPlantType() == Plant.PlantType.CACTUS) return EnumPlantType.Desert;
-        if (plant.getPlantType() == Plant.PlantType.FLOATING) return EnumPlantType.Water;
-        if (plant.getPlantType() == Plant.PlantType.FLOATING_SEA) return EnumPlantType.Water;
-        if (plant.getPlantType() == Plant.PlantType.MUSHROOM) return EnumPlantType.Cave;
-        return EnumPlantType.Plains;
+        switch (plant.getPlantType())
+        {
+            case CACTUS:
+            case DESERT:
+            case DESERT_TALL_PLANT:
+                return EnumPlantType.Desert;
+            case FLOATING:
+            case FLOATING_SEA:
+                return EnumPlantType.Water;
+            case MUSHROOM:
+                return EnumPlantType.Cave;
+            default:
+                return EnumPlantType.Plains;
+        }
     }
 
     @Nonnull
     public Plant.EnumPlantTypeTFC getPlantTypeTFC()
     {
-        if (plant.getIsClayMarking()) return Plant.EnumPlantTypeTFC.Clay;
-        if (plant.getPlantType() == Plant.PlantType.DRY) return Plant.EnumPlantTypeTFC.Dry;
-        if (plant.getPlantType() == Plant.PlantType.DRY_TALL_PLANT) return Plant.EnumPlantTypeTFC.Dry;
-        if (plant.getPlantType() == Plant.PlantType.REED) return Plant.EnumPlantTypeTFC.FreshBeach;
-        if (plant.getPlantType() == Plant.PlantType.REED_SEA) return Plant.EnumPlantTypeTFC.SaltBeach;
-        if (plant.getPlantType() == Plant.PlantType.TALL_REED) return Plant.EnumPlantTypeTFC.FreshBeach;
-        if (plant.getPlantType() == Plant.PlantType.TALL_REED_SEA) return Plant.EnumPlantTypeTFC.SaltBeach;
-        if (plant.getPlantType() == Plant.PlantType.WATER) return Plant.EnumPlantTypeTFC.FreshWater;
-        if (plant.getPlantType() == Plant.PlantType.WATER_SEA) return Plant.EnumPlantTypeTFC.SaltWater;
-        if (plant.getPlantType() == Plant.PlantType.TALL_WATER) return Plant.EnumPlantTypeTFC.FreshWater;
-        if (plant.getPlantType() == Plant.PlantType.TALL_WATER_SEA) return Plant.EnumPlantTypeTFC.SaltWater;
-        if (plant.getPlantType() == Plant.PlantType.EMERGENT_TALL_WATER) return Plant.EnumPlantTypeTFC.FreshWater;
-        if (plant.getPlantType() == Plant.PlantType.EMERGENT_TALL_WATER_SEA) return Plant.EnumPlantTypeTFC.SaltWater;
-        return Plant.EnumPlantTypeTFC.None;
+        return plant.getEnumPlantTypeTFC();
     }
 
-    /*
-        @Override
-    */
     @Nonnull
     protected BlockStateContainer createPlantBlockState()
     {
         return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD, AGE);
+    }
+
+    int getDayPeriod()
+    {
+        return Math.floorDiv(CalenderTFC.getHourOfDay(), CalenderTFC.HOURS_IN_DAY / 4);
+    }
+
+    private boolean isValidSoil(IBlockState state)
+    {
+        switch (plant.getPlantType())
+        {
+            case CACTUS:
+            case DESERT:
+            case DESERT_TALL_PLANT:
+                return BlocksTFC.isSand(state);
+            case DRY:
+            case DRY_TALL_PLANT:
+                return BlocksTFC.isSand(state) || BlocksTFC.isDryGrass(state);
+            case REED:
+            case REED_SEA:
+            case TALL_REED:
+            case TALL_REED_SEA:
+                return BlocksTFC.isSand(state) || BlocksTFC.isSoil(state);
+            case WATER:
+            case TALL_WATER:
+            case EMERGENT_TALL_WATER:
+                return BlocksTFC.isSoilOrGravel(state);
+            case WATER_SEA:
+            case TALL_WATER_SEA:
+            case EMERGENT_TALL_WATER_SEA:
+                return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
+            default:
+                return BlocksTFC.isSoil(state);
+        }
     }
 }

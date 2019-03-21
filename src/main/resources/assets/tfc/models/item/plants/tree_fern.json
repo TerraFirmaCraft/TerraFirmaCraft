@@ -1,29 +1,41 @@
 {
     "parent": "tfc:block/plants/tree_fern_upper",
-    "display": {
-        "ground": {
-            "rotation": [ 0, 0, 0 ],
-            "translation": [ 0, 2, 0],
-            "scale":[ 0.5, 0.5, 0.5 ]
-        },
-        "head": {
-            "rotation": [ 0, 180, 0 ],
-            "translation": [ 0, 13, 7],
-            "scale":[ 1, 1, 1]
-        },
-        "thirdperson_righthand": {
-            "rotation": [ 0, 0, 0 ],
-            "translation": [ 0, 3, 1 ],
-            "scale": [ 0.55, 0.55, 0.55 ]
-        },
-        "firstperson_righthand": {
-            "rotation": [ 0, -90, 25 ],
-            "translation": [ 1.13, 3.2, 1.13],
-            "scale": [ 0.68, 0.68, 0.68 ]
-        },
-        "fixed": {
-            "rotation": [ 0, 180, 0 ],
-            "scale": [ 1, 1, 1 ]
-        }
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 105, -25],
+			"translation": [0, 2, 1.5],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, 105, -25],
+			"translation": [0, 2, 1.5],
+			"scale": [-0.375, 0.375, 0.375]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 105, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 105, 0],
+			"scale": [-0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"rotation": [-15, 0, 75],
+			"translation": [0, 2, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"gui": {
+			"rotation": [75, 95, -30],
+			"translation": [0, -2.5, 0],
+			"scale": [0.3, 0.3, 0.3]
+		},
+		"head": {
+			"rotation": [0, -75, 0],
+			"translation": [0, 10, 0]
+		},
+		"fixed": {
+			"rotation": [0, 105, 0],
+			"scale": [0.5, 0.5, 0.5]
+		}
     }
 }

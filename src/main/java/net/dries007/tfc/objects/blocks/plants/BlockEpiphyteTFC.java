@@ -50,15 +50,10 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
         return MAP.get(plant);
     }
 
-    protected final Plant plant;
-
     public BlockEpiphyteTFC(Plant plant)
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
-
-        this.plant = plant;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]));
     }
 
     @Override
@@ -71,61 +66,13 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        IBlockState iblockstate = this.getDefaultState();
-
-        switch (meta)
-        {
-            case 1:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.EAST);
-                break;
-            case 2:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.WEST);
-                break;
-            case 3:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.SOUTH);
-                break;
-            case 4:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.NORTH);
-                break;
-            case 5:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.DOWN);
-                break;
-            case 6:
-            default:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.UP);
-        }
-
-        return iblockstate;
+        return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        int i = 0;
-
-        switch (state.getValue(FACING))
-        {
-            case EAST:
-                i = i | 1;
-                break;
-            case WEST:
-                i = i | 2;
-                break;
-            case SOUTH:
-                i = i | 3;
-                break;
-            case NORTH:
-                i = i | 4;
-                break;
-            case DOWN:
-                i = i | 5;
-                break;
-            case UP:
-            default:
-                i = i | 6;
-        }
-
-        return i;
+        return state.getValue(FACING).getIndex();
     }
 
     @Override
@@ -133,12 +80,6 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
     {
         world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]));
         this.checkForDrop(world, pos, state);
-    }
-
-    @Nonnull
-    protected BlockStateContainer createPlantBlockState()
-    {
-        return new BlockStateContainer(this, FACING, GROWTHSTAGE, DAYPERIOD, AGE);
     }
 
     @Override
@@ -197,6 +138,12 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
             default:
                 return PLANT_UP_AABB;
         }
+    }
+
+    @Nonnull
+    protected BlockStateContainer createPlantBlockState()
+    {
+        return new BlockStateContainer(this, FACING, GROWTHSTAGE, DAYPERIOD, AGE);
     }
 
     @SuppressWarnings("deprecation")
