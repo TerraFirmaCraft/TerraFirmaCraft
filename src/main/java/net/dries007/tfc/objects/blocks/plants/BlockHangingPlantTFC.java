@@ -43,8 +43,6 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
-
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]).withProperty(BOTTOM, false).withProperty(DOWN, false).withProperty(UP, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(SOUTH, false).withProperty(WEST, false));
     }
 
     @Override
@@ -155,15 +153,15 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.down(), state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.down(), state, true))
             {
-                if (j == 15)
+                if (j == 3)
                 {
                     if (canGrow(worldIn, pos, state, worldIn.isRemote)) grow(worldIn, rand, pos, state);
                     else if (canGrowHorizontally(worldIn, pos, state)) growHorizontally(worldIn, rand, pos, state);
                     else if (canGrowDiagonally(worldIn, pos, state)) growDiagonally(worldIn, rand, pos, state);
                 }
-                else if (j < 15)
+                else if (j < 3)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(BOTTOM, getIsBottom(worldIn, pos)));
                 }
@@ -174,7 +172,7 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
             {
                 if (j == 0)
                 {

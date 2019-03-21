@@ -88,13 +88,14 @@ public class WorldGenSoilPits implements IWorldGenerator
                         {
                             BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
                             IBlockState state = plantBlock.getDefaultState();
+                            int plantAge = plant.getAgeForWorldgen(rng, ClimateTFC.getHeightAdjustedBiomeTemp(world, pos));
 
-                            if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(world, pos), ChunkDataTFC.getRainfall(world, pos), world.getLightFor(EnumSkyBlock.SKY, pos)) &&
+                            if (!world.provider.isNether() && !world.isOutsideBuildHeight(pos) &&
+                                plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(world, pos), ChunkDataTFC.getRainfall(world, pos), world.getLightFor(EnumSkyBlock.SKY, pos)) &&
                                 world.isAirBlock(pos) &&
-                                (!world.provider.isNether() || pos.getY() < 255) &&
                                 plantBlock.canBlockStay(world, pos, state))
                             {
-                                world.setBlockState(pos, state, 2);
+                                world.setBlockState(pos, state.withProperty(BlockPlantTFC.AGE, plantAge), 2);
                             }
                         }
                     }

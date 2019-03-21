@@ -1,7 +1,7 @@
 {
 	"multipart": [
 		{ "apply": [
-				{ "model": "tfc:plants/horsetail" }
+				{ "model": "tfc:plants/lady_fern" }
 			]
 		}
 	]
