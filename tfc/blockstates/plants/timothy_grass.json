@@ -1,15 +1,15 @@
 {
 	"multipart": [
-		{   "when": { "age": "0|1|2|3" },
+		{   "when": { "age": "0" },
 			"apply": { "model": "tfc:plants/timothy_grass_shortest" }
 		},
-		{   "when": { "age": "4|5|6|7" },
+		{   "when": { "age": "1" },
 			"apply": { "model": "tfc:plants/timothy_grass_shorter" }
 		},
-		{   "when": { "age": "8|9|10|11" },
+		{   "when": { "age": "2" },
 			"apply": { "model": "tfc:plants/timothy_grass_short" }
 		},
-		{   "when": { "age": "12|13|14|15" },
+		{   "when": { "age": "3" },
 			"apply": { "model": "tfc:plants/timothy_grass" }
 		}
 	]
