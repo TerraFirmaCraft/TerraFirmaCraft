@@ -173,7 +173,7 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable
                 {
                     grow(worldIn, rand, pos, state);
                 }
-                else
+                else if (j < 15)
                 {
                     worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, j + 1).withProperty(PART, getPlantPart(worldIn, pos)));
                 }

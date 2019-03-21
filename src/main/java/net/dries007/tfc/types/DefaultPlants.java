@@ -29,7 +29,6 @@ public final class DefaultPlants
     public static final ResourceLocation DANDELION = new ResourceLocation(MOD_ID, "dandelion");
     public static final ResourceLocation GOLDENROD = new ResourceLocation(MOD_ID, "goldenrod");
     public static final ResourceLocation HOUSTONIA = new ResourceLocation(MOD_ID, "houstonia");
-    public static final ResourceLocation WATER_LILY = new ResourceLocation(MOD_ID, "water_lily");
     public static final ResourceLocation MEADS_MILKWEED = new ResourceLocation(MOD_ID, "meads_milkweed");
     public static final ResourceLocation MORNING_GLORY = new ResourceLocation(MOD_ID, "morning_glory");
     public static final ResourceLocation MOSS = new ResourceLocation(MOD_ID, "moss");
@@ -46,6 +45,7 @@ public final class DefaultPlants
     public static final ResourceLocation TULIP_PINK = new ResourceLocation(MOD_ID, "tulip_pink");
     public static final ResourceLocation TULIP_RED = new ResourceLocation(MOD_ID, "tulip_red");
     public static final ResourceLocation TULIP_WHITE = new ResourceLocation(MOD_ID, "tulip_white");
+    public static final ResourceLocation WATER_LILY = new ResourceLocation(MOD_ID, "water_lily");
 
     public static final ResourceLocation ATHYRIUM_FERN = new ResourceLocation(MOD_ID, "athyrium_fern");
     public static final ResourceLocation BADDERLOCKS = new ResourceLocation(MOD_ID, "badderlocks");
@@ -93,7 +93,7 @@ public final class DefaultPlants
             new Plant(DANDELION, Plant.PlantType.STANDARD, new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9}, false, false, 10f, 25f, -40f, 40f, 75f, 400f, 10, 15, 1, null),
             new Plant(GOLDENROD, Plant.PlantType.STANDARD, new int[] {0, 0, 0, 1, 2, 2, 2, 2, 3, 4, 4, 4}, true, false, 15f, 23f, -29f, 32f, 75f, 300f, 9, 15, 1, null),
             new Plant(HOUSTONIA, Plant.PlantType.STANDARD, new int[] {0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2}, false, false, 15f, 30f, -46f, 36f, 150f, 500f, 9, 15, 1, null),
-            new Plant(MEADS_MILKWEED, Plant.PlantType.STANDARD, new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, false, false, 13f, 25f, -23f, 31f, 130f, 500f, 12, 15, 1, null),
+            new Plant(MEADS_MILKWEED, Plant.PlantType.STANDARD, new int[] {0, 1, 2, 3, 3, 3, 3, 4, 5, 6, 6, 6}, false, false, 13f, 25f, -23f, 31f, 130f, 500f, 12, 15, 1, null),
             new Plant(NASTURTIUM, Plant.PlantType.STANDARD, new int[] {0, 1, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4}, false, false, 18f, 30f, -46f, 38f, 150f, 500f, 12, 15, 1, null),
             new Plant(OXEYE_DAISY, Plant.PlantType.STANDARD, new int[] {0, 1, 2, 3, 3, 3, 4, 4, 5, 5, 5, 5}, false, false, 18f, 30f, -40f, 33f, 120f, 300f, 9, 15, 1, null),
             new Plant(POPPY, Plant.PlantType.STANDARD, new int[] {0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4}, false, false, 17f, 30f, -40f, 36f, 150f, 250f, 12, 15, 1, null),
@@ -103,9 +103,9 @@ public final class DefaultPlants
             new Plant(TULIP_RED, Plant.PlantType.STANDARD, new int[] {0, 1, 1, 2, 2, 2, 2, 3, 4, 4, 4, 5}, false, false, 15f, 25f, -34f, 33f, 100f, 200f, 9, 15, 1, null),
             new Plant(TULIP_WHITE, Plant.PlantType.STANDARD, new int[] {0, 1, 1, 2, 2, 2, 2, 3, 4, 4, 4, 5}, false, false, 15f, 25f, -34f, 33f, 100f, 200f, 9, 15, 1, null),
 
-            // Desert Plants
-            new Plant(PEROVSKIA, Plant.PlantType.DESERT, new int[] {0, 1, 2, 2, 3, 3, 3, 3, 4, 5, 5, 0}, true, false, 18f, 35f, -29f, 32f, 0f, 200f, 9, 15, 1, null),
-            new Plant(SAGEBRUSH, Plant.PlantType.DESERT, new int[] {0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0}, false, false, 18f, 35f, -34f, 50f, 0f, 100f, 12, 15, 1, null),
+            // Dry Plants
+            new Plant(PEROVSKIA, Plant.PlantType.DRY, new int[] {0, 1, 2, 2, 3, 3, 3, 3, 4, 5, 5, 0}, true, false, 18f, 35f, -29f, 32f, 0f, 200f, 9, 15, 1, null),
+            new Plant(SAGEBRUSH, Plant.PlantType.DRY, new int[] {0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0}, false, false, 18f, 35f, -34f, 50f, 0f, 100f, 12, 15, 1, null),
 
             // Cactus Plants
             new Plant(BARREL_CACTUS, Plant.PlantType.CACTUS, new int[] {0, 1, 2, 2, 2, 2, 3, 3, 0, 0, 0, 0}, false, false, 18f, 40f, -6f, 50f, 0f, 75f, 12, 15, 3, "blockCactus"),
@@ -142,7 +142,7 @@ public final class DefaultPlants
             new Plant(ORCHARD_GRASS, Plant.PlantType.SHORT_GRASS, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 13f, 20f, -29f, 30f, 75f, 300f, 9, 15, 1, null),
             new Plant(PAMPAS_GRASS, Plant.PlantType.TALL_GRASS, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, true, false, 20f, 30f, -12f, 36f, 75f, 200f, 9, 15, 2, null),
             new Plant(PISTIA, Plant.PlantType.FLOATING, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 20f, 40f, 10f, 50f, 0f, 500f, 4, 15, 1, 2, 32, null),
-            new Plant(PORCINI, Plant.PlantType.MUSHROOM, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 13f, 20f, 0f, 25f, 300f, 500f, 0, 12, 1, "mushroomEdible"),
+            new Plant(PORCINI, Plant.PlantType.MUSHROOM, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 13f, 20f, 0f, 30f, 300f, 500f, 0, 12, 1, "mushroomEdible"),
             new Plant(PRIMROSE, Plant.PlantType.STANDARD, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 15f, 25f, -34f, 33f, 150f, 300f, 9, 11, 1, null),
 //            new Plant(RATTAN, Plant.PlantType.HANGING, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 20f, 40f, 10f, 40f, 300f, 500f, 0, 15, 200, null),
             new Plant(ROSE, Plant.PlantType.TALL_PLANT, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, true, false, 11f, 21f, -29f, 34f, 150f, 300f, 9, 15, 2, null),
