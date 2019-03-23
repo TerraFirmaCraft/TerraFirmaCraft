@@ -427,11 +427,11 @@ public class WorldGenPlantTFC extends WorldGenerator
                 BlockCactusTFC plantBlock = BlockCactusTFC.get(plant);
                 IBlockState state = plantBlock.getDefaultState();
 
-                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 4; ++i)
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 8; ++i)
                 {
                     BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
-                    int j = 1 + rand.nextInt(rand.nextInt(3) + 1);
+                    int j = 1 + rand.nextInt(plant.getMaxHeight());
 
                     for (int k = 0; k < j; ++k)
                     {

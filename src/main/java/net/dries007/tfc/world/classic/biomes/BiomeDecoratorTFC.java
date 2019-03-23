@@ -226,7 +226,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                     }
                     case CACTUS:
                     {
-                        for (int i = rng.nextInt(Math.round((cactusCount + 16) / floraDiversity)); i < (1 + floraDensity) * 5; i++)
+                        for (int i = rng.nextInt(Math.round((cactusCount + 32) / floraDiversity)); i < (1 + floraDensity) * 3; i++)
                         {
                             BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                             plantGen.generate(world, rng, blockPos);
