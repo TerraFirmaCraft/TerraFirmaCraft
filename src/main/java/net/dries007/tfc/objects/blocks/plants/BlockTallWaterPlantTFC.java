@@ -35,7 +35,7 @@ import static net.dries007.tfc.world.classic.ChunkGenTFC.SALT_WATER;
 @ParametersAreNonnullByDefault
 public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowable
 {
-    static final PropertyEnum<EnumBlockPart> PART = PropertyEnum.create("part", EnumBlockPart.class);
+    private static final PropertyEnum<EnumBlockPart> PART = PropertyEnum.create("part", EnumBlockPart.class);
     private static final Map<Plant, BlockTallWaterPlantTFC> MAP = new HashMap<>();
 
     public static BlockTallWaterPlantTFC get(Plant plant)
@@ -47,8 +47,6 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
-
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override

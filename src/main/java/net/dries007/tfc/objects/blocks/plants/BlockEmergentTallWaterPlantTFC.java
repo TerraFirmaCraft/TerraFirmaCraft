@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.world.classic.CalenderTFC;
 
 import static net.dries007.tfc.world.classic.ChunkGenTFC.SALT_WATER;
 
@@ -36,8 +35,6 @@ public class BlockEmergentTallWaterPlantTFC extends BlockTallWaterPlantTFC
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
-
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override

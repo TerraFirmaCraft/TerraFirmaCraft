@@ -23,13 +23,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
@@ -236,38 +234,34 @@ public class BlockRockVariant extends Block
     {
         if (plantable instanceof BlockPlantTFC)
         {
-            BlockPlantTFC plant = (BlockPlantTFC) plantable;
-            Plant.EnumPlantTypeTFC plantTypeTFC = plant.getPlantTypeTFC();
-
-            switch (plantTypeTFC)
+            switch (((BlockPlantTFC) plantable).getPlantTypeTFC())
             {
-                case Clay:
+                case CLAY:
                     return type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
-                case Dry:
+                case DRY:
                     return type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND;
-                case FreshWater:
-                    return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.GRAVEL; // todo: gravel?
-                case SaltWater:
-                    return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND || type == Rock.Type.GRAVEL; // todo: gravel?
-                case FreshBeach:
+                case FRESH_WATER:
+                    return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.GRAVEL;
+                case SALT_WATER:
+                    return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND || type == Rock.Type.GRAVEL;
+                case FRESH_BEACH:
                     // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
-                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && // todo: dry grass?
+                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) &&
                         (BlocksTFC.isFreshWater(world.getBlockState(pos.add(1, 0, 0))) ||
                             BlocksTFC.isFreshWater(world.getBlockState(pos.add(-1, 0, 0))) ||
                             BlocksTFC.isFreshWater(world.getBlockState(pos.add(0, 0, 1))) ||
                             BlocksTFC.isFreshWater(world.getBlockState(pos.add(0, 0, -1))));
-                case SaltBeach:
+                case SALT_BEACH:
                     // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
-                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && // todo: dry grass?
+                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) &&
                         (BlocksTFC.isSaltWater(world.getBlockState(pos.add(1, 0, 0))) ||
                             BlocksTFC.isSaltWater(world.getBlockState(pos.add(-1, 0, 0))) ||
                             BlocksTFC.isSaltWater(world.getBlockState(pos.add(0, 0, 1))) ||
                             BlocksTFC.isSaltWater(world.getBlockState(pos.add(0, 0, -1))));
             }
         }
-        EnumPlantType plantType = plantable.getPlantType(world, pos.offset(direction));
 
-        switch (plantType)
+        switch (plantable.getPlantType(world, pos.offset(direction)))
         {
             case Plains:
                 return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS;

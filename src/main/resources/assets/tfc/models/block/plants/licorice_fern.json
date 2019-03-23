@@ -1,29 +1,49 @@
 {
-    "ambientocclusion": false,
-    "textures": {
+	"ambientocclusion": false,
+	"textures": {
 		"fern": "tfc:blocks/plants/licorice_fern/placeholder",
-        "particle": "tfc:blocks/plants/licorice_fern/placeholder"
-    },
-    "elements": [
+		"particle": "tfc:blocks/plants/licorice_fern/placeholder"
+	},
+	"elements": [
 		{
-            "from": [ 12, 0, 1 ], 
-            "to": [ 12, 16, 15.4 ], 
-            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 22.5, "rescale": true },
-            "shade": false,
-            "faces": {
-                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#fern" },
-                "east": { "uv": [ 16, 0, 0, 16 ], "texture": "#fern" }
-            }
-        },
+			"from": [7, 0, -5.2],
+			"to": [7, 16, 9.2],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 8, 1.8], "rescale": true},
+			"faces": {
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern"}
+			}
+		},
 		{
-            "from": [ 6, 0, 3 ], 
-            "to": [ 6, 16, 17.4 ], 
-            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": -22.5, "rescale": true },
-            "shade": false,
-            "faces": {
-                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#fern" },
-                "east": { "uv": [ 16, 0, 0, 16 ], "texture": "#fern" }
-            }
-        }
-    ]
+			"from": [7, 0, -5.2],
+			"to": [7, 16, 9.2],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "y", "origin": [7, 8, 2.8], "rescale": true},
+			"faces": {
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern"}
+			}
+		},
+		{
+			"from": [10, 0, 2.8],
+			"to": [10, 16, 17.2],
+			"shade": false,
+			"rotation": {"angle": -45, "axis": "y", "origin": [10, 8, 10.8], "rescale": true},
+			"faces": {
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern"}
+			}
+		},
+		{
+			"from": [10, 0, 2.8],
+			"to": [10, 16, 17.2],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [10, 8, 10.8], "rescale": true},
+			"faces": {
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern"}
+			}
+		}
+	]
 }

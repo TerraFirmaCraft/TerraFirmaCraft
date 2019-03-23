@@ -170,7 +170,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         int depthCounter = minWaterDepth;
         int maxDepth = maxWaterDepth;
 
-        if (maxDepth == 0) return -1;
+        if (depthCounter == 0 || maxDepth == 0) return -1;
 
         for (int i = 1; i <= depthCounter; ++i)
         {
@@ -256,6 +256,33 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return rand.nextInt(Math.max(1, Math.min(Math.round(10f + ((temp - minGrowthTemp) / (3.75f))), 16)));
     }
 
+    public final EnumPlantTypeTFC getEnumPlantTypeTFC()
+    {
+        if (isClayMarking) return EnumPlantTypeTFC.CLAY;
+        switch (plantType)
+        {
+            case DRY:
+            case DRY_TALL_PLANT:
+                return EnumPlantTypeTFC.DRY;
+            case REED:
+            case TALL_REED:
+                return EnumPlantTypeTFC.FRESH_BEACH;
+            case REED_SEA:
+            case TALL_REED_SEA:
+                return EnumPlantTypeTFC.SALT_BEACH;
+            case WATER:
+            case TALL_WATER:
+            case EMERGENT_TALL_WATER:
+                return EnumPlantTypeTFC.FRESH_WATER;
+            case WATER_SEA:
+            case TALL_WATER_SEA:
+            case EMERGENT_TALL_WATER_SEA:
+                return EnumPlantTypeTFC.SALT_WATER;
+            default:
+                return EnumPlantTypeTFC.NONE;
+        }
+    }
+
     private float getAvgTemp()
     {
         return Float.sum(minTemp, maxTemp) / 2f;
@@ -301,7 +328,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
             return supplier.apply(plant);
         }
 
-        public final Material getPlantMaterial()
+        private final Material getPlantMaterial()
         {
             switch (this)
             {
@@ -326,13 +353,13 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public enum EnumPlantTypeTFC
     {
-        Clay,
-        Dry,
-        FreshBeach,
-        SaltBeach,
-        FreshWater,
-        SaltWater,
-        None;
+        CLAY,
+        DRY,
+        FRESH_BEACH,
+        SALT_BEACH,
+        FRESH_WATER,
+        SALT_WATER,
+        NONE;
 
         public String toString()
         {

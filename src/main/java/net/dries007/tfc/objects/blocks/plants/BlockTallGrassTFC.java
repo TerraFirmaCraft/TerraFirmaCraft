@@ -50,8 +50,6 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
-
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
@@ -170,13 +168,6 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
 
     @Override
     @Nonnull
-    protected BlockStateContainer createPlantBlockState()
-    {
-        return new BlockStateContainer(this, AGE, GROWTHSTAGE, DAYPERIOD, PART);
-    }
-
-    @Override
-    @Nonnull
     public Block.EnumOffsetType getOffsetType()
     {
         return Block.EnumOffsetType.XZ;
@@ -244,6 +235,13 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
             default:
                 return GRASS_AABB.offset(state.getOffset(source, pos));
         }
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createPlantBlockState()
+    {
+        return new BlockStateContainer(this, AGE, GROWTHSTAGE, DAYPERIOD, PART);
     }
 
     @Override
