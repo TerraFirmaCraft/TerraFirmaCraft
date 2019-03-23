@@ -328,7 +328,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
             return supplier.apply(plant);
         }
 
-        private final Material getPlantMaterial()
+        private Material getPlantMaterial()
         {
             switch (this)
             {
