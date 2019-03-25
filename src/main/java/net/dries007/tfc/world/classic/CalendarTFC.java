@@ -11,9 +11,13 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
+import net.minecraftforge.event.CommandEvent;
+import net.minecraftforge.event.GameRuleChangeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -36,7 +40,8 @@ public class CalendarTFC
 {
     public static final int TICKS_IN_DAY = 24000;
     public static final int TICKS_IN_HOUR = 1000;
-    public static final int TICKS_IN_MINUTE = TICKS_IN_HOUR / 60;
+    /* This needs to be a float, otherwise there are ~62 minutes per hour */
+    public static final float TICKS_IN_MINUTE = TICKS_IN_HOUR / 60f;
     public static final int HOURS_IN_DAY = 24;
 
     /**
@@ -52,6 +57,7 @@ public class CalendarTFC
      */
     private static long calendarTime;
     private static long calendarOffset;
+    private static boolean doCalendarCycle;
 
     /* This is set via the timetfc command */
     private static int daysInMonth;
@@ -81,16 +87,15 @@ public class CalendarTFC
     {
         // Don't set the calendar time directly, instead set the offset from the total time
         calendarOffset = calendarTime - totalTime;
-        // Assert that the calendar offset is a valid multiple of days (otherwise day/night becomes de-synced)
-        calendarOffset = (calendarOffset / TICKS_IN_DAY) * TICKS_IN_DAY;
+        CalendarTFC.calendarTime = totalTime + calendarOffset;
         // Then update clients
-        CalendarWorldData.update(world, calendarOffset, daysInMonth);
+        CalendarWorldData.update(world, calendarOffset, daysInMonth, doCalendarCycle);
     }
 
     public static void setMonthLength(World world, int daysInMonth)
     {
         CalendarTFC.daysInMonth = daysInMonth;
-        CalendarWorldData.update(world, calendarOffset, daysInMonth);
+        CalendarWorldData.update(world, calendarOffset, daysInMonth, doCalendarCycle);
     }
 
     public static long getTotalTime()
@@ -98,21 +103,15 @@ public class CalendarTFC
         return totalTime;
     }
 
-    private static void setTotalTime(long totalTime)
+    public static int getMinuteOfHour()
     {
-        CalendarTFC.totalTime = totalTime;
-        CalendarTFC.calendarTime = totalTime + calendarOffset;
+        return (int) ((calendarTime % TICKS_IN_HOUR) / TICKS_IN_MINUTE);
     }
 
     @Nonnull
     public static String getTimeAndDate()
     {
         return String.format("%02d:%02d %s %02d, %04d", getHourOfDay(), getMinuteOfHour(), getMonthOfYear().getShortName(), getDayOfMonth(), getTotalYears());
-    }
-
-    public static int getDayOfMonthFromDayOfYear(long day)
-    {
-        return (int) (day % daysInMonth);
     }
 
     public static long getTotalDays()
@@ -136,14 +135,24 @@ public class CalendarTFC
         return 1000 + (calendarTime + 2 * ticksInMonth) / ticksInYear;
     }
 
-    public static int getMinuteOfHour()
-    {
-        return (int) ((calendarTime / TICKS_IN_MINUTE) % 60);
-    }
-
     public static int getHourOfDay()
     {
-        return (int) ((calendarTime / TICKS_IN_HOUR) % HOURS_IN_DAY);
+        return (int) ((6 + (calendarTime / TICKS_IN_HOUR)) % HOURS_IN_DAY);
+    }
+
+    private static void setTotalTime(long totalTime)
+    {
+        CalendarTFC.totalTime = totalTime;
+        if (doCalendarCycle)
+        {
+            // Set the calendar time based on the current offset
+            calendarTime = totalTime + calendarOffset;
+        }
+        else
+        {
+            // Re-calculate the offset to keep the calendar time static
+            calendarOffset = calendarTime - totalTime;
+        }
     }
 
     public static int getDayOfMonth()
@@ -256,6 +265,29 @@ public class CalendarTFC
                 CalendarTFC.setTotalTime(Minecraft.getMinecraft().world.getTotalWorldTime());
             }
         }
+
+        @SubscribeEvent
+        public static void onGameRuleChange(GameRuleChangeEvent event)
+        {
+            // This is only called on server, so it needs to sync to client
+            GameRules rules = event.getRules();
+            TerraFirmaCraft.getLog().info("Gamerule changed: " + event.getRuleName());
+            if ("doDaylightCycle".equals(event.getRuleName()))
+            {
+                CalendarTFC.doCalendarCycle = rules.getBoolean("doDaylightCycle");
+                CalendarWorldData.update(event.getServer().getEntityWorld());
+            }
+        }
+
+        @SubscribeEvent
+        public static void onCommandFire(CommandEvent event)
+        {
+            if ("time".equals(event.getCommand().getName()))
+            {
+                event.setCanceled(true);
+                event.getSender().sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.time_command_disabled"));
+            }
+        }
     }
 
     @ParametersAreNonnullByDefault
@@ -263,17 +295,23 @@ public class CalendarTFC
     {
         private static final String NAME = MOD_ID + ":calendar";
 
-        public static void update(World world, long calendarOffset, int daysInMonth)
+        public static void update(World world)
+        {
+            update(world, CalendarTFC.calendarOffset, CalendarTFC.daysInMonth, CalendarTFC.doCalendarCycle);
+        }
+
+        public static void update(World world, long calendarOffset, int daysInMonth, boolean doCalendarCycle)
         {
             // Updates world data and sends changes to client if this is run on server
             CalendarWorldData data = get(world);
             data.calendarOffset = calendarOffset;
             data.daysInMonth = daysInMonth;
+            data.doCalendarCycle = doCalendarCycle;
             data.markDirty();
 
             if (!world.isRemote)
             {
-                TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(calendarOffset, daysInMonth));
+                TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(calendarOffset, daysInMonth, doCalendarCycle));
             }
         }
 
@@ -282,6 +320,7 @@ public class CalendarTFC
             CalendarWorldData data = get(world);
             CalendarTFC.calendarOffset = data.calendarOffset;
             CalendarTFC.daysInMonth = data.daysInMonth;
+            CalendarTFC.doCalendarCycle = data.doCalendarCycle;
 
             // Re-calculate values for calendar
             CalendarTFC.daysInYear = data.daysInMonth * 12;
@@ -290,7 +329,7 @@ public class CalendarTFC
 
             if (!world.isRemote)
             {
-                TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalendarTFC.calendarOffset, CalendarTFC.daysInMonth));
+                TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalendarTFC.calendarOffset, CalendarTFC.daysInMonth, CalendarTFC.doCalendarCycle));
             }
         }
 
@@ -307,6 +346,7 @@ public class CalendarTFC
                     data = new CalendarWorldData();
                     data.daysInMonth = 8;
                     data.calendarOffset = 0;
+                    data.doCalendarCycle = true;
                     data.markDirty();
                     mapStorage.setData(NAME, data);
                 }
@@ -317,6 +357,7 @@ public class CalendarTFC
 
         private long calendarOffset;
         private int daysInMonth;
+        private boolean doCalendarCycle;
 
         public CalendarWorldData()
         {
@@ -334,6 +375,7 @@ public class CalendarTFC
         {
             this.calendarOffset = nbt.getLong("calendarOffset");
             this.daysInMonth = nbt.getInteger("daysInMonth");
+            this.doCalendarCycle = nbt.getBoolean("doCalendarCycle");
         }
 
         @Override
@@ -342,6 +384,7 @@ public class CalendarTFC
         {
             nbt.setLong("calendarOffset", calendarOffset);
             nbt.setInteger("daysInMonth", daysInMonth);
+            nbt.setBoolean("doCalendarCycle", doCalendarCycle);
             return nbt;
         }
     }

@@ -42,6 +42,7 @@ import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateRenderHelper;
 import net.dries007.tfc.world.classic.ClimateTFC;
@@ -99,7 +100,8 @@ public class ClientEvents
                         WHITE, data.getAverageTemp(), GRAY,
                         WHITE, ClimateRenderHelper.get(blockpos).getTemperature(), GRAY,
                         WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)));
-                    list.add(CalendarTFC.getTimeAndDate());
+                    String monthName = I18n.format(Helpers.getEnumName(CalendarTFC.getMonthOfYear()));
+                    list.add(String.format("Year %04d, %s %02d %02d:%02d", CalendarTFC.getTotalYears(), monthName, CalendarTFC.getDayOfMonth(), CalendarTFC.getHourOfDay(), CalendarTFC.getMinuteOfHour()));
 
                     list.add(GRAY + "Biome: " + WHITE + mc.world.getBiome(blockpos).getBiomeName());
 

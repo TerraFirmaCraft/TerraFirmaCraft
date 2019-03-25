@@ -21,6 +21,11 @@ tfc.tooltip.anvil_too_cold=The item(s) are not hot enough to work!
 tfc.tooltip.anvil_no_hammer=There is no hammer in the anvil!
 tfc.tooltip.crucible_result=Result:
 
+## Command Tooltips / Messages
+tfc.tooltip.set_month_length=Set Month Length to %d days
+tfc.tooltip.set_time=Set Calendar Time to Year %04d, %s %02d %02d:%02d
+tfc.tooltip.time_command_disabled=This command has been disabled by TFC. Use /timetfc instead!
+
 ## Keybindings
 tfc.key.craft=Crafting GUI
 
@@ -180,6 +185,19 @@ tfc.enum.forgerule.shrink_not_last=Shrink Not Last
 tfc.enum.forgerule.shrink_second_last=Shrink Second Last
 tfc.enum.forgerule.shrink_third_last=Shrink Third Last
 
+
+tfc.enum.month.january=Winter
+tfc.enum.month.febuary=Late Winter
+tfc.enum.month.march=Early Spring
+tfc.enum.month.april=Spring
+tfc.enum.month.may=Late Spring
+tfc.enum.month.june=Early Summer
+tfc.enum.month.july=Summer
+tfc.enum.month.august=Late Summer
+tfc.enum.month.september=Early Autumn
+tfc.enum.month.october=Autumn
+tfc.enum.month.november=Late Autumn
+tfc.enum.month.december=Early Winter
 
 # Items
 item.tfc.wand.name=TFC Debug Wand
@@ -1544,7 +1562,7 @@ tile.tfc.wood.chest_trap.palm.name=Trapped Palm Chest
 tile.tfc.wood.workbench.ash.name=Ash Workbench
 tile.tfc.wood.workbench.aspen.name=Aspen Workbench
 tile.tfc.wood.workbench.birch.name=Birch Workbench
-tile.tfc.wood.workbench.chestnut.name=Workbenchnut Workbench
+tile.tfc.wood.workbench.chestnut.name=Chestnut Workbench
 tile.tfc.wood.workbench.douglas_fir.name=Douglas Fir Workbench
 tile.tfc.wood.workbench.hickory.name=Hickory Workbench
 tile.tfc.wood.workbench.maple.name=Maple Workbench
