@@ -13,6 +13,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
+import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
+import net.minecraftforge.event.terraingen.TerrainGen;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Plant;
@@ -136,6 +138,9 @@ public class BiomeDecoratorTFC extends BiomeDecorator
     @Override
     public void decorate(final World world, final Random rng, final Biome biome, final BlockPos chunkPos)
     {
+        net.minecraft.util.math.ChunkPos forgeChunkPos = new net.minecraft.util.math.ChunkPos(chunkPos); // actual ChunkPos instead of BlockPos, used for events
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.terraingen.DecorateBiomeEvent.Pre(world, rng, forgeChunkPos));
+
         ChunkDataTFC data = ChunkDataTFC.get(world, chunkPos);
         if (data == null || !data.isInitialized()) return;
 
@@ -152,176 +157,251 @@ public class BiomeDecoratorTFC extends BiomeDecorator
 //        TerraFirmaCraft.getLog().info("decorate {} ({}) {} {}", chunkPos, biome.getBiomeName(), lilyPadPerChunk, waterPlantsPerChunk);
         // todo: crops
 
-        if (rng.nextInt(300) == 0)
+        if (TerrainGen.decorate(world, rng, forgeChunkPos, DecorateBiomeEvent.Decorate.EventType.PUMPKIN) && rng.nextInt(300) == 0)
         {
             pumpkinGen.generate(world, rng, world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8)));
         }
 
-        for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+        if (TerrainGen.decorate(world, rng, forgeChunkPos, DecorateBiomeEvent.Decorate.EventType.SHROOM))
         {
-            if (plant.isValidTempForWorldGen(avgTemperature) && plant.isValidRain(rainfall))
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {
-                plantGen.setGeneratedPlant(plant);
-                switch (plant.getPlantType())
+                if (plant.isValidTempForWorldGen(avgTemperature) && plant.isValidRain(rainfall))
                 {
-                    case WATER:
-                    case TALL_WATER:
-                    case EMERGENT_TALL_WATER:
-                    {
-                        for (int i = rng.nextInt(Math.round(waterCount / floraDiversity)); i < floraDensity * waterPlantsPerChunk; i++)
-                        {
-                            BlockPos blockPos = world.getPrecipitationHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case WATER_SEA:
-                    case TALL_WATER_SEA:
-                    case EMERGENT_TALL_WATER_SEA:
-                    {
-                        for (int i = rng.nextInt(Math.round(waterSeaCount / floraDiversity)); i < floraDensity * waterPlantsPerChunk; i++)
-                        {
-                            BlockPos blockPos = world.getPrecipitationHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case FLOATING:
-                    {
-                        for (int i = rng.nextInt(Math.round(floatingCount / floraDiversity)); i < floraDensity * lilyPadPerChunk; i++)
-                        {
-                            BlockPos blockPos = world.getPrecipitationHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case FLOATING_SEA:
-                    {
-                        for (int i = rng.nextInt(Math.round((floatingSeaCount + 64) / floraDiversity)); i < floraDensity * lilyPadPerChunk; i++)
-                        {
-                            BlockPos blockPos = world.getPrecipitationHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case REED:
-                    case TALL_REED:
-                    {
-                        for (int i = rng.nextInt(Math.round(reedCount / floraDiversity)); i < (1 + floraDensity) * 5; i++)
-                        {
-                            BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case REED_SEA:
-                    case TALL_REED_SEA:
-                    {
-                        for (int i = rng.nextInt(Math.round(reedSeaCount / floraDiversity)); i < (1 + floraDensity) * 5; i++)
-                        {
-                            BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case CACTUS:
-                    {
-                        for (int i = rng.nextInt(Math.round((cactusCount + 32) / floraDiversity)); i < (1 + floraDensity) * 3; i++)
-                        {
-                            BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case EPIPHYTE:
-                    {
-                        for (float i = rng.nextInt(Math.round(epiphyteCount / floraDiversity)); i < (1 + floraDensity) * 5; i++)
-                        {
-                            BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case SHORT_GRASS:
-                    {
-                        for (int i = rng.nextInt(Math.round(grassCount / floraDiversity)); i < (3 + floraDensity) * 5; i++)
-                        {
-                            BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case TALL_GRASS:
-                    {
-                        for (int i = rng.nextInt(Math.round((tallGrassCount + 8) / floraDiversity)); i < (1 + floraDensity) * 5; i++)
-                        {
-                            BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case CREEPING:
-                    {
-                        for (float i = rng.nextInt(Math.round((creepingCount + 32) / floraDiversity)); i < (1 + floraDensity) * 5; i++)
-                        {
-                            BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case HANGING:
-                    {
-                        for (float i = rng.nextInt(Math.round(hangingCount / floraDiversity)); i < (1 + floraDensity) * 5; i++)
-                        {
-                            BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case DESERT:
-                    case DESERT_TALL_PLANT:
-                    {
-                        for (float i = rng.nextInt(Math.round((desertCount + 16) / floraDiversity)); i < (1 + floraDensity) * 5; i++)
-                        {
-                            BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case DRY:
-                    case DRY_TALL_PLANT:
-                    {
-                        for (float i = rng.nextInt(Math.round((dryCount + 16) / floraDiversity)); i < (1 + floraDensity) * 5; i++)
-                        {
-                            BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case TALL_PLANT:
-                    {
-                        for (float i = rng.nextInt(Math.round((tallCount + 8) / floraDiversity)); i < (1 + floraDensity) * 3; i++)
-                        {
-                            BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
-                        break;
-                    }
-                    case MUSHROOM:
+                    plantGen.setGeneratedPlant(plant);
+                    if (plant.getPlantType() == Plant.PlantType.MUSHROOM)
                     {
                         for (float i = rng.nextInt(Math.round(mushroomCount / floraDiversity)); i < (1 + floraDensity) * 5; i++)
                         {
                             BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                             plantGen.generate(world, rng, blockPos);
                         }
-                        break;
                     }
-                    default:
+                }
+            }
+        }
+
+        if (TerrainGen.decorate(world, rng, forgeChunkPos, DecorateBiomeEvent.Decorate.EventType.CACTUS))
+        {
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+            {
+                if (plant.isValidTempForWorldGen(avgTemperature) && plant.isValidRain(rainfall))
+                {
+                    plantGen.setGeneratedPlant(plant);
+                    if (plant.getPlantType() == Plant.PlantType.CACTUS)
                     {
-                        for (float i = rng.nextInt(Math.round((standardCount + 32) / floraDiversity)); i < (1 + floraDensity) * 3; i++)
+                        for (int i = rng.nextInt(Math.round((cactusCount + 32) / floraDiversity)); i < (1 + floraDensity) * 3; i++)
                         {
                             BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
                             plantGen.generate(world, rng, blockPos);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (TerrainGen.decorate(world, rng, forgeChunkPos, DecorateBiomeEvent.Decorate.EventType.LILYPAD))
+        {
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+            {
+                if (plant.isValidTempForWorldGen(avgTemperature) && plant.isValidRain(rainfall))
+                {
+                    plantGen.setGeneratedPlant(plant);
+                    switch (plant.getPlantType())
+                    {
+                        case FLOATING:
+                        {
+                            for (int i = rng.nextInt(Math.round(floatingCount / floraDiversity)); i < floraDensity * lilyPadPerChunk; i++)
+                            {
+                                BlockPos blockPos = world.getPrecipitationHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                            break;
+                        }
+                        case FLOATING_SEA:
+                        {
+                            for (int i = rng.nextInt(Math.round((floatingSeaCount + 64) / floraDiversity)); i < floraDensity * lilyPadPerChunk; i++)
+                            {
+                                BlockPos blockPos = world.getPrecipitationHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (TerrainGen.decorate(world, rng, forgeChunkPos, DecorateBiomeEvent.Decorate.EventType.REED))
+        {
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+            {
+                if (plant.isValidTempForWorldGen(avgTemperature) && plant.isValidRain(rainfall))
+                {
+                    plantGen.setGeneratedPlant(plant);
+                    switch (plant.getPlantType())
+                    {
+                        case REED:
+                        case TALL_REED:
+                        {
+                            for (int i = rng.nextInt(Math.round(reedCount / floraDiversity)); i < (1 + floraDensity) * 5; i++)
+                            {
+                                BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                            break;
+                        }
+                        case REED_SEA:
+                        case TALL_REED_SEA:
+                        {
+                            for (int i = rng.nextInt(Math.round(reedSeaCount / floraDiversity)); i < (1 + floraDensity) * 5; i++)
+                            {
+                                BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (TerrainGen.decorate(world, rng, forgeChunkPos, DecorateBiomeEvent.Decorate.EventType.FLOWERS))
+        {
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+            {
+                if (plant.isValidTempForWorldGen(avgTemperature) && plant.isValidRain(rainfall))
+                {
+                    plantGen.setGeneratedPlant(plant);
+                    switch (plant.getPlantType())
+                    {
+                        case WATER:
+                        case TALL_WATER:
+                        case EMERGENT_TALL_WATER:
+                        {
+                            for (int i = rng.nextInt(Math.round(waterCount / floraDiversity)); i < floraDensity * waterPlantsPerChunk; i++)
+                            {
+                                BlockPos blockPos = world.getPrecipitationHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                            break;
+                        }
+                        case WATER_SEA:
+                        case TALL_WATER_SEA:
+                        case EMERGENT_TALL_WATER_SEA:
+                        {
+                            for (int i = rng.nextInt(Math.round(waterSeaCount / floraDiversity)); i < floraDensity * waterPlantsPerChunk; i++)
+                            {
+                                BlockPos blockPos = world.getPrecipitationHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                            break;
+                        }
+                        case EPIPHYTE:
+                        {
+                            for (float i = rng.nextInt(Math.round(epiphyteCount / floraDiversity)); i < (1 + floraDensity) * 5; i++)
+                            {
+                                BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                            break;
+                        }
+                        case CREEPING:
+                        {
+                            for (float i = rng.nextInt(Math.round((creepingCount + 32) / floraDiversity)); i < (1 + floraDensity) * 5; i++)
+                            {
+                                BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                            break;
+                        }
+                        case HANGING:
+                        {
+                            for (float i = rng.nextInt(Math.round(hangingCount / floraDiversity)); i < (1 + floraDensity) * 5; i++)
+                            {
+                                BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                            break;
+                        }
+                        case TALL_PLANT:
+                        {
+                            for (float i = rng.nextInt(Math.round((tallCount + 8) / floraDiversity)); i < (1 + floraDensity) * 3; i++)
+                            {
+                                BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                            break;
+                        }
+                        case STANDARD:
+                        {
+                            for (float i = rng.nextInt(Math.round((standardCount + 32) / floraDiversity)); i < (1 + floraDensity) * 3; i++)
+                            {
+                                BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (TerrainGen.decorate(world, rng, forgeChunkPos, DecorateBiomeEvent.Decorate.EventType.DEAD_BUSH))
+        {
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+            {
+                if (plant.isValidTempForWorldGen(avgTemperature) && plant.isValidRain(rainfall))
+                {
+                    plantGen.setGeneratedPlant(plant);
+                    switch (plant.getPlantType())
+                    {
+                        case DESERT:
+                        case DESERT_TALL_PLANT:
+                        {
+                            for (float i = rng.nextInt(Math.round((desertCount + 16) / floraDiversity)); i < (1 + floraDensity) * 5; i++)
+                            {
+                                BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                            break;
+                        }
+                        case DRY:
+                        case DRY_TALL_PLANT:
+                        {
+                            for (float i = rng.nextInt(Math.round((dryCount + 16) / floraDiversity)); i < (1 + floraDensity) * 5; i++)
+                            {
+                                BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (TerrainGen.decorate(world, rng, forgeChunkPos, DecorateBiomeEvent.Decorate.EventType.GRASS))
+        {
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+            {
+                if (plant.isValidTempForWorldGen(avgTemperature) && plant.isValidRain(rainfall))
+                {
+                    plantGen.setGeneratedPlant(plant);
+                    switch (plant.getPlantType())
+                    {
+                        case SHORT_GRASS:
+                        {
+                            for (int i = rng.nextInt(Math.round(grassCount / floraDiversity)); i < (3 + floraDensity) * 5; i++)
+                            {
+                                BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
+                            break;
+                        }
+                        case TALL_GRASS:
+                        {
+                            for (int i = rng.nextInt(Math.round((tallGrassCount + 8) / floraDiversity)); i < (1 + floraDensity) * 5; i++)
+                            {
+                                BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                                plantGen.generate(world, rng, blockPos);
+                            }
                         }
                     }
                 }
