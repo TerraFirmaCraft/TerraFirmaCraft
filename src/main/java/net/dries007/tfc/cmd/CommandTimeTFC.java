@@ -12,11 +12,15 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.CalendarTFC;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -57,7 +61,7 @@ public class CommandTimeTFC extends CommandBase
             case "monthlength":
                 int value = parseInt(args[2], 1, 1000);
                 CalendarTFC.setMonthLength(server.getEntityWorld(), value);
-                sender.sendMessage(new TextComponentString("Set Month Length to " + value));
+                sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_month_length", value));
                 return;
             default:
                 throw new WrongUsageException("Second argument must be [day|month|year]");
@@ -73,6 +77,7 @@ public class CommandTimeTFC extends CommandBase
         }
 
         CalendarTFC.setCalendarTime(server.getEntityWorld(), time);
-        sender.sendMessage(new TextComponentString("Set Time to: " + CalendarTFC.getTimeAndDate()));
+        ITextComponent month = new TextComponentTranslation(Helpers.getEnumName(CalendarTFC.getMonthOfYear()));
+        sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_time", CalendarTFC.getTotalYears(), month, CalendarTFC.getDayOfMonth(), CalendarTFC.getHourOfDay(), CalendarTFC.getMinuteOfHour()));
     }
 }

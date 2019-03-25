@@ -61,7 +61,7 @@ ext.getChangeLog = { -> // Create a new function that gets the changelog from gi
 }
 
 minecraft { // Only change any of this with prior approval from the dev team!
-    version = "1.12.2-14.23.4.2705"
+    version = "1.12.2-14.23.5.2768"
     runDir = "run"
     mappings = "snapshot_20180814"
 }
