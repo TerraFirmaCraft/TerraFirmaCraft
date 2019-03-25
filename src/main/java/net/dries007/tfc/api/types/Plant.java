@@ -258,12 +258,12 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public final EnumPlantTypeTFC getEnumPlantTypeTFC()
     {
-        if (isClayMarking) return EnumPlantTypeTFC.CLAY;
         switch (plantType)
         {
             case DRY:
             case DRY_TALL_PLANT:
-                return EnumPlantTypeTFC.DRY;
+                if (isClayMarking) return EnumPlantTypeTFC.DRY_CLAY;
+                else return EnumPlantTypeTFC.DRY;
             case REED:
             case TALL_REED:
                 return EnumPlantTypeTFC.FRESH_BEACH;
@@ -279,7 +279,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
             case EMERGENT_TALL_WATER_SEA:
                 return EnumPlantTypeTFC.SALT_WATER;
             default:
-                return EnumPlantTypeTFC.NONE;
+                if (isClayMarking) return EnumPlantTypeTFC.CLAY;
+                else return EnumPlantTypeTFC.NONE;
         }
     }
 
@@ -354,6 +355,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     public enum EnumPlantTypeTFC
     {
         CLAY,
+        DRY_CLAY,
         DRY,
         FRESH_BEACH,
         SALT_BEACH,

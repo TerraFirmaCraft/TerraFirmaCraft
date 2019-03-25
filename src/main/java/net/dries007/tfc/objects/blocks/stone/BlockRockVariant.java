@@ -237,7 +237,9 @@ public class BlockRockVariant extends Block
             switch (((BlockPlantTFC) plantable).getPlantTypeTFC())
             {
                 case CLAY:
-                    return type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
+                    return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
+                case DRY_CLAY:
+                    return type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND || type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
                 case DRY:
                     return type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND;
                 case FRESH_WATER:

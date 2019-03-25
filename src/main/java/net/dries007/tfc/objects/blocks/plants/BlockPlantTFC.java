@@ -208,34 +208,10 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     protected boolean canSustainBush(IBlockState state)
     {
-        if (plant.getIsClayMarking()) return BlocksTFC.isClay(state);
-        switch (plant.getPlantType())
-        {
-            case CACTUS:
-            case DESERT:
-            case DESERT_TALL_PLANT:
-                return BlocksTFC.isSand(state);
-            case DRY:
-            case DRY_TALL_PLANT:
-                return BlocksTFC.isSand(state) || BlocksTFC.isDryGrass(state);
-            case REED:
-            case REED_SEA:
-            case TALL_REED:
-            case TALL_REED_SEA:
-                return BlocksTFC.isSand(state) || BlocksTFC.isSoil(state);
-            case WATER:
-            case TALL_WATER:
-            case EMERGENT_TALL_WATER:
-                return BlocksTFC.isSoilOrGravel(state);
-            case WATER_SEA:
-            case TALL_WATER_SEA:
-            case EMERGENT_TALL_WATER_SEA:
-                return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
-            default:
-                return BlocksTFC.isSoil(state);
-        }
+        if (plant.getIsClayMarking()) return BlocksTFC.isClay(state) || isValidSoil(state);
+        else return isValidSoil(state);
     }
-
+    
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
@@ -325,5 +301,34 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     int getDayPeriod()
     {
         return Math.floorDiv(CalenderTFC.getHourOfDay(), CalenderTFC.HOURS_IN_DAY / 4);
+    }
+
+    private boolean isValidSoil(IBlockState state)
+    {
+        switch (plant.getPlantType())
+        {
+            case CACTUS:
+            case DESERT:
+            case DESERT_TALL_PLANT:
+                return BlocksTFC.isSand(state);
+            case DRY:
+            case DRY_TALL_PLANT:
+                return BlocksTFC.isSand(state) || BlocksTFC.isDryGrass(state);
+            case REED:
+            case REED_SEA:
+            case TALL_REED:
+            case TALL_REED_SEA:
+                return BlocksTFC.isSand(state) || BlocksTFC.isSoil(state);
+            case WATER:
+            case TALL_WATER:
+            case EMERGENT_TALL_WATER:
+                return BlocksTFC.isSoilOrGravel(state);
+            case WATER_SEA:
+            case TALL_WATER_SEA:
+            case EMERGENT_TALL_WATER_SEA:
+                return BlocksTFC.isSand(state) || BlocksTFC.isSoilOrGravel(state);
+            default:
+                return BlocksTFC.isSoil(state);
+        }
     }
 }

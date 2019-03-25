@@ -10,9 +10,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
@@ -138,8 +140,8 @@ public class BiomeDecoratorTFC extends BiomeDecorator
     @Override
     public void decorate(final World world, final Random rng, final Biome biome, final BlockPos chunkPos)
     {
-        net.minecraft.util.math.ChunkPos forgeChunkPos = new net.minecraft.util.math.ChunkPos(chunkPos); // actual ChunkPos instead of BlockPos, used for events
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.terraingen.DecorateBiomeEvent.Pre(world, rng, forgeChunkPos));
+        ChunkPos forgeChunkPos = new ChunkPos(chunkPos); // actual ChunkPos instead of BlockPos, used for events
+        MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Pre(world, rng, forgeChunkPos));
 
         ChunkDataTFC data = ChunkDataTFC.get(world, chunkPos);
         if (data == null || !data.isInitialized()) return;
@@ -407,5 +409,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                 }
             }
         }
+
+        MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Post(world, rng, forgeChunkPos));
     }
 }
