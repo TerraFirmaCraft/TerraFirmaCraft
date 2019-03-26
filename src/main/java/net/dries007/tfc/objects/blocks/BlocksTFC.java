@@ -131,6 +131,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockSheet> allSheets;
     private static ImmutableList<BlockToolRack> allToolRackBlocks;
     private static ImmutableList<BlockPlantTFC> allPlantBlocks;
+    private static ImmutableList<BlockPlantTFC> allGrassBlocks;
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
     {
@@ -227,6 +228,11 @@ public final class BlocksTFC
     public static ImmutableList<BlockPlantTFC> getAllPlantBlocks()
     {
         return allPlantBlocks;
+    }
+
+    public static ImmutableList<BlockPlantTFC> getAllGrassBlocks()
+    {
+        return allGrassBlocks;
     }
 
     @SubscribeEvent
@@ -406,7 +412,8 @@ public final class BlocksTFC
             Builder<BlockPlantTFC> b = ImmutableList.builder();
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {
-                b.add(register(r, "plants/" + plant.getRegistryName().getPath(), plant.getPlantType().create(plant), CT_FLORA));
+                if (plant.getPlantType() != Plant.PlantType.SHORT_GRASS && plant.getPlantType() != Plant.PlantType.TALL_GRASS)
+                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), plant.getPlantType().create(plant), CT_FLORA));
             }
             allPlantBlocks = b.build();
             for (BlockPlantTFC blockPlant : allPlantBlocks)
@@ -419,6 +426,20 @@ public final class BlocksTFC
                 {
                     normalItemBlocks.add(new ItemBlockTFC(blockPlant));
                 }
+            }
+        }
+
+        {
+            Builder<BlockPlantTFC> b = ImmutableList.builder();
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+            {
+                if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS || plant.getPlantType() == Plant.PlantType.TALL_GRASS)
+                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), plant.getPlantType().create(plant), CT_FLORA));
+            }
+            allGrassBlocks = b.build();
+            for (BlockPlantTFC blockPlant : allGrassBlocks)
+            {
+                normalItemBlocks.add(new ItemBlockTFC(blockPlant));
             }
         }
 

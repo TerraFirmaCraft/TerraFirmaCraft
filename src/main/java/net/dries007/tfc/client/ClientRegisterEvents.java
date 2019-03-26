@@ -235,7 +235,11 @@ public final class ClientRegisterEvents
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
                 worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic(),
-            BlocksTFC.getAllPlantBlocks().toArray(new Block[0]));
+            BlocksTFC.getAllPlantBlocks().toArray(new BlockPlantTFC[0]));
+
+        blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
+                worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D),
+            BlocksTFC.getAllGrassBlocks().toArray(new BlockPlantTFC[0]));
     }
 
     @SubscribeEvent
@@ -263,6 +267,10 @@ public final class ClientRegisterEvents
         itemColors.registerItemColorHandler((stack, tintIndex) ->
                 event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
             BlocksTFC.getAllPlantBlocks().toArray(new BlockPlantTFC[0]));
+
+        itemColors.registerItemColorHandler((stack, tintIndex) ->
+                event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
+            BlocksTFC.getAllGrassBlocks().toArray(new BlockPlantTFC[0]));
     }
 
     /**
