@@ -13,7 +13,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -24,8 +23,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.util.FakePlayer;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Crop;
+import net.dries007.tfc.api.types.Food;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
+import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 
 @ParametersAreNonnullByDefault
 
@@ -136,7 +138,9 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
 
         if (isMaxStage(state))
         {
-            drops.add(new ItemStack(Items.EXPERIENCE_BOTTLE, 1, 0));
+            Food fooditem = crop.getFoodItem();
+            drops.add(new ItemStack(ItemFoodTFC.get(fooditem), 1, 0));
+            TerraFirmaCraft.getLog().info("crop " + crop.getFoodItem());
         }
 
         drops.add(new ItemStack(ItemSeedsTFC.get(crop), 1, 0));
