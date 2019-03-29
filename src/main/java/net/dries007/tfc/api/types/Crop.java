@@ -32,6 +32,7 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
     private final boolean pickable;
     private final float maxLifespan;
     private final Food foodItem;
+    private final Food foodItemEarly;
 
 
     /**
@@ -57,10 +58,11 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
      * @param pickable         crop can be picked with right click allowing multiple harvests
      * @param lifespan         crops lifespan, after this many ticks it will die
      * @param foodItem         the food item dropped by mature crop
+     * @param foodItemEarly    the food item dropped by nearly mature crop
 
      */
 
-    public Crop(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minGrowthTemp, float maxGrowthTemp, float minRain, float maxRain, float minDensity, float maxDensity, int growthStages, float minStageGrowthTime, boolean pickable, float lifespan, @Nullable Food foodItem)
+    public Crop(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minGrowthTemp, float maxGrowthTemp, float minRain, float maxRain, float minDensity, float maxDensity, int growthStages, float minStageGrowthTime, boolean pickable, float lifespan, @Nullable Food foodItem, @Nullable Food foodItemEarly)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -75,6 +77,7 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
         this.pickable = pickable;
         this.maxLifespan = lifespan;
         this.foodItem = foodItem;
+        this.foodItemEarly = foodItemEarly;
 
 
         setRegistryName(name);
@@ -117,6 +120,8 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
 
     public Food getFoodItem() { return foodItem; }
 
+    public Food getFoodItemEarly() { return foodItemEarly; }
+
     @Override
     public String toString() { return String.valueOf(getRegistryName()); }
 
@@ -135,11 +140,12 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
         private float minDensity;
         private float maxDensity;
         private final Food foodItem;
+        private final Food foodItemEarly;
 
 
         private ResourceLocation name;
 
-        public Builder(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minGrowthTemp, float maxGrowthTemp, float minRain, float maxRain, int growthStages, float minStageGrowthTime, boolean pickable, float lifespan, @Nonnull ResourceLocation foodItem)
+        public Builder(@Nonnull ResourceLocation name, float minTemp, float maxTemp, float minGrowthTemp, float maxGrowthTemp, float minRain, float maxRain, int growthStages, float minStageGrowthTime, boolean pickable, float lifespan, @Nonnull ResourceLocation foodItem, @Nullable ResourceLocation foodItemEarly)
         {
             this.name = name;
             this.minTemp = minTemp; // required values
@@ -155,6 +161,7 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
             this.minDensity = 0.1f; // default values
             this.maxDensity = 2f;
             this.foodItem = TFCRegistries.FOODS.getValue(foodItem);
+            this.foodItemEarly = TFCRegistries.FOODS.getValue(foodItemEarly);
 
         }
 
@@ -167,7 +174,7 @@ public class Crop extends IForgeRegistryEntry.Impl<Crop>
 
         public Crop build()
         {
-            return new Crop(name, minTemp, maxTemp, minGrowthTemp, maxGrowthTemp, minRain, maxRain, minDensity, maxDensity, growthStages, minStageGrowthTime, pickable, maxLifespan, foodItem);
+            return new Crop(name, minTemp, maxTemp, minGrowthTemp, maxGrowthTemp, minRain, maxRain, minDensity, maxDensity, growthStages, minStageGrowthTime, pickable, maxLifespan, foodItem, foodItemEarly);
         }
 
     }

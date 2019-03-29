@@ -21,8 +21,7 @@ public class ItemFoodTFC extends ItemFood
     // TODO: 4/6/18 This is temporarily functioning like vanilla food until food system implemented.
     /** Number of ticks to run while 'EnumAction'ing until result. */
     public final int itemUseDuration;
-    /** The amount this food item heals the player. */
-    //private final int healAmount;
+    /** The amount this food item heals the player is healAmount in Vanilla, but is handled by caloriesAmount*/
     /** If this field is true, the food can be consumed even if the player don't need to eat. */
     private boolean alwaysEdible;
     /** represents the potion effect that will occurr upon eating this food. Set by setPotionEffect */
@@ -53,10 +52,11 @@ public class ItemFoodTFC extends ItemFood
         this.vitaminAmount = food.getVitamin();
         this.waterAmount = food.getWaterContent();
         this.caloriesAmount = food.getCalories();
+        this.saturationModifier = food.getSaturation();
         this.isEdible = food.isEdible();
         this.decayRate = food.getDecayRate();
         this.itemUseDuration = 32;
-        this.saturationModifier = food.getSaturation();
         this.alwaysEdible = false;
+        if (MAP.put(food, this) != null) throw new IllegalStateException("There can only be one.");
     }
 }
