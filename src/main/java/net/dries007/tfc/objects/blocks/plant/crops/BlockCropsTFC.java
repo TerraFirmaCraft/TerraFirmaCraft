@@ -23,9 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.util.FakePlayer;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Crop;
-import net.dries007.tfc.api.types.Food;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 
@@ -80,16 +78,19 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
 
     public boolean isMaxStage(IBlockState state)
     {
-        return ((Integer)state.getValue(this.getStageProperty())).intValue() >= crop.getGrowthStages();
+        return ((Integer)state.getValue(this.getStageProperty())).intValue() == crop.getGrowthStages();
     }
-
-    //public boolean isPickable() { return crop.isPickable(); }
 
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     { return true; }
 
     public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
-    { return true; }
+    {
+        if (isMaxStage(state))
+        {
+            return false;
+        }
+        return true; }
 
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
@@ -138,9 +139,14 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
 
         if (isMaxStage(state))
         {
-            Food fooditem = crop.getFoodItem();
-            drops.add(new ItemStack(ItemFoodTFC.get(fooditem), 1, 0));
-            TerraFirmaCraft.getLog().info("crop " + crop.getFoodItem());
+            drops.add(new ItemStack(ItemFoodTFC.get(crop.getFoodItem())));
+        }
+        if (crop.getFoodItemEarly() != null)
+        {
+            if (state.getValue(this.getStageProperty()).intValue() == (crop.getGrowthStages() - 1))
+            {
+                drops.add(new ItemStack(ItemFoodTFC.get(crop.getFoodItemEarly())));
+            }
         }
 
         drops.add(new ItemStack(ItemSeedsTFC.get(crop), 1, 0));
@@ -152,7 +158,6 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
     {
         if (crop.isPickable())
         {
-
             if (isMaxStage(state))
             {
                 if (worldIn.isRemote)
@@ -162,7 +167,7 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
 
                 worldIn.setBlockState(pos, this.getDefaultState().withProperty(STAGE, Integer.valueOf(crop.getGrowthStages() - 2)), 3);
 
-                EntityItem entityitem = new EntityItem(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, new ItemStack(ItemSeedsTFC.get(crop)));
+                EntityItem entityitem = new EntityItem(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, new ItemStack(ItemFoodTFC.get(crop.getFoodItem())));
 
                 worldIn.spawnEntity(entityitem);
 
@@ -171,6 +176,28 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
                     entityitem.onCollideWithPlayer(playerIn);
                 }
                 return true;
+            }
+            if (crop.getFoodItemEarly() != null)
+            {
+                if (worldIn.isRemote)
+                {
+                    return true;
+                }
+
+                if (state.getValue(this.getStageProperty()).intValue() == (crop.getGrowthStages() - 1))
+                {
+                    worldIn.setBlockState(pos, this.getDefaultState().withProperty(STAGE, Integer.valueOf(crop.getGrowthStages() - 3)), 3);
+
+                    EntityItem entityitem = new EntityItem(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, new ItemStack(ItemFoodTFC.get(crop.getFoodItemEarly())));
+
+                    worldIn.spawnEntity(entityitem);
+
+                    if (!(playerIn instanceof FakePlayer))
+                    {
+                        entityitem.onCollideWithPlayer(playerIn);
+                    }
+                    return true;
+                }
             }
         }
 
