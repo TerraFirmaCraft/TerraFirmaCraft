@@ -1,443 +1,411 @@
 {
-	"native_copper": {
+  "native_copper": {
     "ore": "tfc:native_copper",
-		"size": "large",
-		"shape": "scattered_cluster",
-		"rarity": 120,
+    "size": "large",
+    "shape": "scattered_cluster",
+    "rarity": 120,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:igneous_extrusive"
-		]
-
-	},
-	"native_gold": {
+    ]
+  },
+  "native_gold": {
     "ore": "tfc:native_gold",
-		"size": "large",
-		"shape": "scattered_cluster",
-		"rarity": 120,
+    "size": "large",
+    "shape": "scattered_cluster",
+    "rarity": 120,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:igneous_extrusive",
       "tfc:igneous_intrusive"
-		]
-
-	},
-	"native_platinum": {
+    ]
+  },
+  "native_platinum": {
     "ore": "tfc:native_platinum",
-		"size": "small",
-		"shape": "scattered_cluster",
-		"rarity": 150,
+    "size": "small",
+    "shape": "scattered_cluster",
+    "rarity": 150,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 60,
+    "density": 60,
     "base_rocks": [
       "tfc:sedimentary"
-		]
-
-	},
-	"native_silver": {
+    ]
+  },
+  "native_silver": {
     "ore": "tfc:native_silver",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 100,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 100,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:gabbro",
       "tfc:gneiss"
-		]
-
-	},
-	"hematite": {
+    ]
+  },
+  "hematite": {
     "ore": "tfc:hematite",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 125,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 125,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:igneous_extrusive"
-		]
-
-	},
-	"cassiterite": {
+    ]
+  },
+  "cassiterite": {
     "ore": "tfc:cassiterite",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 100,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 100,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:igneous_intrusive"
-		]
-
-	},
-	"galena": {
+    ]
+  },
+  "galena": {
     "ore": "tfc:galena",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 100,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 100,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:igneous_extrusive",
       "tfc:metamorphic",
       "tfc:granite",
       "tfc:limestone"
-		]
-
-	},
-	"bismuthinite": {
+    ]
+  },
+  "bismuthinite": {
     "ore": "tfc:bismuthinite",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 100,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 100,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:igneous_extrusive",
       "tfc:sedimentary"
-		]
-
-	},
-	"garnierite": {
+    ]
+  },
+  "garnierite": {
     "ore": "tfc:garnierite",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 150,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 150,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:gabbro"
-		]
-
-	},
-	"malachite": {
+    ]
+  },
+  "malachite": {
     "ore": "tfc:malachite",
-		"size": "large",
-		"shape": "scattered_cluster",
-		"rarity": 100,
+    "size": "large",
+    "shape": "scattered_cluster",
+    "rarity": 100,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:limestone",
       "tfc:marble"
-		]
-
-	},
-	"magnetite": {
+    ]
+  },
+  "magnetite": {
     "ore": "tfc:magnetite",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 150,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 150,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:sedimentary"
-		]
-
-	},
-	"limonite": {
+    ]
+  },
+  "limonite": {
     "ore": "tfc:limonite",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 150,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 150,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:sedimentary"
-		]
-
-	},
-	"sphalerite": {
+    ]
+  },
+  "sphalerite": {
     "ore": "tfc:sphalerite",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 100,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 100,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:metamorphic"
-		]
-
-	},
-	"tetrahedrite": {
+    ]
+  },
+  "tetrahedrite": {
     "ore": "tfc:tetrahedrite",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 100,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 100,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:metamorphic"
-		]
-
-	},
-	"bithminous_coal": {
+    ]
+  },
+  "bithminous_coal": {
     "ore": "tfc:bituminous_coal",
-		"size": "large",
-		"shape": "scattered_cluster",
-		"rarity": 100,
+    "size": "large",
+    "shape": "scattered_cluster",
+    "rarity": 100,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 60,
+    "density": 60,
     "base_rocks": [
       "tfc:sedimentary"
-		]
-
-	},
-	"lignite": {
+    ]
+  },
+  "lignite": {
     "ore": "tfc:lignite",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 100,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 100,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 60,
+    "density": 60,
     "base_rocks": [
       "tfc:sedimentary"
-		]
-
-	},
-	"kaolinite": {
+    ]
+  },
+  "kaolinite": {
     "ore": "tfc:kaolinite",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 90,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 90,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:sedimentary"
-		]
-
-	},
-	"gypsum": {
+    ]
+  },
+  "gypsum": {
     "ore": "tfc:gypsum",
-		"size": "large",
-		"shape": "scattered_cluster",
-		"rarity": 120,
+    "size": "large",
+    "shape": "scattered_cluster",
+    "rarity": 120,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:sedimentary"
-		]
-
-	},
-	"graphite": {
+    ]
+  },
+  "graphite": {
     "ore": "tfc:graphite",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 100,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 100,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:marble",
       "tfc:gneiss",
       "tfc:quartzite",
       "tfc:schist"
-		]
-
-	},
-	"kimberlite": {
+    ]
+  },
+  "kimberlite": {
     "ore": "tfc:kimberlite",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 200,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 200,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 50,
+    "density": 50,
     "base_rocks": [
       "tfc:gabbro"
-		]
-
-	},
-	"jet": {
+    ]
+  },
+  "jet": {
     "ore": "tfc:jet",
-		"size": "large",
-		"shape": "scattered_cluster",
-		"rarity": 110,
+    "size": "large",
+    "shape": "scattered_cluster",
+    "rarity": 110,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:sedimentary"
-		]
-
-	},
-	"pitchblende": {
+    ]
+  },
+  "pitchblende": {
     "ore": "tfc:pitchblende",
-		"size": "small",
-		"shape": "scattered_cluster",
-		"rarity": 150,
+    "size": "small",
+    "shape": "scattered_cluster",
+    "rarity": 150,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:granite"
-		]
-
-	},
-	"cinnabar": {
+    ]
+  },
+  "cinnabar": {
     "ore": "tfc:cinnabar",
-		"size": "small",
-		"shape": "scattered_cluster",
-		"rarity": 150,
+    "size": "small",
+    "shape": "scattered_cluster",
+    "rarity": 150,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 60,
+    "density": 60,
     "base_rocks": [
       "tfc:igneous_extrusive",
       "tfc:shale",
       "tfc:quartzite"
-		]
-
-	},
-	"cryolite": {
+    ]
+  },
+  "cryolite": {
     "ore": "tfc:cryolite",
-		"size": "small",
-		"shape": "scattered_cluster",
-		"rarity": 100,
+    "size": "small",
+    "shape": "scattered_cluster",
+    "rarity": 100,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:granite"
-		]
-
-	},
-	"saltpeter": {
+    ]
+  },
+  "saltpeter": {
     "ore": "tfc:saltpeter",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 120,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 120,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:sedimentary"
-		]
-
-	},
-	"sylvite": {
+    ]
+  },
+  "sylvite": {
     "ore": "tfc:sylvite",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 100,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 100,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 60,
+    "density": 60,
     "base_rocks": [
       "tfc:rocksalt"
-		]
-
-	},
-	"borax": {
+    ]
+  },
+  "borax": {
     "ore": "tfc:borax",
-		"size": "medium",
-		"shape": "scattered_cluster",
-		"rarity": 120,
+    "size": "medium",
+    "shape": "scattered_cluster",
+    "rarity": 120,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:rocksalt"
-		]
-
-	},
-	"lapis_lazuli": {
+    ]
+  },
+  "lapis_lazuli": {
     "ore": "tfc:lapis_lazuli",
-		"size": "large",
-		"shape": "scattered_cluster",
-		"rarity": 120,
+    "size": "large",
+    "shape": "scattered_cluster",
+    "rarity": 120,
     "minimum_height": 5,
     "maximum_height": 128,
-		"density": 70,
+    "density": 70,
     "base_rocks": [
       "tfc:marble"
-		]
-
-	},
-	"surface_native_copper": {
+    ]
+  },
+  "surface_native_copper": {
     "ore": "tfc:native_copper",
-		"size": "small",
-		"shape": "scattered_cluster",
-		"rarity": 35,
+    "size": "small",
+    "shape": "scattered_cluster",
+    "rarity": 35,
     "minimum_height": 128,
     "maximum_height": 240,
-		"density": 40,
+    "density": 40,
     "base_rocks": [
       "tfc:igneous_extrusive"
-		]
-
-	},
-	"surface_cassiterite": {
+    ]
+  },
+  "surface_cassiterite": {
     "ore": "tfc:cassiterite",
-		"size": "small",
-		"shape": "scattered_cluster",
-		"rarity": 35,
+    "size": "small",
+    "shape": "scattered_cluster",
+    "rarity": 35,
     "minimum_height": 128,
     "maximum_height": 240,
-		"density": 40,
+    "density": 40,
     "base_rocks": [
       "tfc:granite"
-		]
-
-	},
-	"surface_bismuthinite": {
+    ]
+  },
+  "surface_bismuthinite": {
     "ore": "tfc:bismuthinite",
-		"size": "small",
-		"shape": "scattered_cluster",
-		"rarity": 35,
+    "size": "small",
+    "shape": "scattered_cluster",
+    "rarity": 35,
     "minimum_height": 128,
     "maximum_height": 240,
-		"density": 40,
+    "density": 40,
     "base_rocks": [
       "tfc:igneous_extrusive",
       "tfc:sedimentary"
-		]
-
-	},
-	"surface_sphalerite": {
+    ]
+  },
+  "surface_sphalerite": {
     "ore": "tfc:sphalerite",
-		"size": "small",
-		"shape": "scattered_cluster",
-		"rarity": 35,
+    "size": "small",
+    "shape": "scattered_cluster",
+    "rarity": 35,
     "minimum_height": 128,
     "maximum_height": 240,
-		"density": 40,
+    "density": 40,
     "base_rocks": [
       "tfc:metamorphic"
-		]
-
-	},
-	"surface_tetrahedrite": {
+    ]
+  },
+  "surface_tetrahedrite": {
     "ore": "tfc:tetrahedrite",
-		"size": "small",
-		"shape": "scattered_cluster",
-		"rarity": 35,
+    "size": "small",
+    "shape": "scattered_cluster",
+    "rarity": 35,
     "minimum_height": 128,
     "maximum_height": 240,
-		"density": 40,
+    "density": 40,
     "base_rocks": [
       "tfc:metamorphic"
-		]
-	}
+    ]
+  }
 }

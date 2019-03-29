@@ -27,7 +27,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -158,15 +157,15 @@ public class BlockLogTFC extends BlockLog implements IItemSize
         return state.getValue(LOG_AXIS).ordinal() | (state.getValue(PLACED) ? 0b100 : 0) | (state.getValue(SMALL) ? 0b1000 : 0);
     }
 
-    public Tree getWood()
-    {
-        return wood;
-    }
-
     @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, LOG_AXIS, PLACED, SMALL);
+    }
+
+    public Tree getWood()
+    {
+        return wood;
     }
 
     @Override
@@ -179,6 +178,18 @@ public class BlockLogTFC extends BlockLog implements IItemSize
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(PLACED, true).withProperty(SMALL, placer.isSneaking());
+    }
+
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.NORMAL;
+    }
+
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.MEDIUM;
     }
 
     private boolean removeTree(World world, BlockPos pos, @Nullable EntityPlayer player, ItemStack stack, boolean stoneTool)
@@ -232,18 +243,6 @@ public class BlockLogTFC extends BlockLog implements IItemSize
             world.setBlockToAir(pos1);
         }
         return maxLogs >= logs.size();
-    }
-
-    @Override
-    public Size getSize(ItemStack stack)
-    {
-        return Size.NORMAL;
-    }
-
-    @Override
-    public Weight getWeight(ItemStack stack)
-    {
-        return Weight.MEDIUM;
     }
 
 }

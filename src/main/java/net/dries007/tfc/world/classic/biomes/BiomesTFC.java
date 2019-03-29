@@ -13,29 +13,30 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.util.Helpers;
+
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_NAME;
 
-@SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = MOD_ID)
 @GameRegistry.ObjectHolder(MOD_ID)
 public final class BiomesTFC
 {
-    public static final BiomeTFC OCEAN = null;
-    public static final BiomeTFC RIVER = null;
+    public static final BiomeTFC OCEAN = Helpers.getNull();
+    public static final BiomeTFC RIVER = Helpers.getNull();
     //    public static final BiomeTFC HELL = null;
-    public static final BiomeTFC BEACH = null;
-    public static final BiomeTFC GRAVEL_BEACH = null;
-    public static final BiomeTFC HIGH_HILLS = null;
-    public static final BiomeTFC PLAINS = null;
-    public static final BiomeTFC SWAMPLAND = null;
-    public static final BiomeTFC HIGH_HILLS_EDGE = null;
-    public static final BiomeTFC ROLLING_HILLS = null;
-    public static final BiomeTFC MOUNTAINS = null;
-    public static final BiomeTFC MOUNTAINS_EDGE = null;
-    public static final BiomeTFC HIGH_PLAINS = null;
-    public static final BiomeTFC DEEP_OCEAN = null;
-    public static final BiomeTFC LAKE = null;
+    public static final BiomeTFC BEACH = Helpers.getNull();
+    public static final BiomeTFC GRAVEL_BEACH = Helpers.getNull();
+    public static final BiomeTFC HIGH_HILLS = Helpers.getNull();
+    public static final BiomeTFC PLAINS = Helpers.getNull();
+    public static final BiomeTFC SWAMPLAND = Helpers.getNull();
+    public static final BiomeTFC HIGH_HILLS_EDGE = Helpers.getNull();
+    public static final BiomeTFC ROLLING_HILLS = Helpers.getNull();
+    public static final BiomeTFC MOUNTAINS = Helpers.getNull();
+    public static final BiomeTFC MOUNTAINS_EDGE = Helpers.getNull();
+    public static final BiomeTFC HIGH_PLAINS = Helpers.getNull();
+    public static final BiomeTFC DEEP_OCEAN = Helpers.getNull();
+    public static final BiomeTFC LAKE = Helpers.getNull();
     private static BiomeTFC[] PLAYER_SPAWN_BIOMES;
     private static BiomeTFC[] OVERWORLD_GENERATE_BIOMES;
 
@@ -50,14 +51,14 @@ public final class BiomesTFC
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Gravel Beach").setBaseHeight(-2.69f).setHeightVariation(-2.68f).setBaseBiome("tfc:beach")), BiomeDictionary.Type.BEACH);
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High Hills").setBaseHeight(-1.9000001f).setHeightVariation(-1.1f)), BiomeDictionary.Type.HILLS);
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Plains").setBaseHeight(-2.6000001f).setHeightVariation(-2.54f)), BiomeDictionary.Type.PLAINS);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Swampland").setBaseHeight(-2.8f).setHeightVariation(-2.6000001f), 8, 45), BiomeDictionary.Type.SWAMP);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Swampland").setBaseHeight(-2.8f).setHeightVariation(-2.6000001f), 16, 45), BiomeDictionary.Type.SWAMP);
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High Hills Edge").setBaseHeight(-2.5f).setHeightVariation(-2.3f).setBaseBiome("tfc:high_hills")), BiomeDictionary.Type.HILLS, BiomeDictionary.Type.PLAINS);
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Rolling Hills").setBaseHeight(-2.6000001f).setHeightVariation(-2.3f)), BiomeDictionary.Type.HILLS);
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains").setBaseHeight(-1.9000001f).setHeightVariation(-1.1f)), BiomeDictionary.Type.MOUNTAIN);
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains Edge").setBaseHeight(-2.3f).setHeightVariation(-1.9000001f).setBaseBiome("tfc:mountains")), BiomeDictionary.Type.MOUNTAIN);
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High Plains").setBaseHeight(-2.3f).setHeightVariation(-2.27f)), BiomeDictionary.Type.HILLS, BiomeDictionary.Type.PLAINS);
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Deep Ocean").setBaseHeight(-4.2f).setHeightVariation(-2.69999f).setBaseBiome("tfc:ocean")), BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-3.2f).setHeightVariation(-2.6990001f).setBaseBiome("tfc:ocean"), 2, 5), BiomeDictionary.Type.RIVER, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-3.2f).setHeightVariation(-2.6990001f).setBaseBiome("tfc:ocean"), 4, 5), BiomeDictionary.Type.RIVER, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
 
         //        register(r, new BiomeTFC(new Biome.BiomeProperties("tfc_hell").setRainDisabled().setTemperature(2.0F).setRainfall(0.0F)));
     }

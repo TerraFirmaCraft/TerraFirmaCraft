@@ -15,12 +15,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.IPlacableItem;
+import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
 
 import static net.dries007.tfc.objects.blocks.metal.BlockSheet.FACE;
 
-public class ItemSheet extends ItemMetal implements IPlacableItem
+public class ItemSheet extends ItemMetal implements IPlaceableItem
 {
     public ItemSheet(Metal metal, Metal.ItemType type)
     {
