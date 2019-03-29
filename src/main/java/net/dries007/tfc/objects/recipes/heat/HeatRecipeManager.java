@@ -20,7 +20,6 @@ public final class HeatRecipeManager
 {
     private static final List<HeatRecipe> recipes = new ArrayList<>();
 
-    @SuppressWarnings("ConstantConditions")
     public static void postInit()
     {
         recipes.clear();
@@ -45,7 +44,7 @@ public final class HeatRecipeManager
             return recipe.get();
         }
         // Default Recipes
-        // These are for default behaviors (IMetalObject = it can melt)
+        // These are for default behaviors (IMetalObject = it can melt into liquid metal)
         if (stack.getItem() instanceof IMetalObject)
         {
             return new HeatRecipe(((IMetalObject) stack.getItem()), stack);

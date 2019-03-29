@@ -3,7 +3,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "texture": "tfc:blocks/wood/trapdoor/sycamore"
+      "texture": "tfc:blocks/wood/trapdoor/sycamore",
+      "all": "tfc:blocks/wood/trapdoor/sycamore"
     }
   },
   "variants": {

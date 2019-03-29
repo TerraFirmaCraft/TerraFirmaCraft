@@ -13,6 +13,7 @@ import os
 import time
 import zipfile
 
+
 def zipfolder(zip_name, target_dir):
     zipobj = zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED)
     rootlen = len(target_dir) + 1
@@ -148,106 +149,6 @@ WOOD_TYPES = [
     'rosewood',
     'blackwood',
     'palm',
-]
-CROP_TYPES = [
-    'barley',
-    'beet',
-    'cabbage',
-    'carrot',
-    'garlic',
-    'oat',
-    'onion',
-    'potato',
-    'redbellpepper',
-    'rice',
-    'rye',
-    'soybean',
-    'squash',
-    'yellowbellpepper',
-    'wheat',
-]
-CROP_TALL_TYPES = [
-    'maize',
-    'greenbean',
-    'jute',
-    'sugarcane',
-    'tomato',
-]
-FOOD_TYPES = [
-    'banana',
-    'blackberry',
-    'blueberry',
-    'bunchberry',
-    'cherry',
-    'cloudberry',
-    'cranberry',
-    'elderberry',
-    'gooseberry',
-    'greenapple',
-    'lemon',
-    'olive',
-    'orange',
-    'peach',
-    'plum',
-    'raspberry',
-    'redapple',
-    'snowberry',
-    'strawberry',
-    'wintergreenberry',
-    'barley',
-    'barleygrain',
-    'barleyflour',
-    'barleydough',
-    'barleybread',
-    'maize',
-    'cornmealflour',
-    'cornmealdough',
-    'cornbread',
-    'oat',
-    'oatgrain',
-    'oatflour',
-    'oatdough',
-    'oatbread',
-    'rice',
-    'ricegrain',
-    'riceflour',
-    'ricedough',
-    'ricebread',
-    'rye',
-    'ryegrain',
-    'ryeflour',
-    'ryedough',
-    'ryebread',
-    'wheat',
-    'wheatgrain',
-    'wheatflour',
-    'wheatdough',
-    'wheatbread',
-    'beet',
-    'cabbage',
-    'carrot',
-    'garlic',
-    'greenbean',
-    'greenbellpepper',
-    'onion',
-    'potato',
-    'redbellpepper',
-    'seaweed',
-    'squash',
-    'tomato',
-    'yellowbellpepper',
-    'beef',
-    'calamari',
-    'egg',
-    'fish',
-    'horsemeat',
-    'mutton',
-    'porkchop',
-    'poultry',
-    'venison',
-    'soybean',
-    'cheese',
-    'milk',
 ]
 GEM_TYPES = [
     'agate',
@@ -602,8 +503,10 @@ for key in METAL_TYPES:
             ('all', 'particle'): 'tfc:blocks/metal/%s' % key
         }, variants={
             'axis': {
-                'true': {'y': 90},
-                'false': {}
+                'north': {'y': 180},
+                'east': {'y': 270},
+                'south': {},
+                'west': {'y': 90}
             }
         })
 
@@ -725,6 +628,14 @@ for rock_type in ROCK_TYPES:
         }]
     })
 
+# STONE ANVILS - only igneous types
+for rock_type in ['granite', 'rhyolite', 'basalt', 'gabbro', 'diorite', 'andesite', 'dacite']:
+    if rock_type not in ROCK_TYPES:
+        raise Exception('The anvil rock types list has been modified, please fix this!')
+    blockstate(('anvil', rock_type), 'tfc:stone_anvil', textures={
+        ('all', 'particle'): 'tfc:blocks/stonetypes/raw/%s' % rock_type,
+    })
+
 
 # WOOD STUFF
 for wood_type in WOOD_TYPES:
@@ -796,7 +707,6 @@ for wood_type in WOOD_TYPES:
     }, variants=DOOR_VARIANTS)
 
     # TOOL RACKS
-    # TODO: make sure I did this right, Dries - LS
     blockstate(('wood', 'tool_rack', wood_type), 'tfc:tool_rack', textures={
         'texture': 'tfc:blocks/wood/planks/%s' % wood_type,
         'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
@@ -823,10 +733,11 @@ for wood_type in WOOD_TYPES:
     })
     cube_all(('slab', 'full', 'wood', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
 
-    # TRAPDOORS
+    # (WOOD) TRAPDOORS
     blockstate(('wood', 'trapdoor', wood_type), None, textures={
-        'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type,
-    }, variants=TRAPDOOR_VARIANTS)
+            'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type,
+        'all': 'tfc:blocks/wood/trapdoor/%s' % wood_type,
+        }, variants=TRAPDOOR_VARIANTS)
 
     # CHESTS
     blockstate(('wood', 'chest', wood_type), 'tfc:chest', textures={
@@ -873,35 +784,16 @@ for wood_type in WOOD_TYPES:
         ('east', 'west'): 'tfc:blocks/wood/workbench_side',
     })
 
-
-# CROP STUFF
-for crop_type in CROP_TYPES:
-    # CROPS
-    blockstate(('crops', crop_type), 'crop', textures={
-        'crop': 'tfc:blocks/crops/%s_0' % crop_type
+    # BARREL
+    blockstate(('wood', 'barrel', wood_type), 'tfc:barrel', textures={
+        ('particle', 'planks'): 'tfc:blocks/wood/planks/%s' % wood_type,
+        'sheet': 'tfc:blocks/wood/sheets/%s' % wood_type,
+        'hoop': 'tfc:blocks/barrelhoop',
     }, variants={
-        ('stage=0'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_0' % crop_type}},
-        ('stage=1'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_1' % crop_type}},
-        ('stage=2'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_2' % crop_type}},
-        ('stage=3'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_3' % crop_type}},
-        ('stage=4'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_4' % crop_type}},
-        ('stage=5'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_5' % crop_type}},
-        ('stage=6'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_6' % crop_type}},
-        ('stage=7'): {'model': 'crop', 'textures': {'crop': 'tfc:blocks/crops/%s_7' % crop_type}}
-    })
-for crop_tall_type in CROP_TALL_TYPES:
-    # CROPS
-    blockstate(('crops', crop_tall_type), 'tfc:crops_tall', textures={
-        'crop': 'tfc:blocks/crops/%s_0' % crop_tall_type
-    }, variants={
-        ('stage=0'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_0' % crop_tall_type}},
-        ('stage=1'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_1' % crop_tall_type}},
-        ('stage=2'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_2' % crop_tall_type}},
-        ('stage=3'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_3' % crop_tall_type}},
-        ('stage=4'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_4' % crop_tall_type}},
-        ('stage=5'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_5' % crop_tall_type}},
-        ('stage=6'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_6' % crop_tall_type}},
-        ('stage=7'): {'model': 'tfc:crops_tall', 'textures': {'crop': 'tfc:blocks/crops/%s_7' % crop_tall_type}}
+        'sealed': {
+            'true': {'model': 'tfc:barrel_sealed'},
+            'false': {},
+        }
     })
 
 #   _____ _
@@ -910,7 +802,7 @@ for crop_tall_type in CROP_TALL_TYPES:
 #    | | | __/ _ \ '_ ` _ \/ __|
 #   _| |_| ||  __/ | | | | \__ \
 #  |_____|\__\___|_| |_| |_|___/
-#
+# 
 # ITEMS
 
 # ORES
@@ -925,10 +817,14 @@ for rock_type in ROCK_TYPES:
     for item_type in ['rock', 'brick']:
         item((item_type, rock_type), 'tfc:items/stonetypes/%s/%s' % (item_type, rock_type))
 
-# DOORS
+# DOORS / TRAPDOORS
 for wood_type in WOOD_TYPES:
     item(('wood', 'log', wood_type), 'tfc:items/wood/log/%s' % wood_type)
     item(('wood', 'door', wood_type), 'tfc:items/wood/door/%s' % wood_type)
+
+    # Trapdoors are special - their item model needs to reference the blockstate #texture
+    model(('item', 'wood', 'trapdoor', wood_type), 'block/trapdoor_bottom',
+          {'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type})
 
 # GEMS
 for gem in GEM_TYPES:
@@ -956,10 +852,13 @@ for wood_type in WOOD_TYPES:
 # ROCK TOOLS
 for rock_cat in ROCK_CATEGORIES:
     for item_type in ['axe', 'shovel', 'hoe', 'knife', 'javelin', 'hammer']:
+        # tools
         parent = 'item/handheld'
         if item_type in ['knife', 'javelin']:
             parent = 'tfc:item/handheld_flipped'
         item(('stone', item_type, rock_cat), 'tfc:items/stone/%s' % item_type, parent=parent)
+        # tool heads
+        item(('stone', item_type + '_head', rock_cat), 'tfc:items/stone/%s_head' % item_type)
 
 # POWDERS
 for powder in POWDERS:
@@ -1009,16 +908,5 @@ item(('ceramics', 'fire_clay'), 'tfc:items/ceramics/fire_clay')
 # FLAT
 for rock_cat in ROCK_TYPES:
     item(('flat', rock_cat), 'tfc:items/flat/%s' % rock_cat)
-item(('flat', 'leather'), 'tfc:items/flat/leather')
-item(('flat', 'clay'), 'tfc:items/flat/clay')
-item(('flat', 'fire_clay'), 'tfc:items/flat/fire_clay')
 
-# SEEDBAGS
-for crop_type in CROP_TYPES:
-    item(('crops', 'seedbag', crop_type), 'tfc:items/crops/seedbag/%s' % crop_type)
-for crop_tall_type in CROP_TALL_TYPES:
-    item(('crops', 'seedbag', crop_tall_type), 'tfc:items/crops/seedbag/%s' % crop_tall_type)
 
-# FOOD
-for food_type in FOOD_TYPES:
-    item(('food', food_type), 'tfc:items/food/%s' % food_type)

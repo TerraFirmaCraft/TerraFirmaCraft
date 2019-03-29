@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.items.metal;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
@@ -21,14 +22,14 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.IPlacableItem;
+import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 
 import static net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC.AXIS;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ItemAnvil extends ItemMetal implements IPlacableItem
+public class ItemAnvil extends ItemMetal implements IPlaceableItem
 {
     public ItemAnvil(Metal metal, Metal.ItemType type)
     {
@@ -54,7 +55,7 @@ public class ItemAnvil extends ItemMetal implements IPlacableItem
     }
 
     @Override
-    public boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, EnumFacing facing, Vec3d hitVec)
+    public boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, @Nullable EnumFacing facing, @Nullable Vec3d hitVec)
     {
         if (!(stack.getItem() instanceof ItemAnvil))
         {
@@ -66,7 +67,7 @@ public class ItemAnvil extends ItemMetal implements IPlacableItem
             if (!world.isRemote)
             {
                 ItemAnvil anvil = (ItemAnvil) stack.getItem();
-                world.setBlockState(pos.offset(facing), BlockAnvilTFC.get(anvil.metal).getDefaultState().withProperty(AXIS, player.getHorizontalFacing().getAxis() == EnumFacing.Axis.X));
+                world.setBlockState(pos.offset(facing), BlockAnvilTFC.get(anvil.metal).getDefaultState().withProperty(AXIS, player.getHorizontalFacing()));
 
                 world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }

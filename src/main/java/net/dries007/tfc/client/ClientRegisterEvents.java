@@ -47,6 +47,7 @@ import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -144,6 +145,12 @@ public final class ClientRegisterEvents
         for (ItemBlock item : BlocksTFC.getAllInventoryItemBlocks())
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 
+        for (ItemBlock item : BlocksTFC.getAllBarrelItemBlocks())
+        {
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "sealed=false"));
+            ModelLoader.setCustomModelResourceLocation(item, 1, new ModelResourceLocation(item.getRegistryName(), "sealed=true"));
+        }
+
         // BLOCKS - STATE MAPPERS //
 
         // Blocks with Ignored Properties
@@ -200,6 +207,8 @@ public final class ClientRegisterEvents
         ClientRegistry.bindTileEntitySpecialRenderer(TEWorldItem.class, new TESRWorldItem());
         ClientRegistry.bindTileEntitySpecialRenderer(TEIngotPile.class, new TESRIngotPile());
         ClientRegistry.bindTileEntitySpecialRenderer(TEBellows.class, new TESRBellows());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEBarrel.class, new TESRBarrel());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEAnvilTFC.class, new TESRAnvil());
     }
 
     @SubscribeEvent
@@ -226,6 +235,10 @@ public final class ClientRegisterEvents
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
                 worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic(),
             BlocksTFC.getAllLeafBlocks().toArray(new Block[0]));
+
+        blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
+                worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic(),
+            BlocksTFC.getAllPlantBlocks().toArray(new Block[0]));
     }
 
     @SubscribeEvent
@@ -249,6 +262,10 @@ public final class ClientRegisterEvents
 
         itemColors.registerItemColorHandler((stack, tintIndex) -> tintIndex == 1 ? EnumDyeColor.byDyeDamage(stack.getItemDamage()).getColorValue() : 0xFFFFFF,
             ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED);
+
+        itemColors.registerItemColorHandler((stack, tintIndex) ->
+                event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
+            BlocksTFC.getAllPlantBlocks().toArray(new BlockPlantTFC[0]));
     }
 
     /**

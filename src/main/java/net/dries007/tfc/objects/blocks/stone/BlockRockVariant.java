@@ -217,12 +217,13 @@ public class BlockRockVariant extends Block
     @Override
     public int quantityDropped(IBlockState state, int fortune, Random random)
     {
-        // todo: see how 1710 handles this
         switch (type)
         {
             case CLAY:
             case CLAY_GRASS:
                 return 4;
+            case RAW:
+                return 1 + random.nextInt(3);
             default:
                 return super.quantityDropped(state, fortune, random);
         }

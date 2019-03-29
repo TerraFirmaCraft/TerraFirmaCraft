@@ -12,7 +12,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 /**
  * The names are separate from the instances TFCRegistries so they can be used without loading the class prematurely.
  */
-public class TFCRegistryNames
+public final class TFCRegistryNames
 {
     public static final ResourceLocation ROCK_TYPE = new ResourceLocation(MOD_ID, "rock_type");
     public static final ResourceLocation ROCK = new ResourceLocation(MOD_ID, "rock");
@@ -21,6 +21,10 @@ public class TFCRegistryNames
     public static final ResourceLocation METAL = new ResourceLocation(MOD_ID, "metal");
     public static final ResourceLocation FOOD = new ResourceLocation(MOD_ID, "food");
     public static final ResourceLocation CROP = new ResourceLocation(MOD_ID, "crop");
+    public static final ResourceLocation PLANT = new ResourceLocation(MOD_ID, "plant");
 
     public static final ResourceLocation ALLOY_RECIPE = new ResourceLocation(MOD_ID, "alloy_recipe");
+    public static final ResourceLocation KNAPPING_RECIPE = new ResourceLocation(MOD_ID, "knapping_recipe");
+    public static final ResourceLocation ANVIL_RECIPE = new ResourceLocation(MOD_ID, "anvil_recipe");
+    public static final ResourceLocation WELDING_RECIPE = new ResourceLocation(MOD_ID, "welding_recipe");
 }

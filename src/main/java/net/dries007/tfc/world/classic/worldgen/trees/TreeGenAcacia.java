@@ -23,7 +23,6 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.api.util.ITreeGenerator;
-import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 
@@ -84,7 +83,7 @@ public class TreeGenAcacia implements ITreeGenerator
 
     private void placeBranch(TemplateManager manager, World world, BlockPos pos, String name)
     {
-        ResourceLocation base = new ResourceLocation(TFCConstants.MOD_ID, name);
+        ResourceLocation base = new ResourceLocation(name);
         Template structureBase = manager.get(world.getMinecraftServer(), base);
 
         if (structureBase == null)
