@@ -137,13 +137,13 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
             {
-                if (j == 15 && canGrow(worldIn, pos, state, worldIn.isRemote))
+                if (j == 3 && canGrow(worldIn, pos, state, worldIn.isRemote))
                 {
                     grow(worldIn, rand, pos, state);
                 }
-                else if (j < 15)
+                else if (j < 3)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(PART, getPlantPart(worldIn, pos)));
                 }
@@ -154,7 +154,7 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
             {
                 if (j == 0 && canShrink(worldIn, pos))
                 {

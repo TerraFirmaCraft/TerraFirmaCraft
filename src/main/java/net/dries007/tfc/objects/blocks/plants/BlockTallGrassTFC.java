@@ -182,13 +182,13 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
             {
-                if (j == 15 && canGrow(worldIn, pos, state, worldIn.isRemote))
+                if (j == 3 && canGrow(worldIn, pos, state, worldIn.isRemote))
                 {
                     grow(worldIn, rand, pos, state);
                 }
-                else if (j < 15)
+                else if (j < 3)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(PART, getPlantPart(worldIn, pos)));
                 }
@@ -199,7 +199,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
             {
                 if (j == 0 && canShrink(worldIn, pos))
                 {
@@ -225,12 +225,6 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable
         {
             case 0:
             case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
                 return SHORTER_GRASS_AABB.offset(state.getOffset(source, pos));
             default:
                 return GRASS_AABB.offset(state.getOffset(source, pos));

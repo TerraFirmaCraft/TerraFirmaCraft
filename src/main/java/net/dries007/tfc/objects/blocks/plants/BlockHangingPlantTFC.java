@@ -153,15 +153,15 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.down(), state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.down(), state, true))
             {
-                if (j == 15)
+                if (j == 3)
                 {
                     if (canGrow(worldIn, pos, state, worldIn.isRemote)) grow(worldIn, rand, pos, state);
                     else if (canGrowHorizontally(worldIn, pos, state)) growHorizontally(worldIn, rand, pos, state);
                     else if (canGrowDiagonally(worldIn, pos, state)) growDiagonally(worldIn, rand, pos, state);
                 }
-                else if (j < 15)
+                else if (j < 3)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(BOTTOM, getIsBottom(worldIn, pos)));
                 }
@@ -172,7 +172,7 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
             {
                 if (j == 0)
                 {

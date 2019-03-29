@@ -253,7 +253,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public int getAgeForWorldgen(Random rand, float temp)
     {
-        return rand.nextInt(Math.max(1, Math.min(Math.round(10f + ((temp - minGrowthTemp) / (3.75f))), 16)));
+        return rand.nextInt(Math.max(1, Math.min(Math.round(2.5f + ((temp - minGrowthTemp) / minGrowthTemp)), 4)));
     }
 
     public final EnumPlantTypeTFC getEnumPlantTypeTFC()

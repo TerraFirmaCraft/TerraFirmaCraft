@@ -44,7 +44,7 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @ParametersAreNonnullByDefault
 public class BlockPlantTFC extends BlockBush implements IItemSize
 {
-    public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
+    public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 3);
     /* Time of day, used for rendering plants that bloom at different times */
     public final static PropertyInteger DAYPERIOD = PropertyInteger.create("dayperiod", 0, 3);
     static final AxisAlignedBB PLANT_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
@@ -130,7 +130,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public int tickRate(World worldIn)
     {
-        return 3;
+        return 10;
     }
 
     @Override
@@ -194,7 +194,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
 
     public double getGrowthRate(World world, BlockPos pos)
     {
-        if (world.isRainingAt(pos)) return ConfigTFC.GENERAL.plantGrowthRate * 2;
+        if (world.isRainingAt(pos)) return ConfigTFC.GENERAL.plantGrowthRate * 5d;
         else return ConfigTFC.GENERAL.plantGrowthRate;
     }
 
@@ -211,7 +211,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         if (plant.getIsClayMarking()) return BlocksTFC.isClay(state) || isValidSoil(state);
         else return isValidSoil(state);
     }
-    
+
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
@@ -221,9 +221,9 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
             {
-                if (j < 15)
+                if (j < 3)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j + 1));
                 }
@@ -234,7 +234,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
             {
                 if (j > 0)
                 {
