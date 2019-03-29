@@ -3,7 +3,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "texture": "tfc:blocks/wood/trapdoor/ash"
+      "texture": "tfc:blocks/wood/trapdoor/ash",
+      "all": "tfc:blocks/wood/trapdoor/ash"
     }
   },
   "variants": {

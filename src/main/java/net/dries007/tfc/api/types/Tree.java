@@ -66,9 +66,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      * @param burnTemp         the temperature at which this will burn in a fire pit or similar
      * @param burnTicks        the number of ticks that this will burn in a fire pit or similar
      */
-    public Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator gen,
-                float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, float dominance,
-                int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, boolean hasBushes, float minGrowthTime, float burnTemp, int burnTicks)
+    public Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator gen, float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, float dominance, int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, boolean hasBushes, float minGrowthTime, float burnTemp, int burnTicks)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -161,7 +159,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
     @Override
     public String toString()
     {
-        return String.valueOf(getRegistryName());
+        return getRegistryName().getPath();
     }
 
     public static class Builder

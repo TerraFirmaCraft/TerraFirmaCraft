@@ -24,6 +24,7 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.util.NBTBuilder;
 import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.DataLayer;
 
@@ -215,8 +216,12 @@ public final class ChunkDataTFC
         @Override
         public NBTBase writeNBT(Capability<ChunkDataTFC> capability, ChunkDataTFC instance, EnumFacing side)
         {
-            if (instance == null) return null;
+            if (instance == null || !instance.isInitialized())
+            {
+                return new NBTBuilder().setBoolean("valid", false).build();
+            }
             NBTTagCompound root = new NBTTagCompound();
+            root.setBoolean("valid", true);
 
             root.setTag("rockLayer1", new NBTTagIntArray(instance.rockLayer1));
             root.setTag("rockLayer2", new NBTTagIntArray(instance.rockLayer2));
@@ -244,28 +249,30 @@ public final class ChunkDataTFC
         @Override
         public void readNBT(Capability<ChunkDataTFC> capability, ChunkDataTFC instance, EnumFacing side, NBTBase nbt)
         {
-            NBTTagCompound root = ((NBTTagCompound) nbt);
+            NBTTagCompound root = (NBTTagCompound) nbt;
+            if (nbt != null && root.getBoolean("valid"))
+            {
+                System.arraycopy(root.getIntArray("rockLayer1"), 0, instance.rockLayer1, 0, 256);
+                System.arraycopy(root.getIntArray("rockLayer2"), 0, instance.rockLayer2, 0, 256);
+                System.arraycopy(root.getIntArray("rockLayer3"), 0, instance.rockLayer3, 0, 256);
+                System.arraycopy(root.getIntArray("seaLevelOffset"), 0, instance.seaLevelOffset, 0, 256);
 
-            System.arraycopy(root.getIntArray("rockLayer1"), 0, instance.rockLayer1, 0, 256);
-            System.arraycopy(root.getIntArray("rockLayer2"), 0, instance.rockLayer2, 0, 256);
-            System.arraycopy(root.getIntArray("rockLayer3"), 0, instance.rockLayer3, 0, 256);
-            System.arraycopy(root.getIntArray("seaLevelOffset"), 0, instance.seaLevelOffset, 0, 256);
+                read(instance.stabilityLayer, root.getByteArray("stabilityLayer"));
+                read(instance.drainageLayer, root.getByteArray("drainageLayer"));
 
-            read(instance.stabilityLayer, root.getByteArray("stabilityLayer"));
-            read(instance.drainageLayer, root.getByteArray("drainageLayer"));
+                instance.fishPopulation = root.getInteger("fishPopulation");
 
-            instance.fishPopulation = root.getInteger("fishPopulation");
+                instance.rainfall = root.getFloat("rainfall");
+                instance.baseTemp = root.getFloat("baseTemp");
+                instance.avgTemp = root.getFloat("avgTemp");
+                instance.floraDensity = root.getFloat("floraDensity");
+                instance.floraDiversity = root.getFloat("floraDiversity");
 
-            instance.rainfall = root.getFloat("rainfall");
-            instance.baseTemp = root.getFloat("baseTemp");
-            instance.avgTemp = root.getFloat("avgTemp");
-            instance.floraDensity = root.getFloat("floraDensity");
-            instance.floraDiversity = root.getFloat("floraDiversity");
+                instance.oresSpawned.clear();
+                root.getTagList("oresSpawned", Constants.NBT.TAG_COMPOUND).forEach(x -> instance.oresSpawned.add(new ChunkDataOreSpawned(((NBTTagCompound) x))));
 
-            instance.oresSpawned.clear();
-            root.getTagList("oresSpawned", Constants.NBT.TAG_COMPOUND).forEach(x -> instance.oresSpawned.add(new ChunkDataOreSpawned(((NBTTagCompound) x))));
-
-            instance.initialized = true;
+                instance.initialized = true;
+            }
         }
     }
 }

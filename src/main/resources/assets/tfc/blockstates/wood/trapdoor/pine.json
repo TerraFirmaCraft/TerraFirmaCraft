@@ -3,7 +3,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "texture": "tfc:blocks/wood/trapdoor/pine"
+      "texture": "tfc:blocks/wood/trapdoor/pine",
+      "all": "tfc:blocks/wood/trapdoor/pine"
     }
   },
   "variants": {

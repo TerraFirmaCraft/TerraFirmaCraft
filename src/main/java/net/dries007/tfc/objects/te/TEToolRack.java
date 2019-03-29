@@ -27,13 +27,6 @@ import net.dries007.tfc.objects.items.metal.ItemMetalTool;
 
 public class TEToolRack extends TileEntity
 {
-    private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
-
-    public NonNullList<ItemStack> getItems()
-    {
-        return items;
-    }
-
     /**
      * Modify this method to register items that can be put on a tool rack.
      * TODO: an api for other mods to register their items
@@ -52,6 +45,13 @@ public class TEToolRack extends TileEntity
     {
         if (item == null || item.isEmpty()) return false;
         return isItemEligible(item.getItem());
+    }
+
+    private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
+
+    public NonNullList<ItemStack> getItems()
+    {
+        return items;
     }
 
     public void onBreakBlock()
@@ -73,6 +73,27 @@ public class TEToolRack extends TileEntity
         super.writeToNBT(compound);
         compound.setTag("items", ItemStackHelper.saveAllItems(new NBTTagCompound(), items));
         return compound;
+    }
+
+    @Nullable
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        return new SPacketUpdateTileEntity(pos, 127, getUpdateTag());
+    }
+
+    @Override
+    @Nonnull
+    public NBTTagCompound getUpdateTag()
+    {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
+    {
+        readFromNBT(pkt.getNbtCompound());
+        updateBlock();
     }
 
     public void updateBlock()
@@ -118,26 +139,5 @@ public class TEToolRack extends TileEntity
             return true;
         }
         return false;
-    }
-
-    @Nullable
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
-        return new SPacketUpdateTileEntity(pos, 127, getUpdateTag());
-    }
-
-    @Override
-    @Nonnull
-    public NBTTagCompound getUpdateTag()
-    {
-        return writeToNBT(new NBTTagCompound());
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-    {
-        readFromNBT(pkt.getNbtCompound());
-        updateBlock();
     }
 }

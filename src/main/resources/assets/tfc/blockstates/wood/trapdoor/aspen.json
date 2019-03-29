@@ -3,7 +3,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "texture": "tfc:blocks/wood/trapdoor/aspen"
+      "texture": "tfc:blocks/wood/trapdoor/aspen",
+      "all": "tfc:blocks/wood/trapdoor/aspen"
     }
   },
   "variants": {

@@ -8,14 +8,14 @@ package net.dries007.tfc.world.classic.biomes;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.BlockTallGrass;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.gen.feature.WorldGenTallGrass;
 
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.worldgen.*;
@@ -28,9 +28,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
     private final WorldGenPumpkinTFC pumpkinGen;
     private final WorldGenWaterPlants waterplantGen;
 
-    private final WorldGenTallGrass grassGen;
-    private final WorldGenTallGrass fernGen;
-    private final WorldGenTallGrass deadBushGen;
+    private final WorldGenPlantTFC plantGen;
 
     public BiomeDecoratorTFC(int lilyPadPerChunk, int waterPlantsPerChunk)
     {
@@ -45,15 +43,11 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         this.mushroomRedGen = null;
         this.bigMushroomGen = null;
         this.reedGen = null;
-        this.waterlilyGen = null;
 
-        grassGen = new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
-        fernGen = new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
-        deadBushGen = new WorldGenTallGrass(BlockTallGrass.EnumType.DEAD_BUSH);
+        plantGen = new WorldGenPlantTFC();
 
         reedGen = new WorldGenTallPlant(Blocks.REEDS); // todo: replace block?
         sandGen = new WorldGenSandTFC(7);
-        waterlilyGen = new WorldGenWaterlilyTFC(); // todo: replace block?
         pumpkinGen = new WorldGenPumpkinTFC(Blocks.PUMPKIN); // todo: replace block?
         waterplantGen = new WorldGenWaterPlants(); // todo: replace block
     }
@@ -76,11 +70,6 @@ public class BiomeDecoratorTFC extends BiomeDecorator
 //        TerraFirmaCraft.getLog().info("decorate {} ({}) {} {}", chunkPos, biome.getBiomeName(), lilyPadPerChunk, waterPlantsPerChunk);
         // todo: crops
 
-        for (int i = 0; i < lilyPadPerChunk; i++)
-        {
-            waterlilyGen.generate(world, rng, world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8)));
-        }
-
         for (int i = 0; i < 10; i++)
         {
             if (rng.nextInt(100) >= 10) continue;
@@ -96,37 +85,54 @@ public class BiomeDecoratorTFC extends BiomeDecorator
             pumpkinGen.generate(world, rng, world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8)));
         }
 
-        if (temperature > 15f && rainfall < 75f && rng.nextBoolean())
+        for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
         {
-            final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-            cactusGen.generate(world, rng, p2);
-        }
+            if (plant.isValidTempRain(temperature, rainfall))
+            {
+                plantGen.setGeneratedPlant(plant);
 
-        for (int i = 0; i < waterPlantsPerChunk; i++)
-        {
-            final BlockPos p2 = world.getPrecipitationHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-            if (ClimateTFC.getHeightAdjustedBiomeTemp(world, p2) >= 7)
-                waterplantGen.generate(world, rng, p2);
-        }
-        if (rainfall < 75f && temperature > 15f)
-        {
-            final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-            deadBushGen.generate(world, rng, p2);
-        }
-        else
-        {
-            if (temperature > 20f && rainfall > 300f)
-            {
-                for (int i = 0; i < 3 + floraDensity * 5; i++)
+                if (plant.getPlantType() == Plant.PlantType.FLOATING || plant.getPlantType() == Plant.PlantType.FLOATING_SEA)
                 {
-                    final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                    fernGen.generate(world, rng, p2);
+                    for (int i = 0; i < lilyPadPerChunk * floraDensity; i++)
+                    {
+                        final BlockPos p2 = world.getPrecipitationHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                        if (ClimateTFC.getHeightAdjustedBiomeTemp(world, p2) >= 7)
+                            plantGen.generate(world, rng, p2);
+                    }
                 }
-            }
-            for (int i = 0; i < 1 + floraDensity * 5; i++)
-            {
-                final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                grassGen.generate(world, rng, p2);
+                else if (plant.getPlantType() == Plant.PlantType.CACTUS)
+                {
+                    if (rng.nextFloat() < floraDensity)
+                    {
+                        final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                        plantGen.generate(world, rng, p2);
+                    }
+                }
+                else if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS)
+                {
+                    // todo: will need to lower how many times this is run if more grasses are added
+                    for (int i = 0; i < 1 + floraDensity * 5; i++)
+                    {
+                        final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                        plantGen.generate(world, rng, p2);
+                    }
+                }
+                else if (plant.getPlantType() == Plant.PlantType.TALL_GRASS)
+                {
+                    for (int i = rng.nextInt(16); i < 1 + floraDensity * 5; i++)
+                    {
+                        final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                        plantGen.generate(world, rng, p2);
+                    }
+                }
+                else
+                {
+                    for (float i = rng.nextInt(64); i < 1 + floraDensity * 5; i++)
+                    {
+                        final BlockPos p2 = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                        plantGen.generate(world, rng, p2);
+                    }
+                }
             }
         }
     }
