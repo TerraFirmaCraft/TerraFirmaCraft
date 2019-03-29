@@ -7,10 +7,10 @@ package net.dries007.tfc.objects.blocks;
 
 import java.util.Random;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockTorch;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -36,11 +36,10 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
-public class BlockTorchTFC extends BlockTorch implements ITileEntityProvider, IItemSize
+public class BlockTorchTFC extends BlockTorch implements IItemSize
 {
     public static final PropertyBool LIT = PropertyBool.create("lit");
 
-    @SuppressWarnings("ConstantConditions")
     public static boolean canLight(ItemStack stack)
     {
         return stack.getItem() == Item.getItemFromBlock(BlocksTFC.TORCH) || ItemFireStarter.canIgnite(stack);
@@ -70,17 +69,31 @@ public class BlockTorchTFC extends BlockTorch implements ITileEntityProvider, II
     }
 
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
-    {
-        return new TETorchTFC();
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         if (!stateIn.getValue(LIT)) return;
         super.randomDisplayTick(stateIn, worldIn, pos, rand);
+    }
+
+    @Override
+    @Nonnull
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(LIT, meta >= 8).withProperty(FACING, EnumFacing.byIndex(meta & 0b111));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return (state.getValue(LIT) ? 8 : 0) + state.getValue(FACING).getIndex();
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, FACING, LIT);
     }
 
     @Override
@@ -109,28 +122,15 @@ public class BlockTorchTFC extends BlockTorch implements ITileEntityProvider, II
     }
 
     @Override
-    @Nonnull
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return getDefaultState().withProperty(LIT, meta >= 8).withProperty(FACING, EnumFacing.byIndex(meta & 0b111));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return (state.getValue(LIT) ? 8 : 0) + state.getValue(FACING).getIndex();
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING, LIT);
-    }
-
-    @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TETorchTFC();
     }
 }

@@ -29,7 +29,7 @@ import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class TELogPile extends TESidedInventory implements ITickable
+public class TELogPile extends TEInventory implements ITickable
 {
     private static final int NUM_SLOTS = 4;
 
@@ -212,7 +212,6 @@ public class TELogPile extends TESidedInventory implements ITickable
         if (j == 1)
         {
             // This log pile is at the bottom of the charcoal pit
-            //noinspection ConstantConditions
             world.setBlockState(pos, BlocksTFC.CHARCOAL_PILE.getDefaultState().withProperty(LAYERS, charcoal));
             return;
         }
@@ -223,7 +222,6 @@ public class TELogPile extends TESidedInventory implements ITickable
             if (state.getBlock() == Blocks.AIR)
             {
                 // If it hits air, place the remaining pile in that block
-                //noinspection ConstantConditions
                 world.setBlockState(pos.down(k), BlocksTFC.CHARCOAL_PILE.getDefaultState().withProperty(LAYERS, charcoal));
                 world.setBlockState(pos, Blocks.AIR.getDefaultState());
                 return;
@@ -234,7 +232,6 @@ public class TELogPile extends TESidedInventory implements ITickable
                 // Place what it can in the existing charcoal pit, then continue climbing
                 charcoal += state.getValue(LAYERS);
                 int toCreate = charcoal > 8 ? 8 : charcoal;
-                //noinspection ConstantConditions
                 world.setBlockState(pos.down(k), BlocksTFC.CHARCOAL_PILE.getDefaultState().withProperty(LAYERS, toCreate));
                 charcoal -= toCreate;
             }
@@ -246,7 +243,6 @@ public class TELogPile extends TESidedInventory implements ITickable
             }
         }
         // If you exit the loop, its arrived back at the original position OR needs to rest the original position, and needs to replace that block
-        //noinspection ConstantConditions
         world.setBlockState(pos, BlocksTFC.CHARCOAL_PILE.getDefaultState().withProperty(LAYERS, charcoal));
     }
 }

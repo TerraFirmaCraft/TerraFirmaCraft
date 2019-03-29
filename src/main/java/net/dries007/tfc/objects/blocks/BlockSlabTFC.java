@@ -74,6 +74,18 @@ public abstract class BlockSlabTFC extends BlockSlab
         return super.getTranslationKey();
     }
 
+    @Override
+    public IProperty<?> getVariantProperty()
+    {
+        return VARIANT; // why is this not null-tolerable ...
+    }
+
+    @Override
+    public Comparable<?> getTypeForItem(ItemStack stack)
+    {
+        return Variant.DEFAULT;
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
@@ -139,18 +151,6 @@ public abstract class BlockSlabTFC extends BlockSlab
     public SoundType getSoundType()
     {
         return modelBlock.getSoundType();
-    }
-
-    @Override
-    public IProperty<?> getVariantProperty()
-    {
-        return VARIANT; // why is this not null-tolerable ...
-    }
-
-    @Override
-    public Comparable<?> getTypeForItem(ItemStack stack)
-    {
-        return Variant.DEFAULT;
     }
 
     public enum Variant implements IStringSerializable

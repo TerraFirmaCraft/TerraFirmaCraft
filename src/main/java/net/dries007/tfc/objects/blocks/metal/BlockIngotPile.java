@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -32,11 +31,12 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.te.TEIngotPile;
+import net.dries007.tfc.objects.te.TEWorldItem;
 import net.dries007.tfc.util.Helpers;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockIngotPile extends Block implements ITileEntityProvider
+public class BlockIngotPile extends Block
 {
     public BlockIngotPile()
     {
@@ -45,13 +45,6 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
         setHardness(3.0F);
         setResistance(10.0F);
         setHarvestLevel("pickaxe", 0);
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
-    {
-        return new TEIngotPile();
     }
 
     @Override
@@ -135,7 +128,6 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
         {
             posTop = posTop.up();
             stateTop = worldIn.getBlockState(posTop);
-            //noinspection ConstantConditions
             if (stateTop.getBlock() != BlocksTFC.INGOT_PILE)
             {
                 te.setCount(te.getCount() - 1);
@@ -146,7 +138,6 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
                         worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                     }
                     playerIn.addItemStackToInventory(new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
-//                    InventoryHelper.spawnItemStack(worldIn, posTop.getX(), posTop.down().getY() + 0.125 * (te.getCount() / 8 + 2), posTop.getZ(), );
                 }
                 return true;
             }
@@ -165,7 +156,6 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
                                 worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                             }
                             playerIn.addItemStackToInventory(new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
-                            //InventoryHelper.spawnItemStack(worldIn, posTop.getX(), posTop.getY() + 0.125 * (te.getCount() / 8 + 2), posTop.getZ(), new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
                         }
                         return true;
                     }
@@ -184,10 +174,33 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
         return te.getCount() == 64;
     }
 
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TEWorldItem();
+    }
+
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        TEIngotPile te = Helpers.getTE(world, pos, TEIngotPile.class);
+        if (te != null)
+        {
+            return new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT));
+        }
+        return ItemStack.EMPTY;
+    }
+
     private boolean collapseDown(World world, BlockPos pos)
     {
         IBlockState stateDown = world.getBlockState(pos.down());
-        //noinspection ConstantConditions
         if (stateDown.getBlock() == BlocksTFC.INGOT_PILE)
         {
 
@@ -209,16 +222,5 @@ public class BlockIngotPile extends Block implements ITileEntityProvider
             return true;
         }
         return false;
-    }
-
-    @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        TEIngotPile te = Helpers.getTE(world, pos, TEIngotPile.class);
-        if (te != null)
-        {
-            return new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT));
-        }
-        return ItemStack.EMPTY;
     }
 }

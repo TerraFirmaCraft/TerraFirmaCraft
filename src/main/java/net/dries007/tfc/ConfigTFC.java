@@ -12,8 +12,6 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import net.dries007.tfc.world.classic.CalenderTFC;
-
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
@@ -22,6 +20,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @Config(modid = MOD_ID, category = "")
 @Mod.EventBusSubscriber(modid = MOD_ID)
 @Config.LangKey("config." + MOD_ID)
+@SuppressWarnings("WeakerAccess")
 public class ConfigTFC
 {
     @Config.Comment("General settings")
@@ -42,9 +41,6 @@ public class ConfigTFC
         if (event.getModID().equals(MOD_ID))
         {
             TerraFirmaCraft.getLog().warn("Config changed");
-
-            CalenderTFC.reload();
-
             ConfigManager.sync(MOD_ID, Config.Type.INSTANCE);
         }
     }
@@ -74,19 +70,29 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonusClasses")
         public String[] leafStickDropChanceBonusClasses = new String[] {"knife", "scythe"};
 
-        @Config.Comment("Modifier for how quickly items gain and lose heat. Smaller number = slower temperature changes")
+        @Config.Comment("Modifier for how quickly items gains and loses heat. Smaller number = slower temperature changes.")
         @Config.RangeDouble(min = 0, max = 10)
-        @Config.LangKey("config." + MOD_ID + ".general.temperatureModifier")
-        public double temperatureModifier = 0.5;
+        @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierGlobal")
+        public double temperatureModifierGlobal = 0.5; // todo: items cool too fast at 0.5, needs tweaking
 
-        @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour), default is 8 hours.")
+        @Config.Comment("Modifier for how quickly devices (i.e. charcoal forge, firepit) gain and lose heat. Smaller number = slower temperature changes.")
+        @Config.RangeDouble(min = 0, max = 10)
+        @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierHeating")
+        public double temperatureModifierHeating = 1;
+
+        @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.")
         @Config.RangeInt(min = 20)
-        @Config.LangKey("config." + MOD_ID + ".general.temperatureModifier")
+        @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierGlobal")
         public int pitKilnTime = 8000;
 
         @Config.Comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour), default is 72 hours. Set to -1 to disable torch burnout.")
         @Config.RangeInt(min = 20)
         public int torchTime = 200; // todo: change to 72000
+
+        @Config.Comment("Modifier for how quickly plants grow. Smaller number = slower")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.plantGrowthRate")
+        public double plantGrowthRate = 0.5;
     }
 
     public static class ClientCFG

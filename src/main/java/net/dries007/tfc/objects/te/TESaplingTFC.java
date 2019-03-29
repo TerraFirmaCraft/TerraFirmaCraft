@@ -29,12 +29,12 @@ public class TESaplingTFC extends TileEntity
 
     public long getHoursSincePlaced()
     {
-        return CalenderTFC.getTotalHours() - timer;
+        return (CalenderTFC.getTotalTime() - timer) / CalenderTFC.TICKS_IN_HOUR;
     }
 
     public void onPlaced()
     {
-        timer = CalenderTFC.getTotalHours();
+        timer = CalenderTFC.getTotalTime();
         this.markDirty();
     }
 

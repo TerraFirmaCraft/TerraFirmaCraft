@@ -74,7 +74,6 @@ public class WorldGenLooseRocks implements IWorldGenerator
 
         if (world.getBlockState(pos).getMaterial().isReplaceable() && !world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).isFullCube())
         {
-            //noinspection ConstantConditions
             world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState(), 2);
             TEWorldItem tile = (TEWorldItem) world.getTileEntity(pos);
             if (tile != null)
