@@ -23,7 +23,7 @@ tfc.tooltip.crucible_result=Result:
 
 ## Command Tooltips / Messages
 tfc.tooltip.set_month_length=Set Month Length to %d days
-tfc.tooltip.set_time=Set Calendar Time to Year %04d, %s %02d %02d:%02d
+tfc.tooltip.set_time=Set Calendar Time to Year %04d, %s %02d %s
 tfc.tooltip.time_command_disabled=This command has been disabled by TFC. Use /timetfc instead!
 
 ## Keybindings
@@ -187,7 +187,7 @@ tfc.enum.forgerule.shrink_third_last=Shrink Third Last
 
 
 tfc.enum.month.january=Winter
-tfc.enum.month.febuary=Late Winter
+tfc.enum.month.february=Late Winter
 tfc.enum.month.march=Early Spring
 tfc.enum.month.april=Spring
 tfc.enum.month.may=Late Spring
