@@ -177,7 +177,6 @@ public class CalendarTFC
 
     public enum Month
     {
-        // todo: make tfc.enum.month.march=Early Spring a translation key
         JANUARY(10, 66.5f, "Jan"),
         FEBRUARY(11, 65.5f, "Feb"),
         MARCH(0, 56f, "Mar"),
@@ -223,8 +222,6 @@ public class CalendarTFC
         public float getTempMod() { return tMod; }
 
         public String getShortName() { return abrev; }
-
-        public String getLongName() { return name().substring(0, 1) + name().substring(1).toLowerCase(); }
 
         public Month next()
         {
