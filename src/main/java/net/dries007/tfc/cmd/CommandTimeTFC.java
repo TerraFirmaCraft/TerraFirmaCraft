@@ -35,7 +35,7 @@ public class CommandTimeTFC extends CommandBase
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "/timetfc [set|add] [year|month|day|monthLength] [value]";
+        return "/timetfc [set|add] [year|month|day|monthLength|ticks] [value]";
     }
 
     @Override
@@ -45,6 +45,7 @@ public class CommandTimeTFC extends CommandBase
         if (args.length != 3) throw new WrongUsageException("Requires three arguments");
 
         long time = CalendarTFC.TICKS_IN_DAY;
+        boolean updateDaylightCycle = false;
         switch (args[1].toLowerCase())
         {
             case "month":
@@ -57,6 +58,11 @@ public class CommandTimeTFC extends CommandBase
                 break;
             case "day":
                 time *= parseInt(args[2], 0, CalendarTFC.getDaysInMonth() * 12 * 1000);
+                break;
+            case "ticks":
+                // This one is different, because it needs to update the actual sun cycle
+                time = parseInt(args[2], 0, Integer.MAX_VALUE);
+                updateDaylightCycle = true;
                 break;
             case "monthlength":
                 int value = parseInt(args[2], 1, 1000);
@@ -78,6 +84,14 @@ public class CommandTimeTFC extends CommandBase
 
         CalendarTFC.setCalendarTime(server.getEntityWorld(), time);
         ITextComponent month = new TextComponentTranslation(Helpers.getEnumName(CalendarTFC.getMonthOfYear()));
-        sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_time", CalendarTFC.getTotalYears(), month, CalendarTFC.getDayOfMonth(), CalendarTFC.getHourOfDay(), CalendarTFC.getMinuteOfHour()));
+        sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_time", CalendarTFC.getTotalYears(), month, CalendarTFC.getDayOfMonth(), String.format("%02d:%02d", CalendarTFC.getHourOfDay(), CalendarTFC.getMinuteOfHour())));
+
+        if (updateDaylightCycle)
+        {
+            for (int i = 0; i < server.worlds.length; ++i)
+            {
+                server.worlds[i].setWorldTime(time);
+            }
+        }
     }
 }
