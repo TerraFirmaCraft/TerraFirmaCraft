@@ -1,5 +1,5 @@
 {
-    "parent": "tfc:block/plants/sword_fern",
+    "parent": "tfc:block/plants/lady_fern",
 	"display": {
 		"thirdperson_righthand": {
 			"translation": [0, 3, 1],

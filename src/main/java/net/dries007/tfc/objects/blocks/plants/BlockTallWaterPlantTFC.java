@@ -18,7 +18,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -33,7 +32,7 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import static net.dries007.tfc.world.classic.ChunkGenTFC.SALT_WATER;
 
 @ParametersAreNonnullByDefault
-public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowable
+public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowable, ITallPlant
 {
     private static final PropertyEnum<EnumBlockPart> PART = PropertyEnum.create("part", EnumBlockPart.class);
     private static final Map<Plant, BlockTallWaterPlantTFC> MAP = new HashMap<>();
@@ -188,7 +187,7 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
     @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return PLANT_AABB.offset(state.getOffset(source, pos));
+        return getTallBoundingBax(state.getValue(AGE), state, source, pos);
     }
 
     @Override
@@ -207,40 +206,5 @@ public class BlockTallWaterPlantTFC extends BlockWaterPlantTFC implements IGrowa
     private boolean canShrink(World worldIn, BlockPos pos)
     {
         return worldIn.getBlockState(pos.down()).getBlock() == this && worldIn.getBlockState(pos.up()).getBlock() != this;
-    }
-
-    private EnumBlockPart getPlantPart(IBlockAccess world, BlockPos pos)
-    {
-        if (world.getBlockState(pos.down()).getBlock() != this && world.getBlockState(pos.up()).getBlock() == this)
-        {
-            return EnumBlockPart.LOWER;
-        }
-        if (world.getBlockState(pos.down()).getBlock() == this && world.getBlockState(pos.up()).getBlock() == this)
-        {
-            return EnumBlockPart.MIDDLE;
-        }
-        if (world.getBlockState(pos.down()).getBlock() == this && world.getBlockState(pos.up()).getBlock() != this)
-        {
-            return EnumBlockPart.UPPER;
-        }
-        return EnumBlockPart.SINGLE;
-    }
-
-    public enum EnumBlockPart implements IStringSerializable
-    {
-        UPPER,
-        MIDDLE,
-        LOWER,
-        SINGLE;
-
-        public String toString()
-        {
-            return this.getName();
-        }
-
-        public String getName()
-        {
-            return name().toLowerCase();
-        }
     }
 }

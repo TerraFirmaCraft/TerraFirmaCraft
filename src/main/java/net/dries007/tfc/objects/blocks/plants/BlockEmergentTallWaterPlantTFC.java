@@ -22,7 +22,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import static net.dries007.tfc.world.classic.ChunkGenTFC.SALT_WATER;
 
 @ParametersAreNonnullByDefault
-public class BlockEmergentTallWaterPlantTFC extends BlockTallWaterPlantTFC
+public class BlockEmergentTallWaterPlantTFC extends BlockTallWaterPlantTFC implements ITallPlant
 {
     private static final Map<Plant, BlockEmergentTallWaterPlantTFC> MAP = new HashMap<>();
 

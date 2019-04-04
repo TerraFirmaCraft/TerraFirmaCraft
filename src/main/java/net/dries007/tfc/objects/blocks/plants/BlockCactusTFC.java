@@ -24,7 +24,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -38,7 +37,7 @@ import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
-public class BlockCactusTFC extends BlockPlantTFC implements IGrowable
+public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPlant
 {
     private static final PropertyEnum<EnumBlockPart> PART = PropertyEnum.create("part", EnumBlockPart.class);
     private static final AxisAlignedBB CACTUS_COLLISION_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D);
@@ -237,40 +236,5 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
         return CACTUS_COLLISION_AABB.offset(blockState.getOffset(worldIn, pos));
-    }
-
-    private EnumBlockPart getPlantPart(IBlockAccess world, BlockPos pos)
-    {
-        if (world.getBlockState(pos.down()).getBlock() != this && world.getBlockState(pos.up()).getBlock() == this)
-        {
-            return EnumBlockPart.LOWER;
-        }
-        if (world.getBlockState(pos.down()).getBlock() == this && world.getBlockState(pos.up()).getBlock() == this)
-        {
-            return EnumBlockPart.MIDDLE;
-        }
-        if (world.getBlockState(pos.down()).getBlock() == this && world.getBlockState(pos.up()).getBlock() != this)
-        {
-            return EnumBlockPart.UPPER;
-        }
-        return EnumBlockPart.SINGLE;
-    }
-
-    public enum EnumBlockPart implements IStringSerializable
-    {
-        UPPER,
-        MIDDLE,
-        LOWER,
-        SINGLE;
-
-        public String toString()
-        {
-            return this.getName();
-        }
-
-        public String getName()
-        {
-            return name().toLowerCase();
-        }
     }
 }

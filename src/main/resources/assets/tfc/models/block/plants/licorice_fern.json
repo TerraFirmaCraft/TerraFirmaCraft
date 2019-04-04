@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"fern": "tfc:blocks/plants/licorice_fern/placeholder",
-		"particle": "tfc:blocks/plants/licorice_fern/placeholder"
+		"fern": "tfc:blocks/plants/licorice_fern/licorice_fern",
+		"particle": "tfc:blocks/plants/licorice_fern/licorice_fern"
 	},
 	"elements": [
 		{
@@ -12,8 +12,8 @@
 			"shade": false,
 			"rotation": {"angle": -22.5, "axis": "z", "origin": [8.5, 0, 1.55], "rescale": true},
 			"faces": {
-				"east": {"uv": [16, 0, 0, 16], "texture": "#fern"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#fern"}
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
 			}
 		},
 		{
@@ -22,8 +22,8 @@
 			"shade": false,
 			"rotation": {"angle": 45, "axis": "y", "origin": [7.625, 0, 6.05], "rescale": true},
 			"faces": {
-				"east": {"uv": [16, 0, 0, 16], "texture": "#fern"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#fern"}
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
 			}
 		},
 		{
@@ -32,8 +32,8 @@
 			"shade": false,
 			"rotation": {"angle": -45, "axis": "y", "origin": [8.75, 0, 9.05], "rescale": true},
 			"faces": {
-				"east": {"uv": [16, 0, 0, 16], "texture": "#fern"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#fern"}
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
 			}
 		},
 		{
@@ -42,8 +42,8 @@
 			"shade": false,
 			"rotation": {"angle": 22.5, "axis": "z", "origin": [9.25, 0, 6.05], "rescale": true},
 			"faces": {
-				"east": {"uv": [16, 0, 0, 16], "texture": "#fern"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#fern"}
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
 			}
 		},
 		{
@@ -52,8 +52,8 @@
 			"shade": false,
 			"rotation": {"angle": -22.5, "axis": "y", "origin": [8.75, 0, 9.05], "rescale": true},
 			"faces": {
-				"east": {"uv": [16, 0, 0, 16], "texture": "#fern"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#fern"}
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
 			}
 		},
 		{
@@ -62,8 +62,8 @@
 			"shade": false,
 			"rotation": {"angle": 22.5, "axis": "y", "origin": [7.625, 0, 6.05], "rescale": true},
 			"faces": {
-				"east": {"uv": [16, 0, 0, 16], "texture": "#fern"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#fern"}
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
 			}
 		},
 		{
@@ -72,8 +72,8 @@
 			"shade": false,
 			"rotation": {"angle": -22.5, "axis": "z", "origin": [5.25, 0, 8.05], "rescale": true},
 			"faces": {
-				"east": {"uv": [16, 0, 0, 16], "texture": "#fern"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#fern"}
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
 			}
 		},
 		{
@@ -82,8 +82,8 @@
 			"shade": false,
 			"rotation": {"angle": 22.5, "axis": "z", "origin": [11.25, 0, -1.95], "rescale": true},
 			"faces": {
-				"east": {"uv": [16, 0, 0, 16], "texture": "#fern"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#fern"}
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
 			}
 		}
 	]
