@@ -32,11 +32,7 @@ import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.*;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
-import net.dries007.tfc.objects.items.itemblock.ItemBlockBarrel;
-import net.dries007.tfc.objects.items.itemblock.ItemBlockFloatingWaterTFC;
-import net.dries007.tfc.objects.items.itemblock.ItemBlockHeat;
-import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
-import net.dries007.tfc.objects.items.itemblock.ItemBlockTorchTFC;
+import net.dries007.tfc.objects.items.itemblock.*;
 import net.dries007.tfc.objects.te.*;
 
 import static net.dries007.tfc.api.types.Rock.Type.*;

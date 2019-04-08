@@ -26,19 +26,6 @@ public class ContainerBarrel extends ContainerTE<TEBarrel>
         super(playerInv, teBarrel);
     }
 
-    @Override
-    protected void addContainerSlots()
-    {
-        IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-
-        if (inventory != null)
-        {
-            this.addSlotToContainer(new SlotTEInput(inventory, SLOT_FLUID_CONTAINER_IN, 35, 20, tile));
-            this.addSlotToContainer(new SlotOutput(inventory, SLOT_FLUID_CONTAINER_OUT, 35, 54));
-            this.addSlotToContainer(new SlotTEInput(inventory, SLOT_ITEM, 89, 37, tile));
-        }
-    }
-
     @Nullable
     public IFluidHandler getBarrelTank()
     {
@@ -54,5 +41,18 @@ public class ContainerBarrel extends ContainerTE<TEBarrel>
     public boolean isBarrelSealed()
     {
         return tile.isSealed();
+    }
+
+    @Override
+    protected void addContainerSlots()
+    {
+        IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+
+        if (inventory != null)
+        {
+            this.addSlotToContainer(new SlotTEInput(inventory, SLOT_FLUID_CONTAINER_IN, 35, 20, tile));
+            this.addSlotToContainer(new SlotOutput(inventory, SLOT_FLUID_CONTAINER_OUT, 35, 54));
+            this.addSlotToContainer(new SlotTEInput(inventory, SLOT_ITEM, 89, 37, tile));
+        }
     }
 }

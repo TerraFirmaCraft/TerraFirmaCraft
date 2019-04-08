@@ -42,8 +42,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     private final PlantType plantType;
     private final Material material;
-    private final Boolean isClayMarking;
-    private final Boolean isSwampPlant;
+    private final boolean isClayMarking;
+    private final boolean isSwampPlant;
     private final Optional<String> oreDictName;
 
     /**
@@ -79,7 +79,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      * @param maxWaterDepth max water depth for water plants on worldgen
      * @param oreDictName   if not empty, the Ore Dictionary entry for this plant
      */
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, int[] stages, Boolean isClayMarking, Boolean isSwampPlant, float minGrowthTemp, float maxGrowthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, int minWaterDepth, int maxWaterDepth, String oreDictName)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, int[] stages, boolean isClayMarking, boolean isSwampPlant, float minGrowthTemp, float maxGrowthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, int minWaterDepth, int maxWaterDepth, String oreDictName)
     {
         this.stages = stages;
         this.minGrowthTemp = minGrowthTemp;
