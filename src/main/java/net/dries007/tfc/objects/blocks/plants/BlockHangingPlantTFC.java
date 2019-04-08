@@ -22,7 +22,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Plant;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -65,7 +65,7 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         worldIn.setBlockState(pos.down(), this.getDefaultState());
-        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]).withProperty(BOTTOM, false);
+        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]).withProperty(BOTTOM, false);
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.down(), this, pos);
     }
@@ -166,7 +166,7 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
         }
-        else if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()))
+        else if (CalendarTFC.getCalendarTime() > Math.multiplyExact(CalendarTFC.TICKS_IN_DAY, CalendarTFC.getDaysInMonth()))
         {
             int j = state.getValue(AGE);
 
@@ -219,7 +219,7 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
                 if (rand.nextDouble() < 0.5D && worldIn.isAirBlock(sidePos) && worldIn.isAirBlock(sidePos.down()))
                 {
                     worldIn.setBlockState(sidePos.down(), this.getDefaultState());
-                    IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]);
+                    IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]);
                     worldIn.setBlockState(pos, iblockstate);
                     iblockstate.neighborChanged(worldIn, sidePos.down(), this, pos);
                     break;
@@ -254,7 +254,7 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
             if (rand.nextDouble() < 0.01D && worldIn.isAirBlock(sidePos))
             {
                 worldIn.setBlockState(sidePos, this.getDefaultState());
-                IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]);
+                IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]);
                 worldIn.setBlockState(pos, iblockstate);
                 iblockstate.neighborChanged(worldIn, sidePos, this, pos);
                 break;

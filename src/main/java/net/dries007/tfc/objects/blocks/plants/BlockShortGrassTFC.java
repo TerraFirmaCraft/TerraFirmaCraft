@@ -29,7 +29,7 @@ import net.minecraftforge.common.IShearable;
 
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 
 @ParametersAreNonnullByDefault
@@ -56,7 +56,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]);
+        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.Month.MARCH.id()]);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
         }
-        else if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()))
+        else if (CalendarTFC.getCalendarTime() > Math.multiplyExact(CalendarTFC.TICKS_IN_DAY, CalendarTFC.getDaysInMonth()))
         {
             int j = state.getValue(AGE);
 

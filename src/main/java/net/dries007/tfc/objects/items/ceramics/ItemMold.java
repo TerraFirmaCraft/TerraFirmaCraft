@@ -39,7 +39,7 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.fluids.FluidMetal;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 public class ItemMold extends ItemFiredPottery
 {
@@ -244,7 +244,7 @@ public class ItemMold extends ItemFiredPottery
             }
             else
             {
-                nbt.setLong("ticks", CalenderTFC.getTotalTime());
+                nbt.setLong("ticks", CalendarTFC.getTotalTime());
             }
             return tank.writeToNBT(nbt);
         }

@@ -37,7 +37,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -82,7 +82,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.Month.MARCH.id()]);
+        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.Month.MARCH.id()]);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]);
+        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
-        CalenderTFC.Month currentMonth = CalenderTFC.getMonthOfYear();
+        CalendarTFC.Month currentMonth = CalendarTFC.getMonthOfYear();
         int currentStage = state.getValue(GROWTHSTAGE);
         int expectedStage = plant.getStages()[currentMonth.id()];
         int currentTime = state.getValue(DAYPERIOD);
@@ -136,7 +136,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalenderTFC.getMonthOfYear().id()]));
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]));
         checkAndDropBlock(world, pos, state);
     }
 
@@ -230,7 +230,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
         }
-        else if (CalenderTFC.getCalendarTime() > Math.multiplyExact(CalenderTFC.TICKS_IN_DAY, CalenderTFC.getDaysInMonth()))
+        else if (CalendarTFC.getCalendarTime() > Math.multiplyExact(CalendarTFC.TICKS_IN_DAY, CalendarTFC.getDaysInMonth()))
         {
             int j = state.getValue(AGE);
 
@@ -268,7 +268,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
 
     @Override
     @Nonnull
-    public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    public EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
     {
         switch (plant.getPlantType())
         {
@@ -300,7 +300,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
 
     int getDayPeriod()
     {
-        return Math.floorDiv(CalenderTFC.getHourOfDay(), CalenderTFC.HOURS_IN_DAY / 4);
+        return Math.floorDiv(CalendarTFC.getHourOfDay(), CalendarTFC.HOURS_IN_DAY / 4);
     }
 
     private boolean isValidSoil(IBlockState state)

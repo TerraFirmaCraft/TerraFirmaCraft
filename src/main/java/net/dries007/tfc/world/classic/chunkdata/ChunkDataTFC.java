@@ -10,12 +10,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.*;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistry;
@@ -45,9 +47,16 @@ public final class ChunkDataTFC
         Arrays.fill(EMPTY.seaLevelOffset, -1);
     }
 
+    @Nonnull
     public static ChunkDataTFC get(World world, BlockPos pos)
     {
-        ChunkDataTFC data = world.getChunk(pos).getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
+        return get(world.getChunk(pos));
+    }
+
+    @Nonnull
+    public static ChunkDataTFC get(Chunk chunk)
+    {
+        ChunkDataTFC data = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
         return data == null ? EMPTY : data;
     }
 
