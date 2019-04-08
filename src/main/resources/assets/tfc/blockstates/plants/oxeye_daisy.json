@@ -1,39 +1,34 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "tfc:cross",
-    "textures": {
-      "cross": "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_jun-aug",
-      "layer0": "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_jun-aug"
-    }
-  },
-  "variants": {
-    "normal": [
-      {}
-    ],
-    "inventory": {
-      "model": "builtin/generated",
-      "transform": "forge:default-item"
-    },
-    "stage": {
-      "0": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_mar" } },
-      "1": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_apr" } },
-      "2": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_may" } },
-      "3": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_jun-aug" } },
-      "4": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_jun-aug" } },
-      "5": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_jun-aug" } },
-      "6": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_sep-oct" } },
-      "7": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_sep-oct" } },
-      "8": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } },
-      "9": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } },
-      "10": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } },
-      "11": { "textures": { "cross" : "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_nov-feb" } }
-    },
-    "dayperiod": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {}
-    }
-  }
+	"multipart": [
+		{ "when": { "stage": "0" },
+			"apply": [
+				{ "model": "tfc:plants/oxeye_daisy_0" }
+			]
+		},
+		{ "when": { "stage": "1" },
+			"apply": [
+				{ "model": "tfc:plants/oxeye_daisy_1" }
+			]
+		},
+		{ "when": { "stage": "2" },
+			"apply": [
+				{ "model": "tfc:plants/oxeye_daisy_2" }
+			]
+		},
+		{ "when": { "stage": "3" },
+			"apply": [
+				{ "model": "tfc:plants/oxeye_daisy_3" }
+			]
+		},
+		{ "when": { "stage": "4" },
+			"apply": [
+				{ "model": "tfc:plants/oxeye_daisy_4" }
+			]
+		},
+		{ "when": { "stage": "5" },
+			"apply": [
+				{ "model": "tfc:plants/oxeye_daisy_5" }
+			]
+		}
+	]
 }

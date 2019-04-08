@@ -7,18 +7,19 @@ package net.dries007.tfc.world.classic.worldgen;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
@@ -80,8 +81,24 @@ public class WorldGenSoilPits implements IWorldGenerator
                 if (flag && rng.nextInt(15) == 0)
                 {
                     final BlockPos pos = world.getTopSolidOrLiquidBlock(posHorizontal);
-                    if (world.isAirBlock(pos) && BlocksTFC.isSoil(world.getBlockState(pos.add(0, -1, 0))))
-                        world.setBlockState(pos, Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.YELLOW), 2); //todo: replace with plant
+
+                    for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+                    {
+                        if (plant.getIsClayMarking())
+                        {
+                            BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
+                            IBlockState state = plantBlock.getDefaultState();
+                            int plantAge = plant.getAgeForWorldgen(rng, ClimateTFC.getHeightAdjustedBiomeTemp(world, pos));
+
+                            if (!world.provider.isNether() && !world.isOutsideBuildHeight(pos) &&
+                                plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(world, pos), ChunkDataTFC.getRainfall(world, pos), world.getLightFor(EnumSkyBlock.SKY, pos)) &&
+                                world.isAirBlock(pos) &&
+                                plantBlock.canBlockStay(world, pos, state))
+                            {
+                                world.setBlockState(pos, state.withProperty(BlockPlantTFC.AGE, plantAge), 2);
+                            }
+                        }
+                    }
                 }
             }
         }
