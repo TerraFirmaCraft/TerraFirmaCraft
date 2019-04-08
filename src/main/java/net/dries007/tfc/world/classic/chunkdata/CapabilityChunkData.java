@@ -39,12 +39,15 @@ public final class CapabilityChunkData
     @SubscribeEvent
     public static void onChunkWatchWatch(ChunkWatchEvent.Watch event)
     {
-        Chunk c = event.getChunkInstance();
-        if (c == null) return;
-        ChunkDataTFC data = c.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
-        if (data == null) return;
-        //noinspection ConstantConditions
-        NBTTagCompound nbt = (NBTTagCompound) ChunkDataProvider.CHUNK_DATA_CAPABILITY.writeNBT(data, null);
-        TerraFirmaCraft.getNetwork().sendTo(new PacketChunkData(event.getChunkInstance().getPos(), nbt), event.getPlayer());
+        Chunk chunk = event.getChunkInstance();
+        if (chunk != null)
+        {
+            ChunkDataTFC data = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
+            if (data != null && data.isInitialized())
+            {
+                NBTTagCompound nbt = (NBTTagCompound) ChunkDataProvider.CHUNK_DATA_CAPABILITY.writeNBT(data, null);
+                TerraFirmaCraft.getNetwork().sendTo(new PacketChunkData(chunk.getPos(), nbt, data.getBaseTemp(), data.getRainfall()), event.getPlayer());
+            }
+        }
     }
 }
