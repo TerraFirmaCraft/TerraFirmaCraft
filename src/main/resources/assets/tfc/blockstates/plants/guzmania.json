@@ -1,0 +1,34 @@
+{
+	"multipart": [
+		{ "when": { "facing": "up" },
+			"apply": [
+				{ "model": "tfc:plants/guzmania_standing" }
+			]
+		},
+		{ "when": { "facing": "down" },
+			"apply": [
+				{ "model": "tfc:plants/guzmania_standing", "x": 180 }
+			]
+		},
+		{ "when": { "facing": "east" },
+			"apply": [
+				{ "model": "tfc:plants/guzmania" }
+			]
+		},
+		{ "when": { "facing": "south" },
+			"apply": [
+				{ "model": "tfc:plants/guzmania", "y": 90 }
+			]
+		},
+		{ "when": { "facing": "west" },
+			"apply": [
+				{ "model": "tfc:plants/guzmania", "y": 180 }
+			]
+		},
+		{ "when": { "facing": "north" },
+			"apply": [
+				{ "model": "tfc:plants/guzmania", "y": 270 }
+			]
+		}
+	]
+}

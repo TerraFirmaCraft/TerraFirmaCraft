@@ -1,5 +1,8 @@
 package net.dries007.tfc.cmd;
 
+import java.util.Collections;
+import java.util.List;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.command.CommandBase;
@@ -7,6 +10,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 
 import mcp.MethodsReturnNonnullByDefault;
@@ -69,5 +73,28 @@ public class CommandTimeTFC extends CommandBase
 
         CalenderTFC.setCalendarTime(server.getEntityWorld(), time);
         sender.sendMessage(new TextComponentString("Set Calendar Time to: " + time));
+    }
+
+    @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 2;
+    }
+
+    @Override
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
+    {
+        if (args.length == 1)
+        {
+            return getListOfStringsMatchingLastWord(args, "set", "add");
+        }
+        else if (args.length == 2 && ("set".equals(args[0]) || "add".equals(args[0])))
+        {
+            return getListOfStringsMatchingLastWord(args, "year", "month", "day", "monthLength");
+        }
+        else
+        {
+            return Collections.emptyList();
+        }
     }
 }

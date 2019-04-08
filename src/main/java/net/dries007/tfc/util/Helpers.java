@@ -87,15 +87,18 @@ public final class Helpers
 
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {
-                float temp = ClimateTFC.getHeightAdjustedBiomeTemp(world, pos.up());
-
-                if (world.isAirBlock(pos.up()) &&
-                    plant.getPlantType() == Plant.PlantType.SHORT_GRASS &&
-                    plant.isValidLocation(temp, ChunkDataTFC.getRainfall(world, pos.up()), world.getLightFromNeighbors(pos.up())) &&
-                    temp > 15 &&
-                    rand.nextFloat() < BlockShortGrassTFC.get(plant).getGrowthRate(world, pos.up()))
+                if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS && rand.nextFloat() < 0.01f)
                 {
-                    world.setBlockState(pos.up(), BlockShortGrassTFC.get(plant).getDefaultState());
+                    float temp = ClimateTFC.getHeightAdjustedBiomeTemp(world, pos.up());
+                    BlockShortGrassTFC plantBlock = BlockShortGrassTFC.get(plant);
+
+                    if (world.isAirBlock(pos.up()) &&
+                        plant.isValidLocation(temp, ChunkDataTFC.getRainfall(world, pos.up()), world.getLightFromNeighbors(pos.up())) &&
+                        plant.isValidGrowthTemp(temp) &&
+                        rand.nextDouble() < plantBlock.getGrowthRate(world, pos.up()))
+                    {
+                        world.setBlockState(pos.up(), plantBlock.getDefaultState());
+                    }
                 }
             }
         }

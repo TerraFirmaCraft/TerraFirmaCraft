@@ -1,65 +1,22 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "tfc:empty",
-    "textures": {
-      "layer0": "tfc:blocks/plants/moss/moss_layer0",
-      "layer1": "tfc:blocks/plants/moss/moss_layer1",
-      "layer2": "tfc:blocks/plants/moss/moss_layer2",
-      "particle": "tfc:blocks/plants/moss/moss_layer0"
-    }
-  },
-  "variants": {
-    "normal": [
-      {}
-    ],
-    "inventory": {
-      "model": "tfc:plants/creeping_plant",
-      "transform": "forge:default-item"
-    },
-    "down": {
-      "true":  { "submodel": "tfc:plants/creeping_plant" },
-      "false": {}
-    },
-    "east": {
-      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 270, "y": 90 },
-      "false": {}
-    },
-    "north": {
-      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 270 },
-      "false": {}
-    },
-    "south": {
-      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 270, "y": 180 },
-      "false": {}
-    },
-    "stage": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {},
-      "4": {},
-      "5": {},
-      "6": {},
-      "7": {},
-      "8": {},
-      "9": {},
-      "10": {},
-      "11": {}
-    },
-    "dayperiod": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {}
-    },
-    "up": {
-      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 180 },
-      "false": {}
-    },
-    "west": {
-      "true":  { "submodel": "tfc:plants/creeping_plant", "x": 270, "y": 270 },
-      "false": {}
-    }
-  }
+	"multipart": [
+       {   "when": { "down": "true" },
+           "apply": { "model": "tfc:plants/moss" }
+       },
+       {   "when": { "east": "true" },
+           "apply": { "model": "tfc:plants/moss", "x": 270, "y": 90 }
+       },
+       {   "when": { "north": "true" },
+           "apply": { "model": "tfc:plants/moss", "x": 270 }
+       },
+       {   "when": { "south": "true" },
+           "apply": { "model": "tfc:plants/moss", "x": 270, "y": 180 }
+       },
+       {   "when": { "up": "true" },
+           "apply": { "model": "tfc:plants/moss", "x": 180 }
+       },
+       {   "when": { "west": "true" },
+           "apply": { "model": "tfc:plants/moss", "x": 270, "y": 270 }
+       }
+	]
 }

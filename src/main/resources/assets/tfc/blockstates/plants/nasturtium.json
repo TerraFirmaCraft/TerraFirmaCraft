@@ -1,39 +1,29 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "tfc:cross",
-    "textures": {
-      "cross": "tfc:blocks/plants/nasturtium/nasturtium_may-sep",
-      "layer0": "tfc:blocks/plants/nasturtium/nasturtium_may-sep"
-    }
-  },
-  "variants": {
-    "normal": [
-      {}
-    ],
-    "inventory": {
-      "model": "builtin/generated",
-      "transform": "forge:default-item"
-    },
-    "stage": {
-      "0": { "textures": { "cross" : "tfc:blocks/plants/nasturtium/nasturtium_mar" } },
-      "1": { "textures": { "cross" : "tfc:blocks/plants/nasturtium/nasturtium_apr" } },
-      "2": { "textures": { "cross" : "tfc:blocks/plants/nasturtium/nasturtium_may-sep" } },
-      "3": { "textures": { "cross" : "tfc:blocks/plants/nasturtium/nasturtium_may-sep" } },
-      "4": { "textures": { "cross" : "tfc:blocks/plants/nasturtium/nasturtium_may-sep" } },
-      "5": { "textures": { "cross" : "tfc:blocks/plants/nasturtium/nasturtium_may-sep" } },
-      "6": { "textures": { "cross" : "tfc:blocks/plants/nasturtium/nasturtium_may-sep" } },
-      "7": { "textures": { "cross" : "tfc:blocks/plants/nasturtium/nasturtium_oct-nov" } },
-      "8": { "textures": { "cross" : "tfc:blocks/plants/nasturtium/nasturtium_oct-nov" } },
-      "9": { "textures": { "cross" : "tfc:blocks/plants/nasturtium/nasturtium_dec-feb" } },
-      "10": { "textures": { "cross" : "tfc:blocks/plants/nasturtium/nasturtium_dec-feb" } },
-      "11": { "textures": { "cross" : "tfc:blocks/plants/nasturtium/nasturtium_dec-feb" } }
-    },
-    "dayperiod": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {}
-    }
-  }
+	"multipart": [
+		{ "when": { "stage": "0" },
+			"apply": [
+				{ "model": "tfc:plants/nasturtium_0" }
+			]
+		},
+		{ "when": { "stage": "1" },
+			"apply": [
+				{ "model": "tfc:plants/nasturtium_1" }
+			]
+		},
+		{ "when": { "stage": "2" },
+			"apply": [
+				{ "model": "tfc:plants/nasturtium_2" }
+			]
+		},
+		{ "when": { "stage": "3" },
+			"apply": [
+				{ "model": "tfc:plants/nasturtium_3" }
+			]
+		},
+		{ "when": { "stage": "4" },
+			"apply": [
+				{ "model": "tfc:plants/nasturtium_4" }
+			]
+		}
+	]
 }
