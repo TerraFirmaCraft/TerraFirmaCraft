@@ -1,0 +1,90 @@
+{
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"fern": "tfc:blocks/plants/licorice_fern/licorice_fern",
+		"particle": "tfc:blocks/plants/licorice_fern/licorice_fern"
+	},
+	"elements": [
+		{
+			"from": [8.5, 0, 1.55],
+			"to": [8.5, 6, 6.95],
+			"shade": false,
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [8.5, 0, 1.55], "rescale": true},
+			"faces": {
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
+			}
+		},
+		{
+			"from": [4.5, 0, 8.05],
+			"to": [4.5, 6, 13.45],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "y", "origin": [7.625, 0, 6.05], "rescale": true},
+			"faces": {
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
+			}
+		},
+		{
+			"from": [6.25, 0, 6.05],
+			"to": [6.25, 6, 11.45],
+			"shade": false,
+			"rotation": {"angle": -45, "axis": "y", "origin": [8.75, 0, 9.05], "rescale": true},
+			"faces": {
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
+			}
+		},
+		{
+			"from": [9.25, 0, 6.05],
+			"to": [9.25, 6, 11.45],
+			"shade": false,
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [9.25, 0, 6.05], "rescale": true},
+			"faces": {
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
+			}
+		},
+		{
+			"from": [4.25, 0, 1.55],
+			"to": [4.25, 6, 6.95],
+			"shade": false,
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [8.75, 0, 9.05], "rescale": true},
+			"faces": {
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
+			}
+		},
+		{
+			"from": [9.25, 0, 6.05],
+			"to": [9.25, 6, 11.45],
+			"shade": false,
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [7.625, 0, 6.05], "rescale": true},
+			"faces": {
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
+			}
+		},
+		{
+			"from": [5.25, 0, 8.05],
+			"to": [5.25, 6, 13.45],
+			"shade": false,
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [5.25, 0, 8.05], "rescale": true},
+			"faces": {
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
+			}
+		},
+		{
+			"from": [11.25, 0, -0.95],
+			"to": [11.25, 6, 4.45],
+			"shade": false,
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [11.25, 0, -1.95], "rescale": true},
+			"faces": {
+				"east": {"uv": [16, 0, 0, 16], "texture": "#fern", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#fern", "tintindex": 0}
+			}
+		}
+	]
+}
