@@ -67,6 +67,44 @@ public class FluidTransferHelper
     }
 
     /**
+     * Tries to fill a fluid container item from the fluid handler, then stores the result in the given inventory.
+     * If the fluid can't be transferred into the container or the result can't fit into the return inventory, the action will be aborted.
+     *
+     * @param container       The fluid container ItemStack to fill.
+     *                        Will not be modified directly, if modifications are necessary a modified copy is returned in the result.
+     * @param fluidSource     The fluid source to fill from.
+     * @param returnInventory An inventory where filled containers are put.
+     * @param returnSlot      The slot id into which the filled containers are inserted.
+     * @param maxAmount       Maximum amount of fluid to put into the container.
+     * @param world           World to play the sound in. Null for no sound.
+     * @param pos             BlockPos to play the sound at. Null for no sound.
+     * @return A {@link FluidActionResult} holding the result and the resulting container. The resulting container is empty on failure.
+     */
+    @Nonnull
+    public static FluidActionResult fillContainerFromTank(@Nonnull ItemStack container, IFluidHandler fluidSource, IItemHandler returnInventory, int returnSlot, int maxAmount, @Nullable World world, @Nullable BlockPos pos)
+    {
+        FluidActionResult filledSimulated = tryFillContainer(container, fluidSource, maxAmount, false, null, null);
+
+        if (filledSimulated.isSuccess())
+        {
+            // check if we can give the itemStack to the inventory
+            ItemStack remainder = returnInventory.insertItem(returnSlot, filledSimulated.getResult(), true);
+
+            if (remainder.isEmpty())
+            {
+                FluidActionResult filledReal = tryFillContainer(container, fluidSource, maxAmount, true, world, pos);
+                returnInventory.insertItem(returnSlot, filledReal.getResult(), false);
+
+                ItemStack containerCopy = container.copy();
+                containerCopy.shrink(1);
+                return new FluidActionResult(containerCopy);
+            }
+        }
+
+        return FluidActionResult.FAILURE;
+    }
+
+    /**
      * Takes a filled container and tries to empty it into the given tank.
      *
      * @param container        The filled container. Will not be modified.
@@ -77,7 +115,7 @@ public class FluidTransferHelper
      * @param world            World to play the sound in. Null for no sound.
      * @param pos              BlockPos to play the sound at. Null for no sound.
      * @return A {@link FluidActionResult} holding the empty container if the fluid handler was filled.
-     *         NOTE If the container is consumable, the empty container will be null on success.
+     * NOTE If the container is consumable, the empty container will be null on success.
      */
     @Nonnull
     private static FluidActionResult tryEmptyContainer(@Nonnull ItemStack container, IFluidHandler fluidDestination, int maxAmount, boolean doDrain, @Nullable World world, @Nullable BlockPos pos)
@@ -115,44 +153,6 @@ public class FluidTransferHelper
     }
 
     /**
-     * Tries to fill a fluid container item from the fluid handler, then stores the result in the given inventory.
-     * If the fluid can't be transferred into the container or the result can't fit into the return inventory, the action will be aborted.
-     *
-     * @param container       The fluid container ItemStack to fill.
-     *                        Will not be modified directly, if modifications are necessary a modified copy is returned in the result.
-     * @param fluidSource     The fluid source to fill from.
-     * @param returnInventory An inventory where filled containers are put.
-     * @param returnSlot      The slot id into which the filled containers are inserted.
-     * @param maxAmount       Maximum amount of fluid to put into the container.
-     * @param world            World to play the sound in. Null for no sound.
-     * @param pos              BlockPos to play the sound at. Null for no sound.
-     * @return A {@link FluidActionResult} holding the result and the resulting container. The resulting container is empty on failure.
-     */
-    @Nonnull
-    public static FluidActionResult fillContainerFromTank(@Nonnull ItemStack container, IFluidHandler fluidSource, IItemHandler returnInventory, int returnSlot, int maxAmount, @Nullable World world, @Nullable BlockPos pos)
-    {
-        FluidActionResult filledSimulated = tryFillContainer(container, fluidSource, maxAmount, false, null, null);
-
-        if (filledSimulated.isSuccess())
-        {
-            // check if we can give the itemStack to the inventory
-            ItemStack remainder = returnInventory.insertItem(returnSlot, filledSimulated.getResult(), true);
-
-            if (remainder.isEmpty())
-            {
-                FluidActionResult filledReal = tryFillContainer(container, fluidSource, maxAmount, true, world, pos);
-                returnInventory.insertItem(returnSlot, filledReal.getResult(), false);
-
-                ItemStack containerCopy = container.copy();
-                containerCopy.shrink(1);
-                return new FluidActionResult(containerCopy);
-            }
-        }
-
-        return FluidActionResult.FAILURE;
-    }
-
-    /**
      * Fill a container from the given fluidSource.
      *
      * @param container   The container to be filled. Will not be modified.
@@ -160,8 +160,8 @@ public class FluidTransferHelper
      * @param fluidSource The fluid handler to be drained.
      * @param maxAmount   The largest amount of fluid that should be transferred.
      * @param doFill      true if the container should actually be filled, false if it should be simulated.
-     * @param world            World to play the sound in. Null for no sound.
-     * @param pos              BlockPos to play the sound at. Null for no sound.
+     * @param world       World to play the sound in. Null for no sound.
+     * @param pos         BlockPos to play the sound at. Null for no sound.
      * @return A {@link FluidActionResult} holding the filled container if successful.
      */
     @Nonnull

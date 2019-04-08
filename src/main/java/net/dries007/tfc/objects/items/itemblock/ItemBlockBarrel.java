@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.items.itemblock;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
@@ -25,6 +26,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.objects.te.TEBarrel;
 
+@ParametersAreNonnullByDefault
 public class ItemBlockBarrel extends ItemBlockTFC
 {
     public ItemBlockBarrel(Block block)
@@ -40,6 +42,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
     }
 
     @Override
+    @Nonnull
     public String getTranslationKey(@Nonnull ItemStack stack)
     {
         if (stack.getMetadata() == 1)
@@ -48,24 +51,6 @@ public class ItemBlockBarrel extends ItemBlockTFC
         }
 
         return super.getTranslationKey();
-    }
-
-    @Override
-    public Size getSize(@Nonnull ItemStack stack)
-    {
-        return Size.LARGE;
-    }
-
-    @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
-    {
-        return Weight.HEAVY;
-    }
-
-    @Override
-    public boolean canStack(@Nonnull ItemStack stack)
-    {
-        return stack.getMetadata() == 0;
     }
 
     @SideOnly(Side.CLIENT)
@@ -105,5 +90,23 @@ public class ItemBlockBarrel extends ItemBlockTFC
                 }
             }
         }
+    }
+
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.LARGE;
+    }
+
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return Weight.HEAVY;
+    }
+
+    @Override
+    public boolean canStack(@Nonnull ItemStack stack)
+    {
+        return stack.getMetadata() == 0;
     }
 }

@@ -47,14 +47,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         super(3);
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound compound)
-    {
-        super.readFromNBT(compound);
-
-        tank.readFromNBT(compound.getCompoundTag("tank"));
-    }
-
     /**
      * Called when this TileEntity was created by placing a sealed Barrel Item.
      * Loads its data from the Item's NBTTagCompound without loading xyz coordinates.
@@ -67,15 +59,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 
         this.markDirty();
-    }
-
-    @Override
-    @Nonnull
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
-    {
-        compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
-
-        return super.writeToNBT(compound);
     }
 
     /**
@@ -93,6 +76,12 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         return compound;
     }
 
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+    {
+        return oldState.getBlock() != newState.getBlock();
+    }
+
     /**
      * Called once per side when the TileEntity has finished loading.
      * On servers, this is the earliest point in time to safely access the TE's World object.
@@ -104,6 +93,30 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         {
             updateLockStatus();
         }
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        //TODO: validate items that go in the item storage slot
+        return slot == SLOT_ITEM || slot == SLOT_FLUID_CONTAINER_IN && FluidUtil.getFluidHandler(stack) != null;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound)
+    {
+        super.readFromNBT(compound);
+
+        tank.readFromNBT(compound.getCompoundTag("tank"));
+    }
+
+    @Override
+    @Nonnull
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
+        compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
+
+        return super.writeToNBT(compound);
     }
 
     /**
@@ -136,16 +149,26 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return oldState.getBlock() != newState.getBlock();
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
     }
 
     @Override
-    public boolean isItemValid(int slot, ItemStack stack)
+    @SuppressWarnings("unchecked")
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
-        //TODO: validate items that go in the item storage slot
-        return slot == SLOT_ITEM || slot == SLOT_FLUID_CONTAINER_IN && FluidUtil.getFluidHandler(stack) != null;
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+            return (T) new ItemHandlerSided(this, inventory, facing);
+        }
+
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
+            return (T) new FluidHandlerSided(this, tank, facing);
+        }
+
+        return super.getCapability(capability, facing);
     }
 
     @Override
@@ -170,29 +193,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     public boolean canDrain(EnumFacing side)
     {
         return !sealed;
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-        {
-            return (T) new ItemHandlerSided(this, inventory, facing);
-        }
-
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-        {
-            return (T) new FluidHandlerSided(this, tank, facing);
-        }
-
-        return super.getCapability(capability, facing);
     }
 
     @Override

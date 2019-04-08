@@ -47,7 +47,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 3);
     /* Time of day, used for rendering plants that bloom at different times */
     public final static PropertyInteger DAYPERIOD = PropertyInteger.create("dayperiod", 0, 3);
-    static final AxisAlignedBB PLANT_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
+    private static final AxisAlignedBB PLANT_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
     private static final Map<Plant, BlockPlantTFC> MAP = new HashMap<>();
 
     public static BlockPlantTFC get(Plant plant)

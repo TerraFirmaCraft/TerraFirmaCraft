@@ -1,11 +1,9 @@
 /*
- *
- *  * Work under Copyright. Licensed under the EUPL.
- *  * See the project README.md and LICENSE.txt for more information.
- *
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.plants;
+package net.dries007.tfc.util;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.IStringSerializable;
@@ -20,7 +18,8 @@ public interface ITallPlant
 
     default AxisAlignedBB getTallBoundingBax(int age, IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        if (getPlantPart(source, pos) == EnumBlockPart.LOWER || getPlantPart(source, pos) == EnumBlockPart.MIDDLE) return PLANT_AABB.offset(state.getOffset(source, pos));
+        if (getPlantPart(source, pos) == EnumBlockPart.LOWER || getPlantPart(source, pos) == EnumBlockPart.MIDDLE)
+            return PLANT_AABB.offset(state.getOffset(source, pos));
         switch (age)
         {
             case 0:

@@ -18,10 +18,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.client.gui.GuiBarrel;
-import net.dries007.tfc.client.gui.GuiContainerTFC;
-import net.dries007.tfc.client.gui.GuiLiquidTransfer;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.api.recipes.KnappingRecipe;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IRockObject;
@@ -129,6 +125,7 @@ public class TFCGuiHandler implements IGuiHandler
                 ItemStack stack = player.getHeldItemMainhand();
                 Rock rock = stack.getItem() instanceof IRockObject ? ((IRockObject) stack.getItem()).getRock(stack) :
                     ((IRockObject) player.getHeldItemOffhand().getItem()).getRock(player.getHeldItemOffhand());
+                //noinspection ConstantConditions
                 return new GuiKnapping(container, player, KnappingRecipe.Type.STONE, rock.getTexture());
             case KNAPPING_CLAY:
                 return new GuiKnapping(container, player, KnappingRecipe.Type.CLAY, CLAY_TEXTURE);

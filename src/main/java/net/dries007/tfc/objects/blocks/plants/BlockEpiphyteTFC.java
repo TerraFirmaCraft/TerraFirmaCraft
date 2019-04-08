@@ -1,8 +1,6 @@
 /*
- *
- *  * Work under Copyright. Licensed under the EUPL.
- *  * See the project README.md and LICENSE.txt for more information.
- *
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  */
 
 package net.dries007.tfc.objects.blocks.plants;
@@ -209,17 +207,16 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
     {
         if (this.checkForDrop(worldIn, pos, state))
         {
-            EnumFacing enumfacing = state.getValue(FACING);
-            EnumFacing.Axis enumfacing$axis = enumfacing.getAxis();
-            EnumFacing enumfacing1 = enumfacing.getOpposite();
-            BlockPos blockpos = pos.offset(enumfacing1);
+            EnumFacing facing = state.getValue(FACING);
+            EnumFacing.Axis axis = facing.getAxis();
+            BlockPos blockpos = pos.offset(facing.getOpposite());
             boolean flag = false;
 
-            if (enumfacing$axis.isHorizontal() && worldIn.getBlockState(blockpos).getBlockFaceShape(worldIn, blockpos, enumfacing) != BlockFaceShape.SOLID)
+            if (axis.isHorizontal() && worldIn.getBlockState(blockpos).getBlockFaceShape(worldIn, blockpos, facing) != BlockFaceShape.SOLID)
             {
                 flag = true;
             }
-            else if (enumfacing$axis.isVertical() && !this.canPlaceOn(worldIn, blockpos))
+            else if (axis.isVertical() && !this.canPlaceOn(worldIn, blockpos))
             {
                 flag = true;
             }
