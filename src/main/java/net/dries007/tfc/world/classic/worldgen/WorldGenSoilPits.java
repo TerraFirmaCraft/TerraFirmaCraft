@@ -26,8 +26,15 @@ import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
+/**
+ * todo: make these bigger without causing cascading lag.
+ * This will require larger re-writes on the scale of oregen
+ */
 public class WorldGenSoilPits implements IWorldGenerator
 {
+    private static final float CLAY_RAINFALL_THREHOLD = 100f;
+    private static final int CLAY_CHUNK_RARITY = 30;
+
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
@@ -50,9 +57,12 @@ public class WorldGenSoilPits implements IWorldGenerator
 
     private void generateClay(World world, Random rng, BlockPos start)
     {
-        int radius = rng.nextInt(14) + 2;
+        // If this has to have a radius that is >= 8, then it needs to be moved to a cascading-lag safe model
+        // Otherwise, do not change this unless you are prepared to do some fairly large re-writes, similar to how ore gen is handled
+        int radius = rng.nextInt(6) + 2;
         int depth = rng.nextInt(3) + 1;
-        if (rng.nextInt(30) != 0 || start.getY() > WorldTypeTFC.SEALEVEL + 6) return;
+        if (rng.nextInt(CLAY_CHUNK_RARITY) != 0 || start.getY() > WorldTypeTFC.SEALEVEL + 6) return;
+        if (ChunkDataTFC.getRainfall(world, start) < CLAY_RAINFALL_THREHOLD) return;
 
         for (int x = -radius; x <= radius; x++)
         {
@@ -60,7 +70,6 @@ public class WorldGenSoilPits implements IWorldGenerator
             {
                 if (x * x + z * z > radius * radius) continue;
                 final BlockPos posHorizontal = start.add(x, 0, z);
-                if (ChunkDataTFC.getRainfall(world, posHorizontal) < 500) continue;
 
                 boolean flag = false;
                 for (int y = -depth; y <= +depth; y++)
@@ -106,7 +115,9 @@ public class WorldGenSoilPits implements IWorldGenerator
 
     private boolean generatePeat(World world, Random rng, BlockPos start)
     {
-        int radius = rng.nextInt(16) + 8;
+        // If this has to have a radius that is >= 8, then it needs to be moved to a cascading-lag safe model
+        // Otherwise, do not change this unless you are prepared to do some fairly large re-writes, similar to how ore gen is handled
+        int radius = rng.nextInt(4) + 4;
         byte depth = 2;
         boolean flag = false;
 

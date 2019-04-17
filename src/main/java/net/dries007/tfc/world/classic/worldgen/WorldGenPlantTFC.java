@@ -22,6 +22,10 @@ import net.dries007.tfc.objects.blocks.plants.*;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
+/**
+ * todo: fix cascading lag. Priority: high
+ * See <a href="https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/40">issue</a> here.
+ */
 @ParametersAreNonnullByDefault
 public class WorldGenPlantTFC extends WorldGenerator
 {
