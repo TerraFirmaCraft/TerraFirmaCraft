@@ -77,7 +77,7 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
         world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]));
-        this.checkForDrop(world, pos, state);
+        checkAndDropBlock(world, pos, state);
     }
 
     @Override

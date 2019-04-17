@@ -84,13 +84,6 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-    {
-
-        return worldIn.getBlockState(pos).getBlock() != this && canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
-    }
-
-    @Override
     protected boolean canSustainBush(IBlockState state)
     {
         return true;
@@ -156,6 +149,14 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         }
 
         return i == 1 ? axisalignedbb : FULL_BLOCK_AABB;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    @Nullable
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return NULL_AABB;
     }
 
     @Override
@@ -229,14 +230,6 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
                 worldIn.destroyBlock(pos, true);
             }
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nullable
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        return NULL_AABB;
     }
 
     @SuppressWarnings("deprecation")

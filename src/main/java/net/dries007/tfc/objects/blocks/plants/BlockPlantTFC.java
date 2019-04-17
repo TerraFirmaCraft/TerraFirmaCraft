@@ -18,6 +18,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -149,15 +151,33 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     }
 
     @Override
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        double movementMod = plant.getMovementMod();
+        //Entity X/Z motion is reduced by plants.
+        entityIn.motionX *= movementMod;
+        entityIn.motionZ *= movementMod;
+    }
+
+    @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
-        if (!plant.getOreDictName().isPresent() && !worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
+        if (!plant.getOreDictName().isPresent() && !worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1 && plant.getPlantType() != Plant.PlantType.SHORT_GRASS && plant.getPlantType() != Plant.PlantType.TALL_GRASS)
         {
             spawnAsEntity(worldIn, pos, new ItemStack(this, 1));
         }
-        else
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        if (!canBlockStay(worldIn, pos, state) && placer instanceof EntityPlayer)
         {
-            super.harvestBlock(worldIn, player, pos, state, te, stack);
+            if (!((EntityPlayer) placer).isCreative() && !plant.getOreDictName().isPresent())
+            {
+                spawnAsEntity(worldIn, pos, new ItemStack(this));
+            }
         }
     }
 
@@ -202,7 +222,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         IBlockState soil = worldIn.getBlockState(pos.down());
-        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && this.canSustainBush(soil);
+        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos).getBlock() != this && soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this);
     }
 
     @Override
@@ -264,6 +284,21 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return PLANT_AABB.offset(state.getOffset(source, pos));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Nullable
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        if (plant.getMovementMod() == 0.0D)
+        {
+            return blockState.getBoundingBox(worldIn, pos);
+        }
+        else
+        {
+            return NULL_AABB;
+        }
     }
 
     @Override

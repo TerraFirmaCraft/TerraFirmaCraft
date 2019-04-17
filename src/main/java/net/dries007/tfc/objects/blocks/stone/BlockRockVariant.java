@@ -232,6 +232,8 @@ public class BlockRockVariant extends Block
     @Override
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
     {
+        int beachDistance = 2;
+
         if (plantable instanceof BlockPlantTFC)
         {
             switch (((BlockPlantTFC) plantable).getPlantTypeTFC())
@@ -247,19 +249,31 @@ public class BlockRockVariant extends Block
                 case SALT_WATER:
                     return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND || type == Rock.Type.GRAVEL;
                 case FRESH_BEACH:
-                    // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
-                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) &&
-                        (BlocksTFC.isFreshWater(world.getBlockState(pos.add(1, 0, 0))) ||
-                            BlocksTFC.isFreshWater(world.getBlockState(pos.add(-1, 0, 0))) ||
-                            BlocksTFC.isFreshWater(world.getBlockState(pos.add(0, 0, 1))) ||
-                            BlocksTFC.isFreshWater(world.getBlockState(pos.add(0, 0, -1))));
+                {
+                    boolean flag = false;
+                    for (EnumFacing facing : EnumFacing.HORIZONTALS)
+                    {
+                        for (int i = 1; i <= beachDistance; i++)
+                            if (BlocksTFC.isFreshWater(world.getBlockState(pos.offset(facing, i))))
+                            {
+                                flag = true;
+                            }
+                    }
+                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && flag;
+                }
                 case SALT_BEACH:
-                    // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
-                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) &&
-                        (BlocksTFC.isSaltWater(world.getBlockState(pos.add(1, 0, 0))) ||
-                            BlocksTFC.isSaltWater(world.getBlockState(pos.add(-1, 0, 0))) ||
-                            BlocksTFC.isSaltWater(world.getBlockState(pos.add(0, 0, 1))) ||
-                            BlocksTFC.isSaltWater(world.getBlockState(pos.add(0, 0, -1))));
+                {
+                    boolean flag = false;
+                    for (EnumFacing facing : EnumFacing.HORIZONTALS)
+                    {
+                        for (int i = 1; i <= beachDistance; i++)
+                            if (BlocksTFC.isSaltWater(world.getBlockState(pos.offset(facing, i))))
+                            {
+                                flag = true;
+                            }
+                    }
+                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && flag;
+                }
             }
         }
 
@@ -276,12 +290,18 @@ public class BlockRockVariant extends Block
             case Water:
                 return false;
             case Beach:
-                // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
-                return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && // todo: dry grass?
-                    (BlocksTFC.isWater(world.getBlockState(pos.add(1, 0, 0))) ||
-                        BlocksTFC.isWater(world.getBlockState(pos.add(-1, 0, 0))) ||
-                        BlocksTFC.isWater(world.getBlockState(pos.add(0, 0, 1))) ||
-                        BlocksTFC.isWater(world.getBlockState(pos.add(0, 0, -1))));
+            {
+                boolean flag = false;
+                for (EnumFacing facing : EnumFacing.HORIZONTALS)
+                {
+                    for (int i = 1; i <= beachDistance; i++)
+                        if (BlocksTFC.isWater(world.getBlockState(pos.offset(facing, i))))
+                        {
+                            flag = true;
+                        }
+                }
+                return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && flag;// todo: dry grass?
+            }
             case Nether:
                 return false;
         }

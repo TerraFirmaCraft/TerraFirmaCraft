@@ -6,11 +6,9 @@
 package net.dries007.tfc.objects.blocks.plants;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
@@ -82,19 +80,6 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPla
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
-    {
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, CACTUS_COLLISION_AABB.offset(state.getOffset(worldIn, pos)));
-    }
-
-    @Override
-    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
-    {
-        entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
-    }
-
     @Override
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, net.minecraftforge.common.IPlantable plantable)
     {
@@ -131,6 +116,12 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPla
     public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
     {
         return false;
+    }
+
+    @Override
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
     }
 
     @Override
@@ -230,12 +221,5 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPla
         {
             worldIn.destroyBlock(pos, true);
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        return CACTUS_COLLISION_AABB.offset(blockState.getOffset(worldIn, pos));
     }
 }

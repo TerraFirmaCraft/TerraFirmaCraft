@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -70,8 +71,26 @@ public class BlockEmergentTallWaterPlantTFC extends BlockTallWaterPlantTFC imple
     {
         IBlockState soil = worldIn.getBlockState(pos.down());
         if (plant.getWaterType() == SALT_WATER)
-            return (worldIn.isAirBlock(pos) || BlocksTFC.isSaltWater(worldIn.getBlockState(pos))) && this.canSustainBush(soil);
-        return (worldIn.isAirBlock(pos) || BlocksTFC.isFreshWater(worldIn.getBlockState(pos))) && this.canSustainBush(soil);
+            return (soil.getBlock() == this || BlocksTFC.isSaltWater(worldIn.getBlockState(pos))) && this.canSustainBush(soil);
+        return (soil.getBlock() == this || BlocksTFC.isFreshWater(worldIn.getBlockState(pos))) && this.canSustainBush(soil);
+    }
+
+    @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    {
+        this.onBlockHarvested(world, pos, state, player);
+
+        boolean flag = false;
+        for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
+        {
+            if (BlocksTFC.isWater(world.getBlockState(pos.offset(enumfacing))))
+            {
+                flag = true;
+            }
+        }
+
+        if (flag) return world.setBlockState(pos, plant.getWaterType(), world.isRemote ? 11 : 3);
+        else return world.setBlockState(pos, net.minecraft.init.Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
     }
 
     @Override
