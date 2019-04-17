@@ -76,10 +76,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
         {
             spawnAsEntity(worldIn, pos, new ItemStack(ItemsTFC.HAY, 1));
         }
-        else
-        {
-            super.harvestBlock(worldIn, player, pos, state, te, stack);
-        }
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
     }
 
     @Override

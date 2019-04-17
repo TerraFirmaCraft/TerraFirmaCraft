@@ -28,6 +28,7 @@ import net.dries007.tfc.objects.blocks.devices.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
+import net.dries007.tfc.objects.blocks.plants.BlockFloatingWaterTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.*;
 import net.dries007.tfc.objects.blocks.wood.*;
@@ -414,13 +415,13 @@ public final class BlocksTFC
             allPlantBlocks = b.build();
             for (BlockPlantTFC blockPlant : allPlantBlocks)
             {
-                if (blockPlant.getPlant().getPlantType() == Plant.PlantType.FLOATING || blockPlant.getPlant().getPlantType() == Plant.PlantType.FLOATING_SEA)
+                if (blockPlant instanceof BlockFloatingWaterTFC)
                 {
-                    inventoryItemBlocks.add(new ItemBlockFloatingWaterTFC(blockPlant));
+                    inventoryItemBlocks.add(new ItemBlockFloatingWaterTFC((BlockFloatingWaterTFC) blockPlant));
                 }
                 else
                 {
-                    normalItemBlocks.add(new ItemBlockTFC(blockPlant));
+                    normalItemBlocks.add(new ItemBlockPlant(blockPlant));
                 }
             }
         }
@@ -435,7 +436,7 @@ public final class BlocksTFC
             allGrassBlocks = b.build();
             for (BlockPlantTFC blockPlant : allGrassBlocks)
             {
-                normalItemBlocks.add(new ItemBlockTFC(blockPlant));
+                normalItemBlocks.add(new ItemBlockPlant(blockPlant));
             }
         }
 
