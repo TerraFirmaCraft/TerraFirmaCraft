@@ -10,6 +10,7 @@ import java.util.Random;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -98,7 +99,10 @@ public class WorldGenFissure implements IWorldGenerator
 
         for (BlockPos pos : list)
         {
-            world.setBlockToAir(pos);
+            if (pos.getY() < 10 && world.getBlockState(pos).getBlock() != Blocks.BEDROCK)
+            {
+                world.setBlockToAir(pos);
+            }
             for (int d = 1; d <= poolDepth; d++)
                 fill(world, pos.add(0, -d, 0), rock, localFillBlock);
 
