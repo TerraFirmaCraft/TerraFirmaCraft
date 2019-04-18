@@ -29,6 +29,7 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 /**
  * todo: make these bigger without causing cascading lag.
  * This will require larger re-writes on the scale of oregen
+ * Wait for 1.13+ as AlcatrazEscapee is doing a worldgen rewrite anyway
  */
 public class WorldGenSoilPits implements IWorldGenerator
 {
