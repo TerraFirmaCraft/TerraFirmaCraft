@@ -137,8 +137,8 @@ public class ItemProPick extends ItemMetalTool
                         player.sendStatusMessage(msg,true);
                         setCooldown(player);
 
-                       for (int i = 0; i < results.size(); i++)
-                           player.sendStatusMessage(new TextComponentString(list[i].ore.getDisplayName() + ": " + String.format("%.02f", list[i].score)), false);
+                       //for (int i = 0; i < results.size(); i++)
+                       //    player.sendStatusMessage(new TextComponentString(list[i].ore.getDisplayName() + ": " + String.format("%.02f", list[i].score)), false);
                     }
                 }
             }
