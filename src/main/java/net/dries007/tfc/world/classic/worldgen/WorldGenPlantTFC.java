@@ -362,7 +362,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                 {
                     int plantAge = plant.getAgeForWorldgen(rand, ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos));
                     setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockEmergentTallWaterPlantTFC.AGE, plantAge));
-                    if (rand.nextInt(15) < plantAge && plantBlock.canGrow(worldIn, blockpos, state, worldIn.isRemote))
+                    if (rand.nextInt(3) < plantAge && plantBlock.canGrow(worldIn, blockpos, state, worldIn.isRemote))
                         setBlockAndNotifyAdequately(worldIn, blockpos.up(), state);
                 }
                 break;
@@ -385,7 +385,7 @@ public class WorldGenPlantTFC extends WorldGenerator
                 {
                     int plantAge = plant.getAgeForWorldgen(rand, ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos));
                     setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockTallPlantTFC.AGE, plantAge));
-                    if (rand.nextInt(15) < plantAge && plantBlock.canGrow(worldIn, blockpos, state, worldIn.isRemote))
+                    if (rand.nextInt(4) < plantAge && plantBlock.canGrow(worldIn, blockpos, state, worldIn.isRemote))
                         setBlockAndNotifyAdequately(worldIn, blockpos.up(), state);
                 }
                 break;

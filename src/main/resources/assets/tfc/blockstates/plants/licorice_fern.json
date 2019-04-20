@@ -2,32 +2,50 @@
 	"multipart": [
 		{ "when": { "facing": "up" },
 			"apply": [
-				{ "model": "tfc:plants/licorice_fern" }
+				{ "model": "tfc:plants/licorice_fern_0", "x": 270 },
+				{ "model": "tfc:plants/licorice_fern_0", "x": 270, "y": 90 },
+				{ "model": "tfc:plants/licorice_fern_0", "x": 270, "y": 180 },
+				{ "model": "tfc:plants/licorice_fern_0", "x": 270, "y": 270 },
+				{ "model": "tfc:plants/licorice_fern_1", "x": 270 },
+				{ "model": "tfc:plants/licorice_fern_1", "x": 270, "y": 90 },
+				{ "model": "tfc:plants/licorice_fern_1", "x": 270, "y": 180 },
+				{ "model": "tfc:plants/licorice_fern_1", "x": 270, "y": 270 }
 			]
 		},
 		{ "when": { "facing": "down" },
 			"apply": [
-				{ "model": "tfc:plants/licorice_fern", "x": 180 }
+				{ "model": "tfc:plants/licorice_fern_0", "x": 90 },
+				{ "model": "tfc:plants/licorice_fern_0", "x": 90, "y": 90 },
+				{ "model": "tfc:plants/licorice_fern_0", "x": 90, "y": 180 },
+				{ "model": "tfc:plants/licorice_fern_0", "x": 90, "y": 270 },
+				{ "model": "tfc:plants/licorice_fern_1", "x": 90 },
+				{ "model": "tfc:plants/licorice_fern_1", "x": 90, "y": 90 },
+				{ "model": "tfc:plants/licorice_fern_1", "x": 90, "y": 180 },
+				{ "model": "tfc:plants/licorice_fern_1", "x": 90, "y": 270 }
 			]
 		},
 		{ "when": { "facing": "east" },
 			"apply": [
-				{ "model": "tfc:plants/licorice_fern", "x": 90, "y": 90 }
+				{ "model": "tfc:plants/licorice_fern_0", "y": 90 },
+				{ "model": "tfc:plants/licorice_fern_1", "y": 90 }
 			]
 		},
 		{ "when": { "facing": "south" },
 			"apply": [
-				{ "model": "tfc:plants/licorice_fern", "x": 90, "y": 180 }
+				{ "model": "tfc:plants/licorice_fern_0", "y": 180 },
+				{ "model": "tfc:plants/licorice_fern_1", "y": 180 }
 			]
 		},
 		{ "when": { "facing": "west" },
 			"apply": [
-				{ "model": "tfc:plants/licorice_fern", "x": 90, "y": 270 }
+				{ "model": "tfc:plants/licorice_fern_0", "y": 270 },
+				{ "model": "tfc:plants/licorice_fern_1", "y": 270 }
 			]
 		},
 		{ "when": { "facing": "north" },
 			"apply": [
-				{ "model": "tfc:plants/licorice_fern", "x": 90 }
+				{ "model": "tfc:plants/licorice_fern_0" },
+				{ "model": "tfc:plants/licorice_fern_1" }
 			]
 		}
 	]
