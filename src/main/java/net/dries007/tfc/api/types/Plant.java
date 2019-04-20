@@ -268,6 +268,10 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     {
         switch (plantType)
         {
+            case DESERT:
+            case DESERT_TALL_PLANT:
+                if (isClayMarking) return EnumPlantTypeTFC.DESERT_CLAY;
+                else return EnumPlantTypeTFC.NONE;
             case DRY:
             case DRY_TALL_PLANT:
                 if (isClayMarking) return EnumPlantTypeTFC.DRY_CLAY;
@@ -398,6 +402,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     public enum EnumPlantTypeTFC
     {
         CLAY,
+        DESERT_CLAY,
         DRY_CLAY,
         DRY,
         FRESH_BEACH,

@@ -662,7 +662,8 @@ for wood_type in WOOD_TYPES:
     # PLANKS BLOCKS
     cube_all(('wood', 'planks', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
     # LEAVES BLOCKS
-    cube_all(('wood', 'leaves', wood_type), 'tfc:blocks/wood/leaves/%s' % wood_type, model='leaves')
+    if wood_type != 'palm':
+        cube_all(('wood', 'leaves', wood_type), 'tfc:blocks/wood/leaves/%s' % wood_type, model='leaves')
 
     # FENCES
     blockstate(('wood', 'fence', wood_type), 'fence_post', textures={

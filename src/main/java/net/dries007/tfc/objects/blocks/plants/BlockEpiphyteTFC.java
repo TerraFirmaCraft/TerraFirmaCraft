@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.blocks.plants;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -94,7 +95,7 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
         {
             if (this.canPlaceAt(worldIn, pos, enumfacing))
             {
-                return true;
+                return worldIn.getBlockState(pos).getBlock() != this;
             }
         }
 
@@ -110,10 +111,14 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
     @Override
     public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (canPlaceBlockAt(worldIn, pos))
+        for (EnumFacing enumfacing : FACING.getAllowedValues())
         {
-            return plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
+            if (this.canPlaceAt(worldIn, pos, enumfacing))
+            {
+                return plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
+            }
         }
+
         return false;
     }
 
