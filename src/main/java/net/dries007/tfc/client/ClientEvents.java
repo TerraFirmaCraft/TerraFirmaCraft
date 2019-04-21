@@ -42,9 +42,10 @@ import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
-import net.dries007.tfc.client.render.TESRBarrel;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.world.classic.ClimateRenderHelper;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -95,20 +96,13 @@ public class ClientEvents
                 if (data == null || !data.isInitialized()) list.add("No data ?!");
                 else
                 {
-                    list.add(String.format("%sTemps: Base: %s%.1f°%s Biome Avg: %s%.1f°%s Actual: %s%.1f°",
+                    list.add(String.format("%sTemp: Base: %s%.1f\u00b0C%s Biome Avg: %s%.1f\u00b0C%s Month: %s%.1f\u00b0C%s Daily: %s%.1f\u00b0C",
                         GRAY, WHITE, data.getBaseTemp(), GRAY,
                         WHITE, data.getAverageTemp(), GRAY,
-                        WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)
-                    ));
-                    list.add(CalenderTFC.getTimeAndDate());/*String.format("%sTime: %s%02d:%02d %04d/%02d/%02d",
-                        GRAY, WHITE,
-                        CalenderTFC.getHourOfDay(),
-                        CalenderTFC.getMinuteOfHour(),
-                        CalenderTFC.getTotalYears(),
-                        CalenderTFC.getMonthOfYear().id(),
-                        CalenderTFC.getDayOfMonth()
-                        )
-                    );*/
+                        WHITE, ClimateRenderHelper.get(blockpos).getTemperature(), GRAY,
+                        WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)));
+                    String monthName = I18n.format(Helpers.getEnumName(CalendarTFC.getMonthOfYear()));
+                    list.add(String.format("Year %04d, %s %02d %02d:%02d", CalendarTFC.getTotalYears(), monthName, CalendarTFC.getDayOfMonth(), CalendarTFC.getHourOfDay(), CalendarTFC.getMinuteOfHour()));
 
                     list.add(GRAY + "Biome: " + WHITE + mc.world.getBiome(blockpos).getBiomeName());
 

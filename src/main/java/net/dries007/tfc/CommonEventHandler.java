@@ -32,7 +32,7 @@ import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -157,7 +157,6 @@ public final class CommonEventHandler
             player.inventoryContainer.addListener(new CapabilityContainerListener(player));
 
             // World Data (Calendar) Sync Handler
-            TerraFirmaCraft.getLog().info("Syncing calendar!");
             TerraFirmaCraft.getNetwork().sendTo(new PacketCalendarUpdate(), player);
         }
     }
@@ -189,9 +188,9 @@ public final class CommonEventHandler
     {
         // Calendar Sync / Initialization
         final World world = event.getWorld();
-        if (world.provider.getDimension() == 0)
+        if (world.provider.getDimension() == 0 && !world.isRemote)
         {
-            CalenderTFC.CalendarWorldData.onLoad(event.getWorld());
+            CalendarTFC.CalendarWorldData.onLoad(event.getWorld());
         }
     }
 }

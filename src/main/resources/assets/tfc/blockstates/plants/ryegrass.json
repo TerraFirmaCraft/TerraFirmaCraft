@@ -1,40 +1,28 @@
 {
 	"multipart": [
-		{   "when": { "stage": "0|1|3|4|5|6|7", "age": "0|1|2|3" },
+		{   "when": { "stage": "0", "age": "0" },
 			"apply": { "model": "tfc:plants/ryegrass_shortest_0" }
 		},
-		{   "when": { "stage": "0|1|3|4|5|6|7", "age": "4|5|6|7" },
+		{   "when": { "stage": "0", "age": "1" },
 			"apply": { "model": "tfc:plants/ryegrass_shorter_0" }
 		},
-		{   "when": { "stage": "0|1|3|4|5|6|7", "age": "8|9|10|11" },
+		{   "when": { "stage": "0", "age": "2" },
 			"apply": { "model": "tfc:plants/ryegrass_short_0" }
 		},
-		{   "when": { "stage": "0|1|3|4|5|6|7", "age": "12|13|14|15" },
+		{   "when": { "stage": "0", "age": "3" },
 			"apply": { "model": "tfc:plants/ryegrass_0" }
 		},
-		{   "when": { "stage": "2", "age": "0|1|2|3" },
+		{   "when": { "stage": "1", "age": "0" },
 			"apply": { "model": "tfc:plants/ryegrass_shortest_0b" }
 		},
-		{   "when": { "stage": "2", "age": "4|5|6|7" },
+		{   "when": { "stage": "1", "age": "1" },
 			"apply": { "model": "tfc:plants/ryegrass_shorter_0b" }
 		},
-		{   "when": { "stage": "2", "age": "8|9|10|11" },
+		{   "when": { "stage": "1", "age": "2" },
 			"apply": { "model": "tfc:plants/ryegrass_short_0b" }
 		},
-		{   "when": { "stage": "2", "age": "12|13|14|15" },
+		{   "when": { "stage": "1", "age": "3" },
 			"apply": { "model": "tfc:plants/ryegrass_0b" }
-		},
-		{   "when": { "stage": "8|9|10|11", "age": "0|1|2|3" },
-			"apply": { "model": "tfc:plants/ryegrass_shortest_1" }
-		},
-		{   "when": { "stage": "8|9|10|11", "age": "4|5|6|7" },
-			"apply": { "model": "tfc:plants/ryegrass_shorter_1" }
-		},
-		{   "when": { "stage": "8|9|10|11", "age": "8|9|10|11" },
-			"apply": { "model": "tfc:plants/ryegrass_short_1" }
-		},
-		{   "when": { "stage": "8|9|10|11", "age": "12|13|14|15" },
-			"apply": { "model": "tfc:plants/ryegrass_1" }
 		}
 	]
 }

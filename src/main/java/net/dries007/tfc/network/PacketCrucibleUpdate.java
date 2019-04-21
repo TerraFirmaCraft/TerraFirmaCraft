@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.network;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,14 +56,17 @@ public class PacketCrucibleUpdate implements IMessage
         public IMessage onMessage(PacketCrucibleUpdate message, MessageContext ctx)
         {
             EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
-            World world = player.getEntityWorld();
-            TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
-                TECrucible te = Helpers.getTE(world, message.pos, TECrucible.class);
-                if (te != null)
-                {
-                    te.setAlloy(message.alloyNBT);
-                }
-            });
+            if (player != null)
+            {
+                World world = player.getEntityWorld();
+                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
+                    TECrucible te = Helpers.getTE(world, message.pos, TECrucible.class);
+                    if (te != null)
+                    {
+                        te.setAlloy(message.alloyNBT);
+                    }
+                });
+            }
             return null;
         }
     }

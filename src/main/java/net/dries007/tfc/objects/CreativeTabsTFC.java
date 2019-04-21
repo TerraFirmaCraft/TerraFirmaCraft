@@ -29,6 +29,7 @@ public final class CreativeTabsTFC
     public static final CreativeTabs CT_PLANTS = new TFCCreativeTab("plants", "tfc:crops/seedbag/tomato");
     public static final CreativeTabs CT_FOOD = new TFCCreativeTab("food", "tfc:food/greenapple");
     public static final CreativeTabs CT_MISC = new TFCCreativeTab("misc", "tfc:wand");
+    public static final CreativeTabs CT_FLORA = new TFCCreativeTab("flora", "tfc:plants/goldenrod");
 
     private static class TFCCreativeTab extends CreativeTabs
     {

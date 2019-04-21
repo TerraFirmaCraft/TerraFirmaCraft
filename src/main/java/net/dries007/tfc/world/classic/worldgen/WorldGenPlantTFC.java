@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -33,174 +34,458 @@ public class WorldGenPlantTFC extends WorldGenerator
 
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS)
+        if (plant.getIsClayMarking()) return false;
+        if (plant.getIsSwampPlant() && (/*!ClimateTFC.isSwamp(worldIn, position) ||*/ !BiomeDictionary.hasType(worldIn.getBiome(position), BiomeDictionary.Type.SWAMP)))
+            return false;
+
+        final float floraDensity = ChunkDataTFC.get(worldIn, position).getFloraDensity();
+        int plantAge = plant.getAgeForWorldgen(rand, ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, position));
+
+        switch (plant.getPlantType())
         {
-            BlockShortGrassTFC plantBlock = BlockShortGrassTFC.get(plant);
-            IBlockState state = plantBlock.getDefaultState();
-
-            for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 4; ++i)
+            case MUSHROOM:
             {
-                BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
-                float temp = ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos);
+                BlockMushroomTFC plantBlock = BlockMushroomTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
 
-                if (plant.isValidLocation(temp, ChunkDataTFC.getRainfall(worldIn, blockpos), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
-                    worldIn.isAirBlock(blockpos) &&
-                    (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
-                    plantBlock.canBlockStay(worldIn, blockpos, state))
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 16; ++i)
                 {
-                    int plantAge = rand.nextInt(Math.max(1, Math.min(rand.nextInt(Math.round(10f + ((temp - 15) / (3.75f)))), 16)));
-                    worldIn.setBlockState(blockpos, state.withProperty(BlockShortGrassTFC.AGE, plantAge), 2);
-                }
-            }
-        }
-        else if (plant.getPlantType() == Plant.PlantType.TALL_GRASS)
-        {
-            BlockTallGrassTFC plantBlock = BlockTallGrassTFC.get(plant);
-            IBlockState state = plantBlock.getDefaultState();
+                    BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
 
-            for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 8; ++i)
-            {
-                BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
-
-                int j = 1 + rand.nextInt(rand.nextInt(3) + 1);
-
-                for (int k = 0; k < j; ++k)
-                {
-                    if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos.up(k)), ChunkDataTFC.getRainfall(worldIn, blockpos.up(k)), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
-                        worldIn.isAirBlock(blockpos.up(k)) &&
-                        (!worldIn.provider.isNether() || blockpos.up(k).getY() < 254) &&
-                        plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
+                    if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                        plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                        plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                        worldIn.isAirBlock(blockpos) &&
+                        plantBlock.canPlaceBlockAt(worldIn, blockpos))
                     {
-                        worldIn.setBlockState(blockpos.up(k), state, 2);
+                        setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockPlantTFC.AGE, plantAge));
+                    }
+                }
+                break;
+            }
+            case SHORT_GRASS:
+            {
+                BlockShortGrassTFC plantBlock = BlockShortGrassTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 4; ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+                    if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                        plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                        plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                        worldIn.isAirBlock(blockpos) &&
+                        plantBlock.canBlockStay(worldIn, blockpos, state))
+                    {
+                        setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockShortGrassTFC.AGE, plantAge));
+                    }
+                }
+                break;
+            }
+            case TALL_GRASS:
+            {
+                BlockTallGrassTFC plantBlock = BlockTallGrassTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 8; ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+                    int j = 1 + rand.nextInt(plant.getMaxHeight());
+
+                    for (int k = 0; k < j; ++k)
+                    {
+                        if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos.up(k)) &&
+                            plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                            plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
+                            worldIn.isAirBlock(blockpos.up(k)) &&
+                            plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
+                        {
+                            setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockShortGrassTFC.AGE, plantAge));
+                        }
+                    }
+                }
+                break;
+            }
+            case CREEPING:
+            {
+                BlockCreepingPlantTFC plantBlock = BlockCreepingPlantTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 16; ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
+
+                    if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                        plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                        plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                        worldIn.isAirBlock(blockpos) &&
+                        plantBlock.canBlockStay(worldIn, blockpos, state) &&
+                        !BlocksTFC.isSand(worldIn.getBlockState(blockpos.down())))
+                    {
+                        setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockCreepingPlantTFC.AGE, plantAge));
+                    }
+                }
+                break;
+            }
+            case HANGING:
+            {
+                BlockHangingPlantTFC plantBlock = BlockHangingPlantTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 4; ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(16), rand.nextInt(8) - rand.nextInt(8));
+
+                    if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                        plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                        plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                        worldIn.isAirBlock(blockpos) &&
+                        plantBlock.canBlockStay(worldIn, blockpos, state))
+                    {
+                        setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockHangingPlantTFC.AGE, plantAge));
+                    }
+                }
+                break;
+            }
+            case REED:
+            case REED_SEA:
+            {
+                BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 16; ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+                    if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                        plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                        plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                        worldIn.isAirBlock(blockpos) &&
+                        worldIn.getBlockState(blockpos.down()).getBlock().canSustainPlant(state, worldIn, blockpos.down(), EnumFacing.UP, plantBlock))
+                    {
+                        setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockPlantTFC.AGE, plantAge));
+                    }
+                }
+                break;
+            }
+            case TALL_REED:
+            case TALL_REED_SEA:
+            {
+                BlockTallPlantTFC plantBlock = BlockTallPlantTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 16; ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+                    int j = 1 + rand.nextInt(plant.getMaxHeight());
+
+                    for (int k = 0; k < j; ++k)
+                    {
+                        if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos.up(k)) &&
+                            plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                            plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
+                            worldIn.isAirBlock(blockpos.up(k)) &&
+                            plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
+                        {
+                            setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockTallPlantTFC.AGE, plantAge));
+                        }
+                    }
+                }
+                break;
+            }
+            case DESERT:
+            {
+                BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position); ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+                    if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                        plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                        plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                        worldIn.isAirBlock(blockpos) &&
+                        !BiomeDictionary.hasType(worldIn.getBiome(blockpos), BiomeDictionary.Type.BEACH) &&
+                        plantBlock.canBlockStay(worldIn, blockpos, state))
+                    {
+                        setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockPlantTFC.AGE, plantAge));
+                    }
+                }
+                break;
+            }
+            case DESERT_TALL_PLANT:
+            {
+                BlockTallPlantTFC plantBlock = BlockTallPlantTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position); ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+                    int j = 1 + rand.nextInt(plant.getMaxHeight());
+
+                    for (int k = 0; k < j; ++k)
+                    {
+                        if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos.up(k)) &&
+                            plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                            plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
+                            worldIn.isAirBlock(blockpos.up(k)) &&
+                            plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
+                        {
+                            setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockTallPlantTFC.AGE, plantAge));
+                        }
+                    }
+                }
+                break;
+            }
+            case DRY:
+            {
+                BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position); ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+                    if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                        plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                        plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                        worldIn.isAirBlock(blockpos) &&
+                        !BiomeDictionary.hasType(worldIn.getBiome(blockpos), BiomeDictionary.Type.BEACH) &&
+                        plantBlock.canBlockStay(worldIn, blockpos, state))
+                    {
+                        setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockPlantTFC.AGE, plantAge));
+                    }
+                }
+                break;
+            }
+            case DRY_TALL_PLANT:
+            {
+                BlockTallPlantTFC plantBlock = BlockTallPlantTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position); ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+                    int j = 1 + rand.nextInt(plant.getMaxHeight());
+
+                    for (int k = 0; k < j; ++k)
+                    {
+                        if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos.up(k)) &&
+                            plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                            plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
+                            worldIn.isAirBlock(blockpos.up(k)) &&
+                            plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
+                        {
+                            setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockTallPlantTFC.AGE, plantAge));
+                        }
+                    }
+                }
+                break;
+            }
+            case TALL_PLANT:
+            {
+                BlockTallPlantTFC plantBlock = BlockTallPlantTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 16; ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+                    int j = 1 + rand.nextInt(plant.getMaxHeight());
+
+                    for (int k = 0; k < j; ++k)
+                    {
+                        if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos.up(k)) &&
+                            plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                            plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
+                            worldIn.isAirBlock(blockpos.up(k)) &&
+                            plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
+                        {
+                            setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockTallPlantTFC.AGE, plantAge));
+                        }
+                    }
+                }
+                break;
+            }
+            case WATER:
+            case WATER_SEA:
+            {
+                BlockWaterPlantTFC plantBlock = BlockWaterPlantTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+                IBlockState water = plant.getWaterType();
+
+                int depth = plant.getValidWaterDepth(worldIn, position, water);
+                if (depth == -1) return false;
+
+                BlockPos blockpos = position.add(0, -depth + 1, 0);
+
+                if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                    plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                    plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                    plantBlock.canPlaceBlockAt(worldIn, blockpos))
+                {
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockWaterPlantTFC.AGE, plantAge));
+                }
+                break;
+            }
+            case EMERGENT_TALL_WATER:
+            case EMERGENT_TALL_WATER_SEA:
+            {
+                BlockEmergentTallWaterPlantTFC plantBlock = BlockEmergentTallWaterPlantTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+                IBlockState water = plant.getWaterType();
+
+                int depth = plant.getValidWaterDepth(worldIn, position, water);
+                if (depth == -1) return false;
+                BlockPos blockpos = position.add(0, -depth + 1, 0);
+
+                if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                    plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                    plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                    plantBlock.canPlaceBlockAt(worldIn, blockpos))
+                {
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockEmergentTallWaterPlantTFC.AGE, plantAge));
+                    if (rand.nextInt(15) < plantAge && plantBlock.canGrow(worldIn, blockpos, state, worldIn.isRemote))
+                        setBlockAndNotifyAdequately(worldIn, blockpos.up(), state);
+                }
+                break;
+            }
+            case TALL_WATER:
+            case TALL_WATER_SEA:
+            {
+                BlockTallWaterPlantTFC plantBlock = BlockTallWaterPlantTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+                IBlockState water = plant.getWaterType();
+
+                int depth = plant.getValidWaterDepth(worldIn, position, water);
+                if (depth == -1) return false;
+                BlockPos blockpos = position.add(0, -depth + 1, 0);
+
+                if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                    plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                    plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                    plantBlock.canPlaceBlockAt(worldIn, blockpos))
+                {
+                    setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockTallPlantTFC.AGE, plantAge));
+                    if (rand.nextInt(15) < plantAge && plantBlock.canGrow(worldIn, blockpos, state, worldIn.isRemote))
+                        setBlockAndNotifyAdequately(worldIn, blockpos.up(), state);
+                }
+                break;
+            }
+            case FLOATING:
+            {
+                BlockFloatingWaterTFC plantBlock = BlockFloatingWaterTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+                IBlockState water = plant.getWaterType();
+
+                for (int i = 0; i < 8; ++i)
+                {
+                    final BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), 0, rand.nextInt(8) - rand.nextInt(8));
+
+                    if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                        plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                        plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                        worldIn.isAirBlock(blockpos) &&
+                        plantBlock.canPlaceBlockAt(worldIn, blockpos) &&
+                        plant.isValidFloatingWaterDepth(worldIn, blockpos, water))
+                    {
+                        setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockFloatingWaterTFC.AGE, plantAge));
+                    }
+                }
+                break;
+            }
+            case FLOATING_SEA:
+            {
+                BlockFloatingWaterTFC plantBlock = BlockFloatingWaterTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+                IBlockState water = plant.getWaterType();
+
+                for (int i = 0; i < 128; ++i)
+                {
+                    final BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), 0, rand.nextInt(8) - rand.nextInt(8));
+
+                    if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                        plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                        plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                        worldIn.isAirBlock(blockpos) &&
+                        plantBlock.canPlaceBlockAt(worldIn, blockpos) &&
+                        plant.isValidFloatingWaterDepth(worldIn, blockpos, water))
+                    {
+                        setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockFloatingWaterTFC.AGE, plantAge));
+                    }
+                }
+                break;
+            }
+            case CACTUS:
+            {
+                BlockCactusTFC plantBlock = BlockCactusTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 8; ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+                    int j = 1 + rand.nextInt(plant.getMaxHeight());
+
+                    for (int k = 0; k < j; ++k)
+                    {
+                        if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos.up(k)) &&
+                            plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                            plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
+                            worldIn.isAirBlock(blockpos.up(k)) &&
+                            plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
+                        {
+                            setBlockAndNotifyAdequately(worldIn, blockpos.up(k), state.withProperty(BlockCactusTFC.AGE, plantAge));
+                        }
+                    }
+                }
+                break;
+            }
+            case EPIPHYTE:
+            {
+                BlockEpiphyteTFC plantBlock = BlockEpiphyteTFC.get(plant);
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 4; ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(16), rand.nextInt(8) - rand.nextInt(8));
+
+                    if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                        plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                        plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                        worldIn.getBlockState(blockpos).getBlock().isReplaceable(worldIn, blockpos) &&
+                        plantBlock.canPlaceBlockAt(worldIn, blockpos))
+                    {
+                        setBlockAndNotifyAdequately(worldIn, blockpos, plantBlock.getStateForWorldGen(worldIn, blockpos).withProperty(BlockEpiphyteTFC.AGE, plantAge));
+                    }
+                }
+                break;
+            }
+            default:
+            {
+                BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
+                IBlockState state = plantBlock.getDefaultState();
+
+                for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 16; ++i)
+                {
+                    BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+                    if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockpos) &&
+                        plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos)) &&
+                        plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
+                        worldIn.isAirBlock(blockpos) &&
+                        plantBlock.canBlockStay(worldIn, blockpos, state))
+                    {
+                        setBlockAndNotifyAdequately(worldIn, blockpos, state.withProperty(BlockPlantTFC.AGE, plantAge));
                     }
                 }
             }
         }
-        else if (plant.getPlantType() == Plant.PlantType.CREEPING)
-        {
-            BlockCreepingPlantTFC plantBlock = BlockCreepingPlantTFC.get(plant);
-            IBlockState state = plantBlock.getDefaultState();
-
-            for (int i = 0; i < 64; ++i)
-            {
-                BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
-
-                if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos), ChunkDataTFC.getRainfall(worldIn, blockpos), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
-                    worldIn.isAirBlock(blockpos) &&
-                    (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
-                    plantBlock.canBlockStay(worldIn, blockpos, state) &&
-                    rand.nextInt() < 10 && !BlocksTFC.isSand(worldIn.getBlockState(blockpos.down())))
-                {
-                    worldIn.setBlockState(blockpos, state, 2);
-                }
-            }
-        }
-        else if (plant.getPlantType() == Plant.PlantType.STANDARD)
-        {
-            BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
-            IBlockState state = plantBlock.getDefaultState();
-
-            for (int i = 0; i < 32; ++i)
-            {
-                BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
-
-                if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos), ChunkDataTFC.getRainfall(worldIn, blockpos), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
-                    worldIn.isAirBlock(blockpos) &&
-                    (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
-                    plantBlock.canBlockStay(worldIn, blockpos, state))
-                {
-                    worldIn.setBlockState(blockpos, state, 2);
-                }
-            }
-        }
-        else if (plant.getPlantType() == Plant.PlantType.DESERT)
-        {
-            BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
-            IBlockState state = plantBlock.getDefaultState();
-
-            for (int i = 0; i < 128; ++i)
-            {
-                BlockPos blockpos = position.add(rand.nextInt(16) - rand.nextInt(16), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(16) - rand.nextInt(16));
-
-                if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos), ChunkDataTFC.getRainfall(worldIn, blockpos), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
-                    worldIn.isAirBlock(blockpos) &&
-                    !BiomeDictionary.hasType(worldIn.getBiome(blockpos), BiomeDictionary.Type.BEACH) &&
-                    (!worldIn.provider.isNether() || blockpos.getY() < 255) &&
-                    plantBlock.canBlockStay(worldIn, blockpos, state))
-                {
-                    worldIn.setBlockState(blockpos, state, 2);
-                }
-            }
-        }
-        else if (plant.getPlantType() == Plant.PlantType.DOUBLE)
-        {
-            BlockDoublePlantTFC plantBlock = BlockDoublePlantTFC.get(plant);
-            IBlockState state = plantBlock.getDefaultState();
-
-            for (int i = 0; i < 32; ++i)
-            {
-                BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
-
-                int j = 1 + rand.nextInt(rand.nextInt(3) + 1);
-
-                for (int k = 0; k < j; ++k)
-                {
-                    float temp = ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos.up(k));
-                    if (plant.isValidLocation(temp, ChunkDataTFC.getRainfall(worldIn, blockpos.up(k)), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
-                        worldIn.isAirBlock(blockpos.up(k)) &&
-                        (!worldIn.provider.isNether() || blockpos.up(k).getY() < 254) &&
-                        plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
-                    {
-                        worldIn.setBlockState(blockpos.up(k), state.withProperty(BlockDoublePlantTFC.AGE, rand.nextInt(Math.max(1, Math.min(rand.nextInt(Math.round(10f + ((temp - 15) / (3.75f)))), 16)))), 2);
-                    }
-                }
-            }
-        }
-        else if (plant.getPlantType() == Plant.PlantType.FLOATING || plant.getPlantType() == Plant.PlantType.FLOATING_SEA)
-        {
-            BlockFloatingWaterTFC plantBlock = BlockFloatingWaterTFC.get(plant);
-            IBlockState state = plantBlock.getDefaultState();
-
-            for (int i = 0; i < 32; ++i)
-            {
-                final BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8),
-                    rand.nextInt(4) - rand.nextInt(4),
-                    rand.nextInt(8) - rand.nextInt(8));
-
-                if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos), ChunkDataTFC.getRainfall(worldIn, blockpos), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
-                    worldIn.isAirBlock(blockpos) &&
-                    (!worldIn.provider.isNether() || blockpos.getY() < 254) &&
-                    plantBlock.canPlaceBlockAt(worldIn, blockpos) &&
-                    plant.isValidFloatingWaterDepth(worldIn, blockpos, plant.getWaterType()))
-                {
-                    worldIn.setBlockState(blockpos, state, 2);
-                }
-            }
-        }
-        else if (plant.getPlantType() == Plant.PlantType.CACTUS)
-        {
-            BlockCactusTFC plantBlock = BlockCactusTFC.get(plant);
-            IBlockState state = plantBlock.getDefaultState();
-
-            for (int i = 0; i < 10; ++i)
-            {
-                BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
-
-                int j = 1 + rand.nextInt(rand.nextInt(3) + 1);
-
-                for (int k = 0; k < j; ++k)
-                {
-                    if (plant.isValidLocation(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, blockpos.up(k)), ChunkDataTFC.getRainfall(worldIn, blockpos.up(k)), worldIn.getLightFor(EnumSkyBlock.SKY, blockpos.up(k))) &&
-                        worldIn.isAirBlock(blockpos.up(k)) &&
-                        (!worldIn.provider.isNether() || blockpos.up(k).getY() < 254) &&
-                        plantBlock.canBlockStay(worldIn, blockpos.up(k), state))
-                    {
-                        worldIn.setBlockState(blockpos.up(k), state, 2);
-                    }
-                }
-            }
-        }
-
         return true;
     }
 }

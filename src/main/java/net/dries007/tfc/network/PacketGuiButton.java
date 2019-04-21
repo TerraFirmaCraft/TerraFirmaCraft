@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.network;
 
 import javax.annotation.Nullable;
@@ -65,12 +70,15 @@ public class PacketGuiButton implements IMessage
         public IMessage onMessage(PacketGuiButton message, MessageContext ctx)
         {
             EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
-            TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
-                if (player.openContainer instanceof IButtonHandler)
-                {
-                    ((IButtonHandler) player.openContainer).onButtonPress(message.buttonID, message.extraNBT);
-                }
-            });
+            if (player != null)
+            {
+                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
+                    if (player.openContainer instanceof IButtonHandler)
+                    {
+                        ((IButtonHandler) player.openContainer).onButtonPress(message.buttonID, message.extraNBT);
+                    }
+                });
+            }
             return null;
         }
     }
