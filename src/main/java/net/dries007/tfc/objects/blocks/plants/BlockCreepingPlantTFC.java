@@ -67,7 +67,7 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()])
+        return super.getActualState(state, worldIn, pos)
             .withProperty(DOWN, canPlantConnectTo(worldIn, pos, EnumFacing.DOWN))
             .withProperty(UP, canPlantConnectTo(worldIn, pos, EnumFacing.UP))
             .withProperty(NORTH, canPlantConnectTo(worldIn, pos, EnumFacing.NORTH))

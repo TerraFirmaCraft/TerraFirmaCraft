@@ -54,7 +54,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable, 
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
+        return super.getActualState(state, worldIn, pos).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
