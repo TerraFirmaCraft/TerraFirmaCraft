@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
@@ -43,6 +44,12 @@ public class BlockRockVariant extends Block
 
     public static BlockRockVariant get(Rock rock, Rock.Type type)
     {
+        //noinspection ConstantConditions
+        if (rock == null)
+        {
+            TerraFirmaCraft.getLog().warn("Rock is null at BlockRockVariant#get! Serious problems, potential NPE! Please report this to developers!", new Exception("AHHHHHHHHHHHHHHHHHHHHHHHHH"));
+            return get(Rock.GRANITE, type);
+        }
         return TABLE.get(rock).get(type);
     }
 
@@ -191,7 +198,7 @@ public class BlockRockVariant extends Block
                 return ItemRock.get(rock);
             case CLAY:
             case CLAY_GRASS:
-                return Items.CLAY_BALL; // todo: own clay or event for clay making?
+                return Items.CLAY_BALL;
             default:
                 return super.getItemDropped(state, rand, fortune);
             case GRASS:
