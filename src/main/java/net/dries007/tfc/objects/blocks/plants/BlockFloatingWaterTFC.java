@@ -6,10 +6,8 @@
 package net.dries007.tfc.objects.blocks.plants;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
@@ -23,18 +21,15 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.EnumPlantType;
 
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.world.classic.CalenderTFC;
-
-import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 @ParametersAreNonnullByDefault
 public class BlockFloatingWaterTFC extends BlockPlantTFC
 {
-    protected static final AxisAlignedBB LILY_PAD_AABB = new AxisAlignedBB(0.125D, -0.125D, 0.125D, 0.875D, 0.0625D, 0.875D);
+    private static final AxisAlignedBB LILY_PAD_AABB = new AxisAlignedBB(0.0D, -0.125D, 0.0D, 1.0D, 0.0625D, 1.0D);
     private static final Map<Plant, BlockFloatingWaterTFC> MAP = new HashMap<>();
 
     public static BlockFloatingWaterTFC get(Plant plant)
@@ -46,14 +41,6 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     {
         super(plant);
         if (MAP.put(plant, this) != null) throw new IllegalStateException("There can only be one.");
-
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GROWTHSTAGE, CalenderTFC.Month.MARCH.id()));
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
-    {
     }
 
     @Override
@@ -71,21 +58,14 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id());
+        return state.withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]);
     }
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, this.blockState.getBaseState().withProperty(DAYPERIOD, getCurrentTime(world)).withProperty(GROWTHSTAGE, CalenderTFC.getMonthOfYear().id()));
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]));
         this.checkAndDropBlock(world, pos, state);
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD);
     }
 
     @Override
@@ -98,7 +78,7 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     @Override
     protected boolean canSustainBush(IBlockState state)
     {
-        return BlocksTFC.isWater(state) || state.getMaterial() == Material.ICE && state == FRESH_WATER;
+        return (BlocksTFC.isWater(state) || state.getMaterial() == Material.ICE && state == plant.getWaterType()) || (state.getMaterial() == Material.CORAL && !(state.getBlock() instanceof BlockEmergentTallWaterPlantTFC));
     }
 
     @Override
@@ -108,7 +88,7 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
         {
             IBlockState stateDown = worldIn.getBlockState(pos.down());
             Material material = stateDown.getMaterial();
-            return (material == Material.WATER && stateDown.getValue(BlockLiquid.LEVEL) == 0 && stateDown == FRESH_WATER) || material == Material.ICE;
+            return (material == Material.WATER && stateDown.getValue(BlockLiquid.LEVEL) == 0 && stateDown == plant.getWaterType()) || material == Material.ICE || (material == Material.CORAL && !(state.getBlock() instanceof BlockEmergentTallWaterPlantTFC));
         }
         else
         {
@@ -125,8 +105,8 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
 
     @Override
     @Nonnull
-    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
+    protected BlockStateContainer createPlantBlockState()
     {
-        return EnumPlantType.Water;
+        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD, AGE);
     }
 }

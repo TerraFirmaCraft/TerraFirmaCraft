@@ -5,9 +5,9 @@
 
 package net.dries007.tfc.network;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -15,13 +15,16 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.world.classic.ClimateRenderHelper;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class PacketChunkData implements IMessage
 {
-    private NBTTagCompound data;
+    private NBTTagCompound nbt;
     private int x, z;
+    private float temperature, rainfall;
 
     @SuppressWarnings("unused")
     public PacketChunkData()
@@ -29,11 +32,13 @@ public class PacketChunkData implements IMessage
 
     }
 
-    public PacketChunkData(ChunkPos chunk, NBTTagCompound data)
+    public PacketChunkData(ChunkPos chunkPos, NBTTagCompound nbt, float temperature, float rainfall)
     {
-        x = chunk.x;
-        z = chunk.z;
-        this.data = data;
+        this.x = chunkPos.x;
+        this.z = chunkPos.z;
+        this.nbt = nbt;
+        this.temperature = temperature;
+        this.rainfall = rainfall;
     }
 
     @Override
@@ -41,7 +46,9 @@ public class PacketChunkData implements IMessage
     {
         x = buf.readInt();
         z = buf.readInt();
-        data = ByteBufUtils.readTag(buf);
+        nbt = ByteBufUtils.readTag(buf);
+        temperature = buf.readFloat();
+        rainfall = buf.readFloat();
     }
 
     @Override
@@ -49,7 +56,9 @@ public class PacketChunkData implements IMessage
     {
         buf.writeInt(x);
         buf.writeInt(z);
-        ByteBufUtils.writeTag(buf, data);
+        ByteBufUtils.writeTag(buf, nbt);
+        buf.writeFloat(temperature);
+        buf.writeFloat(rainfall);
     }
 
     public static class Handler implements IMessageHandler<PacketChunkData, IMessage>
@@ -57,13 +66,20 @@ public class PacketChunkData implements IMessage
         @Override
         public IMessage onMessage(PacketChunkData message, MessageContext ctx)
         {
-            if (ctx.side.isClient())
+            final World world = TerraFirmaCraft.getProxy().getWorld(ctx);
+            if (world != null)
             {
-                Minecraft.getMinecraft().addScheduledTask(() -> {
-                    Chunk c = Minecraft.getMinecraft().world.getChunk(message.x, message.z);
-                    ChunkDataTFC data = c.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
+                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
+                    // Update client-side chunk data capability
+                    Chunk chunk = world.getChunk(message.x, message.z);
+                    ChunkDataTFC data = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
                     if (data != null)
-                        ChunkDataProvider.CHUNK_DATA_CAPABILITY.readNBT(data, null, message.data);
+                    {
+                        ChunkDataProvider.CHUNK_DATA_CAPABILITY.readNBT(data, null, message.nbt);
+                    }
+
+                    // Update rendering climate helper
+                    ClimateRenderHelper.update(chunk.getPos(), message.temperature, message.rainfall);
                 });
             }
             return null;

@@ -43,7 +43,7 @@ import net.dries007.tfc.objects.fluids.FluidMetal;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 public class ItemSmallVessel extends ItemFiredPottery
 {
@@ -196,14 +196,14 @@ public class ItemSmallVessel extends ItemFiredPottery
         @Override
         public float getTemperature()
         {
-            return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalenderTFC.getTotalTime() - lastUpdateTick);
+            return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.getTotalTime() - lastUpdateTick);
         }
 
         @Override
         public void setTemperature(float temperature)
         {
             this.temperature = temperature;
-            this.lastUpdateTick = CalenderTFC.getTotalTime();
+            this.lastUpdateTick = CalendarTFC.getTotalTime();
         }
 
         @Override
@@ -277,7 +277,7 @@ public class ItemSmallVessel extends ItemFiredPottery
             }
             else
             {
-                nbt.setLong("ticks", CalenderTFC.getTotalTime());
+                nbt.setLong("ticks", CalendarTFC.getTotalTime());
             }
 
             if (fluidMode)

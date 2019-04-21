@@ -37,11 +37,7 @@ import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.*;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
-import net.dries007.tfc.objects.items.itemblock.ItemBlockBarrel;
-import net.dries007.tfc.objects.items.itemblock.ItemBlockFloatingWaterTFC;
-import net.dries007.tfc.objects.items.itemblock.ItemBlockHeat;
-import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
-import net.dries007.tfc.objects.items.itemblock.ItemBlockTorchTFC;
+import net.dries007.tfc.objects.items.itemblock.*;
 import net.dries007.tfc.objects.te.*;
 
 import static net.dries007.tfc.api.types.Rock.Type.*;
@@ -137,6 +133,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockToolRack> allToolRackBlocks;
     private static ImmutableList<BlockCropsTFC> allCropBlocks;
     private static ImmutableList<BlockPlantTFC> allPlantBlocks;
+    private static ImmutableList<BlockPlantTFC> allGrassBlocks;
 
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
@@ -234,6 +231,11 @@ public final class BlocksTFC
     public static ImmutableList<BlockCropsTFC> getAllCropBlocks() { return allCropBlocks; }
 
     public static ImmutableList<BlockPlantTFC> getAllPlantBlocks() { return allPlantBlocks; }
+
+    public static ImmutableList<BlockPlantTFC> getAllGrassBlocks()
+    {
+        return allGrassBlocks;
+    }
 
     @SubscribeEvent
     @SuppressWarnings("ConstantConditions")
@@ -419,7 +421,8 @@ public final class BlocksTFC
             Builder<BlockPlantTFC> b = ImmutableList.builder();
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {
-                b.add(register(r, "plants/" + plant.getRegistryName().getPath(), plant.getPlantType().create(plant), CT_DECORATIONS));
+                if (plant.getPlantType() != Plant.PlantType.SHORT_GRASS && plant.getPlantType() != Plant.PlantType.TALL_GRASS)
+                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), plant.getPlantType().create(plant), CT_FLORA));
             }
             allPlantBlocks = b.build();
             for (BlockPlantTFC blockPlant : allPlantBlocks)
@@ -432,6 +435,20 @@ public final class BlocksTFC
                 {
                     normalItemBlocks.add(new ItemBlockTFC(blockPlant));
                 }
+            }
+        }
+
+        {
+            Builder<BlockPlantTFC> b = ImmutableList.builder();
+            for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
+            {
+                if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS || plant.getPlantType() == Plant.PlantType.TALL_GRASS)
+                    b.add(register(r, "plants/" + plant.getRegistryName().getPath(), plant.getPlantType().create(plant), CT_FLORA));
+            }
+            allGrassBlocks = b.build();
+            for (BlockPlantTFC blockPlant : allGrassBlocks)
+            {
+                normalItemBlocks.add(new ItemBlockTFC(blockPlant));
             }
         }
 
@@ -448,9 +465,7 @@ public final class BlocksTFC
         register(r, "log_pile", new BlockLogPile());
         register(r, "pit_kiln", new BlockPitKiln());
 
-        // todo: reeds/sugarcane ?
         // todo: pumpkin/melon ?
-        // todo: waterplants
         // todo: fruit tree stuff (leaves, saplings, logs)
 
         // todo: supports (h & v)
@@ -500,6 +515,16 @@ public final class BlocksTFC
     public static boolean isWater(IBlockState current)
     {
         return current.getMaterial() == Material.WATER;
+    }
+
+    public static boolean isFreshWater(IBlockState current)
+    {
+        return current == FLUID_FRESH_WATER.getDefaultState();
+    }
+
+    public static boolean isSaltWater(IBlockState current)
+    {
+        return current == FLUID_SALT_WATER.getDefaultState();
     }
 
     public static boolean isRawStone(IBlockState current)
@@ -554,6 +579,13 @@ public final class BlocksTFC
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
         Rock.Type type = ((BlockRockVariant) current.getBlock()).type;
         return type.isGrass;
+    }
+
+    public static boolean isDryGrass(IBlockState current)
+    {
+        if (!(current.getBlock() instanceof BlockRockVariant)) return false;
+        Rock.Type type = ((BlockRockVariant) current.getBlock()).type;
+        return type == DRY_GRASS;
     }
 
     public static boolean isGround(IBlockState current)

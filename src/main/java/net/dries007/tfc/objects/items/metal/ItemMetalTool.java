@@ -133,28 +133,38 @@ public class ItemMetalTool extends ItemMetal
     @Override
     public float getDestroySpeed(ItemStack stack, IBlockState state)
     {
+        return canHarvestBlock(state, stack) ? efficiency : 1.0f;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockState state)
+    {
         Material material = state.getMaterial();
         switch (type)
         {
             case AXE:
-                if (material == Material.WOOD || material == Material.PLANTS || material == Material.VINE)
-                    return efficiency;
-                break;
+                return material == Material.WOOD || material == Material.PLANTS || material == Material.VINE;
             case PICK:
-                if (material == Material.IRON || material == Material.ANVIL || material == Material.ROCK)
-                    return efficiency;
-                break;
+                return material == Material.IRON || material == Material.ANVIL || material == Material.ROCK;
             case SHOVEL:
-                if (material == Material.SNOW || material == Material.CRAFTED_SNOW) return efficiency;
+                return material == Material.SNOW || material == Material.CRAFTED_SNOW;
             case SCYTHE:
-                if (material == Material.PLANTS || material == Material.VINE || material == Material.LEAVES)
-                    return efficiency;
+                return material == Material.PLANTS || material == Material.VINE || material == Material.LEAVES;
         }
+        return false;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockState state, ItemStack stack)
+    {
         for (String type : getToolClasses(stack))
         {
-            if (state.getBlock().isToolEffective(type, state)) return efficiency;
+            if (state.getBlock().isToolEffective(type, state))
+            {
+                return true;
+            }
         }
-        return super.getDestroySpeed(stack, state);
+        return canHarvestBlock(state);
     }
 
     @Override

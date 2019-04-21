@@ -33,7 +33,7 @@ import net.dries007.tfc.proxy.IProxy;
 import net.dries007.tfc.util.FuelManager;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.OreSpawnData;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
 import net.dries007.tfc.world.classic.worldgen.*;
@@ -127,7 +127,7 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketCalendarUpdate.Handler(), PacketCalendarUpdate.class, ++id, Side.CLIENT);
 
         EntitiesTFC.preInit();
-        CalenderTFC.preInit();
+        CalendarTFC.preInit();
         OreSpawnData.preInit(event.getModConfigurationDirectory());
 
         CapabilityChunkData.preInit();

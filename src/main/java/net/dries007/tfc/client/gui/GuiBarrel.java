@@ -81,7 +81,7 @@ public class GuiBarrel extends GuiContainerTFC
     {
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
-        ContainerBarrel container = (ContainerBarrel)inventorySlots;
+        ContainerBarrel container = (ContainerBarrel) inventorySlots;
         IFluidHandler tank = container.getBarrelTank();
 
         if (tank != null)
@@ -91,7 +91,7 @@ public class GuiBarrel extends GuiContainerTFC
 
             if (fs != null)
             {
-                int fillHeightPixels = (int) (50 * fs.amount / (float)t.getCapacity());
+                int fillHeightPixels = (int) (50 * fs.amount / (float) t.getCapacity());
 
                 if (fillHeightPixels > 0)
                 {
@@ -157,7 +157,7 @@ public class GuiBarrel extends GuiContainerTFC
         String name = I18n.format(translationKey + ".name");
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
 
-        ContainerBarrel container = (ContainerBarrel)inventorySlots;
+        ContainerBarrel container = (ContainerBarrel) inventorySlots;
 
         if (container.isBarrelSealed())
         {

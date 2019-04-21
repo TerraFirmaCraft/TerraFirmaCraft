@@ -55,10 +55,36 @@ public class BlockBarrel extends Block
     }
 
     @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(SEALED, meta == 1);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        if (state.getValue(SEALED))
+        {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState state)
     {
         return false;
+    }
+
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return BOUNDING_BOX;
     }
 
     @Override
@@ -70,17 +96,10 @@ public class BlockBarrel extends Block
 
     @Override
     @Nonnull
-    @SuppressWarnings("deprecation")
-    public IBlockState getStateFromMeta(int meta)
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getRenderLayer()
     {
-        return this.getDefaultState().withProperty(SEALED, meta == 1);
-    }
-
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return BOUNDING_BOX;
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
@@ -125,19 +144,14 @@ public class BlockBarrel extends Block
         return true;
     }
 
+    /**
+     * The Block needs to be removed here since we prevented its removal earlier in {@link #removedByPlayer(IBlockState, World, BlockPos, EntityPlayer, boolean)}.
+     */
     @Override
-    @Nonnull
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer()
+    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack tool)
     {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    @Nonnull
-    public BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, SEALED);
+        super.harvestBlock(world, player, pos, state, te, tool);
+        world.setBlockToAir(pos);
     }
 
     @Override
@@ -166,27 +180,10 @@ public class BlockBarrel extends Block
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state)
+    @Nonnull
+    public BlockStateContainer createBlockState()
     {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TEBarrel();
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        if (state.getValue(SEALED))
-        {
-            return 1;
-        }
-
-        return 0;
+        return new BlockStateContainer(this, SEALED);
     }
 
     /**
@@ -197,6 +194,19 @@ public class BlockBarrel extends Block
     public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
     {
         return willHarvest || super.removedByPlayer(state, world, pos, player, false);
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TEBarrel();
     }
 
     @Override
@@ -233,15 +243,5 @@ public class BlockBarrel extends Block
                 }
             }
         }
-    }
-
-    /**
-     * The Block needs to be removed here since we prevented its removal earlier in {@link #removedByPlayer(IBlockState, World, BlockPos, EntityPlayer, boolean)}.
-     */
-    @Override
-    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack tool)
-    {
-        super.harvestBlock(world, player, pos, state, te, tool);
-        world.setBlockToAir(pos);
     }
 }

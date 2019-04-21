@@ -14,7 +14,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -29,12 +29,12 @@ public class TESaplingTFC extends TileEntity
 
     public long getHoursSincePlaced()
     {
-        return (CalenderTFC.getTotalTime() - timer) / CalenderTFC.TICKS_IN_HOUR;
+        return (CalendarTFC.getTotalTime() - timer) / CalendarTFC.TICKS_IN_HOUR;
     }
 
     public void onPlaced()
     {
-        timer = CalenderTFC.getTotalTime();
+        timer = CalendarTFC.getTotalTime();
         this.markDirty();
     }
 
@@ -67,13 +67,7 @@ public class TESaplingTFC extends TileEntity
     @Override
     public NBTTagCompound getUpdateTag()
     {
-        /* The tag from this method is used for the initial chunk packet, and it needs to have the TE position!
-        but this should be already handled by writeToNBT, not tested tho
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("x", this.getPos().getX());
-        nbt.setInteger("y", this.getPos().getY());
-        nbt.setInteger("z", this.getPos().getZ());*/
-        return writeToNBT(/*nbt*/new NBTTagCompound());
+        return writeToNBT(new NBTTagCompound());
     }
 
     @Override

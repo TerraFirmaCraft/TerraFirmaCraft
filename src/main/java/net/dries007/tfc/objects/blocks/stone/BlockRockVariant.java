@@ -23,7 +23,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -31,6 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -232,12 +232,41 @@ public class BlockRockVariant extends Block
     @Override
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
     {
-        EnumPlantType plantType = plantable.getPlantType(world, pos.offset(direction));
+        if (plantable instanceof BlockPlantTFC)
+        {
+            switch (((BlockPlantTFC) plantable).getPlantTypeTFC())
+            {
+                case CLAY:
+                    return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
+                case DRY_CLAY:
+                    return type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND || type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
+                case DRY:
+                    return type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND;
+                case FRESH_WATER:
+                    return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.GRAVEL;
+                case SALT_WATER:
+                    return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND || type == Rock.Type.GRAVEL;
+                case FRESH_BEACH:
+                    // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
+                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) &&
+                        (BlocksTFC.isFreshWater(world.getBlockState(pos.add(1, 0, 0))) ||
+                            BlocksTFC.isFreshWater(world.getBlockState(pos.add(-1, 0, 0))) ||
+                            BlocksTFC.isFreshWater(world.getBlockState(pos.add(0, 0, 1))) ||
+                            BlocksTFC.isFreshWater(world.getBlockState(pos.add(0, 0, -1))));
+                case SALT_BEACH:
+                    // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
+                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) &&
+                        (BlocksTFC.isSaltWater(world.getBlockState(pos.add(1, 0, 0))) ||
+                            BlocksTFC.isSaltWater(world.getBlockState(pos.add(-1, 0, 0))) ||
+                            BlocksTFC.isSaltWater(world.getBlockState(pos.add(0, 0, 1))) ||
+                            BlocksTFC.isSaltWater(world.getBlockState(pos.add(0, 0, -1))));
+            }
+        }
 
-        switch (plantType)
+        switch (plantable.getPlantType(world, pos.offset(direction)))
         {
             case Plains:
-                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY_GRASS;
+                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS;
             case Crop:
                 return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.FARMLAND || type == Rock.Type.DRY_GRASS;
             case Desert:
