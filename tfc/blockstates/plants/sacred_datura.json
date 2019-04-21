@@ -10,12 +10,12 @@
 				{ "model": "tfc:plants/sacred_datura_1" }
 			]
 		},
-		{ "when": { "dayperiod": "0|1", "stage": "2" },
+		{ "when": { "dayperiod": "1|2", "stage": "2" },
 			"apply": [
 				{ "model": "tfc:plants/sacred_datura_2" }
 			]
 		},
-		{ "when": { "dayperiod": "2|3", "stage": "2" },
+		{ "when": { "dayperiod": "3|0", "stage": "2" },
 			"apply": [
 				{ "model": "tfc:plants/sacred_datura_2b" }
 			]
