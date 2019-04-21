@@ -18,7 +18,8 @@ import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 /**
- * todo: this causes cascading world gen!
+ * todo: fix cascading lag. Priority: medium low
+ * See <a href="https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/40">issue</a> here.
  */
 public class WorldGenSurfaceFissureCluster implements IWorldGenerator
 {
