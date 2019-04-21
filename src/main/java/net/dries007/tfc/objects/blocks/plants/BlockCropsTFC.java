@@ -1,8 +1,14 @@
-package net.dries007.tfc.objects.blocks.plant.crops;
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
+package net.dries007.tfc.objects.blocks.plants;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockBush;
@@ -14,6 +20,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -26,6 +33,9 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.dries007.tfc.api.types.Crop;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
+import net.dries007.tfc.objects.te.TECropsTFC;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.classic.CalenderTFC;
 
 @ParametersAreNonnullByDefault
 
@@ -53,6 +63,13 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
         super(Material.PLANTS);
         if (MAP.put(crop, this) != null) throw new IllegalStateException("There can only be one.");
         this.crop = crop;
+    }
+
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TECropsTFC te = Helpers.getTE(worldIn, pos, TECropsTFC.class);
+        if (te != null) te.onPlaced();
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
@@ -130,6 +147,38 @@ public class BlockCropsTFC extends BlockBush implements IGrowable
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, STAGE);
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TECropsTFC();
+    }
+
+    @Override
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
+    {
+        super.updateTick(world, pos, state, random);
+
+        if (!world.isRemote)
+        {
+            TECropsTFC te = Helpers.getTE(world, pos, TECropsTFC.class);
+            if (te != null)
+            {
+                long hours = te.getHoursSincePlaced();
+                if (hours > (((getStage(state) *crop.getMinStageGrowthTime()) + crop.getMinStageGrowthTime()) * CalenderTFC.HOURS_IN_DAY))
+                {
+                    grow(world, random, pos, state);
+                }
+            }
+        }
     }
 
     @Override

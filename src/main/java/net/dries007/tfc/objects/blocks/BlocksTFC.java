@@ -24,7 +24,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.*;
-import net.dries007.tfc.objects.blocks.plant.crops.BlockCropsTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockCropsTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -494,6 +494,7 @@ public final class BlocksTFC
         register(TECharcoalForge.class, "charcoal_forge");
         register(TEAnvilTFC.class, "anvil");
         register(TECrucible.class, "crucible");
+        register(TECropsTFC.class, "crops");
     }
 
     public static boolean isWater(IBlockState current)
