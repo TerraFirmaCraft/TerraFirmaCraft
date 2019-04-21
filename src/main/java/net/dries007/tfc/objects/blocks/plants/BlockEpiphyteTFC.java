@@ -7,7 +7,6 @@ package net.dries007.tfc.objects.blocks.plants;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -115,7 +114,7 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
         {
             if (this.canPlaceAt(worldIn, pos, enumfacing))
             {
-                return plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
+                return plant.isValidTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
             }
         }
 

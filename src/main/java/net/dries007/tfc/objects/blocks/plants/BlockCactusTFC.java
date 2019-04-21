@@ -24,6 +24,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -39,7 +40,6 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPlant
 {
     private static final PropertyEnum<EnumBlockPart> PART = PropertyEnum.create("part", EnumBlockPart.class);
-    private static final AxisAlignedBB CACTUS_COLLISION_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D);
     private static final Map<Plant, BlockCactusTFC> MAP = new HashMap<>();
 
     public static BlockCactusTFC get(Plant plant)
@@ -140,7 +140,7 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPla
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos)))
+        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) && plant.isValidSunlight(Math.subtractExact(worldIn.getLightFor(EnumSkyBlock.SKY, pos), worldIn.getSkylightSubtracted())))
         {
             int j = state.getValue(AGE);
 
@@ -181,7 +181,7 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPla
 
             return flag &&
                 soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) &&
-                plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) &&
+                plant.isValidTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) &&
                 plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);

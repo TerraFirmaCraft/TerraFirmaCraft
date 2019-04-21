@@ -193,11 +193,13 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return depthCounter;
     }
 
+    @SuppressWarnings("unused")
     public float getMinGrowthTemp()
     {
         return minGrowthTemp;
     }
 
+    @SuppressWarnings("unused")
     public float getMaxGrowthTemp()
     {
         return maxGrowthTemp;
