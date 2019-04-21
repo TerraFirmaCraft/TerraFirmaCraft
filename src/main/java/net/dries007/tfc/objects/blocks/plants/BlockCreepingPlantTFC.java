@@ -97,7 +97,7 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
             IBlockState blockState = worldIn.getBlockState(pos.offset(face));
             if (blockState.getBlockFaceShape(worldIn, pos.offset(face), face.getOpposite()) == BlockFaceShape.SOLID || blockState.getBlock() instanceof BlockFence)
             {
-                return plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
+                return plant.isValidTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
             }
         }
         return false;
@@ -151,7 +151,6 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         return i == 1 ? axisalignedbb : FULL_BLOCK_AABB;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     @Nullable
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)

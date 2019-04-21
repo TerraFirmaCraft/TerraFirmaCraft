@@ -42,7 +42,7 @@ public class ItemBlockPlant extends ItemBlockTFC
     {
         if (entityIn != null)
         {
-            tempValidity = block.getPlant().getTempValidity(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, entityIn.getPosition()));
+            tempValidity = block.getPlant().getTempValidity(ClimateTFC.getHeightAdjustedTemp(worldIn, entityIn.getPosition()));
             rainValidity = block.getPlant().getRainValidity(ChunkDataTFC.getRainfall(worldIn, entityIn.getPosition()));
         }
     }
@@ -50,7 +50,7 @@ public class ItemBlockPlant extends ItemBlockTFC
     @Override
     public boolean showDurabilityBar(ItemStack stack)
     {
-        // todo: not sure about this feature, tie to agriculture skill if we keep it
+        // todo: useful for testing, not sure if this feature will stay for release, tie to agriculture skill if we keep it
         return true;
     }
 
