@@ -73,8 +73,7 @@ public interface IFireable extends IPlaceableItem
                 if (te != null)
                 {
                     // If you change this, make sure it works in both +x/z and -x/z
-                    te.onRightClick(player, stack, Math.round(hitVec.x) < hitVec.x, Math.round(hitVec.z) < hitVec.z);
-                    return true;
+                    return te.onRightClick(player, stack, Math.round(hitVec.x) < hitVec.x, Math.round(hitVec.z) < hitVec.z);
                 }
             }
         }

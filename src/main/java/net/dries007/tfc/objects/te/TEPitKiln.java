@@ -41,6 +41,7 @@ public class TEPitKiln extends TileEntity implements ITickable
 {
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
+
     private final NonNullList<ItemStack> logs = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> straw = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
@@ -143,81 +144,106 @@ public class TEPitKiln extends TileEntity implements ITickable
         return !(logs.stream().anyMatch(ItemStack::isEmpty) || straw.stream().anyMatch(ItemStack::isEmpty));
     }
 
-    public void onRightClick(EntityPlayer player, ItemStack item, boolean x, boolean z)
+    /**
+     * @return true if an action was taken (passed back through onItemRightClick
+     */
+    public boolean onRightClick(EntityPlayer player, ItemStack stack, boolean x, boolean z)
     {
-        if (isLit()) return;
-        int count = getStrawCount();
-        int slot = 0;
-        if (x) slot += 1;
-        if (z) slot += 2;
-        if (item.isEmpty())
+        if (isLit())
         {
-            if (getLogCount() > 0)
+            return false;
+        }
+        final int slot = (x ? 1 : 0) + (z ? 2 : 0);
+
+        // Try and extract an item
+        if (stack.isEmpty())
+        {
+            // This will search through the logs, then the straw
+            ItemStack dropStack = logs.stream().filter(i -> !i.isEmpty()).findFirst().orElseGet(() ->
+                straw.stream().filter(i -> !i.isEmpty()).findFirst().orElse(ItemStack.EMPTY));
+            if (!dropStack.isEmpty())
             {
-                ItemStack itemStack = logs.stream().filter(i -> !i.isEmpty()).findFirst().get();
-                player.addItemStackToInventory(itemStack.splitStack(1));
+                player.addItemStackToInventory(dropStack.splitStack(1));
                 updateBlock();
-                return;
+                return true;
             }
-            if (getStrawCount() > 0)
+            else
             {
-                ItemStack itemStack = straw.stream().filter(i -> !i.isEmpty()).findFirst().get();
-                player.addItemStackToInventory(itemStack.splitStack(1));
+                // Try and grab the item
+                ItemStack current = items.get(slot);
+                if (current.isEmpty())
+                {
+                    return false;
+                }
+                player.addItemStackToInventory(current.splitStack(1));
+                items.set(slot, ItemStack.EMPTY);
                 updateBlock();
-                return;
+                if (items.stream().filter(ItemStack::isEmpty).count() == 4)
+                {
+                    world.setBlockToAir(pos);
+                }
+                return true;
             }
-            ItemStack current = items.get(slot);
-            if (current.isEmpty()) return;
-            player.addItemStackToInventory(current.splitStack(1));
-            items.set(slot, ItemStack.EMPTY);
-            updateBlock();
-            if (items.stream().filter(ItemStack::isEmpty).count() == 4)
+        }
+        else
+        {
+            // Insert an item
+            int strawCount = getStrawCount(), logCount = getLogCount();
+
+            // Pottery
+            if (IFireable.fromItem(stack.getItem()) != null)
             {
-                world.setBlockToAir(pos);
-                return;
+                if (strawCount == 0 && logCount == 0)
+                {
+                    if (items.get(slot).isEmpty())
+                    {
+                        items.set(slot, stack.splitStack(1));
+                        updateBlock();
+                        return true;
+                    }
+                }
+                return false;
             }
-            return;
+            // Straw
+            if (stack.getItem() == ItemsTFC.HAY && strawCount < STRAW_NEEDED)
+            {
+                addStraw(stack.splitStack(1));
+                updateBlock();
+                return true;
+            }
+            // Straw via thatch block
+            if (stack.getItem() == Item.getItemFromBlock(BlocksTFC.THATCH) && strawCount <= STRAW_NEEDED - 4)
+            {
+                stack.shrink(1);
+                addStraw(new ItemStack(ItemsTFC.HAY));
+                addStraw(new ItemStack(ItemsTFC.HAY));
+                addStraw(new ItemStack(ItemsTFC.HAY));
+                addStraw(new ItemStack(ItemsTFC.HAY));
+                updateBlock();
+                return true;
+            }
+            // Only insert logs if all straw is inserted
+            if (strawCount == STRAW_NEEDED)
+            {
+                // Logs
+                if (OreDictionaryHelper.doesStackMatchOre(stack, "logWood") && logCount < WOOD_NEEDED)
+                {
+                    addLog(stack.splitStack(1));
+                    updateBlock();
+                    return true;
+                }
+                // Light
+                if (logCount == WOOD_NEEDED && stack.getItem() instanceof ItemFlintAndSteel)
+                {
+                    // Flint and steel should light immediately
+                    return tryLight();
+                }
+            }
         }
-        if (IFireable.fromItem(item.getItem()) != null)
-        {
-            ItemStack current = items.get(slot);
-            if (!current.isEmpty()) return;
-            items.set(slot, item.splitStack(1));
-            updateBlock();
-            return;
-        }
-        if (item.getItem() == ItemsTFC.HAY && count < STRAW_NEEDED)
-        {
-            addStraw(item.splitStack(1));
-            updateBlock();
-            return;
-        }
-        if (item.getItem() == Item.getItemFromBlock(BlocksTFC.THATCH) && count <= STRAW_NEEDED - 4)
-        {
-            item.shrink(1);
-            addStraw(new ItemStack(ItemsTFC.HAY));
-            addStraw(new ItemStack(ItemsTFC.HAY));
-            addStraw(new ItemStack(ItemsTFC.HAY));
-            addStraw(new ItemStack(ItemsTFC.HAY));
-            updateBlock();
-            return;
-        }
-        if (count < STRAW_NEEDED) return;
-        count = getLogCount();
-        if (OreDictionaryHelper.doesStackMatchOre(item, "logWood") && count < WOOD_NEEDED)
-        {
-            addLog(item.splitStack(1));
-            updateBlock();
-            return;
-        }
-        if (count < WOOD_NEEDED) return;
-        if (item.getItem() instanceof ItemFlintAndSteel)
-        {
-            tryLight();
-        }
+        return false;
     }
 
-    public void updateBlock()
+    private void updateBlock()
     {
         IBlockState state = world.getBlockState(pos);
         world.notifyBlockUpdate(pos, state, state, 3); // sync TE
