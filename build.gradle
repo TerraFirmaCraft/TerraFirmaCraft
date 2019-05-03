@@ -43,7 +43,7 @@ apply plugin: "net.minecraftforge.gradle.forge"
  *    The version number is a sacret tool that a computer must understand and be able to compare to see what's what.
  *    `-SNAPSHOT` or `.rc0v14s4dffds2` communicates nothing useful.
  */
-version = "0.1.0" // To be clear, you can edit this if you are submitting a patch PR, or if you are merging a feature into master.
+version = "0.2.1" // To be clear, you can edit this if you are submitting a patch PR, or if you are merging a feature into master.
 if (System.getenv().BUILD_NUMBER != null) version += "." + System.getenv().BUILD_NUMBER
 
 group = "net.dries007.tfc" // According to java standards, as I have control over this domain. If you fork this and release your own version, change this.
@@ -61,7 +61,7 @@ ext.getChangeLog = { -> // Create a new function that gets the changelog from gi
 }
 
 minecraft { // Only change any of this with prior approval from the dev team!
-    version = "1.12.2-14.23.4.2705"
+    version = "1.12.2-14.23.5.2768"
     runDir = "run"
     mappings = "snapshot_20180814"
 }

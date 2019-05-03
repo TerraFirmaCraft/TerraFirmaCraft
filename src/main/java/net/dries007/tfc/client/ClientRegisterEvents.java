@@ -17,13 +17,14 @@ import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.ColorizerFoliage;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -47,6 +48,7 @@ import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -59,6 +61,7 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.te.*;
+import net.dries007.tfc.world.classic.ClimateRenderHelper;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -144,6 +147,12 @@ public final class ClientRegisterEvents
         for (ItemBlock item : BlocksTFC.getAllInventoryItemBlocks())
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 
+        for (ItemBlock item : BlocksTFC.getAllBarrelItemBlocks())
+        {
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "sealed=false"));
+            ModelLoader.setCustomModelResourceLocation(item, 1, new ModelResourceLocation(item.getRegistryName(), "sealed=true"));
+        }
+
         // BLOCKS - STATE MAPPERS //
 
         // Blocks with Ignored Properties
@@ -197,6 +206,8 @@ public final class ClientRegisterEvents
         ClientRegistry.bindTileEntitySpecialRenderer(TEWorldItem.class, new TESRWorldItem());
         ClientRegistry.bindTileEntitySpecialRenderer(TEIngotPile.class, new TESRIngotPile());
         ClientRegistry.bindTileEntitySpecialRenderer(TEBellows.class, new TESRBellows());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEBarrel.class, new TESRBarrel());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEAnvilTFC.class, new TESRAnvil());
     }
 
     @SubscribeEvent
@@ -205,24 +216,50 @@ public final class ClientRegisterEvents
     {
         BlockColors blockcolors = event.getBlockColors();
 
-        blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
-                worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D),
-            BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isGrass).toArray(BlockRockVariant[]::new));
+        // Grass Colors
+        IBlockColor grassColor = (state, worldIn, pos, tintIndex) -> {
+            if (pos != null)
+            {
+                ClimateRenderHelper.ClimateData data = ClimateRenderHelper.get(pos);
+                // This internally will call CalendarTFC to get the month based temperature
+                // Base Temp Range is <-25, 20>, Month Adj Range is <-30, 30>
+                double temp = MathHelper.clamp((data.getTemperature() + 30) / 30, 0, 1);
+                // Rainfall is in <0, 500>, although 99% of the time it is within a smaller range of <50, 450>, so trim and clamp as necessary
+                double rain = MathHelper.clamp((data.getRainfall() - 50) / 400, 0, 1);
+                return ColorizerGrass.getGrassColor(temp, rain);
+            }
+            return ColorizerGrass.getGrassColor(0.5, 0.5);
+        };
+
+        // Foliage Color
+        IBlockColor foliageColor = (state, worldIn, pos, tintIndex) -> {
+            if (pos != null)
+            {
+                ClimateRenderHelper.ClimateData data = ClimateRenderHelper.get(pos);
+                // This internally will call CalendarTFC to get the month based temperature
+                // Base Temp Range is <-25, 20>, Month Adj Range is <-30, 30>
+                double temp = MathHelper.clamp((data.getTemperature() + 30) / 30, 0, 1);
+                // Rainfall is in <0, 500>, although 99% of the time it is within a smaller range of <50, 450>, so trim and clamp as necessary
+                double rain = MathHelper.clamp((data.getRainfall() - 50) / 400, 0, 1);
+                return ColorizerGrass.getGrassColor(temp, rain);
+            }
+            return ColorizerGrass.getGrassColor(0.5, 0.5);
+        };
+
+        blockcolors.registerBlockColorHandler(grassColor, BlocksTFC.PEAT_GRASS);
+        blockcolors.registerBlockColorHandler(grassColor, BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type.isGrass).toArray(BlockRockVariant[]::new));
+        // This is talking about tall grass vs actual grass blocks
+        blockcolors.registerBlockColorHandler(grassColor, BlocksTFC.getAllGrassBlocks().toArray(new BlockPlantTFC[0]));
+
+        blockcolors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllLeafBlocks().toArray(new Block[0]));
+        blockcolors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllPlantBlocks().toArray(new BlockPlantTFC[0]));
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> BlockFarmlandTFC.TINT[state.getValue(BlockFarmlandTFC.MOISTURE)],
             BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.type == Rock.Type.FARMLAND).toArray(BlockRockVariant[]::new));
 
         blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
-                worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D),
-            BlocksTFC.PEAT_GRASS);
-
-        blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
                 worldIn != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(worldIn, pos) : 0,
             BlocksTFC.getAllFluidBlocks().stream().filter(x -> x.getDefaultState().getMaterial() == Material.WATER).toArray(BlockFluidBase[]::new));
-
-        blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
-                worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic(),
-            BlocksTFC.getAllLeafBlocks().toArray(new Block[0]));
     }
 
     @SubscribeEvent
@@ -246,6 +283,14 @@ public final class ClientRegisterEvents
 
         itemColors.registerItemColorHandler((stack, tintIndex) -> tintIndex == 1 ? EnumDyeColor.byDyeDamage(stack.getItemDamage()).getColorValue() : 0xFFFFFF,
             ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED);
+
+        itemColors.registerItemColorHandler((stack, tintIndex) ->
+                event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
+            BlocksTFC.getAllPlantBlocks().toArray(new BlockPlantTFC[0]));
+
+        itemColors.registerItemColorHandler((stack, tintIndex) ->
+                event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
+            BlocksTFC.getAllGrassBlocks().toArray(new BlockPlantTFC[0]));
     }
 
     /**

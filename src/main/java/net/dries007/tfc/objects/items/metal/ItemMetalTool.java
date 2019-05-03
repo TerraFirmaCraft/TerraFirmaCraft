@@ -13,9 +13,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -131,28 +133,38 @@ public class ItemMetalTool extends ItemMetal
     @Override
     public float getDestroySpeed(ItemStack stack, IBlockState state)
     {
+        return canHarvestBlock(state, stack) ? efficiency : 1.0f;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockState state)
+    {
         Material material = state.getMaterial();
         switch (type)
         {
             case AXE:
-                if (material == Material.WOOD || material == Material.PLANTS || material == Material.VINE)
-                    return efficiency;
-                break;
+                return material == Material.WOOD || material == Material.PLANTS || material == Material.VINE;
             case PICK:
-                if (material == Material.IRON || material == Material.ANVIL || material == Material.ROCK)
-                    return efficiency;
-                break;
+                return material == Material.IRON || material == Material.ANVIL || material == Material.ROCK;
             case SHOVEL:
-                if (material == Material.SNOW || material == Material.CRAFTED_SNOW) return efficiency;
+                return material == Material.SNOW || material == Material.CRAFTED_SNOW;
             case SCYTHE:
-                if (material == Material.PLANTS || material == Material.VINE || material == Material.LEAVES)
-                    return efficiency;
+                return material == Material.PLANTS || material == Material.VINE || material == Material.LEAVES;
         }
+        return false;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockState state, ItemStack stack)
+    {
         for (String type : getToolClasses(stack))
         {
-            if (state.getBlock().isToolEffective(type, state)) return efficiency;
+            if (state.getBlock().isToolEffective(type, state))
+            {
+                return true;
+            }
         }
-        return super.getDestroySpeed(stack, state);
+        return canHarvestBlock(state);
     }
 
     @Override
@@ -196,12 +208,6 @@ public class ItemMetalTool extends ItemMetal
     }
 
     @Override
-    public boolean canHarvestBlock(IBlockState blockIn)
-    {
-        return super.canHarvestBlock(blockIn);
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public boolean isFull3D()
     {
@@ -224,6 +230,13 @@ public class ItemMetalTool extends ItemMetal
             multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", attackSpeed, 0));
         }
         return multimap;
+    }
+
+    @Override
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
+    {
+        // Hammers need to activate anvils for welding
+        return this.type == Metal.ItemType.HAMMER || super.doesSneakBypassUse(stack, world, pos, player);
     }
 
     @Override

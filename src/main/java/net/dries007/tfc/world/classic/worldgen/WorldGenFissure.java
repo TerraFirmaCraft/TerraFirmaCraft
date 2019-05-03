@@ -10,6 +10,7 @@ import java.util.Random;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -31,7 +32,8 @@ import static net.dries007.tfc.util.CollapseData.Direction.*;
 import static net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC.getRock3;
 
 /**
- * todo: this causes cascading world gen!
+ * todo: fix cascading lag. Priority: medium - low.
+ * See <a href="https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/40">issue</a> here.
  */
 public class WorldGenFissure implements IWorldGenerator
 {
@@ -62,7 +64,6 @@ public class WorldGenFissure implements IWorldGenerator
         BlockPos start = new ChunkPos(chunkX, chunkZ).getBlock(random.nextInt(16) + 8, 0, random.nextInt(16) + 8);
         Biome biome = world.getBiome(start);
 
-        //noinspection ConstantConditions
         if (biome == BiomesTFC.BEACH || biome == BiomesTFC.OCEAN || biome == BiomesTFC.GRAVEL_BEACH || biome == BiomesTFC.LAKE || biome == BiomesTFC.RIVER || biome == BiomesTFC.DEEP_OCEAN)
             return;
 
@@ -98,7 +99,10 @@ public class WorldGenFissure implements IWorldGenerator
 
         for (BlockPos pos : list)
         {
-            world.setBlockToAir(pos);
+            if (pos.getY() < 10 && world.getBlockState(pos).getBlock() != Blocks.BEDROCK)
+            {
+                world.setBlockToAir(pos);
+            }
             for (int d = 1; d <= poolDepth; d++)
                 fill(world, pos.add(0, -d, 0), rock, localFillBlock);
 

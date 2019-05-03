@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -35,9 +34,12 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.te.TEWorldItem;
 import net.dries007.tfc.util.Helpers;
 
+/**
+ * todo: custom particles for walking / breaking?
+ */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlockWorldItem extends Block implements ITileEntityProvider
+public class BlockWorldItem extends Block
 {
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.25D, 0D, 0.25D, 0.75D, 0.0625D, 0.75D);
 
@@ -49,9 +51,31 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    @SuppressWarnings("deprecation")
+    public boolean isTopSolid(IBlockState state)
     {
-        return new TEWorldItem();
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isFullBlock(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isBlockNormalCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isNormalCube(IBlockState state)
+    {
+        return false;
     }
 
     @Override
@@ -66,6 +90,12 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
         return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
+    {
+        return true;
     }
 
     @Override
@@ -128,16 +158,33 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     }
 
     @Override
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TEWorldItem();
+    }
+
+    @Override
     public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles)
     {
-        // todo: add custom particles
         return true;
     }
 
     @Override
     public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity)
     {
-        // todo: add custom particles
         return true;
     }
 
@@ -145,7 +192,6 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     @Override
     public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager)
     {
-        // todo: add custom particles
         return true;
     }
 
@@ -153,7 +199,6 @@ public class BlockWorldItem extends Block implements ITileEntityProvider
     @Override
     public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager)
     {
-        // todo: add custom particles
         return true;
     }
 }

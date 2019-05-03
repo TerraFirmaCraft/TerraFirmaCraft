@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.items.rock;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -22,12 +23,14 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ItemRockAxe extends ItemAxe implements IItemSize
+public class ItemRockAxe extends ItemAxe implements IItemSize, IRockObject
 {
     private static final Map<RockCategory, ItemRockAxe> MAP = new HashMap<>();
 
@@ -53,7 +56,7 @@ public class ItemRockAxe extends ItemAxe implements IItemSize
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
+        tooltip.add("Rock type: " + category);
     }
 
     @Override
@@ -72,5 +75,19 @@ public class ItemRockAxe extends ItemAxe implements IItemSize
     public boolean canStack(ItemStack stack)
     {
         return false;
+    }
+
+    @Nullable
+    @Override
+    public Rock getRock(ItemStack stack)
+    {
+        return null;
+    }
+
+    @Nonnull
+    @Override
+    public RockCategory getRockCategory(ItemStack stack)
+    {
+        return category;
     }
 }

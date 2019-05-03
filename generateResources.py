@@ -13,6 +13,7 @@ import os
 import time
 import zipfile
 
+
 def zipfolder(zip_name, target_dir):
     zipobj = zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED)
     rootlen = len(target_dir) + 1
@@ -502,8 +503,10 @@ for key in METAL_TYPES:
             ('all', 'particle'): 'tfc:blocks/metal/%s' % key
         }, variants={
             'axis': {
-                'true': {'y': 90},
-                'false': {}
+                'north': {'y': 180},
+                'east': {'y': 270},
+                'south': {},
+                'west': {'y': 90}
             }
         })
 
@@ -625,6 +628,14 @@ for rock_type in ROCK_TYPES:
         }]
     })
 
+# STONE ANVILS - only igneous types
+for rock_type in ['granite', 'rhyolite', 'basalt', 'gabbro', 'diorite', 'andesite', 'dacite']:
+    if rock_type not in ROCK_TYPES:
+        raise Exception('The anvil rock types list has been modified, please fix this!')
+    blockstate(('anvil', rock_type), 'tfc:stone_anvil', textures={
+        ('all', 'particle'): 'tfc:blocks/stonetypes/raw/%s' % rock_type,
+    })
+
 
 # WOOD STUFF
 for wood_type in WOOD_TYPES:
@@ -696,7 +707,6 @@ for wood_type in WOOD_TYPES:
     }, variants=DOOR_VARIANTS)
 
     # TOOL RACKS
-    # TODO: make sure I did this right, Dries - LS
     blockstate(('wood', 'tool_rack', wood_type), 'tfc:tool_rack', textures={
         'texture': 'tfc:blocks/wood/planks/%s' % wood_type,
         'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
@@ -723,9 +733,10 @@ for wood_type in WOOD_TYPES:
     })
     cube_all(('slab', 'full', 'wood', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
 
-    # TRAPDOORS
+    # (WOOD) TRAPDOORS
     blockstate(('wood', 'trapdoor', wood_type), None, textures={
             'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type,
+        'all': 'tfc:blocks/wood/trapdoor/%s' % wood_type,
         }, variants=TRAPDOOR_VARIANTS)
 
     # CHESTS
@@ -773,6 +784,18 @@ for wood_type in WOOD_TYPES:
         ('east', 'west'): 'tfc:blocks/wood/workbench_side',
     })
 
+    # BARREL
+    blockstate(('wood', 'barrel', wood_type), 'tfc:barrel', textures={
+        ('particle', 'planks'): 'tfc:blocks/wood/planks/%s' % wood_type,
+        'sheet': 'tfc:blocks/wood/sheets/%s' % wood_type,
+        'hoop': 'tfc:blocks/barrelhoop',
+    }, variants={
+        'sealed': {
+            'true': {'model': 'tfc:barrel_sealed'},
+            'false': {},
+        }
+    })
+
 #   _____ _
 #  |_   _| |
 #    | | | |_ ___ _ __ ___  ___
@@ -794,10 +817,14 @@ for rock_type in ROCK_TYPES:
     for item_type in ['rock', 'brick']:
         item((item_type, rock_type), 'tfc:items/stonetypes/%s/%s' % (item_type, rock_type))
 
-# DOORS
+# DOORS / TRAPDOORS
 for wood_type in WOOD_TYPES:
     item(('wood', 'log', wood_type), 'tfc:items/wood/log/%s' % wood_type)
     item(('wood', 'door', wood_type), 'tfc:items/wood/door/%s' % wood_type)
+
+    # Trapdoors are special - their item model needs to reference the blockstate #texture
+    model(('item', 'wood', 'trapdoor', wood_type), 'block/trapdoor_bottom',
+          {'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type})
 
 # GEMS
 for gem in GEM_TYPES:
@@ -809,10 +836,13 @@ for item_type, tool_item in METAL_ITEMS.items():
     for metal, tool_metal in METAL_TYPES.items():
         if tool_item and not tool_metal:
             continue
-        parent = 'item/handheld' if item_type in TOOLS else 'item/generated'
-        if item_type in ['knife', 'javelin']:
-            parent = 'tfc:item/handheld_flipped'
-        item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal), parent=parent)
+        if item_type == 'anvil':
+            model(('item', 'metal', 'anvil', metal), 'tfc:item/metal/anvil/transformations', {'all': 'tfc:blocks/metal/%s' % metal})
+        else:
+            parent = 'item/handheld' if item_type in TOOLS else 'item/generated'
+            if item_type in ['knife', 'javelin']:
+                parent = 'tfc:item/handheld_flipped'
+            item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal), parent=parent)
 for metal in STEEL:
     for type in ['high_carbon', 'weak']:
         item(('metal', 'ingot', type + '_' + metal), 'tfc:items/metal/ingot/%s' % metal)
@@ -825,10 +855,13 @@ for wood_type in WOOD_TYPES:
 # ROCK TOOLS
 for rock_cat in ROCK_CATEGORIES:
     for item_type in ['axe', 'shovel', 'hoe', 'knife', 'javelin', 'hammer']:
+        # tools
         parent = 'item/handheld'
         if item_type in ['knife', 'javelin']:
             parent = 'tfc:item/handheld_flipped'
         item(('stone', item_type, rock_cat), 'tfc:items/stone/%s' % item_type, parent=parent)
+        # tool heads
+        item(('stone', item_type + '_head', rock_cat), 'tfc:items/stone/%s_head' % item_type)
 
 # POWDERS
 for powder in POWDERS:
@@ -878,8 +911,5 @@ item(('ceramics', 'fire_clay'), 'tfc:items/ceramics/fire_clay')
 # FLAT
 for rock_cat in ROCK_TYPES:
     item(('flat', rock_cat), 'tfc:items/flat/%s' % rock_cat)
-item(('flat', 'leather'), 'tfc:items/flat/leather')
-item(('flat', 'clay'), 'tfc:items/flat/clay')
-item(('flat', 'fire_clay'), 'tfc:items/flat/fire_clay')
 
 

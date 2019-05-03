@@ -16,11 +16,12 @@ import net.dries007.tfc.world.classic.worldgen.trees.*;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SuppressWarnings("WeakerAccess")
 @Mod.EventBusSubscriber(modid = MOD_ID)
-public class DefaultTrees
+public final class DefaultTrees
 {
     /**
-     * Default tree ResourceLocations
+     * Default Tree ResourceLocations
      */
     public static final ResourceLocation ACACIA = new ResourceLocation(MOD_ID, "acacia");
     public static final ResourceLocation ASH = new ResourceLocation(MOD_ID, "ash");
@@ -41,6 +42,7 @@ public class DefaultTrees
     public static final ResourceLocation WHITE_CEDAR = new ResourceLocation(MOD_ID, "white_cedar");
     public static final ResourceLocation WILLOW = new ResourceLocation(MOD_ID, "willow");
     public static final ResourceLocation KAPOK = new ResourceLocation(MOD_ID, "kapok");
+
     /**
      * Simple ITreeGenerator instances.
      */
@@ -53,9 +55,6 @@ public class DefaultTrees
     public static final ITreeGenerator GEN_ACACIA = new TreeGenAcacia();
     public static final ITreeGenerator GEN_KAPOK = new TreeGenKapok();
     public static final ITreeGenerator GEN_SEQUOIA = new TreeGenSequoia();
-    /**
-     * Composite ITreeGenerator (takes a weighted selection of multiple ITreeGenerators. Can be layered)
-     */
     public static final ITreeGenerator GEN_KAPOK_COMPOSITE = new TreeGenComposite().add(0.4f, GEN_TALL).add(0.6f, GEN_KAPOK);
 
     @SubscribeEvent

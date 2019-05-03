@@ -43,7 +43,7 @@ import net.dries007.tfc.objects.fluids.FluidMetal;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 public class ItemSmallVessel extends ItemFiredPottery
 {
@@ -57,11 +57,10 @@ public class ItemSmallVessel extends ItemFiredPottery
 
     @Override
     @Nonnull
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn)
     {
-
-        ItemStack stack = player.getHeldItem(hand);
-        if (!world.isRemote && !player.isSneaking())
+        ItemStack stack = playerIn.getHeldItem(handIn);
+        if (!worldIn.isRemote && !playerIn.isSneaking())
         {
             IFluidHandler cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
             if (cap instanceof ISmallVesselHandler)
@@ -70,10 +69,10 @@ public class ItemSmallVessel extends ItemFiredPottery
                 switch (mode)
                 {
                     case INVENTORY:
-                        TFCGuiHandler.openGui(world, player, TFCGuiHandler.Type.SMALL_VESSEL);
+                        TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.SMALL_VESSEL);
                         break;
                     case LIQUID_MOLTEN:
-                        TFCGuiHandler.openGui(world, player, TFCGuiHandler.Type.SMALL_VESSEL_LIQUID);
+                        TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.SMALL_VESSEL_LIQUID);
                         break;
                     case LIQUID_SOLID:
                         break;
@@ -118,21 +117,8 @@ public class ItemSmallVessel extends ItemFiredPottery
     }
 
     @Override
-    public Size getSize(@Nonnull ItemStack stack)
-    {
-        return Size.LARGE;
-    }
-
-    @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
-    {
-        return Weight.HEAVY;
-    }
-
-    @Override
     public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
     {
-        NBTTagCompound nbt = input.getTagCompound();
         // Case 1: The input is a filled vessel
         IItemHandler capItemHandler = input.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (capItemHandler instanceof ISmallVesselHandler)
@@ -147,30 +133,38 @@ public class ItemSmallVessel extends ItemFiredPottery
                 cap.setFluidMode(true);
                 cap.fill(new FluidStack(FluidsTFC.getMetalFluid(alloy.getResult()), alloy.getAmount()), true);
                 cap.setTemperature(1600f);
-                nbt = cap.serializeNBT();
             }
 
         }
-        input.setTagCompound(nbt);
         return input;
+    }
+
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.LARGE;
+    }
+
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return Weight.HEAVY;
     }
 
     // Extends ItemStackHandler for ease of use. Duplicates most of ItemHeatHandler functionality
     private class SmallVesselCapability extends ItemStackHandler implements ICapabilityProvider, ISmallVesselHandler
     {
-        // todo: make cool slower.
-
         private final FluidTank tank;
 
         private float heatCapacity;
-        private float meltingPoint;
+        private float meltTemp;
         private float temperature;
         private long lastUpdateTick;
 
         private boolean fluidMode; // Does the stack contain molten metal?
-        private IFluidTankProperties fluidTankProperties[];
+        private IFluidTankProperties[] fluidTankProperties;
 
-        public SmallVesselCapability(@Nullable NBTTagCompound nbt)
+        SmallVesselCapability(@Nullable NBTTagCompound nbt)
         {
             super(4);
 
@@ -184,25 +178,59 @@ public class ItemSmallVessel extends ItemFiredPottery
         }
 
         @Override
+        public Mode getFluidMode()
+        {
+            if (fluidMode)
+            {
+                return getTemperature() < meltTemp ? Mode.LIQUID_SOLID : Mode.LIQUID_MOLTEN;
+            }
+            return Mode.INVENTORY;
+        }
+
+        @Override
         public void setFluidMode(boolean fluidMode)
         {
             this.fluidMode = fluidMode;
         }
 
         @Override
-        public Mode getFluidMode()
+        public float getTemperature()
         {
-            if (fluidMode)
-            {
-                return getTemperature() < meltingPoint ? Mode.LIQUID_SOLID : Mode.LIQUID_MOLTEN;
-            }
-            return Mode.INVENTORY;
+            return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.getTotalTime() - lastUpdateTick);
         }
 
         @Override
-        public float getTemperature()
+        public void setTemperature(float temperature)
         {
-            return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalenderTFC.getTotalTime() - lastUpdateTick);
+            this.temperature = temperature;
+            this.lastUpdateTick = CalendarTFC.getTotalTime();
+        }
+
+        @Override
+        public float getHeatCapacity()
+        {
+            return heatCapacity;
+        }
+
+        @Override
+        public float getMeltTemp()
+        {
+            return meltTemp;
+        }
+
+        @SideOnly(Side.CLIENT)
+        @Override
+        public void addHeatInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
+        {
+            Metal metal = getMetal();
+            if (metal != null)
+            {
+                String desc = TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount());
+                if (isMolten())
+                    desc += " - " + I18n.format("tfc.tooltip.liquid");
+                text.add(desc);
+            }
+            ISmallVesselHandler.super.addHeatInfo(stack, text);
         }
 
         @Nullable
@@ -241,8 +269,16 @@ public class ItemSmallVessel extends ItemFiredPottery
             fluidMode = tank.getFluidAmount() > 0;
             nbt.setBoolean("fluidMode", fluidMode);
 
-            nbt.setFloat("heat", getTemperature());
-            nbt.setLong("ticks", CalenderTFC.getTotalTime());
+            float temp = getTemperature();
+            nbt.setFloat("heat", temp);
+            if (temp <= 0)
+            {
+                nbt.setLong("ticks", -1);
+            }
+            else
+            {
+                nbt.setLong("ticks", CalendarTFC.getTotalTime());
+            }
 
             if (fluidMode)
             {
@@ -318,51 +354,17 @@ public class ItemSmallVessel extends ItemFiredPottery
             return null;
         }
 
-        @Override
-        public void setTemperature(float temperature)
-        {
-            this.temperature = temperature;
-            this.lastUpdateTick = CalenderTFC.getTotalTime();
-        }
-
-        @Override
-        public float getHeatCapacity()
-        {
-            return heatCapacity;
-        }
-
-        @Override
-        public float getMeltingPoint()
-        {
-            return meltingPoint;
-        }
-
-        @SideOnly(Side.CLIENT)
-        @Override
-        public void addHeatInfo(ItemStack stack, List<String> text, boolean clearStackNBT)
-        {
-            Metal metal = getMetal();
-            if (metal != null)
-            {
-                String desc = TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount());
-                if (isMolten())
-                    desc += " - " + I18n.format("tfc.tooltip.liquid");
-                text.add(desc);
-            }
-            ISmallVesselHandler.super.addHeatInfo(stack, text, false); // Never clear the NBT based on heat alone
-        }
-
         private void updateFluidData(@Nullable FluidStack fluid)
         {
             if (fluid != null && fluid.getFluid() instanceof FluidMetal)
             {
                 Metal metal = ((FluidMetal) fluid.getFluid()).getMetal();
-                this.meltingPoint = metal.getMeltTemp();
+                this.meltTemp = metal.getMeltTemp();
                 this.heatCapacity = metal.getSpecificHeat();
             }
             else
             {
-                this.meltingPoint = 1000;
+                this.meltTemp = 1000;
                 this.heatCapacity = 1;
             }
 

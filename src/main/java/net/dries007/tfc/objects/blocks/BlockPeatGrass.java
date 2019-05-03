@@ -6,6 +6,8 @@
 package net.dries007.tfc.objects.blocks;
 
 import java.util.Random;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -25,6 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+@ParametersAreNonnullByDefault
 public class BlockPeatGrass extends BlockPeat
 {
     // Used for connected textures only.
@@ -50,6 +53,7 @@ public class BlockPeatGrass extends BlockPeat
     }
 
     @SuppressWarnings("deprecation")
+    @Nonnull
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
     {
@@ -68,13 +72,14 @@ public class BlockPeatGrass extends BlockPeat
     }
 
     @Override
+    @Nonnull
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        //noinspection ConstantConditions
         return Item.getItemFromBlock(BlocksTFC.PEAT);
     }
 
     @Override
+    @Nonnull
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderLayer()
     {
@@ -82,6 +87,7 @@ public class BlockPeatGrass extends BlockPeat
     }
 
     @Override
+    @Nonnull
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);

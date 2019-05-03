@@ -3,7 +3,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "texture": "tfc:blocks/wood/trapdoor/willow"
+      "texture": "tfc:blocks/wood/trapdoor/willow",
+      "all": "tfc:blocks/wood/trapdoor/willow"
     }
   },
   "variants": {

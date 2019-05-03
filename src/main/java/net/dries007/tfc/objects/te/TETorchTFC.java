@@ -12,7 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.objects.blocks.BlockTorchTFC;
-import net.dries007.tfc.world.classic.CalenderTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 public class TETorchTFC extends TileEntity
 {
@@ -20,12 +20,12 @@ public class TETorchTFC extends TileEntity
 
     public TETorchTFC()
     {
-        lastLitTimestamp = CalenderTFC.getTotalTime();
+        lastLitTimestamp = CalendarTFC.getTotalTime();
     }
 
     public void onRandomTick()
     {
-        if (CalenderTFC.getTotalTime() - lastLitTimestamp > (long) ConfigTFC.GENERAL.torchTime && ConfigTFC.GENERAL.torchTime > 0)
+        if (CalendarTFC.getTotalTime() - lastLitTimestamp > (long) ConfigTFC.GENERAL.torchTime && ConfigTFC.GENERAL.torchTime > 0)
         {
             extinguish();
         }
@@ -55,7 +55,7 @@ public class TETorchTFC extends TileEntity
     public void light()
     {
         world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockTorchTFC.LIT, true));
-        lastLitTimestamp = CalenderTFC.getTotalTime();
+        lastLitTimestamp = CalendarTFC.getTotalTime();
         this.markDirty();
     }
 }

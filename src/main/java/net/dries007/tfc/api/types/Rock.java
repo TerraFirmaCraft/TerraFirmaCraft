@@ -6,31 +6,43 @@
 package net.dries007.tfc.api.types;
 
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.blocks.stone.*;
+import net.dries007.tfc.objects.items.rock.*;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.api.types.Rock.FallingBlockType.*;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
  * todo: document API
  */
 public class Rock extends IForgeRegistryEntry.Impl<Rock>
 {
+    @GameRegistry.ObjectHolder("tfc:granite")
+    public static final Rock GRANITE = Helpers.getNull();
+
     private final RockCategory rockCategory;
+    private final ResourceLocation textureLocation;
 
     public Rock(@Nonnull ResourceLocation name, @Nonnull RockCategory rockCategory)
     {
-        setRegistryName(name);
-        this.rockCategory = rockCategory;
         //noinspection ConstantConditions
         if (rockCategory == null)
             throw new IllegalArgumentException("Rock category is not allowed to be null (on rock " + name + ")");
+
+        setRegistryName(name);
+        this.rockCategory = rockCategory;
+        this.textureLocation = new ResourceLocation(MOD_ID, "textures/blocks/stonetypes/raw/" + name.getPath() + ".png");
     }
 
     public Rock(@Nonnull ResourceLocation name, @Nonnull ResourceLocation categoryName)
@@ -39,15 +51,55 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         this(name, TFCRegistries.ROCK_CATEGORIES.getValue(categoryName));
     }
 
+    /**
+     * Used for knapping GUI
+     *
+     * @return a texture resource location
+     */
+    public ResourceLocation getTexture()
+    {
+        return textureLocation;
+    }
+
     public RockCategory getRockCategory()
     {
         return rockCategory;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public String toString()
     {
-        return String.valueOf(getRegistryName());
+        return getRegistryName().getPath();
+    }
+
+    public enum ToolType
+    {
+        AXE(ItemRockAxe::new, " X   ", "XXXX ", "XXXXX", "XXXX ", " X   "),
+        SHOVEL(ItemRockShovel::new, "XXX", "XXX", "XXX", "XXX", " X "),
+        HOE(ItemRockHoe::new, "XXXXX", "   XX"),
+        KNIFE(ItemRockKnife::new, "X ", "XX", "XX", "XX", "XX"),
+        JAVELIN(ItemRockJavelin::new, "XXX  ", "XXXX ", "XXXXX", " XXX ", "  X  "),
+        HAMMER(ItemRockHammer::new, "XXXXX", "XXXXX", "  X  ");
+
+        private final Function<RockCategory, Item> supplier;
+        private final String[] pattern;
+
+        ToolType(@Nonnull Function<RockCategory, Item> supplier, String... pattern)
+        {
+            this.supplier = supplier;
+            this.pattern = pattern;
+        }
+
+        public Item create(RockCategory category)
+        {
+            return supplier.apply(category);
+        }
+
+        public String[] getPattern()
+        {
+            return pattern;
+        }
     }
 
     public enum Type

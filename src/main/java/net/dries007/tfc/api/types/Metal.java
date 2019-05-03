@@ -15,6 +15,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.objects.items.metal.*;
+import net.dries007.tfc.util.Helpers;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
  * todo: document API
@@ -22,11 +25,11 @@ import net.dries007.tfc.objects.items.metal.*;
 public class Metal extends IForgeRegistryEntry.Impl<Metal>
 {
     @GameRegistry.ObjectHolder("tfc:unknown")
-    public static final Metal UNKNOWN = null;
+    public static final Metal UNKNOWN = Helpers.getNull();
 
     private final Tier tier;
     private final float specificHeat;
-    private final int meltTemp;
+    private final float meltTemp;
     private final boolean usable;
     private final int color;
 
@@ -35,24 +38,21 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     /**
      * This is a registry object that will create a number of things.
      *
-     * Use the provided Builder to create your own metals
-     *
-     * @param name      the registry name of the object. The path must also be unique
-     * @param tier      the tier of the metal
-     * @param usable    is the metal usable to create basic metal items? (not tools)
-     * @param sh        specific heat capacity. Higher = harder to heat up / cool down. Most IRL metals are between 0.3 - 0.7
-     * @param melt      melting point. See @link Heat for temperature scale. Similar to IRL melting point in celcius.
-     * @param color     color of the metal when in fluid form. Used to autogenerate a fluid texture
-     * @param toolMetal The tool material. Null if metal is not able to create tools
+     * @param name         the registry name of the object. The path must also be unique
+     * @param tier         the tier of the metal
+     * @param usable       is the metal usable to create basic metal items? (not tools)
+     * @param specificHeat specific heat capacity. Higher = harder to heat up / cool down. Most IRL metals are between 0.3 - 0.7
+     * @param meltTemp     melting point. See @link Heat for temperature scale. Similar to IRL melting point in celsius.
+     * @param color        color of the metal when in fluid form. Used to auto generate a fluid texture. In future this may be used to color items as well
+     * @param toolMetal    The tool material. Null if metal is not able to create tools
      */
-    public Metal(@Nonnull ResourceLocation name, Tier tier, boolean usable, float sh, int melt, int color, @Nullable Item.ToolMaterial toolMetal)
+    public Metal(@Nonnull ResourceLocation name, Tier tier, boolean usable, float specificHeat, float meltTemp, int color, @Nullable Item.ToolMaterial toolMetal)
     {
         this.usable = usable;
         this.tier = tier;
-        this.specificHeat = sh;
-        this.meltTemp = melt;
+        this.specificHeat = specificHeat;
+        this.meltTemp = meltTemp;
         this.color = color;
-
         this.toolMetal = toolMetal;
 
         setRegistryName(name);
@@ -79,7 +79,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         return specificHeat;
     }
 
-    public int getMeltTemp()
+    public float getMeltTemp()
     {
         return meltTemp;
     }
@@ -89,24 +89,73 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         return color;
     }
 
+    public String getTranslationKey()
+    {
+        //noinspection ConstantConditions
+        return MOD_ID + ".types.metal." + getRegistryName().getPath();
+    }
+
+    @SuppressWarnings("ConstantConditions")
     @Override
     public String toString()
     {
-        return String.valueOf(getRegistryName());
+        return getRegistryName().getPath();
     }
 
+    /**
+     * Metals:
+     * T0 - Stone - Work None, Weld T1
+     * T1 - Copper - Work T1, Weld T2
+     * T2 - Bronze / Bismuth Bronze / Black Bronze - Work T2, Weld T3
+     * T3 - Wrought Iron - Work T3, Weld T4
+     * T4 - Steel - Work T4, Weld T5
+     * T5 - Black Steel - Work T5, Weld T6
+     * T6 - Red Steel / Blue Steel - Work T6, Weld T6
+     *
+     * Devices:
+     * T0 - Stone Anvil
+     * T1 - Pit Kiln
+     * T3 - Bloomery
+     * T4 - Blast Furnace
+     */
     public enum Tier
     {
-        TIER_I,
-        TIER_II, // Not implemented, but presumed to be a more advanced, more capable version of the pit kiln.
-        TIER_III,
-        TIER_IV,
-        TIER_V
+        TIER_0, TIER_I, TIER_II, TIER_III, TIER_IV, TIER_V, TIER_VI;
+
+        private static final Tier[] VALUES = values();
+
+        @Nonnull
+        public static Tier valueOf(int tier)
+        {
+            return tier < 0 || tier > VALUES.length ? TIER_I : VALUES[tier];
+        }
+
+        @Nonnull
+        public Tier next()
+        {
+            return this == TIER_VI ? TIER_VI : VALUES[this.ordinal() + 1];
+        }
+
+        @Nonnull
+        public Tier previous()
+        {
+            return this == TIER_0 ? TIER_0 : VALUES[this.ordinal() - 1];
+        }
+
+        public boolean isAtLeast(@Nonnull Tier requiredInclusive)
+        {
+            return this.ordinal() >= requiredInclusive.ordinal();
+        }
+
+        public boolean isAtMost(@Nonnull Tier requiredInclusive)
+        {
+            return this.ordinal() <= requiredInclusive.ordinal();
+        }
     }
 
     public enum ItemType
     {
-        INGOT(false, 100, ItemIngot::new, true, 0.5f),
+        INGOT(false, 100, ItemIngot::new, true, 0.5f, "XXXX", "X  X", "X  X", "X  X", "XXXX"),
         DOUBLE_INGOT(false, 200),
         SCRAP(false, 100),
         DUST(false, 100),
@@ -119,31 +168,31 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         TUYERE(true, 400),
 
         PICK(true, 100, ItemMetalTool::new),
-        PICK_HEAD(true, 100, true),
+        PICK_HEAD(true, 100, true, "XXXXX", "X   X", " XXX ", "XXXXX"),
         SHOVEL(true, 100, ItemMetalTool::new),
-        SHOVEL_HEAD(true, 100, true),
+        SHOVEL_HEAD(true, 100, true, "X   X", "X   X", "X   X", "X   X", "XX XX"),
         AXE(true, 100, ItemMetalTool::new),
-        AXE_HEAD(true, 100, true),
+        AXE_HEAD(true, 100, true, "X XXX", "    X", "     ", "    X", "X XXX"),
         HOE(true, 100, ItemMetalTool::new),
-        HOE_HEAD(true, 100, true),
+        HOE_HEAD(true, 100, true, "XXXXX", "     ", "  XXX", "XXXXX"),
         CHISEL(true, 100, ItemMetalTool::new),
-        CHISEL_HEAD(true, 100, true),
+        CHISEL_HEAD(true, 100, true, "X X", "X X", "X X", "X X", "X X"),
         SWORD(true, 200, ItemMetalTool::new),
-        SWORD_BLADE(true, 200, true),
+        SWORD_BLADE(true, 200, true, "XXX  ", "XX   ", "X   X", "X  XX", " XXXX"),
         MACE(true, 200, ItemMetalTool::new),
-        MACE_HEAD(true, 200, true),
+        MACE_HEAD(true, 200, true, "XX XX", "X   X", "X   X", "X   X", "XX XX"),
         SAW(true, 100, ItemMetalTool::new),
-        SAW_BLADE(true, 100, true),
+        SAW_BLADE(true, 100, true, "XXX  ", "XX   ", "X   X", "    X", "  XXX"),
         JAVELIN(true, 100, ItemMetalTool::new), // todo: special class?
-        JAVELIN_HEAD(true, 100, true),
+        JAVELIN_HEAD(true, 100, true, "XX   ", "X    ", "     ", "X   X", "XX XX"),
         HAMMER(true, 100, ItemMetalTool::new),
-        HAMMER_HEAD(true, 100, true),
-        PROPICK(true, 100, ItemMetalTool::new),
-        PROPICK_HEAD(true, 100, true),
+        HAMMER_HEAD(true, 100, true, "XXXXX", "     ", "     ", "XX XX", "XXXXX"),
+        PROPICK(true, 100, ItemMetalTool::new), // todo: special class + implementation
+        PROPICK_HEAD(true, 100, true, "XXXXX", "    X", " XXX ", " XXXX", "XXXXX"),
         KNIFE(true, 100, ItemMetalTool::new),
-        KNIFE_BLADE(true, 100, true),
-        SCYTHE(true, 100, ItemMetalTool::new),
-        SCYTHE_BLADE(true, 100, true),
+        KNIFE_BLADE(true, 100, true, "XX X", "X  X", "X  X", "X  X", "X  X"),
+        SCYTHE(true, 100, ItemMetalTool::new), // todo: special class + implementation
+        SCYTHE_BLADE(true, 100, true, "XXXXX", "X    ", "    X", "  XXX", "XXXXX"),
 
         UNFINISHED_HELMET(true, 200),
         HELMET(true, 400, ItemMetalArmor::new),
@@ -164,24 +213,26 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         private final boolean hasMold;
         private final float moldReturnRate; // Used as 'if (Constants.RNG.nextFloat() > type.moldReturnRate) return Empty'
         private final BiFunction<Metal, ItemType, Item> supplier;
+        private final String[] pattern;
 
-        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier, boolean hasMold, float moldReturnRate)
+        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier, boolean hasMold, float moldReturnRate, String... moldPattern)
         {
             this.toolItem = toolItem;
             this.smeltAmount = smeltAmount;
             this.supplier = supplier;
             this.hasMold = hasMold;
             this.moldReturnRate = moldReturnRate;
+            this.pattern = moldPattern;
         }
 
-        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier, boolean hasMold)
+        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier, boolean hasMold, String... moldPattern)
         {
-            this(toolItem, smeltAmount, supplier, hasMold, 0);
+            this(toolItem, smeltAmount, supplier, hasMold, 0, moldPattern);
         }
 
-        ItemType(boolean toolItem, int smeltAmount, boolean hasMold)
+        ItemType(boolean toolItem, int smeltAmount, boolean hasMold, String... moldPattern)
         {
-            this(toolItem, smeltAmount, ItemMetal::new, hasMold);
+            this(toolItem, smeltAmount, ItemMetal::new, hasMold, moldPattern);
         }
 
         ItemType(boolean toolItem, int smeltAmount)
@@ -197,7 +248,9 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         public boolean hasType(Metal metal)
         {
             if (!metal.usable)
+            {
                 return this == ItemType.INGOT;
+            }
             return !this.isToolItem() || metal.getToolMetal() != null;
         }
 
@@ -212,12 +265,17 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
             if (metal == null)
                 return hasMold;
             if (this == ItemType.INGOT)
-                return metal.usable;
+                return metal.usable || metal == Metal.UNKNOWN;
             if (hasMold)
-                return metal.isToolMetal() && (metal.getTier() == Tier.TIER_I || metal.getTier() == Tier.TIER_II);
+                return metal.isToolMetal() && metal.getTier().isAtMost(Tier.TIER_II);
             return false;
         }
 
+        /**
+         * Does this item type require a tool metal to be made
+         *
+         * @return true if this must be made from a tool item type
+         */
         public boolean isToolItem()
         {
             return toolItem;
@@ -231,6 +289,11 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         public float getMoldReturnRate()
         {
             return moldReturnRate;
+        }
+
+        public String[] getPattern()
+        {
+            return pattern;
         }
     }
 }

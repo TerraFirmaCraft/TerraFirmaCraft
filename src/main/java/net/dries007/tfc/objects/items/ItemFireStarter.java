@@ -22,7 +22,9 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -39,7 +41,7 @@ import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-import static net.dries007.tfc.objects.blocks.BlockFirePit.LIT;
+import static net.dries007.tfc.objects.blocks.devices.BlockFirePit.LIT;
 import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
 
 @MethodsReturnNonnullByDefault
@@ -51,7 +53,6 @@ public class ItemFireStarter extends ItemTFC
         if (stack.isEmpty()) return false;
         Item item = stack.getItem();
 
-        //noinspection ConstantConditions
         return item == ItemsTFC.FIRESTARTER || item == Items.FLINT_AND_STEEL || item == Items.FIRE_CHARGE || item instanceof ItemFlintAndSteel;
     }
 
@@ -62,17 +63,15 @@ public class ItemFireStarter extends ItemTFC
         setNoRepair();
     }
 
-    /*@Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
+    @Override
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        //todo: move to public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-        ItemStack stack = playerIn.getHeldItem(handIn);
-        if (worldIn.isRemote) return new ActionResult<>(EnumActionResult.PASS, stack);
-        if (handIn != EnumHand.MAIN_HAND) return new ActionResult<>(EnumActionResult.PASS, stack);
-        if (canStartFire(worldIn, playerIn) == null) return new ActionResult<>(EnumActionResult.FAIL, stack);
-        playerIn.setActiveHand(handIn);
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-    }*/
+        if (worldIn.isRemote) return EnumActionResult.PASS;
+        if (hand != EnumHand.MAIN_HAND) return EnumActionResult.PASS;
+        if (canStartFire(worldIn, player) == null) return EnumActionResult.FAIL;
+        player.setActiveHand(hand);
+        return EnumActionResult.SUCCESS;
+    }
 
     @Override
     public EnumAction getItemUseAction(ItemStack stack)
@@ -87,7 +86,6 @@ public class ItemFireStarter extends ItemTFC
     }
 
     @Override
-    @SuppressWarnings("ConstantConditions")
     public void onUsingTick(ItemStack stack, EntityLivingBase entityLivingBase, int countLeft)
     {
         if (!(entityLivingBase instanceof EntityPlayer)) return;
@@ -169,7 +167,6 @@ public class ItemFireStarter extends ItemTFC
                     final float kindlingModifier = Math.min(-0.1f * (float) kindling, 0.5f);
                     if (itemRand.nextFloat() < chance + kindlingModifier)
                     {
-                        //noinspection ConstantConditions
                         world.setBlockState(pos, BlocksTFC.FIREPIT.getDefaultState().withProperty(LIT, true));
                         TEFirePit te = Helpers.getTE(world, pos, TEFirePit.class);
                         if (te != null)

@@ -3,7 +3,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "texture": "tfc:blocks/wood/trapdoor/palm"
+      "texture": "tfc:blocks/wood/trapdoor/palm",
+      "all": "tfc:blocks/wood/trapdoor/palm"
     }
   },
   "variants": {

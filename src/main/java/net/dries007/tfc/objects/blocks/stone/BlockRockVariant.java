@@ -23,14 +23,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -43,6 +44,12 @@ public class BlockRockVariant extends Block
 
     public static BlockRockVariant get(Rock rock, Rock.Type type)
     {
+        //noinspection ConstantConditions
+        if (rock == null)
+        {
+            TerraFirmaCraft.getLog().warn("Rock is null at BlockRockVariant#get! Serious problems, potential NPE! Please report this to developers!", new Exception("AHHHHHHHHHHHHHHHHHHHHHHHHH"));
+            return get(Rock.GRANITE, type);
+        }
         return TABLE.get(rock).get(type);
     }
 
@@ -191,7 +198,7 @@ public class BlockRockVariant extends Block
                 return ItemRock.get(rock);
             case CLAY:
             case CLAY_GRASS:
-                return Items.CLAY_BALL; // todo: own clay or event for clay making?
+                return Items.CLAY_BALL;
             default:
                 return super.getItemDropped(state, rand, fortune);
             case GRASS:
@@ -217,12 +224,13 @@ public class BlockRockVariant extends Block
     @Override
     public int quantityDropped(IBlockState state, int fortune, Random random)
     {
-        // todo: see how 1710 handles this
         switch (type)
         {
             case CLAY:
             case CLAY_GRASS:
                 return 4;
+            case RAW:
+                return 1 + random.nextInt(3);
             default:
                 return super.quantityDropped(state, fortune, random);
         }
@@ -231,12 +239,41 @@ public class BlockRockVariant extends Block
     @Override
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
     {
-        EnumPlantType plantType = plantable.getPlantType(world, pos.offset(direction));
+        if (plantable instanceof BlockPlantTFC)
+        {
+            switch (((BlockPlantTFC) plantable).getPlantTypeTFC())
+            {
+                case CLAY:
+                    return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
+                case DRY_CLAY:
+                    return type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND || type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
+                case DRY:
+                    return type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND;
+                case FRESH_WATER:
+                    return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.GRAVEL;
+                case SALT_WATER:
+                    return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.SAND || type == Rock.Type.GRAVEL;
+                case FRESH_BEACH:
+                    // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
+                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) &&
+                        (BlocksTFC.isFreshWater(world.getBlockState(pos.add(1, 0, 0))) ||
+                            BlocksTFC.isFreshWater(world.getBlockState(pos.add(-1, 0, 0))) ||
+                            BlocksTFC.isFreshWater(world.getBlockState(pos.add(0, 0, 1))) ||
+                            BlocksTFC.isFreshWater(world.getBlockState(pos.add(0, 0, -1))));
+                case SALT_BEACH:
+                    // todo: expand? I think a 2x2 radius is much better in a world where you can't move water sources.
+                    return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) &&
+                        (BlocksTFC.isSaltWater(world.getBlockState(pos.add(1, 0, 0))) ||
+                            BlocksTFC.isSaltWater(world.getBlockState(pos.add(-1, 0, 0))) ||
+                            BlocksTFC.isSaltWater(world.getBlockState(pos.add(0, 0, 1))) ||
+                            BlocksTFC.isSaltWater(world.getBlockState(pos.add(0, 0, -1))));
+            }
+        }
 
-        switch (plantType)
+        switch (plantable.getPlantType(world, pos.offset(direction)))
         {
             case Plains:
-                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY_GRASS;
+                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS;
             case Crop:
                 return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.FARMLAND || type == Rock.Type.DRY_GRASS;
             case Desert:

@@ -27,6 +27,7 @@ public final class CreativeTabsTFC
     public static final CreativeTabs CT_GEMS = new TFCCreativeTab("gems", "tfc:gem/diamond");
     public static final CreativeTabs CT_POTTERY = new TFCCreativeTab("pottery", "tfc:mold/ingot");
     public static final CreativeTabs CT_MISC = new TFCCreativeTab("misc", "tfc:wand");
+    public static final CreativeTabs CT_FLORA = new TFCCreativeTab("flora", "tfc:plants/goldenrod");
 
     private static class TFCCreativeTab extends CreativeTabs
     {

@@ -8,8 +8,10 @@ package net.dries007.tfc.world.classic;
 import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public final class ClimateTFC
@@ -58,24 +60,20 @@ public final class ClimateTFC
     public static boolean isSwamp(World world, BlockPos pos)
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
-        return data != null && data.isInitialized() &&
-            data.getRainfall() >= 375f &&
-            data.getFloraDiversity() >= 0.5f &&
-            data.getFloraDensity() >= 0.5f &&
-            world.getBiome(pos).getHeightVariation() < 0.15;
+        return data.isInitialized() && data.getRainfall() >= 375f && data.getFloraDiversity() >= 0.5f && data.getFloraDensity() >= 0.5f && world.getBiome(pos).getHeightVariation() < 0.15;
     }
 
     public static float getBaseTemp(World world, BlockPos pos)
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
-        if (data == null || !data.isInitialized()) return Float.NaN;
+        if (!data.isInitialized()) return Float.NaN;
         return data.getBaseTemp();
     }
 
     public static float getAverageBiomeTemp(World world, BlockPos pos)
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
-        if (data == null || !data.isInitialized()) return Float.NaN;
+        if (!data.isInitialized()) return Float.NaN;
         return data.getAverageTemp();
     }
 
@@ -89,8 +87,8 @@ public final class ClimateTFC
     public static float getTemp(World world, BlockPos pos)
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
-        if (data == null || !data.isInitialized()) return Float.NaN;
-        return getTemp(data.getBaseTemp(), world.getSeed(), CalenderTFC.getTotalDays(), CalenderTFC.getTotalHours());
+        if (!data.isInitialized()) return Float.NaN;
+        return getTemp(data.getBaseTemp(), world.getSeed(), pos.getZ());
     }
 
     public static float getHeightAdjustedTemp(World world, BlockPos pos)
@@ -114,24 +112,73 @@ public final class ClimateTFC
         return temp;
     }
 
-    private static float getTemp(float baseTemp, long seed, long day, long hour)
+    /**
+     * Range 0 - 1
+     *
+     * @param chunkZ the chunk z position
+     * @return the latitude factor for temperature calculation
+     */
+    public static float latitudeFactor(int chunkZ)
     {
-        int h = (int) ((hour - 6) % CalenderTFC.HOURS_IN_DAY);
-        if (h < 0) h += CalenderTFC.HOURS_IN_DAY;
+        if (!ConfigTFC.WORLD.cyclicTemperatureRegions)
+        {
+            chunkZ = MathHelper.clamp(chunkZ, -1250, 1250);
+        }
+        return 0.5f + 0.5f * ConfigTFC.WORLD.hemisphereType * (float) Math.sin(Math.PI * chunkZ / ConfigTFC.WORLD.zTemperatureModifier);
+    }
+
+    /**
+     * Range -32 to 35
+     *
+     * @param baseTemp The base temp for the current location
+     * @param month    The month (from CalendarTFC)
+     * @return the month factor for temp calculation
+     */
+    public static float monthTemp(float baseTemp, CalendarTFC.Month month, int z)
+    {
+        //return month.getTempMod() + 0.2 * baseTemp;
+        return (41f - month.getTempMod() * 1.1f * (1 - 0.8f * latitudeFactor(z))) + 0.2f * baseTemp;
+    }
+
+    /**
+     * Range -40 to 40
+     *
+     * @param baseTemp The base temp for the current location
+     * @param z        The z-coordinate of the location that is being queried
+     * @return The month adjusted temperature. This gets the base temperature, before daily / hourly changes
+     */
+    public static float getMonthAdjTemp(float baseTemp, int z)
+    {
+        final float currentMonthFactor = monthTemp(baseTemp, CalendarTFC.getMonthOfYear(), z);
+        final float nextMonthFactor = monthTemp(baseTemp, CalendarTFC.getMonthOfYear().next(), z);
+
+        final float delta = (float) CalendarTFC.getDayOfMonth() / CalendarTFC.getDaysInMonth();
+        // Affine combination to smooth temperature transition
+        return currentMonthFactor * (1 - delta) + nextMonthFactor * delta;
+    }
+
+    /**
+     * Get the exact temperature for a location, including day + hour variation
+     *
+     * @param baseTemp The base temperature, either from {@link ChunkDataTFC} or {@link ClimateRenderHelper}
+     * @param seed     The world seed
+     * @param z        the z-coordinate
+     * @return A temperature, in the approximate range -35 to 35
+     */
+    private static float getTemp(float baseTemp, long seed, int z)
+    {
+        int h = (int) ((CalendarTFC.getTotalHours() - 6) % CalendarTFC.HOURS_IN_DAY);
+        if (h < 0) h += CalendarTFC.HOURS_IN_DAY;
 
         float hourMod;
         if (h < 12) hourMod = ((float) h / 11) * 0.3f;
         else hourMod = 0.3f - ((((float) h - 12) / 11) * 0.3f);
 
+        long day = CalendarTFC.getTotalDays();
         rng.setSeed(seed + day);
         final float dailyTemp = (rng.nextInt(200) - 100) / 20f;
 
-        final float monthMod = CalenderTFC.getMonthOfYear().getTempMod();
-        final float prevMonthMod = CalenderTFC.getMonthOfYear().previous().getTempMod();
-
-        final float monthDelta = (prevMonthMod - monthMod) * 1.1f * (1 - 0.8f * baseTemp) * CalenderTFC.getDayOfMonthFromDayOfYear(day) / CalenderTFC.getDaysInMonth();
-
-        return 41f - monthMod + monthDelta + dailyTemp + (hourMod * (baseTemp + dailyTemp));
+        return getMonthAdjTemp(baseTemp, z) + dailyTemp + (hourMod * (baseTemp + dailyTemp));
     }
 
     private ClimateTFC() {}
