@@ -93,6 +93,11 @@ public class ConfigTFC
         @Config.RangeDouble(min = 0d, max = 1d)
         @Config.LangKey("config." + MOD_ID + ".general.plantGrowthRate")
         public double plantGrowthRate = 0.01d;
+
+        @Config.Comment("Chance for the fire starter to be successful")
+        @Config.RangeDouble(min = 0d, max = 1d)
+        @Config.LangKey("config." + MOD_ID + ".general.fireStarterChance")
+        public double fireStarterChance = 0.5d;
     }
 
     public static class ClientCFG
