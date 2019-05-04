@@ -23,10 +23,10 @@ import com.google.gson.stream.JsonWriter;
  */
 public class LowercaseEnumTypeAdapterFactory implements TypeAdapterFactory
 {
+    @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type)
     {
-        //noinspection unchecked
         Class<T> rawType = (Class<T>) type.getRawType();
         if (!rawType.isEnum())
         {
