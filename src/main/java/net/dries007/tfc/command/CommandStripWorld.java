@@ -3,7 +3,10 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.cmd;
+package net.dries007.tfc.command;
+
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
@@ -20,17 +23,21 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
 
+import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 
+@ParametersAreNonnullByDefault
 public class CommandStripWorld extends CommandBase
 {
     @Override
+    @Nonnull
     public String getName()
     {
         return "stripworld";
     }
 
     @Override
+    @Nonnull
     public String getUsage(ICommandSender sender)
     {
         return "/stripworld <radius> -> [DANGER] Strips all stone variant blocks + water.";
@@ -58,17 +65,25 @@ public class CommandStripWorld extends CommandBase
                 {
                     final BlockPos pos = center.add(x, y, z);
                     final Block current = world.getBlockState(pos).getBlock();
-                    if (current instanceof BlockFluidBase)
+                    if (current instanceof BlockFluidBase || current instanceof BlockDynamicLiquid || current instanceof BlockStaticLiquid)
+                    {
                         world.setBlockState(pos, fluidReplacement, 2);
-                    else if (current instanceof BlockDynamicLiquid || current instanceof BlockStaticLiquid)
-                        world.setBlockState(pos, fluidReplacement, 2);
-                    else if (current instanceof BlockRockVariant)
+                    }
+                    else if (current instanceof BlockRockVariant || current instanceof BlockPlantTFC)
+                    {
                         world.setBlockState(pos, terrainReplacement, 2);
+                    }
                 }
             }
         }
 
 
         sender.sendMessage(new TextComponentString("Done."));
+    }
+
+    @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 2;
     }
 }

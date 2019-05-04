@@ -19,31 +19,32 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
-import net.dries007.tfc.util.OreSpawnData;
+import net.dries007.tfc.util.collections.WeightedCollection;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
+import net.dries007.tfc.world.classic.worldgen.vein.Vein;
+import net.dries007.tfc.world.classic.worldgen.vein.VeinCluster;
+import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
-import net.dries007.tfc.world.classic.worldgen.vein.VeinTypeCluster;
 
-public class WorldGenOre implements IWorldGenerator
+public class WorldGenOreVeins implements IWorldGenerator
 {
     private static final int NUM_ROLLS = 2;
     private static final int CHUNK_RADIUS = 2;
     public static final int VEIN_MAX_RADIUS = 16 * CHUNK_RADIUS;
 
     // Used to generate chunk
-    public static List<VeinType> getNearbyVeins(int chunkX, int chunkZ, long worldSeed, int radius)
+    public static List<Vein> getNearbyVeins(int chunkX, int chunkZ, long worldSeed, int radius)
     {
-        List<VeinType> veins = new ArrayList<>();
+        List<Vein> veins = new ArrayList<>();
 
         for (int x = -radius; x <= radius; x++)
         {
             for (int z = -radius; z <= radius; z++)
             {
-                List<VeinType> vein = getVeinsAtChunk(chunkX + x, chunkZ + z, worldSeed);
+                List<Vein> vein = getVeinsAtChunk(chunkX + x, chunkZ + z, worldSeed);
                 if (!vein.isEmpty()) veins.addAll(vein);
             }
         }
@@ -53,53 +54,35 @@ public class WorldGenOre implements IWorldGenerator
 
     // Gets veins at a single chunk. Deterministic for a specific chunk x/z and world seed
     @Nonnull
-    private static List<VeinType> getVeinsAtChunk(int chunkX, int chunkZ, Long worldSeed)
+    private static List<Vein> getVeinsAtChunk(int chunkX, int chunkZ, Long worldSeed)
     {
         Random rand = new Random(worldSeed + chunkX * 341873128712L + chunkZ * 132897987541L);
-        List<VeinType> veins = new ArrayList<>();
+        List<Vein> veins = new ArrayList<>();
 
         for (int i = 0; i < NUM_ROLLS; i++)
         {
-
-            OreSpawnData.OreEntry oreType;
-            BlockPos startPos;
-
-            if (rand.nextDouble() < OreSpawnData.getTotalWeight())
+            WeightedCollection<VeinType> entries = VeinRegistry.INSTANCE.getVeins();
+            if (rand.nextDouble() < entries.getTotalWeight())
             {
-
-                oreType = getWeightedOreType(rand);
-                startPos = new BlockPos(
+                VeinType veinType = entries.getRandomEntry(rand);
+                BlockPos startPos = new BlockPos(
                     chunkX * 16 + 8 + rand.nextInt(16),
-                    oreType.minY + rand.nextInt(oreType.maxY - oreType.minY),
+                    veinType.minY + rand.nextInt(veinType.maxY - veinType.minY),
                     chunkZ * 16 + 8 + rand.nextInt(16)
                 );
 
                 Ore.Grade grade = Ore.Grade.NORMAL;
-                if (oreType.ore != null && oreType.ore.isGraded())
+                if (veinType.ore != null && veinType.ore.isGraded())
                 {
                     int gradeInt = rand.nextInt(100);
                     if (gradeInt < 20) grade = Ore.Grade.RICH;
                     else if (gradeInt < 50) grade = Ore.Grade.POOR;
                 }
 
-                veins.add(new VeinTypeCluster(startPos, oreType, grade, rand));
+                veins.add(new VeinCluster(startPos, veinType, grade, rand));
             }
         }
         return veins;
-    }
-
-    @Nonnull
-    private static OreSpawnData.OreEntry getWeightedOreType(Random rand)
-    {
-        double r = rand.nextDouble() * OreSpawnData.getTotalWeight();
-        double countWeight = 0.0;
-        for (OreSpawnData.OreEntry ore : OreSpawnData.getOreSpawnEntries())
-        {
-            countWeight += ore.weight;
-            if (countWeight >= r)
-                return ore;
-        }
-        throw new RuntimeException("Problem choosing random ore weights. Should never be shown");
     }
 
     @Override
@@ -113,22 +96,20 @@ public class WorldGenOre implements IWorldGenerator
         // Check dimension is overworld
         if (world.provider.getDimension() != 0) return;
 
-        List<VeinType> veins = getNearbyVeins(chunkX, chunkZ, world.getSeed(), CHUNK_RADIUS);
+        List<Vein> veins = getNearbyVeins(chunkX, chunkZ, world.getSeed(), CHUNK_RADIUS);
         if (veins.isEmpty()) return;
 
         // Set constant values here
         int xoff = chunkX * 16 + 8;
         int zoff = chunkZ * 16 + 8;
 
-        for (VeinType vein : veins)
+        for (Vein vein : veins)
         {
-            // Add to chunk data
-            chunkData.addSpawnedOre(vein.oreSpawnData.ore, vein.oreSpawnData.size, vein.grade, vein.pos);
 
             // Do checks here that are specific to each vein
-            if (!vein.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0)) &&
-                !vein.oreSpawnData.baseRocks.contains(chunkData.getRock2(0, 0)) &&
-                !vein.oreSpawnData.baseRocks.contains(chunkData.getRock3(0, 0)))
+            if (!vein.type.baseRocks.contains(chunkData.getRock1(0, 0)) &&
+                !vein.type.baseRocks.contains(chunkData.getRock2(0, 0)) &&
+                !vein.type.baseRocks.contains(chunkData.getRock3(0, 0)))
                 continue;
             if (vein.pos.getY() >= WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(vein.pos))
                 continue;
@@ -142,7 +123,6 @@ public class WorldGenOre implements IWorldGenerator
 
                     for (int y = vein.getLowestY(); y <= vein.getHighestY(); y++)
                     {
-
                         final BlockPos posAt = new BlockPos(xoff + x, y, z + zoff);
                         final IBlockState stateAt = world.getBlockState(posAt);
                         // Do checks specific to the individual block pos that is getting replaced
@@ -151,10 +131,10 @@ public class WorldGenOre implements IWorldGenerator
                         if (!(stateAt.getBlock() instanceof BlockRockVariant)) continue;
 
                         final BlockRockVariant blockAt = (BlockRockVariant) stateAt.getBlock();
-                        if (blockAt.type != Rock.Type.RAW || !vein.oreSpawnData.baseRocks.contains(blockAt.rock))
+                        if (blockAt.type != Rock.Type.RAW || !vein.type.baseRocks.contains(blockAt.rock))
                             continue;
 
-                        world.setBlockState(posAt, BlockOreTFC.get(vein.oreSpawnData.ore, blockAt.rock, vein.grade), 2);
+                        world.setBlockState(posAt, vein.type.getOreState(blockAt.rock, vein.grade), 2);
                     }
                 }
             }

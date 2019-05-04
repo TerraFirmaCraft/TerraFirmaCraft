@@ -3,8 +3,9 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.cmd;
+package net.dries007.tfc.command;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.command.CommandBase;
@@ -16,21 +17,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class CommandHeat extends CommandBase
 {
     @Override
+    @Nonnull
     public String getName()
     {
         return "heat";
     }
 
     @Override
+    @Nonnull
     public String getUsage(ICommandSender sender)
     {
         return "/heat <amount> -> sets the itemheat to amount";
@@ -56,5 +57,11 @@ public class CommandHeat extends CommandBase
         {
             throw new WrongUsageException("Can only be used by a player");
         }
+    }
+
+    @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 2;
     }
 }

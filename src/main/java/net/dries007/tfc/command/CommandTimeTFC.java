@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.cmd;
+package net.dries007.tfc.command;
 
 import java.util.Collections;
 import java.util.List;
