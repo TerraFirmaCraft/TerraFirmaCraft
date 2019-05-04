@@ -17,17 +17,16 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.te.TEWorldItem;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
-import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
+import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 
 public class WorldGenLooseRocks implements IWorldGenerator
 {
-
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
@@ -40,15 +39,15 @@ public class WorldGenLooseRocks implements IWorldGenerator
         if (world.provider.getDimension() != 0) return;
 
         // Get the proper list of veins
-        List<VeinType> veins = WorldGenOre.getNearbyVeins(chunkX, chunkZ, world.getSeed(), 1);
+        List<Vein> veins = WorldGenOreVeins.getNearbyVeins(chunkX, chunkZ, world.getSeed(), 1);
         if (!veins.isEmpty())
         {
             veins.removeIf(v -> {
-                if (!v.oreSpawnData.ore.isGraded()) return true;
+                if (!v.type.hasLooseRocks()) return true;
 
                 int minScanY = (WorldTypeTFC.ROCKLAYER2 + WorldTypeTFC.ROCKLAYER3) / 2;
                 int maxScanY = WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos);
-                return v.pos.getY() <= minScanY || v.pos.getY() >= maxScanY || !v.oreSpawnData.baseRocks.contains(chunkData.getRock1(0, 0));
+                return v.pos.getY() <= minScanY || v.pos.getY() >= maxScanY || !v.type.baseRocks.contains(chunkData.getRock1(0, 0));
 
             });
         }
@@ -69,23 +68,27 @@ public class WorldGenLooseRocks implements IWorldGenerator
         }
     }
 
-    private void generateRock(World world, BlockPos pos, @Nullable VeinType vein, Rock rock)
+    private void generateRock(World world, BlockPos pos, @Nullable Vein vein, Rock rock)
     {
 
         if (world.getBlockState(pos).getMaterial().isReplaceable() && !world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).isFullCube())
         {
             world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState(), 2);
-            TEWorldItem tile = (TEWorldItem) world.getTileEntity(pos);
+            TEWorldItem tile = Helpers.getTE(world, pos, TEWorldItem.class);
             if (tile != null)
-                tile.inventory.setStackInSlot(0, vein == null ? ItemRock.get(rock, 1) : ItemSmallOre.get(vein.oreSpawnData.ore, 1));
+            {
+                tile.inventory.setStackInSlot(0, vein == null ? ItemRock.get(rock, 1) : vein.type.getLooseRockItem());
+            }
         }
     }
 
     @Nullable
-    private VeinType getRandomVein(List<VeinType> veins, Random rand)
+    private Vein getRandomVein(List<Vein> veins, Random rand)
     {
-        if (veins.isEmpty()) return null;
-        if (rand.nextDouble() <= 0.4) return null;
-        return veins.get(rand.nextInt(veins.size()));
+        if (!veins.isEmpty() && rand.nextDouble() < 0.4)
+        {
+            return veins.get(rand.nextInt(veins.size()));
+        }
+        return null;
     }
 }

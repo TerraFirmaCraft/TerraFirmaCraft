@@ -10,26 +10,25 @@ import java.util.Random;
 import net.minecraft.util.math.BlockPos;
 
 import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.util.OreSpawnData;
 
-public class VeinTypeCluster extends VeinType
+public class VeinCluster extends Vein
 {
     private final double verticalModifier;
     private final double horizontalModifier;
 
     private final Cluster[] spawnPoints;
 
-    public VeinTypeCluster(BlockPos pos, OreSpawnData.OreEntry data, Ore.Grade grade, Random rand)
+    public VeinCluster(BlockPos pos, VeinType veinType, Ore.Grade grade, Random rand)
     {
-        super(pos, data, grade);
+        super(pos, veinType, grade);
 
-        this.horizontalModifier = (1.5 - rand.nextDouble()) * data.size.radius;
-        this.verticalModifier = (1.5 - rand.nextDouble()) * data.size.radius;
+        this.horizontalModifier = (1.5 - rand.nextDouble()) * veinType.size.radius;
+        this.verticalModifier = (1.5 - rand.nextDouble()) * veinType.size.radius;
 
-        int clusters = data.type.minClusters;
-        if (data.type.maxClusters > clusters)
+        int clusters = veinType.shape.minClusters;
+        if (veinType.shape.maxClusters > clusters)
         {
-            clusters += rand.nextInt(data.type.maxClusters - data.type.minClusters);
+            clusters += rand.nextInt(veinType.shape.maxClusters - veinType.shape.minClusters);
         }
         spawnPoints = new Cluster[clusters];
         spawnPoints[0] = new Cluster(pos, 0.6 + 0.5 * rand.nextDouble());
@@ -59,7 +58,7 @@ public class VeinTypeCluster extends VeinType
 
             if (shortestRadius == -1 || radius < shortestRadius) shortestRadius = radius;
         }
-        return oreSpawnData.density * oreSpawnData.size.densityModifier * (1.0 - shortestRadius);
+        return type.density * type.size.densityModifier * (1.0 - shortestRadius);
     }
 
     private final class Cluster
