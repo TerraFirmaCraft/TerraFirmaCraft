@@ -39,6 +39,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     private final int maxHeight;
     private final int minWaterDepth;
     private final int maxWaterDepth;
+    private final double movementMod;
 
     private final PlantType plantType;
     private final Material material;
@@ -77,9 +78,10 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
      * @param maxHeight     max height for double+ plants
      * @param minWaterDepth min water depth for water plants on worldgen
      * @param maxWaterDepth max water depth for water plants on worldgen
+     * @param movementMod   modifier for player X/Z movement through this plant
      * @param oreDictName   if not empty, the Ore Dictionary entry for this plant
      */
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, int[] stages, boolean isClayMarking, boolean isSwampPlant, float minGrowthTemp, float maxGrowthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, int minWaterDepth, int maxWaterDepth, String oreDictName)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, int[] stages, boolean isClayMarking, boolean isSwampPlant, float minGrowthTemp, float maxGrowthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, int minWaterDepth, int maxWaterDepth, double movementMod, String oreDictName)
     {
         this.stages = stages;
         this.minGrowthTemp = minGrowthTemp;
@@ -93,6 +95,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         this.maxHeight = maxHeight;
         this.minWaterDepth = minWaterDepth;
         this.maxWaterDepth = maxWaterDepth;
+        this.movementMod = movementMod;
 
         this.plantType = plantType;
         this.isClayMarking = isClayMarking;
@@ -107,9 +110,14 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         setRegistryName(name);
     }
 
-    public Plant(@Nonnull ResourceLocation name, PlantType plantType, int[] stages, Boolean isClayMarking, Boolean isSwampPlant, float minGrowthTemp, float maxGrowthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, String oreDictName)
+    public Plant(@Nonnull ResourceLocation name, PlantType plantType, int[] stages, boolean isClayMarking, boolean isSwampPlant, float minGrowthTemp, float maxGrowthTemp, float minTemp, float maxTemp, float minRain, float maxRain, int minSun, int maxSun, int maxHeight, double movementMod, String oreDictName)
     {
-        this(name, plantType, stages, isClayMarking, isSwampPlant, minGrowthTemp, maxGrowthTemp, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, maxHeight, 0, 0, oreDictName);
+        this(name, plantType, stages, isClayMarking, isSwampPlant, minGrowthTemp, maxGrowthTemp, minTemp, maxTemp, minRain, maxRain, minSun, maxSun, maxHeight, 0, 0, movementMod, oreDictName);
+    }
+
+    public double getMovementMod()
+    {
+        return movementMod;
     }
 
     public boolean getIsClayMarking()
@@ -129,7 +137,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public boolean isValidTemp(float temp)
     {
-        return minTemp <= temp && maxTemp >= temp;
+        return getTempValidity(temp) == PlantValidity.VALID;
     }
 
     public boolean isValidTempForWorldGen(float temp)
@@ -139,7 +147,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public boolean isValidRain(float rain)
     {
-        return minRain <= rain && maxRain >= rain;
+        return getRainValidity(rain) == PlantValidity.VALID;
     }
 
     public boolean isValidSunlight(int sunlight)
@@ -185,11 +193,13 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return depthCounter;
     }
 
+    @SuppressWarnings("unused")
     public float getMinGrowthTemp()
     {
         return minGrowthTemp;
     }
 
+    @SuppressWarnings("unused")
     public float getMaxGrowthTemp()
     {
         return maxGrowthTemp;
@@ -260,6 +270,10 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     {
         switch (plantType)
         {
+            case DESERT:
+            case DESERT_TALL_PLANT:
+                if (isClayMarking) return EnumPlantTypeTFC.DESERT_CLAY;
+                else return EnumPlantTypeTFC.NONE;
             case DRY:
             case DRY_TALL_PLANT:
                 if (isClayMarking) return EnumPlantTypeTFC.DRY_CLAY;
@@ -284,9 +298,44 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         }
     }
 
+    public PlantValidity getTempValidity(float temp)
+    {
+        if (temp < minTemp)
+        {
+            return PlantValidity.COLD;
+        }
+        if (temp > maxTemp)
+        {
+            return PlantValidity.HOT;
+        }
+        return PlantValidity.VALID;
+    }
+
+    public PlantValidity getRainValidity(float rain)
+    {
+        if (rain < minRain)
+        {
+            return PlantValidity.DRY;
+        }
+        if (rain > maxRain)
+        {
+            return PlantValidity.WET;
+        }
+        return PlantValidity.VALID;
+    }
+
     private float getAvgTemp()
     {
         return Float.sum(minTemp, maxTemp) / 2f;
+    }
+
+    public enum PlantValidity
+    {
+        COLD,
+        HOT,
+        DRY,
+        WET,
+        VALID
     }
 
     public enum PlantType
@@ -355,6 +404,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     public enum EnumPlantTypeTFC
     {
         CLAY,
+        DESERT_CLAY,
         DRY_CLAY,
         DRY,
         FRESH_BEACH,

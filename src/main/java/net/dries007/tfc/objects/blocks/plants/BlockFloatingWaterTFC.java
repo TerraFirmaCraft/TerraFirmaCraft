@@ -44,6 +44,13 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
     }
 
     @Override
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
+    {
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]));
+        this.checkAndDropBlock(world, pos, state);
+    }
+
+    @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         super.onEntityCollision(worldIn, pos, state, entityIn);
@@ -52,20 +59,6 @@ public class BlockFloatingWaterTFC extends BlockPlantTFC
         {
             worldIn.destroyBlock(new BlockPos(pos), true);
         }
-    }
-
-    @Override
-    @Nonnull
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
-    {
-        return state.withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]);
-    }
-
-    @Override
-    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
-    {
-        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]));
-        this.checkAndDropBlock(world, pos, state);
     }
 
     @Override
