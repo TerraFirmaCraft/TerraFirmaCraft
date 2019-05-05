@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XFX",
+    "XUX",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:metal/sheet/wrought_iron"
+    },
+    "F": {
+      "item": "tfc:metal/double_ingot/red_steel"
+    },
+    "U": {
+      "item": "tfc:metal/double_ingot/blue_steel"
+    }
+  },
+  "result": {
+    "item": "minecraft:bucket",
+    "count": 1
+  }
+}

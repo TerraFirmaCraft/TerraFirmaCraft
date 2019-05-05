@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BXB",
+    "BXB"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/planks/kapok"
+    },
+    "B": {
+      "item": "tfc:wood/lumber/kapok"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/fence_gate/kapok",
+    "count": 1
+  }
+}

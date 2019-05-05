@@ -1,0 +1,16 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:rock/slate"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "chisel"
+    }
+  ],
+  "result": {
+    "item": "tfc:brick/slate",
+    "count": 1
+  }
+}

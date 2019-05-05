@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:rock/dolomite"
+    }
+  },
+  "result": {
+    "item": "tfc:cobble/dolomite",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X ",
+    " Z"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:metal/ingot/steel"
+    },
+    "Z": {
+      "item": "minecraft:flint"
+    }
+  },
+  "result": {
+    "item": "minecraft:flint_and_steel",
+    "count": 1
+  }
+}

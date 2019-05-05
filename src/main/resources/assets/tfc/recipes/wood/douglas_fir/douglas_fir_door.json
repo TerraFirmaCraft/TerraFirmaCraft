@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/planks/douglas_fir"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/door/douglas_fir",
+    "count": 7
+  }
+}

@@ -183,7 +183,6 @@ public final class ItemsTFC
             registerPottery(simpleItems, r, "ceramics/unfired/fire_brick", "ceramics/fired/fire_brick", new ItemUnfiredPottery(new ItemFiredPottery()));
 
             simpleItems.add(register(r, "ceramics/fire_clay", new ItemFireClay(), CT_MISC));
-            simpleItems.add(register(r, "ceramics/fire_brick", new ItemMisc(Size.NORMAL, Weight.MEDIUM), CT_MISC));
         }
 
         // FLAT

@@ -1,0 +1,22 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "dyeRed"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "gemLapis"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dyePink"
+    }
+  ],
+  "result": {
+    "item": "minecraft:dye",
+    "data": 13,
+    "count": 9
+  }
+}

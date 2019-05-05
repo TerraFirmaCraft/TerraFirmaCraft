@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:cobble/shale"
+    }
+  },
+  "result": {
+    "item": "tfc:wall/cobble/shale",
+    "count": 8
+  }
+}

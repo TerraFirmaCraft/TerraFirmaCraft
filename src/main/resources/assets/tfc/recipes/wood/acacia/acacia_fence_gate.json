@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BXB",
+    "BXB"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/planks/acacia"
+    },
+    "B": {
+      "item": "tfc:wood/lumber/acacia"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/fence_gate/acacia",
+    "count": 1
+  }
+}
