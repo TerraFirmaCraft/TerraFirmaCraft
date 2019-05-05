@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XSS",
+    "SSG",
+    "GGG"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "dyePurple"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "sand"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "gravel"
+    }
+  },
+  "result": {
+    "item": "minecraft:concrete_powder",
+    "data": 10,
+    "count": 8
+  }
+}

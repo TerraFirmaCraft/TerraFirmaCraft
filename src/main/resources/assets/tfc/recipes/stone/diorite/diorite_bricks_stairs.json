@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:bricks/diorite"
+    }
+  },
+  "result": {
+    "item": "tfc:stairs/bricks/diorite",
+    "count": 8
+  }
+}

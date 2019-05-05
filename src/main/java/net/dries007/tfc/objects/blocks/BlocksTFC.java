@@ -363,7 +363,7 @@ public final class BlocksTFC
             Builder<BlockSlabTFC.Half> slab = new Builder<>();
 
             // Walls
-            for (Rock.Type type : new Rock.Type[] {COBBLE, BRICKS})
+            for (Rock.Type type : new Rock.Type[] {SMOOTH, COBBLE, BRICKS})
                 for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
                     b.add(register(r, ("wall/" + type.name() + "/" + rock.getRegistryName().getPath()).toLowerCase(), new BlockWallTFC(BlockRockVariant.get(rock, type)), CT_DECORATIONS));
             // Stairs

@@ -39,14 +39,15 @@ public class CommandTimeTFC extends CommandBase
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "/timetfc [set|add] [year|month|day|monthLength|ticks] [value]";
+        return "/timetfc <set|add> <year|month|day|monthLength|ticks> <value>";
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         TerraFirmaCraft.getLog().info("Executing command TFC");
-        if (args.length != 3) throw new WrongUsageException("Requires three arguments");
+        if (args.length != 3)
+            throw new WrongUsageException("Invalid arguments! /timetfc <set|add> <year|month|day|monthLength|ticks> <value>");
 
         long time = CalendarTFC.TICKS_IN_DAY;
         boolean updateDaylightCycle = false;
@@ -74,7 +75,7 @@ public class CommandTimeTFC extends CommandBase
                 sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_month_length", value));
                 return;
             default:
-                throw new WrongUsageException("Second argument must be [day|month|year|monthlength|ticks]");
+                throw new WrongUsageException("Second argument must be <day|month|year>");
         }
 
         if (args[0].equals("add"))
@@ -83,7 +84,7 @@ public class CommandTimeTFC extends CommandBase
         }
         else if (!args[0].equals("set"))
         {
-            throw new WrongUsageException("First argument must be [add|set]");
+            throw new WrongUsageException("First argument must be <add|set>");
         }
 
         CalendarTFC.setCalendarTime(server.getEntityWorld(), time);
