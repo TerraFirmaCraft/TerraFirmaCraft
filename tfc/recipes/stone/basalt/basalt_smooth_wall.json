@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:smooth/basalt"
+    }
+  },
+  "result": {
+    "item": "tfc:wall/smooth/basalt",
+    "count": 8
+  }
+}

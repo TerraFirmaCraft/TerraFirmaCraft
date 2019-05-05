@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:cobble/andesite"
+    }
+  },
+  "result": {
+    "item": "tfc:stairs/cobble/andesite",
+    "count": 8
+  }
+}

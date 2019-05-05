@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:smooth/dacite"
+    }
+  },
+  "result": {
+    "item": "tfc:stairs/smooth/dacite",
+    "count": 8
+  }
+}
