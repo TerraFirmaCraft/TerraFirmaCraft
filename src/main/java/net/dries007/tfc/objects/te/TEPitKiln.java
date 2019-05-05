@@ -235,11 +235,11 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
     }
 
     @Override
-    public void onBreakBlock()
+    public void onBreakBlock(World worldIn, BlockPos pos)
     {
         strawItems.forEach(i -> InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), i));
         logItems.forEach(i -> InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), i));
-        super.onBreakBlock();
+        super.onBreakBlock(worldIn, pos);
     }
 
     public int getLogCount()

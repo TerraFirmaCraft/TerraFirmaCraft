@@ -79,7 +79,9 @@ public final class DefaultRecipes
 
         /* LEATHER ITEMS */
 
-        // todo: leather recipes
+        //event.getRegistry().registerAll(
+        //    new KnappingRecipe.Simple(KnappingRecipe.Type.LEATHER, false, )
+        //);
 
         /* FIRE CLAY ITEMS */
 

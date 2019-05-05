@@ -2982,6 +2982,19 @@ item.tfc.ceramics.fired.fire_brick.name=Fire Brick
 item.tfc.ceramics.unfired.fire_brick.name=Unfired Fire Brick
 item.tfc.ceramics.fire_clay.name=Fire Clay
 
+item.tfc.hide.raw.small.name=Small Raw Hide
+item.tfc.hide.raw.medium.name=Medium Raw Hide
+item.tfc.hide.raw.large.name=Large Raw Hide
+item.tfc.hide.soaked.small.name=Small Soaked Hide
+item.tfc.hide.soaked.medium.name=Medium Soaked Hide
+item.tfc.hide.soaked.large.name=Large Soaked Hide
+item.tfc.hide.scraped.small.name=Small Scraped Hide
+item.tfc.hide.scraped.medium.name=Medium Scraped Hide
+item.tfc.hide.scraped.large.name=Large Scraped Hide
+item.tfc.hide.prepared.small.name=Small Prepared Hide
+item.tfc.hide.prepared.medium.name=Medium Prepared Hide
+item.tfc.hide.prepared.large.name=Large Prepared Hide
+
 tile.tfc.stone.button.granite.name=Granite Button
 tile.tfc.stone.button.diorite.name=Diorite Button
 tile.tfc.stone.button.gabbro.name=Gabbro Button

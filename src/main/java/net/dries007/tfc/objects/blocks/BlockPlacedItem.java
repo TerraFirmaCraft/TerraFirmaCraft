@@ -101,7 +101,7 @@ public class BlockPlacedItem extends Block
         TEPlacedItem te = Helpers.getTE(worldIn, pos, TEPlacedItem.class);
         if (te != null)
         {
-            te.onBreakBlock();
+            te.onBreakBlock(worldIn, pos);
         }
         super.breakBlock(worldIn, pos, state);
     }
