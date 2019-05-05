@@ -578,8 +578,8 @@ for rock_type in ROCK_TYPES:
         'top': 'tfc:blocks/stonetypes/farmland/%s' % rock_type,
     })
 
-    # WALLS (cobble & bricks only)
-    for block_type in ['cobble', 'bricks']:
+    # WALLS (smooth, cobble, bricks)
+    for block_type in ['smooth', 'cobble', 'bricks']:
         blockstate(('wall', block_type, rock_type), 'tfc:empty', textures={
             ('wall', 'particle'): 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type),
         }, variants={

@@ -6,7 +6,6 @@
 package net.dries007.tfc;
 
 import org.apache.logging.log4j.Logger;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
@@ -132,7 +131,6 @@ public final class TerraFirmaCraft
         CapabilityItemSize.preInit();
         CapabilityItemHeat.preInit();
         CapabilityForgeable.preInit();
-        MinecraftForge.EVENT_BUS.register(new JunkEventHandler());
 
         if (event.getSide().isClient()) ClientEvents.preInit();
     }
