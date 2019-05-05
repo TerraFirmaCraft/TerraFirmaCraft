@@ -18,6 +18,7 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.GameRuleChangeEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -283,6 +284,17 @@ public class CalendarTFC
             {
                 event.setCanceled(true);
                 event.getSender().sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.time_command_disabled"));
+            }
+        }
+
+        @SubscribeEvent
+        public static void onWorldLoad(WorldEvent.Load event)
+        {
+            // Calendar Sync / Initialization
+            final World world = event.getWorld();
+            if (world.provider.getDimension() == 0 && !world.isRemote)
+            {
+                CalendarTFC.CalendarWorldData.onLoad(event.getWorld());
             }
         }
     }

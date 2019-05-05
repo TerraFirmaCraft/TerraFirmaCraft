@@ -38,7 +38,7 @@ public class ItemBlockPlant extends ItemBlockTFC
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
+    public void onUpdate(ItemStack stack, World worldIn, @Nullable Entity entityIn, int itemSlot, boolean isSelected)
     {
         if (worldIn.isRemote && entityIn != null && entityIn.ticksExisted % 10 == 0)
         {
