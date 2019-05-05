@@ -51,6 +51,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.debug")
         public boolean debug = Launch.blackboard.get("fml.deobfuscatedEnvironment") != null;
 
+        @Config.Comment({"Enable/Disable the vanilla recipe removal spam. False = Those recipes are left in place."})
+        @Config.LangKey("config." + MOD_ID + ".general.removeVanillaRecipes")
+        public boolean removeVanillaRecipes = true;
+
         @Config.Comment("Lengths of a month in in game days. Year length is this x12")
         @Config.LangKey("config." + MOD_ID + ".general.monthLength")
         @Config.RangeInt(min = 1, max = 1000)
