@@ -18,6 +18,7 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.GameRuleChangeEvent;
+import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -268,7 +269,7 @@ public class CalendarTFC
         {
             // This is only called on server, so it needs to sync to client
             GameRules rules = event.getRules();
-            TerraFirmaCraft.getLog().info("Gamerule changed: " + event.getRuleName());
+            TerraFirmaCraft.getLog().debug("Gamerule changed: " + event.getRuleName());
             if ("doDaylightCycle".equals(event.getRuleName()))
             {
                 CalendarTFC.doCalendarCycle = rules.getBoolean("doDaylightCycle");
@@ -284,6 +285,19 @@ public class CalendarTFC
                 event.setCanceled(true);
                 event.getSender().sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.time_command_disabled"));
             }
+        }
+
+        /**
+         * This allows beds to function correctly with TFC's calendar
+         *
+         * @param event {@link PlayerWakeUpEvent}
+         */
+        @SubscribeEvent
+        public static void onPlayerWakeUp(PlayerWakeUpEvent event)
+        {
+            // Set the calendar time to time=0. This will implicitly call CalendarTFC#update
+            long newCalendarTime = (CalendarTFC.getTotalDays() + 1) * TICKS_IN_DAY;
+            setCalendarTime(event.getEntityPlayer().getEntityWorld(), newCalendarTime);
         }
     }
 
