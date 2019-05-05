@@ -18,6 +18,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -26,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
@@ -45,7 +48,13 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 public class BlockPlantTFC extends BlockBush implements IItemSize
 {
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 3);
-    /* Time of day, used for rendering plants that bloom at different times */
+    /*
+     * Time of day, used for rendering plants that bloom at different times
+     * 0 = midnight-dawn
+     * 1 = dawn-noon
+     * 2 = noon-dusk
+     * 3 = dusk-midnight
+     */
     public final static PropertyInteger DAYPERIOD = PropertyInteger.create("dayperiod", 0, 3);
     private static final AxisAlignedBB PLANT_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
     private static final Map<Plant, BlockPlantTFC> MAP = new HashMap<>();
@@ -82,7 +91,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.Month.MARCH.id()]);
+        return this.getDefaultState().withProperty(AGE, meta);
     }
 
     @Override
@@ -149,15 +158,33 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     }
 
     @Override
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        double movementMod = plant.getMovementMod();
+        //Entity X/Z motion is reduced by plants.
+        entityIn.motionX *= movementMod;
+        entityIn.motionZ *= movementMod;
+    }
+
+    @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
-        if (!plant.getOreDictName().isPresent() && !worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
+        if (!plant.getOreDictName().isPresent() && !worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1 && plant.getPlantType() != Plant.PlantType.SHORT_GRASS && plant.getPlantType() != Plant.PlantType.TALL_GRASS)
         {
             spawnAsEntity(worldIn, pos, new ItemStack(this, 1));
         }
-        else
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        if (!canBlockStay(worldIn, pos, state) && placer instanceof EntityPlayer)
         {
-            super.harvestBlock(worldIn, player, pos, state, te, stack);
+            if (!((EntityPlayer) placer).isCreative() && !plant.getOreDictName().isPresent())
+            {
+                spawnAsEntity(worldIn, pos, new ItemStack(this));
+            }
         }
     }
 
@@ -202,7 +229,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         IBlockState soil = worldIn.getBlockState(pos.down());
-        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && this.canSustainBush(soil);
+        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos).getBlock() != this && soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this);
     }
 
     @Override
@@ -217,7 +244,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
+        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) && plant.isValidSunlight(Math.subtractExact(worldIn.getLightFor(EnumSkyBlock.SKY, pos), worldIn.getSkylightSubtracted())))
         {
             int j = state.getValue(AGE);
 
@@ -230,7 +257,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
         }
-        else if (CalendarTFC.getCalendarTime() > Math.multiplyExact(CalendarTFC.TICKS_IN_DAY, CalendarTFC.getDaysInMonth()))
+        else if (!plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) || !plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, pos)))
         {
             int j = state.getValue(AGE);
 
@@ -253,7 +280,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         IBlockState soil = worldIn.getBlockState(pos.down());
         if (state.getBlock() == this)
         {
-            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
+            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);
     }
@@ -264,6 +291,21 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return PLANT_AABB.offset(state.getOffset(source, pos));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Nullable
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        if (plant.getMovementMod() == 0.0D)
+        {
+            return blockState.getBoundingBox(worldIn, pos);
+        }
+        else
+        {
+            return NULL_AABB;
+        }
     }
 
     @Override

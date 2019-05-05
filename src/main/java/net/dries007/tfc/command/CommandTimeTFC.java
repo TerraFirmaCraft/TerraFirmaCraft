@@ -74,7 +74,7 @@ public class CommandTimeTFC extends CommandBase
                 sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_month_length", value));
                 return;
             default:
-                throw new WrongUsageException("Second argument must be [day|month|year]");
+                throw new WrongUsageException("Second argument must be [day|month|year|monthlength|ticks]");
         }
 
         if (args[0].equals("add"))
@@ -114,7 +114,7 @@ public class CommandTimeTFC extends CommandBase
         }
         else if (args.length == 2 && ("set".equals(args[0]) || "add".equals(args[0])))
         {
-            return getListOfStringsMatchingLastWord(args, "year", "month", "day", "monthLength");
+            return getListOfStringsMatchingLastWord(args, "year", "month", "day", "monthLength", "ticks");
         }
         else
         {

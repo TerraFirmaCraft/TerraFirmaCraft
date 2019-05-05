@@ -77,7 +77,7 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
         world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]));
-        this.checkForDrop(world, pos, state);
+        checkAndDropBlock(world, pos, state);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
         {
             if (this.canPlaceAt(worldIn, pos, enumfacing))
             {
-                return true;
+                return worldIn.getBlockState(pos).getBlock() != this;
             }
         }
 
@@ -110,10 +110,14 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
     @Override
     public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (canPlaceBlockAt(worldIn, pos))
+        for (EnumFacing enumfacing : FACING.getAllowedValues())
         {
-            return plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
+            if (this.canPlaceAt(worldIn, pos, enumfacing))
+            {
+                return plant.isValidTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
+            }
         }
+
         return false;
     }
 
