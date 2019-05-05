@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.items;
 
 import java.util.EnumMap;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -72,12 +73,14 @@ public class ItemGem extends ItemTFC
             items.add(new ItemStack(this, 1, grade.getMeta()));
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.TINY;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {

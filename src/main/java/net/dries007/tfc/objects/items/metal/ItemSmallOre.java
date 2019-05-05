@@ -57,12 +57,14 @@ public class ItemSmallOre extends ItemTFC implements IMetalObject
         return 10; //todo: config
     }
 
+    @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
         return Size.SMALL;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {

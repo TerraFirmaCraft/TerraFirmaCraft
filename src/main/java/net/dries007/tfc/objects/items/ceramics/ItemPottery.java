@@ -23,12 +23,14 @@ public class ItemPottery extends ItemTFC implements IFireable
         return input; // Already fired pottery does nothing.
     }
 
+    @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
         return Size.SMALL;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {

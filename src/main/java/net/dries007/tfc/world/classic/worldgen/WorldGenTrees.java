@@ -19,6 +19,8 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.api.util.ITreeGenerator;
@@ -32,7 +34,6 @@ import net.dries007.tfc.world.classic.worldgen.trees.TreeGenBushes;
 
 public class WorldGenTrees implements IWorldGenerator
 {
-
     private static final ITreeGenerator GEN_BUSHES = new TreeGenBushes();
 
     @Override
@@ -130,7 +131,13 @@ public class WorldGenTrees implements IWorldGenerator
                 world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
                 TEPlacedItemFlat tile = (TEPlacedItemFlat) world.getTileEntity(pos);
                 if (tile != null)
-                    tile.inventory.setStackInSlot(0, new ItemStack(Items.STICK));
+                {
+                    IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                    if (cap != null)
+                    {
+                        cap.insertItem(0, new ItemStack(Items.STICK), false);
+                    }
+                }
             }
         }
     }

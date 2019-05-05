@@ -56,12 +56,14 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize
         OreDictionaryHelper.register(this, "torch");
     }
 
+    @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
         return Size.NORMAL;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {

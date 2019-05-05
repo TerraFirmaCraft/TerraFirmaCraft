@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.items;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemSlab;
@@ -25,12 +26,14 @@ public class ItemSlabTFC extends ItemSlab implements IItemSize
         super(slab, slab1, doubleSlab);
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.SMALL;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {

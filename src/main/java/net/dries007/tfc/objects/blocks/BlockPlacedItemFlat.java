@@ -29,6 +29,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.te.TEPlacedItemFlat;
@@ -46,7 +49,6 @@ public class BlockPlacedItemFlat extends Block
     BlockPlacedItemFlat()
     {
         super(Material.CIRCUITS);
-        setDefaultState(blockState.getBaseState());
         setHardness(0.1F);
     }
 
@@ -133,14 +135,19 @@ public class BlockPlacedItemFlat extends Block
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
         if (!worldIn.isSideSolid(pos.add(0, -1, 0), EnumFacing.UP))
+        {
             worldIn.setBlockToAir(pos);
+        }
     }
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TEPlacedItemFlat te = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
-        if (te != null) te.onBreakBlock(pos.add(0.5D, 0.01D, 0.5D));
+        if (te != null)
+        {
+            te.onBreakBlock(worldIn, pos);
+        }
         super.breakBlock(worldIn, pos, state);
     }
 
@@ -150,9 +157,15 @@ public class BlockPlacedItemFlat extends Block
         TEPlacedItemFlat te = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
         if (te != null && !worldIn.isRemote)
         {
-            te.onBreakBlock(playerIn.getPosition());
-            te.inventory.setStackInSlot(0, ItemStack.EMPTY); // Prevent it from dropping itself AGAIN
-            worldIn.setBlockToAir(pos);
+            IItemHandler cap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            if (cap != null)
+            {
+                ItemStack stack = cap.extractItem(0, 64, true);
+                ItemHandlerHelper.giveItemToPlayer(playerIn, stack);
+                //te.onBreakBlock(playerIn.getPosition());
+                //cap.(0, ItemStack.EMPTY); // Prevent it from dropping itself AGAIN
+                worldIn.setBlockToAir(pos);
+            }
         }
         return true;
     }

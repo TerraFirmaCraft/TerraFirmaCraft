@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.items.wood;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemDoor;
@@ -42,12 +43,14 @@ public class ItemDoorTFC extends ItemDoor implements IItemSize
         OreDictionaryHelper.register(this, "door", wood.getRegistryName().getPath());
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.HUGE;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {

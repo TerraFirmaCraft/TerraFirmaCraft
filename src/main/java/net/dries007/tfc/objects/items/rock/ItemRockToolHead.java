@@ -45,12 +45,14 @@ public class ItemRockToolHead extends ItemTFC implements IRockObject
         OreDictionaryHelper.register(this, type, "head", category);
     }
 
+    @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
         return Size.LARGE;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {

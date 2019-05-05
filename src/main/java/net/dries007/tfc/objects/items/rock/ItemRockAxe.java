@@ -59,12 +59,14 @@ public class ItemRockAxe extends ItemAxe implements IItemSize, IRockObject
         tooltip.add("Rock type: " + category);
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.LARGE;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {

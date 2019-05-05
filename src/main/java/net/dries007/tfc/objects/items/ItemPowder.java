@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.items;
 
 import java.util.EnumMap;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
@@ -43,12 +44,14 @@ public class ItemPowder extends ItemTFC
         OreDictionaryHelper.register(this, "dust", Powder);
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.TINY;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {

@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.items.wood;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
@@ -45,12 +46,14 @@ public class ItemLumberTFC extends ItemTFC
         OreDictionaryHelper.register(this, "lumber", wood.getRegistryName().getPath());
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.NORMAL;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {
