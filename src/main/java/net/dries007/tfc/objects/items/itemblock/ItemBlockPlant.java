@@ -40,7 +40,7 @@ public class ItemBlockPlant extends ItemBlockTFC
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
     {
-        if (entityIn != null)
+        if (worldIn.isRemote && entityIn != null && entityIn.ticksExisted % 10 == 0)
         {
             tempValidity = block.getPlant().getTempValidity(ClimateTFC.getHeightAdjustedTemp(worldIn, entityIn.getPosition()));
             rainValidity = block.getPlant().getRainValidity(ChunkDataTFC.getRainfall(worldIn, entityIn.getPosition()));
