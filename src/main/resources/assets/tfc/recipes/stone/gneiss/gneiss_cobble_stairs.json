@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:cobble/gneiss"
+    }
+  },
+  "result": {
+    "item": "tfc:stairs/cobble/gneiss",
+    "count": 8
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:cobble/diorite"
+    }
+  },
+  "result": {
+    "item": "tfc:wall/cobble/diorite",
+    "count": 8
+  }
+}

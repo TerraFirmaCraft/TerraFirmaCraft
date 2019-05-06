@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.te.TEChestTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockChestTFC extends BlockChest
 {
@@ -44,9 +45,11 @@ public class BlockChestTFC extends BlockChest
         {
             case BASIC:
                 if (MAP_BASIC.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+                OreDictionaryHelper.register(this, "chest");
                 break;
             case TRAP:
                 if (MAP_TRAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+                OreDictionaryHelper.register(this, "chest", "chestTrapped");
                 break;
             default:
                 throw new IllegalStateException();

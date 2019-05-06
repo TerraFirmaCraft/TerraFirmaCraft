@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:rock/rocksalt"
+    }
+  },
+  "result": {
+    "item": "tfc:cobble/rocksalt",
+    "count": 1
+  }
+}

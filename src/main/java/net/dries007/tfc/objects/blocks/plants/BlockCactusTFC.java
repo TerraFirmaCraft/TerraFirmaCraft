@@ -6,11 +6,9 @@
 package net.dries007.tfc.objects.blocks.plants;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
@@ -26,6 +24,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -41,7 +40,6 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPlant
 {
     private static final PropertyEnum<EnumBlockPart> PART = PropertyEnum.create("part", EnumBlockPart.class);
-    private static final AxisAlignedBB CACTUS_COLLISION_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D);
     private static final Map<Plant, BlockCactusTFC> MAP = new HashMap<>();
 
     public static BlockCactusTFC get(Plant plant)
@@ -82,19 +80,6 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPla
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
-    {
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, CACTUS_COLLISION_AABB.offset(state.getOffset(worldIn, pos)));
-    }
-
-    @Override
-    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
-    {
-        entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
-    }
-
     @Override
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, net.minecraftforge.common.IPlantable plantable)
     {
@@ -109,28 +94,21 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPla
 
     @Override
     @Nonnull
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(DAYPERIOD, getDayPeriod()).withProperty(AGE, meta).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]);
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(AGE);
-    }
-
-    @Override
-    @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
+        return super.getActualState(state, worldIn, pos).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
     public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
     {
         return false;
+    }
+
+    @Override
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
     }
 
     @Override
@@ -162,7 +140,7 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPla
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
+        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) && plant.isValidSunlight(Math.subtractExact(worldIn.getLightFor(EnumSkyBlock.SKY, pos), worldIn.getSkylightSubtracted())))
         {
             int j = state.getValue(AGE);
 
@@ -203,7 +181,7 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPla
 
             return flag &&
                 soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) &&
-                plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) &&
+                plant.isValidTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) &&
                 plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);
@@ -230,12 +208,5 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPla
         {
             worldIn.destroyBlock(pos, true);
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        return CACTUS_COLLISION_AABB.offset(blockState.getOffset(worldIn, pos));
     }
 }

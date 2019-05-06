@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XSX",
+    "SXS",
+    "XSX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:metal/ingot/wrought_iron"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    }
+  },
+  "result": {
+    "item": "minecraft:shield",
+    "count": 1
+  }
+}

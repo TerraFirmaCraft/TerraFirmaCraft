@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:cobble/limestone"
+    }
+  },
+  "result": {
+    "item": "tfc:stairs/cobble/limestone",
+    "count": 8
+  }
+}

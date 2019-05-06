@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "X X",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/planks/birch"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/barrel/birch",
+    "data": 0,
+    "count": 1
+  }
+}

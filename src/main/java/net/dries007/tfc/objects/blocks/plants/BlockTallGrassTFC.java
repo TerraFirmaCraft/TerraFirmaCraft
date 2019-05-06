@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
@@ -20,11 +19,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -56,7 +55,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable, 
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
+        return super.getActualState(state, worldIn, pos).withProperty(PART, getPlantPart(worldIn, pos));
     }
 
     @Override
@@ -73,7 +72,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable, 
         if (worldIn.getBlockState(pos.down(plant.getMaxHeight())).getBlock() == this) return false;
         if (state.getBlock() == this)
         {
-            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
+            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);
     }
@@ -138,7 +137,24 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable, 
     @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
     {
-        super.onBlockHarvested(worldIn, pos, state, player);
+        if (!worldIn.isRemote && player != null)
+        {
+            ItemStack stack = player.getHeldItemMainhand();
+            if (stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
+            {
+                for (int i = 1; worldIn.getBlockState(pos.up(i)).getBlock() == this; ++i)
+                {
+                    spawnAsEntity(worldIn, pos, new ItemStack(ItemsTFC.HAY, 1));
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    {
+        this.onBlockHarvested(world, pos, state, player);
+        return world.setBlockState(pos, net.minecraft.init.Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
     }
 
     @Override
@@ -154,19 +170,6 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable, 
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
-    {
-        if (!worldIn.isRemote && state.getValue(PART) == EnumBlockPart.LOWER && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
-        {
-            spawnAsEntity(worldIn, pos, new ItemStack(ItemsTFC.HAY, 2));
-        }
-        else
-        {
-            super.harvestBlock(worldIn, player, pos, state, te, stack);
-        }
-    }
-
-    @Override
     @Nonnull
     public Block.EnumOffsetType getOffsetType()
     {
@@ -178,7 +181,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable, 
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedBiomeTemp(worldIn, pos)) && plant.isValidSunlight(worldIn.getLightFromNeighbors(pos.up())))
+        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) && plant.isValidSunlight(Math.subtractExact(worldIn.getLightFor(EnumSkyBlock.SKY, pos), worldIn.getSkylightSubtracted())))
         {
             int j = state.getValue(AGE);
 
@@ -195,7 +198,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable, 
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
         }
-        else if (CalendarTFC.getCalendarTime() > Math.multiplyExact(CalendarTFC.TICKS_IN_DAY, CalendarTFC.getDaysInMonth()))
+        else if (!plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) || !plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, pos)))
         {
             int j = state.getValue(AGE);
 

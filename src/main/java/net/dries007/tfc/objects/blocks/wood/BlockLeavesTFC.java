@@ -98,7 +98,10 @@ public class BlockLeavesTFC extends BlockLeaves
         entityIn.fallDistance = 0;
         //Entity motion is reduced by leaves.
         entityIn.motionX *= 0.1D;
-        entityIn.motionY *= 0.1D;
+        if (entityIn.motionY < 0)
+        {
+            entityIn.motionY *= 0.1D;
+        }
         entityIn.motionZ *= 0.1D;
     }
 

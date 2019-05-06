@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:bricks/phyllite"
+    }
+  },
+  "result": {
+    "item": "tfc:stairs/bricks/phyllite",
+    "count": 8
+  }
+}

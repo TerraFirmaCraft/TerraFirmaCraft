@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:wood/planks/palm"
+    }
+  ],
+  "result": {
+    "item": "tfc:wood/button/palm",
+    "count": 1
+  }
+}
