@@ -1,0 +1,5 @@
+{
+  "recipes": {
+    "damage_item_shapeless": "net.dries007.tfc.objects.recipes.ShapelessDamageRecipe$Factory"
+  }
+}

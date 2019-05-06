@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:smooth/dacite"
+    }
+  },
+  "result": {
+    "item": "tfc:wall/smooth/dacite",
+    "count": 8
+  }
+}
