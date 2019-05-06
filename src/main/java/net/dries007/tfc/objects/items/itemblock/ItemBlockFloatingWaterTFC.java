@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -26,31 +25,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.api.capability.size.Size;
-import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.blocks.plants.BlockFloatingWaterTFC;
 
 @ParametersAreNonnullByDefault
-public class ItemBlockFloatingWaterTFC extends ItemBlockTFC
+public class ItemBlockFloatingWaterTFC extends ItemBlockPlant
 {
-    private BlockFloatingWaterTFC blockFloatingWaterTFC;
+    protected BlockFloatingWaterTFC block;
 
-    public ItemBlockFloatingWaterTFC(Block block)
+    public ItemBlockFloatingWaterTFC(BlockFloatingWaterTFC block)
     {
         super(block);
-        blockFloatingWaterTFC = (BlockFloatingWaterTFC) block;
-    }
-
-    @Override
-    public Size getSize(ItemStack stack)
-    {
-        return Size.SMALL;
-    }
-
-    @Override
-    public Weight getWeight(ItemStack stack)
-    {
-        return Weight.LIGHT;
+        this.block = block;
     }
 
     @Override
@@ -79,18 +64,18 @@ public class ItemBlockFloatingWaterTFC extends ItemBlockTFC
                 BlockPos blockpos1 = blockpos.up();
                 IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-                if (iblockstate.getMaterial() == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0 && worldIn.isAirBlock(blockpos1) && iblockstate == blockFloatingWaterTFC.getPlant().getWaterType())
+                if (iblockstate.getMaterial() == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0 && worldIn.isAirBlock(blockpos1) && iblockstate == block.getPlant().getWaterType())
                 {
                     // special case for handling block placement with water lilies
                     net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(worldIn, blockpos1);
-                    worldIn.setBlockState(blockpos1, blockFloatingWaterTFC.getDefaultState());
+                    worldIn.setBlockState(blockpos1, block.getDefaultState());
                     if (net.minecraftforge.event.ForgeEventFactory.onPlayerBlockPlace(playerIn, blocksnapshot, net.minecraft.util.EnumFacing.UP, handIn).isCanceled())
                     {
                         blocksnapshot.restore(true, false);
                         return new ActionResult<>(EnumActionResult.FAIL, itemstack);
                     }
 
-                    worldIn.setBlockState(blockpos1, blockFloatingWaterTFC.getDefaultState(), 11);
+                    worldIn.setBlockState(blockpos1, block.getDefaultState(), 11);
 
                     if (playerIn instanceof EntityPlayerMP)
                     {

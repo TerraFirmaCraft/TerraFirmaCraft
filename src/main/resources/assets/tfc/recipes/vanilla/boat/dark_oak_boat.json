@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S S",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "tfc:wood/planks/hickory"
+    }
+  },
+  "result": {
+    "item": "minecraft:dark_oak_boat",
+    "count": 1
+  }
+}

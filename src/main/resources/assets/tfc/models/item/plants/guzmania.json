@@ -1,5 +1,5 @@
 {
-    "parent": "tfc:block/plants/guzmania_standing",
+    "parent": "tfc:block/plants/guzmania_standing_2",
 	"display": {
 		"thirdperson_righthand": {
 			"translation": [0, 3, 1],

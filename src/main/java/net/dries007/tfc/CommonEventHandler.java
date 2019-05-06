@@ -19,7 +19,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -32,7 +31,6 @@ import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.classic.CalendarTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -180,17 +178,6 @@ public final class CommonEventHandler
         {
             final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
             event.getContainer().addListener(new CapabilityContainerListener(player));
-        }
-    }
-
-    @SubscribeEvent
-    public static void onWorldLoad(WorldEvent.Load event)
-    {
-        // Calendar Sync / Initialization
-        final World world = event.getWorld();
-        if (world.provider.getDimension() == 0 && !world.isRemote)
-        {
-            CalendarTFC.CalendarWorldData.onLoad(event.getWorld());
         }
     }
 }

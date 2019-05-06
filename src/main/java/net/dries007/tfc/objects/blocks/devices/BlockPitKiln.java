@@ -26,6 +26,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
 
@@ -70,8 +71,11 @@ public class BlockPitKiln extends Block
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
-        if (te == null) return state;
-        return state.withProperty(BlockPitKiln.LIT, te.isLit()).withProperty(BlockPitKiln.FULL, te.hasFuel());
+        if (te != null)
+        {
+            return state.withProperty(BlockPitKiln.LIT, te.isLit()).withProperty(BlockPitKiln.FULL, te.hasFuel());
+        }
+        return state;
     }
 
     @Override
@@ -120,7 +124,10 @@ public class BlockPitKiln extends Block
         if (blockIn == Blocks.FIRE)
         {
             TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
-            if (te != null) te.tryLight();
+            if (te != null)
+            {
+                te.tryLight();
+            }
         }
     }
 
@@ -128,7 +135,10 @@ public class BlockPitKiln extends Block
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
-        if (te != null) te.onBreakBlock();
+        if (te != null)
+        {
+            te.onBreakBlock();
+        }
         super.breakBlock(worldIn, pos, state); // todo: drop items
     }
 
@@ -136,9 +146,16 @@ public class BlockPitKiln extends Block
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
-        if (te == null) return true;
-        te.onRightClick(playerIn, playerIn.getHeldItem(hand), hitX < 0.5, hitZ < 0.5);
-        return true;
+        if (te != null)
+        {
+            // Skip interacting if using a fire starter
+            if (playerIn.getHeldItemMainhand().getItem() == ItemsTFC.FIRESTARTER || playerIn.getHeldItemOffhand().getItem() == ItemsTFC.FIRESTARTER)
+            {
+                return false;
+            }
+            return te.onRightClick(playerIn, playerIn.getHeldItem(hand), hitX < 0.5, hitZ < 0.5);
+        }
+        return false;
     }
 
     @Override

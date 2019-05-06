@@ -34,7 +34,9 @@
       }
     },
     "inventory": [
-      {}
+      {
+        "model": "blocks/torch_on"
+      }
     ]
   }
 }

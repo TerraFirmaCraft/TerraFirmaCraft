@@ -578,8 +578,8 @@ for rock_type in ROCK_TYPES:
         'top': 'tfc:blocks/stonetypes/farmland/%s' % rock_type,
     })
 
-    # WALLS (cobble & bricks only)
-    for block_type in ['cobble', 'bricks']:
+    # WALLS (smooth, cobble, bricks)
+    for block_type in ['smooth', 'cobble', 'bricks']:
         blockstate(('wall', block_type, rock_type), 'tfc:empty', textures={
             ('wall', 'particle'): 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type),
         }, variants={
@@ -662,7 +662,8 @@ for wood_type in WOOD_TYPES:
     # PLANKS BLOCKS
     cube_all(('wood', 'planks', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
     # LEAVES BLOCKS
-    cube_all(('wood', 'leaves', wood_type), 'tfc:blocks/wood/leaves/%s' % wood_type, model='leaves')
+    if wood_type != 'palm':
+        cube_all(('wood', 'leaves', wood_type), 'tfc:blocks/wood/leaves/%s' % wood_type, model='leaves')
 
     # FENCES
     blockstate(('wood', 'fence', wood_type), 'fence_post', textures={

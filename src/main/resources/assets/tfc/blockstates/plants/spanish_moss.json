@@ -1,5 +1,11 @@
 {
    "multipart": [
+       {   "when": { "down": "true", "up": "true" },
+           "apply": { "model": "tfc:plants/spanish_moss_cross_0" }
+       },
+       {   "when": { "down": "false", "up": "true" },
+           "apply": { "model": "tfc:plants/spanish_moss_cross_1" }
+       },
        {   "when": { "down": "true" },
            "apply": { "model": "tfc:plants/spanish_moss_0" }
        },

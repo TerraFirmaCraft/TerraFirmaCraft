@@ -12,11 +12,13 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.blocks.stone.*;
 import net.dries007.tfc.objects.items.rock.*;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.api.types.Rock.FallingBlockType.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -26,6 +28,9 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
  */
 public class Rock extends IForgeRegistryEntry.Impl<Rock>
 {
+    @GameRegistry.ObjectHolder("tfc:granite")
+    public static final Rock GRANITE = Helpers.getNull();
+
     private final RockCategory rockCategory;
     private final ResourceLocation textureLocation;
 

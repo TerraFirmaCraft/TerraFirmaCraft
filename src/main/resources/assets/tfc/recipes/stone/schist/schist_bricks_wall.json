@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:bricks/schist"
+    }
+  },
+  "result": {
+    "item": "tfc:wall/bricks/schist",
+    "count": 8
+  }
+}

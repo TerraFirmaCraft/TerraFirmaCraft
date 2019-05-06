@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:brick/dacite"
+    }
+  },
+  "result": {
+    "item": "tfc:bricks/dacite",
+    "count": 4
+  }
+}

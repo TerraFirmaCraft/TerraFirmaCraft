@@ -5,29 +5,27 @@
 
 package net.dries007.tfc.world.classic.chunkdata;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByteArray;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.NBTBuilder;
-import net.dries007.tfc.util.OreSpawnData;
 import net.dries007.tfc.world.classic.DataLayer;
 
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER2;
@@ -84,8 +82,6 @@ public final class ChunkDataTFC
     private final DataLayer[] drainageLayer = new DataLayer[256]; // To be removed / replaced?
     private final DataLayer[] stabilityLayer = new DataLayer[256]; // To be removed / replaced?
     private final int[] seaLevelOffset = new int[256];
-    private final List<ChunkDataOreSpawned> oresSpawned = new ArrayList<>();
-    private final List<ChunkDataOreSpawned> oresSpawnedView = Collections.unmodifiableList(oresSpawned);
     private boolean initialized = false;
     private int fishPopulation = FISH_POP_MAX; // todo: Set this based on biome? temp? rng?
 
@@ -115,14 +111,6 @@ public final class ChunkDataTFC
         this.avgTemp = avgTemp;
         this.floraDensity = floraDensity;
         this.floraDiversity = floraDiversity;
-    }
-
-    /**
-     * INTERNAL USE ONLY.
-     */
-    public void addSpawnedOre(Ore ore, OreSpawnData.SpawnSize size, Ore.Grade grade, BlockPos pos)
-    {
-        oresSpawned.add(new ChunkDataOreSpawned(ore, size, grade, pos));
     }
 
     public boolean isInitialized()
@@ -155,8 +143,6 @@ public final class ChunkDataTFC
     public int getSeaLevelOffset(int x, int z) { return seaLevelOffset[z << 4 | x]; }
 
     public int getFishPopulation() { return fishPopulation; }
-
-    public List<ChunkDataOreSpawned> getOresSpawned() { return oresSpawnedView; }
 
     public float getRainfall() { return rainfall; }
 
@@ -248,10 +234,6 @@ public final class ChunkDataTFC
             root.setFloat("floraDensity", instance.floraDensity);
             root.setFloat("floraDiversity", instance.floraDiversity);
 
-            NBTTagList chunkDataOreSpawnedNBT = new NBTTagList();
-            instance.oresSpawned.stream().map(ChunkDataOreSpawned::serialize).forEach(chunkDataOreSpawnedNBT::appendTag);
-            root.setTag("oresSpawned", chunkDataOreSpawnedNBT);
-
             return root;
         }
 
@@ -276,9 +258,6 @@ public final class ChunkDataTFC
                 instance.avgTemp = root.getFloat("avgTemp");
                 instance.floraDensity = root.getFloat("floraDensity");
                 instance.floraDiversity = root.getFloat("floraDiversity");
-
-                instance.oresSpawned.clear();
-                root.getTagList("oresSpawned", Constants.NBT.TAG_COMPOUND).forEach(x -> instance.oresSpawned.add(new ChunkDataOreSpawned(((NBTTagCompound) x))));
 
                 instance.initialized = true;
             }

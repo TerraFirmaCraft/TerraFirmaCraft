@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "SSS",
+    "XXX"
+  ],
+  "key": {
+    "X": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "lumber"
+      }
+    ],
+    "S": {
+      "item": "tfc:leather"
+    }
+  },
+  "result": {
+    "item": "tfc:bellows",
+    "count": 1
+  }
+}
