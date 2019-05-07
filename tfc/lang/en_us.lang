@@ -33,6 +33,7 @@ tfc.tooltip.time_command_disabled=This command has been disabled by TFC. Use /ti
 
 ## Keybindings
 tfc.key.craft=Crafting GUI
+tfc.key.placeblock=Place Item Holder Block
 
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=Spawn Fuzzing Radius
