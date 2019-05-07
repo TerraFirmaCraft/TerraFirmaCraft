@@ -116,6 +116,7 @@ public final class TerraFirmaCraft
         int id = 0;
         // Received on server
         network.registerMessage(new PacketGuiButton.Handler(), PacketGuiButton.class, ++id, Side.SERVER);
+        network.registerMessage(new PacketPlaceBlockFromKeyBind.Handler(), PacketPlaceBlockFromKeyBind.class, ++id, Side.SERVER);
         // Received on client
         network.registerMessage(new PacketAnvilUpdate.Handler(), PacketAnvilUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketCrucibleUpdate.Handler(), PacketCrucibleUpdate.class, ++id, Side.CLIENT);

@@ -197,6 +197,7 @@ public final class ClientRegisterEvents
         ModelLoader.setCustomStateMapper(BlocksTFC.PIT_KILN, blockIn -> ImmutableMap.of(BlocksTFC.PIT_KILN.getDefaultState(), new ModelResourceLocation("tfc:empty")));
         ModelLoader.setCustomStateMapper(BlocksTFC.WORLD_ITEM, blockIn -> ImmutableMap.of(BlocksTFC.WORLD_ITEM.getDefaultState(), new ModelResourceLocation("tfc:empty")));
         ModelLoader.setCustomStateMapper(BlocksTFC.INGOT_PILE, blockIn -> ImmutableMap.of(BlocksTFC.INGOT_PILE.getDefaultState(), new ModelResourceLocation("tfc:empty")));
+        ModelLoader.setCustomStateMapper(BlocksTFC.ITEM_HOLDER, blockIn -> ImmutableMap.of(BlocksTFC.ITEM_HOLDER.getDefaultState(), new ModelResourceLocation("tfc:empty")));
 
         // TESRs //
 
@@ -208,6 +209,7 @@ public final class ClientRegisterEvents
         ClientRegistry.bindTileEntitySpecialRenderer(TEBellows.class, new TESRBellows());
         ClientRegistry.bindTileEntitySpecialRenderer(TEBarrel.class, new TESRBarrel());
         ClientRegistry.bindTileEntitySpecialRenderer(TEAnvilTFC.class, new TESRAnvil());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEItemHolder.class, new TESRItemHolder());
     }
 
     @SubscribeEvent
