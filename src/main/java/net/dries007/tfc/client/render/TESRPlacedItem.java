@@ -21,7 +21,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.dries007.tfc.objects.te.TEPlacedItem;
 
 @SideOnly(Side.CLIENT)
-public class TESRItemHolder extends TileEntitySpecialRenderer<TEPlacedItem>
+public class TESRPlacedItem extends TileEntitySpecialRenderer<TEPlacedItem>
 {
     @Override
     public void render(TEPlacedItem te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
