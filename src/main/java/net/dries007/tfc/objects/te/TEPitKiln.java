@@ -23,6 +23,8 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.recipes.PitKilnRecipe;
@@ -43,13 +45,39 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
         TEPlacedItem teOld = Helpers.getTE(world, pos, TEPlacedItem.class);
         if (teOld != null)
         {
+            // Remove inventory items
+            // This happens here to stop the block dropping its items in onBreakBlock()
+            IItemHandler capOld = teOld.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            ItemStack[] inventory = new ItemStack[4];
+            if (capOld != null)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    inventory[i] = capOld.extractItem(i, 64, false);
+                }
+            }
+
             // Replace the block
             world.setBlockState(pos, BlocksTFC.PIT_KILN.getDefaultState());
             // Copy TE data
             TEPitKiln teNew = Helpers.getTE(world, pos, TEPitKiln.class);
             if (teNew != null)
             {
-                teNew.copyDataFromPlacedItem(teOld, strawStack);
+                // Copy inventory
+                IItemHandler capNew = teNew.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                if (capNew != null)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        if (inventory[i] != null && !inventory[i].isEmpty())
+                        {
+                            capNew.insertItem(i, inventory[i], false);
+                        }
+                    }
+                }
+                // Copy misc data
+                teNew.isHoldingLargeItem = teOld.isHoldingLargeItem;
+                teNew.addStraw(strawStack.splitStack(1));
             }
         }
     }
@@ -113,13 +141,12 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
 
     @Override
     @Nonnull
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(compound);
-        compound.setLong("burnTicksToGo", burnTicksToGo);
-        compound.setTag("strawItems", ItemStackHelper.saveAllItems(new NBTTagCompound(), strawItems));
-        compound.setTag("logItems", ItemStackHelper.saveAllItems(new NBTTagCompound(), logItems));
-        return compound;
+        nbt.setLong("burnTicksToGo", burnTicksToGo);
+        nbt.setTag("strawItems", ItemStackHelper.saveAllItems(new NBTTagCompound(), strawItems));
+        nbt.setTag("logItems", ItemStackHelper.saveAllItems(new NBTTagCompound(), logItems));
+        return super.writeToNBT(nbt);
     }
 
     public boolean isLit()
@@ -141,7 +168,6 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
         {
             return false;
         }
-        final int slot = (x ? 1 : 0) + (z ? 2 : 0);
 
         // Try and extract an item
         if (stack.isEmpty() || player.isSneaking())
@@ -154,7 +180,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 player.addItemStackToInventory(dropStack.splitStack(1));
                 updateBlock();
 
-                if (isEmpty())
+                if (getStrawCount() == 0)
                 {
                     TEPlacedItem.convertPitKilnToPlacedItem(world, pos);
                 }
@@ -256,18 +282,6 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             if (!logItems.get(i).isEmpty()) continue;
             logItems.set(i, stack);
             return;
-        }
-    }
-
-    private void copyDataFromPlacedItem(TEPlacedItem teOld, ItemStack strawStack)
-    {
-        this.isHoldingLargeItem = teOld.isHoldingLargeItem;
-
-        // Known at this point that strawStack matches the ore dictionary name "straw"
-        addStraw(strawStack.splitStack(1));
-        for (int i = 0; i < inventory.getSlots(); i++)
-        {
-            inventory.setStackInSlot(i, teOld.inventory.getStackInSlot(i));
         }
     }
 }
