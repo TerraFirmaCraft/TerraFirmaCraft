@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 
 @SideOnly(Side.CLIENT)
-public class TESRWorldItem extends TileEntitySpecialRenderer<TEPlacedItemFlat>
+public class TESRPlacedItemFlat extends TileEntitySpecialRenderer<TEPlacedItemFlat>
 {
     @Override
     public void render(TEPlacedItemFlat te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
