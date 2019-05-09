@@ -49,7 +49,7 @@ public final class ItemsTFC
     public static final ItemDebug WAND = getNull();
     public static final ItemFireStarter FIRESTARTER = getNull();
     public static final ItemGoldPan GOLDPAN = getNull();
-    public static final ItemMisc HAY = getNull();
+    public static final ItemMisc STRAW = getNull();
     public static final ItemLeatherTFC LEATHER = getNull();
 
     @GameRegistry.ObjectHolder("ceramics/fire_clay")
@@ -190,7 +190,7 @@ public final class ItemsTFC
             r.register(new ItemFlat(rock).setRegistryName(MOD_ID, "flat/" + rock.getRegistryName().getPath().toLowerCase()));
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
-        simpleItems.add(register(r, "hay", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling"), CT_MISC));
+        simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "straw"), CT_MISC));
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
 
         simpleItems.add(register(r, "leather", new ItemLeatherTFC(), CT_MISC));

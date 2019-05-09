@@ -25,6 +25,7 @@ import net.dries007.tfc.util.forge.ForgeSteps;
  * Anvil Recipe
  *
  * They all take a single item input and will produce a single item output
+ * todo: in 1.13+ move this to a json recipe type
  */
 @ParametersAreNonnullByDefault
 public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
