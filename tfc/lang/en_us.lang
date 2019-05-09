@@ -32,12 +32,13 @@ tfc.tooltip.set_time=Set Calendar Time to Year %04d, %s %02d %s
 tfc.tooltip.time_command_disabled=This command has been disabled by TFC. Use /timetfc instead!
 
 ## Prospecting Result Messages
-tfc.propick.found_nothing=Found nothing of interest
 tfc.propick.found=Found
-tfc.propick.found_signs=Found signs of mineralisation
 tfc.propick.found_traces=Found traces of
-tfc.propick.found_small_sample=Found a small sample of
-tfc.propick.found_large_sample=Found a large sample of
+tfc.propick.found_small=Found a small sample of
+tfc.propick.found_medium=Found a medium sample of
+tfc.propick.found_large=Found a large sample of
+tfc.propick.found_very_large=Found a very large sample of
+tfc.propick.found_nothing=Found nothing of interest.
 
 ## Keybindings
 tfc.key.craft=Crafting GUI
