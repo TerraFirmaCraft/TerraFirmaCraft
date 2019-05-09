@@ -208,7 +208,7 @@ tfc.enum.month.december=Early Winter
 # Items
 item.tfc.wand.name=TFC Debug Wand
 item.tfc.firestarter.name=Firestarter
-item.tfc.hay.name=Hay
+item.tfc.straw.name=Straw
 item.leather.name=Leather
 
 # Fluids

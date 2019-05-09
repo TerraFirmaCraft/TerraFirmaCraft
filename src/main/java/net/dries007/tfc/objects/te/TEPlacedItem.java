@@ -18,6 +18,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
@@ -35,13 +37,37 @@ public class TEPlacedItem extends TEInventory
         TEPitKiln teOld = Helpers.getTE(world, pos, TEPitKiln.class);
         if (teOld != null)
         {
+            // Remove inventory items
+            // This happens here to stop the block dropping its items in onBreakBlock()
+            IItemHandler capOld = teOld.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            ItemStack[] inventory = new ItemStack[4];
+            if (capOld != null)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    inventory[i] = capOld.extractItem(i, 64, false);
+                }
+            }
             // Replace the block
             world.setBlockState(pos, BlocksTFC.PLACED_ITEM.getDefaultState());
-            // Copy TE data
+
+            // Replace inventory items
             TEPlacedItem teNew = Helpers.getTE(world, pos, TEPlacedItem.class);
             if (teNew != null)
             {
-                teNew.copyDataFromPitKiln(teOld);
+                IItemHandler capNew = teNew.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                if (capNew != null)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        if (inventory[i] != null && !inventory[i].isEmpty())
+                        {
+                            capNew.insertItem(i, inventory[i], false);
+                        }
+                    }
+                }
+                // Copy misc data
+                teNew.isHoldingLargeItem = teOld.isHoldingLargeItem;
             }
         }
     }
@@ -176,13 +202,5 @@ public class TEPlacedItem extends TEInventory
             }
         }
         return true;
-    }
-
-    private void copyDataFromPitKiln(TEPitKiln teOld)
-    {
-        for (int i = 0; i < inventory.getSlots(); i++)
-        {
-            inventory.setStackInSlot(i, teOld.inventory.getStackInSlot(i));
-        }
     }
 }
