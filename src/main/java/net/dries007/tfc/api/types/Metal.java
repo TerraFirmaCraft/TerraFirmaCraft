@@ -14,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import net.dries007.tfc.objects.items.metal.ItemProPick;
 import net.dries007.tfc.objects.items.metal.*;
 import net.dries007.tfc.util.Helpers;
 
@@ -188,7 +187,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         JAVELIN_HEAD(true, 100, true, "XX   ", "X    ", "     ", "X   X", "XX XX"),
         HAMMER(true, 100, ItemMetalTool::new),
         HAMMER_HEAD(true, 100, true, "XXXXX", "     ", "     ", "XX XX", "XXXXX"),
-        PROPICK(true, 100, ItemProPick::new), // todo: special class + implementation
+        PROPICK(true, 100, ItemProspectorPick::new),
         PROPICK_HEAD(true, 100, true, "XXXXX", "    X", " XXX ", " XXXX", "XXXXX"),
         KNIFE(true, 100, ItemMetalTool::new),
         KNIFE_BLADE(true, 100, true, "XX X", "X  X", "X  X", "X  X", "X  X"),

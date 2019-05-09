@@ -122,6 +122,10 @@ public class ConfigTFC
         @Config.Comment({"Show ItemStack NBT on the tooltip when advanced tooltips are enabled. (F3+H)"})
         @Config.LangKey("config." + MOD_ID + ".client.showNBTTooltip")
         public boolean showNBTTooltip = false;
+
+        @Config.Comment("Should the prospectors pick output to the actionbar? (the space just above the hotbar)")
+        @Config.LangKey("config." + MOD_ID + ".client.propickOutputToActionBar")
+        public boolean propickOutputToActionBar = true;
     }
 
     public static class WorldCFG
