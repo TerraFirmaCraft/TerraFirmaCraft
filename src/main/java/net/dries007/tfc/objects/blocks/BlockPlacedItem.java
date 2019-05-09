@@ -1,12 +1,20 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.blocks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -16,14 +24,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.objects.te.TEItemHolder;
+import net.dries007.tfc.objects.te.TEPitKiln;
+import net.dries007.tfc.objects.te.TEPlacedItem;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class BlockItemHolder extends Block
+@ParametersAreNonnullByDefault
+public class BlockPlacedItem extends Block
 {
-    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 1D / 16D, 1);
+    public static final AxisAlignedBB PLACED_ITEM_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.0625, 1);
 
-    public BlockItemHolder()
+    BlockPlacedItem()
     {
         super(Material.CIRCUITS);
         setHardness(0.5f);
@@ -44,6 +55,7 @@ public class BlockItemHolder extends Block
     }
 
     @Override
+    @Nonnull
     @SuppressWarnings("deprecation")
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
@@ -51,13 +63,15 @@ public class BlockItemHolder extends Block
     }
 
     @Override
+    @Nonnull
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return AABB;
+        return PLACED_ITEM_AABB;
     }
 
     @Override
+    @Nonnull
     @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
@@ -74,7 +88,7 @@ public class BlockItemHolder extends Block
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        TEItemHolder te = Helpers.getTE(worldIn, pos, TEItemHolder.class);
+        TEPlacedItem te = Helpers.getTE(worldIn, pos, TEPlacedItem.class);
         if (te != null)
         {
             te.onBreakBlock();
@@ -85,9 +99,16 @@ public class BlockItemHolder extends Block
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        TEItemHolder te = Helpers.getTE(worldIn, pos, TEItemHolder.class);
+        TEPlacedItem te = Helpers.getTE(worldIn, pos, TEPlacedItem.class);
         if (te != null)
         {
+            ItemStack stack = playerIn.getHeldItemMainhand();
+            // Check for pit kiln conversion
+            if (!playerIn.isSneaking() && OreDictionaryHelper.doesStackMatchOre(stack, "straw"))
+            {
+                TEPitKiln.convertPlacedItemToPitKiln(worldIn, pos, stack);
+                return true;
+            }
             return te.onRightClick(playerIn, playerIn.getHeldItem(hand), hitX < 0.5, hitZ < 0.5);
         }
         return false;
@@ -103,6 +124,6 @@ public class BlockItemHolder extends Block
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        return new TEItemHolder();
+        return new TEPlacedItem();
     }
 }

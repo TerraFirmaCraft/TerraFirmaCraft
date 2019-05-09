@@ -14,6 +14,9 @@ import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.util.SimpleCraftMatrix;
 
+/**
+ * todo: in 1.13+ move this to a json recipe type
+ */
 public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRecipe>
 {
     private final Type type;

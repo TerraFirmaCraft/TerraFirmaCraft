@@ -31,7 +31,7 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.te.TEIngotPile;
-import net.dries007.tfc.objects.te.TEWorldItem;
+import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.util.Helpers;
 
 @MethodsReturnNonnullByDefault
@@ -128,7 +128,7 @@ public class BlockIngotPile extends Block
         {
             posTop = posTop.up();
             stateTop = worldIn.getBlockState(posTop);
-            if (stateTop.getBlock() != BlocksTFC.INGOT_PILE)
+            if (stateTop.getBlock() != BlocksTFC.INGOT_PILE && te != null)
             {
                 te.setCount(te.getCount() - 1);
                 if (!worldIn.isRemote)
@@ -184,7 +184,7 @@ public class BlockIngotPile extends Block
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        return new TEWorldItem();
+        return new TEPlacedItemFlat();
     }
 
     @Override

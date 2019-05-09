@@ -24,12 +24,12 @@ import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class TEWorldItem extends TileEntity
+public class TEPlacedItemFlat extends TileEntity
 {
     public ItemStackHandler inventory = new ItemStackHandler(1);
     private byte rotation;
 
-    public TEWorldItem()
+    public TEPlacedItemFlat()
     {
         Random rand = new Random();
         rotation = (byte) rand.nextInt(4);

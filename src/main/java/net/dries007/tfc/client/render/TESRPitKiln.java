@@ -15,11 +15,12 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.objects.te.TEPitKiln;
 
@@ -58,71 +59,74 @@ public class TESRPitKiln extends TileEntitySpecialRenderer<TEPitKiln>
         GlStateManager.translate(x, y, z);
 
         GlStateManager.pushMatrix();
-        NonNullList<ItemStack> items = te.getItems();
-        float timeD = (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
-        GlStateManager.scale(0.5F, 0.5F, 0.5F);
-        GlStateManager.translate(0.5, 0.5, 0.5);
-        RenderHelper.enableStandardItemLighting();
-        GlStateManager.pushAttrib();
-        for (int i = 0; i < items.size(); i++)
+        IItemHandler cap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (cap != null)
         {
-            ItemStack stack = items.get(i);
-            if (stack.isEmpty()) continue;
-            GlStateManager.pushMatrix();
-            GlStateManager.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));
-            GlStateManager.rotate(timeD, 0, 1, 0);
-            renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
-            GlStateManager.popMatrix();
-        }
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.popAttrib();
-        GlStateManager.popMatrix();
-
-        int straw = te.getStrawCount();
-        if (straw != 0)
-        {
-            GlStateManager.pushMatrix();
+            float timeD = (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
+            GlStateManager.scale(0.5F, 0.5F, 0.5F);
+            GlStateManager.translate(0.5, 0.5, 0.5);
+            RenderHelper.enableStandardItemLighting();
             GlStateManager.pushAttrib();
-            GlStateManager.enableLighting();
-            GlStateManager.enableRescaleNormal();
-
-            bindTexture(THATCH);
-            HAY[straw - 1].render(null, 0, 0, 0, 0, 0, SCALE);
-
-            GlStateManager.popAttrib();
-            GlStateManager.popMatrix();
-        }
-
-        int logs = te.getLogCount();
-        if (logs != 0)
-        {
-            GlStateManager.pushMatrix();
-            GlStateManager.pushAttrib();
-            GlStateManager.enableLighting();
-            GlStateManager.enableRescaleNormal();
-            GlStateManager.translate(0, 0.5d, 0);
-
-            bindTexture(BARK);
-
-            for (int row = 0; row < LOG_ROWS && logs > 0; row++)
+            for (int i = 0; i < cap.getSlots(); i++)
             {
+                ItemStack stack = cap.getStackInSlot(i);
+                if (stack.isEmpty()) continue;
                 GlStateManager.pushMatrix();
-                GlStateManager.translate(0, row * 0.5d / (double) LOG_ROWS, 0);
-                for (int i = 0; i < LOGS_PER_ROW && logs > 0; i++, logs--)
-                {
-                    GlStateManager.pushMatrix();
-                    GlStateManager.translate(0, 0, i / (double) LOGS_PER_ROW);
-                    LOG.render(null, 0, 0, 0, 0, 0, SCALE);
-                    GlStateManager.popMatrix();
-                }
+                GlStateManager.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));
+                GlStateManager.rotate(timeD, 0, 1, 0);
+                renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
                 GlStateManager.popMatrix();
             }
+            RenderHelper.disableStandardItemLighting();
+            GlStateManager.popAttrib();
+            GlStateManager.popMatrix();
+
+            int straw = te.getStrawCount();
+            if (straw != 0)
+            {
+                GlStateManager.pushMatrix();
+                GlStateManager.pushAttrib();
+                GlStateManager.enableLighting();
+                GlStateManager.enableRescaleNormal();
+
+                bindTexture(THATCH);
+                HAY[straw - 1].render(null, 0, 0, 0, 0, 0, SCALE);
+
+                GlStateManager.popAttrib();
+                GlStateManager.popMatrix();
+            }
+
+            int logs = te.getLogCount();
+            if (logs != 0)
+            {
+                GlStateManager.pushMatrix();
+                GlStateManager.pushAttrib();
+                GlStateManager.enableLighting();
+                GlStateManager.enableRescaleNormal();
+                GlStateManager.translate(0, 0.5d, 0);
+
+                bindTexture(BARK);
+
+                for (int row = 0; row < LOG_ROWS && logs > 0; row++)
+                {
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(0, row * 0.5d / (double) LOG_ROWS, 0);
+                    for (int i = 0; i < LOGS_PER_ROW && logs > 0; i++, logs--)
+                    {
+                        GlStateManager.pushMatrix();
+                        GlStateManager.translate(0, 0, i / (double) LOGS_PER_ROW);
+                        LOG.render(null, 0, 0, 0, 0, 0, SCALE);
+                        GlStateManager.popMatrix();
+                    }
+                    GlStateManager.popMatrix();
+                }
+                GlStateManager.popAttrib();
+                GlStateManager.popMatrix();
+            }
+
             GlStateManager.popAttrib();
             GlStateManager.popMatrix();
         }
-
-        GlStateManager.popAttrib();
-        GlStateManager.popMatrix();
     }
 
     private static class ModelHay extends ModelBase

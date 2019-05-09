@@ -13,13 +13,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.objects.te.TEWorldItem;
+import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 
 @SideOnly(Side.CLIENT)
-public class TESRWorldItem extends TileEntitySpecialRenderer<TEWorldItem>
+public class TESRWorldItem extends TileEntitySpecialRenderer<TEPlacedItemFlat>
 {
     @Override
-    public void render(TEWorldItem te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+    public void render(TEPlacedItemFlat te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         ItemStack stack = te.inventory.getStackInSlot(0);
         byte rotation = te.getRotation();

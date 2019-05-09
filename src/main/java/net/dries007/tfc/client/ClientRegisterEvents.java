@@ -195,21 +195,21 @@ public final class ClientRegisterEvents
 
         // Empty Models
         ModelLoader.setCustomStateMapper(BlocksTFC.PIT_KILN, blockIn -> ImmutableMap.of(BlocksTFC.PIT_KILN.getDefaultState(), new ModelResourceLocation("tfc:empty")));
-        ModelLoader.setCustomStateMapper(BlocksTFC.WORLD_ITEM, blockIn -> ImmutableMap.of(BlocksTFC.WORLD_ITEM.getDefaultState(), new ModelResourceLocation("tfc:empty")));
+        ModelLoader.setCustomStateMapper(BlocksTFC.PLACED_ITEM_FLAT, blockIn -> ImmutableMap.of(BlocksTFC.PLACED_ITEM_FLAT.getDefaultState(), new ModelResourceLocation("tfc:empty")));
         ModelLoader.setCustomStateMapper(BlocksTFC.INGOT_PILE, blockIn -> ImmutableMap.of(BlocksTFC.INGOT_PILE.getDefaultState(), new ModelResourceLocation("tfc:empty")));
-        ModelLoader.setCustomStateMapper(BlocksTFC.ITEM_HOLDER, blockIn -> ImmutableMap.of(BlocksTFC.ITEM_HOLDER.getDefaultState(), new ModelResourceLocation("tfc:empty")));
+        ModelLoader.setCustomStateMapper(BlocksTFC.PLACED_ITEM, blockIn -> ImmutableMap.of(BlocksTFC.PLACED_ITEM.getDefaultState(), new ModelResourceLocation("tfc:empty")));
 
         // TESRs //
 
         ClientRegistry.bindTileEntitySpecialRenderer(TEChestTFC.class, new TESRChestTFC());
         ClientRegistry.bindTileEntitySpecialRenderer(TEToolRack.class, new TESRToolRack());
         ClientRegistry.bindTileEntitySpecialRenderer(TEPitKiln.class, new TESRPitKiln());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEWorldItem.class, new TESRWorldItem());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEPlacedItemFlat.class, new TESRWorldItem());
         ClientRegistry.bindTileEntitySpecialRenderer(TEIngotPile.class, new TESRIngotPile());
         ClientRegistry.bindTileEntitySpecialRenderer(TEBellows.class, new TESRBellows());
         ClientRegistry.bindTileEntitySpecialRenderer(TEBarrel.class, new TESRBarrel());
         ClientRegistry.bindTileEntitySpecialRenderer(TEAnvilTFC.class, new TESRAnvil());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEItemHolder.class, new TESRItemHolder());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEPlacedItem.class, new TESRItemHolder());
     }
 
     @SubscribeEvent

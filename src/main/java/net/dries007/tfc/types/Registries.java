@@ -19,10 +19,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
 
-import net.dries007.tfc.api.recipes.AlloyRecipe;
-import net.dries007.tfc.api.recipes.AnvilRecipe;
-import net.dries007.tfc.api.recipes.KnappingRecipe;
-import net.dries007.tfc.api.recipes.WeldingRecipe;
+import net.dries007.tfc.api.recipes.*;
 import net.dries007.tfc.api.registries.TFCRegistryEvent;
 import net.dries007.tfc.api.types.*;
 
@@ -50,6 +47,7 @@ public final class Registries
         newRegistry(KNAPPING_RECIPE, KnappingRecipe.class, false);
         newRegistry(ANVIL_RECIPE, AnvilRecipe.class, false);
         newRegistry(WELDING_RECIPE, WeldingRecipe.class, false);
+        newRegistry(PIT_KILN_RECIPE, PitKilnRecipe.class, false);
     }
 
     /**

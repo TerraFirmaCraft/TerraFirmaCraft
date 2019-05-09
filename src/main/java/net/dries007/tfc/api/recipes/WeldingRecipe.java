@@ -18,6 +18,7 @@ import net.dries007.tfc.api.types.Metal;
  * Welding Recipe
  *
  * This takes two items and produces a single item out
+ * todo: in 1.13+ move this to a json recipe type
  */
 @ParametersAreNonnullByDefault
 public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe>
