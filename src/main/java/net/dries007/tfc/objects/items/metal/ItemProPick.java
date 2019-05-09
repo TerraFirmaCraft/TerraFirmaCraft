@@ -12,22 +12,21 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
-
-import static net.dries007.tfc.objects.blocks.stone.BlockOreTFC.GRADE;
+import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
+import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
 
 public class ItemProPick extends ItemMetalTool
 {
@@ -35,37 +34,12 @@ public class ItemProPick extends ItemMetalTool
     private int timesUsedOnBlock = 0;
     private final static int cooldown = 40;
     private Random random = new Random();
-    private float efficiency;
-    private Map<String, ProspectResult> results = new HashMap<>();
 
     public ItemProPick(Metal metal, Metal.ItemType type)
     {
         super(metal, type);
-        efficiency = material.getEfficiency() * 0.5F;
     }
 
-    /**
-     * Fragile backup pick, take extra durability damage and reduce speed
-     */
-    @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
-    {
-        if (!worldIn.isRemote && (double) state.getBlockHardness(worldIn, pos) != 0.0D)
-        {
-            stack.damageItem(5, entityLiving);
-        }
-        return true;
-    }
-
-    @Override
-    public float getDestroySpeed(ItemStack stack, IBlockState state)
-    {
-        return canHarvestBlock(state, stack) ? efficiency : 1.0f;
-    }
-
-    /**
-     * Called when a Block is right-clicked with this Item
-     */
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
@@ -77,13 +51,13 @@ public class ItemProPick extends ItemMetalTool
         // Play a block hit sound, reduce dirt block volume because its loud on default.
         SoundType soundType = bState.getBlock().getSoundType(bState, worldIn, pos, player);
         if (soundType.equals(SoundType.GROUND))
-            worldIn.playSound(player, pos, soundType.getHitSound(), SoundCategory.BLOCKS, soundType.getVolume()-0.5F, soundType.getPitch()-0.5F); //Think this sends to all except player
+            worldIn.playSound(player, pos, soundType.getHitSound(), SoundCategory.BLOCKS, soundType.getVolume() - 0.5F, soundType.getPitch() - 0.5F);
         else
-            worldIn.playSound(player, pos, soundType.getHitSound(), SoundCategory.BLOCKS, soundType.getVolume(), soundType.getPitch()); //Think this sends to all except player
+            worldIn.playSound(player, pos, soundType.getHitSound(), SoundCategory.BLOCKS, soundType.getVolume(), soundType.getPitch());
 
         if (!worldIn.isRemote)
         {
-            ItemStack itemStack = getOreBlock(bState);
+            ItemStack itemStack = getOreDrop(bState, true);
             if (itemStack != null)
             {
                 //Current block is ore, tell result
@@ -93,7 +67,7 @@ public class ItemProPick extends ItemMetalTool
             }
             else
             {
-                //Hit block 5 times to get a search result.
+                //Hit block X times to get a search result.
                 if (activeBlockPos == null || !activeBlockPos.equals(pos))
                 {
                     activeBlockPos = pos;
@@ -101,14 +75,13 @@ public class ItemProPick extends ItemMetalTool
                 }
 
                 timesUsedOnBlock += 1;
-                player.getHeldItem(hand).damageItem(1, player);
 
-                if (timesUsedOnBlock >= 5)
+                if (timesUsedOnBlock >= 3)
                 {
                     activeBlockPos = null;
                     timesUsedOnBlock = 0;
 
-                    scanSurroundingBlocks(worldIn, pos);
+                    Map<String, ProspectResult> results = scanSurroundingBlocks(worldIn, pos, false);
 
                     if (results.isEmpty())
                     {
@@ -118,27 +91,31 @@ public class ItemProPick extends ItemMetalTool
                     }
                     else
                     {
+                        random.setSeed(pos.toLong());
+
                         ProspectResult[] list = results.values().toArray(new ProspectResult[0]);
-                        // todo: made show grades/multiple results if skilled prospector
                         int index = results.size()== 1 ? 0 : random.nextInt(results.size()-1);
                         double score = list[index].score;
-                        //remove grade from ore
-                        String trKey = new ItemStack(list[index].ore.getItem(),1,0).getTranslationKey() + ".name";
 
-                        ITextComponent msg;
-                        if (score < 20)
-                            msg = new TextComponentTranslation("tfc.propick.found_signs");
+                        String msg;
+                        if (score < 10)
+                            msg = "tfc.propick.found_traces";
+                        else if (score < 20)
+                            msg = "tfc.propick.found_small";
                         else if (score < 40)
-                            msg = new TextComponentTranslation("tfc.propick.found_traces").appendText(" ").appendSibling(new TextComponentTranslation(trKey));
+                            msg = "tfc.propick.found_medium";
                         else if (score < 80)
-                            msg = new TextComponentTranslation("tfc.propick.found_small_sample").appendText(" ").appendSibling(new TextComponentTranslation(trKey));
+                            msg = "tfc.propick.found_large";
                         else
-                            msg = new TextComponentTranslation("tfc.propick.found_large_sample").appendText(" ").appendSibling(new TextComponentTranslation(trKey));
-                        player.sendStatusMessage(msg,true);
-                        setCooldown(player);
+                            msg = "tfc.propick.found_very_large";
 
-                       //for (int i = 0; i < results.size(); i++)
-                       //    player.sendStatusMessage(new TextComponentString(list[i].ore.getDisplayName() + ": " + String.format("%.02f", list[i].score)), false);
+                        player.sendStatusMessage(new TextComponentTranslation(msg).appendText(" ").appendSibling(new TextComponentTranslation(list[index].ore.getDisplayName())), true);
+                        setCooldown(player);
+                        player.getHeldItem(hand).damageItem(1, player);
+
+                        if (ConfigTFC.GENERAL.debug)
+                            for (int i = 0; i < results.size(); i++)
+                                player.sendStatusMessage(new TextComponentString(list[i].ore.getDisplayName() + ": " + String.format("%.02f", list[i].score)), false);
                     }
                 }
             }
@@ -151,59 +128,58 @@ public class ItemProPick extends ItemMetalTool
         return EnumActionResult.SUCCESS;
     }
 
-    private void scanSurroundingBlocks(World world, BlockPos center)
+    private Map<String, ProspectResult> scanSurroundingBlocks(World world, BlockPos center, boolean getGrade)
     {
-        int rad = 15;
-        double maxDistSquared = rad*rad;
-        int step = 2;
-        int maxScore = 9;
-        results.clear();
-        // Loop trough every 8th block in a sphere, find ores and give them a value 1 -> maxScore+1 based on distance.
+        Map<String, ProspectResult> results = new HashMap<>();
+        int rad = 12;
+        int step = 1;
+        // Loop trough every block in a 25^3 cube
         for (int x = -rad; x <= rad; x+=step)
         {
             for (int y = -rad; y <= rad; y+=step)
             {
                 for (int z = -rad; z <= rad; z+=step)
                 {
-                    double distSquared = x*x + y*y + z*z;
-                    if (distSquared < maxDistSquared)
+                    BlockPos pos = new BlockPos(x, y, z).add(center);
+                    ItemStack iStack = getOreDrop(world.getBlockState(pos), getGrade);
+
+                    if (iStack != null)
                     {
-                        BlockPos pos = new BlockPos(x,y,z).add(center);
-                        ItemStack iStack = getOreBlock(world.getBlockState(pos));
+                        String oreName = iStack.getDisplayName();
 
-                        if (iStack != null)
-                        {
-                            double score = Math.pow(((distSquared-maxDistSquared)/maxDistSquared), 2) * maxScore + 1;
-                            String oreName = iStack.getDisplayName();
-
-
-                            if (results.containsKey(oreName))
-                                results.get(oreName).score+= score;
-                            else
-                                results.put(oreName, new ProspectResult(iStack, score));
-                        }
+                        if (results.containsKey(oreName))
+                            results.get(oreName).score += 1;
+                        else
+                            results.put(oreName, new ProspectResult(iStack, 1));
                     }
                 }
             }
         }
+        return results;
     }
 
-    // todo: This works for BlockOreTFC but not anything else (addons for example,fix?)
-    private ItemStack getOreBlock(IBlockState blockState)
+    // todo: 1.13/14 block metadata
+    private ItemStack getOreDrop(IBlockState blockState, boolean getGrade)
     {
-        if (blockState == null) return null;
-        Block block = blockState.getBlock();
-        if (block instanceof BlockOreTFC) //
-        {
-            int grade = blockState.getValue(GRADE).getMeta();
-            return new ItemStack(block.getItemDropped(blockState, null,0), 1, grade);
-        }
+        if (blockState == null || BlocksTFC.isGround(blockState)) return null;
+        for (VeinType vein : VeinRegistry.INSTANCE.getVeins().values())
+            if (vein.isOreBlock(blockState))
+            {
+                Block block = blockState.getBlock();
+                if (vein.ore != null)
+                    if (vein.ore.isGraded() && getGrade)
+                        return new ItemStack(block.getItemDropped(blockState, null, 0), 1, block.getMetaFromState(blockState));
+                    else
+                        return new ItemStack(block.getItemDropped(blockState, null, 0), 1, 0);
+                else
+                    return new ItemStack(Item.getItemFromBlock(block), 1, block.getMetaFromState(blockState));
+            }
         return null;
     }
 
     private boolean isValidProspectBlock(IBlockState state)
     {
-        return BlocksTFC.isGround(state) || (getOreBlock(state) != null);
+        return BlocksTFC.isGround(state) || (getOreDrop(state, false) != null);
     }
 
     private void setCooldown(EntityPlayer player)

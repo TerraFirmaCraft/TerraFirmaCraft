@@ -30,7 +30,7 @@ import net.dries007.tfc.api.types.Metal;
 public class ItemMetalTool extends ItemMetal
 {
     public final ToolMaterial material;
-    private final float efficiency;
+    private float efficiency;
     private final double attackDamage;
     private final int areaOfAttack; // todo: implement
     private final float attackSpeed;
@@ -42,6 +42,11 @@ public class ItemMetalTool extends ItemMetal
             throw new IllegalArgumentException("You can't make tools out of non tool metals.");
         material = metal.getToolMetal();
         int harvestLevel = material.getHarvestLevel();
+
+        setMaxStackSize(1);
+        setMaxDamage(material.getMaxUses());
+        efficiency = material.getEfficiency();
+
         float typeDamage;
         switch (type)
         {
@@ -86,6 +91,8 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 1f;
                 areaOfAttack = 1;
                 attackSpeed = -3.5f;
+                setMaxDamage(material.getMaxUses() / 3);
+                efficiency = material.getEfficiency() * 0.5F;
                 break;
             case SCYTHE:
                 setHarvestLevel("scythe", harvestLevel);
@@ -124,9 +131,6 @@ public class ItemMetalTool extends ItemMetal
                 throw new IllegalArgumentException("Tool from non tool type.");
         }
 
-        setMaxStackSize(1);
-        setMaxDamage(material.getMaxUses());
-        efficiency = material.getEfficiency();
         attackDamage = typeDamage * material.getAttackDamage();
     }
 
