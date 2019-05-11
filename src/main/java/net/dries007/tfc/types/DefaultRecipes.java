@@ -97,13 +97,18 @@ public final class DefaultRecipes
         {
             if (type.hasMold(null))
             {
-                r.register(new PitKilnRecipe(Ingredient.fromItems(ItemMold.get(type))).setRegistryName(MOD_ID, "mold_" + type.name().toLowerCase()));
+                // Fired molds
+                r.register(new PitKilnRecipe(Ingredient.fromItems(ItemMold.get(type))).setRegistryName(MOD_ID, "mold_" + type.name().toLowerCase() + "_fireable"));
+                // Unfired molds
+                r.register(new PitKilnRecipe(Ingredient.fromItems(ItemUnfiredMold.get(type)), new ItemStack(ItemMold.get(type))).setRegistryName(MOD_ID, "mold_" + type.name().toLowerCase()));
             }
         }
 
+        // Fired ceramic vessels
         r.register(new PitKilnRecipe(Ingredient.fromStacks(new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL))).setRegistryName(MOD_ID, "fired_vessel_fireable"));
         r.register(new PitKilnRecipe(Ingredient.fromStacks(new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, OreDictionary.WILDCARD_VALUE))).setRegistryName(MOD_ID, "fired_vessel_fireable_glazed"));
 
+        // Unfired ceramic vessels
         r.register(new PitKilnRecipe(Ingredient.fromItems(ItemsTFC.CERAMICS_UNFIRED_VESSEL), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL)).setRegistryName("fired_vessel"));
         for (EnumDyeColor color : EnumDyeColor.values())
         {

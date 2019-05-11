@@ -119,17 +119,17 @@ public class BlockPitKiln extends Block
     @SuppressWarnings("deprecation")
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (!worldIn.isSideSolid(pos.add(0, -1, 0), EnumFacing.UP))
-            worldIn.destroyBlock(pos, true);
-        if (blockIn == Blocks.FIRE)
+        TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
+        if (te != null)
         {
-            TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
-            if (te != null)
+            if (blockIn == Blocks.FIRE)
             {
                 te.tryLight();
             }
+            // Make sure the sides are valid
+            te.assertValid();
         }
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
     }
 
     @Override
