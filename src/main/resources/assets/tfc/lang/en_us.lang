@@ -42,6 +42,7 @@ tfc.propick.found_nothing=Found nothing of interest.
 
 ## Keybindings
 tfc.key.craft=Crafting GUI
+tfc.key.placeblock=Place Item Holder Block
 
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=Spawn Fuzzing Radius
@@ -216,7 +217,7 @@ tfc.enum.month.december=Early Winter
 # Items
 item.tfc.wand.name=TFC Debug Wand
 item.tfc.firestarter.name=Firestarter
-item.tfc.hay.name=Hay
+item.tfc.straw.name=Straw
 item.leather.name=Leather
 
 # Fluids

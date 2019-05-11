@@ -15,6 +15,9 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 
+/**
+ * todo: in 1.13+ move this to a json recipe type
+ */
 public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
 {
     private final ImmutableMap<Metal, Predicate<Double>> metalMap;

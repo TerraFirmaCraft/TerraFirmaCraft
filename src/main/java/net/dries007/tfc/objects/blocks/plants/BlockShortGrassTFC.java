@@ -61,7 +61,7 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
         }
         else if (!worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
         {
-            spawnAsEntity(worldIn, pos, new ItemStack(ItemsTFC.HAY, 1));
+            spawnAsEntity(worldIn, pos, new ItemStack(ItemsTFC.STRAW, 1));
         }
         super.harvestBlock(worldIn, player, pos, state, te, stack);
     }

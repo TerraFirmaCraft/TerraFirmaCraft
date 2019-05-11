@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.api.util.ITreeGenerator;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.te.TEWorldItem;
+import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.biomes.BiomeTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -127,8 +127,8 @@ public class WorldGenTrees implements IWorldGenerator
 
             if (world.getBlockState(pos).getMaterial().isReplaceable() && !world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).isOpaqueCube())
             {
-                world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState());
-                TEWorldItem tile = (TEWorldItem) world.getTileEntity(pos);
+                world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
+                TEPlacedItemFlat tile = (TEPlacedItemFlat) world.getTileEntity(pos);
                 if (tile != null)
                     tile.inventory.setStackInSlot(0, new ItemStack(Items.STICK));
             }

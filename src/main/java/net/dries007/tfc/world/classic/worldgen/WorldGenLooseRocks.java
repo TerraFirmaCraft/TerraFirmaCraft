@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
-import net.dries007.tfc.objects.te.TEWorldItem;
+import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
@@ -73,8 +73,8 @@ public class WorldGenLooseRocks implements IWorldGenerator
 
         if (world.getBlockState(pos).getMaterial().isReplaceable() && !world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).isFullCube())
         {
-            world.setBlockState(pos, BlocksTFC.WORLD_ITEM.getDefaultState(), 2);
-            TEWorldItem tile = Helpers.getTE(world, pos, TEWorldItem.class);
+            world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState(), 2);
+            TEPlacedItemFlat tile = Helpers.getTE(world, pos, TEPlacedItemFlat.class);
             if (tile != null)
             {
                 tile.inventory.setStackInSlot(0, vein == null ? ItemRock.get(rock, 1) : vein.type.getLooseRockItem());
