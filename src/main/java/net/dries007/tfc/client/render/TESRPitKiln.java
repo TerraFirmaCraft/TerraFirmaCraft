@@ -31,7 +31,7 @@ public class TESRPitKiln extends TileEntitySpecialRenderer<TEPitKiln>
 {
     private static final ResourceLocation THATCH = new ResourceLocation(MOD_ID, "textures/blocks/thatch.png");
     private static final ResourceLocation BARK = new ResourceLocation(MOD_ID, "textures/blocks/wood/log/oak.png");
-    private static final ModelHay[] HAY = new ModelHay[TEPitKiln.STRAW_NEEDED];
+    private static final ModelStraw[] STRAW = new ModelStraw[TEPitKiln.STRAW_NEEDED];
     private static final int LOG_ROWS = 2;
     private static final int LOGS_PER_ROW = TEPitKiln.WOOD_NEEDED / LOG_ROWS;
     private static final ModelLog LOG = new ModelLog();
@@ -41,7 +41,7 @@ public class TESRPitKiln extends TileEntitySpecialRenderer<TEPitKiln>
     {
         for (int i = 0; i < TEPitKiln.STRAW_NEEDED; i++)
         {
-            HAY[i] = new ModelHay(i);
+            STRAW[i] = new ModelStraw(i);
         }
     }
 
@@ -90,7 +90,7 @@ public class TESRPitKiln extends TileEntitySpecialRenderer<TEPitKiln>
                 GlStateManager.enableRescaleNormal();
 
                 bindTexture(THATCH);
-                HAY[straw - 1].render(null, 0, 0, 0, 0, 0, SCALE);
+                STRAW[straw - 1].render(null, 0, 0, 0, 0, 0, SCALE);
 
                 GlStateManager.popAttrib();
                 GlStateManager.popMatrix();
@@ -129,22 +129,22 @@ public class TESRPitKiln extends TileEntitySpecialRenderer<TEPitKiln>
         }
     }
 
-    private static class ModelHay extends ModelBase
+    private static class ModelStraw extends ModelBase
     {
-        private final ModelRenderer hayRenderer;
+        private final ModelRenderer strawRenderer;
 
-        public ModelHay(int height)
+        public ModelStraw(int height)
         {
             textureHeight = 16;
             textureWidth = 16;
-            hayRenderer = new ModelRenderer(this, 0, 0);
-            hayRenderer.addBox(0, 0, 0, 16, height + 1, 16);
+            strawRenderer = new ModelRenderer(this, 0, 0);
+            strawRenderer.addBox(0, 0, 0, 16, height + 1, 16);
         }
 
         @Override
         public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
         {
-            hayRenderer.render(scale);
+            strawRenderer.render(scale);
         }
     }
 

@@ -5,20 +5,25 @@
 
 package net.dries007.tfc.types;
 
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.api.recipes.KnappingRecipe;
+import net.dries007.tfc.api.recipes.PitKilnRecipe;
 import net.dries007.tfc.api.recipes.WeldingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
@@ -79,6 +84,31 @@ public final class DefaultRecipes
         /* FIRE CLAY ITEMS */
 
         // todo: fire clay recipes
+    }
+
+    @SubscribeEvent
+    public static void onRegisterPitKilnRecipeEvent(RegistryEvent.Register<PitKilnRecipe> event)
+    {
+        IForgeRegistry<PitKilnRecipe> r = event.getRegistry();
+
+        /* Pottery Items */
+
+        for (Metal.ItemType type : Metal.ItemType.values())
+        {
+            if (type.hasMold(null))
+            {
+                r.register(new PitKilnRecipe(Ingredient.fromItems(ItemMold.get(type))).setRegistryName(MOD_ID, "mold_" + type.name().toLowerCase()));
+            }
+        }
+
+        r.register(new PitKilnRecipe(Ingredient.fromStacks(new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL))).setRegistryName(MOD_ID, "fired_vessel_fireable"));
+        r.register(new PitKilnRecipe(Ingredient.fromStacks(new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, OreDictionary.WILDCARD_VALUE))).setRegistryName(MOD_ID, "fired_vessel_fireable_glazed"));
+
+        r.register(new PitKilnRecipe(Ingredient.fromItems(ItemsTFC.CERAMICS_UNFIRED_VESSEL), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL)).setRegistryName("fired_vessel"));
+        for (EnumDyeColor color : EnumDyeColor.values())
+        {
+            r.register(new PitKilnRecipe(Ingredient.fromStacks(new ItemStack(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, color.getMetadata())), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, color.getMetadata())).setRegistryName(MOD_ID, "fired_vessel_glazed_" + color.getName()));
+        }
     }
 
     @SubscribeEvent
