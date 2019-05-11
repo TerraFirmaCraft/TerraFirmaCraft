@@ -254,17 +254,41 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
 
     public boolean tryLight()
     {
-        if (!hasFuel()) return false;
-        BlockPos above = pos.add(0, 1, 0);
-        if (!Blocks.FIRE.canPlaceBlockAt(world, above)) return false;
-        for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL)
+        if (hasFuel() && isValid())
         {
-            if (!world.isSideSolid(pos.offset(facing), facing.getOpposite())) return false;
+            BlockPos above = pos.add(0, 1, 0);
+            if (Blocks.FIRE.canPlaceBlockAt(world, above))
+            {
+                for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL)
+                {
+                    if (!world.isSideSolid(pos.offset(facing), facing.getOpposite()))
+                    {
+                        return false;
+                    }
+                }
+                burnTicksToGo = ConfigTFC.GENERAL.pitKilnTime;
+                updateBlock();
+                world.setBlockState(above, Blocks.FIRE.getDefaultState());
+                return true;
+            }
         }
-        burnTicksToGo = ConfigTFC.GENERAL.pitKilnTime;
-        updateBlock();
-        world.setBlockState(above, Blocks.FIRE.getDefaultState());
-        return true;
+        return false;
+    }
+
+    public void assertValid()
+    {
+        if (isLit() && !isValid() && !world.isRemote)
+        {
+            // Stop burning, remove all straw + wood, etc.
+            if (world.getBlockState(pos.up()).getMaterial() == Material.FIRE)
+            {
+                world.setBlockToAir(pos.up());
+            }
+            strawItems.clear();
+            logItems.clear();
+            // The easiest way to do this is just to convert to a PlacedItem:
+            TEPlacedItem.convertPitKilnToPlacedItem(world, pos);
+        }
     }
 
     private void addStraw(ItemStack stack)
@@ -285,5 +309,17 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             logItems.set(i, stack);
             return;
         }
+    }
+
+    private boolean isValid()
+    {
+        for (EnumFacing face : EnumFacing.HORIZONTALS)
+        {
+            if (!world.getBlockState(pos.offset(face)).isNormalCube())
+            {
+                return false;
+            }
+        }
+        return world.getBlockState(pos.down()).isNormalCube();
     }
 }
