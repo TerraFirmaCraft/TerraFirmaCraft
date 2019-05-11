@@ -125,6 +125,8 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
 
                 world.setBlockToAir(above);
                 updateBlock();
+                // Since there will be no items in the pit kiln at this point
+                TEPlacedItem.convertPitKilnToPlacedItem(world, pos);
             }
         }
     }

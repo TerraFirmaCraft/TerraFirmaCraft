@@ -62,7 +62,6 @@ public class ItemMold extends ItemFiredPottery
     @Nonnull
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand)
     {
-
         ItemStack stack = player.getHeldItem(hand);
         if (!world.isRemote && !player.isSneaking())
         {
