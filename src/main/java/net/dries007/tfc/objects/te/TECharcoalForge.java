@@ -12,8 +12,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -249,12 +247,6 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
         {
             TerraFirmaCraft.getLog().debug("Slot: {} - NBT: {}", i, inventory.getStackInSlot(i).serializeNBT().toString());
         }
-    }
-
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
-    {
-        return oldState.getBlock() != newSate.getBlock();
     }
 
     @Override
