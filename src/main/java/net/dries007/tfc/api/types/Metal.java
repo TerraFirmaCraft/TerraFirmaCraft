@@ -24,7 +24,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
  */
 public class Metal extends IForgeRegistryEntry.Impl<Metal>
 {
-    @GameRegistry.ObjectHolder("tfc:unknown")
+    @GameRegistry.ObjectHolder(MOD_ID + ":unknown")
     public static final Metal UNKNOWN = Helpers.getNull();
 
     private final Tier tier;
