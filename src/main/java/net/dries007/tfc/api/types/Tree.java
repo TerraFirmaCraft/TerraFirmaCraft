@@ -13,12 +13,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.util.ITreeGenerator;
+import net.dries007.tfc.util.Helpers;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class Tree extends IForgeRegistryEntry.Impl<Tree>
 {
+    @GameRegistry.ObjectHolder(MOD_ID + ":sequoia")
+    public static final Tree SEQUOIA = Helpers.getNull();
+
     private final int maxGrowthRadius;
     private final float dominance;
     private final int maxHeight;

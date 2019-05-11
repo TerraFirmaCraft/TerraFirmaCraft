@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.blocks.wood;
 import java.util.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
@@ -32,6 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+@ParametersAreNonnullByDefault
 public class BlockLeavesTFC extends BlockLeaves
 {
     private static final Map<Tree, BlockLeavesTFC> MAP = new HashMap<>();
@@ -71,14 +73,7 @@ public class BlockLeavesTFC extends BlockLeaves
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
         return NULL_AABB;
     }
@@ -88,6 +83,12 @@ public class BlockLeavesTFC extends BlockLeaves
     public void neighborChanged(IBlockState state, World world, BlockPos pos, @Nullable Block blockIn, @Nullable BlockPos fromPos)
     {
         doLeafDecay(world, pos, state);
+    }
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        doLeafDecay(worldIn, pos, state);
     }
 
     @Override
@@ -113,9 +114,9 @@ public class BlockLeavesTFC extends BlockLeaves
     }
 
     @Override
-    public void updateTick(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, Random rand)
+    protected int getSaplingDropChance(IBlockState state)
     {
-        doLeafDecay(worldIn, pos, state);
+        return wood == Tree.SEQUOIA ? 0 : 25;
     }
 
     @Override
@@ -125,8 +126,16 @@ public class BlockLeavesTFC extends BlockLeaves
         return Item.getItemFromBlock(BlockSaplingTFC.get(wood));
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
+    @Nonnull
     public BlockRenderLayer getRenderLayer()
     {
         /*
@@ -148,7 +157,7 @@ public class BlockLeavesTFC extends BlockLeaves
     }
 
     @Override
-    public void beginLeavesDecay(IBlockState state, @Nonnull World world, @Nonnull BlockPos pos)
+    public void beginLeavesDecay(IBlockState state, World world, BlockPos pos)
     {
         // Don't do vanilla decay
     }
@@ -162,12 +171,12 @@ public class BlockLeavesTFC extends BlockLeaves
          * See comment on getRenderLayer()
          */
         leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
-        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+        return true;// super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 
     @Override
     @Nonnull
-    public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
+    public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
         return ImmutableList.of(new ItemStack(this));
     }
