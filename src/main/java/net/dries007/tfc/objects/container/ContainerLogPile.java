@@ -21,6 +21,7 @@ import net.dries007.tfc.objects.te.TELogPile;
 @MethodsReturnNonnullByDefault
 public class ContainerLogPile extends ContainerTE<TELogPile>
 {
+    private static final int[] SLOT_SHIFT_ORDER = new int[] {0, 1, 2, 3};
 
     public ContainerLogPile(InventoryPlayer playerInv, TELogPile te)
     {
@@ -30,7 +31,10 @@ public class ContainerLogPile extends ContainerTE<TELogPile>
     @Override
     public boolean canInteractWith(@Nonnull EntityPlayer player)
     {
-        if (this.tile.burning) { return false; }
+        if (this.tile.isBurning())
+        {
+            return false;
+        }
         return this.tile.countLogs() > 0;
     }
 
@@ -45,5 +49,11 @@ public class ContainerLogPile extends ContainerTE<TELogPile>
             addSlotToContainer(new SlotTEInput(inventory, 2, 71, 41, tile));
             addSlotToContainer(new SlotTEInput(inventory, 3, 89, 41, tile));
         }
+    }
+
+    @Override
+    protected int[] getSlotShiftOrder(int containerSlots)
+    {
+        return SLOT_SHIFT_ORDER;
     }
 }

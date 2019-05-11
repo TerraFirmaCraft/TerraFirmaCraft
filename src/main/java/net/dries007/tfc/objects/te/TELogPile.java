@@ -14,10 +14,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.Constants;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogPile;
@@ -33,13 +34,7 @@ public class TELogPile extends TEInventory implements ITickable
 {
     private static final int NUM_SLOTS = 4;
 
-    public static boolean isStackValid(ItemStack stack)
-    {
-        return (stack.isEmpty() || OreDictionaryHelper.doesStackMatchOre(stack, "logWood"));
-    }
-
-    private final int maxBurnTicks = 8000; // 8 In-game Hours
-    public boolean burning;
+    private boolean burning;
     private int burnTicks;
 
     public TELogPile()
@@ -53,25 +48,26 @@ public class TELogPile extends TEInventory implements ITickable
     @Override
     public void update()
     {
-        if (world.isRemote) { return; }
-
-        if (burning)
+        if (!world.isRemote)
         {
-            if (burnTicks < maxBurnTicks)
+            if (burning)
             {
-                burnTicks++;
+                if (burnTicks < ConfigTFC.GENERAL.pitKilnTime)
+                {
+                    burnTicks++;
+                }
+                else
+                {
+                    // Attempt to turn this log pile into charcoal
+                    createCharcoal();
+                }
             }
             else
             {
-                // Attempt to turn this log pile into charcoal
-                createCharcoal();
-            }
-        }
-        else
-        {
-            if (world.getBlockState(pos.up()).getBlock() == Blocks.FIRE)
-            {
-                burning = true;
+                if (world.getBlockState(pos.up()).getBlock() == Blocks.FIRE)
+                {
+                    burning = true;
+                }
             }
         }
     }
@@ -83,12 +79,14 @@ public class TELogPile extends TEInventory implements ITickable
         {
             for (int i = 0; i < 4; i++)
             {
+                TerraFirmaCraft.getLog().info("Stack in slot: {} = {}", i, inventory.getStackInSlot(i));
                 if (!inventory.getStackInSlot(i).isEmpty())
                 {
                     super.setAndUpdateSlots(slot);
                     return;
                 }
             }
+            TerraFirmaCraft.getLog().info("Setting the block to air!");
             world.setBlockToAir(pos);
         }
         super.setAndUpdateSlots(slot);
@@ -103,23 +101,23 @@ public class TELogPile extends TEInventory implements ITickable
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return isStackValid(stack);
+        return OreDictionaryHelper.doesStackMatchOre(stack, "logWood");
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound c)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        burnTicks = c.getInteger("burn_ticks");
-        burning = c.getBoolean("burning");
-        super.readFromNBT(c);
+        burnTicks = nbt.getInteger("burn_ticks");
+        burning = nbt.getBoolean("burning");
+        super.readFromNBT(nbt);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound c)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        c.setInteger("burn_ticks", burnTicks);
-        c.setBoolean("burning", burning);
-        return super.writeToNBT(c);
+        nbt.setInteger("burn_ticks", burnTicks);
+        nbt.setBoolean("burning", burning);
+        return super.writeToNBT(nbt);
     }
 
     public boolean insertLog(ItemStack stack)
@@ -163,10 +161,9 @@ public class TELogPile extends TEInventory implements ITickable
         return logs;
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+    public boolean isBurning()
     {
-        return (oldState.getBlock() != newState.getBlock());
+        return burning;
     }
 
     private void tryLightNearby()
@@ -188,6 +185,7 @@ public class TELogPile extends TEInventory implements ITickable
     }
 
     // This function does some magic **** to not create floating charcoal. Don't touch unless broken
+    // - AlcatrazEscapee
     private void createCharcoal()
     {
         int j = 0;
@@ -197,12 +195,12 @@ public class TELogPile extends TEInventory implements ITickable
             j++;
             block = world.getBlockState(pos.down(j)).getBlock();
             // This is here so that the charcoal pile will collapse Bottom > Top
-            // Because the pile scans Top > Bottom this is nessecary to avoid floating blocks
+            // Because the pile scans Top > Bottom this is necessary to avoid floating blocks
             if (block instanceof BlockLogPile) { return; }
         } while (block == Blocks.AIR || block instanceof BlockCharcoalPile);
 
         double logs = (double) countLogs();
-        double log2 = 0.008d * logs * (logs + 42.5d) - 0.75d + 1.5d * Math.random();
+        double log2 = 0.008d * logs * (logs + 42.5d) - 0.75d + 1.5d * Constants.RNG.nextFloat();
         int charcoal = (int) Math.min(8, Math.max(0, Math.round(log2)));
         if (charcoal == 0)
         {

@@ -150,6 +150,7 @@ public class OreDictionaryHelper
         MAP.put(thing, toString(parts));
     }
 
+    @SuppressWarnings("ConstantConditions")
     private static void registerRockType(Thing thing, Rock.Type type, Rock rock, Object... prefixParts)
     {
         switch (type)

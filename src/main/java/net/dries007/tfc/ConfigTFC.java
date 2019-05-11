@@ -55,11 +55,6 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.removeVanillaRecipes")
         public boolean removeVanillaRecipes = true;
 
-        @Config.Comment("Lengths of a month in in game days. Year length is this x12")
-        @Config.LangKey("config." + MOD_ID + ".general.monthLength")
-        @Config.RangeInt(min = 1, max = 1000)
-        public int monthLength = 8;
-
         @Config.Comment("Normal decay leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChance")
