@@ -12,11 +12,10 @@ import net.minecraft.item.ItemStack;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.IFireable;
 
-public class ItemPottery extends ItemTFC implements IPlaceableItem, IFireable
+public class ItemPottery extends ItemTFC implements IFireable
 {
     @Override
     public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)

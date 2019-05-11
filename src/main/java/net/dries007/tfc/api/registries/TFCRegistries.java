@@ -12,10 +12,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.recipes.AlloyRecipe;
-import net.dries007.tfc.api.recipes.AnvilRecipe;
-import net.dries007.tfc.api.recipes.KnappingRecipe;
-import net.dries007.tfc.api.recipes.WeldingRecipe;
+import net.dries007.tfc.api.recipes.*;
 import net.dries007.tfc.api.types.*;
 
 /**
@@ -33,6 +30,7 @@ public class TFCRegistries
     public static final IForgeRegistry<KnappingRecipe> KNAPPING = GameRegistry.findRegistry(KnappingRecipe.class);
     public static final IForgeRegistry<AnvilRecipe> ANVIL = GameRegistry.findRegistry(AnvilRecipe.class);
     public static final IForgeRegistry<WeldingRecipe> WELDING = GameRegistry.findRegistry(WeldingRecipe.class);
+    public static final IForgeRegistry<PitKilnRecipe> PIT_KILN = GameRegistry.findRegistry(PitKilnRecipe.class);
 
     public static final IForgeRegistry<Plant> PLANTS = GameRegistry.findRegistry(Plant.class);
 

@@ -97,7 +97,8 @@ public final class BlocksTFC
     public static final BlockFirePit FIREPIT = getNull();
     public static final BlockThatch THATCH = getNull();
     public static final BlockPitKiln PIT_KILN = getNull();
-    public static final BlockWorldItem WORLD_ITEM = getNull();
+    public static final BlockPlacedItemFlat PLACED_ITEM_FLAT = getNull();
+    public static final BlockPlacedItem PLACED_ITEM = getNull();
     public static final BlockCharcoalPile CHARCOAL_PILE = getNull();
     public static final BlockLogPile LOG_PILE = getNull();
     public static final BlockIngotPile INGOT_PILE = getNull();
@@ -461,7 +462,8 @@ public final class BlocksTFC
         // These have no ItemBlock or Creative Tab
         register(r, "firepit", new BlockFirePit());
         register(r, "charcoal_forge", new BlockCharcoalForge());
-        register(r, "world_item", new BlockWorldItem());
+        register(r, "placed_item_flat", new BlockPlacedItemFlat());
+        register(r, "placed_item", new BlockPlacedItem());
         register(r, "charcoal_pile", new BlockCharcoalPile());
         register(r, "ingot_pile", new BlockIngotPile());
         register(r, "log_pile", new BlockLogPile());
@@ -499,7 +501,8 @@ public final class BlocksTFC
         // Putting tile entity registration in the respective block can call it multiple times. Just put here to avoid duplicates
         register(TESaplingTFC.class, "sapling");
         register(TEChestTFC.class, "chest");
-        register(TEWorldItem.class, "world_item");
+        register(TEPlacedItem.class, "placed_item");
+        register(TEPlacedItemFlat.class, "placed_item_flat");
         register(TETorchTFC.class, "torch");
         register(TEPitKiln.class, "pit_kiln");
         register(TELogPile.class, "log_pile");

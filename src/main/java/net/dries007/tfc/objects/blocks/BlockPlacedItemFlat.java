@@ -31,7 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.te.TEWorldItem;
+import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -39,11 +39,11 @@ import net.dries007.tfc.util.Helpers;
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlockWorldItem extends Block
+public class BlockPlacedItemFlat extends Block
 {
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.25D, 0D, 0.25D, 0.75D, 0.0625D, 0.75D);
 
-    BlockWorldItem()
+    BlockPlacedItemFlat()
     {
         super(Material.CIRCUITS);
         setDefaultState(blockState.getBaseState());
@@ -139,7 +139,7 @@ public class BlockWorldItem extends Block
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        TEWorldItem te = Helpers.getTE(worldIn, pos, TEWorldItem.class);
+        TEPlacedItemFlat te = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
         if (te != null) te.onBreakBlock(pos.add(0.5D, 0.01D, 0.5D));
         super.breakBlock(worldIn, pos, state);
     }
@@ -147,7 +147,7 @@ public class BlockWorldItem extends Block
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        TEWorldItem te = Helpers.getTE(worldIn, pos, TEWorldItem.class);
+        TEPlacedItemFlat te = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
         if (te != null && !worldIn.isRemote)
         {
             te.onBreakBlock(playerIn.getPosition());
@@ -173,7 +173,7 @@ public class BlockWorldItem extends Block
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        return new TEWorldItem();
+        return new TEPlacedItemFlat();
     }
 
     @Override

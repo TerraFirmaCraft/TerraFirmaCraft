@@ -25,4 +25,5 @@ public final class TFCRegistryNames
     public static final ResourceLocation KNAPPING_RECIPE = new ResourceLocation(MOD_ID, "knapping_recipe");
     public static final ResourceLocation ANVIL_RECIPE = new ResourceLocation(MOD_ID, "anvil_recipe");
     public static final ResourceLocation WELDING_RECIPE = new ResourceLocation(MOD_ID, "welding_recipe");
+    public static final ResourceLocation PIT_KILN_RECIPE = new ResourceLocation(MOD_ID, "pit_kiln_recipe");
 }
