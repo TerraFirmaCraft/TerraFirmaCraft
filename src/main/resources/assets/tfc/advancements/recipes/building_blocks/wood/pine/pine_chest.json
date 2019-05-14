@@ -1,0 +1,57 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:wood/pine/pine_chest",
+      "tfc:wood/pine/pine_chest_planks"
+    ]
+  },
+  "criteria": {
+    "has_chest": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "chestPine"
+          }
+        ]
+      }
+    },
+    "has_trapped_chest": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "chestTrappedPine"
+          }
+        ]
+      }
+    },
+    "has_trapped_chest_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:wood/pine/pine_chest_trapped"
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_chest",
+      "has_trapped_chest",
+      "has_trapped_chest_recipe"
+    ]
+  ]
+}

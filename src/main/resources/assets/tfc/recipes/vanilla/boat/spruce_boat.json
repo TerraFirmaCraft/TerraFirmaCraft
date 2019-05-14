@@ -1,12 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "boat",
   "pattern": [
     "S S",
     "SSS"
   ],
   "key": {
     "S": {
-      "item": "tfc:wood/planks/spruce"
+      "type": "forge:ore_dict",
+      "ore": "plankWoodSpruce"
     }
   },
   "result": {

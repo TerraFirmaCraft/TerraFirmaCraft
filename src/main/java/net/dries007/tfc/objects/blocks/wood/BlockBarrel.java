@@ -35,9 +35,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
 public class BlockBarrel extends Block
@@ -45,9 +47,13 @@ public class BlockBarrel extends Block
     public static final PropertyBool SEALED = PropertyBool.create("sealed");
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
-    public BlockBarrel()
+    public BlockBarrel(Tree wood)
     {
         super(Material.WOOD);
+
+        OreDictionaryHelper.register(this, "barrel");
+        OreDictionaryHelper.register(this, "barrel", wood.getRegistryName().getPath());
+
         setSoundType(SoundType.WOOD);
         setHardness(2F);
 

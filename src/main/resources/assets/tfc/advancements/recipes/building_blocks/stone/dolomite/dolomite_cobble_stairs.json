@@ -1,0 +1,70 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:stone/dolomite/dolomite_rock",
+      "tfc:stone/dolomite/dolomite_cobble",
+      "tfc:stone/dolomite/dolomite_cobble_stairs"
+    ]
+  },
+  "criteria": {
+    "has_stairs_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:stone/dolomite/dolomite_cobble_stairs"
+      }
+    },
+    "has_rock": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "rockDolomite"
+          }
+        ]
+      }
+    },
+    "has_cobble": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "cobblestoneDolomite"
+          }
+        ]
+      }
+    },
+    "has_stairs": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "stairCobblestoneDolomite"
+          }
+        ]
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_stairs_recipe",
+      "has_rock",
+      "has_cobble",
+      "has_stairs"
+    ]
+  ]
+}

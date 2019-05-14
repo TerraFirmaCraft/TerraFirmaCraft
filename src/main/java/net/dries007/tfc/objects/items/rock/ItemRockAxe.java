@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.IItemSize;
@@ -47,9 +48,9 @@ public class ItemRockAxe extends ItemAxe implements IItemSize, IRockObject
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
         setHarvestLevel("axe", category.getToolMaterial().getHarvestLevel());
-        OreDictionaryHelper.register(this, "axe");
-        OreDictionaryHelper.register(this, "axe", "stone");
-        OreDictionaryHelper.register(this, "axe", "stone", category);
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "axe");
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "axe", "stone");
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "axe", "stone", category);
     }
 
     @Override

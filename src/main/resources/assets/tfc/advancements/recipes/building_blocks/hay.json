@@ -1,0 +1,59 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:vanilla/hay",
+      "tfc:vanilla/hay_bale"
+    ]
+  },
+  "criteria": {
+    "has_at_least_9_straw": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "straw",
+            "count": {
+              "min": 9
+            }
+          }
+        ]
+      }
+    },
+    "has_hay_bale": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:hay_block"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:vanilla/hay"
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_at_least_9_straw",
+      "has_hay_bale",
+      "has_the_recipe"
+    ]
+  ]
+}

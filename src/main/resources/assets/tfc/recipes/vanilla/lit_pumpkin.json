@@ -6,7 +6,8 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:torch"
+      "type": "forge:ore_dict",
+      "ore": "torch"
     },
     "B": {
       "item": "minecraft:pumpkin"

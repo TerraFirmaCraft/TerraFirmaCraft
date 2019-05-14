@@ -1,0 +1,57 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:stone/chert/chert_smooth",
+      "tfc:stone/chert/chert_smooth_wall"
+    ]
+  },
+  "criteria": {
+    "has_wall_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:stone/chert/chert_smooth_wall"
+      }
+    },
+    "has_smooth": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "stoneChertPolished"
+          }
+        ]
+      }
+    },
+    "has_wall": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "wallStoneChertPolished"
+          }
+        ]
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_wall_recipe",
+      "has_smooth",
+      "has_wall"
+    ]
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:stone/chert/chert_brick",
+      "tfc:stone/chert/chert_bricks",
+      "tfc:stone/chert/chert_bricks_stairs"
+    ]
+  },
+  "criteria": {
+    "has_stairs_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:stone/chert/chert_bricks_stairs"
+      }
+    },
+    "has_brick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "brickChert"
+          }
+        ]
+      }
+    },
+    "has_bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "stoneChertBrick"
+          }
+        ]
+      }
+    },
+    "has_stairs": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "stairStoneChertBrick"
+          }
+        ]
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_stairs_recipe",
+      "has_brick",
+      "has_bricks",
+      "has_stairs"
+    ]
+  ]
+}

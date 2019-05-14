@@ -1,11 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "wooden_slab",
   "pattern": [
     "XXX"
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/hickory"
+      "type": "forge:ore_dict",
+      "ore": "plankWoodHickory"
     }
   },
   "result": {

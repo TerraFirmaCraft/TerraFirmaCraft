@@ -1,0 +1,70 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:stone/diorite/diorite_brick",
+      "tfc:stone/diorite/diorite_bricks",
+      "tfc:stone/diorite/diorite_bricks_stairs"
+    ]
+  },
+  "criteria": {
+    "has_stairs_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:stone/diorite/diorite_bricks_stairs"
+      }
+    },
+    "has_brick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "brickDiorite"
+          }
+        ]
+      }
+    },
+    "has_bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "stoneDioriteBrick"
+          }
+        ]
+      }
+    },
+    "has_stairs": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "stairStoneDioriteBrick"
+          }
+        ]
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_stairs_recipe",
+      "has_brick",
+      "has_bricks",
+      "has_stairs"
+    ]
+  ]
+}

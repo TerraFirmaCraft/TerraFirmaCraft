@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "wooden_stairs",
   "pattern": [
     "X  ",
     "XX ",
@@ -7,11 +8,12 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/acacia"
+      "type": "forge:ore_dict",
+      "ore": "plankWoodHickory"
     }
   },
   "result": {
-    "item": "tfc:stairs/wood/acacia",
+    "item": "tfc:stairs/wood/hickory",
     "count": 8
   }
 }

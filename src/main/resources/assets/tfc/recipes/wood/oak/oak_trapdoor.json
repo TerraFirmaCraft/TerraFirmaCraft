@@ -1,16 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "wooden_trapdoor",
   "pattern": [
-    "XX",
-    "XX"
+    "XXX",
+    "XXX"
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/oak"
+      "type": "forge:ore_dict",
+      "ore": "lumberOak"
     }
   },
   "result": {
     "item": "tfc:wood/trapdoor/oak",
-    "count": 4
+    "count": 1
   }
 }

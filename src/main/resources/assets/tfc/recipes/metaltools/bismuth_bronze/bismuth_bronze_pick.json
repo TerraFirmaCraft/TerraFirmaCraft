@@ -1,0 +1,18 @@
+{
+  "type": "tfc:tool_item_shapeless",
+  "group": "metal_pick",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "pickHeadBismuthBronze"
+    }
+  ],
+  "result": {
+    "item": "tfc:metal/pick/bismuth_bronze",
+    "count": 1
+  }
+}

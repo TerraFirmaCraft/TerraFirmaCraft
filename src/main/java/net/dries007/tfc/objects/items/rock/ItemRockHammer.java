@@ -19,6 +19,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.IItemSize;
@@ -48,9 +49,9 @@ public class ItemRockHammer extends ItemTool implements IItemSize, IRockObject
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
         setHarvestLevel("hammer", category.getToolMaterial().getHarvestLevel());
-        OreDictionaryHelper.register(this, "hammer");
-        OreDictionaryHelper.register(this, "hammer", "stone");
-        OreDictionaryHelper.register(this, "hammer", "stone", category);
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "hammer");
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "hammer", "stone");
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "hammer", "stone", category);
     }
 
     @Override

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "bookshelf",
   "pattern": [
     "XXX",
     "BBB",
@@ -7,7 +8,8 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/palm"
+      "type": "forge:ore_dict",
+      "ore": "plankWoodPalm"
     },
     "B": {
       "item": "minecraft:book"

@@ -1,12 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "cobblestone_wall",
   "pattern": [
     "XXX",
     "XXX"
   ],
   "key": {
     "X": {
-      "item": "tfc:cobble/slate"
+      "type": "forge:ore_dict",
+      "ore": "cobblestoneSlate"
     }
   },
   "result": {

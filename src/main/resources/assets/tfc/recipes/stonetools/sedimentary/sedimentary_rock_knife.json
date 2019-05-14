@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock_knife",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "knifeHeadSedimentary"
+    }
+  ],
+  "result": {
+    "item": "tfc:stone/knife/sedimentary",
+    "count": 1
+  }
+}

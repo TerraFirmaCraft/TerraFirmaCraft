@@ -7,13 +7,16 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:metal/sheet/wrought_iron"
+      "type": "forge:ore_dict",
+      "ore": "sheetWroughtIron"
     },
     "F": {
-      "item": "tfc:metal/double_ingot/red_steel"
+      "type": "forge:ore_dict",
+      "ore": "doubleIngotRedSteel"
     },
     "U": {
-      "item": "tfc:metal/double_ingot/blue_steel"
+      "type": "forge:ore_dict",
+      "ore": "doubleIngotBlueSteel"
     }
   },
   "result": {

@@ -1,0 +1,58 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:vanilla/boat/spruce_boat"
+    ]
+  },
+  "criteria": {
+    "entered_fresh_water": {
+      "trigger": "minecraft:enter_block",
+      "conditions": {
+        "block": "tfc:fluid/fresh_water"
+      }
+    },
+    "entered_salt_water": {
+      "trigger": "minecraft:enter_block",
+      "conditions": {
+        "block": "tfc:fluid/salt_water"
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:vanilla/boat/spruce_boat"
+      }
+    },
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "boatSpruce"
+          }
+        ]
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_item",
+      "entered_fresh_water",
+      "entered_salt_water",
+      "has_the_recipe"
+    ]
+  ]
+}

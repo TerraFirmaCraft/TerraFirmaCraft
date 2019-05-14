@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "brick_stairs",
   "pattern": [
     "X  ",
     "XX ",
@@ -7,7 +8,8 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:bricks/quartzite"
+      "type": "forge:ore_dict",
+      "ore": "stoneQuartziteBrick"
     }
   },
   "result": {

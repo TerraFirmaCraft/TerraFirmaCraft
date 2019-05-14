@@ -1,11 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "cobblestone_slab",
   "pattern": [
     "XXX"
   ],
   "key": {
     "X": {
-      "item": "tfc:cobble/rhyolite"
+      "type": "forge:ore_dict",
+      "ore": "cobblestoneRhyolite"
     }
   },
   "result": {

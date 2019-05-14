@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "cobblestoneGabbro"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/gabbro",
+    "count": 4
+  }
+}

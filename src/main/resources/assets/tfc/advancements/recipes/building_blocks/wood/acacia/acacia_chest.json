@@ -1,0 +1,83 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:wood/acacia/acacia_chest",
+      "tfc:wood/acacia/acacia_chest_planks"
+    ]
+  },
+  "criteria": {
+    "has_ingredient": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "lumberAcacia"
+          }
+        ]
+      }
+    },
+    "has_chest": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "chestAcacia"
+          }
+        ]
+      }
+    },
+    "has_trapped_chest": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "chestTrappedAcacia"
+          }
+        ]
+      }
+    },
+    "has_chest_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:wood/acacia/acacia_chest"
+      }
+    },
+    "has_trapped_chest_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:wood/acacia/acacia_chest_trapped"
+      }
+    },
+    "has_chest_planks_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:wood/acacia/acacia_chest_planks"
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_ingredient",
+      "has_chest",
+      "has_trapped_chest",
+      "has_chest_recipe",
+      "has_trapped_chest_recipe",
+      "has_chest_planks_recipe"
+    ]
+  ]
+}

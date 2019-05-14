@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "barrel_planks",
+  "pattern": [
+    "X X",
+    "X X",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "plankWoodSpruce"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/barrel/spruce",
+    "data": 0,
+    "count": 4
+  }
+}

@@ -23,10 +23,14 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class ItemLeatherTFC extends ItemTFC implements IPlaceableItem
 {
-    public ItemLeatherTFC() {}
+    public ItemLeatherTFC()
+    {
+        OreDictionaryHelper.register(this, "leather");
+    }
 
     @Override
     public Size getSize(@Nonnull ItemStack stack)

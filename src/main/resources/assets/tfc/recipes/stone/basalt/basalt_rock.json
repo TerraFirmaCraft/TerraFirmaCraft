@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "cobblestoneBasalt"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/basalt",
+    "count": 4
+  }
+}

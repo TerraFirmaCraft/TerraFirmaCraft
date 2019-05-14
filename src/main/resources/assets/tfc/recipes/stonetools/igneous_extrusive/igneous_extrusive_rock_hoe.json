@@ -1,18 +1,16 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X",
-    "S"
-  ],
-  "key": {
-    "X": {
-      "item": "tfc:stone/hoe_head/igneous_extrusive"
-    },
-    "S": {
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock_hoe",
+  "ingredients": [
+    {
       "type": "forge:ore_dict",
       "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "hoeHeadIgneousExtrusive"
     }
-  },
+  ],
   "result": {
     "item": "tfc:stone/hoe/igneous_extrusive",
     "count": 1

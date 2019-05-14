@@ -1,0 +1,18 @@
+{
+  "type": "tfc:tool_item_shapeless",
+  "group": "metal_axe",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "axeHeadBronze"
+    }
+  ],
+  "result": {
+    "item": "tfc:metal/axe/bronze",
+    "count": 1
+  }
+}

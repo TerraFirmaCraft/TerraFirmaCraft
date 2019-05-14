@@ -1,0 +1,70 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:stone/slate/slate_rock",
+      "tfc:stone/slate/slate_cobble",
+      "tfc:stone/slate/slate_cobble_wall"
+    ]
+  },
+  "criteria": {
+    "has_wall_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:stone/slate/slate_cobble_wall"
+      }
+    },
+    "has_rock": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "rockSlate"
+          }
+        ]
+      }
+    },
+    "has_cobble": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "cobblestoneSlate"
+          }
+        ]
+      }
+    },
+    "has_wall": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "wallCobblestoneSlate"
+          }
+        ]
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_wall_recipe",
+      "has_rock",
+      "has_cobble",
+      "has_wall"
+    ]
+  ]
+}

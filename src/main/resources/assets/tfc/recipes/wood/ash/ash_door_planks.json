@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wooden_door_planks",
+  "pattern": [
+    "XX",
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "plankWoodAsh"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/door/ash",
+    "count": 4
+  }
+}

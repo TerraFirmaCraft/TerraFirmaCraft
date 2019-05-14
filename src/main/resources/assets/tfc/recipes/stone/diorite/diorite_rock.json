@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "cobblestoneDiorite"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/diorite",
+    "count": 4
+  }
+}

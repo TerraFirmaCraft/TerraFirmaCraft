@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.api.capability.forge.ForgeableHandler;
 import net.dries007.tfc.api.capability.size.Size;
@@ -47,9 +48,9 @@ public class ItemMetal extends ItemTFC implements IMetalObject
         TABLE.get(metal).put(type, this);
 
         setNoRepair();
-        OreDictionaryHelper.register(this, type);
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, type);
         //noinspection ConstantConditions
-        OreDictionaryHelper.register(this, type, metal.getRegistryName().getPath());
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, type, metal.getRegistryName().getPath());
     }
 
     @Override

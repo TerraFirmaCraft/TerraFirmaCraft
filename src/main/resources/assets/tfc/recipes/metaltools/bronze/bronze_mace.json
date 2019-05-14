@@ -1,0 +1,18 @@
+{
+  "type": "tfc:tool_item_shapeless",
+  "group": "metal_mace",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "maceHeadBronze"
+    }
+  ],
+  "result": {
+    "item": "tfc:metal/mace/bronze",
+    "count": 1
+  }
+}

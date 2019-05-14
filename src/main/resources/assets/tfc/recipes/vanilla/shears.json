@@ -6,7 +6,8 @@
   ],
   "key": {
     "S": {
-      "item": "tfc:metal/sheet/wrought_iron"
+      "type": "forge:ore_dict",
+      "ore": "sheetWroughtIron"
     }
   },
   "result": {

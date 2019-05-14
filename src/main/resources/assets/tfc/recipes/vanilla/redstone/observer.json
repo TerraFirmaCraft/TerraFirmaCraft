@@ -12,7 +12,7 @@
     },
     "W": {
       "type": "forge:ore_dict",
-      "ore": "planksWood"
+      "ore": "plankWood"
     },
     "R": {
       "type": "forge:ore_dict",

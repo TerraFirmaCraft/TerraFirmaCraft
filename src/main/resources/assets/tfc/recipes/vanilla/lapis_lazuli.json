@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "blockLapis"
+    }
+  ],
+  "result": {
+    "item": "tfc:ore/lapis_lazuli",
+    "count": 9
+  }
+}

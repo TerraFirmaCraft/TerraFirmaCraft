@@ -1,0 +1,18 @@
+{
+  "type": "tfc:tool_item_shapeless",
+  "group": "metal_sword",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "swordBladeCopper"
+    }
+  ],
+  "result": {
+    "item": "tfc:metal/sword/copper",
+    "count": 1
+  }
+}

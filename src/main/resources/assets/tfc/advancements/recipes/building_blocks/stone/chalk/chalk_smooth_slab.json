@@ -1,0 +1,57 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:stone/chalk/chalk_smooth",
+      "tfc:stone/chalk/chalk_smooth_slab"
+    ]
+  },
+  "criteria": {
+    "has_slab_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:stone/chalk/chalk_smooth_slab"
+      }
+    },
+    "has_smooth": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "stoneChalkPolished"
+          }
+        ]
+      }
+    },
+    "has_slab": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "slabStoneChalkPolished"
+          }
+        ]
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_slab_recipe",
+      "has_smooth",
+      "has_slab"
+    ]
+  ]
+}

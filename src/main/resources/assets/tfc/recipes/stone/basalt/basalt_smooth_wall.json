@@ -1,12 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "smooth_stone_wall",
   "pattern": [
     "XXX",
     "XXX"
   ],
   "key": {
     "X": {
-      "item": "tfc:smooth/basalt"
+      "type": "forge:ore_dict",
+      "ore": "stoneBasaltPolished"
     }
   },
   "result": {

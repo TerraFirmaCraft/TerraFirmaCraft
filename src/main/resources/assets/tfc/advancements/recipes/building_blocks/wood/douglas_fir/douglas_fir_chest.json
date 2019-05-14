@@ -1,0 +1,83 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:wood/douglas_fir/douglas_fir_chest",
+      "tfc:wood/douglas_fir/douglas_fir_chest_planks"
+    ]
+  },
+  "criteria": {
+    "has_ingredient": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "lumberDouglasFir"
+          }
+        ]
+      }
+    },
+    "has_chest": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "chestDouglasFir"
+          }
+        ]
+      }
+    },
+    "has_trapped_chest": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "chestTrappedDouglasFir"
+          }
+        ]
+      }
+    },
+    "has_chest_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:wood/douglas_fir/douglas_fir_chest"
+      }
+    },
+    "has_trapped_chest_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:wood/douglas_fir/douglas_fir_chest_trapped"
+      }
+    },
+    "has_chest_planks_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:wood/douglas_fir/douglas_fir_chest_planks"
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_ingredient",
+      "has_chest",
+      "has_trapped_chest",
+      "has_chest_recipe",
+      "has_trapped_chest_recipe",
+      "has_chest_planks_recipe"
+    ]
+  ]
+}

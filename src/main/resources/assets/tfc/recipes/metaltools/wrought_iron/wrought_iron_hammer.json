@@ -1,0 +1,18 @@
+{
+  "type": "tfc:tool_item_shapeless",
+  "group": "metal_hammer",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "hammerHeadWroughtIron"
+    }
+  ],
+  "result": {
+    "item": "tfc:metal/hammer/wrought_iron",
+    "count": 1
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "group": "lumber_from_planks",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "plankWoodDouglasFir"
+    },
+    {
+      "item": "#SAW"
+    }
+  ],
+  "result": {
+    "item": "tfc:wood/lumber/douglas_fir",
+    "count": 4
+  }
+}

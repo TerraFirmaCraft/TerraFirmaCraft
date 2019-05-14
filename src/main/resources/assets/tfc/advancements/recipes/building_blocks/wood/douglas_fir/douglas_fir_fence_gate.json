@@ -1,0 +1,68 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:wood/douglas_fir/douglas_fir_fence_gate"
+    ]
+  },
+  "criteria": {
+    "has_lumber": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "lumberDouglasFir"
+          }
+        ]
+      }
+    },
+    "has_planks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "plankWoodDouglasFir"
+          }
+        ]
+      }
+    },
+    "has_fence_gate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "fenceGateDouglasFir"
+          }
+        ]
+      }
+    },
+    "has_fence_gate_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:wood/douglas_fir/douglas_fir_fence_gate"
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_lumber",
+      "has_planks",
+      "has_fence_gate",
+      "has_fence_gate_recipe"
+    ]
+  ]
+}

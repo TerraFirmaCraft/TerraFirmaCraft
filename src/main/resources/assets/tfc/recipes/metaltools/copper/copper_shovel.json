@@ -1,0 +1,18 @@
+{
+  "type": "tfc:tool_item_shapeless",
+  "group": "metal_shovel",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "shovelHeadCopper"
+    }
+  ],
+  "result": {
+    "item": "tfc:metal/shovel/copper",
+    "count": 1
+  }
+}

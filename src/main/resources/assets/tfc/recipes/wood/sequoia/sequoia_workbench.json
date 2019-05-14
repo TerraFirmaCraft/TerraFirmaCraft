@@ -1,12 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "workbench",
   "pattern": [
     "XX",
     "XX"
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/sequoia"
+      "type": "forge:ore_dict",
+      "ore": "plankWoodSequoia"
     }
   },
   "result": {

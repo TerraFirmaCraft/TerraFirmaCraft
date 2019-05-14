@@ -1,12 +1,13 @@
 {
   "type": "tfc:damage_item_shapeless",
+  "group": "brick",
   "ingredients": [
     {
-      "item": "tfc:rock/dolomite"
+      "type": "forge:ore_dict",
+      "ore": "rockDolomite"
     },
     {
-      "type": "forge:ore_dict",
-      "ore": "chisel"
+      "item": "#CHISEL"
     }
   ],
   "result": {

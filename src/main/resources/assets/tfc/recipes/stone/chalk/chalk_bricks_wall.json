@@ -1,12 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "brick_wall",
   "pattern": [
     "XXX",
     "XXX"
   ],
   "key": {
     "X": {
-      "item": "tfc:bricks/chalk"
+      "type": "forge:ore_dict",
+      "ore": "stoneChalkBrick"
     }
   },
   "result": {

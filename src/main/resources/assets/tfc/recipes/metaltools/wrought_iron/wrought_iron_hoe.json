@@ -1,0 +1,18 @@
+{
+  "type": "tfc:tool_item_shapeless",
+  "group": "metal_hoe",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "hoeHeadWroughtIron"
+    }
+  ],
+  "result": {
+    "item": "tfc:metal/hoe/wrought_iron",
+    "count": 1
+  }
+}

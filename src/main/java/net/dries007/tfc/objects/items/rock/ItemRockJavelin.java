@@ -19,6 +19,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.IItemSize;
@@ -47,9 +48,9 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
         super(1f * category.getToolMaterial().getAttackDamage(), -1, category.getToolMaterial(), ImmutableSet.of());
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
-        OreDictionaryHelper.register(this, "javelin");
-        OreDictionaryHelper.register(this, "javelin", "stone");
-        OreDictionaryHelper.register(this, "javelin", "stone", category);
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "javelin");
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "javelin", "stone");
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "javelin", "stone", category);
     }
 
     @Override

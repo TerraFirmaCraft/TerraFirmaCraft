@@ -1,18 +1,16 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X",
-    "S"
-  ],
-  "key": {
-    "X": {
-      "item": "tfc:stone/shovel_head/igneous_intrusive"
-    },
-    "S": {
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock_shovel",
+  "ingredients": [
+    {
       "type": "forge:ore_dict",
       "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "shovelHeadIgneousIntrusive"
     }
-  },
+  ],
   "result": {
     "item": "tfc:stone/shovel/igneous_intrusive",
     "count": 1

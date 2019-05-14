@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.IItemSize;
@@ -47,9 +48,9 @@ public class ItemRockHoe extends ItemHoe implements IItemSize, IRockObject
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
         setHarvestLevel("hoe", category.getToolMaterial().getHarvestLevel());
-        OreDictionaryHelper.register(this, "hoe");
-        OreDictionaryHelper.register(this, "hoe", "stone");
-        OreDictionaryHelper.register(this, "hoe", "stone", category);
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "hoe");
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "hoe", "stone");
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "hoe", "stone", category);
     }
 
     @Override

@@ -1,11 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "wooden_slab",
   "pattern": [
     "XXX"
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/aspen"
+      "type": "forge:ore_dict",
+      "ore": "plankWoodAspen"
     }
   },
   "result": {

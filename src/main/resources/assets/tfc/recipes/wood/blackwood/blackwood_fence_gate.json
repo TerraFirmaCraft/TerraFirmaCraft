@@ -1,15 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "wooden_fence_gate",
   "pattern": [
     "BXB",
     "BXB"
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/blackwood"
+      "type": "forge:ore_dict",
+      "ore": "plankWoodBlackwood"
     },
     "B": {
-      "item": "tfc:wood/lumber/blackwood"
+      "type": "forge:ore_dict",
+      "ore": "lumberBlackwood"
     }
   },
   "result": {

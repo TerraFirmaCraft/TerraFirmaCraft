@@ -1,17 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X ",
-    " Z"
-  ],
-  "key": {
-    "X": {
-      "item": "tfc:metal/ingot/steel"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "ingotSteel"
     },
-    "Z": {
+    {
       "item": "minecraft:flint"
     }
-  },
+  ],
   "result": {
     "item": "minecraft:flint_and_steel",
     "count": 1

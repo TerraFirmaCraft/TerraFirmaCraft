@@ -1,0 +1,17 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "group": "flux",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "rockFlux"
+    },
+    {
+      "item": "#HAMMER"
+    }
+  ],
+  "result": {
+    "item": "tfc:powder/flux",
+    "count": 2
+  }
+}

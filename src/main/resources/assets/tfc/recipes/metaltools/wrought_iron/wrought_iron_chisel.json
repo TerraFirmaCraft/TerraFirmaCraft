@@ -1,0 +1,18 @@
+{
+  "type": "tfc:tool_item_shapeless",
+  "group": "metal_chisel",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "chiselHeadWroughtIron"
+    }
+  ],
+  "result": {
+    "item": "tfc:metal/chisel/wrought_iron",
+    "count": 1
+  }
+}

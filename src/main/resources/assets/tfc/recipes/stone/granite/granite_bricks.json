@@ -1,12 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "bricks",
   "pattern": [
     "XX",
     "XX"
   ],
   "key": {
     "X": {
-      "item": "tfc:brick/granite"
+      "type": "forge:ore_dict",
+      "ore": "brickGranite"
     }
   },
   "result": {

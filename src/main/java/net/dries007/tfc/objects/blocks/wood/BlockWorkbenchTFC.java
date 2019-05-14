@@ -53,6 +53,7 @@ public class BlockWorkbenchTFC extends BlockWorkbench
         setHardness(2.0F).setResistance(5.0F);
         setHarvestLevel("axe", 0);
         OreDictionaryHelper.register(this, "workbench");
+        OreDictionaryHelper.register(this, "workbench", wood.getRegistryName().getPath());
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 

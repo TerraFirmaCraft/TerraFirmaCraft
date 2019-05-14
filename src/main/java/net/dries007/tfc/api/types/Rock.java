@@ -33,8 +33,9 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
 
     private final RockCategory rockCategory;
     private final ResourceLocation textureLocation;
+    private final boolean isFluxstone;
 
-    public Rock(@Nonnull ResourceLocation name, @Nonnull RockCategory rockCategory)
+    public Rock(@Nonnull ResourceLocation name, @Nonnull RockCategory rockCategory, boolean isFluxstone)
     {
         //noinspection ConstantConditions
         if (rockCategory == null)
@@ -43,12 +44,13 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         setRegistryName(name);
         this.rockCategory = rockCategory;
         this.textureLocation = new ResourceLocation(MOD_ID, "textures/blocks/stonetypes/raw/" + name.getPath() + ".png");
+        this.isFluxstone = isFluxstone;
     }
 
-    public Rock(@Nonnull ResourceLocation name, @Nonnull ResourceLocation categoryName)
+    public Rock(@Nonnull ResourceLocation name, @Nonnull ResourceLocation categoryName, boolean isFluxstone)
     {
         //noinspection ConstantConditions
-        this(name, TFCRegistries.ROCK_CATEGORIES.getValue(categoryName));
+        this(name, TFCRegistries.ROCK_CATEGORIES.getValue(categoryName), isFluxstone);
     }
 
     /**
@@ -64,6 +66,11 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
     public RockCategory getRockCategory()
     {
         return rockCategory;
+    }
+
+    public boolean getIsFluxstone()
+    {
+        return isFluxstone;
     }
 
     @SuppressWarnings("ConstantConditions")

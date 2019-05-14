@@ -3086,3 +3086,12 @@ tile.tfc.plants.vriesea.name=Flaming Sword Bromeliad
 tile.tfc.plants.water_canna.name=Water Canna
 tile.tfc.plants.water_lily.name=Water Lily
 tile.tfc.plants.yucca.name=Yucca
+
+
+# Items
+item.boat.dark_oak.name=Hickory Boat
+item.boat.jungle.name=Kapok Boat
+item.dyePowder.blue.name=Blue Dye
+item.dyePowder.green.name=Green Dye
+item.dyePowder.yellow.name=Yellow Dye
+item.dyePowder.red.name=Red Dye

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "cobblestoneGneiss"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/gneiss",
+    "count": 4
+  }
+}

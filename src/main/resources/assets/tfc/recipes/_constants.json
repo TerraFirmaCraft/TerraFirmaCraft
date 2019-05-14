@@ -1,0 +1,141 @@
+[
+    {
+        "name": "HAMMER",
+        "ingredient": [
+          {
+              "item": "tfc:stone/hammer/igneous_extrusive",
+              "data": 32767
+          },
+          {
+              "item": "tfc:stone/hammer/igneous_intrusive",
+              "data": 32767
+          },
+          {
+              "item": "tfc:stone/hammer/metamorphic",
+              "data": 32767
+          },
+          {
+              "item": "tfc:stone/hammer/sedimentary",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/hammer/bismuth_bronze",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/hammer/black_bronze",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/hammer/bronze",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/hammer/copper",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/hammer/wrought_iron",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/hammer/steel",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/hammer/black_steel",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/hammer/blue_steel",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/hammer/red_steel",
+              "data": 32767
+          }
+       ]
+    },
+    {
+        "name": "SAW",
+        "ingredient": [
+          {
+              "item": "tfc:metal/saw/bismuth_bronze",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/saw/black_bronze",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/saw/bronze",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/saw/copper",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/saw/wrought_iron",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/saw/steel",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/saw/black_steel",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/saw/blue_steel",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/saw/red_steel",
+              "data": 32767
+          }
+       ]
+    },
+    {
+        "name": "CHISEL",
+        "ingredient": [
+          {
+              "item": "tfc:metal/chisel/bismuth_bronze",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/chisel/black_bronze",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/chisel/bronze",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/chisel/copper",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/chisel/wrought_iron",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/chisel/steel",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/chisel/black_steel",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/chisel/blue_steel",
+              "data": 32767
+          },
+          {
+              "item": "tfc:metal/chisel/red_steel",
+              "data": 32767
+          }
+       ]
+    }
+]

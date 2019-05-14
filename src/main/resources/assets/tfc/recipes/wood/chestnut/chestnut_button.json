@@ -1,8 +1,13 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "group": "wooden_button",
   "ingredients": [
     {
-      "item": "tfc:wood/planks/chestnut"
+      "type": "forge:ore_dict",
+      "ore": "lumberChestnut"
+    },
+    {
+      "item": "#SAW"
     }
   ],
   "result": {

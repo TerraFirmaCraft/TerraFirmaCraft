@@ -1,12 +1,13 @@
 {
   "type": "tfc:damage_item_shapeless",
+  "group": "brick",
   "ingredients": [
     {
-      "item": "tfc:rock/basalt"
+      "type": "forge:ore_dict",
+      "ore": "rockBasalt"
     },
     {
-      "type": "forge:ore_dict",
-      "ore": "chisel"
+      "item": "#CHISEL"
     }
   ],
   "result": {

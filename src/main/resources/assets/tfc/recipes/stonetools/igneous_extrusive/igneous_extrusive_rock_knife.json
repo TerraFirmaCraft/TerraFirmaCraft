@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock_knife",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "knifeHeadIgneousExtrusive"
+    }
+  ],
+  "result": {
+    "item": "tfc:stone/knife/igneous_extrusive",
+    "count": 1
+  }
+}

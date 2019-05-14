@@ -53,6 +53,7 @@ public class ItemRock extends ItemTFC implements IRockObject
         OreDictionaryHelper.register(this, "rock");
         OreDictionaryHelper.register(this, "rock", rock);
         OreDictionaryHelper.register(this, "rock", rock.getRockCategory());
+        if (rock.getIsFluxstone()) OreDictionaryHelper.register(this, "rock", "flux");
     }
 
     @Override

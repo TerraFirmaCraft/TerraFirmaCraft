@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "chest_planks",
+  "pattern": [
+    "XXX",
+    "X X",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "plankWoodSequoia"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/chest/sequoia",
+    "count": 4
+  }
+}

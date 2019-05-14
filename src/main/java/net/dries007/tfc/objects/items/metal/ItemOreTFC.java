@@ -55,10 +55,12 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
         {
             setHasSubtypes(true);
             OreDictionaryHelper.register(this, "ore");
+            OreDictionaryHelper.register(this, "ore", ore.getMetal().getRegistryName().getPath());
             OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath());
             for (Ore.Grade grade : Ore.Grade.values())
             {
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", grade);
+                OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore.getMetal().getRegistryName().getPath(), grade);
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore.getRegistryName().getPath(), grade);
             }
         }

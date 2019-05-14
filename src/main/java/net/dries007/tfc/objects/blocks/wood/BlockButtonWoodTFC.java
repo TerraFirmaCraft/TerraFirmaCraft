@@ -13,6 +13,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.init.Blocks;
 
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockButtonWoodTFC extends BlockButtonWood
 {
@@ -29,6 +30,11 @@ public class BlockButtonWoodTFC extends BlockButtonWood
     {
         this.wood = wood;
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+
+        OreDictionaryHelper.register(this, "button");
+        OreDictionaryHelper.register(this, "button", "wood");
+        OreDictionaryHelper.register(this, "button", "wood", wood.getRegistryName().getPath());
+
         setHardness(0.5F);
         setSoundType(SoundType.WOOD);
         Blocks.FIRE.setFireInfo(this, 5, 20);

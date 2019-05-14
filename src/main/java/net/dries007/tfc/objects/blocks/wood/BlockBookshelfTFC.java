@@ -39,6 +39,7 @@ public class BlockBookshelfTFC extends Block
         setHardness(2.0F).setResistance(5.0F);
         setHarvestLevel("axe", 0);
         OreDictionaryHelper.register(this, "bookshelf");
+        OreDictionaryHelper.register(this, "bookshelf", wood.getRegistryName().getPath());
         Blocks.FIRE.setFireInfo(this, 30, 20);
     }
 

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "cobblestoneShale"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/shale",
+    "count": 4
+  }
+}

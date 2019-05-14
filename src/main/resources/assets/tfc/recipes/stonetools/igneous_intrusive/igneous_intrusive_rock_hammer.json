@@ -1,18 +1,16 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X",
-    "S"
-  ],
-  "key": {
-    "X": {
-      "item": "tfc:stone/hammer_head/igneous_intrusive"
-    },
-    "S": {
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock_hammer",
+  "ingredients": [
+    {
       "type": "forge:ore_dict",
       "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "hammerHeadIgneousIntrusive"
     }
-  },
+  ],
   "result": {
     "item": "tfc:stone/hammer/igneous_intrusive",
     "count": 1

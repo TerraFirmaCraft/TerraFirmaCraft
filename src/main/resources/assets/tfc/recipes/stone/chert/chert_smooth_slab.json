@@ -1,11 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "smooth_stone_slab",
   "pattern": [
     "XXX"
   ],
   "key": {
     "X": {
-      "item": "tfc:smooth/chert"
+      "type": "forge:ore_dict",
+      "ore": "stoneChertPolished"
     }
   },
   "result": {

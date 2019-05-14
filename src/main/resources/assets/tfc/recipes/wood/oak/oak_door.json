@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "wooden_door",
   "pattern": [
     "XX",
     "XX",
@@ -7,11 +8,12 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/oak"
+      "type": "forge:ore_dict",
+      "ore": "lumberOak"
     }
   },
   "result": {
     "item": "tfc:wood/door/oak",
-    "count": 7
+    "count": 1
   }
 }

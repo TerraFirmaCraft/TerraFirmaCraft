@@ -1,15 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "wooden_fence",
   "pattern": [
     "XBX",
     "XBX"
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/willow"
+      "type": "forge:ore_dict",
+      "ore": "plankWoodWillow"
     },
     "B": {
-      "item": "tfc:wood/lumber/willow"
+      "type": "forge:ore_dict",
+      "ore": "lumberWillow"
     }
   },
   "result": {

@@ -1,0 +1,60 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:stone/dacite/dacite_brick",
+      "tfc:stone/dacite/dacite_bricks",
+      "tfc:stone/dacite/dacite_bricks_slab",
+      "tfc:stone/dacite/dacite_bricks_stairs",
+      "tfc:stone/dacite/dacite_bricks_wall"
+    ]
+  },
+  "criteria": {
+    "has_bricks_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:stone/dacite/dacite_bricks"
+      }
+    },
+    "has_brick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "brickDacite"
+          }
+        ]
+      }
+    },
+    "has_bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "stoneDaciteBrick"
+          }
+        ]
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_bricks_recipe",
+      "has_brick",
+      "has_bricks"
+    ]
+  ]
+}

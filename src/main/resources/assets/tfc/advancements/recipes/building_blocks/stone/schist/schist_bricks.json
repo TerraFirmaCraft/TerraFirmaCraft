@@ -1,0 +1,60 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:stone/schist/schist_brick",
+      "tfc:stone/schist/schist_bricks",
+      "tfc:stone/schist/schist_bricks_slab",
+      "tfc:stone/schist/schist_bricks_stairs",
+      "tfc:stone/schist/schist_bricks_wall"
+    ]
+  },
+  "criteria": {
+    "has_bricks_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:stone/schist/schist_bricks"
+      }
+    },
+    "has_brick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "brickSchist"
+          }
+        ]
+      }
+    },
+    "has_bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "stoneSchistBrick"
+          }
+        ]
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_bricks_recipe",
+      "has_brick",
+      "has_bricks"
+    ]
+  ]
+}

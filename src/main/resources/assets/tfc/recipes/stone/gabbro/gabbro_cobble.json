@@ -1,12 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "cobblestone",
   "pattern": [
     "XX",
     "XX"
   ],
   "key": {
     "X": {
-      "item": "tfc:rock/gabbro"
+      "type": "forge:ore_dict",
+      "ore": "rockGabbro"
     }
   },
   "result": {

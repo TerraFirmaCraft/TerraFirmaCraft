@@ -1,0 +1,18 @@
+{
+  "type": "tfc:tool_item_shapeless",
+  "group": "metal_knife",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "knifeBladeBlueSteel"
+    }
+  ],
+  "result": {
+    "item": "tfc:metal/knife/blue_steel",
+    "count": 1
+  }
+}

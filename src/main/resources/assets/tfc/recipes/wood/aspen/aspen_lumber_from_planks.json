@@ -1,0 +1,17 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "group": "lumber_from_planks",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "plankWoodAspen"
+    },
+    {
+      "item": "#SAW"
+    }
+  ],
+  "result": {
+    "item": "tfc:wood/lumber/aspen",
+    "count": 4
+  }
+}

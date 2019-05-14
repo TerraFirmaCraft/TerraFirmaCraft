@@ -1,12 +1,13 @@
 {
   "type": "tfc:damage_item_shapeless",
+  "group": "stone_button",
   "ingredients": [
     {
-      "item": "tfc:brick/conglomerate"
+      "type": "forge:ore_dict",
+      "ore": "brickConglomerate"
     },
     {
-      "type": "forge:ore_dict",
-      "ore": "chisel"
+      "item": "#CHISEL"
     }
   ],
   "result": {

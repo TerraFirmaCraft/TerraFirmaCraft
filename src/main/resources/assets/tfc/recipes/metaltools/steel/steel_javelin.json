@@ -1,0 +1,18 @@
+{
+  "type": "tfc:tool_item_shapeless",
+  "group": "metal_javelin",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "javelinHeadSteel"
+    }
+  ],
+  "result": {
+    "item": "tfc:metal/javelin/steel",
+    "count": 1
+  }
+}

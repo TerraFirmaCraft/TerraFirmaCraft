@@ -39,7 +39,8 @@ public class ItemDoorTFC extends ItemDoor implements IItemSize
         if (MAP.put(block.wood, this) != null) throw new IllegalStateException("There can only be one.");
         wood = block.wood;
         OreDictionaryHelper.register(this, "door");
-        OreDictionaryHelper.register(this, "door", wood.getRegistryName().getPath());
+        OreDictionaryHelper.register(this, "door", "wood");
+        OreDictionaryHelper.register(this, "door", "wood", wood.getRegistryName().getPath());
     }
 
     @Override

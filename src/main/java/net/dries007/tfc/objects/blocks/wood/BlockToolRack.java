@@ -35,6 +35,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.te.TEToolRack;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.minecraft.block.BlockHorizontal.FACING;
 import static net.minecraft.block.material.Material.WOOD;
@@ -52,6 +53,10 @@ public class BlockToolRack extends BlockContainer implements IItemSize
     {
         super(WOOD, MapColor.AIR);
         this.wood = wood;
+
+        OreDictionaryHelper.register(this, "toolrack");
+        OreDictionaryHelper.register(this, "toolrack", wood.getRegistryName().getPath());
+
         setSoundType(SoundType.WOOD);
         setHarvestLevel("axe", 0);
         setHardness(0.5f);

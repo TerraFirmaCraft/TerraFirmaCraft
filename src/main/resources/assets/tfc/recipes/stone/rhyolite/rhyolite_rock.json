@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "cobblestoneRhyolite"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/rhyolite",
+    "count": 4
+  }
+}

@@ -1,18 +1,16 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X",
-    "S"
-  ],
-  "key": {
-    "X": {
-      "item": "tfc:stone/axe_head/sedimentary"
-    },
-    "S": {
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock_axe",
+  "ingredients": [
+    {
       "type": "forge:ore_dict",
       "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "axeHeadSedimentary"
     }
-  },
+  ],
   "result": {
     "item": "tfc:stone/axe/sedimentary",
     "count": 1

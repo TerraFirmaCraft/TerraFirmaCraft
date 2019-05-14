@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "cobblestoneChalk"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/chalk",
+    "count": 4
+  }
+}

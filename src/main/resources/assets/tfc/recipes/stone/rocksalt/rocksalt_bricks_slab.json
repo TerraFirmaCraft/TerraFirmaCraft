@@ -1,11 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "brick_slab",
   "pattern": [
     "XXX"
   ],
   "key": {
     "X": {
-      "item": "tfc:bricks/rocksalt"
+      "type": "forge:ore_dict",
+      "ore": "stoneRocksaltBrick"
     }
   },
   "result": {

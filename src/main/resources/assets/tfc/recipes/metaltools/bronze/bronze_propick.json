@@ -1,0 +1,18 @@
+{
+  "type": "tfc:tool_item_shapeless",
+  "group": "metal_propick",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "propickHeadBronze"
+    }
+  ],
+  "result": {
+    "item": "tfc:metal/propick/bronze",
+    "count": 1
+  }
+}

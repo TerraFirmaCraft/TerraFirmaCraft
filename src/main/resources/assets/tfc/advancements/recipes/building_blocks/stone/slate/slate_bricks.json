@@ -1,0 +1,60 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:stone/slate/slate_brick",
+      "tfc:stone/slate/slate_bricks",
+      "tfc:stone/slate/slate_bricks_slab",
+      "tfc:stone/slate/slate_bricks_stairs",
+      "tfc:stone/slate/slate_bricks_wall"
+    ]
+  },
+  "criteria": {
+    "has_bricks_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:stone/slate/slate_bricks"
+      }
+    },
+    "has_brick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "brickSlate"
+          }
+        ]
+      }
+    },
+    "has_bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "stoneSlateBrick"
+          }
+        ]
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_bricks_recipe",
+      "has_brick",
+      "has_bricks"
+    ]
+  ]
+}

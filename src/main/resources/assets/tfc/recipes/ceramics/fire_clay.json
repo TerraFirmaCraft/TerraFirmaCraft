@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "KGK",
+    "GCG",
+    "KGK"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:clay_ball"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "dustGraphitePowder"
+    },
+    "K": {
+      "type": "forge:ore_dict",
+      "ore": "dustKaolinitePowder"
+    }
+  },
+  "result": {
+    "item": "tfc:ceramics/fire_clay",
+    "count": 1
+  }
+}

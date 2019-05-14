@@ -1,12 +1,13 @@
 {
   "type": "tfc:damage_item_shapeless",
+  "group": "lumber",
   "ingredients": [
     {
-      "item": "tfc:wood/log/willow"
+      "type": "forge:ore_dict",
+      "ore": "logWoodWillow"
     },
     {
-      "type": "forge:ore_dict",
-      "ore": "saw"
+      "item": "#SAW"
     }
   ],
   "result": {

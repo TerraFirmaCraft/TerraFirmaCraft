@@ -1,12 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "cobblestone",
   "pattern": [
     "XX",
     "XX"
   ],
   "key": {
     "X": {
-      "item": "tfc:rock/marble"
+      "type": "forge:ore_dict",
+      "ore": "rockMarble"
     }
   },
   "result": {

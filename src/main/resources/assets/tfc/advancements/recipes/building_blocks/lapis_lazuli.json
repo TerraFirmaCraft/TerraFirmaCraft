@@ -1,0 +1,59 @@
+{
+  "parent": "tfc:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tfc:vanilla/lapis_lazuli_block",
+      "tfc:vanilla/lapis_lazuli"
+    ]
+  },
+  "criteria": {
+    "has_at_least_9_lapis": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "gemLapis",
+            "count": {
+              "min": 9
+            }
+          }
+        ]
+      }
+    },
+    "has_lapis_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:hay_block"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tfc:vanilla/lapis_lazuli_block"
+      }
+    },
+    "has_debug_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_debug_wand",
+      "has_at_least_9_lapis",
+      "has_lapis_block",
+      "has_the_recipe"
+    ]
+  ]
+}

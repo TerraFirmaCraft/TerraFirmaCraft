@@ -1,12 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "cobblestone",
   "pattern": [
     "XX",
     "XX"
   ],
   "key": {
     "X": {
-      "item": "tfc:rock/conglomerate"
+      "type": "forge:ore_dict",
+      "ore": "rockConglomerate"
     }
   },
   "result": {

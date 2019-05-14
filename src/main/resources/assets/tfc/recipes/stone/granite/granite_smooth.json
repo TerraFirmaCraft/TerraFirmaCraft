@@ -1,12 +1,13 @@
 {
   "type": "tfc:damage_item_shapeless",
+  "group": "smooth_stone",
   "ingredients": [
     {
-      "item": "tfc:raw/granite"
+      "type": "forge:ore_dict",
+      "ore": "stoneGraniteRaw"
     },
     {
-      "type": "forge:ore_dict",
-      "ore": "chisel"
+      "item": "#CHISEL"
     }
   ],
   "result": {

@@ -1,8 +1,10 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "group": "trapped_chest",
   "ingredients": [
     {
-      "item": "tfc:wood/chest/douglas_fir"
+      "type": "forge:ore_dict",
+      "ore": "chestDouglasFir"
     },
     {
       "item": "minecraft:tripwire_hook"

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "cobblestoneDolomite"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/dolomite",
+    "count": 4
+  }
+}

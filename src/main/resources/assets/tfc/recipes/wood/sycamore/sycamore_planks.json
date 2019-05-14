@@ -1,12 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "planks",
   "pattern": [
     "XX",
     "XX"
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/lumber/sycamore"
+      "type": "forge:ore_dict",
+      "ore": "lumberSycamore"
     }
   },
   "result": {

@@ -12,6 +12,7 @@ import net.minecraft.block.BlockButtonStone;
 import net.minecraft.block.SoundType;
 
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockButtonStoneTFC extends BlockButtonStone
 {
@@ -28,6 +29,12 @@ public class BlockButtonStoneTFC extends BlockButtonStone
     {
         this.rock = rock;
         if (MAP.put(rock, this) != null) throw new IllegalStateException("There can only be one.");
+
+        OreDictionaryHelper.register(this, "button");
+        OreDictionaryHelper.register(this, "button", "stone");
+        OreDictionaryHelper.register(this, "button", "stone", rock.getRegistryName().getPath());
+        OreDictionaryHelper.register(this, "button", "stone", rock.getRockCategory().getRegistryName().getPath());
+
         setHardness(0.5F);
         setSoundType(SoundType.STONE);
     }

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "blue_dye",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "gemLapisLazuli"
+    }
+  ],
+  "result": {
+    "item": "minecraft:dye",
+    "data": 4
+  }
+}

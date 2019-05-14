@@ -6,7 +6,8 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:straw"
+      "type": "forge:ore_dict",
+      "ore": "straw"
     }
   },
   "result": {

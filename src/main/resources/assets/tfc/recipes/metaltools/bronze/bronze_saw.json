@@ -1,0 +1,18 @@
+{
+  "type": "tfc:tool_item_shapeless",
+  "group": "metal_saw",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "sawBladeBronze"
+    }
+  ],
+  "result": {
+    "item": "tfc:metal/saw/bronze",
+    "count": 1
+  }
+}

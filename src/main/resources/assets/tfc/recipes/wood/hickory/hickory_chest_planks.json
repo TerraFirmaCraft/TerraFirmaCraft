@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "chest_planks",
+  "pattern": [
+    "XXX",
+    "X X",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "plankWoodHickory"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/chest/hickory",
+    "count": 4
+  }
+}

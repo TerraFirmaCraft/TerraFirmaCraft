@@ -1,0 +1,17 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "group": "lumber_from_planks",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "plankWoodAcacia"
+    },
+    {
+      "item": "#SAW"
+    }
+  ],
+  "result": {
+    "item": "tfc:wood/lumber/acacia",
+    "count": 4
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "thatch"
+    }
+  ],
+  "result": {
+    "item": "tfc:straw",
+    "count": 4
+  }
+}

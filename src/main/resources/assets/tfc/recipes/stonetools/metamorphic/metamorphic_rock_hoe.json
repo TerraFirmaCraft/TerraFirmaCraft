@@ -1,18 +1,16 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X",
-    "S"
-  ],
-  "key": {
-    "X": {
-      "item": "tfc:stone/hoe_head/metamorphic"
-    },
-    "S": {
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock_hoe",
+  "ingredients": [
+    {
       "type": "forge:ore_dict",
       "ore": "stickWood"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "hoeHeadMetamorphic"
     }
-  },
+  ],
   "result": {
     "item": "tfc:stone/hoe/metamorphic",
     "count": 1

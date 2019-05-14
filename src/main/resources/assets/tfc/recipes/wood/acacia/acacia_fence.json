@@ -1,15 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "wooden_fence",
   "pattern": [
     "XBX",
     "XBX"
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/acacia"
+      "type": "forge:ore_dict",
+      "ore": "plankWoodAcacia"
     },
     "B": {
-      "item": "tfc:wood/lumber/acacia"
+      "type": "forge:ore_dict",
+      "ore": "lumberAcacia"
     }
   },
   "result": {

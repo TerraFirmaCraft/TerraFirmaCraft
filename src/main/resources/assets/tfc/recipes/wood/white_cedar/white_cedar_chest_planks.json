@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "chest_planks",
+  "pattern": [
+    "XXX",
+    "X X",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "plankWoodWhiteCedar"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/chest/white_cedar",
+    "count": 4
+  }
+}

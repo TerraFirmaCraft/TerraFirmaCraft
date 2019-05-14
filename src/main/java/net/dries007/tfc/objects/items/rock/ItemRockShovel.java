@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.IItemSize;
@@ -48,9 +49,9 @@ public class ItemRockShovel extends ItemSpade implements IItemSize, IRockObject
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
         attackDamage = 1.5f * category.getToolMaterial().getAttackDamage();
         setHarvestLevel("shovel", category.getToolMaterial().getHarvestLevel());
-        OreDictionaryHelper.register(this, "shovel");
-        OreDictionaryHelper.register(this, "shovel", "stone");
-        OreDictionaryHelper.register(this, "shovel", "stone", category);
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "shovel");
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "shovel", "stone");
+        OreDictionaryHelper.registerMeta(this, OreDictionary.WILDCARD_VALUE, "shovel", "stone", category);
     }
 
     @Override

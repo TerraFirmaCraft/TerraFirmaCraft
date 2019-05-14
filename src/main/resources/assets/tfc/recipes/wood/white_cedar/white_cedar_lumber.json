@@ -1,12 +1,13 @@
 {
   "type": "tfc:damage_item_shapeless",
+  "group": "lumber",
   "ingredients": [
     {
-      "item": "tfc:wood/log/white_cedar"
+      "type": "forge:ore_dict",
+      "ore": "logWoodWhiteCedar"
     },
     {
-      "type": "forge:ore_dict",
-      "ore": "saw"
+      "item": "#SAW"
     }
   ],
   "result": {

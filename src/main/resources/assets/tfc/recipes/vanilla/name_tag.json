@@ -7,10 +7,12 @@
   ],
   "key": {
     "X": {
-      "item": "minecraft:string"
+      "type": "forge:ore_dict",
+      "ore": "string"
     },
     "B": {
-      "item": "minecraft:paper"
+      "type": "forge:ore_dict",
+      "ore": "paper"
     }
   },
   "result": {

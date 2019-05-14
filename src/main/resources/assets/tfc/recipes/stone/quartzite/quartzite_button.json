@@ -1,12 +1,13 @@
 {
   "type": "tfc:damage_item_shapeless",
+  "group": "stone_button",
   "ingredients": [
     {
-      "item": "tfc:brick/quartzite"
+      "type": "forge:ore_dict",
+      "ore": "brickQuartzite"
     },
     {
-      "type": "forge:ore_dict",
-      "ore": "chisel"
+      "item": "#CHISEL"
     }
   ],
   "result": {

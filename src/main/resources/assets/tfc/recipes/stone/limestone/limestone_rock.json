@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "rock",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "cobblestoneLimestone"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/limestone",
+    "count": 4
+  }
+}
