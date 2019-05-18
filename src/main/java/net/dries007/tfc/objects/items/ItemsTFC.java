@@ -69,6 +69,8 @@ public final class ItemsTFC
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_POT = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/bowl")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_BOWL = getNull();
+    @GameRegistry.ObjectHolder("ceramics/unfired/fire_brick")
+    public static final ItemUnfiredPottery CERAMICS_UNFIRED_FIRE_BRICK = getNull();
     @GameRegistry.ObjectHolder("hide/soaked/small")
     public static final ItemAnimalHide HIDE_SOAKED_SMALL = getNull();
     @GameRegistry.ObjectHolder("hide/soaked/medium")
