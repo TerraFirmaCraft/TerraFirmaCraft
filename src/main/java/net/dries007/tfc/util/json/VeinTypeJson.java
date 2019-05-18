@@ -75,7 +75,15 @@ public class VeinTypeJson implements JsonDeserializer<VeinType>
             {
                 //todo: remove metadata in 1.13
                 int meta = JsonUtils.getInt(jsonObject, "meta", 0);
-                IBlockState oreState = block.getStateFromMeta(meta);
+                IBlockState oreState;
+                try
+                {
+                    oreState = block.getStateFromMeta(meta);
+                }
+                catch (RuntimeException e)
+                {
+                    throw new JsonParseException("Unable to find a matching IBlockState for block " + oreName + " and metadata: " + meta);
+                }
                 return new VeinType.Special(oreState, size, shape, blocks, rarity, minY, maxY, density);
             }
             else
