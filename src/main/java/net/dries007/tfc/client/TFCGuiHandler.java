@@ -114,7 +114,7 @@ public class TFCGuiHandler implements IGuiHandler
             case FIRE_PIT:
                 return new GuiFirePit(container, player.inventory, Helpers.getTE(world, pos, TEFirePit.class));
             case BARREL:
-                return new GuiBarrel(container, player.inventory, world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
+                return new GuiBarrel(container, player.inventory, Helpers.getTE(world, pos, TEBarrel.class), world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
             case CHARCOAL_FORGE:
                 return new GuiCharcoalForge(container, player.inventory, Helpers.getTE(world, pos, TECharcoalForge.class));
             case ANVIL:

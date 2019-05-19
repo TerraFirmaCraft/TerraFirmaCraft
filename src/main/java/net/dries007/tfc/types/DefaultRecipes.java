@@ -5,23 +5,25 @@
 
 package net.dries007.tfc.types;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import net.dries007.tfc.api.recipes.AnvilRecipe;
-import net.dries007.tfc.api.recipes.KnappingRecipe;
-import net.dries007.tfc.api.recipes.PitKilnRecipe;
-import net.dries007.tfc.api.recipes.WeldingRecipe;
+import net.dries007.tfc.api.recipes.*;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.inventory.ingredient.IngredientFluidStack;
+import net.dries007.tfc.objects.inventory.ingredient.IngredientOreDict;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
@@ -37,6 +39,15 @@ import static net.dries007.tfc.util.forge.ForgeRule.*;
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public final class DefaultRecipes
 {
+    @SubscribeEvent
+    public static void onRegisterBarrelRecipeEvent(RegistryEvent.Register<BarrelRecipe> event)
+    {
+        event.getRegistry().registerAll(
+            new BarrelRecipe(new IngredientFluidStack(FluidRegistry.WATER, 1000), new IngredientOreDict("stone"), new FluidStack(FluidRegistry.LAVA, 500), new ItemStack(Blocks.DIRT), 200).setRegistryName(MOD_ID, "test_recipe")
+            // todo: barrel crafting recipes!!!
+        );
+    }
+
     @SubscribeEvent
     public static void onRegisterKnappingRecipeEvent(RegistryEvent.Register<KnappingRecipe> event)
     {
