@@ -69,12 +69,14 @@ public class ItemRock extends ItemTFC implements IRockObject
         return rock.getRockCategory();
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.TINY;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {

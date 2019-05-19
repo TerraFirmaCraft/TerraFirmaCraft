@@ -69,7 +69,6 @@ public class BlockBarrel extends Block
         {
             return 1;
         }
-
         return 0;
     }
 

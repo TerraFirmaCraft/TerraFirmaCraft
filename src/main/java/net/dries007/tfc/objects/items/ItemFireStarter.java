@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.items;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -218,12 +219,14 @@ public class ItemFireStarter extends ItemTFC
         }
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.SMALL;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {

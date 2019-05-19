@@ -50,7 +50,6 @@ public final class ItemsTFC
     public static final ItemFireStarter FIRESTARTER = getNull();
     public static final ItemGoldPan GOLDPAN = getNull();
     public static final ItemMisc STRAW = getNull();
-    public static final ItemLeatherTFC LEATHER = getNull();
 
     @GameRegistry.ObjectHolder("ceramics/fire_clay")
     public static final ItemFireClay FIRE_CLAY = getNull();
@@ -70,6 +69,14 @@ public final class ItemsTFC
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_POT = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/bowl")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_BOWL = getNull();
+    @GameRegistry.ObjectHolder("ceramics/unfired/fire_brick")
+    public static final ItemUnfiredPottery CERAMICS_UNFIRED_FIRE_BRICK = getNull();
+    @GameRegistry.ObjectHolder("hide/soaked/small")
+    public static final ItemAnimalHide HIDE_SOAKED_SMALL = getNull();
+    @GameRegistry.ObjectHolder("hide/soaked/medium")
+    public static final ItemAnimalHide HIDE_SOAKED_MEDIUM = getNull();
+    @GameRegistry.ObjectHolder("hide/soaked/large")
+    public static final ItemAnimalHide HIDE_SOAKED_LARGE = getNull();
 
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
@@ -191,9 +198,24 @@ public final class ItemsTFC
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
         simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "straw"), CT_MISC));
-        register(r, "goldpan", new ItemGoldPan(), CT_MISC);
 
-        simpleItems.add(register(r, "leather", new ItemLeatherTFC(), CT_MISC));
+        // Animal Hides
+        simpleItems.add(register(r, "hide/sheepskin", new ItemMisc(Size.VERY_SMALL, Weight.LIGHT), CT_MISC));
+        for (ItemAnimalHide.HideSize size : ItemAnimalHide.HideSize.values())
+        {
+            for (ItemAnimalHide.HideType type : ItemAnimalHide.HideType.values())
+            {
+                if (type == ItemAnimalHide.HideType.SOAKED)
+                {
+                    simpleItems.add(register(r, ("hide/" + type.name() + "/" + size.name()).toLowerCase(), new ItemAnimalHide.Soaked(type, size), CT_MISC));
+                }
+                else
+                {
+                    simpleItems.add(register(r, ("hide/" + type.name() + "/" + size.name()).toLowerCase(), new ItemAnimalHide(type, size), CT_MISC));
+                }
+            }
+        }
+        register(r, "goldpan", new ItemGoldPan(), CT_MISC);
 
         // todo: Bow? Arrows?
         // todo: Fishing rod?

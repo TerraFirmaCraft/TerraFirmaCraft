@@ -36,12 +36,14 @@ public class ItemBlockTFC extends ItemBlock implements IItemSize
         }
     }
 
+    @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
         return size;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {

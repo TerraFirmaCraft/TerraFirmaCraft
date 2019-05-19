@@ -207,12 +207,14 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         return plant;
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.SMALL;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {

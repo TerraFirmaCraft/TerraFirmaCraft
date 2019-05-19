@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.items;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -100,12 +101,14 @@ public class ItemGoldPan extends ItemTFC
         //todo: this is a copypaste from firestarter, it needs to pan, not start fires.
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.SMALL;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {

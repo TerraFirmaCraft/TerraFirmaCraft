@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -28,7 +27,6 @@ import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemRockShovel extends ItemSpade implements IItemSize, IRockObject
 {
@@ -60,12 +58,14 @@ public class ItemRockShovel extends ItemSpade implements IItemSize, IRockObject
         tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.LARGE;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {

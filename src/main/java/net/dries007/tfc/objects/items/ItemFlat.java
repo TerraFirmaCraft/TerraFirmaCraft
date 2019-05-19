@@ -32,12 +32,14 @@ public final class ItemFlat extends ItemTFC
         if (ROCK_MAP.put(rock, this) != null) throw new IllegalStateException("There can only be one.");
     }
 
+    @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
         return Size.NORMAL;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {

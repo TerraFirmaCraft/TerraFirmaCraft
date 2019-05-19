@@ -6,6 +6,7 @@
 package net.dries007.tfc.types;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -21,6 +22,7 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
@@ -87,11 +89,21 @@ public final class DefaultRecipes
 
         /* LEATHER ITEMS */
 
-        // todo: leather recipes
+        event.getRegistry().registerAll(
+            new KnappingRecipe.Simple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.LEATHER_HELMET), "XXXXX", "X   X", "X   X", "     ", "     ").setRegistryName(MOD_ID, "leather_helmet"),
+            new KnappingRecipe.Simple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.LEATHER_CHESTPLATE), "X   X", "XXXXX", "XXXXX", "XXXXX", "XXXXX").setRegistryName(MOD_ID, "leather_chestplate"),
+            new KnappingRecipe.Simple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.LEATHER_LEGGINGS), "XXXXX", "XXXXX", "XX XX", "XX XX", "XX XX").setRegistryName(MOD_ID, "leather_leggings"),
+            new KnappingRecipe.Simple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.LEATHER_BOOTS), "XX   ", "XX   ", "XX   ", "XXXX ", "XXXXX").setRegistryName(MOD_ID, "leather_boots"),
+            new KnappingRecipe.Simple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.SADDLE), "  X  ", "XXXXX", "XXXXX", "XXXXX", "  X  ").setRegistryName(MOD_ID, "leather_saddle")
+        );
 
         /* FIRE CLAY ITEMS */
 
-        // todo: fire clay recipes
+        event.getRegistry().registerAll(
+            new KnappingRecipe.Simple(KnappingRecipe.Type.FIRE_CLAY, true, new ItemStack(BlocksTFC.CRUCIBLE), "X   X", "X   X", "X   X", "X   X", "XXXXX").setRegistryName(MOD_ID, "fire_clay_crucible"),
+            new KnappingRecipe.Simple(KnappingRecipe.Type.FIRE_CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_FIRE_BRICK, 2), "XX XX", "XX XX", "XX XX", "XX XX", "XX XX").setRegistryName(MOD_ID, "fire_clay_fire_brick")
+        );
+
     }
 
     @SubscribeEvent

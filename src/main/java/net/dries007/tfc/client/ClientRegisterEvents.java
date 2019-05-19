@@ -55,6 +55,7 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
+import net.dries007.tfc.objects.items.ItemAnimalHide;
 import net.dries007.tfc.objects.items.ItemGem;
 import net.dries007.tfc.objects.items.ItemGoldPan;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -64,6 +65,7 @@ import net.dries007.tfc.objects.te.*;
 import net.dries007.tfc.world.classic.ClimateRenderHelper;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.objects.blocks.BlockPlacedHide.SIZE;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)
@@ -194,10 +196,15 @@ public final class ClientRegisterEvents
         );
 
         // Empty Models
-        ModelLoader.setCustomStateMapper(BlocksTFC.PIT_KILN, blockIn -> ImmutableMap.of(BlocksTFC.PIT_KILN.getDefaultState(), new ModelResourceLocation("tfc:empty")));
-        ModelLoader.setCustomStateMapper(BlocksTFC.PLACED_ITEM_FLAT, blockIn -> ImmutableMap.of(BlocksTFC.PLACED_ITEM_FLAT.getDefaultState(), new ModelResourceLocation("tfc:empty")));
-        ModelLoader.setCustomStateMapper(BlocksTFC.INGOT_PILE, blockIn -> ImmutableMap.of(BlocksTFC.INGOT_PILE.getDefaultState(), new ModelResourceLocation("tfc:empty")));
-        ModelLoader.setCustomStateMapper(BlocksTFC.PLACED_ITEM, blockIn -> ImmutableMap.of(BlocksTFC.PLACED_ITEM.getDefaultState(), new ModelResourceLocation("tfc:empty")));
+        final ModelResourceLocation empty = new ModelResourceLocation(MOD_ID + ":empty");
+        // todo: switch to hide rack (involves changing mechanics, etc)
+        final ModelResourceLocation hideRack = new ModelResourceLocation(MOD_ID + ":hide_rack");
+
+        ModelLoader.setCustomStateMapper(BlocksTFC.PIT_KILN, blockIn -> ImmutableMap.of(BlocksTFC.PIT_KILN.getDefaultState(), empty));
+        ModelLoader.setCustomStateMapper(BlocksTFC.PLACED_ITEM_FLAT, blockIn -> ImmutableMap.of(BlocksTFC.PLACED_ITEM_FLAT.getDefaultState(), empty));
+        ModelLoader.setCustomStateMapper(BlocksTFC.INGOT_PILE, blockIn -> ImmutableMap.of(BlocksTFC.INGOT_PILE.getDefaultState(), empty));
+        ModelLoader.setCustomStateMapper(BlocksTFC.PLACED_ITEM, blockIn -> ImmutableMap.of(BlocksTFC.PLACED_ITEM.getDefaultState(), empty));
+        ModelLoader.setCustomStateMapper(BlocksTFC.PLACED_HIDE, blockIn -> ImmutableMap.of(BlocksTFC.PLACED_HIDE.getDefaultState().withProperty(SIZE, ItemAnimalHide.HideSize.SMALL), empty, BlocksTFC.PLACED_HIDE.getDefaultState().withProperty(SIZE, ItemAnimalHide.HideSize.MEDIUM), empty, BlocksTFC.PLACED_HIDE.getDefaultState().withProperty(SIZE, ItemAnimalHide.HideSize.LARGE), empty));
 
         // TESRs //
 
@@ -205,11 +212,12 @@ public final class ClientRegisterEvents
         ClientRegistry.bindTileEntitySpecialRenderer(TEToolRack.class, new TESRToolRack());
         ClientRegistry.bindTileEntitySpecialRenderer(TEPitKiln.class, new TESRPitKiln());
         ClientRegistry.bindTileEntitySpecialRenderer(TEPlacedItemFlat.class, new TESRPlacedItemFlat());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEPlacedItem.class, new TESRPlacedItem());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEPlacedHide.class, new TESRPlacedHide());
         ClientRegistry.bindTileEntitySpecialRenderer(TEIngotPile.class, new TESRIngotPile());
         ClientRegistry.bindTileEntitySpecialRenderer(TEBellows.class, new TESRBellows());
         ClientRegistry.bindTileEntitySpecialRenderer(TEBarrel.class, new TESRBarrel());
         ClientRegistry.bindTileEntitySpecialRenderer(TEAnvilTFC.class, new TESRAnvil());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEPlacedItem.class, new TESRPlacedItem());
     }
 
     @SubscribeEvent

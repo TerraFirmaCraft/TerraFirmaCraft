@@ -60,12 +60,14 @@ public class ItemRockKnife extends ItemTool implements IItemSize, IRockObject
         tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.NORMAL;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {

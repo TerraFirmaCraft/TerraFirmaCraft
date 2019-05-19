@@ -139,12 +139,14 @@ public class ItemSmallVessel extends ItemFiredPottery
         return input;
     }
 
+    @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
         return Size.LARGE;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {
