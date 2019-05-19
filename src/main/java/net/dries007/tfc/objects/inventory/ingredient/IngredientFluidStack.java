@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.objects.inventory.ingredient;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -12,12 +15,12 @@ public class IngredientFluidStack implements IIngredient<FluidStack>
 {
     private final FluidStack inputFluid;
 
-    public IngredientFluidStack(Fluid fluid, int amount)
+    IngredientFluidStack(@Nonnull Fluid fluid, int amount)
     {
         this(new FluidStack(fluid, amount));
     }
 
-    public IngredientFluidStack(FluidStack inputFluid)
+    IngredientFluidStack(@Nonnull FluidStack inputFluid)
     {
         this.inputFluid = inputFluid;
     }
@@ -25,14 +28,17 @@ public class IngredientFluidStack implements IIngredient<FluidStack>
     @Override
     public boolean test(FluidStack fluidStack)
     {
-        if (fluidStack != null && fluidStack.getFluid() != null)
-        {
-            return fluidStack.getFluid() == this.inputFluid.getFluid() && fluidStack.amount >= this.inputFluid.amount;
-        }
-        return false;
+        return testIgnoreCount(fluidStack) && fluidStack.amount >= this.inputFluid.amount;
     }
 
     @Override
+    public boolean testIgnoreCount(FluidStack fluidStack)
+    {
+        return fluidStack != null && fluidStack.getFluid() != null && fluidStack.getFluid() == this.inputFluid.getFluid();
+    }
+
+    @Override
+    @Nullable
     public FluidStack consume(FluidStack input)
     {
         if (input.amount > inputFluid.amount)
