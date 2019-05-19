@@ -913,4 +913,10 @@ item(('ceramics', 'fire_clay'), 'tfc:items/ceramics/fire_clay')
 for rock_cat in ROCK_TYPES:
     item(('flat', rock_cat), 'tfc:items/flat/%s' % rock_cat)
 
+# LEATHER / HIDES
 
+for size in ('small', 'medium', 'large'):
+    for hide in ('raw', 'scraped', 'soaked', 'prepared'):
+        item(('hide', hide, size), 'tfc:items/hide/%s/%s' % (size, hide))
+
+blockstate(('placed_hide',), 'tfc:hide_rack', {})

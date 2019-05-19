@@ -61,7 +61,7 @@ public final class CommonEventHandler
 
     /**
      * Handler for {@link IPlaceableItem}
-     * To add a new placeable item effect, eiether implement {@link IPlaceableItem} or see {@link IPlaceableItem.Impl} for vanilla item usages
+     * To add a new placeable item effect, either implement {@link IPlaceableItem} or see {@link IPlaceableItem.Impl} for vanilla item usages
      *
      * Notes:
      * 1) `onBlockActivate` doesn't get called when the player is sneaking, unless doesSneakBypassUse returns true.
@@ -77,9 +77,9 @@ public final class CommonEventHandler
         final ItemStack stack = event.getItemStack();
         final EntityPlayer player = event.getEntityPlayer();
 
-        if (IPlaceableItem.Impl.isPlaceable(stack))
+        IPlaceableItem placeable = IPlaceableItem.Impl.getPlaceable(stack);
+        if (placeable != null)
         {
-            IPlaceableItem placeable = IPlaceableItem.Impl.getPlaceable(stack);
             if (placeable.placeItemInWorld(world, pos, stack, player, event.getFace(), event.getHitVec()))
             {
                 player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, placeable.consumeAmount()));
@@ -102,9 +102,9 @@ public final class CommonEventHandler
         final ItemStack stack = event.getItemStack();
         final EntityPlayer player = event.getEntityPlayer();
 
-        if (IPlaceableItem.Impl.isUsable(stack))
+        IPlaceableItem placeable = IPlaceableItem.Impl.getUsable(stack);
+        if (placeable != null)
         {
-            IPlaceableItem placeable = IPlaceableItem.Impl.getUsable(stack);
             if (placeable.placeItemInWorld(world, pos, stack, player, event.getFace(), null))
             {
                 player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));

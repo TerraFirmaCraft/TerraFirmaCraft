@@ -170,20 +170,24 @@ public interface IPlaceableItem
 
             // Clay -> Knapping
             putBoth(stack -> stack.getItem() == Items.CLAY_BALL && stack.getCount() >= 5, (world, pos, stack, player, facing, hitVec) -> {
-                TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.KNAPPING_CLAY);
+                if (!world.isRemote)
+                {
+                    TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.KNAPPING_CLAY);
+                }
+                return false;
+            });
+
+            // Leather -> Knapping
+            putBoth(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "leather"), (world, pos, stack, player, facing, hitVec) -> {
+                if (!world.isRemote && stack.getCount() >= 5 && Helpers.playerHasItemMatchingOre(player.inventory, "knife"))
+                {
+                    TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.KNAPPING_LEATHER);
+                }
                 return false;
             });
         }
 
-        public static boolean isPlaceable(ItemStack stack)
-        {
-            if (stack.getItem() instanceof IPlaceableItem)
-            {
-                return true;
-            }
-            return placeableInstances.keySet().stream().anyMatch(x -> x.test(stack));
-        }
-
+        @Nullable
         public static IPlaceableItem getPlaceable(ItemStack stack)
         {
             if (stack.getItem() instanceof IPlaceableItem)
@@ -193,14 +197,10 @@ public interface IPlaceableItem
             return placeableInstances.entrySet().stream().filter(x -> x.getKey().test(stack)).map(Map.Entry::getValue).findFirst().orElse(null);
         }
 
-        public static boolean isUsable(ItemStack stack)
-        {
-            return usableInstances.keySet().stream().anyMatch(x -> x.test(stack));
-        }
-
+        @Nullable
         public static IPlaceableItem getUsable(ItemStack stack)
         {
-            return usableInstances.entrySet().stream().filter(x -> x.getKey().test(stack)).map(Map.Entry::getValue).findFirst().orElse(null);
+            return usableInstances.entrySet().stream().filter(x -> x.getKey().test(stack)).findFirst().map(Map.Entry::getValue).orElse(null);
         }
 
         private static void putBoth(Predicate<ItemStack> predicate, IPlaceableItem placeable)

@@ -30,8 +30,10 @@ public interface IItemSize
         return canStack ? Math.min(size.stackSize * weight.multiplier, 64) : 1;
     }
 
+    @Nonnull
     Size getSize(@Nonnull ItemStack stack);
 
+    @Nonnull
     Weight getWeight(@Nonnull ItemStack stack);
 
     default boolean canStack(@Nonnull ItemStack stack)

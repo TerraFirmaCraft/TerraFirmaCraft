@@ -10,7 +10,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -160,18 +159,6 @@ public class TEPlacedItem extends TEInventory
             }
         }
         return false;
-    }
-
-    public void onBreakBlock()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            ItemStack stack = inventory.getStackInSlot(i);
-            if (!stack.isEmpty())
-            {
-                InventoryHelper.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
-            }
-        }
     }
 
     protected void updateBlock()

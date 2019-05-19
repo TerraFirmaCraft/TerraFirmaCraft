@@ -12,7 +12,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Rock;
@@ -21,7 +20,6 @@ import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemBrickTFC extends ItemTFC implements IRockObject
 {
@@ -49,12 +47,14 @@ public class ItemBrickTFC extends ItemTFC implements IRockObject
         OreDictionaryHelper.register(this, "brick", rock.getRockCategory());
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.TINY;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {
