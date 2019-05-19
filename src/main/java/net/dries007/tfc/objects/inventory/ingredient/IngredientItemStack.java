@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.inventory.ingredient;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -12,16 +14,15 @@ public class IngredientItemStack implements IIngredient<ItemStack>
 {
     private final ItemStack inputStack;
 
-    public IngredientItemStack(ItemStack inputStack)
+    IngredientItemStack(@Nonnull ItemStack inputStack)
     {
         this.inputStack = inputStack;
     }
 
     @Override
-    public ItemStack consume(ItemStack input)
+    public boolean test(ItemStack stack)
     {
-        input.shrink(inputStack.getCount());
-        return input;
+        return testIgnoreCount(stack) && stack.getCount() >= inputStack.getCount();
     }
 
     @Override
@@ -31,7 +32,7 @@ public class IngredientItemStack implements IIngredient<ItemStack>
     }
 
     @Override
-    public boolean test(ItemStack stack)
+    public boolean testIgnoreCount(ItemStack stack)
     {
         if (stack != null && !stack.isEmpty())
         {
@@ -41,5 +42,13 @@ public class IngredientItemStack implements IIngredient<ItemStack>
             }
         }
         return false;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack consume(ItemStack input)
+    {
+        input.shrink(inputStack.getCount());
+        return input;
     }
 }

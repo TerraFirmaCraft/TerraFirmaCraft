@@ -8,22 +8,19 @@ package net.dries007.tfc.types;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.recipes.*;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.objects.inventory.ingredient.IngredientFluidStack;
-import net.dries007.tfc.objects.inventory.ingredient.IngredientOreDict;
+import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
@@ -43,7 +40,7 @@ public final class DefaultRecipes
     public static void onRegisterBarrelRecipeEvent(RegistryEvent.Register<BarrelRecipe> event)
     {
         event.getRegistry().registerAll(
-            new BarrelRecipe(new IngredientFluidStack(FluidRegistry.WATER, 1000), new IngredientOreDict("stone"), new FluidStack(FluidRegistry.LAVA, 500), new ItemStack(Blocks.DIRT), 200).setRegistryName(MOD_ID, "test_recipe")
+            new BarrelRecipe(IIngredient.of(FluidRegistry.WATER, 1000), IIngredient.of("stone"), new FluidStack(FluidRegistry.LAVA, 500), new ItemStack(Blocks.DIRT), 200).setRegistryName(MOD_ID, "test_recipe")
             // todo: barrel crafting recipes!!!
         );
     }
@@ -109,21 +106,21 @@ public final class DefaultRecipes
             if (type.hasMold(null))
             {
                 // Fired molds
-                r.register(new PitKilnRecipe(Ingredient.fromItems(ItemMold.get(type))).setRegistryName(MOD_ID, "mold_" + type.name().toLowerCase() + "_fireable"));
+                r.register(new PitKilnRecipe(IIngredient.of(ItemMold.get(type))).setRegistryName(MOD_ID, "mold_" + type.name().toLowerCase() + "_fireable"));
                 // Unfired molds
-                r.register(new PitKilnRecipe(Ingredient.fromItems(ItemUnfiredMold.get(type)), new ItemStack(ItemMold.get(type))).setRegistryName(MOD_ID, "mold_" + type.name().toLowerCase()));
+                r.register(new PitKilnRecipe(IIngredient.of(ItemUnfiredMold.get(type)), new ItemStack(ItemMold.get(type))).setRegistryName(MOD_ID, "mold_" + type.name().toLowerCase()));
             }
         }
 
         // Fired ceramic vessels
-        r.register(new PitKilnRecipe(Ingredient.fromStacks(new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL))).setRegistryName(MOD_ID, "fired_vessel_fireable"));
-        r.register(new PitKilnRecipe(Ingredient.fromStacks(new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, OreDictionary.WILDCARD_VALUE))).setRegistryName(MOD_ID, "fired_vessel_fireable_glazed"));
+        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_FIRED_VESSEL)).setRegistryName(MOD_ID, "fired_vessel_fireable"));
+        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED)).setRegistryName(MOD_ID, "fired_vessel_fireable_glazed"));
 
         // Unfired ceramic vessels
-        r.register(new PitKilnRecipe(Ingredient.fromItems(ItemsTFC.CERAMICS_UNFIRED_VESSEL), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL)).setRegistryName("fired_vessel"));
+        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_UNFIRED_VESSEL), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL)).setRegistryName("fired_vessel"));
         for (EnumDyeColor color : EnumDyeColor.values())
         {
-            r.register(new PitKilnRecipe(Ingredient.fromStacks(new ItemStack(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, color.getMetadata())), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, color.getMetadata())).setRegistryName(MOD_ID, "fired_vessel_glazed_" + color.getName()));
+            r.register(new PitKilnRecipe(IIngredient.of(new ItemStack(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, color.getMetadata())), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, color.getMetadata())).setRegistryName(MOD_ID, "fired_vessel_glazed_" + color.getName()));
         }
     }
 
