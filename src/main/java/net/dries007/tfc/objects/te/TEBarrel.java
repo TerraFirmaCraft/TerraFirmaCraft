@@ -20,12 +20,14 @@ import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import net.dries007.tfc.api.recipes.BarrelRecipe;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
 import net.dries007.tfc.objects.fluids.capability.FluidHandlerSided;
 import net.dries007.tfc.objects.fluids.capability.IFluidHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSided;
 import net.dries007.tfc.util.FluidTransferHelper;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 @ParametersAreNonnullByDefault
 public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback
@@ -33,11 +35,13 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     public static final int SLOT_FLUID_CONTAINER_IN = 0;
     public static final int SLOT_FLUID_CONTAINER_OUT = 1;
     public static final int SLOT_ITEM = 2;
-    @SuppressWarnings("WeakerAccess")
     public static final int TANK_CAPACITY = 10000;
+    public static final int BARREL_MAX_FLUID_TEMPERATURE = 500;
 
     private FluidTank tank = new FluidTank(TANK_CAPACITY);
     private boolean sealed;
+    private long sealedTick;
+    private BarrelRecipe recipe;
     private int tickCounter;
 
     public TEBarrel()
@@ -95,20 +99,22 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(compound);
+        super.readFromNBT(nbt);
 
-        tank.readFromNBT(compound.getCompoundTag("tank"));
+        tank.readFromNBT(nbt.getCompoundTag("tank"));
+        sealedTick = nbt.getLong("sealedTick");
     }
 
     @Override
     @Nonnull
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
+        nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
+        nbt.setLong("sealedTick", sealedTick);
 
-        return super.writeToNBT(compound);
+        return super.writeToNBT(nbt);
     }
 
     /**
@@ -178,7 +184,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     @Override
     public boolean canFill(FluidStack resource, EnumFacing side)
     {
-        return !sealed;
+        return !sealed && (resource.getFluid() == null || resource.getFluid().getTemperature(resource) < BARREL_MAX_FLUID_TEMPERATURE);
     }
 
     @Override
@@ -192,43 +198,59 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     {
         //TODO: recipes
 
-        if (world.isRemote)
+        if (!world.isRemote)
         {
-            return;
-        }
+            tickCounter++;
 
-        tickCounter++;
+            if (tickCounter == 10)
+            {
+                tickCounter = 0;
 
-        if (tickCounter != 10)
-        {
-            return;
-        }
+                ItemStack fluidContainerIn = inventory.getStackInSlot(SLOT_FLUID_CONTAINER_IN);
+                FluidActionResult result = FluidTransferHelper.emptyContainerIntoTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, TANK_CAPACITY, world, pos);
 
-        tickCounter = 0;
+                if (!result.isSuccess())
+                {
+                    result = FluidTransferHelper.fillContainerFromTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, TANK_CAPACITY, world, pos);
+                }
 
-        ItemStack fluidContainerIn = inventory.getStackInSlot(SLOT_FLUID_CONTAINER_IN);
-        FluidActionResult result = FluidTransferHelper.emptyContainerIntoTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, TANK_CAPACITY, world, pos);
+                if (result.isSuccess())
+                {
+                    inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, result.getResult());
 
-        if (!result.isSuccess())
-        {
-            result = FluidTransferHelper.fillContainerFromTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, TANK_CAPACITY, world, pos);
-        }
+                    IBlockState state = world.getBlockState(pos);
+                    world.notifyBlockUpdate(pos, state, state, 3);
+                }
 
-        if (result.isSuccess())
-        {
-            inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, result.getResult());
+                Fluid freshWater = FluidRegistry.getFluid("fresh_water");
 
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos, state, state, 3);
-        }
+                if (!sealed && world.isRainingAt(pos.up()) && (tank.getFluid() == null || tank.getFluid().getFluid() == freshWater))
+                {
+                    tank.fill(new FluidStack(freshWater, 10), true);
+                    IBlockState state = world.getBlockState(pos);
+                    world.notifyBlockUpdate(pos, state, state, 3);
+                }
+            }
 
-        Fluid freshWater = FluidRegistry.getFluid("fresh_water");
+            // Check if recipe is complete
+            if (recipe != null)
+            {
+                int durationSealed = (int) (CalendarTFC.getTotalTime() - sealedTick);
+                if (durationSealed > recipe.getDuration())
+                {
+                    ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);
+                    FluidStack inputFluid = tank.getFluid();
+                    if (recipe.isValidInput(inputFluid, inputStack))
+                    {
+                        tank.setFluid(recipe.getOutputFluid(inputFluid, inputStack));
+                        inventory.setStackInSlot(SLOT_ITEM, recipe.getOutputItem(inputFluid, inputStack));
 
-        if (!sealed && world.isRainingAt(pos.up()) && (tank.getFluid() == null || tank.getFluid().getFluid() == freshWater))
-        {
-            tank.fill(new FluidStack(freshWater, 10), true);
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos, state, state, 3);
+                        IBlockState state = world.getBlockState(pos);
+                        world.notifyBlockUpdate(pos, state, state, 3);
+                    }
+                    recipe = null;
+                }
+            }
         }
     }
 
@@ -237,8 +259,15 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         return sealed;
     }
 
+    public void onSealed()
+    {
+        sealedTick = CalendarTFC.getTotalTime();
+        recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
+    }
+
     private void updateLockStatus()
     {
         sealed = world.getBlockState(pos).getValue(BlockBarrel.SEALED);
+
     }
 }

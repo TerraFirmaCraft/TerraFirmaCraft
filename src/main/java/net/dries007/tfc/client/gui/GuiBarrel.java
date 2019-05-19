@@ -5,11 +5,13 @@
 
 package net.dries007.tfc.client.gui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -26,20 +28,26 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import net.dries007.tfc.api.util.TFCConstants;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.FluidSpriteCache;
+import net.dries007.tfc.client.button.GuiButtonBarrelSeal;
+import net.dries007.tfc.network.PacketGuiButton;
 import net.dries007.tfc.objects.container.ContainerBarrel;
+import net.dries007.tfc.objects.te.TEBarrel;
 
-public class GuiBarrel extends GuiContainerTFC
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+
+public class GuiBarrel extends GuiContainerTE<TEBarrel>
 {
-    private static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/barrel.png");
+    public static final ResourceLocation BARREL_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/barrel.png");
     private final String translationKey;
 
-    public GuiBarrel(Container container, InventoryPlayer playerInv, String translationKey)
+    public GuiBarrel(Container container, InventoryPlayer playerInv, TEBarrel tile, String translationKey)
     {
-        super(container, playerInv, RESOURCE_LOCATION);
+        super(container, playerInv, tile, BARREL_BACKGROUND);
 
         this.translationKey = translationKey;
     }
@@ -63,12 +71,12 @@ public class GuiBarrel extends GuiContainerTFC
 
                 if (fluid == null || fluid.amount == 0)
                 {
-                    tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_empty"));
+                    tooltip.add(I18n.format(MOD_ID + ".tooltip.barrel_empty"));
                 }
                 else
                 {
                     tooltip.add(fluid.getLocalizedName());
-                    tooltip.add(TextFormatting.GRAY.toString() + I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_fluid_amount", fluid.amount));
+                    tooltip.add(TextFormatting.GRAY.toString() + I18n.format(MOD_ID + ".tooltip.barrel_fluid_amount", fluid.amount));
                 }
 
                 this.drawHoveringText(tooltip, mouseX, mouseY, fontRenderer);
@@ -142,7 +150,7 @@ public class GuiBarrel extends GuiContainerTFC
 
                     Tessellator.getInstance().draw();
 
-                    Minecraft.getMinecraft().renderEngine.bindTexture(RESOURCE_LOCATION);
+                    Minecraft.getMinecraft().renderEngine.bindTexture(BARREL_BACKGROUND);
                     GlStateManager.color(1, 1, 1, 1);
                 }
             }
@@ -152,16 +160,21 @@ public class GuiBarrel extends GuiContainerTFC
     }
 
     @Override
+    public void initGui()
+    {
+        super.initGui();
+        addButton(new GuiButtonBarrelSeal(tile, 0, guiTop, guiLeft));
+    }
+
+    @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         String name = I18n.format(translationKey + ".name");
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
 
-        ContainerBarrel container = (ContainerBarrel) inventorySlots;
-
-        if (container.isBarrelSealed())
+        if (tile.isSealed())
         {
-            IItemHandler handler = container.getBarrelInventory();
+            IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
             if (handler != null)
             {
@@ -169,12 +182,19 @@ public class GuiBarrel extends GuiContainerTFC
 
                 for (int slotId = 0; slotId < handler.getSlots(); slotId++)
                 {
-                    drawSlotOverlay(container.getSlot(slotId));
+                    drawSlotOverlay(inventorySlots.getSlot(slotId));
                 }
 
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
             }
         }
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException
+    {
+        TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id));
+        super.actionPerformed(button);
     }
 
     private void drawSlotOverlay(Slot slot)
