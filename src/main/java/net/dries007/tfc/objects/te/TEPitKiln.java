@@ -77,7 +77,14 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 }
                 // Copy misc data
                 teNew.isHoldingLargeItem = teOld.isHoldingLargeItem;
-                teNew.addStraw(strawStack.splitStack(1));
+                if (OreDictionaryHelper.doesStackMatchOre(strawStack, "blockStraw"))
+                {
+                    teNew.addStrawBlock();
+                }
+                else
+                {
+                    teNew.addStraw(strawStack.splitStack(1));
+                }
             }
         }
     }
@@ -206,10 +213,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             if (stack.getItem() == Item.getItemFromBlock(BlocksTFC.THATCH) && strawCount <= STRAW_NEEDED - 4)
             {
                 stack.shrink(1);
-                addStraw(new ItemStack(ItemsTFC.STRAW));
-                addStraw(new ItemStack(ItemsTFC.STRAW));
-                addStraw(new ItemStack(ItemsTFC.STRAW));
-                addStraw(new ItemStack(ItemsTFC.STRAW));
+                addStrawBlock();
                 updateBlock();
                 return true;
             }
@@ -291,13 +295,23 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
         }
     }
 
+    private void addStrawBlock()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            addStraw(new ItemStack(ItemsTFC.STRAW));
+        }
+    }
+
     private void addStraw(ItemStack stack)
     {
         for (int i = 0; i < strawItems.size(); i++)
         {
-            if (!strawItems.get(i).isEmpty()) continue;
-            strawItems.set(i, stack);
-            return;
+            if (strawItems.get(i).isEmpty())
+            {
+                strawItems.set(i, stack);
+                return;
+            }
         }
     }
 
@@ -305,9 +319,11 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
     {
         for (int i = 0; i < logItems.size(); i++)
         {
-            if (!logItems.get(i).isEmpty()) continue;
-            logItems.set(i, stack);
-            return;
+            if (logItems.get(i).isEmpty())
+            {
+                logItems.set(i, stack);
+                return;
+            }
         }
     }
 

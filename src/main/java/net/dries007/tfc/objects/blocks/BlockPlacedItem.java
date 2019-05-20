@@ -114,7 +114,7 @@ public class BlockPlacedItem extends Block
         {
             ItemStack stack = playerIn.getHeldItemMainhand();
             // Check for pit kiln conversion
-            if (!playerIn.isSneaking() && OreDictionaryHelper.doesStackMatchOre(stack, "straw"))
+            if (!playerIn.isSneaking() && (OreDictionaryHelper.doesStackMatchOre(stack, "straw") || OreDictionaryHelper.doesStackMatchOre(stack, "blockStraw")))
             {
                 TEPitKiln.convertPlacedItemToPitKiln(worldIn, pos, stack);
                 return true;

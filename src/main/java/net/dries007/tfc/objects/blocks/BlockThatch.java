@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.objects.blocks;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -22,14 +25,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+@ParametersAreNonnullByDefault
 public class BlockThatch extends Block
 {
-    public BlockThatch(Material material)
+    BlockThatch(Material material)
     {
         super(material);
         setSoundType(SoundType.PLANT);
         setHardness(0.6F);
         OreDictionaryHelper.register(this, "thatch");
+        OreDictionaryHelper.register(this, "block", "straw");
         Blocks.FIRE.setFireInfo(this, 60, 20);
     }
 
@@ -43,7 +48,7 @@ public class BlockThatch extends Block
     @SideOnly(Side.CLIENT)
     @Override
     @SuppressWarnings("deprecation")
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
         return true;
     }
@@ -57,6 +62,7 @@ public class BlockThatch extends Block
 
     @SideOnly(Side.CLIENT)
     @Override
+    @Nonnull
     public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT_MIPPED;

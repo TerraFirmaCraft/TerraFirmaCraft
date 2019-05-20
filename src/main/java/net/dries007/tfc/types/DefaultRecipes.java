@@ -5,13 +5,11 @@
 
 package net.dries007.tfc.types;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -21,17 +19,20 @@ import net.dries007.tfc.api.recipes.*;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
+import net.dries007.tfc.objects.items.ItemAnimalHide;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
 import net.dries007.tfc.util.forge.ForgeRule;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 import static net.dries007.tfc.api.types.Metal.ItemType.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.objects.fluids.FluidsTFC.*;
 import static net.dries007.tfc.types.DefaultMetals.*;
 import static net.dries007.tfc.util.forge.ForgeRule.*;
 
@@ -42,8 +43,34 @@ public final class DefaultRecipes
     public static void onRegisterBarrelRecipeEvent(RegistryEvent.Register<BarrelRecipe> event)
     {
         event.getRegistry().registerAll(
-            new BarrelRecipe(IIngredient.of(FluidRegistry.WATER, 1000), IIngredient.of("stone"), new FluidStack(FluidRegistry.LAVA, 500), new ItemStack(Blocks.DIRT), 200).setRegistryName(MOD_ID, "test_recipe")
-            // todo: barrel crafting recipes!!!
+            // Hide Processing (all three conversions)
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 300), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.SCRAPED, ItemAnimalHide.HideSize.SMALL)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.SMALL)), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName(MOD_ID, "small_prepared_hide"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 400), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.SCRAPED, ItemAnimalHide.HideSize.MEDIUM)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.MEDIUM)), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName(MOD_ID, "medium_prepared_hide"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.SCRAPED, ItemAnimalHide.HideSize.LARGE)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.LARGE)), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName(MOD_ID, "large_prepared_hide"),
+            new BarrelRecipe(IIngredient.of(LIMEWATER, 300), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.RAW, ItemAnimalHide.HideSize.SMALL)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.SOAKED, ItemAnimalHide.HideSize.SMALL)), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName(MOD_ID, "small_soaked_hide"),
+            new BarrelRecipe(IIngredient.of(LIMEWATER, 400), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.RAW, ItemAnimalHide.HideSize.MEDIUM)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.SOAKED, ItemAnimalHide.HideSize.MEDIUM)), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName(MOD_ID, "medium_soaked_hide"),
+            new BarrelRecipe(IIngredient.of(LIMEWATER, 500), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.RAW, ItemAnimalHide.HideSize.LARGE)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.SOAKED, ItemAnimalHide.HideSize.LARGE)), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName(MOD_ID, "large_soaked_hide"),
+            new BarrelRecipe(IIngredient.of(TANNIN, 300), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.SMALL)), null, new ItemStack(Items.LEATHER), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("leather_small_hide"),
+            new BarrelRecipe(IIngredient.of(TANNIN, 400), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.MEDIUM)), null, new ItemStack(Items.LEATHER, 2), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("leather_medium_hide"),
+            new BarrelRecipe(IIngredient.of(TANNIN, 500), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.LARGE)), null, new ItemStack(Items.LEATHER, 3), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("leather_large_hide"),
+            // Misc
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 1000), IIngredient.of("logWoodTannin"), new FluidStack(TANNIN, 10000), ItemStack.EMPTY, 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName(MOD_ID, "tannin"),
+            // todo: enslave Claycorp for recipe magics
+            // todo: jute
+            // todo: sugar
+            // todo: all alcohol recipes
+            // todo: vinegar (many variants, use "fruit" ore dict and IIngredient.of(int, Fluid...)
+            // todo: brine + food? (may have to have a discussion about how we should handle "traits" on food.)
+            // todo: pickling (same as above)
+            // todo: mortar
+            // todo: curdled milk -> cheese (use an empty IIngredient for the item)
+            // todo: flavored cheese (figure out how to handle this?)
+
+            // Instant recipes: set the duration to 0
+            // todo: brine
+            // todo: limewater
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of("dustFlux"), new FluidStack(LIMEWATER, 500), ItemStack.EMPTY, 0).setRegistryName(MOD_ID, "limewater")
+            // todo: curdled milk (make it a simpler calculation)
         );
     }
 

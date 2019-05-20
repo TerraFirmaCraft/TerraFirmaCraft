@@ -91,6 +91,7 @@ public class CommandTimeTFC extends CommandBase
         ITextComponent month = new TextComponentTranslation(Helpers.getEnumName(CalendarTFC.getMonthOfYear()));
         sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_time", CalendarTFC.getTotalYears(), month, CalendarTFC.getDayOfMonth(), String.format("%02d:%02d", CalendarTFC.getHourOfDay(), CalendarTFC.getMinuteOfHour())));
 
+        TerraFirmaCraft.getLog().info("Does this run on server?");
         if (updateDaylightCycle)
         {
             for (int i = 0; i < server.worlds.length; ++i)

@@ -179,7 +179,7 @@ public interface IPlaceableItem
 
             // Leather -> Knapping
             putBoth(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "leather"), (world, pos, stack, player, facing, hitVec) -> {
-                if (!world.isRemote && stack.getCount() >= 5 && Helpers.playerHasItemMatchingOre(player.inventory, "knife"))
+                if (!world.isRemote && Helpers.playerHasItemMatchingOre(player.inventory, "knife"))
                 {
                     TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.KNAPPING_LEATHER);
                 }

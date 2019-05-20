@@ -87,15 +87,18 @@ public class PacketAnvilUpdate implements IMessage
         public IMessage onMessage(PacketAnvilUpdate message, MessageContext ctx)
         {
             EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
-            World world = player.getEntityWorld();
-            TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
-                TEAnvilTFC te = Helpers.getTE(world, message.pos, TEAnvilTFC.class);
-                if (te != null)
-                {
-                    AnvilRecipe recipe = message.recipe != null ? TFCRegistries.ANVIL.getValue(message.recipe) : null;
-                    te.onReceivePacket(recipe, message.steps, message.workProgress, message.workTarget);
-                }
-            });
+            if (player != null)
+            {
+                World world = player.getEntityWorld();
+                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
+                    TEAnvilTFC te = Helpers.getTE(world, message.pos, TEAnvilTFC.class);
+                    if (te != null)
+                    {
+                        AnvilRecipe recipe = message.recipe != null ? TFCRegistries.ANVIL.getValue(message.recipe) : null;
+                        te.onReceivePacket(recipe, message.steps, message.workProgress, message.workTarget);
+                    }
+                });
+            }
             return null;
         }
     }

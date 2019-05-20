@@ -25,7 +25,7 @@ public interface IIngredient<T> extends Predicate<T>
 {
     static IIngredient<ItemStack> of(@Nonnull Item predicateItem)
     {
-        return new IngredientItemStack(new ItemStack(predicateItem, OreDictionary.WILDCARD_VALUE));
+        return new IngredientItemStack(new ItemStack(predicateItem, 1, OreDictionary.WILDCARD_VALUE));
     }
 
     static IIngredient<ItemStack> of(@Nonnull ItemStack predicateStack)
@@ -51,6 +51,11 @@ public interface IIngredient<T> extends Predicate<T>
     static IIngredient<FluidStack> of(@Nonnull Fluid fluid, int amount)
     {
         return new IngredientFluidStack(fluid, amount);
+    }
+
+    static IIngredient<FluidStack> of(int amount, @Nonnull Fluid... fluids)
+    {
+        return new IngredientMultipleFluidStack(amount, fluids);
     }
 
     /**

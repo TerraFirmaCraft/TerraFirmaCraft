@@ -919,4 +919,5 @@ for size in ('small', 'medium', 'large'):
     for hide in ('raw', 'scraped', 'soaked', 'prepared'):
         item(('hide', hide, size), 'tfc:items/hide/%s/%s' % (size, hide))
 
+item(('hide', 'sheepskin'), 'tfc:items/hide/sheepskin')
 blockstate(('placed_hide',), 'tfc:hide_rack', {})

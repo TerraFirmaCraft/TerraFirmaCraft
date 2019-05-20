@@ -20,7 +20,9 @@ import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.BarrelRecipe;
+import net.dries007.tfc.network.PacketBarrelUpdate;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
 import net.dries007.tfc.objects.fluids.capability.FluidHandlerSided;
 import net.dries007.tfc.objects.fluids.capability.IFluidHandlerSidedCallback;
@@ -40,7 +42,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
 
     private FluidTank tank = new FluidTank(TANK_CAPACITY);
     private boolean sealed;
-    private long sealedTick;
+    private long sealedTick, sealedCalendarTick;
     private BarrelRecipe recipe;
     private int tickCounter;
 
@@ -53,12 +55,15 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
      * Called when this TileEntity was created by placing a sealed Barrel Item.
      * Loads its data from the Item's NBTTagCompound without loading xyz coordinates.
      *
-     * @param compound The NBTTagCompound to load from.
+     * @param nbt The NBTTagCompound to load from.
      */
-    public void readFromItemTag(NBTTagCompound compound)
+    public void readFromItemTag(NBTTagCompound nbt)
     {
-        tank.readFromNBT(compound.getCompoundTag("tank"));
-        inventory.deserializeNBT(compound.getCompoundTag("inventory"));
+        tank.readFromNBT(nbt.getCompoundTag("tank"));
+        inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
+
+        sealedTick = nbt.getLong("sealedTick");
+        sealedCalendarTick = nbt.getLong("sealedCalendarTick");
 
         this.markDirty();
     }
@@ -71,11 +76,14 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
      */
     public NBTTagCompound getItemTag()
     {
-        NBTTagCompound compound = new NBTTagCompound();
-        compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
-        compound.setTag("inventory", inventory.serializeNBT());
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
+        nbt.setTag("inventory", inventory.serializeNBT());
 
-        return compound;
+        nbt.setLong("sealedTick", sealedTick);
+        nbt.setLong("sealedCalendarTick", sealedCalendarTick);
+
+        return nbt;
     }
 
     /**
@@ -98,23 +106,14 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         return slot == SLOT_ITEM || slot == SLOT_FLUID_CONTAINER_IN && FluidUtil.getFluidHandler(stack) != null;
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public BarrelRecipe getRecipe()
     {
-        super.readFromNBT(nbt);
-
-        tank.readFromNBT(nbt.getCompoundTag("tank"));
-        sealedTick = nbt.getLong("sealedTick");
+        return recipe;
     }
 
-    @Override
-    @Nonnull
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public String getSealedDate()
     {
-        nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
-        nbt.setLong("sealedTick", sealedTick);
-
-        return super.writeToNBT(nbt);
+        return CalendarTFC.getTimeAndDate(sealedCalendarTick);
     }
 
     /**
@@ -129,7 +128,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     public SPacketUpdateTileEntity getUpdatePacket()
     {
         updateLockStatus();
-
         return super.getUpdatePacket();
     }
 
@@ -142,7 +140,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     public void handleUpdateTag(NBTTagCompound tag)
     {
         readFromNBT(tag);
-
         updateLockStatus();
     }
 
@@ -185,6 +182,22 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     public boolean canFill(FluidStack resource, EnumFacing side)
     {
         return !sealed && (resource.getFluid() == null || resource.getFluid().getTemperature(resource) < BARREL_MAX_FLUID_TEMPERATURE);
+    }
+
+    public void onSealed()
+    {
+        sealedTick = CalendarTFC.getTotalTime();
+        sealedCalendarTick = CalendarTFC.getCalendarTime();
+        recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
+        TerraFirmaCraft.getLog().info("Current recipe: {}. Calendar Tick: {} / {}", recipe == null ? "nothing" : recipe.getRegistryName(), sealedCalendarTick, CalendarTFC.getTimeAndDate(sealedCalendarTick));
+        TerraFirmaCraft.getNetwork().sendToDimension(new PacketBarrelUpdate(this, recipe, sealedCalendarTick), world.provider.getDimension());
+    }
+
+    public void onReceivePacket(@Nullable BarrelRecipe recipe, long sealedCalendarTick)
+    {
+        this.recipe = recipe;
+        this.sealedCalendarTick = sealedCalendarTick;
+        TerraFirmaCraft.getLog().info("Calendar Tick: {} / {}", sealedCalendarTick, CalendarTFC.getTimeAndDate(sealedCalendarTick));
     }
 
     @Override
@@ -259,10 +272,47 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         return sealed;
     }
 
-    public void onSealed()
+    @Override
+    public void setAndUpdateSlots(int slot)
     {
-        sealedTick = CalendarTFC.getTotalTime();
-        recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
+        if (!world.isRemote)
+        {
+            // Try and perform an instant recipe
+            ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);
+            FluidStack inputFluid = tank.getFluid();
+            BarrelRecipe instantRecipe = BarrelRecipe.getInstant(inputStack, inputFluid);
+            if (instantRecipe != null)
+            {
+                // Recipe completion, ignoring sealed status
+                tank.setFluid(instantRecipe.getOutputFluid(inputFluid, inputStack));
+                inventory.setStackInSlot(SLOT_ITEM, instantRecipe.getOutputItem(inputFluid, inputStack));
+
+                IBlockState state = world.getBlockState(pos);
+                world.notifyBlockUpdate(pos, state, state, 3);
+            }
+        }
+        super.setAndUpdateSlots(slot);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+
+        tank.readFromNBT(nbt.getCompoundTag("tank"));
+        sealedTick = nbt.getLong("sealedTick");
+        sealedCalendarTick = nbt.getLong("sealedCalendarTick");
+    }
+
+    @Override
+    @Nonnull
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
+        nbt.setLong("sealedTick", sealedTick);
+        nbt.setLong("sealedCalendarTick", sealedCalendarTick);
+
+        return super.writeToNBT(nbt);
     }
 
     private void updateLockStatus()

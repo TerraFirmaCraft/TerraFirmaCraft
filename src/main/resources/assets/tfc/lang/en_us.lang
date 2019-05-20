@@ -2994,6 +2994,7 @@ item.tfc.hide.scraped.large.name=Large Scraped Hide
 item.tfc.hide.prepared.small.name=Small Prepared Hide
 item.tfc.hide.prepared.medium.name=Medium Prepared Hide
 item.tfc.hide.prepared.large.name=Large Prepared Hide
+item.tfc.hide.sheepskin.name=Sheep Skin
 
 tile.tfc.stone.button.granite.name=Granite Button
 tile.tfc.stone.button.diorite.name=Diorite Button
