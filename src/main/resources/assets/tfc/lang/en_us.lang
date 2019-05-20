@@ -25,6 +25,8 @@ tfc.tooltip.anvil_no_flux=There is no flux in the anvil!
 tfc.tooltip.anvil_too_cold=The item(s) are not hot enough to work!
 tfc.tooltip.anvil_no_hammer=There is no hammer in the anvil!
 tfc.tooltip.crucible_result=Result:
+tfc.tooltip.barrel_seal=Seal Barrel
+tfc.tooltip.barrel_unseal=Unseal Barrel
 
 ## Command Tooltips / Messages
 tfc.tooltip.set_month_length=Set Month Length to %d days
@@ -2981,6 +2983,20 @@ item.tfc.ceramics.unfired.bowl.name=Unfired Bowl
 item.tfc.ceramics.fired.fire_brick.name=Fire Brick
 item.tfc.ceramics.unfired.fire_brick.name=Unfired Fire Brick
 item.tfc.ceramics.fire_clay.name=Fire Clay
+
+item.tfc.hide.raw.small.name=Small Raw Hide
+item.tfc.hide.raw.medium.name=Medium Raw Hide
+item.tfc.hide.raw.large.name=Large Raw Hide
+item.tfc.hide.soaked.small.name=Small Soaked Hide
+item.tfc.hide.soaked.medium.name=Medium Soaked Hide
+item.tfc.hide.soaked.large.name=Large Soaked Hide
+item.tfc.hide.scraped.small.name=Small Scraped Hide
+item.tfc.hide.scraped.medium.name=Medium Scraped Hide
+item.tfc.hide.scraped.large.name=Large Scraped Hide
+item.tfc.hide.prepared.small.name=Small Prepared Hide
+item.tfc.hide.prepared.medium.name=Medium Prepared Hide
+item.tfc.hide.prepared.large.name=Large Prepared Hide
+item.tfc.hide.sheepskin.name=Sheep Skin
 
 tile.tfc.stone.button.granite.name=Granite Button
 tile.tfc.stone.button.diorite.name=Diorite Button

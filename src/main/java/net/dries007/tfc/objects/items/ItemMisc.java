@@ -38,12 +38,14 @@ public class ItemMisc extends ItemTFC implements IItemSize
         this.weight = weight;
     }
 
+    @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
         return size;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {

@@ -45,12 +45,14 @@ public class ItemSizeHandler implements ICapabilityProvider, IItemSize
         return capability == CapabilityItemSize.ITEM_SIZE_CAPABILITY ? (T) this : null;
     }
 
+    @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
         return this.size;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {

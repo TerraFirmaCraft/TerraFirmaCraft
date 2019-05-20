@@ -84,7 +84,7 @@ public class TFCGuiHandler implements IGuiHandler
             case KNAPPING_CLAY:
                 return new ContainerKnapping(KnappingRecipe.Type.CLAY, player.inventory, stack.getItem() == Items.CLAY_BALL ? stack : player.getHeldItemOffhand());
             case KNAPPING_LEATHER:
-                return new ContainerKnapping(KnappingRecipe.Type.LEATHER, player.inventory, stack.getItem() == ItemsTFC.LEATHER ? stack : player.getHeldItemOffhand());
+                return new ContainerKnapping(KnappingRecipe.Type.LEATHER, player.inventory, stack.getItem() == Items.LEATHER ? stack : player.getHeldItemOffhand());
             case KNAPPING_FIRE_CLAY:
                 return new ContainerKnapping(KnappingRecipe.Type.FIRE_CLAY, player.inventory, stack.getItem() == ItemsTFC.FIRE_CLAY ? stack : player.getHeldItemOffhand());
             case CRUCIBLE:
@@ -114,7 +114,7 @@ public class TFCGuiHandler implements IGuiHandler
             case FIRE_PIT:
                 return new GuiFirePit(container, player.inventory, Helpers.getTE(world, pos, TEFirePit.class));
             case BARREL:
-                return new GuiBarrel(container, player.inventory, world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
+                return new GuiBarrel(container, player.inventory, Helpers.getTE(world, pos, TEBarrel.class), world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
             case CHARCOAL_FORGE:
                 return new GuiCharcoalForge(container, player.inventory, Helpers.getTE(world, pos, TECharcoalForge.class));
             case ANVIL:

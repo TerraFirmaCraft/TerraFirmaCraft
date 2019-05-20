@@ -85,9 +85,9 @@ public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRe
     {
         private final ItemStack output;
 
-        public Simple(Type type, boolean inverted, ItemStack output, String... pattern)
+        public Simple(Type type, boolean outsideSlotRequired, ItemStack output, String... pattern)
         {
-            super(type, inverted, pattern);
+            super(type, outsideSlotRequired, pattern);
             this.output = output;
         }
 

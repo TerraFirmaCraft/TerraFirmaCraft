@@ -22,12 +22,14 @@ public class ItemFireClay extends ItemTFC
 {
     public ItemFireClay() {}
 
+    @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
         return Size.VERY_SMALL;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {

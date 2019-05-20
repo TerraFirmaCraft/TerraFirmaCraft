@@ -21,12 +21,15 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.api.types.Rock;
@@ -223,6 +226,26 @@ public final class Helpers
             {
                 return side;
             }
+        }
+        return null;
+    }
+
+    public static void writeResourceLocation(ByteBuf buf, @Nullable ResourceLocation loc)
+    {
+        buf.writeBoolean(loc != null);
+        if (loc != null)
+        {
+            ByteBufUtils.writeUTF8String(buf, loc.toString());
+        }
+    }
+
+
+    @Nullable
+    public static ResourceLocation readResourceLocation(ByteBuf buf)
+    {
+        if (buf.readBoolean())
+        {
+            return new ResourceLocation(ByteBufUtils.readUTF8String(buf));
         }
         return null;
     }

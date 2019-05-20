@@ -116,12 +116,14 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
         return getGradeFromStack(stack).smeltAmount;
     }
 
+    @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
         return Size.SMALL;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {

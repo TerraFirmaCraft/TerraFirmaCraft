@@ -118,12 +118,14 @@ public class BlockCactusTFC extends BlockPlantTFC implements IGrowable, ITallPla
         return EnumOffsetType.XYZ;
     }
 
+    @Nonnull
     @Override
     public Size getSize(ItemStack stack)
     {
         return Size.NORMAL;
     }
 
+    @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {
