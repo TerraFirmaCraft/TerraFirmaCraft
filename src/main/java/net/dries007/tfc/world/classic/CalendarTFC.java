@@ -18,8 +18,8 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.GameRuleChangeEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -107,13 +107,30 @@ public class CalendarTFC
 
     public static int getMinuteOfHour()
     {
-        return (int) ((calendarTime % TICKS_IN_HOUR) / TICKS_IN_MINUTE);
+        return getMinuteOfHour(calendarTime);
     }
 
     @Nonnull
     public static String getTimeAndDate()
     {
-        return String.format("%02d:%02d %s %02d, %04d", getHourOfDay(), getMinuteOfHour(), getMonthOfYear().getShortName(), getDayOfMonth(), getTotalYears());
+        return getTimeAndDate(getHourOfDay(), getMinuteOfHour(), getMonthOfYear().getShortName(), getDayOfMonth(), getTotalYears());
+    }
+
+    @Nonnull
+    public static String getTimeAndDate(long calendarTime)
+    {
+        return getTimeAndDate(getHourOfDay(calendarTime), getMinuteOfHour(calendarTime), getMonthOfYear(calendarTime).getShortName(), getDayOfMonth(calendarTime), getTotalYears(calendarTime));
+    }
+
+    @Nonnull
+    public static String getTimeAndDate(int hour, int minute, String month, int day, long years)
+    {
+        return String.format("%02d:%02d %s %02d, %04d", hour, minute, month, day, years);
+    }
+
+    public static long getTotalYears()
+    {
+        return getTotalYears(calendarTime);
     }
 
     public static long getTotalDays()
@@ -131,15 +148,20 @@ public class CalendarTFC
         return calendarTime / ticksInMonth;
     }
 
-    public static long getTotalYears()
-    {
-        // Years start at 1000, and begin at Jan, but month is indexed starting at March
-        return 1000 + (calendarTime + 2 * ticksInMonth) / ticksInYear;
-    }
-
     public static int getHourOfDay()
     {
-        return (int) ((6 + (calendarTime / TICKS_IN_HOUR)) % HOURS_IN_DAY);
+        return getHourOfDay(calendarTime);
+    }
+
+    public static int getDayOfMonth()
+    {
+        return getDayOfMonth(calendarTime);
+    }
+
+    @Nonnull
+    public static Month getMonthOfYear()
+    {
+        return getMonthOfYear(calendarTime);
     }
 
     private static void setTotalTime(long totalTime)
@@ -157,16 +179,6 @@ public class CalendarTFC
         }
     }
 
-    public static int getDayOfMonth()
-    {
-        return (int) ((calendarTime / TICKS_IN_DAY) % daysInMonth);
-    }
-
-    public static Month getMonthOfYear()
-    {
-        return Month.getById((int) ((calendarTime / ticksInMonth) % 12));
-    }
-
     public static int getDaysInMonth()
     {
         return daysInMonth;
@@ -175,6 +187,33 @@ public class CalendarTFC
     public static int getDaysInYear()
     {
         return daysInYear;
+    }
+
+    // Calculation based functions - do not change these unless broken
+    private static long getTotalYears(long calendarTime)
+    {
+        // Years start at 1000, and begin at Jan, but month is indexed starting at March
+        return 1000 + (calendarTime + 2 * ticksInMonth) / ticksInYear;
+    }
+
+    private static int getMinuteOfHour(long calendarTime)
+    {
+        return (int) ((calendarTime % TICKS_IN_HOUR) / TICKS_IN_MINUTE);
+    }
+
+    private static int getHourOfDay(long calendarTime)
+    {
+        return (int) ((6 + (calendarTime / TICKS_IN_HOUR)) % HOURS_IN_DAY);
+    }
+
+    private static int getDayOfMonth(long calendarTime)
+    {
+        return (int) ((calendarTime / TICKS_IN_DAY) % daysInMonth);
+    }
+
+    private static Month getMonthOfYear(long calendarTime)
+    {
+        return Month.getById((int) ((calendarTime / ticksInMonth) % 12));
     }
 
     public enum Month
@@ -250,6 +289,10 @@ public class CalendarTFC
             if (event.phase == TickEvent.Phase.START)
             {
                 CalendarTFC.setTotalTime(event.world.getTotalWorldTime());
+                if (event.world.getTotalWorldTime() % 100 == 0)
+                {
+                    TerraFirmaCraft.getLog().debug("World Tick: {} / {}", totalTime, getTimeAndDate());
+                }
             }
         }
 
@@ -262,6 +305,10 @@ public class CalendarTFC
             if (event.phase == TickEvent.Phase.START && !Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().player != null)
             {
                 CalendarTFC.setTotalTime(Minecraft.getMinecraft().world.getTotalWorldTime());
+                if (Minecraft.getMinecraft().world.getTotalWorldTime() % 100 == 0)
+                {
+                    TerraFirmaCraft.getLog().debug("Client Tick: {} / {}", totalTime, getTimeAndDate());
+                }
             }
         }
 
@@ -336,6 +383,8 @@ public class CalendarTFC
             {
                 TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(calendarOffset, daysInMonth, doCalendarCycle));
             }
+
+            TerraFirmaCraft.getLog().debug("Calendar Update: {}", getTimeAndDate());
         }
 
         public static void onLoad(World world)
@@ -354,6 +403,8 @@ public class CalendarTFC
             {
                 TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalendarTFC.calendarOffset, CalendarTFC.daysInMonth, CalendarTFC.doCalendarCycle));
             }
+
+            TerraFirmaCraft.getLog().debug("Calendar Load: {}", getTimeAndDate());
         }
 
         @Nonnull

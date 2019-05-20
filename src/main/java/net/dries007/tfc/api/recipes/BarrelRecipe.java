@@ -18,9 +18,16 @@ import net.dries007.tfc.objects.te.TEBarrel;
 
 public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
 {
+    @Nullable
     public static BarrelRecipe get(ItemStack stack, FluidStack fluidStack)
     {
         return TFCRegistries.BARREL.getValuesCollection().stream().filter(x -> x.isValidInput(fluidStack, stack)).findFirst().orElse(null);
+    }
+
+    @Nullable
+    public static BarrelRecipe getInstant(ItemStack stack, FluidStack fluidStack)
+    {
+        return TFCRegistries.BARREL.getValuesCollection().stream().filter(x -> x.isValidInput(fluidStack, stack) && x.getDuration() == 0).findFirst().orElse(null);
     }
 
     private final IIngredient<ItemStack> inputStack;
@@ -29,7 +36,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
     private final ItemStack outputStack;
     private final int duration;
 
-    public BarrelRecipe(IIngredient<FluidStack> inputFluid, IIngredient<ItemStack> inputStack, FluidStack outputFluid, ItemStack outputStack, int duration)
+    public BarrelRecipe(@Nonnull IIngredient<FluidStack> inputFluid, @Nonnull IIngredient<ItemStack> inputStack, @Nullable FluidStack outputFluid, @Nonnull ItemStack outputStack, int duration)
     {
         this.inputStack = inputStack;
         this.inputFluid = inputFluid;
@@ -45,17 +52,39 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
 
     public int getDuration()
     {
-        return duration;
+        return (int) (duration * 0.01); // todo: remove cheeky barrel speed stuff
+    }
+
+    @Nullable
+    public FluidStack getOutputFluid()
+    {
+        return outputFluid;
+    }
+
+    @Nonnull
+    public ItemStack getOutputStack()
+    {
+        return outputStack;
     }
 
     @Nullable
     public FluidStack getOutputFluid(FluidStack inputFluid, ItemStack inputStack)
     {
+        int multiplier = getMultiplier(inputFluid, inputStack);
         if (outputFluid != null)
         {
-            int multiplier = getMultiplier(inputFluid, inputStack);
+            // Ignore input and replace with output
             int outputAmount = Math.min(multiplier * outputFluid.amount, TEBarrel.TANK_CAPACITY);
             return new FluidStack(outputFluid.getFluid(), outputAmount);
+        }
+        else
+        {
+            // Try and keep as much of the original input as possible
+            int retainAmount = inputFluid.amount - (multiplier * this.inputFluid.getAmount());
+            if (retainAmount > 0)
+            {
+                return new FluidStack(inputFluid.getFluid(), inputFluid.amount - (multiplier * this.inputFluid.getAmount()));
+            }
         }
         return null;
     }
@@ -64,10 +93,25 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
     public ItemStack getOutputItem(FluidStack inputFluid, ItemStack inputStack)
     {
         int multiplier = getMultiplier(inputFluid, inputStack);
-        int outputCount = Math.min(multiplier * outputStack.getCount(), outputStack.getMaxStackSize());
-        ItemStack output = outputStack.copy();
-        output.setCount(outputCount);
-        return output;
+        if (!this.outputStack.isEmpty())
+        {
+            // Ignore input and replace with output
+            int outputCount = Math.min(multiplier * outputStack.getCount(), outputStack.getMaxStackSize());
+            ItemStack output = outputStack.copy();
+            output.setCount(outputCount);
+            return output;
+        }
+        else
+        {
+            // Try and keep as much of the original input as possible
+            int retainCount = inputStack.getCount() - (multiplier * this.inputStack.getAmount());
+            if (retainCount > 0)
+            {
+                inputStack.setCount(retainCount);
+                return inputStack;
+            }
+        }
+        return ItemStack.EMPTY;
     }
 
     private int getMultiplier(FluidStack inputFluid, ItemStack inputStack)
