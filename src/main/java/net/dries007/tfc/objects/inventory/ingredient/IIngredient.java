@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.inventory.ingredient;
 import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -23,6 +24,11 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public interface IIngredient<T> extends Predicate<T>
 {
+    static IIngredient<ItemStack> of(@Nonnull Block predicateBlock)
+    {
+        return new IngredientItemStack(new ItemStack(predicateBlock, 1, OreDictionary.WILDCARD_VALUE));
+    }
+
     static IIngredient<ItemStack> of(@Nonnull Item predicateItem)
     {
         return new IngredientItemStack(new ItemStack(predicateItem, 1, OreDictionary.WILDCARD_VALUE));

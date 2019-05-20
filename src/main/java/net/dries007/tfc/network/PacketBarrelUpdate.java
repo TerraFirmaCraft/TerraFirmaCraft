@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -45,14 +44,7 @@ public class PacketBarrelUpdate implements IMessage
     {
         pos = BlockPos.fromLong(buf.readLong());
         calendarTick = buf.readLong();
-        if (buf.readBoolean())
-        {
-            recipeName = null;
-        }
-        else
-        {
-            recipeName = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
-        }
+        recipeName = Helpers.readResourceLocation(buf);
     }
 
     @Override
@@ -60,11 +52,7 @@ public class PacketBarrelUpdate implements IMessage
     {
         buf.writeLong(pos.toLong());
         buf.writeLong(calendarTick);
-        buf.writeBoolean(recipeName == null);
-        if (recipeName != null)
-        {
-            ByteBufUtils.writeUTF8String(buf, recipeName.toString());
-        }
+        Helpers.writeResourceLocation(buf, recipeName);
     }
 
     public static final class Handler implements IMessageHandler<PacketBarrelUpdate, IMessage>

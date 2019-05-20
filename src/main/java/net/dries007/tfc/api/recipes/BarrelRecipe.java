@@ -52,7 +52,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
 
     public int getDuration()
     {
-        return (int) (duration * 0.01); // todo: remove cheeky barrel speed stuff
+        return duration;
     }
 
     @Nullable

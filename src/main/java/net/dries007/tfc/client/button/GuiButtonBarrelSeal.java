@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.GlStateManager;
 
 import net.dries007.tfc.objects.te.TEBarrel;
 
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.client.gui.GuiBarrel.BARREL_BACKGROUND;
 
 
@@ -28,8 +29,7 @@ public class GuiButtonBarrelSeal extends GuiButtonTFC implements IButtonTooltip
     @Override
     public String getTooltip()
     {
-        // todo: return different tooltip based on barrel state (maybe)
-        return "HI BOB";
+        return MOD_ID + ".tooltip." + (tile.isSealed() ? "barrel_unseal" : "barrel_seal");
     }
 
     @Override

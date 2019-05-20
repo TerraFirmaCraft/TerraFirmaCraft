@@ -289,10 +289,6 @@ public class CalendarTFC
             if (event.phase == TickEvent.Phase.START)
             {
                 CalendarTFC.setTotalTime(event.world.getTotalWorldTime());
-                if (event.world.getTotalWorldTime() % 100 == 0)
-                {
-                    TerraFirmaCraft.getLog().debug("World Tick: {} / {}", totalTime, getTimeAndDate());
-                }
             }
         }
 
@@ -305,10 +301,6 @@ public class CalendarTFC
             if (event.phase == TickEvent.Phase.START && !Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().player != null)
             {
                 CalendarTFC.setTotalTime(Minecraft.getMinecraft().world.getTotalWorldTime());
-                if (Minecraft.getMinecraft().world.getTotalWorldTime() % 100 == 0)
-                {
-                    TerraFirmaCraft.getLog().debug("Client Tick: {} / {}", totalTime, getTimeAndDate());
-                }
             }
         }
 
@@ -317,7 +309,6 @@ public class CalendarTFC
         {
             // This is only called on server, so it needs to sync to client
             GameRules rules = event.getRules();
-            TerraFirmaCraft.getLog().debug("Gamerule changed: " + event.getRuleName());
             if ("doDaylightCycle".equals(event.getRuleName()))
             {
                 CalendarTFC.doCalendarCycle = rules.getBoolean("doDaylightCycle");
@@ -383,8 +374,6 @@ public class CalendarTFC
             {
                 TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(calendarOffset, daysInMonth, doCalendarCycle));
             }
-
-            TerraFirmaCraft.getLog().debug("Calendar Update: {}", getTimeAndDate());
         }
 
         public static void onLoad(World world)
@@ -403,8 +392,6 @@ public class CalendarTFC
             {
                 TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalendarTFC.calendarOffset, CalendarTFC.daysInMonth, CalendarTFC.doCalendarCycle));
             }
-
-            TerraFirmaCraft.getLog().debug("Calendar Load: {}", getTimeAndDate());
         }
 
         @Nonnull
