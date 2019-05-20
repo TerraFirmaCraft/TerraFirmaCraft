@@ -99,6 +99,7 @@ public final class BlocksTFC
     public static final BlockPitKiln PIT_KILN = getNull();
     public static final BlockPlacedItemFlat PLACED_ITEM_FLAT = getNull();
     public static final BlockPlacedItem PLACED_ITEM = getNull();
+    public static final BlockPlacedHide PLACED_HIDE = getNull();
     public static final BlockCharcoalPile CHARCOAL_PILE = getNull();
     public static final BlockLogPile LOG_PILE = getNull();
     public static final BlockIngotPile INGOT_PILE = getNull();
@@ -464,6 +465,7 @@ public final class BlocksTFC
         register(r, "charcoal_forge", new BlockCharcoalForge());
         register(r, "placed_item_flat", new BlockPlacedItemFlat());
         register(r, "placed_item", new BlockPlacedItem());
+        register(r, "placed_hide", new BlockPlacedHide());
         register(r, "charcoal_pile", new BlockCharcoalPile());
         register(r, "ingot_pile", new BlockIngotPile());
         register(r, "log_pile", new BlockLogPile());
@@ -503,6 +505,7 @@ public final class BlocksTFC
         register(TEChestTFC.class, "chest");
         register(TEPlacedItem.class, "placed_item");
         register(TEPlacedItemFlat.class, "placed_item_flat");
+        register(TEPlacedHide.class, "placed_hide");
         register(TETorchTFC.class, "torch");
         register(TEPitKiln.class, "pit_kiln");
         register(TELogPile.class, "log_pile");

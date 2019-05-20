@@ -69,7 +69,6 @@ public class BlockBarrel extends Block
         {
             return 1;
         }
-
         return 0;
     }
 
@@ -105,43 +104,45 @@ public class BlockBarrel extends Block
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (worldIn.isRemote)
+        if (!worldIn.isRemote)
+        {
+            ItemStack heldItem = playerIn.getHeldItem(hand);
+            TEBarrel te = Helpers.getTE(worldIn, pos, TEBarrel.class);
+
+            if (te != null)
+            {
+                if (heldItem.isEmpty() && playerIn.isSneaking())
+                {
+                    worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 0.85F);
+                    worldIn.setBlockState(pos, state.withProperty(SEALED, !state.getValue(SEALED)));
+                    te.onSealed();
+                }
+                else if (heldItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
+                {
+                    if (!state.getValue(SEALED))
+                    {
+                        IFluidHandler fluidHandler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+                        if (fluidHandler != null)
+                        {
+                            FluidUtil.interactWithFluidHandler(playerIn, hand, fluidHandler);
+                            te.markDirty();
+                            worldIn.notifyBlockUpdate(pos, state, state, 3);
+                        }
+                    }
+                }
+                else
+                {
+                    TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.BARREL);
+                }
+            }
+
+            return true;
+        }
+        else
         {
             return true;
         }
 
-        ItemStack heldItem = playerIn.getHeldItem(hand);
-
-        if (heldItem.isEmpty() && playerIn.isSneaking())
-        {
-            worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 0.85F);
-            worldIn.setBlockState(pos, state.withProperty(SEALED, !state.getValue(SEALED)));
-        }
-        else if (heldItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
-        {
-            if (!state.getValue(SEALED))
-            {
-                TEBarrel te = Helpers.getTE(worldIn, pos, TEBarrel.class);
-
-                if (te != null)
-                {
-                    IFluidHandler fluidHandler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-
-                    if (fluidHandler != null)
-                    {
-                        FluidUtil.interactWithFluidHandler(playerIn, hand, fluidHandler);
-                        te.markDirty();
-                        worldIn.notifyBlockUpdate(pos, state, state, 3);
-                    }
-                }
-            }
-        }
-        else
-        {
-            TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.BARREL);
-        }
-
-        return true;
     }
 
     /**

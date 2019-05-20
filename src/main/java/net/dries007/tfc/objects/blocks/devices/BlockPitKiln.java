@@ -138,7 +138,7 @@ public class BlockPitKiln extends Block
         TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
         if (te != null)
         {
-            te.onBreakBlock();
+            te.onBreakBlock(worldIn, pos);
         }
         super.breakBlock(worldIn, pos, state); // todo: drop items
     }
