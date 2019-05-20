@@ -20,7 +20,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.CalendarTFC;
 
@@ -45,25 +44,30 @@ public class CommandTimeTFC extends CommandBase
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        TerraFirmaCraft.getLog().info("Executing command TFC");
         if (args.length != 3)
+        {
             throw new WrongUsageException("Invalid arguments! /timetfc <set|add> <year|month|day|monthLength|ticks> <value>");
+        }
 
         long time = CalendarTFC.TICKS_IN_DAY;
         boolean updateDaylightCycle = false;
         switch (args[1].toLowerCase())
         {
             case "month":
+            case "months":
                 time *= CalendarTFC.getDaysInMonth();
                 time *= parseInt(args[2], 0, 12 * 1000);
                 break;
             case "year":
+            case "years":
                 time *= CalendarTFC.getDaysInMonth() * 12;
                 time *= parseInt(args[2], 0, 1000);
                 break;
             case "day":
+            case "days":
                 time *= parseInt(args[2], 0, CalendarTFC.getDaysInMonth() * 12 * 1000);
                 break;
+            case "tick":
             case "ticks":
                 // This one is different, because it needs to update the actual sun cycle
                 time = parseInt(args[2], 0, Integer.MAX_VALUE);
@@ -91,7 +95,6 @@ public class CommandTimeTFC extends CommandBase
         ITextComponent month = new TextComponentTranslation(Helpers.getEnumName(CalendarTFC.getMonthOfYear()));
         sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_time", CalendarTFC.getTotalYears(), month, CalendarTFC.getDayOfMonth(), String.format("%02d:%02d", CalendarTFC.getHourOfDay(), CalendarTFC.getMinuteOfHour())));
 
-        TerraFirmaCraft.getLog().info("Does this run on server?");
         if (updateDaylightCycle)
         {
             for (int i = 0; i < server.worlds.length; ++i)
@@ -116,7 +119,7 @@ public class CommandTimeTFC extends CommandBase
         }
         else if (args.length == 2 && ("set".equals(args[0]) || "add".equals(args[0])))
         {
-            return getListOfStringsMatchingLastWord(args, "year", "month", "day", "monthLength", "ticks");
+            return getListOfStringsMatchingLastWord(args, "year", "month", "day", "monthlength", "ticks");
         }
         else
         {

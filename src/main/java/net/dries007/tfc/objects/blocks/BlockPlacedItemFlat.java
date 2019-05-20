@@ -162,8 +162,6 @@ public class BlockPlacedItemFlat extends Block
             {
                 ItemStack stack = cap.extractItem(0, 64, true);
                 ItemHandlerHelper.giveItemToPlayer(playerIn, stack);
-                //te.onBreakBlock(playerIn.getPosition());
-                //cap.(0, ItemStack.EMPTY); // Prevent it from dropping itself AGAIN
                 worldIn.setBlockToAir(pos);
             }
         }

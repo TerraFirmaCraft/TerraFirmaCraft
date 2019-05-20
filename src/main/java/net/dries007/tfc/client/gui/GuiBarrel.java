@@ -36,6 +36,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.BarrelRecipe;
 import net.dries007.tfc.client.FluidSpriteCache;
 import net.dries007.tfc.client.button.GuiButtonBarrelSeal;
+import net.dries007.tfc.client.button.IButtonTooltip;
 import net.dries007.tfc.network.PacketGuiButton;
 import net.dries007.tfc.objects.container.ContainerBarrel;
 import net.dries007.tfc.objects.te.TEBarrel;
@@ -157,6 +158,19 @@ public class GuiBarrel extends GuiContainerTE<TEBarrel>
                 }
 
                 this.drawHoveringText(tooltip, mouseX, mouseY, fontRenderer);
+            }
+        }
+
+        // Button Tooltips
+        for (GuiButton button : buttonList)
+        {
+            if (button instanceof IButtonTooltip && button.isMouseOver())
+            {
+                IButtonTooltip tooltip = (IButtonTooltip) button;
+                if (tooltip.hasTooltip())
+                {
+                    drawHoveringText(I18n.format(tooltip.getTooltip()), mouseX, mouseY);
+                }
             }
         }
     }
