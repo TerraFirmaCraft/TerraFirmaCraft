@@ -24,10 +24,4 @@ public class ItemStackHandlerTE extends ItemStackHandler
     {
         return tile.getSlotLimit(slot);
     }
-
-    @Override
-    protected void onContentsChanged(int slot)
-    {
-        tile.setAndUpdateSlots(slot);
-    }
 }

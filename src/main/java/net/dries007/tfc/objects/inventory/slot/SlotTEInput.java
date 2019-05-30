@@ -26,6 +26,8 @@ public class SlotTEInput extends SlotItemHandler
     @Override
     public void onSlotChanged()
     {
+        // Calling this only happens here
+        // If called in the container / item handler it can call during the middle of slot transfers, resulting in strange behavior
         te.setAndUpdateSlots(getSlotIndex());
         super.onSlotChanged();
     }
