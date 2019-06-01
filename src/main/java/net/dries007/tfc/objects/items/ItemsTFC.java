@@ -25,9 +25,11 @@ import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.Powder;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.plants.BlockCropsTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.ceramics.*;
+import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
@@ -185,6 +187,12 @@ public final class ItemsTFC
 
             simpleItems.add(register(r, "ceramics/fire_clay", new ItemFireClay(), CT_MISC));
         }
+
+        for (Crop type : TFCRegistries.CROPS.getValuesCollection())
+            simpleItems.add(register(r, "crops/seedbag/" + type.getRegistryName().getPath(), (new ItemSeedsTFC(type, BlockCropsTFC.get(type))), CT_PLANTS));
+
+        for (Food food : TFCRegistries.FOODS.getValuesCollection())
+            simpleItems.add(register(r, "food/" + food.getRegistryName().getPath(), (new ItemFoodTFC(food, food.getCalories(), food.getSaturation(), false)), CT_FOOD ));
 
         // FLAT
         for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
