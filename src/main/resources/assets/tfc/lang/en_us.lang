@@ -3027,10 +3027,54 @@ tile.tfc.stone.button.ranite.name=Granite Button
 tfc.tooltip.plant_cold=%sToo cold%s
 tfc.tooltip.plant_dry=%sToo dry%s
 tfc.tooltip.plant_hot=%sToo hot%s
-tfc.tooltip.plant_rain=Rainfall: 
-tfc.tooltip.plant_temp=Temperature: 
+tfc.tooltip.plant_rain=Rainfall:
+tfc.tooltip.plant_temp=Temperature:
 tfc.tooltip.plant_valid=%sGood%s
 tfc.tooltip.plant_wet=%sToo wet%s
+
+itemGroup.tfc.plants=TFC Plants
+
+item.tfc.crops.seedbag.barley.name=Barley Seeds
+item.tfc.crops.seedbag.beet.name=Beet Seeds
+item.tfc.crops.seedbag.cabbage.name=Cabbage Seeds
+item.tfc.crops.seedbag.carrot.name=Carrot Seeds
+item.tfc.crops.seedbag.garlic.name=Garlic Seeds
+item.tfc.crops.seedbag.greenbean.name=Green Bean Seeds
+item.tfc.crops.seedbag.jute.name=Jute Seeds
+item.tfc.crops.seedbag.maize.name=Maize Seeds
+item.tfc.crops.seedbag.oat.name=Oat Seeds
+item.tfc.crops.seedbag.onion.name=Onion Seeds
+item.tfc.crops.seedbag.potato.name=Potato Seeds
+item.tfc.crops.seedbag.redbellpepper.name=Red Bell Pepper Seeds
+item.tfc.crops.seedbag.rice.name=Rice Seeds
+item.tfc.crops.seedbag.rye.name=Rye Seeds
+item.tfc.crops.seedbag.soybean.name=Soybean Seeds
+item.tfc.crops.seedbag.squash.name=Squash Seeds
+item.tfc.crops.seedbag.sugarcane.name=Sugarcane Seeds
+item.tfc.crops.seedbag.tomato.name=Tomato Seeds
+item.tfc.crops.seedbag.wheat.name=Wheat Seeds
+item.tfc.crops.seedbag.yellowbellpepper.name=Yellow Bell Pepper Seeds
+
+tile.tfc.crops.barley.name=Barley
+tile.tfc.crops.beet.name=Beets
+tile.tfc.crops.cabbage.name=Cabbage
+tile.tfc.crops.carrot.name=Carrots
+tile.tfc.crops.garlic.name=Garlic
+tile.tfc.crops.greenbean.name=Green Beans
+tile.tfc.crops.jute.name=Jute
+tile.tfc.crops.maize.name=Maize
+tile.tfc.crops.oat.name=Oats
+tile.tfc.crops.onion.name=Onion
+tile.tfc.crops.potato.name=Potatoes
+tile.tfc.crops.redbellpepper.name=Red Bell Peppers
+tile.tfc.crops.rice.name=Rice
+tile.tfc.crops.rye.name=Rye
+tile.tfc.crops.soybean.name=Soybeans
+tile.tfc.crops.squash.name=Squash
+tile.tfc.crops.sugarcane.name=Sugarcane
+tile.tfc.crops.tomato.name=Tomatoes
+tile.tfc.crops.wheat.name=Wheat
+tile.tfc.crops.yellowbellpepper.name=Yellow Bell Peppers
 
 # Plants
 itemGroup.tfc.flora=TFC Flora

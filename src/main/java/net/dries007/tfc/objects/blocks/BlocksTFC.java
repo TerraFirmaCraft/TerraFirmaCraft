@@ -24,6 +24,11 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.*;
+import net.dries007.tfc.objects.blocks.plants.BlockCropsTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.stone.BlockWallTFC;
 import net.dries007.tfc.objects.blocks.devices.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
@@ -129,8 +134,10 @@ public final class BlocksTFC
     private static ImmutableList<BlockAnvilTFC> allAnvils;
     private static ImmutableList<BlockSheet> allSheets;
     private static ImmutableList<BlockToolRack> allToolRackBlocks;
+    private static ImmutableList<BlockCropsTFC> allCropBlocks;
     private static ImmutableList<BlockPlantTFC> allPlantBlocks;
     private static ImmutableList<BlockPlantTFC> allGrassBlocks;
+
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
     {
@@ -224,10 +231,9 @@ public final class BlocksTFC
         return allToolRackBlocks;
     }
 
-    public static ImmutableList<BlockPlantTFC> getAllPlantBlocks()
-    {
-        return allPlantBlocks;
-    }
+    public static ImmutableList<BlockCropsTFC> getAllCropBlocks() { return allCropBlocks; }
+
+    public static ImmutableList<BlockPlantTFC> getAllPlantBlocks() { return allPlantBlocks; }
 
     public static ImmutableList<BlockPlantTFC> getAllGrassBlocks()
     {
@@ -422,6 +428,13 @@ public final class BlocksTFC
         }
 
         {
+            Builder<BlockCropsTFC> crops = ImmutableList.builder();
+
+            for (Crop type : TFCRegistries.CROPS.getValuesCollection())
+            {
+                crops.add(register(r, "crops/" + type.getRegistryName().getPath(), new BlockCropsTFC(type), CT_PLANTS));
+            }
+            allCropBlocks = crops.build();
             Builder<BlockPlantTFC> b = ImmutableList.builder();
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {
@@ -517,6 +530,7 @@ public final class BlocksTFC
         register(TECharcoalForge.class, "charcoal_forge");
         register(TEAnvilTFC.class, "anvil");
         register(TECrucible.class, "crucible");
+        register(TECropsTFC.class, "crops");
     }
 
     public static boolean isWater(IBlockState current)
