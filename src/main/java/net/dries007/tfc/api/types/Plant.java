@@ -338,7 +338,8 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         VALID
     }
 
-    public enum PlantType
+    // todo: switch usages to interface from enum, it will make custom plants by addons easier down the line. It's also a better design
+    public enum PlantType implements IPlantType
     {
         STANDARD(BlockPlantTFC::new),
         TALL_PLANT(BlockTallPlantTFC::new),
@@ -373,12 +374,14 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
             this.supplier = supplier;
         }
 
+        @Override
         public BlockPlantTFC create(Plant plant)
         {
             return supplier.apply(plant);
         }
 
-        private Material getPlantMaterial()
+        @Override
+        public Material getPlantMaterial()
         {
             switch (this)
             {

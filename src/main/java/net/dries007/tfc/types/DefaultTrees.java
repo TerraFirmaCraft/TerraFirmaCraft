@@ -21,7 +21,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 public final class DefaultTrees
 {
     /**
-     * Default Tree ResourceLocations
+     * Simple Tree ResourceLocations
      */
     public static final ResourceLocation ACACIA = new ResourceLocation(MOD_ID, "acacia");
     public static final ResourceLocation ASH = new ResourceLocation(MOD_ID, "ash");

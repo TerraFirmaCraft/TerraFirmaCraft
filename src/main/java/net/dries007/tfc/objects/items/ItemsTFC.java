@@ -25,7 +25,6 @@ import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.Powder;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.plants.BlockCropsTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.ceramics.*;
@@ -39,6 +38,8 @@ import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
 import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 import net.dries007.tfc.objects.items.wood.ItemLumberTFC;
+import net.dries007.tfc.util.agriculture.Crop;
+import net.dries007.tfc.util.agriculture.Food;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.CreativeTabsTFC.*;
@@ -52,6 +53,7 @@ public final class ItemsTFC
     public static final ItemFireStarter FIRESTARTER = getNull();
     public static final ItemGoldPan GOLDPAN = getNull();
     public static final ItemMisc STRAW = getNull();
+    public static final Item JUTE = getNull();
 
     @GameRegistry.ObjectHolder("ceramics/fire_clay")
     public static final ItemFireClay FIRE_CLAY = getNull();
@@ -188,15 +190,21 @@ public final class ItemsTFC
             simpleItems.add(register(r, "ceramics/fire_clay", new ItemFireClay(), CT_MISC));
         }
 
-        for (Crop type : TFCRegistries.CROPS.getValuesCollection())
-            simpleItems.add(register(r, "crops/seedbag/" + type.getRegistryName().getPath(), (new ItemSeedsTFC(type, BlockCropsTFC.get(type))), CT_PLANTS));
+        for (Crop crop : Crop.values())
+        {
+            simpleItems.add(register(r, "crop/seeds/" + crop.name().toLowerCase(), new ItemSeedsTFC(crop), CT_FOOD));
+        }
 
-        for (Food food : TFCRegistries.FOODS.getValuesCollection())
-            simpleItems.add(register(r, "food/" + food.getRegistryName().getPath(), (new ItemFoodTFC(food, food.getCalories(), food.getSaturation(), false)), CT_FOOD ));
+        for (Food food : Food.values())
+        {
+            simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemFoodTFC(food), CT_FOOD));
+        }
 
         // FLAT
         for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
+        {
             r.register(new ItemFlat(rock).setRegistryName(MOD_ID, "flat/" + rock.getRegistryName().getPath().toLowerCase()));
+        }
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
         simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "straw"), CT_MISC));

@@ -27,7 +27,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_NAME;
 @SideOnly(Side.CLIENT)
 public class TFCKeybindings
 {
-    private static final KeyBinding OPEN_CRAFTING_TABLE = new KeyBinding("tfc.key.craft", KeyConflictContext.UNIVERSAL, Keyboard.KEY_C, MOD_NAME);
+    private static final KeyBinding OPEN_CRAFTING_TABLE = new KeyBinding("tfc.key.craft", KeyConflictContext.IN_GAME, Keyboard.KEY_C, MOD_NAME);
     private static final KeyBinding PLACE_BLOCK = new KeyBinding("tfc.key.placeblock", KeyConflictContext.IN_GAME, Keyboard.KEY_V, MOD_NAME);
 
     public static void init()

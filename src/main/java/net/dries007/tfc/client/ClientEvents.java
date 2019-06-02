@@ -12,6 +12,7 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiCreateWorld;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -19,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -37,10 +39,13 @@ import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
+import net.dries007.tfc.api.capability.nuturient.INutrients;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.api.util.IRockObject;
+import net.dries007.tfc.client.gui.GuiPlayerInventoryTFC;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.util.Helpers;
@@ -63,14 +68,27 @@ public class ClientEvents
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void openGUI(GuiScreenEvent.InitGuiEvent.Pre event)
+    public static void onInitGuiPre(GuiScreenEvent.InitGuiEvent.Pre event)
     {
         if (ConfigTFC.CLIENT.makeWorldTypeClassicDefault && event.getGui() instanceof GuiCreateWorld)
         {
             GuiCreateWorld gui = ((GuiCreateWorld) event.getGui());
             // Only change if default is selected, because coming back from customisation, this will be set already.
             if (gui.selectedIndex == WorldType.DEFAULT.getId())
+            {
                 gui.selectedIndex = TerraFirmaCraft.getWorldTypeTFC().getId();
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void onOpenGui(GuiOpenEvent event)
+    {
+        if (event.getGui() instanceof GuiInventory)
+        {
+            TerraFirmaCraft.getLog().info("Replacing the player gui!");
+            event.setGui(new GuiPlayerInventoryTFC());
         }
     }
 
@@ -152,6 +170,11 @@ public class ClientEvents
         if (heat != null)
         {
             heat.addHeatInfo(stack, tt);
+        }
+        INutrients nutrients = stack.getCapability(CapabilityNutrients.CAPABILITY_NUTRIENTS, null);
+        if (nutrients != null)
+        {
+            nutrients.addNutrientInfo(stack, tt);
         }
 
         if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode

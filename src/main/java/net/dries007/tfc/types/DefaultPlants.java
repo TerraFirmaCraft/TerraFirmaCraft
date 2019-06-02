@@ -19,7 +19,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 public final class DefaultPlants
 {
     /**
-     * Default Plant ResourceLocations
+     * Simple Plant ResourceLocations
      */
     public static final ResourceLocation ALLIUM = new ResourceLocation(MOD_ID, "allium");
     public static final ResourceLocation ATHYRIUM_FERN = new ResourceLocation(MOD_ID, "athyrium_fern");
