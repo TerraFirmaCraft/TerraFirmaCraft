@@ -24,15 +24,11 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.*;
-import net.dries007.tfc.objects.blocks.plants.BlockCropsTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockButtonStoneTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
-import net.dries007.tfc.objects.blocks.stone.BlockWallTFC;
 import net.dries007.tfc.objects.blocks.devices.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
+import net.dries007.tfc.objects.blocks.plants.BlockCropTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockFloatingWaterTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.*;
@@ -40,6 +36,7 @@ import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.itemblock.*;
 import net.dries007.tfc.objects.te.*;
+import net.dries007.tfc.util.agriculture.Crop;
 
 import static net.dries007.tfc.api.types.Rock.Type.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -134,7 +131,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockAnvilTFC> allAnvils;
     private static ImmutableList<BlockSheet> allSheets;
     private static ImmutableList<BlockToolRack> allToolRackBlocks;
-    private static ImmutableList<BlockCropsTFC> allCropBlocks;
+    private static ImmutableList<BlockCropTFC> allCropBlocks;
     private static ImmutableList<BlockPlantTFC> allPlantBlocks;
     private static ImmutableList<BlockPlantTFC> allGrassBlocks;
 
@@ -231,7 +228,7 @@ public final class BlocksTFC
         return allToolRackBlocks;
     }
 
-    public static ImmutableList<BlockCropsTFC> getAllCropBlocks() { return allCropBlocks; }
+    public static ImmutableList<BlockCropTFC> getAllCropBlocks() { return allCropBlocks; }
 
     public static ImmutableList<BlockPlantTFC> getAllPlantBlocks() { return allPlantBlocks; }
 
@@ -428,13 +425,17 @@ public final class BlocksTFC
         }
 
         {
-            Builder<BlockCropsTFC> crops = ImmutableList.builder();
+            Builder<BlockCropTFC> b = ImmutableList.builder();
 
-            for (Crop type : TFCRegistries.CROPS.getValuesCollection())
+            for (Crop crop : Crop.values())
             {
-                crops.add(register(r, "crops/" + type.getRegistryName().getPath(), new BlockCropsTFC(type), CT_PLANTS));
+                b.add(register(r, "crop/" + crop.name().toLowerCase(), crop.create()));
             }
-            allCropBlocks = crops.build();
+
+            allCropBlocks = b.build();
+        }
+        {
+
             Builder<BlockPlantTFC> b = ImmutableList.builder();
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {

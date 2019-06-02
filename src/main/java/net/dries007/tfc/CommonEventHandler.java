@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
+import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -115,34 +116,45 @@ public final class CommonEventHandler
 
     }
 
-    //Used for IItemSize capability. You can either implement the interface or use the capability
+
     @SubscribeEvent
     public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> e)
     {
         ItemStack stack = e.getObject();
-        // Skip items with existing capabilities
-        if (CapabilityItemSize.getIItemSize(stack) != null) return;
-
         Item item = stack.getItem();
-        boolean canStack = stack.getMaxStackSize() > 1; // This is necessary so it isn't accidentally overridden by a default implementation
 
-        // todo: Add more items here
-        if (item == Items.COAL)
-            CapabilityItemSize.add(e, Items.COAL, Size.SMALL, Weight.MEDIUM, canStack);
-        else if (item == Items.STICK)
-            e.addCapability(ItemStickCapability.KEY, new ItemStickCapability(e.getObject().getTagCompound()));
-        else if (item == Items.CLAY_BALL)
-            CapabilityItemSize.add(e, item, Size.SMALL, Weight.MEDIUM, canStack);
+        // Item Size
+        // Skip items with existing capabilities
+        if (CapabilityItemSize.getIItemSize(stack) == null)
+        {
 
-            // Final checks for general item types
-        else if (item instanceof ItemTool)
-            CapabilityItemSize.add(e, item, Size.LARGE, Weight.MEDIUM, canStack);
-        else if (item instanceof ItemArmor)
-            CapabilityItemSize.add(e, item, Size.LARGE, Weight.HEAVY, canStack);
-        else if (item instanceof ItemBlock)
-            CapabilityItemSize.add(e, item, Size.SMALL, Weight.MEDIUM, canStack);
-        else
-            CapabilityItemSize.add(e, item, Size.VERY_SMALL, Weight.LIGHT, canStack);
+            boolean canStack = stack.getMaxStackSize() > 1; // This is necessary so it isn't accidentally overridden by a default implementation
+
+            // todo: Add more items here
+            if (item == Items.COAL)
+                CapabilityItemSize.add(e, Items.COAL, Size.SMALL, Weight.MEDIUM, canStack);
+            else if (item == Items.STICK)
+                e.addCapability(ItemStickCapability.KEY, new ItemStickCapability(e.getObject().getTagCompound()));
+            else if (item == Items.CLAY_BALL)
+                CapabilityItemSize.add(e, item, Size.SMALL, Weight.MEDIUM, canStack);
+
+                // Final checks for general item types
+            else if (item instanceof ItemTool)
+                CapabilityItemSize.add(e, item, Size.LARGE, Weight.MEDIUM, canStack);
+            else if (item instanceof ItemArmor)
+                CapabilityItemSize.add(e, item, Size.LARGE, Weight.HEAVY, canStack);
+            else if (item instanceof ItemBlock)
+                CapabilityItemSize.add(e, item, Size.SMALL, Weight.MEDIUM, canStack);
+            else
+                CapabilityItemSize.add(e, item, Size.VERY_SMALL, Weight.LIGHT, canStack);
+        }
+
+        // Food Nutrients
+        if (item instanceof ItemFood && !stack.hasCapability(CapabilityNutrients.CAPABILITY_NUTRIENTS, null))
+        {
+            CapabilityNutrients.add(e);
+        }
+
     }
 
     @SubscribeEvent

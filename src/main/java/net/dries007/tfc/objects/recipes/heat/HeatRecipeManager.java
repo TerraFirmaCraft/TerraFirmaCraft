@@ -43,7 +43,7 @@ public final class HeatRecipeManager
         {
             return recipe.get();
         }
-        // Default Recipes
+        // Simple Recipes
         // These are for default behaviors (IMetalObject = it can melt into liquid metal)
         if (stack.getItem() instanceof IMetalObject)
         {

@@ -1,10 +1,16 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.items;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -13,41 +19,42 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 
-import net.dries007.tfc.api.types.Crop;
+import net.dries007.tfc.api.types.ICrop;
+import net.dries007.tfc.objects.blocks.plants.BlockCropTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
 
 public class ItemSeedsTFC extends Item implements IPlantable
 {
-    private final Block crops;
-    /** BlockID of the block the seeds can be planted on. */
-    public final Crop seedbag;
+    private static final Map<ICrop, ItemSeedsTFC> MAP = new HashMap<>();
 
-    private static final Map<Crop, ItemSeedsTFC> MAP = new HashMap<>();
+    public static ItemSeedsTFC get(ICrop crop) { return MAP.get(crop); }
 
-    public static ItemSeedsTFC get(Crop seedbag) { return MAP.get(seedbag); }
+    public static ItemStack get(ICrop crop, int amount) { return new ItemStack(MAP.get(crop), amount); }
 
-    public static ItemStack get(Crop seedbag, int amount) { return new ItemStack(MAP.get(seedbag), amount); }
+    private final ICrop crop;
 
-    public ItemSeedsTFC(Crop seedbag, Block crops)
+    public ItemSeedsTFC(ICrop crop)
     {
-        this.seedbag = seedbag;
-        this.crops = crops;
-        if (MAP.put(seedbag, this) != null) throw new IllegalStateException("There can only be one.");
+        this.crop = crop;
+        if (MAP.put(crop, this) != null)
+        {
+            throw new IllegalStateException("There can only be one.");
+        }
     }
-    /**
-     * Called when a Block is right-clicked with this Item
-     */
+
+    @Nonnull
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack itemstack = player.getHeldItem(hand);
-        net.minecraft.block.state.IBlockState state = worldIn.getBlockState(pos);
+        IBlockState state = worldIn.getBlockState(pos);
         if (facing == EnumFacing.UP && player.canPlayerEdit(pos.offset(facing), facing, itemstack) && state.getBlock().canSustainPlant(state, worldIn, pos, EnumFacing.UP, this) && worldIn.isAirBlock(pos.up()) && state.getBlock() instanceof BlockFarmlandTFC)
         {
-            worldIn.setBlockState(pos.up(), this.crops.getDefaultState());
+            worldIn.setBlockState(pos.up(), BlockCropTFC.get(crop).getDefaultState());
 
             if (player instanceof EntityPlayerMP)
             {
@@ -64,14 +71,19 @@ public class ItemSeedsTFC extends Item implements IPlantable
     }
 
     @Override
-    public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
     {
         return EnumPlantType.Crop;
     }
 
     @Override
-    public net.minecraft.block.state.IBlockState getPlant(net.minecraft.world.IBlockAccess world, BlockPos pos)
+    public IBlockState getPlant(IBlockAccess world, BlockPos pos)
     {
-        return this.crops.getDefaultState();
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof BlockCropTFC && ((BlockCropTFC) state.getBlock()).getCrop() == this.crop)
+        {
+            return state;
+        }
+        return BlockCropTFC.get(crop).getDefaultState();
     }
 }

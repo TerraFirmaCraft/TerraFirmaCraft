@@ -90,6 +90,8 @@ itemGroup.tfc.decorations=TFC Decorations
 itemGroup.tfc.pottery=TFC Pottery
 itemGroup.tfc.metal=TFC Metal
 itemGroup.tfc.gems=TFC Gems
+itemGroup.tfc.food=TFC Foodstuffs
+
 generator.tfc_classic=TFC Classic
 
 # Enum types
