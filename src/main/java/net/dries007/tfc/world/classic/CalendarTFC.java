@@ -6,6 +6,8 @@
 package net.dries007.tfc.world.classic;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -68,6 +70,25 @@ public class CalendarTFC
     private static int ticksInYear;
     private static int ticksInMonth;
 
+    private static final String[] DAY_NAMES = new String[] {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
+    private static final Map<String, String> BIRTHDAYS = new HashMap<>();
+
+    static
+    {
+        // Original developers, all hail their glorious creation
+        BIRTHDAYS.put("JULY7", "Bioxx's Birthday");
+        BIRTHDAYS.put("JUNE18", "Kitty's Birthday");
+        BIRTHDAYS.put("OCTOBER2", "Dunk's Birthday");
+
+        // 1.12+ Dev Team, Contributors, and Moderators
+        BIRTHDAYS.put("MAY1", "Dries's Birthday");
+        BIRTHDAYS.put("DECEMBER9", "Alcatraz's Birthday");
+        BIRTHDAYS.put("JANUARY2", "Bunsan's Birthday");
+        BIRTHDAYS.put("MARCH14", "Claycorp's Birthday");
+        BIRTHDAYS.put("DECEMBER1", "LightningShock's Birthday");
+        BIRTHDAYS.put("JANUARY20", "Therighthon's Birthday");
+    }
+
     public static void preInit()
     {
         // Set everything to default values so we don't hit any div/0 exceptions with any accessors prior to world load
@@ -114,6 +135,19 @@ public class CalendarTFC
     public static String getTimeAndDate()
     {
         return getTimeAndDate(getHourOfDay(), getMinuteOfHour(), getMonthOfYear().getShortName(), getDayOfMonth(), getTotalYears());
+    }
+
+    @Nonnull
+    public static String getDayName()
+    {
+        String date = getMonthOfYear().name() + getDayOfMonth();
+        String birthday = BIRTHDAYS.get(date);
+        if (birthday != null)
+        {
+            return birthday;
+        }
+        long days = getTotalDays();
+        return "tfc.enum.day." + DAY_NAMES[(int) (days % 7)];
     }
 
     @Nonnull

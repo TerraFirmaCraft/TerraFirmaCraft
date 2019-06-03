@@ -27,6 +27,10 @@ tfc.tooltip.anvil_no_hammer=There is no hammer in the anvil!
 tfc.tooltip.crucible_result=Result:
 tfc.tooltip.barrel_seal=Seal Barrel
 tfc.tooltip.barrel_unseal=Unseal Barrel
+tfc.tooltip.calendar=Calendar
+tfc.tooltip.season=Season : %s
+tfc.tooltip.day=Day : %s
+tfc.tooltip.date=Date : %s
 
 ## Command Tooltips / Messages
 tfc.tooltip.set_month_length=Set Month Length to %d days
@@ -217,6 +221,15 @@ tfc.enum.month.september=Early Autumn
 tfc.enum.month.october=Autumn
 tfc.enum.month.november=Late Autumn
 tfc.enum.month.december=Early Winter
+
+tfc.enum.day.sunday=Sunday
+tfc.enum.day.monday=Monday
+tfc.enum.day.tuesday=Tuesday
+tfc.enum.day.wednesday=Wednesday
+tfc.enum.day.thursday=Thursday
+tfc.enum.day.friday=Friday
+tfc.enum.day.saturday=Saturday
+
 
 # Items
 item.tfc.wand.name=TFC Debug Wand
