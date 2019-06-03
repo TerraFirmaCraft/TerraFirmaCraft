@@ -8,6 +8,7 @@ package net.dries007.tfc.util.agriculture;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.types.ICrop;
@@ -37,6 +38,11 @@ public enum Crop implements ICrop
     TOMATO(Food.TOMATO, 5f, 35f, 100f, 400f, 8, 0.5f, false),
     YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 5f, 35f, 100f, 400f, 7, 0.5f, false),
     JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 6, 0.5f, false);
+
+    public static final PropertyInteger STAGE_8 = PropertyInteger.create("stage", 0, 7);
+    public static final PropertyInteger STAGE_7 = PropertyInteger.create("stage", 0, 6);
+    public static final PropertyInteger STAGE_6 = PropertyInteger.create("stage", 0, 5);
+    public static final PropertyInteger STAGE_5 = PropertyInteger.create("stage", 0, 4);
 
     private final Supplier<ItemStack> foodDrop;
     private final Supplier<ItemStack> foodDropEarly;
@@ -115,17 +121,57 @@ public enum Crop implements ICrop
 
     public BlockCropTFC create()
     {
+        // Type: SIMPLE, PICKABLE
         switch (growthStages)
         {
             case 5:
-                return new BlockCropTFC.Simple5(this);
+                return new BlockCropTFC(this)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_5;
+                    }
+                };
             case 6:
-                return new BlockCropTFC.Simple6(this);
+                return new BlockCropTFC(this)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_6;
+                    }
+                };
             case 7:
-                return new BlockCropTFC.Simple7(this);
+                return new BlockCropTFC(this)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_7;
+                    }
+                };
             case 8:
-                return new BlockCropTFC.Simple8(this);
+                return new BlockCropTFC(this)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_8;
+                    }
+                };
         }
+        // Type: TALL,
+        // Type: SPREAD
         throw new IllegalStateException("Invalid growthstage property " + growthStages + " for crop");
+    }
+
+    public enum CropType
+    {
+        SIMPLE,
+        TALL,
+        PICKABLE,
+        ROOT,
+        SPREAD
     }
 }

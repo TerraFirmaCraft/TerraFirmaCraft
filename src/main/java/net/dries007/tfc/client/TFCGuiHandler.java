@@ -89,6 +89,10 @@ public class TFCGuiHandler implements IGuiHandler
                 return new ContainerKnapping(KnappingRecipe.Type.FIRE_CLAY, player.inventory, stack.getItem() == ItemsTFC.FIRE_CLAY ? stack : player.getHeldItemOffhand());
             case CRUCIBLE:
                 return new ContainerCrucible(player.inventory, Helpers.getTE(world, pos, TECrucible.class));
+            case CALENDAR:
+            case SKILLS:
+            case NUTRITION:
+                return new ContainerSimple(player.inventory);
             default:
                 return null;
         }
@@ -135,6 +139,12 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiKnapping(container, player, KnappingRecipe.Type.FIRE_CLAY, FIRE_CLAY_TEXTURE);
             case CRUCIBLE:
                 return new GuiCrucible(container, player.inventory, Helpers.getTE(world, pos, TECrucible.class));
+            case CALENDAR:
+                return new GuiCalendar(container, player.inventory);
+            case NUTRITION:
+                return new GuiNutrition(container, player.inventory);
+            case SKILLS:
+                return new GuiSkills(container, player.inventory);
             default:
                 return null;
         }
@@ -156,12 +166,16 @@ public class TFCGuiHandler implements IGuiHandler
         ANVIL,
         ANVIL_PLAN,
         CRUCIBLE,
-        NULL;
+        CALENDAR,
+        NUTRITION,
+        SKILLS,
+        INVENTORY, // This is special, it is used by GuiButtonPlayerInventoryTab to signal to open the vanilla inventory
+        NULL; // This is special, it is a non-null null.
 
         private static Type[] values = values();
 
         @Nonnull
-        private static Type valueOf(int id)
+        public static Type valueOf(int id)
         {
             return id < 0 || id >= values.length ? NULL : values[id];
         }

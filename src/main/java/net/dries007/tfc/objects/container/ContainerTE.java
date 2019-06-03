@@ -7,10 +7,10 @@ package net.dries007.tfc.objects.container;
 
 import java.util.stream.IntStream;
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -25,7 +25,8 @@ import net.dries007.tfc.util.ITileFields;
  *
  * @param <T> The Tile Entity class
  */
-public abstract class ContainerTE<T extends TEInventory> extends Container
+@ParametersAreNonnullByDefault
+public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
 {
     protected final T tile;
     protected final EntityPlayer player;
@@ -138,12 +139,6 @@ public abstract class ContainerTE<T extends TEInventory> extends Container
         }
     }
 
-    @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer player)
-    {
-        return true;
-    }
-
     protected abstract void addContainerSlots();
 
     protected void detectAndSendAllChanges()
@@ -210,22 +205,4 @@ public abstract class ContainerTE<T extends TEInventory> extends Container
     {
         return IntStream.range(0, containerSlots).toArray();
     }
-
-    private void addPlayerInventorySlots(InventoryPlayer playerInv)
-    {
-        // Add Player Inventory Slots
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + yOffset));
-            }
-        }
-
-        for (int k = 0; k < 9; k++)
-        {
-            addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142 + yOffset));
-        }
-    }
-
 }

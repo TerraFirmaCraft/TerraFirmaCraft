@@ -107,7 +107,9 @@ public final class TerraFirmaCraft
         log = event.getModLog();
         log.debug("If you can see this, debug logging is working :)");
         if (!isSignedBuild)
+        {
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
+        }
 
         // No need to sync config here, forge magic
 
@@ -117,6 +119,7 @@ public final class TerraFirmaCraft
         // Received on server
         network.registerMessage(new PacketGuiButton.Handler(), PacketGuiButton.class, ++id, Side.SERVER);
         network.registerMessage(new PacketPlaceBlockSpecial.Handler(), PacketPlaceBlockSpecial.class, ++id, Side.SERVER);
+        network.registerMessage(new PacketSwitchPlayerInventoryTab.Handler(), PacketSwitchPlayerInventoryTab.class, ++id, Side.SERVER);
         // Received on client
         network.registerMessage(new PacketAnvilUpdate.Handler(), PacketAnvilUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketCrucibleUpdate.Handler(), PacketCrucibleUpdate.class, ++id, Side.CLIENT);
@@ -134,14 +137,19 @@ public final class TerraFirmaCraft
         CapabilityItemHeat.preInit();
         CapabilityForgeable.preInit();
 
-        if (event.getSide().isClient()) ClientEvents.preInit();
+        if (event.getSide().isClient())
+        {
+            ClientEvents.preInit();
+        }
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
         if (!isSignedBuild)
+        {
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
+        }
 
         OreDictionaryHelper.init();
         ItemsTFC.init();
@@ -155,6 +163,7 @@ public final class TerraFirmaCraft
 
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true, 20)), 0);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureRarity, new WorldGenFissure(false, -1)), 0);
+        // todo: fix these. They are commented out due to significant cascading lag problems. They need to be rewritten
         //GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureClusterRarity, new WorldGenSurfaceFissureCluster(true)), 1);
         //GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureClusterRarity, new WorldGenSurfaceFissureCluster(false)), 1);
         GameRegistry.registerWorldGenerator(new WorldGenOreVeins(), 2);
@@ -163,14 +172,15 @@ public final class TerraFirmaCraft
         GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 5);
         GameRegistry.registerWorldGenerator(new WorldGenSoilPits(), 6);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 7);
-        //todo: add plants
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
         if (!isSignedBuild)
+        {
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
+        }
 
         HeatRecipeManager.postInit();
         FuelManager.postInit();
@@ -182,7 +192,10 @@ public final class TerraFirmaCraft
     public void onServerStarting(FMLServerStartingEvent event)
     {
         if (!isSignedBuild)
+        {
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
+        }
+
         event.registerServerCommand(new CommandStripWorld());
         event.registerServerCommand(new CommandGenTree());
         event.registerServerCommand(new CommandHeat());
