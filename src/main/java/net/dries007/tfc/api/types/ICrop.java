@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 public interface ICrop
 {
     /**
-     * @return the minimum time the crop will take to grow one stage (in months)
+     * @return the minimum time the crop will take to grow one stage (in hours)
      */
     float getGrowthTime();
 
@@ -40,13 +40,6 @@ public interface ICrop
      * @return true if the crop is allowed to grow.(false doesn't mean death)
      */
     boolean isValidForGrowth(float temperature, float rainfall);
-
-    /**
-     * Can the crop be picked via right click?
-     *
-     * @return true if the crop can be right clicked to receive a food item and -2 to growth
-     */
-    boolean isPickable();
 
     /**
      * Get the food item dropped by the crop upon breaking / picking

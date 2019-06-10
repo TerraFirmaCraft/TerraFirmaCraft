@@ -6,40 +6,40 @@
 package net.dries007.tfc.objects.te;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.nbt.NBTTagCompound;
 
 import net.dries007.tfc.world.classic.CalendarTFC;
 
-public class TECropsTFC extends TEBase
+@ParametersAreNonnullByDefault
+public class TETickCounter extends TEBase
 {
-    private long timer;
+    private long lastUpdateTick;
 
-    public TECropsTFC() { super (); }
-
-    public long getHoursSincePlaced()
+    public long getTicksSinceUpdate()
     {
-        return (CalendarTFC.getTotalTime() - timer) / CalendarTFC.TICKS_IN_HOUR;
+        return CalendarTFC.getCalendarTime() - lastUpdateTick;
     }
 
-    public void onPlaced()
+    public void resetCounter()
     {
-        timer = CalendarTFC.getTotalTime();
-        this.markDirty();
+        lastUpdateTick = CalendarTFC.getCalendarTime();
+        markDirty();
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
-        timer = nbt.getLong("timer");
+        lastUpdateTick = nbt.getLong("tick");
         super.readFromNBT(nbt);
     }
 
-    @Override
     @Nonnull
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setLong("timer", timer);
+        nbt.setLong("tick", lastUpdateTick);
         return super.writeToNBT(nbt);
     }
 }

@@ -24,11 +24,11 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.*;
+import net.dries007.tfc.objects.blocks.crops.BlockCropTFC;
 import net.dries007.tfc.objects.blocks.devices.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
-import net.dries007.tfc.objects.blocks.plants.BlockCropTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockFloatingWaterTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.*;
@@ -515,13 +515,15 @@ public final class BlocksTFC
 
         // Register Tile Entities
         // Putting tile entity registration in the respective block can call it multiple times. Just put here to avoid duplicates
-        register(TESaplingTFC.class, "sapling");
-        register(TEChestTFC.class, "chest");
+
+        // Generic classes
+        register(TETickCounter.class, "tick_counter");
         register(TEPlacedItem.class, "placed_item");
         register(TEPlacedItemFlat.class, "placed_item_flat");
         register(TEPlacedHide.class, "placed_hide");
         register(TETorchTFC.class, "torch");
         register(TEPitKiln.class, "pit_kiln");
+        register(TEChestTFC.class, "chest");
         register(TELogPile.class, "log_pile");
         register(TEIngotPile.class, "ingot_pile");
         register(TEFirePit.class, "fire_pit");
@@ -531,7 +533,7 @@ public final class BlocksTFC
         register(TECharcoalForge.class, "charcoal_forge");
         register(TEAnvilTFC.class, "anvil");
         register(TECrucible.class, "crucible");
-        register(TECropsTFC.class, "crops");
+        register(TECropSpreading.class, "crop_spreading");
     }
 
     public static boolean isWater(IBlockState current)

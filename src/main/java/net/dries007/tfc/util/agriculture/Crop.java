@@ -9,35 +9,43 @@ import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.types.ICrop;
-import net.dries007.tfc.objects.blocks.plants.BlockCropTFC;
+import net.dries007.tfc.objects.blocks.crops.BlockCropSimple;
+import net.dries007.tfc.objects.blocks.crops.BlockCropSpreading;
+import net.dries007.tfc.objects.blocks.crops.BlockCropTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
+import net.dries007.tfc.world.classic.CalendarTFC;
+
+import static net.dries007.tfc.util.agriculture.Crop.CropType.*;
 
 public enum Crop implements ICrop
 {
-    BARLEY(Food.BARLEY, 5f, 35f, 100f, 400f, 8, 0.5f, false),
-    MAIZE(Food.MAIZE, 5f, 35f, 100f, 400f, 6, 0.5f, false),
-    OAT(Food.OAT, 5f, 35f, 100f, 400f, 8, 0.5f, false),
-    RICE(Food.RICE, 5f, 35f, 100f, 400f, 8, 0.5f, false),
-    RYE(Food.RYE, 5f, 35f, 100f, 400f, 8, 0.5f, false),
-    WHEAT(Food.WHEAT, 5f, 35f, 100f, 400f, 8, 0.5f, false),
-    BEET(Food.BEET, 5f, 35f, 100f, 400f, 7, 0.5f, false),
-    CABBAGE(Food.CABBAGE, 5f, 35f, 100f, 400f, 6, 0.5f, false),
-    CARROT(Food.CARROT, 5f, 35f, 100f, 400f, 5, 0.5f, false),
-    GARLIC(Food.GARLIC, 5f, 35f, 100f, 400f, 5, 0.5f, false),
-    GREEN_BEAN(Food.GREEN_BEAN, 5f, 35f, 100f, 400f, 7, 0.5f, false),
-    ONION(Food.ONION, 5f, 35f, 100f, 400f, 7, 0.5f, false),
-    POTATO(Food.POTATO, 5f, 35f, 100f, 400f, 7, 0.5f, false),
-    SOYBEAN(Food.SOYBEAN, 5f, 35f, 100f, 400f, 7, 0.5f, false),
-    SQUASH(Food.SQUASH, 5f, 35f, 100f, 400f, 7, 0.5f, false),
-    SUGARCANE(Food.SUGARCANE, 5f, 35f, 100f, 400f, 8, 0.5f, false),
-    RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 5f, 35f, 100f, 400f, 7, 0.5f, false),
-    TOMATO(Food.TOMATO, 5f, 35f, 100f, 400f, 8, 0.5f, false),
-    YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 5f, 35f, 100f, 400f, 7, 0.5f, false),
-    JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 6, 0.5f, false);
+    BARLEY(Food.BARLEY, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
+    MAIZE(Food.MAIZE, 5f, 35f, 100f, 400f, 6, 0.5f, SIMPLE),
+    OAT(Food.OAT, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
+    RICE(Food.RICE, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
+    RYE(Food.RYE, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
+    WHEAT(Food.WHEAT, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
+    BEET(Food.BEET, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
+    CABBAGE(Food.CABBAGE, 5f, 35f, 100f, 400f, 6, 0.5f, SIMPLE),
+    CARROT(Food.CARROT, 5f, 35f, 100f, 400f, 5, 0.5f, SIMPLE),
+    GARLIC(Food.GARLIC, 5f, 35f, 100f, 400f, 5, 0.5f, SIMPLE),
+    GREEN_BEAN(Food.GREEN_BEAN, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
+    ONION(Food.ONION, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
+    POTATO(Food.POTATO, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
+    SOYBEAN(Food.SOYBEAN, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
+    SQUASH(Food.SQUASH, 5f, 35f, 100f, 400f, 7, 0.5f, SPREADING),
+    SUGARCANE(Food.SUGARCANE, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
+    RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
+    TOMATO(Food.TOMATO, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
+    YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
+    JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 6, 0.5f, SIMPLE),
+    PUMPKIN(() -> new ItemStack(Blocks.PUMPKIN), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 8, 0.5f, SPREADING),
+    MELON(() -> new ItemStack(Blocks.MELON_BLOCK), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 8, 0.5f, SPREADING);
 
     public static final PropertyInteger STAGE_8 = PropertyInteger.create("stage", 0, 7);
     public static final PropertyInteger STAGE_7 = PropertyInteger.create("stage", 0, 6);
@@ -52,14 +60,14 @@ public enum Crop implements ICrop
     private final float maxRain;
     private final int growthStages;
     private final float growthTime;
-    private final boolean isPickable;
+    private final CropType type;
 
-    Crop(Food foodDrop, float minTemp, float maxTemp, float minRain, float maxRain, int growthStages, float growthTime, boolean isPickable)
+    Crop(Food foodDrop, float minTemp, float maxTemp, float minRain, float maxRain, int growthStages, float growthTime, CropType type)
     {
-        this(() -> new ItemStack(ItemFoodTFC.get(foodDrop)), () -> ItemStack.EMPTY, minTemp, maxTemp, minRain, maxRain, growthStages, growthTime, isPickable);
+        this(() -> new ItemStack(ItemFoodTFC.get(foodDrop)), () -> ItemStack.EMPTY, minTemp, maxTemp, minRain, maxRain, growthStages, growthTime, type);
     }
 
-    Crop(Supplier<ItemStack> foodDrop, Supplier<ItemStack> foodDropEarly, float minTemp, float maxTemp, float minRain, float maxRain, int growthStages, float growthTime, boolean isPickable)
+    Crop(Supplier<ItemStack> foodDrop, Supplier<ItemStack> foodDropEarly, float minTemp, float maxTemp, float minRain, float maxRain, int growthStages, float growthTime, CropType type)
     {
         this.foodDrop = foodDrop;
         this.foodDropEarly = foodDropEarly;
@@ -70,8 +78,10 @@ public enum Crop implements ICrop
         this.maxRain = maxRain;
 
         this.growthStages = growthStages;
-        this.growthTime = growthTime;
-        this.isPickable = isPickable;
+        // The value stored it measured in hours, the input value is in months
+        this.growthTime = growthTime * CalendarTFC.getDaysInMonth() * 24;
+
+        this.type = type;
     }
 
     @Override
@@ -98,12 +108,6 @@ public enum Crop implements ICrop
         return minTemp < temperature && temperature < maxTemp && minRain < rainfall && rainfall < maxRain;
     }
 
-    @Override
-    public boolean isPickable()
-    {
-        return isPickable;
-    }
-
     @Nonnull
     @Override
     public ItemStack getFoodDrop(int currentStage)
@@ -121,57 +125,57 @@ public enum Crop implements ICrop
 
     public BlockCropTFC create()
     {
-        // Type: SIMPLE, PICKABLE
-        switch (growthStages)
+        if (type == SIMPLE || type == PICKABLE)
         {
-            case 5:
-                return new BlockCropTFC(this)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
+            switch (growthStages)
+            {
+                case 5:
+                    return new BlockCropSimple(this, type == PICKABLE)
                     {
-                        return STAGE_5;
-                    }
-                };
-            case 6:
-                return new BlockCropTFC(this)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
+                        @Override
+                        public PropertyInteger getStageProperty()
+                        {
+                            return STAGE_5;
+                        }
+                    };
+                case 6:
+                    return new BlockCropSimple(this, type == PICKABLE)
                     {
-                        return STAGE_6;
-                    }
-                };
-            case 7:
-                return new BlockCropTFC(this)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
+                        @Override
+                        public PropertyInteger getStageProperty()
+                        {
+                            return STAGE_6;
+                        }
+                    };
+                case 7:
+                    return new BlockCropSimple(this, type == PICKABLE)
                     {
-                        return STAGE_7;
-                    }
-                };
-            case 8:
-                return new BlockCropTFC(this)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
+                        @Override
+                        public PropertyInteger getStageProperty()
+                        {
+                            return STAGE_7;
+                        }
+                    };
+                case 8:
+                    return new BlockCropSimple(this, type == PICKABLE)
                     {
-                        return STAGE_8;
-                    }
-                };
+                        @Override
+                        public PropertyInteger getStageProperty()
+                        {
+                            return STAGE_8;
+                        }
+                    };
+            }
         }
-        // Type: TALL,
-        // Type: SPREAD
+        else if (type == SPREADING)
+        {
+            return new BlockCropSpreading(this);
+        }
         throw new IllegalStateException("Invalid growthstage property " + growthStages + " for crop");
     }
 
-    public enum CropType
+    enum CropType
     {
-        SIMPLE,
-        TALL,
-        PICKABLE,
-        ROOT,
-        SPREAD
+        SIMPLE, PICKABLE, SPREADING
     }
 }

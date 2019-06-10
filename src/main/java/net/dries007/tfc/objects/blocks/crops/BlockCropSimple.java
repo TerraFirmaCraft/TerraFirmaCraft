@@ -3,40 +3,39 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.plants;
+package net.dries007.tfc.objects.blocks.crops;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.IGrowable;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.types.ICrop;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
-import net.dries007.tfc.objects.te.TECropsTFC;
+import net.dries007.tfc.objects.te.TEPlacedItem;
+import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
-public abstract class BlockCropTFC extends BlockBush implements IGrowable
+public abstract class BlockCropSimple extends BlockCropTFC
 {
     private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
         new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.125D, 0.875D),
@@ -49,39 +48,14 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
         new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D)
     };
 
-    private static final Map<ICrop, BlockCropTFC> MAP = new HashMap<>();
+    private final boolean isPickable;
 
-    public static BlockCropTFC get(ICrop crop)
+    protected BlockCropSimple(ICrop crop, boolean isPickable)
     {
-        return MAP.get(crop);
-    }
+        super(crop);
+        this.isPickable = isPickable;
 
-    public final ICrop crop;
-
-    public BlockCropTFC(ICrop crop)
-    {
-        super(Material.PLANTS);
-        if (MAP.put(crop, this) != null)
-        {
-            throw new IllegalStateException("There can only be one.");
-        }
-        this.crop = crop;
-
-        setDefaultState(getBlockState().getBaseState().withProperty(getStageProperty(), 0));
-    }
-
-    @Override
-    public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
-    {
-        // todo: advanced check involving light, nutrients, etc.
-        return true;
-    }
-
-    @Override
-    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
-    {
-        // todo: remove
-        return state.getValue(getStageProperty()) != crop.getMaxStage();
+        setDefaultState(getBlockState().getBaseState().withProperty(getStageProperty(), 0).withProperty(WILD, false));
     }
 
     @Override
@@ -93,6 +67,11 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
             {
                 worldIn.setBlockState(pos, state.withProperty(getStageProperty(), state.getValue(getStageProperty()) + 1), 2);
             }
+            TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
+            if (tile != null)
+            {
+                tile.resetCounter();
+            }
         }
     }
 
@@ -101,29 +80,19 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(getStageProperty(), meta);
+        return this.getDefaultState().withProperty(getStageProperty(), meta & 7).withProperty(WILD, meta > 7);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(getStageProperty());
-    }
-
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TECropsTFC te = Helpers.getTE(worldIn, pos, TECropsTFC.class);
-        if (te != null)
-        {
-            te.onPlaced();
-        }
+        return state.getValue(getStageProperty()) + (state.getValue(WILD) ? 8 : 0);
     }
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (crop.isPickable())
+        if (isPickable)
         {
             ItemStack foodDrop = crop.getFoodDrop(state.getValue(getStageProperty()));
             if (!foodDrop.isEmpty())
@@ -143,11 +112,11 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, getStageProperty());
+        return new BlockStateContainer(this, getStageProperty(), WILD);
     }
 
     @Override
-    public void getDrops(net.minecraft.util.NonNullList<ItemStack> drops, net.minecraft.world.IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
         drops.clear();
         drops.add(new ItemStack(ItemSeedsTFC.get(crop)));
@@ -160,40 +129,35 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TECropsTFC();
-    }
-
-    public abstract PropertyInteger getStageProperty();
-
-    @Nonnull
-    public ICrop getCrop()
-    {
-        return crop;
-    }
-
-    @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
     {
         super.updateTick(world, pos, state, random);
         if (!world.isRemote)
         {
-            TECropsTFC te = Helpers.getTE(world, pos, TECropsTFC.class);
+            float temp = ClimateTFC.getTemp(world, pos);
+            float rainfall = ChunkDataTFC.getRainfall(world, pos);
+            TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
             if (te != null)
             {
-                // todo: reevaluate this
-                long hours = te.getHoursSincePlaced();
-                if (hours > (((state.getValue(getStageProperty()) * crop.getGrowthTime()) + crop.getGrowthTime()) * CalendarTFC.HOURS_IN_DAY))
+                long hours = te.getTicksSinceUpdate() / CalendarTFC.TICKS_IN_HOUR;
+                if (hours > crop.getGrowthTime() && crop.isValidForGrowth(temp, rainfall))
                 {
                     grow(world, random, pos, state);
+                    te.resetCounter();
+                }
+            }
+
+            if (!crop.isValidConditions(temp, rainfall))
+            {
+                world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
+                TEPlacedItem tilePlaced = Helpers.getTE(world, pos, TEPlacedItem.class);
+                if (tilePlaced != null)
+                {
+                    IItemHandler cap = tilePlaced.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                    if (cap != null)
+                    {
+                        cap.insertItem(0, new ItemStack(ItemSeedsTFC.get(crop)), false);
+                    }
                 }
             }
         }
@@ -207,10 +171,6 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
         return CROPS_AABB[state.getValue(getStageProperty())];
     }
 
-    @Nonnull
-    @Override
-    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
-    {
-        return EnumPlantType.Crop;
-    }
+
+    protected abstract PropertyInteger getStageProperty();
 }

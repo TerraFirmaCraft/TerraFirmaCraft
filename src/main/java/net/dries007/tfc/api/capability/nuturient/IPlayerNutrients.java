@@ -11,5 +11,13 @@ public interface IPlayerNutrients
 {
     float getNutrient(Nutrient nutrient);
 
+    float[] getNutrients();
+
+    void setNutrients(float[] nutrients);
+
+    void setNutrient(Nutrient nutrient, float amount);
+
     void addNutrient(Nutrient nutrient, float amount);
+
+    void updateNutrientsFastForward();
 }

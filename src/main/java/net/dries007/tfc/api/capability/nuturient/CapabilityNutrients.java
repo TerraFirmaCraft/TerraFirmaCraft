@@ -26,6 +26,9 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public final class CapabilityNutrients
 {
+    public static final float MIN_PLAYER_NUTRIENTS = 0f;
+    public static final float MAX_PLAYER_NUTRIENTS = 100f;
+
     @CapabilityInject(INutrients.class)
     public static final Capability<INutrients> CAPABILITY_NUTRIENTS = Helpers.getNull();
     @CapabilityInject(IPlayerNutrients.class)
@@ -72,7 +75,10 @@ public final class CapabilityNutrients
                     for (Nutrient nutrient : Nutrient.values())
                     {
                         playerCap.addNutrient(nutrient, itemCap.getNutrients(stack, nutrient));
+
+
                     }
+                    ((PlayerNutrientsHandler) playerCap).debug();
                 }
             }
         }

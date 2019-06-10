@@ -25,11 +25,13 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
 import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
+import net.dries007.tfc.api.capability.nuturient.IPlayerNutrients;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
+import net.dries007.tfc.network.PacketNutrientsUpdate;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.util.Helpers;
 
@@ -168,6 +170,14 @@ public final class CommonEventHandler
 
             // World Data (Calendar) Sync Handler
             TerraFirmaCraft.getNetwork().sendTo(new PacketCalendarUpdate(), player);
+
+            // Player nutrients
+            IPlayerNutrients cap = player.getCapability(CapabilityNutrients.CAPABILITY_PLAYER_NUTRIENTS, null);
+            if (cap != null)
+            {
+                cap.updateNutrientsFastForward();
+                TerraFirmaCraft.getNetwork().sendTo(new PacketNutrientsUpdate(cap), player);
+            }
         }
     }
 
