@@ -15,6 +15,7 @@ import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
