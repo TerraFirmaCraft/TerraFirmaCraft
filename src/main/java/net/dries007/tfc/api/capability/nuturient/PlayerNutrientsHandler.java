@@ -13,11 +13,17 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.agriculture.Nutrient;
+import net.dries007.tfc.world.classic.CalendarTFC;
+
+import static net.dries007.tfc.api.capability.nuturient.CapabilityNutrients.MAX_PLAYER_NUTRIENTS;
+import static net.dries007.tfc.api.capability.nuturient.CapabilityNutrients.MIN_PLAYER_NUTRIENTS;
 
 public class PlayerNutrientsHandler implements IPlayerNutrients, ICapabilitySerializable<NBTTagCompound>
 {
     private final float[] nutrients;
+    private long lastUpdateTick;
 
     public PlayerNutrientsHandler()
     {
@@ -26,7 +32,11 @@ public class PlayerNutrientsHandler implements IPlayerNutrients, ICapabilitySeri
 
     public PlayerNutrientsHandler(@Nullable NBTTagCompound nbt)
     {
-        this.nutrients = new float[Nutrient.TOTAL];
+        nutrients = new float[Nutrient.TOTAL];
+        for (int i = 0; i < nutrients.length; i++)
+        {
+            nutrients[i] = 0.8f * MAX_PLAYER_NUTRIENTS;
+        }
 
         deserializeNBT(nbt);
     }
@@ -34,13 +44,46 @@ public class PlayerNutrientsHandler implements IPlayerNutrients, ICapabilitySeri
     @Override
     public float getNutrient(Nutrient nutrient)
     {
-        return 0;
+        updateNutrients();
+        return nutrients[nutrient.ordinal()];
+    }
+
+    @Override
+    public float[] getNutrients()
+    {
+        updateNutrients();
+        return nutrients;
+    }
+
+    @Override
+    public void setNutrients(float[] nutrients)
+    {
+        System.arraycopy(nutrients, 0, this.nutrients, 0, this.nutrients.length);
+    }
+
+    @Override
+    public void setNutrient(Nutrient nutrient, float amount)
+    {
+        if (amount < MIN_PLAYER_NUTRIENTS)
+        {
+            nutrients[nutrient.ordinal()] = MIN_PLAYER_NUTRIENTS;
+        }
+        else if (amount > MAX_PLAYER_NUTRIENTS)
+        {
+            nutrients[nutrient.ordinal()] = MAX_PLAYER_NUTRIENTS;
+        }
+        else
+        {
+            nutrients[nutrient.ordinal()] = amount;
+        }
     }
 
     @Override
     public void addNutrient(Nutrient nutrient, float amount)
     {
-
+        updateNutrients();
+        float newAmount = nutrients[nutrient.ordinal()] + amount;
+        setNutrient(nutrient, newAmount);
     }
 
     @Override
@@ -57,15 +100,23 @@ public class PlayerNutrientsHandler implements IPlayerNutrients, ICapabilitySeri
         return capability == CapabilityNutrients.CAPABILITY_PLAYER_NUTRIENTS ? (T) this : null;
     }
 
+    public void updateNutrientsFastForward()
+    {
+        lastUpdateTick = CalendarTFC.getCalendarTime();
+    }
+
     @Override
     @Nonnull
     public NBTTagCompound serializeNBT()
     {
+        updateNutrients();
+
         NBTTagCompound nbt = new NBTTagCompound();
         for (Nutrient nutrient : Nutrient.values())
         {
             nbt.setFloat(nutrient.name().toLowerCase(), this.nutrients[nutrient.ordinal()]);
         }
+        nbt.setLong("lastUpdateTick", lastUpdateTick);
         return nbt;
     }
 
@@ -76,8 +127,26 @@ public class PlayerNutrientsHandler implements IPlayerNutrients, ICapabilitySeri
         {
             for (Nutrient nutrient : Nutrient.values())
             {
-                this.nutrients[nutrient.ordinal()] = nbt.getFloat(nutrient.name().toLowerCase());
+                nutrients[nutrient.ordinal()] = nbt.getFloat(nutrient.name().toLowerCase());
             }
+            lastUpdateTick = nbt.getLong("lastUpdateTick");
         }
+    }
+
+    public void debug()
+    {
+        TerraFirmaCraft.getLog().info("Player Nutrients!!!");
+        for (Nutrient n : Nutrient.values())
+            TerraFirmaCraft.getLog().info("Nutrient: " + n.name() + " = " + nutrients[n.ordinal()]);
+    }
+
+    private void updateNutrients()
+    {
+        int ticksPassed = (int) (CalendarTFC.getCalendarTime() - lastUpdateTick);
+        for (Nutrient nutrient : Nutrient.values())
+        {
+            setNutrient(nutrient, nutrients[nutrient.ordinal()] - (nutrient.getDecayModifier() * ticksPassed));
+        }
+        lastUpdateTick = CalendarTFC.getCalendarTime();
     }
 }

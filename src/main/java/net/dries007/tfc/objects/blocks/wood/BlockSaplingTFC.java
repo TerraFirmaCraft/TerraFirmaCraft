@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.te.TESaplingTFC;
+import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.world.classic.CalendarTFC;
@@ -76,14 +76,11 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
-        TESaplingTFC te = Helpers.getTE(worldIn, pos, TESaplingTFC.class);
-        if (te != null) te.onPlaced();
-    }
-
-    @Override
-    public int damageDropped(IBlockState state)
-    {
-        return 0; // explicit override on default, because saplings should be reset when they are broken.
+        TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
+        if (te != null)
+        {
+            te.resetCounter();
+        }
     }
 
     @Override
@@ -103,7 +100,7 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        return new TESaplingTFC();
+        return new TETickCounter();
     }
 
     @Override
@@ -113,11 +110,11 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
 
         if (!world.isRemote)
         {
-            TESaplingTFC te = Helpers.getTE(world, pos, TESaplingTFC.class);
+            TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
             if (te != null)
             {
-                long hours = te.getHoursSincePlaced();
-                if (hours > wood.getMinGrowthTime() * CalendarTFC.HOURS_IN_DAY)
+                long days = te.getTicksSinceUpdate() / CalendarTFC.TICKS_IN_DAY;
+                if (days > wood.getMinGrowthTime())
                 {
                     grow(world, random, pos, state);
                 }

@@ -4,7 +4,7 @@
   "defaults": {
     "model": "crop",
     "textures": {
-      "crop": "tfc:blocks/crop/squash_0"
+      "crop": "tfc:blocks/crop/melon_0"
     }
   },
   "variants": {
@@ -14,42 +14,42 @@
     "stage": {
       "0": {
         "textures": {
-          "crop": "tfc:blocks/crop/squash_0"
+          "crop": "tfc:blocks/crop/melon_0"
         }
       },
       "1": {
         "textures": {
-          "crop": "tfc:blocks/crop/squash_1"
+          "crop": "tfc:blocks/crop/melon_1"
         }
       },
       "2": {
         "textures": {
-          "crop": "tfc:blocks/crop/squash_2"
+          "crop": "tfc:blocks/crop/melon_2"
         }
       },
       "3": {
         "textures": {
-          "crop": "tfc:blocks/crop/squash_3"
+          "crop": "tfc:blocks/crop/melon_3"
         }
       },
       "4": {
         "textures": {
-          "crop": "tfc:blocks/crop/squash_4"
+          "crop": "tfc:blocks/crop/melon_4"
         }
       },
       "5": {
         "textures": {
-          "crop": "tfc:blocks/crop/squash_5"
+          "crop": "tfc:blocks/crop/melon_5"
         }
       },
       "6": {
         "textures": {
-          "crop": "tfc:blocks/crop/squash_6"
+          "crop": "tfc:blocks/crop/melon_6"
         }
       },
       "7": {
         "textures": {
-          "crop": "tfc:blocks/crop/squash_7"
+          "crop": "tfc:blocks/crop/melon_7"
         }
       }
     }

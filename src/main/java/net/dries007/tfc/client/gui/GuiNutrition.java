@@ -7,6 +7,7 @@ package net.dries007.tfc.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
@@ -14,9 +15,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
+import net.dries007.tfc.api.capability.nuturient.IPlayerNutrients;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.agriculture.Nutrient;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -25,9 +30,19 @@ public class GuiNutrition extends GuiContainerTFC
 {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/player_nutrition.png");
 
+    private float[] cachedNutrients;
+
     public GuiNutrition(Container container, InventoryPlayer playerInv)
     {
         super(container, playerInv, BACKGROUND);
+
+        cachedNutrients = new float[Nutrient.TOTAL];
+        IPlayerNutrients cap = playerInv.player.getCapability(CapabilityNutrients.CAPABILITY_PLAYER_NUTRIENTS, null);
+        if (cap != null)
+        {
+            for (Nutrient n : Nutrient.values())
+                cachedNutrients[n.ordinal()] = cap.getNutrient(n);
+        }
     }
 
     @Override
@@ -47,7 +62,11 @@ public class GuiNutrition extends GuiContainerTFC
     {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
-        // todo: draw nutrition bars
+        for (Nutrient n : Nutrient.values())
+        {
+            String stuff = I18n.format(Helpers.getEnumName(n)) + ": " + cachedNutrients[n.ordinal()];
+            fontRenderer.drawString(stuff, xSize / 2 - fontRenderer.getStringWidth(stuff) / 2, 10 + 12 * n.ordinal(), 0x404040);
+        }
     }
 
     @Override

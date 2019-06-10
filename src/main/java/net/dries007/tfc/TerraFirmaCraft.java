@@ -127,6 +127,7 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketCapabilityContainerUpdate.Handler(), PacketCapabilityContainerUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketCalendarUpdate.Handler(), PacketCalendarUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketBarrelUpdate.Handler(), PacketBarrelUpdate.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketNutrientsUpdate.Handler(), PacketNutrientsUpdate.class, ++id, Side.CLIENT);
 
         EntitiesTFC.preInit();
         CalendarTFC.preInit();
@@ -201,6 +202,7 @@ public final class TerraFirmaCraft
         event.registerServerCommand(new CommandHeat());
         event.registerServerCommand(new CommandTimeTFC());
         event.registerServerCommand(new CommandFindVeins());
+        event.registerServerCommand(new CommandNutrients());
     }
 
     @Mod.EventHandler

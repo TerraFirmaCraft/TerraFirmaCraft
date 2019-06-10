@@ -139,6 +139,12 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
         }
     }
 
+    @Override
+    protected void addPlayerInventorySlots(InventoryPlayer playerInv)
+    {
+        super.addPlayerInventorySlots(playerInv, yOffset);
+    }
+
     protected abstract void addContainerSlots();
 
     protected void detectAndSendAllChanges()

@@ -88,18 +88,23 @@ public class ContainerSimple extends Container
 
     protected void addPlayerInventorySlots(InventoryPlayer playerInv)
     {
+        addPlayerInventorySlots(playerInv, 0);
+    }
+
+    protected void addPlayerInventorySlots(InventoryPlayer playerInv, int yOffset)
+    {
         // Add Player Inventory Slots
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 9; j++)
             {
-                addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + yOffset));
             }
         }
 
         for (int k = 0; k < 9; k++)
         {
-            addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142));
+            addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142 + yOffset));
         }
     }
 }

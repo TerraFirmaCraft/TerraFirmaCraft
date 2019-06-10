@@ -292,13 +292,14 @@ SIMPLE_CROPS = {
     'onion': (False, 7),
     'potato': (False, 7),
     'soybean': (False, 7),
-    'squash': (False, 7),
+    # 'squash': (False, 7),
     'sugarcane': (False, 8),
     'red_bell_pepper': (False, 7),
     'tomato': (False, 8),
     'yellow_bell_pepper': (False, 7),
     'jute': (True, 6)
 }
+SPREADING_CROPS = ['pumpkin', 'squash', 'melon']
 
 FOODS = [
     'banana',
@@ -905,6 +906,11 @@ for crop in SIMPLE_CROPS.keys():
         'stage': dict(('%d' % i, {'textures': {'crop': 'tfc:blocks/crop/%s_%d' % (crop, i)}}) for i in range(stages))
     })
 
+for crop in SPREADING_CROPS:
+    blockstate(('crop', crop), 'crop', {'crop': 'tfc:blocks/crop/%s_0' % crop}, {
+        'stage': dict(('%d' % i, {'textures': {'crop': 'tfc:blocks/crop/%s_%d' % (crop, i)}}) for i in range(8))
+    })
+
 #   _____ _
 #  |_   _| |
 #    | | | |_ ___ _ __ ___  ___
@@ -1034,4 +1040,7 @@ for food in FOODS:
     item(('food', food), 'tfc:items/food/%s' % food)
 
 for crop in SIMPLE_CROPS.keys():
+    item(('crop', 'seeds', crop), 'tfc:items/crop/seeds/%s' % crop)
+
+for crop in SPREADING_CROPS:
     item(('crop', 'seeds', crop), 'tfc:items/crop/seeds/%s' % crop)

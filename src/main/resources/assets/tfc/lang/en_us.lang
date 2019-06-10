@@ -230,6 +230,11 @@ tfc.enum.day.thursday=Thursday
 tfc.enum.day.friday=Friday
 tfc.enum.day.saturday=Saturday
 
+tfc.enum.nutrient.carbohydrates=Carbohydrates
+tfc.enum.nutrient.fat=Fat
+tfc.enum.nutrient.protein=Protein
+tfc.enum.nutrient.minerals=Minerals
+tfc.enum.nutrient.vitamins=Vitamins
 
 # Items
 item.tfc.wand.name=TFC Debug Wand
