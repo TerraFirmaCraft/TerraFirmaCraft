@@ -99,7 +99,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
                 ItemStack stack = inventory.getStackInSlot(SLOT_FUEL_MIN);
                 if (stack.isEmpty())
                 {
-                    world.setBlockState(pos, state.withProperty(BlockFirePit.LIT, false));
+                    //world.setBlockState(pos, state.withProperty(BlockFirePit.LIT, false));
                     burnTicks = 0;
                     burnTemperature = 0;
                 }
@@ -168,6 +168,8 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
                     }
                 }
             }
+        }else{
+            world.setBlockState(pos, state.withProperty(BlockFirePit.LIT, false));
         }
 
         // This is here to avoid duplication glitches
