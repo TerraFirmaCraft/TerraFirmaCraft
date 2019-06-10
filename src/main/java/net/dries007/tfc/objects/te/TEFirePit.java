@@ -91,6 +91,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
                 else
                 {
                     inventory.setStackInSlot(SLOT_FUEL_CONSUME, ItemStack.EMPTY);
+                    requiresSlotUpdate = true;
                     Fuel fuel = FuelManager.getFuel(stack);
                     burnTicks += fuel.getAmount();
                     burnTemperature = fuel.getTemperature();
