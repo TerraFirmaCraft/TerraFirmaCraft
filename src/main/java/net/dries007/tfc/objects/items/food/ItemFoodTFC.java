@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import net.dries007.tfc.api.capability.nuturient.NutrientsHandler;
+import net.dries007.tfc.api.capability.nuturient.FoodHandler;
 import net.dries007.tfc.util.agriculture.Food;
 
 public class ItemFoodTFC extends ItemFood
@@ -48,6 +48,6 @@ public class ItemFoodTFC extends ItemFood
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new NutrientsHandler(food);
+        return new FoodHandler(nbt, food);
     }
 }

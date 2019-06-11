@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.network;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +24,8 @@ import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
+import net.dries007.tfc.api.capability.nuturient.IFood;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 
 /**
@@ -46,7 +49,7 @@ public class PacketCapabilityContainerUpdate implements IMessage
         this.windowID = windowID;
 
         final NBTTagCompound data = readCapability(stack);
-        if (data != null)
+        if (!data.isEmpty())
         {
             capabilityData.put(slotID, data);
         }
@@ -59,7 +62,7 @@ public class PacketCapabilityContainerUpdate implements IMessage
         for (int i = 0; i < items.size(); i++)
         {
             final NBTTagCompound nbt = readCapability(items.get(i));
-            if (nbt != null)
+            if (!nbt.isEmpty())
             {
                 capabilityData.put(i, nbt);
             }
@@ -98,14 +101,21 @@ public class PacketCapabilityContainerUpdate implements IMessage
         return !capabilityData.isEmpty();
     }
 
+    @Nonnull
     private NBTTagCompound readCapability(final ItemStack stack)
     {
         IItemHeat itemHeat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+        IFood food = stack.getCapability(CapabilityNutrients.CAPABILITY_NUTRIENTS, null);
+        NBTTagCompound nbt = new NBTTagCompound();
         if (itemHeat != null)
         {
-            return itemHeat.serializeNBT();
+            nbt.setTag("heat", itemHeat.serializeNBT());
         }
-        return null;
+        if (food != null)
+        {
+            nbt.setTag("food", food.serializeNBT());
+        }
+        return nbt;
     }
 
     @ParametersAreNonnullByDefault
@@ -120,33 +130,46 @@ public class PacketCapabilityContainerUpdate implements IMessage
                 final EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
                 final Container container;
 
-                if (message.windowID == 0)
+                if (player != null)
                 {
-                    container = player.inventoryContainer;
-                }
-                else if (message.windowID == player.openContainer.windowId)
-                {
-                    container = player.openContainer;
-                }
-                else
-                {
-                    return;
-                }
-
-                message.capabilityData.forEachEntry((index, nbt) -> {
-                    final ItemStack stack = container.getSlot(index).getStack();
-
-                    final IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                    if (cap != null)
+                    if (message.windowID == 0)
                     {
-                        if (!cap.serializeNBT().equals(nbt))
-                        {
-                            TerraFirmaCraft.getLog().debug("Capabilities have changed and been synced");
-                            cap.deserializeNBT(nbt);
-                        }
+                        container = player.inventoryContainer;
                     }
-                    return true;
-                });
+                    else if (message.windowID == player.openContainer.windowId)
+                    {
+                        container = player.openContainer;
+                    }
+                    else
+                    {
+                        return;
+                    }
+
+                    message.capabilityData.forEachEntry((index, nbt) -> {
+                        final ItemStack stack = container.getSlot(index).getStack();
+
+                        final IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                        if (heat != null)
+                        {
+                            NBTTagCompound heatNBT = nbt.getCompoundTag("heat");
+                            if (!heat.serializeNBT().equals(heatNBT))
+                            {
+                                heat.deserializeNBT(heatNBT);
+                            }
+                        }
+
+                        final IFood food = stack.getCapability(CapabilityNutrients.CAPABILITY_NUTRIENTS, null);
+                        if (food != null)
+                        {
+                            NBTTagCompound foodNBT = nbt.getCompoundTag("food");
+                            if (!food.serializeNBT().equals(foodNBT))
+                            {
+                                food.deserializeNBT(foodNBT);
+                            }
+                        }
+                        return true;
+                    });
+                }
             });
 
             return null;

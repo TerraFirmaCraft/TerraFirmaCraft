@@ -125,29 +125,14 @@ public enum Food
         return category;
     }
 
-    public float getCarbohydrates()
+    public float getDecayModifier()
     {
-        return carbohydrates;
+        return decayModifier;
     }
 
-    public float getFat()
+    public float[] getNutrients()
     {
-        return fat;
-    }
-
-    public float getProtein()
-    {
-        return protein;
-    }
-
-    public float getVitamins()
-    {
-        return vitamins;
-    }
-
-    public float getMinerals()
-    {
-        return minerals;
+        return new float[] {carbohydrates, fat, protein, vitamins, minerals};
     }
 
     public enum Category

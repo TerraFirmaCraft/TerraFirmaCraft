@@ -5,9 +5,16 @@
 
 package net.dries007.tfc.api.capability.nuturient;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -17,10 +24,9 @@ import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.agriculture.Nutrient;
+import net.dries007.tfc.world.classic.CalendarTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -28,19 +34,23 @@ public final class CapabilityNutrients
 {
     public static final float MIN_PLAYER_NUTRIENTS = 0f;
     public static final float MAX_PLAYER_NUTRIENTS = 100f;
+    public static final int DEFAULT_ROT_TICKS = CalendarTFC.TICKS_IN_DAY * 10;
 
-    @CapabilityInject(INutrients.class)
-    public static final Capability<INutrients> CAPABILITY_NUTRIENTS = Helpers.getNull();
+    @CapabilityInject(IFood.class)
+    public static final Capability<IFood> CAPABILITY_NUTRIENTS = Helpers.getNull();
     @CapabilityInject(IPlayerNutrients.class)
     public static final Capability<IPlayerNutrients> CAPABILITY_PLAYER_NUTRIENTS = Helpers.getNull();
 
     private static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "nutrients");
     private static final ResourceLocation PLAYER_KEY = new ResourceLocation(MOD_ID, "player_nutrients");
 
+    private static List<Supplier<PotionEffect>> spoiledFoodEffects = null;
+    private static List<Supplier<PotionEffect>> rottenFoodEffects = null;
+
     public static void preInit()
     {
         // Item nutrient capability
-        CapabilityManager.INSTANCE.register(INutrients.class, new DumbStorage<>(), () -> null);
+        CapabilityManager.INSTANCE.register(IFood.class, new DumbStorage<>(), () -> null);
         // Player nutrient capability
         CapabilityManager.INSTANCE.register(IPlayerNutrients.class, new DumbStorage<>(), PlayerNutrientsHandler::new);
     }
@@ -50,7 +60,22 @@ public final class CapabilityNutrients
         // Attaches a nutrient capability to a food item.
         // todo: lookup an ore dictionary / item table for the respective nutrients (for vanilla)
         // todo: populate via json / craft tweaker?
-        event.addCapability(KEY, new NutrientsHandler(1, 1, 1, 1, 1));
+        event.addCapability(KEY, new FoodHandler(null, new float[] {1, 0, 0, 0, 0}, 1));
+    }
+
+    static List<Supplier<PotionEffect>> getRottenFoodEffects()
+    {
+        // todo: this is temp, it is subject to change
+        if (rottenFoodEffects == null)
+        {
+            rottenFoodEffects = new ArrayList<>();
+            rottenFoodEffects.add(() -> new PotionEffect(MobEffects.POISON, 600, 2));
+            rottenFoodEffects.add(() -> new PotionEffect(MobEffects.WEAKNESS, 3600, 1));
+            rottenFoodEffects.add(() -> new PotionEffect(MobEffects.SLOWNESS, 3600, 1));
+            rottenFoodEffects.add(() -> new PotionEffect(MobEffects.HUNGER, 6000, 3));
+            rottenFoodEffects.add(() -> new PotionEffect(MobEffects.NAUSEA, 3600, 1));
+        }
+        return rottenFoodEffects;
     }
 
     /**
@@ -60,25 +85,27 @@ public final class CapabilityNutrients
     public static final class EventHandler
     {
         @SubscribeEvent
+        public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event)
+        {
+            // This is only to attach food capabilities
+            // Food Nutrients
+            ItemStack stack = event.getObject();
+            if (stack.getItem() instanceof ItemFood && !stack.hasCapability(CapabilityNutrients.CAPABILITY_NUTRIENTS, null))
+            {
+                event.addCapability(KEY, new FoodHandler(stack.getTagCompound(), new float[] {1, 0, 0, 0, 0}, 1));
+            }
+        }
+
+        @SubscribeEvent
         public static void onFinishUsingItem(LivingEntityUseItemEvent.Finish event)
         {
             if (event.getEntity() instanceof EntityPlayer)
             {
                 ItemStack stack = event.getItem();
-
-                INutrients itemCap = stack.getCapability(CAPABILITY_NUTRIENTS, null);
-                IPlayerNutrients playerCap = event.getEntity().getCapability(CAPABILITY_PLAYER_NUTRIENTS, null);
-
-                if (itemCap != null && playerCap != null)
+                IFood itemCap = stack.getCapability(CAPABILITY_NUTRIENTS, null);
+                if (itemCap != null)
                 {
-                    TerraFirmaCraft.getLog().info("Adding nutrients!!!");
-                    for (Nutrient nutrient : Nutrient.values())
-                    {
-                        playerCap.addNutrient(nutrient, itemCap.getNutrients(stack, nutrient));
-
-
-                    }
-                    ((PlayerNutrientsHandler) playerCap).debug();
+                    itemCap.onConsumedByPlayer((EntityPlayer) event.getEntity(), stack);
                 }
             }
         }

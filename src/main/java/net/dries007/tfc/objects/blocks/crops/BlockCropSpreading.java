@@ -13,13 +13,17 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.ICrop;
+import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.objects.te.TECropSpreading;
 import net.dries007.tfc.util.Helpers;
 
@@ -75,7 +79,7 @@ public class BlockCropSpreading extends BlockCropTFC
                                 newTile.setMaxGrowthStage(newTile.getMaxGrowthStage() + 1);
                             }
                         }
-                        else if (newState.getBlock().isAir(state, worldIn, newPos))
+                        else if (newState.getBlock().isAir(newState, worldIn, newPos))
                         {
                             IBlockState stateDown = worldIn.getBlockState(newPos.down());
                             if (stateDown.getBlock().canSustainPlant(stateDown, worldIn, newPos.down(), EnumFacing.UP, this))
@@ -140,5 +144,18 @@ public class BlockCropSpreading extends BlockCropTFC
             tile.onPlaced();
         }
         super.onBlockAdded(worldIn, pos, state);
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        drops.clear();
+        drops.add(new ItemStack(ItemSeedsTFC.get(crop)));
+
+        ItemStack foodDrop = crop.getFoodDrop(state.getValue(STAGE_8));
+        if (!foodDrop.isEmpty())
+        {
+            drops.add(foodDrop);
+        }
     }
 }
