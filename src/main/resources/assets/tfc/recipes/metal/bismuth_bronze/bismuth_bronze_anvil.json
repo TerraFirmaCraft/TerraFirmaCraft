@@ -7,7 +7,8 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:metal/double_ingot/bismuth_bronze"
+      "type": "forge:ore_dict",
+      "ore": "doubleIngotBismuthBronze"
     }
   },
   "result": {
