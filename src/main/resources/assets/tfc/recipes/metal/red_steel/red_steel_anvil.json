@@ -7,7 +7,8 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:metal/double_ingot/red_steel"
+      "type": "forge:ore_dict",
+      "ore": "doubleIngotRedSteel"
     }
   },
   "result": {
