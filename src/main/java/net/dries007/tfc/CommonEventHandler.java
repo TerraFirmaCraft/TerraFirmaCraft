@@ -118,7 +118,6 @@ public final class CommonEventHandler
 
     }
 
-
     @SubscribeEvent
     public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> e)
     {
@@ -150,13 +149,6 @@ public final class CommonEventHandler
             else
                 CapabilityItemSize.add(e, item, Size.VERY_SMALL, Weight.LIGHT, canStack);
         }
-
-        // Food Nutrients
-        if (item instanceof ItemFood && !stack.hasCapability(CapabilityNutrients.CAPABILITY_NUTRIENTS, null))
-        {
-            CapabilityNutrients.add(e);
-        }
-
     }
 
     @SubscribeEvent

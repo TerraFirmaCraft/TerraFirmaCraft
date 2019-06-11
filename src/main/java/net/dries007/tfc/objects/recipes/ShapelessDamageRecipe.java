@@ -68,6 +68,7 @@ public class ShapelessDamageRecipe extends ShapelessOreRecipe
         return damagedStack;
     }
 
+    @SuppressWarnings("unused")
     public static class Factory implements IRecipeFactory
     {
         @Override

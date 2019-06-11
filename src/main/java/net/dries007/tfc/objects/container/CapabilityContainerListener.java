@@ -16,6 +16,7 @@ import net.minecraft.util.NonNullList;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
 import net.dries007.tfc.network.PacketCapabilityContainerUpdate;
 
 /**
@@ -70,27 +71,24 @@ public class CapabilityContainerListener implements IContainerListener
     @Override
     public void sendSlotContents(Container container, int slotIndex, ItemStack stack)
     {
-        if (!shouldSyncItem(stack)) return;
-
-        final PacketCapabilityContainerUpdate message = new PacketCapabilityContainerUpdate(container.windowId, slotIndex, stack);
-        if (message.hasData())
-        { // Don't send the message if there's nothing to update
-            TerraFirmaCraft.getNetwork().sendTo(message, player);
+        if (shouldSyncItem(stack))
+        {
+            final PacketCapabilityContainerUpdate message = new PacketCapabilityContainerUpdate(container.windowId, slotIndex, stack);
+            if (message.hasData())
+            { // Don't send the message if there's nothing to update
+                TerraFirmaCraft.getNetwork().sendTo(message, player);
+            }
         }
     }
 
     @Override
-    public void sendWindowProperty(Container container, int ID, int value)
-    {
-    }
+    public void sendWindowProperty(Container container, int ID, int value) {}
 
     @Override
-    public void sendAllWindowProperties(Container container, IInventory inventory)
-    {
-    }
+    public void sendAllWindowProperties(Container container, IInventory inventory) {}
 
     private boolean shouldSyncItem(ItemStack stack)
     {
-        return stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+        return stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null) || stack.hasCapability(CapabilityNutrients.CAPABILITY_NUTRIENTS, null);
     }
 }
