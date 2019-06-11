@@ -8,7 +8,7 @@ This project is the official port of TerraFirmaCraft (the original, also called 
 
 ## Goal
 
-- The ultimate goal of this project is to be **the** TerraFirmaCraft for 1.12.2, not a mire partial imitation.
+- The ultimate goal of this project is to be **the** TerraFirmaCraft for 1.12.2, not a mere partial imitation.
 - The idea is to stay faithful to the original where possible until at least version 1.0.
   Major content adding will probably be only done after that point.
 
@@ -29,7 +29,7 @@ This project is the official port of TerraFirmaCraft (the original, also called 
     + Reformat & Rearrange your code. (IntelliJ can do this for you.)
 
 #### Copyright header
-This header should be applied to all java source files.
+This header should be applied to all Java source files.
 Other files will be assessed on a case by case basis.
 ```java
 /*
@@ -45,7 +45,7 @@ to a shared scope matching pattern `net.dries007.tfc..*`.
 + To enable debug logging, set your run config to include this argument: `-Dlog4j.configurationFile=../debug_log4j2_client.xml` or `_server`.
 + To auto-run the python script before every launch:
     1. Add a python run configuration (named `generateResources`) that runs the script with a python 3 interpreter with the root of the project set as run directory.
-    2. In the (java) `run client` run config, add a 'Before launch' step of type `Run another configuration` and select `generateResources` there.
+    2. In the (Java) `run client` run config, add a 'Before launch' step of type `Run another configuration` and select `generateResources` there.
     3. Move the new `run 'Python 'generateResources''` task to before the `Build` step.
     4. Done. Whenever you launch the client, it will first run the python script now. You'll see it appear in the run tab. 
 
