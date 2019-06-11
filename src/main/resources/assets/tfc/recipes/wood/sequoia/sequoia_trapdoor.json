@@ -1,8 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XX",
-    "XX"
+    "XXX",
+    "XXX"
   ],
   "key": {
     "X": {
@@ -11,6 +11,6 @@
   },
   "result": {
     "item": "tfc:wood/trapdoor/sequoia",
-    "count": 4
+    "count": 2
   }
 }
