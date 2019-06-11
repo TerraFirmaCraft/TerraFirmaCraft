@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "XXX",
-    "XXX",
+    " X ",
     "XXX"
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/acacia"
+      "item": "tfc:metal/double_ingot/steel"
     }
   },
   "result": {
-    "item": "tfc:wood/workbench/acacia",
+    "item": "tfc:metal/anvil/steel",
     "count": 1
   }
 }
