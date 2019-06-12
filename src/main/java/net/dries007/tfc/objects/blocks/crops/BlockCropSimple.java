@@ -9,7 +9,6 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -170,7 +169,4 @@ public abstract class BlockCropSimple extends BlockCropTFC
     {
         return CROPS_AABB[state.getValue(getStageProperty())];
     }
-
-
-    protected abstract PropertyInteger getStageProperty();
 }

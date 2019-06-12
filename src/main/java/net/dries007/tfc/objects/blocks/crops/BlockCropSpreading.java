@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -157,5 +158,11 @@ public class BlockCropSpreading extends BlockCropTFC
         {
             drops.add(foodDrop);
         }
+    }
+
+    @Override
+    public PropertyInteger getStageProperty()
+    {
+        return STAGE_8;
     }
 }
