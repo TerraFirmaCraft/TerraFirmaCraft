@@ -24,7 +24,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
 import net.dries007.tfc.api.capability.nuturient.IPlayerNutrients;
-import net.dries007.tfc.network.PacketNutrientsUpdate;
+import net.dries007.tfc.network.PacketPlayerNutrientsUpdate;
 import net.dries007.tfc.util.agriculture.Nutrient;
 
 @ParametersAreNonnullByDefault
@@ -69,7 +69,7 @@ public class CommandNutrients extends CommandBase
                 sender.sendMessage(new TextComponentString("Set Nutrients!"));
                 if (sender.getCommandSenderEntity() instanceof EntityPlayerMP)
                 {
-                    TerraFirmaCraft.getNetwork().sendTo(new PacketNutrientsUpdate(cap), (EntityPlayerMP) sender.getCommandSenderEntity());
+                    TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerNutrientsUpdate(cap), (EntityPlayerMP) sender.getCommandSenderEntity());
                 }
             }
         }

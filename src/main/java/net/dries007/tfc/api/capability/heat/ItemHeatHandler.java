@@ -32,7 +32,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
     protected long lastUpdateTick;
 
     /**
-     * Simple ItemHeatHandler implementation
+     * Default ItemHeatHandler implementation
      *
      * @param nbt          The NBT of the itemstack. (Provided in Item#initCapabilities())
      * @param heatCapacity The heat capacity

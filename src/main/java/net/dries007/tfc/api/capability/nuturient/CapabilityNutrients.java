@@ -54,14 +54,6 @@ public final class CapabilityNutrients
         CapabilityManager.INSTANCE.register(IPlayerNutrients.class, new DumbStorage<>(), PlayerNutrientsHandler::new);
     }
 
-    public static void add(AttachCapabilitiesEvent<ItemStack> event)
-    {
-        // Attaches a nutrient capability to a food item.
-        // todo: lookup an ore dictionary / item table for the respective nutrients (for vanilla)
-        // todo: populate via json / craft tweaker?
-        event.addCapability(KEY, new FoodHandler(null, new float[] {1, 0, 0, 0, 0}, 1));
-    }
-
     static List<Supplier<PotionEffect>> getRottenFoodEffects()
     {
         // todo: this is temp, it is subject to change
@@ -87,7 +79,8 @@ public final class CapabilityNutrients
         public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event)
         {
             // This is only to attach food capabilities
-            // Food Nutrients
+            // todo: create a lookup or something for vanilla items
+            // future plans: add via craft tweaker or json (1.14)
             ItemStack stack = event.getObject();
             if (stack.getItem() instanceof ItemFood && !stack.hasCapability(CapabilityNutrients.CAPABILITY_NUTRIENTS, null))
             {

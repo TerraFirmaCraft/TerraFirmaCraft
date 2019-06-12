@@ -40,8 +40,8 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
      *
      * @param name         The resource location of the rock.
      * @param toolMaterial The tool material used for stone tools made of this rock
-     * @param caveGenMod   a modifier for cave generation. Simple 0, range -0.5 <> 0.5
-     * @param caveFreqMod  another modifier for cave generation. Simple 0, sedimentary uses +5
+     * @param caveGenMod   a modifier for cave generation. Default 0, range -0.5 <> 0.5
+     * @param caveFreqMod  another modifier for cave generation. Default 0, sedimentary uses +5
      * @param hasAnvil     if this rock should be able to create a stone anvil
      */
     public RockCategory(@Nonnull ResourceLocation name, @Nonnull Item.ToolMaterial toolMaterial, boolean layer1, boolean layer2, boolean layer3, float caveGenMod, float caveFreqMod, boolean hasAnvil)
