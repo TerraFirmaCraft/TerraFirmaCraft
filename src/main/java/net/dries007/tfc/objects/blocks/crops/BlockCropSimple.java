@@ -20,18 +20,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.types.ICrop;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
-import net.dries007.tfc.objects.te.TEPlacedItem;
-import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.classic.CalendarTFC;
-import net.dries007.tfc.world.classic.ClimateTFC;
-import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
 public abstract class BlockCropSimple extends BlockCropTFC
@@ -65,11 +57,6 @@ public abstract class BlockCropSimple extends BlockCropTFC
             if (state.getValue(getStageProperty()) < crop.getMaxStage())
             {
                 worldIn.setBlockState(pos, state.withProperty(getStageProperty(), state.getValue(getStageProperty()) + 1), 2);
-            }
-            TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
-            if (tile != null)
-            {
-                tile.resetCounter();
             }
         }
     }
@@ -125,41 +112,6 @@ public abstract class BlockCropSimple extends BlockCropTFC
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, getStageProperty(), WILD);
-    }
-
-    @Override
-    public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
-    {
-        super.updateTick(world, pos, state, random);
-        if (!world.isRemote)
-        {
-            float temp = ClimateTFC.getTemp(world, pos);
-            float rainfall = ChunkDataTFC.getRainfall(world, pos);
-            TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
-            if (te != null)
-            {
-                long hours = te.getTicksSinceUpdate() / CalendarTFC.TICKS_IN_HOUR;
-                if (hours > crop.getGrowthTime() && crop.isValidForGrowth(temp, rainfall))
-                {
-                    grow(world, random, pos, state);
-                    te.resetCounter();
-                }
-            }
-
-            if (!crop.isValidConditions(temp, rainfall))
-            {
-                world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
-                TEPlacedItem tilePlaced = Helpers.getTE(world, pos, TEPlacedItem.class);
-                if (tilePlaced != null)
-                {
-                    IItemHandler cap = tilePlaced.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-                    if (cap != null)
-                    {
-                        cap.insertItem(0, new ItemStack(ItemSeedsTFC.get(crop)), false);
-                    }
-                }
-            }
-        }
     }
 
     @Override

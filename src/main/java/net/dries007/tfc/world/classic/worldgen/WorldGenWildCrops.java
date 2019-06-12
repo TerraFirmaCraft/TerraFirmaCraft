@@ -21,6 +21,8 @@ import net.dries007.tfc.objects.blocks.crops.BlockCropTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
+import static net.dries007.tfc.objects.blocks.crops.BlockCropTFC.WILD;
+
 @ParametersAreNonnullByDefault
 public class WorldGenWildCrops extends WorldGenerator
 {
@@ -58,7 +60,7 @@ public class WorldGenWildCrops extends WorldGenerator
                     if (BlocksTFC.isSoil(world.getBlockState(pos.add(0, -1, 0))))
                     {
                         int growth = 2 + rng.nextInt(crop.getMaxStage() - 2);
-                        world.setBlockState(pos, cropBlock.getDefaultState().withProperty(cropBlock.getStageProperty(), growth), 2);
+                        world.setBlockState(pos, cropBlock.getDefaultState().withProperty(cropBlock.getStageProperty(), growth).withProperty(WILD, true), 2);
                     }
 
                 }
