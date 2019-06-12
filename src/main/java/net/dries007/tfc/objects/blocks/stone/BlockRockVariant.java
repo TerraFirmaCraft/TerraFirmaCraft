@@ -78,8 +78,8 @@ public class BlockRockVariant extends Block
         }
     }
 
-    public final Rock.Type type;
-    public final Rock rock;
+    protected final Rock.Type type;
+    protected final Rock rock;
 
     public BlockRockVariant(Rock.Type type, Rock rock)
     {
@@ -316,5 +316,15 @@ public class BlockRockVariant extends Block
         }
 
         return false;
+    }
+
+    public Rock.Type getType()
+    {
+        return type;
+    }
+
+    public Rock getRock()
+    {
+        return rock;
     }
 }
