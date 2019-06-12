@@ -10,7 +10,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public abstract class GuiContainerTE<T extends TileEntity> extends GuiContainerTFC
+public class GuiContainerTE<T extends TileEntity> extends GuiContainerTFC
 {
     protected final T tile;
 

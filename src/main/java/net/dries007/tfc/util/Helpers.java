@@ -56,7 +56,7 @@ public final class Helpers
             else if (us.getBlock() instanceof BlockRockVariant)
             {
                 BlockRockVariant block = ((BlockRockVariant) us.getBlock());
-                world.setBlockState(pos, block.getVariant(block.type.getNonGrassVersion()).getDefaultState());
+                world.setBlockState(pos, block.getVariant(block.getType().getNonGrassVersion()).getDefaultState());
             }
         }
         else
@@ -81,11 +81,11 @@ public final class Helpers
                 else if (current.getBlock() instanceof BlockRockVariant)
                 {
                     Rock.Type spreader = Rock.Type.GRASS;
-                    if ((us.getBlock() instanceof BlockRockVariant) && ((BlockRockVariant) us.getBlock()).type == Rock.Type.DRY_GRASS)
+                    if ((us.getBlock() instanceof BlockRockVariant) && ((BlockRockVariant) us.getBlock()).getType() == Rock.Type.DRY_GRASS)
                         spreader = Rock.Type.DRY_GRASS;
 
                     BlockRockVariant block = ((BlockRockVariant) current.getBlock());
-                    world.setBlockState(target, block.getVariant(block.type.getGrassVersion(spreader)).getDefaultState());
+                    world.setBlockState(target, block.getVariant(block.getType().getGrassVersion(spreader)).getDefaultState());
                 }
             }
 

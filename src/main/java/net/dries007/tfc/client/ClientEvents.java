@@ -11,7 +11,10 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiCreateWorld;
+import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.gui.recipebook.GuiButtonRecipe;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -37,11 +40,15 @@ import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
+import net.dries007.tfc.api.capability.nuturient.IFood;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.api.util.IRockObject;
+import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
+import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.CalendarTFC;
@@ -63,14 +70,59 @@ public class ClientEvents
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void openGUI(GuiScreenEvent.InitGuiEvent.Pre event)
+    public static void onInitGuiPre(GuiScreenEvent.InitGuiEvent.Pre event)
     {
         if (ConfigTFC.CLIENT.makeWorldTypeClassicDefault && event.getGui() instanceof GuiCreateWorld)
         {
             GuiCreateWorld gui = ((GuiCreateWorld) event.getGui());
             // Only change if default is selected, because coming back from customisation, this will be set already.
             if (gui.selectedIndex == WorldType.DEFAULT.getId())
+            {
                 gui.selectedIndex = TerraFirmaCraft.getWorldTypeTFC().getId();
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void onInitGuiPost(GuiScreenEvent.InitGuiEvent.Post event)
+    {
+        if (event.getGui() instanceof GuiInventory)
+        {
+            int buttonId = event.getButtonList().size();
+            int guiLeft = ((GuiInventory) event.getGui()).getGuiLeft();
+            int guiTop = ((GuiInventory) event.getGui()).getGuiTop();
+
+            event.getButtonList().add(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.INVENTORY, guiLeft, guiTop, ++buttonId, false));
+            event.getButtonList().add(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.SKILLS, guiLeft, guiTop, ++buttonId, true));
+            event.getButtonList().add(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.CALENDAR, guiLeft, guiTop, ++buttonId, true));
+            event.getButtonList().add(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.NUTRITION, guiLeft, guiTop, ++buttonId, true));
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void onGuiButtonPress(GuiScreenEvent.ActionPerformedEvent.Post event)
+    {
+        if (event.getGui() instanceof GuiInventory && event.getButton() instanceof GuiButtonPlayerInventoryTab)
+        {
+            // This should generally be true, but check just in case something has disabled it
+            GuiButtonPlayerInventoryTab button = (GuiButtonPlayerInventoryTab) event.getButton();
+            if (button.isActive())
+            {
+                TerraFirmaCraft.getNetwork().sendToServer(new PacketSwitchPlayerInventoryTab(button.getGuiType()));
+            }
+        }
+        else if (event.getGui() instanceof GuiInventory && event.getButton() instanceof GuiButtonRecipe)
+        {
+            // This is necessary to catch the resizing of the inventory gui when you open the recipe book
+            for (GuiButton button : event.getButtonList())
+            {
+                if (button instanceof GuiButtonPlayerInventoryTab)
+                {
+                    ((GuiButtonPlayerInventoryTab) button).updateGuiLeft(((GuiInventory) event.getGui()).getGuiLeft());
+                }
+            }
         }
     }
 
@@ -152,6 +204,11 @@ public class ClientEvents
         if (heat != null)
         {
             heat.addHeatInfo(stack, tt);
+        }
+        IFood nutrients = stack.getCapability(CapabilityNutrients.CAPABILITY_NUTRIENTS, null);
+        if (nutrients != null)
+        {
+            nutrients.addNutrientInfo(stack, tt);
         }
 
         if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode

@@ -276,6 +276,103 @@ FLUIDS = {
     'milk_vinegar': 'milk_vinegar',
 }
 
+# Simple crops (tall / stages)
+SIMPLE_CROPS = {
+    'barley': (False, 8),
+    'maize': (False, 6),
+    'oat': (False, 8),
+    'rice': (False, 8),
+    'rye': (False, 8),
+    'wheat': (False, 8),
+    'beet': (False, 7),
+    'cabbage': (False, 6),
+    'carrot': (False, 5),
+    'garlic': (False, 5),
+    'green_bean': (False, 7),
+    'onion': (False, 7),
+    'potato': (False, 7),
+    'soybean': (False, 7),
+    # 'squash': (False, 7),
+    'sugarcane': (False, 8),
+    'red_bell_pepper': (False, 7),
+    'tomato': (False, 8),
+    'yellow_bell_pepper': (False, 7),
+    'jute': (True, 6)
+}
+SPREADING_CROPS = ['pumpkin', 'squash', 'melon']
+
+FOODS = [
+    'banana',
+    'blackberry',
+    'blueberry',
+    'bunch_berry',
+    'cherry',
+    'cloud_berry',
+    'cranberry',
+    'elderberry',
+    'gooseberry',
+    'green_apple',
+    'lemon',
+    'olive',
+    'orange',
+    'peach',
+    'plum',
+    'raspberry',
+    'red_apple',
+    'snow_berry',
+    'strawberry',
+    'wintergreen_berry',
+    'barley',
+    'barley_grain',
+    'barley_flour',
+    'barley_dough',
+    'barley_bread',
+    'maize',
+    'cornbread',
+    'cornmeal_flour',
+    'cornmeal_dough',
+    'oat',
+    'oat_grain',
+    'oat_flour',
+    'oat_dough',
+    'oat_bread',
+    'rice',
+    'rice_grain',
+    'rice_flour',
+    'rice_dough',
+    'rice_bread',
+    'rye',
+    'rye_grain',
+    'rye_flour',
+    'rye_dough',
+    'rye_bread',
+    'wheat',
+    'wheat_grain',
+    'wheat_flour',
+    'wheat_dough',
+    'wheat_bread',
+    'beet',
+    'cabbage',
+    'carrot',
+    'garlic',
+    'green_bean',
+    'green_bell_pepper',
+    'onion',
+    'potato',
+    'red_bell_pepper',
+    'seaweed',
+    'soybean',
+    'squash',
+    'tomato',
+    'yellow_bell_pepper',
+    'calamari',
+    'horse_meat',
+    'venison',
+    'cheese',
+    'sugarcane',
+    'cooked_egg'
+]
+
 # Special 'hardcoded' cases
 DOOR_VARIANTS = {
     'normal': None,
@@ -797,6 +894,23 @@ for wood_type in WOOD_TYPES:
         }
     })
 
+# LEATHER / HIDES
+blockstate(('placed_hide',), 'tfc:hide_rack', {})
+
+# AGRICULTURE
+
+for crop in SIMPLE_CROPS.keys():
+    tall = SIMPLE_CROPS[crop][0]
+    stages = SIMPLE_CROPS[crop][1]
+    blockstate(('crop', crop), 'tfc:crop_tall' if tall else 'crop', {'crop': 'tfc:blocks/crop/%s_0' % crop}, {
+        'stage': dict(('%d' % i, {'textures': {'crop': 'tfc:blocks/crop/%s_%d' % (crop, i)}}) for i in range(stages))
+    })
+
+for crop in SPREADING_CROPS:
+    blockstate(('crop', crop), 'crop', {'crop': 'tfc:blocks/crop/%s_0' % crop}, {
+        'stage': dict(('%d' % i, {'textures': {'crop': 'tfc:blocks/crop/%s_%d' % (crop, i)}}) for i in range(8))
+    })
+
 #   _____ _
 #  |_   _| |
 #    | | | |_ ___ _ __ ___  ___
@@ -920,4 +1034,13 @@ for size in ('small', 'medium', 'large'):
         item(('hide', hide, size), 'tfc:items/hide/%s/%s' % (size, hide))
 
 item(('hide', 'sheepskin'), 'tfc:items/hide/sheepskin')
-blockstate(('placed_hide',), 'tfc:hide_rack', {})
+
+# AGRICULTURE
+for food in FOODS:
+    item(('food', food), 'tfc:items/food/%s' % food)
+
+for crop in SIMPLE_CROPS.keys():
+    item(('crop', 'seeds', crop), 'tfc:items/crop/seeds/%s' % crop)
+
+for crop in SPREADING_CROPS:
+    item(('crop', 'seeds', crop), 'tfc:items/crop/seeds/%s' % crop)

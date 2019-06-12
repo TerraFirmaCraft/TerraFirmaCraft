@@ -8,7 +8,6 @@ package net.dries007.tfc.world.classic.biomes;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -23,15 +22,15 @@ import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.worldgen.WorldGenPlantTFC;
-import net.dries007.tfc.world.classic.worldgen.WorldGenPumpkinTFC;
 import net.dries007.tfc.world.classic.worldgen.WorldGenSandTFC;
+import net.dries007.tfc.world.classic.worldgen.WorldGenWildCrops;
 
 @ParametersAreNonnullByDefault
 public class BiomeDecoratorTFC extends BiomeDecorator
 {
     private final int lilyPadPerChunk;
     private final int waterPlantsPerChunk;
-    private final WorldGenPumpkinTFC pumpkinGen;
+    private final WorldGenWildCrops wildCropsGen;
 
     private final WorldGenPlantTFC plantGen;
     private int standardCount = 0;
@@ -69,7 +68,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         plantGen = new WorldGenPlantTFC();
 
         sandGen = new WorldGenSandTFC(7);
-        pumpkinGen = new WorldGenPumpkinTFC(Blocks.PUMPKIN); // todo: replace block?  pumpkins and melons are technically crops
+        wildCropsGen = new WorldGenWildCrops();
 
         for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
         {
@@ -144,7 +143,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Pre(world, rng, forgeChunkPos));
 
         ChunkDataTFC data = ChunkDataTFC.get(world, chunkPos);
-        if (data == null || !data.isInitialized()) return;
+        if (!data.isInitialized()) return;
 
         final float avgTemperature = ClimateTFC.getAverageBiomeTemp(world, chunkPos);
         final float rainfall = ChunkDataTFC.getRainfall(world, chunkPos);
@@ -159,9 +158,9 @@ public class BiomeDecoratorTFC extends BiomeDecorator
 //        TerraFirmaCraft.getLog().info("decorate {} ({}) {} {}", chunkPos, biome.getBiomeName(), lilyPadPerChunk, waterPlantsPerChunk);
         // todo: crops
 
-        if (TerrainGen.decorate(world, rng, forgeChunkPos, DecorateBiomeEvent.Decorate.EventType.PUMPKIN) && rng.nextInt(300) == 0)
+        if (rng.nextInt(20) == 0)
         {
-            pumpkinGen.generate(world, rng, world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8)));
+            wildCropsGen.generate(world, rng, world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8)));
         }
 
         if (TerrainGen.decorate(world, rng, forgeChunkPos, DecorateBiomeEvent.Decorate.EventType.SHROOM))

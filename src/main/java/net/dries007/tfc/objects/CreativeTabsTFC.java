@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -26,6 +28,7 @@ public final class CreativeTabsTFC
     public static final CreativeTabs CT_METAL = new TFCCreativeTab("metal", "tfc:metal/ingot/bronze");
     public static final CreativeTabs CT_GEMS = new TFCCreativeTab("gems", "tfc:gem/diamond");
     public static final CreativeTabs CT_POTTERY = new TFCCreativeTab("pottery", "tfc:mold/ingot");
+    public static final CreativeTabs CT_FOOD = new TFCCreativeTab("food", "tfc:food/green_apple");
     public static final CreativeTabs CT_MISC = new TFCCreativeTab("misc", "tfc:wand");
     public static final CreativeTabs CT_FLORA = new TFCCreativeTab("flora", "tfc:plants/goldenrod");
 
@@ -41,12 +44,15 @@ public final class CreativeTabsTFC
 
         @SideOnly(Side.CLIENT)
         @Override
+        @Nonnull
         public ItemStack createIcon()
         {
             //noinspection ConstantConditions
             ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(iconResourceLocation));
-            if (!stack.isEmpty()) return stack;
-
+            if (!stack.isEmpty())
+            {
+                return stack;
+            }
             TerraFirmaCraft.getLog().error("[Please inform developers] No icon stack for creative tab {}", getTabLabel());
             return new ItemStack(Items.STICK);
         }
