@@ -2,7 +2,8 @@
   "type": "tfc:damage_item_shapeless",
   "ingredients": [
     {
-      "item": "tfc:rock/marble"
+      "type": "forge:ore_dict",
+      "ore": "rockFlux"
     },
     {
       "type": "forge:ore_dict",
