@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.blocks.crops;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -17,6 +18,7 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -43,6 +45,11 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     public static BlockCropTFC get(ICrop crop)
     {
         return MAP.get(crop);
+    }
+
+    public static Set<ICrop> getCrops()
+    {
+        return MAP.keySet();
     }
 
     protected final ICrop crop;
@@ -122,4 +129,6 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     {
         return new ItemStack(ItemSeedsTFC.get(crop));
     }
+
+    public abstract PropertyInteger getStageProperty();
 }
