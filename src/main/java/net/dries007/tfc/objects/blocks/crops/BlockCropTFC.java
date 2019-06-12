@@ -28,11 +28,18 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.types.ICrop;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
+import net.dries007.tfc.objects.te.TEPlacedItem;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
 public abstract class BlockCropTFC extends BlockBush implements IGrowable
@@ -110,10 +117,40 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-        super.updateTick(worldIn, pos, state, rand);
-        grow(worldIn, rand, pos, state);
+        super.updateTick(worldIn, pos, state, random);
+        if (!worldIn.isRemote)
+        {
+            // Attempt to grow
+            float temp = ClimateTFC.getTemp(worldIn, pos);
+            float rainfall = ChunkDataTFC.getRainfall(worldIn, pos);
+            TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
+            if (te != null)
+            {
+                long hours = te.getTicksSinceUpdate() / CalendarTFC.TICKS_IN_HOUR;
+                if (hours > crop.getGrowthTime() && crop.isValidForGrowth(temp, rainfall))
+                {
+                    grow(worldIn, random, pos, state);
+                    te.resetCounter();
+                }
+            }
+
+            // If not valid conditions, die
+            if (!crop.isValidConditions(temp, rainfall))
+            {
+                worldIn.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
+                TEPlacedItem tilePlaced = Helpers.getTE(worldIn, pos, TEPlacedItem.class);
+                if (tilePlaced != null)
+                {
+                    IItemHandler cap = tilePlaced.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                    if (cap != null)
+                    {
+                        cap.insertItem(0, new ItemStack(ItemSeedsTFC.get(crop)), false);
+                    }
+                }
+            }
+        }
     }
 
     @Nonnull

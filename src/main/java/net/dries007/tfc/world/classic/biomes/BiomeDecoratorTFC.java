@@ -158,7 +158,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
 //        TerraFirmaCraft.getLog().info("decorate {} ({}) {} {}", chunkPos, biome.getBiomeName(), lilyPadPerChunk, waterPlantsPerChunk);
         // todo: crops
 
-        if (rng.nextInt(80) == 0)
+        if (rng.nextInt(20) == 0)
         {
             wildCropsGen.generate(world, rng, world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8)));
         }

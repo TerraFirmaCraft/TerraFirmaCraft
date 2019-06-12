@@ -31,10 +31,13 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.crops.BlockCropTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
+
+import static net.dries007.tfc.objects.blocks.crops.BlockCropTFC.WILD;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -283,6 +286,22 @@ public class BlockRockVariant extends Block
                     }
                     return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && flag;
                 }
+            }
+        }
+        else if (plantable instanceof BlockCropTFC)
+        {
+            IBlockState cropState = world.getBlockState(pos.up());
+            if (cropState.getBlock() instanceof BlockCropTFC)
+            {
+                boolean isWild = cropState.getValue(WILD);
+                if (isWild)
+                {
+                    if (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY_GRASS)
+                    {
+                        return true;
+                    }
+                }
+                return type == Rock.Type.FARMLAND;
             }
         }
 
