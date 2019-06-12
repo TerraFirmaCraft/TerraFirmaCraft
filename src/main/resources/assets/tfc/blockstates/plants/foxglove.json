@@ -1,8 +1,0 @@
-{
-	"multipart": [
-		{ "apply": [
-				{ "model": "tfc:plants/foxglove" }
-			]
-		}
-	]
-}
