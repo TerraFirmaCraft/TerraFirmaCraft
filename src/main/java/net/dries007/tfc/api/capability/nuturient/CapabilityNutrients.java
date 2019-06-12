@@ -34,7 +34,7 @@ public final class CapabilityNutrients
 {
     public static final float MIN_PLAYER_NUTRIENTS = 0f;
     public static final float MAX_PLAYER_NUTRIENTS = 100f;
-    public static final int DEFAULT_ROT_TICKS = CalendarTFC.TICKS_IN_DAY * 10;
+    public static final int DEFAULT_ROT_TICKS = CalendarTFC.TICKS_IN_DAY * 15;
 
     @CapabilityInject(IFood.class)
     public static final Capability<IFood> CAPABILITY_NUTRIENTS = Helpers.getNull();
@@ -44,7 +44,6 @@ public final class CapabilityNutrients
     private static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "nutrients");
     private static final ResourceLocation PLAYER_KEY = new ResourceLocation(MOD_ID, "player_nutrients");
 
-    private static List<Supplier<PotionEffect>> spoiledFoodEffects = null;
     private static List<Supplier<PotionEffect>> rottenFoodEffects = null;
 
     public static void preInit()
