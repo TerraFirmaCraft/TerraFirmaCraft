@@ -7,7 +7,8 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:metal/tuyere/wrought_iron"
+      "type": "forge:ore_dict",
+      "ore": "tuyereWroughtIron"
     },
     "S": {
       "type": "forge:ore_dict",

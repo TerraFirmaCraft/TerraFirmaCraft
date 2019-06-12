@@ -2,16 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "XXX",
-    "XXX",
+    " X ",
     "XXX"
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/acacia"
+      "type": "forge:ore_dict",
+      "ore": "doubleIngotWroughtIron"
     }
   },
   "result": {
-    "item": "tfc:wood/workbench/acacia",
+    "item": "tfc:metal/anvil/wrought_iron",
     "count": 1
   }
 }
