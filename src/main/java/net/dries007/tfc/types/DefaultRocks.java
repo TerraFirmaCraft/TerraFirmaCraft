@@ -63,27 +63,27 @@ public final class DefaultRocks
     public static void onPreRegisterRock(TFCRegistryEvent.RegisterPreBlock<Rock> event)
     {
         event.getRegistry().registerAll(
-            new Rock(GRANITE, IGNEOUS_INTRUSIVE),
-            new Rock(DIORITE, IGNEOUS_INTRUSIVE),
-            new Rock(GABBRO, IGNEOUS_INTRUSIVE),
-            new Rock(SHALE, SEDIMENTARY),
-            new Rock(CLAYSTONE, SEDIMENTARY),
-            new Rock(ROCKSALT, SEDIMENTARY),
-            new Rock(LIMESTONE, SEDIMENTARY),
-            new Rock(CONGLOMERATE, SEDIMENTARY),
-            new Rock(DOLOMITE, SEDIMENTARY),
-            new Rock(CHERT, SEDIMENTARY),
-            new Rock(CHALK, SEDIMENTARY),
-            new Rock(RHYOLITE, IGNEOUS_EXTRUSIVE),
-            new Rock(BASALT, IGNEOUS_EXTRUSIVE),
-            new Rock(ANDESITE, IGNEOUS_EXTRUSIVE),
-            new Rock(DACITE, IGNEOUS_EXTRUSIVE),
-            new Rock(QUARTZITE, METAMORPHIC),
-            new Rock(SLATE, METAMORPHIC),
-            new Rock(PHYLLITE, METAMORPHIC),
-            new Rock(SCHIST, METAMORPHIC),
-            new Rock(GNEISS, METAMORPHIC),
-            new Rock(MARBLE, METAMORPHIC)
+            new Rock(GRANITE, IGNEOUS_INTRUSIVE, false),
+            new Rock(DIORITE, IGNEOUS_INTRUSIVE, false),
+            new Rock(GABBRO, IGNEOUS_INTRUSIVE, false),
+            new Rock(SHALE, SEDIMENTARY, false),
+            new Rock(CLAYSTONE, SEDIMENTARY, false),
+            new Rock(ROCKSALT, SEDIMENTARY, false),
+            new Rock(LIMESTONE, SEDIMENTARY, true),
+            new Rock(CONGLOMERATE, SEDIMENTARY, false),
+            new Rock(DOLOMITE, SEDIMENTARY, true),
+            new Rock(CHERT, SEDIMENTARY, false),
+            new Rock(CHALK, SEDIMENTARY, true),
+            new Rock(RHYOLITE, IGNEOUS_EXTRUSIVE, false),
+            new Rock(BASALT, IGNEOUS_EXTRUSIVE, false),
+            new Rock(ANDESITE, IGNEOUS_EXTRUSIVE, false),
+            new Rock(DACITE, IGNEOUS_EXTRUSIVE, false),
+            new Rock(QUARTZITE, METAMORPHIC, false),
+            new Rock(SLATE, METAMORPHIC, false),
+            new Rock(PHYLLITE, METAMORPHIC, false),
+            new Rock(SCHIST, METAMORPHIC, false),
+            new Rock(GNEISS, METAMORPHIC, false),
+            new Rock(MARBLE, METAMORPHIC, true)
         );
     }
 }
