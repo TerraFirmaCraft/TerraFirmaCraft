@@ -23,7 +23,6 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.te.TEBloomery;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -173,10 +172,7 @@ public interface IPlaceableItem
             putBoth(stack -> stack.getItem() == Items.CLAY_BALL && stack.getCount() >= 5, (world, pos, stack, player, facing, hitVec) -> {
                 if (!world.isRemote)
                 {
-                    //TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.KNAPPING_CLAY);
-                    if(player.isSneaking()){
-                        world.setBlockState(pos.up(), BlocksTFC.BLOOMERY_BOTTOM.getDefaultState());
-                    }
+                    TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.KNAPPING_CLAY);
                 }
                 return false;
             });

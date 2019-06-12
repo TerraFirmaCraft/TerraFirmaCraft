@@ -106,8 +106,6 @@ public final class BlocksTFC
     public static final BlockTorchTFC TORCH = getNull();
     public static final BlockCharcoalForge CHARCOAL_FORGE = getNull();
     public static final BlockCrucible CRUCIBLE = getNull();
-    public static final BlockBloomeryBottom BLOOMERY_BOTTOM = getNull();
-    public static final BlockBloomeryStructure BLOOMERY_STRUCTURE = getNull();
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -472,8 +470,6 @@ public final class BlocksTFC
         register(r, "ingot_pile", new BlockIngotPile());
         register(r, "log_pile", new BlockLogPile());
         register(r, "pit_kiln", new BlockPitKiln());
-        register(r, "bloomery_bottom", new BlockBloomeryBottom());
-        register(r, "bloomery_structure", new BlockBloomeryStructure());
 
         // todo: pumpkin/melon ?
         // todo: fruit tree stuff (leaves, saplings, logs)
@@ -521,7 +517,6 @@ public final class BlocksTFC
         register(TECharcoalForge.class, "charcoal_forge");
         register(TEAnvilTFC.class, "anvil");
         register(TECrucible.class, "crucible");
-        register(TEBloomery.class, "bloomery");
     }
 
     public static boolean isWater(IBlockState current)
