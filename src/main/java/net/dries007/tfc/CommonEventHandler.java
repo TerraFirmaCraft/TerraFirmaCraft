@@ -36,7 +36,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
-import net.dries007.tfc.network.PacketNutrientsUpdate;
+import net.dries007.tfc.network.PacketPlayerNutrientsUpdate;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.util.Helpers;
@@ -196,7 +196,7 @@ public final class CommonEventHandler
             if (cap != null)
             {
                 cap.updateNutrientsFastForward();
-                TerraFirmaCraft.getNetwork().sendTo(new PacketNutrientsUpdate(cap), player);
+                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerNutrientsUpdate(cap), player);
             }
         }
     }

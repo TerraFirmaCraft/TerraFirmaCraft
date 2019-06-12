@@ -33,7 +33,6 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     {
         this.nutrients = new float[Nutrient.TOTAL];
         this.decayModifier = decayModifier;
-        // Food decay initially is synced with the hour. This allows items grabbed within a minute to stack
         System.arraycopy(nutrients, 0, this.nutrients, 0, nutrients.length);
 
         deserializeNBT(nbt);
@@ -104,6 +103,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         else
         {
             // Don't default to zero
+            // Food decay initially is synced with the hour. This allows items grabbed within a minute to stack
             creationDate = CalendarTFC.getTotalHours() * CalendarTFC.TICKS_IN_HOUR;
         }
     }

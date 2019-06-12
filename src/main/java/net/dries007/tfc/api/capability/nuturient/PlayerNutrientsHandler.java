@@ -13,7 +13,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.agriculture.Nutrient;
 import net.dries007.tfc.world.classic.CalendarTFC;
 
@@ -133,19 +133,12 @@ public class PlayerNutrientsHandler implements IPlayerNutrients, ICapabilitySeri
         }
     }
 
-    public void debug()
-    {
-        TerraFirmaCraft.getLog().info("Player Nutrients!!!");
-        for (Nutrient n : Nutrient.values())
-            TerraFirmaCraft.getLog().info("Nutrient: " + n.name() + " = " + nutrients[n.ordinal()]);
-    }
-
     private void updateNutrients()
     {
         int ticksPassed = (int) (CalendarTFC.getCalendarTime() - lastUpdateTick);
         for (Nutrient nutrient : Nutrient.values())
         {
-            setNutrient(nutrient, nutrients[nutrient.ordinal()] - (nutrient.getDecayModifier() * ticksPassed));
+            setNutrient(nutrient, nutrients[nutrient.ordinal()] - (float) (ConfigTFC.GENERAL.playerNutritionDecayModifier * nutrient.getDecayModifier() * ticksPassed));
         }
         lastUpdateTick = CalendarTFC.getCalendarTime();
     }

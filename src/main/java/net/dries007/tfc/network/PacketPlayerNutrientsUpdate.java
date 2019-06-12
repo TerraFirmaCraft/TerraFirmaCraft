@@ -16,17 +16,17 @@ import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
 import net.dries007.tfc.api.capability.nuturient.IPlayerNutrients;
 import net.dries007.tfc.util.agriculture.Nutrient;
 
-public class PacketNutrientsUpdate implements IMessage
+public class PacketPlayerNutrientsUpdate implements IMessage
 {
     private float[] nutrients;
 
     @SuppressWarnings("unused")
-    public PacketNutrientsUpdate()
+    public PacketPlayerNutrientsUpdate()
     {
         nutrients = new float[Nutrient.TOTAL];
     }
 
-    public PacketNutrientsUpdate(IPlayerNutrients cap)
+    public PacketPlayerNutrientsUpdate(IPlayerNutrients cap)
     {
         nutrients = cap.getNutrients();
     }
@@ -49,10 +49,10 @@ public class PacketNutrientsUpdate implements IMessage
         }
     }
 
-    public static final class Handler implements IMessageHandler<PacketNutrientsUpdate, IMessage>
+    public static final class Handler implements IMessageHandler<PacketPlayerNutrientsUpdate, IMessage>
     {
         @Override
-        public IMessage onMessage(PacketNutrientsUpdate message, MessageContext ctx)
+        public IMessage onMessage(PacketPlayerNutrientsUpdate message, MessageContext ctx)
         {
             TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
                 EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);

@@ -42,7 +42,7 @@ public final class CapabilityItemHeat
 
     public static void addTemp(IItemHeat instance)
     {
-        // Simple modifier = 3 (2x normal cooling)
+        // Default modifier = 3 (2x normal cooling)
         addTemp(instance, 3);
     }
 
