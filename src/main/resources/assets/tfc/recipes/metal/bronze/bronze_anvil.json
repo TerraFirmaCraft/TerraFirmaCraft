@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    " X ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:metal/double_ingot/bronze"
+    }
+  },
+  "result": {
+    "item": "tfc:metal/anvil/bronze",
+    "count": 1
+  }
+}

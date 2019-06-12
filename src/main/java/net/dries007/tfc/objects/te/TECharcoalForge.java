@@ -106,6 +106,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
                 else
                 {
                     inventory.setStackInSlot(SLOT_FUEL_MIN, ItemStack.EMPTY);
+                    requiresSlotUpdate = true;
                     Fuel fuel = FuelManager.getFuel(stack);
                     burnTicks += fuel.getAmount();
                     burnTemperature = fuel.getTemperature();

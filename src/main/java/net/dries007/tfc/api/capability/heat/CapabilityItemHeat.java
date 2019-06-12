@@ -35,7 +35,7 @@ public final class CapabilityItemHeat
      */
     public static float adjustTemp(float temp, float heatCapacity, long ticksSinceUpdate)
     {
-        if (ticksSinceUpdate == -1) return MIN_TEMPERATURE;
+        if (ticksSinceUpdate <= 0) return temp;
         final float newTemp = temp - heatCapacity * (float) ticksSinceUpdate * (float) ConfigTFC.GENERAL.temperatureModifierGlobal;
         return newTemp < MIN_TEMPERATURE ? MIN_TEMPERATURE : newTemp;
     }

@@ -15,6 +15,7 @@ import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -171,6 +172,7 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:wooden_pickaxe"));
             modRegistry.remove(new ResourceLocation("minecraft:wooden_button"));
             modRegistry.remove(new ResourceLocation("minecraft:wooden_door"));
+            modRegistry.remove(new ResourceLocation("minecraft:trapdoor"));
             //birch
             modRegistry.remove(new ResourceLocation("minecraft:birch_wooden_slab"));
             modRegistry.remove(new ResourceLocation("minecraft:birch_stairs"));
