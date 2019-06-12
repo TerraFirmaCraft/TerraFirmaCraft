@@ -131,10 +131,10 @@ public class WorldGenOreVeins implements IWorldGenerator
                         if (!(stateAt.getBlock() instanceof BlockRockVariant)) continue;
 
                         final BlockRockVariant blockAt = (BlockRockVariant) stateAt.getBlock();
-                        if (blockAt.type != Rock.Type.RAW || !vein.type.baseRocks.contains(blockAt.rock))
+                        if (blockAt.getType() != Rock.Type.RAW || !vein.type.baseRocks.contains(blockAt.getRock()))
                             continue;
 
-                        world.setBlockState(posAt, vein.type.getOreState(blockAt.rock, vein.grade), 2);
+                        world.setBlockState(posAt, vein.type.getOreState(blockAt.getRock(), vein.grade), 2);
                     }
                 }
             }

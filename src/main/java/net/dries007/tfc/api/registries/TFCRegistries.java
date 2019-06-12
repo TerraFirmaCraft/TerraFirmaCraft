@@ -20,6 +20,12 @@ import net.dries007.tfc.api.types.*;
  */
 public class TFCRegistries
 {
+    /**
+     * To developers: If you are considering creating one of these pre-block registries, take a minute to ask "is this the best idea"
+     * i.e create an interface + enum, so addons register their own instances of TFC block classes using a custom implementation of the enum
+     *
+     * - AlcatrazEscapee
+     */
     public static final IForgeRegistry<Rock> ROCKS = GameRegistry.findRegistry(Rock.class);
     public static final IForgeRegistry<RockCategory> ROCK_CATEGORIES = GameRegistry.findRegistry(RockCategory.class);
     public static final IForgeRegistry<Ore> ORES = GameRegistry.findRegistry(Ore.class);
