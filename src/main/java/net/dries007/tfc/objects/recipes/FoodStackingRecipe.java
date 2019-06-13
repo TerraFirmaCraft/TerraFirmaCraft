@@ -17,8 +17,8 @@ import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
-import net.dries007.tfc.api.capability.nuturient.IFood;
+import net.dries007.tfc.api.capability.nutrient.CapabilityNutrients;
+import net.dries007.tfc.api.capability.nutrient.IFood;
 
 @ParametersAreNonnullByDefault
 public class FoodStackingRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
