@@ -28,8 +28,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
-import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
-import net.dries007.tfc.api.capability.nuturient.IPlayerNutrients;
+import net.dries007.tfc.api.capability.nutrient.CapabilityNutrients;
+import net.dries007.tfc.api.capability.nutrient.IPlayerNutrients;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;

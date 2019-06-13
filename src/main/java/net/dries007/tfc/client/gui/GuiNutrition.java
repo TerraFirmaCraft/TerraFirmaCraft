@@ -15,8 +15,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
-import net.dries007.tfc.api.capability.nuturient.IPlayerNutrients;
+import net.dries007.tfc.api.capability.nutrient.CapabilityNutrients;
+import net.dries007.tfc.api.capability.nutrient.IPlayerNutrients;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;

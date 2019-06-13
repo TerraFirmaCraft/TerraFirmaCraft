@@ -22,8 +22,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
-import net.dries007.tfc.api.capability.nuturient.IPlayerNutrients;
+import net.dries007.tfc.api.capability.nutrient.CapabilityNutrients;
+import net.dries007.tfc.api.capability.nutrient.IPlayerNutrients;
 import net.dries007.tfc.network.PacketPlayerNutrientsUpdate;
 import net.dries007.tfc.util.agriculture.Nutrient;
 

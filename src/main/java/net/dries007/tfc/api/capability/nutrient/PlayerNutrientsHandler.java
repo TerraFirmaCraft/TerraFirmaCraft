@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.nuturient;
+package net.dries007.tfc.api.capability.nutrient;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,8 +17,8 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.agriculture.Nutrient;
 import net.dries007.tfc.world.classic.CalendarTFC;
 
-import static net.dries007.tfc.api.capability.nuturient.CapabilityNutrients.MAX_PLAYER_NUTRIENTS;
-import static net.dries007.tfc.api.capability.nuturient.CapabilityNutrients.MIN_PLAYER_NUTRIENTS;
+import static net.dries007.tfc.api.capability.nutrient.CapabilityNutrients.MAX_PLAYER_NUTRIENTS;
+import static net.dries007.tfc.api.capability.nutrient.CapabilityNutrients.MIN_PLAYER_NUTRIENTS;
 
 public class PlayerNutrientsHandler implements IPlayerNutrients, ICapabilitySerializable<NBTTagCompound>
 {

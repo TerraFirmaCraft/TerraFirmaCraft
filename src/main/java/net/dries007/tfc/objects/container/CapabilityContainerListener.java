@@ -16,7 +16,7 @@ import net.minecraft.util.NonNullList;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
+import net.dries007.tfc.api.capability.nutrient.CapabilityNutrients;
 import net.dries007.tfc.network.PacketCapabilityContainerUpdate;
 
 /**

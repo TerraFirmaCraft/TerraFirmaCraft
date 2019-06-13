@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.nuturient;
+package net.dries007.tfc.api.capability.nutrient;
 
 import java.util.ArrayList;
 import java.util.List;

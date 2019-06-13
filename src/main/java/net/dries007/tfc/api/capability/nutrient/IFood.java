@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.nuturient;
+package net.dries007.tfc.api.capability.nutrient;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -77,7 +77,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
 
     /**
      * Called when the player consumes this food item
-     * Called from {@link net.dries007.tfc.api.capability.nuturient.CapabilityNutrients.EventHandler}
+     * Called from {@link net.dries007.tfc.api.capability.nutrient.CapabilityNutrients.EventHandler}
      *
      * @param player the player doing the consuming
      * @param stack the stack being consumed
