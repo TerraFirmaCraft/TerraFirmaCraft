@@ -47,7 +47,7 @@ public class PacketPlaceBlockSpecial implements IMessage
                     final RayTraceResult rayTrace = player.rayTrace(player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue(), 1);
                     final ItemStack stack = player.getHeldItemMainhand().isEmpty() ? player.getHeldItemOffhand() : player.getHeldItemMainhand();
 
-                    if (rayTrace != null)
+                    if (!stack.isEmpty() && rayTrace != null)
                     {
                         BlockPos pos = rayTrace.getBlockPos();
                         double placeReach = player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
