@@ -12,9 +12,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -32,7 +29,7 @@ import net.dries007.tfc.objects.inventory.capability.ItemStackHandlerTE;
  */
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public abstract class TEInventory extends TileEntity
+public abstract class TEInventory extends TEBase
 {
     protected final ItemStackHandler inventory;
 
@@ -67,35 +64,6 @@ public abstract class TEInventory extends TileEntity
     {
         compound.setTag("inventory", inventory.serializeNBT());
         return super.writeToNBT(compound);
-    }
-
-    @Override
-    @Nullable
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
-        NBTTagCompound updateTagDescribingTileEntityState = getUpdateTag();
-        return new SPacketUpdateTileEntity(this.pos, 1, updateTagDescribingTileEntityState);
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag()
-    {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        writeToNBT(nbtTagCompound);
-        return nbtTagCompound;
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-    {
-        NBTTagCompound updateTagDescribingTileEntityState = pkt.getNbtCompound();
-        handleUpdateTag(updateTagDescribingTileEntityState);
-    }
-
-    @Override
-    public void handleUpdateTag(NBTTagCompound tag)
-    {
-        this.readFromNBT(tag);
     }
 
     @Override

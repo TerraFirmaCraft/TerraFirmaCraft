@@ -115,7 +115,9 @@ public class BlockOreTFC extends Block
     @Override
     public int quantityDropped(IBlockState state, int fortune, Random random)
     {
-        return super.quantityDropped(state, fortune, random); // todo: see how 1710 handles this
+        if (ore.quantity != null)
+            return ore.quantity.quantityDropped(state, fortune, random);
+        return super.quantityDropped(state, fortune, random);
     }
 
     @Override

@@ -248,9 +248,9 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         return 0;
     }
 
-    public void onAirIntake(float amount)
+    public void onAirIntake(int amount)
     {
-        airTicks += (int) (200 * amount);
+        airTicks += amount;
         if (airTicks > 600)
         {
             airTicks = 600;

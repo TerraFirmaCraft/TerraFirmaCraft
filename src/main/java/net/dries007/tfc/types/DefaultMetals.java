@@ -18,6 +18,7 @@ import net.dries007.tfc.objects.ToolMaterialsTFC;
 
 import static net.dries007.tfc.api.types.Metal.Tier.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.util.functionalinterfaces.OreBlockQuantity.rng;
 
 @SuppressWarnings("WeakerAccess")
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -113,8 +114,8 @@ public final class DefaultMetals
             new Ore(LIMONITE, PIG_IRON),
             new Ore(SPHALERITE, ZINC),
             new Ore(TETRAHEDRITE, COPPER),
-            new Ore(BITUMINOUS_COAL),
-            new Ore(LIGNITE),
+            new Ore(BITUMINOUS_COAL, rng(2)),
+            new Ore(LIGNITE, rng(2)),
             new Ore(KAOLINITE),
             new Ore(GYPSUM),
             new Ore(SATINSPAR),
@@ -128,7 +129,7 @@ public final class DefaultMetals
             new Ore(PITCHBLENDE),
             new Ore(CINNABAR),
             new Ore(CRYOLITE),
-            new Ore(SALTPETER),
+            new Ore(SALTPETER, rng(3)),
             new Ore(SERPENTINE),
             new Ore(SYLVITE),
             new Ore(BORAX),

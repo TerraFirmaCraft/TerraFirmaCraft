@@ -37,12 +37,12 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.ILightableBlock;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlockLogPile extends Block
+public class BlockLogPile extends Block implements ILightableBlock
 {
-    public static final PropertyBool ONFIRE = PropertyBool.create("onfire");
     private static final PropertyBool AXIS = PropertyBool.create("axis");
 
     public BlockLogPile()
@@ -53,26 +53,26 @@ public class BlockLogPile extends Block
         setSoundType(SoundType.WOOD);
         setTickRandomly(true);
         setHarvestLevel("axe", 0);
-        this.setDefaultState(this.getDefaultState().withProperty(AXIS, false).withProperty(ONFIRE, false));
+        this.setDefaultState(this.getDefaultState().withProperty(AXIS, false).withProperty(LIT, false));
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AXIS, meta == 0).withProperty(ONFIRE, meta >= 2);
+        return this.getDefaultState().withProperty(AXIS, meta == 0).withProperty(LIT, meta >= 2);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return (state.getValue(AXIS) ? 0 : 1) + (state.getValue(ONFIRE) ? 2 : 0);
+        return (state.getValue(AXIS) ? 0 : 1) + (state.getValue(LIT) ? 2 : 0);
     }
 
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-        if (!worldIn.isRemote && state.getValue(ONFIRE))
+        if (!worldIn.isRemote && state.getValue(LIT))
         {
             for (EnumFacing side : EnumFacing.values())
             {
@@ -83,9 +83,9 @@ public class BlockLogPile extends Block
                 IBlockState state2 = worldIn.getBlockState(pos.offset(side));
                 if (state2.getBlock() instanceof BlockLogPile)
                 {
-                    if (!state2.getValue(ONFIRE))
+                    if (!state2.getValue(LIT))
                     {
-                        worldIn.setBlockState(pos.offset(side), state2.withProperty(ONFIRE, true));
+                        worldIn.setBlockState(pos.offset(side), state2.withProperty(LIT, true));
                     }
                 }
             }
@@ -96,7 +96,7 @@ public class BlockLogPile extends Block
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        if (stateIn.getValue(ONFIRE))
+        if (stateIn.getValue(LIT))
         {
             worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + rand.nextFloat(), pos.getY() + 1, pos.getZ() + rand.nextFloat(),
                 0f, 0.1f + 0.1f * rand.nextFloat(), 0f);
@@ -120,19 +120,19 @@ public class BlockLogPile extends Block
             // 2. Try and light the TE
             // 3. Open the GUI
             ItemStack stack = player.getHeldItem(hand);
-            if (stack.getItem() == Items.FLINT_AND_STEEL && !state.getValue(ONFIRE) && side == EnumFacing.UP)
+            if (stack.getItem() == Items.FLINT_AND_STEEL && !state.getValue(LIT) && side == EnumFacing.UP)
             {
                 // Light the Pile
                 if (world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos))
                 {
-                    world.setBlockState(pos, state.withProperty(ONFIRE, true));
+                    world.setBlockState(pos, state.withProperty(LIT, true));
                     te.light();
                     world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
                     world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 }
             }
 
-            if (!player.isSneaking() && !state.getValue(ONFIRE))
+            if (!player.isSneaking() && !state.getValue(LIT))
             {
                 TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.LOG_PILE);
             }
@@ -164,7 +164,7 @@ public class BlockLogPile extends Block
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, AXIS, ONFIRE);
+        return new BlockStateContainer(this, AXIS, LIT);
     }
 
     @Override

@@ -32,11 +32,10 @@ import net.minecraft.world.World;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.te.TECharcoalForge;
 import net.dries007.tfc.util.Helpers;
-
-import static net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge.LIT;
+import net.dries007.tfc.util.ILightableBlock;
 
 @ParametersAreNonnullByDefault
-public class BlockCharcoalPile extends Block
+public class BlockCharcoalPile extends Block implements ILightableBlock
 {
     public static final PropertyInteger LAYERS = PropertyInteger.create("type", 1, 8);
     private static final AxisAlignedBB[] PILE_AABB = new AxisAlignedBB[] {
@@ -171,13 +170,13 @@ public class BlockCharcoalPile extends Block
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (!world.isRemote)
-        {
-            ItemStack stack = player.getHeldItem(hand);
+        ItemStack stack = player.getHeldItem(hand);
 
-            if (stack.getItem() == ItemsTFC.FIRESTARTER || stack.getItem() == Items.FLINT_AND_STEEL)
+        if (stack.getItem() == ItemsTFC.FIRESTARTER || stack.getItem() == Items.FLINT_AND_STEEL)
+        {
+            if (state.getValue(LAYERS) == 7)
             {
-                if (state.getValue(LAYERS) == 7)
+                if (!world.isRemote)
                 {
                     world.setBlockState(pos, BlocksTFC.CHARCOAL_FORGE.getDefaultState().withProperty(LIT, true));
                     TECharcoalForge te = Helpers.getTE(world, pos, TECharcoalForge.class);
@@ -186,10 +185,10 @@ public class BlockCharcoalPile extends Block
                         te.onCreate();
                     }
                 }
+                return true;
             }
-            return false;
         }
-        return true;
+        return false;
     }
 
     @Override

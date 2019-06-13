@@ -17,7 +17,7 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.util.Helpers;
 
 /*
- * Must be on Item or Block (with ItemBlock, i.e. do not implement on blocks that have a seperate item block)
+ * Must be on Item or Block (with ItemBlock, i.e. do not implement on blocks that have a separate item block)
  */
 public interface IMetalObject
 {
@@ -43,7 +43,7 @@ public interface IMetalObject
     }
 
     /**
-     * @param stack the item stack
+     * @param stack the item stack. This can assume that it is of the right item type and do casts without checking
      * @return the metal of the stack
      */
     @Nullable

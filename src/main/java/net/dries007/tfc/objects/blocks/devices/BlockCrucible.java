@@ -29,9 +29,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.te.TECrucible;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.IHeatConsumerBlock;
 
 @ParametersAreNonnullByDefault
-public class BlockCrucible extends Block
+public class BlockCrucible extends Block implements IHeatConsumerBlock
 {
     private static final AxisAlignedBB CRUCIBLE_AABB = new AxisAlignedBB(0.0625, 0, 0.0625, 0.9375, 0.9375, 0.9375);
     private static final AxisAlignedBB AABB_LEGS = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.9375D, 0.125D, 0.9375D);
@@ -47,6 +49,16 @@ public class BlockCrucible extends Block
         setHardness(3.0f);
         setHarvestLevel("pickaxe", 0);
         setSoundType(SoundType.METAL);
+    }
+
+    @Override
+    public void acceptHeat(World world, BlockPos pos, float temperature)
+    {
+        TECrucible tile = Helpers.getTE(world, pos, TECrucible.class);
+        if (tile != null)
+        {
+            tile.acceptHeat(temperature);
+        }
     }
 
     @SuppressWarnings("deprecation")
