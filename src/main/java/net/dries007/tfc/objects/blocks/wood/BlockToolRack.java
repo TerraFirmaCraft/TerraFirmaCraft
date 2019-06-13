@@ -36,6 +36,8 @@ import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.te.TEToolRack;
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.util.Helpers.getAValidHorizontal;
+import static net.dries007.tfc.util.functionalinterfaces.FacingChecker.canHangAt;
 import static net.minecraft.block.BlockHorizontal.FACING;
 import static net.minecraft.block.material.Material.WOOD;
 
@@ -140,7 +142,7 @@ public class BlockToolRack extends BlockContainer implements IItemSize
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (Helpers.canHangAt(worldIn, pos, state.getValue(FACING))) return;
+        if (canHangAt.canFace(worldIn, pos, state.getValue(FACING))) return;
         dropBlockAsItem(worldIn, pos, state, 0);
         TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
         if (te != null) te.onBreakBlock();
@@ -150,9 +152,10 @@ public class BlockToolRack extends BlockContainer implements IItemSize
     @Override
     public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
     {
-        return super.canPlaceBlockAt(worldIn, pos) && Helpers.getASolidFacing(worldIn, pos, null, EnumFacing.HORIZONTALS) != null;
+        return super.canPlaceBlockAt(worldIn, pos) && getAValidHorizontal(worldIn, pos, canHangAt, EnumFacing.SOUTH) != null;
     }
 
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
@@ -167,7 +170,7 @@ public class BlockToolRack extends BlockContainer implements IItemSize
     {
         if (facing.getAxis() == EnumFacing.Axis.Y)
             facing = placer.getHorizontalFacing().getOpposite();
-        return this.getDefaultState().withProperty(FACING, Helpers.getASolidFacing(worldIn, pos, facing, EnumFacing.HORIZONTALS));
+        return this.getDefaultState().withProperty(FACING, getAValidHorizontal(worldIn, pos, canHangAt, facing));
     }
 
     @Override

@@ -26,6 +26,10 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 {
     @GameRegistry.ObjectHolder(MOD_ID + ":unknown")
     public static final Metal UNKNOWN = Helpers.getNull();
+    @GameRegistry.ObjectHolder("tfc:wrought_iron")
+    public static final Metal WROUGHT_IRON = Helpers.getNull();
+    @GameRegistry.ObjectHolder("tfc:pig_iron")
+    public static final Metal PIG_IRON = Helpers.getNull();
 
     private final Tier tier;
     private final float specificHeat;

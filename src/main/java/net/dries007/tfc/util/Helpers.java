@@ -5,10 +5,7 @@
 
 package net.dries007.tfc.util;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,6 +24,10 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraft.world.ChunkCache;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import io.netty.buffer.ByteBuf;
@@ -38,12 +39,17 @@ import net.dries007.tfc.objects.blocks.BlockPeat;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockShortGrassTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.util.functionalinterfaces.FacingChecker;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
+
+import static net.dries007.tfc.Constants.facingPriorityLists;
+import static net.minecraft.util.EnumFacing.*;
 
 public final class Helpers
 {
     private static final Joiner JOINER_DOT = Joiner.on('.');
+
 
     public static void spreadGrass(World world, BlockPos pos, IBlockState us, Random rand)
     {
@@ -115,9 +121,29 @@ public final class Helpers
     }
 
     @SuppressWarnings("unchecked")
+    @Nullable
     public static <T extends TileEntity> T getTE(IBlockAccess world, BlockPos pos, Class<T> aClass)
     {
         TileEntity te = world.getTileEntity(pos);
+        if (!aClass.isInstance(te)) return null;
+        return (T) te;
+    }
+
+    /**
+     * Used to get a tile entity when it is nessecary to make saftey checks
+     * See {@link net.minecraft.block.Block#getActualState(IBlockState, IBlockAccess, BlockPos)}
+     *
+     * @param world  The world
+     * @param pos    The position
+     * @param aClass The TE class to return
+     * @param <T>    The type of the TE
+     * @return the te if it exists, or null if it doesn't
+     */
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public static <T extends TileEntity> T getTESafely(IBlockAccess world, BlockPos pos, Class<T> aClass)
+    {
+        TileEntity te = world instanceof ChunkCache ? ((ChunkCache) world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : world.getTileEntity(pos);
         if (!aClass.isInstance(te)) return null;
         return (T) te;
     }
@@ -188,41 +214,48 @@ public final class Helpers
     }
 
     /**
-     * Method for hanging blocks to check if they can hang. 11/10 description.
-     * NOTE: where applicable, remember to still check if the blockstate allows for the specified direction!
-     *
-     * @param pos    position of the block that makes the check
-     * @param facing the direction the block is facing. This is the direction the block should be pointing and the side it hangs ON, not the side it sticks WITH.
-     *               e.g: a sign facing north also hangs on the north side of the support block
-     * @return true if the side is solid, false otherwise.
+     * @see #getAValidFacing
+     * very simillar, made for horizontally rotatable blocks
+     * @param preferredSide must be an {@link EnumFacing#HORIZONTALS}
+     * @return A valid Horizontal facing or null if none is
      */
-    public static boolean canHangAt(World worldIn, BlockPos pos, EnumFacing facing)
+    public static EnumFacing getAValidHorizontal(World worldIn, BlockPos pos, FacingChecker checker, EnumFacing preferredSide)
     {
-        return worldIn.isSideSolid(pos.offset(facing.getOpposite()), facing);
+        int index = preferredSide.getHorizontalIndex();
+        if (index == -1)
+            throw new IllegalArgumentException("Received side was not a horizontal");
+        return getAValidFacing(worldIn, pos, checker, facingPriorityLists.get(preferredSide.getHorizontalIndex()));
     }
 
     /**
-     * Primarily for use in placing checks. Determines a solid side for the block to attach to.
+     * This is meant to avoid Intellij's warnings about null fields that are injected to at runtime
+     * Use this for things like @ObjectHolder, @CapabilityInject, etc.
+     * AKA - The @Nullable is intentional. If it crashes your dev env, then fix your dev env, not this. :)
      *
-     * @param pos             position of the block/space to be checked.
-     * @param possibleSides   a list/array of all sides the block can attach to.
-     * @param preferredFacing this facing is checked first. It can be invalid or null.
-     * @return Found facing or null is none is found. This is the direction the block should be pointing and the side it stick TO, not the side it sticks WITH.
+     * @param <T> anything and everything
+     * @return null, but not null
      */
-    public static EnumFacing getASolidFacing(World worldIn, BlockPos pos, @Nullable EnumFacing preferredFacing, EnumFacing... possibleSides)
+    @Nonnull
+    @SuppressWarnings("ConstantConditions")
+    public static <T> T getNull()
     {
-        return getASolidFacing(worldIn, pos, preferredFacing, Arrays.asList(possibleSides));
+        return null;
     }
 
-    public static EnumFacing getASolidFacing(World worldIn, BlockPos pos, @Nullable EnumFacing preferredFacing, Collection<EnumFacing> possibleSides)
+    /**
+     * Primarily for use in placing checks. Determines a valid facing for a block.
+     *
+     * @param pos           position that the block does or is going to occupy.
+     * @param checker       the checking algorithm. For simple solid side checking,
+     * @param possibleSides a collection of all sides the block can face, sorted by priority.
+     * @return Found facing or null is none is found.
+     * @see FacingChecker#canHangAt
+     */
+    public static EnumFacing getAValidFacing(World worldIn, BlockPos pos, FacingChecker checker, Collection<EnumFacing> possibleSides)
     {
-        if (preferredFacing != null && possibleSides.contains(preferredFacing) && canHangAt(worldIn, pos, preferredFacing))
-        {
-            return preferredFacing;
-        }
         for (EnumFacing side : possibleSides)
         {
-            if (side != null && canHangAt(worldIn, pos, side))
+            if (side != null && checker.canFace(worldIn, pos, side))
             {
                 return side;
             }
@@ -247,21 +280,6 @@ public final class Helpers
         {
             return new ResourceLocation(ByteBufUtils.readUTF8String(buf));
         }
-        return null;
-    }
-
-    /**
-     * This is meant to avoid Intellij's warnings about null fields that are injected to at runtime
-     * Use this for things like @ObjectHolder, @CapabilityInject, etc.
-     * AKA - The @Nullable is intentional. If it crashes your dev env, then fix your dev env, not this. :)
-     *
-     * @param <T> anything and everything
-     * @return null, but not null
-     */
-    @Nonnull
-    @SuppressWarnings("ConstantConditions")
-    public static <T> T getNull()
-    {
         return null;
     }
 }

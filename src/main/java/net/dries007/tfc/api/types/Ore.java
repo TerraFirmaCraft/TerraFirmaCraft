@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.util.functionalinterfaces.OreBlockQuantity;
 
 /**
  * todo: document API
@@ -21,11 +22,13 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
 {
     private final boolean graded;
     private final Metal metal;
+    public final OreBlockQuantity quantity;
 
     public Ore(ResourceLocation name, @Nullable Metal metal)
     {
         this.graded = (metal != null);
         this.metal = metal;
+        quantity = null;
         setRegistryName(name);
     }
 
@@ -37,6 +40,14 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
     public Ore(ResourceLocation name)
     {
         this(name, (Metal) null);
+    }
+
+    public Ore(ResourceLocation name, OreBlockQuantity quantity)
+    {
+        this.graded = false;
+        this.metal = null;
+        this.quantity = quantity;
+        setRegistryName(name);
     }
 
     public boolean isGraded()
