@@ -56,7 +56,6 @@ public interface IPlaceableItem
         return 1;
     }
 
-
     class Impl
     {
         // Add to this map for things that fire when you right click a block
@@ -169,21 +168,47 @@ public interface IPlaceableItem
             });
 
             // Clay -> Knapping
-            putBoth(stack -> stack.getItem() == Items.CLAY_BALL && stack.getCount() >= 5, (world, pos, stack, player, facing, hitVec) -> {
-                if (!world.isRemote)
+            putBoth(stack -> stack.getItem() == Items.CLAY_BALL && stack.getCount() >= 5, new IPlaceableItem()
+            {
+                @Override
+                public boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, @Nullable EnumFacing facing, @Nullable Vec3d hitVec)
                 {
-                    TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.KNAPPING_CLAY);
+                    if (!world.isRemote)
+                    {
+                        TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.KNAPPING_CLAY);
+                    }
+                    return true;
                 }
-                return false;
+
+                @Override
+                public int consumeAmount()
+                {
+                    return 0;
+                }
             });
 
             // Leather -> Knapping
-            putBoth(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "leather"), (world, pos, stack, player, facing, hitVec) -> {
-                if (!world.isRemote && Helpers.playerHasItemMatchingOre(player.inventory, "knife"))
+            putBoth(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "leather"), new IPlaceableItem()
+            {
+                @Override
+                public boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, @Nullable EnumFacing facing, @Nullable Vec3d hitVec)
                 {
-                    TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.KNAPPING_LEATHER);
+                    if (Helpers.playerHasItemMatchingOre(player.inventory, "knife"))
+                    {
+                        if (!world.isRemote)
+                        {
+                            TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.KNAPPING_LEATHER);
+                        }
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
+
+                @Override
+                public int consumeAmount()
+                {
+                    return 0;
+                }
             });
         }
 
