@@ -191,7 +191,7 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
         if (!super.canPlaceBlockAt(worldIn, pos))
             return false;
 
-        return (getChimneyLevels(worldIn, pos) > 0) ? true : false;
+        return getChimneyLevels(worldIn, pos) > 0;
     }
 
     @Override
@@ -207,11 +207,13 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
                 //TODO: Show debug msg(missing charcoal pile/charcoal/ore)
                 return false;
             item.damageItem(1, playerIn);
-            worldIn.setBlockState(pos, state.withProperty(LIT, true));
+            //Keep door closed while cooking ore
+            worldIn.setBlockState(pos, state.withProperty(LIT, true).withProperty(OPEN, false));
             te.onIgnite();
             return true;
         }
-        worldIn.setBlockState(pos, state.cycleProperty(OPEN));
+        if (!state.getValue(LIT))
+            worldIn.setBlockState(pos, state.cycleProperty(OPEN));
         return true;
     }
 

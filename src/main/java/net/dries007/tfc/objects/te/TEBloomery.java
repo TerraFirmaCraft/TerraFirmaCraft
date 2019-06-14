@@ -12,12 +12,15 @@ import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlockMolten;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.metal.BlockBloom;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
@@ -27,11 +30,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
 import static net.dries007.tfc.util.ILightableBlock.LIT;
+import static net.minecraft.block.BlockHorizontal.FACING;
 
 public class TEBloomery extends TEBase implements ITickable {
 
     //Gets the internal block, should be charcoal pile
-    private static final Vec3i OFFSET_INTERNAL = new Vec3i(-1, 0, 0);
+    private static final Vec3i OFFSET_INTERNAL = new Vec3i(1, 0, 0);
 
     public int charcoalCount, maxCharcoal;
     public long burnTicksLeft;
@@ -51,19 +55,33 @@ public class TEBloomery extends TEBase implements ITickable {
         delayTimer = 0;
     }
 
-    private boolean convertToBloom(ItemStack stack)
+    @Override
+    public void readFromNBT(NBTTagCompound tag)
     {
-        if (stack.getItem() instanceof ItemOreTFC)
-        {
-            ItemOreTFC metal = (ItemOreTFC) stack.getItem();
-            if (metal.getMetal(stack) == Metal.WROUGHT_IRON)
-            {
-                oreCount++;
-                outCount += metal.getSmeltAmount(stack);
-                return true;
-            }
-        }
-        return false;
+        charcoalCount = tag.getInteger("charcoalCount");
+        burnTicksLeft = tag.getLong("burnTicksLeft");
+        oreCount = tag.getInteger("oreCount");
+        outCount = tag.getInteger("outCount");
+        super.readFromNBT(tag);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag)
+    {
+        tag.setInteger("charcoalCount", charcoalCount);
+        tag.setLong("burnTicksLeft", burnTicksLeft);
+        tag.setInteger("oreCount", oreCount);
+        tag.setInteger("outCount", outCount);
+        return super.writeToNBT(tag);
+    }
+
+    private BlockPos getInternalBlock()
+    {
+        EnumFacing direction = world.getBlockState(pos).getValue(FACING);
+        BlockPos posx = pos.up(OFFSET_INTERNAL.getY())
+            .offset(direction, OFFSET_INTERNAL.getX())
+            .offset(direction.rotateY(), OFFSET_INTERNAL.getZ());
+        return posx;
     }
 
     public boolean canIgnite() {
@@ -71,7 +89,7 @@ public class TEBloomery extends TEBase implements ITickable {
         if (this.charcoalCount < this.oreCount || oreCount == 0)
             return false;
 
-        IBlockState inside = world.getBlockState(pos.add(OFFSET_INTERNAL));
+        IBlockState inside = world.getBlockState(getInternalBlock());
         if (inside.getBlock() == BlocksTFC.CHARCOAL_PILE && inside.getValue(BlockCharcoalPile.LAYERS) >= 8)
             return true;
         return false;
@@ -80,12 +98,12 @@ public class TEBloomery extends TEBase implements ITickable {
     public void onIgnite()
     {
         //TODO Change this to real value later(15-ingame hours)
-        this.burnTicksLeft = 1200;
+        this.burnTicksLeft = 200;
     }
 
     private void addItemsFromWorld()
     {
-        for (EntityItem entityItem : world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.add(OFFSET_INTERNAL).up(), getPos().add(1, 5, 1)), EntitySelectors.IS_ALIVE))
+        for (EntityItem entityItem : world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(getInternalBlock().up(), getInternalBlock().add(1, 3, 1)), EntitySelectors.IS_ALIVE))
         {
             ItemStack stack = entityItem.getItem();
             TerraFirmaCraft.getLog().warn("ITEM FOUND");
@@ -105,7 +123,7 @@ public class TEBloomery extends TEBase implements ITickable {
             else if(stack.getItem() instanceof ItemOreTFC)
             {
                 ItemOreTFC metal = (ItemOreTFC) stack.getItem();
-                if(metal.getMetal(stack) == Metal.WROUGHT_IRON) {
+                if(metal.getMetal(stack) == Metal.WROUGHT_IRON || metal.getMetal(stack) == Metal.PIG_IRON) {
                     while(oreCount < maxOre) {
                         oreCount++;
                         outCount += metal.getSmeltAmount(stack.splitStack(1));
@@ -119,24 +137,32 @@ public class TEBloomery extends TEBase implements ITickable {
         }
     }
 
-    private void updateSlagBlock()
+    private void updateSlagBlock(boolean cooking)
     {
         int slag = charcoalCount+oreCount;
-        int slagLayers = slag > 0 && slag < 4 ? 1 : charcoalCount+oreCount / 4;
+        //If there's at least one item show one layer so player knows that it is working
+        int slagLayers = slag > 0 && slag < 4 ? 1 : slag / 4;
         int height = 0;
-        boolean isLit = burnTicksLeft > 0;
-        BlockPos inside = pos.add(OFFSET_INTERNAL);
-        BlockPos layer = inside.up();
+        BlockPos layer = getInternalBlock().up();
         while(slagLayers > 0)
         {
+            //4 layers means one block
             if(slagLayers >= 4){
                 slagLayers -= 4;
-                world.setBlockState(layer, BlocksTFC.MOLTEN.getDefaultState().withProperty(LIT, isLit).withProperty(BlockMolten.LAYERS, 4));
-                layer = layer.up();
+                world.setBlockState(layer, BlocksTFC.MOLTEN.getDefaultState().withProperty(LIT, cooking).withProperty(BlockMolten.LAYERS, 4));
             }else{
-                world.setBlockState(layer, BlocksTFC.MOLTEN.getDefaultState().withProperty(LIT, isLit).withProperty(BlockMolten.LAYERS, slagLayers));
+                world.setBlockState(layer, BlocksTFC.MOLTEN.getDefaultState().withProperty(LIT, cooking).withProperty(BlockMolten.LAYERS, slagLayers));
                 slagLayers = 0;
             }
+            height++;
+            layer = layer.up();
+        }
+        //Remove any surplus slag blocks(ie: after cooking ore)
+        int maxHeight = BlocksTFC.BLOOMERY.getChimneyLevels(world, pos);
+        while(height < maxHeight)
+        {
+            world.setBlockToAir(layer);
+            height++;
         }
     }
 
@@ -159,13 +185,21 @@ public class TEBloomery extends TEBase implements ITickable {
                 //TODO Multiblock became malformed, should we break the bloomery gate?
             }
             addItemsFromWorld();
-            updateSlagBlock();
+            updateSlagBlock(this.burnTicksLeft > 0);
         }
-        int count = charcoalCount + oreCount;
         IBlockState state = world.getBlockState(pos);
-        if (state.getValue(LIT)) {
+        if (state.getValue(LIT)){
             if(--this.burnTicksLeft<=0){
                 //TODO Finished cooking ore
+                this.burnTicksLeft = 0;
+                this.charcoalCount = 0;
+                this.oreCount = 0;
+                world.setBlockState(getInternalBlock(), BlocksTFC.BLOOM.getDefaultState());
+                TEBloom te = Helpers.getTE(world, getInternalBlock(), TEBloom.class);
+                if (te != null) te.setCount(outCount);
+                outCount = 0;
+                updateSlagBlock(false);
+                world.setBlockState(pos, state.withProperty(LIT, false));
             }
         }
     }
