@@ -27,6 +27,7 @@ import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.blocks.crops.BlockCropTFC;
 import net.dries007.tfc.objects.blocks.devices.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
+import net.dries007.tfc.objects.blocks.metal.BlockBloom;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
 import net.dries007.tfc.objects.blocks.metal.BlockSheet;
 import net.dries007.tfc.objects.blocks.plants.BlockFloatingWaterTFC;
@@ -110,6 +111,7 @@ public final class BlocksTFC
     public static final BlockCrucible CRUCIBLE = getNull();
     public static final BlockMolten MOLTEN = getNull();
     public static final BlockBlastFurnace BLAST_FURNACE = getNull();
+    public static final BlockBloom BLOOM = getNull();
     public static final BlockBloomery BLOOMERY = getNull();
 
     // All these are for use in model registration. Do not use for block lookups.
@@ -489,6 +491,7 @@ public final class BlocksTFC
         register(r, "log_pile", new BlockLogPile());
         register(r, "pit_kiln", new BlockPitKiln());
         register(r, "molten", new BlockMolten());
+        register(r, "bloom", new BlockBloom());
 
         // todo: pumpkin/melon ?
         // todo: fruit tree stuff (leaves, saplings, logs)
@@ -541,6 +544,7 @@ public final class BlocksTFC
         register(TECropSpreading.class, "crop_spreading");
         register(TEBlastFurnace.class, "blast_furnace");
         register(TEBloomery.class, "bloomery");
+        register(TEBloom.class, "bloom");
     }
 
     public static boolean isWater(IBlockState current)
