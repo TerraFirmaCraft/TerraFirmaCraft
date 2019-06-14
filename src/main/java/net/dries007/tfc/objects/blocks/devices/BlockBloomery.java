@@ -66,7 +66,7 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
             }
         };
 
-    private FacingChecker isValidMultiblock = (World world, BlockPos pos, EnumFacing facing) -> getLevel(world, pos, facing) > -1;
+    private FacingChecker isValidMultiblock = (World world, BlockPos pos, EnumFacing facing) -> this.getChimneyLevels(world, pos, facing) > 0;
 
     public BlockBloomery()
     {
@@ -156,7 +156,7 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (getLevel(worldIn, pos, state.getValue(FACING)) > -1) return;
+        if (this.getChimneyLevels(worldIn, pos, state.getValue(FACING)) > -1) return;
         dropBlockAsItem(worldIn, pos, state, 0);
         //TODO
         //TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
@@ -191,20 +191,7 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
         if (!super.canPlaceBlockAt(worldIn, pos))
             return false;
 
-        switch (getLevel(worldIn, pos, EnumFacing.SOUTH))
-        {
-            case -2:
-                return false;
-            case -1:
-            {
-                for (int i = 1; i < 4; i++)
-                    if (getLevel(worldIn, pos, EnumFacing.HORIZONTALS[i]) > -1)
-                        return true;
-                return false;
-            }
-            default:
-                return true;
-        }
+        return (getChimneyLevels(worldIn, pos) > 0) ? true : false;
     }
 
     @Override
@@ -212,16 +199,16 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     {
         TEBloomery te = Helpers.getTE(worldIn, pos, TEBloomery.class);
         if (te == null)
-            return true;
+            return false;
         ItemStack item = playerIn.getHeldItem(hand);
         if (ItemFireStarter.canIgnite(item))
         {
             if (state.getValue(LIT) || !te.canIgnite())
-                //think about this more
-                return true;
-            //TODO ignite
+                //TODO: Show debug msg(missing charcoal pile/charcoal/ore)
+                return false;
             item.damageItem(1, playerIn);
             worldIn.setBlockState(pos, state.withProperty(LIT, true));
+            te.onIgnite();
             return true;
         }
         worldIn.setBlockState(pos, state.cycleProperty(OPEN));
@@ -273,11 +260,11 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     }
 
     /**
-     * @return bloomery height, maximum of 4, or a negative value as follows:
+     * @return bloomery chimney height, maximum of 3, or a negative value as follows:
      * -2 if the position is invalid no matter the rotation
      * -1 if the position is invalid but rotating might fix this
      */
-    public int getLevel(World worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing facing)
+    public int getChimneyLevels(World worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing facing)
     {
         if (!(isBlockEligible(worldIn, pos.up()) && isBlockEligible(worldIn, pos.down())))
             return -2;
@@ -288,7 +275,7 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
         pos = pos.offset(facing);
         if (!(isBlockEligible(worldIn, pos.offset(facing)) && isBlockEligible(worldIn, pos.add(horizontal)) && isBlockEligible(worldIn, pos.subtract(horizontal))))
             return -1;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 4; i++)
         {
             pos = pos.up();
             if (!(isBlockEligible(worldIn, pos.north())
@@ -297,6 +284,30 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
                 && isBlockEligible(worldIn, pos.west())))
                 return i;
         }
-        return 4;
+        return 3;
+    }
+
+    /**
+     * @return bloomery chimney height, maximum of 3, or 0 in case of an invalid multiblock
+     */
+    public int getChimneyLevels(World worldIn, @Nonnull BlockPos pos)
+    {
+        int height = this.getChimneyLevels(worldIn, pos, EnumFacing.SOUTH);
+        switch (height)
+        {
+            case -2:
+                return 0;
+            case -1:
+            {
+                for (int i = 1; i < 4; i++) {
+                    height = this.getChimneyLevels(worldIn, pos, EnumFacing.HORIZONTALS[i]);
+                    if (height > 0)
+                        return height;
+                }
+                return 0;
+            }
+            default:
+                return height;
+        }
     }
 }

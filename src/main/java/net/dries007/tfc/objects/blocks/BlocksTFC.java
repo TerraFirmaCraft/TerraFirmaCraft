@@ -110,6 +110,7 @@ public final class BlocksTFC
     public static final BlockCrucible CRUCIBLE = getNull();
     public static final BlockMolten MOLTEN = getNull();
     public static final BlockBlastFurnace BLAST_FURNACE = getNull();
+    public static final BlockBloomery BLOOMERY = getNull();
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
