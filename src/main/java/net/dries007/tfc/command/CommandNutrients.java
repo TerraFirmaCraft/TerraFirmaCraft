@@ -22,7 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.nutrient.CapabilityNutrients;
+import net.dries007.tfc.api.capability.nutrient.CapabilityFood;
 import net.dries007.tfc.api.capability.nutrient.IPlayerNutrients;
 import net.dries007.tfc.network.PacketPlayerNutrientsUpdate;
 import net.dries007.tfc.util.agriculture.Nutrient;
@@ -61,7 +61,7 @@ public class CommandNutrients extends CommandBase
         try
         {
             Nutrient nutrient = Nutrient.valueOf(args[0].toUpperCase());
-            IPlayerNutrients cap = sender.getCommandSenderEntity().getCapability(CapabilityNutrients.CAPABILITY_PLAYER_NUTRIENTS, null);
+            IPlayerNutrients cap = sender.getCommandSenderEntity().getCapability(CapabilityFood.CAPABILITY_PLAYER_NUTRIENTS, null);
             if (cap != null)
             {
                 float nutrientValue = (float) parseDouble(args[1]);

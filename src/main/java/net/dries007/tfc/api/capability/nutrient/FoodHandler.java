@@ -24,6 +24,11 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     private long creationDate;
     private float decayModifier;
 
+    public FoodHandler()
+    {
+        this(null, new float[] {0f, 0f, 0f, 0f, 0f}, 1f);
+    }
+
     public FoodHandler(@Nullable NBTTagCompound nbt, @Nonnull Food food)
     {
         this(nbt, food.getNutrients(), food.getDecayModifier());
@@ -68,13 +73,13 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     @Override
     public long getRottenDate()
     {
-        return creationDate + (long) (decayModifier * CapabilityNutrients.DEFAULT_ROT_TICKS);
+        return creationDate + (long) (decayModifier * CapabilityFood.DEFAULT_ROT_TICKS);
     }
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityNutrients.CAPABILITY_NUTRIENTS;
+        return capability == CapabilityFood.CAPABILITY_NUTRIENTS;
     }
 
     @Nullable
@@ -82,7 +87,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     @SuppressWarnings("unchecked")
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityNutrients.CAPABILITY_NUTRIENTS ? (T) this : null;
+        return capability == CapabilityFood.CAPABILITY_NUTRIENTS ? (T) this : null;
     }
 
     @Override
