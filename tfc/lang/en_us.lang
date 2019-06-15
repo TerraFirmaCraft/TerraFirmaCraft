@@ -2877,6 +2877,9 @@ item.tfc.metal.lamp.black_steel.name=Black Steel Lamp
 item.tfc.metal.lamp.blue_steel.name=Blue Steel Lamp
 item.tfc.metal.lamp.red_steel.name=Red Steel Lamp
 
+item.tfc.metal.bloom.unrefined.name=Raw Iron Bloom
+item.tfc.metal.bloom.refined.name=Refined Iron Bloom
+
 item.tfc.stone.axe_head.sedimentary.name=Rock Axe Head
 item.tfc.stone.shovel_head.sedimentary.name=Rock Shovel Head
 item.tfc.stone.hoe_head.sedimentary.name=Rock Hoe Head
