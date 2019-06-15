@@ -93,6 +93,8 @@ public class TFCGuiHandler implements IGuiHandler
             case SKILLS:
             case NUTRITION:
                 return new ContainerSimple(player.inventory);
+            case CRAFTING:
+                return new ContainerInventoryCrafting(player.inventory, player.world);
             default:
                 return null;
         }
@@ -145,6 +147,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiNutrition(container, player.inventory);
             case SKILLS:
                 return new GuiSkills(container, player.inventory);
+            case CRAFTING:
+                return new GuiInventoryCrafting(container);
             default:
                 return null;
         }
@@ -170,6 +174,7 @@ public class TFCGuiHandler implements IGuiHandler
         NUTRITION,
         SKILLS,
         INVENTORY, // This is special, it is used by GuiButtonPlayerInventoryTab to signal to open the vanilla inventory
+        CRAFTING, // In-inventory 3x3 crafting grid
         NULL; // This is special, it is a non-null null.
 
         private static Type[] values = values();
