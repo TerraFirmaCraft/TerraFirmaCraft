@@ -45,7 +45,7 @@ public class GuiButtonAnvilPlan extends GuiButtonTFC implements IButtonTooltip
             AnvilRecipe recipe = tile.getRecipe();
             if (recipe != null)
             {
-                ItemStack stack = recipe.getOutput(recipe.getInput());
+                ItemStack stack = recipe.getOutput();
                 drawItemStack(stack, x + 1, y + 1);
             }
             else

@@ -239,6 +239,7 @@ public class TEAnvilTFC extends TEInventory
                 cap.addStep(step);
                 steps = cap.getSteps().copy();
                 workingProgress += step.getStepAmount();
+                world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.PLAYERS, 1.0f, 1.0f);
             }
 
             // Handle possible recipe completion
@@ -247,7 +248,7 @@ public class TEAnvilTFC extends TEInventory
                 if (workingProgress == workingTarget && recipe.matches(steps))
                 {
                     // Consume input + produce output / throw it in the world
-                    ItemStack stack = recipe.getOutput(input);
+                    ItemStack stack = recipe.getOutput();
 
                     // Set output item temperature
                     IItemHeat outputCap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
@@ -256,26 +257,12 @@ public class TEAnvilTFC extends TEInventory
                         outputCap.setTemperature(cap.getTemperature());
                     }
 
-                    //Check for bloom splitting
-                    if(input.getItem() == ItemsTFC.REFINED_BLOOM && input.getItemDamage() > 100)
-                    {
-                        int output = input.getItemDamage() / 100;
-                        int surplus = input.getItemDamage() % 100;
-                        ItemStack spawnInWorld1 = stack.copy();
-
-                        spawnInWorld1.setCount(output);
-                        spawnInWorld1.setItemDamage(100);
-                        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), spawnInWorld1);
-                        if(surplus > 0) {
-                            ItemStack spawnInWorld2 = stack.copy();
-                            spawnInWorld2.setItemDamage(surplus);
-                            InventoryHelper.spawnItemStack(world, pos.getX(), pos.up().getY(), pos.getZ(), spawnInWorld2);
-                        }
-                        stack = ItemStack.EMPTY;
-                    }
+                    ItemStack dump = recipe.consumeInput(input);
+                    //If dump is not empty(used by iron blooms) dump it in world
+                    if(dump != ItemStack.EMPTY)
+                        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), dump);
 
                     inventory.setStackInSlot(SLOT_INPUT_1, stack);
-                    world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.PLAYERS, 1.0f, 1.0f);
 
                     // Reset forge stuff
                     resetFields();
