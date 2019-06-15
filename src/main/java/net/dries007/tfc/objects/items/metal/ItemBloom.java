@@ -6,8 +6,10 @@ import javax.annotation.Nullable;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -25,8 +27,24 @@ public class ItemBloom extends ItemTFC implements IMetalObject
 {
     public ItemBloom()
     {
-        setMaxDamage(0);
+        setMaxDamage(1000);
         setMaxStackSize(1);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void getSubItems (CreativeTabs tab, NonNullList<ItemStack> items)
+    {
+        items.add(new ItemStack(this, 1, 100));
+        items.add(new ItemStack(this, 1, 200));
+        items.add(new ItemStack(this, 1, 300));
+        items.add(new ItemStack(this, 1, 400));
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack itemStack)
+    {
+        return false;
     }
 
     @Nonnull
@@ -53,19 +71,12 @@ public class ItemBloom extends ItemTFC implements IMetalObject
     @Override
     public int getSmeltAmount(ItemStack stack)
     {
-        return stack.hasTagCompound() ? stack.getTagCompound().getInteger("count") : 100;
+        return stack.getItemDamage();
     }
 
     public static void setSmeltAmount(ItemStack stack, int value)
     {
-        if(!stack.hasTagCompound())
-        {
-            NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setInteger("count", value);
-            stack.setTagCompound(nbt);
-        }else{
-            stack.getTagCompound().setInteger("count", value);
-        }
+        stack.setItemDamage(value);
     }
 
     @Nullable

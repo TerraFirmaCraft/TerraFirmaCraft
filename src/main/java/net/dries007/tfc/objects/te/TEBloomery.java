@@ -97,16 +97,14 @@ public class TEBloomery extends TEBase implements ITickable {
 
     public void onIgnite()
     {
-        //TODO Change this to real value later(15-ingame hours)
-        this.burnTicksLeft = 200;
+        this.burnTicksLeft = 15000; //15 in-game hours
     }
 
     private void addItemsFromWorld()
     {
-        for (EntityItem entityItem : world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(getInternalBlock().up(), getInternalBlock().add(1, 3, 1)), EntitySelectors.IS_ALIVE))
+        for (EntityItem entityItem : world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(getInternalBlock().up(), getInternalBlock().add(1, 4, 1)), EntitySelectors.IS_ALIVE))
         {
             ItemStack stack = entityItem.getItem();
-            TerraFirmaCraft.getLog().warn("ITEM FOUND");
             if (stack.getItem() == Items.COAL)
             {
                 // Add charcoal
@@ -163,6 +161,7 @@ public class TEBloomery extends TEBase implements ITickable {
         {
             world.setBlockToAir(layer);
             height++;
+            layer = layer.up();
         }
     }
 
@@ -190,7 +189,6 @@ public class TEBloomery extends TEBase implements ITickable {
         IBlockState state = world.getBlockState(pos);
         if (state.getValue(LIT)){
             if(--this.burnTicksLeft<=0){
-                //TODO Finished cooking ore
                 this.burnTicksLeft = 0;
                 this.charcoalCount = 0;
                 this.oreCount = 0;

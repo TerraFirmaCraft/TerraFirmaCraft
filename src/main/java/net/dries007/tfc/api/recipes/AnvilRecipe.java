@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
@@ -44,11 +45,13 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
     private final ItemStack input;
     private final Metal.Tier minTier;
     private final long workingSeed;
+    private final boolean inheritsDamage;
 
-    public AnvilRecipe(ResourceLocation name, ItemStack input, ItemStack output, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
+    public AnvilRecipe(ResourceLocation name, ItemStack input, ItemStack output, boolean inheritsDamage, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
     {
         this.input = input;
         this.output = output;
+        this.inheritsDamage = inheritsDamage;
         if (input.isEmpty() || output.isEmpty())
             throw new IllegalArgumentException("Input and output are not allowed to be empty");
 
@@ -62,10 +65,7 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
         workingSeed = ++SEED;
     }
 
-    public boolean matches(ItemStack input)
-    {
-        return this.input.isItemEqual(input);
-    }
+    public boolean matches(ItemStack input) { return this.inheritsDamage ? this.input.isItemEqualIgnoreDurability(input) : this.input.isItemEqual(input); }
 
     public boolean matches(ForgeSteps steps)
     {
@@ -78,10 +78,15 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
     }
 
     @Nonnull
-    public ItemStack getOutput()
+    public ItemStack getOutput(ItemStack input)
     {
-        return output.copy();
+        ItemStack out = output.copy();
+        if(this.inheritsDamage)out.setItemDamage(input.getItemDamage());
+        return out;
     }
+
+    @Nonnull
+    public ItemStack getInput() { return this.input; }
 
     @Nonnull
     public ForgeRule[] getRules()
