@@ -16,7 +16,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.api.capability.forge.ForgeableHandler;
+import net.dries007.tfc.api.capability.forge.*;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
@@ -25,20 +25,14 @@ import net.dries007.tfc.objects.items.ItemTFC;
 
 public class ItemBloom extends ItemTFC implements IMetalObject
 {
-    public ItemBloom()
-    {
-        setMaxDamage(1000);
-        setMaxStackSize(1);
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubItems (CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        items.add(new ItemStack(this, 1, 100));
-        items.add(new ItemStack(this, 1, 200));
-        items.add(new ItemStack(this, 1, 300));
-        items.add(new ItemStack(this, 1, 400));
+        items.add(setSmeltAmount(new ItemStack(this, 1), 100));
+        items.add(setSmeltAmount(new ItemStack(this, 1), 200));
+        items.add(setSmeltAmount(new ItemStack(this, 1), 300));
+        items.add(setSmeltAmount(new ItemStack(this, 1), 400));
     }
 
     @Override
@@ -51,7 +45,7 @@ public class ItemBloom extends ItemTFC implements IMetalObject
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return Size.LARGE;
+        return Size.HUGE;
     }
 
     @Nonnull
@@ -71,19 +65,22 @@ public class ItemBloom extends ItemTFC implements IMetalObject
     @Override
     public int getSmeltAmount(ItemStack stack)
     {
-        return stack.getItemDamage();
+        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        return ((IForgeableMeasurable)cap).getMetalAmount();
     }
 
-    public static void setSmeltAmount(ItemStack stack, int value)
+    public static ItemStack setSmeltAmount(ItemStack stack, int value)
     {
-        stack.setItemDamage(value);
+        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        ((IForgeableMeasurable)cap).setMetalAmount(value);
+        return stack;
     }
 
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new ForgeableHandler(nbt, Metal.WROUGHT_IRON.getSpecificHeat(), Metal.WROUGHT_IRON.getMeltTemp());
+        return new ForgeableMeasurableHandler(nbt, Metal.WROUGHT_IRON.getSpecificHeat(), Metal.WROUGHT_IRON.getMeltTemp(), 100);
     }
 
     @Override
