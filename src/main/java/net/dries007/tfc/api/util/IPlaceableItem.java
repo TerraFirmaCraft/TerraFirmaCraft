@@ -73,7 +73,7 @@ public interface IPlaceableItem
 
                 IBlockState state = world.getBlockState(pos);
 
-                if (facing == EnumFacing.UP && state.getBlock() == BlocksTFC.CHARCOAL_PILE)
+                if (state.getBlock() == BlocksTFC.CHARCOAL_PILE)
                 {
                     if (state.getValue(LAYERS) < 8)
                     {

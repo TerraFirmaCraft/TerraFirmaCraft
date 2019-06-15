@@ -112,14 +112,12 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     @Override
     public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
     {
-        TerraFirmaCraft.getLog().warn(offset.equals(TEBellows.OFFSET_INSET));
         return offset.equals(TEBellows.OFFSET_INSET);
     }
 
     @Override
     public void onAirIntake(TEBellows te, World world, BlockPos pos, int airAmount)
     {
-        TerraFirmaCraft.getLog().warn(airAmount);
         TECharcoalForge teForge = Helpers.getTE(world, pos, TECharcoalForge.class);
         if (teForge != null)
         {

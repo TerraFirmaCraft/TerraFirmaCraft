@@ -7,12 +7,15 @@ package net.dries007.tfc.objects.te;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.util.Helpers;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -54,6 +57,13 @@ public class TEBloom extends TEBase
     {
         ItemStack output = new ItemStack(ItemsTFC.UNREFINED_BLOOM, 1);
         ItemBloom.setSmeltAmount(output, count);
-        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), output);
+        TEBloomery te = null;
+        BlockPos bloomeryPos = pos;
+        for (int i = 0; i < 4 && te == null; i++)
+            te = Helpers.getTE(world, pos.offset(EnumFacing.HORIZONTALS[i]), TEBloomery.class);
+        //This statement must always be true
+        if(te!=null)
+            bloomeryPos = te.getPos();
+        InventoryHelper.spawnItemStack(world, bloomeryPos.getX(), bloomeryPos.getY(), bloomeryPos.getZ(), output);
     }
 }

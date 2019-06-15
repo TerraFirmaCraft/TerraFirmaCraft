@@ -9,9 +9,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.objects.items.ItemsTFC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -245,13 +247,31 @@ public class TEAnvilTFC extends TEInventory
                 if (workingProgress == workingTarget && recipe.matches(steps))
                 {
                     // Consume input + produce output / throw it in the world
-                    ItemStack stack = recipe.getOutput();
+                    ItemStack stack = recipe.getOutput(input);
 
                     // Set output item temperature
                     IItemHeat outputCap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
                     if (outputCap != null)
                     {
                         outputCap.setTemperature(cap.getTemperature());
+                    }
+
+                    //Check for bloom splitting
+                    if(input.getItem() == ItemsTFC.REFINED_BLOOM && input.getItemDamage() > 100)
+                    {
+                        int output = input.getItemDamage() / 100;
+                        int surplus = input.getItemDamage() % 100;
+                        ItemStack spawnInWorld1 = stack.copy();
+
+                        spawnInWorld1.setCount(output);
+                        spawnInWorld1.setItemDamage(100);
+                        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), spawnInWorld1);
+                        if(surplus > 0) {
+                            ItemStack spawnInWorld2 = stack.copy();
+                            spawnInWorld2.setItemDamage(surplus);
+                            InventoryHelper.spawnItemStack(world, pos.getX(), pos.up().getY(), pos.getZ(), spawnInWorld2);
+                        }
+                        stack = ItemStack.EMPTY;
                     }
 
                     inventory.setStackInSlot(SLOT_INPUT_1, stack);
