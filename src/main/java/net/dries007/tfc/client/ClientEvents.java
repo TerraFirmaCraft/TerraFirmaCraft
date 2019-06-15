@@ -40,7 +40,7 @@ import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.api.capability.nutrient.CapabilityNutrients;
+import net.dries007.tfc.api.capability.nutrient.CapabilityFood;
 import net.dries007.tfc.api.capability.nutrient.IFood;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
@@ -205,7 +205,7 @@ public class ClientEvents
         {
             heat.addHeatInfo(stack, tt);
         }
-        IFood nutrients = stack.getCapability(CapabilityNutrients.CAPABILITY_NUTRIENTS, null);
+        IFood nutrients = stack.getCapability(CapabilityFood.CAPABILITY_NUTRIENTS, null);
         if (nutrients != null)
         {
             nutrients.addNutrientInfo(stack, tt);

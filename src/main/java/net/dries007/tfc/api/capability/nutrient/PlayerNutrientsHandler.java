@@ -17,8 +17,8 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.agriculture.Nutrient;
 import net.dries007.tfc.world.classic.CalendarTFC;
 
-import static net.dries007.tfc.api.capability.nutrient.CapabilityNutrients.MAX_PLAYER_NUTRIENTS;
-import static net.dries007.tfc.api.capability.nutrient.CapabilityNutrients.MIN_PLAYER_NUTRIENTS;
+import static net.dries007.tfc.api.capability.nutrient.CapabilityFood.MAX_PLAYER_NUTRIENTS;
+import static net.dries007.tfc.api.capability.nutrient.CapabilityFood.MIN_PLAYER_NUTRIENTS;
 
 public class PlayerNutrientsHandler implements IPlayerNutrients, ICapabilitySerializable<NBTTagCompound>
 {
@@ -89,7 +89,7 @@ public class PlayerNutrientsHandler implements IPlayerNutrients, ICapabilitySeri
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityNutrients.CAPABILITY_PLAYER_NUTRIENTS;
+        return capability == CapabilityFood.CAPABILITY_PLAYER_NUTRIENTS;
     }
 
     @Nullable
@@ -97,7 +97,7 @@ public class PlayerNutrientsHandler implements IPlayerNutrients, ICapabilitySeri
     @SuppressWarnings("unchecked")
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityNutrients.CAPABILITY_PLAYER_NUTRIENTS ? (T) this : null;
+        return capability == CapabilityFood.CAPABILITY_PLAYER_NUTRIENTS ? (T) this : null;
     }
 
     public void updateNutrientsFastForward()

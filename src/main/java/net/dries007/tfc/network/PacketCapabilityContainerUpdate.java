@@ -24,7 +24,7 @@ import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.api.capability.nutrient.CapabilityNutrients;
+import net.dries007.tfc.api.capability.nutrient.CapabilityFood;
 import net.dries007.tfc.api.capability.nutrient.IFood;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 
@@ -105,7 +105,7 @@ public class PacketCapabilityContainerUpdate implements IMessage
     private NBTTagCompound readCapability(final ItemStack stack)
     {
         IItemHeat itemHeat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        IFood food = stack.getCapability(CapabilityNutrients.CAPABILITY_NUTRIENTS, null);
+        IFood food = stack.getCapability(CapabilityFood.CAPABILITY_NUTRIENTS, null);
         NBTTagCompound nbt = new NBTTagCompound();
         if (itemHeat != null)
         {
@@ -158,7 +158,7 @@ public class PacketCapabilityContainerUpdate implements IMessage
                             }
                         }
 
-                        final IFood food = stack.getCapability(CapabilityNutrients.CAPABILITY_NUTRIENTS, null);
+                        final IFood food = stack.getCapability(CapabilityFood.CAPABILITY_NUTRIENTS, null);
                         if (food != null)
                         {
                             NBTTagCompound foodNBT = nbt.getCompoundTag("food");
