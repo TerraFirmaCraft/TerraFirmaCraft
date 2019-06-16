@@ -12,8 +12,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
-import net.dries007.tfc.api.capability.nuturient.IPlayerNutrients;
+import net.dries007.tfc.api.capability.nutrient.CapabilityFood;
+import net.dries007.tfc.api.capability.nutrient.IPlayerNutrients;
 import net.dries007.tfc.util.agriculture.Nutrient;
 
 public class PacketPlayerNutrientsUpdate implements IMessage
@@ -58,7 +58,7 @@ public class PacketPlayerNutrientsUpdate implements IMessage
                 EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
                 if (player != null)
                 {
-                    IPlayerNutrients cap = player.getCapability(CapabilityNutrients.CAPABILITY_PLAYER_NUTRIENTS, null);
+                    IPlayerNutrients cap = player.getCapability(CapabilityFood.CAPABILITY_PLAYER_NUTRIENTS, null);
                     if (cap != null)
                     {
                         cap.setNutrients(message.nutrients);

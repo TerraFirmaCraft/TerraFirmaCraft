@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.nuturient;
+package net.dries007.tfc.api.capability.nutrient;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -77,19 +77,19 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
 
     /**
      * Called when the player consumes this food item
-     * Called from {@link net.dries007.tfc.api.capability.nuturient.CapabilityNutrients.EventHandler}
+     * Called from {@link CapabilityFood.EventHandler}
      *
      * @param player the player doing the consuming
      * @param stack the stack being consumed
      */
     default void onConsumedByPlayer(@Nonnull EntityPlayer player, @Nonnull ItemStack stack)
     {
-        IPlayerNutrients playerCap = player.getCapability(CapabilityNutrients.CAPABILITY_PLAYER_NUTRIENTS, null);
+        IPlayerNutrients playerCap = player.getCapability(CapabilityFood.CAPABILITY_PLAYER_NUTRIENTS, null);
         if (playerCap != null)
         {
             if (isRotten() && !player.world.isRemote)
             {
-                for (Supplier<PotionEffect> effectSupplier : CapabilityNutrients.getRottenFoodEffects())
+                for (Supplier<PotionEffect> effectSupplier : CapabilityFood.getRottenFoodEffects())
                 {
                     if (Constants.RNG.nextFloat() < 0.8)
                     {
