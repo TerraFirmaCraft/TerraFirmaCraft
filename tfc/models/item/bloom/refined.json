@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tfc:items/metal/bloom/unrefined"
+    "layer0": "tfc:items/bloom/refined"
   }
 }
