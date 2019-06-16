@@ -19,8 +19,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.api.util.ITreeGenerator;
@@ -132,11 +130,7 @@ public class WorldGenTrees implements IWorldGenerator
                 TEPlacedItemFlat tile = (TEPlacedItemFlat) world.getTileEntity(pos);
                 if (tile != null)
                 {
-                    IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-                    if (cap != null)
-                    {
-                        cap.insertItem(0, new ItemStack(Items.STICK), false);
-                    }
+                    tile.setStack(new ItemStack(Items.STICK));
                 }
             }
         }

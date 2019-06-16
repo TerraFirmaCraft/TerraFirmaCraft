@@ -5,47 +5,54 @@
 
 package net.dries007.tfc.objects.te;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-public class TEPlacedItemFlat extends TEInventory
+public class TEPlacedItemFlat extends TEBase
 {
     private byte rotation;
+    private ItemStack inventory;
 
     public TEPlacedItemFlat()
     {
-        super(1);
         rotation = (byte) Constants.RNG.nextInt(4);
+        inventory = ItemStack.EMPTY;
     }
 
     public void onBreakBlock(BlockPos pos)
     {
-        Helpers.spawnItemStack(world, pos, inventory.getStackInSlot(0));
+        if (!world.isRemote && !inventory.isEmpty())
+        {
+            Helpers.spawnItemStack(world, pos, getStack());
+        }
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        rotation = tag.hasKey("rotation") ? tag.getByte("rotation") : 0;
-        super.readFromNBT(tag);
+        rotation = nbt.hasKey("rotation") ? nbt.getByte("rotation") : 0;
+        inventory = new ItemStack(nbt.getCompoundTag("stack"));
+        super.readFromNBT(nbt);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag)
+    @Nonnull
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        tag.setByte("rotation", rotation);
-        return super.writeToNBT(tag);
+        nbt.setByte("rotation", rotation);
+        nbt.setTag("stack", inventory.serializeNBT());
+        return super.writeToNBT(nbt);
     }
 
     @Override
@@ -56,6 +63,7 @@ public class TEPlacedItemFlat extends TEInventory
     }
 
     @Override
+    @Nonnull
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
@@ -65,5 +73,16 @@ public class TEPlacedItemFlat extends TEInventory
     public byte getRotation()
     {
         return rotation;
+    }
+
+    public ItemStack getStack()
+    {
+        return inventory;
+    }
+
+    public void setStack(ItemStack stack)
+    {
+        this.inventory = stack;
+        markDirty();
     }
 }

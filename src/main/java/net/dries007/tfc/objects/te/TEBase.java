@@ -23,39 +23,35 @@ import net.minecraft.world.World;
 @ParametersAreNonnullByDefault
 public abstract class TEBase extends TileEntity
 {
+    /**
+     * Gets the update packet that is used to sync the TE on load
+     */
     @Override
     @Nullable
     public SPacketUpdateTileEntity getUpdatePacket()
     {
-        // Needed to sync TE data on block update
-        // It only needs the TE-specific data
-        NBTTagCompound nbt = new NBTTagCompound();
-        writeToNBT(nbt);
-        return new SPacketUpdateTileEntity(getPos(), 1, nbt);
+        return new SPacketUpdateTileEntity(getPos(), 1, getUpdateTag());
     }
 
+    /**
+     * Gets the update tag send by packets. Contains base data (i.e. position), as well as TE specific data
+     */
     @Nonnull
     @Override
     public NBTTagCompound getUpdateTag()
     {
-        // Needed to sync TE data on chunk load
-        // This needs to write the TE data (i.e. x, y, z), as well as whatever TE-specific NBT is required
-        NBTTagCompound nbt = super.getUpdateTag();
-        return writeToNBT(nbt);
+        return writeToNBT(super.getUpdateTag());
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
-        // Needed to sync TE data on chunk load
-        NBTTagCompound nbt = pkt.getNbtCompound();
-        readFromNBT(nbt);
+        readFromNBT(pkt.getNbtCompound());
     }
 
     @Override
     public void handleUpdateTag(NBTTagCompound nbt)
     {
-        // Needed to sync TE data on chunk load
         readFromNBT(nbt);
     }
 

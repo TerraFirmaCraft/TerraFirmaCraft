@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.blocks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -29,11 +30,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.util.Helpers;
 
@@ -41,7 +39,6 @@ import net.dries007.tfc.util.Helpers;
  * todo: custom particles for walking / breaking?
  */
 @ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class BlockPlacedItemFlat extends Block
 {
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.25D, 0D, 0.25D, 0.75D, 0.0625D, 0.75D);
@@ -88,6 +85,7 @@ public class BlockPlacedItemFlat extends Block
     }
 
     @Override
+    @Nonnull
     @SuppressWarnings("deprecation")
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
@@ -101,6 +99,7 @@ public class BlockPlacedItemFlat extends Block
     }
 
     @Override
+    @Nonnull
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
@@ -108,6 +107,7 @@ public class BlockPlacedItemFlat extends Block
     }
 
     @Override
+    @Nonnull
     @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
@@ -146,7 +146,7 @@ public class BlockPlacedItemFlat extends Block
         TEPlacedItemFlat te = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
         if (te != null)
         {
-            te.onBreakBlock(worldIn, pos);
+            te.onBreakBlock(pos);
         }
         super.breakBlock(worldIn, pos, state);
     }
@@ -157,13 +157,13 @@ public class BlockPlacedItemFlat extends Block
         TEPlacedItemFlat te = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
         if (te != null && !worldIn.isRemote)
         {
-            IItemHandler cap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            if (cap != null)
+            ItemStack stack = te.getStack();
+            if (!stack.isEmpty())
             {
-                ItemStack stack = cap.extractItem(0, 64, true);
                 ItemHandlerHelper.giveItemToPlayer(playerIn, stack);
-                worldIn.setBlockToAir(pos);
             }
+            te.setStack(ItemStack.EMPTY);
+            worldIn.setBlockToAir(pos);
         }
         return true;
     }
