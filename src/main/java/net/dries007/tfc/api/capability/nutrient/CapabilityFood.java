@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.nuturient;
+package net.dries007.tfc.api.capability.nutrient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ import net.dries007.tfc.world.classic.CalendarTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
-public final class CapabilityNutrients
+public final class CapabilityFood
 {
     public static final float MIN_PLAYER_NUTRIENTS = 0f;
     public static final float MAX_PLAYER_NUTRIENTS = 100f;
@@ -49,7 +49,7 @@ public final class CapabilityNutrients
     public static void preInit()
     {
         // Item nutrient capability
-        CapabilityManager.INSTANCE.register(IFood.class, new DumbStorage<>(), () -> null);
+        CapabilityManager.INSTANCE.register(IFood.class, new DumbStorage<>(), FoodHandler::new);
         // Player nutrient capability
         CapabilityManager.INSTANCE.register(IPlayerNutrients.class, new DumbStorage<>(), PlayerNutrientsHandler::new);
     }
@@ -82,7 +82,7 @@ public final class CapabilityNutrients
             // todo: create a lookup or something for vanilla items
             // future plans: add via craft tweaker or json (1.14)
             ItemStack stack = event.getObject();
-            if (stack.getItem() instanceof ItemFood && !stack.hasCapability(CapabilityNutrients.CAPABILITY_NUTRIENTS, null))
+            if (stack.getItem() instanceof ItemFood && !stack.hasCapability(CapabilityFood.CAPABILITY_NUTRIENTS, null))
             {
                 event.addCapability(KEY, new FoodHandler(stack.getTagCompound(), new float[] {1, 0, 0, 0, 0}, 1));
             }

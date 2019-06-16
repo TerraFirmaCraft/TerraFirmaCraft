@@ -28,8 +28,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
-import net.dries007.tfc.api.capability.nuturient.CapabilityNutrients;
-import net.dries007.tfc.api.capability.nuturient.IPlayerNutrients;
+import net.dries007.tfc.api.capability.nutrient.CapabilityFood;
+import net.dries007.tfc.api.capability.nutrient.IPlayerNutrients;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -156,7 +156,7 @@ public final class CommonEventHandler
 
         // Item Size
         // Skip items with existing capabilities
-        if (CapabilityItemSize.getIItemSize(stack) == null)
+        if (!stack.isEmpty() && CapabilityItemSize.getIItemSize(stack) == null)
         {
 
             boolean canStack = stack.getMaxStackSize() > 1; // This is necessary so it isn't accidentally overridden by a default implementation
@@ -194,7 +194,7 @@ public final class CommonEventHandler
             TerraFirmaCraft.getNetwork().sendTo(new PacketCalendarUpdate(), player);
 
             // Player nutrients
-            IPlayerNutrients cap = player.getCapability(CapabilityNutrients.CAPABILITY_PLAYER_NUTRIENTS, null);
+            IPlayerNutrients cap = player.getCapability(CapabilityFood.CAPABILITY_PLAYER_NUTRIENTS, null);
             if (cap != null)
             {
                 cap.updateNutrientsFastForward();

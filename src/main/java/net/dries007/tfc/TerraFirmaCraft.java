@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.nutrient.CapabilityFood;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.client.ClientEvents;
@@ -120,6 +121,7 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketGuiButton.Handler(), PacketGuiButton.class, ++id, Side.SERVER);
         network.registerMessage(new PacketPlaceBlockSpecial.Handler(), PacketPlaceBlockSpecial.class, ++id, Side.SERVER);
         network.registerMessage(new PacketSwitchPlayerInventoryTab.Handler(), PacketSwitchPlayerInventoryTab.class, ++id, Side.SERVER);
+        network.registerMessage(new PacketOpenCraftingGui.Handler(), PacketOpenCraftingGui.class, ++id, Side.SERVER);
         // Received on client
         network.registerMessage(new PacketAnvilUpdate.Handler(), PacketAnvilUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketCrucibleUpdate.Handler(), PacketCrucibleUpdate.class, ++id, Side.CLIENT);
@@ -137,6 +139,7 @@ public final class TerraFirmaCraft
         CapabilityItemSize.preInit();
         CapabilityItemHeat.preInit();
         CapabilityForgeable.preInit();
+        CapabilityFood.preInit();
 
         if (event.getSide().isClient())
         {
