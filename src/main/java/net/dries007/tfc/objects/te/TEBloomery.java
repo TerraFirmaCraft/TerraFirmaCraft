@@ -84,20 +84,23 @@ public class TEBloomery extends TEBase implements ITickable {
         return posx;
     }
 
+    private boolean isInternalBlockComplete()
+    {
+        IBlockState inside = world.getBlockState(getInternalBlock());
+        return (inside.getBlock() == BlocksTFC.CHARCOAL_PILE && inside.getValue(BlockCharcoalPile.LAYERS) >= 8);
+    }
+
     public boolean canIgnite() {
         if (world.isRemote) return false;
         if (this.charcoalCount < this.oreCount || oreCount == 0)
             return false;
 
-        IBlockState inside = world.getBlockState(getInternalBlock());
-        if (inside.getBlock() == BlocksTFC.CHARCOAL_PILE && inside.getValue(BlockCharcoalPile.LAYERS) >= 8)
-            return true;
-        return false;
+        return isInternalBlockComplete();
     }
 
     public void onIgnite()
     {
-        this.burnTicksLeft = 15000; //15 in-game hours
+        this.burnTicksLeft = 100; //15 in-game hours
     }
 
     private void addItemsFromWorld()
@@ -175,15 +178,18 @@ public class TEBloomery extends TEBase implements ITickable {
             this.maxCharcoal = newMaxItems;
             this.maxOre = newMaxItems;
             if (maxOre < oreCount) {
-                //TODO The chimney height shrink while ore count was high, should we output or destroy the surplus?
+                //TODO The chimney height shrink while ore count was high, should we dump in world or destroy the surplus?
             }
             if (maxCharcoal < charcoalCount) {
-                //TODO The chimney height shrink while charcoal count was high, should we output or destroy the surplus?
+                //TODO The chimney height shrink while charcoal count was high, should we dump in world or destroy the surplus?
             }
             if (maxOre <= 0) {
                 //TODO Multiblock became malformed, should we break the bloomery gate?
             }
-            addItemsFromWorld();
+            if(!isInternalBlockComplete() && (oreCount > 0 || charcoalCount > 0)){
+                //TODO Internal block was modified while ore/charcoal was already inside. Should we dump in the world?
+            }
+            if(isInternalBlockComplete())addItemsFromWorld();
             updateSlagBlock(this.burnTicksLeft > 0);
         }
         IBlockState state = world.getBlockState(pos);

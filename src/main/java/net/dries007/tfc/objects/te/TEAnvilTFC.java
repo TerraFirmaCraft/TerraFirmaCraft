@@ -239,7 +239,8 @@ public class TEAnvilTFC extends TEInventory
                 cap.addStep(step);
                 steps = cap.getSteps().copy();
                 workingProgress += step.getStepAmount();
-                world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                //The line below should be changed to a "HIT" sound, not 3 hits(minecraft default)
+                world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.PLAYERS, 1.0f, 1.0f);
             }
 
             // Handle possible recipe completion
@@ -256,12 +257,16 @@ public class TEAnvilTFC extends TEInventory
                     {
                         outputCap.setTemperature(cap.getTemperature());
                     }
+                    for(ItemStack dump : recipe.consumeInput(input))
+                    {
+                        //If dump is not empty(used by iron blooms) dump it in world
+                        if(dump != ItemStack.EMPTY)
+                            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), dump);
 
-                    ItemStack dump = recipe.consumeInput(input);
-                    //If dump is not empty(used by iron blooms) dump it in world
-                    if(dump != ItemStack.EMPTY)
-                        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), dump);
+                    }
 
+                    //Should we change this for a completed work sound effect?
+                    world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
                     inventory.setStackInSlot(SLOT_INPUT_1, stack);
 
                     // Reset forge stuff

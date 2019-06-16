@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
@@ -19,6 +20,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -195,25 +197,29 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        TEBloomery te = Helpers.getTE(worldIn, pos, TEBloomery.class);
-        if (te == null)
-            return false;
-        ItemStack item = playerIn.getHeldItem(hand);
-        if (ItemFireStarter.canIgnite(item))
+        if (!worldIn.isRemote)
         {
-            if (state.getValue(LIT) || !te.canIgnite())
+            if (!state.getValue(LIT))
+                worldIn.setBlockState(pos, state.cycleProperty(OPEN));
+            TEBloomery te = Helpers.getTE(worldIn, pos, TEBloomery.class);
+            if (te == null)
+                return true;
+            if (!state.getValue(LIT) && te.canIgnite())
+            {
+                ItemStack held = player.getHeldItem(hand);
+                if (ItemFireStarter.canIgnite(held))
+                {
+                    worldIn.setBlockState(pos, state.withProperty(LIT, true).withProperty(OPEN, false));
+                    te.onIgnite();
+                    return true;
+                }
+            }else{
                 //TODO: Show debug msg(missing charcoal pile/charcoal/ore)
-                return false;
-            item.damageItem(1, playerIn);
-            //Keep door closed while cooking ore
-            worldIn.setBlockState(pos, state.withProperty(LIT, true).withProperty(OPEN, false));
-            te.onIgnite();
-            return true;
+            }
+
         }
-        if (!state.getValue(LIT))
-            worldIn.setBlockState(pos, state.cycleProperty(OPEN));
         return true;
     }
 
@@ -262,6 +268,15 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     }
 
     /**
+     * @return true if the block is valid to be inside the chimney, false otherwise
+     */
+    public boolean isBlockChimneyPart(World worldIn, @Nonnull BlockPos pos)
+    {
+        IBlockState state = worldIn.getBlockState(pos);
+        return (state.getBlock() == BlocksTFC.MOLTEN || state.getBlock() == Blocks.AIR);
+    }
+
+    /**
      * @return bloomery chimney height, maximum of 3, or a negative value as follows:
      * -2 if the position is invalid no matter the rotation
      * -1 if the position is invalid but rotating might fix this
@@ -283,7 +298,8 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
             if (!(isBlockEligible(worldIn, pos.north())
                 && isBlockEligible(worldIn, pos.south())
                 && isBlockEligible(worldIn, pos.east())
-                && isBlockEligible(worldIn, pos.west())))
+                && isBlockEligible(worldIn, pos.west())
+                && isBlockChimneyPart(worldIn, pos)))
                 return i;
         }
         return 3;
