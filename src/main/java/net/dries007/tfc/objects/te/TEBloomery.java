@@ -100,7 +100,7 @@ public class TEBloomery extends TEBase implements ITickable {
 
     public void onIgnite()
     {
-        this.burnTicksLeft = 100; //15 in-game hours
+        this.burnTicksLeft = 15000; //15 in-game hours
     }
 
     private void addItemsFromWorld()
