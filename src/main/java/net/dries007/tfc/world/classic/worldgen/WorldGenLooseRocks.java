@@ -14,8 +14,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -79,11 +77,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
             TEPlacedItemFlat tile = Helpers.getTE(world, pos, TEPlacedItemFlat.class);
             if (tile != null)
             {
-                IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-                if (cap != null)
-                {
-                    cap.insertItem(0, vein == null ? ItemRock.get(rock, 1) : vein.type.getLooseRockItem(), false);
-                }
+                tile.setStack(vein == null ? ItemRock.get(rock, 1) : vein.type.getLooseRockItem());
             }
         }
     }
