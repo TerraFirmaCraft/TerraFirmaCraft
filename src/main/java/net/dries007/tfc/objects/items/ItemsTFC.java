@@ -30,7 +30,6 @@ import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.ceramics.*;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
-import net.dries007.tfc.objects.items.metal.ItemBloom;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
@@ -77,9 +76,9 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("ceramics/unfired/fire_brick")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_FIRE_BRICK = getNull();
 
-    @GameRegistry.ObjectHolder("metal/bloom/unrefined")
+    @GameRegistry.ObjectHolder("bloom/unrefined")
     public static final ItemBloom UNREFINED_BLOOM = getNull();
-    @GameRegistry.ObjectHolder("metal/bloom/refined")
+    @GameRegistry.ObjectHolder("bloom/refined")
     public static final ItemBloom REFINED_BLOOM = getNull();
 
     private static ImmutableList<Item> allSimpleItems;
@@ -255,8 +254,8 @@ public final class ItemsTFC
         // todo: fire clay & fire brick & fire bricks (block)
 
         // todo: bloom & raw bloom ( = IMetalObject)
-        simpleItems.add(register(r, "metal/bloom/unrefined", new ItemBloom(), CT_MISC));
-        simpleItems.add(register(r, "metal/bloom/refined", new ItemBloom(), CT_MISC));
+        simpleItems.add(register(r, "bloom/unrefined", new ItemBloom(), CT_MISC));
+        simpleItems.add(register(r, "bloom/refined", new ItemBloom(), CT_MISC));
         // todo: jute & jute fiber
         // todo: quiver
         // todo: millstone (quern)

@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -84,12 +85,12 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
     }
 
     /*
-     * Can be used by custom implementations to return input
+     * To be used by custom implementations to dump items based on input to the world
      */
     @Nonnull
-    public ItemStack consumeInput(ItemStack input)
+    public NonNullList<ItemStack> consumeInput(ItemStack input)
     {
-        return ItemStack.EMPTY;
+        return NonNullList.withSize(1, ItemStack.EMPTY);
     }
 
     @Nonnull

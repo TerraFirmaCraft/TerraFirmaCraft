@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.te;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,15 +20,15 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.objects.blocks.devices.BlockFirePit;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipe;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.FuelManager;
-import net.dries007.tfc.util.IHeatConsumerBlock;
 import net.dries007.tfc.util.ITileFields;
 
 import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
-import static net.dries007.tfc.util.ILightableBlock.LIT;
+import static net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge.LIT;
 
 @ParametersAreNonnullByDefault
 public class TECharcoalForge extends TEInventory implements ITickable, ITileFields
@@ -76,7 +75,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     {
         if (world.isRemote) return;
         IBlockState state = world.getBlockState(pos);
-        if (state.getValue(LIT))
+        if (state.getValue(BlockFirePit.LIT))
         {
             // Update fuel
             if (burnTicks > 0)
@@ -99,7 +98,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
                     inventory.setStackInSlot(SLOT_FUEL_MIN, ItemStack.EMPTY);
                     requiresSlotUpdate = true;
                     Fuel fuel = FuelManager.getFuel(stack);
-                    burnTicks += fuel.getAmount();
+                    burnTicks = fuel.getAmount();
                     burnTemperature = fuel.getTemperature();
                 }
             }
@@ -137,13 +136,6 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
                 temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
             }
 
-            // Provide heat to blocks that are one block above
-            Block blockUp = world.getBlockState(pos.up()).getBlock();
-            if (blockUp instanceof IHeatConsumerBlock)
-            {
-                ((IHeatConsumerBlock) blockUp).acceptHeat(world, pos.up(), temperature);
-            }
-
             // Update items in slots
             // Loop through input + 2 output slots
             for (int i = SLOT_INPUT_MIN; i <= SLOT_EXTRA_MAX; i++)
@@ -178,7 +170,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
 
     public void onCreate()
     {
-        burnTicks += 200;
+        burnTicks = 200;
         burnTemperature = 500;
     }
 

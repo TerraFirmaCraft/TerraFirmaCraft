@@ -1,4 +1,4 @@
-package net.dries007.tfc.objects.items.metal;
+package net.dries007.tfc.objects.items;
 
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -45,7 +45,7 @@ public class ItemBloom extends ItemTFC implements IMetalObject
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return Size.HUGE;
+        return Size.LARGE;
     }
 
     @Nonnull

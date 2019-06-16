@@ -1,8 +1,10 @@
 package net.dries007.tfc.api.capability.forge;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 public class ForgeableMeasurableHandler extends ForgeableHandler implements IForgeableMeasurable
 {
@@ -25,5 +27,25 @@ public class ForgeableMeasurableHandler extends ForgeableHandler implements IFor
     public void setMetalAmount(int metalAmount)
     {
         this.metalAmount = metalAmount;
+    }
+
+    @Override
+    @Nonnull
+    public NBTTagCompound serializeNBT()
+    {
+        NBTTagCompound nbt = super.serializeNBT();
+
+        nbt.setInteger("metalAmount", metalAmount);
+        return nbt;
+    }
+
+    @Override
+    public void deserializeNBT(@Nullable NBTTagCompound nbt)
+    {
+        if (nbt != null)
+        {
+            metalAmount = nbt.getInteger("metalAmount");
+        }
+        super.deserializeNBT(nbt);
     }
 }
