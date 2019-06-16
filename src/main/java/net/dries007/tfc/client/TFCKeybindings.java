@@ -7,7 +7,6 @@ package net.dries007.tfc.client;
 
 import org.lwjgl.input.Keyboard;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -18,6 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.network.PacketOpenCraftingGui;
 import net.dries007.tfc.network.PacketPlaceBlockSpecial;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -44,7 +44,7 @@ public class TFCKeybindings
         final Minecraft mc = Minecraft.getMinecraft();
         if (OPEN_CRAFTING_TABLE.isPressed())
         {
-            mc.displayGuiScreen(new GuiCrafting(mc.player.inventory, mc.world));
+            TerraFirmaCraft.getNetwork().sendToServer(new PacketOpenCraftingGui());
         }
         if (PLACE_BLOCK.isPressed())
         {
