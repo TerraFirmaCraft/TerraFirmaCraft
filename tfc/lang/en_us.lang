@@ -2877,9 +2877,6 @@ item.tfc.metal.lamp.black_steel.name=Black Steel Lamp
 item.tfc.metal.lamp.blue_steel.name=Blue Steel Lamp
 item.tfc.metal.lamp.red_steel.name=Red Steel Lamp
 
-item.tfc.metal.bloom.unrefined.name=Raw Iron Bloom
-item.tfc.metal.bloom.refined.name=Refined Iron Bloom
-
 item.tfc.stone.axe_head.sedimentary.name=Rock Axe Head
 item.tfc.stone.shovel_head.sedimentary.name=Rock Shovel Head
 item.tfc.stone.hoe_head.sedimentary.name=Rock Hoe Head
@@ -3227,7 +3224,6 @@ item.tfc.food.cheese.name=Cheese
 item.tfc.food.sugarcane.name=Sugarcane
 item.tfc.food.cooked_egg.name=Cooked Egg
 
-
 item.tfc.crop.seeds.barley.name=Barley Seeds
 item.tfc.crop.seeds.beet.name=Beet Seeds
 item.tfc.crop.seeds.cabbage.name=Cabbage Seeds
@@ -3250,3 +3246,6 @@ item.tfc.crop.seeds.wheat.name=Wheat Seeds
 item.tfc.crop.seeds.yellow_bell_pepper.name=Yellow Bell Pepper Seeds
 item.tfc.crop.seeds.pumpkin.name=Pumpkin Seeds
 item.tfc.crop.seeds.melon.name=Melon Seeds
+
+item.tfc.bloom.unrefined.name=Raw Iron Bloom
+item.tfc.bloom.refined.name=Refined Iron Bloom
