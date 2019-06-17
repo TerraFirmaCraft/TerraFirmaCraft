@@ -34,10 +34,13 @@ public class ItemBloom extends ItemTFC implements IMetalObject
     @Override
     public void getSubItems (CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        items.add(setSmeltAmount(new ItemStack(this, 1), 100));
-        items.add(setSmeltAmount(new ItemStack(this, 1), 200));
-        items.add(setSmeltAmount(new ItemStack(this, 1), 300));
-        items.add(setSmeltAmount(new ItemStack(this, 1), 400));
+        if(isInCreativeTab(tab))
+        {
+            items.add(setSmeltAmount(new ItemStack(this, 1), 100));
+            items.add(setSmeltAmount(new ItemStack(this, 1), 200));
+            items.add(setSmeltAmount(new ItemStack(this, 1), 300));
+            items.add(setSmeltAmount(new ItemStack(this, 1), 400));
+        }
     }
 
     @Override

@@ -11,6 +11,8 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.objects.blocks.metal.BlockMetalSheet;
 import net.dries007.tfc.objects.te.TEMetalSheet;
 import net.dries007.tfc.util.ILightableBlock;
 import net.minecraft.block.Block;
@@ -49,17 +51,16 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
             // no crucible
             return 0;
         }
-        return 1;
-        /*for (int i = 0; i < 5; i++)
+        for (int i = 1; i < 6; i++)
         {
             BlockPos center = pos.up(i);
             if (!BLAST_FURNACE_CHIMNEY.test(world, center))
             {
-                return i;
+                return i-1;
             }
         }
         // Maximum levels
-        return 5;*/
+        return 5;
     }
 
     public BlockBlastFurnace()
@@ -67,20 +68,31 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
         super(Material.IRON);
         //TODO: update when firebricks are added
         Predicate<IBlockState> stoneMatcher = state -> state.getMaterial() == Material.ROCK && state.isNormalCube();
+        Predicate<IBlockState> ironSheetMatcher = state -> (state.getBlock() instanceof BlockMetalSheet)
+            && ((BlockMetalSheet)state.getBlock()).getMetal() == Metal.WROUGHT_IRON;
         BLAST_FURNACE_CHIMNEY = new Multiblock()
             .match(new BlockPos(0, 0, 0), state -> state.getBlock() == BlocksTFC.MOLTEN || state.getBlock() == Blocks.AIR)
             .match(new BlockPos(0, 0, 1), stoneMatcher)
-            //.match(new BlockPos(0, 0, 2), tile -> tile.getFace(EnumFacing.NORTH), TEMetalSheet.class)
             .match(new BlockPos(0, 0, -1), stoneMatcher)
-            //.match(new BlockPos(0, 0, -2), tile -> tile.getFace(EnumFacing.SOUTH), TEMetalSheet.class)
             .match(new BlockPos(1, 0, 0), stoneMatcher)
-            //.match(new BlockPos(2, 0, 0), tile -> tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
-            .match(new BlockPos(-1, 0, 0), stoneMatcher);
-            //.match(new BlockPos(-2, 0, 0), tile -> tile.getFace(EnumFacing.EAST), TEMetalSheet.class)
-            //.match(new BlockPos(1, 0, 1), tile -> tile.getFace(EnumFacing.NORTH) && tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
-            //.match(new BlockPos(-1, 0, 1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
-            //.match(new BlockPos(1, 0, -1), tile -> tile.getFace(EnumFacing.NORTH) && tile.getFace(EnumFacing.EAST), TEMetalSheet.class)
-            //.match(new BlockPos(-1, 0, -1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.EAST), TEMetalSheet.class);
+            .match(new BlockPos(-1, 0, 0), stoneMatcher)
+            .match(new BlockPos(0, 0, -2), ironSheetMatcher)
+            .match(new BlockPos(0, 0, -2), tile -> tile.getFace(EnumFacing.NORTH), TEMetalSheet.class)
+            .match(new BlockPos(0, 0, 2), ironSheetMatcher)
+            .match(new BlockPos(0, 0, 2), tile -> tile.getFace(EnumFacing.SOUTH), TEMetalSheet.class)
+            .match(new BlockPos(2, 0, 0), ironSheetMatcher)
+            .match(new BlockPos(2, 0, 0), tile -> tile.getFace(EnumFacing.EAST), TEMetalSheet.class)
+            .match(new BlockPos(-2, 0, 0), ironSheetMatcher)
+            .match(new BlockPos(-2, 0, 0), tile -> tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
+            .match(new BlockPos(-1, 0, -1), ironSheetMatcher)
+            .match(new BlockPos(-1, 0, -1), tile -> tile.getFace(EnumFacing.NORTH) && tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
+            .match(new BlockPos(1, 0, -1), ironSheetMatcher)
+            .match(new BlockPos(1, 0, -1), tile -> tile.getFace(EnumFacing.NORTH) && tile.getFace(EnumFacing.EAST), TEMetalSheet.class)
+            .match(new BlockPos(-1, 0, 1), ironSheetMatcher)
+            .match(new BlockPos(-1, 0, 1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
+            .match(new BlockPos(1, 0, 1), ironSheetMatcher)
+            .match(new BlockPos(1, 0, 1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.EAST), TEMetalSheet.class);
+
     }
 
     @SuppressWarnings("deprecation")
@@ -157,6 +169,16 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
         {
             teBlastFurnace.onAirIntake(airAmount);
         }
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if(!worldIn.isRemote) {
+            TEBlastFurnace te = Helpers.getTE(worldIn, pos, TEBlastFurnace.class);
+            if (te != null) te.onBreakBlock();
+        }
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override

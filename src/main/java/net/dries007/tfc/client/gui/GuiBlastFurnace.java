@@ -1,5 +1,6 @@
 package net.dries007.tfc.client.gui;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
@@ -28,7 +29,7 @@ public class GuiBlastFurnace extends GuiContainerTE<TEBlastFurnace>
 
         int temperature = (int) (51 * tile.getField(TEBlastFurnace.FIELD_TEMPERATURE) / MAX_TEMPERATURE);
         if (temperature > 0) {
-            drawTexturedModalRect(guiLeft + 8, guiTop + 66 - temperature, 176, 0, 15, 5);
+            drawTexturedModalRect(guiLeft + 8, guiTop + 66 - temperature, 185, 32, 15, 5);
         }
 
         int oreCount = tile.getField(TEBlastFurnace.FIELD_ORE) * 4;
@@ -40,5 +41,37 @@ public class GuiBlastFurnace extends GuiContainerTE<TEBlastFurnace>
         if (fuelCount > 0) {
             drawTexturedModalRect(guiLeft + 40, guiTop + 43, 176, 0, fuelCount + 1, 8);
         }
+
+        int meltAmount = tile.getField(TEBlastFurnace.FIELD_MELT);
+        if(meltAmount > 700)meltAmount = 700;
+        meltAmount = (int)(meltAmount / 8.75f);
+        if (meltAmount > 0) {
+            drawTexturedModalRect(guiLeft + 40, guiTop + 61, 176, 0, meltAmount + 1, 8);
+        }
+
+        fontRenderer.drawString(I18n.format(MOD_ID + ".tooltip.blast_furnace_ore_amount"), guiLeft + 40, guiTop + 17, 0x000000);
+        fontRenderer.drawString(I18n.format(MOD_ID + ".tooltip.blast_furnace_fuel_amount"), guiLeft + 40, guiTop + 35, 0x000000);
+        fontRenderer.drawString(I18n.format(MOD_ID + ".tooltip.blast_furnace_melt_amount"), guiLeft + 40, guiTop + 53, 0x000000);
+    }
+
+    @Override
+    protected void renderHoveredToolTip(int mouseX, int mouseY)
+    {
+        if (mouseX > guiLeft + 40 && mouseX < guiLeft + 120 && mouseY > guiTop + 25 && mouseY < guiTop + 33)
+        {
+            int amount = tile.getField(TEBlastFurnace.FIELD_ORE);
+            drawHoveringText(I18n.format(MOD_ID + ".tooltip.units", amount), mouseX, mouseY);
+        }
+        if (mouseX > guiLeft + 40 && mouseX < guiLeft + 120 && mouseY > guiTop + 43 && mouseY < guiTop + 51)
+        {
+            int amount = tile.getField(TEBlastFurnace.FIELD_FUEL);
+            drawHoveringText(I18n.format(MOD_ID + ".tooltip.units", amount), mouseX, mouseY);
+        }
+        if (mouseX > guiLeft + 40 && mouseX < guiLeft + 120 && mouseY > guiTop + 61 && mouseY < guiTop + 69)
+        {
+            int amount = tile.getField(TEBlastFurnace.FIELD_MELT);
+            drawHoveringText(I18n.format(MOD_ID + ".tooltip.units", amount), mouseX, mouseY);
+        }
+        super.renderHoveredToolTip(mouseX, mouseY);
     }
 }
