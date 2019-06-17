@@ -18,7 +18,6 @@ import net.dries007.tfc.objects.ToolMaterialsTFC;
 
 import static net.dries007.tfc.api.types.Metal.Tier.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-import static net.dries007.tfc.util.functionalinterfaces.OreBlockQuantity.rng;
 
 @SuppressWarnings("WeakerAccess")
 @Mod.EventBusSubscriber(modid = MOD_ID)

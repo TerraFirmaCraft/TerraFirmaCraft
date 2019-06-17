@@ -5,7 +5,10 @@
 
 package net.dries007.tfc.util;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,14 +23,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkCache;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraft.world.ChunkCache;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import io.netty.buffer.ByteBuf;
@@ -44,7 +45,6 @@ import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.Constants.facingPriorityLists;
-import static net.minecraft.util.EnumFacing.*;
 
 public final class Helpers
 {
@@ -214,10 +214,10 @@ public final class Helpers
     }
 
     /**
-     * @see #getAValidFacing
-     * very simillar, made for horizontally rotatable blocks
      * @param preferredSide must be an {@link EnumFacing#HORIZONTALS}
      * @return A valid Horizontal facing or null if none is
+     * @see #getAValidFacing
+     * very simillar, made for horizontally rotatable blocks
      */
     public static EnumFacing getAValidHorizontal(World worldIn, BlockPos pos, FacingChecker checker, EnumFacing preferredSide)
     {

@@ -34,12 +34,6 @@ public class IngredientOreDict implements IIngredient<ItemStack>
     }
 
     @Override
-    public int getAmount()
-    {
-        return amount;
-    }
-
-    @Override
     public boolean testIgnoreCount(ItemStack stack)
     {
         return stack != null && !stack.isEmpty() && OreDictionaryHelper.doesStackMatchOre(stack, oreName);
@@ -51,5 +45,11 @@ public class IngredientOreDict implements IIngredient<ItemStack>
     {
         input.shrink(amount);
         return input;
+    }
+
+    @Override
+    public int getAmount()
+    {
+        return amount;
     }
 }

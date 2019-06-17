@@ -16,37 +16,26 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.api.capability.forge.*;
+import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
+import net.dries007.tfc.api.capability.forge.ForgeableMeasurableHandler;
+import net.dries007.tfc.api.capability.forge.IForgeable;
+import net.dries007.tfc.api.capability.forge.IForgeableMeasurable;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IMetalObject;
-import net.dries007.tfc.objects.items.ItemTFC;
 
 public class ItemBloom extends ItemTFC implements IMetalObject
 {
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void getSubItems (CreativeTabs tab, NonNullList<ItemStack> items)
+    public static ItemStack setSmeltAmount(ItemStack stack, int value)
     {
-        if(isInCreativeTab(tab))
-        {
-            items.add(setSmeltAmount(new ItemStack(this, 1), 100));
-            items.add(setSmeltAmount(new ItemStack(this, 1), 200));
-            items.add(setSmeltAmount(new ItemStack(this, 1), 300));
-            items.add(setSmeltAmount(new ItemStack(this, 1), 400));
-        }
-    }
-
-    @Override
-    public boolean showDurabilityBar(ItemStack itemStack)
-    {
-        return false;
+        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        ((IForgeableMeasurable) cap).setMetalAmount(value);
+        return stack;
     }
 
     @Nonnull
@@ -74,21 +63,7 @@ public class ItemBloom extends ItemTFC implements IMetalObject
     public int getSmeltAmount(ItemStack stack)
     {
         IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-        return ((IForgeableMeasurable)cap).getMetalAmount();
-    }
-
-    public static ItemStack setSmeltAmount(ItemStack stack, int value)
-    {
-        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-        ((IForgeableMeasurable)cap).setMetalAmount(value);
-        return stack;
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        return new ForgeableMeasurableHandler(nbt, Metal.WROUGHT_IRON.getSpecificHeat(), Metal.WROUGHT_IRON.getMeltTemp(), 100);
+        return ((IForgeableMeasurable) cap).getMetalAmount();
     }
 
     @Override
@@ -96,5 +71,31 @@ public class ItemBloom extends ItemTFC implements IMetalObject
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add(I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    {
+        if (isInCreativeTab(tab))
+        {
+            items.add(setSmeltAmount(new ItemStack(this, 1), 100));
+            items.add(setSmeltAmount(new ItemStack(this, 1), 200));
+            items.add(setSmeltAmount(new ItemStack(this, 1), 300));
+            items.add(setSmeltAmount(new ItemStack(this, 1), 400));
+        }
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack itemStack)
+    {
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new ForgeableMeasurableHandler(nbt, Metal.WROUGHT_IRON.getSpecificHeat(), Metal.WROUGHT_IRON.getMeltTemp(), 100);
     }
 }

@@ -38,9 +38,8 @@ public class ItemAnimalHide extends ItemTFC
     {
         return TABLE.get(type).get(size);
     }
-
-    private final HideType type;
     protected final HideSize size;
+    private final HideType type;
 
     ItemAnimalHide(HideType type, HideSize size)
     {

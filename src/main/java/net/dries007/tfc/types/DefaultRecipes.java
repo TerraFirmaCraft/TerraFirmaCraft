@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.types;
 
-import net.dries007.tfc.api.util.IMetalObject;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;

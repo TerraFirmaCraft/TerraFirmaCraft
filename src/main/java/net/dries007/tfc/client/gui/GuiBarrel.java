@@ -56,6 +56,107 @@ public class GuiBarrel extends GuiContainerTE<TEBarrel>
     }
 
     @Override
+    public void initGui()
+    {
+        super.initGui();
+        addButton(new GuiButtonBarrelSeal(tile, 0, guiTop, guiLeft));
+    }
+
+    @Override
+    protected void renderHoveredToolTip(int mouseX, int mouseY)
+    {
+        super.renderHoveredToolTip(mouseX, mouseY);
+
+        int relX = mouseX - guiLeft;
+        int relY = mouseY - guiTop;
+
+        if (relX >= 7 && relY >= 19 && relX < 25 && relY < 71)
+        {
+            IFluidHandler tank = ((ContainerBarrel) inventorySlots).getBarrelTank();
+
+            if (tank != null)
+            {
+                FluidStack fluid = tank.getTankProperties()[0].getContents();
+                List<String> tooltip = new ArrayList<>();
+
+                if (fluid == null || fluid.amount == 0)
+                {
+                    tooltip.add(I18n.format(MOD_ID + ".tooltip.barrel_empty"));
+                }
+                else
+                {
+                    tooltip.add(fluid.getLocalizedName());
+                    tooltip.add(TextFormatting.GRAY.toString() + I18n.format(MOD_ID + ".tooltip.barrel_fluid_amount", fluid.amount));
+                }
+
+                this.drawHoveringText(tooltip, mouseX, mouseY, fontRenderer);
+            }
+        }
+
+        // Button Tooltips
+        for (GuiButton button : buttonList)
+        {
+            if (button instanceof IButtonTooltip && button.isMouseOver())
+            {
+                IButtonTooltip tooltip = (IButtonTooltip) button;
+                if (tooltip.hasTooltip())
+                {
+                    drawHoveringText(I18n.format(tooltip.getTooltip()), mouseX, mouseY);
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+        String name = I18n.format(translationKey + ".name");
+        fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
+
+        if (tile.isSealed())
+        {
+            // Draw over the input items, making them look unavailable
+            IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            if (handler != null)
+            {
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                for (int slotId = 0; slotId < handler.getSlots(); slotId++)
+                {
+                    drawSlotOverlay(inventorySlots.getSlot(slotId));
+                }
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+            }
+
+            // Draw the text displaying both the seal date, and the recipe name
+            fontRenderer.drawString(tile.getSealedDate(), 59, 19, 0x404040);
+
+            BarrelRecipe recipe = tile.getRecipe();
+            if (recipe != null)
+            {
+                ItemStack resultStack = recipe.getOutputStack();
+                String resultName;
+                if (!resultStack.isEmpty())
+                {
+                    resultName = resultStack.getDisplayName();
+                }
+                else
+                {
+                    FluidStack fluid = recipe.getOutputFluid();
+                    if (fluid == null)
+                    {
+                        resultName = "Empty";
+                    }
+                    else
+                    {
+                        resultName = fluid.getFluid().getLocalizedName(fluid);
+                    }
+                }
+                fontRenderer.drawString(resultName, 59, 59, 0x404040);
+            }
+        }
+    }
+
+    @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
@@ -128,107 +229,6 @@ public class GuiBarrel extends GuiContainerTE<TEBarrel>
         }
 
         drawTexturedModalRect(guiLeft + 7, guiTop + 19, 176, 0, 18, 52);
-    }
-
-    @Override
-    protected void renderHoveredToolTip(int mouseX, int mouseY)
-    {
-        super.renderHoveredToolTip(mouseX, mouseY);
-
-        int relX = mouseX - guiLeft;
-        int relY = mouseY - guiTop;
-
-        if (relX >= 7 && relY >= 19 && relX < 25 && relY < 71)
-        {
-            IFluidHandler tank = ((ContainerBarrel) inventorySlots).getBarrelTank();
-
-            if (tank != null)
-            {
-                FluidStack fluid = tank.getTankProperties()[0].getContents();
-                List<String> tooltip = new ArrayList<>();
-
-                if (fluid == null || fluid.amount == 0)
-                {
-                    tooltip.add(I18n.format(MOD_ID + ".tooltip.barrel_empty"));
-                }
-                else
-                {
-                    tooltip.add(fluid.getLocalizedName());
-                    tooltip.add(TextFormatting.GRAY.toString() + I18n.format(MOD_ID + ".tooltip.barrel_fluid_amount", fluid.amount));
-                }
-
-                this.drawHoveringText(tooltip, mouseX, mouseY, fontRenderer);
-            }
-        }
-
-        // Button Tooltips
-        for (GuiButton button : buttonList)
-        {
-            if (button instanceof IButtonTooltip && button.isMouseOver())
-            {
-                IButtonTooltip tooltip = (IButtonTooltip) button;
-                if (tooltip.hasTooltip())
-                {
-                    drawHoveringText(I18n.format(tooltip.getTooltip()), mouseX, mouseY);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void initGui()
-    {
-        super.initGui();
-        addButton(new GuiButtonBarrelSeal(tile, 0, guiTop, guiLeft));
-    }
-
-    @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-    {
-        String name = I18n.format(translationKey + ".name");
-        fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
-
-        if (tile.isSealed())
-        {
-            // Draw over the input items, making them look unavailable
-            IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            if (handler != null)
-            {
-                GL11.glDisable(GL11.GL_DEPTH_TEST);
-                for (int slotId = 0; slotId < handler.getSlots(); slotId++)
-                {
-                    drawSlotOverlay(inventorySlots.getSlot(slotId));
-                }
-                GL11.glEnable(GL11.GL_DEPTH_TEST);
-            }
-
-            // Draw the text displaying both the seal date, and the recipe name
-            fontRenderer.drawString(tile.getSealedDate(), 59, 19, 0x404040);
-
-            BarrelRecipe recipe = tile.getRecipe();
-            if (recipe != null)
-            {
-                ItemStack resultStack = recipe.getOutputStack();
-                String resultName;
-                if (!resultStack.isEmpty())
-                {
-                    resultName = resultStack.getDisplayName();
-                }
-                else
-                {
-                    FluidStack fluid = recipe.getOutputFluid();
-                    if (fluid == null)
-                    {
-                        resultName = "Empty";
-                    }
-                    else
-                    {
-                        resultName = fluid.getFluid().getLocalizedName(fluid);
-                    }
-                }
-                fontRenderer.drawString(resultName, 59, 59, 0x404040);
-            }
-        }
     }
 
     @Override

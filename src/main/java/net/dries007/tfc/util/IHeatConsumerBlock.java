@@ -18,8 +18,8 @@ public interface IHeatConsumerBlock
     /**
      * Gets the current temperature of the block
      *
-     * @param world The world
-     * @param pos   The position of the {@code IHeatConsumerBlock}
+     * @param world       The world
+     * @param pos         The position of the {@code IHeatConsumerBlock}
      * @param temperature a temperature in the range [0, {@link net.dries007.tfc.api.capability.heat.CapabilityItemHeat#MAX_TEMPERATURE}]
      */
     void acceptHeat(World world, BlockPos pos, float temperature);
