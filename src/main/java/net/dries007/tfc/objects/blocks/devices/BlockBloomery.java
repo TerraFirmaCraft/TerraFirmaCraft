@@ -14,7 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -255,6 +254,16 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEBloomery();
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if(!worldIn.isRemote) {
+            TEBloomery te = Helpers.getTE(worldIn, pos, TEBloomery.class);
+            if (te != null) te.onBreakBlock();
+        }
+        super.breakBlock(worldIn, pos, state);
     }
 
     /**

@@ -41,7 +41,7 @@ public class BlockMolten extends Block implements ILightableBlock
     public BlockMolten()
     {
         super(Material.ROCK);
-
+        setHardness(-1);
         setDefaultState(this.getBlockState().getBaseState().withProperty(LIT, false).withProperty(LAYERS, 1));
     }
 

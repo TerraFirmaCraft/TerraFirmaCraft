@@ -10,6 +10,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.objects.te.TEMetalSheet;
+import net.dries007.tfc.util.ILightableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -33,10 +36,8 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IBellowsConsumerBlock;
 import net.dries007.tfc.util.Multiblock;
 
-import static net.dries007.tfc.util.ILightableBlock.LIT;
-
 @ParametersAreNonnullByDefault
-public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock
+public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, ILightableBlock
 {
     //removed static in order to grant addon makers customization possibilities
     private final Multiblock BLAST_FURNACE_CHIMNEY;
@@ -48,7 +49,8 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock
             // no crucible
             return 0;
         }
-        for (int i = 0; i < 5; i++)
+        return 1;
+        /*for (int i = 0; i < 5; i++)
         {
             BlockPos center = pos.up(i);
             if (!BLAST_FURNACE_CHIMNEY.test(world, center))
@@ -57,7 +59,7 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock
             }
         }
         // Maximum levels
-        return 5;
+        return 5;*/
     }
 
     public BlockBlastFurnace()
@@ -73,8 +75,8 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock
             //.match(new BlockPos(0, 0, -2), tile -> tile.getFace(EnumFacing.SOUTH), TEMetalSheet.class)
             .match(new BlockPos(1, 0, 0), stoneMatcher)
             //.match(new BlockPos(2, 0, 0), tile -> tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
-            .match(new BlockPos(1, 0, 0), stoneMatcher);
-            //.match(new BlockPos(2, 0, 0), tile -> tile.getFace(EnumFacing.EAST), TEMetalSheet.class)
+            .match(new BlockPos(-1, 0, 0), stoneMatcher);
+            //.match(new BlockPos(-2, 0, 0), tile -> tile.getFace(EnumFacing.EAST), TEMetalSheet.class)
             //.match(new BlockPos(1, 0, 1), tile -> tile.getFace(EnumFacing.NORTH) && tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
             //.match(new BlockPos(-1, 0, 1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
             //.match(new BlockPos(1, 0, -1), tile -> tile.getFace(EnumFacing.NORTH) && tile.getFace(EnumFacing.EAST), TEMetalSheet.class)
@@ -102,10 +104,14 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock
         {
             if (!state.getValue(LIT))
             {
+                TEBlastFurnace te = Helpers.getTE(worldIn, pos, TEBlastFurnace.class);
+                if (te == null)
+                    return true;
                 ItemStack held = playerIn.getHeldItem(hand);
-                if (ItemFireStarter.canIgnite(held))
+                if (ItemFireStarter.canIgnite(held) && te.canIgnite())
                 {
                     worldIn.setBlockState(pos, state.withProperty(LIT, true));
+                    //te.onIgnite();
                     return true;
                 }
             }
@@ -151,5 +157,14 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock
         {
             teBlastFurnace.onAirIntake(airAmount);
         }
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
+    {
+        if (!super.canPlaceBlockAt(worldIn, pos))
+            return false;
+
+        return getChimneyLevels(worldIn, pos) > 0;
     }
 }
