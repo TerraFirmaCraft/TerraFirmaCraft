@@ -59,6 +59,17 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         }
     }
 
+    public void acceptMeltAlloy(Metal metal, int amount)
+    {
+        alloy.add(metal, amount);
+        //Update crucible temperature to match
+        if(this.temperature < metal.getMeltTemp())
+            this.temperature = metal.getMeltTemp();
+        if(this.targetTemperature < metal.getMeltTemp())
+            this.targetTemperature = metal.getMeltTemp();
+        TerraFirmaCraft.getNetwork().sendToAllTracking(new PacketCrucibleUpdate(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
+    }
+
     @Override
     public void update()
     {
