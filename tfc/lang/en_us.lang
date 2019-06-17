@@ -41,6 +41,9 @@ tfc.tooltip.plant_rain=Rainfall:
 tfc.tooltip.plant_temp=Temperature:
 tfc.tooltip.plant_valid=%sGood%s
 tfc.tooltip.plant_wet=%sToo wet%s
+tfc.tooltip.blast_furnace_ore_amount=Ore amount
+tfc.tooltip.blast_furnace_fuel_amount=Fuel amount
+tfc.tooltip.blast_furnace_melt_amount=Melt amount
 
 ## Command Tooltips / Messages
 tfc.tooltip.set_month_length=Set Month Length to %d days
