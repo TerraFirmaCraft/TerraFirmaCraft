@@ -37,15 +37,17 @@ import static net.minecraft.block.BlockHorizontal.FACING;
 
 public class TEBloomery extends TEBase implements ITickable {
 
-    //Gets the internal block, should be charcoal pile
+    //Gets the internal block, should be charcoal pile/bloom
     private static final Vec3i OFFSET_INTERNAL = new Vec3i(1, 0, 0);
+    //Gets the external block, the front of the facing to dump contents in world.
+    private static final Vec3i OFFSET_EXTERNAL = new Vec3i(-1, 0, 0);
     private List<ItemStack> oreStacks = new ArrayList<>();
     private List<ItemStack> fuelStacks = new ArrayList<>();
 
     private int maxFuel = 0, maxOre = 0, delayTimer = 0;
     private long burnTicksLeft;
 
-    private BlockPos internalBlock = null;
+    private BlockPos internalBlock = null, externalBlock = null;
 
     public TEBloomery() { }
 
@@ -98,15 +100,15 @@ public class TEBloomery extends TEBase implements ITickable {
         }
         for(ItemStack stack : oreStacks)
         {
-            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+            InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), stack);
         }
         for(ItemStack stack : fuelStacks)
         {
-            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+            InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), stack);
         }
     }
 
-    private BlockPos getInternalBlock()
+    public BlockPos getInternalBlock()
     {
         if(internalBlock == null){
             EnumFacing direction = world.getBlockState(pos).getValue(FACING);
@@ -115,6 +117,17 @@ public class TEBloomery extends TEBase implements ITickable {
                 .offset(direction.rotateY(), OFFSET_INTERNAL.getZ());
         }
         return internalBlock;
+    }
+
+    public BlockPos getExternalBlock()
+    {
+        if(externalBlock == null){
+            EnumFacing direction = world.getBlockState(pos).getValue(FACING);
+            externalBlock = pos.up(OFFSET_EXTERNAL.getY())
+                .offset(direction, OFFSET_EXTERNAL.getX())
+                .offset(direction.rotateY(), OFFSET_EXTERNAL.getZ());
+        }
+        return externalBlock;
     }
 
     private boolean isInternalBlockComplete()
@@ -133,7 +146,7 @@ public class TEBloomery extends TEBase implements ITickable {
 
     public void onIgnite()
     {
-        this.burnTicksLeft = 100; //15 in-game hours
+        this.burnTicksLeft = 15000; //15 in-game hours
     }
 
     private void addItemsFromWorld()
@@ -174,31 +187,24 @@ public class TEBloomery extends TEBase implements ITickable {
     private void updateSlagBlock(boolean cooking)
     {
         int slag = fuelStacks.size() + oreStacks.size();
-        //If there's at least one item show one layer so player knows that it is working
+        //If there's at least one item, show one layer so player knows that it is holding stacks
         int slagLayers = slag > 0 && slag < 4 ? 1 : slag / 4;
-        int height = 0;
-        BlockPos layer = getInternalBlock().up();
-        while(slagLayers > 0)
+        for(int i = 1; i < 4; i++)
         {
-            //4 layers means one block
-            if(slagLayers >= 4){
-                slagLayers -= 4;
-                world.setBlockState(layer, BlocksTFC.MOLTEN.getDefaultState().withProperty(LIT, cooking).withProperty(BlockMolten.LAYERS, 4));
+            if(slagLayers > 0)
+            {
+                if(slagLayers >= 4){
+                    slagLayers -= 4;
+                    world.setBlockState(getInternalBlock().up(i), BlocksTFC.MOLTEN.getDefaultState().withProperty(LIT, cooking).withProperty(BlockMolten.LAYERS, 4));
+                }else{
+                    world.setBlockState(getInternalBlock().up(i), BlocksTFC.MOLTEN.getDefaultState().withProperty(LIT, cooking).withProperty(BlockMolten.LAYERS, slagLayers));
+                    slagLayers = 0;
+                }
             }else{
-                world.setBlockState(layer, BlocksTFC.MOLTEN.getDefaultState().withProperty(LIT, cooking).withProperty(BlockMolten.LAYERS, slagLayers));
-                slagLayers = 0;
+                //Remove any surplus slag(ie: after cooking/structure became compromised)
+                if(world.getBlockState(getInternalBlock().up(i)).getBlock() == BlocksTFC.MOLTEN)
+                    world.setBlockToAir(getInternalBlock().up(i));
             }
-            height++;
-            layer = layer.up();
-        }
-        //Remove any surplus slag blocks(ie: after cooking ore)
-        int maxHeight = BlocksTFC.BLOOMERY.getChimneyLevels(world, pos);
-        while(height < maxHeight)
-        {
-            if(world.getBlockState(layer).getBlock() == BlocksTFC.MOLTEN)
-                world.setBlockToAir(layer);
-            height++;
-            layer = layer.up();
         }
     }
 
@@ -212,15 +218,17 @@ public class TEBloomery extends TEBase implements ITickable {
             this.maxFuel = newMaxItems;
             this.maxOre = newMaxItems;
             while (maxOre < oreStacks.size()) {
-                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), oreStacks.get(0));
+                //Structure lost one or more chimney levels
+                InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), oreStacks.get(0));
                 oreStacks.remove(0);
             }
             while (maxFuel < fuelStacks.size()) {
-                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), fuelStacks.get(0));
+                InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), fuelStacks.get(0));
                 fuelStacks.remove(0);
             }
             if (maxOre <= 0) {
-                world.setBlockToAir(pos);
+                //Structure became compromised
+                world.destroyBlock(pos, true);
                 return;
             }
             if(!isInternalBlockComplete() && (!fuelStacks.isEmpty() || !fuelStacks.isEmpty())){

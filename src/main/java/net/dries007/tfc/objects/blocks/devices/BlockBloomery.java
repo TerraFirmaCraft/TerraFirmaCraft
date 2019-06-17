@@ -159,9 +159,6 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
         if (this.getChimneyLevels(worldIn, pos, state.getValue(FACING)) > -1) return;
         dropBlockAsItem(worldIn, pos, state, 0);
-        //TODO
-        //TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
-        //if (te != null) te.onBreakBlock();
         worldIn.setBlockToAir(pos);
     }
 

@@ -50,12 +50,12 @@ public class TEBloom extends TEBase
         ItemStack output = new ItemStack(ItemsTFC.UNREFINED_BLOOM, 1);
         ItemBloom.setSmeltAmount(output, count);
         TEBloomery te = null;
-        BlockPos bloomeryPos = pos;
+        BlockPos dumpPos = pos;
         for (int i = 0; i < 4 && te == null; i++)
             te = Helpers.getTE(world, pos.offset(EnumFacing.HORIZONTALS[i]), TEBloomery.class);
         //This statement must always be true
         if(te!=null)
-            bloomeryPos = te.getPos();
-        InventoryHelper.spawnItemStack(world, bloomeryPos.getX(), bloomeryPos.getY(), bloomeryPos.getZ(), output);
+            dumpPos = te.getExternalBlock();
+        InventoryHelper.spawnItemStack(world, dumpPos.getX(), dumpPos.getY(), dumpPos.getZ(), output);
     }
 }

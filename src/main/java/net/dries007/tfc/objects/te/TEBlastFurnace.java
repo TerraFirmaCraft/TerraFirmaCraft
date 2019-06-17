@@ -17,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -39,7 +40,7 @@ import static net.dries007.tfc.util.ILightableBlock.LIT;
 public class TEBlastFurnace extends TEInventory implements ITickable, ITileFields
 {
     public static final int SLOT_TUYERE = 0;
-    public static final int FIELD_TEMPERATURE = 0, FIELD_ORE = 1, FIELD_FUEL = 2;
+    public static final int FIELD_TEMPERATURE = 0, FIELD_ORE = 1, FIELD_FUEL = 2, FIELD_MELT = 3;
     private List<ItemStack> oreStacks = new ArrayList<>();
     private List<ItemStack> fuelStacks = new ArrayList<>();
 
@@ -120,10 +121,28 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         return !this.fuelStacks.isEmpty() && !this.oreStacks.isEmpty();
     }
 
+    public void onBreakBlock()
+    {
+        //Dump everything in world
+        for(int i = 1; i < 6; i++)
+        {
+            if(world.getBlockState(pos.up(i)).getBlock() == BlocksTFC.MOLTEN)
+                world.setBlockToAir(pos.up(i));
+        }
+        for(ItemStack stack : oreStacks)
+        {
+            InventoryHelper.spawnItemStack(world, pos.north().getX(), pos.getY(), pos.north().getZ(), stack);
+        }
+        for(ItemStack stack : fuelStacks)
+        {
+            InventoryHelper.spawnItemStack(world, pos.north().getX(), pos.getY(), pos.north().getZ(), stack);
+        }
+    }
+
     @Override
     public int getFieldCount()
     {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -140,6 +159,9 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
             case FIELD_FUEL:
                 this.fuelCount = value;
                 return;
+            case FIELD_MELT:
+                this.meltAmount = value;
+                return;
         }
         TerraFirmaCraft.getLog().warn("Illegal field id {} in TEBlastFurnace#setField", index);
     }
@@ -155,6 +177,8 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
                 return this.oreCount;
             case FIELD_FUEL:
                 return this.fuelCount;
+            case FIELD_MELT:
+                return this.meltAmount;
         }
         TerraFirmaCraft.getLog().warn("Illegal field id {} in TEBlastFurnace#getField", index);
         return 0;
@@ -170,11 +194,20 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
             int newMaxItems = BlocksTFC.BLAST_FURNACE.getChimneyLevels(world, pos) * 4;
             maxFuel = newMaxItems;
             maxOre = newMaxItems;
-            if (maxFuel < fuelStacks.size()) {
-                //TODO dump fuel in the world?
+            while (maxOre < oreStacks.size()) {
+                //Structure lost one or more chimney levels
+                InventoryHelper.spawnItemStack(world, pos.north().getX(), pos.getY(), pos.north().getZ(), oreStacks.get(0));
+                oreStacks.remove(0);
             }
-            if (maxOre < oreStacks.size()) {
-                //TODO dump ore/flux in the world?
+            while (maxFuel < fuelStacks.size()) {
+                InventoryHelper.spawnItemStack(world, pos.north().getX(), pos.north().getY(), pos.north().getZ(), fuelStacks.get(0));
+                fuelStacks.remove(0);
+            }
+            if(newMaxItems <= 0)
+            {
+                //Structure became compromised
+                world.destroyBlock(pos, true);
+                return;
             }
             addItemsFromWorld();
             if(temperature > Metal.PIG_IRON.getMeltTemp() && !oreStacks.isEmpty()) //Melting one item per sec
@@ -341,31 +374,25 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
 
     private void updateSlagBlock(boolean cooking)
     {
-        int slag = fuelStacks.size()+oreStacks.size();
-        //If there's at least one item show one layer so player knows that it is working
+        int slag = fuelStacks.size() + oreStacks.size();
+        //If there's at least one item, show one layer so player knows that it is holding stacks
         int slagLayers = slag == 1 ? 1 : slag / 2;
-        int height = 0;
-        BlockPos layer = pos.up();
-        while(slagLayers > 0)
+        for(int i = 1; i < 6; i++)
         {
-            //4 layers means one block
-            if(slagLayers >= 4){
-                slagLayers -= 4;
-                world.setBlockState(layer, BlocksTFC.MOLTEN.getDefaultState().withProperty(LIT, cooking).withProperty(BlockMolten.LAYERS, 4));
+            if(slagLayers > 0)
+            {
+                if(slagLayers >= 4){
+                    slagLayers -= 4;
+                    world.setBlockState(pos.up(i), BlocksTFC.MOLTEN.getDefaultState().withProperty(LIT, cooking).withProperty(BlockMolten.LAYERS, 4));
+                }else{
+                    world.setBlockState(pos.up(i), BlocksTFC.MOLTEN.getDefaultState().withProperty(LIT, cooking).withProperty(BlockMolten.LAYERS, slagLayers));
+                    slagLayers = 0;
+                }
             }else{
-                world.setBlockState(layer, BlocksTFC.MOLTEN.getDefaultState().withProperty(LIT, cooking).withProperty(BlockMolten.LAYERS, slagLayers));
-                slagLayers = 0;
+                //Remove any surplus slag(ie: after cooking/structure became compromised)
+                if(world.getBlockState(pos.up(i)).getBlock() == BlocksTFC.MOLTEN)
+                    world.setBlockToAir(pos.up(i));
             }
-            height++;
-            layer = layer.up();
-        }
-        //Remove any surplus slag blocks(ie: after cooking ore)
-        int maxHeight = BlocksTFC.BLAST_FURNACE.getChimneyLevels(world, pos);
-        while(height < maxHeight)
-        {
-            world.setBlockToAir(layer);
-            height++;
-            layer = layer.up();
         }
     }
 }
