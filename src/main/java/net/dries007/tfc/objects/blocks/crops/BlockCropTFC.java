@@ -94,29 +94,6 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
-        if (tile != null)
-        {
-            tile.resetCounter();
-        }
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TETickCounter();
-    }
-
-    @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
         super.updateTick(worldIn, pos, state, random);
@@ -153,11 +130,27 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
         }
     }
 
-    @Nonnull
     @Override
-    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
-        return EnumPlantType.Crop;
+        TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
+        if (tile != null)
+        {
+            tile.resetCounter();
+        }
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TETickCounter();
     }
 
     @Override
@@ -165,6 +158,13 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(ItemSeedsTFC.get(crop));
+    }
+
+    @Nonnull
+    @Override
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
+    {
+        return EnumPlantType.Crop;
     }
 
     public abstract PropertyInteger getStageProperty();

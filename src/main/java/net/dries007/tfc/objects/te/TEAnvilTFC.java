@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.objects.items.ItemsTFC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -257,10 +256,10 @@ public class TEAnvilTFC extends TEInventory
                     {
                         outputCap.setTemperature(cap.getTemperature());
                     }
-                    for(ItemStack dump : recipe.consumeInput(input))
+                    for (ItemStack dump : recipe.consumeInput(input))
                     {
                         //If dump is not empty(used by iron blooms) dump it in world
-                        if(dump != ItemStack.EMPTY)
+                        if (dump != ItemStack.EMPTY)
                             InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), dump);
 
                     }

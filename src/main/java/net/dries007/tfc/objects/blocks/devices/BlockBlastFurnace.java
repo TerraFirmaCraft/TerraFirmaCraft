@@ -10,11 +10,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.blocks.metal.BlockMetalSheet;
-import net.dries007.tfc.objects.te.TEMetalSheet;
-import net.dries007.tfc.util.ILightableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -29,13 +24,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.metal.BlockMetalSheet;
 import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEBellows;
 import net.dries007.tfc.objects.te.TEBlastFurnace;
+import net.dries007.tfc.objects.te.TEMetalSheet;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IBellowsConsumerBlock;
+import net.dries007.tfc.util.ILightableBlock;
 import net.dries007.tfc.util.Multiblock;
 
 @ParametersAreNonnullByDefault
@@ -44,32 +43,13 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
     //removed static in order to grant addon makers customization possibilities
     private final Multiblock BLAST_FURNACE_CHIMNEY;
 
-    public int getChimneyLevels(World world, BlockPos pos)
-    {
-        if (world.getBlockState(pos.down()).getBlock() != BlocksTFC.CRUCIBLE)
-        {
-            // no crucible
-            return 0;
-        }
-        for (int i = 1; i < 6; i++)
-        {
-            BlockPos center = pos.up(i);
-            if (!BLAST_FURNACE_CHIMNEY.test(world, center))
-            {
-                return i-1;
-            }
-        }
-        // Maximum levels
-        return 5;
-    }
-
     public BlockBlastFurnace()
     {
         super(Material.IRON);
         //TODO: update when firebricks are added
         Predicate<IBlockState> stoneMatcher = state -> state.getMaterial() == Material.ROCK && state.isNormalCube();
         Predicate<IBlockState> ironSheetMatcher = state -> (state.getBlock() instanceof BlockMetalSheet)
-            && ((BlockMetalSheet)state.getBlock()).getMetal() == Metal.WROUGHT_IRON;
+            && ((BlockMetalSheet) state.getBlock()).getMetal() == Metal.WROUGHT_IRON;
         BLAST_FURNACE_CHIMNEY = new Multiblock()
             .match(new BlockPos(0, 0, 0), state -> state.getBlock() == BlocksTFC.MOLTEN || state.getBlock() == Blocks.AIR)
             .match(new BlockPos(0, 0, 1), stoneMatcher)
@@ -95,6 +75,25 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
 
     }
 
+    public int getChimneyLevels(World world, BlockPos pos)
+    {
+        if (world.getBlockState(pos.down()).getBlock() != BlocksTFC.CRUCIBLE)
+        {
+            // no crucible
+            return 0;
+        }
+        for (int i = 1; i < 6; i++)
+        {
+            BlockPos center = pos.up(i);
+            if (!BLAST_FURNACE_CHIMNEY.test(world, center))
+            {
+                return i - 1;
+            }
+        }
+        // Maximum levels
+        return 5;
+    }
+
     @SuppressWarnings("deprecation")
     @Nonnull
     @Override
@@ -107,6 +106,26 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(LIT) ? 1 : 0;
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if (!worldIn.isRemote)
+        {
+            TEBlastFurnace te = Helpers.getTE(worldIn, pos, TEBlastFurnace.class);
+            if (te != null) te.onBreakBlock();
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
+    {
+        if (!super.canPlaceBlockAt(worldIn, pos))
+            return false;
+
+        return getChimneyLevels(worldIn, pos) > 0;
     }
 
     @Override
@@ -169,24 +188,5 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
         {
             teBlastFurnace.onAirIntake(airAmount);
         }
-    }
-
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if(!worldIn.isRemote) {
-            TEBlastFurnace te = Helpers.getTE(worldIn, pos, TEBlastFurnace.class);
-            if (te != null) te.onBreakBlock();
-        }
-        super.breakBlock(worldIn, pos, state);
-    }
-
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
-    {
-        if (!super.canPlaceBlockAt(worldIn, pos))
-            return false;
-
-        return getChimneyLevels(worldIn, pos) > 0;
     }
 }

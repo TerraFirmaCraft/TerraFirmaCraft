@@ -23,6 +23,14 @@ public class TECropSpreading extends TETickCounter
         this.maxGrowthStage = 0;
     }
 
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        maxGrowthStage = nbt.getInteger("maxGrowthStage");
+        baseAge = nbt.getInteger("baseAge");
+        super.readFromNBT(nbt);
+    }
+
     @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
@@ -30,14 +38,6 @@ public class TECropSpreading extends TETickCounter
         nbt.setInteger("maxGrowthStage", maxGrowthStage);
         nbt.setInteger("baseAge", baseAge);
         return super.writeToNBT(nbt);
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        maxGrowthStage = nbt.getInteger("maxGrowthStage");
-        baseAge = nbt.getInteger("baseAge");
-        super.readFromNBT(nbt);
     }
 
     public void onPlaced()

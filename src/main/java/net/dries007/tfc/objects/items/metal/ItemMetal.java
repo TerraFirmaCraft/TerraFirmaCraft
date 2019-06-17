@@ -69,12 +69,6 @@ public class ItemMetal extends ItemTFC implements IMetalObject
         return d < 0 ? 0 : MathHelper.floor(type.getSmeltAmount() * d);
     }
 
-    @Override
-    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
-    {
-        return this.type == Metal.ItemType.KNIFE || super.doesSneakBypassUse(stack, world, pos, player);
-    }
-
     @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
@@ -198,9 +192,10 @@ public class ItemMetal extends ItemTFC implements IMetalObject
         return super.getRarity(stack);
     }
 
-    public Metal.ItemType getType()
+    @Override
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
     {
-        return type;
+        return this.type == Metal.ItemType.KNIFE || super.doesSneakBypassUse(stack, world, pos, player);
     }
 
     @Nullable
@@ -208,5 +203,10 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
         return new ForgeableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
+    }
+
+    public Metal.ItemType getType()
+    {
+        return type;
     }
 }

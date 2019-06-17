@@ -52,10 +52,11 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
      * Use to apply preservation over time
      * DO NOT TRY AND PRESERVE ALREADY ROTTEN FOOD
      * Example:
-     *  - A ceramic large vessel will tick randomly. Between each tick, it tracks a tick counter.
-     *  - On a tick, for each item in inventory, it will try and "preserve" the item based on it being in the vessel for the time between the last random tick and the current tick
-     *  - It then would call setCreationDate(getCreationDate() + ticksSinceLastRandomTick * decayModifier)
-     *  - A decay modifier of 0 is no preservation, a decay modifier = 1 is 100% preservation (i.e. never decaying)
+     * - A ceramic large vessel will tick randomly. Between each tick, it tracks a tick counter.
+     * - On a tick, for each item in inventory, it will try and "preserve" the item based on it being in the vessel for the time between the last random tick and the current tick
+     * - It then would call setCreationDate(getCreationDate() + ticksSinceLastRandomTick * decayModifier)
+     * - A decay modifier of 0 is no preservation, a decay modifier = 1 is 100% preservation (i.e. never decaying)
+     *
      * @param creationDate A calendar time
      */
     void setCreationDate(long creationDate);
@@ -80,7 +81,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
      * Called from {@link CapabilityFood.EventHandler}
      *
      * @param player the player doing the consuming
-     * @param stack the stack being consumed
+     * @param stack  the stack being consumed
      */
     default void onConsumedByPlayer(@Nonnull EntityPlayer player, @Nonnull ItemStack stack)
     {
@@ -112,7 +113,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
      * Called from {@link net.dries007.tfc.client.ClientEvents}
      *
      * @param stack the stack in question
-     * @param text the tooltip
+     * @param text  the tooltip
      */
     @SideOnly(Side.CLIENT)
     default void addNutrientInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)

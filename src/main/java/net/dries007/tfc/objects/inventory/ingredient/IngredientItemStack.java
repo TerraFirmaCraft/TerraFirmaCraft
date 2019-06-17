@@ -26,12 +26,6 @@ public class IngredientItemStack implements IIngredient<ItemStack>
     }
 
     @Override
-    public int getAmount()
-    {
-        return inputStack.getCount();
-    }
-
-    @Override
     public boolean testIgnoreCount(ItemStack stack)
     {
         if (stack != null && !stack.isEmpty())
@@ -50,5 +44,11 @@ public class IngredientItemStack implements IIngredient<ItemStack>
     {
         input.shrink(inputStack.getCount());
         return input;
+    }
+
+    @Override
+    public int getAmount()
+    {
+        return inputStack.getCount();
     }
 }

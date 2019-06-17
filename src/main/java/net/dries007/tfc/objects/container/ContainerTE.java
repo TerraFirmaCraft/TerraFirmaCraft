@@ -77,6 +77,16 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public void updateProgressBar(int id, int data)
+    {
+        if (shouldSyncFields)
+        {
+            ((ITileFields) tile).setField(id, data);
+        }
+    }
+
+    @Override
     @Nonnull
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
@@ -127,16 +137,6 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
         }
         slot.onTake(player, stack);
         return stackCopy;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int id, int data)
-    {
-        if (shouldSyncFields)
-        {
-            ((ITileFields) tile).setField(id, data);
-        }
     }
 
     @Override

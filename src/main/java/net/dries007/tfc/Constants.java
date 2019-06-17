@@ -20,7 +20,6 @@ import net.dries007.tfc.util.json.VeinTypeJson;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
 
 import static net.minecraft.util.EnumFacing.*;
-import static net.minecraft.util.EnumFacing.WEST;
 
 public final class Constants
 {

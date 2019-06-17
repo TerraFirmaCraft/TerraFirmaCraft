@@ -19,13 +19,10 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -43,7 +40,6 @@ import net.dries007.tfc.util.Helpers;
 @ParametersAreNonnullByDefault
 public class BlockMetalSheet extends Block
 {
-    private static final Map<Metal, BlockMetalSheet> MAP = new HashMap<>();
     public static final PropertyBool[] FACE_PROPERTIES = new PropertyBool[] {
         PropertyBool.create("down"),
         PropertyBool.create("up"),
@@ -52,6 +48,7 @@ public class BlockMetalSheet extends Block
         PropertyBool.create("west"),
         PropertyBool.create("east")
     };
+    private static final Map<Metal, BlockMetalSheet> MAP = new HashMap<>();
     private static final AxisAlignedBB[] SHEET_AABB = new AxisAlignedBB[] {
         new AxisAlignedBB(0d, 0.9375d, 0d, 1d, 1d, 1d),
         new AxisAlignedBB(0d, 0d, 0d, 1d, 0.0625d, 1d),
@@ -247,6 +244,14 @@ public class BlockMetalSheet extends Block
         }
     }
 
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TEMetalSheet te = Helpers.getTE(worldIn, pos, TEMetalSheet.class);
+        if (te != null) te.onBreakBlock(this.metal);
+        super.breakBlock(worldIn, pos, state);
+    }
+
     @Nullable
     @Override
     @SuppressWarnings("deprecation")
@@ -301,13 +306,5 @@ public class BlockMetalSheet extends Block
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEMetalSheet();
-    }
-
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TEMetalSheet te = Helpers.getTE(worldIn, pos, TEMetalSheet.class);
-        if (te != null) te.onBreakBlock(this.metal);
-        super.breakBlock(worldIn, pos, state);
     }
 }

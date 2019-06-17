@@ -178,22 +178,6 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     }
 
     @Override
-    public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
-    {
-        return offset.equals(TEBellows.OFFSET_LEVEL);
-    }
-
-    @Override
-    public void onAirIntake(TEBellows te, World world, BlockPos pos, int airAmount)
-    {
-        TEFirePit teFirePit = Helpers.getTE(world, pos, TEFirePit.class);
-        if (teFirePit != null)
-        {
-            teFirePit.onAirIntake(airAmount);
-        }
-    }
-
-    @Override
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
@@ -223,6 +207,22 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEFirePit();
+    }
+
+    @Override
+    public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
+    {
+        return offset.equals(TEBellows.OFFSET_LEVEL);
+    }
+
+    @Override
+    public void onAirIntake(TEBellows te, World world, BlockPos pos, int airAmount)
+    {
+        TEFirePit teFirePit = Helpers.getTE(world, pos, TEFirePit.class);
+        if (teFirePit != null)
+        {
+            teFirePit.onAirIntake(airAmount);
+        }
     }
 
     private boolean canBePlacedOn(World worldIn, BlockPos pos)

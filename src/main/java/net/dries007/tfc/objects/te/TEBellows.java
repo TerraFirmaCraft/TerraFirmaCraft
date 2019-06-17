@@ -54,6 +54,7 @@ public class TEBellows extends TEBase
      * {@link BlockFirePit}
      * meanwhile, blocks that sink into ground( like forges) must check {@code Vec3i(1,-1,0)}.
      * {@link BlockCharcoalForge}
+     *
      * @param offset The offset to check
      */
     public static void addBellowsOffset(Vec3i offset)

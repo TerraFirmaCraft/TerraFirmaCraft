@@ -7,7 +7,6 @@ package net.dries007.tfc.api.recipes;
 
 import javax.annotation.Nonnull;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -50,14 +49,18 @@ public class AnvilMeasurableRecipe extends AnvilRecipe
     @Override
     public boolean matches(ItemStack input)
     {
-        if(!super.matches(input))return false;
-        if(isCopyRule) {
+        if (!super.matches(input)) return false;
+        if (isCopyRule)
+        {
             IForgeable cap = input.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
             if (cap instanceof IForgeableMeasurable) metalAmount = ((IForgeableMeasurable) cap).getMetalAmount();
             return true;
-        }else{
+        }
+        else
+        {
             IForgeable cap = input.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-            if (cap instanceof IForgeableMeasurable)return metalAmount == ((IForgeableMeasurable) cap).getMetalAmount();
+            if (cap instanceof IForgeableMeasurable)
+                return metalAmount == ((IForgeableMeasurable) cap).getMetalAmount();
             return false;
         }
     }
@@ -67,7 +70,8 @@ public class AnvilMeasurableRecipe extends AnvilRecipe
     public ItemStack getOutput()
     {
         ItemStack out = super.getOutput();
-        if(isCopyRule) {
+        if (isCopyRule)
+        {
             IForgeable cap = out.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
             ((IForgeableMeasurable) cap).setMetalAmount(metalAmount);
         }

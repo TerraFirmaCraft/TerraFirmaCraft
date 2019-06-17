@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.te;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.util.IHeatConsumerBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -26,6 +25,7 @@ import net.dries007.tfc.objects.recipes.heat.HeatRecipe;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.FuelManager;
+import net.dries007.tfc.util.IHeatConsumerBlock;
 import net.dries007.tfc.util.ITileFields;
 
 import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;

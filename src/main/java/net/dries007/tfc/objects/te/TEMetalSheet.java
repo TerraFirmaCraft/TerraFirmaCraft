@@ -8,15 +8,16 @@ package net.dries007.tfc.objects.te;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.blocks.metal.BlockMetalSheet;
-import net.dries007.tfc.objects.items.metal.ItemMetalSheet;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+
+import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.objects.blocks.metal.BlockMetalSheet;
+import net.dries007.tfc.objects.items.metal.ItemMetalSheet;
 
 @ParametersAreNonnullByDefault
 public class TEMetalSheet extends TEBase

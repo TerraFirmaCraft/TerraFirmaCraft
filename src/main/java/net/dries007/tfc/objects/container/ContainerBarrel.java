@@ -48,6 +48,18 @@ public class ContainerBarrel extends ContainerTE<TEBarrel> implements IButtonHan
     }
 
     @Override
+    public void onButtonPress(int buttonID, @Nullable NBTTagCompound extraNBT)
+    {
+        // Slot will always be 0, extraNBT will be empty
+        if (!tile.getWorld().isRemote)
+        {
+            IBlockState state = tile.getWorld().getBlockState(tile.getPos());
+            tile.getWorld().setBlockState(tile.getPos(), state.withProperty(SEALED, !state.getValue(SEALED)));
+            tile.onSealed();
+        }
+    }
+
+    @Override
     protected void addContainerSlots()
     {
         IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -57,18 +69,6 @@ public class ContainerBarrel extends ContainerTE<TEBarrel> implements IButtonHan
             this.addSlotToContainer(new SlotTEInput(inventory, SLOT_FLUID_CONTAINER_IN, 35, 20, tile));
             this.addSlotToContainer(new SlotOutput(inventory, SLOT_FLUID_CONTAINER_OUT, 35, 54));
             this.addSlotToContainer(new SlotTEInput(inventory, SLOT_ITEM, 89, 37, tile));
-        }
-    }
-
-    @Override
-    public void onButtonPress(int buttonID, @Nullable NBTTagCompound extraNBT)
-    {
-        // Slot will always be 0, extraNBT will be empty
-        if (!tile.getWorld().isRemote)
-        {
-            IBlockState state = tile.getWorld().getBlockState(tile.getPos());
-            tile.getWorld().setBlockState(tile.getPos(), state.withProperty(SEALED, !state.getValue(SEALED)));
-            tile.onSealed();
         }
     }
 }

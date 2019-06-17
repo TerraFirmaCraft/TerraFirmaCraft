@@ -7,7 +7,6 @@ package net.dries007.tfc.objects.te;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.util.Helpers;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,8 +14,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ItemBloom;
+import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.util.Helpers;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -29,7 +29,7 @@ public class TEBloom extends TEBase
         count = 100;
     }
 
-    public void setCount(int count){ this.count = count; }
+    public void setCount(int count) { this.count = count; }
 
     @Override
     public void readFromNBT(NBTTagCompound tag)
@@ -54,7 +54,7 @@ public class TEBloom extends TEBase
         for (int i = 0; i < 4 && te == null; i++)
             te = Helpers.getTE(world, pos.offset(EnumFacing.HORIZONTALS[i]), TEBloomery.class);
         //This statement must always be true
-        if(te!=null)
+        if (te != null)
             dumpPos = te.getExternalBlock();
         InventoryHelper.spawnItemStack(world, dumpPos.getX(), dumpPos.getY(), dumpPos.getZ(), output);
     }

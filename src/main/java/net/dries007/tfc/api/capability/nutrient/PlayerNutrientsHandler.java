@@ -86,6 +86,11 @@ public class PlayerNutrientsHandler implements IPlayerNutrients, ICapabilitySeri
         setNutrient(nutrient, newAmount);
     }
 
+    public void updateNutrientsFastForward()
+    {
+        lastUpdateTick = CalendarTFC.getCalendarTime();
+    }
+
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
@@ -98,11 +103,6 @@ public class PlayerNutrientsHandler implements IPlayerNutrients, ICapabilitySeri
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
     {
         return capability == CapabilityFood.CAPABILITY_PLAYER_NUTRIENTS ? (T) this : null;
-    }
-
-    public void updateNutrientsFastForward()
-    {
-        lastUpdateTick = CalendarTFC.getCalendarTime();
     }
 
     @Override

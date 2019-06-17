@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
@@ -31,6 +30,7 @@ import net.minecraft.world.World;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEBloomery;
 import net.dries007.tfc.util.Helpers;
@@ -163,6 +163,17 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if (!worldIn.isRemote)
+        {
+            TEBloomery te = Helpers.getTE(worldIn, pos, TEBloomery.class);
+            if (te != null) te.onBreakBlock();
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     @Nullable
     @ParametersAreNonnullByDefault
@@ -211,7 +222,9 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
                     te.onIgnite();
                     return true;
                 }
-            }else{
+            }
+            else
+            {
                 //TODO: Show debug msg(missing charcoal pile/charcoal/ore)
             }
 
@@ -251,16 +264,6 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEBloomery();
-    }
-
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if(!worldIn.isRemote) {
-            TEBloomery te = Helpers.getTE(worldIn, pos, TEBloomery.class);
-            if (te != null) te.onBreakBlock();
-        }
-        super.breakBlock(worldIn, pos, state);
     }
 
     /**
@@ -323,7 +326,8 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
                 return 0;
             case -1:
             {
-                for (int i = 1; i < 4; i++) {
+                for (int i = 1; i < 4; i++)
+                {
                     height = this.getChimneyLevels(worldIn, pos, EnumFacing.HORIZONTALS[i]);
                     if (height > 0)
                         return height;

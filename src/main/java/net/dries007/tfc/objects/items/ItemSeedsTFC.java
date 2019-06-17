@@ -58,7 +58,7 @@ public class ItemSeedsTFC extends Item implements IPlantable
 
             if (player instanceof EntityPlayerMP)
             {
-                CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)player, pos.up(), itemstack);
+                CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos.up(), itemstack);
             }
 
             itemstack.shrink(1);
