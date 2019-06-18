@@ -29,6 +29,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
     {
         return TFCRegistries.BARREL.getValuesCollection().stream().filter(x -> x.isValidInput(fluidStack, stack) && x.getDuration() == 0).findFirst().orElse(null);
     }
+
     private final IIngredient<ItemStack> inputStack;
     private final IIngredient<FluidStack> inputFluid;
     private final FluidStack outputFluid;

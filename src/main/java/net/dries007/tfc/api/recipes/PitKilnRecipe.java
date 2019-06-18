@@ -31,6 +31,7 @@ public class PitKilnRecipe extends IForgeRegistryEntry.Impl<PitKilnRecipe>
     {
         return TFCRegistries.PIT_KILN.getValuesCollection().stream().filter(r -> r.isValidInput(stack)).findFirst().orElse(null);
     }
+
     private final IIngredient<ItemStack> ingredient;
     private final ItemStack output;
     private final boolean isComplex;

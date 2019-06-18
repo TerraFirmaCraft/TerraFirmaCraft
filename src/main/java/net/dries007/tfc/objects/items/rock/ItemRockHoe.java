@@ -38,6 +38,7 @@ public class ItemRockHoe extends ItemHoe implements IItemSize, IRockObject
     {
         return MAP.get(category);
     }
+
     public final RockCategory category;
 
     public ItemRockHoe(RockCategory category)

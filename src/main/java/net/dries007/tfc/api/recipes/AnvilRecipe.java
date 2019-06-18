@@ -41,6 +41,7 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
     {
         return TFCRegistries.ANVIL.getValuesCollection().stream().filter(x -> x.matches(stack)).collect(Collectors.toList());
     }
+
     protected final ForgeRule[] rules;
     protected final ItemStack output;
     protected final IIngredient<ItemStack> ingredient;

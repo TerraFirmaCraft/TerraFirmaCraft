@@ -21,6 +21,7 @@ public class BlockButtonStoneTFC extends BlockButtonStone
     {
         return MAP.get(rock);
     }
+
     public final Rock rock;
 
     public BlockButtonStoneTFC(Rock rock)

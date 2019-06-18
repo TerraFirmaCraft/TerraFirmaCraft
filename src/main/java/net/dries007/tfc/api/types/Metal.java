@@ -211,6 +211,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         {
             return type.supplier.apply(metal, type);
         }
+
         private final boolean toolItem;
         private final int smeltAmount;
         private final boolean hasMold;

@@ -32,6 +32,7 @@ public class BlockChestTFC extends BlockChest
     {
         return MAP_TRAP.get(wood);
     }
+
     public final Tree wood;
 
     public BlockChestTFC(Type type, Tree wood)

@@ -24,6 +24,7 @@ public class BlockTrapDoorWoodTFC extends BlockTrapDoor
     {
         return MAP.get(wood);
     }
+
     public final Tree wood;
 
     public BlockTrapDoorWoodTFC(Tree wood)

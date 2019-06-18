@@ -27,6 +27,7 @@ public class BlockWallTFC extends BlockWall
     {
         return TABLE.get(rock).get(type);
     }
+
     public final BlockRockVariant parent;
 
     public BlockWallTFC(BlockRockVariant modelBlock)

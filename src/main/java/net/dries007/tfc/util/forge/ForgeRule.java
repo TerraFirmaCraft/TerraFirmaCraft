@@ -58,6 +58,7 @@ public enum ForgeRule
     {
         return id >= 0 && id < VALUES.length ? VALUES[id] : null;
     }
+
     private final Order order;
     private final ForgeStep type;
 

@@ -43,6 +43,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     {
         return new ItemStack(MAP.get(ore), amount);
     }
+
     public final Ore ore;
 
     public ItemOreTFC(Ore ore)

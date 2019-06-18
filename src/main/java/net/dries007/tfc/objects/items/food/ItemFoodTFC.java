@@ -31,6 +31,7 @@ public class ItemFoodTFC extends ItemFood
     {
         return new ItemStack(MAP.get(food), amount);
     }
+
     private final Food food;
 
     public ItemFoodTFC(@Nonnull Food food)

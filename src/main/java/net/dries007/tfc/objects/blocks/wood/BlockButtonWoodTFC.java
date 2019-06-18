@@ -22,6 +22,7 @@ public class BlockButtonWoodTFC extends BlockButtonWood
     {
         return MAP.get(wood);
     }
+
     public final Tree wood;
 
     public BlockButtonWoodTFC(Tree wood)
