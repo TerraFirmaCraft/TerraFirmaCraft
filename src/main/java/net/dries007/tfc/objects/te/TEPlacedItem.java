@@ -70,7 +70,6 @@ public class TEPlacedItem extends TEInventory
             }
         }
     }
-
     protected boolean isHoldingLargeItem;
 
     public TEPlacedItem()
@@ -79,7 +78,6 @@ public class TEPlacedItem extends TEInventory
         super(4);
         this.isHoldingLargeItem = false;
     }
-
 
     @Override
     @Nonnull

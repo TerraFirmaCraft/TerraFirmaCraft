@@ -64,5 +64,7 @@ public interface IFallingBlock
         return ImmutableList.of(new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state)));
     }
 
-    default void onEndFalling(World world, BlockPos pos, IBlockState state, IBlockState current) {}
+    default void onEndFalling(World world, BlockPos pos, IBlockState state, IBlockState current)
+    {
+    }
 }

@@ -96,7 +96,6 @@ public final class TerraFirmaCraft
     {
         return TerraFirmaCraft.getState().ordinal() >= state.ordinal();
     }
-
     private boolean isSignedBuild = true;
     private Logger log;
     private WorldTypeTFC worldTypeTFC;

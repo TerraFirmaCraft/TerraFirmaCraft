@@ -56,7 +56,6 @@ public class BlockStoneAnvil extends Block implements IRockObject
     {
         return MAP.get(rock);
     }
-
     private final Rock rock;
 
     public BlockStoneAnvil(Rock rock)

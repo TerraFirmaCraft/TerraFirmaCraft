@@ -67,7 +67,6 @@ public class BlockMetalSheet extends Block
     {
         return new ItemStack(MAP.get(metal), amount);
     }
-
     private final Metal metal;
 
     public BlockMetalSheet(Metal metal)
@@ -108,7 +107,7 @@ public class BlockMetalSheet extends Block
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        TEMetalSheet tile = Helpers.getTESafely(worldIn, pos, TEMetalSheet.class);
+        TEMetalSheet tile = Helpers.getTE(worldIn, pos, TEMetalSheet.class);
         if (tile != null)
         {
             for (EnumFacing face : EnumFacing.values())

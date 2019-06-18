@@ -131,5 +131,7 @@ public final class BiomesTFC
         BiomeDictionary.addTypes(item, types);
     }
 
-    private BiomesTFC() {}
+    private BiomesTFC()
+    {
+    }
 }

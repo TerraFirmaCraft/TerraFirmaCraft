@@ -271,13 +271,15 @@ public class CalendarTFC
             averageTempMod /= 12f;
         }
 
-        public static float getAverageTempMod() { return averageTempMod; }
+        public static float getAverageTempMod()
+        {
+            return averageTempMod;
+        }
 
         public static Month getById(int id)
         {
             return Arrays.stream(Month.values()).filter(m -> m.index == id).findFirst().orElse(MARCH);
         }
-
         private final int index;
         private final float tMod;
         private final String abrev;
@@ -289,11 +291,20 @@ public class CalendarTFC
             this.abrev = abrev;
         }
 
-        public int id() { return index; }
+        public int id()
+        {
+            return index;
+        }
 
-        public float getTempMod() { return tMod; }
+        public float getTempMod()
+        {
+            return tMod;
+        }
 
-        public String getShortName() { return abrev; }
+        public String getShortName()
+        {
+            return abrev;
+        }
 
         public Month next()
         {
@@ -446,7 +457,6 @@ public class CalendarTFC
             }
             throw new IllegalStateException("Map Storage is NULL!");
         }
-
         private long calendarOffset;
         private int daysInMonth;
         private boolean doCalendarCycle;

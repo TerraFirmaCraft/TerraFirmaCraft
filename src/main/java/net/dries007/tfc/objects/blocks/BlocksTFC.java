@@ -150,7 +150,10 @@ public final class BlocksTFC
         return allInventoryItemBlocks;
     }
 
-    public static ImmutableList<ItemBlockBarrel> getAllBarrelItemBlocks() { return allBarrelItemBlocks; }
+    public static ImmutableList<ItemBlockBarrel> getAllBarrelItemBlocks()
+    {
+        return allBarrelItemBlocks;
+    }
 
     public static ImmutableList<BlockFluidBase> getAllFluidBlocks()
     {
@@ -232,9 +235,15 @@ public final class BlocksTFC
         return allToolRackBlocks;
     }
 
-    public static ImmutableList<BlockCropTFC> getAllCropBlocks() { return allCropBlocks; }
+    public static ImmutableList<BlockCropTFC> getAllCropBlocks()
+    {
+        return allCropBlocks;
+    }
 
-    public static ImmutableList<BlockPlantTFC> getAllPlantBlocks() { return allPlantBlocks; }
+    public static ImmutableList<BlockPlantTFC> getAllPlantBlocks()
+    {
+        return allPlantBlocks;
+    }
 
     public static ImmutableList<BlockPlantTFC> getAllGrassBlocks()
     {

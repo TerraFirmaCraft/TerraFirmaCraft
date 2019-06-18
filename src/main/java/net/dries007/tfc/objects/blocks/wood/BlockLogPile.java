@@ -113,7 +113,10 @@ public class BlockLogPile extends Block implements ILightableBlock
         if (!world.isRemote)
         {
             TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
-            if (te == null) { return false; }
+            if (te == null)
+            {
+                return false;
+            }
 
             // Special Interactions
             // 1. Try and put a log inside (happens on right click event)

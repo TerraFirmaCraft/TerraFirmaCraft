@@ -22,7 +22,9 @@ import net.minecraft.item.ItemStack;
 @ParametersAreNonnullByDefault
 public class ContainerSimple extends Container
 {
-    public ContainerSimple() {}
+    public ContainerSimple()
+    {
+    }
 
     public ContainerSimple(InventoryPlayer playerInv)
     {

@@ -234,6 +234,8 @@ public interface IPlaceableItem
             usableInstances.put(predicate, placeable);
         }
 
-        private Impl() {}
+        private Impl()
+        {
+        }
     }
 }

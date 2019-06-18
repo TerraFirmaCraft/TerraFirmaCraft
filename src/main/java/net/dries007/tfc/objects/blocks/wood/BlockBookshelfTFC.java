@@ -27,7 +27,6 @@ public class BlockBookshelfTFC extends Block
     {
         return MAP.get(wood);
     }
-
     public final Tree wood;
 
     public BlockBookshelfTFC(Tree wood)

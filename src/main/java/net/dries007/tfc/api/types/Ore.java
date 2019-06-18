@@ -63,7 +63,6 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
         {
             return Grade.values()[meta];
         }
-
         public final int smeltAmount;
 
         Grade(int smeltAmount)

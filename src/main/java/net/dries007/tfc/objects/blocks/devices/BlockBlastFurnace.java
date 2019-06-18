@@ -40,13 +40,11 @@ import net.dries007.tfc.util.Multiblock;
 @ParametersAreNonnullByDefault
 public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, ILightableBlock
 {
-    //removed static in order to grant addon makers customization possibilities
-    private final Multiblock BLAST_FURNACE_CHIMNEY;
+    private static final Multiblock BLAST_FURNACE_CHIMNEY;
 
-    public BlockBlastFurnace()
+    static
     {
-        super(Material.IRON);
-        //TODO: update when firebricks are added
+        //TODO Update when firebricks are added
         Predicate<IBlockState> stoneMatcher = state -> state.getMaterial() == Material.ROCK && state.isNormalCube();
         Predicate<IBlockState> ironSheetMatcher = state -> (state.getBlock() instanceof BlockMetalSheet)
             && ((BlockMetalSheet) state.getBlock()).getMetal() == Metal.WROUGHT_IRON;
@@ -72,7 +70,11 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
             .match(new BlockPos(-1, 0, 1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
             .match(new BlockPos(1, 0, 1), ironSheetMatcher)
             .match(new BlockPos(1, 0, 1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.EAST), TEMetalSheet.class);
+    }
 
+    public BlockBlastFurnace()
+    {
+        super(Material.IRON);
     }
 
     public int getChimneyLevels(World world, BlockPos pos)
@@ -108,13 +110,14 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
         return state.getValue(LIT) ? 1 : 0;
     }
 
+
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (!worldIn.isRemote)
+        TEBlastFurnace te = Helpers.getTE(worldIn, pos, TEBlastFurnace.class);
+        if (te != null)
         {
-            TEBlastFurnace te = Helpers.getTE(worldIn, pos, TEBlastFurnace.class);
-            if (te != null) te.onBreakBlock();
+            te.onBreakBlock(worldIn, pos);
         }
         super.breakBlock(worldIn, pos, state);
     }

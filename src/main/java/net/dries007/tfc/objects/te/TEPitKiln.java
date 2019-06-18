@@ -88,10 +88,8 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             }
         }
     }
-
     private final NonNullList<ItemStack> logItems = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> strawItems = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
-
     private int burnTicksToGo;
 
     @Override

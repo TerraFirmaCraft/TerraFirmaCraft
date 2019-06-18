@@ -19,7 +19,9 @@ public class PacketSwitchPlayerInventoryTab implements IMessage
     private TFCGuiHandler.Type typeToSwitchTo;
 
     @SuppressWarnings("unused")
-    public PacketSwitchPlayerInventoryTab() {}
+    public PacketSwitchPlayerInventoryTab()
+    {
+    }
 
     public PacketSwitchPlayerInventoryTab(TFCGuiHandler.Type typeToSwitchTo)
     {

@@ -247,26 +247,32 @@ public class TEAnvilTFC extends TEInventory
             {
                 if (workingProgress == workingTarget && recipe.matches(steps))
                 {
-                    // Consume input + produce output / throw it in the world
-                    ItemStack stack = recipe.getOutput();
+                    //Consume input
+                    inventory.setStackInSlot(SLOT_INPUT_1, ItemStack.EMPTY);
+                    //Produce output
+                    for (ItemStack output : recipe.getOutput(input))
+                    {
+                        if (!output.isEmpty())
+                        {
+                            IItemHeat outputCap = output.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                            if (outputCap != null)
+                            {
+                                outputCap.setTemperature(cap.getTemperature());
+                            }
+                            if (inventory.getStackInSlot(SLOT_INPUT_1).isEmpty())
+                                inventory.setStackInSlot(SLOT_INPUT_1, output);
+                            else if (inventory.getStackInSlot(SLOT_INPUT_2).isEmpty())
+                                inventory.setStackInSlot(SLOT_INPUT_2, output);
+                            else
+                                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), output);
 
-                    // Set output item temperature
-                    IItemHeat outputCap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                    if (outputCap != null)
-                    {
-                        outputCap.setTemperature(cap.getTemperature());
-                    }
-                    for (ItemStack dump : recipe.consumeInput(input))
-                    {
-                        //If dump is not empty(used by iron blooms) dump it in world
-                        if (dump != ItemStack.EMPTY)
-                            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), dump);
+                        }
+
 
                     }
 
                     //Should we change this for a completed work sound effect?
                     world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                    inventory.setStackInSlot(SLOT_INPUT_1, stack);
 
                     // Reset forge stuff
                     resetFields();

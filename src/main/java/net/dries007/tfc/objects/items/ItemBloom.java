@@ -31,13 +31,6 @@ import net.dries007.tfc.api.util.IMetalObject;
 
 public class ItemBloom extends ItemTFC implements IMetalObject
 {
-    public static ItemStack setSmeltAmount(ItemStack stack, int value)
-    {
-        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-        ((IForgeableMeasurable) cap).setMetalAmount(value);
-        return stack;
-    }
-
     @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
@@ -79,17 +72,13 @@ public class ItemBloom extends ItemTFC implements IMetalObject
     {
         if (isInCreativeTab(tab))
         {
-            items.add(setSmeltAmount(new ItemStack(this, 1), 100));
-            items.add(setSmeltAmount(new ItemStack(this, 1), 200));
-            items.add(setSmeltAmount(new ItemStack(this, 1), 300));
-            items.add(setSmeltAmount(new ItemStack(this, 1), 400));
+            for (int i = 100; i <= 400; i += 100)
+            {
+                ItemStack stack = new ItemStack(this);
+                ((IForgeableMeasurable) stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null)).setMetalAmount(i);
+                items.add(stack);
+            }
         }
-    }
-
-    @Override
-    public boolean showDurabilityBar(ItemStack itemStack)
-    {
-        return false;
     }
 
     @Nullable

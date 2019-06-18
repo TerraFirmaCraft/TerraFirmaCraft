@@ -34,7 +34,6 @@ public class ItemGem extends ItemTFC
     {
         return new ItemStack(MAP.get(ore), amount, grade.getMeta());
     }
-
     public final Gem gem;
 
     public ItemGem(Gem gem)

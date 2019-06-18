@@ -46,7 +46,6 @@ public class TEToolRack extends TileEntity
         if (item == null || item.isEmpty()) return false;
         return isItemEligible(item.getItem());
     }
-
     private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
 
     public NonNullList<ItemStack> getItems()

@@ -61,7 +61,6 @@ public class TEBellows extends TEBase
     {
         offsets.add(offset);
     }
-
     private long lastPushed = 0L;
 
     // Min 0.125, Max 0.875

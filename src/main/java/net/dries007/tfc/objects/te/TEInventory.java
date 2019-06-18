@@ -50,7 +50,10 @@ public abstract class TEInventory extends TEBase
         return 64;
     }
 
-    public boolean isItemValid(int slot, ItemStack stack) { return true; }
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        return true;
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound compound)

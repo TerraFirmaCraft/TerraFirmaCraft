@@ -29,11 +29,12 @@ public class BlockBloom extends Block
         setSoundType(SoundType.STONE);
     }
 
+
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TEBloom te = Helpers.getTE(worldIn, pos, TEBloom.class);
-        if (te != null) te.onBreakBlock();
+        if (te != null) te.onBreakBlock(worldIn, pos);
         super.breakBlock(worldIn, pos, state);
     }
 
