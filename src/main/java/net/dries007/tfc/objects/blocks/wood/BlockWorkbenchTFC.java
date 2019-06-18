@@ -41,7 +41,6 @@ public class BlockWorkbenchTFC extends BlockWorkbench
     {
         return MAP.get(wood);
     }
-
     public final Tree wood;
 
     public BlockWorkbenchTFC(Tree wood)

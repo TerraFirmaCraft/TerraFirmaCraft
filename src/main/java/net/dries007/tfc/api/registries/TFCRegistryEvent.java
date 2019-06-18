@@ -19,11 +19,11 @@ public class TFCRegistryEvent
     /**
      * Required (for now) because of https://github.com/MinecraftForge/MinecraftForge/issues/4987
      * **Beware, dirty hack.**
-     *
+     * <p>
      * This even it called inside a HIGHEST priority registry event for the BLOCKS registry.
      * This is used to allow us to expose our list of stone types and other things to addons,
      * so dynamic adding of the appropriate blocks is automatic.
-     *
+     * <p>
      * This against Forge's policy of "Every mod registers it's own blocks/items"!
      *
      * @param <T>

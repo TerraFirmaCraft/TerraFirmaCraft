@@ -43,7 +43,6 @@ public final class DataLayer
         if (LAYERS[i] != null) throw new IllegalArgumentException("Layer " + i + " already in use.");
         return LAYERS[i] = new DataLayer(i, null, name, value, Float.NaN);
     }
-
     public final int layerID;
     public final BlockRockVariant block;
     public final String name;

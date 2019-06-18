@@ -117,18 +117,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
-    {
-        return oldState.getBlock() != newState.getBlock();
-    }
-
-    public boolean canIgnite()
-    {
-        if (world.isRemote) return false;
-        return !this.fuelStacks.isEmpty() && !this.oreStacks.isEmpty();
-    }
-
-    public void onBreakBlock()
+    public void onBreakBlock(World worldIn, BlockPos pos)
     {
         //Dump everything in world
         for (int i = 1; i < 6; i++)
@@ -144,6 +133,13 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         {
             InventoryHelper.spawnItemStack(world, pos.north().getX(), pos.getY(), pos.north().getZ(), stack);
         }
+        super.onBreakBlock(world, pos);
+    }
+
+    public boolean canIgnite()
+    {
+        if (world.isRemote) return false;
+        return !this.fuelStacks.isEmpty() && !this.oreStacks.isEmpty();
     }
 
     @Override

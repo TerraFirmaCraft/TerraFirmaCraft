@@ -32,7 +32,6 @@ public class ItemPowder extends ItemTFC
     {
         return new ItemStack(MAP.get(Powder), amount);
     }
-
     public final Powder Powder;
 
     public ItemPowder(Powder Powder)

@@ -31,7 +31,6 @@ public class ItemDoorTFC extends ItemDoor implements IItemSize
     {
         return MAP.get(wood);
     }
-
     public final Tree wood;
 
     public ItemDoorTFC(BlockDoorTFC block)

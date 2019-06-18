@@ -24,7 +24,6 @@ public class ForgeSteps implements INBTSerializable<NBTTagCompound>
         steps.setStepInt(2, (serialized & 0xFFFFFF) >> 16);
         return steps;
     }
-
     private final LinkedList<ForgeStep> steps;
 
     public ForgeSteps()

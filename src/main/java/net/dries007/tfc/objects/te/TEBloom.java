@@ -7,55 +7,29 @@ package net.dries007.tfc.objects.te;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.items.ItemBloom;
+import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
+import net.dries007.tfc.api.capability.forge.IForgeableMeasurable;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.util.Helpers;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class TEBloom extends TEBase
+public class TEBloom extends TEInventory
 {
-    private int count;
-
     public TEBloom()
     {
-        count = 100;
+        super(1);
+        ItemStack stack = new ItemStack(ItemsTFC.UNREFINED_BLOOM);
+        ((IForgeableMeasurable) stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null)).setMetalAmount(100);
+        inventory.setStackInSlot(0, stack);
     }
 
-    public void setCount(int count) { this.count = count; }
-
-    @Override
-    public void readFromNBT(NBTTagCompound tag)
+    public void setMetalAmount(int metalAmount)
     {
-        count = tag.getInteger("count");
-        super.readFromNBT(tag);
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag)
-    {
-        tag.setInteger("count", count);
-        return super.writeToNBT(tag);
-    }
-
-    public void onBreakBlock()
-    {
-        ItemStack output = new ItemStack(ItemsTFC.UNREFINED_BLOOM, 1);
-        ItemBloom.setSmeltAmount(output, count);
-        TEBloomery te = null;
-        BlockPos dumpPos = pos;
-        for (int i = 0; i < 4 && te == null; i++)
-            te = Helpers.getTE(world, pos.offset(EnumFacing.HORIZONTALS[i]), TEBloomery.class);
-        //This statement must always be true
-        if (te != null)
-            dumpPos = te.getExternalBlock();
-        InventoryHelper.spawnItemStack(world, dumpPos.getX(), dumpPos.getY(), dumpPos.getZ(), output);
+        ItemStack stack = new ItemStack(ItemsTFC.UNREFINED_BLOOM);
+        ((IForgeableMeasurable) stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null)).setMetalAmount(metalAmount);
+        inventory.setStackInSlot(0, stack);
     }
 }

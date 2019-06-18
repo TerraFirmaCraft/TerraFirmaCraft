@@ -80,7 +80,6 @@ public class BlockRockVariant extends Block
                 return new BlockRockVariant(type, rock);
         }
     }
-
     protected final Rock.Type type;
     protected final Rock rock;
 

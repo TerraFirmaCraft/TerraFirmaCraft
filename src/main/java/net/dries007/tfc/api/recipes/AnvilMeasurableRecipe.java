@@ -8,12 +8,14 @@ package net.dries007.tfc.api.recipes;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeableMeasurable;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.forge.ForgeRule;
 
 /*
@@ -23,24 +25,24 @@ import net.dries007.tfc.util.forge.ForgeRule;
 public class AnvilMeasurableRecipe extends AnvilRecipe
 {
 
-    protected int metalAmount;
+    protected int specificAmount;
     protected boolean isCopyRule;
 
 
     /*
      * Use this constructor to make a recipe where only accepts input if it has a specific amount of metal.
      */
-    public AnvilMeasurableRecipe(ResourceLocation name, ItemStack input, ItemStack output, int specificAmount, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
+    public AnvilMeasurableRecipe(ResourceLocation name, IIngredient<ItemStack> input, ItemStack output, int specificAmount, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
     {
         super(name, input, output, minTier, rules);
         this.isCopyRule = false;
-        this.metalAmount = specificAmount;
+        this.specificAmount = specificAmount;
     }
 
     /*
      * Use this constructor to build a recipe where the metal amount is copied from input to output.
      */
-    public AnvilMeasurableRecipe(ResourceLocation name, ItemStack input, ItemStack output, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
+    public AnvilMeasurableRecipe(ResourceLocation name, IIngredient<ItemStack> input, ItemStack output, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
     {
         super(name, input, output, minTier, rules);
         this.isCopyRule = true;
@@ -52,28 +54,29 @@ public class AnvilMeasurableRecipe extends AnvilRecipe
         if (!super.matches(input)) return false;
         if (isCopyRule)
         {
-            IForgeable cap = input.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-            if (cap instanceof IForgeableMeasurable) metalAmount = ((IForgeableMeasurable) cap).getMetalAmount();
             return true;
         }
         else
         {
             IForgeable cap = input.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
             if (cap instanceof IForgeableMeasurable)
-                return metalAmount == ((IForgeableMeasurable) cap).getMetalAmount();
+                return specificAmount == ((IForgeableMeasurable) cap).getMetalAmount();
             return false;
         }
     }
 
     @Override
     @Nonnull
-    public ItemStack getOutput()
+    public NonNullList<ItemStack> getOutput(ItemStack input)
     {
-        ItemStack out = super.getOutput();
+        if (!matches(input)) return NonNullList.create();
+        NonNullList<ItemStack> out = super.getOutput(input);
         if (isCopyRule)
         {
-            IForgeable cap = out.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-            ((IForgeableMeasurable) cap).setMetalAmount(metalAmount);
+            IForgeable inCap = input.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+            int amount = ((IForgeableMeasurable) inCap).getMetalAmount();
+            IForgeable outCap = out.get(0).getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+            ((IForgeableMeasurable) outCap).setMetalAmount(amount);
         }
         return out;
     }

@@ -17,7 +17,6 @@ public class WorldGenSettings
         if (Strings.isNullOrEmpty(options)) return new WorldGenSettingsBuilder();
         return Constants.GSON.fromJson(options, WorldGenSettingsBuilder.class);
     }
-
     public final int spawnFuzz; //todo: remove, vanilla does it with a gamerule
     public final boolean flatBedrock;
     public final int ravineRarity;

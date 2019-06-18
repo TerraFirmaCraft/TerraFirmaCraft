@@ -39,7 +39,6 @@ public class ItemRockHammer extends ItemTool implements IItemSize, IRockObject
     {
         return MAP.get(category);
     }
-
     public final RockCategory category;
 
     public ItemRockHammer(RockCategory category)

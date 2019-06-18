@@ -38,7 +38,6 @@ public class ItemRockAxe extends ItemAxe implements IItemSize, IRockObject
     {
         return MAP.get(category);
     }
-
     public final RockCategory category;
 
     public ItemRockAxe(RockCategory category)

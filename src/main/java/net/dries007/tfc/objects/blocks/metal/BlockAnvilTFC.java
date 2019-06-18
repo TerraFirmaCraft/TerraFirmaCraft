@@ -63,7 +63,6 @@ public class BlockAnvilTFC extends Block
     {
         return new ItemStack(MAP.get(metal), amount);
     }
-
     private final Metal metal;
 
     public BlockAnvilTFC(Metal metal)

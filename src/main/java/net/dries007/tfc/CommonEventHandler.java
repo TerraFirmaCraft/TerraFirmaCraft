@@ -71,7 +71,7 @@ public final class CommonEventHandler
     /**
      * Handler for {@link IPlaceableItem}
      * To add a new placeable item effect, either implement {@link IPlaceableItem} or see {@link IPlaceableItem.Impl} for vanilla item usages
-     *
+     * <p>
      * Notes:
      * 1) `onBlockActivate` doesn't get called when the player is sneaking, unless doesSneakBypassUse returns true.
      * 2) This event handler is fired first with the main hand as event.getStack()

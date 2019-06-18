@@ -20,7 +20,7 @@ import net.dries007.tfc.util.IFireable;
 
 /**
  * Pit kiln recipe, for simple itemstack -> itemstack conversions in the pit kiln
- *
+ * <p>
  * todo: in 1.13+ move this to a json recipe type
  */
 @ParametersAreNonnullByDefault
@@ -31,7 +31,6 @@ public class PitKilnRecipe extends IForgeRegistryEntry.Impl<PitKilnRecipe>
     {
         return TFCRegistries.PIT_KILN.getValuesCollection().stream().filter(r -> r.isValidInput(stack)).findFirst().orElse(null);
     }
-
     private final IIngredient<ItemStack> ingredient;
     private final ItemStack output;
     private final boolean isComplex;

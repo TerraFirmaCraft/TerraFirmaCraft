@@ -49,7 +49,6 @@ public class ItemMold extends ItemFiredPottery
     {
         return MAP.get(category);
     }
-
     public final Metal.ItemType type;
 
     public ItemMold(Metal.ItemType type)

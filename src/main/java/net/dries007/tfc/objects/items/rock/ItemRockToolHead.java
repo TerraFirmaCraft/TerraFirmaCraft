@@ -29,7 +29,6 @@ public class ItemRockToolHead extends ItemTFC implements IRockObject
     {
         return TABLE.get(type).get(cat);
     }
-
     private final RockCategory category;
     private final Rock.ToolType type;
 

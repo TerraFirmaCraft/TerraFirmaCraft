@@ -64,7 +64,6 @@ public enum Heat
         }
         return null;
     }
-
     final float min;
     final float max;
     final TextFormatting format;

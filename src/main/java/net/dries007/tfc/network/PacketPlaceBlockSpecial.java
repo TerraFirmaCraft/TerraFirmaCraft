@@ -25,13 +25,19 @@ import net.dries007.tfc.util.Helpers;
  */
 public class PacketPlaceBlockSpecial implements IMessage
 {
-    public PacketPlaceBlockSpecial() {}
+    public PacketPlaceBlockSpecial()
+    {
+    }
 
     @Override
-    public void fromBytes(ByteBuf buf) {}
+    public void fromBytes(ByteBuf buf)
+    {
+    }
 
     @Override
-    public void toBytes(ByteBuf buf) {}
+    public void toBytes(ByteBuf buf)
+    {
+    }
 
     public static class Handler implements IMessageHandler<PacketPlaceBlockSpecial, IMessage>
     {

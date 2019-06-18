@@ -158,7 +158,10 @@ public class BlockShortGrassTFC extends BlockPlantTFC implements IShearable
     }
 
     @Override
-    public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos) { return true; }
+    public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos)
+    {
+        return true;
+    }
 
     @Override
     @Nonnull

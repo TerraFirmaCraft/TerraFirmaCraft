@@ -19,9 +19,18 @@ public class TESRBase<T extends TileEntity> extends TileEntitySpecialRenderer<T>
     protected static double[][] getVerticesBySide(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, String axies)
     {
         double[][] ret = new double[][] {};
-        if (axies.contains("x")) { ret = append(ret, getXVertices(minX, minY, minZ, maxX, maxY, maxZ)); }
-        if (axies.contains("y")) { ret = append(ret, getYVertices(minX, minY, minZ, maxX, maxY, maxZ)); }
-        if (axies.contains("z")) { ret = append(ret, getZVertices(minX, minY, minZ, maxX, maxY, maxZ)); }
+        if (axies.contains("x"))
+        {
+            ret = append(ret, getXVertices(minX, minY, minZ, maxX, maxY, maxZ));
+        }
+        if (axies.contains("y"))
+        {
+            ret = append(ret, getYVertices(minX, minY, minZ, maxX, maxY, maxZ));
+        }
+        if (axies.contains("z"))
+        {
+            ret = append(ret, getZVertices(minX, minY, minZ, maxX, maxY, maxZ));
+        }
         return ret;
 
     }

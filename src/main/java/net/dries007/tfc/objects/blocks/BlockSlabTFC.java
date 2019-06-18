@@ -218,7 +218,6 @@ public abstract class BlockSlabTFC extends BlockSlab
         {
             return WOOD_MAP.get(wood);
         }
-
         public final Double doubleSlab;
 
         public Half(Rock rock, Rock.Type type)

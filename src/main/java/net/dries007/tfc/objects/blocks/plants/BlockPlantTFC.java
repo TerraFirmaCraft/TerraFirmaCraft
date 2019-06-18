@@ -63,7 +63,6 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     {
         return MAP.get(plant);
     }
-
     /* Growth Stage of the plant, tied to the month of year */
     public final PropertyInteger GROWTHSTAGE;
     protected final Plant plant;

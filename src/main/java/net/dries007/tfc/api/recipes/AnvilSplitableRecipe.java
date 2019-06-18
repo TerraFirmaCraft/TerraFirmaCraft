@@ -15,6 +15,7 @@ import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeableMeasurable;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.forge.ForgeRule;
 
 /*
@@ -25,9 +26,9 @@ public class AnvilSplitableRecipe extends AnvilMeasurableRecipe
 
     protected int splitAmount;
 
-    public AnvilSplitableRecipe(ResourceLocation name, ItemStack splitItem, int splitAmount, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
+    public AnvilSplitableRecipe(ResourceLocation name, IIngredient<ItemStack> input, int splitAmount, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
     {
-        super(name, splitItem, splitItem, minTier, rules);
+        super(name, input, ItemStack.EMPTY, minTier, rules);
         this.splitAmount = splitAmount;
     }
 
@@ -36,26 +37,22 @@ public class AnvilSplitableRecipe extends AnvilMeasurableRecipe
     {
         if (!super.matches(input)) return false;
         //Splitable if the output is at least two(don't change this or you will have duplicates)
-        return metalAmount > splitAmount;
+        IForgeable cap = input.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        if (cap instanceof IForgeableMeasurable)
+            return splitAmount < ((IForgeableMeasurable) cap).getMetalAmount();
+        return false;
     }
+
 
     @Override
     @Nonnull
-    public ItemStack getOutput()
+    public NonNullList<ItemStack> getOutput(ItemStack input)
     {
-        ItemStack out = super.getOutput();
-        IForgeable cap = out.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-        ((IForgeableMeasurable) cap).setMetalAmount(splitAmount);
-        return out;
-    }
-
-    @Nonnull
-    public NonNullList<ItemStack> consumeInput(ItemStack input)
-    {
+        if (!matches(input)) return NonNullList.withSize(1, ItemStack.EMPTY);
+        IForgeable inCap = input.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        int metalAmount = ((IForgeableMeasurable) inCap).getMetalAmount();
         int surplus = metalAmount % splitAmount;
         int outCount = metalAmount / splitAmount;
-        outCount--; //This is because one of the split stack will be left inside using getOutput() method
-        //Also need to keep one in getOutput() method so Guis can show what recipe is selected.
         NonNullList<ItemStack> output = NonNullList.create();
         for (int i = 0; i < outCount; i++)
         {

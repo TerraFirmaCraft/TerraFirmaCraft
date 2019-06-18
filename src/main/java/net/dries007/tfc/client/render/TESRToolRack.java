@@ -87,7 +87,7 @@ public class TESRToolRack extends TileEntitySpecialRenderer<TEToolRack>
             for (int i = 0; i < 4; i++)
             {
                 ItemStack stack = te.getItems().get(i);
-                if (te.getItems().get(i) != ItemStack.EMPTY)
+                if (!te.getItems().get(i).isEmpty())
                 {
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(x + ITEM_LOCATION[dir][i][0], y + ITEM_LOCATION[dir][i][1], z + ITEM_LOCATION[dir][i][2]);

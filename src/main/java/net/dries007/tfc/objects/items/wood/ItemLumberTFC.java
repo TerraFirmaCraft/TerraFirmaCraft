@@ -34,7 +34,6 @@ public class ItemLumberTFC extends ItemTFC
     {
         return new ItemStack(MAP.get(wood), amount);
     }
-
     public final Tree wood;
 
     public ItemLumberTFC(Tree wood)

@@ -196,7 +196,10 @@ public class TELogPile extends TEInventory implements ITickable
             block = world.getBlockState(pos.down(j)).getBlock();
             // This is here so that the charcoal pile will collapse Bottom > Top
             // Because the pile scans Top > Bottom this is necessary to avoid floating blocks
-            if (block instanceof BlockLogPile) { return; }
+            if (block instanceof BlockLogPile)
+            {
+                return;
+            }
         } while (block == Blocks.AIR || block instanceof BlockCharcoalPile);
 
         double logs = (double) countLogs();

@@ -20,6 +20,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import net.dries007.tfc.api.types.Metal;
@@ -34,7 +35,7 @@ import net.dries007.tfc.util.Helpers;
 import static net.dries007.tfc.util.ILightableBlock.LIT;
 import static net.minecraft.block.BlockHorizontal.FACING;
 
-public class TEBloomery extends TEBase implements ITickable
+public class TEBloomery extends TEInventory implements ITickable
 {
 
     //Gets the internal block, should be charcoal pile/bloom
@@ -46,10 +47,14 @@ public class TEBloomery extends TEBase implements ITickable
 
     private int maxFuel = 0, maxOre = 0, delayTimer = 0;
     private long burnTicksLeft;
+    private EnumFacing direction = null;
 
     private BlockPos internalBlock = null, externalBlock = null;
 
-    public TEBloomery() { }
+    public TEBloomery()
+    {
+        super(0);
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound tag)
@@ -90,29 +95,17 @@ public class TEBloomery extends TEBase implements ITickable
         return super.writeToNBT(tag);
     }
 
-    public void onBreakBlock()
+    @Override
+    public void onBreakBlock(World worldIn, BlockPos pos)
     {
-        //Dump everything in world
-        for (int i = 1; i < 4; i++)
-        {
-            if (world.getBlockState(getInternalBlock().up(i)).getBlock() == BlocksTFC.MOLTEN)
-                world.setBlockToAir(getInternalBlock().up(i));
-        }
-        for (ItemStack stack : oreStacks)
-        {
-            InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), stack);
-        }
-        for (ItemStack stack : fuelStacks)
-        {
-            InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), stack);
-        }
+        dumpItems();
+        super.onBreakBlock(world, pos);
     }
 
     public BlockPos getInternalBlock()
     {
         if (internalBlock == null)
         {
-            EnumFacing direction = world.getBlockState(pos).getValue(FACING);
             internalBlock = pos.up(OFFSET_INTERNAL.getY())
                 .offset(direction, OFFSET_INTERNAL.getX())
                 .offset(direction.rotateY(), OFFSET_INTERNAL.getZ());
@@ -124,7 +117,6 @@ public class TEBloomery extends TEBase implements ITickable
     {
         if (externalBlock == null)
         {
-            EnumFacing direction = world.getBlockState(pos).getValue(FACING);
             externalBlock = pos.up(OFFSET_EXTERNAL.getY())
                 .offset(direction, OFFSET_EXTERNAL.getX())
                 .offset(direction.rotateY(), OFFSET_EXTERNAL.getZ());
@@ -143,7 +135,7 @@ public class TEBloomery extends TEBase implements ITickable
 
     public void onIgnite()
     {
-        this.burnTicksLeft = 15000; //15 in-game hours
+        this.burnTicksLeft = 100; //15 in-game hours
     }
 
     @Override
@@ -154,7 +146,10 @@ public class TEBloomery extends TEBase implements ITickable
         {
             delayTimer = 20;
             // Update multiblock status
-            int newMaxItems = BlocksTFC.BLOOMERY.getChimneyLevels(world, pos) * 8;
+            if (direction == null) direction = world.getBlockState(pos).getValue(FACING);
+            int newMaxItems = BlocksTFC.BLOOMERY.getChimneyLevels(world, getInternalBlock()) * 8;
+            if (!BlocksTFC.BLOOMERY.isFormed(world, getInternalBlock(), world.getBlockState(pos).getValue(FACING)))
+                newMaxItems = 0;
             this.maxFuel = newMaxItems;
             this.maxOre = newMaxItems;
             while (maxOre < oreStacks.size())
@@ -176,7 +171,7 @@ public class TEBloomery extends TEBase implements ITickable
             }
             if (!isInternalBlockComplete() && (!fuelStacks.isEmpty() || !fuelStacks.isEmpty()))
             {
-                onBreakBlock();
+                dumpItems();
             }
             if (isInternalBlockComplete()) addItemsFromWorld();
             updateSlagBlock(this.burnTicksLeft > 0);
@@ -197,12 +192,24 @@ public class TEBloomery extends TEBase implements ITickable
                 fuelStacks.clear();
                 world.setBlockState(getInternalBlock(), BlocksTFC.BLOOM.getDefaultState());
                 TEBloom te = Helpers.getTE(world, getInternalBlock(), TEBloom.class);
-                if (te != null) te.setCount(totalOutput);
+                if (te != null) te.setMetalAmount(totalOutput);
                 updateSlagBlock(false);
                 world.setBlockState(pos, state.withProperty(LIT, false));
                 this.markDirty();
             }
         }
+    }
+
+    private void dumpItems()
+    {
+        //Dump everything in world
+        for (int i = 1; i < 4; i++)
+        {
+            if (world.getBlockState(getInternalBlock().up(i)).getBlock() == BlocksTFC.MOLTEN)
+                world.setBlockToAir(getInternalBlock().up(i));
+        }
+        oreStacks.forEach(i -> InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), i));
+        fuelStacks.forEach(i -> InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), i));
     }
 
     private boolean isInternalBlockComplete()

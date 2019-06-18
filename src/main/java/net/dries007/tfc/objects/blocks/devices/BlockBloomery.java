@@ -5,11 +5,11 @@
 
 package net.dries007.tfc.objects.blocks.devices;
 
+import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -23,7 +23,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -35,9 +38,8 @@ import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEBloomery;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.ILightableBlock;
-import net.dries007.tfc.util.functionalinterfaces.FacingChecker;
+import net.dries007.tfc.util.Multiblock;
 
-import static net.dries007.tfc.util.Helpers.getAValidHorizontal;
 import static net.minecraft.block.BlockTrapDoor.OPEN;
 
 public class BlockBloomery extends BlockHorizontal implements IItemSize, ILightableBlock
@@ -67,7 +69,60 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
             }
         };
 
-    private FacingChecker isValidMultiblock = (World world, BlockPos pos, EnumFacing facing) -> this.getChimneyLevels(world, pos, facing) > 0;
+    private static final Multiblock BLOOMERY_CHIMNEY, BLOOMERY_BASE, GATE_NORTH, GATE_SOUTH, GATE_EAST, GATE_WEST;
+
+    static
+    {
+        Predicate<IBlockState> stoneMatcher = state -> state.getMaterial() == Material.ROCK && state.isNormalCube();
+        Predicate<IBlockState> insideChimney = state -> state.getBlock() == BlocksTFC.MOLTEN || state.getBlock() == Blocks.AIR;
+        Predicate<IBlockState> center = state -> state.getBlock() == BlocksTFC.CHARCOAL_PILE || state.getBlock() == BlocksTFC.BLOOM || state.getBlock() == Blocks.AIR;
+        BLOOMERY_BASE = new Multiblock()
+            .match(new BlockPos(0, 0, 0), center)
+            .match(new BlockPos(0, -1, 0), stoneMatcher);
+        BLOOMERY_CHIMNEY = new Multiblock()
+            .match(new BlockPos(0, 0, 0), insideChimney)
+            .match(new BlockPos(1, 0, 0), stoneMatcher)
+            .match(new BlockPos(-1, 0, 0), stoneMatcher)
+            .match(new BlockPos(0, 0, 1), stoneMatcher)
+            .match(new BlockPos(0, 0, -1), stoneMatcher);
+        //Only one of the gates will return true if the structure is built right
+        GATE_NORTH = new Multiblock()
+            .match(new BlockPos(0, 0, 1), state -> state.getBlock() == BlocksTFC.BLOOMERY || state.getBlock() == Blocks.AIR)
+            .match(new BlockPos(1, 0, 1), stoneMatcher)
+            .match(new BlockPos(-1, 0, 1), stoneMatcher)
+            .match(new BlockPos(0, 1, 1), stoneMatcher)
+            .match(new BlockPos(0, -1, 1), stoneMatcher)
+            .match(new BlockPos(0, 0, -1), stoneMatcher)
+            .match(new BlockPos(1, 0, 0), stoneMatcher)
+            .match(new BlockPos(-1, 0, 0), stoneMatcher);
+        GATE_SOUTH = new Multiblock()
+            .match(new BlockPos(0, 0, -1), state -> state.getBlock() == BlocksTFC.BLOOMERY || state.getBlock() == Blocks.AIR)
+            .match(new BlockPos(1, 0, -1), stoneMatcher)
+            .match(new BlockPos(-1, 0, -1), stoneMatcher)
+            .match(new BlockPos(0, 1, -1), stoneMatcher)
+            .match(new BlockPos(0, -1, -1), stoneMatcher)
+            .match(new BlockPos(0, 0, 1), stoneMatcher)
+            .match(new BlockPos(1, 0, 0), stoneMatcher)
+            .match(new BlockPos(-1, 0, 0), stoneMatcher);
+        GATE_WEST = new Multiblock()
+            .match(new BlockPos(1, 0, 0), state -> state.getBlock() == BlocksTFC.BLOOMERY || state.getBlock() == Blocks.AIR)
+            .match(new BlockPos(1, 0, -1), stoneMatcher)
+            .match(new BlockPos(1, 0, 1), stoneMatcher)
+            .match(new BlockPos(1, 1, 0), stoneMatcher)
+            .match(new BlockPos(1, -1, 0), stoneMatcher)
+            .match(new BlockPos(0, 0, 1), stoneMatcher)
+            .match(new BlockPos(0, 0, -1), stoneMatcher)
+            .match(new BlockPos(-1, 0, 0), stoneMatcher);
+        GATE_EAST = new Multiblock()
+            .match(new BlockPos(-1, 0, 0), state -> state.getBlock() == BlocksTFC.BLOOMERY || state.getBlock() == Blocks.AIR)
+            .match(new BlockPos(-1, 0, -1), stoneMatcher)
+            .match(new BlockPos(-1, 0, 1), stoneMatcher)
+            .match(new BlockPos(-1, 1, 0), stoneMatcher)
+            .match(new BlockPos(-1, -1, 0), stoneMatcher)
+            .match(new BlockPos(0, 0, 1), stoneMatcher)
+            .match(new BlockPos(0, 0, -1), stoneMatcher)
+            .match(new BlockPos(1, 0, 0), stoneMatcher);
+    }
 
     public BlockBloomery()
     {
@@ -79,6 +134,48 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
             .withProperty(FACING, EnumFacing.NORTH)
             .withProperty(LIT, false)
             .withProperty(OPEN, false));
+    }
+
+    public int getChimneyLevels(World world, BlockPos centerPos)
+    {
+        for (int i = 1; i < 4; i++)
+        {
+            BlockPos center = centerPos.up(i);
+            if (!BLOOMERY_CHIMNEY.test(world, center))
+            {
+                return i - 1;
+            }
+        }
+        // Maximum levels
+        return 3;
+    }
+
+    public boolean isFormed(World world, BlockPos centerPos, EnumFacing facing)
+    {
+        if (!BLOOMERY_BASE.test(world, centerPos)) return false;
+        if (getChimneyLevels(world, centerPos) == 0) return false;
+        switch (facing)
+        {
+            case NORTH:
+                return GATE_NORTH.test(world, centerPos);
+            case SOUTH:
+                return GATE_SOUTH.test(world, centerPos);
+            case EAST:
+                return GATE_EAST.test(world, centerPos);
+            case WEST:
+                return GATE_WEST.test(world, centerPos);
+        }
+        return false;
+    }
+
+    @Nullable
+    public EnumFacing getAValidFacing(World world, BlockPos pos)
+    {
+        for (EnumFacing facing : EnumFacing.HORIZONTALS)
+        {
+            if (isFormed(world, pos.offset(facing), facing)) return facing;
+        }
+        return null;
     }
 
     @Override
@@ -153,22 +250,12 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (this.getChimneyLevels(worldIn, pos, state.getValue(FACING)) > -1) return;
-        dropBlockAsItem(worldIn, pos, state, 0);
-        worldIn.setBlockToAir(pos);
-    }
-
-    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (!worldIn.isRemote)
+        TEBloomery te = Helpers.getTE(worldIn, pos, TEBloomery.class);
+        if (te != null)
         {
-            TEBloomery te = Helpers.getTE(worldIn, pos, TEBloomery.class);
-            if (te != null) te.onBreakBlock();
+            te.onBreakBlock(worldIn, pos);
         }
         super.breakBlock(worldIn, pos, state);
     }
@@ -197,10 +284,7 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     @Override
     public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
     {
-        if (!super.canPlaceBlockAt(worldIn, pos))
-            return false;
-
-        return getChimneyLevels(worldIn, pos) > 0;
+        return super.canPlaceBlockAt(worldIn, pos) && getAValidFacing(worldIn, pos) != null;
     }
 
     @Override
@@ -237,7 +321,7 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     @Nonnull
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getDefaultState().withProperty(FACING, getAValidHorizontal(worldIn, pos, isValidMultiblock, placer.getHorizontalFacing()));
+        return this.getDefaultState().withProperty(FACING, getAValidFacing(worldIn, pos));
     }
 
     @Override
@@ -264,78 +348,5 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEBloomery();
-    }
-
-    /**
-     * @return true if the block is valid for a bloomery, false otherwise
-     */
-    public boolean isBlockEligible(World worldIn, @Nonnull BlockPos pos)
-    {
-        IBlockState state = worldIn.getBlockState(pos);
-        Material blockMaterial = state.getMaterial();
-        return (blockMaterial == Material.ROCK || blockMaterial == Material.IRON) && state.isNormalCube();
-    }
-
-    /**
-     * @return true if the block is valid to be inside the chimney, false otherwise
-     */
-    public boolean isBlockChimneyPart(World worldIn, @Nonnull BlockPos pos)
-    {
-        IBlockState state = worldIn.getBlockState(pos);
-        return (state.getBlock() == BlocksTFC.MOLTEN || state.getBlock() == Blocks.AIR);
-    }
-
-    /**
-     * @return bloomery chimney height, maximum of 3, or a negative value as follows:
-     * -2 if the position is invalid no matter the rotation
-     * -1 if the position is invalid but rotating might fix this
-     */
-    public int getChimneyLevels(World worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing facing)
-    {
-        if (!(isBlockEligible(worldIn, pos.up()) && isBlockEligible(worldIn, pos.down())))
-            return -2;
-        Vec3i horizontal = facing.rotateY().getDirectionVec();
-        if (!(isBlockEligible(worldIn, pos.add(horizontal)) && isBlockEligible(worldIn, pos.subtract(horizontal))))
-            return -1;
-
-        pos = pos.offset(facing);
-        if (!(isBlockEligible(worldIn, pos.offset(facing)) && isBlockEligible(worldIn, pos.add(horizontal)) && isBlockEligible(worldIn, pos.subtract(horizontal))))
-            return -1;
-        for (int i = 0; i < 4; i++)
-        {
-            pos = pos.up();
-            if (!(isBlockEligible(worldIn, pos.north())
-                && isBlockEligible(worldIn, pos.south())
-                && isBlockEligible(worldIn, pos.east())
-                && isBlockEligible(worldIn, pos.west())
-                && isBlockChimneyPart(worldIn, pos)))
-                return i;
-        }
-        return 3;
-    }
-
-    /**
-     * @return bloomery chimney height, maximum of 3, or 0 in case of an invalid multiblock
-     */
-    public int getChimneyLevels(World worldIn, @Nonnull BlockPos pos)
-    {
-        int height = this.getChimneyLevels(worldIn, pos, EnumFacing.SOUTH);
-        switch (height)
-        {
-            case -2:
-                return 0;
-            case -1:
-            {
-                for (int i = 1; i < 4; i++)
-                {
-                    height = this.getChimneyLevels(worldIn, pos, EnumFacing.HORIZONTALS[i]);
-                    if (height > 0)
-                        return height;
-                }
-                return 0;
-            }
-            default:
-                return height;
-        }
     }
 }

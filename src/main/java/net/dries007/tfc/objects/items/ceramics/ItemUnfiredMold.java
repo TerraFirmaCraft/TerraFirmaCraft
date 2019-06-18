@@ -17,7 +17,6 @@ public class ItemUnfiredMold extends ItemUnfiredPottery
     {
         return MAP.get(category);
     }
-
     public final Metal.ItemType type;
 
     public ItemUnfiredMold(ItemFiredPottery firedVersion, Metal.ItemType type)

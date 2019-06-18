@@ -115,7 +115,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
      * T4 - Steel - Work T4, Weld T5
      * T5 - Black Steel - Work T5, Weld T6
      * T6 - Red Steel / Blue Steel - Work T6, Weld T6
-     *
+     * <p>
      * Devices:
      * T0 - Stone Anvil
      * T1 - Pit Kiln
@@ -211,7 +211,6 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         {
             return type.supplier.apply(metal, type);
         }
-
         private final boolean toolItem;
         private final int smeltAmount;
         private final boolean hasMold;

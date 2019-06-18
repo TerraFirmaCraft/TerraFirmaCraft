@@ -49,7 +49,6 @@ public class BlockLogTFC extends BlockLog implements IItemSize
     {
         return MAP.get(wood);
     }
-
     private final Tree wood;
 
     public BlockLogTFC(Tree wood)
