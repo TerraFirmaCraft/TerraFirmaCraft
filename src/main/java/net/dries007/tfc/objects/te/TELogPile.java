@@ -26,7 +26,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
-import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
+import static net.dries007.tfc.util.ILightableBlock.LIT;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -173,8 +173,8 @@ public class TELogPile extends TEInventory implements ITickable
             IBlockState state = world.getBlockState(pos.offset(side));
             if (state.getBlock() instanceof BlockLogPile)
             {
-                if (state.getValue(ONFIRE)) continue;
-                world.setBlockState(pos.offset(side), state.withProperty(ONFIRE, true));
+                if (state.getValue(LIT)) continue;
+                world.setBlockState(pos.offset(side), state.withProperty(LIT, true));
                 TELogPile tile = Helpers.getTE(world, pos.offset(side), TELogPile.class);
                 if (tile != null)
                 {
@@ -196,7 +196,10 @@ public class TELogPile extends TEInventory implements ITickable
             block = world.getBlockState(pos.down(j)).getBlock();
             // This is here so that the charcoal pile will collapse Bottom > Top
             // Because the pile scans Top > Bottom this is necessary to avoid floating blocks
-            if (block instanceof BlockLogPile) { return; }
+            if (block instanceof BlockLogPile)
+            {
+                return;
+            }
         } while (block == Blocks.AIR || block instanceof BlockCharcoalPile);
 
         double logs = (double) countLogs();

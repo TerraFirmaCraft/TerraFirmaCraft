@@ -12,18 +12,20 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.forge.ForgeRule;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
 /**
  * Anvil Recipe
- *
+ * <p>
  * They all take a single item input and will produce a single item output
  * todo: in 1.13+ move this to a json recipe type
  */
@@ -31,6 +33,7 @@ import net.dries007.tfc.util.forge.ForgeSteps;
 public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
 {
     private static final Random RNG = new Random();
+    private static final NonNullList<ItemStack> EMPTY = NonNullList.create();
     private static long SEED = 0;
 
     @Nonnull
@@ -39,18 +42,18 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
         return TFCRegistries.ANVIL.getValuesCollection().stream().filter(x -> x.matches(stack)).collect(Collectors.toList());
     }
 
-    private final ForgeRule[] rules;
-    private final ItemStack output;
-    private final ItemStack input;
-    private final Metal.Tier minTier;
-    private final long workingSeed;
+    protected final ForgeRule[] rules;
+    protected final ItemStack output;
+    protected final IIngredient<ItemStack> ingredient;
+    protected final Metal.Tier minTier;
+    protected final long workingSeed;
 
-    public AnvilRecipe(ResourceLocation name, ItemStack input, ItemStack output, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
+    public AnvilRecipe(ResourceLocation name, IIngredient<ItemStack> ingredient, ItemStack output, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
     {
-        this.input = input;
+        this.ingredient = ingredient;
         this.output = output;
-        if (input.isEmpty() || output.isEmpty())
-            throw new IllegalArgumentException("Input and output are not allowed to be empty");
+        if (ingredient.test(ItemStack.EMPTY))
+            throw new IllegalArgumentException("Input is not allowed to be empty");
 
         this.rules = rules;
         if (rules.length == 0 || rules.length > 3)
@@ -64,7 +67,7 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
 
     public boolean matches(ItemStack input)
     {
-        return this.input.isItemEqual(input);
+        return ingredient.test(input);
     }
 
     public boolean matches(ForgeSteps steps)
@@ -78,9 +81,15 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
     }
 
     @Nonnull
-    public ItemStack getOutput()
+    public NonNullList<ItemStack> getOutput(ItemStack input)
     {
-        return output.copy();
+        return matches(input) ? NonNullList.withSize(1, output.copy()) : EMPTY;
+    }
+
+    @Nonnull
+    public ItemStack getPlanIcon()
+    {
+        return output;
     }
 
     @Nonnull

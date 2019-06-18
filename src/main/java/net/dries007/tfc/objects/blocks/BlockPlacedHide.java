@@ -133,6 +133,13 @@ public class BlockPlacedHide extends Block
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), getItemStackDropped(worldIn, pos, state));
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack stack = playerIn.getHeldItem(hand);
@@ -183,13 +190,6 @@ public class BlockPlacedHide extends Block
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEPlacedHide();
-    }
-
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), getItemStackDropped(worldIn, pos, state));
-        super.breakBlock(worldIn, pos, state);
     }
 
     @Override

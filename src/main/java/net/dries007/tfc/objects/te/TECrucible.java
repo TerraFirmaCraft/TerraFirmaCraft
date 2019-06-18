@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.te;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
@@ -26,7 +25,6 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.network.PacketCrucibleUpdate;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.util.Alloy;
-import net.dries007.tfc.util.IHeatProviderBlock;
 import net.dries007.tfc.util.ITileFields;
 
 @ParametersAreNonnullByDefault
@@ -53,19 +51,29 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         this.lastFillTimer = 0;
     }
 
+    public void acceptHeat(float temperature)
+    {
+        if (temperature > targetTemperature)
+        {
+            targetTemperature = temperature;
+        }
+    }
+
+    public void acceptMeltAlloy(Metal metal, int amount)
+    {
+        alloy.add(metal, amount);
+        //Update crucible temperature to match
+        if (this.temperature < metal.getMeltTemp())
+            this.temperature = metal.getMeltTemp();
+        if (this.targetTemperature < metal.getMeltTemp())
+            this.targetTemperature = metal.getMeltTemp();
+        TerraFirmaCraft.getNetwork().sendToAllTracking(new PacketCrucibleUpdate(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
+    }
+
     @Override
     public void update()
     {
         if (world.isRemote) return;
-
-        // Update temperature based on block underneath
-        Block blockDown = world.getBlockState(pos.down()).getBlock();
-        if (blockDown instanceof IHeatProviderBlock)
-        {
-            this.targetTemperature = ((IHeatProviderBlock) blockDown).getTemperature(world, pos.down());
-        }
-
-        // Update temperature
         if (temperature < targetTemperature)
         {
             temperature += (float) ConfigTFC.GENERAL.temperatureModifierHeating;
@@ -73,6 +81,13 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         else if (temperature > targetTemperature)
         {
             temperature -= (float) ConfigTFC.GENERAL.temperatureModifierHeating;
+        }
+
+        // Update target temperature
+        if (targetTemperature > 0)
+        {
+            // Crucible target temperature decays constantly, since it is set by outside providers
+            targetTemperature -= (float) ConfigTFC.GENERAL.temperatureModifierHeating;
         }
 
         // Input draining

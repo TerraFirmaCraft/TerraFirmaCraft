@@ -80,7 +80,6 @@ public class TEPlacedItem extends TEInventory
         this.isHoldingLargeItem = false;
     }
 
-
     @Override
     @Nonnull
     @SideOnly(Side.CLIENT)

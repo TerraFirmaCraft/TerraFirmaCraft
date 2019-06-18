@@ -99,13 +99,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         }
     }
 
-    @Override
-    public boolean isItemValid(int slot, ItemStack stack)
-    {
-        //TODO: validate items that go in the item storage slot
-        return slot == SLOT_ITEM || slot == SLOT_FLUID_CONTAINER_IN && FluidUtil.getFluidHandler(stack) != null;
-    }
-
     public BarrelRecipe getRecipe()
     {
         return recipe;
@@ -144,29 +137,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-        {
-            return (T) new ItemHandlerSided(this, inventory, facing);
-        }
-
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-        {
-            return (T) new FluidHandlerSided(this, tank, facing);
-        }
-
-        return super.getCapability(capability, facing);
-    }
-
-    @Override
     public boolean canInsert(int slot, ItemStack stack, EnumFacing side)
     {
         return !sealed && (isItemValid(slot, stack) || side == null && slot == SLOT_FLUID_CONTAINER_OUT);
@@ -184,6 +154,12 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         return !sealed && (resource.getFluid() == null || resource.getFluid().getTemperature(resource) < BARREL_MAX_FLUID_TEMPERATURE);
     }
 
+    @Override
+    public boolean canDrain(EnumFacing side)
+    {
+        return !sealed;
+    }
+
     public void onSealed()
     {
         sealedTick = CalendarTFC.getTotalTime();
@@ -198,12 +174,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         this.recipe = recipe;
         this.sealedCalendarTick = sealedCalendarTick;
         TerraFirmaCraft.getLog().info("Calendar Tick: {} / {}", sealedCalendarTick, CalendarTFC.getTimeAndDate(sealedCalendarTick));
-    }
-
-    @Override
-    public boolean canDrain(EnumFacing side)
-    {
-        return !sealed;
     }
 
     @Override
@@ -295,6 +265,13 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     }
 
     @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        //TODO: validate items that go in the item storage slot
+        return slot == SLOT_ITEM || slot == SLOT_FLUID_CONTAINER_IN && FluidUtil.getFluidHandler(stack) != null;
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
@@ -313,6 +290,29 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         nbt.setLong("sealedCalendarTick", sealedCalendarTick);
 
         return super.writeToNBT(nbt);
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
+    {
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+            return (T) new ItemHandlerSided(this, inventory, facing);
+        }
+
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
+            return (T) new FluidHandlerSided(this, tank, facing);
+        }
+
+        return super.getCapability(capability, facing);
     }
 
     private void updateLockStatus()

@@ -37,8 +37,8 @@ public class ItemMetal extends ItemTFC implements IMetalObject
         return TABLE.get(metal).get(type);
     }
 
-    public final Metal metal;
-    public final Metal.ItemType type;
+    protected final Metal metal;
+    protected final Metal.ItemType type;
 
     public ItemMetal(Metal metal, Metal.ItemType type)
     {
@@ -67,12 +67,6 @@ public class ItemMetal extends ItemTFC implements IMetalObject
         if (!isDamageable() || !stack.isItemDamaged()) return type.getSmeltAmount();
         double d = (stack.getMaxDamage() - stack.getItemDamage()) / (double) stack.getMaxDamage() - .10;
         return d < 0 ? 0 : MathHelper.floor(type.getSmeltAmount() * d);
-    }
-
-    @Override
-    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
-    {
-        return this.type == Metal.ItemType.KNIFE || super.doesSneakBypassUse(stack, world, pos, player);
     }
 
     @Nonnull
@@ -198,10 +192,21 @@ public class ItemMetal extends ItemTFC implements IMetalObject
         return super.getRarity(stack);
     }
 
+    @Override
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
+    {
+        return this.type == Metal.ItemType.KNIFE || super.doesSneakBypassUse(stack, world, pos, player);
+    }
+
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
         return new ForgeableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
+    }
+
+    public Metal.ItemType getType()
+    {
+        return type;
     }
 }

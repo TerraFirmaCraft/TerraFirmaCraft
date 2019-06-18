@@ -11,7 +11,7 @@ import net.dries007.tfc.api.types.Metal;
 
 /**
  * Must be on Item or Block
- *
+ * <p>
  * This allows the fireable item to do two things:
  * 1) be placed via shift + right click,
  * 2) use special handling for the pit kiln recipe (a recipe is still required)

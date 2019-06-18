@@ -47,7 +47,8 @@ public class CalendarTFC
     /* This needs to be a float, otherwise there are ~62 minutes per hour */
     public static final float TICKS_IN_MINUTE = TICKS_IN_HOUR / 60f;
     public static final int HOURS_IN_DAY = 24;
-
+    private static final String[] DAY_NAMES = new String[] {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
+    private static final Map<String, String> BIRTHDAYS = new HashMap<>();
     /**
      * Total time for the world, directly from world#getTotalTime
      * Synced via two event handlers, one on Client Tick, one on World Tick
@@ -62,16 +63,12 @@ public class CalendarTFC
     private static long calendarTime;
     private static long calendarOffset;
     private static boolean doCalendarCycle;
-
     /* This is set via the timetfc command */
     private static int daysInMonth;
     /* These are calculated from above */
     private static int daysInYear;
     private static int ticksInYear;
     private static int ticksInMonth;
-
-    private static final String[] DAY_NAMES = new String[] {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
-    private static final Map<String, String> BIRTHDAYS = new HashMap<>();
 
     static
     {
@@ -124,6 +121,21 @@ public class CalendarTFC
     public static long getTotalTime()
     {
         return totalTime;
+    }
+
+    private static void setTotalTime(long totalTime)
+    {
+        CalendarTFC.totalTime = totalTime;
+        if (doCalendarCycle)
+        {
+            // Set the calendar time based on the current offset
+            calendarTime = totalTime + calendarOffset;
+        }
+        else
+        {
+            // Re-calculate the offset to keep the calendar time static
+            calendarOffset = calendarTime - totalTime;
+        }
     }
 
     public static int getMinuteOfHour()
@@ -198,21 +210,6 @@ public class CalendarTFC
         return getMonthOfYear(calendarTime);
     }
 
-    private static void setTotalTime(long totalTime)
-    {
-        CalendarTFC.totalTime = totalTime;
-        if (doCalendarCycle)
-        {
-            // Set the calendar time based on the current offset
-            calendarTime = totalTime + calendarOffset;
-        }
-        else
-        {
-            // Re-calculate the offset to keep the calendar time static
-            calendarOffset = calendarTime - totalTime;
-        }
-    }
-
     public static int getDaysInMonth()
     {
         return daysInMonth;
@@ -274,7 +271,10 @@ public class CalendarTFC
             averageTempMod /= 12f;
         }
 
-        public static float getAverageTempMod() { return averageTempMod; }
+        public static float getAverageTempMod()
+        {
+            return averageTempMod;
+        }
 
         public static Month getById(int id)
         {
@@ -292,11 +292,20 @@ public class CalendarTFC
             this.abrev = abrev;
         }
 
-        public int id() { return index; }
+        public int id()
+        {
+            return index;
+        }
 
-        public float getTempMod() { return tMod; }
+        public float getTempMod()
+        {
+            return tMod;
+        }
 
-        public String getShortName() { return abrev; }
+        public String getShortName()
+        {
+            return abrev;
+        }
 
         public Month next()
         {

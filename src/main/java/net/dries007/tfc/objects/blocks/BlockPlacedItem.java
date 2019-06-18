@@ -80,19 +80,19 @@ public class BlockPlacedItem extends Block
 
     @Override
     @SuppressWarnings("deprecation")
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         if (!worldIn.isSideSolid(pos.down(), EnumFacing.UP))
         {
             worldIn.destroyBlock(pos, true);
         }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
     }
 
     @Override

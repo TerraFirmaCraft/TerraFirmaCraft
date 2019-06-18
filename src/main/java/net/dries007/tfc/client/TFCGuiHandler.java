@@ -93,6 +93,8 @@ public class TFCGuiHandler implements IGuiHandler
             case SKILLS:
             case NUTRITION:
                 return new ContainerSimple(player.inventory);
+            case BLAST_FURNACE:
+                return new ContainerBlastFurnace(player.inventory, Helpers.getTE(world, pos, TEBlastFurnace.class));
             case CRAFTING:
                 return new ContainerInventoryCrafting(player.inventory, player.world);
             default:
@@ -147,6 +149,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiNutrition(container, player.inventory);
             case SKILLS:
                 return new GuiSkills(container, player.inventory);
+            case BLAST_FURNACE:
+                return new GuiBlastFurnace(container, player.inventory, Helpers.getTE(world, pos, TEBlastFurnace.class));
             case CRAFTING:
                 return new GuiInventoryCrafting(container);
             default:
@@ -174,6 +178,7 @@ public class TFCGuiHandler implements IGuiHandler
         NUTRITION,
         SKILLS,
         INVENTORY, // This is special, it is used by GuiButtonPlayerInventoryTab to signal to open the vanilla inventory
+        BLAST_FURNACE,
         CRAFTING, // In-inventory 3x3 crafting grid
         NULL; // This is special, it is a non-null null.
 

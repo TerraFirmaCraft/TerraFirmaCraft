@@ -26,6 +26,10 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 {
     @GameRegistry.ObjectHolder(MOD_ID + ":unknown")
     public static final Metal UNKNOWN = Helpers.getNull();
+    @GameRegistry.ObjectHolder("tfc:wrought_iron")
+    public static final Metal WROUGHT_IRON = Helpers.getNull();
+    @GameRegistry.ObjectHolder("tfc:pig_iron")
+    public static final Metal PIG_IRON = Helpers.getNull();
 
     private final Tier tier;
     private final float specificHeat;
@@ -111,7 +115,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
      * T4 - Steel - Work T4, Weld T5
      * T5 - Black Steel - Work T5, Weld T6
      * T6 - Red Steel / Blue Steel - Work T6, Weld T6
-     *
+     * <p>
      * Devices:
      * T0 - Stone Anvil
      * T1 - Pit Kiln
@@ -160,7 +164,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         SCRAP(false, 100),
         DUST(false, 100),
         NUGGET(false, 10),
-        SHEET(false, 200, ItemSheet::new),
+        SHEET(false, 200, ItemMetalSheet::new),
         DOUBLE_SHEET(false, 400),
         LAMP(false, 100, ItemLamp::new),
 

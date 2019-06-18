@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockTorch;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,13 +32,12 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TETorchTFC;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.ILightableBlock;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
-public class BlockTorchTFC extends BlockTorch implements IItemSize
+public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBlock
 {
-    public static final PropertyBool LIT = PropertyBool.create("lit");
-
     public static boolean canLight(ItemStack stack)
     {
         return stack.getItem() == Item.getItemFromBlock(BlocksTFC.TORCH) || ItemFireStarter.canIgnite(stack);

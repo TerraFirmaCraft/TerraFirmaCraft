@@ -184,5 +184,7 @@ public final class ClimateTFC
         return getMonthAdjTemp(baseTemp, z) + dailyTemp + (hourMod * (baseTemp + dailyTemp));
     }
 
-    private ClimateTFC() {}
+    private ClimateTFC()
+    {
+    }
 }

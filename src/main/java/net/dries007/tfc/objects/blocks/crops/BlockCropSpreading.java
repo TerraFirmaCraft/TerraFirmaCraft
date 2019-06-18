@@ -129,11 +129,17 @@ public class BlockCropSpreading extends BlockCropTFC
         return new BlockStateContainer(this, WILD, STAGE_8);
     }
 
-    @Nullable
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        return new TECropSpreading();
+        drops.clear();
+        drops.add(new ItemStack(ItemSeedsTFC.get(crop)));
+
+        ItemStack foodDrop = crop.getFoodDrop(state.getValue(STAGE_8));
+        if (!foodDrop.isEmpty())
+        {
+            drops.add(foodDrop);
+        }
     }
 
     @Override
@@ -147,17 +153,11 @@ public class BlockCropSpreading extends BlockCropTFC
         super.onBlockAdded(worldIn, pos, state);
     }
 
+    @Nullable
     @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
-        drops.clear();
-        drops.add(new ItemStack(ItemSeedsTFC.get(crop)));
-
-        ItemStack foodDrop = crop.getFoodDrop(state.getValue(STAGE_8));
-        if (!foodDrop.isEmpty())
-        {
-            drops.add(foodDrop);
-        }
+        return new TECropSpreading();
     }
 
     @Override

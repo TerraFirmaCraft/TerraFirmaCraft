@@ -86,12 +86,6 @@ public class BlockLeavesTFC extends BlockLeaves
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
-        doLeafDecay(worldIn, pos, state);
-    }
-
-    @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         //Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
@@ -114,9 +108,9 @@ public class BlockLeavesTFC extends BlockLeaves
     }
 
     @Override
-    protected int getSaplingDropChance(IBlockState state)
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        return wood == Tree.SEQUOIA ? 0 : 25;
+        doLeafDecay(worldIn, pos, state);
     }
 
     @Override
@@ -124,6 +118,12 @@ public class BlockLeavesTFC extends BlockLeaves
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(BlockSaplingTFC.get(wood));
+    }
+
+    @Override
+    protected int getSaplingDropChance(IBlockState state)
+    {
+        return wood == Tree.SEQUOIA ? 0 : 25;
     }
 
     @SuppressWarnings("deprecation")

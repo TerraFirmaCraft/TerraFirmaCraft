@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.blocks.devices;
 
 import java.util.Random;
+import java.util.function.BiPredicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -13,11 +14,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,24 +33,38 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEBellows;
 import net.dries007.tfc.objects.te.TECharcoalForge;
 import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IBellowsHandler;
-import net.dries007.tfc.util.IHeatProviderBlock;
+import net.dries007.tfc.util.IBellowsConsumerBlock;
+import net.dries007.tfc.util.ILightableBlock;
+import net.dries007.tfc.util.Multiblock;
 
 @ParametersAreNonnullByDefault
-public class BlockCharcoalForge extends Block implements IBellowsHandler, IHeatProviderBlock
+public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, ILightableBlock
 {
-    public static final PropertyBool LIT = PropertyBool.create("lit");
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
-    private static final Vec3i BELLOWS_OFFSET = new Vec3i(1, -1, 0);
+    private static final Multiblock CHARCOAL_FORGE_MULTIBLOCK;
 
     static
     {
-        TEBellows.addBellowsOffset(BELLOWS_OFFSET);
+        BiPredicate<World, BlockPos> skyMatcher = World::canBlockSeeSky;
+        CHARCOAL_FORGE_MULTIBLOCK = new Multiblock()
+            .match(new BlockPos(0, 1, 0), state -> state.getBlock() == BlocksTFC.CRUCIBLE || state.getBlock() == Blocks.AIR)
+            .matchOneOf(new BlockPos(0, 1, 0), new Multiblock()
+                .match(new BlockPos(0, 0, 0), skyMatcher)
+                .match(new BlockPos(0, 0, 1), skyMatcher)
+                .match(new BlockPos(0, 0, 2), skyMatcher)
+                .match(new BlockPos(0, 0, -1), skyMatcher)
+                .match(new BlockPos(0, 0, -2), skyMatcher)
+                .match(new BlockPos(1, 0, 0), skyMatcher)
+                .match(new BlockPos(2, 0, 0), skyMatcher)
+                .match(new BlockPos(-1, 0, 0), skyMatcher)
+                .match(new BlockPos(-2, 0, 0), skyMatcher)
+            );
     }
 
     public static boolean hasValidSideBlocks(World world, BlockPos pos)
@@ -79,10 +94,7 @@ public class BlockCharcoalForge extends Block implements IBellowsHandler, IHeatP
 
     public static boolean hasValidChimney(World world, BlockPos pos)
     {
-        BlockPos posUp = pos.up();
-        IBlockState stateUp = world.getBlockState(posUp);
-        // todo: better checks for this involving air and crucible
-        return true;
+        return CHARCOAL_FORGE_MULTIBLOCK.test(world, pos);
     }
 
     public BlockCharcoalForge()
@@ -99,29 +111,17 @@ public class BlockCharcoalForge extends Block implements IBellowsHandler, IHeatP
     @Override
     public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
     {
-        return offset.equals(BELLOWS_OFFSET);
+        return offset.equals(TEBellows.OFFSET_INSET);
     }
 
     @Override
-    public float onAirIntake(TEBellows te, World world, BlockPos pos, float airAmount)
+    public void onAirIntake(TEBellows te, World world, BlockPos pos, int airAmount)
     {
         TECharcoalForge teForge = Helpers.getTE(world, pos, TECharcoalForge.class);
         if (teForge != null)
         {
             teForge.onAirIntake(airAmount);
         }
-        return airAmount;
-    }
-
-    @Override
-    public float getTemperature(World world, BlockPos pos)
-    {
-        TECharcoalForge te = Helpers.getTE(world, pos, TECharcoalForge.class);
-        if (te != null)
-        {
-            return te.getTemperature();
-        }
-        return 0;
     }
 
     @Override
