@@ -36,6 +36,7 @@ public class ItemRockShovel extends ItemSpade implements IItemSize, IRockObject
     {
         return MAP.get(category);
     }
+
     public final RockCategory category;
 
     public ItemRockShovel(RockCategory category)

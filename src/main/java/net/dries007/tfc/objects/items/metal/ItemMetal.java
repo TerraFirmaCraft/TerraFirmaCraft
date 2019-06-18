@@ -36,6 +36,7 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     {
         return TABLE.get(metal).get(type);
     }
+
     protected final Metal metal;
     protected final Metal.ItemType type;
 

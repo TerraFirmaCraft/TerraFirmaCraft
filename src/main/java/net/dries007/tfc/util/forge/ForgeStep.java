@@ -28,6 +28,7 @@ public enum ForgeStep
     {
         return id >= 0 && id < VALUES.length ? VALUES[id] : null;
     }
+
     private final int stepAmount;
     private final int x, y, u, v;
 

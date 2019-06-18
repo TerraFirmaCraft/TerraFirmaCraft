@@ -67,6 +67,7 @@ public class BlockMetalSheet extends Block
     {
         return new ItemStack(MAP.get(metal), amount);
     }
+
     private final Metal metal;
 
     public BlockMetalSheet(Metal metal)

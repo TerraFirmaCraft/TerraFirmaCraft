@@ -102,6 +102,7 @@ public final class ChunkDataTFC
     {
         return get(world, pos).getRockLayerHeight(pos.getX() & 15, pos.getY(), pos.getZ() & 15);
     }
+
     private final int[] rockLayer1 = new int[256];
     private final int[] rockLayer2 = new int[256];
     private final int[] rockLayer3 = new int[256];

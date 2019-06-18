@@ -280,6 +280,7 @@ public class CalendarTFC
         {
             return Arrays.stream(Month.values()).filter(m -> m.index == id).findFirst().orElse(MARCH);
         }
+
         private final int index;
         private final float tMod;
         private final String abrev;
@@ -457,6 +458,7 @@ public class CalendarTFC
             }
             throw new IllegalStateException("Map Storage is NULL!");
         }
+
         private long calendarOffset;
         private int daysInMonth;
         private boolean doCalendarCycle;

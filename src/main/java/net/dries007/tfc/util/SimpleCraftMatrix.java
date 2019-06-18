@@ -26,6 +26,7 @@ public class SimpleCraftMatrix
         for (boolean m : matrix) b.append(m ? "X" : " ");
         TerraFirmaCraft.getLog().debug("Matrix: {" + b.toString() + "}");
     }
+
     /**
      * This is the actual craft matrix
      * true = full

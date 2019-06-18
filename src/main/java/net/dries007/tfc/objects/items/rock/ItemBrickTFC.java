@@ -34,6 +34,7 @@ public class ItemBrickTFC extends ItemTFC implements IRockObject
     {
         return new ItemStack(MAP.get(ore), amount);
     }
+
     private final Rock rock;
 
     public ItemBrickTFC(Rock rock)

@@ -39,6 +39,7 @@ public class ItemRockKnife extends ItemTool implements IItemSize, IRockObject
     {
         return MAP.get(category);
     }
+
     public final RockCategory category;
 
     public ItemRockKnife(RockCategory category)

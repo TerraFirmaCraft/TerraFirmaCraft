@@ -47,6 +47,7 @@ public class BlockOreTFC extends Block
         if (!ore.isGraded()) return state;
         return state.withProperty(GRADE, grade);
     }
+
     public final Ore ore;
     public final Rock rock;
 

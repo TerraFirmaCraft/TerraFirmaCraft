@@ -33,6 +33,7 @@ public class BlockDoorTFC extends BlockDoor
     {
         return MAP.get(wood);
     }
+
     public final Tree wood;
 
     public BlockDoorTFC(Tree wood)

@@ -23,6 +23,7 @@ public class BlockFenceGateTFC extends BlockFenceGate
     {
         return MAP.get(wood);
     }
+
     public final Tree wood;
 
     public BlockFenceGateTFC(Tree wood)

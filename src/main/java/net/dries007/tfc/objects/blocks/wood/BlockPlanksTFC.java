@@ -24,6 +24,7 @@ public class BlockPlanksTFC extends Block
     {
         return MAP.get(wood);
     }
+
     public final Tree wood;
 
     public BlockPlanksTFC(Tree wood)

@@ -39,6 +39,7 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
     {
         return MAP.get(category);
     }
+
     public final RockCategory category;
 
     public ItemRockJavelin(RockCategory category)

@@ -70,6 +70,7 @@ public class TEPlacedItem extends TEInventory
             }
         }
     }
+
     protected boolean isHoldingLargeItem;
 
     public TEPlacedItem()
