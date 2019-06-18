@@ -26,6 +26,8 @@ import net.minecraftforge.common.util.Constants;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.objects.blocks.BlockMolten;
@@ -217,18 +219,6 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
                 return;
             }
             addItemsFromWorld();
-            if (temperature > Metal.PIG_IRON.getMeltTemp() && !oreStacks.isEmpty()) //Melting one item per sec
-            {
-                this.markDirty();
-                convertToMolten(oreStacks.get(0));
-                oreStacks.remove(0);
-                burnTicksLeft = 0; //To consume instantly current fuel
-                ItemStack tuyereStack = inventory.getStackInSlot(0);
-                if (!tuyereStack.isEmpty())
-                {
-                    tuyereStack.damageItem(1, null);
-                }
-            }
             updateSlagBlock(state.getValue(LIT));
             this.oreCount = oreStacks.size();
             this.fuelCount = fuelStacks.size();
@@ -288,12 +278,48 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
                 {
                     ((IHeatConsumerBlock) blockCrucible).acceptHeat(world, pos.down(), temperature);
                 }
+                oreStacks.removeIf(stack ->
+                {
+                    IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                    if (cap != null)
+                    {
+                        // Update temperature of item
+                        float itemTemp = cap.getTemperature();
+                        if (temperature > itemTemp)
+                        {
+                            CapabilityItemHeat.addTemp(cap);
+                        }
+                        if (cap.isMolten())
+                        {
+                            convertToMolten(stack);
+                            ItemStack tuyereStack = inventory.getStackInSlot(0);
+                            if (!tuyereStack.isEmpty())
+                            {
+                                tuyereStack.damageItem(1, null);
+                            }
+                            return true;
+                        }
+                    }
+                    return false;
+                });
             }
             if (temperature <= 0 && burnTemperature <= 0)
             {
                 temperature = 0;
                 world.setBlockState(pos, state.withProperty(LIT, false));
             }
+        }
+    }
+
+    public void debug()
+    {
+        TerraFirmaCraft.getLog().debug("Debugging Blast Furnace:");
+        TerraFirmaCraft.getLog().debug("Temp {} | Burn Temp {} | Fuel Ticks {}", temperature, burnTemperature, burnTicksLeft);
+        TerraFirmaCraft.getLog().debug("Burning? {}", world.getBlockState(pos).getValue(LIT));
+        int i = 0;
+        for (ItemStack item : oreStacks)
+        {
+            TerraFirmaCraft.getLog().debug("Slot: {} - NBT: {}", i, item.serializeNBT().toString());
         }
     }
 
@@ -362,8 +388,6 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
             }
         }
         //Add each ore consuming flux
-        //For each ore added, drop temperature
-        int before = oreStacks.size();
         while (maxOre > oreStacks.size())
         {
             if (fluxEntity == null || oreEntity == null) break;
@@ -382,13 +406,6 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
                 oreEntity.setDead();
                 oreEntity = null;
             }
-        }
-        //Resets
-        if (before == 0 && !oreStacks.isEmpty()) temperature = 0;
-        //Drops by % amount
-        if (before < oreStacks.size())
-        {
-            temperature = temperature * before / oreStacks.size();
         }
     }
 
