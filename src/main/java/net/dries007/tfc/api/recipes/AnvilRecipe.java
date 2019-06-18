@@ -33,7 +33,7 @@ import net.dries007.tfc.util.forge.ForgeSteps;
 public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
 {
     private static final Random RNG = new Random();
-    private static final NonNullList<ItemStack> EMPTY = NonNullList.create();
+    public static final NonNullList<ItemStack> EMPTY = NonNullList.create();
     private static long SEED = 0;
 
     @Nonnull
@@ -52,14 +52,10 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
     {
         this.ingredient = ingredient;
         this.output = output;
-        if (ingredient.test(ItemStack.EMPTY))
-            throw new IllegalArgumentException("Input is not allowed to be empty");
-
+        this.minTier = minTier;
         this.rules = rules;
         if (rules.length == 0 || rules.length > 3)
             throw new IllegalArgumentException("Rules length must be within the closed interval [1, 3]");
-
-        this.minTier = minTier;
 
         setRegistryName(name);
         workingSeed = ++SEED;

@@ -70,33 +70,26 @@ public interface IPlaceableItem
             placeableInstances.put(stack -> stack.getItem() == Items.COAL && stack.getMetadata() == 1, (world, pos, stack, player, facing, hitVec) ->
             {
                 if (facing == null) return false;
-
                 IBlockState state = world.getBlockState(pos);
-
                 if (state.getBlock() == BlocksTFC.CHARCOAL_PILE)
                 {
                     if (state.getValue(LAYERS) < 8)
                     {
                         world.setBlockState(pos, state.withProperty(LAYERS, state.getValue(LAYERS) + 1));
                         world.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0f, 0.5f);
-
                         return true;
                     }
                 }
-
-                if (world.getBlockState(pos.down().offset(facing)).isNormalCube() && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing)))
+                if (facing == EnumFacing.UP && world.getBlockState(pos).isNormalCube() && world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos.up()))
                 {
                     // Create a new charcoal pile
                     if (!world.isRemote)
                     {
-                        world.setBlockState(pos.offset(facing), BlocksTFC.CHARCOAL_PILE.getDefaultState());
-
-                        world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0f, 0.5f);
-
+                        world.setBlockState(pos.up(), BlocksTFC.CHARCOAL_PILE.getDefaultState());
+                        world.playSound(null, pos.up(), SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0f, 0.5f);
                         return true;
                     }
                 }
-
                 return false;
             });
 
@@ -234,8 +227,6 @@ public interface IPlaceableItem
             usableInstances.put(predicate, placeable);
         }
 
-        private Impl()
-        {
-        }
+        private Impl() {}
     }
 }

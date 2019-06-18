@@ -68,7 +68,7 @@ public class GuiBlastFurnace extends GuiContainerTE<TEBlastFurnace>
     {
         if (mouseX > guiLeft + 40 && mouseX < guiLeft + 120 && mouseY > guiTop + 25 && mouseY < guiTop + 33)
         {
-            int amount = tile.getField(TEBlastFurnace.FIELD_ORE);
+            int amount = tile.getField(TEBlastFurnace.FIELD_ORE_UNITS);
             drawHoveringText(I18n.format(MOD_ID + ".tooltip.units", amount), mouseX, mouseY);
         }
         if (mouseX > guiLeft + 40 && mouseX < guiLeft + 120 && mouseY > guiTop + 43 && mouseY < guiTop + 51)

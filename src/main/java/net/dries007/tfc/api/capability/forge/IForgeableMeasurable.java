@@ -5,15 +5,12 @@
 
 package net.dries007.tfc.api.capability.forge;
 
+/**
+ * Interface for the forgeable capability for items that store a metal amount, i.e. blooms
+ */
 public interface IForgeableMeasurable extends IForgeable
 {
-    /*
-     * Gets the current metal amount stored in the object
-     */
     int getMetalAmount();
 
-    /*
-     * Sets the metal amount stored in the object
-     */
     void setMetalAmount(int metalAmount);
 }

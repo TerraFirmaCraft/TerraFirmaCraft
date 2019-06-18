@@ -19,10 +19,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -42,6 +44,7 @@ import net.dries007.tfc.util.Multiblock;
 
 import static net.minecraft.block.BlockTrapDoor.OPEN;
 
+@ParametersAreNonnullByDefault
 public class BlockBloomery extends BlockHorizontal implements IItemSize, ILightableBlock
 {
     //[horizontal index][basic shape / door1 / door2]
@@ -168,26 +171,30 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
         return false;
     }
 
-    @Nullable
-    public EnumFacing getAValidFacing(World world, BlockPos pos)
-    {
-        for (EnumFacing facing : EnumFacing.HORIZONTALS)
-        {
-            if (isFormed(world, pos.offset(facing), facing)) return facing;
-        }
-        return null;
-    }
-
     @Override
-    public Size getSize(@Nonnull ItemStack stack)
+    @Nonnull
+    public Size getSize(ItemStack stack)
     {
         return Size.VERY_SMALL;
     }
 
     @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
+    @Nonnull
+    public Weight getWeight(ItemStack stack)
     {
         return Weight.HEAVY;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    @ParametersAreNonnullByDefault
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        if (blockState.getValue(OPEN))
+        {
+            return NULL_AABB;
+        }
+        return AABB[blockState.getValue(FACING).getHorizontalIndex()][0];
     }
 
     @Override
@@ -234,16 +241,6 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
 
     @Override
     @SuppressWarnings("deprecation")
-    @ParametersAreNonnullByDefault
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        if (blockState.getValue(OPEN))
-            return NULL_AABB;
-        return AABB[blockState.getValue(FACING).getHorizontalIndex()][0];
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
@@ -266,19 +263,26 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     @ParametersAreNonnullByDefault
     public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end)
     {
-        if (!blockState.getValue(OPEN))
-            return super.collisionRayTrace(blockState, worldIn, pos, start, end);
+        if (blockState.getValue(OPEN))
+        {
+            int index = blockState.getValue(FACING).getHorizontalIndex();
+            RayTraceResult rayTraceDoor1 = rayTrace(pos, start, end, AABB[index][1]), rayTraceDoor2 = rayTrace(pos, start, end, AABB[index][2]);
 
-        int index = blockState.getValue(FACING).getHorizontalIndex();
-        RayTraceResult rayTraceDoor1 = rayTrace(pos, start, end, AABB[index][1]),
-            rayTraceDoor2 = rayTrace(pos, start, end, AABB[index][2]);
-
-        if (rayTraceDoor1 == null)
+            if (rayTraceDoor1 == null)
+            {
+                return rayTraceDoor2;
+            }
+            else if (rayTraceDoor2 == null)
+            {
+                return rayTraceDoor1;
+            }
+            if (rayTraceDoor1.hitVec.squareDistanceTo(end) > rayTraceDoor2.hitVec.squareDistanceTo(end))
+            {
+                return rayTraceDoor1;
+            }
             return rayTraceDoor2;
-        else if (rayTraceDoor2 == null)
-            return rayTraceDoor1;
-        return rayTraceDoor1.hitVec.squareDistanceTo(end) > rayTraceDoor2.hitVec.squareDistanceTo(end)
-            ? rayTraceDoor1 : rayTraceDoor2;
+        }
+        return super.collisionRayTrace(blockState, worldIn, pos, start, end);
     }
 
     @Override
@@ -293,25 +297,24 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
         if (!worldIn.isRemote)
         {
             if (!state.getValue(LIT))
-                worldIn.setBlockState(pos, state.cycleProperty(OPEN));
-            TEBloomery te = Helpers.getTE(worldIn, pos, TEBloomery.class);
-            if (te == null)
-                return true;
-            if (!state.getValue(LIT) && te.canIgnite())
             {
-                ItemStack held = player.getHeldItem(hand);
-                if (ItemFireStarter.canIgnite(held))
+                worldIn.setBlockState(pos, state.cycleProperty(OPEN));
+                worldIn.playSound(null, pos, SoundEvents.BLOCK_FENCE_GATE_CLOSE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            }
+            TEBloomery te = Helpers.getTE(worldIn, pos, TEBloomery.class);
+            if (te != null)
+            {
+                if (!state.getValue(LIT) && te.canIgnite())
                 {
-                    worldIn.setBlockState(pos, state.withProperty(LIT, true).withProperty(OPEN, false));
-                    te.onIgnite();
-                    return true;
+                    ItemStack held = player.getHeldItem(hand);
+                    if (ItemFireStarter.canIgnite(held))
+                    {
+                        worldIn.setBlockState(pos, state.withProperty(LIT, true).withProperty(OPEN, false));
+                        te.onIgnite();
+                        return true;
+                    }
                 }
             }
-            else
-            {
-                //TODO: Show debug msg(missing charcoal pile/charcoal/ore)
-            }
-
         }
         return true;
     }
@@ -321,7 +324,25 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     @Nonnull
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getDefaultState().withProperty(FACING, getAValidFacing(worldIn, pos));
+        EnumFacing placeDirection = getAValidFacing(worldIn, pos);
+        if (placeDirection != null)
+        {
+            return this.getDefaultState().withProperty(FACING, placeDirection);
+        }
+        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
+    }
+
+    @Nullable
+    private EnumFacing getAValidFacing(World world, BlockPos pos)
+    {
+        for (EnumFacing facing : EnumFacing.HORIZONTALS)
+        {
+            if (isFormed(world, pos.offset(facing), facing))
+            {
+                return facing;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -344,7 +365,6 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     }
 
     @Override
-    @ParametersAreNonnullByDefault
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEBloomery();

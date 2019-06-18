@@ -215,6 +215,9 @@ public final class ItemsTFC
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
         simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "straw"), CT_MISC));
 
+        simpleItems.add(register(r, "bloom/unrefined", new ItemBloom(), CT_MISC));
+        simpleItems.add(register(r, "bloom/refined", new ItemBloom(), CT_MISC));
+
         // Animal Hides
         simpleItems.add(register(r, "hide/sheepskin", new ItemMisc(Size.VERY_SMALL, Weight.LIGHT), CT_MISC));
         for (ItemAnimalHide.HideSize size : ItemAnimalHide.HideSize.values())
@@ -233,6 +236,7 @@ public final class ItemsTFC
         }
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
 
+        // Note: if you add items you don't need to put them in this list of todos. Feel free to add them where they make sense :)
         // todo: Bow? Arrows?
         // todo: Fishing rod?
         // todo: (white) dye? (so white dye isn't bonemeal)
@@ -253,9 +257,6 @@ public final class ItemsTFC
         // todo: straw
         // todo: fire clay & fire brick & fire bricks (block)
 
-        // todo: bloom & raw bloom ( = IMetalObject)
-        simpleItems.add(register(r, "bloom/unrefined", new ItemBloom(), CT_MISC));
-        simpleItems.add(register(r, "bloom/refined", new ItemBloom(), CT_MISC));
         // todo: jute & jute fiber
         // todo: quiver
         // todo: millstone (quern)

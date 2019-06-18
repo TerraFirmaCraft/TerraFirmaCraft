@@ -50,12 +50,12 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
     /**
      * Addon mods that want to add plants should subscribe to the registry event for this class
      * They also must put (in their mod) the required resources in /assets/tfc/...
-     * <p>
+     *
      * Plant world generation is determined dynamically based on valid temperature and rainfall values
-     * <p>
+     *
      * Valid average biome temperatures are those that fall within the range
      * plus or minus one quarter of the plants full temperature range
-     * <p>
+     *
      * Example: Lotus
      * Full temperature range: 10-50
      * Average temp: 30 ( (10+50)/2 )

@@ -262,15 +262,17 @@ public final class BlocksTFC
         Builder<ItemBlock> normalItemBlocks = ImmutableList.builder();
         Builder<ItemBlock> inventoryItemBlocks = ImmutableList.builder();
 
-        normalItemBlocks.add(new ItemBlock(register(r, "debug", new BlockDebug(), CT_MISC)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "debug", new BlockDebug(), CT_MISC)));
 
-        normalItemBlocks.add(new ItemBlock(register(r, "peat", new BlockPeat(Material.GROUND), CT_ROCK_BLOCKS)));
-        normalItemBlocks.add(new ItemBlock(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_BLOCKS)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "peat", new BlockPeat(Material.GROUND), CT_ROCK_BLOCKS)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_BLOCKS)));
 
-        normalItemBlocks.add(new ItemBlock(register(r, "thatch", new BlockThatch(Material.PLANTS), CT_DECORATIONS)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "thatch", new BlockThatch(Material.PLANTS), CT_DECORATIONS)));
 
-        normalItemBlocks.add(new ItemBlock(register(r, "crucible", new BlockCrucible(), CT_MISC)));
-        normalItemBlocks.add(new ItemBlock(register(r, "blast_furnace", new BlockBlastFurnace(), CT_MISC)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "crucible", new BlockCrucible(), CT_MISC)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "blast_furnace", new BlockBlastFurnace(), CT_MISC)));
+        inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bellows", new BlockBellows(), CT_MISC)));
+        inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bloomery", new BlockBloomery(), CT_MISC)));
 
         {
             Builder<BlockFluidBase> b = ImmutableList.builder();
@@ -501,6 +503,7 @@ public final class BlocksTFC
         register(r, "molten", new BlockMolten());
         register(r, "bloom", new BlockBloom());
 
+        // Note: if you add blocks you don't need to put them in this list of todos. Feel free to add them where they make sense :)
         // todo: pumpkin/melon ?
         // todo: fruit tree stuff (leaves, saplings, logs)
 
@@ -513,8 +516,6 @@ public final class BlocksTFC
         // todo: sluice
         // todo: quern
         // todo: loom
-        inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bellows", new BlockBellows(), CT_MISC)));
-        inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bloomery", new BlockBloomery(), CT_MISC)));
         // todo: bloom/molten blocks
         // todo: large vessels
         // todo: nestbox

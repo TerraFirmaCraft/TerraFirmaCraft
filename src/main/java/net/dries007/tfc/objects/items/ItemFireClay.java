@@ -20,10 +20,6 @@ import net.dries007.tfc.client.TFCGuiHandler;
 
 public class ItemFireClay extends ItemTFC
 {
-    public ItemFireClay()
-    {
-    }
-
     @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)

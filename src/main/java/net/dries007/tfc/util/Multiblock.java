@@ -15,6 +15,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+/**
+ * Use this as a helper to detect multiblocks
+ *
+ * todo: add a rotation detector / helper? (bloomery would benefit from this)
+ */
 public class Multiblock implements BiPredicate<World, BlockPos>
 {
     private final List<BiPredicate<World, BlockPos>> conditions;

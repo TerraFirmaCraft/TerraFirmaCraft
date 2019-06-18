@@ -110,14 +110,9 @@ public class BlockLogPile extends Block implements ILightableBlock
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (!world.isRemote)
+        TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
+        if (te != null)
         {
-            TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
-            if (te == null)
-            {
-                return false;
-            }
-
             // Special Interactions
             // 1. Try and put a log inside (happens on right click event)
             // 2. Try and light the TE
@@ -128,19 +123,27 @@ public class BlockLogPile extends Block implements ILightableBlock
                 // Light the Pile
                 if (world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos))
                 {
-                    world.setBlockState(pos, state.withProperty(LIT, true));
-                    te.light();
-                    world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
-                    world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    if (!world.isRemote)
+                    {
+                        world.setBlockState(pos, state.withProperty(LIT, true));
+                        te.light();
+                        world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
+                        world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    }
+                    return true;
                 }
             }
 
             if (!player.isSneaking() && !state.getValue(LIT))
             {
-                TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.LOG_PILE);
+                if (!world.isRemote)
+                {
+                    TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.LOG_PILE);
+                    return true;
+                }
             }
         }
-        return true;
+        return false;
     }
 
     @Override

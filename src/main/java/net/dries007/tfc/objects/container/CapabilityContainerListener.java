@@ -82,14 +82,10 @@ public class CapabilityContainerListener implements IContainerListener
     }
 
     @Override
-    public void sendWindowProperty(Container container, int ID, int value)
-    {
-    }
+    public void sendWindowProperty(Container container, int ID, int value) {}
 
     @Override
-    public void sendAllWindowProperties(Container container, IInventory inventory)
-    {
-    }
+    public void sendAllWindowProperties(Container container, IInventory inventory) {}
 
     private boolean shouldSyncItem(ItemStack stack)
     {

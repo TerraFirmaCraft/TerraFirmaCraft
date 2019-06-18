@@ -46,9 +46,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
         deserializeNBT(nbt);
     }
 
-    public ItemHeatHandler()
-    {
-    } // This is here so you can do a custom implementation
+    public ItemHeatHandler() {} // This is here so you can do a custom implementation
 
     /**
      * This gets the outwards facing temperature. It will differ from the internal temperature value or the value saved to NBT

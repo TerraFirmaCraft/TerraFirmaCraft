@@ -142,7 +142,7 @@ public class BlockMetalSheet extends Block
 
     @Override
     @Nonnull
-    @SuppressWarnings({"ConstantConditions", "deprecation"})
+    @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         TEMetalSheet tile = Helpers.getTE(source, pos, TEMetalSheet.class);

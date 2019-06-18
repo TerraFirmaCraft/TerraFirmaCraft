@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.items;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -29,6 +30,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IMetalObject;
 
+@ParametersAreNonnullByDefault
 public class ItemBloom extends ItemTFC implements IMetalObject
 {
     @Nonnull
@@ -56,7 +58,11 @@ public class ItemBloom extends ItemTFC implements IMetalObject
     public int getSmeltAmount(ItemStack stack)
     {
         IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-        return ((IForgeableMeasurable) cap).getMetalAmount();
+        if (cap instanceof IForgeableMeasurable)
+        {
+            return ((IForgeableMeasurable) cap).getMetalAmount();
+        }
+        return 0;
     }
 
     @Override
@@ -75,8 +81,12 @@ public class ItemBloom extends ItemTFC implements IMetalObject
             for (int i = 100; i <= 400; i += 100)
             {
                 ItemStack stack = new ItemStack(this);
-                ((IForgeableMeasurable) stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null)).setMetalAmount(i);
-                items.add(stack);
+                IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+                if (cap instanceof IForgeableMeasurable)
+                {
+                    ((IForgeableMeasurable) cap).setMetalAmount(i);
+                    items.add(stack);
+                }
             }
         }
     }

@@ -42,13 +42,14 @@ import static net.dries007.tfc.util.ILightableBlock.LIT;
 public class TEBlastFurnace extends TEInventory implements ITickable, ITileFields
 {
     public static final int SLOT_TUYERE = 0;
-    public static final int FIELD_TEMPERATURE = 0, FIELD_ORE = 1, FIELD_FUEL = 2, FIELD_MELT = 3;
+    public static final int FIELD_TEMPERATURE = 0, FIELD_ORE = 1, FIELD_FUEL = 2, FIELD_MELT = 3, FIELD_ORE_UNITS = 4;
+
     private List<ItemStack> oreStacks = new ArrayList<>();
     private List<ItemStack> fuelStacks = new ArrayList<>();
 
     private int maxFuel = 0, maxOre = 0, delayTimer = 0, meltAmount = 0;
     private long burnTicksLeft = 0, airTicks = 0;
-    private int fuelCount = 0, oreCount = 0; //Used to show on client's GUI how much ore/fuel TE has
+    private int fuelCount = 0, oreCount = 0, oreUnits; // Used to show on client's GUI how much ore/fuel TE has
 
     private int temperature = 0;
     private float burnTemperature = 0;
@@ -125,7 +126,9 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         for (int i = 1; i < 6; i++)
         {
             if (world.getBlockState(pos.up(i)).getBlock() == BlocksTFC.MOLTEN)
+            {
                 world.setBlockToAir(pos.up(i));
+            }
         }
         for (ItemStack stack : oreStacks)
         {
@@ -140,14 +143,17 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
 
     public boolean canIgnite()
     {
-        if (world.isRemote) return false;
-        return !this.fuelStacks.isEmpty() && !this.oreStacks.isEmpty();
+        if (!world.isRemote)
+        {
+            return !fuelStacks.isEmpty() && !oreStacks.isEmpty();
+        }
+        return false;
     }
 
     @Override
     public int getFieldCount()
     {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -156,16 +162,19 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         switch (index)
         {
             case FIELD_TEMPERATURE:
-                this.temperature = value;
+                temperature = value;
                 return;
             case FIELD_ORE:
-                this.oreCount = value;
+                oreCount = value;
                 return;
             case FIELD_FUEL:
-                this.fuelCount = value;
+                fuelCount = value;
                 return;
             case FIELD_MELT:
-                this.meltAmount = value;
+                meltAmount = value;
+                return;
+            case FIELD_ORE_UNITS:
+                oreUnits = value;
                 return;
         }
         TerraFirmaCraft.getLog().warn("Illegal field id {} in TEBlastFurnace#setField", index);
@@ -177,13 +186,15 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         switch (index)
         {
             case FIELD_TEMPERATURE:
-                return this.temperature;
+                return temperature;
             case FIELD_ORE:
-                return this.oreCount;
+                return oreCount;
             case FIELD_FUEL:
-                return this.fuelCount;
+                return fuelCount;
             case FIELD_MELT:
-                return this.meltAmount;
+                return meltAmount;
+            case FIELD_ORE_UNITS:
+                return oreUnits;
         }
         TerraFirmaCraft.getLog().warn("Illegal field id {} in TEBlastFurnace#getField", index);
         return 0;
@@ -192,121 +203,132 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
     @Override
     public void update()
     {
-        if (world.isRemote) return;
-        IBlockState state = world.getBlockState(pos);
-        if (--delayTimer <= 0)
+        if (!world.isRemote)
         {
-            delayTimer = 20;
-            // Update multiblock status
-            int newMaxItems = BlocksTFC.BLAST_FURNACE.getChimneyLevels(world, pos) * 4;
-            maxFuel = newMaxItems;
-            maxOre = newMaxItems;
-            while (maxOre < oreStacks.size())
-            {
-                //Structure lost one or more chimney levels
-                InventoryHelper.spawnItemStack(world, pos.north().getX(), pos.getY(), pos.north().getZ(), oreStacks.get(0));
-                oreStacks.remove(0);
-            }
-            while (maxFuel < fuelStacks.size())
-            {
-                InventoryHelper.spawnItemStack(world, pos.north().getX(), pos.north().getY(), pos.north().getZ(), fuelStacks.get(0));
-                fuelStacks.remove(0);
-            }
-            if (newMaxItems <= 0)
-            {
-                //Structure became compromised
-                world.destroyBlock(pos, true);
-                return;
-            }
-            addItemsFromWorld();
-            updateSlagBlock(state.getValue(LIT));
-            this.oreCount = oreStacks.size();
-            this.fuelCount = fuelStacks.size();
-        }
-        if (meltAmount > 0)
-        {
-            //Move already molten liquid metal to the crucible.
-            //This makes the effect of slow(not so much) filling up the crucible.
-            TECrucible te = Helpers.getTE(world, pos.down(), TECrucible.class);
-            if (te != null)
-            {
-                te.acceptMeltAlloy(Metal.PIG_IRON, 1);
-                meltAmount -= 1;
-            }
-        }
-        if (state.getValue(LIT))
-        {
-            // Update bellows air
-            if (--airTicks <= 0)
-            {
-                airTicks = 0;
-            }
+            IBlockState state = world.getBlockState(pos);
 
-            if (--this.burnTicksLeft <= 0)
+            if (--delayTimer <= 0)
             {
-                if (!fuelStacks.isEmpty())
+                delayTimer = 20;
+                // Update multiblock status
+                int newMaxItems = BlocksTFC.BLAST_FURNACE.getChimneyLevels(world, pos) * 4;
+                maxFuel = newMaxItems;
+                maxOre = newMaxItems;
+                while (maxOre < oreStacks.size())
                 {
-                    ItemStack fuelStack = fuelStacks.get(0);
+                    //Structure lost one or more chimney levels
+                    InventoryHelper.spawnItemStack(world, pos.north().getX(), pos.getY(), pos.north().getZ(), oreStacks.get(0));
+                    oreStacks.remove(0);
+                }
+                while (maxFuel < fuelStacks.size())
+                {
+                    InventoryHelper.spawnItemStack(world, pos.north().getX(), pos.north().getY(), pos.north().getZ(), fuelStacks.get(0));
                     fuelStacks.remove(0);
-                    Fuel fuel = FuelManager.getFuel(fuelStack);
-                    burnTicksLeft = fuel.getAmount();
-                    burnTemperature = fuel.getTemperature();
-                    this.markDirty();
                 }
-                else
+                if (newMaxItems <= 0)
                 {
-                    burnTemperature = 0;
+                    //Structure became compromised
+                    world.destroyBlock(pos, true);
+                    return;
                 }
-            }
+                addItemsFromWorld();
+                updateSlagBlock(state.getValue(LIT));
 
-            if (temperature > 0 || burnTemperature > 0)
-            {
-                float targetTemperature = Math.min(MAX_TEMPERATURE, burnTemperature + airTicks);
-                if (temperature < targetTemperature)
-                {
-                    // Modifier for heating = 2x for bellows
-                    temperature += (airTicks > 0 ? 2 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
-                }
-                else if (temperature > targetTemperature)
-                {
-                    // Modifier for cooling = 0.5x for bellows
-                    temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
-                }
-                // Provide heat to blocks that are one block bellow AKA crucible
-                Block blockCrucible = world.getBlockState(pos.down()).getBlock();
-                if (blockCrucible instanceof IHeatConsumerBlock)
-                {
-                    ((IHeatConsumerBlock) blockCrucible).acceptHeat(world, pos.down(), temperature);
-                }
-                oreStacks.removeIf(stack ->
-                {
-                    IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                    if (cap != null)
+                oreCount = oreStacks.size();
+                oreUnits = oreStacks.stream().mapToInt(stack -> {
+                    if (stack.getItem() instanceof IMetalObject)
                     {
-                        // Update temperature of item
-                        float itemTemp = cap.getTemperature();
-                        if (temperature > itemTemp)
-                        {
-                            CapabilityItemHeat.addTemp(cap);
-                        }
-                        if (cap.isMolten())
-                        {
-                            convertToMolten(stack);
-                            ItemStack tuyereStack = inventory.getStackInSlot(0);
-                            if (!tuyereStack.isEmpty())
-                            {
-                                tuyereStack.damageItem(1, null);
-                            }
-                            return true;
-                        }
+                        return ((IMetalObject) stack.getItem()).getSmeltAmount(stack);
                     }
-                    return false;
-                });
+                    return 1;
+                }).sum();
+                fuelCount = fuelStacks.size();
             }
-            if (temperature <= 0 && burnTemperature <= 0)
+            if (meltAmount > 0)
             {
-                temperature = 0;
-                world.setBlockState(pos, state.withProperty(LIT, false));
+                //Move already molten liquid metal to the crucible.
+                //This makes the effect of slow(not so much) filling up the crucible.
+                TECrucible te = Helpers.getTE(world, pos.down(), TECrucible.class);
+                if (te != null)
+                {
+                    te.addMetal(Metal.PIG_IRON, 1);
+                    meltAmount -= 1;
+                }
+            }
+            if (state.getValue(LIT))
+            {
+                // Update bellows air
+                if (--airTicks <= 0)
+                {
+                    airTicks = 0;
+                }
+
+                if (--burnTicksLeft <= 0)
+                {
+                    if (!fuelStacks.isEmpty())
+                    {
+                        ItemStack fuelStack = fuelStacks.get(0);
+                        fuelStacks.remove(0);
+                        Fuel fuel = FuelManager.getFuel(fuelStack);
+                        burnTicksLeft = fuel.getAmount();
+                        burnTemperature = fuel.getTemperature();
+                        this.markDirty();
+                    }
+                    else
+                    {
+                        burnTemperature = 0;
+                    }
+                }
+
+                if (temperature > 0 || burnTemperature > 0)
+                {
+                    float targetTemperature = Math.min(MAX_TEMPERATURE, burnTemperature + airTicks);
+                    if (temperature < targetTemperature)
+                    {
+                        // Modifier for heating = 2x for bellows
+                        temperature += (airTicks > 0 ? 2 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
+                    }
+                    else if (temperature > targetTemperature)
+                    {
+                        // Modifier for cooling = 0.5x for bellows
+                        temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
+                    }
+                    // Provide heat to blocks that are one block bellow AKA crucible
+                    Block blockCrucible = world.getBlockState(pos.down()).getBlock();
+                    if (blockCrucible instanceof IHeatConsumerBlock)
+                    {
+                        ((IHeatConsumerBlock) blockCrucible).acceptHeat(world, pos.down(), temperature);
+                    }
+                    oreStacks.removeIf(stack ->
+                    {
+                        IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                        if (cap != null)
+                        {
+                            // Update temperature of item
+                            float itemTemp = cap.getTemperature();
+                            if (temperature > itemTemp)
+                            {
+                                CapabilityItemHeat.addTemp(cap);
+                            }
+                            if (cap.isMolten())
+                            {
+                                convertToMolten(stack);
+                                ItemStack tuyereStack = inventory.getStackInSlot(0);
+                                if (!tuyereStack.isEmpty())
+                                {
+                                    Helpers.damageItem(tuyereStack);
+                                }
+                                return true;
+                            }
+                        }
+                        return false;
+                    });
+                }
+                if (temperature <= 0 && burnTemperature <= 0)
+                {
+                    temperature = 0;
+                    world.setBlockState(pos, state.withProperty(LIT, false));
+                }
             }
         }
     }
@@ -353,7 +375,6 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         }
     }
 
-
     private void addItemsFromWorld()
     {
         EntityItem fluxEntity = null, oreEntity = null;
@@ -365,7 +386,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
                 // Add fuel
                 while (maxFuel > fuelStacks.size())
                 {
-                    this.markDirty();
+                    markDirty();
                     fuelStacks.add(stack.splitStack(1));
                     if (stack.getCount() <= 0)
                     {
@@ -390,17 +411,24 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         //Add each ore consuming flux
         while (maxOre > oreStacks.size())
         {
-            if (fluxEntity == null || oreEntity == null) break;
-            this.markDirty();
+            if (fluxEntity == null || oreEntity == null)
+            {
+                break;
+            }
+            markDirty();
+
             ItemStack flux = fluxEntity.getItem();
             flux.shrink(1);
+
             ItemStack ore = oreEntity.getItem();
             oreStacks.add(ore.splitStack(1));
+
             if (flux.getCount() <= 0)
             {
                 fluxEntity.setDead();
                 fluxEntity = null;
             }
+
             if (ore.getCount() <= 0)
             {
                 oreEntity.setDead();
@@ -433,7 +461,9 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
             {
                 //Remove any surplus slag(ie: after cooking/structure became compromised)
                 if (world.getBlockState(pos.up(i)).getBlock() == BlocksTFC.MOLTEN)
+                {
                     world.setBlockToAir(pos.up(i));
+                }
             }
         }
     }
