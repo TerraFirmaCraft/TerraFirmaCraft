@@ -21,9 +21,7 @@ public class PacketCalendarUpdate implements IMessage
     private boolean doCalendarCycle;
 
     @SuppressWarnings("unused")
-    public PacketCalendarUpdate()
-    {
-    }
+    public PacketCalendarUpdate() {}
 
     public PacketCalendarUpdate(long calendarOffset, int daysInMonth, boolean doCalendarCycle)
     {

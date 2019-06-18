@@ -49,10 +49,10 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      * This is a registry object that will create a number of things:
      * 1. Wood logs, planks, and leaf blocks, and all the respective variants
      * 2. A Tree object to be used in TFC world gen
-     * <p>
+     *
      * Addon mods that want to add trees should subscribe to the registry event for this class
      * They also must put (in their mod) the required resources in /assets/tfc/...
-     * <p>
+     *
      * When using this class, use the provided Builder to create your trees. This will require all the default values, as well as
      * provide optional values that you can change
      *

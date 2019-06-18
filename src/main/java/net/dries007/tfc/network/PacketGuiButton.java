@@ -30,9 +30,7 @@ public class PacketGuiButton implements IMessage
     private NBTTagCompound extraNBT;
 
     @SuppressWarnings("unused")
-    public PacketGuiButton()
-    {
-    }
+    public PacketGuiButton() {}
 
     public PacketGuiButton(int buttonID, @Nullable NBTTagCompound extraNBT)
     {

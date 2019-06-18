@@ -6,6 +6,7 @@
 package net.dries007.tfc.api.recipes;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -22,17 +23,16 @@ import net.dries007.tfc.util.forge.ForgeRule;
  * Use this AnvilRecipe implementation if your recipe has metal amount to transfer from input to output
  * *Or* if your input must have a specific amount to work
  */
-public class AnvilMeasurableRecipe extends AnvilRecipe
+@ParametersAreNonnullByDefault
+public class AnvilRecipeMeasurable extends AnvilRecipe
 {
-
     protected int specificAmount;
     protected boolean isCopyRule;
-
 
     /*
      * Use this constructor to make a recipe where only accepts input if it has a specific amount of metal.
      */
-    public AnvilMeasurableRecipe(ResourceLocation name, IIngredient<ItemStack> input, ItemStack output, int specificAmount, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
+    public AnvilRecipeMeasurable(ResourceLocation name, IIngredient<ItemStack> input, ItemStack output, int specificAmount, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
     {
         super(name, input, output, minTier, rules);
         this.isCopyRule = false;
@@ -42,7 +42,7 @@ public class AnvilMeasurableRecipe extends AnvilRecipe
     /*
      * Use this constructor to build a recipe where the metal amount is copied from input to output.
      */
-    public AnvilMeasurableRecipe(ResourceLocation name, IIngredient<ItemStack> input, ItemStack output, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
+    public AnvilRecipeMeasurable(ResourceLocation name, IIngredient<ItemStack> input, ItemStack output, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
     {
         super(name, input, output, minTier, rules);
         this.isCopyRule = true;
@@ -69,15 +69,24 @@ public class AnvilMeasurableRecipe extends AnvilRecipe
     @Nonnull
     public NonNullList<ItemStack> getOutput(ItemStack input)
     {
-        if (!matches(input)) return NonNullList.create();
-        NonNullList<ItemStack> out = super.getOutput(input);
-        if (isCopyRule)
+        if (matches(input))
         {
-            IForgeable inCap = input.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-            int amount = ((IForgeableMeasurable) inCap).getMetalAmount();
-            IForgeable outCap = out.get(0).getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-            ((IForgeableMeasurable) outCap).setMetalAmount(amount);
+            NonNullList<ItemStack> out = super.getOutput(input);
+            if (isCopyRule)
+            {
+                IForgeable inCap = input.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+                if (inCap instanceof IForgeableMeasurable)
+                {
+                    IForgeable outCap = out.get(0).getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+                    if (outCap instanceof IForgeableMeasurable)
+                    {
+                        ((IForgeableMeasurable) outCap).setMetalAmount(((IForgeableMeasurable) inCap).getMetalAmount());
+                    }
+                }
+
+            }
+            return out;
         }
-        return out;
+        return EMPTY;
     }
 }

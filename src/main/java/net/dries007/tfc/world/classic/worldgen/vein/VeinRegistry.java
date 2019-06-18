@@ -94,9 +94,7 @@ public enum VeinRegistry
             try
             {
                 weightedVeinTypes = new WeightedCollection<>();
-                veinTypeRegistry = GSON.fromJson(worldGenData, new TypeToken<Map<String, VeinType>>()
-                {
-                }.getType());
+                veinTypeRegistry = GSON.fromJson(worldGenData, new TypeToken<Map<String, VeinType>>() {}.getType());
                 veinTypeRegistry.forEach((name, veinType) -> {
                     veinType.setRegistryName(name);
                     weightedVeinTypes.add(veinType.weight, veinType);

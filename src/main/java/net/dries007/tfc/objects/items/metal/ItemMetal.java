@@ -53,6 +53,11 @@ public class ItemMetal extends ItemTFC implements IMetalObject
         OreDictionaryHelper.register(this, type);
         //noinspection ConstantConditions
         OreDictionaryHelper.register(this, type, metal.getRegistryName().getPath());
+
+        if (type == Metal.ItemType.TUYERE)
+        {
+            setMaxDamage(metal.getToolMetal() != null ? (int) (metal.getToolMetal().getMaxUses() * 0.2) : 100);
+        }
     }
 
     @Override

@@ -30,9 +30,7 @@ public class PacketBarrelUpdate implements IMessage
     private ResourceLocation recipeName;
 
     @SuppressWarnings("unused")
-    public PacketBarrelUpdate()
-    {
-    }
+    public PacketBarrelUpdate() {}
 
     public PacketBarrelUpdate(@Nonnull TEBarrel tile, @Nullable BarrelRecipe currentRecipe, long calendarTick)
     {

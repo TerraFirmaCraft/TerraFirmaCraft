@@ -66,9 +66,7 @@ public class BlockBellows extends Block
     @Nonnull
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
-        if (face == state.getValue(FACING))
-            return BlockFaceShape.SOLID;
-        return BlockFaceShape.UNDEFINED;
+        return face == state.getValue(FACING) ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
     }
 
     @Override
@@ -81,8 +79,11 @@ public class BlockBellows extends Block
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         TEBellows te = Helpers.getTE(worldIn, pos, TEBellows.class);
-        if (te == null) return true;
-        return te.onRightClick();
+        if (te != null)
+        {
+            return te.onRightClick();
+        }
+        return true;
     }
 
     @Override
@@ -91,8 +92,17 @@ public class BlockBellows extends Block
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         if (facing.getAxis() == EnumFacing.Axis.Y)
-            facing = placer.getHorizontalFacing().getOpposite();
-        return this.getDefaultState().withProperty(FACING, facing);
+        {
+            if (placer.isSneaking())
+            {
+                facing = placer.getHorizontalFacing().getOpposite();
+            }
+            else
+            {
+                facing = placer.getHorizontalFacing();
+            }
+        }
+        return getDefaultState().withProperty(FACING, facing);
     }
 
     @Override

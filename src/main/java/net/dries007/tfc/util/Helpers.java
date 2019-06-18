@@ -30,6 +30,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import io.netty.buffer.ByteBuf;
+import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.api.types.Rock;
@@ -174,6 +175,25 @@ public final class Helpers
     public static ItemStack consumeItem(ItemStack stack, EntityPlayer player, int amount)
     {
         return player.isCreative() ? stack : consumeItem(stack, amount);
+    }
+
+    public static void damageItem(ItemStack stack)
+    {
+        damageItem(stack, 1);
+    }
+
+    /**
+     * Utility method for damaging an item that doesn't take an entity
+     *
+     * @param stack the stack to be damaged
+     */
+    public static void damageItem(ItemStack stack, int amount)
+    {
+        if (stack.attemptDamageItem(amount, Constants.RNG, null))
+        {
+            stack.shrink(1);
+            stack.setItemDamage(0);
+        }
     }
 
     /**

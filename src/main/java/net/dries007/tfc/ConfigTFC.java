@@ -81,12 +81,18 @@ public class ConfigTFC
 
         @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.")
         @Config.RangeInt(min = 20)
-        @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierGlobal")
+        @Config.LangKey("config." + MOD_ID + ".general.pitKilnTime")
         public int pitKilnTime = 8000;
 
         @Config.Comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour), default is 72 hours. Set to -1 to disable torch burnout.")
         @Config.RangeInt(min = 20)
-        public int torchTime = 200; // todo: change to 72000
+        @Config.LangKey("config." + MOD_ID + ".general.torchTime")
+        public int torchTime = 72000;
+
+        @Config.Comment("Number of ticks required for a bloomery to complete. (1000 = 1 in game hour = 50 seconds), default is 15 hours.")
+        @Config.RangeInt(min = 20)
+        @Config.LangKey("config." + MOD_ID + ".general.bloomeryTime")
+        public int bloomeryTime = 15000;
 
         @Config.Comment("Percentage chance that plants will grow each update. Smaller number = slower.")
         @Config.RangeDouble(min = 0d, max = 1d)

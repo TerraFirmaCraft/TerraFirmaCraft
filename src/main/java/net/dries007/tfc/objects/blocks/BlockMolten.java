@@ -155,6 +155,6 @@ public class BlockMolten extends Block implements ILightableBlock
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        // NOOP
+        // Drops are handled by the relevant TE (blast furnace or bloomery)
     }
 }

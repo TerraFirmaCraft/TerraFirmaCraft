@@ -174,11 +174,11 @@ public class TFCGuiHandler implements IGuiHandler
         ANVIL,
         ANVIL_PLAN,
         CRUCIBLE,
+        BLAST_FURNACE,
         CALENDAR,
         NUTRITION,
         SKILLS,
         INVENTORY, // This is special, it is used by GuiButtonPlayerInventoryTab to signal to open the vanilla inventory
-        BLAST_FURNACE,
         CRAFTING, // In-inventory 3x3 crafting grid
         NULL; // This is special, it is a non-null null.
 

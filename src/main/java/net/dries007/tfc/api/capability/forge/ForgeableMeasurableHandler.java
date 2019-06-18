@@ -10,9 +10,11 @@ import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+/**
+ * Default Implementation of {@link IForgeableMeasurable}
+ */
 public class ForgeableMeasurableHandler extends ForgeableHandler implements IForgeableMeasurable
 {
-
     protected int metalAmount;
 
     public ForgeableMeasurableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltTemp, int metalAmount)
@@ -38,7 +40,6 @@ public class ForgeableMeasurableHandler extends ForgeableHandler implements IFor
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound nbt = super.serializeNBT();
-
         nbt.setInteger("metalAmount", metalAmount);
         return nbt;
     }

@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.blocks;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -18,9 +19,9 @@ import net.minecraft.world.World;
 import net.dries007.tfc.objects.te.TEBloom;
 import net.dries007.tfc.util.Helpers;
 
+@ParametersAreNonnullByDefault
 public class BlockBloom extends Block
 {
-
     public BlockBloom()
     {
         super(Material.IRON);
@@ -29,12 +30,14 @@ public class BlockBloom extends Block
         setSoundType(SoundType.STONE);
     }
 
-
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TEBloom te = Helpers.getTE(worldIn, pos, TEBloom.class);
-        if (te != null) te.onBreakBlock(worldIn, pos);
+        if (te != null)
+        {
+            te.onBreakBlock(worldIn, pos);
+        }
         super.breakBlock(worldIn, pos, state);
     }
 

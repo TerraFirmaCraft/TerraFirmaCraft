@@ -46,7 +46,5 @@ public class ContainerAnvilPlan extends ContainerTE<TEAnvilTFC> implements IButt
     }
 
     @Override
-    protected void addContainerSlots()
-    {
-    }
+    protected void addContainerSlots() {}
 }
