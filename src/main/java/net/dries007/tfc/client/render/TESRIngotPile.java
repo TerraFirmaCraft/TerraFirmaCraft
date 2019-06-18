@@ -20,11 +20,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @SideOnly(Side.CLIENT)
 public class TESRIngotPile extends TileEntitySpecialRenderer<TEIngotPile>
 {
-    private ModelIngotPile model = new ModelIngotPile();
-
-    public TESRIngotPile()
-    {
-    }
+    private final ModelIngotPile model = new ModelIngotPile();
 
     @Override
     public void render(TEIngotPile te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
@@ -35,7 +31,8 @@ public class TESRIngotPile extends TileEntitySpecialRenderer<TEIngotPile>
 
             Metal metal = te.getMetal();
             int count = te.getCount();
-            this.bindTexture(new ResourceLocation(MOD_ID, "textures/blocks/metal/" + metal.getRegistryName().getPath() + ".png"));
+            //noinspection ConstantConditions
+            bindTexture(new ResourceLocation(MOD_ID, "textures/blocks/metal/" + metal.getRegistryName().getPath() + ".png"));
             GlStateManager.pushMatrix();
             GlStateManager.translate(x, y, z);
 

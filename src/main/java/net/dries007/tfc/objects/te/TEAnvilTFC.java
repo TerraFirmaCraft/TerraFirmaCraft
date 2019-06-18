@@ -12,6 +12,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -237,6 +238,8 @@ public class TEAnvilTFC extends TEInventory
                 cap.addStep(step);
                 steps = cap.getSteps().copy();
                 workingProgress += step.getStepAmount();
+                //The line below should be changed to a "HIT" sound, not 3 hits(minecraft default)
+                world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.PLAYERS, 1.0f, 1.0f);
             }
 
             // Handle possible recipe completion
@@ -244,18 +247,32 @@ public class TEAnvilTFC extends TEInventory
             {
                 if (workingProgress == workingTarget && recipe.matches(steps))
                 {
-                    // Consume input + produce output / throw it in the world
-                    ItemStack stack = recipe.getOutput();
-
-                    // Set output item temperature
-                    IItemHeat outputCap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                    if (outputCap != null)
+                    //Consume input
+                    inventory.setStackInSlot(SLOT_INPUT_1, ItemStack.EMPTY);
+                    //Produce output
+                    for (ItemStack output : recipe.getOutput(input))
                     {
-                        outputCap.setTemperature(cap.getTemperature());
+                        if (!output.isEmpty())
+                        {
+                            IItemHeat outputCap = output.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                            if (outputCap != null)
+                            {
+                                outputCap.setTemperature(cap.getTemperature());
+                            }
+                            if (inventory.getStackInSlot(SLOT_INPUT_1).isEmpty())
+                                inventory.setStackInSlot(SLOT_INPUT_1, output);
+                            else if (inventory.getStackInSlot(SLOT_INPUT_2).isEmpty())
+                                inventory.setStackInSlot(SLOT_INPUT_2, output);
+                            else
+                                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), output);
+
+                        }
+
+
                     }
 
-                    inventory.setStackInSlot(SLOT_INPUT_1, stack);
-                    world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    //Should we change this for a completed work sound effect?
+                    world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
 
                     // Reset forge stuff
                     resetFields();

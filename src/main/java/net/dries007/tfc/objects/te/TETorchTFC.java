@@ -11,8 +11,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.objects.blocks.BlockTorchTFC;
 import net.dries007.tfc.world.classic.CalendarTFC;
+
+import static net.dries007.tfc.util.ILightableBlock.LIT;
 
 public class TETorchTFC extends TileEntity
 {
@@ -48,13 +49,13 @@ public class TETorchTFC extends TileEntity
 
     public void extinguish()
     {
-        world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockTorchTFC.LIT, false));
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(LIT, false));
         this.markDirty();
     }
 
     public void light()
     {
-        world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockTorchTFC.LIT, true));
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(LIT, true));
         lastLitTimestamp = CalendarTFC.getTotalTime();
         this.markDirty();
     }

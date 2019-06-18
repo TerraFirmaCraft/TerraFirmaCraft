@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 
 /**
- * todo: The behaviour of this needs to be adjusted/debugged so it actually fills up blocks and doesn't live 1 level high residue.
+ * todo: The behaviour of this needs to be adjusted/debugged so it actually fills up blocks and doesn't live 1 level high residue. Also fix debug world crashing!
  */
 public class BlockFluidFiniteTFC extends BlockFluidFinite
 {

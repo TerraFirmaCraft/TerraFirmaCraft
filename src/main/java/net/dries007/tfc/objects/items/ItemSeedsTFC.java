@@ -32,9 +32,15 @@ public class ItemSeedsTFC extends Item implements IPlantable
 {
     private static final Map<ICrop, ItemSeedsTFC> MAP = new HashMap<>();
 
-    public static ItemSeedsTFC get(ICrop crop) { return MAP.get(crop); }
+    public static ItemSeedsTFC get(ICrop crop)
+    {
+        return MAP.get(crop);
+    }
 
-    public static ItemStack get(ICrop crop, int amount) { return new ItemStack(MAP.get(crop), amount); }
+    public static ItemStack get(ICrop crop, int amount)
+    {
+        return new ItemStack(MAP.get(crop), amount);
+    }
 
     private final ICrop crop;
 
@@ -58,7 +64,7 @@ public class ItemSeedsTFC extends Item implements IPlantable
 
             if (player instanceof EntityPlayerMP)
             {
-                CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)player, pos.up(), itemstack);
+                CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos.up(), itemstack);
             }
 
             itemstack.shrink(1);

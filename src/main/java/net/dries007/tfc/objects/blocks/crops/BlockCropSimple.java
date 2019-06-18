@@ -95,6 +95,13 @@ public abstract class BlockCropSimple extends BlockCropTFC
     }
 
     @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, getStageProperty(), WILD);
+    }
+
+    @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
         drops.clear();
@@ -105,13 +112,6 @@ public abstract class BlockCropSimple extends BlockCropTFC
         {
             drops.add(foodDrop);
         }
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, getStageProperty(), WILD);
     }
 
     @Override

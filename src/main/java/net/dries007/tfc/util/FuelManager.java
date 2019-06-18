@@ -20,6 +20,8 @@ import net.dries007.tfc.types.DefaultMetals;
 
 public final class FuelManager
 {
+    public static final float CHARCOAL_BURN_TEMPERATURE = 1350f;
+
     private static final List<Fuel> fuels = new ArrayList<>();
     private static final Fuel EMPTY = new Fuel(ItemStack.EMPTY, 0, 0);
 

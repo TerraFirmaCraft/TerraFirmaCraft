@@ -185,7 +185,7 @@ public class BlockToolRack extends BlockContainer implements IItemSize
         TEToolRack te = Helpers.getTE(world, pos, TEToolRack.class);
         if (te == null) return new ItemStack(this);
         ItemStack item = te.getItems().get(getSlotFromPos(state, (float) vec.x, (float) vec.y, (float) vec.z));
-        if (item == ItemStack.EMPTY) return new ItemStack(this);
+        if (item.isEmpty()) return new ItemStack(this);
         return item;
     }
 

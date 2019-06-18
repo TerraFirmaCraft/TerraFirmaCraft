@@ -29,7 +29,7 @@ public class GuiButtonAnvilPlanIcon extends GuiButtonTFC implements IButtonToolt
     {
         super(id, x, y, 18, 18, "");
 
-        this.displayItem = recipe.getOutput();
+        this.displayItem = recipe.getPlanIcon();
         this.recipeName = recipe.getRegistryName();
         this.tooltip = displayItem.getDisplayName();
     }

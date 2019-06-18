@@ -12,7 +12,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -36,21 +35,13 @@ import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEBellows;
 import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IBellowsHandler;
-import net.dries007.tfc.util.IHeatProviderBlock;
+import net.dries007.tfc.util.IBellowsConsumerBlock;
+import net.dries007.tfc.util.ILightableBlock;
 
 @ParametersAreNonnullByDefault
-public class BlockFirePit extends Block implements IBellowsHandler, IHeatProviderBlock
+public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILightableBlock
 {
-    public static final PropertyBool LIT = PropertyBool.create("lit");
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.03125D, 0.9375D);
-    private static final Vec3i BELLOWS_OFFSET = new Vec3i(1, 0, 0);
-
-    static
-    {
-        TEBellows.addBellowsOffset(BELLOWS_OFFSET);
-    }
-
 
     public BlockFirePit()
     {
@@ -59,17 +50,6 @@ public class BlockFirePit extends Block implements IBellowsHandler, IHeatProvide
         disableStats();
         setTickRandomly(true);
         setLightLevel(1F);
-    }
-
-    @Override
-    public float getTemperature(World world, BlockPos pos)
-    {
-        TEFirePit te = Helpers.getTE(world, pos, TEFirePit.class);
-        if (te != null)
-        {
-            return te.getTemperature();
-        }
-        return 0;
     }
 
     @Override
@@ -232,18 +212,17 @@ public class BlockFirePit extends Block implements IBellowsHandler, IHeatProvide
     @Override
     public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
     {
-        return offset.equals(BELLOWS_OFFSET);
+        return offset.equals(TEBellows.OFFSET_LEVEL);
     }
 
     @Override
-    public float onAirIntake(TEBellows te, World world, BlockPos pos, float airAmount)
+    public void onAirIntake(TEBellows te, World world, BlockPos pos, int airAmount)
     {
         TEFirePit teFirePit = Helpers.getTE(world, pos, TEFirePit.class);
         if (teFirePit != null)
         {
             teFirePit.onAirIntake(airAmount);
         }
-        return airAmount;
     }
 
     private boolean canBePlacedOn(World worldIn, BlockPos pos)

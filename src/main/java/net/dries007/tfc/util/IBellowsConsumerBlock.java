@@ -18,8 +18,9 @@ import net.dries007.tfc.objects.te.TEBellows;
  * Blocks(not TEs) must implement this interface in order to work with bellows
  * and must provide an offset for them to check by calling {@link TEBellows#addBellowsOffset(Vec3i)}
  */
-public interface IBellowsHandler
+public interface IBellowsConsumerBlock
 {
+
     /**
      * standard handlers should check if they have been accessed by belows from a legal offset
      *
@@ -32,9 +33,7 @@ public interface IBellowsHandler
 
     /**
      * @param te        the bellows that give the air intake.
-     * @param airAmount the amount of air that the bellows give. For reference, TFC bellows always give 1.
-     * @return the amount of air actually used, idk, I was thinking someone might make some custom bellows that use that.
+     * @param airAmount the amount of air that the bellows give. For reference, TFC bellows always give 200.
      */
-    @SuppressWarnings("UnusedReturnValue")
-    float onAirIntake(@Nonnull TEBellows te, @Nonnull World world, @Nonnull BlockPos pos, float airAmount);
+    void onAirIntake(@Nonnull TEBellows te, @Nonnull World world, @Nonnull BlockPos pos, int airAmount);
 }

@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.objects.recipes;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -18,6 +21,7 @@ import net.dries007.tfc.objects.items.metal.ItemMetal;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@ParametersAreNonnullByDefault
 public class MetalToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
     private static final NonNullList<ItemStack> STICKS = OreDictionary.getOres("stickWood");
@@ -49,7 +53,7 @@ public class MetalToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> implement
             else if (stack.getItem() instanceof ItemMetal)
             {
                 ItemMetal metal = ((ItemMetal) stack.getItem());
-                if (metal.type != inp) return false;
+                if (metal.getType() != inp) return false;
                 if (toolhead) return false;
                 toolhead = true;
             }
@@ -62,10 +66,11 @@ public class MetalToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> implement
     }
 
     @Override
+    @Nonnull
     public ItemStack getCraftingResult(InventoryCrafting inv)
     {
         boolean stick = false;
-        ItemMetal toolhead = null;
+        Metal toolheadMetal = null;
         for (int slot = 0; slot < inv.getSizeInventory(); slot++)
         {
             ItemStack stack = inv.getStackInSlot(slot);
@@ -73,23 +78,23 @@ public class MetalToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> implement
 
             if (STICKS.stream().anyMatch(x -> OreDictionary.itemMatches(x, stack, false)))
             {
-                if (stick) return null;
+                if (stick) return ItemStack.EMPTY;
                 stick = true;
             }
             else if (stack.getItem() instanceof ItemMetal)
             {
                 ItemMetal metal = ((ItemMetal) stack.getItem());
-                if (metal.type != inp) return null;
-                if (toolhead != null) return null;
-                toolhead = metal;
+                if (metal.getType() != inp) return ItemStack.EMPTY;
+                if (toolheadMetal != null) return ItemStack.EMPTY;
+                toolheadMetal = metal.getMetal(stack);
             }
             else
             {
-                return null;
+                return ItemStack.EMPTY;
             }
         }
-        if (!stick || toolhead == null) return null;
-        return new ItemStack(ItemMetal.get(toolhead.metal, outp));
+        if (!stick || toolheadMetal == null) return ItemStack.EMPTY;
+        return new ItemStack(ItemMetal.get(toolheadMetal, outp));
     }
 
     @Override
@@ -99,6 +104,7 @@ public class MetalToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> implement
     }
 
     @Override
+    @Nonnull
     public ItemStack getRecipeOutput()
     {
         return ItemStack.EMPTY;
@@ -111,6 +117,7 @@ public class MetalToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> implement
     }
 
     @Override
+    @Nonnull
     public String getGroup()
     {
         return MOD_ID + ":metal_" + outp.name().toLowerCase();

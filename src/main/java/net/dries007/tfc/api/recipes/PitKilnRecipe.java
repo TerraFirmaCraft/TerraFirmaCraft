@@ -20,7 +20,7 @@ import net.dries007.tfc.util.IFireable;
 
 /**
  * Pit kiln recipe, for simple itemstack -> itemstack conversions in the pit kiln
- *
+ * <p>
  * todo: in 1.13+ move this to a json recipe type
  */
 @ParametersAreNonnullByDefault

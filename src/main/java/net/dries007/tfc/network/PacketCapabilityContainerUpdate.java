@@ -42,7 +42,9 @@ public class PacketCapabilityContainerUpdate implements IMessage
     private int windowID;
 
     @SuppressWarnings("unused")
-    public PacketCapabilityContainerUpdate() {}
+    public PacketCapabilityContainerUpdate()
+    {
+    }
 
     public PacketCapabilityContainerUpdate(int windowID, int slotID, ItemStack stack)
     {

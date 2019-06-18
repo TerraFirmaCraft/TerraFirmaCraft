@@ -42,8 +42,7 @@ import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-import static net.dries007.tfc.objects.blocks.devices.BlockFirePit.LIT;
-import static net.dries007.tfc.objects.blocks.wood.BlockLogPile.ONFIRE;
+import static net.dries007.tfc.util.ILightableBlock.LIT;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -135,7 +134,7 @@ public class ItemFireStarter extends ItemTFC
                 // Log pile
                 if (itemRand.nextFloat() < chance)
                 {
-                    world.setBlockState(pos.down(), state.withProperty(ONFIRE, true));
+                    world.setBlockState(pos.down(), state.withProperty(LIT, true));
                     TELogPile te = Helpers.getTE(world, pos.down(), TELogPile.class);
                     if (te != null)
                     {

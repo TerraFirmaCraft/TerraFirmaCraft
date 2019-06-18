@@ -76,6 +76,11 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("ceramics/unfired/fire_brick")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_FIRE_BRICK = getNull();
 
+    @GameRegistry.ObjectHolder("bloom/unrefined")
+    public static final ItemBloom UNREFINED_BLOOM = getNull();
+    @GameRegistry.ObjectHolder("bloom/refined")
+    public static final ItemBloom REFINED_BLOOM = getNull();
+
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
     private static ImmutableList<ItemGem> allGemItems;
@@ -188,6 +193,7 @@ public final class ItemsTFC
             registerPottery(simpleItems, r, "ceramics/unfired/fire_brick", "ceramics/fired/fire_brick", new ItemUnfiredPottery(new ItemFiredPottery()));
 
             simpleItems.add(register(r, "ceramics/fire_clay", new ItemFireClay(), CT_MISC));
+
         }
 
         for (Crop crop : Crop.values())
@@ -248,6 +254,8 @@ public final class ItemsTFC
         // todo: fire clay & fire brick & fire bricks (block)
 
         // todo: bloom & raw bloom ( = IMetalObject)
+        simpleItems.add(register(r, "bloom/unrefined", new ItemBloom(), CT_MISC));
+        simpleItems.add(register(r, "bloom/refined", new ItemBloom(), CT_MISC));
         // todo: jute & jute fiber
         // todo: quiver
         // todo: millstone (quern)

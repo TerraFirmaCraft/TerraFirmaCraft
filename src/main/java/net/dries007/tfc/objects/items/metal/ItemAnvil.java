@@ -61,17 +61,20 @@ public class ItemAnvil extends ItemMetal implements IPlaceableItem
         {
             return false;
         }
-        IBlockState state = world.getBlockState(pos.offset(facing));
-        if (state.getBlock().isReplaceable(world, pos.offset(facing)))
+        if (facing != null)
         {
-            if (!world.isRemote)
+            IBlockState state = world.getBlockState(pos.offset(facing));
+            if (state.getBlock().isReplaceable(world, pos.offset(facing)))
             {
-                ItemAnvil anvil = (ItemAnvil) stack.getItem();
-                world.setBlockState(pos.offset(facing), BlockAnvilTFC.get(anvil.metal).getDefaultState().withProperty(AXIS, player.getHorizontalFacing()));
+                if (!world.isRemote)
+                {
+                    ItemAnvil anvil = (ItemAnvil) stack.getItem();
+                    world.setBlockState(pos.offset(facing), BlockAnvilTFC.get(anvil.metal).getDefaultState().withProperty(AXIS, player.getHorizontalFacing()));
 
-                world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                }
+                return true;
             }
-            return true;
         }
         return false;
     }

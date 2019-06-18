@@ -91,7 +91,6 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
 
     private final NonNullList<ItemStack> logItems = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> strawItems = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
-
     private int burnTicksToGo;
 
     @Override
@@ -156,6 +155,14 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
         nbt.setTag("strawItems", ItemStackHelper.saveAllItems(new NBTTagCompound(), strawItems));
         nbt.setTag("logItems", ItemStackHelper.saveAllItems(new NBTTagCompound(), logItems));
         return super.writeToNBT(nbt);
+    }
+
+    @Override
+    public void onBreakBlock(World worldIn, BlockPos pos)
+    {
+        strawItems.forEach(i -> InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), i));
+        logItems.forEach(i -> InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), i));
+        super.onBreakBlock(worldIn, pos);
     }
 
     public boolean isLit()
@@ -236,14 +243,6 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             }
         }
         return false;
-    }
-
-    @Override
-    public void onBreakBlock(World worldIn, BlockPos pos)
-    {
-        strawItems.forEach(i -> InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), i));
-        logItems.forEach(i -> InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), i));
-        super.onBreakBlock(worldIn, pos);
     }
 
     public int getLogCount()
