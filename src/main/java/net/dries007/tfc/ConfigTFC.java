@@ -108,6 +108,26 @@ public class ConfigTFC
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.playerNutritionDecayModifier")
         public double playerNutritionDecayModifier = 0.2;
+
+        @Config.Comment("Starting base health for the player")
+        @Config.RangeDouble(min = 1, max = 5000)
+        @Config.LangKey("config." + MOD_ID + ".general.playerBaseHealth")
+        public int playerBaseHealth = 1000;
+
+        @Config.Comment("Maximum health a player can obtain with high nutrients")
+        @Config.RangeDouble(min = 1, max = 5000)
+        @Config.LangKey("config." + MOD_ID + ".general.playerMaxHealth")
+        public int playerMaxHealth = 3000;
+
+        @Config.Comment("Minimum health a player can obtain with low nutrients")
+        @Config.RangeDouble(min = 1, max = 5000)
+        @Config.LangKey("config." + MOD_ID + ".general.playerMaxHealth")
+        public int playerMinHealth = 500;
+
+        @Config.Comment("Modifier for how quickly the players becomes thirsty")
+        @Config.RangeDouble(min = 0, max = 10)
+        @Config.LangKey("config." + MOD_ID + ".general.playerThirstModifier")
+        public double playerThirstModifier = 1.0;
     }
 
     public static class ClientCFG

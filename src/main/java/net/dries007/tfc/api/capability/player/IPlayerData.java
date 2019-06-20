@@ -3,11 +3,11 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.nutrient;
+package net.dries007.tfc.api.capability.player;
 
 import net.dries007.tfc.util.agriculture.Nutrient;
 
-public interface IPlayerNutrients
+public interface IPlayerData
 {
     float getNutrient(Nutrient nutrient);
 
@@ -20,4 +20,16 @@ public interface IPlayerNutrients
     void addNutrient(Nutrient nutrient, float amount);
 
     void updateNutrientsFastForward();
+
+    float getMaxHealth();
+
+    float getThirst();
+
+    void setThirst(float value);
+
+    /**
+     * Drinks fluid(ie: water) to fill or drain(salt water) thirst bar.
+     * @param value value to fill/drain(negative)
+     */
+    void drink(float value);
 }

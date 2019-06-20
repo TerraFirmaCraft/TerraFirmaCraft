@@ -15,8 +15,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.nutrient.CapabilityFood;
-import net.dries007.tfc.api.capability.nutrient.IPlayerNutrients;
+import net.dries007.tfc.api.capability.player.CapabilityPlayer;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
@@ -37,7 +37,7 @@ public class GuiNutrition extends GuiContainerTFC
         super(container, playerInv, BACKGROUND);
 
         cachedNutrients = new float[Nutrient.TOTAL];
-        IPlayerNutrients cap = playerInv.player.getCapability(CapabilityFood.CAPABILITY_PLAYER_NUTRIENTS, null);
+        IPlayerData cap = playerInv.player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
         if (cap != null)
         {
             for (Nutrient n : Nutrient.values())
