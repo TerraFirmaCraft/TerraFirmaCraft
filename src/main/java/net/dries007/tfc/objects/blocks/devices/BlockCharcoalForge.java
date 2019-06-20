@@ -230,7 +230,7 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     {
         if (!world.isRemote)
         {
-            if (!state.getValue(LIT))
+            if (!state.getValue(LIT) && hasValidSideBlocks(world, pos) && hasValidChimney(world, pos))
             {
                 ItemStack held = player.getHeldItem(hand);
                 if (ItemFireStarter.canIgnite(held))

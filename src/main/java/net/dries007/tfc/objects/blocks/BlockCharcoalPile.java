@@ -178,11 +178,13 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
             {
                 if (!world.isRemote)
                 {
-                    world.setBlockState(pos, BlocksTFC.CHARCOAL_FORGE.getDefaultState().withProperty(LIT, true));
-                    TECharcoalForge te = Helpers.getTE(world, pos, TECharcoalForge.class);
-                    if (te != null)
+                    if(BlocksTFC.CHARCOAL_FORGE.hasValidSideBlocks(world, pos) && BlocksTFC.CHARCOAL_FORGE.hasValidChimney(world, pos))
                     {
-                        te.onCreate();
+                        world.setBlockState(pos, BlocksTFC.CHARCOAL_FORGE.getDefaultState().withProperty(LIT, true));
+                        TECharcoalForge te = Helpers.getTE(world, pos, TECharcoalForge.class);
+                        if (te != null) {
+                            te.onCreate();
+                        }
                     }
                 }
                 return true;
