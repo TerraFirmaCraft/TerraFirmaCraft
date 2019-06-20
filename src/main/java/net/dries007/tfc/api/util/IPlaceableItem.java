@@ -47,7 +47,7 @@ public interface IPlaceableItem
     boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, @Nullable EnumFacing facing, @Nullable Vec3d hitVec);
 
     /**
-     * This will be called after a sucessful placement. If this is nonzero, the player will consume that amount from their held item.
+     * This will be called after a successful placement. If this is nonzero, the player will consume that amount from their held item.
      *
      * @return the amount to consume
      */
@@ -95,67 +95,61 @@ public interface IPlaceableItem
 
             // Logs -> Log Piles (placement + insertion)
             placeableInstances.put(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "logWood"), (world, pos, stack, player, facing, hitVec) -> {
-                if (player.isSneaking())
+                if (facing != null)
                 {
-                    if (facing != null)
+                    if (world.getBlockState(pos).getBlock() == BlocksTFC.LOG_PILE)
                     {
-                        if (world.getBlockState(pos).getBlock() == BlocksTFC.LOG_PILE)
+                        // Clicked on a log pile, so try an insert or grow the original pile
+                        TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
+                        if (te != null)
                         {
-                            if (!world.isRemote)
+                            if (te.insertLog(stack.copy()))
                             {
-                                TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
-                                if (te != null)
-                                {
-                                    if (te.insertLog(stack.copy()))
-                                    {
-                                        world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                                        return true;
-                                    }
-                                    else
-                                    {
-                                        // Insert log didn't work, see if trying to place another log pile
-                                        if (facing == EnumFacing.UP && te.countLogs() == 16 || (facing != EnumFacing.UP && world.getBlockState(pos.down().offset(facing)).isNormalCube()
-                                            && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing))))
-                                        {
-                                            world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
-
-                                            TELogPile te2 = Helpers.getTE(world, pos.offset(facing), TELogPile.class);
-                                            if (te2 != null)
-                                            {
-                                                te2.insertLog(stack.copy());
-                                            }
-
-                                            world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (world.getBlockState(pos.down().offset(facing)).isNormalCube()
-                                && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing)) &&
-                                player.isSneaking())
-                            {
-                                // Place log pile
                                 if (!world.isRemote)
                                 {
+                                    world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                                }
+                                return true;
+                            }
+                            else if (facing == EnumFacing.UP && te.countLogs() == 16 || (facing != EnumFacing.UP && world.getBlockState(pos.down().offset(facing)).isNormalCube()
+                                && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing))))
+                            {
+                                if (!world.isRemote)
+                                {
+                                    // Insert log didn't work, see if trying to place another log pile
                                     world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
 
-                                    TELogPile te = Helpers.getTE(world, pos.offset(facing), TELogPile.class);
-                                    if (te != null)
+                                    TELogPile te2 = Helpers.getTE(world, pos.offset(facing), TELogPile.class);
+                                    if (te2 != null)
                                     {
-                                        te.insertLog(stack.copy());
+                                        te2.insertLog(stack.copy());
                                     }
 
                                     world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                                    return true;
                                 }
+                                return true;
                             }
                         }
                     }
-                    return true;
+                    else if (world.getBlockState(pos.down().offset(facing)).isNormalCube()
+                        && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing)) &&
+                        player.isSneaking())
+                    {
+                        // Place log pile
+                        if (!world.isRemote)
+                        {
+                            world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
+
+                            TELogPile te = Helpers.getTE(world, pos.offset(facing), TELogPile.class);
+                            if (te != null)
+                            {
+                                te.insertLog(stack.copy());
+                            }
+
+                            world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                        }
+                        return true;
+                    }
                 }
                 return false;
             });

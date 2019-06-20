@@ -139,8 +139,9 @@ public class BlockLogPile extends Block implements ILightableBlock
                 if (!world.isRemote)
                 {
                     TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.LOG_PILE);
-                    return true;
+
                 }
+                return true;
             }
         }
         return false;
