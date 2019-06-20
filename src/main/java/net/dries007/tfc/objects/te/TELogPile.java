@@ -18,7 +18,6 @@ import net.minecraft.util.ITickable;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogPile;
@@ -79,14 +78,12 @@ public class TELogPile extends TEInventory implements ITickable
         {
             for (int i = 0; i < 4; i++)
             {
-                TerraFirmaCraft.getLog().info("Stack in slot: {} = {}", i, inventory.getStackInSlot(i));
                 if (!inventory.getStackInSlot(i).isEmpty())
                 {
                     super.setAndUpdateSlots(slot);
                     return;
                 }
             }
-            TerraFirmaCraft.getLog().info("Setting the block to air!");
             world.setBlockToAir(pos);
         }
         super.setAndUpdateSlots(slot);

@@ -29,6 +29,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.te.TECharcoalForge;
 import net.dries007.tfc.util.Helpers;
@@ -145,7 +146,6 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
                 }
                 return;
             }
-
             if (!stateUnder.isNormalCube())
             {
                 this.dropBlockAsItem(worldIn, pos, state, 0);
@@ -174,7 +174,7 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
 
         if (stack.getItem() == ItemsTFC.FIRESTARTER || stack.getItem() == Items.FLINT_AND_STEEL)
         {
-            if (state.getValue(LAYERS) == 7)
+            if (state.getValue(LAYERS) >= 7 && BlockCharcoalForge.isValid(world, pos))
             {
                 if (!world.isRemote)
                 {
@@ -210,7 +210,6 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
 
         if (!world.isRemote)
         {
-
             int layers = state.getValue(LAYERS);
             if (layers == 1)
             {

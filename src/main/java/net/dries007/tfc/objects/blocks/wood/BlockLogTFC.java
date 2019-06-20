@@ -61,6 +61,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
         setHardness(15.0F);
         setResistance(5.0F);
         OreDictionaryHelper.register(this, "log", "wood");
+        //noinspection ConstantConditions
         OreDictionaryHelper.register(this, "log", "wood", wood.getRegistryName().getPath());
         if (wood.canMakeTannin())
         {
@@ -182,7 +183,8 @@ public class BlockLogTFC extends BlockLog implements IItemSize
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(PLACED, true).withProperty(SMALL, placer.isSneaking());
+        // Small logs are a weird feature, for now they shall be disabled via shift placement since it interferes with log pile placement
+        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(PLACED, true);
     }
 
     @Override
