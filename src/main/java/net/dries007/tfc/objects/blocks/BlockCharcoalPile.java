@@ -148,7 +148,7 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
 
             if (!stateUnder.isNormalCube())
             {
-                this.dropBlockAsItem(worldIn, pos, state, 0);
+                spawnAsEntity(worldIn, pos, new ItemStack(getItemDropped(state, RANDOM, 0), state.getValue(LAYERS), this.damageDropped(state)));
                 worldIn.setBlockToAir(pos);
             }
         }
@@ -174,7 +174,7 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
 
         if (stack.getItem() == ItemsTFC.FIRESTARTER || stack.getItem() == Items.FLINT_AND_STEEL)
         {
-            if (state.getValue(LAYERS) == 7)
+            if (state.getValue(LAYERS) == 7 || state.getValue(LAYERS) == 8)
             {
                 if (!world.isRemote)
                 {

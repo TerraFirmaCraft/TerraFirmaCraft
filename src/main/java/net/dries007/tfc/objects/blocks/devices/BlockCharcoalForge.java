@@ -47,12 +47,13 @@ import net.dries007.tfc.util.Multiblock;
 public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, ILightableBlock
 {
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
-    private static final Multiblock CHARCOAL_FORGE_MULTIBLOCK;
+    private static final Multiblock CHARCOAL_FORGE_CHIMNEY_MULTIBLOCK;
+    private static final Multiblock CHARCOAL_FORGE_PIT_MULTIBLOCK;
 
     static
     {
         BiPredicate<World, BlockPos> skyMatcher = World::canBlockSeeSky;
-        CHARCOAL_FORGE_MULTIBLOCK = new Multiblock()
+        CHARCOAL_FORGE_CHIMNEY_MULTIBLOCK = new Multiblock()
             .match(new BlockPos(0, 1, 0), state -> state.getBlock() == BlocksTFC.CRUCIBLE || state.getBlock() == Blocks.AIR)
             .matchOneOf(new BlockPos(0, 1, 0), new Multiblock()
                 .match(new BlockPos(0, 0, 0), skyMatcher)
@@ -65,36 +66,25 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
                 .match(new BlockPos(-1, 0, 0), skyMatcher)
                 .match(new BlockPos(-2, 0, 0), skyMatcher)
             );
+
+        CHARCOAL_FORGE_PIT_MULTIBLOCK = new Multiblock()
+            .matchAllOf(new BlockPos(0,0,0), new Multiblock()
+                .match(new BlockPos(0,-1,0), state -> state.getMaterial() == Material.ROCK)
+                .match(new BlockPos(0,0,1), state -> state.getMaterial() == Material.ROCK)
+                .match(new BlockPos(0,0,-1), state -> state.getMaterial() == Material.ROCK)
+                .match(new BlockPos(1,0,0), state -> state.getMaterial() == Material.ROCK)
+                .match(new BlockPos(-1,0,0), state -> state.getMaterial() == Material.ROCK)
+        );
     }
 
     public static boolean hasValidSideBlocks(World world, BlockPos pos)
     {
-        for (EnumFacing face : EnumFacing.values())
-        {
-            IBlockState state = world.getBlockState(pos.offset(face));
-            if (face == EnumFacing.UP)
-            {
-                // The block on top must be non-solid
-                if (state.isNormalCube())
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                // Side blocks must be rock, opaque, and full blocks
-                if (state.getMaterial() != Material.ROCK || !state.isOpaqueCube() || !state.isFullBlock())
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return CHARCOAL_FORGE_PIT_MULTIBLOCK.test(world, pos);
     }
 
     public static boolean hasValidChimney(World world, BlockPos pos)
     {
-        return CHARCOAL_FORGE_MULTIBLOCK.test(world, pos);
+        return CHARCOAL_FORGE_CHIMNEY_MULTIBLOCK.test(world, pos);
     }
 
     public BlockCharcoalForge()
