@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.nutrient;
+package net.dries007.tfc.api.capability.player;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -30,10 +30,10 @@ import net.dries007.tfc.world.classic.CalendarTFC;
 public interface IFood extends INBTSerializable<NBTTagCompound>
 {
     /**
-     * Gets the nutrient value (only a single item, not the sum of the stack)
+     * Gets the player value (only a single item, not the sum of the stack)
      *
-     * @param stack    the stack to get the nutrient of
-     * @param nutrient the nutrient in question
+     * @param stack    the stack to get the player of
+     * @param nutrient the player in question
      * @return a value, current range is around 0 - 3
      */
     float getNutrient(ItemStack stack, Nutrient nutrient);
@@ -78,19 +78,19 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
 
     /**
      * Called when the player consumes this food item
-     * Called from {@link CapabilityFood.EventHandler}
+     * Called from {@link CapabilityPlayer.EventHandler}
      *
      * @param player the player doing the consuming
      * @param stack  the stack being consumed
      */
     default void onConsumedByPlayer(@Nonnull EntityPlayer player, @Nonnull ItemStack stack)
     {
-        IPlayerNutrients playerCap = player.getCapability(CapabilityFood.CAPABILITY_PLAYER_NUTRIENTS, null);
+        IPlayerData playerCap = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
         if (playerCap != null)
         {
             if (isRotten() && !player.world.isRemote)
             {
-                for (Supplier<PotionEffect> effectSupplier : CapabilityFood.getRottenFoodEffects())
+                for (Supplier<PotionEffect> effectSupplier : CapabilityPlayer.getRottenFoodEffects())
                 {
                     if (Constants.RNG.nextFloat() < 0.8)
                     {
@@ -125,7 +125,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
         else
         {
             text.add(I18n.format("tfc.tooltip.food_expiry_date", CalendarTFC.getTimeAndDate(getRottenDate())));
-            // Show nutrient values if not rotten
+            // Show player values if not rotten
             for (Nutrient nutrient : Nutrient.values())
             {
                 text.add(nutrient.name().toLowerCase() + ": " + getNutrient(stack, nutrient));

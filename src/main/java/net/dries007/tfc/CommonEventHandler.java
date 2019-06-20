@@ -8,6 +8,9 @@ package net.dries007.tfc;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -16,8 +19,11 @@ import net.minecraft.item.*;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
@@ -26,19 +32,22 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
-import net.dries007.tfc.api.capability.nutrient.CapabilityFood;
-import net.dries007.tfc.api.capability.nutrient.IPlayerNutrients;
+import net.dries007.tfc.api.capability.player.CapabilityPlayer;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
-import net.dries007.tfc.network.PacketPlayerNutrientsUpdate;
+import net.dries007.tfc.network.PacketPlayerDataUpdate;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
+import net.dries007.tfc.util.DamageManager;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -148,6 +157,30 @@ public final class CommonEventHandler
     }
 
     @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event)
+    {
+        if(event.getEntityLiving() instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer)event.getEntityLiving();
+            IPlayerData cap = event.getEntityLiving().getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
+            if(cap != null)
+            {
+                float damage = DamageManager.rescaleDamage(event.getAmount(), 20, ConfigTFC.GENERAL.playerBaseHealth);
+                damage = DamageManager.applyArmor(damage, event.getSource(), player);
+                //So you came here and ask, why cap.getMaxHealth() and not the config? because this way
+                //we still use 20 as max health in vanilla, but our final damage is scaled to playerBaseHealth
+                //Lets take an example: Player takes 20 damage(in vanilla). This is scaled to 1000(default)
+                //armor is applied(for this example, let's assume player has no armor)
+                //then 1000 damage is 1/3rd of players's max health(3000), so, the rescale function
+                //will return 6.6667(1/3rd of 20) and apply that damage to the player. Voila :D
+                float finalDamage = DamageManager.rescaleDamage(damage, cap.getMaxHealth(), 20);
+                event.setAmount(finalDamage);
+                event.getSource().setDamageBypassesArmor(); //Armor calculations is already done
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> e)
     {
         ItemStack stack = e.getObject();
@@ -193,11 +226,11 @@ public final class CommonEventHandler
             TerraFirmaCraft.getNetwork().sendTo(new PacketCalendarUpdate(), player);
 
             // Player nutrients
-            IPlayerNutrients cap = player.getCapability(CapabilityFood.CAPABILITY_PLAYER_NUTRIENTS, null);
+            IPlayerData cap = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
             if (cap != null)
             {
                 cap.updateNutrientsFastForward();
-                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerNutrientsUpdate(cap), player);
+                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), player);
             }
         }
     }

@@ -6,6 +6,8 @@
 package net.dries007.tfc;
 
 import org.apache.logging.log4j.Logger;
+import net.minecraftforge.client.GuiIngameForge;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
@@ -16,12 +18,13 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.api.capability.nutrient.CapabilityFood;
+import net.dries007.tfc.api.capability.player.CapabilityPlayer;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCKeybindings;
+import net.dries007.tfc.client.gui.overlay.PlayerDataOverlay;
 import net.dries007.tfc.command.*;
 import net.dries007.tfc.network.*;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
@@ -122,6 +125,8 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketPlaceBlockSpecial.Handler(), PacketPlaceBlockSpecial.class, ++id, Side.SERVER);
         network.registerMessage(new PacketSwitchPlayerInventoryTab.Handler(), PacketSwitchPlayerInventoryTab.class, ++id, Side.SERVER);
         network.registerMessage(new PacketOpenCraftingGui.Handler(), PacketOpenCraftingGui.class, ++id, Side.SERVER);
+        network.registerMessage(new PacketDrinkWater.Handler(), PacketDrinkWater.class, ++id, Side.SERVER);
+
         // Received on client
         network.registerMessage(new PacketAnvilUpdate.Handler(), PacketAnvilUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketCrucibleUpdate.Handler(), PacketCrucibleUpdate.class, ++id, Side.CLIENT);
@@ -129,7 +134,7 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketCapabilityContainerUpdate.Handler(), PacketCapabilityContainerUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketCalendarUpdate.Handler(), PacketCalendarUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketBarrelUpdate.Handler(), PacketBarrelUpdate.class, ++id, Side.CLIENT);
-        network.registerMessage(new PacketPlayerNutrientsUpdate.Handler(), PacketPlayerNutrientsUpdate.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketPlayerDataUpdate.Handler(), PacketPlayerDataUpdate.class, ++id, Side.CLIENT);
 
         EntitiesTFC.preInit();
         CalendarTFC.preInit();
@@ -139,7 +144,7 @@ public final class TerraFirmaCraft
         CapabilityItemSize.preInit();
         CapabilityItemHeat.preInit();
         CapabilityForgeable.preInit();
-        CapabilityFood.preInit();
+        CapabilityPlayer.preInit();
 
         if (event.getSide().isClient())
         {
@@ -154,6 +159,12 @@ public final class TerraFirmaCraft
         {
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
         }
+
+        //Enable overlay for rendering health, hunger and thirst bars
+        MinecraftForge.EVENT_BUS.register(PlayerDataOverlay.getInstance());
+        GuiIngameForge.renderHealth = false;
+        GuiIngameForge.renderArmor = false;
+        GuiIngameForge.renderExperiance = false;
 
         OreDictionaryHelper.init();
         ItemsTFC.init();

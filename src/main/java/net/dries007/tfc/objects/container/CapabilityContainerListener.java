@@ -16,7 +16,7 @@ import net.minecraft.util.NonNullList;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.api.capability.nutrient.CapabilityFood;
+import net.dries007.tfc.api.capability.player.CapabilityPlayer;
 import net.dries007.tfc.network.PacketCapabilityContainerUpdate;
 
 /**
@@ -89,6 +89,6 @@ public class CapabilityContainerListener implements IContainerListener
 
     private boolean shouldSyncItem(ItemStack stack)
     {
-        return stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null) || stack.hasCapability(CapabilityFood.CAPABILITY_NUTRIENTS, null);
+        return stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null) || stack.hasCapability(CapabilityPlayer.CAPABILITY_NUTRIENTS, null);
     }
 }
