@@ -1,7 +1,7 @@
 {
-    "parent": "tfc:block/cross",
-    "textures": {
-		"cross": "tfc:blocks/plants/primrose/primrose",
-        "particle": "tfc:blocks/plants/primrose/primrose"
-    }
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/primrose/primrose",
+    "particle": "tfc:blocks/plants/primrose/primrose"
+  }
 }

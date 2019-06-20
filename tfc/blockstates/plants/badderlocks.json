@@ -1,14 +1,24 @@
 {
-	"multipart": [
-		{   "when": { "part": "lower" },
-			"apply": [
-				{ "model": "tfc:plants/badderlocks_lower" }
-			]
-		},
-		{   "when": { "part": "single|upper" },
-			"apply": [
-				{ "model": "tfc:plants/badderlocks_upper" }
-			]
-		}
-	]
+  "multipart": [
+    {
+      "when": {
+        "part": "lower"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/badderlocks_lower"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "single|upper"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/badderlocks_upper"
+        }
+      ]
+    }
+  ]
 }

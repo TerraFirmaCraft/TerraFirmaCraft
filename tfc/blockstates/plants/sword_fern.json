@@ -1,8 +1,11 @@
 {
-	"multipart": [
-		{ "apply": [
-				{ "model": "tfc:plants/sword_fern" }
-			]
-		}
-	]
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "tfc:plants/sword_fern"
+        }
+      ]
+    }
+  ]
 }
