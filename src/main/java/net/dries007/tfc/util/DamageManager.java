@@ -4,6 +4,7 @@
  */
 
 package net.dries007.tfc.util;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 
@@ -11,9 +12,10 @@ public final class DamageManager
 {
     /**
      * Reescale damage, from base max health(ie: 20 for vanilla) to max health(ie: 1000 for TFC Classic)
-     * @param value to be scaled
+     *
+     * @param value         to be scaled
      * @param baseMaxHealth for base max health(one hit would kill)
-     * @param toMaxHealth for the rescaled max health
+     * @param toMaxHealth   for the rescaled max health
      * @return
      */
     public static float rescaleDamage(float value, float baseMaxHealth, float toMaxHealth)
@@ -23,9 +25,10 @@ public final class DamageManager
 
     /**
      * Apply armor defence on damage.
+     *
      * @param originalDamage the incoming damage(should be scaled)
-     * @param source the DamageSource from LivingHurtEvent
-     * @param player the player from LivingHurtEvent
+     * @param source         the DamageSource from LivingHurtEvent
+     * @param player         the player from LivingHurtEvent
      * @return
      */
     public static float applyArmor(float originalDamage, DamageSource source, EntityPlayer player)

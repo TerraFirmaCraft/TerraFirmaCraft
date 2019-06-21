@@ -30,9 +30,9 @@ import net.dries007.tfc.world.classic.CalendarTFC;
 public interface IFood extends INBTSerializable<NBTTagCompound>
 {
     /**
-     * Gets the player value (only a single item, not the sum of the stack)
+     * Gets the nutrient value (only a single item, not the sum of the stack)
      *
-     * @param stack    the stack to get the player of
+     * @param stack    the stack to get the nutrient of
      * @param nutrient the nutrient in question
      * @return a value, current range is around 0 - 3
      */

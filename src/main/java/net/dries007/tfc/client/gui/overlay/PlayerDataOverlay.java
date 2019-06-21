@@ -1,7 +1,8 @@
 package net.dries007.tfc.client.gui.overlay;
 
-import java.awt.Color;
+import java.awt.*;
 
+import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -13,13 +14,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import org.lwjgl.opengl.GL11;
 import net.dries007.tfc.util.DamageManager;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -27,13 +26,13 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 public final class PlayerDataOverlay
 {
     private static final ResourceLocation ICONS = new ResourceLocation(MOD_ID, "textures/gui/overlay/icons.png");
-    private FontRenderer fontrenderer = null;
     private static final PlayerDataOverlay INSTANCE = new PlayerDataOverlay();
-    private float maxHealth=1000, curThirst=100;
-
-    private PlayerDataOverlay(){}
 
     public static PlayerDataOverlay getInstance() { return INSTANCE; }
+    private FontRenderer fontrenderer = null;
+    private float maxHealth = 1000, curThirst = 100;
+
+    private PlayerDataOverlay() {}
 
     public void setMaxHealth(float value) { this.maxHealth = value; }
 
@@ -46,7 +45,7 @@ public final class PlayerDataOverlay
         EntityPlayer player = mc.player.inventory.player;
         GuiIngameForge.renderFood = false;
         // We check for crosshairs just because it's always drawn and is before air bar
-        if(event.getType() != ElementType.CROSSHAIRS)
+        if (event.getType() != ElementType.CROSSHAIRS)
             return;
 
         // This is for air to be drawn above our bars
@@ -63,17 +62,29 @@ public final class PlayerDataOverlay
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.renderEngine.bindTexture(ICONS);
 
-        if(mc.playerController.gameIsSurvivalOrAdventure())
+        if (mc.playerController.gameIsSurvivalOrAdventure())
         {
             //Draw Health
             GL11.glEnable(GL11.GL_BLEND);
-            this.drawTexturedModalRect(mid-91, healthRowHeight, 0, 0, 90, 10);
+            this.drawTexturedModalRect(mid - 91, healthRowHeight, 0, 0, 90, 10);
             float maxHealth = this.maxHealth;
             float curHealth = DamageManager.rescaleDamage(player.getHealth(), 20, maxHealth);
             float percentHealth = curHealth / maxHealth;
+            float surplusPercent = Math.max(percentHealth - 1, 0);
+            int uSurplus = 90;
+            if(percentHealth > 1)percentHealth = 1;
 
-            this.drawTexturedModalRect(mid-91, healthRowHeight, 0, 10, (int) (90*percentHealth), 10);
-
+            this.drawTexturedModalRect(mid - 91, healthRowHeight, 0, 10, (int) (90 * percentHealth), 10);
+            while(surplusPercent > 0)
+            {
+                //Draw beyond max health bar(if other mods adds more health)
+                float percent = Math.min(surplusPercent, 1);
+                this.drawTexturedModalRect(mid - 91, healthRowHeight, uSurplus, 10, (int) (90 * percent), 10);
+                surplusPercent -= 1.0f;
+                uSurplus = uSurplus == 90 ? 0 : 90; //To alternate between red and yellow bars (if mods adds that much surplus health)
+                //To anyone seeing this: feel free to make a colorize(Hue tweaking?) function to get other color bars
+                //Or just add more color bars to overlay icons.
+            }
             //Draw Food and Water
             float foodLevel = player.getFoodStats().getFoodLevel();
             float percentFood = foodLevel / 20f;
@@ -81,27 +92,17 @@ public final class PlayerDataOverlay
 
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.drawTexturedModalRect(mid+1, healthRowHeight, 0, 20, 90, 5);
-            //Removed during port
-			/*if(playerclient != null && playerclient.guishowFoodRestoreAmount)
-			{
-				float percentFood2 = Math.min(percentFood + playerclient.guiFoodRestoreAmount / foodstats.getMaxStomach(player), 1);
-				GL11.glColor4f(0.0F, 0.6F, 0.0F, 0.3F);
-				this.drawTexturedModalRect(mid+1, healthRowHeight, 0, 25, (int) (90*(percentFood2)), 5);
-			}*/
+            this.drawTexturedModalRect(mid + 1, healthRowHeight, 0, 20, 90, 5);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-            this.drawTexturedModalRect(mid+1, healthRowHeight, 0, 25, (int) (90*percentFood), 5);
+            this.drawTexturedModalRect(mid + 1, healthRowHeight, 0, 25, (int) (90 * percentFood), 5);
 
-            this.drawTexturedModalRect(mid+1, healthRowHeight+5, 90, 20, 90, 5);
-            this.drawTexturedModalRect(mid+1, healthRowHeight+5, 90, 25, (int) (90*percentThirst), 5);
+            this.drawTexturedModalRect(mid + 1, healthRowHeight + 5, 90, 20, 90, 5);
+            this.drawTexturedModalRect(mid + 1, healthRowHeight + 5, 90, 25, (int) (90 * percentThirst), 5);
 
             //Draw Notifications
-            String healthString = ((int) Math.min(curHealth, maxHealth)) + "/" + ((int) (maxHealth));
-            fontrenderer.drawString(healthString, mid-45-(fontrenderer.getStringWidth(healthString)/2), healthRowHeight+2, Color.white.getRGB());
-            //Removed during port
-            //if (player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TFCAttributes.OVERBURDENED_UUID) != null)
-            //	mc.fontrenderer.drawString(TFC_Core.translate("gui.overburdened"), mid-(mc.fontrenderer.getStringWidth(TFC_Core.translate("gui.overburdened"))/2), healthRowHeight-20, Color.red.getRGB());
+            String healthString = ((int) curHealth) + "/" + ((int) (maxHealth));
+            fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2, Color.white.getRGB());
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             mc.renderEngine.bindTexture(new ResourceLocation("minecraft:textures/gui/icons.png"));
@@ -141,34 +142,20 @@ public final class PlayerDataOverlay
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             }
 
-            // Don't show the dismount message if it was triggered by the "mounting" from opening a horse inventory.
-			/*if (mc.currentScreen instanceof GuiScreenHorseInventoryTFC) //Removed during port
-			{
-				recordTimer = 0;
-				try
-				{
-					_recordPlayingUpFor.setInt(mc.ingameGUI, 0);
-				} catch (Exception e)
-				{
-					throw new RuntimeException(e);
-				}
-			}*/
-
             // Draw mount's health bar
             if (player.getRidingEntity() instanceof EntityLivingBase)
             {
                 GuiIngameForge.renderHealthMount = false;
                 mc.renderEngine.bindTexture(ICONS);
                 EntityLivingBase mount = ((EntityLivingBase) player.getRidingEntity());
-                this.drawTexturedModalRect(mid+1, armorRowHeight, 90, 0, 90, 10);
+                this.drawTexturedModalRect(mid + 1, armorRowHeight, 90, 0, 90, 10);
                 double mountMaxHealth = mount.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
                 double mountCurrentHealth = mount.getHealth();
-                float mountPercentHealth = (float)Math.min(mountCurrentHealth/mountMaxHealth, 1.0f);
-                this.drawTexturedModalRect(mid+1, armorRowHeight, 90, 10, (int) (90*mountPercentHealth), 10);
+                float mountPercentHealth = (float) Math.min(mountCurrentHealth / mountMaxHealth, 1.0f);
+                this.drawTexturedModalRect(mid + 1, armorRowHeight, 90, 10, (int) (90 * mountPercentHealth), 10);
 
                 String mountHealthString = (int) Math.min(mountCurrentHealth, mountMaxHealth) + "/" + (int) mountMaxHealth;
                 fontrenderer.drawString(mountHealthString, mid + 47 - (fontrenderer.getStringWidth(mountHealthString) / 2), armorRowHeight + 2, Color.white.getRGB());
-                //renderDismountOverlay(mc, mid, sr.getScaledHeight(), event.partialTicks);//Removed during port
             }
 
             mc.renderEngine.bindTexture(new ResourceLocation("minecraft:textures/gui/icons.png"));

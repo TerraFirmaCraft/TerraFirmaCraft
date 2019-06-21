@@ -8,11 +8,6 @@ package net.dries007.tfc;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -25,7 +20,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -39,7 +33,6 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
 import net.dries007.tfc.api.capability.player.CapabilityPlayer;
@@ -87,30 +80,35 @@ public final class CommonEventHandler
     @SubscribeEvent
     public static void onRightClickWater(PlayerInteractEvent event)
     {
-        if(event.getSide() == Side.CLIENT)return;
-        if(!(event instanceof PlayerInteractEvent.RightClickBlock || event instanceof PlayerInteractEvent.RightClickEmpty))return;
+        if (event.getSide() == Side.CLIENT) return;
+        if (!(event instanceof PlayerInteractEvent.RightClickBlock || event instanceof PlayerInteractEvent.RightClickEmpty))
+            return;
         EntityPlayer player = event.getEntityPlayer();
-        if(!(player.getHeldItemMainhand().isEmpty() && player.getHeldItemOffhand().isEmpty()))return; //Need both hands to drink water
+        if (!(player.getHeldItemMainhand().isEmpty() && player.getHeldItemOffhand().isEmpty()))
+            return; //Need both hands to drink water
         RayTraceResult result = Helpers.rayTrace(event.getWorld(), player, true);
-        if(result != null && result.typeOfHit == RayTraceResult.Type.BLOCK)
+        if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK)
         {
             BlockPos blockpos = result.getBlockPos();
             IBlockState state = event.getWorld().getBlockState(blockpos);
             IPlayerData cap = event.getEntityLiving().getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
-            if(cap != null)
+            if (cap != null)
             {
-                if(BlocksTFC.isFreshWater(state))
+                if (BlocksTFC.isFreshWater(state))
                 {
-                    if(cap.drink(15)){
+                    if (cap.drink(15))
+                    {
                         player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                        TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP)player);
+                        TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
                     }
-                }else if(BlocksTFC.isSaltWater(state))
+                }
+                else if (BlocksTFC.isSaltWater(state))
                 {
-                    if(cap.drink(-15)){
+                    if (cap.drink(-15))
+                    {
                         //Salty water drains thirst bar.
                         player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                        TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP)player);
+                        TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
                     }
                 }
             }
@@ -201,11 +199,11 @@ public final class CommonEventHandler
     public static void onLivingHurt(LivingHurtEvent event)
     {
         //Starvation should not be scaled, you receive damage based on % anyway.
-        if(event.getEntityLiving() instanceof EntityPlayer && !(event.getSource() == DamageSource.STARVE))
+        if (event.getEntityLiving() instanceof EntityPlayer && !(event.getSource() == DamageSource.STARVE))
         {
-            EntityPlayer player = (EntityPlayer)event.getEntityLiving();
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
             IPlayerData cap = event.getEntityLiving().getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
-            if(cap != null)
+            if (cap != null)
             {
                 float damage = DamageManager.rescaleDamage(event.getAmount(), 20, ConfigTFC.GENERAL.playerBaseHealth);
                 damage = DamageManager.applyArmor(damage, event.getSource(), player);
@@ -310,10 +308,14 @@ public final class CommonEventHandler
         {
             EntityPlayer player = (EntityPlayer) event.getEntity();
             IPlayerData cap = event.getEntityLiving().getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
-            if (cap != null && !player.isCreative()) {
-                if (player.isSprinting()) {
+            if (cap != null && !player.isCreative())
+            {
+                if (player.isSprinting())
+                {
                     cap.addExhaustion(4.0F);
-                } else {
+                }
+                else
+                {
                     cap.addExhaustion(1.0F);
                 }
             }
@@ -329,25 +331,29 @@ public final class CommonEventHandler
         if (!world.isRemote && event.getEntity() instanceof EntityPlayer)
         {
             EntityPlayer player = (EntityPlayer) event.getEntity();
-            if(player.ticksExisted % 20 == 0)
+            if (player.ticksExisted % 20 == 0)
             {
                 IPlayerData cap = event.getEntityLiving().getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
                 if (cap != null && !player.isCreative())
                 {
                     //Add exhaustion each second of sprint, also, each 5 secs sync player data for HUD
-                    if(player.isSprinting())cap.addExhaustion(1.5F);
-                    if(player.ticksExisted % 100 == 0)
+                    if (player.isSprinting()) cap.addExhaustion(1.5F);
+                    if (player.ticksExisted % 100 == 0)
                     {
                         cap.update();
                         //Apply Debuff
-                        if(cap.getThirst() < 10f){
+                        if (cap.getThirst() < 10f)
+                        {
                             player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 1));
                             player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 1));
-                            if(cap.getThirst() <= 0f){
+                            if (cap.getThirst() <= 0f)
+                            {
                                 //Hurt the player
                                 player.attackEntityFrom(DamageSource.STARVE, 1); //5% life/5secs
                             }
-                        }else if(cap.getThirst() < 40f){
+                        }
+                        else if (cap.getThirst() < 40f)
+                        {
                             player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 0));
                             player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 0));
                         }
@@ -374,7 +380,8 @@ public final class CommonEventHandler
             if (canHarvestBlock)
             {
                 IPlayerData cap = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
-                if (cap != null) {
+                if (cap != null)
+                {
                     cap.addExhaustion(1.0F);
                 }
             }
