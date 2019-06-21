@@ -159,7 +159,7 @@ public final class TerraFirmaCraft
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
         }
 
-        if(event.getSide() == Side.CLIENT)
+        if (event.getSide() == Side.CLIENT)
         {
             //Enable overlay for rendering health, hunger and thirst bars
             MinecraftForge.EVENT_BUS.register(PlayerDataOverlay.getInstance());

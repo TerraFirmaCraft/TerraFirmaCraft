@@ -34,6 +34,7 @@ public interface IPlayerData
 
     /**
      * Drinks fluid(ie: water) to fill or drain(salt water) thirst bar.
+     *
      * @param value value to fill/drain(negative)
      * @return true if the fluid was drank(ie: cooldown)
      */
@@ -46,6 +47,7 @@ public interface IPlayerData
     /**
      * Adds an exhaustion(consumes thirst bar faster) modifier
      * The exhaustion worn off over time
+     *
      * @param value
      */
     void addExhaustion(float value);

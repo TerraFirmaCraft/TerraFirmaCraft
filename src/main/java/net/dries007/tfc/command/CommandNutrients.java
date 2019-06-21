@@ -75,7 +75,7 @@ public class CommandNutrients extends CommandBase
         }
         catch (IllegalArgumentException e)
         {
-            throw new WrongUsageException("Unknown player: " + args[0]);
+            throw new WrongUsageException("Unknown nutrient: " + args[0]);
         }
     }
 
