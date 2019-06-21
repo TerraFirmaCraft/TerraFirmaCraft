@@ -269,6 +269,7 @@ public final class BlocksTFC
 
         normalItemBlocks.add(new ItemBlockTFC(register(r, "thatch", new BlockThatch(Material.PLANTS), CT_DECORATIONS)));
 
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "quern", new BlockQuern(), CT_MISC)));
         normalItemBlocks.add(new ItemBlockTFC(register(r, "crucible", new BlockCrucible(), CT_MISC)));
         normalItemBlocks.add(new ItemBlockTFC(register(r, "blast_furnace", new BlockBlastFurnace(), CT_MISC)));
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bellows", new BlockBellows(), CT_MISC)));
