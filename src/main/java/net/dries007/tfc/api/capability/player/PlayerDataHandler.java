@@ -23,10 +23,14 @@ import static net.dries007.tfc.api.capability.player.CapabilityPlayer.MIN_PLAYER
 
 public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<NBTTagCompound>
 {
-    private static final float BASE_NUTRIENT = 0.8f, MAX_NUTRIENT = 1.0f, MIN_NUTRIENT = 0.5f; //To determine max health
+    //To determine max health, compare (averageSkills + averageNutrients) / 2.0f to these
+    private static final float MAX_HEALTH_THRESHOULD = 1.0f, BASE_HEALTH_THRESHOULD = 0.4f, MIN_HEALTH_THRESHOULD = 0.1f;
     private final float[] nutrients;
-    private long lastUpdateTick;
-    private float thirst;
+    private final float[] skills;
+    private long lastUpdateTick, lastDrinkTick;
+    private float thirst, exhaustion;
+
+    private static final int PLACEHOLDER_SKILL_TOTAL = 1; //TODO Implement this
 
     public PlayerDataHandler()
     {
@@ -36,25 +40,31 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     public PlayerDataHandler(@Nullable NBTTagCompound nbt)
     {
         nutrients = new float[Nutrient.TOTAL];
+        skills = new float[PLACEHOLDER_SKILL_TOTAL]; //TODO change this to real value later
         for (int i = 0; i < nutrients.length; i++)
         {
-            nutrients[i] = BASE_NUTRIENT * MAX_PLAYER_NUTRIENTS;
+            nutrients[i] = 0.8f * MAX_PLAYER_NUTRIENTS;
+        }
+        for (int i = 0; i < skills.length; i++)
+        {
+            skills[i] = 0;
         }
         thirst = 70.0f;
+        exhaustion = 0;
         deserializeNBT(nbt);
     }
 
     @Override
     public float getNutrient(Nutrient nutrient)
     {
-        updateData();
+        update();
         return nutrients[nutrient.ordinal()];
     }
 
     @Override
     public float[] getNutrients()
     {
-        updateData();
+        update();
         return nutrients;
     }
 
@@ -84,14 +94,9 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     @Override
     public void addNutrient(Nutrient nutrient, float amount)
     {
-        updateData();
+        update();
         float newAmount = nutrients[nutrient.ordinal()] + amount;
         setNutrient(nutrient, newAmount);
-    }
-
-    public void updateNutrientsFastForward()
-    {
-        lastUpdateTick = CalendarTFC.getCalendarTime();
     }
 
     @Override
@@ -112,15 +117,18 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     @Nonnull
     public NBTTagCompound serializeNBT()
     {
-        updateData();
+        update();
 
         NBTTagCompound nbt = new NBTTagCompound();
         for (Nutrient nutrient : Nutrient.values())
         {
             nbt.setFloat(nutrient.name().toLowerCase(), this.nutrients[nutrient.ordinal()]);
         }
+        //TODO serialize skills
         nbt.setFloat("thirst", thirst);
+        nbt.setFloat("exhaustion", exhaustion);
         nbt.setLong("lastUpdateTick", lastUpdateTick);
+        nbt.setLong("lastDrinkTick", lastDrinkTick);
         return nbt;
     }
 
@@ -133,48 +141,84 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
             {
                 nutrients[nutrient.ordinal()] = nbt.getFloat(nutrient.name().toLowerCase());
             }
+            //TODO deserialize skills
             thirst = nbt.getFloat("thirst");
+            exhaustion = nbt.getFloat("exhaustion");
             lastUpdateTick = nbt.getLong("lastUpdateTick");
+            lastDrinkTick = nbt.getLong("lastDrinkTick");
         }
     }
 
-    private void updateData()
+    @Override
+    public void update()
     {
         int ticksPassed = (int) (CalendarTFC.getCalendarTime() - lastUpdateTick);
         for (Nutrient nutrient : Nutrient.values())
         {
             setNutrient(nutrient, nutrients[nutrient.ordinal()] - (float) (ConfigTFC.GENERAL.playerNutritionDecayModifier * nutrient.getDecayModifier() * ticksPassed));
         }
+        //Reduces thirst bar for normal living
         thirst -= (float) (ConfigTFC.GENERAL.playerThirstModifier * ticksPassed / 240);
-        if(thirst < 0)thirst = 0;
+        if (exhaustion > 0)
+        {
+            float ticksExhaustion = exhaustion * 20.0f; //1.0F of exhaustion per sec
+            if (ticksExhaustion < ticksPassed)
+            {
+                exhaustion = 0;
+            }
+            else
+            {
+                exhaustion -= ticksPassed / 20f;
+                ticksExhaustion = ticksPassed;
+            }
+            thirst -= 0.025f * ticksExhaustion;
+        }
+        if (thirst < 0) thirst = 0;
         lastUpdateTick = CalendarTFC.getCalendarTime();
+    }
+
+    private float getNutrientAverage()
+    {
+        float total = 0;
+        for (Nutrient nutrient : Nutrient.values())
+        {
+            total += this.nutrients[nutrient.ordinal()];
+        }
+        return total / Nutrient.TOTAL;
+    }
+
+    private float getSkillAverage()
+    {
+        //TODO implement this like getNutrientAverage()
+        return 100;
     }
 
     @Override
     public float getMaxHealth()
     {
-        float average = 0;
-        for (Nutrient nutrient : Nutrient.values())
-        {
-            average += this.nutrients[nutrient.ordinal()];
-        }
-        average = average / Nutrient.TOTAL / MAX_PLAYER_NUTRIENTS;
-        if(average < BASE_NUTRIENT)
+        float nutrientPercent = getNutrientAverage() / MAX_PLAYER_NUTRIENTS;
+        float skillPercent = getSkillAverage() / 100; //MAX_PLAYER_SKILLS;
+        float averagePercent = (nutrientPercent + skillPercent) / 2.0f;
+        float maxHealth;
+        if (averagePercent < BASE_HEALTH_THRESHOULD)
         {
             //Less than base health
-            if(average <= MIN_NUTRIENT)return ConfigTFC.GENERAL.playerMinHealth;
-            float difNutrientValue = BASE_NUTRIENT - MIN_NUTRIENT;
+            if (averagePercent <= MIN_HEALTH_THRESHOULD) return ConfigTFC.GENERAL.playerMinHealth;
+            float difNutrientValue = BASE_HEALTH_THRESHOULD - MIN_HEALTH_THRESHOULD;
             int difHealthValue = ConfigTFC.GENERAL.playerBaseHealth - ConfigTFC.GENERAL.playerMinHealth;
-            average -= MIN_NUTRIENT;
-            return average * difHealthValue / difNutrientValue + ConfigTFC.GENERAL.playerMinHealth;
-        }else{
-            //More than base health;
-            if(average >= MAX_NUTRIENT)return ConfigTFC.GENERAL.playerMaxHealth;
-            float difNutrientValue = MAX_NUTRIENT - BASE_NUTRIENT;
-            int difHealthValue = ConfigTFC.GENERAL.playerMaxHealth - ConfigTFC.GENERAL.playerBaseHealth;
-            average -= BASE_NUTRIENT;
-            return average * difHealthValue / difNutrientValue + ConfigTFC.GENERAL.playerBaseHealth;
+            averagePercent -= MIN_HEALTH_THRESHOULD;
+            maxHealth = averagePercent * difHealthValue / difNutrientValue + ConfigTFC.GENERAL.playerMinHealth;
         }
+        else
+        {
+            //More than base health;
+            if (averagePercent >= MAX_HEALTH_THRESHOULD) return ConfigTFC.GENERAL.playerMaxHealth;
+            float difNutrientValue = MAX_HEALTH_THRESHOULD - BASE_HEALTH_THRESHOULD;
+            int difHealthValue = ConfigTFC.GENERAL.playerMaxHealth - ConfigTFC.GENERAL.playerBaseHealth;
+            averagePercent -= BASE_HEALTH_THRESHOULD;
+            maxHealth = averagePercent * difHealthValue / difNutrientValue + ConfigTFC.GENERAL.playerBaseHealth;
+        }
+        return maxHealth;
     }
 
     @Override
@@ -187,13 +231,39 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     public void setThirst(float value)
     {
         this.thirst = value;
+        if (this.thirst > 100) this.thirst = 100;
+        if (this.thirst < 0) this.thirst = 0;
     }
 
     @Override
-    public void drink(float value)
+    public boolean drink(float value)
     {
-        this.thirst += value;
-        if(this.thirst > 100)this.thirst = 100;
-        if(this.thirst < 0)this.thirst = 0;
+        int ticksPassed = (int) (CalendarTFC.getCalendarTime() - lastDrinkTick);
+        if (ticksPassed < 30 || this.thirst > 95) return false; //One sip per one and a half sec and stops after almost full(to stop drinking after that)
+        lastDrinkTick = CalendarTFC.getCalendarTime();
+        this.setThirst(this.thirst + value);
+        return true;
     }
+
+    @Override
+    public float getExhaustion()
+    {
+        return this.exhaustion;
+    }
+
+    @Override
+    public void setExhaustion(float value)
+    {
+        this.exhaustion = value;
+        if(this.exhaustion > 100)this.exhaustion = 100; //100 secs max?
+        if(this.exhaustion < 0)this.exhaustion = 0; //For custom implementations to reduce exhaust(eg: potion of fatigue reducing?)
+    }
+
+    @Override
+    public void addExhaustion(float value)
+    {
+        this.setExhaustion(this.exhaustion + value);
+    }
+
+
 }

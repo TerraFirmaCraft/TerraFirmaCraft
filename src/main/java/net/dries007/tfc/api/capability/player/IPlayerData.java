@@ -19,7 +19,7 @@ public interface IPlayerData
 
     void addNutrient(Nutrient nutrient, float amount);
 
-    void updateNutrientsFastForward();
+    void update();
 
     float getMaxHealth();
 
@@ -31,5 +31,22 @@ public interface IPlayerData
      * Drinks fluid(ie: water) to fill or drain(salt water) thirst bar.
      * @param value value to fill/drain(negative)
      */
-    void drink(float value);
+
+    /**
+     * Drinks fluid(ie: water) to fill or drain(salt water) thirst bar.
+     * @param value value to fill/drain(negative)
+     * @return true if the fluid was drank(ie: cooldown)
+     */
+    boolean drink(float value);
+
+    float getExhaustion();
+
+    void setExhaustion(float value);
+
+    /**
+     * Adds an exhaustion(consumes thirst bar faster) modifier
+     * The exhaustion worn off over time
+     * @param value
+     */
+    void addExhaustion(float value);
 }
