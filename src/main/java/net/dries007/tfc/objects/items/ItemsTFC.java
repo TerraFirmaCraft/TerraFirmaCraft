@@ -54,6 +54,7 @@ public final class ItemsTFC
     public static final ItemGoldPan GOLDPAN = getNull();
     public static final ItemMisc STRAW = getNull();
     public static final Item JUTE = getNull();
+    public static final ItemHandstone HANDSTONE = getNull();
 
     @GameRegistry.ObjectHolder("ceramics/fire_clay")
     public static final ItemFireClay FIRE_CLAY = getNull();
@@ -214,6 +215,7 @@ public final class ItemsTFC
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
         simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "straw"), CT_MISC));
+        simpleItems.add(register(r, "handstone", new ItemHandstone(), CT_MISC));
 
         simpleItems.add(register(r, "bloom/unrefined", new ItemBloom(), CT_MISC));
         simpleItems.add(register(r, "bloom/refined", new ItemBloom(), CT_MISC));
