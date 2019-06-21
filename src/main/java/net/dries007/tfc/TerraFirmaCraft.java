@@ -125,7 +125,6 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketPlaceBlockSpecial.Handler(), PacketPlaceBlockSpecial.class, ++id, Side.SERVER);
         network.registerMessage(new PacketSwitchPlayerInventoryTab.Handler(), PacketSwitchPlayerInventoryTab.class, ++id, Side.SERVER);
         network.registerMessage(new PacketOpenCraftingGui.Handler(), PacketOpenCraftingGui.class, ++id, Side.SERVER);
-        network.registerMessage(new PacketDrinkWater.Handler(), PacketDrinkWater.class, ++id, Side.SERVER);
 
         // Received on client
         network.registerMessage(new PacketAnvilUpdate.Handler(), PacketAnvilUpdate.class, ++id, Side.CLIENT);
@@ -160,11 +159,14 @@ public final class TerraFirmaCraft
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
         }
 
-        //Enable overlay for rendering health, hunger and thirst bars
-        MinecraftForge.EVENT_BUS.register(PlayerDataOverlay.getInstance());
-        GuiIngameForge.renderHealth = false;
-        GuiIngameForge.renderArmor = false;
-        GuiIngameForge.renderExperiance = false;
+        if(event.getSide() == Side.CLIENT)
+        {
+            //Enable overlay for rendering health, hunger and thirst bars
+            MinecraftForge.EVENT_BUS.register(PlayerDataOverlay.getInstance());
+            GuiIngameForge.renderHealth = false;
+            GuiIngameForge.renderArmor = false;
+            GuiIngameForge.renderExperiance = false;
+        }
 
         OreDictionaryHelper.init();
         ItemsTFC.init();

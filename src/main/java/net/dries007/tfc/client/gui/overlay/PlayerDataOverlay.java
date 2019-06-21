@@ -66,16 +66,19 @@ public final class PlayerDataOverlay
         if(mc.playerController.gameIsSurvivalOrAdventure())
         {
             //Draw Health
+            GL11.glEnable(GL11.GL_BLEND);
             this.drawTexturedModalRect(mid-91, healthRowHeight, 0, 0, 90, 10);
             float maxHealth = this.maxHealth;
             float curHealth = DamageManager.rescaleDamage(player.getHealth(), 20, maxHealth);
             float percentHealth = curHealth / maxHealth;
+
             this.drawTexturedModalRect(mid-91, healthRowHeight, 0, 10, (int) (90*percentHealth), 10);
 
             //Draw Food and Water
             float foodLevel = player.getFoodStats().getFoodLevel();
             float percentFood = foodLevel / 20f;
             float percentThirst = this.curThirst / 100f;
+
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.drawTexturedModalRect(mid+1, healthRowHeight, 0, 20, 90, 5);

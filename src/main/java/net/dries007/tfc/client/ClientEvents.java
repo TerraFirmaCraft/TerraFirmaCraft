@@ -10,30 +10,22 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiCreateWorld;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.gui.recipebook.GuiButtonRecipe;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -50,16 +42,13 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.capability.player.CapabilityPlayer;
 import net.dries007.tfc.api.capability.player.IFood;
-import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
-import net.dries007.tfc.network.PacketDrinkWater;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.CalendarTFC;
@@ -307,64 +296,5 @@ public class ClientEvents
     public static void textureStitched(TextureStitchEvent.Post event)
     {
         FluidSpriteCache.clear();
-    }
-
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public static void onRightClick(PlayerInteractEvent.RightClickEmpty event)
-    {
-        TerraFirmaCraft.getLog().warn("RightClickEmpty Event");
-        EntityPlayerSP player = (EntityPlayerSP)event.getEntityPlayer();
-        ItemStack stack = event.getItemStack();
-        if(stack.isEmpty())
-        {
-                Vec3d vec3d = player.getPositionEyes(1f);
-                Vec3d vec3d1 = player.getLook(1f);
-                Vec3d vec3d2 = vec3d.add(vec3d1.x * 3, vec3d1.y * 3, vec3d1.z * 3);
-                RayTraceResult result = player.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
-                if(result != null && result.typeOfHit == RayTraceResult.Type.MISS)
-                {
-                    TerraFirmaCraft.getLog().warn("Result one");
-                    BlockPos blockpos = result.getBlockPos();
-                    IBlockState state = event.getWorld().getBlockState(blockpos);
-                    TerraFirmaCraft.getLog().warn(state.getBlock().toString());
-                    if(BlocksTFC.isFreshWater(state))
-                    {
-                        TerraFirmaCraft.getLog().warn("found fresh water");
-                        TerraFirmaCraft.getNetwork().sendToServer(new PacketDrinkWater(15f));
-                    }
-                }
-                else if(result != null && result.typeOfHit == RayTraceResult.Type.BLOCK)
-                {
-                    TerraFirmaCraft.getLog().warn("Result two");
-                    BlockPos blockpos = result.getBlockPos().offset(result.sideHit);
-                    IBlockState state = event.getWorld().getBlockState(blockpos);
-                    TerraFirmaCraft.getLog().warn(state.getBlock().toString());
-                    if(BlocksTFC.isFreshWater(state))
-                    {
-                        TerraFirmaCraft.getLog().warn("found fresh water");
-                        TerraFirmaCraft.getNetwork().sendToServer(new PacketDrinkWater(15f));
-                    }
-                }
-            }
-    }
-
-
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public static void onRightClick(PlayerInteractEvent.RightClickBlock event)
-    {
-        TerraFirmaCraft.getLog().warn("Fired click block event");
-        if(event.getHitVec() == null || !event.getItemStack().isEmpty())
-        {
-            return;
-        }
-        BlockPos blockpos = event.getPos().offset(event.getFace());
-        IBlockState state = event.getWorld().getBlockState(blockpos);
-        if(BlocksTFC.isFreshWater(state))
-        {
-            TerraFirmaCraft.getLog().warn("found fresh water");
-            TerraFirmaCraft.getNetwork().sendToServer(new PacketDrinkWater(15f));
-        }
     }
 }
