@@ -32,6 +32,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
@@ -270,7 +271,7 @@ public final class CommonEventHandler
             IPlayerData cap = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
             if (cap != null)
             {
-                cap.update();
+                cap.onUpdate(player);
                 TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), player);
             }
         }
@@ -298,95 +299,39 @@ public final class CommonEventHandler
         }
     }
 
-    //Add exhaustion on player jumping
     @SubscribeEvent
-    public static void onPlayerJump(LivingEvent.LivingJumpEvent event)
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event)
     {
-        World world = event.getEntity().world;
+        World world = event.player.world;
 
-        if (!world.isRemote && event.getEntity() instanceof EntityPlayer)
+        if (!world.isRemote && event.phase == TickEvent.Phase.START)
         {
-            EntityPlayer player = (EntityPlayer) event.getEntity();
-            IPlayerData cap = event.getEntityLiving().getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
-            if (cap != null && !player.isCreative())
+            EntityPlayer player = event.player;
+            IPlayerData cap = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
+            if (cap != null)
             {
-                if (player.isSprinting())
+                cap.onUpdate(player);
+                if (player.ticksExisted % 100 == 0)
                 {
-                    cap.addExhaustion(4.0F);
-                }
-                else
-                {
-                    cap.addExhaustion(1.0F);
-                }
-            }
-        }
-    }
-
-
-    @SubscribeEvent
-    public static void onPlayerLivingUpdate(LivingEvent.LivingUpdateEvent event)
-    {
-        World world = event.getEntity().world;
-
-        if (!world.isRemote && event.getEntity() instanceof EntityPlayer)
-        {
-            EntityPlayer player = (EntityPlayer) event.getEntity();
-            if (player.ticksExisted % 20 == 0)
-            {
-                IPlayerData cap = event.getEntityLiving().getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
-                if (cap != null && !player.isCreative())
-                {
-                    //Add exhaustion each second of sprint, also, each 5 secs sync player data for HUD
-                    if (player.isSprinting()) cap.addExhaustion(1.5F);
-                    if (player.ticksExisted % 100 == 0)
+                    //Apply Debuff and send update to client
+                    if (cap.getThirst() < 10f)
                     {
-                        cap.update();
-                        //Apply Debuff
-                        if (cap.getThirst() < 10f)
+                        player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 1));
+                        player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 1));
+                        if (cap.getThirst() <= 0f)
                         {
-                            player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 1));
-                            player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 1));
-                            if (cap.getThirst() <= 0f)
-                            {
-                                //Hurt the player
-                                player.attackEntityFrom(DamageSource.STARVE, 1); //5% life/5secs
-                            }
+                            //Hurt the player
+                            player.attackEntityFrom(DamageSource.STARVE, 1); //5% life/5secs
                         }
-                        else if (cap.getThirst() < 40f)
-                        {
-                            player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 0));
-                            player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 0));
-                        }
-                        TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
                     }
+                    else if (cap.getThirst() < 40f)
+                    {
+                        player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 0));
+                        player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 0));
+                    }
+                    TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
                 }
             }
         }
     }
-
-    //Add exhaustion on player breaking blocks
-    @SubscribeEvent
-    public static void onBlockBreak(BlockEvent.BreakEvent event)
-    {
-        World world = event.getWorld();
-        EntityPlayer player = event.getPlayer();
-        BlockPos pos = event.getPos();
-        IBlockState state = event.getState();
-
-        if (!world.isRemote && !player.isCreative())
-        {
-            boolean canHarvestBlock = state.getBlock().canHarvestBlock(world, pos, player);
-
-            if (canHarvestBlock)
-            {
-                IPlayerData cap = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
-                if (cap != null)
-                {
-                    cap.addExhaustion(1.0F);
-                }
-            }
-        }
-    }
-
-
 }
