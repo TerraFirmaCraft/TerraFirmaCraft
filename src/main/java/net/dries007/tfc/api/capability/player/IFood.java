@@ -125,7 +125,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
         else
         {
             text.add(I18n.format("tfc.tooltip.food_expiry_date", CalendarTFC.getTimeAndDate(getRottenDate())));
-            // Show player values if not rotten
+            // Show nutrient values if not rotten
             for (Nutrient nutrient : Nutrient.values())
             {
                 text.add(nutrient.name().toLowerCase() + ": " + getNutrient(stack, nutrient));

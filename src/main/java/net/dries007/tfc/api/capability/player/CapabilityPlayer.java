@@ -70,7 +70,7 @@ public final class CapabilityPlayer
     }
 
     /**
-     * This is the handler for anything player / food / decay related
+     * This is the handler for anything player data / food / decay related
      */
     @Mod.EventBusSubscriber(modid = MOD_ID)
     public static final class EventHandler
