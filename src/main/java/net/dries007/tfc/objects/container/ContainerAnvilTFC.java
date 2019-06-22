@@ -23,7 +23,7 @@ import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.client.TFCGuiHandler;
-import net.dries007.tfc.objects.inventory.slot.SlotTEInput;
+import net.dries007.tfc.objects.inventory.slot.SlotCallback;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.IButtonHandler;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -74,10 +74,10 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC> implements IButto
         IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (inventory != null)
         {
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_INPUT_1, 31, 68, tile));
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_INPUT_2, 13, 68, tile));
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_HAMMER, 129, 68, tile));
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_FLUX, 147, 68, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_INPUT_1, 31, 68, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_INPUT_2, 13, 68, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_HAMMER, 129, 68, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_FLUX, 147, 68, tile));
         }
     }
 

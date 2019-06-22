@@ -9,7 +9,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import net.dries007.tfc.objects.inventory.slot.SlotTEInput;
+import net.dries007.tfc.objects.inventory.slot.SlotCallback;
 import net.dries007.tfc.objects.te.TECrucible;
 
 import static net.dries007.tfc.objects.te.TECrucible.SLOT_INPUT;
@@ -28,8 +28,8 @@ public class ContainerCrucible extends ContainerTE<TECrucible>
         IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (inventory != null)
         {
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_INPUT, 152, 7, tile));
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_OUTPUT, 152, 90, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_INPUT, 152, 7, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_OUTPUT, 152, 90, tile));
         }
     }
 }

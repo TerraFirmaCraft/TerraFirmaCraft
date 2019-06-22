@@ -9,7 +9,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import net.dries007.tfc.objects.inventory.slot.SlotTEInput;
+import net.dries007.tfc.objects.inventory.slot.SlotCallback;
 import net.dries007.tfc.objects.te.TEFirePit;
 
 import static net.dries007.tfc.objects.te.TEFirePit.*;
@@ -31,12 +31,12 @@ public class ContainerFirePit extends ContainerTE<TEFirePit>
         {
             // fuel slots
             for (int i = 0; i < 4; i++)
-                addSlotToContainer(new SlotTEInput(inventory, i, 8, 62 - 18 * i, tile));
+                addSlotToContainer(new SlotCallback(inventory, i, 8, 62 - 18 * i, tile));
             // input slot
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_ITEM_INPUT, 80, 20, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_ITEM_INPUT, 80, 20, tile));
             // output slots
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_OUTPUT_1, 71, 48, tile));
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_OUTPUT_2, 89, 48, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_OUTPUT_1, 71, 48, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_OUTPUT_2, 89, 48, tile));
         }
     }
 

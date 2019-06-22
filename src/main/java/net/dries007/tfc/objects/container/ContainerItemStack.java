@@ -122,7 +122,9 @@ public abstract class ContainerItemStack extends Container
     {
         IItemHandler cap = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (cap instanceof ItemStackHandler)
+        {
             stack.setTagCompound(((ItemStackHandler) cap).serializeNBT());
+        }
         super.onContainerClosed(player);
     }
 

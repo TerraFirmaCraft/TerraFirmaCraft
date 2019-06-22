@@ -9,13 +9,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -23,8 +18,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.objects.inventory.capability.ItemStackHandlerTE;
+import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
+import net.dries007.tfc.objects.inventory.capability.ItemStackHandlerCallback;
 
 /**
  * This is a helper class for TE's with a simple inventory that will respect automation
@@ -32,30 +27,19 @@ import net.dries007.tfc.objects.inventory.capability.ItemStackHandlerTE;
  * Without overriding the getCapability methods, this will not accept items from external automation
  */
 @ParametersAreNonnullByDefault
-public abstract class TEInventory extends TEBase
+public abstract class TEInventory extends TEBase implements ISlotCallback
 {
     protected final ItemStackHandler inventory;
 
     TEInventory(int inventorySize)
     {
-        super();
-        inventory = new ItemStackHandlerTE(this, inventorySize);
-        this.markDirty();
+        inventory = new ItemStackHandlerCallback(this, inventorySize);
     }
 
+    @Override
     public void setAndUpdateSlots(int slot)
     {
         this.markDirty();
-    }
-
-    public int getSlotLimit(int slot)
-    {
-        return 64;
-    }
-
-    public boolean isItemValid(int slot, ItemStack stack)
-    {
-        return true;
     }
 
     @Override
