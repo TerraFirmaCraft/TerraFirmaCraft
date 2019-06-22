@@ -50,7 +50,7 @@ public final class CapabilityPlayer
     {
         // Item player capability
         CapabilityManager.INSTANCE.register(IFood.class, new DumbStorage<>(), FoodHandler::new);
-        // Player player capability
+        // Player data capability
         CapabilityManager.INSTANCE.register(IPlayerData.class, new DumbStorage<>(), PlayerDataHandler::new);
     }
 

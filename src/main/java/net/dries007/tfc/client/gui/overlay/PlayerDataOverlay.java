@@ -19,6 +19,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import net.dries007.tfc.api.capability.player.CapabilityPlayer;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.util.DamageManager;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -47,7 +49,12 @@ public final class PlayerDataOverlay
         // We check for crosshairs just because it's always drawn and is before air bar
         if (event.getType() != ElementType.CROSSHAIRS)
             return;
-
+        IPlayerData capb = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
+        if (capb != null)
+        {
+            maxHealth = 20 * capb.getHealthModifier() * 50; //20 = 1000 HP in overlay
+            curThirst = capb.getThirst();
+        }
         // This is for air to be drawn above our bars
         GuiIngameForge.right_height += 10;
 

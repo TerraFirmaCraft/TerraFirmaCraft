@@ -21,18 +21,15 @@ public interface IPlayerData
 
     void addNutrient(Nutrient nutrient, float amount);
 
+    void updateTicksFastForward();
+
     void onUpdate(EntityPlayer player);
 
-    float getMaxHealth();
+    float getHealthModifier();
 
     float getThirst();
 
     void setThirst(float value);
-
-    /**
-     * Drinks fluid(ie: water) to fill or drain(salt water) thirst bar.
-     * @param value value to fill/drain(negative)
-     */
 
     /**
      * Drinks fluid(ie: water) to fill or drain(salt water) thirst bar.

@@ -159,21 +159,17 @@ public final class TerraFirmaCraft
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
         }
 
-        if (event.getSide() == Side.CLIENT)
-        {
-            //Enable overlay for rendering health, hunger and thirst bars
-            MinecraftForge.EVENT_BUS.register(PlayerDataOverlay.getInstance());
-            GuiIngameForge.renderHealth = false;
-            GuiIngameForge.renderArmor = false;
-            GuiIngameForge.renderExperiance = false;
-        }
-
         OreDictionaryHelper.init();
         ItemsTFC.init();
 
         if (event.getSide().isClient())
         {
             TFCKeybindings.init();
+            //Enable overlay to render health, thirst and hunger bars, TFC style.
+            MinecraftForge.EVENT_BUS.register(PlayerDataOverlay.getInstance());
+            GuiIngameForge.renderHealth = false;
+            GuiIngameForge.renderArmor = false;
+            GuiIngameForge.renderExperiance = false;
         }
 
         worldTypeTFC = new WorldTypeTFC();

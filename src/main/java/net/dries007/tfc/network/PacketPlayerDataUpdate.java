@@ -69,9 +69,6 @@ public class PacketPlayerDataUpdate implements IMessage
                     {
                         cap.setNutrients(message.nutrients);
                         cap.setThirst(message.thirst);
-                        //Update HUD
-                        PlayerDataOverlay.getInstance().setMaxHealth(cap.getMaxHealth());
-                        PlayerDataOverlay.getInstance().setCurThirst(cap.getThirst());
                     }
                 }
             });
