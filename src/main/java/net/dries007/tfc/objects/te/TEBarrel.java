@@ -27,7 +27,7 @@ import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
 import net.dries007.tfc.objects.fluids.capability.FluidHandlerSided;
 import net.dries007.tfc.objects.fluids.capability.IFluidHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
-import net.dries007.tfc.objects.inventory.capability.ItemHandlerSided;
+import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
 import net.dries007.tfc.util.FluidTransferHelper;
 import net.dries007.tfc.world.classic.CalendarTFC;
 
@@ -267,8 +267,16 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        //TODO: validate items that go in the item storage slot
-        return slot == SLOT_ITEM || slot == SLOT_FLUID_CONTAINER_IN && FluidUtil.getFluidHandler(stack) != null;
+        //TODO: validate items that go in the item storage slot (based on side?)
+        switch (slot)
+        {
+            case SLOT_FLUID_CONTAINER_IN:
+                return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+            case SLOT_ITEM:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
@@ -304,7 +312,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
-            return (T) new ItemHandlerSided(this, inventory, facing);
+            return (T) new ItemHandlerSidedWrapper(this, inventory, facing);
         }
 
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)

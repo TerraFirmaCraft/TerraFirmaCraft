@@ -15,8 +15,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import net.dries007.tfc.objects.inventory.slot.SlotOutput;
-import net.dries007.tfc.objects.inventory.slot.SlotTEInput;
+import net.dries007.tfc.objects.inventory.slot.SlotCallback;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.IButtonHandler;
 
@@ -66,9 +65,9 @@ public class ContainerBarrel extends ContainerTE<TEBarrel> implements IButtonHan
 
         if (inventory != null)
         {
-            this.addSlotToContainer(new SlotTEInput(inventory, SLOT_FLUID_CONTAINER_IN, 35, 20, tile));
-            this.addSlotToContainer(new SlotOutput(inventory, SLOT_FLUID_CONTAINER_OUT, 35, 54));
-            this.addSlotToContainer(new SlotTEInput(inventory, SLOT_ITEM, 89, 37, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_FLUID_CONTAINER_IN, 35, 20, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_FLUID_CONTAINER_OUT, 35, 54, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_ITEM, 89, 37, tile));
         }
     }
 }

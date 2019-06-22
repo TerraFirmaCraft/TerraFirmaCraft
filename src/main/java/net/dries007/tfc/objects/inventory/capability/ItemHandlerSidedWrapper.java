@@ -11,13 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-public class ItemHandlerSided implements IItemHandlerModifiable
+public class ItemHandlerSidedWrapper implements IItemHandlerModifiable
 {
     private IItemHandlerSidedCallback callback;
     private IItemHandlerModifiable handler;
     private EnumFacing side;
 
-    public ItemHandlerSided(IItemHandlerSidedCallback callback, IItemHandlerModifiable handler, EnumFacing side)
+    public ItemHandlerSidedWrapper(IItemHandlerSidedCallback callback, IItemHandlerModifiable handler, EnumFacing side)
     {
         this.callback = callback;
         this.handler = handler;

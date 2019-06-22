@@ -108,7 +108,7 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
             {
                 return ItemStack.EMPTY;
             }
-            // This is already called in SlotTEInput (which should be used by the Container anyway)
+            // This is already called in SlotCallback (which should be used by the Container anyway)
             //tile.setAndUpdateSlots(index);
         }
         // Transfer into the container

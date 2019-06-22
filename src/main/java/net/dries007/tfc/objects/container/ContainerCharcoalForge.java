@@ -9,7 +9,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import net.dries007.tfc.objects.inventory.slot.SlotTEInput;
+import net.dries007.tfc.objects.inventory.slot.SlotCallback;
 import net.dries007.tfc.objects.te.TECharcoalForge;
 
 import static net.dries007.tfc.objects.te.TECharcoalForge.*;
@@ -32,25 +32,25 @@ public class ContainerCharcoalForge extends ContainerTE<TECharcoalForge>
             // Fuel slots
             // Note: the order of these statements is important
             int index = SLOT_FUEL_MIN;
-            addSlotToContainer(new SlotTEInput(inventory, index++, 80, 62, tile));
-            addSlotToContainer(new SlotTEInput(inventory, index++, 98, 44, tile));
-            addSlotToContainer(new SlotTEInput(inventory, index++, 62, 44, tile));
-            addSlotToContainer(new SlotTEInput(inventory, index++, 116, 26, tile));
-            addSlotToContainer(new SlotTEInput(inventory, index, 44, 26, tile));
+            addSlotToContainer(new SlotCallback(inventory, index++, 80, 62, tile));
+            addSlotToContainer(new SlotCallback(inventory, index++, 98, 44, tile));
+            addSlotToContainer(new SlotCallback(inventory, index++, 62, 44, tile));
+            addSlotToContainer(new SlotCallback(inventory, index++, 116, 26, tile));
+            addSlotToContainer(new SlotCallback(inventory, index, 44, 26, tile));
 
             // Input slots
             // Note: the order of these statements is important
             index = SLOT_INPUT_MIN;
-            addSlotToContainer(new SlotTEInput(inventory, index++, 80, 44, tile));
-            addSlotToContainer(new SlotTEInput(inventory, index++, 98, 26, tile));
-            addSlotToContainer(new SlotTEInput(inventory, index++, 62, 26, tile));
-            addSlotToContainer(new SlotTEInput(inventory, index++, 116, 8, tile));
-            addSlotToContainer(new SlotTEInput(inventory, index, 44, 8, tile));
+            addSlotToContainer(new SlotCallback(inventory, index++, 80, 44, tile));
+            addSlotToContainer(new SlotCallback(inventory, index++, 98, 26, tile));
+            addSlotToContainer(new SlotCallback(inventory, index++, 62, 26, tile));
+            addSlotToContainer(new SlotCallback(inventory, index++, 116, 8, tile));
+            addSlotToContainer(new SlotCallback(inventory, index, 44, 8, tile));
 
             // Extra slots (for ceramic molds)
             for (int i = SLOT_EXTRA_MIN; i <= SLOT_EXTRA_MAX; i++)
             {
-                addSlotToContainer(new SlotTEInput(inventory, i, 152, 8 + 18 * (i - SLOT_EXTRA_MIN), tile));
+                addSlotToContainer(new SlotCallback(inventory, i, 152, 8 + 18 * (i - SLOT_EXTRA_MIN), tile));
             }
         }
     }
