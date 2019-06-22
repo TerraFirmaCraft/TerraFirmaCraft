@@ -24,7 +24,8 @@ import static net.dries007.tfc.api.capability.player.CapabilityPlayer.MIN_PLAYER
 public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<NBTTagCompound>
 {
     //To determine max health, compare (averageSkills + averageNutrients) / 2.0f to these
-    private static final float MAX_HEALTH_THRESHOULD = 1.0f, BASE_HEALTH_THRESHOULD = 0.4f, MIN_HEALTH_THRESHOULD = 0.1f;
+    //0.95f so it CAN be obtainable(as each tick decreases nutrients, so 1.0F nutrients is impossible to keep)
+    private static final float MAX_HEALTH_THRESHOULD = 0.95f, BASE_HEALTH_THRESHOULD = 0.4f, MIN_HEALTH_THRESHOULD = 0.1f;
     private static final int PLACEHOLDER_SKILL_TOTAL = 1; //TODO Implement this
     private final float[] nutrients;
     private final float[] skills;
@@ -95,6 +96,12 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     }
 
     @Override
+    public void updateTicksFastForward()
+    {
+        this.lastUpdateTick = CalendarTFC.getCalendarTime();
+    }
+
+    @Override
     public void onUpdate(@Nonnull EntityPlayer player)
     {
         int ticksPassed = (int) (CalendarTFC.getCalendarTime() - lastUpdateTick);
@@ -112,31 +119,32 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     }
 
     @Override
-    public float getMaxHealth()
+    public float getHealthModifier()
     {
         float nutrientPercent = getNutrientAverage() / MAX_PLAYER_NUTRIENTS;
         float skillPercent = getSkillAverage() / 100; //MAX_PLAYER_SKILLS; This should return a value between 0 and 1.0F
         float averagePercent = (nutrientPercent + skillPercent) / 2.0f;
-        float maxHealth;
+        float maxHealthModifier;
         if (averagePercent < BASE_HEALTH_THRESHOULD)
         {
             //Less than base health
-            if (averagePercent <= MIN_HEALTH_THRESHOULD) return ConfigTFC.GENERAL.playerMinHealth;
+            if (averagePercent <= MIN_HEALTH_THRESHOULD) return 1;
             float difNutrientValue = BASE_HEALTH_THRESHOULD - MIN_HEALTH_THRESHOULD;
-            int difHealthValue = ConfigTFC.GENERAL.playerBaseHealth - ConfigTFC.GENERAL.playerMinHealth;
+            float difHealthValue = (float)(1d - ConfigTFC.GENERAL.playerMinHealthModifier);
             averagePercent -= MIN_HEALTH_THRESHOULD;
-            maxHealth = averagePercent * difHealthValue / difNutrientValue + ConfigTFC.GENERAL.playerMinHealth;
+            maxHealthModifier = (float)(averagePercent * difHealthValue / difNutrientValue + ConfigTFC.GENERAL.playerMinHealthModifier);
         }
         else
         {
             //More than base health;
-            if (averagePercent >= MAX_HEALTH_THRESHOULD) return ConfigTFC.GENERAL.playerMaxHealth;
+            if (averagePercent >= MAX_HEALTH_THRESHOULD) return (float)(ConfigTFC.GENERAL.playerMaxHealthModifier);
             float difNutrientValue = MAX_HEALTH_THRESHOULD - BASE_HEALTH_THRESHOULD;
-            int difHealthValue = ConfigTFC.GENERAL.playerMaxHealth - ConfigTFC.GENERAL.playerBaseHealth;
+            float difHealthValue = (float)(ConfigTFC.GENERAL.playerMaxHealthModifier - 1d);
             averagePercent -= BASE_HEALTH_THRESHOULD;
-            maxHealth = averagePercent * difHealthValue / difNutrientValue + ConfigTFC.GENERAL.playerBaseHealth;
+            maxHealthModifier = (float)(averagePercent * difHealthValue / difNutrientValue + 1d);
         }
-        return maxHealth;
+        //XP modifier?
+        return maxHealthModifier;
     }
 
     @Override

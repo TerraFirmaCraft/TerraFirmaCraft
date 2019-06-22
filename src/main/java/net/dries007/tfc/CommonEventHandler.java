@@ -206,15 +206,7 @@ public final class CommonEventHandler
             IPlayerData cap = event.getEntityLiving().getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
             if (cap != null)
             {
-                float damage = DamageManager.rescaleDamage(event.getAmount(), 20, ConfigTFC.GENERAL.playerBaseHealth);
-                damage = DamageManager.applyArmor(damage, event.getSource(), player);
-                //So you came here and ask, why cap.getMaxHealth() and not the config? because this way
-                //we still use 20 as max health in vanilla, but our final damage is scaled to playerBaseHealth
-                //Lets take an example: Player takes 20 damage(in vanilla). This is scaled to 1000(default)
-                //armor is applied(for this example, let's assume player has no armor)
-                //then 1000 damage is 1/3rd of players's max health(3000), so, the rescale function
-                //will return 6.6667(1/3rd of 20) and apply that damage to the player. Voila :D
-                float finalDamage = DamageManager.rescaleDamage(damage, cap.getMaxHealth(), 20);
+                float finalDamage = DamageManager.applyArmor(event.getAmount(), event.getSource(), player) / cap.getHealthModifier();
                 event.setAmount(finalDamage);
                 event.getSource().setDamageBypassesArmor(); //Armor calculation is already done
             }
@@ -271,7 +263,7 @@ public final class CommonEventHandler
             IPlayerData cap = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
             if (cap != null)
             {
-                cap.onUpdate(player);
+                cap.updateTicksFastForward();
                 TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), player);
             }
         }
