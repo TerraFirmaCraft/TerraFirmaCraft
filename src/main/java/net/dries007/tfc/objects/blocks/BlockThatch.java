@@ -68,12 +68,25 @@ public class BlockThatch extends Block
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        // Return false in order to stop xray through blocks
+        return false;
+    }
+
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         // Player will take damage when hitting thatch if fall is over 13 blocks, fall damage is then set to 0.
         entityIn.fall((entityIn.fallDistance - 10), 1.0F); // TODO: 17/4/18 balance fall damage reduction.
         entityIn.fallDistance = 0;
-        entityIn.setInWeb();
+
+        entityIn.motionX *= 0.1;
+        entityIn.motionZ *= 0.1;
+
+        // This makes the player way too slow
+        //entityIn.setInWeb();
     }
 }
