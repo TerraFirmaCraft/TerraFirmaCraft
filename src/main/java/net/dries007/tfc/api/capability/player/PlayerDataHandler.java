@@ -8,6 +8,7 @@ package net.dries007.tfc.api.capability.player;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -28,7 +29,7 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     private final float[] nutrients;
     private final float[] skills;
     private long lastUpdateTick, lastDrinkTick;
-    private float thirst, exhaustion;
+    private float thirst;
 
     public PlayerDataHandler()
     {
@@ -48,21 +49,18 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
             skills[i] = 0;
         }
         thirst = 70.0f;
-        exhaustion = 0;
         deserializeNBT(nbt);
     }
 
     @Override
     public float getNutrient(Nutrient nutrient)
     {
-        update();
         return nutrients[nutrient.ordinal()];
     }
 
     @Override
     public float[] getNutrients()
     {
-        update();
         return nutrients;
     }
 
@@ -92,13 +90,12 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     @Override
     public void addNutrient(Nutrient nutrient, float amount)
     {
-        update();
         float newAmount = nutrients[nutrient.ordinal()] + amount;
         setNutrient(nutrient, newAmount);
     }
 
     @Override
-    public void update()
+    public void onUpdate(@Nonnull EntityPlayer player)
     {
         int ticksPassed = (int) (CalendarTFC.getCalendarTime() - lastUpdateTick);
         for (Nutrient nutrient : Nutrient.values())
@@ -107,19 +104,8 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
         }
         //Reduces thirst bar for normal living
         thirst -= (float) (ConfigTFC.GENERAL.playerThirstModifier * ticksPassed / 240);
-        if (exhaustion > 0)
-        {
-            float ticksExhaustion = exhaustion * 20.0f; //1.0F of exhaustion per sec
-            if (ticksExhaustion < ticksPassed)
-            {
-                exhaustion = 0;
-            }
-            else
-            {
-                exhaustion -= ticksPassed / 20f;
-                ticksExhaustion = ticksPassed;
-            }
-            thirst -= 0.025f * ticksExhaustion;
+        if(player.getFoodStats().foodExhaustionLevel >= 4.0F){
+            thirst -= ConfigTFC.GENERAL.playerThirstModifier * 4.0F;
         }
         if (thirst < 0) thirst = 0;
         lastUpdateTick = CalendarTFC.getCalendarTime();
@@ -179,27 +165,6 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     }
 
     @Override
-    public float getExhaustion()
-    {
-        return this.exhaustion;
-    }
-
-    @Override
-    public void setExhaustion(float value)
-    {
-        this.exhaustion = value;
-        if (this.exhaustion > 100) this.exhaustion = 100; //100 secs max?
-        if (this.exhaustion < 0)
-            this.exhaustion = 0; //For custom implementations to reduce exhaust(eg: potion of fatigue reducing?)
-    }
-
-    @Override
-    public void addExhaustion(float value)
-    {
-        this.setExhaustion(this.exhaustion + value);
-    }
-
-    @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
         return capability == CapabilityPlayer.CAPABILITY_PLAYER_DATA;
@@ -217,8 +182,6 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     @Nonnull
     public NBTTagCompound serializeNBT()
     {
-        update();
-
         NBTTagCompound nbt = new NBTTagCompound();
         for (Nutrient nutrient : Nutrient.values())
         {
@@ -226,7 +189,6 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
         }
         //TODO serialize skills
         nbt.setFloat("thirst", thirst);
-        nbt.setFloat("exhaustion", exhaustion);
         nbt.setLong("lastUpdateTick", lastUpdateTick);
         nbt.setLong("lastDrinkTick", lastDrinkTick);
         return nbt;
@@ -243,7 +205,6 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
             }
             //TODO deserialize skills
             thirst = nbt.getFloat("thirst");
-            exhaustion = nbt.getFloat("exhaustion");
             lastUpdateTick = nbt.getLong("lastUpdateTick");
             lastDrinkTick = nbt.getLong("lastDrinkTick");
         }
