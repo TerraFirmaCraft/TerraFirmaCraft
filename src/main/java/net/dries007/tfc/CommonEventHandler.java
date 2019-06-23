@@ -17,6 +17,7 @@ import net.minecraft.item.*;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -81,37 +82,33 @@ public final class CommonEventHandler
     @SubscribeEvent
     public static void onRightClickWater(PlayerInteractEvent event)
     {
-        if (event.getSide() == Side.CLIENT) return;
         if (!(event instanceof PlayerInteractEvent.RightClickBlock || event instanceof PlayerInteractEvent.RightClickEmpty))
             return;
         EntityPlayer player = event.getEntityPlayer();
-        if (!(player.getHeldItemMainhand().isEmpty() && player.getHeldItemOffhand().isEmpty()))
-            return; //Need both hands to drink water
+        if (!(player.getHeldItemMainhand().isEmpty()))
+            return;
         RayTraceResult result = Helpers.rayTrace(event.getWorld(), player, true);
         if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK)
         {
             BlockPos blockpos = result.getBlockPos();
             IBlockState state = event.getWorld().getBlockState(blockpos);
             IPlayerData cap = event.getEntityLiving().getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
-            if (cap != null)
+            if (BlocksTFC.isFreshWater(state))
             {
-                if (BlocksTFC.isFreshWater(state))
-                {
-                    if (cap.drink(15))
-                    {
-                        player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                        TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
-                    }
+                if (event.getSide().isServer() && cap != null && cap.drink(15)){
+                    player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
                 }
-                else if (BlocksTFC.isSaltWater(state))
-                {
-                    if (cap.drink(-15))
-                    {
-                        //Salty water drains thirst bar.
-                        player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                        TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
-                    }
+                event.setCancellationResult(EnumActionResult.SUCCESS);
+                event.setCanceled(true);
+            }else if (BlocksTFC.isSaltWater(state))
+            {
+                if (event.getSide().isServer() && cap != null && cap.drink(-15)){
+                    player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
                 }
+                event.setCancellationResult(EnumActionResult.SUCCESS);
+                event.setCanceled(true);
             }
         }
     }
