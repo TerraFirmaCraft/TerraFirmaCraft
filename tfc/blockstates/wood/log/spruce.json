@@ -29,6 +29,7 @@
         "y": 90
       },
       "none": {
+		"model": "cube_column",
         "textures": {
           "end": "tfc:blocks/wood/log/spruce"
         }
