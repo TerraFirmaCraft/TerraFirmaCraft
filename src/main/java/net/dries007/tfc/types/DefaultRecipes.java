@@ -5,8 +5,10 @@
 
 package net.dries007.tfc.types;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -56,7 +58,7 @@ public final class DefaultRecipes
             // Misc
             new BarrelRecipe(IIngredient.of(FRESH_WATER, 1000), IIngredient.of("logWoodTannin"), new FluidStack(TANNIN, 10000), ItemStack.EMPTY, 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName(MOD_ID, "tannin"),
             // todo: enslave Claycorp for recipe magics
-            // todo: jute
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 200), IIngredient.of(ItemsTFC.JUTE), null, new ItemStack(ItemsTFC.JUTE_FIBER), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName(MOD_ID, "jute_fiber"),
             // todo: sugar
             // todo: all alcohol recipes
             // todo: vinegar (many variants, use "fruit" ore dict and IIngredient.of(int, Fluid...)
@@ -161,6 +163,12 @@ public final class DefaultRecipes
         {
             r.register(new PitKilnRecipe(IIngredient.of(new ItemStack(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, color.getMetadata())), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, color.getMetadata())).setRegistryName(MOD_ID, "fired_vessel_glazed_" + color.getName()));
         }
+
+        /*// Fired spindle
+        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_FIRED_SPINDLE)).setRegistryName(MOD_ID, "fired_spindle_fireable"));*/
+
+        // Spindle
+        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_UNFIRED_SPINDLE), new ItemStack(ItemsTFC.CERAMICS_FIRED_SPINDLE)).setRegistryName("fired_spindle"));
     }
 
     @SubscribeEvent
@@ -226,6 +234,18 @@ public final class DefaultRecipes
         // Special Recipes
 
         // todo: shears
+    }
+
+    @SubscribeEvent
+    public static void onRegisterLoomRecipeEvent(RegistryEvent.Register<LoomRecipe> event)
+    {
+        IForgeRegistry<LoomRecipe> r = event.getRegistry();
+
+        r.register(new LoomRecipe(new ResourceLocation(MOD_ID, "burlap_cloth"), ItemsTFC.JUTE_FIBER, 12, ItemsTFC.BURLAP_CLOTH, 12, new ResourceLocation(MOD_ID, "textures/blocks/devices/loom/product/burlap.png")));
+        r.register(new LoomRecipe(new ResourceLocation(MOD_ID, "wool_cloth"), ItemsTFC.WOOL_YARN, 16, ItemsTFC.WOOL_CLOTH, 16, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")));
+        r.register(new LoomRecipe(new ResourceLocation(MOD_ID, "silk_cloth"), Items.STRING, 24, ItemsTFC.SILK_CLOTH, 24, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")));
+
+        r.register(new LoomRecipe(new ResourceLocation(MOD_ID, "wool_block"), ItemsTFC.WOOL_CLOTH, 4, ItemBlock.getItemFromBlock(Blocks.WOOL), 4, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")));
     }
 
     private static void addAnvil(IForgeRegistry<AnvilRecipe> registry, Metal.ItemType inputType, Metal.ItemType outputType, boolean onlyToolMetals, ForgeRule... rules)

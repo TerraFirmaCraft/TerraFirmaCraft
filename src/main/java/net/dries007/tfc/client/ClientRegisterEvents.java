@@ -222,6 +222,7 @@ public final class ClientRegisterEvents
         ClientRegistry.bindTileEntitySpecialRenderer(TEBellows.class, new TESRBellows());
         ClientRegistry.bindTileEntitySpecialRenderer(TEBarrel.class, new TESRBarrel());
         ClientRegistry.bindTileEntitySpecialRenderer(TEAnvilTFC.class, new TESRAnvil());
+        ClientRegistry.bindTileEntitySpecialRenderer(TELoom.class, new TESRLoom());
     }
 
     @SubscribeEvent

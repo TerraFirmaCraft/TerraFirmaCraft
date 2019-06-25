@@ -138,6 +138,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockCropTFC> allCropBlocks;
     private static ImmutableList<BlockPlantTFC> allPlantBlocks;
     private static ImmutableList<BlockPlantTFC> allGrassBlocks;
+    private static ImmutableList<BlockLoom> allLoomBlocks;
 
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
@@ -250,6 +251,11 @@ public final class BlocksTFC
         return allGrassBlocks;
     }
 
+    public static ImmutableList<BlockLoom> getAllLoomBlocks()
+    {
+        return allLoomBlocks;
+    }
+
     @SubscribeEvent
     @SuppressWarnings("ConstantConditions")
     public static void registerBlocks(RegistryEvent.Register<Block> event)
@@ -322,6 +328,7 @@ public final class BlocksTFC
             Builder<BlockToolRack> toolRacks = ImmutableList.builder();
             Builder<ItemBlockBarrel> barrelItems = ImmutableList.builder();
             Builder<BlockPlantTFC> plants = ImmutableList.builder();
+            Builder<BlockLoom> looms = ImmutableList.builder();
 
             // This loop is split up to organize the ordering of the creative tab
             // Do not optimize these loops back together
@@ -354,6 +361,8 @@ public final class BlocksTFC
 
                 toolRacks.add(register(r, "wood/tool_rack/" + wood.getRegistryName().getPath(), new BlockToolRack(wood), CT_DECORATIONS));
                 barrelItems.add(new ItemBlockBarrel(register(r, "wood/barrel/" + wood.getRegistryName().getPath(), new BlockBarrel(), CT_DECORATIONS)));
+
+                looms.add(register(r, "wood/loom/" + wood.getRegistryName().getPath(), new BlockLoom(wood), CT_WOOD));
             }
 
             allLogBlocks = logs.build();
@@ -364,6 +373,7 @@ public final class BlocksTFC
             allTrapDoorWoodBlocks = trapDoors.build();
             allChestBlocks = chests.build();
             allToolRackBlocks = toolRacks.build();
+            allLoomBlocks = looms.build();
 
             allBarrelItemBlocks = barrelItems.build();
 
@@ -376,6 +386,7 @@ public final class BlocksTFC
             allTrapDoorWoodBlocks.forEach(x -> inventoryItemBlocks.add(new ItemBlockTFC(x)));
             allChestBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
             allToolRackBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
+            allLoomBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
         }
 
         {
@@ -545,6 +556,7 @@ public final class BlocksTFC
         register(TEIngotPile.class, "ingot_pile");
         register(TEFirePit.class, "fire_pit");
         register(TEToolRack.class, "tool_rack");
+        register(TELoom.class, "loom");
         register(TEBellows.class, "bellows");
         register(TEBarrel.class, "barrel");
         register(TECharcoalForge.class, "charcoal_forge");
