@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -70,8 +71,9 @@ public class WorldGenLooseRocks implements IWorldGenerator
 
     private void generateRock(World world, BlockPos pos, @Nullable Vein vein, Rock rock)
     {
-
-        if (world.getBlockState(pos).getMaterial().isReplaceable() && !world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).isFullCube())
+        // Use air, so it doesn't replace other replaceable world gen
+        // This matches the check in BlockPlacedItemFlat for if the block can stay
+        if (world.isAirBlock(pos) && world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP))
         {
             world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState(), 2);
             TEPlacedItemFlat tile = Helpers.getTE(world, pos, TEPlacedItemFlat.class);

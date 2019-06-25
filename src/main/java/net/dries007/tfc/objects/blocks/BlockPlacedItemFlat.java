@@ -134,7 +134,7 @@ public class BlockPlacedItemFlat extends Block
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (!worldIn.isSideSolid(pos.add(0, -1, 0), EnumFacing.UP))
+        if (!worldIn.isSideSolid(pos.down(), EnumFacing.UP))
         {
             worldIn.setBlockToAir(pos);
         }
