@@ -894,6 +894,19 @@ for wood_type in WOOD_TYPES:
         }
     })
 
+    # LOOM
+    blockstate(('wood', 'loom', wood_type), 'tfc:loom', textures={
+        'texture': 'tfc:blocks/wood/planks/%s' % wood_type,
+        'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
+    }, variants={
+        'facing': {
+            'south': {},
+            'west': {'y': 90},
+            'north': {'y': 180},
+            'east': {'y': 270},
+        }
+    })
+
 # LEATHER / HIDES
 blockstate(('placed_hide',), 'tfc:hide_rack', {})
 
@@ -1030,10 +1043,8 @@ for rock_cat in ROCK_TYPES:
 # LEATHER / HIDES
 
 for size in ('small', 'medium', 'large'):
-    for hide in ('raw', 'scraped', 'soaked', 'prepared'):
+    for hide in ('raw', 'scraped', 'soaked', 'prepared', 'sheepskin'):
         item(('hide', hide, size), 'tfc:items/hide/%s/%s' % (size, hide))
-
-item(('hide', 'sheepskin'), 'tfc:items/hide/sheepskin')
 
 # AGRICULTURE
 for food in FOODS:

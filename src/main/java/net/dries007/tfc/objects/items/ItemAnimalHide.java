@@ -98,7 +98,7 @@ public class ItemAnimalHide extends ItemTFC
 
     public enum HideType
     {
-        RAW, SOAKED, SCRAPED, PREPARED
+        RAW, SOAKED, SCRAPED, PREPARED, SHEEPSKIN
     }
 
     public static class Soaked extends ItemAnimalHide implements IPlaceableItem
