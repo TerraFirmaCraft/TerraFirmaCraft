@@ -153,11 +153,6 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         this.chunkPos = chunkPos;
         // todo: settings for all the rarities?
 
-//        final Random rng = new Random(world.getSeed() + ((this.chunkPos.getX() >> 7) - (this.chunkPos.getZ() >> 7)) * (this.chunkPos.getZ() >> 7));
-
-//        TerraFirmaCraft.getLog().info("decorate {} ({}) {} {}", chunkPos, biome.getBiomeName(), lilyPadPerChunk, waterPlantsPerChunk);
-        // todo: crops
-
         if (rng.nextInt(20) == 0)
         {
             wildCropsGen.generate(world, rng, world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8)));
@@ -167,16 +162,14 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         {
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {
-                if (plant.isValidTempForWorldGen(avgTemperature) && plant.isValidRain(rainfall))
+                if (plant.getPlantType() == Plant.PlantType.MUSHROOM && plant.isValidTempForWorldGen(avgTemperature) && plant.isValidRain(rainfall))
                 {
                     plantGen.setGeneratedPlant(plant);
-                    if (plant.getPlantType() == Plant.PlantType.MUSHROOM)
+
+                    for (float i = rng.nextInt(Math.round(mushroomCount / floraDiversity)); i < (1 + floraDensity) * 5; i++)
                     {
-                        for (float i = rng.nextInt(Math.round(mushroomCount / floraDiversity)); i < (1 + floraDensity) * 5; i++)
-                        {
-                            BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
+                        BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                        plantGen.generate(world, rng, blockPos);
                     }
                 }
             }
@@ -186,17 +179,16 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         {
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {
-                if (plant.isValidTempForWorldGen(avgTemperature) && plant.isValidRain(rainfall))
+                if (plant.getPlantType() == Plant.PlantType.CACTUS && plant.isValidTempForWorldGen(avgTemperature) && plant.isValidRain(rainfall))
                 {
                     plantGen.setGeneratedPlant(plant);
-                    if (plant.getPlantType() == Plant.PlantType.CACTUS)
+
+                    for (int i = rng.nextInt(Math.round((cactusCount + 32) / floraDiversity)); i < (1 + floraDensity) * 3; i++)
                     {
-                        for (int i = rng.nextInt(Math.round((cactusCount + 32) / floraDiversity)); i < (1 + floraDensity) * 3; i++)
-                        {
-                            BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
-                            plantGen.generate(world, rng, blockPos);
-                        }
+                        BlockPos blockPos = world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8));
+                        plantGen.generate(world, rng, blockPos);
                     }
+
                 }
             }
         }

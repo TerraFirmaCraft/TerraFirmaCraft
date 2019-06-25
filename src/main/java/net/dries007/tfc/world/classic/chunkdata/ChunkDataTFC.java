@@ -236,7 +236,6 @@ public final class ChunkDataTFC
 
     public List<Tree> getValidTrees()
     {
-        //todo: replace with efficient code (preferably cached?)
         return TFCRegistries.TREES.getValuesCollection().stream()
             .filter(t -> t.isValidLocation(avgTemp, rainfall, floraDensity))
             .sorted((s, t) -> (int) (t.getDominance() - s.getDominance()))
@@ -246,7 +245,6 @@ public final class ChunkDataTFC
     @Nullable
     public Tree getSparseGenTree()
     {
-        //todo: replace with efficient, (preferably cached?)
         return TFCRegistries.TREES.getValuesCollection().stream()
             .filter(t -> t.isValidLocation(0.5f * avgTemp + 10f, 0.5f * rainfall + 120f, 0.5f))
             .min((s, t) -> (int) (t.getDominance() - s.getDominance()))

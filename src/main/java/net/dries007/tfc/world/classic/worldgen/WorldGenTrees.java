@@ -11,6 +11,7 @@ import java.util.Random;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -104,7 +105,9 @@ public class WorldGenTrees implements IWorldGenerator
                 final Tree tree = getTree(trees, density, random);
 
                 if (GEN_BUSHES.canGenerateTree(world, pos, tree))
+                {
                     GEN_BUSHES.generateTree(manager, world, pos, tree, random);
+                }
             }
         }
     }
@@ -124,7 +127,9 @@ public class WorldGenTrees implements IWorldGenerator
             final int z = chunkZ * 16 + rand.nextInt(16) + 8;
             final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
 
-            if (world.getBlockState(pos).getMaterial().isReplaceable() && !world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).isOpaqueCube())
+            // Use air, so it doesn't replace other replaceable world gen
+            // This matches the check in BlockPlacedItemFlat for if the block can stay
+            if (world.isAirBlock(pos) && world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP))
             {
                 world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
                 TEPlacedItemFlat tile = (TEPlacedItemFlat) world.getTileEntity(pos);
