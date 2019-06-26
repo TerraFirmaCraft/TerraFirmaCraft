@@ -46,7 +46,7 @@ public class TESRBellows extends TESRBase<TEBellows>
             BufferBuilder b = t.getBuffer();
 
             // TODO: make this render less of a clusterfuck
-            double tileY = 1 - te.getHeight() + 0.075; // todo: replace 0.5 with the total distance outwards
+            double tileY = 1 - te.getHeight();
 
             b.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
             drawMiddle(b, tileY);
@@ -71,7 +71,7 @@ public class TESRBellows extends TESRBase<TEBellows>
 
         for (double[] v : sides)
         {
-            b.pos(v[0], v[1], v[2]).tex(v[3] * 0.5, v[4] * 0.5).endVertex();
+            b.pos(v[0], v[1], v[2]).tex(v[4] * 0.5, v[3] * 0.5).endVertex();
         }
     }
 

@@ -154,17 +154,19 @@ public class TELoom extends TEBase implements ITickable
         {
             if(recipe != null)
             {
-                if (recipe.getInputCount() == items.get(0).getCount() && progress < recipe.getStepCount() && !needsUpdate)
+                if(recipe.getInputCount() == items.get(0).getCount() && progress < recipe.getStepCount() && !needsUpdate)
                 {
-                    long time = world.getTotalWorldTime() - lastPushed;
-                    if (time < 20)
-                        return false;
-                    lastPushed = world.getTotalWorldTime();
+                    if (!world.isRemote)
+                    {
+                        long time = world.getTotalWorldTime() - lastPushed;
+                        if (time < 20)
+                            return true;
+                        lastPushed = world.getTotalWorldTime();
 
-                    needsUpdate = true;
+                        needsUpdate = true;
 
-                    TerraFirmaCraft.getNetwork().sendToDimension(new PacketLoomUpdate(this, lastPushed), world.provider.getDimension());
-
+                        TerraFirmaCraft.getNetwork().sendToDimension(new PacketLoomUpdate(this, lastPushed), world.provider.getDimension());
+                    }
                     return true;
                 }
             }
@@ -211,7 +213,7 @@ public class TELoom extends TEBase implements ITickable
     {
         if(recipe != null)
         {
-            if(needsUpdate && !world.isRemote)
+            if(needsUpdate)
             {
                 if (world.getTotalWorldTime() - lastPushed >= 20)
                 {
