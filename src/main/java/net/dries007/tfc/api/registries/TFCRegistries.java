@@ -37,6 +37,7 @@ public class TFCRegistries
     public static final IForgeRegistry<WeldingRecipe> WELDING = GameRegistry.findRegistry(WeldingRecipe.class);
     public static final IForgeRegistry<PitKilnRecipe> PIT_KILN = GameRegistry.findRegistry(PitKilnRecipe.class);
     public static final IForgeRegistry<BarrelRecipe> BARREL = GameRegistry.findRegistry(BarrelRecipe.class);
+    public static final IForgeRegistry<LoomRecipe> LOOM = GameRegistry.findRegistry(LoomRecipe.class);
 
     public static final IForgeRegistry<Plant> PLANTS = GameRegistry.findRegistry(Plant.class);
 
