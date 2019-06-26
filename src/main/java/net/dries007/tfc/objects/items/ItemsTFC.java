@@ -53,7 +53,20 @@ public final class ItemsTFC
     public static final ItemFireStarter FIRESTARTER = getNull();
     public static final ItemGoldPan GOLDPAN = getNull();
     public static final ItemMisc STRAW = getNull();
-    public static final Item JUTE = getNull();
+
+    @GameRegistry.ObjectHolder("crop/product/jute")
+    public static final ItemMisc JUTE = getNull();
+    @GameRegistry.ObjectHolder("crop/product/jute_fiber")
+    public static final ItemMisc JUTE_FIBER = getNull();
+    @GameRegistry.ObjectHolder("crop/product/burlap_cloth")
+    public static final ItemMisc BURLAP_CLOTH = getNull();
+    @GameRegistry.ObjectHolder("animal/product/wool_yarn")
+    public static final ItemMisc WOOL_YARN = getNull();
+    @GameRegistry.ObjectHolder("animal/product/wool_cloth")
+    public static final ItemMisc WOOL_CLOTH = getNull();
+    @GameRegistry.ObjectHolder("animal/product/silk_cloth")
+    public static final ItemMisc SILK_CLOTH = getNull();
+
 
     @GameRegistry.ObjectHolder("ceramics/fire_clay")
     public static final ItemFireClay FIRE_CLAY = getNull();
@@ -75,6 +88,10 @@ public final class ItemsTFC
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_BOWL = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/fire_brick")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_FIRE_BRICK = getNull();
+    @GameRegistry.ObjectHolder("ceramics/unfired/spindle")
+    public static final ItemUnfiredPottery CERAMICS_UNFIRED_SPINDLE = getNull();
+    @GameRegistry.ObjectHolder("ceramics/fired/spindle")
+    public static final ItemFiredPottery CERAMICS_FIRED_SPINDLE = getNull();
 
     @GameRegistry.ObjectHolder("bloom/unrefined")
     public static final ItemBloom UNREFINED_BLOOM = getNull();
@@ -201,6 +218,10 @@ public final class ItemsTFC
             simpleItems.add(register(r, "crop/seeds/" + crop.name().toLowerCase(), new ItemSeedsTFC(crop), CT_FOOD));
         }
 
+        simpleItems.add(register(r, "crop/product/jute", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
+        simpleItems.add(register(r, "crop/product/jute_fiber", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
+        simpleItems.add(register(r, "crop/product/burlap_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth"), CT_MISC));
+
         for (Food food : Food.values())
         {
             simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemFoodTFC(food), CT_FOOD));
@@ -215,11 +236,12 @@ public final class ItemsTFC
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
         simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "straw"), CT_MISC));
 
+        simpleItems.add(register(r, "spindle", new ItemCraftingTool(40, Size.NORMAL, Weight.MEDIUM, "spindle"), CT_MISC));
+
         simpleItems.add(register(r, "bloom/unrefined", new ItemBloom(), CT_MISC));
         simpleItems.add(register(r, "bloom/refined", new ItemBloom(), CT_MISC));
 
         // Animal Hides
-        simpleItems.add(register(r, "hide/sheepskin", new ItemMisc(Size.VERY_SMALL, Weight.LIGHT), CT_MISC));
         for (ItemAnimalHide.HideSize size : ItemAnimalHide.HideSize.values())
         {
             for (ItemAnimalHide.HideType type : ItemAnimalHide.HideType.values())
@@ -234,6 +256,12 @@ public final class ItemsTFC
                 }
             }
         }
+
+        simpleItems.add(register(r, "animal/product/wool", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
+        simpleItems.add(register(r, "animal/product/wool_yarn", new ItemMisc(Size.TINY, Weight.LIGHT, "string"), CT_MISC));
+        simpleItems.add(register(r, "animal/product/wool_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth"), CT_MISC));
+        simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth"), CT_MISC));
+
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
 
         // Note: if you add items you don't need to put them in this list of todos. Feel free to add them where they make sense :)

@@ -5,9 +5,8 @@
 
 package net.dries007.tfc.objects.recipes;
 
-import javax.annotation.Nonnull;
-
 import com.google.gson.JsonObject;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -21,14 +20,19 @@ import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-//Much of this is borrowed from https://github.com/Choonster-Minecraft-Mods/TestMod3/blob/d064915183a4a3b803d779576f982279268b1ca3/src/main/java/choonster/testmod3/crafting/recipe/ShapelessCuttingRecipe.java
+import javax.annotation.Nonnull;
 
-public class ShapelessDamageRecipe extends ShapelessOreRecipe
+public class ShapelessDamageAddItemRecipe extends ShapelessOreRecipe
 {
-    public ShapelessDamageRecipe(ResourceLocation group, NonNullList<Ingredient> input, @Nonnull ItemStack result)
+    private ItemStack out;
+    private int damage;
+
+    public ShapelessDamageAddItemRecipe(ResourceLocation group, NonNullList<Ingredient> input, @Nonnull ItemStack result, @Nonnull ItemStack output, int damage)
     {
         super(group, input, result);
         this.isSimple = false;
+        this.out = output;
+        this.damage = damage;
     }
 
     @Override
@@ -51,6 +55,12 @@ public class ShapelessDamageRecipe extends ShapelessOreRecipe
             }
         }
 
+        EntityPlayer player = ForgeHooks.getCraftingPlayer();
+        if (player != null)
+        {
+            player.addItemStackToInventory(out.copy());
+        }
+
         return remainingItems;
     }
 
@@ -64,7 +74,7 @@ public class ShapelessDamageRecipe extends ShapelessOreRecipe
     private ItemStack damageStack(ItemStack stack)
     {
         ItemStack damagedStack = stack.copy();
-        damagedStack.damageItem(1, ForgeHooks.getCraftingPlayer());
+        damagedStack.damageItem(damage, ForgeHooks.getCraftingPlayer());
 
         return damagedStack;
     }
@@ -78,8 +88,10 @@ public class ShapelessDamageRecipe extends ShapelessOreRecipe
             final String group = JsonUtils.getString(json, "group", "");
             final NonNullList<Ingredient> ingredients = RecipeUtils.parseShapeless(context, json);
             final ItemStack result = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context);
+            final ItemStack output = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "output"), context);
+            final int damage = JsonUtils.getInt(json, "damage");
 
-            return new ShapelessDamageRecipe(group.isEmpty() ? null : new ResourceLocation(group), ingredients, result);
+            return new ShapelessDamageAddItemRecipe(group.isEmpty() ? null : new ResourceLocation(group), ingredients, result, output, damage);
         }
     }
 }

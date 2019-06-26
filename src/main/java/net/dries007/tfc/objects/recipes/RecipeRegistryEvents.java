@@ -98,6 +98,7 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:beacon"));
             modRegistry.remove(new ResourceLocation("minecraft:armor_stand"));
             modRegistry.remove(new ResourceLocation("minecraft:anvil"));
+            modRegistry.remove(new ResourceLocation("minecraft:painting"));
 
             //breakydowny, buildyupy things.
             modRegistry.remove(new ResourceLocation("minecraft:wheat"));
@@ -321,6 +322,8 @@ public class RecipeRegistryEvents
 
             //white
             modRegistry.remove(new ResourceLocation("minecraft:white_concrete_powder"));
+            modRegistry.remove(new ResourceLocation("minecraft:white_bed"));
+            modRegistry.remove(new ResourceLocation("minecraft:white_carpet"));
 
             //Yellow
             modRegistry.remove(new ResourceLocation("minecraft:yellow_dye_from_sunflower"));
