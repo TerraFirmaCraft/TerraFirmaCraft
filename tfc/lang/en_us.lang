@@ -1774,6 +1774,26 @@ tile.tfc.wood.barrel.rosewood.sealed.name=Rosewood Barrel (Sealed)
 tile.tfc.wood.barrel.blackwood.sealed.name=Blackwood Barrel (Sealed)
 tile.tfc.wood.barrel.palm.sealed.name=Palm Barrel (Sealed)
 
+tile.tfc.wood.loom.ash.name=Ash Loom
+tile.tfc.wood.loom.aspen.name=Aspen Loom
+tile.tfc.wood.loom.birch.name=Birch Loom
+tile.tfc.wood.loom.chestnut.name=Chestnut Loom
+tile.tfc.wood.loom.douglas_fir.name=Douglas Fir Loom
+tile.tfc.wood.loom.hickory.name=Hickory Loom
+tile.tfc.wood.loom.maple.name=Maple Loom
+tile.tfc.wood.loom.oak.name=Oak Loom
+tile.tfc.wood.loom.pine.name=Pine Loom
+tile.tfc.wood.loom.sequoia.name=Sequoia Loom
+tile.tfc.wood.loom.spruce.name=Spruce Loom
+tile.tfc.wood.loom.sycamore.name=Sycamore Loom
+tile.tfc.wood.loom.white_cedar.name=White Cedar Loom
+tile.tfc.wood.loom.willow.name=Willow Loom
+tile.tfc.wood.loom.kapok.name=Kapok Loom
+tile.tfc.wood.loom.acacia.name=Acacia Loom
+tile.tfc.wood.loom.rosewood.name=Rosewood Loom
+tile.tfc.wood.loom.blackwood.name=Blackwood Loom
+tile.tfc.wood.loom.palm.name=Palm Loom
+
 tile.tfc.wall.cobble.granite.name=Granite Cobble Wall
 tile.tfc.wall.cobble.diorite.name=Diorite Cobble Wall
 tile.tfc.wall.cobble.gabbro.name=Gabbro Cobble Wall
@@ -2083,6 +2103,7 @@ item.tfc.wand.name=TFC Debug Wand
 item.tfc.firestarter.name=Firestarter
 item.tfc.straw.name=Straw
 item.leather.name=Leather
+item.tfc.spindle.name=Spindle
 
 item.tfc.ore.native_copper.name=Native Copper
 item.tfc.ore.native_gold.name=Native Gold
@@ -3155,7 +3176,9 @@ item.tfc.hide.scraped.large.name=Large Scraped Hide
 item.tfc.hide.prepared.small.name=Small Prepared Hide
 item.tfc.hide.prepared.medium.name=Medium Prepared Hide
 item.tfc.hide.prepared.large.name=Large Prepared Hide
-item.tfc.hide.sheepskin.name=Sheep Skin
+item.tfc.hide.sheepskin.small.name=Small Sheep Skin
+item.tfc.hide.sheepskin.medium.name=Medium Sheep Skin
+item.tfc.hide.sheepskin.large.name=Large Sheep Skin
 
 item.tfc.food.banana.name=Banana
 item.tfc.food.blackberry.name=Blackberry
@@ -3250,5 +3273,14 @@ item.tfc.crop.seeds.yellow_bell_pepper.name=Yellow Bell Pepper Seeds
 item.tfc.crop.seeds.pumpkin.name=Pumpkin Seeds
 item.tfc.crop.seeds.melon.name=Melon Seeds
 
+item.tfc.crop.product.jute.name=Jute
+item.tfc.crop.product.jute_fiber.name=Jute Fiber
+item.tfc.crop.product.burlap_cloth.name=Burlap Cloth
+
 item.tfc.bloom.unrefined.name=Raw Iron Bloom
 item.tfc.bloom.refined.name=Refined Iron Bloom
+
+item.tfc.animal.product.wool.name=Wool
+item.tfc.animal.product.wool_yarn.name=Wool Yarn
+item.tfc.animal.product.wool_cloth.name=Wool Cloth
+item.tfc.animal.product.silk_cloth.name=Silk Cloth
