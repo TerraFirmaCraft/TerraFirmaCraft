@@ -122,11 +122,11 @@ public class BlockRockVariant extends Block
                 setHarvestLevel("shovel", 0);
                 break;
             case GRAVEL:
+            case CLAY:
                 setSoundType(SoundType.GROUND);
                 setHardness(0.6F);
                 setHarvestLevel("shovel", 0);
                 break;
-            case CLAY:
             case CLAY_GRASS:
             case GRASS:
             case DRY_GRASS:

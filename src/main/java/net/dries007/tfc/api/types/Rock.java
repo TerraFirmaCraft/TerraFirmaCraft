@@ -120,7 +120,7 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         DIRT(Material.GROUND, FALL_HORIZONTAL, false),
         GRASS(Material.GRASS, FALL_HORIZONTAL, true),
         DRY_GRASS(Material.GRASS, FALL_HORIZONTAL, true),
-        CLAY(Material.GRASS, FALL_VERTICAL, false),
+        CLAY(Material.CLAY, FALL_VERTICAL, false),
         CLAY_GRASS(Material.GRASS, FALL_VERTICAL, true),
         FARMLAND(Material.GROUND, FALL_VERTICAL, false, BlockFarmlandTFC::new),
         PATH(Material.GROUND, FALL_VERTICAL, false, BlockPathTFC::new);
