@@ -7,15 +7,9 @@ package net.dries007.tfc.objects.te;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -24,6 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.network.PacketBellowsUpdate;
 import net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge;
 import net.dries007.tfc.objects.blocks.devices.BlockFirePit;
 import net.dries007.tfc.util.IBellowsConsumerBlock;
@@ -64,52 +59,21 @@ public class TEBellows extends TEBase
 
     private long lastPushed = 0L;
 
-    // Min 0.125, Max 0.875
+    // Min 0.125, Max 0.625
     @SideOnly(Side.CLIENT)
     public double getHeight()
     {
         int time = (int) (world.getTotalWorldTime() - lastPushed);
         if (time < 10)
-            return (double) time * 0.075 + 0.125;
+            return (double) time * 0.05 + 0.125;
         else if (time < 20)
-            return (double) (20 - time) * 0.075 + 0.125;
+            return (double) (20 - time) * 0.05 + 0.125;
         return 0.125;
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag)
+    public void onReceivePacket(long lastPushed)
     {
-        lastPushed = tag.getLong("lastPushed");
-        super.readFromNBT(tag);
-    }
-
-    @Override
-    @Nonnull
-    public NBTTagCompound writeToNBT(NBTTagCompound tag)
-    {
-        tag.setLong("lastPushed", lastPushed);
-        return super.writeToNBT(tag);
-    }
-
-    @Nullable
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
-        return new SPacketUpdateTileEntity(pos, 127, getUpdateTag());
-    }
-
-    @Override
-    @Nonnull
-    public NBTTagCompound getUpdateTag()
-    {
-        return writeToNBT(new NBTTagCompound());
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-    {
-        readFromNBT(pkt.getNbtCompound());
-        updateBlock();
+        this.lastPushed = lastPushed;
     }
 
     public boolean onRightClick()
@@ -117,7 +81,13 @@ public class TEBellows extends TEBase
         long time = world.getTotalWorldTime() - lastPushed;
         if (time < 20)
             return true;
-        lastPushed = world.getTotalWorldTime();
+
+        if(!world.isRemote)
+        {
+            lastPushed = world.getTotalWorldTime();
+            TerraFirmaCraft.getNetwork().sendToDimension(new PacketBellowsUpdate(this, lastPushed), world.provider.getDimension());
+        }
+
         EnumFacing direction = world.getBlockState(pos).getValue(FACING); // It is a better idea to inherit the direction directly from the block.
         for (Vec3i offset : offsets)
         {
@@ -138,7 +108,7 @@ public class TEBellows extends TEBase
                 return true;
             }
         }
-        return false;
+        return true;
     }
 
     public void debug()
@@ -146,12 +116,5 @@ public class TEBellows extends TEBase
         TerraFirmaCraft.getLog().debug("Debugging Bellows");
         TerraFirmaCraft.getLog().debug("Now: {} | Then: {} | Difference: {}", world.getTotalWorldTime(), lastPushed, (world.getTotalWorldTime() - lastPushed));
         TerraFirmaCraft.getLog().debug("Total Height: {}", getHeight());
-    }
-
-    private void updateBlock()
-    {
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3); // sync TE
-        markDirty(); // make sure everything saves to disk
     }
 }
