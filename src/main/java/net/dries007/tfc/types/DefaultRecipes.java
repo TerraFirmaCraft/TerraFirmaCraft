@@ -241,11 +241,11 @@ public final class DefaultRecipes
     {
         IForgeRegistry<LoomRecipe> r = event.getRegistry();
 
-        r.register(new LoomRecipe(new ResourceLocation(MOD_ID, "burlap_cloth"), ItemsTFC.JUTE_FIBER, 12, ItemsTFC.BURLAP_CLOTH, 12, new ResourceLocation(MOD_ID, "textures/blocks/devices/loom/product/burlap.png")));
-        r.register(new LoomRecipe(new ResourceLocation(MOD_ID, "wool_cloth"), ItemsTFC.WOOL_YARN, 16, ItemsTFC.WOOL_CLOTH, 16, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")));
-        r.register(new LoomRecipe(new ResourceLocation(MOD_ID, "silk_cloth"), Items.STRING, 24, ItemsTFC.SILK_CLOTH, 24, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")));
+        r.register(new LoomRecipe(new ResourceLocation(MOD_ID, "burlap_cloth"), IIngredient.of(ItemsTFC.JUTE_FIBER), 12, new ItemStack(ItemsTFC.BURLAP_CLOTH), 12, new ResourceLocation(MOD_ID, "textures/blocks/devices/loom/product/burlap.png")));
+        r.register(new LoomRecipe(new ResourceLocation(MOD_ID, "wool_cloth"), IIngredient.of(ItemsTFC.WOOL_YARN), 16, new ItemStack(ItemsTFC.WOOL_CLOTH), 16, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")));
+        r.register(new LoomRecipe(new ResourceLocation(MOD_ID, "silk_cloth"), IIngredient.of(Items.STRING), 24, new ItemStack(ItemsTFC.SILK_CLOTH), 24, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")));
 
-        r.register(new LoomRecipe(new ResourceLocation(MOD_ID, "wool_block"), ItemsTFC.WOOL_CLOTH, 4, ItemBlock.getItemFromBlock(Blocks.WOOL), 4, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")));
+        r.register(new LoomRecipe(new ResourceLocation(MOD_ID, "wool_block"), IIngredient.of(ItemsTFC.WOOL_CLOTH), 4, new ItemStack(ItemBlock.getItemFromBlock(Blocks.WOOL)), 4, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")));
     }
 
     private static void addAnvil(IForgeRegistry<AnvilRecipe> registry, Metal.ItemType inputType, Metal.ItemType outputType, boolean onlyToolMetals, ForgeRule... rules)

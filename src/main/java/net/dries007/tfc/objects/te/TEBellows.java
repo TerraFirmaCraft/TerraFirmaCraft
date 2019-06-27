@@ -82,7 +82,7 @@ public class TEBellows extends TEBase
         if (time < 20)
             return true;
 
-        if(!world.isRemote)
+        if (!world.isRemote)
         {
             lastPushed = world.getTotalWorldTime();
             TerraFirmaCraft.getNetwork().sendToDimension(new PacketBellowsUpdate(this, lastPushed), world.provider.getDimension());

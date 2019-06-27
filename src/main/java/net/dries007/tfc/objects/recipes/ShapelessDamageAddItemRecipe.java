@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.recipes;
 
+import javax.annotation.Nonnull;
+
 import com.google.gson.JsonObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
@@ -19,8 +21,6 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-
-import javax.annotation.Nonnull;
 
 public class ShapelessDamageAddItemRecipe extends ShapelessOreRecipe
 {
