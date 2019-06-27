@@ -17,13 +17,11 @@ import net.minecraft.item.*;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -34,7 +32,6 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
 import net.dries007.tfc.api.capability.player.CapabilityPlayer;
@@ -79,48 +76,16 @@ public final class CommonEventHandler
         }
     }
 
-    @SubscribeEvent
-    public static void onRightClickWater(PlayerInteractEvent event)
-    {
-        if (!(event instanceof PlayerInteractEvent.RightClickBlock || event instanceof PlayerInteractEvent.RightClickEmpty))
-            return;
-        EntityPlayer player = event.getEntityPlayer();
-        if (!(player.getHeldItemMainhand().isEmpty()))
-            return;
-        RayTraceResult result = Helpers.rayTrace(event.getWorld(), player, true);
-        if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK)
-        {
-            BlockPos blockpos = result.getBlockPos();
-            IBlockState state = event.getWorld().getBlockState(blockpos);
-            IPlayerData cap = event.getEntityLiving().getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
-            if (BlocksTFC.isFreshWater(state))
-            {
-                if (event.getSide().isServer() && cap != null && cap.drink(15)){
-                    player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                    TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
-                }
-                event.setCancellationResult(EnumActionResult.SUCCESS);
-                event.setCanceled(true);
-            }else if (BlocksTFC.isSaltWater(state))
-            {
-                if (event.getSide().isServer() && cap != null && cap.drink(-15)){
-                    player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                    TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
-                }
-                event.setCancellationResult(EnumActionResult.SUCCESS);
-                event.setCanceled(true);
-            }
-        }
-    }
-
     /**
      * Handler for {@link IPlaceableItem}
      * To add a new placeable item effect, either implement {@link IPlaceableItem} or see {@link IPlaceableItem.Impl} for vanilla item usages
      * Notes:
      * 1) `onBlockActivate` doesn't get called when the player is sneaking, unless doesSneakBypassUse returns true.
      * 2) This event handler is fired first with the main hand as event.getStack()
-     * If nothing happens (as per vanilla behavior, even if this event causes something to happen),
+     * If nothing happens (i.e. the event is not cancelled + set cancellation result to success
      * The event will fire AGAIN with the offhand and offhand stack.
+     *
+     * Also handles drinking water when right clicking an underwater block
      */
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
@@ -141,6 +106,30 @@ public final class CommonEventHandler
                 }
                 event.setCancellationResult(EnumActionResult.SUCCESS);
                 event.setCanceled(true);
+                return;
+            }
+        }
+
+        // Try to drink water
+        if (stack.isEmpty())
+        {
+            RayTraceResult result = Helpers.rayTrace(event.getWorld(), player, true);
+            if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK)
+            {
+                BlockPos blockpos = result.getBlockPos();
+                IBlockState state = event.getWorld().getBlockState(blockpos);
+                IPlayerData cap = event.getEntityLiving().getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
+                boolean isFreshWater = BlocksTFC.isFreshWater(state), isSaltWater = BlocksTFC.isSaltWater(state);
+                if (cap != null && ((isFreshWater && cap.drink(15)) || (isSaltWater && cap.drink(-5))))
+                {
+                    if (!world.isRemote)
+                    {
+                        player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                        TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
+                    }
+                    event.setCancellationResult(EnumActionResult.SUCCESS);
+                    event.setCanceled(true);
+                }
             }
         }
     }

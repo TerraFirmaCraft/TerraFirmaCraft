@@ -5,25 +5,36 @@
 
 package net.dries007.tfc.api.capability.player;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 
 import net.dries007.tfc.util.agriculture.Nutrient;
 
 public interface IPlayerData
 {
-    float getNutrient(Nutrient nutrient);
+    float getNutrient(@Nonnull Nutrient nutrient);
 
     float[] getNutrients();
 
     void setNutrients(float[] nutrients);
 
-    void setNutrient(Nutrient nutrient, float amount);
+    void setNutrient(@Nonnull Nutrient nutrient, float amount);
 
-    void addNutrient(Nutrient nutrient, float amount);
+    void addNutrient(@Nonnull Nutrient nutrient, float amount);
 
+    /**
+     * Called when a player loads in the world.
+     * Updates nutrients assuming that no time had passed between player log out + log in
+     */
     void updateTicksFastForward();
 
-    void onUpdate(EntityPlayer player);
+    /**
+     * Called during player tick, used to calculate thirst
+     *
+     * @param player the player that is ticking
+     */
+    void onUpdate(@Nonnull EntityPlayer player);
 
     float getHealthModifier();
 

@@ -112,7 +112,7 @@ public class ConfigTFC
         @Config.Comment("Minimum health modifier player can obtain with low stats")
         @Config.RangeDouble(min = 0.1d, max = 1d)
         @Config.LangKey("config." + MOD_ID + ".general.playerMinHealthModifier")
-        public double playerMinHealthModifier = 0.5d;
+        public double playerMinHealthModifier = 0.2d;
 
         @Config.Comment("Maximum health modifier player can obtain with high stats")
         @Config.RangeDouble(min = 1d, max = 5d)
