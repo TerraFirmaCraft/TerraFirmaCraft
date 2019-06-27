@@ -107,9 +107,11 @@ public abstract class BlockCropSimple extends BlockCropTFC
         drops.clear();
         drops.add(new ItemStack(ItemSeedsTFC.get(crop)));
 
+        // todo: adjust food drops based on player agriculture skill. For now just go with 2 for initial balance
         ItemStack foodDrop = crop.getFoodDrop(state.getValue(getStageProperty()));
         if (!foodDrop.isEmpty())
         {
+            foodDrop.setCount(2);
             drops.add(foodDrop);
         }
     }
