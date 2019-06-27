@@ -14,6 +14,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -26,6 +27,7 @@ import net.minecraft.world.World;
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.objects.te.TECropSpreading;
+import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.util.agriculture.Crop.STAGE_8;
@@ -92,6 +94,7 @@ public class BlockCropSpreading extends BlockCropTFC
                                 {
                                     newTile.setMaxGrowthStage(tile.getMaxGrowthStage() + 2);
                                     newTile.setBaseAge(tile.getBaseAge() + currentGrowthStage);
+                                    newTile.setSeedPlant(false);
                                 }
                             }
                         }
@@ -118,7 +121,6 @@ public class BlockCropSpreading extends BlockCropTFC
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        grow(worldIn, RANDOM, pos, state);
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
     }
 
@@ -130,14 +132,31 @@ public class BlockCropSpreading extends BlockCropTFC
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        // Seed dropping happens here because it needs to access the TE, which is gone by the time getDrops is called
+        TECropSpreading tile = Helpers.getTE(worldIn, pos, TECropSpreading.class);
+        if (tile != null && tile.isSeedPlant())
+        {
+            InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ItemSeedsTFC.get(crop)));
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
         drops.clear();
-        drops.add(new ItemStack(ItemSeedsTFC.get(crop)));
-
+        TECropSpreading tile = Helpers.getTE(world, pos, TECropSpreading.class);
+        if (tile != null && tile.isSeedPlant())
+        {
+            drops.add(new ItemStack(ItemSeedsTFC.get(crop)));
+        }
+        // todo: adjust food drops based on player agriculture skill. For now just go with 2 for initial balance
         ItemStack foodDrop = crop.getFoodDrop(state.getValue(STAGE_8));
         if (!foodDrop.isEmpty())
         {
+            foodDrop.setCount(2);
             drops.add(foodDrop);
         }
     }
@@ -164,5 +183,15 @@ public class BlockCropSpreading extends BlockCropTFC
     public PropertyInteger getStageProperty()
     {
         return STAGE_8;
+    }
+
+    @Override
+    protected ItemStack getDeathItem(TETickCounter cropTE)
+    {
+        if (crop instanceof TECropSpreading && ((TECropSpreading) cropTE).isSeedPlant())
+        {
+            return super.getDeathItem(cropTE);
+        }
+        return ItemStack.EMPTY;
     }
 }

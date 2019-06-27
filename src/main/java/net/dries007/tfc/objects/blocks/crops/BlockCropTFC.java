@@ -28,13 +28,11 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
-import net.dries007.tfc.objects.te.TEPlacedItem;
+import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.CalendarTFC;
@@ -111,19 +109,15 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
                     grow(worldIn, random, pos, state);
                     te.resetCounter();
                 }
-            }
 
-            // If not valid conditions, die
-            if (!crop.isValidConditions(temp, rainfall))
-            {
-                worldIn.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
-                TEPlacedItem tilePlaced = Helpers.getTE(worldIn, pos, TEPlacedItem.class);
-                if (tilePlaced != null)
+                // If not valid conditions, die
+                if (!crop.isValidConditions(temp, rainfall))
                 {
-                    IItemHandler cap = tilePlaced.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-                    if (cap != null)
+                    worldIn.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
+                    TEPlacedItemFlat tilePlaced = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
+                    if (tilePlaced != null)
                     {
-                        cap.insertItem(0, new ItemStack(ItemSeedsTFC.get(crop)), false);
+                        tilePlaced.setStack(getDeathItem(te));
                     }
                 }
             }
@@ -165,6 +159,14 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
     {
         return EnumPlantType.Crop;
+    }
+
+    /**
+     * Gets the item stack that the crop will create upon dying and turning into a placed item
+     */
+    protected ItemStack getDeathItem(TETickCounter cropTE)
+    {
+        return ItemSeedsTFC.get(crop, 1);
     }
 
     public abstract PropertyInteger getStageProperty();

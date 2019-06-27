@@ -38,7 +38,7 @@ public enum Crop implements ICrop
     ONION(Food.ONION, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
     POTATO(Food.POTATO, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
     SOYBEAN(Food.SOYBEAN, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    SQUASH(Food.SQUASH, 5f, 35f, 100f, 400f, 7, 0.5f, SPREADING),
+    SQUASH(Food.SQUASH, 5f, 35f, 100f, 400f, 8, 0.5f, SPREADING),
     SUGARCANE(Food.SUGARCANE, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
     RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
     TOMATO(Food.TOMATO, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
