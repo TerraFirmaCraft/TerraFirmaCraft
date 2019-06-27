@@ -265,21 +265,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     }
 
     @Override
-    public boolean isItemValid(int slot, ItemStack stack)
-    {
-        //TODO: validate items that go in the item storage slot (based on side?)
-        switch (slot)
-        {
-            case SLOT_FLUID_CONTAINER_IN:
-                return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-            case SLOT_ITEM:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
@@ -321,6 +306,21 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         }
 
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        //TODO: validate items that go in the item storage slot (based on side?)
+        switch (slot)
+        {
+            case SLOT_FLUID_CONTAINER_IN:
+                return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+            case SLOT_ITEM:
+                return true;
+            default:
+                return false;
+        }
     }
 
     private void updateLockStatus()

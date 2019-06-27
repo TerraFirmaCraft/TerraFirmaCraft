@@ -90,18 +90,6 @@ public class TELogPile extends TEInventory implements ITickable
     }
 
     @Override
-    public int getSlotLimit(int slot)
-    {
-        return 4;
-    }
-
-    @Override
-    public boolean isItemValid(int slot, ItemStack stack)
-    {
-        return OreDictionaryHelper.doesStackMatchOre(stack, "logWood");
-    }
-
-    @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         burnTicks = nbt.getInteger("burn_ticks");
@@ -115,6 +103,18 @@ public class TELogPile extends TEInventory implements ITickable
         nbt.setInteger("burn_ticks", burnTicks);
         nbt.setBoolean("burning", burning);
         return super.writeToNBT(nbt);
+    }
+
+    @Override
+    public int getSlotLimit(int slot)
+    {
+        return 4;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        return OreDictionaryHelper.doesStackMatchOre(stack, "logWood");
     }
 
     public boolean insertLog(ItemStack stack)

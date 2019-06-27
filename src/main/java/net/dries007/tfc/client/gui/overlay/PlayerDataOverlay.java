@@ -87,10 +87,10 @@ public final class PlayerDataOverlay
             float percentHealth = curHealth / maxHealth;
             float surplusPercent = Math.max(percentHealth - 1, 0);
             int uSurplus = 90;
-            if(percentHealth > 1)percentHealth = 1;
+            if (percentHealth > 1) percentHealth = 1;
 
             this.drawTexturedModalRect(mid - 91, healthRowHeight, 0, 10, (int) (90 * percentHealth), 10);
-            while(surplusPercent > 0)
+            while (surplusPercent > 0)
             {
                 //Draw beyond max health bar(if other mods adds more health)
                 float percent = Math.min(surplusPercent, 1);

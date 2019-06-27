@@ -161,6 +161,8 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
         return EnumPlantType.Crop;
     }
 
+    public abstract PropertyInteger getStageProperty();
+
     /**
      * Gets the item stack that the crop will create upon dying and turning into a placed item
      */
@@ -168,6 +170,4 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     {
         return ItemSeedsTFC.get(crop, 1);
     }
-
-    public abstract PropertyInteger getStageProperty();
 }

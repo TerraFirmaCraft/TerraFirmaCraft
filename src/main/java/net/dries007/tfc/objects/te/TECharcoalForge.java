@@ -190,6 +190,27 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     }
 
     @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        temperature = nbt.getFloat("temperature");
+        burnTicks = nbt.getInteger("burnTicks");
+        airTicks = nbt.getInteger("airTicks");
+        burnTemperature = nbt.getFloat("burnTemperature");
+        super.readFromNBT(nbt);
+    }
+
+    @Override
+    @Nonnull
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        nbt.setFloat("temperature", temperature);
+        nbt.setInteger("burnTicks", burnTicks);
+        nbt.setInteger("airTicks", airTicks);
+        nbt.setFloat("burnTemperature", burnTemperature);
+        return super.writeToNBT(nbt);
+    }
+
+    @Override
     public int getSlotLimit(int slot)
     {
         // All slots have limit 1
@@ -214,27 +235,6 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
             // Extra slots - anything that can heat up and hold fluids
             return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         }
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        temperature = nbt.getFloat("temperature");
-        burnTicks = nbt.getInteger("burnTicks");
-        airTicks = nbt.getInteger("airTicks");
-        burnTemperature = nbt.getFloat("burnTemperature");
-        super.readFromNBT(nbt);
-    }
-
-    @Override
-    @Nonnull
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-    {
-        nbt.setFloat("temperature", temperature);
-        nbt.setInteger("burnTicks", burnTicks);
-        nbt.setInteger("airTicks", airTicks);
-        nbt.setFloat("burnTemperature", burnTemperature);
-        return super.writeToNBT(nbt);
     }
 
     public void debug()

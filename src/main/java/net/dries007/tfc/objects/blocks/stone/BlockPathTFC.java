@@ -38,12 +38,6 @@ public class BlockPathTFC extends BlockRockVariantFallable
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState state)
     {
@@ -88,6 +82,12 @@ public class BlockPathTFC extends BlockRockVariantFallable
             default:
                 return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
         }
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
     }
 
     @Override

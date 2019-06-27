@@ -14,7 +14,6 @@ import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.player.CapabilityPlayer;
 import net.dries007.tfc.api.capability.player.IPlayerData;
-import net.dries007.tfc.client.gui.overlay.PlayerDataOverlay;
 import net.dries007.tfc.util.agriculture.Nutrient;
 
 public class PacketPlayerDataUpdate implements IMessage

@@ -86,6 +86,13 @@ public class ContainerLiquidTransfer extends ContainerItemStack implements ISlot
     }
 
     @Override
+    protected void addContainerSlots()
+    {
+        inventory = new ItemStackHandlerCallback(this, 1);
+        addSlotToContainer(new SlotItemHandler(inventory, 0, 80, 34));
+    }
+
+    @Override
     public int getSlotLimit(int slot)
     {
         return 1;
@@ -95,12 +102,5 @@ public class ContainerLiquidTransfer extends ContainerItemStack implements ISlot
     public boolean isItemValid(int slot, @Nonnull ItemStack stack)
     {
         return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-    }
-
-    @Override
-    protected void addContainerSlots()
-    {
-        inventory = new ItemStackHandlerCallback(this, 1);
-        addSlotToContainer(new SlotItemHandler(inventory, 0, 80, 34));
     }
 }

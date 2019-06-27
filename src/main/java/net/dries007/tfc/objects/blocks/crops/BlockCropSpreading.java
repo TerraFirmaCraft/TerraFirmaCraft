@@ -117,13 +117,6 @@ public class BlockCropSpreading extends BlockCropTFC
     }
 
     @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, WILD, STAGE_8);
-    }
-
-    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         // Seed dropping happens here because it needs to access the TE, which is gone by the time getDrops is called
@@ -133,6 +126,13 @@ public class BlockCropSpreading extends BlockCropTFC
             InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ItemSeedsTFC.get(crop)));
         }
         super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, WILD, STAGE_8);
     }
 
     @Override
