@@ -22,12 +22,6 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
         return TFCRegistries.LOOM.getValuesCollection().stream().filter(x -> x.isValidInput(item)).findFirst().orElse(null);
     }
 
-    @Nullable
-    public static LoomRecipe getByOutput(ItemStack item)
-    {
-        return TFCRegistries.LOOM.getValuesCollection().stream().filter(x -> x.isValidOutput(item)).findFirst().orElse(null);
-    }
-
     private IIngredient<ItemStack> inputItem;
     private int inputAmount;
     private ItemStack outputItem;

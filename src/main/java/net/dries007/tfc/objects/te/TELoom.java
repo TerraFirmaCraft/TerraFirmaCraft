@@ -21,6 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.LoomRecipe;
+import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.network.PacketLoomUpdate;
 import net.dries007.tfc.objects.blocks.wood.BlockLoom;
@@ -66,15 +67,9 @@ public class TELoom extends TEInventory implements ITickable
     {
         super.readFromNBT(compound);
         progress = compound.getInteger("progress");
-        if (!inventory.getStackInSlot(0).isEmpty())
-        {
-            recipe = LoomRecipe.get(inventory.getStackInSlot(0));
-        }
-        else if (!inventory.getStackInSlot(1).isEmpty())
-        {
-            recipe = LoomRecipe.getByOutput(inventory.getStackInSlot(1));
-        }
-        else recipe = null;
+        String recipeName = compound.getString("recipe");
+        String[] recipeNameSplit = recipeName.split(":");
+        recipe = (recipeName != "null") ? TFCRegistries.LOOM.getValue(new ResourceLocation(recipeNameSplit[0], recipeNameSplit[1])) : null;
     }
 
     @Override
@@ -83,6 +78,7 @@ public class TELoom extends TEInventory implements ITickable
     {
         super.writeToNBT(compound);
         compound.setInteger("progress", progress);
+        compound.setString("recipe", (recipe != null) ? recipe.getRegistryName().toString() : "null");
         return compound;
     }
 
