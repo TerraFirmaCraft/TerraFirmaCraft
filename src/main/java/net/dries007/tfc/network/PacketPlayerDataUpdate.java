@@ -12,23 +12,27 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.nutrient.CapabilityFood;
-import net.dries007.tfc.api.capability.nutrient.IPlayerNutrients;
+import net.dries007.tfc.api.capability.player.CapabilityPlayer;
+import net.dries007.tfc.api.capability.player.IPlayerData;
+import net.dries007.tfc.client.gui.overlay.PlayerDataOverlay;
 import net.dries007.tfc.util.agriculture.Nutrient;
 
-public class PacketPlayerNutrientsUpdate implements IMessage
+public class PacketPlayerDataUpdate implements IMessage
 {
     private float[] nutrients;
+    private float thirst;
 
     @SuppressWarnings("unused")
-    public PacketPlayerNutrientsUpdate()
+    public PacketPlayerDataUpdate()
     {
         nutrients = new float[Nutrient.TOTAL];
+        thirst = 0;
     }
 
-    public PacketPlayerNutrientsUpdate(IPlayerNutrients cap)
+    public PacketPlayerDataUpdate(IPlayerData cap)
     {
         nutrients = cap.getNutrients();
+        thirst = cap.getThirst();
     }
 
     @Override
@@ -38,6 +42,7 @@ public class PacketPlayerNutrientsUpdate implements IMessage
         {
             nutrients[i] = buf.readFloat();
         }
+        thirst = buf.readFloat();
     }
 
     @Override
@@ -47,21 +52,23 @@ public class PacketPlayerNutrientsUpdate implements IMessage
         {
             buf.writeFloat(nutrient);
         }
+        buf.writeFloat(thirst);
     }
 
-    public static final class Handler implements IMessageHandler<PacketPlayerNutrientsUpdate, IMessage>
+    public static final class Handler implements IMessageHandler<PacketPlayerDataUpdate, IMessage>
     {
         @Override
-        public IMessage onMessage(PacketPlayerNutrientsUpdate message, MessageContext ctx)
+        public IMessage onMessage(PacketPlayerDataUpdate message, MessageContext ctx)
         {
             TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
                 EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
                 if (player != null)
                 {
-                    IPlayerNutrients cap = player.getCapability(CapabilityFood.CAPABILITY_PLAYER_NUTRIENTS, null);
+                    IPlayerData cap = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
                     if (cap != null)
                     {
                         cap.setNutrients(message.nutrients);
+                        cap.setThirst(message.thirst);
                     }
                 }
             });

@@ -17,8 +17,8 @@ import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import net.dries007.tfc.api.capability.nutrient.CapabilityFood;
-import net.dries007.tfc.api.capability.nutrient.IFood;
+import net.dries007.tfc.api.capability.player.CapabilityPlayer;
+import net.dries007.tfc.api.capability.player.IFood;
 
 @ParametersAreNonnullByDefault
 public class FoodStackingRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
@@ -33,7 +33,7 @@ public class FoodStackingRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
             if (!stack.isEmpty())
             {
                 // All nonempty stacks must be a food
-                if (!stack.hasCapability(CapabilityFood.CAPABILITY_NUTRIENTS, null))
+                if (!stack.hasCapability(CapabilityPlayer.CAPABILITY_NUTRIENTS, null))
                 {
                     return false;
                 }
@@ -69,7 +69,7 @@ public class FoodStackingRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
             if (!stack.isEmpty())
             {
                 // Get the food capability
-                IFood cap = stack.getCapability(CapabilityFood.CAPABILITY_NUTRIENTS, null);
+                IFood cap = stack.getCapability(CapabilityPlayer.CAPABILITY_NUTRIENTS, null);
                 if (cap != null)
                 {
                     // Increment output amount
@@ -92,7 +92,7 @@ public class FoodStackingRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
 
         // Update the capability and count of the result
         resultStack.setCount(outputAmount);
-        IFood cap = resultStack.getCapability(CapabilityFood.CAPABILITY_NUTRIENTS, null);
+        IFood cap = resultStack.getCapability(CapabilityPlayer.CAPABILITY_NUTRIENTS, null);
         if (cap != null)
         {
             cap.setCreationDate(minCreationDate);

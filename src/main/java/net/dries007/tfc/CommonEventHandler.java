@@ -11,13 +11,18 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
@@ -26,19 +31,22 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
-import net.dries007.tfc.api.capability.nutrient.CapabilityFood;
-import net.dries007.tfc.api.capability.nutrient.IPlayerNutrients;
+import net.dries007.tfc.api.capability.player.CapabilityPlayer;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
-import net.dries007.tfc.network.PacketPlayerNutrientsUpdate;
+import net.dries007.tfc.network.PacketPlayerDataUpdate;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
+import net.dries007.tfc.util.DamageManager;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -74,8 +82,10 @@ public final class CommonEventHandler
      * Notes:
      * 1) `onBlockActivate` doesn't get called when the player is sneaking, unless doesSneakBypassUse returns true.
      * 2) This event handler is fired first with the main hand as event.getStack()
-     * If nothing happens (as per vanilla behavior, even if this event causes something to happen),
+     * If nothing happens (i.e. the event is not cancelled + set cancellation result to success
      * The event will fire AGAIN with the offhand and offhand stack.
+     *
+     * Also handles drinking water when right clicking an underwater block
      */
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
@@ -96,6 +106,30 @@ public final class CommonEventHandler
                 }
                 event.setCancellationResult(EnumActionResult.SUCCESS);
                 event.setCanceled(true);
+                return;
+            }
+        }
+
+        // Try to drink water
+        if (stack.isEmpty())
+        {
+            RayTraceResult result = Helpers.rayTrace(event.getWorld(), player, true);
+            if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK)
+            {
+                BlockPos blockpos = result.getBlockPos();
+                IBlockState state = event.getWorld().getBlockState(blockpos);
+                IPlayerData cap = event.getEntityLiving().getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
+                boolean isFreshWater = BlocksTFC.isFreshWater(state), isSaltWater = BlocksTFC.isSaltWater(state);
+                if (cap != null && ((isFreshWater && cap.drink(15)) || (isSaltWater && cap.drink(-5))))
+                {
+                    if (!world.isRemote)
+                    {
+                        player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                        TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
+                    }
+                    event.setCancellationResult(EnumActionResult.SUCCESS);
+                    event.setCanceled(true);
+                }
             }
         }
     }
@@ -147,6 +181,25 @@ public final class CommonEventHandler
 
     }
 
+
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event)
+    {
+        //Starvation should not be scaled, you receive damage based on % anyway.
+        if (event.getEntityLiving() instanceof EntityPlayer && !(event.getSource() == DamageSource.STARVE))
+        {
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            IPlayerData cap = event.getEntityLiving().getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
+            if (cap != null)
+            {
+                float finalDamage = DamageManager.applyArmor(event.getAmount(), event.getSource(), player) / cap.getHealthModifier();
+                event.setAmount(finalDamage);
+                event.getSource().setDamageBypassesArmor(); //Armor calculation is already done
+            }
+        }
+    }
+
+
     @SubscribeEvent
     public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> e)
     {
@@ -192,12 +245,12 @@ public final class CommonEventHandler
             // World Data (Calendar) Sync Handler
             TerraFirmaCraft.getNetwork().sendTo(new PacketCalendarUpdate(), player);
 
-            // Player nutrients
-            IPlayerNutrients cap = player.getCapability(CapabilityFood.CAPABILITY_PLAYER_NUTRIENTS, null);
+            // Player data
+            IPlayerData cap = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
             if (cap != null)
             {
-                cap.updateNutrientsFastForward();
-                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerNutrientsUpdate(cap), player);
+                cap.updateTicksFastForward();
+                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), player);
             }
         }
     }
@@ -221,6 +274,42 @@ public final class CommonEventHandler
         {
             final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
             event.getContainer().addListener(new CapabilityContainerListener(player));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event)
+    {
+        World world = event.player.world;
+
+        if (!world.isRemote && event.phase == TickEvent.Phase.START)
+        {
+            EntityPlayer player = event.player;
+            IPlayerData cap = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
+            if (cap != null)
+            {
+                cap.onUpdate(player);
+                if (player.ticksExisted % 100 == 0)
+                {
+                    //Apply Debuff and send update to client
+                    if (cap.getThirst() < 10f)
+                    {
+                        player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 1));
+                        player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 1));
+                        if (cap.getThirst() <= 0f)
+                        {
+                            //Hurt the player
+                            player.attackEntityFrom(DamageSource.STARVE, 1); //5% life/5secs
+                        }
+                    }
+                    else if (cap.getThirst() < 40f)
+                    {
+                        player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 0));
+                        player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 0));
+                    }
+                    TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
+                }
+            }
         }
     }
 }

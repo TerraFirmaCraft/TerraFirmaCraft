@@ -23,6 +23,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -107,6 +110,27 @@ public final class Helpers
                 }
             }
         }
+    }
+
+    /**
+     * Copy from Item#rayTrace
+     * Returns a RayTraceResult containing first found block in Players reach.
+     *
+     * @param worldIn    the world obj player stands in.
+     * @param playerIn   the player obj
+     * @param useLiquids do fluids counts as block?
+     * @return
+     */
+    public static RayTraceResult rayTrace(World worldIn, EntityPlayer playerIn, boolean useLiquids)
+    {
+        Vec3d playerVec = new Vec3d(playerIn.posX, playerIn.posY + playerIn.getEyeHeight(), playerIn.posZ);
+        float cosYaw = MathHelper.cos(-playerIn.rotationYaw * 0.017453292F - (float) Math.PI);
+        float sinYaw = MathHelper.sin(-playerIn.rotationYaw * 0.017453292F - (float) Math.PI);
+        float cosPitch = -MathHelper.cos(-playerIn.rotationPitch * 0.017453292F);
+        float sinPitch = MathHelper.sin(-playerIn.rotationPitch * 0.017453292F);
+        double reachDistance = playerIn.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
+        Vec3d targetVec = playerVec.add((sinYaw * cosPitch) * reachDistance, sinPitch * reachDistance, (cosYaw * cosPitch) * reachDistance);
+        return worldIn.rayTraceBlocks(playerVec, targetVec, useLiquids, !useLiquids, false);
     }
 
     public static boolean containsAnyOfCaseInsensitive(Collection<String> input, String... items)

@@ -187,18 +187,6 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
 
     @Override
     @SuppressWarnings("deprecation")
-    @ParametersAreNonnullByDefault
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        if (blockState.getValue(OPEN))
-        {
-            return NULL_AABB;
-        }
-        return AABB[blockState.getValue(FACING).getHorizontalIndex()][0];
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
@@ -237,6 +225,18 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    @ParametersAreNonnullByDefault
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        if (blockState.getValue(OPEN))
+        {
+            return NULL_AABB;
+        }
+        return AABB[blockState.getValue(FACING).getHorizontalIndex()][0];
     }
 
     @Override
@@ -332,19 +332,6 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
         return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
     }
 
-    @Nullable
-    private EnumFacing getAValidFacing(World world, BlockPos pos)
-    {
-        for (EnumFacing facing : EnumFacing.HORIZONTALS)
-        {
-            if (isFormed(world, pos.offset(facing), facing))
-            {
-                return facing;
-            }
-        }
-        return null;
-    }
-
     @Override
     @Nonnull
     protected BlockStateContainer createBlockState()
@@ -368,5 +355,18 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEBloomery();
+    }
+
+    @Nullable
+    private EnumFacing getAValidFacing(World world, BlockPos pos)
+    {
+        for (EnumFacing facing : EnumFacing.HORIZONTALS)
+        {
+            if (isFormed(world, pos.offset(facing), facing))
+            {
+                return facing;
+            }
+        }
+        return null;
     }
 }
