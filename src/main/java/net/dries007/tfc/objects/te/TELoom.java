@@ -67,9 +67,7 @@ public class TELoom extends TEInventory implements ITickable
     {
         super.readFromNBT(compound);
         progress = compound.getInteger("progress");
-        String recipeName = compound.getString("recipe");
-        String[] recipeNameSplit = recipeName.split(":");
-        recipe = (recipeName != "null") ? TFCRegistries.LOOM.getValue(new ResourceLocation(recipeNameSplit[0], recipeNameSplit[1])) : null;
+        recipe = compound.hasKey("recipe") ? TFCRegistries.LOOM.getValue(new ResourceLocation(compound.getString("recipe"))) : null;
     }
 
     @Override
@@ -78,7 +76,7 @@ public class TELoom extends TEInventory implements ITickable
     {
         super.writeToNBT(compound);
         compound.setInteger("progress", progress);
-        compound.setString("recipe", (recipe != null) ? recipe.getRegistryName().toString() : "null");
+        if (recipe != null) compound.setString("recipe", recipe.getRegistryName().toString());
         return compound;
     }
 
