@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.nutrient;
+package net.dries007.tfc.api.capability.player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -73,13 +73,13 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     @Override
     public long getRottenDate()
     {
-        return creationDate + (long) (decayModifier * CapabilityFood.DEFAULT_ROT_TICKS);
+        return creationDate + (long) (decayModifier * CapabilityPlayer.DEFAULT_ROT_TICKS);
     }
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityFood.CAPABILITY_NUTRIENTS;
+        return capability == CapabilityPlayer.CAPABILITY_NUTRIENTS;
     }
 
     @Nullable
@@ -87,7 +87,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     @SuppressWarnings("unchecked")
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityFood.CAPABILITY_NUTRIENTS ? (T) this : null;
+        return capability == CapabilityPlayer.CAPABILITY_NUTRIENTS ? (T) this : null;
     }
 
     @Override

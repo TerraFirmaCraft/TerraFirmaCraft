@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.nutrient;
+package net.dries007.tfc.api.capability.player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ import net.dries007.tfc.world.classic.CalendarTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
-public final class CapabilityFood
+public final class CapabilityPlayer
 {
     public static final float MIN_PLAYER_NUTRIENTS = 0f;
     public static final float MAX_PLAYER_NUTRIENTS = 100f;
@@ -38,20 +38,20 @@ public final class CapabilityFood
 
     @CapabilityInject(IFood.class)
     public static final Capability<IFood> CAPABILITY_NUTRIENTS = Helpers.getNull();
-    @CapabilityInject(IPlayerNutrients.class)
-    public static final Capability<IPlayerNutrients> CAPABILITY_PLAYER_NUTRIENTS = Helpers.getNull();
+    @CapabilityInject(IPlayerData.class)
+    public static final Capability<IPlayerData> CAPABILITY_PLAYER_DATA = Helpers.getNull();
 
     private static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "nutrients");
-    private static final ResourceLocation PLAYER_KEY = new ResourceLocation(MOD_ID, "player_nutrients");
+    private static final ResourceLocation PLAYER_KEY = new ResourceLocation(MOD_ID, "player_data");
 
     private static List<Supplier<PotionEffect>> rottenFoodEffects = null;
 
     public static void preInit()
     {
-        // Item nutrient capability
+        // Item player capability
         CapabilityManager.INSTANCE.register(IFood.class, new DumbStorage<>(), FoodHandler::new);
-        // Player nutrient capability
-        CapabilityManager.INSTANCE.register(IPlayerNutrients.class, new DumbStorage<>(), PlayerNutrientsHandler::new);
+        // Player data capability
+        CapabilityManager.INSTANCE.register(IPlayerData.class, new DumbStorage<>(), PlayerDataHandler::new);
     }
 
     static List<Supplier<PotionEffect>> getRottenFoodEffects()
@@ -70,7 +70,7 @@ public final class CapabilityFood
     }
 
     /**
-     * This is the handler for anything nutrient / food / decay related
+     * This is the handler for anything player data / food / decay related
      */
     @Mod.EventBusSubscriber(modid = MOD_ID)
     public static final class EventHandler
@@ -82,7 +82,7 @@ public final class CapabilityFood
             // todo: create a lookup or something for vanilla items
             // future plans: add via craft tweaker or json (1.14)
             ItemStack stack = event.getObject();
-            if (stack.getItem() instanceof ItemFood && !stack.hasCapability(CapabilityFood.CAPABILITY_NUTRIENTS, null))
+            if (stack.getItem() instanceof ItemFood && !stack.hasCapability(CapabilityPlayer.CAPABILITY_NUTRIENTS, null))
             {
                 event.addCapability(KEY, new FoodHandler(stack.getTagCompound(), new float[] {1, 0, 0, 0, 0}, 1));
             }
@@ -107,7 +107,7 @@ public final class CapabilityFood
         {
             if (event.getObject() instanceof EntityPlayer)
             {
-                event.addCapability(PLAYER_KEY, new PlayerNutrientsHandler());
+                event.addCapability(PLAYER_KEY, new PlayerDataHandler());
             }
         }
     }
