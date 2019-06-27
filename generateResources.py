@@ -609,18 +609,16 @@ for key in METAL_TYPES:
 
 # METAL SHEETS
 for key in METAL_TYPES:
-    blockstate(('sheet', key), 'tfc:sheet', textures={
+    blockstate(('sheet', key), 'tfc:empty', textures={
         ('all', 'particle'): 'tfc:blocks/metal/%s' % key
     }, variants={
         'normal': None,
-        'face': {
-            'north': {'x': 90},
-            'east': {'y': 90, 'x': 90},
-            'south': {'y': 180, 'x': 90},
-            'west': {'y': 270, 'x': 90},
-            'up': {},
-            'down': {'x': 180}
-        }
+        "north": { "true": { "submodel": { "north": { "model": "tfc:sheet", "x": 90 } } }, "false": {} },
+        "south": { "true": { "submodel": { "south": { "model": "tfc:sheet", "y": 180, "x": 90 } } }, "false": {} },
+        "east": { "true": { "submodel": { "east": { "model": "tfc:sheet", "y": 90, "x": 90 } } }, "false": {} },
+        "west": { "true": { "submodel": { "west": { "model": "tfc:sheet", "y": 270, "x": 90 } } }, "false": {} },
+        "up": { "true": { "submodel": { "up": { "model": "tfc:sheet" } } }, "false": {} },
+        "down": { "true": { "submodel": { "down": { "model": "tfc:sheet", "x": 180 } } }, "false": {} }
     })
 
 # ROCK STUFF

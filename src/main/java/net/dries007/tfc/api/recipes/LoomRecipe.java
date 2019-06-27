@@ -5,38 +5,42 @@
 
 package net.dries007.tfc.api.recipes;
 
-import net.dries007.tfc.api.registries.TFCRegistries;
-import net.minecraft.item.Item;
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import javax.annotation.Nullable;
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
 {
     @Nullable
-    public static LoomRecipe get(Item item)
+    public static LoomRecipe get(ItemStack item)
     {
         return TFCRegistries.LOOM.getValuesCollection().stream().filter(x -> x.isValidInput(item)).findFirst().orElse(null);
     }
 
     @Nullable
-    public static LoomRecipe getByOutput(Item item)
+    public static LoomRecipe getByOutput(ItemStack item)
     {
         return TFCRegistries.LOOM.getValuesCollection().stream().filter(x -> x.isValidOutput(item)).findFirst().orElse(null);
     }
 
-    private Item inputItem;
+    private IIngredient<ItemStack> inputItem;
     private int inputAmount;
-    private Item outputItem;
+    private ItemStack outputItem;
+    private IIngredient<ItemStack> outputTestItem;
     private int stepCount;
     private ResourceLocation inProgressTexture;
 
-    public LoomRecipe(ResourceLocation name, Item input, int inputAmount, Item output, int stepsRequired, ResourceLocation inProgressTexture)
+    public LoomRecipe(ResourceLocation name, IIngredient<ItemStack> input, int inputAmount, ItemStack output, int stepsRequired, ResourceLocation inProgressTexture)
     {
         inputItem = input;
         this.inputAmount = inputAmount;
         outputItem = output;
+        outputTestItem = IIngredient.of(outputItem);
         stepCount = stepsRequired;
 
         this.inProgressTexture = inProgressTexture;
@@ -46,14 +50,14 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
         setRegistryName(name);
     }
 
-    public boolean isValidInput(Item inputItem)
+    public boolean isValidInput(ItemStack inputItem)
     {
-        return this.inputItem == inputItem;
+        return this.inputItem.testIgnoreCount(inputItem);
     }
 
-    public boolean isValidOutput(Item outputItem)
+    public boolean isValidOutput(ItemStack outputItem)
     {
-        return this.outputItem == outputItem;
+        return this.outputTestItem.testIgnoreCount(outputItem);
     }
 
     public int getInputCount()
@@ -66,7 +70,7 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
         return stepCount;
     }
 
-    public Item getOutputItem()
+    public ItemStack getOutputItem()
     {
         return outputItem;
     }

@@ -5,10 +5,8 @@
 
 package net.dries007.tfc.network;
 
-import io.netty.buffer.ByteBuf;
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.objects.te.TELoom;
-import net.dries007.tfc.util.Helpers;
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,7 +14,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import javax.annotation.Nonnull;
+import io.netty.buffer.ByteBuf;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.objects.te.TELoom;
+import net.dries007.tfc.util.Helpers;
 
 public class PacketLoomUpdate implements IMessage
 {

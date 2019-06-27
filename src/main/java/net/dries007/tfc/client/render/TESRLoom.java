@@ -5,9 +5,10 @@
 
 package net.dries007.tfc.client.render;
 
-import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.te.TELoom;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.lwjgl.opengl.GL11;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -15,10 +16,10 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
-import java.util.HashMap;
-import java.util.Map;
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.te.TELoom;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -61,7 +62,7 @@ public class TESRLoom extends TESRBase<TELoom>
             BufferBuilder b = t.getBuffer();
 
             b.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-            if(te.getAnimElement() == "u")
+            if (te.getAnimElement() == "u")
             {
                 drawUpper(b, tileZ);
                 drawLower(b, 0);
@@ -79,9 +80,10 @@ public class TESRLoom extends TESRBase<TELoom>
             GlStateManager.popMatrix();
         }
 
-        if(te.hasRecipe())
+        if (te.hasRecipe())
         {
-            try {
+            try
+            {
                 GlStateManager.pushMatrix();
                 GlStateManager.color(1, 1, 1, 1);
                 this.bindTexture(te.getInProgressTexture());
@@ -103,7 +105,9 @@ public class TESRLoom extends TESRBase<TELoom>
                 drawProduct(b, te.getMaxProgress(), te.getProgress());
 
                 t.draw();
-            } finally {
+            }
+            finally
+            {
                 GlStateManager.popMatrix();
             }
         }
@@ -117,7 +121,7 @@ public class TESRLoom extends TESRBase<TELoom>
 
     private void drawProduct(BufferBuilder b, int maxProgress, int progress)
     {
-        double[][] sidesZ = getPlaneVertices(0.1875, 0.9375, 0.75 - 0.001, 0.8125, 0.9375 - (0.625 / maxProgress) * progress, 0.75 - 0.001, 0, 0, 1, (double)progress / (double)16);
+        double[][] sidesZ = getPlaneVertices(0.1875, 0.9375, 0.75 - 0.001, 0.8125, 0.9375 - (0.625 / maxProgress) * progress, 0.75 - 0.001, 0, 0, 1, (double) progress / (double) 16);
 
         for (double[] v : sidesZ)
         {
@@ -129,16 +133,20 @@ public class TESRLoom extends TESRBase<TELoom>
     {
         double y1 = 0.9375 - (0.625 / maxProgress) * progress, y2, z1 = 0.75, z2;
         double texX1, texX2, texY1, texY2;
-        for(int i = 0;i< pieces;i++) {
+        for (int i = 0; i < pieces; i++)
+        {
 
-            if (i % 2 == 0) {
+            if (i % 2 == 0)
+            {
                 texX1 = 0;
                 texY1 = 0;
                 texX2 = 0.0625;
                 texY2 = 0.125;
                 z2 = 0.75 - Z1;
                 y2 = 0.34375;
-            } else {
+            }
+            else
+            {
                 texX1 = 0.125;
                 texY1 = 0;
                 texX2 = 0.1875;
@@ -149,16 +157,20 @@ public class TESRLoom extends TESRBase<TELoom>
 
             double[][] sidesZ = getPlaneVertices(0.1875 + (0.625 / maxPieces) * i, y1, z1 - 0.001, 0.1875 + (0.625 / maxPieces) * (i + 1), y2, z2 - 0.001, texX1, texY1, texX2, texY2);
 
-            for (double[] v : sidesZ) {
+            for (double[] v : sidesZ)
+            {
                 b.pos(v[0], v[1], v[2]).tex(v[3], v[4]).endVertex();
             }
 
-            if (i % 2 == 0) {
+            if (i % 2 == 0)
+            {
                 texX1 = 0;
                 texY1 = 0.5;
                 texX2 = 0.0625;
                 texY2 = 0.5625;
-            } else {
+            }
+            else
+            {
                 texX1 = 0.125;
                 texY1 = 0.5;
                 texX2 = 0.1875;
@@ -229,7 +241,7 @@ public class TESRLoom extends TESRBase<TELoom>
             b.pos(v[0], v[1], v[2]).tex(v[3] * 0.0625, v[4] * 0.875).endVertex();
         }
 
-        double[][] sidesZ= getVerticesBySide(0.0625, 0.09375, 0.5626 - z, 0.9375, 0.15625, 0.625 - z, "z");
+        double[][] sidesZ = getVerticesBySide(0.0625, 0.09375, 0.5626 - z, 0.9375, 0.15625, 0.625 - z, "z");
 
         for (double[] v : sidesZ)
         {
