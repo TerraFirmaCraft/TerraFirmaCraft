@@ -111,7 +111,8 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
         }
         //Reduces thirst bar for normal living
         thirst -= (float) (ConfigTFC.GENERAL.playerThirstModifier * ticksPassed / 240);
-        if(player.getFoodStats().foodExhaustionLevel >= 4.0F){
+        if (player.getFoodStats().foodExhaustionLevel >= 4.0F)
+        {
             thirst -= ConfigTFC.GENERAL.playerThirstModifier * 4.0F;
         }
         if (thirst < 0) thirst = 0;
@@ -130,18 +131,18 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
             //Less than base health
             if (averagePercent <= MIN_HEALTH_THRESHOULD) return 1;
             float difNutrientValue = BASE_HEALTH_THRESHOULD - MIN_HEALTH_THRESHOULD;
-            float difHealthValue = (float)(1d - ConfigTFC.GENERAL.playerMinHealthModifier);
+            float difHealthValue = (float) (1d - ConfigTFC.GENERAL.playerMinHealthModifier);
             averagePercent -= MIN_HEALTH_THRESHOULD;
-            maxHealthModifier = (float)(averagePercent * difHealthValue / difNutrientValue + ConfigTFC.GENERAL.playerMinHealthModifier);
+            maxHealthModifier = (float) (averagePercent * difHealthValue / difNutrientValue + ConfigTFC.GENERAL.playerMinHealthModifier);
         }
         else
         {
             //More than base health;
-            if (averagePercent >= MAX_HEALTH_THRESHOULD) return (float)(ConfigTFC.GENERAL.playerMaxHealthModifier);
+            if (averagePercent >= MAX_HEALTH_THRESHOULD) return (float) (ConfigTFC.GENERAL.playerMaxHealthModifier);
             float difNutrientValue = MAX_HEALTH_THRESHOULD - BASE_HEALTH_THRESHOULD;
-            float difHealthValue = (float)(ConfigTFC.GENERAL.playerMaxHealthModifier - 1d);
+            float difHealthValue = (float) (ConfigTFC.GENERAL.playerMaxHealthModifier - 1d);
             averagePercent -= BASE_HEALTH_THRESHOULD;
-            maxHealthModifier = (float)(averagePercent * difHealthValue / difNutrientValue + 1d);
+            maxHealthModifier = (float) (averagePercent * difHealthValue / difNutrientValue + 1d);
         }
         //XP modifier?
         return maxHealthModifier;

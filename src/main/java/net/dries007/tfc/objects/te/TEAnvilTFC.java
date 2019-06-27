@@ -151,29 +151,6 @@ public class TEAnvilTFC extends TEInventory
     }
 
     @Override
-    public int getSlotLimit(int slot)
-    {
-        return slot == SLOT_FLUX ? super.getSlotLimit(slot) : 1;
-    }
-
-    @Override
-    public boolean isItemValid(int slot, ItemStack stack)
-    {
-        switch (slot)
-        {
-            case SLOT_INPUT_1:
-            case SLOT_INPUT_2:
-                return stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null) && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-            case SLOT_FLUX:
-                return OreDictionaryHelper.doesStackMatchOre(stack, "dustFlux");
-            case SLOT_HAMMER:
-                return OreDictionaryHelper.doesStackMatchOre(stack, "hammer");
-            default:
-                return false;
-        }
-    }
-
-    @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         String recipe = nbt.getString("recipe");
@@ -204,6 +181,29 @@ public class TEAnvilTFC extends TEInventory
         nbt.setInteger("work", this.workingProgress);
         nbt.setInteger("target", this.workingTarget);
         return super.writeToNBT(nbt);
+    }
+
+    @Override
+    public int getSlotLimit(int slot)
+    {
+        return slot == SLOT_FLUX ? super.getSlotLimit(slot) : 1;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        switch (slot)
+        {
+            case SLOT_INPUT_1:
+            case SLOT_INPUT_2:
+                return stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null) && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+            case SLOT_FLUX:
+                return OreDictionaryHelper.doesStackMatchOre(stack, "dustFlux");
+            case SLOT_HAMMER:
+                return OreDictionaryHelper.doesStackMatchOre(stack, "hammer");
+            default:
+                return false;
+        }
     }
 
     /**

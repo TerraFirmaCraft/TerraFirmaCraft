@@ -47,19 +47,6 @@ public class BlockBloom extends Block
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TEBloom();
-    }
-
-    @Override
     public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, @Nullable EntityPlayer player, boolean willHarvest)
     {
         if (player != null && player.canHarvestBlock(state) && !player.isCreative())
@@ -78,5 +65,18 @@ public class BlockBloom extends Block
         }
         //noinspection ConstantConditions
         return super.removedByPlayer(state, world, pos, player, willHarvest);
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TEBloom();
     }
 }

@@ -56,16 +56,6 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         burnTicks = 0;
     }
 
-    /**
-     * Used by {@link net.dries007.tfc.util.IHeatProviderBlock}
-     *
-     * @return the temperature
-     */
-    public float getTemperature()
-    {
-        return temperature;
-    }
-
     @Override
     public void update()
     {
@@ -162,6 +152,26 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
     }
 
     @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        temperature = nbt.getFloat("temperature");
+        burnTicks = nbt.getInteger("burnTicks");
+        airTicks = nbt.getInteger("airTicks");
+        burnTemperature = nbt.getFloat("burnTemperature");
+        super.readFromNBT(nbt);
+    }
+
+    @Override
+    @Nonnull
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        nbt.setFloat("temperature", temperature);
+        nbt.setInteger("burnTicks", burnTicks);
+        nbt.setFloat("burnTemperature", burnTemperature);
+        return super.writeToNBT(nbt);
+    }
+
+    @Override
     public int getSlotLimit(int slot)
     {
         return slot <= 4 ? 1 : 64;
@@ -182,26 +192,6 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
             default: // Other fuel slots + output slots
                 return false;
         }
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        temperature = nbt.getFloat("temperature");
-        burnTicks = nbt.getInteger("burnTicks");
-        airTicks = nbt.getInteger("airTicks");
-        burnTemperature = nbt.getFloat("burnTemperature");
-        super.readFromNBT(nbt);
-    }
-
-    @Override
-    @Nonnull
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-    {
-        nbt.setFloat("temperature", temperature);
-        nbt.setInteger("burnTicks", burnTicks);
-        nbt.setFloat("burnTemperature", burnTemperature);
-        return super.writeToNBT(nbt);
     }
 
     public void onCreate(ItemStack log)

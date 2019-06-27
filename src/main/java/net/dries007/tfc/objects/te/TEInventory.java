@@ -20,7 +20,6 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemStackHandlerCallback;
-import net.dries007.tfc.objects.inventory.capability.ItemStackHandlerTE;
 
 /**
  * This is a helper class for TE's with a simple inventory that will respect automation
