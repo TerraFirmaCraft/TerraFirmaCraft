@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.client.gui.overlay;
 
 import java.awt.*;
@@ -18,6 +23,8 @@ import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.capability.player.CapabilityPlayer;
 import net.dries007.tfc.api.capability.player.IPlayerData;
@@ -25,20 +32,17 @@ import net.dries007.tfc.util.DamageManager;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SideOnly(Side.CLIENT)
 public final class PlayerDataOverlay
 {
     private static final ResourceLocation ICONS = new ResourceLocation(MOD_ID, "textures/gui/overlay/icons.png");
     private static final PlayerDataOverlay INSTANCE = new PlayerDataOverlay();
 
     public static PlayerDataOverlay getInstance() { return INSTANCE; }
-    private FontRenderer fontrenderer = null;
+
     private float maxHealth = 1000, curThirst = 100;
 
     private PlayerDataOverlay() {}
-
-    public void setMaxHealth(float value) { this.maxHealth = value; }
-
-    public void setCurThirst(float value) { this.curThirst = value; }
 
     @SubscribeEvent
     public void render(RenderGameOverlayEvent.Pre event)
@@ -46,21 +50,25 @@ public final class PlayerDataOverlay
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.player.inventory.player;
         GuiIngameForge.renderFood = false;
+
         // We check for crosshairs just because it's always drawn and is before air bar
         if (event.getType() != ElementType.CROSSHAIRS)
-            return;
-        IPlayerData capb = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
-        if (capb != null)
         {
-            maxHealth = 20 * capb.getHealthModifier() * 50; //20 = 1000 HP in overlay
-            curThirst = capb.getThirst();
+            return;
+        }
+
+        IPlayerData playerData = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
+        if (playerData != null)
+        {
+            maxHealth = 20 * playerData.getHealthModifier() * 50; //20 = 1000 HP in overlay
+            curThirst = playerData.getThirst();
         }
         // This is for air to be drawn above our bars
         GuiIngameForge.right_height += 10;
 
         ScaledResolution sr = event.getResolution();
 
-        fontrenderer = mc.fontRenderer;
+        FontRenderer fontrenderer = mc.fontRenderer;
 
         int healthRowHeight = sr.getScaledHeight() - 40;
         int armorRowHeight = healthRowHeight - 10;
@@ -117,8 +125,7 @@ public final class PlayerDataOverlay
             //Draw experience bar when not riding anything, riding a non-living entity such as a boat/minecart, or riding a pig.
             if (!(player.getRidingEntity() instanceof EntityLiving))
             {
-                int cap = 0;
-                cap = player.xpBarCap();
+                int cap = player.xpBarCap();
                 int left = mid - 91;
 
                 if (cap > 0)
@@ -133,8 +140,7 @@ public final class PlayerDataOverlay
 
                 if (player.experienceLevel > 0)
                 {
-                    boolean flag1 = false;
-                    int color = flag1 ? 16777215 : 8453920;
+                    int color = 8453920;
                     String text = Integer.toString(player.experienceLevel);
                     int x = (sr.getScaledWidth() - fontrenderer.getStringWidth(text)) / 2;
                     int y = sr.getScaledHeight() - 30;
@@ -169,17 +175,18 @@ public final class PlayerDataOverlay
         }
     }
 
+    @SuppressWarnings("PointlessArithmeticExpression")
     public void drawTexturedModalRect(float xCoord, float yCoord, int minU, int minV, int maxU, int maxV)
     {
-        float f = 0.00390625F;
-        float f1 = 0.00390625F;
+        float textureScaleU = 0.00390625F;
+        float textureScaleV = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder vb = tessellator.getBuffer();
         vb.begin(7, DefaultVertexFormats.POSITION_TEX);
-        vb.pos(xCoord + 0.0F, yCoord + maxV, 0).tex((minU + 0) * f, (minV + maxV) * f1).endVertex();
-        vb.pos(xCoord + maxU, yCoord + maxV, 0).tex((minU + maxU) * f, (minV + maxV) * f1).endVertex();
-        vb.pos(xCoord + maxU, yCoord + 0.0F, 0).tex((minU + maxU) * f, (minV + 0) * f1).endVertex();
-        vb.pos(xCoord + 0.0F, yCoord + 0.0F, 0).tex((minU + 0) * f, (minV + 0) * f1).endVertex();
+        vb.pos(xCoord + 0.0F, yCoord + maxV, 0).tex((minU + 0) * textureScaleU, (minV + maxV) * textureScaleV).endVertex();
+        vb.pos(xCoord + maxU, yCoord + maxV, 0).tex((minU + maxU) * textureScaleU, (minV + maxV) * textureScaleV).endVertex();
+        vb.pos(xCoord + maxU, yCoord + 0.0F, 0).tex((minU + maxU) * textureScaleU, (minV + 0) * textureScaleV).endVertex();
+        vb.pos(xCoord + 0.0F, yCoord + 0.0F, 0).tex((minU + 0) * textureScaleU, (minV + 0) * textureScaleV).endVertex();
         tessellator.draw();
     }
 }

@@ -54,7 +54,7 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     }
 
     @Override
-    public float getNutrient(Nutrient nutrient)
+    public float getNutrient(@Nonnull Nutrient nutrient)
     {
         return nutrients[nutrient.ordinal()];
     }
@@ -72,7 +72,7 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     }
 
     @Override
-    public void setNutrient(Nutrient nutrient, float amount)
+    public void setNutrient(@Nonnull Nutrient nutrient, float amount)
     {
         if (amount < MIN_PLAYER_NUTRIENTS)
         {
@@ -89,7 +89,7 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     }
 
     @Override
-    public void addNutrient(Nutrient nutrient, float amount)
+    public void addNutrient(@Nonnull Nutrient nutrient, float amount)
     {
         float newAmount = nutrients[nutrient.ordinal()] + amount;
         setNutrient(nutrient, newAmount);
@@ -157,8 +157,14 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     public void setThirst(float value)
     {
         this.thirst = value;
-        if (this.thirst > 100) this.thirst = 100;
-        if (this.thirst < 0) this.thirst = 0;
+        if (this.thirst > 100)
+        {
+            this.thirst = 100;
+        }
+        if (this.thirst < 0)
+        {
+            this.thirst = 0;
+        }
     }
 
     @Override
