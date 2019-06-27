@@ -1,8 +1,11 @@
 {
-	"multipart": [
-		{ "apply": [
-				{ "model": "tfc:plants/porcini" }
-			]
-		}
-	]
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "tfc:plants/porcini"
+        }
+      ]
+    }
+  ]
 }

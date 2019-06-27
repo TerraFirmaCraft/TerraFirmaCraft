@@ -1,8 +1,11 @@
 {
-	"multipart": [
-		{ "apply": [
-				{ "model": "tfc:plants/blood_lily" }
-			]
-		}
-	]
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "tfc:plants/blood_lily"
+        }
+      ]
+    }
+  ]
 }

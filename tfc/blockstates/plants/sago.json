@@ -1,8 +1,11 @@
 {
-	"multipart": [
-		{ "apply": [
-				{ "model": "tfc:plants/sago" }
-			]
-		}
-	]
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "tfc:plants/sago"
+        }
+      ]
+    }
+  ]
 }
