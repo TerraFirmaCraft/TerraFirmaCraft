@@ -177,7 +177,10 @@ public class BlockLoom extends BlockContainer implements IItemSize
     public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
     {
         TELoom te = Helpers.getTE(worldIn, pos, TELoom.class);
-        if (te != null) te.onBreakBlock(worldIn, pos);
+        if (te != null)
+        {
+            te.onBreakBlock(worldIn, pos);
+        }
         super.breakBlock(worldIn, pos, state);
     }
 }

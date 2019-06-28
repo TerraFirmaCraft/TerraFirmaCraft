@@ -30,19 +30,20 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
 
     public LoomRecipe(ResourceLocation name, IIngredient<ItemStack> input, int inputAmount, ItemStack output, int stepsRequired, ResourceLocation inProgressTexture)
     {
-        inputItem = input;
+        this.inputItem = input;
         this.inputAmount = inputAmount;
-        outputItem = output;
-        stepCount = stepsRequired;
-
+        this.outputItem = output;
+        this.stepCount = stepsRequired;
         this.inProgressTexture = inProgressTexture;
 
         if (inputItem == null || inputAmount == 0 || outputItem == null || stepsRequired == 0)
+        {
             throw new IllegalArgumentException("Input and output are not allowed to be empty");
+        }
         setRegistryName(name);
     }
 
-    public boolean isValidInput(ItemStack inputItem)
+    private boolean isValidInput(ItemStack inputItem)
     {
         return this.inputItem.testIgnoreCount(inputItem);
     }
