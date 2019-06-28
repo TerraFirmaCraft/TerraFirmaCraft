@@ -50,6 +50,7 @@ public final class Registries
         newRegistry(WELDING_RECIPE, WeldingRecipe.class, false);
         newRegistry(PIT_KILN_RECIPE, PitKilnRecipe.class, false);
         newRegistry(BARREL_RECIPE, BarrelRecipe.class, false);
+        newRegistry(LOOM_RECIPE, LoomRecipe.class, false);
     }
 
     /**
