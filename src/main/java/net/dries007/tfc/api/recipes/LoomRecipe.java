@@ -25,7 +25,6 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
     private IIngredient<ItemStack> inputItem;
     private int inputAmount;
     private ItemStack outputItem;
-    private IIngredient<ItemStack> outputTestItem;
     private int stepCount;
     private ResourceLocation inProgressTexture;
 
@@ -34,7 +33,6 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
         inputItem = input;
         this.inputAmount = inputAmount;
         outputItem = output;
-        outputTestItem = IIngredient.of(outputItem);
         stepCount = stepsRequired;
 
         this.inProgressTexture = inProgressTexture;
@@ -47,11 +45,6 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
     public boolean isValidInput(ItemStack inputItem)
     {
         return this.inputItem.testIgnoreCount(inputItem);
-    }
-
-    public boolean isValidOutput(ItemStack outputItem)
-    {
-        return this.outputTestItem.testIgnoreCount(outputItem);
     }
 
     public int getInputCount()
