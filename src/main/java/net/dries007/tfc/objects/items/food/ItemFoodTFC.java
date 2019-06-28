@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import net.dries007.tfc.api.capability.player.FoodHandler;
+import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.util.agriculture.Food;
 
 public class ItemFoodTFC extends ItemFood

@@ -12,9 +12,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.player.CapabilityPlayer;
-import net.dries007.tfc.api.capability.player.IPlayerData;
-import net.dries007.tfc.util.agriculture.Nutrient;
+import net.dries007.tfc.api.capability.food.Nutrient;
+import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
+import net.dries007.tfc.api.capability.skill.IPlayerSkills;
 
 public class PacketPlayerDataUpdate implements IMessage
 {
@@ -28,7 +28,7 @@ public class PacketPlayerDataUpdate implements IMessage
         thirst = 0;
     }
 
-    public PacketPlayerDataUpdate(IPlayerData cap)
+    public PacketPlayerDataUpdate(IPlayerSkills cap)
     {
         nutrients = cap.getNutrients();
         thirst = cap.getThirst();
@@ -63,7 +63,7 @@ public class PacketPlayerDataUpdate implements IMessage
                 EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
                 if (player != null)
                 {
-                    IPlayerData cap = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
+                    IPlayerSkills cap = player.getCapability(CapabilityPlayerSkills.CAPABILITY_SKILLS, null);
                     if (cap != null)
                     {
                         cap.setNutrients(message.nutrients);
