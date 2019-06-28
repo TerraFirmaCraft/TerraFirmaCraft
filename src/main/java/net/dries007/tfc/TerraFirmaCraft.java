@@ -133,7 +133,6 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketCapabilityContainerUpdate.Handler(), PacketCapabilityContainerUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketCalendarUpdate.Handler(), PacketCalendarUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketBarrelUpdate.Handler(), PacketBarrelUpdate.class, ++id, Side.CLIENT);
-        network.registerMessage(new PacketPlayerNutrientsUpdate.Handler(), PacketPlayerNutrientsUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketLoomUpdate.Handler(), PacketLoomUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketBellowsUpdate.Handler(), PacketBellowsUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketPlayerDataUpdate.Handler(), PacketPlayerDataUpdate.class, ++id, Side.CLIENT);
