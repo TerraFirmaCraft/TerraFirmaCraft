@@ -32,6 +32,7 @@ public class TESRLoom extends TESRBase<TELoom>
     {
         for (Tree wood : TFCRegistries.TREES.getValuesCollection())
         {
+            //noinspection ConstantConditions
             PLANKS_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/blocks/wood/planks/" + wood.getRegistryName().getPath() + ".png"));
         }
     }
@@ -62,7 +63,7 @@ public class TESRLoom extends TESRBase<TELoom>
             BufferBuilder b = t.getBuffer();
 
             b.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-            if (te.getAnimElement() == "u")
+            if ("u".equals(te.getAnimElement()))
             {
                 drawUpper(b, tileZ);
                 drawLower(b, 0);
@@ -101,7 +102,7 @@ public class TESRLoom extends TESRBase<TELoom>
 
                 double Z = tileZ * 2 / 3;
 
-                drawMaterial(b, te.getMaxInputCount(), te.getCount(), te.getMaxProgress(), te.getProgress(), (te.getAnimElement() == "u") ? Z : 0, (te.getAnimElement() == "l") ? Z : 0);
+                drawMaterial(b, te.getMaxInputCount(), te.getCount(), te.getMaxProgress(), te.getProgress(), ("u".equals(te.getAnimElement())) ? Z : 0, ("l".equals(te.getAnimElement())) ? Z : 0);
                 drawProduct(b, te.getMaxProgress(), te.getProgress());
 
                 t.draw();

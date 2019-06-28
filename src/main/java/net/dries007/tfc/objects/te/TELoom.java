@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.te;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -27,7 +28,7 @@ import net.dries007.tfc.network.PacketLoomUpdate;
 import net.dries007.tfc.objects.blocks.wood.BlockLoom;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
-
+@ParametersAreNonnullByDefault
 public class TELoom extends TEInventory implements ITickable
 {
     private Tree cachedWood;
@@ -42,6 +43,7 @@ public class TELoom extends TEInventory implements ITickable
     }
 
     @Override
+    @Nonnull
     public BlockLoom getBlockType()
     {
         Block block = super.getBlockType();
@@ -55,29 +57,34 @@ public class TELoom extends TEInventory implements ITickable
     {
         if (cachedWood == null)
         {
-            if (world == null)
-                return null;
-            cachedWood = getBlockType().wood;
+            if (world != null)
+            {
+                cachedWood = getBlockType().wood;
+            }
         }
         return cachedWood;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(compound);
-        progress = compound.getInteger("progress");
-        recipe = compound.hasKey("recipe") ? TFCRegistries.LOOM.getValue(new ResourceLocation(compound.getString("recipe"))) : null;
+        super.readFromNBT(nbt);
+        progress = nbt.getInteger("progress");
+        recipe = nbt.hasKey("recipe") ? TFCRegistries.LOOM.getValue(new ResourceLocation(nbt.getString("recipe"))) : null;
     }
 
     @Override
     @Nonnull
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(compound);
-        compound.setInteger("progress", progress);
-        if (recipe != null) compound.setString("recipe", recipe.getRegistryName().toString());
-        return compound;
+        super.writeToNBT(nbt);
+        nbt.setInteger("progress", progress);
+        if (recipe != null)
+        {
+            //noinspection ConstantConditions
+            nbt.setString("recipe", recipe.getRegistryName().toString());
+        }
+        return nbt;
     }
 
     public void onReceivePacket(long lastPushed)
@@ -85,24 +92,28 @@ public class TELoom extends TEInventory implements ITickable
         this.lastPushed = lastPushed;
     }
 
-    public void updateBlock()
-    {
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3);
-        markDirty();
-    }
-
-    private long lastPushed = 0L;
-
     @SideOnly(Side.CLIENT)
     public double getAnimPos()
     {
         int time = (int) (world.getTotalWorldTime() - lastPushed);
         if (time < 10)
+        {
             return java.lang.Math.sin((java.lang.Math.PI / 20) * time) * 0.23125;
+        }
         else if (time < 20)
+        {
             return java.lang.Math.sin((java.lang.Math.PI / 20) * (20 - time)) * 0.23125;
+        }
         return 0;
+    }
+
+    private long lastPushed = 0L;
+
+    private void updateBlock()
+    {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+        markDirty();
     }
 
     @SideOnly(Side.CLIENT)

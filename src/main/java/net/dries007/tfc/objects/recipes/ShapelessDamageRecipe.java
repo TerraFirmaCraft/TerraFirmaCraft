@@ -32,6 +32,7 @@ public class ShapelessDamageRecipe extends ShapelessOreRecipe
     }
 
     @Override
+    @Nonnull
     public NonNullList<ItemStack> getRemainingItems(final InventoryCrafting inventoryCrafting)
     {
         final NonNullList<ItemStack> remainingItems = NonNullList.withSize(inventoryCrafting.getSizeInventory(), ItemStack.EMPTY);
@@ -55,6 +56,7 @@ public class ShapelessDamageRecipe extends ShapelessOreRecipe
     }
 
     @Override
+    @Nonnull
     public String getGroup()
     {
         return group == null ? "" : group.toString();
