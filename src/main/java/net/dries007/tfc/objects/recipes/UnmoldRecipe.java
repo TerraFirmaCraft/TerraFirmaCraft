@@ -13,7 +13,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.Constants;
@@ -123,17 +122,13 @@ public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
     {
         EntityPlayer player = ForgeHooks.getCraftingPlayer();
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer() && player != null)
+        if (player != null)
         {
-            // Has to be server side due to sync issues. This function is also called on the client.
-            // This is also the reason why it's done here as a drop instead of a retaining item.
-            // todo: see if this can be done better, it might break for autocrafters.
             if (mold.type.getMoldReturnRate() < 1 || mold.type.getMoldReturnRate() > 0)
             {
                 if (Constants.RNG.nextFloat() <= mold.type.getMoldReturnRate())
                 {
                     player.addItemStackToInventory(new ItemStack(mold));
-                    //InventoryHelper.spawnItemStack(player.world, player.posX, player.posY, player.posZ, new ItemStack(mold));
                 }
             }
         }

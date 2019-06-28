@@ -609,18 +609,16 @@ for key in METAL_TYPES:
 
 # METAL SHEETS
 for key in METAL_TYPES:
-    blockstate(('sheet', key), 'tfc:sheet', textures={
+    blockstate(('sheet', key), 'tfc:empty', textures={
         ('all', 'particle'): 'tfc:blocks/metal/%s' % key
     }, variants={
         'normal': None,
-        'face': {
-            'north': {'x': 90},
-            'east': {'y': 90, 'x': 90},
-            'south': {'y': 180, 'x': 90},
-            'west': {'y': 270, 'x': 90},
-            'up': {},
-            'down': {'x': 180}
-        }
+        "north": { "true": { "submodel": { "north": { "model": "tfc:sheet", "x": 90 } } }, "false": {} },
+        "south": { "true": { "submodel": { "south": { "model": "tfc:sheet", "y": 180, "x": 90 } } }, "false": {} },
+        "east": { "true": { "submodel": { "east": { "model": "tfc:sheet", "y": 90, "x": 90 } } }, "false": {} },
+        "west": { "true": { "submodel": { "west": { "model": "tfc:sheet", "y": 270, "x": 90 } } }, "false": {} },
+        "up": { "true": { "submodel": { "up": { "model": "tfc:sheet" } } }, "false": {} },
+        "down": { "true": { "submodel": { "down": { "model": "tfc:sheet", "x": 180 } } }, "false": {} }
     })
 
 # ROCK STUFF
@@ -894,6 +892,19 @@ for wood_type in WOOD_TYPES:
         }
     })
 
+    # LOOM
+    blockstate(('wood', 'loom', wood_type), 'tfc:loom', textures={
+        'texture': 'tfc:blocks/wood/planks/%s' % wood_type,
+        'particle': 'tfc:blocks/wood/planks/%s' % wood_type,
+    }, variants={
+        'facing': {
+            'south': {},
+            'west': {'y': 90},
+            'north': {'y': 180},
+            'east': {'y': 270},
+        }
+    })
+
 # LEATHER / HIDES
 blockstate(('placed_hide',), 'tfc:hide_rack', {})
 
@@ -1030,10 +1041,8 @@ for rock_cat in ROCK_TYPES:
 # LEATHER / HIDES
 
 for size in ('small', 'medium', 'large'):
-    for hide in ('raw', 'scraped', 'soaked', 'prepared'):
+    for hide in ('raw', 'scraped', 'soaked', 'prepared', 'sheepskin'):
         item(('hide', hide, size), 'tfc:items/hide/%s/%s' % (size, hide))
-
-item(('hide', 'sheepskin'), 'tfc:items/hide/sheepskin')
 
 # AGRICULTURE
 for food in FOODS:
