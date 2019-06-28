@@ -1,6 +1,7 @@
 {
   "recipes": {
     "damage_item_shapeless": "net.dries007.tfc.objects.recipes.ShapelessDamageRecipe$Factory",
-    "food_stacking": "net.dries007.tfc.objects.recipes.FoodStackingRecipe$Factory"
+    "food_stacking": "net.dries007.tfc.objects.recipes.FoodStackingRecipe$Factory",
+    "damage_add_item_shapeless": "net.dries007.tfc.objects.recipes.ShapelessDamageAddItemRecipe$Factory"
   }
 }
