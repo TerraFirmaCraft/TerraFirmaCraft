@@ -26,9 +26,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.api.capability.player.CapabilityPlayer;
-import net.dries007.tfc.api.capability.player.IPlayerData;
-import net.dries007.tfc.util.DamageManager;
+import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
+import net.dries007.tfc.api.capability.skill.IPlayerSkills;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -57,7 +56,7 @@ public final class PlayerDataOverlay
             return;
         }
 
-        IPlayerData playerData = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
+        IPlayerSkills playerData = player.getCapability(CapabilityPlayerSkills.CAPABILITY_SKILLS, null);
         if (playerData != null)
         {
             maxHealth = 20 * playerData.getHealthModifier() * 50; //20 = 1000 HP in overlay
@@ -83,7 +82,7 @@ public final class PlayerDataOverlay
             GL11.glEnable(GL11.GL_BLEND);
             this.drawTexturedModalRect(mid - 91, healthRowHeight, 0, 0, 90, 10);
             float maxHealth = this.maxHealth;
-            float curHealth = DamageManager.rescaleDamage(player.getHealth(), 20, maxHealth);
+            float curHealth = player.getHealth() * maxHealth / (float) 20;
             float percentHealth = curHealth / maxHealth;
             float surplusPercent = Math.max(percentHealth - 1, 0);
             int uSurplus = 90;

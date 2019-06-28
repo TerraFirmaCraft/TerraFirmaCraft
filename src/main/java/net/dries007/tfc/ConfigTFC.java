@@ -107,7 +107,7 @@ public class ConfigTFC
         @Config.Comment("Modifier for how quickly the players nutrition values will decay")
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.playerNutritionDecayModifier")
-        public double playerNutritionDecayModifier = 0.2;
+        public double playerNutritionDecayModifier = 0.01;
 
         @Config.Comment("Minimum health modifier player can obtain with low stats")
         @Config.RangeDouble(min = 0.1d, max = 1d)

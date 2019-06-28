@@ -130,6 +130,11 @@ public enum Food
         return decayModifier;
     }
 
+    public float getWater()
+    {
+        return water;
+    }
+
     public float[] getNutrients()
     {
         return new float[] {carbohydrates, fat, protein, vitamins, minerals};

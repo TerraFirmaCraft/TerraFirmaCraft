@@ -15,13 +15,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.player.CapabilityPlayer;
-import net.dries007.tfc.api.capability.player.IPlayerData;
+import net.dries007.tfc.api.capability.food.Nutrient;
+import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
+import net.dries007.tfc.api.capability.skill.IPlayerSkills;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.agriculture.Nutrient;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -37,7 +37,7 @@ public class GuiNutrition extends GuiContainerTFC
         super(container, playerInv, BACKGROUND);
 
         cachedNutrients = new float[Nutrient.TOTAL];
-        IPlayerData cap = playerInv.player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
+        IPlayerSkills cap = playerInv.player.getCapability(CapabilityPlayerSkills.CAPABILITY_SKILLS, null);
         if (cap != null)
         {
             for (Nutrient n : Nutrient.values())
