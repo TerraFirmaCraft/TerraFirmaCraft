@@ -33,12 +33,15 @@ public class ItemSmallOre extends ItemTFC implements IMetalObject
         return new ItemStack(MAP.get(ore), amount);
     }
 
-    public final Ore ore;
+    private final Ore ore;
 
     public ItemSmallOre(Ore ore)
     {
         this.ore = ore;
-        if (MAP.put(ore, this) != null) throw new IllegalStateException("There can only be one.");
+        if (MAP.put(ore, this) != null)
+        {
+            throw new IllegalStateException("There can only be one.");
+        }
         setMaxDamage(0);
         OreDictionaryHelper.register(this, "ore");
         OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath());
@@ -69,5 +72,11 @@ public class ItemSmallOre extends ItemTFC implements IMetalObject
     public Weight getWeight(@Nonnull ItemStack stack)
     {
         return Weight.HEAVY;
+    }
+
+    @Nonnull
+    public Ore getOre()
+    {
+        return ore;
     }
 }

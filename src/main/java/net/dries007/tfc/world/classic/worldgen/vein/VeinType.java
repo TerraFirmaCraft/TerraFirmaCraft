@@ -7,17 +7,19 @@ package net.dries007.tfc.world.classic.worldgen.vein;
 
 import java.util.Collection;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
-import net.dries007.tfc.objects.items.metal.ItemOreTFC;
+import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 
 @ParametersAreNonnullByDefault
 public class VeinType
@@ -68,9 +70,19 @@ public class VeinType
         return ore != null && ore.isGraded();
     }
 
+    @Nonnull
     public ItemStack getLooseRockItem()
     {
-        return ore != null ? ItemOreTFC.get(ore, 1) : ItemStack.EMPTY;
+        if (ore != null)
+        {
+            // This is done intentionally, as some ores may not have a small ore item
+            Item itemOre = ItemSmallOre.get(ore);
+            if (itemOre != null)
+            {
+                return new ItemStack(itemOre, 1);
+            }
+        }
+        return ItemStack.EMPTY;
     }
 
     public void setRegistryName(String name)
