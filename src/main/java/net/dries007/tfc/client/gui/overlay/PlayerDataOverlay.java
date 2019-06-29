@@ -18,6 +18,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.FoodStats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -26,8 +27,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
+import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -56,11 +56,12 @@ public final class PlayerDataOverlay
             return;
         }
 
-        IPlayerSkills playerData = player.getCapability(CapabilityPlayerSkills.CAPABILITY_SKILLS, null);
-        if (playerData != null)
+        FoodStats foodStats = player.getFoodStats();
+        if (foodStats instanceof IFoodStatsTFC)
         {
-            maxHealth = 20 * playerData.getHealthModifier() * 50; //20 = 1000 HP in overlay
-            curThirst = playerData.getThirst();
+            IFoodStatsTFC foodStatsTFC = (IFoodStatsTFC) foodStats;
+            maxHealth = 20 * foodStatsTFC.getHealthModifier() * 50; //20 = 1000 HP in overlay
+            curThirst = foodStatsTFC.getThirst();
         }
         // This is for air to be drawn above our bars
         GuiIngameForge.right_height += 10;

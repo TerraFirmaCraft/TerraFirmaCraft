@@ -9,10 +9,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.damage.IDamageResistance;
 
@@ -54,7 +58,81 @@ public enum DamageType
     @Nonnull
     private static DamageType get(DamageSource source)
     {
-        // todo: try and guess what damage type was just dealt, using the various parts of the source
+        // Unblockable damage types don't have a special damage source
+        if (!source.isUnblockable())
+        {
+            // First try and match damage types specified via config
+            for (String damageType : ConfigTFC.GENERAL.slashingDamageSources)
+            {
+                if (damageType.equals(source.damageType))
+                {
+                    return SLASHING;
+                }
+            }
+            for (String damageType : ConfigTFC.GENERAL.crushingDamageSources)
+            {
+                if (damageType.equals(source.damageType))
+                {
+                    return CRUSHING;
+                }
+            }
+            for (String damageType : ConfigTFC.GENERAL.piercingDamageSources)
+            {
+                if (damageType.equals(source.damageType))
+                {
+                    return PIERCING;
+                }
+            }
+
+            // Next, try and check for an entity doing the damaging
+            Entity sourceEntity = source.getTrueSource();
+            if (sourceEntity != null)
+            {
+                // Check for the attacking weapon
+                if (sourceEntity instanceof EntityLivingBase)
+                {
+                    ItemStack heldItem = ((EntityLivingBase) sourceEntity).getHeldItemMainhand();
+                    if (!heldItem.isEmpty())
+                    {
+                        // Find a unique damage type for the weapon, if it exists
+                        DamageType weaponDamageType = getFromItem(heldItem);
+                        if (weaponDamageType != GENERIC)
+                        {
+                            return weaponDamageType;
+                        }
+                    }
+                }
+
+                // Check for config based entities
+                ResourceLocation entityType = EntityList.getKey(sourceEntity);
+                if (entityType != null)
+                {
+                    String entityTypeName = entityType.toString();
+                    for (String damageType : ConfigTFC.GENERAL.slashingDamageEntities)
+                    {
+                        if (damageType.equals(entityTypeName))
+                        {
+                            return SLASHING;
+                        }
+                    }
+                    for (String damageType : ConfigTFC.GENERAL.crushingDamageEntities)
+                    {
+                        if (damageType.equals(entityTypeName))
+                        {
+                            return CRUSHING;
+                        }
+                    }
+                    for (String damageType : ConfigTFC.GENERAL.piercingDamageEntities)
+                    {
+                        if (damageType.equals(entityTypeName))
+                        {
+                            return PIERCING;
+                        }
+                    }
+                }
+            }
+        }
+        // Default to generic damage
         return GENERIC;
     }
 

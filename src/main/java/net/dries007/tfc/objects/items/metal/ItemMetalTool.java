@@ -24,6 +24,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.util.DamageType;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -67,6 +69,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 1.5f;
                 areaOfAttack = 1;
                 attackSpeed = -3f;
+                OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
                 break;
             case HOE:
                 setHarvestLevel("hoe", harvestLevel);
@@ -105,27 +108,32 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 0.5f;
                 areaOfAttack = 1;
                 attackSpeed = 3f;
+                OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             case HAMMER:
                 setHarvestLevel("hammer", harvestLevel);
                 typeDamage = 2f;
                 areaOfAttack = 1;
                 attackSpeed = -3.5f;
+                OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
                 break;
             case SWORD:
                 typeDamage = 1f;
                 areaOfAttack = 1;
                 attackSpeed = -0.75f;
+                OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
                 break;
             case MACE:
                 typeDamage = 1.1f;
                 areaOfAttack = 1;
                 attackSpeed = -1;
+                OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
                 break;
             case JAVELIN:
                 typeDamage = 1f;
                 areaOfAttack = 1;
                 attackSpeed = -1;
+                OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             default:
                 throw new IllegalArgumentException("Tool from non tool type.");

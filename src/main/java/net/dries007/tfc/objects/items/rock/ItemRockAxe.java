@@ -26,6 +26,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.api.util.IRockObject;
+import net.dries007.tfc.util.DamageType;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
@@ -50,6 +51,7 @@ public class ItemRockAxe extends ItemAxe implements IItemSize, IRockObject
         OreDictionaryHelper.register(this, "axe");
         OreDictionaryHelper.register(this, "axe", "stone");
         OreDictionaryHelper.register(this, "axe", "stone", category);
+        OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
     }
 
     @Override
