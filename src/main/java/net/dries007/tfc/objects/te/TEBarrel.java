@@ -12,6 +12,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -126,13 +127,11 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
 
     /**
      * Called on clients whenever this TileEntity received an update from the server.
-     *
-     * @param tag An NBTTagCompound containing the TE's data.
-     */
+     **/
     @Override
-    public void handleUpdateTag(NBTTagCompound tag)
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
-        readFromNBT(tag);
+        readFromNBT(pkt.getNbtCompound());
         updateLockStatus();
     }
 
@@ -263,6 +262,19 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         }
         super.setAndUpdateSlots(slot);
     }
+
+    /**
+     * Called on clients when this TileEntity received an update from the server on load.
+     *
+     * @param tag An NBTTagCompound containing the TE's data.
+     */
+    @Override
+    public void handleUpdateTag(NBTTagCompound tag)
+    {
+        readFromNBT(tag);
+        updateLockStatus();
+    }
+
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
