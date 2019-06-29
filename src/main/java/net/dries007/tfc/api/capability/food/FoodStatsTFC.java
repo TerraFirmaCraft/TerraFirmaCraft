@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.api.capability.food;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -100,6 +101,11 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         }
     }
 
+    /**
+     * Called from {@link EntityPlayer#onUpdate()} on server side only
+     *
+     * @param player the player who's food stats this is
+     */
     @Override
     public void onUpdate(EntityPlayer player)
     {
@@ -112,12 +118,12 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             {
                 addThirst((float) ConfigTFC.GENERAL.playerThirstModifier);
             }
-        }
 
-        // Then, we decrement nutrients
-        for (int i = 0; i < nutrients.length; i++)
-        {
-            addNutrient(i, (float) ConfigTFC.GENERAL.playerNutritionDecayModifier);
+            // Then, we decrement nutrients
+            for (int i = 0; i < nutrients.length; i++)
+            {
+                addNutrient(i, -(float) ConfigTFC.GENERAL.playerNutritionDecayModifier);
+            }
         }
 
         // Finally, update the original food stats
@@ -205,6 +211,24 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         originalStats.setFoodLevel(foodLevelIn);
     }
 
+    /**
+     * Sets the nutrient value directly. Used by command nutrients and for debug purposes
+     *
+     * @param nutrient the nutrient to set
+     * @param value    the value to set to, in [0, 100]
+     */
+    @Override
+    public void setNutrient(@Nonnull Nutrient nutrient, float value)
+    {
+        setNutrient(nutrient.ordinal(), value);
+    }
+
+    @Override
+    public float getThirst()
+    {
+        return thirst;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public void setFoodSaturationLevel(float foodSaturationLevelIn)
@@ -237,19 +261,27 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         return false;
     }
 
+    @Override
+    public float getNutrient(@Nonnull Nutrient nutrient)
+    {
+        return nutrients[nutrient.ordinal()];
+    }
+
     private void addNutrient(int index, float amount)
     {
-        if (index > 0 && index < Nutrient.TOTAL)
+        setNutrient(index, nutrients[index] + amount);
+    }
+
+    private void setNutrient(int index, float amount)
+    {
+        nutrients[index] = amount;
+        if (nutrients[index] < 0)
         {
-            nutrients[index] += amount;
-            if (nutrients[index] < 0)
-            {
-                nutrients[index] = 0;
-            }
-            else if (nutrients[index] > MAX_PLAYER_NUTRIENTS)
-            {
-                nutrients[index] = MAX_PLAYER_NUTRIENTS;
-            }
+            nutrients[index] = 0;
+        }
+        else if (nutrients[index] > MAX_PLAYER_NUTRIENTS)
+        {
+            nutrients[index] = MAX_PLAYER_NUTRIENTS;
         }
     }
 

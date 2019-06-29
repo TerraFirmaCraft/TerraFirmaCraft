@@ -16,16 +16,12 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.FoodStats;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 
-import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.food.Nutrient;
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
-import net.dries007.tfc.network.PacketPlayerDataUpdate;
 
 @ParametersAreNonnullByDefault
 public class CommandNutrients extends CommandBase
@@ -61,16 +57,11 @@ public class CommandNutrients extends CommandBase
         try
         {
             Nutrient nutrient = Nutrient.valueOf(args[0].toUpperCase());
-            IPlayerSkills cap = sender.getCommandSenderEntity().getCapability(CapabilityPlayerSkills.CAPABILITY_SKILLS, null);
-            if (cap != null)
+            FoodStats stats = ((EntityPlayer) sender.getCommandSenderEntity()).getFoodStats();
+            if (stats instanceof IFoodStatsTFC)
             {
                 float nutrientValue = (float) parseDouble(args[1]);
-                cap.setNutrient(nutrient, nutrientValue);
-                sender.sendMessage(new TextComponentString("Set Nutrients!"));
-                if (sender.getCommandSenderEntity() instanceof EntityPlayerMP)
-                {
-                    TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) sender.getCommandSenderEntity());
-                }
+                ((IFoodStatsTFC) stats).setNutrient(nutrient, nutrientValue);
             }
         }
         catch (IllegalArgumentException e)

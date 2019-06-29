@@ -123,6 +123,30 @@ public class ConfigTFC
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.playerThirstModifier")
         public double playerThirstModifier = 1.0;
+
+        @Config.Comment("Damage Source Types that will default to Slashing damage")
+        @Config.LangKey("config." + MOD_ID + ".general.slashingDamageSources")
+        public String[] slashingDamageSources = new String[] {};
+
+        @Config.Comment("Damage Source Types that will default to Piercing damage")
+        @Config.LangKey("config." + MOD_ID + ".general.piercingDamageSources")
+        public String[] piercingDamageSources = new String[] {"arrow", "cactus", "thorns"};
+
+        @Config.Comment("Damage Source Types that will default to Crushing damage")
+        @Config.LangKey("config." + MOD_ID + ".general.crushingDamageSources")
+        public String[] crushingDamageSources = new String[] {"anvil", "falling_block"};
+
+        @Config.Comment("Damage Source Entities that will default to Slashing damage")
+        @Config.LangKey("config." + MOD_ID + ".general.slashingDamageEntities")
+        public String[] slashingDamageEntities = new String[] {"minecraft:wither_skeleton", "minecraft:vex", "minecraft:vindication_illager", "minecraft:zombie_pigman", "minecraft:wolf", "minecraft:polar_bear"};
+
+        @Config.Comment("Damage Source Entities that will default to Piercing damage")
+        @Config.LangKey("config." + MOD_ID + ".general.piercingDamageEntities")
+        public String[] piercingDamageEntities = new String[] {"minecraft:stray", "minecraft:skeleton"};
+
+        @Config.Comment("Damage Source Entities that will default to Crushing damage")
+        @Config.LangKey("config." + MOD_ID + ".general.crushingDamageEntities")
+        public String[] crushingDamageEntities = new String[] {"minecraft:husk", "minecraft:skeleton_horse", "minecraft:zombie_horse", "minecraft:spider", "minecraft:giant", "minecraft:zombie", "minecraft:slime", "minecraft:cave_spider", "minecraft:silverfish", "minecraft:villager_golem", "minecraft:zombie_villager"};
     }
 
     public static class ClientCFG

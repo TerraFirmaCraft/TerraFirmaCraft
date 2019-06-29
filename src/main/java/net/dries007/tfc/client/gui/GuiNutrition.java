@@ -10,14 +10,14 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.util.FoodStats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.food.Nutrient;
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
@@ -37,11 +37,14 @@ public class GuiNutrition extends GuiContainerTFC
         super(container, playerInv, BACKGROUND);
 
         cachedNutrients = new float[Nutrient.TOTAL];
-        IPlayerSkills cap = playerInv.player.getCapability(CapabilityPlayerSkills.CAPABILITY_SKILLS, null);
-        if (cap != null)
+
+        FoodStats foodStats = playerInv.player.getFoodStats();
+        if (foodStats instanceof IFoodStatsTFC)
         {
             for (Nutrient n : Nutrient.values())
-                cachedNutrients[n.ordinal()] = cap.getNutrient(n);
+            {
+                cachedNutrients[n.ordinal()] = ((IFoodStatsTFC) foodStats).getNutrient(n);
+            }
         }
     }
 

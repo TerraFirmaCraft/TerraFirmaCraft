@@ -9,16 +9,16 @@ public interface IDamageResistance
 {
     default float getCrushingModifier()
     {
-        return 1;
+        return 0;
     }
 
     default float getPiercingModifier()
     {
-        return 1;
+        return 0;
     }
 
     default float getSlashingModifier()
     {
-        return 1;
+        return 0;
     }
 }
