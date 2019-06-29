@@ -49,11 +49,15 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
 
         if (!hasBeenModified)
         {
-            ItemStack stack = Helpers.consumeItem(this.stack, type.getAmountToConsume());
+            ItemStack stack = player.isCreative() ? this.stack : Helpers.consumeItem(this.stack, type.getAmountToConsume());
             if (isOffhand)
+            {
                 player.setHeldItem(EnumHand.OFF_HAND, stack);
+            }
             else
+            {
                 player.setHeldItem(EnumHand.MAIN_HAND, stack);
+            }
             hasBeenModified = true;
         }
 

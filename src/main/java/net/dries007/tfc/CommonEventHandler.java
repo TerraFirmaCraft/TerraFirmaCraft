@@ -155,10 +155,13 @@ public final class CommonEventHandler
         {
             if (placeable.placeItemInWorld(world, pos, stack, player, event.getFace(), null))
             {
-                player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, 1));
+                if (placeable.consumeAmount() > 0)
+                {
+                    player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, placeable.consumeAmount()));
+                }
+                event.setCancellationResult(EnumActionResult.SUCCESS);
+                event.setCanceled(true);
             }
-            event.setCancellationResult(EnumActionResult.SUCCESS);
-            event.setCanceled(true);
         }
     }
 
@@ -182,9 +185,7 @@ public final class CommonEventHandler
                 event.setResult(Event.Result.ALLOW);
             }
         }
-
     }
-
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event)
@@ -202,7 +203,6 @@ public final class CommonEventHandler
             }
         }
     }
-
 
     @SubscribeEvent
     public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> e)

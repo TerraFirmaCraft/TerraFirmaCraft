@@ -189,8 +189,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
         if (stack.isEmpty() || player.isSneaking())
         {
             // This will search through the logItems, then the strawItems
-            ItemStack dropStack = logItems.stream().filter(i -> !i.isEmpty()).findFirst().orElseGet(() ->
-                strawItems.stream().filter(i -> !i.isEmpty()).findFirst().orElse(ItemStack.EMPTY));
+            ItemStack dropStack = logItems.stream().filter(i -> !i.isEmpty()).findFirst().orElseGet(() -> strawItems.stream().filter(i -> !i.isEmpty()).findFirst().orElse(ItemStack.EMPTY));
             if (!dropStack.isEmpty())
             {
                 player.addItemStackToInventory(dropStack.splitStack(1));

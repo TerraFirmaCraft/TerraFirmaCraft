@@ -26,16 +26,13 @@ public class ContainerLogPile extends ContainerTE<TELogPile>
     public ContainerLogPile(InventoryPlayer playerInv, TELogPile te)
     {
         super(playerInv, te);
+        te.setContainerOpen(true);
     }
 
     @Override
     public boolean canInteractWith(@Nonnull EntityPlayer player)
     {
-        if (this.tile.isBurning())
-        {
-            return false;
-        }
-        return this.tile.countLogs() > 0;
+        return tile.canInteractWith(player);
     }
 
     @Override
@@ -55,5 +52,13 @@ public class ContainerLogPile extends ContainerTE<TELogPile>
     protected int[] getSlotShiftOrder(int containerSlots)
     {
         return SLOT_SHIFT_ORDER;
+    }
+
+    @Override
+    public void onContainerClosed(EntityPlayer playerIn)
+    {
+        // Marks the log pile as closed, allows it to delete itself if there aren't any logs in it
+        tile.setContainerOpen(false);
+        super.onContainerClosed(playerIn);
     }
 }

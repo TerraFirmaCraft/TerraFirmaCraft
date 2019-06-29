@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockTorch;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,6 +49,7 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(LIT, true));
         setLightLevel(0.9375F);
         setTickRandomly(true);
+        setSoundType(SoundType.WOOD);
 
         Blocks.FIRE.setFireInfo(this, 5, 20);
 

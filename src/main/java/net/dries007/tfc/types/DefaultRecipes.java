@@ -102,7 +102,8 @@ public final class DefaultRecipes
         {
             if (type.hasMold(null))
             {
-                event.getRegistry().register(new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemUnfiredMold.get(type)), type.getPattern()).setRegistryName(MOD_ID, type.name().toLowerCase() + "_mold"));
+                int amount = type == INGOT ? 2 : 1;
+                event.getRegistry().register(new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemUnfiredMold.get(type), amount), type.getPattern()).setRegistryName(MOD_ID, type.name().toLowerCase() + "_mold"));
             }
         }
 
