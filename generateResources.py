@@ -692,7 +692,7 @@ for rock_type in ROCK_TYPES:
         blockstate(('stairs', block_type, rock_type), None, textures={
             ('top', 'bottom', 'side'): 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type),
         }, variants=STAIR_VARIANTS)
-        blockstate(('slab', 'half', block_type, rock_type), 'half_slab', textures={
+        blockstate(('slab', block_type, rock_type), 'half_slab', textures={
             ('top', 'bottom', 'side'): 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type),
         }, variants={
             'half': {
@@ -700,7 +700,7 @@ for rock_type in ROCK_TYPES:
                 'top': {'model': 'upper_slab'}
             }
         })
-        cube_all(('slab', 'full', block_type, rock_type), 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type))
+        cube_all(('double_slab', block_type, rock_type), 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type))
 
     # (STONE) BUTTON
     blockstate(('stone', 'button', rock_type), 'button', textures={
@@ -819,7 +819,7 @@ for wood_type in WOOD_TYPES:
     blockstate(('stairs', 'wood', wood_type), None, textures={
         ('top', 'bottom', 'side'): 'tfc:blocks/wood/planks/%s' % wood_type,
     }, variants=STAIR_VARIANTS)
-    blockstate(('slab', 'half', 'wood', wood_type), 'half_slab', textures={
+    blockstate(('slab', 'wood', wood_type), 'half_slab', textures={
         ('top', 'bottom', 'side'): 'tfc:blocks/wood/planks/%s' % wood_type,
     }, variants={
         'half': {
@@ -827,7 +827,7 @@ for wood_type in WOOD_TYPES:
             'top': {'model': 'upper_slab'}
         }
     })
-    cube_all(('slab', 'full', 'wood', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
+    cube_all(('double_slab', 'wood', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
 
     # (WOOD) TRAPDOORS
     blockstate(('wood', 'trapdoor', wood_type), None, textures={
@@ -1002,23 +1002,30 @@ _heads = [x + '_head' for x in TOOLS] + [x + '_blade' for x in TOOLS]
 for item_type in METAL_ITEMS:
     if item_type not in _heads:
         continue
-    item(('mold', item_type, 'unfired'), 'tfc:items/mold/%s/%s' % ('unfired', item_type.split('_')[0]))
-    item(('mold', item_type, 'empty'), 'tfc:items/mold/%s/%s' % ('empty', item_type.split('_')[0]))
-    for metal in ['copper', 'bronze', 'black_bronze', 'bismuth_bronze']:
-        item(('mold', item_type, metal), 'tfc:items/mold/%s/%s' % (metal, item_type.split('_')[0]))
-for type in ['empty', 'unfired', 'unknown']:
-    item(('mold', 'ingot', type), 'tfc:items/mold/ingot/' + type)
+    # unfired molds
+    item(('ceramics', 'unfired', 'mold', item_type), 'tfc:items/ceramics/unfired/mold/%s' % item_type)
+    # fired, empty molds
+    item(('ceramics', 'fired', 'mold', item_type, 'empty'), 'tfc:items/ceramics/fired/mold/%s/empty' % item_type)
+    # fired, filled molds
+    for metal in ('copper', 'bronze', 'black_bronze', 'bismuth_bronze'):
+        item(('ceramics', 'fired', 'mold', item_type, metal),
+             'tfc:items/ceramics/fired/mold/%s/%s' % (item_type, metal))
+
+# unfired ingot molds
+item(('ceramics', 'unfired', 'mold', 'ingot'), 'tfc:items/ceramics/unfired/mold/ingot')
+# fired ingot molds for all metals
+item(('ceramics', 'fired', 'mold', 'ingot', 'empty'), 'tfc:items/ceramics/fired/mold/ingot/empty')
+item(('ceramics', 'fired', 'mold', 'ingot', 'unknown'), 'tfc:items/ceramics/fired/mold/ingot/unknown')
 for metal in METAL_TYPES.keys():
-    item(('mold', 'ingot', metal), 'tfc:items/mold/ingot/' + metal)
+    item(('ceramics', 'fired', 'mold', 'ingot', metal), 'tfc:items/ceramics/fired/mold/ingot/' + metal)
+
 del _heads
 
 item(('ceramics', 'unfired', 'vessel'), 'tfc:items/ceramics/unfired/vessel')
 item(('ceramics', 'fired', 'vessel'), 'tfc:items/ceramics/fired/vessel')
-item(('ceramics', 'unfired', 'vessel_glazed'),
-     'tfc:items/ceramics/unfired/vessel',
+item(('ceramics', 'unfired', 'vessel_glazed'), 'tfc:items/ceramics/unfired/vessel',
      'tfc:items/ceramics/fired/vessel_overlay')
-item(('ceramics', 'fired', 'vessel_glazed'),
-     'tfc:items/ceramics/fired/vessel',
+item(('ceramics', 'fired', 'vessel_glazed'), 'tfc:items/ceramics/fired/vessel',
      'tfc:items/ceramics/fired/vessel_overlay')
 
 item(('ceramics', 'unfired', 'spindle'), 'tfc:items/ceramics/unfired/spindle')
