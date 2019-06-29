@@ -128,6 +128,7 @@ public class ItemFireStarter extends ItemTFC
         }
         else if (countLeft == 1) // Server, and last tick of use
         {
+            stack.damageItem(1, player);
             final IBlockState state = world.getBlockState(pos.down());
             if (state.getBlock() == BlocksTFC.LOG_PILE)
             {
@@ -161,7 +162,6 @@ public class ItemFireStarter extends ItemTFC
             else
             {
                 // Try to make a fire pit
-                stack.damageItem(1, player);
 
                 final List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 2, 1)));
                 final List<EntityItem> stuffToUse = new ArrayList<>();
@@ -230,6 +230,12 @@ public class ItemFireStarter extends ItemTFC
     public Weight getWeight(ItemStack stack)
     {
         return Weight.LIGHT;
+    }
+
+    @Override
+    public boolean canStack(@Nonnull ItemStack stack)
+    {
+        return false;
     }
 
     @Nullable

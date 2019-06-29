@@ -283,13 +283,13 @@ public final class BlocksTFC
         {
             Builder<BlockFluidBase> b = ImmutableList.builder();
             for (Fluid fluid : FluidsTFC.getAllInfiniteFluids())
-                registerFluid(b, r, fluid, Material.WATER);
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidClassicTFC(fluid, Material.WATER)));
             for (Fluid fluid : FluidsTFC.getAllAlcoholsFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidFiniteTFC(fluid, FluidsTFC.MATERIAL_ALCOHOL)));
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidClassicTFC(fluid, FluidsTFC.MATERIAL_ALCOHOL)));
             for (Fluid fluid : FluidsTFC.getAllOtherFiniteFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidFiniteTFC(fluid, Material.WATER)));
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidClassicTFC(fluid, Material.WATER)));
             for (Fluid fluid : FluidsTFC.getAllMetalFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidFiniteTFC(fluid, Material.LAVA)));
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidClassicTFC(fluid, Material.LAVA)));
             allFluidBlocks = b.build();
         }
 
@@ -650,17 +650,6 @@ public final class BlocksTFC
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
         Rock.Type type = ((BlockRockVariant) current.getBlock()).getType();
         return type == GRASS || type == DRY_GRASS || type == DIRT || type == GRAVEL || type == RAW || type == SAND;
-    }
-
-    private static void registerFluid(Builder<BlockFluidBase> b, IForgeRegistry<Block> r, Fluid fluid, Material material)
-    {
-        BlockFluidBase block = new BlockFluidClassicTFC(fluid, material);
-        register(r, "fluid/" + fluid.getName(), block);
-        b.add(block);
-        // todo: these three lines are causing the "A mod has assigned a fluid to block {null}" are they nessecary?
-        block = new BlockFluidFiniteTFC(fluid, material);
-        register(r, "fluid/finite_" + fluid.getName(), block);
-        b.add(block);
     }
 
     private static <T extends Block> T register(IForgeRegistry<Block> r, String name, T block, CreativeTabs ct)
