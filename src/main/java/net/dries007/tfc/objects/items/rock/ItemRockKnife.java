@@ -48,6 +48,7 @@ public class ItemRockKnife extends ItemTool implements IItemSize, IRockObject
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
         setHarvestLevel("knife", category.getToolMaterial().getHarvestLevel());
+
         OreDictionaryHelper.register(this, "knife");
         OreDictionaryHelper.register(this, "knife", "stone");
         OreDictionaryHelper.register(this, "knife", "stone", category);

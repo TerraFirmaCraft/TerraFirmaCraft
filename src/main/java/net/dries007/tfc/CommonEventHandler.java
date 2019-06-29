@@ -70,9 +70,13 @@ public final class CommonEventHandler
             // Done via event so it applies to all leaves.
             double chance = ConfigTFC.GENERAL.leafStickDropChance;
             if (!heldItem.isEmpty() && Helpers.containsAnyOfCaseInsensitive(heldItem.getItem().getToolClasses(heldItem), ConfigTFC.GENERAL.leafStickDropChanceBonusClasses))
+            {
                 chance = ConfigTFC.GENERAL.leafStickDropChanceBonus;
+            }
             if (Constants.RNG.nextFloat() < chance)
+            {
                 event.getDrops().add(new ItemStack(Items.STICK));
+            }
         }
     }
 

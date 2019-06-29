@@ -61,15 +61,15 @@ public class ItemProspectorPick extends ItemMetalTool
 
                 RANDOM.setSeed(pos.toLong());
                 ItemStack targetStack = getOreStack(state, false);
-                if (RANDOM.nextFloat() < 0.4)
-                {
-                    // False negative
-                    player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found_nothing"), ConfigTFC.CLIENT.propickOutputToActionBar);
-                }
-                else if (targetStack != null)
+                if (targetStack != null)
                 {
                     // Just clicked on an ore block
                     player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found").appendText(" " + targetStack.getDisplayName()), ConfigTFC.CLIENT.propickOutputToActionBar);
+                }
+                else if (RANDOM.nextFloat() < 0.4)
+                {
+                    // False negative
+                    player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found_nothing"), ConfigTFC.CLIENT.propickOutputToActionBar);
                 }
                 else
                 {

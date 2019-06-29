@@ -23,6 +23,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -118,6 +119,29 @@ public class BlockLeavesTFC extends BlockLeaves
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(BlockSaplingTFC.get(wood));
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        int chance = this.getSaplingDropChance(state);
+        if (chance > 0)
+        {
+            if (fortune > 0)
+            {
+                chance -= 2 << fortune;
+                if (chance < 10) chance = 10;
+            }
+
+            if (RANDOM.nextInt(chance) == 0)
+            {
+                ItemStack drop = new ItemStack(getItemDropped(state, RANDOM, fortune), 1, damageDropped(state));
+                if (!drop.isEmpty())
+                {
+                    drops.add(drop);
+                }
+            }
+        }
     }
 
     @Override

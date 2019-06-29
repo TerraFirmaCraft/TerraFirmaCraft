@@ -173,9 +173,13 @@ public class ItemMetalTool extends ItemMetal
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
     {
-        if (!worldIn.isRemote && (double) state.getBlockHardness(worldIn, pos) != 0.0D)
+        // Knives and scythes always take damage, as they break blocks like grass for extra drops n stuff
+        if (state.getBlockHardness(worldIn, pos) > 0 || type == Metal.ItemType.KNIFE || type == Metal.ItemType.SCYTHE)
         {
-            stack.damageItem(1, entityLiving);
+            if (!worldIn.isRemote)
+            {
+                stack.damageItem(1, entityLiving);
+            }
         }
         return true;
     }
