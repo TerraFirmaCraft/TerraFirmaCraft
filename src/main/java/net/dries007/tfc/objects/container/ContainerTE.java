@@ -60,6 +60,12 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
     }
 
     @Override
+    public boolean canInteractWith(EntityPlayer playerIn)
+    {
+        return tile.canInteractWith(player);
+    }
+
+    @Override
     public void detectAndSendChanges()
     {
         if (shouldSyncFields)

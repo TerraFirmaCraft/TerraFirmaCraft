@@ -66,7 +66,7 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         worldIn.setBlockState(pos.down(), this.getDefaultState());
-        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]).withProperty(BOTTOM, false);
+        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(growthStageProperty, plant.getStages()[CalendarTFC.getMonthOfYear().id()]).withProperty(BOTTOM, false);
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.down(), this, pos);
     }
@@ -120,7 +120,7 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
     @Nonnull
     protected BlockStateContainer createPlantBlockState()
     {
-        return new BlockStateContainer(this, DOWN, UP, NORTH, EAST, WEST, SOUTH, GROWTHSTAGE, DAYPERIOD, AGE, BOTTOM);
+        return new BlockStateContainer(this, DOWN, UP, NORTH, EAST, WEST, SOUTH, growthStageProperty, DAYPERIOD, AGE, BOTTOM);
     }
 
     @Override
@@ -220,7 +220,7 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
                 if (rand.nextDouble() < 0.5D && worldIn.isAirBlock(sidePos) && worldIn.isAirBlock(sidePos.down()))
                 {
                     worldIn.setBlockState(sidePos.down(), this.getDefaultState());
-                    IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]);
+                    IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(growthStageProperty, plant.getStages()[CalendarTFC.getMonthOfYear().id()]);
                     worldIn.setBlockState(pos, iblockstate);
                     iblockstate.neighborChanged(worldIn, sidePos.down(), this, pos);
                     break;
@@ -255,7 +255,7 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
             if (rand.nextDouble() < 0.01D && worldIn.isAirBlock(sidePos))
             {
                 worldIn.setBlockState(sidePos, this.getDefaultState());
-                IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]);
+                IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(growthStageProperty, plant.getStages()[CalendarTFC.getMonthOfYear().id()]);
                 worldIn.setBlockState(pos, iblockstate);
                 iblockstate.neighborChanged(worldIn, sidePos, this, pos);
                 break;

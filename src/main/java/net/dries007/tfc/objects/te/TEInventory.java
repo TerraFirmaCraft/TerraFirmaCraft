@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -80,5 +81,13 @@ public abstract class TEInventory extends TEBase implements ISlotCallback
         {
             InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
         }
+    }
+
+    /**
+     * Delegated from {@link net.minecraft.inventory.Container#canInteractWith(EntityPlayer)}
+     */
+    public boolean canInteractWith(EntityPlayer player)
+    {
+        return true;
     }
 }

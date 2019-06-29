@@ -123,7 +123,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable, 
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         worldIn.setBlockState(pos.up(), this.getDefaultState());
-        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
+        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(growthStageProperty, plant.getStages()[CalendarTFC.getMonthOfYear().id()]).withProperty(PART, getPlantPart(worldIn, pos));
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.up(), this, pos);
     }
@@ -230,7 +230,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable, 
     @Nonnull
     protected BlockStateContainer createPlantBlockState()
     {
-        return new BlockStateContainer(this, AGE, GROWTHSTAGE, DAYPERIOD, PART);
+        return new BlockStateContainer(this, AGE, growthStageProperty, DAYPERIOD, PART);
     }
 
     @Override
