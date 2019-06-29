@@ -104,18 +104,21 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     @Override
     public void onUpdate(@Nonnull EntityPlayer player)
     {
-        int ticksPassed = (int) (CalendarTFC.getCalendarTime() - lastUpdateTick);
-        for (Nutrient nutrient : Nutrient.values())
+        if (!player.capabilities.isCreativeMode)
         {
-            setNutrient(nutrient, nutrients[nutrient.ordinal()] - (float) (ConfigTFC.GENERAL.playerNutritionDecayModifier * nutrient.getDecayModifier() * ticksPassed));
+            int ticksPassed = (int) (CalendarTFC.getCalendarTime() - lastUpdateTick);
+            for (Nutrient nutrient : Nutrient.values())
+            {
+                setNutrient(nutrient, nutrients[nutrient.ordinal()] - (float) (ConfigTFC.GENERAL.playerNutritionDecayModifier * nutrient.getDecayModifier() * ticksPassed));
+            }
+            //Reduces thirst bar for normal living
+            thirst -= (float) (ConfigTFC.GENERAL.playerThirstModifier * ticksPassed / 240);
+            if (player.getFoodStats().foodExhaustionLevel >= 4.0F)
+            {
+                thirst -= ConfigTFC.GENERAL.playerThirstModifier * 4.0F;
+            }
+            if (thirst < 0) thirst = 0;
         }
-        //Reduces thirst bar for normal living
-        thirst -= (float) (ConfigTFC.GENERAL.playerThirstModifier * ticksPassed / 240);
-        if (player.getFoodStats().foodExhaustionLevel >= 4.0F)
-        {
-            thirst -= ConfigTFC.GENERAL.playerThirstModifier * 4.0F;
-        }
-        if (thirst < 0) thirst = 0;
         lastUpdateTick = CalendarTFC.getCalendarTime();
     }
 

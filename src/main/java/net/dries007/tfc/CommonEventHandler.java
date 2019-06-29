@@ -293,25 +293,28 @@ public final class CommonEventHandler
             if (cap != null)
             {
                 cap.onUpdate(player);
-                if (player.ticksExisted % 100 == 0)
+                if (!player.capabilities.isCreativeMode)
                 {
-                    //Apply Debuff and send update to client
-                    if (cap.getThirst() < 10f)
+                    if (player.ticksExisted % 100 == 0)
                     {
-                        player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 1));
-                        player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 1));
-                        if (cap.getThirst() <= 0f)
+                        //Apply Debuff and send update to client
+                        if (cap.getThirst() < 10f)
                         {
-                            //Hurt the player
-                            player.attackEntityFrom(DamageSource.STARVE, 1); //5% life/5secs
+                            player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 1));
+                            player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 1));
+                            if (cap.getThirst() <= 0f)
+                            {
+                                //Hurt the player
+                                player.attackEntityFrom(DamageSource.STARVE, 1); //5% life/5secs
+                            }
                         }
+                        else if (cap.getThirst() < 40f)
+                        {
+                            player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 0));
+                            player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 0));
+                        }
+                        TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
                     }
-                    else if (cap.getThirst() < 40f)
-                    {
-                        player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 0));
-                        player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 0));
-                    }
-                    TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
                 }
             }
         }
