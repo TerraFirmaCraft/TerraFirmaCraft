@@ -28,7 +28,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.crops.BlockCropTFC;
@@ -47,12 +46,6 @@ public class BlockRockVariant extends Block
 
     public static BlockRockVariant get(Rock rock, Rock.Type type)
     {
-        //noinspection ConstantConditions
-        if (rock == null)
-        {
-            TerraFirmaCraft.getLog().warn("Rock is null at BlockRockVariant#get! Serious problems, potential NPE! Please report this to developers!", new Exception("AHHHHHHHHHHHHHHHHHHHHHHHHH"));
-            return get(Rock.GRANITE, type);
-        }
         return TABLE.get(rock).get(type);
     }
 

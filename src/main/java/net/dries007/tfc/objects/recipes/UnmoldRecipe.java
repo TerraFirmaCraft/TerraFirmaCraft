@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.objects.recipes;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -26,6 +29,7 @@ import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.ITEM_HEAT_
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 
+@ParametersAreNonnullByDefault
 public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
     private final ItemMold mold;
@@ -38,72 +42,102 @@ public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn)
     {
-        boolean mold = false;
+        boolean foundMold = false;
         for (int slot = 0; slot < inv.getSizeInventory(); slot++)
         {
             ItemStack stack = inv.getStackInSlot(slot);
-            if (stack.isEmpty()) continue;
-
-            if (stack.getItem() instanceof ItemMold)
+            if (!stack.isEmpty())
             {
-                ItemMold moldItem = ((ItemMold) stack.getItem());
+                if (stack.getItem() instanceof ItemMold)
+                {
+                    ItemMold moldItem = ((ItemMold) stack.getItem());
+                    IFluidHandler cap = stack.getCapability(FLUID_HANDLER_CAPABILITY, null);
 
-                IFluidHandler cap = stack.getCapability(FLUID_HANDLER_CAPABILITY, null);
-
-                if (!(cap instanceof IMoldHandler)) return false;
-                IMoldHandler moldHandler = ((IMoldHandler) cap);
-                if (moldHandler.isMolten()) return false;
-                Metal m = moldHandler.getMetal();
-                if (m == null) return false;
-                if (moldItem != this.mold) return false;
-                if (mold) return false;
-                mold = true;
-            }
-            else
-            {
-                return false;
+                    if (cap instanceof IMoldHandler)
+                    {
+                        IMoldHandler moldHandler = ((IMoldHandler) cap);
+                        if (!moldHandler.isMolten())
+                        {
+                            Metal m = moldHandler.getMetal();
+                            if (m != null && moldItem != this.mold && !foundMold)
+                            {
+                                foundMold = true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
-        return mold;
+        return foundMold;
     }
 
     @Override
+    @Nonnull
     public ItemStack getCraftingResult(InventoryCrafting inv)
     {
         ItemStack moldStack = null;
         for (int slot = 0; slot < inv.getSizeInventory(); slot++)
         {
             ItemStack stack = inv.getStackInSlot(slot);
-            if (stack.isEmpty()) continue;
-
-            if (stack.getItem() instanceof ItemMold)
+            if (!stack.isEmpty())
             {
-                ItemMold tmp = ((ItemMold) stack.getItem());
-                if (tmp != this.mold) return null;
-                if (moldStack != null) return null;
-                moldStack = stack;
-            }
-            else
-            {
-                return null;
+                if (stack.getItem() instanceof ItemMold)
+                {
+                    ItemMold tmp = ((ItemMold) stack.getItem());
+                    if (tmp == this.mold && moldStack == null)
+                    {
+                        moldStack = stack;
+                    }
+                    else
+                    {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                else
+                {
+                    return ItemStack.EMPTY;
+                }
             }
         }
-        if (moldStack == null) return null;
-
-        IFluidHandler moldCap = moldStack.getCapability(FLUID_HANDLER_CAPABILITY, null);
-        if (!(moldCap instanceof IMoldHandler)) return null;
-        IMoldHandler moldHandler = ((IMoldHandler) moldCap);
-        if (moldHandler.isMolten()) return null;
-        Metal m = moldHandler.getMetal();
-        if (m == null) return null;
-
-        ItemStack output = new ItemStack(ItemMetal.get(moldHandler.getMetal(), ((ItemMold) moldStack.getItem()).type));
-        IItemHeat heat = output.getCapability(ITEM_HEAT_CAPABILITY, null);
-        if (heat != null)
+        if (moldStack != null)
         {
-            heat.setTemperature(moldHandler.getTemperature());
+            IFluidHandler moldCap = moldStack.getCapability(FLUID_HANDLER_CAPABILITY, null);
+            if (moldCap instanceof IMoldHandler)
+            {
+                IMoldHandler moldHandler = (IMoldHandler) moldCap;
+                if (!moldHandler.isMolten())
+                {
+                    Metal m = moldHandler.getMetal();
+                    if (m != null)
+                    {
+                        ItemStack output = new ItemStack(ItemMetal.get(moldHandler.getMetal(), ((ItemMold) moldStack.getItem()).type));
+                        IItemHeat heat = output.getCapability(ITEM_HEAT_CAPABILITY, null);
+                        if (heat != null)
+                        {
+                            heat.setTemperature(moldHandler.getTemperature());
+                        }
+                        return output;
+                    }
+                }
+            }
         }
-        return output;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -113,12 +147,14 @@ public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
     }
 
     @Override
+    @Nonnull
     public ItemStack getRecipeOutput()
     {
         return ItemStack.EMPTY;
     }
 
     @Override
+    @Nonnull
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
     {
         EntityPlayer player = ForgeHooks.getCraftingPlayer();
@@ -132,7 +168,7 @@ public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
                 }
             }
         }
-        return net.minecraftforge.common.ForgeHooks.defaultRecipeGetRemainingItems(inv);
+        return ForgeHooks.defaultRecipeGetRemainingItems(inv);
     }
 
     @Override
@@ -142,6 +178,7 @@ public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
     }
 
     @Override
+    @Nonnull
     public String getGroup()
     {
         return MOD_ID + ":unmold_" + mold.type.name().toLowerCase();
