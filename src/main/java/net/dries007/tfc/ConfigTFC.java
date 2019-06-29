@@ -107,7 +107,7 @@ public class ConfigTFC
         @Config.Comment("Modifier for how quickly the players nutrition values will decay")
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.playerNutritionDecayModifier")
-        public double playerNutritionDecayModifier = 0.01;
+        public double playerNutritionDecayModifier = 0.0003;
 
         @Config.Comment("Minimum health modifier player can obtain with low stats")
         @Config.RangeDouble(min = 0.1d, max = 1d)
@@ -120,9 +120,9 @@ public class ConfigTFC
         public double playerMaxHealthModifier = 3d;
 
         @Config.Comment("Modifier for how quickly the players becomes thirsty")
-        @Config.RangeDouble(min = 0, max = 10)
+        @Config.RangeDouble(min = 0, max = 100)
         @Config.LangKey("config." + MOD_ID + ".general.playerThirstModifier")
-        public double playerThirstModifier = 1.0;
+        public double playerThirstModifier = 8.0;
 
         @Config.Comment("Damage Source Types that will default to Slashing damage")
         @Config.LangKey("config." + MOD_ID + ".general.slashingDamageSources")
