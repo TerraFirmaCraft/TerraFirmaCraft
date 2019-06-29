@@ -171,10 +171,10 @@ public class PlayerDataHandler implements IPlayerData, ICapabilitySerializable<N
     @Override
     public boolean drink(float value)
     {
-        int ticksPassed = (int) (CalendarTFC.getCalendarTime() - lastDrinkTick);
+        int ticksPassed = (int) (CalendarTFC.getTotalTime() - lastDrinkTick);
         if (ticksPassed < 30 || this.thirst > 95)
             return false; //One sip per one and a half sec and stops after almost full(to stop drinking after that)
-        lastDrinkTick = CalendarTFC.getCalendarTime();
+        lastDrinkTick = CalendarTFC.getTotalTime();
         this.setThirst(this.thirst + value);
         return true;
     }
