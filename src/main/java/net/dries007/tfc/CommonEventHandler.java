@@ -14,7 +14,6 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.FoodStats;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -31,7 +30,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
-import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
@@ -183,13 +181,23 @@ public final class CommonEventHandler
     public static void onLivingHurt(LivingHurtEvent event)
     {
         float actualDamage = event.getAmount();
+        // Modifier for damage type + damage resistance
         actualDamage *= DamageType.getModifier(event.getSource(), event.getEntityLiving());
         if (event.getEntityLiving() instanceof EntityPlayer)
         {
             EntityPlayer player = (EntityPlayer) event.getEntityLiving();
             if (player.getFoodStats() instanceof IFoodStatsTFC)
             {
-                actualDamage /= ((IFoodStatsTFC) player.getFoodStats()).getHealthModifier();
+                float healthModifier = ((IFoodStatsTFC) player.getFoodStats()).getHealthModifier();
+                if (healthModifier < ConfigTFC.GENERAL.playerMinHealthModifier)
+                {
+                    healthModifier = (float) ConfigTFC.GENERAL.playerMinHealthModifier;
+                }
+                if (healthModifier > ConfigTFC.GENERAL.playerMaxHealthModifier)
+                {
+                    healthModifier = (float) ConfigTFC.GENERAL.playerMaxHealthModifier;
+                }
+                actualDamage /= healthModifier;
             }
         }
         event.setAmount(actualDamage);
@@ -238,13 +246,6 @@ public final class CommonEventHandler
 
             // World Data (Calendar) Sync Handler
             TerraFirmaCraft.getNetwork().sendTo(new PacketCalendarUpdate(), player);
-        }
-
-        // Replace food stats, should happen on both logical sides
-        FoodStats originalStats = event.player.getFoodStats();
-        if (!(originalStats instanceof FoodStatsTFC))
-        {
-            event.player.foodStats = new FoodStatsTFC(event.player, originalStats);
         }
     }
 

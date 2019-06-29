@@ -39,10 +39,6 @@ public final class PlayerDataOverlay
 
     public static PlayerDataOverlay getInstance() { return INSTANCE; }
 
-    private float maxHealth = 1000, curThirst = 100;
-
-    private PlayerDataOverlay() {}
-
     @SubscribeEvent
     public void render(RenderGameOverlayEvent.Pre event)
     {
@@ -57,11 +53,13 @@ public final class PlayerDataOverlay
         }
 
         FoodStats foodStats = player.getFoodStats();
+        float baseMaxHealth = 1000;
+        float currentThirst = 100;
         if (foodStats instanceof IFoodStatsTFC)
         {
             IFoodStatsTFC foodStatsTFC = (IFoodStatsTFC) foodStats;
-            maxHealth = 20 * foodStatsTFC.getHealthModifier() * 50; //20 = 1000 HP in overlay
-            curThirst = foodStatsTFC.getThirst();
+            baseMaxHealth = 20 * foodStatsTFC.getHealthModifier() * 50; //20 = 1000 HP in overlay
+            currentThirst = foodStatsTFC.getThirst();
         }
         // This is for air to be drawn above our bars
         GuiIngameForge.right_height += 10;
@@ -82,9 +80,8 @@ public final class PlayerDataOverlay
             //Draw Health
             GL11.glEnable(GL11.GL_BLEND);
             this.drawTexturedModalRect(mid - 91, healthRowHeight, 0, 0, 90, 10);
-            float maxHealth = this.maxHealth;
-            float curHealth = player.getHealth() * maxHealth / (float) 20;
-            float percentHealth = curHealth / maxHealth;
+            float curHealth = player.getHealth() * baseMaxHealth / (float) 20;
+            float percentHealth = curHealth / baseMaxHealth;
             float surplusPercent = Math.max(percentHealth - 1, 0);
             int uSurplus = 90;
             if (percentHealth > 1) percentHealth = 1;
@@ -103,7 +100,7 @@ public final class PlayerDataOverlay
             //Draw Food and Water
             float foodLevel = player.getFoodStats().getFoodLevel();
             float percentFood = foodLevel / 20f;
-            float percentThirst = this.curThirst / 100f;
+            float percentThirst = currentThirst / 100f;
 
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -116,7 +113,7 @@ public final class PlayerDataOverlay
             this.drawTexturedModalRect(mid + 1, healthRowHeight + 5, 90, 25, (int) (90 * percentThirst), 5);
 
             //Draw Notifications
-            String healthString = ((int) curHealth) + "/" + ((int) (maxHealth));
+            String healthString = ((int) curHealth) + "/" + ((int) (baseMaxHealth));
             fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2, Color.white.getRGB());
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

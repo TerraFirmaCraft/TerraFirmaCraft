@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.network.PacketFoodStatsUpdate;
 import net.dries007.tfc.world.classic.CalendarTFC;
 
 @ParametersAreNonnullByDefault
@@ -114,9 +117,9 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         if (difficulty != EnumDifficulty.PEACEFUL)
         {
             // First, we check exhaustion, to decrement thirst
-            if (player.getFoodStats().foodExhaustionLevel >= 4.0F)
+            if (originalStats.foodExhaustionLevel >= 4.0F)
             {
-                addThirst((float) ConfigTFC.GENERAL.playerThirstModifier);
+                addThirst(-(float) ConfigTFC.GENERAL.playerThirstModifier);
             }
 
             // Then, we decrement nutrients
@@ -136,8 +139,8 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             {
                 if (thirst < 10f)
                 {
-                    player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 1));
-                    player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 1));
+                    player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 1, false, false));
+                    player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 1, false, false));
                     if (thirst <= 0f)
                     {
                         //Hurt the sourcePlayer
@@ -146,11 +149,23 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
                 }
                 else if (thirst < 20f)
                 {
-                    player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 0));
-                    player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 0));
+                    player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 0, false, false));
+                    player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 0, false, false));
                 }
             }
         }
+
+        if (player instanceof EntityPlayerMP)
+        {
+            TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsUpdate(nutrients, thirst), (EntityPlayerMP) player);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void onReceivePacket(float[] nutrients, float thirst)
+    {
+        System.arraycopy(nutrients, 0, this.nutrients, 0, this.nutrients.length);
+        this.thirst = thirst;
     }
 
     @Override
@@ -244,7 +259,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         {
             totalNutrients += nutrient;
         }
-        return totalNutrients / (MAX_PLAYER_NUTRIENTS * Nutrient.TOTAL);
+        return 0.2f + totalNutrients / (MAX_PLAYER_NUTRIENTS * Nutrient.TOTAL);
     }
 
     @Override
