@@ -80,7 +80,7 @@ public interface IPlaceableItem
                         return true;
                     }
                 }
-                if (facing == EnumFacing.UP && world.getBlockState(pos).isNormalCube() && world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos.up()))
+                if (facing == EnumFacing.UP && world.getBlockState(pos).isNormalCube() && world.mayPlace(BlocksTFC.CHARCOAL_PILE, pos.up(), false, EnumFacing.UP, null))
                 {
                     // Create a new charcoal pile
                     if (!world.isRemote)
@@ -133,14 +133,13 @@ public interface IPlaceableItem
                     }
                     else if (player.isSneaking())
                     {
-
                         IBlockState stateAt = world.getBlockState(pos);
                         BlockPos posAt = pos;
                         if (!stateAt.getBlock().isReplaceable(world, pos))
                         {
                             posAt = posAt.offset(facing);
                         }
-                        if (world.getBlockState(posAt.down()).isNormalCube() && world.getBlockState(posAt).getBlock().isReplaceable(world, posAt))
+                        if (world.getBlockState(posAt.down()).isNormalCube() && world.mayPlace(BlocksTFC.LOG_PILE, posAt, false, facing, null))
                         {
                             // Place log pile
                             if (!world.isRemote)
