@@ -131,24 +131,32 @@ public interface IPlaceableItem
                             }
                         }
                     }
-                    else if (world.getBlockState(pos.down().offset(facing)).isNormalCube()
-                        && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing)) &&
-                        player.isSneaking())
+                    else if (player.isSneaking())
                     {
-                        // Place log pile
-                        if (!world.isRemote)
+
+                        IBlockState stateAt = world.getBlockState(pos);
+                        BlockPos posAt = pos;
+                        if (!stateAt.getBlock().isReplaceable(world, pos))
                         {
-                            world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
-
-                            TELogPile te = Helpers.getTE(world, pos.offset(facing), TELogPile.class);
-                            if (te != null)
-                            {
-                                te.insertLog(stack.copy());
-                            }
-
-                            world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                            posAt = posAt.offset(facing);
                         }
-                        return true;
+                        if (world.getBlockState(posAt.down()).isNormalCube() && world.getBlockState(posAt).getBlock().isReplaceable(world, posAt))
+                        {
+                            // Place log pile
+                            if (!world.isRemote)
+                            {
+                                world.setBlockState(posAt, BlocksTFC.LOG_PILE.getStateForPlacement(world, posAt, facing, 0, 0, 0, 0, player));
+
+                                TELogPile te = Helpers.getTE(world, posAt, TELogPile.class);
+                                if (te != null)
+                                {
+                                    te.insertLog(stack.copy());
+                                }
+
+                                world.playSound(null, posAt, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                            }
+                            return true;
+                        }
                     }
                 }
                 return false;
