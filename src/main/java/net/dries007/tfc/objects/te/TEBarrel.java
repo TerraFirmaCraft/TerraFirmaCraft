@@ -266,8 +266,8 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     }
 
     /**
-    * Called on clients whenever this TileEntity received an update from the server.
-    **/
+     * Called on clients whenever this TileEntity received an update from the server.
+     **/
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
@@ -338,6 +338,5 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     private void updateLockStatus()
     {
         sealed = world.getBlockState(pos).getValue(BlockBarrel.SEALED);
-
     }
 }
