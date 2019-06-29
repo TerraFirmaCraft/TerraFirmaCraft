@@ -38,6 +38,7 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.fluids.FluidMetal;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
@@ -231,6 +232,24 @@ public class ItemSmallVessel extends ItemFiredPottery
                 if (isMolten())
                     desc += " - " + I18n.format("tfc.tooltip.liquid");
                 text.add(desc);
+            }
+            else
+            {
+                boolean hasContent = false;
+                for (int i = 0; i < super.stacks.size(); i++)
+                {
+                    ItemStack slot = super.stacks.get(i);
+                    if (!slot.isEmpty())
+                    {
+                        text.add(1, TextFormatting.DARK_AQUA + I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_item", slot.getCount(), slot.getItem().getItemStackDisplayName(slot)));
+                        hasContent = true;
+                    }
+                }
+
+                if (!hasContent)
+                {
+                    text.add(1, TextFormatting.DARK_AQUA + I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_empty"));
+                }
             }
             ISmallVesselHandler.super.addHeatInfo(stack, text);
         }
