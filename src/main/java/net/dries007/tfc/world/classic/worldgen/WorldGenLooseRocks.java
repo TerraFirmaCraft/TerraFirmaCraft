@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -79,7 +80,16 @@ public class WorldGenLooseRocks implements IWorldGenerator
             TEPlacedItemFlat tile = Helpers.getTE(world, pos, TEPlacedItemFlat.class);
             if (tile != null)
             {
-                tile.setStack(vein == null ? ItemRock.get(rock, 1) : vein.type.getLooseRockItem());
+                ItemStack stack = ItemStack.EMPTY;
+                if (vein != null)
+                {
+                    stack = vein.type.getLooseRockItem();
+                }
+                if (stack.isEmpty())
+                {
+                    stack = ItemRock.get(rock, 1);
+                }
+                tile.setStack(stack);
             }
         }
     }
