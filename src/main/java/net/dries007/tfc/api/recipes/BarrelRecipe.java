@@ -55,12 +55,21 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         return duration;
     }
 
+    /**
+     * Only for GUI purposes - not intended as a crafting mechanic
+     *
+     * @return The output fluid stack
+     */
     @Nullable
     public FluidStack getOutputFluid()
     {
         return outputFluid;
     }
 
+    /**
+     * Only for GUI purposes - not intended as a crafting mechanic
+     * @return the output item stack
+     */
     @Nonnull
     public ItemStack getOutputStack()
     {

@@ -179,8 +179,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     @Override
     public void update()
     {
-        //TODO: recipes
-
         if (!world.isRemote)
         {
             tickCounter++;
@@ -311,7 +309,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        //TODO: validate items that go in the item storage slot (based on side?)
+        //TODO: validate items that go in the item storage slot (based on size?)
         switch (slot)
         {
             case SLOT_FLUID_CONTAINER_IN:
