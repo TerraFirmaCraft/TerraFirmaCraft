@@ -10,12 +10,14 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -295,6 +297,8 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         super.setAndUpdateSlots(slot);
     }
 
+    long soundLastPlayed = 0L;
+
     private boolean coolDownItemRecipe(ItemStack inputStack, FluidStack inputFluid)
     {
         IItemHeat heat = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
@@ -310,6 +314,12 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         else
         {
             heat.setTemperature(0);
+        }
+
+        if (world.getTotalWorldTime() - soundLastPlayed >= 3)
+        {
+            world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            soundLastPlayed = world.getTotalWorldTime();
         }
 
         IBlockState state = world.getBlockState(pos);
