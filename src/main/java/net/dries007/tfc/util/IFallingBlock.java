@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.objects.blocks.wood.BlockSupport;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 
 public interface IFallingBlock
@@ -37,7 +38,7 @@ public interface IFallingBlock
     default void checkFalling(World worldIn, BlockPos pos, IBlockState state)
     {
         BlockPos pos1 = getFallablePos(worldIn, pos);
-        if (pos1 != null)
+        if (pos1 != null && !isBeingSupported(worldIn, pos))
         {
             if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
             {
@@ -57,6 +58,25 @@ public interface IFallingBlock
                 if (pos1.getY() > 0) worldIn.setBlockState(pos1.up(), state); // Includes Forge's fix for data loss.
             }
         }
+    }
+
+    /**
+     * Checks if this pos is being supported by a support beam
+     *
+     * @param worldIn the worldObj to check
+     * @param pos the BlockPos of this Fallable block
+     * @return true if there is a support in 4 block radius
+     */
+    default boolean isBeingSupported(World worldIn, BlockPos pos)
+    {
+        for(BlockPos searchSupport : BlockPos.getAllInBox(pos.add(-4, -1, -4), pos.add(4, 1, 4)))
+        {
+            IBlockState st = worldIn.getBlockState(searchSupport);
+            if(st.getBlock() instanceof BlockSupport){
+                if(((BlockSupport)st.getBlock()).canSupportBlocks(worldIn, searchSupport))return true; //Found support block that can support this BlockPos
+            }
+        }
+        return false;
     }
 
     default Iterable<ItemStack> getDropsFromFall(World world, BlockPos pos, IBlockState state, @Nullable NBTTagCompound teData, int fallTime, float fallDistance)

@@ -5,8 +5,11 @@
 
 package net.dries007.tfc.objects.blocks.stone;
 
+import java.util.Arrays;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -31,8 +34,27 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
         super(type, rock);
     }
 
-    //todo: add collapsable mechanics
+    @Nullable
+    @Override
+    public BlockPos getFallablePos(World world, BlockPos pos)
+    {
+        return type.canFall() && shouldFall(world, pos) ? pos : null;
+    }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        checkCollapse(worldIn, pos, state);
+    }
+
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        super.onBlockAdded(worldIn, pos, state);
+        checkCollapse(worldIn, pos, state);
+    }
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
