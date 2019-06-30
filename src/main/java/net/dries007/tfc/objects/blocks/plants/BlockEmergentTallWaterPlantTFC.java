@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.util.ITallPlant;
+import net.dries007.tfc.objects.blocks.property.ITallPlant;
 
 import static net.dries007.tfc.world.classic.ChunkGenTFC.SALT_WATER;
 

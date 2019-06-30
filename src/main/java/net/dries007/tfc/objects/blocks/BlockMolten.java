@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.util.ILightableBlock;
+import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 
 @ParametersAreNonnullByDefault
 public class BlockMolten extends Block implements ILightableBlock

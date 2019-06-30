@@ -25,7 +25,6 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.network.PacketCrucibleUpdate;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.util.Alloy;
-import net.dries007.tfc.util.ITileFields;
 
 @ParametersAreNonnullByDefault
 public class TECrucible extends TEInventory implements ITickable, ITileFields

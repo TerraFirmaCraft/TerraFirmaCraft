@@ -42,8 +42,8 @@ public class BlockStairsTFC extends BlockStairs
             ROCK_TABLE.put(rock, new EnumMap<>(Rock.Type.class));
         ROCK_TABLE.get(rock).put(type, this);
 
-        Block c = BlockRockVariant.get(rock, type);
-        setHarvestLevel(c.getHarvestTool(c.getDefaultState()), c.getHarvestLevel(c.getDefaultState()));
+        Block baseBlock = BlockRockVariant.get(rock, type);
+        setHarvestLevel(baseBlock.getHarvestTool(baseBlock.getDefaultState()), baseBlock.getHarvestLevel(baseBlock.getDefaultState()));
         OreDictionaryHelper.register(this, "stair");
         OreDictionaryHelper.registerRockType(this, type, rock, "stair");
     }
@@ -51,12 +51,18 @@ public class BlockStairsTFC extends BlockStairs
     public BlockStairsTFC(Tree wood)
     {
         super(BlockPlanksTFC.get(wood).getDefaultState());
-        if (WOOD_MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
-        Block c = BlockPlanksTFC.get(wood);
-        setHarvestLevel(c.getHarvestTool(c.getDefaultState()), c.getHarvestLevel(c.getDefaultState()));
+        if (WOOD_MAP.put(wood, this) != null)
+        {
+            throw new IllegalStateException("There can only be one.");
+        }
+
+        Block baseBlock = BlockPlanksTFC.get(wood);
+        setHarvestLevel(baseBlock.getHarvestTool(baseBlock.getDefaultState()), baseBlock.getHarvestLevel(baseBlock.getDefaultState()));
+
         OreDictionaryHelper.register(this, "stair");
         OreDictionaryHelper.register(this, "stair", "wood");
         OreDictionaryHelper.register(this, "stair", "wood", wood);
+
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 }

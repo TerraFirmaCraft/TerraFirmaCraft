@@ -22,9 +22,8 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipe;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
-import net.dries007.tfc.util.Fuel;
-import net.dries007.tfc.util.FuelManager;
-import net.dries007.tfc.util.ITileFields;
+import net.dries007.tfc.util.fuel.Fuel;
+import net.dries007.tfc.util.fuel.FuelManager;
 
 import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
 import static net.dries007.tfc.objects.blocks.devices.BlockFirePit.LIT;

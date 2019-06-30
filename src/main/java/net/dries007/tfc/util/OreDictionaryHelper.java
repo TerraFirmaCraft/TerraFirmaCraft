@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.types.Rock;
 
 import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
@@ -74,9 +75,9 @@ public class OreDictionaryHelper
         registerRockType(new Thing(thing), type, rock, prefixParts);
     }
 
-    public static void registerRockType(Item thing, Rock.Type type, Rock rock, Object... prefixParts)
+    public static void registerDamageType(Item thing, DamageType type)
     {
-        registerRockType(new Thing(thing), type, rock, prefixParts);
+        register(thing, "damage", "type", type.name().toLowerCase());
     }
 
     public static void init()

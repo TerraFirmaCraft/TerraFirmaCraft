@@ -17,7 +17,6 @@ import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.objects.inventory.slot.SlotCallback;
 import net.dries007.tfc.objects.te.TEBarrel;
-import net.dries007.tfc.util.IButtonHandler;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockBarrel.SEALED;
 import static net.dries007.tfc.objects.te.TEBarrel.*;

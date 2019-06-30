@@ -15,8 +15,8 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.util.IFireable;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
-import net.dries007.tfc.util.IFireable;
 
 /**
  * Pit kiln recipe, for simple itemstack -> itemstack conversions in the pit kiln

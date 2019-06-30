@@ -36,12 +36,12 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.api.capability.player.CapabilityPlayer;
-import net.dries007.tfc.api.capability.player.IFood;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.util.IMetalObject;
@@ -205,7 +205,7 @@ public class ClientEvents
         {
             heat.addHeatInfo(stack, tt);
         }
-        IFood nutrients = stack.getCapability(CapabilityPlayer.CAPABILITY_NUTRIENTS, null);
+        IFood nutrients = stack.getCapability(CapabilityFood.CAPABILITY, null);
         if (nutrients != null)
         {
             nutrients.addNutrientInfo(stack, tt);
