@@ -241,14 +241,14 @@ public class ItemSmallVessel extends ItemFiredPottery
                     ItemStack slot = super.stacks.get(i);
                     if (!slot.isEmpty())
                     {
-                        text.add(1, TextFormatting.DARK_AQUA + I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_item", slot.getCount(), slot.getItem().getItemStackDisplayName(slot)));
+                        text.add(1, TextFormatting.GOLD + I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_item", slot.getCount(), slot.getItem().getItemStackDisplayName(slot)));
                         hasContent = true;
                     }
                 }
 
                 if (!hasContent)
                 {
-                    text.add(1, TextFormatting.DARK_AQUA + I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_empty"));
+                    text.add(1, I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_empty"));
                 }
             }
             ISmallVesselHandler.super.addHeatInfo(stack, text);
