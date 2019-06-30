@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEPlacedItem;
@@ -23,14 +22,8 @@ import net.dries007.tfc.util.Helpers;
 /**
  * This packet is send when the client player presses the "Place Block Special" keybind. It has no special information
  */
-public class PacketPlaceBlockSpecial implements IMessage
+public class PacketPlaceBlockSpecial implements IMessageEmpty
 {
-    @Override
-    public void fromBytes(ByteBuf buf) {}
-
-    @Override
-    public void toBytes(ByteBuf buf) {}
-
     public static final class Handler implements IMessageHandler<PacketPlaceBlockSpecial, IMessage>
     {
         @Override

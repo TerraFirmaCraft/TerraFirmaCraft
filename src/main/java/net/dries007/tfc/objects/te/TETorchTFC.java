@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.world.classic.CalendarTFC;
 
-import static net.dries007.tfc.util.ILightableBlock.LIT;
+import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 
 public class TETorchTFC extends TileEntity
 {

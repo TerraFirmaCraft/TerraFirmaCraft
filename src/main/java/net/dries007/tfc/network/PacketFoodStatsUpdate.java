@@ -6,68 +6,66 @@
 package net.dries007.tfc.network;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.FoodStats;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.player.CapabilityPlayer;
-import net.dries007.tfc.api.capability.player.IPlayerData;
-import net.dries007.tfc.util.agriculture.Nutrient;
+import net.dries007.tfc.api.capability.food.FoodStatsTFC;
+import net.dries007.tfc.api.capability.food.Nutrient;
 
-public class PacketPlayerDataUpdate implements IMessage
+public class PacketFoodStatsUpdate implements IMessage
 {
     private float[] nutrients;
     private float thirst;
 
     @SuppressWarnings("unused")
-    public PacketPlayerDataUpdate()
+    public PacketFoodStatsUpdate()
     {
-        nutrients = new float[Nutrient.TOTAL];
-        thirst = 0;
+        this.nutrients = new float[Nutrient.TOTAL];
     }
 
-    public PacketPlayerDataUpdate(IPlayerData cap)
+    public PacketFoodStatsUpdate(float[] nutrients, float thirst)
     {
-        nutrients = cap.getNutrients();
-        thirst = cap.getThirst();
+        this.nutrients = nutrients;
+        this.thirst = thirst;
     }
 
     @Override
     public void fromBytes(ByteBuf buf)
     {
+        thirst = buf.readFloat();
         for (int i = 0; i < nutrients.length; i++)
         {
             nutrients[i] = buf.readFloat();
         }
-        thirst = buf.readFloat();
     }
 
     @Override
     public void toBytes(ByteBuf buf)
     {
-        for (float nutrient : nutrients)
-        {
-            buf.writeFloat(nutrient);
-        }
         buf.writeFloat(thirst);
+        for (float f : nutrients)
+        {
+            buf.writeFloat(f);
+        }
     }
 
-    public static final class Handler implements IMessageHandler<PacketPlayerDataUpdate, IMessage>
+    public static final class Handler implements IMessageHandler<PacketFoodStatsUpdate, IMessage>
     {
         @Override
-        public IMessage onMessage(PacketPlayerDataUpdate message, MessageContext ctx)
+        public IMessage onMessage(PacketFoodStatsUpdate message, MessageContext ctx)
         {
             TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
-                EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
+                final EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
                 if (player != null)
                 {
-                    IPlayerData cap = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
-                    if (cap != null)
+                    FoodStats foodStats = player.getFoodStats();
+                    if (foodStats instanceof FoodStatsTFC)
                     {
-                        cap.setNutrients(message.nutrients);
-                        cap.setThirst(message.thirst);
+                        ((FoodStatsTFC) foodStats).onReceivePacket(message.nutrients, message.thirst);
                     }
                 }
             });

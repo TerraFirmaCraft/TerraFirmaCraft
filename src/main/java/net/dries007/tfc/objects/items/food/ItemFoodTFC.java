@@ -15,7 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import net.dries007.tfc.api.capability.player.FoodHandler;
+import net.dries007.tfc.api.capability.food.FoodHandler;
+import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.util.agriculture.Food;
 
 public class ItemFoodTFC extends ItemFood
@@ -36,7 +37,7 @@ public class ItemFoodTFC extends ItemFood
 
     public ItemFoodTFC(@Nonnull Food food)
     {
-        super(food.getCalories(), food.getSaturation(), food.getCategory() == Food.Category.MEAT);
+        super(IFoodStatsTFC.FOOD_HUNGER_AMOUNT, food.getCalories(), food.getCategory() == Food.Category.MEAT);
         this.food = food;
         if (MAP.put(food, this) != null)
         {
