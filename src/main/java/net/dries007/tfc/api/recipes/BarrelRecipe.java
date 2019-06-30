@@ -9,6 +9,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -21,7 +23,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
     @Nullable
     public static BarrelRecipe get(ItemStack stack, FluidStack fluidStack)
     {
-        return TFCRegistries.BARREL.getValuesCollection().stream().filter(x -> x.isValidInput(fluidStack, stack)).findFirst().orElse(null);
+        return TFCRegistries.BARREL.getValuesCollection().stream().filter(x -> x.isValidInput(fluidStack, stack) && x.getDuration() != 0).findFirst().orElse(null);
     }
 
     @Nullable
@@ -121,5 +123,15 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
             return Math.min(inputFluid.amount / this.inputFluid.getAmount(), inputStack.getCount() / this.inputStack.getAmount());
         }
         return 0;
+    }
+
+    public boolean shouldRepeate()
+    {
+        return false;
+    }
+
+    public void playSound(World world, BlockPos pos, int tickCounter)
+    {
+
     }
 }

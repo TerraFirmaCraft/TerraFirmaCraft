@@ -10,22 +10,18 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.BarrelRecipe;
 import net.dries007.tfc.network.PacketBarrelUpdate;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
@@ -33,11 +29,8 @@ import net.dries007.tfc.objects.fluids.capability.FluidHandlerSided;
 import net.dries007.tfc.objects.fluids.capability.IFluidHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
-import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.FluidTransferHelper;
 import net.dries007.tfc.world.classic.CalendarTFC;
-
-import static net.dries007.tfc.objects.fluids.FluidsTFC.FRESH_WATER;
 
 @ParametersAreNonnullByDefault
 public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback
@@ -53,7 +46,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     private long sealedTick, sealedCalendarTick;
     private BarrelRecipe recipe;
     private int tickCounter;
-    private boolean isCooling = false;
 
     public TEBarrel()
     {
@@ -183,6 +175,8 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         TerraFirmaCraft.getLog().info("Calendar Tick: {} / {}", sealedCalendarTick, CalendarTFC.getTimeAndDate(sealedCalendarTick));
     }
 
+    private boolean checkInstantRecipe = false;
+
     @Override
     public void update()
     {
@@ -192,9 +186,9 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         {
             tickCounter++;
 
-            if (tickCounter == 10)
+            if (tickCounter % 10 == 0)
             {
-                tickCounter = 0;
+                if (tickCounter == 20) tickCounter = 0;
 
                 ItemStack fluidContainerIn = inventory.getStackInSlot(SLOT_FLUID_CONTAINER_IN);
                 FluidActionResult result = FluidTransferHelper.emptyContainerIntoTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, TANK_CAPACITY, world, pos);
@@ -241,12 +235,24 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                     recipe = null;
                 }
             }
-            else if (isCooling)
+
+            if (checkInstantRecipe)
             {
                 ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);
                 FluidStack inputFluid = tank.getFluid();
-                isCooling = coolDownItemRecipe(inputStack, inputFluid);
-                super.setAndUpdateSlots(SLOT_ITEM);
+                BarrelRecipe instantRecipe = BarrelRecipe.getInstant(inputStack, inputFluid);
+                if (instantRecipe != null)
+                {
+                    tank.setFluid(instantRecipe.getOutputFluid(inputFluid, inputStack));
+                    inventory.setStackInSlot(SLOT_ITEM, instantRecipe.getOutputItem(inputFluid, inputStack));
+                    instantRecipe.playSound(world, pos, tickCounter);
+
+                    IBlockState state = world.getBlockState(pos);
+                    world.notifyBlockUpdate(pos, state, state, 3);
+
+                    if (!instantRecipe.shouldRepeate()) checkInstantRecipe = false;
+                }
+                else checkInstantRecipe = false;
             }
         }
     }
@@ -259,72 +265,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     @Override
     public void setAndUpdateSlots(int slot)
     {
-        if (!world.isRemote)
-        {
-            // Try and perform an instant recipe
-            ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);
-            FluidStack inputFluid = tank.getFluid();
-
-            if (!inputStack.isEmpty())
-            {
-                if (inputStack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
-                {
-                    IItemHeat heat = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                    if (heat.getTemperature() > 0.0f)
-                    {
-                        if (IIngredient.of(FRESH_WATER, 1).testIgnoreCount(inputFluid))
-                        {
-                            isCooling = true;
-                            return;
-                        }
-                    }
-                }
-            }
-
-            isCooling = false;
-
-            BarrelRecipe instantRecipe = BarrelRecipe.getInstant(inputStack, inputFluid);
-            if (instantRecipe != null)
-            {
-                // Recipe completion, ignoring sealed status
-                tank.setFluid(instantRecipe.getOutputFluid(inputFluid, inputStack));
-                inventory.setStackInSlot(SLOT_ITEM, instantRecipe.getOutputItem(inputFluid, inputStack));
-
-                IBlockState state = world.getBlockState(pos);
-                world.notifyBlockUpdate(pos, state, state, 3);
-            }
-        }
-        super.setAndUpdateSlots(slot);
-    }
-
-    long soundLastPlayed = 0L;
-
-    private boolean coolDownItemRecipe(ItemStack inputStack, FluidStack inputFluid)
-    {
-        IItemHeat heat = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        if (heat.getTemperature() <= 0.0f) return false;
-        if (!IIngredient.of(FRESH_WATER, 1).testIgnoreCount(inputFluid)) return false;
-        if (tank.getFluidAmount() < inputStack.getCount()) return false;
-
-        tank.drain(inputStack.getCount(), true);
-        if (heat.getTemperature() >= 50.0f)
-        {
-            heat.setTemperature(heat.getTemperature() - 50);
-        }
-        else
-        {
-            heat.setTemperature(0);
-        }
-
-        if (world.getTotalWorldTime() - soundLastPlayed >= 3)
-        {
-            world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 1.0f);
-            soundLastPlayed = world.getTotalWorldTime();
-        }
-
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3);
-        return true;
+        checkInstantRecipe = true;
     }
 
     /**
