@@ -30,9 +30,6 @@ import net.dries007.tfc.world.classic.CalendarTFC;
 @ParametersAreNonnullByDefault
 public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
 {
-    public static final float MAX_PLAYER_NUTRIENTS = 100f;
-    public static final float MAX_PLAYER_THIRST = 100f;
-    public static final int FOOD_HUNGER_AMOUNT = 4; // The amount of hunger restored by eating any food, regardless of type
 
     private final EntityPlayer sourcePlayer;
     private final FoodStats originalStats;
