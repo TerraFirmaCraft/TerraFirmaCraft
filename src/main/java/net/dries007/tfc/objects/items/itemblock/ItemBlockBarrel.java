@@ -73,11 +73,11 @@ public class ItemBlockBarrel extends ItemBlockTFC
                 {
                     if (inventory.isEmpty())
                     {
-                        tooltip.add(TextFormatting.DARK_AQUA + I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_empty"));
+                        tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_empty"));
                     }
                     else
                     {
-                        tooltip.add(TextFormatting.DARK_AQUA + I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_item", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
+                        tooltip.add(TextFormatting.GOLD + I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_item", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
                     }
                 }
                 else
@@ -86,7 +86,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
 
                     if (!inventory.isEmpty())
                     {
-                        tooltip.add(TextFormatting.DARK_AQUA + I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_item_in_fluid", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
+                        tooltip.add(TextFormatting.GOLD + I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_item_in_fluid", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
                     }
                 }
             }
