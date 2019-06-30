@@ -21,7 +21,7 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 
 /**
  * Resistances are positive, weaknesses are negative
- * Calculations are done per <a href="https://www.desmos.com/calculator/689oqycw1t>this spreadsheet</a>
+ * Calculations are done per <a href="https://www.desmos.com/calculator/689oqycw1t">this spreadsheet</a>
  */
 @ParametersAreNonnullByDefault
 public enum DamageType
