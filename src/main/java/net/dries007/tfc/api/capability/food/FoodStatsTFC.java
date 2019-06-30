@@ -59,8 +59,8 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         // In TFC, all foods have a constant amount of food filled (In 1.7.10 this was 5oz, out of a 24 oz stomach.) We will go with real units, and just make this 1/5 of the sourcePlayer's food bar (4 haunches)
         // However, old vanilla foods have a bonus to their saturation based on their hunger value
         // Vanilla foods are generally in the range 0.0 - 1.0 for saturation, and 1 - 8 for hunger
-        float extraSaturationModifier = 1f + (hungerAmount - 4f) * 0.125f;
-        originalStats.addStats(4, saturationAmount * extraSaturationModifier);
+        float extraSaturationModifier = 1f + (hungerAmount - FOOD_HUNGER_AMOUNT) * 0.125f;
+        originalStats.addStats(FOOD_HUNGER_AMOUNT, saturationAmount * extraSaturationModifier);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             }
         }
 
-        // Finally, update the original food stats
+        // Next, update the original food stats
         originalStats.onUpdate(player);
 
         // Last, apply negative effects due to thirst
@@ -143,8 +143,8 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
                     player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 160, 1, false, false));
                     if (thirst <= 0f)
                     {
-                        //Hurt the sourcePlayer
-                        player.attackEntityFrom(DamageSource.STARVE, 1); //5% life/5secs
+                        // Hurt the player, same as starvation
+                        player.attackEntityFrom(DamageSource.STARVE, 1);
                     }
                 }
                 else if (thirst < 20f)
@@ -155,6 +155,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             }
         }
 
+        // Since this is only called server side, and vanilla has a custom packet for this stuff, we need our own
         if (player instanceof EntityPlayerMP)
         {
             TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsUpdate(nutrients, thirst), (EntityPlayerMP) player);
@@ -266,7 +267,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     public boolean attemptDrink(float value)
     {
         int ticksPassed = (int) (CalendarTFC.getCalendarTime() - lastDrinkTick);
-        if (ticksPassed >= 30 && thirst < 95)
+        if (ticksPassed >= 15 && thirst < 95)
         {
             // One drink every so often
             lastDrinkTick = CalendarTFC.getCalendarTime();
@@ -300,7 +301,8 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         }
     }
 
-    private void addThirst(float value)
+    @Override
+    public void addThirst(float value)
     {
         this.thirst += value;
         if (thirst < 0)

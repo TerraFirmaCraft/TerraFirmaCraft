@@ -18,12 +18,11 @@ import net.minecraft.world.World;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.client.TFCGuiHandler;
-import net.dries007.tfc.util.ICollapsableBlock;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
+public class BlockRockRaw extends BlockRockVariant
 {
 
     public BlockRockRaw(Rock.Type type, Rock rock)

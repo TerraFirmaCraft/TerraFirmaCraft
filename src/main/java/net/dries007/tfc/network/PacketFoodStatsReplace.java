@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
@@ -22,16 +21,8 @@ import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
  * Since all the relevant events where this is listened for are server only
  * {@link CapabilityFood}
  */
-public class PacketFoodStatsReplace implements IMessage
+public class PacketFoodStatsReplace implements IMessageEmpty
 {
-    public PacketFoodStatsReplace() {}
-
-    @Override
-    public void fromBytes(ByteBuf buf) {}
-
-    @Override
-    public void toBytes(ByteBuf buf) {}
-
     public static final class Handler implements IMessageHandler<PacketFoodStatsReplace, IMessage>
     {
         @Override
