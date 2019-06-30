@@ -267,7 +267,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     public boolean attemptDrink(float value)
     {
         int ticksPassed = (int) (CalendarTFC.getCalendarTime() - lastDrinkTick);
-        if (ticksPassed >= 15 && thirst < 95)
+        if (ticksPassed >= 20 && thirst + value <= MAX_PLAYER_THIRST)
         {
             // One drink every so often
             lastDrinkTick = CalendarTFC.getCalendarTime();

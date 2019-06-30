@@ -8,12 +8,14 @@ package net.dries007.tfc;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.FoodStats;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -31,13 +33,19 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
 import net.dries007.tfc.api.capability.damage.DamageType;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.FoodHandler;
+import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
+import net.dries007.tfc.api.capability.skill.PlayerSkillsHandler;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
+import net.dries007.tfc.network.PacketFoodStatsReplace;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
@@ -114,7 +122,7 @@ public final class CommonEventHandler
                 BlockPos blockpos = result.getBlockPos();
                 IBlockState state = event.getWorld().getBlockState(blockpos);
                 boolean isFreshWater = BlocksTFC.isFreshWater(state), isSaltWater = BlocksTFC.isSaltWater(state);
-                if ((isFreshWater && foodStats.attemptDrink(15)) || (isSaltWater && foodStats.attemptDrink(-5)))
+                if ((isFreshWater && foodStats.attemptDrink(10)) || (isSaltWater && foodStats.attemptDrink(-1)))
                 {
                     if (!world.isRemote)
                     {
@@ -202,9 +210,9 @@ public final class CommonEventHandler
     }
 
     @SubscribeEvent
-    public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> e)
+    public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event)
     {
-        ItemStack stack = e.getObject();
+        ItemStack stack = event.getObject();
         Item item = stack.getItem();
 
         // Item Size
@@ -215,24 +223,50 @@ public final class CommonEventHandler
 
             // todo: Add more items here
             if (item == Items.COAL)
-                CapabilityItemSize.add(e, Items.COAL, Size.SMALL, Weight.MEDIUM, canStack);
+                CapabilityItemSize.add(event, Items.COAL, Size.SMALL, Weight.MEDIUM, canStack);
             else if (item == Items.STICK)
-                e.addCapability(ItemStickCapability.KEY, new ItemStickCapability(e.getObject().getTagCompound()));
+                event.addCapability(ItemStickCapability.KEY, new ItemStickCapability(event.getObject().getTagCompound()));
             else if (item == Items.CLAY_BALL)
-                CapabilityItemSize.add(e, item, Size.SMALL, Weight.MEDIUM, canStack);
+                CapabilityItemSize.add(event, item, Size.SMALL, Weight.MEDIUM, canStack);
 
                 // Final checks for general item types
             else if (item instanceof ItemTool)
-                CapabilityItemSize.add(e, item, Size.LARGE, Weight.MEDIUM, canStack);
+                CapabilityItemSize.add(event, item, Size.LARGE, Weight.MEDIUM, canStack);
             else if (item instanceof ItemArmor)
-                CapabilityItemSize.add(e, item, Size.LARGE, Weight.HEAVY, canStack);
+                CapabilityItemSize.add(event, item, Size.LARGE, Weight.HEAVY, canStack);
             else if (item instanceof ItemBlock)
-                CapabilityItemSize.add(e, item, Size.SMALL, Weight.MEDIUM, canStack);
+                CapabilityItemSize.add(event, item, Size.SMALL, Weight.MEDIUM, canStack);
             else
-                CapabilityItemSize.add(e, item, Size.VERY_SMALL, Weight.LIGHT, canStack);
+                CapabilityItemSize.add(event, item, Size.VERY_SMALL, Weight.LIGHT, canStack);
+        }
+
+        // todo: create a lookup or something for vanilla items
+        // future plans: add via craft tweaker or json (1.14)
+        if (stack.getItem() instanceof ItemFood && !stack.hasCapability(CapabilityFood.CAPABILITY, null))
+        {
+            event.addCapability(CapabilityFood.KEY, new FoodHandler(stack.getTagCompound(), new float[] {1, 0, 0, 0, 0}, 0, 0, 1));
         }
     }
 
+    @SubscribeEvent
+    public static void onAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event)
+    {
+        if (event.getObject() instanceof EntityPlayer)
+        {
+            // Player skills
+            EntityPlayer player = (EntityPlayer) event.getObject();
+            if (!player.hasCapability(CapabilityPlayerSkills.CAPABILITY, null))
+            {
+                event.addCapability(CapabilityPlayerSkills.KEY, new PlayerSkillsHandler());
+            }
+        }
+    }
+
+    /**
+     * Fired on server only when a player logs in
+     *
+     * @param event {@link PlayerEvent.PlayerLoggedInEvent}
+     */
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
@@ -244,26 +278,46 @@ public final class CommonEventHandler
 
             // World Data (Calendar) Sync Handler
             TerraFirmaCraft.getNetwork().sendTo(new PacketCalendarUpdate(), player);
+
+            // Food Stats
+            FoodStats originalStats = event.player.getFoodStats();
+            if (!(originalStats instanceof FoodStatsTFC))
+            {
+                event.player.foodStats = new FoodStatsTFC(event.player, originalStats);
+                TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.player);
+            }
         }
     }
 
+    /**
+     * Fired on server only when a player dies and respawns, or is cloned via other means (?)
+     * @param event {@link net.minecraftforge.event.entity.player.PlayerEvent.Clone}
+     */
     @SubscribeEvent
     public static void onPlayerClone(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
     {
-        // Capability Sync Handler
         if (event.getEntityPlayer() instanceof EntityPlayerMP)
         {
+            // Capability Sync Handler
             final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
             player.inventoryContainer.addListener(new CapabilityContainerListener(player));
+
+            // Food Stats
+            FoodStats originalStats = event.getEntityPlayer().getFoodStats();
+            if (!(originalStats instanceof FoodStatsTFC))
+            {
+                event.getEntityPlayer().foodStats = new FoodStatsTFC(event.getEntityPlayer(), originalStats);
+                TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.getEntityPlayer());
+            }
         }
     }
 
     @SubscribeEvent
     public static void onContainerOpen(PlayerContainerEvent.Open event)
     {
-        // Capability Sync Handler
         if (event.getEntityPlayer() instanceof EntityPlayerMP)
         {
+            // Capability Sync Handler
             final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
             event.getContainer().addListener(new CapabilityContainerListener(player));
         }
