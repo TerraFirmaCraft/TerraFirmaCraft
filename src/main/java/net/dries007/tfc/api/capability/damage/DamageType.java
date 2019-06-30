@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.api.capability.damage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,8 +17,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
-import net.dries007.tfc.api.capability.damage.IDamageResistance;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 /**
  * Resistances are positive, weaknesses are negative

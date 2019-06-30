@@ -69,21 +69,6 @@ public class Multiblock implements BiPredicate<World, BlockPos>
         return this;
     }
 
-    public Multiblock matchAllOf(BlockPos baseOffset, Multiblock subMultiblock)
-    {
-        conditions.add((world, pos) -> {
-            for (BiPredicate<World, BlockPos> condition : subMultiblock.conditions)
-            {
-                if (!condition.test(world, pos.add(baseOffset)))
-                {
-                    return false;
-                }
-            }
-            return true;
-        });
-        return this;
-    }
-
     @Override
     public boolean test(World world, BlockPos pos)
     {

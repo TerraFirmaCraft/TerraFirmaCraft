@@ -30,6 +30,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
+import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
@@ -40,7 +41,6 @@ import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
-import net.dries007.tfc.util.DamageType;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -119,8 +119,6 @@ public final class CommonEventHandler
                     if (!world.isRemote)
                     {
                         player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                        // todo: test, I think this is not nessecary now that we are using food stats
-                        //TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap), (EntityPlayerMP) player);
                     }
                     event.setCancellationResult(EnumActionResult.SUCCESS);
                     event.setCanceled(true);

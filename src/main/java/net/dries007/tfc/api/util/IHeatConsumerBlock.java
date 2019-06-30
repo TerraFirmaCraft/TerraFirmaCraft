@@ -3,15 +3,14 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.api.util;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
  * Implement this on blocks that accept heat from outside sources
- * The block accepting heat should query the {@code IHeatConsumerBlock} for the current temperature, and then update itself accordingly
- * Example: {@link net.dries007.tfc.objects.te.TECrucible} will search for blocks that are one block down from itself and update its heat accordingly
+ * Various blocks (i.e. fire pits, forges) will try and heat blocks in specific locations if they implement this interface
  */
 public interface IHeatConsumerBlock
 {

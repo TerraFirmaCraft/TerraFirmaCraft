@@ -36,7 +36,7 @@ public class ItemFoodTFC extends ItemFood
 
     public ItemFoodTFC(@Nonnull Food food)
     {
-        super(food.getCalories(), food.getSaturation(), food.getCategory() == Food.Category.MEAT);
+        super(4, food.getCalories(), food.getCategory() == Food.Category.MEAT);
         this.food = food;
         if (MAP.put(food, this) != null)
         {

@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.world.classic.worldgen;
+package net.dries007.tfc.world.classic.worldgen.fissure;
 
 import java.util.Random;
 

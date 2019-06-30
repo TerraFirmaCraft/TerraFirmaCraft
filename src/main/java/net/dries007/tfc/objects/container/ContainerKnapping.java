@@ -19,7 +19,6 @@ import net.dries007.tfc.api.recipes.KnappingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.inventory.slot.SlotKnappingOutput;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IButtonHandler;
 import net.dries007.tfc.util.SimpleCraftMatrix;
 
 public class ContainerKnapping extends ContainerItemStack implements IButtonHandler
