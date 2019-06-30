@@ -30,7 +30,6 @@ import net.dries007.tfc.world.classic.CalendarTFC;
 @ParametersAreNonnullByDefault
 public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
 {
-
     private final EntityPlayer sourcePlayer;
     private final FoodStats originalStats;
     private final float[] nutrients;
@@ -42,7 +41,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         this.sourcePlayer = sourcePlayer;
         this.originalStats = originalStats;
         this.nutrients = new float[Nutrient.TOTAL];
-        this.thirst = 70f;
+        this.thirst = MAX_PLAYER_THIRST;
 
         for (int i = 0; i < nutrients.length; i++)
         {
@@ -264,7 +263,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     public boolean attemptDrink(float value)
     {
         int ticksPassed = (int) (CalendarTFC.getCalendarTime() - lastDrinkTick);
-        if (ticksPassed >= 20 && thirst + value <= MAX_PLAYER_THIRST)
+        if (ticksPassed >= 20 && thirst <= MAX_PLAYER_THIRST)
         {
             // One drink every so often
             lastDrinkTick = CalendarTFC.getCalendarTime();
