@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.world.classic;
+package net.dries007.tfc.util.calendar;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.GameRules;
@@ -28,47 +29,28 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
-/**
- * Info: For those wanting to use this class:
- * There are two main accessors:
- * {@link CalendarTFC#getTotalTime()} will always return you the result of world#getTotalTime
- * Any other method will return you the CALENDAR TIME (which can be offset / changed from the total world time)
- */
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 @SuppressWarnings("WeakerAccess")
-public class CalendarTFC
+public enum CalendarTFC
 {
+    INSTANCE;
+
     public static final int TICKS_IN_DAY = 24000;
     public static final int TICKS_IN_HOUR = 1000;
     /* This needs to be a float, otherwise there are ~62 minutes per hour */
     public static final float TICKS_IN_MINUTE = TICKS_IN_HOUR / 60f;
+
     public static final int HOURS_IN_DAY = 24;
+
     private static final String[] DAY_NAMES = new String[] {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
     private static final Map<String, String> BIRTHDAYS = new HashMap<>();
-    /**
-     * Total time for the world, directly from world#getTotalTime
-     * Synced via two event handlers, one on Client Tick, one on World Tick
-     * Usage: Anything that requires TOTAL TIME PASSED, i.e. temperature change, tree growth, etc.
-     */
-    private static long totalTime;
-    /**
-     * Calendar time, calculated as an offset from totalTime, influenced by timetfc command, changing config, etc.
-     * Synced via packets on world load
-     * Usage: Anything that requires seasonal change, i.e. flower growth, weather, etc.
-     */
-    private static long calendarTime;
-    private static long calendarOffset;
-    private static boolean doCalendarCycle;
-    /* This is set via the timetfc command */
-    private static int daysInMonth;
-    /* These are calculated from above */
-    private static int daysInYear;
-    private static int ticksInYear;
-    private static int ticksInMonth;
 
     static
     {
@@ -86,73 +68,158 @@ public class CalendarTFC
         BIRTHDAYS.put("JANUARY20", "Therighthon's Birthday");
     }
 
-    public static void preInit()
+    private long totalTime;
+    private long calendarTime;
+    private long calendarOffset;
+    private boolean doCalendarCycle;
+    private int daysInMonth;
+    private int ticksInYear;
+    private int ticksInMonth;
+
+    CalendarTFC()
     {
         // Set everything to default values so we don't hit any div/0 exceptions with any accessors prior to world load
-        CalendarTFC.calendarOffset = 0;
-        CalendarTFC.daysInMonth = 8;
+        calendarOffset = 0;
+        daysInMonth = 8;
 
-        // Re-calculate values for calendar
-        CalendarTFC.daysInYear = 8 * 12;
-        CalendarTFC.ticksInMonth = 8 * TICKS_IN_DAY;
-        CalendarTFC.ticksInYear = 8 * 12 * TICKS_IN_DAY;
+        reset();
     }
 
-    public static long getCalendarTime()
+    /**
+     * Calendar time, calculated as an offset from totalTime, influenced by timetfc command, changing config, etc.
+     * Synced via packets on world load
+     * Usage: Anything that requires seasonal change, i.e. flower growth, weather, etc.
+     */
+    public long getCalendarTime()
     {
         return calendarTime;
     }
 
-    public static void setCalendarTime(World world, long calendarTime)
-    {
-        // Don't set the calendar time directly, instead set the offset from the total time
-        calendarOffset = calendarTime - totalTime;
-        CalendarTFC.calendarTime = totalTime + calendarOffset;
-        // Then update clients
-        CalendarWorldData.update(world, calendarOffset, daysInMonth, doCalendarCycle);
-    }
-
-    public static void setMonthLength(World world, int daysInMonth)
-    {
-        CalendarTFC.daysInMonth = daysInMonth;
-        CalendarWorldData.update(world, calendarOffset, daysInMonth, doCalendarCycle);
-    }
-
-    public static long getTotalTime()
+    /**
+     * Total time for the world, directly from world#getTotalTime
+     * Synced via two event handlers, one on Client Tick, one on World Tick
+     * Usage: Anything that requires TOTAL TIME PASSED, i.e. temperature change, tree growth, etc.
+     */
+    public long getTotalTime()
     {
         return totalTime;
     }
 
-    private static void setTotalTime(long totalTime)
+    /**
+     * Sets the total time
+     * Called from tick handlers on world and client tick to keep this accurate
+     *
+     * @param totalTime the total world time to set to
+     */
+    private void setTotalTime(long totalTime)
     {
-        CalendarTFC.totalTime = totalTime;
+        this.totalTime = totalTime;
         if (doCalendarCycle)
         {
             // Set the calendar time based on the current offset
-            calendarTime = totalTime + calendarOffset;
+            this.calendarTime = totalTime + calendarOffset;
         }
         else
         {
-            // Re-calculate the offset to keep the calendar time static
-            calendarOffset = calendarTime - totalTime;
+            // Re-calculate the offset to keep the calendar time constant
+            this.calendarOffset = calendarTime - totalTime;
         }
     }
 
-    public static int getMinuteOfHour()
+    /**
+     * Sets the calendar time.
+     * This actually sets the calendar offset - i.e. the difference between the current world time and the calendar time
+     * It then will save that offset to world data, and sync to client
+     *
+     * @param world        The world
+     * @param calendarTime The calendar time
+     */
+    public void setCalendarTime(World world, long calendarTime)
+    {
+        // Don't set the calendar time directly, instead set the offset from the total time
+        this.calendarOffset = calendarTime - totalTime;
+        this.calendarTime = totalTime + calendarOffset;
+
+        // Then update clients
+        CalendarWorldData.update(world, calendarOffset, daysInMonth, doCalendarCycle);
+    }
+
+    /**
+     * Sets the per-world month length. Will also recalculate all time that has passed so far
+     *
+     * @param world       The current world
+     * @param daysInMonth the days per each month
+     */
+    public void setMonthLength(World world, int daysInMonth)
+    {
+        this.daysInMonth = daysInMonth;
+
+        CalendarWorldData.update(world, calendarOffset, daysInMonth, doCalendarCycle);
+    }
+
+    public int getMinuteOfHour()
     {
         return getMinuteOfHour(calendarTime);
     }
 
-    @Nonnull
-    public static String getTimeAndDate()
+    public long getTotalYears()
     {
-        return getTimeAndDate(getHourOfDay(), getMinuteOfHour(), getMonthOfYear().getShortName(), getDayOfMonth(), getTotalYears());
+        return getTotalYears(calendarTime);
+    }
+
+    public long getTotalDays()
+    {
+        return calendarTime / TICKS_IN_DAY;
+    }
+
+    public long getTotalHours()
+    {
+        return calendarTime / TICKS_IN_HOUR;
+    }
+
+    public int getHourOfDay()
+    {
+        return getHourOfDay(calendarTime);
+    }
+
+    public int getDayOfMonth()
+    {
+        return getDayOfMonth(calendarTime);
     }
 
     @Nonnull
-    public static String getDayName()
+    public Month getMonthOfYear()
     {
-        String date = getMonthOfYear().name() + getDayOfMonth();
+        return getMonthOfYear(calendarTime);
+    }
+
+    public int getDaysInMonth()
+    {
+        return daysInMonth;
+    }
+
+    @Nonnull
+    public String getTimeAndDate()
+    {
+        return getTimeAndDate(getHourOfDay(), getMinuteOfHour(), CalendarTFC.INSTANCE.getMonthOfYear().getShortName(), getDayOfMonth(), getTotalYears());
+    }
+
+    @Nonnull
+    public String getTimeAndDate(long calendarTime)
+    {
+        return getTimeAndDate(getHourOfDay(calendarTime), getMinuteOfHour(calendarTime), getMonthOfYear(calendarTime).getShortName(), getDayOfMonth(calendarTime), getTotalYears(calendarTime));
+    }
+
+    @Nonnull
+    public String getTimeAndDate(int hour, int minute, String month, int day, long years)
+    {
+        return String.format("%02d:%02d %s %02d, %04d", hour, minute, month, day, years);
+    }
+
+    @Nonnull
+    public String getDayTranslationKey()
+    {
+        String date = CalendarTFC.INSTANCE.getMonthOfYear().name() + getDayOfMonth();
         String birthday = BIRTHDAYS.get(date);
         if (birthday != null)
         {
@@ -162,89 +229,66 @@ public class CalendarTFC
         return "tfc.enum.day." + DAY_NAMES[(int) (days % 7)];
     }
 
-    @Nonnull
-    public static String getTimeAndDate(long calendarTime)
+    /**
+     * Resets the calendar to the provided values
+     */
+    private void reset(long calendarOffset, int daysInMonth, boolean doCalendarCycle)
     {
-        return getTimeAndDate(getHourOfDay(calendarTime), getMinuteOfHour(calendarTime), getMonthOfYear(calendarTime).getShortName(), getDayOfMonth(calendarTime), getTotalYears(calendarTime));
+        this.calendarOffset = calendarOffset;
+        this.daysInMonth = daysInMonth;
+        this.doCalendarCycle = doCalendarCycle;
+        reset();
     }
 
-    @Nonnull
-    public static String getTimeAndDate(int hour, int minute, String month, int day, long years)
+    /**
+     * Resets calculated values based on the current calendar settings
+     */
+    private void reset()
     {
-        return String.format("%02d:%02d %s %02d, %04d", hour, minute, month, day, years);
+        // Re-calculate values for calendar
+        ticksInMonth = 8 * TICKS_IN_DAY;
+        ticksInYear = 8 * 12 * TICKS_IN_DAY;
     }
 
-    public static long getTotalYears()
-    {
-        return getTotalYears(calendarTime);
-    }
-
-    public static long getTotalDays()
-    {
-        return calendarTime / TICKS_IN_DAY;
-    }
-
-    public static long getTotalHours()
-    {
-        return calendarTime / TICKS_IN_HOUR;
-    }
-
-    public static long getTotalMonths()
-    {
-        return calendarTime / ticksInMonth;
-    }
-
-    public static int getHourOfDay()
-    {
-        return getHourOfDay(calendarTime);
-    }
-
-    public static int getDayOfMonth()
-    {
-        return getDayOfMonth(calendarTime);
-    }
-
-    @Nonnull
-    public static Month getMonthOfYear()
-    {
-        return getMonthOfYear(calendarTime);
-    }
-
-    public static int getDaysInMonth()
-    {
-        return daysInMonth;
-    }
-
-    public static int getDaysInYear()
-    {
-        return daysInYear;
-    }
-
-    // Calculation based functions - do not change these unless broken
-    private static long getTotalYears(long calendarTime)
+    /**
+     * Calculate total years from a calendar time
+     */
+    private long getTotalYears(long calendarTime)
     {
         // Years start at 1000, and begin at Jan, but month is indexed starting at March
         return 1000 + (calendarTime + 2 * ticksInMonth) / ticksInYear;
     }
 
-    private static int getMinuteOfHour(long calendarTime)
+    /**
+     * Calculates the current month from a calendar time
+     */
+    private Month getMonthOfYear(long calendarTime)
     {
-        return (int) ((calendarTime % TICKS_IN_HOUR) / TICKS_IN_MINUTE);
+        return Month.getById((int) ((calendarTime / ticksInMonth) % 12));
     }
 
-    private static int getHourOfDay(long calendarTime)
+    /**
+     * Calculates the day of a month from the calendar time (i.e. 01 - ??)
+     */
+    private int getDayOfMonth(long calendarTime)
+    {
+        return 1 + (int) ((calendarTime / TICKS_IN_DAY) % daysInMonth);
+    }
+
+    /**
+     * Calculates the hour of the day from a calendar time, military time (i.e 00 - 23)
+     */
+    private int getHourOfDay(long calendarTime)
     {
         return (int) ((6 + (calendarTime / TICKS_IN_HOUR)) % HOURS_IN_DAY);
     }
 
-    private static int getDayOfMonth(long calendarTime)
+    /**
+     * Calculates the minute of the hour from a calendar time (i.e. 00 - 59)
+     */
+    private int getMinuteOfHour(long calendarTime)
     {
-        return (int) ((calendarTime / TICKS_IN_DAY) % daysInMonth);
-    }
-
-    private static Month getMonthOfYear(long calendarTime)
-    {
-        return Month.getById((int) ((calendarTime / ticksInMonth) % 12));
+        return (int) ((calendarTime % TICKS_IN_HOUR) / TICKS_IN_MINUTE);
     }
 
     public enum Month
@@ -313,13 +357,6 @@ public class CalendarTFC
                 return MARCH;
             return Month.getById(this.index + 1);
         }
-
-        public Month previous()
-        {
-            if (this == MARCH)
-                return FEBRUARY;
-            return Month.getById(this.index - 1);
-        }
     }
 
     @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -331,7 +368,7 @@ public class CalendarTFC
             // Does not get called on DEDICATED CLIENT
             if (event.phase == TickEvent.Phase.START)
             {
-                CalendarTFC.setTotalTime(event.world.getTotalWorldTime());
+                CalendarTFC.INSTANCE.setTotalTime(event.world.getTotalWorldTime());
             }
         }
 
@@ -340,10 +377,10 @@ public class CalendarTFC
         public static void onClientTick(TickEvent.ClientTickEvent event)
         {
             // On LOGICAL CLIENT, this will be overwritten by onWorldTick
-            // On DEDICATED CLIENT, this will be the sole time-tracking for each player (hopefully it works)
+            // On DEDICATED CLIENT, this will be the sole time-tracking for each player
             if (event.phase == TickEvent.Phase.START && !Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().player != null)
             {
-                CalendarTFC.setTotalTime(Minecraft.getMinecraft().world.getTotalWorldTime());
+                CalendarTFC.INSTANCE.setTotalTime(Minecraft.getMinecraft().world.getTotalWorldTime());
             }
         }
 
@@ -354,8 +391,7 @@ public class CalendarTFC
             GameRules rules = event.getRules();
             if ("doDaylightCycle".equals(event.getRuleName()))
             {
-                CalendarTFC.doCalendarCycle = rules.getBoolean("doDaylightCycle");
-                CalendarWorldData.update(event.getServer().getEntityWorld());
+                CalendarWorldData.update(event.getServer().getEntityWorld(), CalendarTFC.INSTANCE.calendarOffset, CalendarTFC.INSTANCE.daysInMonth, rules.getBoolean("doDaylightCycle"));
             }
         }
 
@@ -378,8 +414,8 @@ public class CalendarTFC
         public static void onPlayerWakeUp(PlayerWakeUpEvent event)
         {
             // Set the calendar time to time=0. This will implicitly call CalendarTFC#update
-            long newCalendarTime = (CalendarTFC.getTotalDays() + 1) * TICKS_IN_DAY;
-            setCalendarTime(event.getEntityPlayer().getEntityWorld(), newCalendarTime);
+            long newCalendarTime = (CalendarTFC.INSTANCE.getTotalDays() + 1) * TICKS_IN_DAY;
+            CalendarTFC.INSTANCE.setCalendarTime(event.getEntityPlayer().getEntityWorld(), newCalendarTime);
         }
 
         @SubscribeEvent
@@ -389,7 +425,7 @@ public class CalendarTFC
             final World world = event.getWorld();
             if (world.provider.getDimension() == 0 && !world.isRemote)
             {
-                CalendarTFC.CalendarWorldData.onLoad(event.getWorld());
+                CalendarTFC.CalendarWorldData.update(event.getWorld());
             }
         }
     }
@@ -399,41 +435,59 @@ public class CalendarTFC
     {
         private static final String NAME = MOD_ID + ":calendar";
 
-        public static void update(World world)
+        /**
+         * Sends an update packet to a player on log in
+         *
+         * @param player the server player to send to
+         */
+        public static void update(EntityPlayerMP player)
         {
-            update(world, CalendarTFC.calendarOffset, CalendarTFC.daysInMonth, CalendarTFC.doCalendarCycle);
+            TerraFirmaCraft.getNetwork().sendTo(new PacketCalendarUpdate(CalendarTFC.INSTANCE.calendarOffset, CalendarTFC.INSTANCE.daysInMonth, CalendarTFC.INSTANCE.doCalendarCycle), player);
         }
 
+        /**
+         * Reads the calendar from saved world data, then updates clients
+         * Called on {@link CalendarTFC.EventHandler#onWorldLoad}
+         *
+         * @param world the world
+         */
+        public static void update(World world)
+        {
+            // Update calendar from saved world data
+            CalendarWorldData data = get(world);
+            CalendarTFC.INSTANCE.calendarOffset = data.calendarOffset;
+            CalendarTFC.INSTANCE.daysInMonth = data.daysInMonth;
+            CalendarTFC.INSTANCE.doCalendarCycle = data.doCalendarCycle;
+            CalendarTFC.INSTANCE.reset(data.calendarOffset, data.daysInMonth, data.doCalendarCycle);
+
+            // Sync to clients
+            if (!world.isRemote)
+            {
+                TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(data.calendarOffset, data.daysInMonth, data.doCalendarCycle));
+            }
+        }
+
+        /**
+         * Updates the world data and the calendar with the provided values
+         *
+         * @param world the world
+         */
         public static void update(World world, long calendarOffset, int daysInMonth, boolean doCalendarCycle)
         {
-            // Updates world data and sends changes to client if this is run on server
+            // Get and update world data
             CalendarWorldData data = get(world);
             data.calendarOffset = calendarOffset;
             data.daysInMonth = daysInMonth;
             data.doCalendarCycle = doCalendarCycle;
             data.markDirty();
 
+            // Update calendar
+            CalendarTFC.INSTANCE.reset(data.calendarOffset, data.daysInMonth, data.doCalendarCycle);
+
+            // Sync to clients
             if (!world.isRemote)
             {
                 TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(calendarOffset, daysInMonth, doCalendarCycle));
-            }
-        }
-
-        public static void onLoad(World world)
-        {
-            CalendarWorldData data = get(world);
-            CalendarTFC.calendarOffset = data.calendarOffset;
-            CalendarTFC.daysInMonth = data.daysInMonth;
-            CalendarTFC.doCalendarCycle = data.doCalendarCycle;
-
-            // Re-calculate values for calendar
-            CalendarTFC.daysInYear = data.daysInMonth * 12;
-            CalendarTFC.ticksInMonth = data.daysInMonth * TICKS_IN_DAY;
-            CalendarTFC.ticksInYear = data.daysInMonth * 12 * TICKS_IN_DAY;
-
-            if (!world.isRemote)
-            {
-                TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalendarTFC.calendarOffset, CalendarTFC.daysInMonth, CalendarTFC.doCalendarCycle));
             }
         }
 

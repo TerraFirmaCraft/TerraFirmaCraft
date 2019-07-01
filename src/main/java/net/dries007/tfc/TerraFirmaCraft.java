@@ -35,7 +35,6 @@ import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
 import net.dries007.tfc.proxy.IProxy;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.fuel.FuelManager;
-import net.dries007.tfc.world.classic.CalendarTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
 import net.dries007.tfc.world.classic.worldgen.*;
@@ -142,7 +141,6 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketFoodStatsReplace.Handler(), PacketFoodStatsReplace.class, ++id, Side.CLIENT);
 
         EntitiesTFC.preInit();
-        CalendarTFC.preInit();
         VeinRegistry.INSTANCE.preInit(event.getModConfigurationDirectory());
 
         CapabilityChunkData.preInit();

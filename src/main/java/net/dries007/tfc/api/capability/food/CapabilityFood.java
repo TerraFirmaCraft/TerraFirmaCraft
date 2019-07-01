@@ -12,7 +12,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 

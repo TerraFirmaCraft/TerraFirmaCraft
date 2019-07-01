@@ -18,7 +18,7 @@ import net.dries007.tfc.objects.blocks.crops.BlockCropSpreading;
 import net.dries007.tfc.objects.blocks.crops.BlockCropTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.util.agriculture.Crop.CropType.*;
 
@@ -79,7 +79,7 @@ public enum Crop implements ICrop
 
         this.growthStages = growthStages;
         // The value stored it measured in hours, the input value is in months
-        this.growthTime = growthTime * CalendarTFC.getDaysInMonth() * 24;
+        this.growthTime = growthTime * CalendarTFC.INSTANCE.getDaysInMonth() * 24;
 
         this.type = type;
     }

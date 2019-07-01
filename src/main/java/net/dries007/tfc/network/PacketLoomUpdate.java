@@ -25,6 +25,7 @@ public class PacketLoomUpdate implements IMessage
     private long lastPushed;
 
     @SuppressWarnings("unused")
+    @Deprecated
     public PacketLoomUpdate() {}
 
     public PacketLoomUpdate(@Nonnull TELoom tile, long lastPushed)

@@ -35,7 +35,7 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                 TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
 
                     final World world = player.getEntityWorld();
-                    final RayTraceResult rayTrace = player.rayTrace(player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue(), 1);
+                    final RayTraceResult rayTrace = Helpers.rayTrace(player, player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue(), 1);
                     final ItemStack stack = player.getHeldItemMainhand().isEmpty() ? player.getHeldItemOffhand() : player.getHeldItemMainhand();
 
                     if (!stack.isEmpty() && rayTrace != null)

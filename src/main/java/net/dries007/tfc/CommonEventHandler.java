@@ -44,12 +44,12 @@ import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.capability.skill.PlayerSkillsHandler;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IPlaceableItem;
-import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketFoodStatsReplace;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -117,7 +117,7 @@ public final class CommonEventHandler
         }
 
         // Try to drink water
-        if (stack.isEmpty() && player.getFoodStats() instanceof IFoodStatsTFC)
+        if (!player.isCreative() && stack.isEmpty() && player.getFoodStats() instanceof IFoodStatsTFC)
         {
             IFoodStatsTFC foodStats = (IFoodStatsTFC) player.getFoodStats();
             RayTraceResult result = Helpers.rayTrace(event.getWorld(), player, true);
@@ -282,7 +282,7 @@ public final class CommonEventHandler
             player.inventoryContainer.addListener(new CapabilityContainerListener(player));
 
             // World Data (Calendar) Sync Handler
-            TerraFirmaCraft.getNetwork().sendTo(new PacketCalendarUpdate(), player);
+            CalendarTFC.CalendarWorldData.update(player);
 
             // Food Stats
             FoodStats originalStats = event.player.getFoodStats();

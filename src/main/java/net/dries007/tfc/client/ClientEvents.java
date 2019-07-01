@@ -51,7 +51,7 @@ import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateRenderHelper;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
@@ -153,8 +153,8 @@ public class ClientEvents
                         WHITE, data.getAverageTemp(), GRAY,
                         WHITE, ClimateRenderHelper.get(blockpos).getTemperature(), GRAY,
                         WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)));
-                    String monthName = I18n.format(Helpers.getEnumName(CalendarTFC.getMonthOfYear()));
-                    list.add(String.format("Year %04d, %s %02d %02d:%02d", CalendarTFC.getTotalYears(), monthName, CalendarTFC.getDayOfMonth(), CalendarTFC.getHourOfDay(), CalendarTFC.getMinuteOfHour()));
+                    String monthName = I18n.format(Helpers.getEnumName(CalendarTFC.INSTANCE.getMonthOfYear()));
+                    list.add(String.format("Year %04d, %s %02d %02d:%02d", CalendarTFC.INSTANCE.getTotalYears(), monthName, CalendarTFC.INSTANCE.getDayOfMonth(), CalendarTFC.INSTANCE.getHourOfDay(), CalendarTFC.INSTANCE.getMinuteOfHour()));
 
                     list.add(GRAY + "Biome: " + WHITE + mc.world.getBiome(blockpos).getBiomeName());
 
