@@ -1,12 +1,10 @@
 {
 	"credit": "Made with Blockbench",
-	"textures": {
-		"particle": "#texture"
-	},
+	"parent": "block/block",
 	"elements": [
 		{
-			"name": "Support",
-			"from": [0, 10, 5],
+			"name": "Support connection",
+			"from": [11, 10, 5],
 			"to": [16, 16, 11],
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#texture"},

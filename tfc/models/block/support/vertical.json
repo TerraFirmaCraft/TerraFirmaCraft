@@ -1,8 +1,6 @@
 {
 	"credit": "Made with Blockbench",
-	"textures": {
-		"particle": "#texture"
-	},
+	"parent": "block/block",
 	"elements": [
 		{
 			"name": "Support",
