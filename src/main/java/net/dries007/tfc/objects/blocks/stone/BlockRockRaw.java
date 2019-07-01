@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.objects.blocks.stone;
 
-import java.util.Arrays;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 

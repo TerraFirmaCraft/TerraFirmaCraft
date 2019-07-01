@@ -64,16 +64,18 @@ public interface IFallingBlock
      * Checks if this pos is being supported by a support beam
      *
      * @param worldIn the worldObj to check
-     * @param pos the BlockPos of this Fallable block
+     * @param pos     the BlockPos of this Fallable block
      * @return true if there is a support in 4 block radius
      */
     default boolean isBeingSupported(World worldIn, BlockPos pos)
     {
-        for(BlockPos searchSupport : BlockPos.getAllInBox(pos.add(-4, -1, -4), pos.add(4, 1, 4)))
+        for (BlockPos searchSupport : BlockPos.getAllInBox(pos.add(-4, -1, -4), pos.add(4, 1, 4)))
         {
             IBlockState st = worldIn.getBlockState(searchSupport);
-            if(st.getBlock() instanceof BlockSupport){
-                if(((BlockSupport)st.getBlock()).canSupportBlocks(worldIn, searchSupport))return true; //Found support block that can support this BlockPos
+            if (st.getBlock() instanceof BlockSupport)
+            {
+                if (((BlockSupport) st.getBlock()).canSupportBlocks(worldIn, searchSupport))
+                    return true; //Found support block that can support this BlockPos
             }
         }
         return false;
