@@ -25,7 +25,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.PacketFoodStatsUpdate;
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
 public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
@@ -262,11 +262,11 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     @Override
     public boolean attemptDrink(float value)
     {
-        int ticksPassed = (int) (CalendarTFC.getCalendarTime() - lastDrinkTick);
-        if (ticksPassed >= 20 && thirst <= MAX_PLAYER_THIRST)
+        int ticksPassed = (int) (CalendarTFC.INSTANCE.getCalendarTime() - lastDrinkTick);
+        if (ticksPassed >= 20 && thirst < MAX_PLAYER_THIRST)
         {
             // One drink every so often
-            lastDrinkTick = CalendarTFC.getCalendarTime();
+            lastDrinkTick = CalendarTFC.INSTANCE.getCalendarTime();
             addThirst(value);
             return true;
         }

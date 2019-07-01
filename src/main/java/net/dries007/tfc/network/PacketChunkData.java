@@ -27,10 +27,8 @@ public class PacketChunkData implements IMessage
     private float temperature, rainfall;
 
     @SuppressWarnings("unused")
-    public PacketChunkData()
-    {
-
-    }
+    @Deprecated
+    public PacketChunkData() {}
 
     public PacketChunkData(ChunkPos chunkPos, NBTTagCompound nbt, float temperature, float rainfall)
     {

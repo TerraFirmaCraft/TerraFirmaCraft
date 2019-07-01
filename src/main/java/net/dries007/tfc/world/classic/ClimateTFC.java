@@ -12,6 +12,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public final class ClimateTFC
@@ -124,10 +125,10 @@ public final class ClimateTFC
      */
     public static float getMonthAdjTemp(float baseTemp, int z)
     {
-        final float currentMonthFactor = monthTemp(baseTemp, CalendarTFC.getMonthOfYear(), z);
-        final float nextMonthFactor = monthTemp(baseTemp, CalendarTFC.getMonthOfYear().next(), z);
+        final float currentMonthFactor = monthTemp(baseTemp, CalendarTFC.INSTANCE.getMonthOfYear(), z);
+        final float nextMonthFactor = monthTemp(baseTemp, CalendarTFC.INSTANCE.getMonthOfYear().next(), z);
 
-        final float delta = (float) CalendarTFC.getDayOfMonth() / CalendarTFC.getDaysInMonth();
+        final float delta = (float) CalendarTFC.INSTANCE.getDayOfMonth() / CalendarTFC.INSTANCE.getDaysInMonth();
         // Affine combination to smooth temperature transition
         return currentMonthFactor * (1 - delta) + nextMonthFactor * delta;
     }
@@ -169,7 +170,7 @@ public final class ClimateTFC
      */
     private static float getTemp(float baseTemp, int z)
     {
-        int h = (int) ((CalendarTFC.getTotalHours() - 6) % CalendarTFC.HOURS_IN_DAY);
+        int h = (int) ((CalendarTFC.INSTANCE.getTotalHours() - 6) % CalendarTFC.HOURS_IN_DAY);
         if (h < 0) h += CalendarTFC.HOURS_IN_DAY;
 
         float hourMod;
@@ -177,7 +178,7 @@ public final class ClimateTFC
         else hourMod = 0.3f - ((((float) h - 12) / 11) * 0.3f);
 
         // Note: this does not use world seed, as that is not synced from server - client, resulting in the seed being different
-        long day = CalendarTFC.getTotalDays();
+        long day = CalendarTFC.INSTANCE.getTotalDays();
         RANDOM.setSeed(day);
         final float dailyTemp = (RANDOM.nextInt(200) - 100) / 20f;
 

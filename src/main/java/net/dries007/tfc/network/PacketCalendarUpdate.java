@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class PacketCalendarUpdate implements IMessage
 {
@@ -21,6 +21,7 @@ public class PacketCalendarUpdate implements IMessage
     private boolean doCalendarCycle;
 
     @SuppressWarnings("unused")
+    @Deprecated
     public PacketCalendarUpdate() {}
 
     public PacketCalendarUpdate(long calendarOffset, int daysInMonth, boolean doCalendarCycle)

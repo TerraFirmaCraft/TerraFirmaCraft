@@ -283,13 +283,13 @@ public final class BlocksTFC
         {
             Builder<BlockFluidBase> b = ImmutableList.builder();
             for (Fluid fluid : FluidsTFC.getAllInfiniteFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidClassicTFC(fluid, Material.WATER)));
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidTFC(fluid, Material.WATER, true)));
             for (Fluid fluid : FluidsTFC.getAllAlcoholsFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidClassicTFC(fluid, FluidsTFC.MATERIAL_ALCOHOL)));
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidTFC(fluid, FluidsTFC.MATERIAL_ALCOHOL, false)));
             for (Fluid fluid : FluidsTFC.getAllOtherFiniteFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidClassicTFC(fluid, Material.WATER)));
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidTFC(fluid, Material.WATER, false)));
             for (Fluid fluid : FluidsTFC.getAllMetalFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidClassicTFC(fluid, Material.LAVA)));
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidTFC(fluid, Material.LAVA, false)));
             allFluidBlocks = b.build();
         }
 

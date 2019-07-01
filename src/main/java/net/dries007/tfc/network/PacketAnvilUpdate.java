@@ -37,6 +37,7 @@ public class PacketAnvilUpdate implements IMessage
 
     // no args constructor required for forge
     @SuppressWarnings("unused")
+    @Deprecated
     public PacketAnvilUpdate() {}
 
     public PacketAnvilUpdate(@Nonnull TEAnvilTFC tile)

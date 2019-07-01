@@ -22,6 +22,7 @@ public class PacketFoodStatsUpdate implements IMessage
     private float thirst;
 
     @SuppressWarnings("unused")
+    @Deprecated
     public PacketFoodStatsUpdate()
     {
         this.nutrients = new float[Nutrient.TOTAL];

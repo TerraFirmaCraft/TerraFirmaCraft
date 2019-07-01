@@ -6,7 +6,6 @@
 package net.dries007.tfc.client;
 
 import org.lwjgl.input.Keyboard;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -36,18 +35,17 @@ public class TFCKeybindings
         ClientRegistry.registerKeyBinding(PLACE_BLOCK);
     }
 
-
     @SideOnly(Side.CLIENT)
     @SubscribeEvent()
     public static void onKeyEvent(InputEvent.KeyInputEvent event)
     {
-        final Minecraft mc = Minecraft.getMinecraft();
         if (OPEN_CRAFTING_TABLE.isPressed())
         {
             TerraFirmaCraft.getNetwork().sendToServer(new PacketOpenCraftingGui());
         }
         if (PLACE_BLOCK.isPressed())
         {
+            TerraFirmaCraft.getLog().info("Place block key pressed");
             TerraFirmaCraft.getNetwork().sendToServer(new PacketPlaceBlockSpecial());
         }
     }
