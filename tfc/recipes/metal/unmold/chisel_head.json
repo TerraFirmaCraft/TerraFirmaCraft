@@ -1,0 +1,9 @@
+{
+  "type": "tfc:unmold_recipe",
+  "ingredients": [
+    {
+      "item": "tfc:ceramics/fired/mold/chisel_head"
+    }
+  ],
+  "result": "chisel_head"
+}
