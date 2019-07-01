@@ -906,16 +906,16 @@ for wood_type in WOOD_TYPES:
     })
 	
 	# SUPPORT
-    blockstate(('wood', 'support', wood_type), 'tfc:support_vertical', textures={
+    blockstate(('wood', 'support', wood_type), 'tfc:support/vertical', textures={
         'texture': 'tfc:blocks/wood/sheets/%s' % wood_type,
         'particle': 'tfc:blocks/wood/sheets/%s' % wood_type,
     }, variants={
-        'inventory': {'model': 'fence_inventory'},
-		'axis': {'y': {'model': 'tfc:support_vertical'}, 'x': {'model': 'tfc:support_horizontal'}, 'z': {'model': 'tfc:support_horizontal', 'y': 90}},
-        'north': {'true': {'submodel': 'tfc:support_connection', 'y': 270}, 'false': {}},
-        'east': {'true': {'submodel': 'tfc:support_connection'}, 'false': {}},
-        'south': {'true': {'submodel': 'tfc:support_connection', 'y': 90}, 'false': {}},
-        'west': {'true': {'submodel': 'tfc:support_connection', 'y': 180}, 'false': {}},
+        'inventory': {'model': 'tfc:support/inventory'},
+		'axis': {'y': {'model': 'tfc:support/vertical'}, 'x': {'model': 'tfc:support/horizontal'}, 'z': {'model': 'tfc:support/horizontal', 'y': 90}},
+        'north': {'true': {'submodel': 'tfc:support/connection', 'y': 270}, 'false': {}},
+        'east': {'true': {'submodel': 'tfc:support/connection'}, 'false': {}},
+        'south': {'true': {'submodel': 'tfc:support/connection', 'y': 90}, 'false': {}},
+        'west': {'true': {'submodel': 'tfc:support/connection', 'y': 180}, 'false': {}},
     })
 
 # LEATHER / HIDES
