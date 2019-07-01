@@ -45,14 +45,14 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        checkCollapse(worldIn, pos, state);
+        checkFalling(worldIn, pos, state);
     }
 
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         super.onBlockAdded(worldIn, pos, state);
-        checkCollapse(worldIn, pos, state);
+        checkFalling(worldIn, pos, state);
     }
 
     @Override
