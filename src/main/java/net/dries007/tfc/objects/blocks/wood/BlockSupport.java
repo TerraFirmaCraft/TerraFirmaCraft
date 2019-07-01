@@ -217,7 +217,7 @@ public class BlockSupport extends Block
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState()
-            .withProperty(AXIS, BlockLog.EnumAxis.NONE)
+            .withProperty(AXIS, BlockLog.EnumAxis.Y)
             .withProperty(NORTH, false)
             .withProperty(SOUTH, false)
             .withProperty(EAST, false)
@@ -268,7 +268,7 @@ public class BlockSupport extends Block
             }
             else if (distance > 0)
             {
-                stack.shrink(distance);
+                stack.shrink(distance-1); //-1 because the first one is already placed by onBlockPlace
                 for (int i = 1; i < distance; i++)
                 {
                     if (worldIn.getBlockState(pos.offset(face, i)).getMaterial().isReplaceable())
