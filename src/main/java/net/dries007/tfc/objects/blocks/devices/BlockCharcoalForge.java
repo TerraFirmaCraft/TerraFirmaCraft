@@ -17,12 +17,15 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -151,6 +154,23 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return AABB;
+    }
+
+    @Override
+    public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
+    {
+        IBlockState state = worldIn.getBlockState(pos);
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
+        {
+            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 2.0F);
+        }
+        super.onEntityWalk(worldIn, pos, entityIn);
+    }
+
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return state.getValue(LIT) ? 15 : 0;
     }
 
     @Override
