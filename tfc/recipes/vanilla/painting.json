@@ -8,15 +8,14 @@
   "key": {
     "S": {
       "type": "forge:ore_dict",
-      "ore": "cloth"
+      "ore": "clothHighQuality"
     },
     "W": {
       "type": "forge:ore_dict",
-      "ore": "lumber"
+      "ore": "stickWood"
     }
   },
   "result": {
-    "item": "minecraft:painting",
-    "count": 2
+    "item": "minecraft:painting"
   }
 }
