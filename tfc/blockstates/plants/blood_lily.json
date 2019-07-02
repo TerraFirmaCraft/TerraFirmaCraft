@@ -1,6 +1,11 @@
 {
-  "parent": "item/generated",
-  "textures": {
-	"layer0": "tfc:blocks/plants/blood_lily/blood_lily_2"
-  }
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "tfc:plants/blood_lily"
+        }
+      ]
+    }
+  ]
 }

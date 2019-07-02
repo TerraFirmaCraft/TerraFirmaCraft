@@ -1,127 +1,264 @@
 {
-  "parent": "tfc:block/plants/morning_glory",
-  "textures": {
-    "layer0": "tfc:blocks/plants/morning_glory/morning_glory_layer0",
-    "layer1": "tfc:blocks/plants/morning_glory/morning_glory_layer1",
-    "middle": "tfc:blocks/plants/morning_glory/morning_glory_middle_1",
-    "top": "tfc:blocks/plants/morning_glory/morning_glory_top_1"
-  },
-  "display": {
-    "thirdperson_righthand": {
-      "rotation": [
-        90,
-        0,
-        0
-      ],
-      "translation": [
-        0,
-        3,
-        6
-      ],
-      "scale": [
-        0.55,
-        0.55,
-        0.55
-      ]
+  "multipart": [
+    {
+      "when": {
+        "down": "true",
+        "stage": "0|1"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory"
+      }
     },
-    "thirdperson_lefthand": {
-      "rotation": [
-        90,
-        0,
-        0
-      ],
-      "translation": [
-        0,
-        3,
-        6
-      ],
-      "scale": [
-        0.55,
-        0.55,
-        0.55
-      ]
+    {
+      "when": {
+        "east": "true",
+        "stage": "0|1"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory",
+        "x": 270,
+        "y": 90
+      }
     },
-    "firstperson_righthand": {
-      "rotation": [
-        65,
-        0,
-        0
-      ],
-      "translation": [
-        1.13,
-        3.2,
-        1.13
-      ],
-      "scale": [
-        0.68,
-        0.68,
-        0.68
-      ]
+    {
+      "when": {
+        "north": "true",
+        "stage": "0|1"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory",
+        "x": 270
+      }
     },
-    "firstperson_lefthand": {
-      "rotation": [
-        60,
-        0,
-        0
-      ],
-      "translation": [
-        1.13,
-        3.2,
-        1.13
-      ],
-      "scale": [
-        0.68,
-        0.68,
-        0.68
-      ]
+    {
+      "when": {
+        "south": "true",
+        "stage": "0|1"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory",
+        "x": 270,
+        "y": 180
+      }
     },
-    "ground": {
-      "translation": [
-        0,
-        2,
-        0
-      ],
-      "scale": [
-        0.5,
-        0.5,
-        0.5
-      ]
+    {
+      "when": {
+        "up": "true",
+        "stage": "0|1"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory",
+        "x": 180
+      }
     },
-    "gui": {
-      "rotation": [
-        90,
-        0,
-        0
-      ],
-      "scale": [
-        0.75,
-        0.75,
-        0.75
-      ]
+    {
+      "when": {
+        "west": "true",
+        "stage": "0|1"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory",
+        "x": 270,
+        "y": 270
+      }
     },
-    "head": {
-      "rotation": [
-        0,
-        180,
-        0
-      ],
-      "translation": [
-        0,
-        14.5,
-        0
-      ]
+    {
+      "when": {
+        "down": "true",
+        "stage": "1",
+        "dayperiod": "1"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_1"
+      }
     },
-    "fixed": {
-      "rotation": [
-        -90,
-        180,
-        0
-      ],
-      "translation": [
-        0,
-        0,
-        -8
-      ]
+    {
+      "when": {
+        "east": "true",
+        "stage": "1",
+        "dayperiod": "1"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_1",
+        "x": 270,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "stage": "1",
+        "dayperiod": "1"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_1",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "south": "true",
+        "stage": "1",
+        "dayperiod": "1"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_1",
+        "x": 270,
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "up": "true",
+        "stage": "1",
+        "dayperiod": "1"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_1",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true",
+        "stage": "1",
+        "dayperiod": "1"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_1",
+        "x": 270,
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "down": "true",
+        "stage": "1",
+        "dayperiod": "2|3|0"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_0"
+      }
+    },
+    {
+      "when": {
+        "east": "true",
+        "stage": "1",
+        "dayperiod": "2|3|0"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_0",
+        "x": 270,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "stage": "1",
+        "dayperiod": "2|3|0"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_0",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "south": "true",
+        "stage": "1",
+        "dayperiod": "2|3|0"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_0",
+        "x": 270,
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "up": "true",
+        "stage": "1",
+        "dayperiod": "2|3|0"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_0",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true",
+        "stage": "1",
+        "dayperiod": "2|3|0"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_0",
+        "x": 270,
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "down": "true",
+        "stage": "2"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_2"
+      }
+    },
+    {
+      "when": {
+        "east": "true",
+        "stage": "2"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_2",
+        "x": 270,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "stage": "2"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_2",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "south": "true",
+        "stage": "2"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_2",
+        "x": 270,
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "up": "true",
+        "stage": "2"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_2",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true",
+        "stage": "2"
+      },
+      "apply": {
+        "model": "tfc:plants/morning_glory_2",
+        "x": 270,
+        "y": 270
+      }
     }
-  }
+  ]
 }

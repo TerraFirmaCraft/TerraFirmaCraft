@@ -1,111 +1,126 @@
 {
-  "parent": "tfc:block/plants/barrel_cactus_single",
-  "display": {
-    "thirdperson_righthand": {
-      "rotation": [
-        75,
-        45,
-        0
-      ],
-      "translation": [
-        0,
-        2.5,
-        0
-      ],
-      "scale": [
-        0.375,
-        0.375,
-        0.375
+  "multipart": [
+    {
+      "when": {
+        "age": "0",
+        "part": "single"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/barrel_cactus_small"
+        }
       ]
     },
-    "thirdperson_lefthand": {
-      "rotation": [
-        75,
-        45,
-        0
-      ],
-      "translation": [
-        0,
-        2.5,
-        0
-      ],
-      "scale": [
-        0.375,
-        0.375,
-        0.375
+    {
+      "when": {
+        "part": "lower"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/barrel_cactus_lower"
+        }
       ]
     },
-    "firstperson_righthand": {
-      "rotation": [
-        0,
-        45,
-        0
-      ],
-      "scale": [
-        0.4,
-        0.4,
-        0.4
+    {
+      "when": {
+        "part": "middle"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/barrel_cactus_middle"
+        }
       ]
     },
-    "firstperson_lefthand": {
-      "rotation": [
-        0,
-        45,
-        0
-      ],
-      "scale": [
-        0.4,
-        0.4,
-        0.4
+    {
+      "when": {
+        "age": "1|2|3",
+        "part": "single"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/barrel_cactus_single"
+        }
       ]
     },
-    "ground": {
-      "translation": [
-        0,
-        2,
-        0
-      ],
-      "scale": [
-        0.5,
-        0.5,
-        0.5
+    {
+      "when": {
+        "part": "upper"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/barrel_cactus_upper"
+        }
       ]
     },
-    "gui": {
-      "rotation": [
-        30,
-        45,
-        0
-      ],
-      "scale": [
-        0.625,
-        0.625,
-        0.625
+    {
+      "when": {
+        "part": "upper",
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/barrel_cactus_flower_0"
+        }
       ]
     },
-    "head": {
-      "rotation": [
-        0,
-        180,
-        0
-      ],
-      "translation": [
-        0,
-        2,
-        0
-      ],
-      "scale": [
-        1.07,
-        1.07,
-        1.07
+    {
+      "when": {
+        "age": "1",
+        "part": "single",
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/barrel_cactus_flower_1"
+        }
       ]
     },
-    "fixed": {
-      "rotation": [
-        0,
-        180,
-        0
+    {
+      "when": {
+        "age": "0|1",
+        "part": "upper",
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/barrel_cactus_flower_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "part": "single|upper",
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/barrel_cactus_flower_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "1|2|3",
+        "part": "single",
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/barrel_cactus_flower_3"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper",
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/barrel_cactus_flower_3"
+        }
       ]
     }
-  }
+  ]
 }

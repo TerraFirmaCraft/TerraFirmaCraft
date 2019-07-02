@@ -1,6 +1,11 @@
 {
-  "parent": "item/generated",
-  "textures": {
-	"layer0": "tfc:blocks/plants/lady_fern/fern_single"
-  }
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "tfc:plants/lady_fern"
+        }
+      ]
+    }
+  ]
 }

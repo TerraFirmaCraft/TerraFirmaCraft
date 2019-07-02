@@ -1,6 +1,11 @@
 {
-  "parent": "item/generated",
-  "textures": {
-	"layer0": "tfc:blocks/plants/trillium/item"
-  }
+	"multipart": [
+		{ "apply": [
+				{ "model": "tfc:plants/trillium"},	
+				{ "model": "tfc:plants/trillium", "y": 90 },
+				{ "model": "tfc:plants/trillium", "y": 180 },
+				{ "model": "tfc:plants/trillium", "y": 270 }
+			]
+		}
+	]
 }

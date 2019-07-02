@@ -1,6 +1,11 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "tfc:blocks/plants/sago/sago"
-  }
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "tfc:plants/sago"
+        }
+      ]
+    }
+  ]
 }

@@ -1,6 +1,11 @@
 {
-  "parent": "item/generated",
-  "textures": {
-	"layer0": "tfc:blocks/plants/sword_fern/item"
-  }
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "tfc:plants/sword_fern"
+        }
+      ]
+    }
+  ]
 }
