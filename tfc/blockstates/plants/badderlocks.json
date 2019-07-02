@@ -1,14 +1,6 @@
 {
-	"multipart": [
-		{   "when": { "part": "lower" },
-			"apply": [
-				{ "model": "tfc:plants/badderlocks_lower" }
-			]
-		},
-		{   "when": { "part": "single|upper" },
-			"apply": [
-				{ "model": "tfc:plants/badderlocks_upper" }
-			]
-		}
-	]
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/badderlocks/placeholder"
+  }
 }

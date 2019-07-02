@@ -1,11 +1,6 @@
 {
-	"multipart": [
-		{ "apply": [
-				{ "model": "tfc:plants/duckweed" },
-				{ "model": "tfc:plants/duckweed", "y": 90 },
-				{ "model": "tfc:plants/duckweed", "y": 180 },
-				{ "model": "tfc:plants/duckweed", "y": 270 }
-			]
-		}
-	]
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/duckweed/duckweed"
+  }
 }

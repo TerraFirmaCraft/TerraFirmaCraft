@@ -1,11 +1,6 @@
 {
-	"multipart": [
-		{ "apply": [
-				{ "model": "tfc:plants/rough_horsetail" },
-				{ "model": "tfc:plants/rough_horsetail", "y": 90 },
-				{ "model": "tfc:plants/rough_horsetail", "y": 180 },
-				{ "model": "tfc:plants/rough_horsetail", "y": 270 }
-			]
-		}
-	]
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/rough_horsetail/rough_horsetail"
+  }
 }

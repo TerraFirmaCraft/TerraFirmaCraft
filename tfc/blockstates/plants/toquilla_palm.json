@@ -1,12 +1,6 @@
 {
-	"multipart": [
-		{   "when": { "part": "lower|single" },
-			"apply": [
-				{ "model": "tfc:plants/toquilla_palm" },
-				{ "model": "tfc:plants/toquilla_palm", "y": 90 },
-				{ "model": "tfc:plants/toquilla_palm", "y": 180 },
-				{ "model": "tfc:plants/toquilla_palm", "y": 270 }
-			]
-		}
-	]
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/toquilla_palm/item"
+  }
 }

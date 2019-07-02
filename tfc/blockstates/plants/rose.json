@@ -1,14 +1,6 @@
 {
-	"multipart": [
-		{ "when": { "part": "lower" },
-			"apply": [
-				{ "model": "tfc:plants/rose_lower" }
-			]
-		},
-		{ "when": { "part": "upper|single" },
-			"apply": [
-				{ "model": "tfc:plants/rose_upper" }
-			]
-		}
-	]
+  "parent": "item/generated",
+  "textures": {
+	"layer0": "tfc:blocks/plants/rose/item"
+  }
 }

@@ -1,34 +1,6 @@
 {
-	"multipart": [
-		{ "when": { "stage": "0" },
-			"apply": [
-				{ "model": "tfc:plants/oxeye_daisy_0" }
-			]
-		},
-		{ "when": { "stage": "1" },
-			"apply": [
-				{ "model": "tfc:plants/oxeye_daisy_1" }
-			]
-		},
-		{ "when": { "stage": "2" },
-			"apply": [
-				{ "model": "tfc:plants/oxeye_daisy_2" }
-			]
-		},
-		{ "when": { "stage": "3" },
-			"apply": [
-				{ "model": "tfc:plants/oxeye_daisy_3" }
-			]
-		},
-		{ "when": { "stage": "4" },
-			"apply": [
-				{ "model": "tfc:plants/oxeye_daisy_4" }
-			]
-		},
-		{ "when": { "stage": "5" },
-			"apply": [
-				{ "model": "tfc:plants/oxeye_daisy_5" }
-			]
-		}
-	]
+  "parent": "item/generated",
+  "textures": {
+	"layer0": "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_3"
+  }
 }

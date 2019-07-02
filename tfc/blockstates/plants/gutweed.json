@@ -1,11 +1,6 @@
 {
-	"multipart": [
-		{ "apply": [
-				{ "model": "tfc:plants/gutweed" },
-				{ "model": "tfc:plants/gutweed", "y": 90 },
-				{ "model": "tfc:plants/gutweed", "y": 180 },
-				{ "model": "tfc:plants/gutweed", "y": 270 }
-			]
-		}
-	]
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/gutweed/gutweed"
+  }
 }

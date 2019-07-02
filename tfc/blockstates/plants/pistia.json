@@ -1,11 +1,6 @@
 {
-	"multipart": [
-		{ "apply": [
-				{ "model": "tfc:plants/pistia" },
-				{ "model": "tfc:plants/pistia", "y": 90 },
-				{ "model": "tfc:plants/pistia", "y": 180 },
-				{ "model": "tfc:plants/pistia", "y": 270 }
-			]
-		}
-	]
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/pistia/pistia_0"
+  }
 }

@@ -1,16 +1,6 @@
 {
-	"multipart": [
-		{   "when": { "age": "0" },
-			"apply": { "model": "tfc:plants/scutch_grass_shortest" }
-		},
-		{   "when": { "age": "1" },
-			"apply": { "model": "tfc:plants/scutch_grass_shorter" }
-		},
-		{   "when": { "age": "2" },
-			"apply": { "model": "tfc:plants/scutch_grass_short" }
-		},
-		{   "when": { "age": "3" },
-			"apply": { "model": "tfc:plants/scutch_grass" }
-		}
-	]
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/scutch_grass/placeholder"
+  }
 }
