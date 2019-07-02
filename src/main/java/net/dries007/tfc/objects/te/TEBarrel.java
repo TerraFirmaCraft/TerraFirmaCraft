@@ -245,12 +245,12 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 {
                     tank.setFluid(instantRecipe.getOutputFluid(inputFluid, inputStack));
                     inventory.setStackInSlot(SLOT_ITEM, instantRecipe.getOutputItem(inputFluid, inputStack));
-                    instantRecipe.playSound(world, pos, tickCounter);
+                    instantRecipe.onRecipeComplete(world, pos, tickCounter);
 
                     IBlockState state = world.getBlockState(pos);
                     world.notifyBlockUpdate(pos, state, state, 3);
 
-                    if (!instantRecipe.shouldRepeate()) checkInstantRecipe = false;
+                    if (!instantRecipe.shouldRepeat()) checkInstantRecipe = false;
                 }
                 else checkInstantRecipe = false;
             }

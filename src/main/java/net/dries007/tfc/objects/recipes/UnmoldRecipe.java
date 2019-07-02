@@ -5,13 +5,10 @@
 
 package net.dries007.tfc.objects.recipes;
 
-import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
-import net.minecraft.client.util.RecipeItemHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -24,12 +21,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 
 import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.ITEM_HEAT_CAPABILITY;
@@ -38,8 +37,6 @@ import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_
 @ParametersAreNonnullByDefault
 public class UnmoldRecipe extends ShapelessOreRecipe
 {
-    int moldSlotID;
-    IMoldHandler moldHandler;
     Metal.ItemType type;
     float chance;
 
@@ -52,18 +49,45 @@ public class UnmoldRecipe extends ShapelessOreRecipe
 
     @Override
     @Nonnull
-    public NonNullList<ItemStack> getRemainingItems(final InventoryCrafting inventoryCrafting)
+    public NonNullList<ItemStack> getRemainingItems(final InventoryCrafting inv)
     {
-        if (Constants.RNG.nextFloat() <= chance)
+        ItemStack moldStack = null;
+        for (int slot = 0; slot < inv.getSizeInventory(); slot++)
         {
-            EntityPlayer player = ForgeHooks.getCraftingPlayer();
-            if (player != null)
+            ItemStack stack = inv.getStackInSlot(slot);
+            if (!stack.isEmpty())
             {
-                player.addItemStackToInventory(new ItemStack(inventoryCrafting.getStackInSlot(moldSlotID).getItem()));
+                if (stack.getItem() instanceof ItemMold)
+                {
+                    ItemMold tmp = ((ItemMold) stack.getItem());
+                    if (tmp.type.equals(this.type) && moldStack == null)
+                    {
+                        moldStack = stack;
+                    }
+                    else
+                    {
+                        return super.getRemainingItems(inv);
+                    }
+                }
+                else
+                {
+                    return super.getRemainingItems(inv);
+                }
+            }
+        }
+        if (moldStack != null)
+        {
+            if (Constants.RNG.nextFloat() <= chance)
+            {
+                EntityPlayer player = ForgeHooks.getCraftingPlayer();
+                if (player != null)
+                {
+                    player.addItemStackToInventory(new ItemStack(moldStack.getItem()));
+                }
             }
         }
 
-        return super.getRemainingItems(inventoryCrafting);
+        return super.getRemainingItems(inv);
     }
 
     @Override
@@ -80,47 +104,92 @@ public class UnmoldRecipe extends ShapelessOreRecipe
     @Override
     public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world)
     {
-        int ingredientCount = 0;
-        RecipeItemHelper recipeItemHelper = new RecipeItemHelper();
-        List<ItemStack> items = Lists.newArrayList();
-
-        for (int i = 0; i < inv.getSizeInventory(); ++i)
+        boolean foundMold = false;
+        for (int slot = 0; slot < inv.getSizeInventory(); slot++)
         {
-            ItemStack itemstack = inv.getStackInSlot(i);
-            if (!itemstack.isEmpty())
+            ItemStack stack = inv.getStackInSlot(slot);
+            if (!stack.isEmpty())
             {
-                ++ingredientCount;
-                if (this.isSimple)
-                    recipeItemHelper.accountStack(itemstack, 1);
-                else
-                    items.add(itemstack);
+                if (stack.getItem() instanceof ItemMold)
+                {
+                    ItemMold moldItem = ((ItemMold) stack.getItem());
+                    IFluidHandler cap = stack.getCapability(FLUID_HANDLER_CAPABILITY, null);
 
-                moldSlotID = i;
+                    if (cap instanceof IMoldHandler)
+                    {
+                        IMoldHandler moldHandler = ((IMoldHandler) cap);
+                        if (!moldHandler.isMolten())
+                        {
+                            Metal m = moldHandler.getMetal();
+                            if (m != null && moldItem.type.equals(this.type) && !foundMold)
+                            {
+                                foundMold = true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
-
-        if (ingredientCount != this.input.size())
-            return false;
-
-        boolean canCraft = recipeItemHelper.canCraft(this, null);
-
-        if (canCraft)
-        {
-            ItemStack itemstack = inv.getStackInSlot(moldSlotID);
-            IMoldHandler moldHandler = ((IMoldHandler) itemstack.getCapability(FLUID_HANDLER_CAPABILITY, null));
-            this.moldHandler = moldHandler;
-            if (moldHandler.getMetal() == null || moldHandler.getAmount() != 100 || moldHandler.isMolten())
-                return false;
-        }
-
-        return canCraft;
+        return foundMold;
     }
 
     @Override
     @Nonnull
     public ItemStack getCraftingResult(InventoryCrafting inv)
     {
-        return getOutputItem(moldHandler, type);
+        ItemStack moldStack = null;
+        for (int slot = 0; slot < inv.getSizeInventory(); slot++)
+        {
+            ItemStack stack = inv.getStackInSlot(slot);
+            if (!stack.isEmpty())
+            {
+                if (stack.getItem() instanceof ItemMold)
+                {
+                    ItemMold tmp = ((ItemMold) stack.getItem());
+                    if (tmp.type.equals(this.type) && moldStack == null)
+                    {
+                        moldStack = stack;
+                    }
+                    else
+                    {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                else
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+        }
+        if (moldStack != null)
+        {
+            IFluidHandler moldCap = moldStack.getCapability(FLUID_HANDLER_CAPABILITY, null);
+            if (moldCap instanceof IMoldHandler)
+            {
+                IMoldHandler moldHandler = (IMoldHandler) moldCap;
+                if (!moldHandler.isMolten() && moldHandler.getAmount() == 100)
+                {
+                    return getOutputItem(moldHandler, this.type);
+                }
+            }
+        }
+        return ItemStack.EMPTY;
     }
 
     @Override

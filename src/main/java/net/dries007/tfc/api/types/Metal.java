@@ -159,7 +159,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 
     public enum ItemType
     {
-        INGOT(false, 100, ItemIngot::new, true, 0.5f, "XXXX", "X  X", "X  X", "X  X", "XXXX"),
+        INGOT(false, 100, ItemIngot::new, true, "XXXX", "X  X", "X  X", "X  X", "XXXX"),
         DOUBLE_INGOT(false, 200),
         SCRAP(false, 100),
         DUST(false, 100),
@@ -215,23 +215,16 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         private final boolean toolItem;
         private final int smeltAmount;
         private final boolean hasMold;
-        private final float moldReturnRate; // Used as 'if (Constants.RNG.nextFloat() > type.moldReturnRate) return Empty'
         private final BiFunction<Metal, ItemType, Item> supplier;
         private final String[] pattern;
 
-        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier, boolean hasMold, float moldReturnRate, String... moldPattern)
+        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier, boolean hasMold, String... moldPattern)
         {
             this.toolItem = toolItem;
             this.smeltAmount = smeltAmount;
             this.supplier = supplier;
             this.hasMold = hasMold;
-            this.moldReturnRate = moldReturnRate;
             this.pattern = moldPattern;
-        }
-
-        ItemType(boolean toolItem, int smeltAmount, @Nonnull BiFunction<Metal, ItemType, Item> supplier, boolean hasMold, String... moldPattern)
-        {
-            this(toolItem, smeltAmount, supplier, hasMold, 0, moldPattern);
         }
 
         ItemType(boolean toolItem, int smeltAmount, boolean hasMold, String... moldPattern)
@@ -288,11 +281,6 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         public int getSmeltAmount()
         {
             return smeltAmount;
-        }
-
-        public float getMoldReturnRate()
-        {
-            return moldReturnRate;
         }
 
         public String[] getPattern()

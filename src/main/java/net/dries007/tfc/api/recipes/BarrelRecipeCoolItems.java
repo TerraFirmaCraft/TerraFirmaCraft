@@ -52,13 +52,13 @@ public class BarrelRecipeCoolItems extends BarrelRecipe
     }
 
     @Override
-    public boolean shouldRepeate()
+    public boolean shouldRepeat()
     {
         return true;
     }
 
     @Override
-    public void playSound(World world, BlockPos pos, int tickCounter)
+    public void onRecipeComplete(World world, BlockPos pos, int tickCounter)
     {
         if (tickCounter % 4 == 0)
             world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 1.0f);
