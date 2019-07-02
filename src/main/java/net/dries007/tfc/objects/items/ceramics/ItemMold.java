@@ -91,21 +91,6 @@ public class ItemMold extends ItemFiredPottery
         return super.getTranslationKey(stack);
     }
 
-    @Override
-    @Nonnull
-    public ItemStack getContainerItem(@Nonnull ItemStack itemStack)
-    {
-        if (type.getMoldReturnRate() >= 1)
-            return new ItemStack(itemStack.getItem(), itemStack.getCount(), itemStack.getMetadata());
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public boolean hasContainerItem(ItemStack stack)
-    {
-        return type.getMoldReturnRate() >= 1;
-    }
-
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
