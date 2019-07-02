@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "tfc:blocks/plants/ryegrass/ryegrass_0"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/ryegrass/ryegrass_0"
+  }
 }
