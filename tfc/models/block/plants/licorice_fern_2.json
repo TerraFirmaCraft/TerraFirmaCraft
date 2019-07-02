@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
-		"0": "tfc:blocks/plants/licorice_fern/licorice_fern_1",
+		"1": "tfc:blocks/plants/licorice_fern/licorice_fern_3",
 		"particle": "tfc:blocks/plants/licorice_fern/licorice_fern_1"
 	},
 	"elements": [
@@ -10,12 +10,11 @@
 			"from": [0, 7, 1],
 			"to": [16, 7, 17],
 			"faces": {
-				
-				"up": {"uv": [0, 0, 16, 16], "texture": "#0",
+				"up": {"uv": [0, 0, 16, 16], "texture": "#1",
 					"tintindex": 0},
 				"down": {
 					"uv": [0, 16, 16, 0],
-					"texture": "#0",
+					"texture": "#1",
 					"tintindex": 0
 				}
 			},
