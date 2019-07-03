@@ -34,6 +34,7 @@ import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
+import net.dries007.tfc.util.TFCSoundEvents;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
@@ -239,7 +240,7 @@ public class TEAnvilTFC extends TEInventory
                 steps = cap.getSteps().copy();
                 workingProgress += step.getStepAmount();
                 //The line below should be changed to a "HIT" sound, not 3 hits(minecraft default)
-                world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                world.playSound(null, pos, TFCSoundEvents.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
             }
 
             // Handle possible recipe completion
@@ -271,8 +272,7 @@ public class TEAnvilTFC extends TEInventory
 
                     }
 
-                    //Should we change this for a completed work sound effect?
-                    world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    world.playSound(null, pos, TFCSoundEvents.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
 
                     // Reset forge stuff
                     resetFields();

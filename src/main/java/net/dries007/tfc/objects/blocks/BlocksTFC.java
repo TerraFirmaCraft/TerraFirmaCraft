@@ -139,6 +139,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockPlantTFC> allPlantBlocks;
     private static ImmutableList<BlockPlantTFC> allGrassBlocks;
     private static ImmutableList<BlockLoom> allLoomBlocks;
+    private static ImmutableList<BlockSupport> allSupportBlocks;
 
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
@@ -256,6 +257,11 @@ public final class BlocksTFC
         return allLoomBlocks;
     }
 
+    public static ImmutableList<BlockSupport> getAllSupportBlocks()
+    {
+        return allSupportBlocks;
+    }
+
     @SubscribeEvent
     @SuppressWarnings("ConstantConditions")
     public static void registerBlocks(RegistryEvent.Register<Block> event)
@@ -329,6 +335,7 @@ public final class BlocksTFC
             Builder<ItemBlockBarrel> barrelItems = ImmutableList.builder();
             Builder<BlockPlantTFC> plants = ImmutableList.builder();
             Builder<BlockLoom> looms = ImmutableList.builder();
+            Builder<BlockSupport> supports = ImmutableList.builder();
 
             // This loop is split up to organize the ordering of the creative tab
             // Do not optimize these loops back together
@@ -363,6 +370,7 @@ public final class BlocksTFC
                 barrelItems.add(new ItemBlockBarrel(register(r, "wood/barrel/" + wood.getRegistryName().getPath(), new BlockBarrel(), CT_DECORATIONS)));
 
                 looms.add(register(r, "wood/loom/" + wood.getRegistryName().getPath(), new BlockLoom(wood), CT_WOOD));
+                supports.add(register(r, "wood/support/" + wood.getRegistryName().getPath(), new BlockSupport(wood), CT_WOOD));
             }
 
             allLogBlocks = logs.build();
@@ -374,6 +382,7 @@ public final class BlocksTFC
             allChestBlocks = chests.build();
             allToolRackBlocks = toolRacks.build();
             allLoomBlocks = looms.build();
+            allSupportBlocks = supports.build();
 
             allBarrelItemBlocks = barrelItems.build();
 
@@ -387,6 +396,7 @@ public final class BlocksTFC
             allChestBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
             allToolRackBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
             allLoomBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
+            allSupportBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
         }
 
         {
