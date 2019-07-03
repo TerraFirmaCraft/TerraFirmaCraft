@@ -42,6 +42,7 @@ import net.dries007.tfc.objects.items.metal.ItemAnvil;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.TFCSoundEvents;
 
 import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
 
@@ -166,7 +167,7 @@ public class BlockAnvilTFC extends Block
                 if (te.attemptWelding(playerIn))
                 {
                     // Valid welding occurred.
-                    worldIn.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    worldIn.playSound(null, pos, TFCSoundEvents.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
                     return true;
                 }
             }

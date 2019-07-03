@@ -6,6 +6,7 @@
 package net.dries007.tfc.util;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -50,6 +51,7 @@ public interface ICollapsableBlock
                     {
                         //Trigger collapse!
                         collapseArea(worldIn, checking);
+                        worldIn.playSound(null, pos, TFCSoundEvents.ROCK_SLIDE_LONG, SoundCategory.BLOCKS, 1.0F, 1.0F);
                         return; //Don't need to check other blocks
                     }
                 }

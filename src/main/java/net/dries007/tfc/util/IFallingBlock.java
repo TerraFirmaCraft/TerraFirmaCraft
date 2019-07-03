@@ -37,7 +37,15 @@ public interface IFallingBlock
     @Nullable
     BlockPos getFallablePos(World world, BlockPos pos);
 
-    default void checkFalling(World worldIn, BlockPos pos, IBlockState state)
+    /**
+     * Check if this block gonna fall.
+     *
+     * @param worldIn the worldObj this block is in
+     * @param pos the BlockPos this block is in
+     * @param state this block state
+     * @return true if this block has falled, false otherwise
+     */
+    default boolean checkFalling(World worldIn, BlockPos pos, IBlockState state)
     {
         BlockPos pos1 = getFallablePos(worldIn, pos);
         if (pos1 != null)
@@ -59,9 +67,9 @@ public interface IFallingBlock
                     pos1 = pos1.down();
                 if (pos1.getY() > 0) worldIn.setBlockState(pos1.up(), state); // Includes Forge's fix for data loss.
             }
-            //Play sound on block falling
-            worldIn.playSound(null, pos, SoundEvents.BLOCK_STONE_FALL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            return true;
         }
+        return false;
     }
 
     default Iterable<ItemStack> getDropsFromFall(World world, BlockPos pos, IBlockState state, @Nullable NBTTagCompound teData, int fallTime, float fallDistance)
