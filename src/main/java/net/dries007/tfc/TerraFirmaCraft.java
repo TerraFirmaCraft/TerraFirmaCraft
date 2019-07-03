@@ -33,6 +33,7 @@ import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
 import net.dries007.tfc.proxy.IProxy;
 import net.dries007.tfc.util.FuelManager;
 import net.dries007.tfc.util.OreDictionaryHelper;
+import net.dries007.tfc.util.TFCSoundEvents;
 import net.dries007.tfc.world.classic.CalendarTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
@@ -163,6 +164,7 @@ public final class TerraFirmaCraft
 
         OreDictionaryHelper.init();
         ItemsTFC.init();
+        TFCSoundEvents.init();
 
         if (event.getSide().isClient())
         {
