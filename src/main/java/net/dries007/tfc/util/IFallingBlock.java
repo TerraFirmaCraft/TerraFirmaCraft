@@ -30,7 +30,7 @@ public interface IFallingBlock
     // Can the block fall at a particular position; ignore horizontal falling
     default boolean shouldFall(World world, BlockPos pos)
     {
-        return canFallThrough(world.getBlockState(pos.down()));
+        return canFallThrough(world.getBlockState(pos.down())) && !BlockSupport.isBeingSupported(world, pos);
     }
 
     // Get the position that the block will fall from (allows for horizontal falling)
@@ -40,7 +40,7 @@ public interface IFallingBlock
     default void checkFalling(World worldIn, BlockPos pos, IBlockState state)
     {
         BlockPos pos1 = getFallablePos(worldIn, pos);
-        if (pos1 != null && !isBeingSupported(worldIn, pos))
+        if (pos1 != null)
         {
             if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
             {
@@ -62,27 +62,6 @@ public interface IFallingBlock
             //Play sound on block falling
             worldIn.playSound(null, pos, SoundEvents.BLOCK_STONE_FALL, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
-    }
-
-    /**
-     * Checks if this pos is being supported by a support beam
-     *
-     * @param worldIn the worldObj to check
-     * @param pos     the BlockPos of this Fallable block
-     * @return true if there is a support in 4 block radius
-     */
-    default boolean isBeingSupported(World worldIn, BlockPos pos)
-    {
-        for (BlockPos searchSupport : BlockPos.getAllInBox(pos.add(-4, -1, -4), pos.add(4, 1, 4)))
-        {
-            IBlockState st = worldIn.getBlockState(searchSupport);
-            if (st.getBlock() instanceof BlockSupport)
-            {
-                if (((BlockSupport) st.getBlock()).canSupportBlocks(worldIn, searchSupport))
-                    return true; //Found support block that can support this BlockPos
-            }
-        }
-        return false;
     }
 
     default Iterable<ItemStack> getDropsFromFall(World world, BlockPos pos, IBlockState state, @Nullable NBTTagCompound teData, int fallTime, float fallDistance)

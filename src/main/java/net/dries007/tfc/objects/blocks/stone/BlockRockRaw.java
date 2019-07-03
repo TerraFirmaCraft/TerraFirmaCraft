@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.objects.blocks.stone;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
@@ -20,6 +19,7 @@ import net.minecraft.world.World;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.ICollapsableBlock;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
@@ -33,11 +33,10 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
         super(type, rock);
     }
 
-    @Nullable
     @Override
-    public BlockPos getFallablePos(World world, BlockPos pos)
+    public BlockRockVariantFallable getFallingVariant()
     {
-        return type.canFall() && shouldFall(world, pos) ? pos : null;
+        return (BlockRockVariantFallable) BlockRockVariant.get(rock, Rock.Type.COBBLE);
     }
 
     @SuppressWarnings("deprecation")
@@ -45,14 +44,24 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        checkFalling(worldIn, pos, state);
+        if (worldIn.getBlockState(pos.up()).getMaterial().isReplaceable()
+            && worldIn.getBlockState(pos.down()).getMaterial().isReplaceable()
+            && worldIn.getBlockState(pos.north()).getMaterial().isReplaceable()
+            && worldIn.getBlockState(pos.south()).getMaterial().isReplaceable()
+            && worldIn.getBlockState(pos.east()).getMaterial().isReplaceable()
+            && worldIn.getBlockState(pos.west()).getMaterial().isReplaceable())
+        {
+            //Silk touch effect
+            worldIn.setBlockToAir(pos);
+            Helpers.spawnItemStack(worldIn, pos, new ItemStack(state.getBlock(), 1));
+        }
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        super.onBlockAdded(worldIn, pos, state);
-        checkFalling(worldIn, pos, state);
+        //Trigger the collapsing mechanic!
+        checkCollapsingArea(worldIn, pos);
     }
 
     @Override
