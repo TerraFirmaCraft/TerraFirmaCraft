@@ -35,8 +35,8 @@ public interface ICollapsableBlock
      */
     default void checkCollapsingArea(World worldIn, BlockPos pos)
     {
-        if (!worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
-            return; //First, let's check if this area is loaded
+        if (worldIn.isRemote || !worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
+            return; //First, let's check if this area is loaded and is on server
         if (Constants.RNG.nextDouble() < ConfigTFC.GENERAL.collapseChance) //Then, we check rng if a collapse should trigger
         {
             //Rng the radius
@@ -86,7 +86,7 @@ public interface ICollapsableBlock
                 {
                     BlockRockVariantFallable fallingBlock = ((ICollapsableBlock) st.getBlock()).getFallingVariant();
                     world.setBlockState(cavein, fallingBlock.getDefaultState());
-                    fallingBlock.checkFalling(world, cavein, st);
+                    fallingBlock.checkFalling(world, cavein, world.getBlockState(cavein));
                 }
             }
         }
