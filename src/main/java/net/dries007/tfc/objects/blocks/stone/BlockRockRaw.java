@@ -58,7 +58,7 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
     {
         //Trigger the collapsing mechanic!
         checkCollapsingArea(worldIn, pos);
