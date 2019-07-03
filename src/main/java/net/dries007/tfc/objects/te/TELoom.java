@@ -36,6 +36,8 @@ public class TELoom extends TEInventory implements ITickable
     private int progress = 0;
 
     private LoomRecipe recipe = null;
+    private long lastPushed = 0L;
+    private boolean needsUpdate = false;
 
     public TELoom()
     {
@@ -107,22 +109,11 @@ public class TELoom extends TEInventory implements ITickable
         return 0;
     }
 
-    private long lastPushed = 0L;
-
-    private void updateBlock()
-    {
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3);
-        markDirty();
-    }
-
     @SideOnly(Side.CLIENT)
     public String getAnimElement()
     {
         return (progress % 2 == 0) ? "u" : "l";
     }
-
-    private boolean needsUpdate = false;
 
     public boolean onRightClick(EntityPlayer player)
     {
@@ -237,5 +228,12 @@ public class TELoom extends TEInventory implements ITickable
     public ResourceLocation getInProgressTexture()
     {
         return recipe.getInProgressTexture();
+    }
+
+    private void updateBlock()
+    {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+        markDirty();
     }
 }
