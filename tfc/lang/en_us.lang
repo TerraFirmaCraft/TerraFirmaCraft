@@ -1794,6 +1794,26 @@ tile.tfc.wood.loom.rosewood.name=Rosewood Loom
 tile.tfc.wood.loom.blackwood.name=Blackwood Loom
 tile.tfc.wood.loom.palm.name=Palm Loom
 
+tile.tfc.wood.support.ash.name=Ash Support Beam
+tile.tfc.wood.support.aspen.name=Aspen Support Beam
+tile.tfc.wood.support.birch.name=Birch Support Beam
+tile.tfc.wood.support.chestnut.name=Chestnut Support Beam
+tile.tfc.wood.support.douglas_fir.name=Douglas Fir Support Beam
+tile.tfc.wood.support.hickory.name=Hickory Support Beam
+tile.tfc.wood.support.maple.name=Maple Support Beam
+tile.tfc.wood.support.oak.name=Oak Support Beam
+tile.tfc.wood.support.pine.name=Pine Support Beam
+tile.tfc.wood.support.sequoia.name=Sequoia Support Beam
+tile.tfc.wood.support.spruce.name=Spruce Support Beam
+tile.tfc.wood.support.sycamore.name=Sycamore Support Beam
+tile.tfc.wood.support.white_cedar.name=White Cedar Support Beam
+tile.tfc.wood.support.willow.name=Willow Support Beam
+tile.tfc.wood.support.kapok.name=Kapok Support Beam
+tile.tfc.wood.support.acacia.name=Acacia Support Beam
+tile.tfc.wood.support.rosewood.name=Rosewood Support Beam
+tile.tfc.wood.support.blackwood.name=Blackwood Support Beam
+tile.tfc.wood.support.palm.name=Palm Support Beam
+
 tile.tfc.wall.cobble.granite.name=Granite Cobble Wall
 tile.tfc.wall.cobble.diorite.name=Diorite Cobble Wall
 tile.tfc.wall.cobble.gabbro.name=Gabbro Cobble Wall
