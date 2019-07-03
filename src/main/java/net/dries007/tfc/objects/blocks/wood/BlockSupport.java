@@ -69,7 +69,8 @@ public class BlockSupport extends Block
      */
     public static boolean isBeingSupported(World worldIn, BlockPos pos)
     {
-        for (BlockPos searchSupport : BlockPos.getAllInBox(pos.add(-5, -1, -5), pos.add(5, 1, 5)))
+        if(!worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))return true; //If world isn't loaded...
+        for (BlockPos.MutableBlockPos searchSupport : BlockPos.getAllInBoxMutable(pos.add(-5, -1, -5), pos.add(5, 1, 5)))
         {
             IBlockState st = worldIn.getBlockState(searchSupport);
             if (st.getBlock() instanceof BlockSupport)

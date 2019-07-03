@@ -11,32 +11,57 @@ import java.util.Set;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.util.TFCConstants;
 
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.util.Helpers.getNull;
+
+@Mod.EventBusSubscriber(modid = MOD_ID)
+@GameRegistry.ObjectHolder(MOD_ID)
 public class TFCSoundEvents
 {
-    static Set<SoundEvent> EVENTS = new HashSet();
-    public static SoundEvent ROCK_SLIDE_LONG = registerSound("rock.slide.long");
-    public static SoundEvent ROCK_SLIDE_SHORT = registerSound("rock.slide.short");
-    public static SoundEvent DIRT_SLIDE_SHORT = registerSound("dirt.slide.short");
-    public static SoundEvent BELLOWS_BLOW_AIR = registerSound("bellows.blow.air");
-    public static SoundEvent QUERN_USE = registerSound("quern.stonedrag");
-    public static SoundEvent CERAMIC_BREAK = registerSound("item.ceramicbreak");
-    public static SoundEvent ANVIL_IMPACT = registerSound("anvil.metalimpact");
 
-    private static SoundEvent registerSound(String name)
+    @GameRegistry.ObjectHolder("rock.slide.long")
+    public static final SoundEvent ROCK_SLIDE_LONG = getNull();
+    @GameRegistry.ObjectHolder("rock.slide.short")
+    public static final SoundEvent ROCK_SLIDE_SHORT = getNull();
+    @GameRegistry.ObjectHolder("dirt.slide.short")
+    public static final SoundEvent DIRT_SLIDE_SHORT = getNull();
+    @GameRegistry.ObjectHolder("bellows.blow.air")
+    public static final SoundEvent BELLOWS_BLOW_AIR = getNull();
+    @GameRegistry.ObjectHolder("quern.stonedrag")
+    public static final SoundEvent QUERN_USE = getNull();
+    @GameRegistry.ObjectHolder("item.ceramicbreak")
+    public static final SoundEvent CERAMIC_BREAK = getNull();
+    @GameRegistry.ObjectHolder("anvil.metalimpact")
+    public static final SoundEvent ANVIL_IMPACT = getNull();
+
+
+
+
+    @SubscribeEvent
+    public static void registerSounds(RegistryEvent.Register<SoundEvent> event)
     {
-        ResourceLocation location = new ResourceLocation(TFCConstants.MOD_ID, name);
-        SoundEvent event = new SoundEvent(location);
-        EVENTS.add(event.setRegistryName(location));
-        return event;
+        IForgeRegistry<SoundEvent> r = event.getRegistry();
+        register(r,"rock.slide.long");
+        register(r,"rock.slide.short");
+        register(r,"dirt.slide.short");
+        register(r,"bellows.blow.air");
+        register(r,"quern.stonedrag");
+        register(r,"item.ceramicbreak");
+        register(r,"anvil.metalimpact");
     }
 
-    public static void init()
+    private static void register(IForgeRegistry<SoundEvent> r, String name)
     {
-        for(SoundEvent event : EVENTS)
-            ForgeRegistries.SOUND_EVENTS.register(event);
+        ResourceLocation soundID = new ResourceLocation(MOD_ID, name);
+        r.register(new SoundEvent(soundID).setRegistryName(soundID));
     }
 }

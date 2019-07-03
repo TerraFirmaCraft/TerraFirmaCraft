@@ -123,6 +123,16 @@ public class ConfigTFC
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.playerThirstModifier")
         public double playerThirstModifier = 1.0;
+
+        @Config.Comment("Chance that mining a raw rock triggers a collapse.")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.collapseChance")
+        public double collapseChance = 0.10;
+
+        @Config.Comment("Chance that collapsing blocks propagade the collapse. Influenced by distance from epicenter of collapse.")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.propogateCollapseChance")
+        public double propogateCollapseChance = 0.55;
     }
 
     public static class ClientCFG

@@ -10,6 +10,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariantFallable;
 import net.dries007.tfc.objects.blocks.wood.BlockSupport;
 
@@ -35,13 +37,13 @@ public interface ICollapsableBlock
     {
         if (!worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
             return; //First, let's check if this area is loaded
-        if (worldIn.rand.nextInt(100) < 10) //Then, we check rng if a collapse should trigger
+        if (Constants.RNG.nextDouble() < ConfigTFC.GENERAL.collapseChance) //Then, we check rng if a collapse should trigger
         {
             //Rng the radius
-            int radX = (worldIn.rand.nextInt(5) + 4) / 2;
-            int radY = (worldIn.rand.nextInt(3) + 2) / 2;
-            int radZ = (worldIn.rand.nextInt(5) + 4) / 2;
-            for (BlockPos checking : BlockPos.getAllInBox(pos.add(-radX, -radY, -radZ), pos.add(radX, radY, radZ))) //9x5x9 max
+            int radX = (Constants.RNG.nextInt(5) + 4) / 2;
+            int radY = (Constants.RNG.nextInt(3) + 2) / 2;
+            int radZ = (Constants.RNG.nextInt(5) + 4) / 2;
+            for (BlockPos.MutableBlockPos checking : BlockPos.getAllInBoxMutable(pos.add(-radX, -radY, -radZ), pos.add(radX, radY, radZ))) //9x5x9 max
             {
                 //Check the area for a block collapse!
                 if (worldIn.getBlockState(checking).getBlock() instanceof ICollapsableBlock)
@@ -79,8 +81,8 @@ public interface ICollapsableBlock
                     Math.pow(centerPoint.getX() - cavein.getX(), 2)
                         + Math.pow(centerPoint.getY() - cavein.getY(), 2)
                         + Math.pow(centerPoint.getZ() - cavein.getZ(), 2);
-                int chance = 55 - (int) Math.sqrt(distSqrd);
-                if (world.rand.nextInt(100) < chance)
+                double chance = ConfigTFC.GENERAL.propogateCollapseChance - 0.01 * Math.sqrt(distSqrd);
+                if (Constants.RNG.nextDouble() < chance)
                 {
                     BlockRockVariantFallable fallingBlock = ((ICollapsableBlock) st.getBlock()).getFallingVariant();
                     world.setBlockState(cavein, fallingBlock.getDefaultState());
