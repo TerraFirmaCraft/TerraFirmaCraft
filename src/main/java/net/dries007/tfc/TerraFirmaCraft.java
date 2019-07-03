@@ -164,7 +164,6 @@ public final class TerraFirmaCraft
 
         OreDictionaryHelper.init();
         ItemsTFC.init();
-        TFCSoundEvents.init();
 
         if (event.getSide().isClient())
         {
