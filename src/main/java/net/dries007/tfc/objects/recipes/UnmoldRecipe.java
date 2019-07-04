@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.gson.JsonObject;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -51,7 +50,8 @@ public class UnmoldRecipe extends ShapelessOreRecipe
     @Nonnull
     public NonNullList<ItemStack> getRemainingItems(final InventoryCrafting inv)
     {
-        ItemStack moldStack = null;
+        final NonNullList<ItemStack> remainingItems = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+
         for (int slot = 0; slot < inv.getSizeInventory(); slot++)
         {
             ItemStack stack = inv.getStackInSlot(slot);
@@ -60,34 +60,26 @@ public class UnmoldRecipe extends ShapelessOreRecipe
                 if (stack.getItem() instanceof ItemMold)
                 {
                     ItemMold tmp = ((ItemMold) stack.getItem());
-                    if (tmp.type.equals(this.type) && moldStack == null)
+                    if (tmp.type.equals(this.type))
                     {
-                        moldStack = stack;
+                        //Only perform random on server side so it doesn't cause desync with the remeaning item
+                        if (Constants.RNG.nextFloat() <= chance && !ForgeHooks.getCraftingPlayer().world.isRemote)
+                        {
+                            remainingItems.set(slot, new ItemStack(stack.getItem()));
+                        }
                     }
                     else
                     {
-                        return super.getRemainingItems(inv);
+                        return remainingItems;
                     }
                 }
                 else
                 {
-                    return super.getRemainingItems(inv);
+                    return remainingItems;
                 }
             }
         }
-        if (moldStack != null)
-        {
-            if (Constants.RNG.nextFloat() <= chance)
-            {
-                EntityPlayer player = ForgeHooks.getCraftingPlayer();
-                if (player != null)
-                {
-                    player.addItemStackToInventory(new ItemStack(moldStack.getItem()));
-                }
-            }
-        }
-
-        return super.getRemainingItems(inv);
+        return remainingItems;
     }
 
     @Override
