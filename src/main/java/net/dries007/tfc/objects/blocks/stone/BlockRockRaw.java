@@ -39,29 +39,28 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
         return (BlockRockVariantFallable) BlockRockVariant.get(rock, Rock.Type.COBBLE);
     }
 
+    @Override
+    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
+    {
+        // Trigger the collapsing mechanic!
+        checkCollapsingArea(worldIn, pos);
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (worldIn.getBlockState(pos.up()).getMaterial().isReplaceable()
-            && worldIn.getBlockState(pos.down()).getMaterial().isReplaceable()
-            && worldIn.getBlockState(pos.north()).getMaterial().isReplaceable()
-            && worldIn.getBlockState(pos.south()).getMaterial().isReplaceable()
-            && worldIn.getBlockState(pos.east()).getMaterial().isReplaceable()
-            && worldIn.getBlockState(pos.west()).getMaterial().isReplaceable())
+        for (EnumFacing face : EnumFacing.values())
         {
-            //Silk touch effect
+            if (!worldIn.getBlockState(pos.offset(face)).getBlock().isReplaceable(worldIn, pos))
+            {
+                break;
+            }
+            // No supporting solid blocks, so pop off as an item
             worldIn.setBlockToAir(pos);
             Helpers.spawnItemStack(worldIn, pos, new ItemStack(state.getBlock(), 1));
         }
-    }
-
-    @Override
-    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
-    {
-        //Trigger the collapsing mechanic!
-        checkCollapsingArea(worldIn, pos);
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
     }
 
     @Override
