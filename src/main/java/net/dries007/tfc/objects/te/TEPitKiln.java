@@ -240,6 +240,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                     return tryLight();
                 }
             }
+            return true; //This was added so when the pit kiln is full of either logs or straws player won't grab the last input holding the same item in hand
         }
         return false;
     }
