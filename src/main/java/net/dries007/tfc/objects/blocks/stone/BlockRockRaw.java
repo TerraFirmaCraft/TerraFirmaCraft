@@ -50,17 +50,18 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
         for (EnumFacing face : EnumFacing.values())
         {
             if (!worldIn.getBlockState(pos.offset(face)).getBlock().isReplaceable(worldIn, pos))
             {
-                break;
+                return;
             }
-            // No supporting solid blocks, so pop off as an item
-            worldIn.setBlockToAir(pos);
-            Helpers.spawnItemStack(worldIn, pos, new ItemStack(state.getBlock(), 1));
         }
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+
+        // No supporting solid blocks, so pop off as an item
+        worldIn.setBlockToAir(pos);
+        Helpers.spawnItemStack(worldIn, pos, new ItemStack(state.getBlock(), 1));
     }
 
     @Override
