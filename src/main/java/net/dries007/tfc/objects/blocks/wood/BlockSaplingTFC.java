@@ -30,7 +30,7 @@ import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
 public class BlockSaplingTFC extends BlockBush implements IGrowable

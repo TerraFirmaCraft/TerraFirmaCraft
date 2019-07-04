@@ -77,6 +77,14 @@ public class BlockPlacedItem extends Block
         return PLACED_ITEM_AABB;
     }
 
+    @SuppressWarnings("deprecation")
+    @Nullable
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return NULL_AABB;
+    }
+
     @Override
     @Nonnull
     @SuppressWarnings("deprecation")

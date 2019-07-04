@@ -10,7 +10,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
 public class TETickCounter extends TEBase
@@ -19,12 +19,12 @@ public class TETickCounter extends TEBase
 
     public long getTicksSinceUpdate()
     {
-        return CalendarTFC.getCalendarTime() - lastUpdateTick;
+        return CalendarTFC.INSTANCE.getCalendarTime() - lastUpdateTick;
     }
 
     public void resetCounter()
     {
-        lastUpdateTick = CalendarTFC.getCalendarTime();
+        lastUpdateTick = CalendarTFC.INSTANCE.getCalendarTime();
         markDirty();
     }
 

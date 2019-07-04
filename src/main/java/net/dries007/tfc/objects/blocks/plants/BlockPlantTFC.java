@@ -40,7 +40,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -65,7 +65,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     }
 
     /* Growth Stage of the plant, tied to the month of year */
-    public final PropertyInteger GROWTHSTAGE;
+    public final PropertyInteger growthStageProperty;
     protected final Plant plant;
     protected final BlockStateContainer blockState;
 
@@ -77,7 +77,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         plant.getOreDictName().ifPresent(name -> OreDictionaryHelper.register(this, name));
 
         this.plant = plant;
-        GROWTHSTAGE = PropertyInteger.create("stage", 0, plant.getNumStages());
+        this.growthStageProperty = PropertyInteger.create("stage", 0, plant.getNumStages());
         this.setTickRandomly(true);
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
@@ -105,7 +105,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]);
+        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]);
     }
 
     @Override
@@ -118,19 +118,19 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
-        CalendarTFC.Month currentMonth = CalendarTFC.getMonthOfYear();
-        int currentStage = state.getValue(GROWTHSTAGE);
+        CalendarTFC.Month currentMonth = CalendarTFC.INSTANCE.getMonthOfYear();
+        int currentStage = state.getValue(growthStageProperty);
         int expectedStage = plant.getStages()[currentMonth.id()];
         int currentTime = state.getValue(DAYPERIOD);
         int expectedTime = getDayPeriod();
 
         if (currentTime != expectedTime)
         {
-            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, currentStage));
+            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(growthStageProperty, currentStage));
         }
         if (currentStage != expectedStage && random.nextDouble() < 0.5)
         {
-            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(GROWTHSTAGE, expectedStage));
+            worldIn.setBlockState(pos, state.withProperty(DAYPERIOD, expectedTime).withProperty(growthStageProperty, expectedStage));
         }
 
         this.updateTick(worldIn, pos, state, random);
@@ -145,7 +145,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]));
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]));
         checkAndDropBlock(world, pos, state);
     }
 
@@ -162,6 +162,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     {
         double movementMod = plant.getMovementMod();
         //Entity X/Z motion is reduced by plants.
+        // todo: make this specific to the plant type (i.e. smaller grasses affect you less than larger ones)
         entityIn.motionX *= movementMod;
         entityIn.motionZ *= movementMod;
     }
@@ -339,12 +340,12 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     protected BlockStateContainer createPlantBlockState()
     {
-        return new BlockStateContainer(this, GROWTHSTAGE, DAYPERIOD, AGE);
+        return new BlockStateContainer(this, growthStageProperty, DAYPERIOD, AGE);
     }
 
     int getDayPeriod()
     {
-        return Math.floorDiv(CalendarTFC.getHourOfDay(), CalendarTFC.HOURS_IN_DAY / 4);
+        return Math.floorDiv(CalendarTFC.INSTANCE.getHourOfDay(), CalendarTFC.HOURS_IN_DAY / 4);
     }
 
     private boolean isValidSoil(IBlockState state)

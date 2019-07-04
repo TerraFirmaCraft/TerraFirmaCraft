@@ -3,9 +3,9 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.util.agriculture;
+package net.dries007.tfc.api.capability.food;
 
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public enum Nutrient
 {

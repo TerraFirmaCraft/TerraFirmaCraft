@@ -107,7 +107,7 @@ public class ConfigTFC
         @Config.Comment("Modifier for how quickly the players nutrition values will decay")
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.playerNutritionDecayModifier")
-        public double playerNutritionDecayModifier = 0.2;
+        public double playerNutritionDecayModifier = 0.0003;
 
         @Config.Comment("Minimum health modifier player can obtain with low stats")
         @Config.RangeDouble(min = 0.1d, max = 1d)
@@ -120,9 +120,9 @@ public class ConfigTFC
         public double playerMaxHealthModifier = 3d;
 
         @Config.Comment("Modifier for how quickly the players becomes thirsty")
-        @Config.RangeDouble(min = 0, max = 10)
+        @Config.RangeDouble(min = 0, max = 100)
         @Config.LangKey("config." + MOD_ID + ".general.playerThirstModifier")
-        public double playerThirstModifier = 1.0;
+        public double playerThirstModifier = 8.0;
 
         @Config.Comment("Chance that mining a raw rock triggers a collapse.")
         @Config.RangeDouble(min = 0, max = 1)
@@ -133,6 +133,30 @@ public class ConfigTFC
         @Config.RangeDouble(min = 0, max = 1)
         @Config.LangKey("config." + MOD_ID + ".general.propogateCollapseChance")
         public double propogateCollapseChance = 0.55;
+
+        @Config.Comment("Damage Source Types that will default to Slashing damage")
+        @Config.LangKey("config." + MOD_ID + ".general.slashingDamageSources")
+        public String[] slashingDamageSources = new String[] {};
+
+        @Config.Comment("Damage Source Types that will default to Piercing damage")
+        @Config.LangKey("config." + MOD_ID + ".general.piercingDamageSources")
+        public String[] piercingDamageSources = new String[] {"arrow", "cactus", "thorns"};
+
+        @Config.Comment("Damage Source Types that will default to Crushing damage")
+        @Config.LangKey("config." + MOD_ID + ".general.crushingDamageSources")
+        public String[] crushingDamageSources = new String[] {"anvil", "falling_block"};
+
+        @Config.Comment("Damage Source Entities that will default to Slashing damage")
+        @Config.LangKey("config." + MOD_ID + ".general.slashingDamageEntities")
+        public String[] slashingDamageEntities = new String[] {"minecraft:wither_skeleton", "minecraft:vex", "minecraft:vindication_illager", "minecraft:zombie_pigman", "minecraft:wolf", "minecraft:polar_bear"};
+
+        @Config.Comment("Damage Source Entities that will default to Piercing damage")
+        @Config.LangKey("config." + MOD_ID + ".general.piercingDamageEntities")
+        public String[] piercingDamageEntities = new String[] {"minecraft:stray", "minecraft:skeleton"};
+
+        @Config.Comment("Damage Source Entities that will default to Crushing damage")
+        @Config.LangKey("config." + MOD_ID + ".general.crushingDamageEntities")
+        public String[] crushingDamageEntities = new String[] {"minecraft:husk", "minecraft:skeleton_horse", "minecraft:zombie_horse", "minecraft:spider", "minecraft:giant", "minecraft:zombie", "minecraft:slime", "minecraft:cave_spider", "minecraft:silverfish", "minecraft:villager_golem", "minecraft:zombie_villager"};
     }
 
     public static class ClientCFG

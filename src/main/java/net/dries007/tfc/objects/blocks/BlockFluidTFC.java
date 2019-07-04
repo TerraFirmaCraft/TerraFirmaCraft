@@ -20,24 +20,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 
-public class BlockFluidClassicTFC extends BlockFluidClassic
+public class BlockFluidTFC extends BlockFluidClassic
 {
-    public BlockFluidClassicTFC(Fluid fluid, Material material)
+    public BlockFluidTFC(Fluid fluid, Material material, boolean canCreateSources)
     {
         super(fluid, material);
+        this.canCreateSources = canCreateSources;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        if (rand.nextInt(4) != 0) return;
-        if (definedFluid == FluidsTFC.HOT_WATER)
+        if (definedFluid == FluidsTFC.HOT_WATER && rand.nextInt(4) == 0)
         {
-            double d0 = (double) ((float) pos.getX() + rand.nextFloat());
-            double d1 = (double) pos.getY() + 0.50D;
-            double d2 = (double) ((float) pos.getZ() + rand.nextFloat());
-            worldIn.spawnParticle(EnumParticleTypes.WATER_BUBBLE, d0, d1, d2, 0.0D, 0.0D, 0.0D, Block.getStateId(stateIn));
+            worldIn.spawnParticle(EnumParticleTypes.WATER_BUBBLE, (double) (pos.getX() + rand.nextFloat()), pos.getY() + 0.50D, (double) (pos.getZ() + rand.nextFloat()), 0.0D, 0.0D, 0.0D, Block.getStateId(stateIn));
         }
     }
 }

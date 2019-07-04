@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.world.classic.worldgen;
+package net.dries007.tfc.world.classic.worldgen.fissure;
 
 import java.util.List;
 import java.util.Random;
@@ -22,14 +22,12 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
-import net.dries007.tfc.util.CollapseData;
-import net.dries007.tfc.util.CollapseList;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-import static net.dries007.tfc.util.CollapseData.Direction.*;
 import static net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC.getRock3;
+import static net.dries007.tfc.world.classic.worldgen.fissure.CollapseData.Direction.*;
 
 /**
  * todo: fix cascading lag. Priority: medium - low.

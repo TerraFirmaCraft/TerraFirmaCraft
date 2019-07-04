@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.player;
+package net.dries007.tfc.api.capability.food;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,32 +15,47 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 import net.dries007.tfc.util.agriculture.Food;
-import net.dries007.tfc.util.agriculture.Nutrient;
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompound>
 {
     private float[] nutrients;
     private long creationDate;
     private float decayModifier;
+    private float water;
+    private float calories;
 
     public FoodHandler()
     {
-        this(null, new float[] {0f, 0f, 0f, 0f, 0f}, 1f);
+        this(null, new float[] {0f, 0f, 0f, 0f, 0f}, 0.5f, 0f, 1f);
     }
 
     public FoodHandler(@Nullable NBTTagCompound nbt, @Nonnull Food food)
     {
-        this(nbt, food.getNutrients(), food.getDecayModifier());
+        this(nbt, food.getNutrients(), food.getCalories(), food.getWater(), food.getDecayModifier());
     }
 
-    public FoodHandler(@Nullable NBTTagCompound nbt, float[] nutrients, float decayModifier)
+    public FoodHandler(@Nullable NBTTagCompound nbt, float[] nutrients, float calories, float water, float decayModifier)
     {
         this.nutrients = new float[Nutrient.TOTAL];
         this.decayModifier = decayModifier;
+        this.water = water;
+        this.calories = calories;
         System.arraycopy(nutrients, 0, this.nutrients, 0, nutrients.length);
 
         deserializeNBT(nbt);
+    }
+
+    @Override
+    public long getRottenDate()
+    {
+        return creationDate + (long) (decayModifier * CapabilityFood.DEFAULT_ROT_TICKS);
+    }
+
+    @Override
+    public float getWater()
+    {
+        return water;
     }
 
     @Override
@@ -71,15 +86,15 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     }
 
     @Override
-    public long getRottenDate()
+    public float getCalories()
     {
-        return creationDate + (long) (decayModifier * CapabilityPlayer.DEFAULT_ROT_TICKS);
+        return calories;
     }
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityPlayer.CAPABILITY_NUTRIENTS;
+        return capability == CapabilityFood.CAPABILITY;
     }
 
     @Nullable
@@ -87,7 +102,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     @SuppressWarnings("unchecked")
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityPlayer.CAPABILITY_NUTRIENTS ? (T) this : null;
+        return capability == CapabilityFood.CAPABILITY ? (T) this : null;
     }
 
     @Override
@@ -109,7 +124,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         {
             // Don't default to zero
             // Food decay initially is synced with the hour. This allows items grabbed within a minute to stack
-            creationDate = CalendarTFC.getTotalHours() * CalendarTFC.TICKS_IN_HOUR;
+            creationDate = CalendarTFC.INSTANCE.getTotalHours() * CalendarTFC.TICKS_IN_HOUR;
         }
     }
 }

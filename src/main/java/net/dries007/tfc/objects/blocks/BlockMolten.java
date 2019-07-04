@@ -14,7 +14,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -24,7 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.util.ILightableBlock;
+import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 
 @ParametersAreNonnullByDefault
 public class BlockMolten extends Block implements ILightableBlock
@@ -85,6 +88,17 @@ public class BlockMolten extends Block implements ILightableBlock
     public boolean isNormalCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
+    {
+        IBlockState state = worldIn.getBlockState(pos);
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
+        {
+            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 4.0f);
+        }
+        super.onEntityWalk(worldIn, pos, entityIn);
     }
 
     @SuppressWarnings("deprecation")

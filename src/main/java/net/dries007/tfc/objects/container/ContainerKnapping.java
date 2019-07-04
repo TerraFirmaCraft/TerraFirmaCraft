@@ -19,7 +19,6 @@ import net.dries007.tfc.api.recipes.KnappingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.inventory.slot.SlotKnappingOutput;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IButtonHandler;
 import net.dries007.tfc.util.SimpleCraftMatrix;
 
 public class ContainerKnapping extends ContainerItemStack implements IButtonHandler
@@ -49,11 +48,15 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
 
         if (!hasBeenModified)
         {
-            ItemStack stack = Helpers.consumeItem(this.stack, type.getAmountToConsume());
+            ItemStack stack = player.isCreative() ? this.stack : Helpers.consumeItem(this.stack, type.getAmountToConsume());
             if (isOffhand)
+            {
                 player.setHeldItem(EnumHand.OFF_HAND, stack);
+            }
             else
+            {
                 player.setHeldItem(EnumHand.MAIN_HAND, stack);
+            }
             hasBeenModified = true;
         }
 

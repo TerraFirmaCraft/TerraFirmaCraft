@@ -9,6 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,7 +26,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
-import static net.dries007.tfc.util.ILightableBlock.LIT;
+import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -35,6 +36,7 @@ public class TELogPile extends TEInventory implements ITickable
 
     private boolean burning;
     private int burnTicks;
+    private boolean isContainerOpen;
 
     public TELogPile()
     {
@@ -42,6 +44,33 @@ public class TELogPile extends TEInventory implements ITickable
 
         burnTicks = 0;
         burning = false;
+    }
+
+    public void setContainerOpen(boolean containerOpen)
+    {
+        isContainerOpen = containerOpen;
+        setAndUpdateSlots(-1);
+    }
+
+    @Override
+    public void setAndUpdateSlots(int slot)
+    {
+        if (!world.isRemote)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (!inventory.getStackInSlot(i).isEmpty())
+                {
+                    super.setAndUpdateSlots(slot);
+                    return;
+                }
+            }
+            if (!isContainerOpen)
+            {
+                world.setBlockToAir(pos);
+            }
+        }
+        super.setAndUpdateSlots(slot);
     }
 
     @Override
@@ -72,21 +101,9 @@ public class TELogPile extends TEInventory implements ITickable
     }
 
     @Override
-    public void setAndUpdateSlots(int slot)
+    public boolean canInteractWith(EntityPlayer player)
     {
-        if (!world.isRemote)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                if (!inventory.getStackInSlot(i).isEmpty())
-                {
-                    super.setAndUpdateSlots(slot);
-                    return;
-                }
-            }
-            world.setBlockToAir(pos);
-        }
-        super.setAndUpdateSlots(slot);
+        return !burning && world.getTileEntity(pos) == this;
     }
 
     @Override

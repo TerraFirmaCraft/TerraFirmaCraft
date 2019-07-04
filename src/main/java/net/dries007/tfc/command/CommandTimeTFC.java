@@ -21,7 +21,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -55,17 +55,17 @@ public class CommandTimeTFC extends CommandBase
         {
             case "month":
             case "months":
-                time *= CalendarTFC.getDaysInMonth();
+                time *= CalendarTFC.INSTANCE.getDaysInMonth();
                 time *= parseInt(args[2], 0, 12 * 1000);
                 break;
             case "year":
             case "years":
-                time *= CalendarTFC.getDaysInMonth() * 12;
+                time *= CalendarTFC.INSTANCE.getDaysInMonth() * 12;
                 time *= parseInt(args[2], 0, 1000);
                 break;
             case "day":
             case "days":
-                time *= parseInt(args[2], 0, CalendarTFC.getDaysInMonth() * 12 * 1000);
+                time *= parseInt(args[2], 0, CalendarTFC.INSTANCE.getDaysInMonth() * 12 * 1000);
                 break;
             case "tick":
             case "ticks":
@@ -75,7 +75,7 @@ public class CommandTimeTFC extends CommandBase
                 break;
             case "monthlength":
                 int value = parseInt(args[2], 1, 1000);
-                CalendarTFC.setMonthLength(server.getEntityWorld(), value);
+                CalendarTFC.INSTANCE.setMonthLength(server.getEntityWorld(), value);
                 sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_month_length", value));
                 return;
             default:
@@ -84,16 +84,16 @@ public class CommandTimeTFC extends CommandBase
 
         if (args[0].equals("add"))
         {
-            time += CalendarTFC.getCalendarTime();
+            time += CalendarTFC.INSTANCE.getCalendarTime();
         }
         else if (!args[0].equals("set"))
         {
             throw new WrongUsageException("First argument must be <add|set>");
         }
 
-        CalendarTFC.setCalendarTime(server.getEntityWorld(), time);
-        ITextComponent month = new TextComponentTranslation(Helpers.getEnumName(CalendarTFC.getMonthOfYear()));
-        sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_time", CalendarTFC.getTotalYears(), month, CalendarTFC.getDayOfMonth(), String.format("%02d:%02d", CalendarTFC.getHourOfDay(), CalendarTFC.getMinuteOfHour())));
+        CalendarTFC.INSTANCE.setCalendarTime(server.getEntityWorld(), time);
+        ITextComponent month = new TextComponentTranslation(Helpers.getEnumName(CalendarTFC.INSTANCE.getMonthOfYear()));
+        sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_time", CalendarTFC.INSTANCE.getTotalYears(), month, CalendarTFC.INSTANCE.getDayOfMonth(), String.format("%02d:%02d", CalendarTFC.INSTANCE.getHourOfDay(), CalendarTFC.INSTANCE.getMinuteOfHour())));
 
         if (updateDaylightCycle)
         {

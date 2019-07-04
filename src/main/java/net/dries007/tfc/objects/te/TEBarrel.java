@@ -12,6 +12,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -29,7 +30,7 @@ import net.dries007.tfc.objects.fluids.capability.IFluidHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
 import net.dries007.tfc.util.FluidTransferHelper;
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
 public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback
@@ -106,7 +107,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
 
     public String getSealedDate()
     {
-        return CalendarTFC.getTimeAndDate(sealedCalendarTick);
+        return CalendarTFC.INSTANCE.getTimeAndDate(sealedCalendarTick);
     }
 
     /**
@@ -126,13 +127,11 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
 
     /**
      * Called on clients whenever this TileEntity received an update from the server.
-     *
-     * @param tag An NBTTagCompound containing the TE's data.
-     */
+     **/
     @Override
-    public void handleUpdateTag(NBTTagCompound tag)
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
-        readFromNBT(tag);
+        readFromNBT(pkt.getNbtCompound());
         updateLockStatus();
     }
 
@@ -162,10 +161,10 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
 
     public void onSealed()
     {
-        sealedTick = CalendarTFC.getTotalTime();
-        sealedCalendarTick = CalendarTFC.getCalendarTime();
+        sealedTick = CalendarTFC.INSTANCE.getTotalTime();
+        sealedCalendarTick = CalendarTFC.INSTANCE.getCalendarTime();
         recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
-        TerraFirmaCraft.getLog().info("Current recipe: {}. Calendar Tick: {} / {}", recipe == null ? "nothing" : recipe.getRegistryName(), sealedCalendarTick, CalendarTFC.getTimeAndDate(sealedCalendarTick));
+        TerraFirmaCraft.getLog().info("Current recipe: {}. Calendar Tick: {} / {}", recipe == null ? "nothing" : recipe.getRegistryName(), sealedCalendarTick, CalendarTFC.INSTANCE.getTimeAndDate(sealedCalendarTick));
         TerraFirmaCraft.getNetwork().sendToDimension(new PacketBarrelUpdate(this, recipe, sealedCalendarTick), world.provider.getDimension());
     }
 
@@ -173,14 +172,12 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     {
         this.recipe = recipe;
         this.sealedCalendarTick = sealedCalendarTick;
-        TerraFirmaCraft.getLog().info("Calendar Tick: {} / {}", sealedCalendarTick, CalendarTFC.getTimeAndDate(sealedCalendarTick));
+        TerraFirmaCraft.getLog().info("Calendar Tick: {} / {}", sealedCalendarTick, CalendarTFC.INSTANCE.getTimeAndDate(sealedCalendarTick));
     }
 
     @Override
     public void update()
     {
-        //TODO: recipes
-
         if (!world.isRemote)
         {
             tickCounter++;
@@ -218,7 +215,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
             // Check if recipe is complete
             if (recipe != null)
             {
-                int durationSealed = (int) (CalendarTFC.getTotalTime() - sealedTick);
+                int durationSealed = (int) (CalendarTFC.INSTANCE.getTotalTime() - sealedTick);
                 if (durationSealed > recipe.getDuration())
                 {
                     ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);
@@ -263,6 +260,19 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         }
         super.setAndUpdateSlots(slot);
     }
+
+    /**
+     * Called on clients when this TileEntity received an update from the server on load.
+     *
+     * @param tag An NBTTagCompound containing the TE's data.
+     */
+    @Override
+    public void handleUpdateTag(NBTTagCompound tag)
+    {
+        readFromNBT(tag);
+        updateLockStatus();
+    }
+
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
@@ -311,7 +321,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        //TODO: validate items that go in the item storage slot (based on side?)
+        //TODO: validate items that go in the item storage slot (based on size?)
         switch (slot)
         {
             case SLOT_FLUID_CONTAINER_IN:
