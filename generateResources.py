@@ -392,41 +392,41 @@ DOOR_VARIANTS = {
     'facing=south,half=lower,hinge=right,open=true': {'model': 'door_bottom'},
     'facing=west,half=lower,hinge=right,open=true': {'model': 'door_bottom', 'y': 90},
     'facing=north,half=lower,hinge=right,open=true': {'model': 'door_bottom', 'y': 180},
-    'facing=east,half=upper,hinge=left,open=false': {'model': 'door_top'},
-    'facing=south,half=upper,hinge=left,open=false': {'model': 'door_top', 'y': 90},
-    'facing=west,half=upper,hinge=left,open=false': {'model': 'door_top', 'y': 180},
-    'facing=north,half=upper,hinge=left,open=false': {'model': 'door_top', 'y': 270},
-    'facing=east,half=upper,hinge=right,open=false': {'model': 'door_top_rh'},
-    'facing=south,half=upper,hinge=right,open=false': {'model': 'door_top_rh', 'y': 90},
-    'facing=west,half=upper,hinge=right,open=false': {'model': 'door_top_rh', 'y': 180},
-    'facing=north,half=upper,hinge=right,open=false': {'model': 'door_top_rh', 'y': 270},
-    'facing=east,half=upper,hinge=left,open=true': {'model': 'door_top_rh', 'y': 90},
-    'facing=south,half=upper,hinge=left,open=true': {'model': 'door_top_rh', 'y': 180},
-    'facing=west,half=upper,hinge=left,open=true': {'model': 'door_top_rh', 'y': 270},
-    'facing=north,half=upper,hinge=left,open=true': {'model': 'door_top_rh'},
-    'facing=east,half=upper,hinge=right,open=true': {'model': 'door_top', 'y': 270},
-    'facing=south,half=upper,hinge=right,open=true': {'model': 'door_top'},
-    'facing=west,half=upper,hinge=right,open=true': {'model': 'door_top', 'y': 90},
-    'facing=north,half=upper,hinge=right,open=true': {'model': 'door_top', 'y': 180}
+    'facing=east,half=upper,hinge=left,open=false': {'model': 'tfc:door_top_tfc'},
+    'facing=south,half=upper,hinge=left,open=false': {'model': 'tfc:door_top_tfc', 'y': 90},
+    'facing=west,half=upper,hinge=left,open=false': {'model': 'tfc:door_top_tfc', 'y': 180},
+    'facing=north,half=upper,hinge=left,open=false': {'model': 'tfc:door_top_tfc', 'y': 270},
+    'facing=east,half=upper,hinge=right,open=false': {'model': 'tfc:door_top_rh_tfc'},
+    'facing=south,half=upper,hinge=right,open=false': {'model': 'tfc:door_top_rh_tfc', 'y': 90},
+    'facing=west,half=upper,hinge=right,open=false': {'model': 'tfc:door_top_rh_tfc', 'y': 180},
+    'facing=north,half=upper,hinge=right,open=false': {'model': 'tfc:door_top_rh_tfc', 'y': 270},
+    'facing=east,half=upper,hinge=left,open=true': {'model': 'tfc:door_top_rh_tfc', 'y': 90},
+    'facing=south,half=upper,hinge=left,open=true': {'model': 'tfc:door_top_rh_tfc', 'y': 180},
+    'facing=west,half=upper,hinge=left,open=true': {'model': 'tfc:door_top_rh_tfc', 'y': 270},
+    'facing=north,half=upper,hinge=left,open=true': {'model': 'tfc:door_top_rh_tfc'},
+    'facing=east,half=upper,hinge=right,open=true': {'model': 'tfc:door_top_tfc', 'y': 270},
+    'facing=south,half=upper,hinge=right,open=true': {'model': 'tfc:door_top_tfc'},
+    'facing=west,half=upper,hinge=right,open=true': {'model': 'tfc:door_top_tfc', 'y': 90},
+    'facing=north,half=upper,hinge=right,open=true': {'model': 'tfc:door_top_tfc', 'y': 180}
 }
 TRAPDOOR_VARIANTS = {
     'normal': None,
-    'facing=north,half=bottom,open=false': {'model': 'trapdoor_bottom'},
-    'facing=south,half=bottom,open=false': {'model': 'trapdoor_bottom'},
-    'facing=east,half=bottom,open=false': {'model': 'trapdoor_bottom'},
-    'facing=west,half=bottom,open=false': {'model': 'trapdoor_bottom'},
-    'facing=north,half=top,open=false': {'model': 'trapdoor_top'},
-    'facing=south,half=top,open=false': {'model': 'trapdoor_top'},
-    'facing=east,half=top,open=false': {'model': 'trapdoor_top'},
-    'facing=west,half=top,open=false': {'model': 'trapdoor_top'},
-    'facing=north,half=bottom,open=true': {'model': 'trapdoor_open'},
-    'facing=south,half=bottom,open=true': {'model': 'trapdoor_open', 'y': 180},
-    'facing=east,half=bottom,open=true': {'model': 'trapdoor_open', 'y': 90},
-    'facing=west,half=bottom,open=true': {'model': 'trapdoor_open', 'y': 270},
-    'facing=north,half=top,open=true': {'model': 'trapdoor_open'},
-    'facing=south,half=top,open=true': {'model': 'trapdoor_open', 'y': 180},
-    'facing=east,half=top,open=true': {'model': 'trapdoor_open', 'y': 90},
-    'facing=west,half=top,open=true': {'model': 'trapdoor_open', 'y': 270}
+    'facing=north,half=bottom,open=false': {'model': 'tfc:trapdoor_tfc', 'x': 180},
+    'facing=south,half=bottom,open=false': {'model': 'tfc:trapdoor_tfc', 'x': 180},
+    'facing=east,half=bottom,open=false': {'model': 'tfc:trapdoor_tfc', 'x': 180},
+    'facing=west,half=bottom,open=false': {'model': 'tfc:trapdoor_tfc', 'x': 180},
+    'facing=north,half=top,open=false': {'model': 'tfc:trapdoor_tfc'},
+    'facing=south,half=top,open=false': {'model': 'tfc:trapdoor_tfc'},
+    'facing=east,half=top,open=false': {'model': 'tfc:trapdoor_tfc'},
+    'facing=west,half=top,open=false': {'model': 'tfc:trapdoor_tfc'},
+    'facing=north,half=bottom,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 270},
+    'facing=south,half=bottom,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 90},
+    'facing=east,half=bottom,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 270, 'y': 90},
+    'facing=west,half=bottom,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 270, 'y': 270},
+    'facing=north,half=top,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 270},
+    'facing=south,half=top,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 90},
+    'facing=east,half=top,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 270, 'y': 90},
+    'facing=west,half=top,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 270, 'y': 270}
 }
 STAIR_VARIANTS = {
     'normal': {'model': 'stairs'},
@@ -735,16 +735,17 @@ for rock_type in ['granite', 'rhyolite', 'basalt', 'gabbro', 'diorite', 'andesit
 # WOOD STUFF
 for wood_type in WOOD_TYPES:
     # LOG BLOCKS
-    blockstate(('wood', 'log', wood_type), 'cube_column', textures={
+    blockstate(('wood', 'log', wood_type), 'item/generated', textures={
         ('particle', 'side'): 'tfc:blocks/wood/log/%s' % wood_type,
         'end': 'tfc:blocks/wood/top/%s' % wood_type,
         'layer0': 'tfc:items/wood/log/%s' % wood_type,
     }, variants={
         'axis': {
-            'y': {},
-            'z': {'x': 90},
-            'x': {'x': 90, 'y': 90},
+            'y': {'model': 'cube_column'},
+            'z': {'model': 'cube_column', 'x': 90},
+            'x': {'model': 'cube_column', 'x': 90, 'y': 90},
             'none': {
+                'model': 'cube_column',
                 'textures': {'end': 'tfc:blocks/wood/log/%s' % wood_type}
             }
         },
@@ -831,8 +832,7 @@ for wood_type in WOOD_TYPES:
 
     # (WOOD) TRAPDOORS
     blockstate(('wood', 'trapdoor', wood_type), None, textures={
-            'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type,
-        'all': 'tfc:blocks/wood/trapdoor/%s' % wood_type,
+        'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type
         }, variants=TRAPDOOR_VARIANTS)
 
     # CHESTS
