@@ -1,3 +1,6 @@
 {
-  "parent": "tfc:block/plants/snapdragon_pink_1"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/snapdragon/snapdragon_pink_1"
+  }
 }

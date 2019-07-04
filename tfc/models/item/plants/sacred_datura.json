@@ -1,3 +1,6 @@
 {
-  "parent": "tfc:block/plants/sacred_datura_2b"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/sacred_datura/sacred_datura_2b"
+  }
 }

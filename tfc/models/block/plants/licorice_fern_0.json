@@ -1,97 +1,62 @@
 {
-  "credit": "Made with Blockbench",
+  "credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
   "textures": {
-    "0": "tfc:blocks/plants/licorice_fern/licorice1",
-    "1": "tfc:blocks/plants/licorice_fern/licorice2",
-    "particle": "tfc:blocks/plants/licorice_fern/licorice2"
+    "0": "tfc:blocks/plants/licorice_fern/licorice_fern_1",
+    "particle": "tfc:blocks/plants/licorice_fern/licorice_fern_1"
   },
   "elements": [
     {
+      "name": "cube",
       "from": [
-        1,
-        8,
+        0,
+        7,
         1
       ],
       "to": [
-        17,
-        8,
+        16,
+        7,
         17
       ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            16,
+            16,
+            0
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        }
+      },
       "rotation": {
-        "angle": -22.5,
-        "axis": "x",
         "origin": [
-          9,
           8,
-          9
-        ]
-      },
-      "faces": {
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#1",
-          "tintindex": 0
-        },
-        "down": {
-          "uv": [
-            0,
-            16,
-            16,
-            0
-          ],
-          "texture": "#1",
-          "tintindex": 0
-        }
-      }
-    },
-    {
-      "from": [
-        -1,
-        5,
-        1
-      ],
-      "to": [
-        15,
-        5,
-        17
-      ],
-      "rotation": {
-        "angle": -22.5,
-        "axis": "x",
-        "origin": [
           7,
-          5,
           9
-        ]
-      },
-      "faces": {
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#0",
-          "tintindex": 0
-        },
-        "down": {
-          "uv": [
-            0,
-            16,
-            16,
-            0
-          ],
-          "texture": "#0",
-          "tintindex": 0
-        }
+        ],
+        "axis": "x",
+        "angle": -22.5
       }
     }
   ],
-  "display": {}
+  "display": {
+    "thirdperson_righthand": {
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    }
+  }
 }

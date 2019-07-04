@@ -1,3 +1,6 @@
 {
-  "parent": "tfc:block/plants/oxeye_daisy_3"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_3"
+  }
 }

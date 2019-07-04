@@ -1,3 +1,6 @@
 {
-  "parent": "tfc:block/plants/yucca_2"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/yucca/item"
+  }
 }

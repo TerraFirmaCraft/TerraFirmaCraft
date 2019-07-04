@@ -1,3 +1,6 @@
 {
-  "parent": "tfc:block/plants/canna_3"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/canna/canna_3"
+  }
 }

@@ -1,3 +1,6 @@
 {
-  "parent": "tfc:block/plants/grape_hyacinth_1"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/grape_hyacinth/grape_hyacinth_1"
+  }
 }

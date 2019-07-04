@@ -1,3 +1,6 @@
 {
-  "parent": "tfc:block/plants/sagebrush_2"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/sagebrush/sagebrush_2"
+  }
 }

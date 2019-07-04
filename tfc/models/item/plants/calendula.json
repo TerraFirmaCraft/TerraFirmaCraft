@@ -1,3 +1,6 @@
 {
-  "parent": "tfc:block/plants/calendula_3"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/calendula/calendula_3"
+  }
 }

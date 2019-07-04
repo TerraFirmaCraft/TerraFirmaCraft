@@ -1,3 +1,6 @@
 {
-  "parent": "tfc:block/plants/perovskia_3"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/perovskia/perovskia_3"
+  }
 }

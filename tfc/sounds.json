@@ -20,21 +20,18 @@
       "tfc:firestarter10"
     ]
   },
-  
   "item.jug.blow": {
     "category": "ambient",
     "sounds": [
       "tfc:jugblow1"
     ]
   },
-
   "mob.rooster.cry": {
     "category": "ambient",
     "sounds": [
       "tfc:rooster1"
     ]
   },
-
   "quern.stonedrag": {
     "category": "block",
     "sounds": [
@@ -42,14 +39,12 @@
       "tfc:stonedrag2"
     ]
   },
-
   "bellows.blow.air": {
     "category": "block",
     "sounds": [
       "tfc:bellows1"
     ]
   },
-
   "dirt.slide.short": {
     "category": "block",
     "sounds": [
@@ -57,7 +52,6 @@
       "tfc:fdirts2"
     ]
   },
-
   "rock.slide.long": {
     "category": "block",
     "sounds": [
@@ -65,7 +59,6 @@
       "tfc:frockl2"
     ]
   },
-
   "rock.slide.short": {
     "category": "block",
     "sounds": [
@@ -73,7 +66,6 @@
       "tfc:frocks2"
     ]
   },
-
   "anvil.metalimpact": {
     "category": "block",
     "sounds": [
@@ -83,7 +75,6 @@
       "tfc:metalimpact4"
     ]
   },
-
   "mob.deer.say": {
     "category": "ambient",
     "sounds": [
@@ -93,10 +84,9 @@
       "tfc:deer4",
       "tfc:deer5",
       "tfc:deer6",
-	  "tfc:deer7"
+      "tfc:deer7"
     ]
   },
-
   "mob.deer.cry": {
     "category": "ambient",
     "sounds": [
@@ -106,21 +96,18 @@
       "tfc:deercry4"
     ]
   },
-
   "mob.deer.hurt": {
     "category": "ambient",
     "sounds": [
       "tfc:deerhurt1"
     ]
   },
-
   "mob.deer.death": {
     "category": "ambient",
     "sounds": [
       "tfc:deerdeath1"
     ]
   },
-
   "mob.bear.say": {
     "category": "ambient",
     "sounds": [
@@ -132,7 +119,6 @@
       "tfc:bear6"
     ]
   },
-
   "mob.bear.cry": {
     "category": "ambient",
     "sounds": [
@@ -142,28 +128,24 @@
       "tfc:bearcry4"
     ]
   },
-
   "mob.bear.cub.cry": {
     "category": "ambient",
     "sounds": [
       "tfc:bearcubcry1"
     ]
   },
-
   "mob.bear.hurt": {
     "category": "ambient",
     "sounds": [
       "tfc:bearhurt1"
     ]
   },
-
-    "mob.bear.death": {
+  "mob.bear.death": {
     "category": "ambient",
     "sounds": [
       "tfc:beardeath1"
     ]
   },
-
   "mob.pheasant.say": {
     "category": "ambient",
     "sounds": [
@@ -171,28 +153,24 @@
       "tfc:pheasant2"
     ]
   },
-
   "mob.pheasant.chick.say": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasantchick1"
     ]
   },
-
   "mob.pheasant.hurt": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasanthurt1"
     ]
   },
-
   "mob.pheasant.death": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasantdeath1"
     ]
   },
-
   "mob.cricket": {
     "category": "ambient",
     "sounds": [
@@ -202,22 +180,35 @@
       "tfc:cricket4"
     ]
   },
-
   "mob.frog": {
     "category": "ambient",
     "sounds": [
       "tfc:frog1"
     ]
   },
-
   "music.tfc": {
     "category": "music",
     "sounds": [
-      {"name": "tfc:music/m0", "stream": true},
-      {"name": "tfc:music/m1", "stream": true},
-      {"name": "tfc:music/m2", "stream": true},
-      {"name": "tfc:music/m3", "stream": true},
-      {"name": "tfc:music/m4", "stream": true}
+      {
+        "name": "tfc:music/m0",
+        "stream": true
+      },
+      {
+        "name": "tfc:music/m1",
+        "stream": true
+      },
+      {
+        "name": "tfc:music/m2",
+        "stream": true
+      },
+      {
+        "name": "tfc:music/m3",
+        "stream": true
+      },
+      {
+        "name": "tfc:music/m4",
+        "stream": true
+      }
     ]
   }
 }

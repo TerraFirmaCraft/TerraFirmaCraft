@@ -1,3 +1,6 @@
 {
-  "parent": "tfc:block/plants/sapphire_tower_single"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/sapphire_tower/item"
+  }
 }

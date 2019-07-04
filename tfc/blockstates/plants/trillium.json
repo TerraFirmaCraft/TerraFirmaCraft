@@ -4,6 +4,18 @@
       "apply": [
         {
           "model": "tfc:plants/trillium"
+        },
+        {
+          "model": "tfc:plants/trillium",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/trillium",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/trillium",
+          "y": 270
         }
       ]
     }
