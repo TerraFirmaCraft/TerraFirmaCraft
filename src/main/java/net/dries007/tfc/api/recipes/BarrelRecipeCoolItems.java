@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
+import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
@@ -52,15 +53,9 @@ public class BarrelRecipeCoolItems extends BarrelRecipe
     }
 
     @Override
-    public boolean shouldRepeat()
+    public void onRecipeComplete(World world, BlockPos pos)
     {
-        return true;
-    }
-
-    @Override
-    public void onRecipeComplete(World world, BlockPos pos, int tickCounter)
-    {
-        if (tickCounter % 4 == 0)
-            world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 1.0f);
+        if (world.getTotalWorldTime() % 4 == 0)
+            world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.8f, 0.8f + Constants.RNG.nextFloat() * 0.4f);
     }
 }

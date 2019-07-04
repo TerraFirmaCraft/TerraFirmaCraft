@@ -125,12 +125,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         return 0;
     }
 
-    public boolean shouldRepeat()
-    {
-        return false;
-    }
-
-    public void onRecipeComplete(World world, BlockPos pos, int tickCounter)
+    public void onRecipeComplete(World world, BlockPos pos)
     {
 
     }

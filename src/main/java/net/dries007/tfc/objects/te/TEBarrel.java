@@ -186,9 +186,9 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         {
             tickCounter++;
 
-            if (tickCounter % 10 == 0)
+            if (tickCounter == 10)
             {
-                if (tickCounter == 20) tickCounter = 0;
+                tickCounter = 0;
 
                 ItemStack fluidContainerIn = inventory.getStackInSlot(SLOT_FLUID_CONTAINER_IN);
                 FluidActionResult result = FluidTransferHelper.emptyContainerIntoTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, TANK_CAPACITY, world, pos);
@@ -245,12 +245,10 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 {
                     tank.setFluid(instantRecipe.getOutputFluid(inputFluid, inputStack));
                     inventory.setStackInSlot(SLOT_ITEM, instantRecipe.getOutputItem(inputFluid, inputStack));
-                    instantRecipe.onRecipeComplete(world, pos, tickCounter);
+                    instantRecipe.onRecipeComplete(world, pos);
 
                     IBlockState state = world.getBlockState(pos);
                     world.notifyBlockUpdate(pos, state, state, 3);
-
-                    if (!instantRecipe.shouldRepeat()) checkInstantRecipe = false;
                 }
                 else checkInstantRecipe = false;
             }

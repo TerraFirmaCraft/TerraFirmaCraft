@@ -41,6 +41,8 @@ import net.dries007.tfc.objects.fluids.FluidMetal;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.CalendarTFC;
 
+import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+
 public class ItemMold extends ItemFiredPottery
 {
     private static final EnumMap<Metal.ItemType, ItemMold> MAP = new EnumMap<>(Metal.ItemType.class);
@@ -96,6 +98,13 @@ public class ItemMold extends ItemFiredPottery
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
         return new FilledMoldCapability(nbt);
+    }
+
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        IMoldHandler moldHandler = (IMoldHandler) stack.getCapability(FLUID_HANDLER_CAPABILITY, null);
+        return (moldHandler.getMetal() == null) ? super.getItemStackLimit(stack) : 1;
     }
 
     // Extends ItemHeatHandler for ease of use
