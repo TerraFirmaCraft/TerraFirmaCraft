@@ -169,6 +169,9 @@ public final class DefaultRecipes
 
         // Spindle
         r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_UNFIRED_SPINDLE), new ItemStack(ItemsTFC.CERAMICS_FIRED_SPINDLE)).setRegistryName("fired_spindle"));
+
+        // Fire Brick
+        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.UNFIRED_FIRE_BRICK), new ItemStack(ItemsTFC.FIRE_BRICK)).setRegistryName(MOD_ID, "fire_brick"));
     }
 
     @SubscribeEvent

@@ -280,6 +280,7 @@ public final class BlocksTFC
         normalItemBlocks.add(new ItemBlockTFC(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_BLOCKS)));
 
         normalItemBlocks.add(new ItemBlockTFC(register(r, "thatch", new BlockThatch(Material.PLANTS), CT_DECORATIONS)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "fire_bricks", new BlockFireBrick(), CT_DECORATIONS)));
 
         normalItemBlocks.add(new ItemBlockTFC(register(r, "crucible", new BlockCrucible(), CT_MISC)));
         normalItemBlocks.add(new ItemBlockTFC(register(r, "blast_furnace", new BlockBlastFurnace(), CT_MISC)));

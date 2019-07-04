@@ -5,10 +5,7 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -85,10 +82,10 @@ public class BlockSupport extends Block
         return false;
     }
 
-    public static List<BlockPos> getAllUnsupportedBlocksIn(World worldIn, BlockPos from, BlockPos to)
+    public static Set<BlockPos> getAllUnsupportedBlocksIn(World worldIn, BlockPos from, BlockPos to)
     {
-        List<BlockPos> listSupported = new ArrayList<>();
-        List<BlockPos> listUnsupported = new ArrayList<>();
+        Set<BlockPos> listSupported = new HashSet<>();
+        Set<BlockPos> listUnsupported = new HashSet<>();
         int minX = Math.min(from.getX(), to.getX());
         int maxX = Math.max(from.getX(), to.getX());
         int minY = Math.min(from.getY(), to.getY());
@@ -97,19 +94,18 @@ public class BlockSupport extends Block
         int maxZ = Math.max(from.getZ(), to.getZ());
         BlockPos minPoint = new BlockPos(minX, minY, minZ);
         BlockPos maxPoint = new BlockPos(maxX, maxY, maxZ);
-        for (BlockPos searchingPoint : BlockPos.getAllInBox(minPoint.add(-5, -1, -5), maxPoint.add(5, 1, 5)))
+        for (BlockPos.MutableBlockPos searchingPoint : BlockPos.getAllInBoxMutable(minPoint.add(-5, -1, -5), maxPoint.add(5, 1, 5)))
         {
             if (!listSupported.contains(searchingPoint))
-                listUnsupported.add(searchingPoint); //Adding blocks that wasn't found supported
+                listUnsupported.add(searchingPoint.toImmutable()); //Adding blocks that wasn't found supported
             IBlockState st = worldIn.getBlockState(searchingPoint);
             if (st.getBlock() instanceof BlockSupport)
             {
                 if (((BlockSupport) st.getBlock()).canSupportBlocks(worldIn, searchingPoint))
                 {
-                    for (BlockPos supported : BlockPos.getAllInBox(searchingPoint.add(-5, -1, -5), searchingPoint.add(5, 1, 5)))
+                    for (BlockPos.MutableBlockPos supported : BlockPos.getAllInBoxMutable(searchingPoint.add(-5, -1, -5), searchingPoint.add(5, 1, 5)))
                     {
-                        if (!listSupported.contains(supported))
-                            listSupported.add(supported); //Adding all supported blocks by this support
+                        listSupported.add(supported.toImmutable()); //Adding all supported blocks by this support
                         listUnsupported.remove(supported); //Remove if this block was added earlier
                     }
                 }
