@@ -313,6 +313,7 @@ tile.tfc.crucible.name=Crucible
 tile.tfc.torch.name=Torch
 tile.tfc.blast_furnace.name=Blast Furnace
 tile.tfc.bloomery.name=Bloomery
+tile.tfc.fire_bricks.name=Fire Bricks
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite
