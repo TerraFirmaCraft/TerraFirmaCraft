@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +70,7 @@ public class BlockSupport extends Block
      */
     public static boolean isBeingSupported(World worldIn, BlockPos pos)
     {
-        if(!worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))return true; //If world isn't loaded...
+        if (!worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) return true; //If world isn't loaded...
         for (BlockPos.MutableBlockPos searchSupport : BlockPos.getAllInBoxMutable(pos.add(-5, -1, -5), pos.add(5, 1, 5)))
         {
             IBlockState st = worldIn.getBlockState(searchSupport);
@@ -81,6 +82,46 @@ public class BlockSupport extends Block
         }
         return false;
     }
+
+    public static List<BlockPos> getAllUnsupportedBlocksIn(World worldIn, BlockPos from, BlockPos to)
+    {
+        List<BlockPos> listSupported = new ArrayList<>();
+        List<BlockPos> listUnsupported = new ArrayList<>();
+        int minX = Math.min(from.getX(), to.getX());
+        int maxX = Math.max(from.getX(), to.getX());
+        int minY = Math.min(from.getY(), to.getY());
+        int maxY = Math.max(from.getY(), to.getY());
+        int minZ = Math.min(from.getZ(), to.getZ());
+        int maxZ = Math.max(from.getZ(), to.getZ());
+        BlockPos minPoint = new BlockPos(minX, minY, minZ);
+        BlockPos maxPoint = new BlockPos(maxX, maxY, maxZ);
+        for (BlockPos searchingPoint : BlockPos.getAllInBox(minPoint.add(-5, -1, -5), maxPoint.add(5, 1, 5)))
+        {
+            if (!listSupported.contains(searchingPoint))
+                listUnsupported.add(searchingPoint); //Adding blocks that wasn't found supported
+            IBlockState st = worldIn.getBlockState(searchingPoint);
+            if (st.getBlock() instanceof BlockSupport)
+            {
+                if (((BlockSupport) st.getBlock()).canSupportBlocks(worldIn, searchingPoint))
+                {
+                    for (BlockPos supported : BlockPos.getAllInBox(searchingPoint.add(-5, -1, -5), searchingPoint.add(5, 1, 5)))
+                    {
+                        if (!listSupported.contains(supported))
+                            listSupported.add(supported); //Adding all supported blocks by this support
+                        listUnsupported.remove(supported); //Remove if this block was added earlier
+                    }
+                }
+            }
+        }
+        //Searching point wasn't from points between from <-> to but
+        //Time to remove the outsides that were added for convenience
+        listUnsupported.removeIf(content -> content.getX() < minX || content.getX() > maxX
+            || content.getY() < minY || content.getY() > maxY
+            || content.getZ() < minZ || content.getZ() > maxZ);
+
+        return listUnsupported;
+    }
+
     private final Tree wood;
 
     public BlockSupport(Tree wood)
