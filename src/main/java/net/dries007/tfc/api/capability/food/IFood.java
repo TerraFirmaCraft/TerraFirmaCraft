@@ -3,25 +3,20 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.player;
+package net.dries007.tfc.api.capability.food;
 
 import java.util.List;
-import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.Constants;
-import net.dries007.tfc.util.agriculture.Nutrient;
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 /**
  * Capability for any food item
@@ -73,40 +68,23 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
      */
     default boolean isRotten()
     {
-        return getRottenDate() < CalendarTFC.getCalendarTime();
+        return getRottenDate() < CalendarTFC.INSTANCE.getCalendarTime();
     }
 
     /**
-     * Called when the player consumes this food item
-     * Called from {@link CapabilityPlayer.EventHandler}
+     * How much thirst is restored when this item is eaten.
+     * Drinking water from a water source gives 15, for reference
      *
-     * @param player the player doing the consuming
-     * @param stack  the stack being consumed
+     * @return a thirst value, roughly in the range 0 - 15
      */
-    default void onConsumedByPlayer(@Nonnull EntityPlayer player, @Nonnull ItemStack stack)
-    {
-        IPlayerData playerCap = player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
-        if (playerCap != null)
-        {
-            if (isRotten() && !player.world.isRemote)
-            {
-                for (Supplier<PotionEffect> effectSupplier : CapabilityPlayer.getRottenFoodEffects())
-                {
-                    if (Constants.RNG.nextFloat() < 0.8)
-                    {
-                        player.addPotionEffect(effectSupplier.get());
-                    }
-                }
-            }
-            else
-            {
-                for (Nutrient nutrient : Nutrient.values())
-                {
-                    playerCap.addNutrient(nutrient, getNutrient(stack, nutrient));
-                }
-            }
-        }
-    }
+    float getWater();
+
+    /**
+     * This is basically a saturation modifier
+     *
+     * @return a value roughly in the range 0.0 - 1.0
+     */
+    float getCalories();
 
     /**
      * Tooltip added to the food item
@@ -124,7 +102,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
         }
         else
         {
-            text.add(I18n.format("tfc.tooltip.food_expiry_date", CalendarTFC.getTimeAndDate(getRottenDate())));
+            text.add(I18n.format("tfc.tooltip.food_expiry_date", CalendarTFC.INSTANCE.getTimeAndDate(getRottenDate())));
             // Show nutrient values if not rotten
             for (Nutrient nutrient : Nutrient.values())
             {

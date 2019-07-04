@@ -28,6 +28,7 @@ public class PacketCrucibleUpdate implements IMessage
     private BlockPos pos;
 
     @SuppressWarnings("unused")
+    @Deprecated
     public PacketCrucibleUpdate() {}
 
     public PacketCrucibleUpdate(TECrucible tile)

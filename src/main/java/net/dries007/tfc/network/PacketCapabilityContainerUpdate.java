@@ -22,10 +22,10 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.api.capability.player.CapabilityPlayer;
-import net.dries007.tfc.api.capability.player.IFood;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 
 /**
@@ -42,9 +42,8 @@ public class PacketCapabilityContainerUpdate implements IMessage
     private int windowID;
 
     @SuppressWarnings("unused")
-    public PacketCapabilityContainerUpdate()
-    {
-    }
+    @Deprecated
+    public PacketCapabilityContainerUpdate() {}
 
     public PacketCapabilityContainerUpdate(int windowID, int slotID, ItemStack stack)
     {
@@ -107,7 +106,7 @@ public class PacketCapabilityContainerUpdate implements IMessage
     private NBTTagCompound readCapability(final ItemStack stack)
     {
         IItemHeat itemHeat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        IFood food = stack.getCapability(CapabilityPlayer.CAPABILITY_NUTRIENTS, null);
+        IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
         NBTTagCompound nbt = new NBTTagCompound();
         if (itemHeat != null)
         {
@@ -160,7 +159,7 @@ public class PacketCapabilityContainerUpdate implements IMessage
                             }
                         }
 
-                        final IFood food = stack.getCapability(CapabilityPlayer.CAPABILITY_NUTRIENTS, null);
+                        final IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
                         if (food != null)
                         {
                             NBTTagCompound foodNBT = nbt.getCompoundTag("food");

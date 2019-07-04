@@ -30,10 +30,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge;
+import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.te.TECharcoalForge;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.ILightableBlock;
 
 @ParametersAreNonnullByDefault
 public class BlockCharcoalPile extends Block implements ILightableBlock

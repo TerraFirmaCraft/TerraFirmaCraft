@@ -10,18 +10,18 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.util.FoodStats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.player.CapabilityPlayer;
-import net.dries007.tfc.api.capability.player.IPlayerData;
+import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
+import net.dries007.tfc.api.capability.food.Nutrient;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.agriculture.Nutrient;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -37,11 +37,14 @@ public class GuiNutrition extends GuiContainerTFC
         super(container, playerInv, BACKGROUND);
 
         cachedNutrients = new float[Nutrient.TOTAL];
-        IPlayerData cap = playerInv.player.getCapability(CapabilityPlayer.CAPABILITY_PLAYER_DATA, null);
-        if (cap != null)
+
+        FoodStats foodStats = playerInv.player.getFoodStats();
+        if (foodStats instanceof IFoodStatsTFC)
         {
             for (Nutrient n : Nutrient.values())
-                cachedNutrients[n.ordinal()] = cap.getNutrient(n);
+            {
+                cachedNutrients[n.ordinal()] = ((IFoodStatsTFC) foodStats).getNutrient(n);
+            }
         }
     }
 
@@ -58,14 +61,24 @@ public class GuiNutrition extends GuiContainerTFC
     }
 
     @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+    {
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+        for (Nutrient n : Nutrient.values())
+        {
+            int scaledNutrient = (int) (cachedNutrients[n.ordinal()] / 2f);
+            drawTexturedModalRect(guiLeft + 118, guiTop + 21 + 13 * n.ordinal(), 176, 0, scaledNutrient, 5);
+        }
+    }
+
+    @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-
         for (Nutrient n : Nutrient.values())
         {
-            String stuff = I18n.format(Helpers.getEnumName(n)) + ": " + cachedNutrients[n.ordinal()];
-            fontRenderer.drawString(stuff, xSize / 2 - fontRenderer.getStringWidth(stuff) / 2, 10 + 12 * n.ordinal(), 0x404040);
+            String caption = I18n.format(Helpers.getEnumName(n));
+            fontRenderer.drawString(caption, 112 - fontRenderer.getStringWidth(caption), 19 + 13 * n.ordinal(), 0x404040);
         }
     }
 

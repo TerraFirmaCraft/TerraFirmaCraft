@@ -20,6 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -50,6 +51,7 @@ public class ItemRockAxe extends ItemAxe implements IItemSize, IRockObject
         OreDictionaryHelper.register(this, "axe");
         OreDictionaryHelper.register(this, "axe", "stone");
         OreDictionaryHelper.register(this, "axe", "stone", category);
+        OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
     }
 
     @Override

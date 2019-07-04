@@ -70,8 +70,6 @@ public final class ItemsTFC
 
     @GameRegistry.ObjectHolder("ceramics/fire_clay")
     public static final ItemFireClay FIRE_CLAY = getNull();
-    @GameRegistry.ObjectHolder("mold/ingot")
-    public static final ItemMold MOLD_INGOT = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/vessel")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_VESSEL = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/vessel")
@@ -156,7 +154,9 @@ public final class ItemsTFC
             for (Metal metal : TFCRegistries.METALS.getValuesCollection())
             {
                 if (type.hasType(metal))
+                {
                     simpleItems.add(register(r, "metal/" + type.name().toLowerCase() + "/" + metal.getRegistryName().getPath(), Metal.ItemType.create(metal, type), CT_METAL));
+                }
             }
         }
 
@@ -195,8 +195,8 @@ public final class ItemsTFC
                 {
                     // Not using registerPottery here because the ItemMold uses a custom ItemModelMesher, meaning it can't be in simpleItems
                     ItemFiredPottery item = new ItemMold(type);
-                    register(r, "mold/" + type.name().toLowerCase(), item, CT_POTTERY);
-                    simpleItems.add(register(r, "mold/" + type.name().toLowerCase() + "/unfired", new ItemUnfiredMold(item, type), CT_POTTERY));
+                    register(r, "ceramics/fired/mold/" + type.name().toLowerCase(), item, CT_POTTERY);
+                    simpleItems.add(register(r, "ceramics/unfired/mold/" + type.name().toLowerCase(), new ItemUnfiredMold(item, type), CT_POTTERY));
                 }
             }
 

@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
-import net.dries007.tfc.world.classic.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -76,7 +76,7 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(GROWTHSTAGE, plant.getStages()[CalendarTFC.getMonthOfYear().id()]));
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]));
         checkAndDropBlock(world, pos, state);
     }
 
@@ -145,7 +145,7 @@ public class BlockEpiphyteTFC extends BlockPlantTFC
     @Nonnull
     protected BlockStateContainer createPlantBlockState()
     {
-        return new BlockStateContainer(this, FACING, GROWTHSTAGE, DAYPERIOD, AGE);
+        return new BlockStateContainer(this, FACING, growthStageProperty, DAYPERIOD, AGE);
     }
 
     @SuppressWarnings("deprecation")

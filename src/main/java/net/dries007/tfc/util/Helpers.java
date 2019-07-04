@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Joiner;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -119,8 +120,8 @@ public final class Helpers
      * @param worldIn    the world obj player stands in.
      * @param playerIn   the player obj
      * @param useLiquids do fluids counts as block?
-     * @return
      */
+    @Nullable
     public static RayTraceResult rayTrace(World worldIn, EntityPlayer playerIn, boolean useLiquids)
     {
         Vec3d playerVec = new Vec3d(playerIn.posX, playerIn.posY + playerIn.getEyeHeight(), playerIn.posZ);
@@ -131,6 +132,22 @@ public final class Helpers
         double reachDistance = playerIn.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
         Vec3d targetVec = playerVec.add((sinYaw * cosPitch) * reachDistance, sinPitch * reachDistance, (cosYaw * cosPitch) * reachDistance);
         return worldIn.rayTraceBlocks(playerVec, targetVec, useLiquids, !useLiquids, false);
+    }
+
+    /**
+     * Copied from {@link net.minecraft.entity.Entity#rayTrace(double, float)} as it is client only
+     *
+     * @param blockReachDistance the reach distance
+     * @param partialTicks       idk
+     * @return the ray trace result
+     */
+    @Nullable
+    public static RayTraceResult rayTrace(Entity entity, double blockReachDistance, float partialTicks)
+    {
+        Vec3d eyePosition = entity.getPositionEyes(partialTicks);
+        Vec3d lookVector = entity.getLook(partialTicks);
+        Vec3d rayTraceVector = eyePosition.add(lookVector.x * blockReachDistance, lookVector.y * blockReachDistance, lookVector.z * blockReachDistance);
+        return entity.world.rayTraceBlocks(eyePosition, rayTraceVector, false, false, true);
     }
 
     public static boolean containsAnyOfCaseInsensitive(Collection<String> input, String... items)

@@ -38,6 +38,7 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -354,6 +355,7 @@ public class ChunkGenTFC implements IChunkGenerator
         }
     }
 
+    @SuppressWarnings("PointlessArithmeticExpression")
     private void generateRoughTerrain(int chunkX, int chunkZ, ChunkPrimer primer)
     {
         world.getBiomeProvider().getBiomesForGeneration(biomes, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
@@ -524,6 +526,12 @@ public class ChunkGenTFC implements IChunkGenerator
                 Rock rock1 = ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer1[colIndex]);
                 Rock rock2 = ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer2[colIndex]);
                 Rock rock3 = ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer3[colIndex]);
+                // This is a hack to stop this whole thing from crashing and burning
+                // It will be fixed / rewritten in 1.14
+                if (rock1 == null) rock1 = Rock.GRANITE;
+                if (rock2 == null) rock2 = Rock.GRANITE;
+                if (rock3 == null) rock3 = Rock.GRANITE;
+
                 DataLayer drainage = drainageLayer[colIndex];
                 DataLayer stability = stabilityLayer[colIndex];
                 int noise = (int) (noise4[colIndex] / 3.0D + 6.0D);

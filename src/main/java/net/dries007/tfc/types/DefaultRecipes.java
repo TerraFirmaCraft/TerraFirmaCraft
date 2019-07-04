@@ -28,8 +28,8 @@ import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.forge.ForgeRule;
-import net.dries007.tfc.world.classic.CalendarTFC;
 
 import static net.dries007.tfc.api.types.Metal.ItemType.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -102,7 +102,8 @@ public final class DefaultRecipes
         {
             if (type.hasMold(null))
             {
-                event.getRegistry().register(new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemUnfiredMold.get(type)), type.getPattern()).setRegistryName(MOD_ID, type.name().toLowerCase() + "_mold"));
+                int amount = type == INGOT ? 2 : 1;
+                event.getRegistry().register(new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemUnfiredMold.get(type), amount), type.getPattern()).setRegistryName(MOD_ID, type.name().toLowerCase() + "_mold"));
             }
         }
 

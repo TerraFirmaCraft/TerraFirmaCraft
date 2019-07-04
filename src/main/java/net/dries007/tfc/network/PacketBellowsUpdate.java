@@ -25,6 +25,7 @@ public class PacketBellowsUpdate implements IMessage
     private long lastPushed;
 
     @SuppressWarnings("unused")
+    @Deprecated
     public PacketBellowsUpdate() {}
 
     public PacketBellowsUpdate(@Nonnull TEBellows tile, long lastPushed)

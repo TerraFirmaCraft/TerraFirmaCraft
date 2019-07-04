@@ -17,8 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.objects.te.ITileFields;
 import net.dries007.tfc.objects.te.TEInventory;
-import net.dries007.tfc.util.ITileFields;
 
 /**
  * This is the mother of all Container-with-a-Tile-Entity implementations
@@ -57,6 +57,12 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
 
         addContainerSlots();
         addPlayerInventorySlots(playerInv);
+    }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer playerIn)
+    {
+        return tile.canInteractWith(player);
     }
 
     @Override

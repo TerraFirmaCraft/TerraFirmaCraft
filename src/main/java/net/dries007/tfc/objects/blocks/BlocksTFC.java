@@ -289,13 +289,13 @@ public final class BlocksTFC
         {
             Builder<BlockFluidBase> b = ImmutableList.builder();
             for (Fluid fluid : FluidsTFC.getAllInfiniteFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidClassicTFC(fluid, Material.WATER)));
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidTFC(fluid, Material.WATER, true)));
             for (Fluid fluid : FluidsTFC.getAllAlcoholsFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidClassicTFC(fluid, FluidsTFC.MATERIAL_ALCOHOL)));
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidTFC(fluid, FluidsTFC.MATERIAL_ALCOHOL, false)));
             for (Fluid fluid : FluidsTFC.getAllOtherFiniteFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidClassicTFC(fluid, Material.WATER)));
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidTFC(fluid, Material.WATER, false)));
             for (Fluid fluid : FluidsTFC.getAllMetalFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidClassicTFC(fluid, Material.LAVA)));
+                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidTFC(fluid, Material.LAVA, false)));
             allFluidBlocks = b.build();
         }
 
@@ -418,16 +418,16 @@ public final class BlocksTFC
             // Full slabs are the same as full blocks, they are not saved to a list, they are kept track of by the halfslab version.
             for (Rock.Type type : new Rock.Type[] {SMOOTH, COBBLE, BRICKS})
                 for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
-                    register(r, "slab/full/" + (type.name() + "/" + rock.getRegistryName().getPath()).toLowerCase(), new BlockSlabTFC.Double(rock, type));
+                    register(r, "double_slab/" + (type.name() + "/" + rock.getRegistryName().getPath()).toLowerCase(), new BlockSlabTFC.Double(rock, type));
             for (Tree wood : TFCRegistries.TREES.getValuesCollection())
-                register(r, "slab/full/wood/" + wood.getRegistryName().getPath(), new BlockSlabTFC.Double(wood));
+                register(r, "double_slab/wood/" + wood.getRegistryName().getPath(), new BlockSlabTFC.Double(wood));
 
             // Slabs
             for (Rock.Type type : new Rock.Type[] {SMOOTH, COBBLE, BRICKS})
                 for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
-                    slab.add(register(r, "slab/half/" + (type.name() + "/" + rock.getRegistryName().getPath()).toLowerCase(), new BlockSlabTFC.Half(rock, type), CT_DECORATIONS));
+                    slab.add(register(r, "slab/" + (type.name() + "/" + rock.getRegistryName().getPath()).toLowerCase(), new BlockSlabTFC.Half(rock, type), CT_DECORATIONS));
             for (Tree wood : TFCRegistries.TREES.getValuesCollection())
-                slab.add(register(r, "slab/half/wood/" + wood.getRegistryName().getPath(), new BlockSlabTFC.Half(wood), CT_DECORATIONS));
+                slab.add(register(r, "slab/wood/" + wood.getRegistryName().getPath(), new BlockSlabTFC.Half(wood), CT_DECORATIONS));
 
             for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
                 inventoryItemBlocks.add(new ItemBlockTFC(register(r, "stone/button/" + rock.getRegistryName().getPath().toLowerCase(), new BlockButtonStoneTFC(rock), CT_DECORATIONS)));

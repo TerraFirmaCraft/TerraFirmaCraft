@@ -32,10 +32,10 @@ import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlockMolten;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
-import net.dries007.tfc.util.FuelManager;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.fuel.FuelManager;
 
-import static net.dries007.tfc.util.ILightableBlock.LIT;
+import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 import static net.minecraft.block.BlockHorizontal.FACING;
 
 @ParametersAreNonnullByDefault

@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.util.IButtonHandler;
+import net.dries007.tfc.objects.container.IButtonHandler;
 
 /**
  * This is a generic packet that sends a button notification to the players open container, which can delegate to the tile entity if needed
@@ -30,6 +30,7 @@ public class PacketGuiButton implements IMessage
     private NBTTagCompound extraNBT;
 
     @SuppressWarnings("unused")
+    @Deprecated
     public PacketGuiButton() {}
 
     public PacketGuiButton(int buttonID, @Nullable NBTTagCompound extraNBT)
