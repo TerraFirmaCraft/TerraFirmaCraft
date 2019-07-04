@@ -1,6 +1,6 @@
 {
-	"credit": "Made with Blockbench",
-	"parent": "block/block",
+  "credit": "Made with Blockbench",
+  "parent": "block/block",
   "elements": [
     {
       "from": [
