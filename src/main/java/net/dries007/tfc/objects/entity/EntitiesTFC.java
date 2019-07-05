@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -20,7 +21,7 @@ public class EntitiesTFC
     public static void preInit()
     {
         register("falling_block", EntityFallingBlockTFC.class);
-        register("thrown_item", EntityJavelin.class);
+        register("thrown_javelin", EntityThrownJavelin.class);
     }
 
     private static void register(String name, Class<? extends Entity> cls)

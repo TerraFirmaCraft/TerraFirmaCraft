@@ -10,12 +10,10 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemBow;
@@ -32,9 +30,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.entity.EntityJavelin;
+import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.TFCSoundEvents;
 
@@ -296,61 +295,29 @@ public class ItemMetalTool extends ItemMetal
         return type == Metal.ItemType.JAVELIN ? 72000 : 0;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
     {
-        if (entityLiving instanceof EntityPlayer)
+        if (entityLiving instanceof EntityPlayer && type == Metal.ItemType.JAVELIN)
         {
-            EntityPlayer entityplayer = (EntityPlayer) entityLiving;
-            boolean flagInf = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-
-            int i = this.getMaxItemUseDuration(stack) - timeLeft;
-            if (i < 0) return;
-
-            float f = ItemBow.getArrowVelocity(i); //Using bow mechanics for now
-
-            if ((double) f >= 0.1D)
+            EntityPlayer player = (EntityPlayer) entityLiving;
+            int charge = this.getMaxItemUseDuration(stack) - timeLeft;
+            if (charge > 5)
             {
+                float f = ItemBow.getArrowVelocity(charge); //Same charge time as bow
+
                 if (!worldIn.isRemote)
                 {
-                    if (!flagInf) stack.damageItem(1, entityplayer);
-                    EntityJavelin thrownJavelin = new EntityJavelin(worldIn, entityplayer);
-                    thrownJavelin.setThrowItem(stack);
-                    thrownJavelin.setDamage(attackDamage);
-                    thrownJavelin.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
-
-                    if (f == 1.0F)
-                    {
-                        thrownJavelin.setIsCritical(true);
-                    }
-
-                    int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
-
-                    if (j > 0)
-                    {
-                        thrownJavelin.setDamage(thrownJavelin.getDamage() + (double) j * 0.5D + 0.5D);
-                    }
-
-                    int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
-
-                    if (k > 0)
-                    {
-                        thrownJavelin.setKnockbackStrength(k);
-                    }
-
-                    if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack) > 0)
-                    {
-                        thrownJavelin.setFire(100);
-                    }
-
-                    stack.damageItem(1, entityplayer);
-
-                    worldIn.spawnEntity(thrownJavelin);
+                    EntityThrownJavelin javelin = new EntityThrownJavelin(worldIn, player);
+                    javelin.setDamage(attackDamage);
+                    javelin.setWeapon(stack);
+                    javelin.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, f * 1.5F, 0.5F);
+                    worldIn.spawnEntity(javelin);
+                    worldIn.playSound(null, player.posX, player.posY, player.posZ, TFCSoundEvents.ITEM_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F / (Constants.RNG.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
                 }
-
-                worldIn.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, TFCSoundEvents.ITEM_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
-                entityplayer.inventory.deleteStack(stack);
-                entityplayer.addStat(StatList.getObjectUseStats(this));
+                player.inventory.deleteStack(stack);
+                player.addStat(StatList.getObjectUseStats(this));
             }
         }
     }
