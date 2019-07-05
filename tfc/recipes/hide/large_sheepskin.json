@@ -1,0 +1,21 @@
+{
+  "type": "tfc:damage_add_item_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:hide/sheepskin/large"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "knife"
+    }
+  ],
+  "result": {
+    "item": "tfc:animal/product/wool",
+    "count": 3
+  },
+  "output": {
+    "item": "tfc:hide/raw/large",
+    "count": 1
+  },
+  "damage": 3
+}

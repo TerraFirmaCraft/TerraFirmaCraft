@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-	"layer0": "tfc:blocks/plants/porcini/porcini"
+    "layer0": "tfc:blocks/plants/porcini/porcini"
   }
 }
