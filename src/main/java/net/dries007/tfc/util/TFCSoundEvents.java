@@ -5,20 +5,13 @@
 
 package net.dries007.tfc.util;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
-
-import net.dries007.tfc.api.util.TFCConstants;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.util.Helpers.getNull;
@@ -42,6 +35,8 @@ public class TFCSoundEvents
     public static final SoundEvent CERAMIC_BREAK = getNull();
     @GameRegistry.ObjectHolder("anvil.metalimpact")
     public static final SoundEvent ANVIL_IMPACT = getNull();
+    @GameRegistry.ObjectHolder("item.throw")
+    public static final SoundEvent ITEM_THROW = getNull();
 
 
 
@@ -57,6 +52,7 @@ public class TFCSoundEvents
         register(r,"quern.stonedrag");
         register(r,"item.ceramicbreak");
         register(r,"anvil.metalimpact");
+        register(r, "item.throw");
     }
 
     private static void register(IForgeRegistry<SoundEvent> r, String name)

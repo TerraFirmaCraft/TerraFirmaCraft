@@ -20,6 +20,7 @@ public class EntitiesTFC
     public static void preInit()
     {
         register("falling_block", EntityFallingBlockTFC.class);
+        register("thrown_item", EntityJavelin.class);
     }
 
     private static void register(String name, Class<? extends Entity> cls)
