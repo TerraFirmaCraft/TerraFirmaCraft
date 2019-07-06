@@ -27,7 +27,6 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
 {
-
     public BlockRockRaw(Rock.Type type, Rock rock)
     {
         super(type, rock);
