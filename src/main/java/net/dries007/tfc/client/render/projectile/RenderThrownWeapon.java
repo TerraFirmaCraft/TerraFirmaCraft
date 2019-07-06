@@ -14,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownWeapon;
 
 @SideOnly(Side.CLIENT)
@@ -51,10 +50,6 @@ public class RenderThrownWeapon<T extends EntityThrownWeapon> extends Render<T>
         if (!weapon.isEmpty())
         {
             this.itemRenderer.renderItem(weapon, ItemCameraTransforms.TransformType.GROUND);
-        }
-        else
-        {
-            TerraFirmaCraft.getLog().warn(" ERRO NAO ENCONTRADO O WEAPON DA ENTITY");
         }
 
         if (this.renderOutlines)
