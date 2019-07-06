@@ -5,20 +5,13 @@
 
 package net.dries007.tfc.util;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
-
-import net.dries007.tfc.api.util.TFCConstants;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.util.Helpers.getNull;

@@ -70,6 +70,10 @@ public final class ItemsTFC
 
     @GameRegistry.ObjectHolder("ceramics/fire_clay")
     public static final ItemFireClay FIRE_CLAY = getNull();
+    @GameRegistry.ObjectHolder("ceramics/unfired/fire_brick")
+    public static final ItemUnfiredPottery UNFIRED_FIRE_BRICK = getNull();
+    @GameRegistry.ObjectHolder("ceramics/fired/fire_brick")
+    public static final ItemFiredPottery FIRE_BRICK = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/vessel")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_VESSEL = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/vessel")
@@ -283,7 +287,6 @@ public final class ItemsTFC
         // todo: mortar
         // todo: hides (raw, soaked, scraped, prepared)
         // todo: straw
-        // todo: fire clay & fire brick & fire bricks (block)
 
         // todo: jute & jute fiber
         // todo: quiver
