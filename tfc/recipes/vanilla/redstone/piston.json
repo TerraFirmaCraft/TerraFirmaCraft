@@ -8,7 +8,7 @@
   "key": {
     "X": {
       "type": "forge:ore_dict",
-      "ore": "tuyereWroughtIron"
+      "ore": "ingotWroughtIron"
     },
     "S": {
       "type": "forge:ore_dict",
