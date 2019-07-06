@@ -73,21 +73,6 @@
       "tfc:igneous_intrusive"
     ]
   },
-  "galena": {
-    "ore": "tfc:galena",
-    "size": "medium",
-    "shape": "scattered_cluster",
-    "rarity": 100,
-    "minimum_height": 5,
-    "maximum_height": 128,
-    "density": 70,
-    "base_rocks": [
-      "tfc:igneous_extrusive",
-      "tfc:metamorphic",
-      "tfc:granite",
-      "tfc:limestone"
-    ]
-  },
   "bismuthinite": {
     "ore": "tfc:bismuthinite",
     "size": "medium",
@@ -210,18 +195,6 @@
       "tfc:sedimentary"
     ]
   },
-  "gypsum": {
-    "ore": "tfc:gypsum",
-    "size": "large",
-    "shape": "scattered_cluster",
-    "rarity": 120,
-    "minimum_height": 5,
-    "maximum_height": 128,
-    "density": 70,
-    "base_rocks": [
-      "tfc:sedimentary"
-    ]
-  },
   "graphite": {
     "ore": "tfc:graphite",
     "size": "medium",
@@ -247,30 +220,6 @@
     "density": 50,
     "base_rocks": [
       "tfc:gabbro"
-    ]
-  },
-  "jet": {
-    "ore": "tfc:jet",
-    "size": "large",
-    "shape": "scattered_cluster",
-    "rarity": 110,
-    "minimum_height": 5,
-    "maximum_height": 128,
-    "density": 70,
-    "base_rocks": [
-      "tfc:sedimentary"
-    ]
-  },
-  "pitchblende": {
-    "ore": "tfc:pitchblende",
-    "size": "small",
-    "shape": "scattered_cluster",
-    "rarity": 150,
-    "minimum_height": 5,
-    "maximum_height": 128,
-    "density": 70,
-    "base_rocks": [
-      "tfc:granite"
     ]
   },
   "cinnabar": {
