@@ -195,7 +195,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         PROPICK_HEAD(true, 100, true, "XXXXX", "    X", " XXX ", " XXXX", "XXXXX"),
         KNIFE(true, 100, ItemMetalTool::new),
         KNIFE_BLADE(true, 100, true, "XX X", "X  X", "X  X", "X  X", "X  X"),
-        SCYTHE(true, 100, ItemMetalTool::new), // todo: special class + implementation
+        SCYTHE(true, 100, ItemMetalTool::new),
         SCYTHE_BLADE(true, 100, true, "XXXXX", "X    ", "    X", "  XXX", "XXXXX"),
         SHEARS(true, 200, ItemMetalShears::new),
 
