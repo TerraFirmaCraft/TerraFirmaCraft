@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:ceramics/fired/fire_brick"
+    }
+  },
+  "result": {
+    "item": "tfc:fire_bricks",
+    "count": 2
+  }
+}
