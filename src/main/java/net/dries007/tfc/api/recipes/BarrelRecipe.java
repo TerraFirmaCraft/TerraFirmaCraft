@@ -32,8 +32,8 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         return TFCRegistries.BARREL.getValuesCollection().stream().filter(x -> x.isValidInput(fluidStack, stack) && x.getDuration() == 0).findFirst().orElse(null);
     }
 
-    private final IIngredient<ItemStack> inputStack;
-    private final IIngredient<FluidStack> inputFluid;
+    protected final IIngredient<ItemStack> inputStack;
+    protected final IIngredient<FluidStack> inputFluid;
     private final FluidStack outputFluid;
     private final ItemStack outputStack;
     private final int duration;
@@ -125,8 +125,12 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         return 0;
     }
 
-    public void onRecipeComplete(World world, BlockPos pos)
-    {
-
-    }
+    /**
+     * Called by TEBarrel when a recipe finishes
+     * Used if you want to play a sound / cause an update of some sort
+     *
+     * @param world The world
+     * @param pos   The TE pos
+     */
+    public void onRecipeComplete(World world, BlockPos pos) {}
 }

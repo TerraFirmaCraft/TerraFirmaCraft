@@ -73,7 +73,7 @@ public final class DefaultRecipes
             new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of("dustFlux"), new FluidStack(LIMEWATER, 500), ItemStack.EMPTY, 0).setRegistryName(MOD_ID, "limewater"),
             // todo: curdled milk (make it a simpler calculation)
 
-            new BarrelRecipeCoolItems().setRegistryName(MOD_ID, "cool_items")
+            new BarrelRecipeTemperature(IIngredient.of(FRESH_WATER, 1), 50).setRegistryName(MOD_ID, "fresh_water_cooling")
         );
     }
 

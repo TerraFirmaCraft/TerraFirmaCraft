@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.gson.JsonObject;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -21,6 +22,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import net.dries007.tfc.Constants;
@@ -33,13 +35,14 @@ import net.dries007.tfc.objects.items.metal.ItemMetal;
 import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.ITEM_HEAT_CAPABILITY;
 import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 
+@SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
 public class UnmoldRecipe extends ShapelessOreRecipe
 {
-    Metal.ItemType type;
-    float chance;
+    private Metal.ItemType type;
+    private float chance;
 
-    public UnmoldRecipe(ResourceLocation group, NonNullList<Ingredient> input, @Nonnull Metal.ItemType type, float chance)
+    private UnmoldRecipe(ResourceLocation group, NonNullList<Ingredient> input, @Nonnull Metal.ItemType type, float chance)
     {
         super(group, input, ItemStack.EMPTY);
         this.type = type;
@@ -50,8 +53,7 @@ public class UnmoldRecipe extends ShapelessOreRecipe
     @Nonnull
     public NonNullList<ItemStack> getRemainingItems(final InventoryCrafting inv)
     {
-        final NonNullList<ItemStack> remainingItems = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
-
+        // Return empty molds
         for (int slot = 0; slot < inv.getSizeInventory(); slot++)
         {
             ItemStack stack = inv.getStackInSlot(slot);
@@ -59,27 +61,21 @@ public class UnmoldRecipe extends ShapelessOreRecipe
             {
                 if (stack.getItem() instanceof ItemMold)
                 {
-                    ItemMold tmp = ((ItemMold) stack.getItem());
-                    if (tmp.type.equals(this.type))
+                    // No need to check for the mold, as it has already been checked earlier
+                    if (Constants.RNG.nextFloat() <= chance)
                     {
-                        //Only perform random on server side so it doesn't cause desync with the remeaning item
-                        if (Constants.RNG.nextFloat() <= chance && !ForgeHooks.getCraftingPlayer().world.isRemote)
+                        EntityPlayer player = ForgeHooks.getCraftingPlayer();
+                        if (!player.world.isRemote)
                         {
-                            remainingItems.set(slot, new ItemStack(stack.getItem()));
+                            // This can't use the remaining items, because vanilla doesn't sync them on crafting, thus it gives a desync error
+                            // To fix: ContainerWorkbench#onCraftMatrixChanged needs to call Container#detectAndSendChanges
+                            ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(stack.getItem()));
                         }
                     }
-                    else
-                    {
-                        return remainingItems;
-                    }
-                }
-                else
-                {
-                    return remainingItems;
                 }
             }
         }
-        return remainingItems;
+        return super.getRemainingItems(inv);
     }
 
     @Override
@@ -109,11 +105,11 @@ public class UnmoldRecipe extends ShapelessOreRecipe
 
                     if (cap instanceof IMoldHandler)
                     {
-                        IMoldHandler moldHandler = ((IMoldHandler) cap);
+                        IMoldHandler moldHandler = (IMoldHandler) cap;
                         if (!moldHandler.isMolten())
                         {
-                            Metal m = moldHandler.getMetal();
-                            if (m != null && moldItem.type.equals(this.type) && !foundMold)
+                            Metal metal = moldHandler.getMetal();
+                            if (metal != null && moldItem.type.equals(this.type) && !foundMold)
                             {
                                 foundMold = true;
                             }
@@ -196,7 +192,7 @@ public class UnmoldRecipe extends ShapelessOreRecipe
         return true;
     }
 
-    public ItemStack getOutputItem(final IMoldHandler moldHandler, final Metal.ItemType type)
+    private ItemStack getOutputItem(final IMoldHandler moldHandler, final Metal.ItemType type)
     {
         Metal m = moldHandler.getMetal();
         if (m != null)
@@ -229,7 +225,6 @@ public class UnmoldRecipe extends ShapelessOreRecipe
             {
                 chance = JsonUtils.getFloat(json, "chance");
             }
-
 
             return new UnmoldRecipe(group.isEmpty() ? new ResourceLocation(result) : new ResourceLocation(group), ingredients, type, chance);
         }

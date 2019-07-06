@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockWorkbench;
 import net.minecraft.block.SoundType;
@@ -17,7 +18,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -30,7 +30,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.container.ContainerWorkbenchTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockWorkbenchTFC extends BlockWorkbench
@@ -46,9 +48,12 @@ public class BlockWorkbenchTFC extends BlockWorkbench
 
     public BlockWorkbenchTFC(Tree wood)
     {
-        super();
-        if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+        if (MAP.put(wood, this) != null)
+        {
+            throw new IllegalStateException("There can only be one.");
+        }
         this.wood = wood;
+
         setSoundType(SoundType.WOOD);
         setHardness(2.0F).setResistance(5.0F);
         setHarvestLevel("axe", 0);
@@ -79,9 +84,11 @@ public class BlockWorkbenchTFC extends BlockWorkbench
         }
     }
 
+    @ParametersAreNonnullByDefault
+    @MethodsReturnNonnullByDefault
     public static class InterfaceCraftingTable implements IInteractionObject
     {
-        //todo: replace with proper workbench mechanics
+        //todo: replace with proper workbench mechanics + normal forge gui code
         private final BlockWorkbenchTFC workbenchTFC;
         private final World world;
         private final BlockPos position;
@@ -133,32 +140,4 @@ public class BlockWorkbenchTFC extends BlockWorkbench
         }
     }
 
-    public static class ContainerWorkbenchTFC extends ContainerWorkbench
-    {
-        //todo: replace with proper workbench mechanics
-        private final World world;
-        private final BlockPos pos;
-        private final BlockWorkbenchTFC block;
-
-        public ContainerWorkbenchTFC(InventoryPlayer inv, World world, BlockPos pos, BlockWorkbenchTFC block)
-        {
-            super(inv, world, pos);
-            this.world = world;
-            this.pos = pos;
-            this.block = block;
-        }
-
-        @Override
-        public boolean canInteractWith(EntityPlayer playerIn)
-        {
-            if (world.getBlockState(pos).getBlock() != block)
-            {
-                return false;
-            }
-            else
-            {
-                return playerIn.getDistanceSq((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D) <= 64.0D;
-            }
-        }
-    }
 }
