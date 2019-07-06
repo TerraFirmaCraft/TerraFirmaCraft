@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.api.recipes;
 
 import javax.annotation.Nonnull;
@@ -15,19 +20,25 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
-import static net.dries007.tfc.objects.fluids.FluidsTFC.FRESH_WATER;
-
-public class BarrelRecipeCoolItems extends BarrelRecipe
+public class BarrelRecipeTemperature extends BarrelRecipe
 {
-    public BarrelRecipeCoolItems()
+    private final int coolAmount;
+
+    public BarrelRecipeTemperature(IIngredient<FluidStack> fluidInput, int coolAmount)
     {
-        super(IIngredient.of((FluidStack) null), IIngredient.of((ItemStack) null), null, (ItemStack) null, 0);
+        super(fluidInput, IIngredient.empty(), null, ItemStack.EMPTY, 0);
+        this.coolAmount = coolAmount;
     }
 
     @Override
     public boolean isValidInput(FluidStack inputFluid, ItemStack inputStack)
     {
-        return IIngredient.of(FRESH_WATER, 1).testIgnoreCount(inputFluid) && inputStack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null) && inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null).getTemperature() > 0;
+        IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+        if (cap != null)
+        {
+            return cap.getTemperature() > 0 && this.inputFluid.testIgnoreCount(inputFluid);
+        }
+        return false;
     }
 
     @Override
@@ -35,7 +46,10 @@ public class BarrelRecipeCoolItems extends BarrelRecipe
     public ItemStack getOutputItem(FluidStack inputFluid, ItemStack inputStack)
     {
         IItemHeat heat = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        heat.setTemperature(heat.getTemperature() - 50);
+        if (heat != null)
+        {
+            heat.setTemperature(heat.getTemperature() - coolAmount);
+        }
         return inputStack;
     }
 
@@ -56,6 +70,8 @@ public class BarrelRecipeCoolItems extends BarrelRecipe
     public void onRecipeComplete(World world, BlockPos pos)
     {
         if (world.getTotalWorldTime() % 4 == 0)
+        {
             world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.8f, 0.8f + Constants.RNG.nextFloat() * 0.4f);
+        }
     }
 }
