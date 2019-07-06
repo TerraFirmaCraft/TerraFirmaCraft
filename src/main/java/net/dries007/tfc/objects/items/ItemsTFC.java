@@ -31,7 +31,6 @@ import net.dries007.tfc.objects.items.ceramics.*;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
-import net.dries007.tfc.objects.items.metal.ItemMetalShield;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.objects.items.rock.ItemBrickTFC;
@@ -91,9 +90,6 @@ public final class ItemsTFC
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_SPINDLE = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/spindle")
     public static final ItemFiredPottery CERAMICS_FIRED_SPINDLE = getNull();
-
-    @GameRegistry.ObjectHolder("metal/shield/bronze")
-    public static final ItemMetalShield BRONZE_SHIELD = getNull();
 
     @GameRegistry.ObjectHolder("bloom/unrefined")
     public static final ItemBloom UNREFINED_BLOOM = getNull();
