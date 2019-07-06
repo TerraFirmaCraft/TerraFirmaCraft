@@ -44,6 +44,7 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.client.model.ModelShieldTFC;
 import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
@@ -77,6 +78,8 @@ public final class ClientRegisterEvents
     public static void registerModels(ModelRegistryEvent event)
     {
         // ITEMS //
+
+        ItemsTFC.BRONZE_SHIELD.setTileEntityItemStackRenderer(new TEISRShield(ItemsTFC.BRONZE_SHIELD, new ModelShieldTFC()));
 
         // Simple Items
         for (Item item : ItemsTFC.getAllSimpleItems())

@@ -15,14 +15,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -30,12 +23,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.dries007.tfc.util.TFCSoundEvents;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -113,6 +103,12 @@ public class ItemMetalTool extends ItemMetal
                 areaOfAttack = 3;
                 attackSpeed = -3.5f;
                 break;
+            case SHEARS:
+                setHarvestLevel("shears", harvestLevel);
+                typeDamage = 0.5f;
+                areaOfAttack = 1;
+                attackSpeed = -3;
+                break;
             case KNIFE:
                 setHarvestLevel("knife", harvestLevel);
                 typeDamage = 0.5f;
@@ -145,6 +141,11 @@ public class ItemMetalTool extends ItemMetal
                 attackSpeed = -1;
                 OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
+            case SHIELD:
+                typeDamage = 0.1f;
+                areaOfAttack = 1;
+                attackSpeed = -3;
+                break;
             default:
                 throw new IllegalArgumentException("Tool from non tool type.");
         }
@@ -165,6 +166,7 @@ public class ItemMetalTool extends ItemMetal
         {
             case PROPICK:
             case SAW:
+            case SHEARS:
                 stack.damageItem(4, attacker);
                 break;
             case HOE:
@@ -272,59 +274,11 @@ public class ItemMetalTool extends ItemMetal
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
-    {
-        if (type == Metal.ItemType.JAVELIN)
-        {
-            ItemStack itemstack = playerIn.getHeldItem(handIn);
-            playerIn.setActiveHand(handIn);
-            return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
-        }
-        return super.onItemRightClick(worldIn, playerIn, handIn);
-    }
-
-    @Override
-    public EnumAction getItemUseAction(ItemStack stack)
-    {
-        return EnumAction.BOW;
-    }
-
-    @Override
-    public int getMaxItemUseDuration(ItemStack stack)
-    {
-        return type == Metal.ItemType.JAVELIN ? 72000 : 0;
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
-    {
-        if (entityLiving instanceof EntityPlayer && type == Metal.ItemType.JAVELIN)
-        {
-            EntityPlayer player = (EntityPlayer) entityLiving;
-            int charge = this.getMaxItemUseDuration(stack) - timeLeft;
-            if (charge > 5)
-            {
-                float f = ItemBow.getArrowVelocity(charge); //Same charge time as bow
-
-                if (!worldIn.isRemote)
-                {
-                    EntityThrownJavelin javelin = new EntityThrownJavelin(worldIn, player);
-                    javelin.setDamage(attackDamage);
-                    javelin.setWeapon(stack);
-                    javelin.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, f * 1.5F, 0.5F);
-                    worldIn.spawnEntity(javelin);
-                    worldIn.playSound(null, player.posX, player.posY, player.posZ, TFCSoundEvents.ITEM_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F / (Constants.RNG.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
-                }
-                player.inventory.deleteStack(stack);
-                player.addStat(StatList.getObjectUseStats(this));
-            }
-        }
-    }
-
-    @Override
     public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
     {
+        //This stops swords and other weapons breaking blocks in creative
         return canHarvestBlock(world.getBlockState(pos));
     }
+
+    public double getAttackDamage() { return this.attackDamage; }
 }
