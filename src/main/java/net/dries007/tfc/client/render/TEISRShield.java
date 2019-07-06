@@ -1,31 +1,30 @@
 package net.dries007.tfc.client.render;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BannerTextures;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.client.model.ModelShieldTFC;
-import net.dries007.tfc.objects.items.metal.ItemMetalShield;
 
 public class TEISRShield extends TileEntityItemStackRenderer
 {
-    private final Item shield;
     private final ModelShieldTFC shieldModel;
+    private final ResourceLocation shieldTexture;
 
-    public TEISRShield(ItemMetalShield itemShield, ModelShieldTFC modelShield)
+    public TEISRShield(ResourceLocation textureLocation)
     {
-        this.shield = itemShield;
-        this.shieldModel = modelShield;
+        this.shieldModel = new ModelShieldTFC();
+        this.shieldTexture = textureLocation;
     }
 
     @Override
     public void renderByItem(ItemStack itemStackIn, float partialTicks)
     {
         Item item = itemStackIn.getItem();
-        Minecraft.getMinecraft().getTextureManager().bindTexture(BannerTextures.SHIELD_BASE_TEXTURE);
+        Minecraft.getMinecraft().getTextureManager().bindTexture(shieldTexture);
 
         GlStateManager.pushMatrix();
         GlStateManager.scale(1.0F, -1.0F, -1.0F);
