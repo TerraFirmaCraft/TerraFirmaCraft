@@ -78,8 +78,6 @@ public final class ClientRegisterEvents
     {
         // ITEMS //
 
-        ItemsTFC.BRONZE_SHIELD.setTileEntityItemStackRenderer(new TEISRShield(new ResourceLocation(MOD_ID, "items/metal/shield/bronze")));
-
         // Simple Items
         for (Item item : ItemsTFC.getAllSimpleItems())
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName().toString()));
