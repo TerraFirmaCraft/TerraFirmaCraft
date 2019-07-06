@@ -193,6 +193,13 @@ public class ItemMetalTool extends ItemMetal
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
     {
+        if (state.getBlockHardness(worldIn, pos) > 0 || type == Metal.ItemType.KNIFE || type == Metal.ItemType.SCYTHE)
+        {
+            if (!worldIn.isRemote)
+            {
+                stack.damageItem(1, entityLiving);
+            }
+        }
         if (areaOfEffect > 1 && entityLiving instanceof EntityPlayer && !worldIn.isRemote)
         {
             EntityPlayer player = (EntityPlayer) entityLiving;
