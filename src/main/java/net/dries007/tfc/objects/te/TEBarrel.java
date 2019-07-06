@@ -175,6 +175,8 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         TerraFirmaCraft.getLog().info("Calendar Tick: {} / {}", sealedCalendarTick, CalendarTFC.INSTANCE.getTimeAndDate(sealedCalendarTick));
     }
 
+    private boolean checkInstantRecipe = false;
+
     @Override
     public void update()
     {
@@ -231,6 +233,23 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                     recipe = null;
                 }
             }
+
+            if (checkInstantRecipe)
+            {
+                ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);
+                FluidStack inputFluid = tank.getFluid();
+                BarrelRecipe instantRecipe = BarrelRecipe.getInstant(inputStack, inputFluid);
+                if (instantRecipe != null)
+                {
+                    tank.setFluid(instantRecipe.getOutputFluid(inputFluid, inputStack));
+                    inventory.setStackInSlot(SLOT_ITEM, instantRecipe.getOutputItem(inputFluid, inputStack));
+                    instantRecipe.onRecipeComplete(world, pos);
+
+                    IBlockState state = world.getBlockState(pos);
+                    world.notifyBlockUpdate(pos, state, state, 3);
+                }
+                else checkInstantRecipe = false;
+            }
         }
     }
 
@@ -242,23 +261,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     @Override
     public void setAndUpdateSlots(int slot)
     {
-        if (!world.isRemote)
-        {
-            // Try and perform an instant recipe
-            ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);
-            FluidStack inputFluid = tank.getFluid();
-            BarrelRecipe instantRecipe = BarrelRecipe.getInstant(inputStack, inputFluid);
-            if (instantRecipe != null)
-            {
-                // Recipe completion, ignoring sealed status
-                tank.setFluid(instantRecipe.getOutputFluid(inputFluid, inputStack));
-                inventory.setStackInSlot(SLOT_ITEM, instantRecipe.getOutputItem(inputFluid, inputStack));
-
-                IBlockState state = world.getBlockState(pos);
-                world.notifyBlockUpdate(pos, state, state, 3);
-            }
-        }
-        super.setAndUpdateSlots(slot);
+        checkInstantRecipe = true;
     }
 
     /**

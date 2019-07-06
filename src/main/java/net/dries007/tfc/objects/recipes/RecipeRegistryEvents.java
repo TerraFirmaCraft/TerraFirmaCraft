@@ -15,7 +15,6 @@ import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.items.ceramics.ItemMold;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -42,15 +41,6 @@ public class RecipeRegistryEvents
         r.register(new MetalToolRecipe(Metal.ItemType.PROPICK_HEAD, Metal.ItemType.PROPICK).setRegistryName(MOD_ID, "metal_propick"));
         r.register(new MetalToolRecipe(Metal.ItemType.KNIFE_BLADE, Metal.ItemType.KNIFE).setRegistryName(MOD_ID, "metal_knife"));
         r.register(new MetalToolRecipe(Metal.ItemType.SCYTHE_BLADE, Metal.ItemType.SCYTHE).setRegistryName(MOD_ID, "metal_scythe"));
-
-        // MOLD -> ITEM + MOLD (left in grid)
-        // todo: move to an IRecipeFactory and jsonify
-        for (Metal.ItemType type : Metal.ItemType.values())
-        {
-            ItemMold mold = ItemMold.get(type);
-            if (mold == null) continue; // Skip types that don't have mods.
-            r.register(new UnmoldRecipe(mold).setRegistryName(MOD_ID, "unmold_" + type.name().toLowerCase()));
-        }
 
         // todo: in 1.13 move to json overrides
         // This causes massive log spawm

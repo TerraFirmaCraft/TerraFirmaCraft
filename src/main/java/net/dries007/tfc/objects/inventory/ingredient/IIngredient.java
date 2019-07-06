@@ -24,6 +24,14 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public interface IIngredient<T> extends Predicate<T>
 {
+    IIngredient<?> EMPTY = input -> false;
+
+    @SuppressWarnings("unchecked")
+    static <P> IIngredient<P> empty()
+    {
+        return (IIngredient<P>) EMPTY;
+    }
+
     static IIngredient<ItemStack> of(@Nonnull Block predicateBlock)
     {
         return new IngredientItemStack(new ItemStack(predicateBlock, 1, OreDictionary.WILDCARD_VALUE));
