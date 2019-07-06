@@ -24,7 +24,7 @@ public interface ICollapsableBlock
     // Check if this pos is collapsable
     default boolean canCollapse(World world, BlockPos pos)
     {
-        return world.getBlockState(pos.down()).getMaterial().isReplaceable() && !BlockSupport.isBeingSupported(world, pos);
+        return world.getBlockState(pos.down()).getMaterial().isReplaceable();
     }
 
     /**
@@ -43,16 +43,16 @@ public interface ICollapsableBlock
             int radX = (Constants.RNG.nextInt(5) + 4) / 2;
             int radY = (Constants.RNG.nextInt(3) + 2) / 2;
             int radZ = (Constants.RNG.nextInt(5) + 4) / 2;
-            for (BlockPos.MutableBlockPos checking : BlockPos.getAllInBoxMutable(pos.add(-radX, -radY, -radZ), pos.add(radX, radY, radZ))) //9x5x9 max
+            for (BlockPos checking : BlockSupport.getAllUnsupportedBlocksIn(worldIn, pos.add(-radX, -radY, -radZ), pos.add(radX, radY, radZ))) //9x5x9 max
             {
                 //Check the area for a block collapse!
                 if (worldIn.getBlockState(checking).getBlock() instanceof ICollapsableBlock)
                 {
                     ICollapsableBlock block = (ICollapsableBlock) worldIn.getBlockState(checking).getBlock();
-                    if (block.canCollapse(worldIn, checking))
+                    if (block.canCollapse(worldIn, checking)) //Still needs this to check if this can collapse without support(ie: no blocks below)
                     {
                         //Trigger collapse!
-                        collapseArea(worldIn, checking);
+                        block.collapseArea(worldIn, checking);
                         worldIn.playSound(null, pos, TFCSoundEvents.ROCK_SLIDE_LONG, SoundCategory.BLOCKS, 1.0F, 1.0F);
                         return; //Don't need to check other blocks
                     }
@@ -71,11 +71,11 @@ public interface ICollapsableBlock
     default void collapseArea(World world, BlockPos centerPoint)
     {
         int radiusH = (world.rand.nextInt(31) + 5) / 2; //5-36
-        for (BlockPos cavein : BlockPos.getAllInBox(centerPoint.add(-radiusH, -4, -radiusH), centerPoint.add(radiusH, 1, radiusH)))
+        for (BlockPos cavein : BlockSupport.getAllUnsupportedBlocksIn(world, centerPoint.add(-radiusH, -4, -radiusH), centerPoint.add(radiusH, 1, radiusH)))
         {
             IBlockState st = world.getBlockState(cavein);
             if (st.getBlock() instanceof ICollapsableBlock
-                && canCollapse(world, cavein))
+                && ((ICollapsableBlock) st.getBlock()).canCollapse(world, cavein))
             {
                 double distSqrd =
                     Math.pow(centerPoint.getX() - cavein.getX(), 2)
