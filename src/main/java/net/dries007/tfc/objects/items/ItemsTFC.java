@@ -66,7 +66,8 @@ public final class ItemsTFC
     public static final ItemMisc WOOL_CLOTH = getNull();
     @GameRegistry.ObjectHolder("animal/product/silk_cloth")
     public static final ItemMisc SILK_CLOTH = getNull();
-
+    @GameRegistry.ObjectHolder("food/sugarcane")
+    public static final Item SUGARCANE = getNull();
 
     @GameRegistry.ObjectHolder("ceramics/fire_clay")
     public static final ItemFireClay FIRE_CLAY = getNull();

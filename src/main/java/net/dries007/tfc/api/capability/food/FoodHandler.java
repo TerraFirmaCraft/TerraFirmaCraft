@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.api.capability.food;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -19,6 +22,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompound>
 {
+    private final List<IFoodTrait> foodTraits;
     private float[] nutrients;
     private long creationDate;
     private float decayModifier;
@@ -37,6 +41,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
 
     public FoodHandler(@Nullable NBTTagCompound nbt, float[] nutrients, float calories, float water, float decayModifier)
     {
+        this.foodTraits = new ArrayList<>();
         this.nutrients = new float[Nutrient.TOTAL];
         this.decayModifier = decayModifier;
         this.water = water;
@@ -110,15 +115,24 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setLong("creationDate", getCreationDate());
+        // Traits are sorted so they match when trying to stack them
+        nbt.setString("traits", foodTraits.stream().sorted().map(IFoodTrait::getName).collect(Collectors.joining(",")));
         return nbt;
     }
 
     @Override
     public void deserializeNBT(@Nullable NBTTagCompound nbt)
     {
+        foodTraits.clear();
         if (nbt != null && nbt.hasKey("creationDate"))
         {
             creationDate = nbt.getLong("creationDate");
+            // Read the traits and apply each one
+            String serializedFoodTraits = nbt.getString("traits");
+            for (String traitName : serializedFoodTraits.split(","))
+            {
+                foodTraits.add(CapabilityFood.getTraits().get(traitName));
+            }
         }
         else
         {
@@ -126,5 +140,12 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
             // Food decay initially is synced with the hour. This allows items grabbed within a minute to stack
             creationDate = CalendarTFC.INSTANCE.getTotalHours() * CalendarTFC.TICKS_IN_HOUR;
         }
+    }
+
+    @Nonnull
+    @Override
+    public List<IFoodTrait> getTraits()
+    {
+        return foodTraits;
     }
 }
