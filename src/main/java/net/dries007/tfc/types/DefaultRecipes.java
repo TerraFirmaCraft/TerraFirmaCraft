@@ -232,7 +232,9 @@ public final class DefaultRecipes
 
         //Vanilla iron bars and trap doors
         addAnvil(r, "iron_bars", SHEET, WROUGHT_IRON, new ItemStack(Blocks.IRON_BARS, 8), Metal.Tier.TIER_III, UPSET_LAST, PUNCH_SECOND_LAST, PUNCH_THIRD_LAST);
+        addAnvil(r, "iron_bars_double", DOUBLE_SHEET, WROUGHT_IRON, new ItemStack(Blocks.IRON_BARS, 16), Metal.Tier.TIER_III, UPSET_LAST, PUNCH_SECOND_LAST, PUNCH_THIRD_LAST);
         addAnvil(r, "iron_trap_door", DOUBLE_SHEET, WROUGHT_IRON, new ItemStack(Blocks.IRON_TRAPDOOR), Metal.Tier.TIER_III, UPSET_LAST, PUNCH_SECOND_LAST, PUNCH_THIRD_LAST);
+        addAnvil(r, "iron_door", SHEET, WROUGHT_IRON, new ItemStack(Items.IRON_DOOR), Metal.Tier.TIER_III, HIT_LAST, DRAW_NOT_LAST, PUNCH_NOT_LAST);
     }
 
     @SubscribeEvent

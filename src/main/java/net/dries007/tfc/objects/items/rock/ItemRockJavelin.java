@@ -58,7 +58,13 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
     {
         super(1f * category.getToolMaterial().getAttackDamage(), -1, category.getToolMaterial(), ImmutableSet.of());
         this.category = category;
-        if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
+        if (MAP.put(category, this) != null)
+        {
+            throw new IllegalStateException("There can only be one.");
+        }
+
+        setMaxDamage((int) (category.getToolMaterial().getMaxUses() * 0.1));
+
         OreDictionaryHelper.register(this, "javelin");
         OreDictionaryHelper.register(this, "javelin", "stone");
         OreDictionaryHelper.register(this, "javelin", "stone", category);
