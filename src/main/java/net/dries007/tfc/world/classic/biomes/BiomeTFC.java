@@ -28,6 +28,8 @@ public class BiomeTFC extends Biome
 
         // throw out the first decorator, because it's missing the lilypad & plant settings
         this.decorator = createBiomeDecorator();
+
+        // todo: adjust the spawnable creatures lists, and spawn conditions
     }
 
     @Override
@@ -43,6 +45,4 @@ public class BiomeTFC extends Biome
         // todo: Forge event wrap this
         return new BiomeDecoratorTFC(lilyPadPerChunk, waterPlantsPerChunk);
     }
-
-    // todo : temp, climate, etc
 }

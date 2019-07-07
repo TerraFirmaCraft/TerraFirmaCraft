@@ -33,7 +33,7 @@ public class ItemMetalTool extends ItemMetal
 {
     public final ToolMaterial material;
     private final double attackDamage;
-    private final int areaOfAttack; // todo: implement
+    private final int areaOfEffect; // todo: implement
     private final float attackSpeed;
     private float efficiency;
 
@@ -55,44 +55,44 @@ public class ItemMetalTool extends ItemMetal
             case PICK:
                 setHarvestLevel("pickaxe", harvestLevel);
                 typeDamage = 1.2f; // todo: use some central spot for this (config maybe?) and make the rock equivalents use the same numbers.
-                areaOfAttack = 1;
+                areaOfEffect = 1;
                 attackSpeed = -2.8f;
                 break;
             case SHOVEL:
                 setHarvestLevel("shovel", harvestLevel);
                 typeDamage = 1.3f;
-                areaOfAttack = 1;
+                areaOfEffect = 1;
                 attackSpeed = -3f;
                 break;
             case AXE:
                 setHarvestLevel("axe", harvestLevel);
                 typeDamage = 1.5f;
-                areaOfAttack = 1;
+                areaOfEffect = 1;
                 attackSpeed = -3f;
                 OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
                 break;
             case HOE:
                 setHarvestLevel("hoe", harvestLevel);
                 typeDamage = 0.7f;
-                areaOfAttack = 1;
+                areaOfEffect = 1;
                 attackSpeed = -3;
                 break;
             case CHISEL:
                 setHarvestLevel("chisel", harvestLevel);
                 typeDamage = 0.7f;
-                areaOfAttack = 1;
+                areaOfEffect = 1;
                 attackSpeed = 0;
                 break;
             case SAW:
                 setHarvestLevel("saw", harvestLevel);
                 typeDamage = 0.5f;
-                areaOfAttack = 1;
+                areaOfEffect = 1;
                 attackSpeed = -1;
                 break;
             case PROPICK:
                 setHarvestLevel("pickaxe", harvestLevel);
                 typeDamage = 1f;
-                areaOfAttack = 1;
+                areaOfEffect = 1;
                 attackSpeed = -3.5f;
                 setMaxDamage(material.getMaxUses() / 3);
                 efficiency = material.getEfficiency() * 0.5F;
@@ -100,40 +100,51 @@ public class ItemMetalTool extends ItemMetal
             case SCYTHE:
                 setHarvestLevel("scythe", harvestLevel);
                 typeDamage = 1.5f;
-                areaOfAttack = 3;
+                areaOfEffect = 2;
                 attackSpeed = -3.5f;
+                break;
+            case SHEARS:
+                setHarvestLevel("shears", harvestLevel);
+                typeDamage = 0.5f;
+                areaOfEffect = 1;
+                attackSpeed = -3;
                 break;
             case KNIFE:
                 setHarvestLevel("knife", harvestLevel);
                 typeDamage = 0.5f;
-                areaOfAttack = 1;
+                areaOfEffect = 1;
                 attackSpeed = 3f;
                 OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             case HAMMER:
                 setHarvestLevel("hammer", harvestLevel);
                 typeDamage = 2f;
-                areaOfAttack = 1;
+                areaOfEffect = 1;
                 attackSpeed = -3.5f;
                 OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
                 break;
             case SWORD:
                 typeDamage = 1f;
-                areaOfAttack = 1;
+                areaOfEffect = 1;
                 attackSpeed = -0.75f;
                 OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
                 break;
             case MACE:
                 typeDamage = 1.1f;
-                areaOfAttack = 1;
+                areaOfEffect = 1;
                 attackSpeed = -1;
                 OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
                 break;
             case JAVELIN:
                 typeDamage = 1f;
-                areaOfAttack = 1;
+                areaOfEffect = 1;
                 attackSpeed = -1;
                 OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
+                break;
+            case SHIELD:
+                typeDamage = 0.1f;
+                areaOfEffect = 1;
+                attackSpeed = -3;
                 break;
             default:
                 throw new IllegalArgumentException("Tool from non tool type.");
@@ -155,6 +166,7 @@ public class ItemMetalTool extends ItemMetal
         {
             case PROPICK:
             case SAW:
+            case SHEARS:
                 stack.damageItem(4, attacker);
                 break;
             case HOE:
@@ -181,12 +193,26 @@ public class ItemMetalTool extends ItemMetal
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
     {
-        // Knives and scythes always take damage, as they break blocks like grass for extra drops n stuff
         if (state.getBlockHardness(worldIn, pos) > 0 || type == Metal.ItemType.KNIFE || type == Metal.ItemType.SCYTHE)
         {
             if (!worldIn.isRemote)
             {
                 stack.damageItem(1, entityLiving);
+            }
+        }
+        if (areaOfEffect > 1 && entityLiving instanceof EntityPlayer && !worldIn.isRemote)
+        {
+            EntityPlayer player = (EntityPlayer) entityLiving;
+            int areaPlus = areaOfEffect - 1; //First block already added
+            for (BlockPos.MutableBlockPos extraPos : BlockPos.getAllInBoxMutable(pos.add(-areaPlus, -areaPlus, -areaPlus), pos.add(areaPlus, areaPlus, areaPlus)))
+            {
+                IBlockState st = worldIn.getBlockState(extraPos);
+                if (!extraPos.equals(pos) && !worldIn.isAirBlock(extraPos) && canHarvestBlock(st))
+                {
+                    st.getBlock().onPlayerDestroy(worldIn, extraPos, st);
+                    st.getBlock().harvestBlock(worldIn, player, extraPos, st, worldIn.getTileEntity(extraPos), stack);
+                    worldIn.setBlockToAir(extraPos);
+                }
             }
         }
         return true;
@@ -260,4 +286,13 @@ public class ItemMetalTool extends ItemMetal
         // Hammers need to activate anvils for welding
         return this.type == Metal.ItemType.HAMMER || super.doesSneakBypassUse(stack, world, pos, player);
     }
+
+    @Override
+    public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
+    {
+        //This stops swords and other weapons breaking blocks in creative
+        return canHarvestBlock(world.getBlockState(pos));
+    }
+
+    public double getAttackDamage() { return this.attackDamage; }
 }

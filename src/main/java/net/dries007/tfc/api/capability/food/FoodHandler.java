@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.api.capability.food;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -19,11 +22,13 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompound>
 {
-    private float[] nutrients;
+    private final List<IFoodTrait> foodTraits;
+    private final float[] nutrients;
+    private final float decayModifier;
+    private final float water;
+    private final float calories;
+
     private long creationDate;
-    private float decayModifier;
-    private float water;
-    private float calories;
 
     public FoodHandler()
     {
@@ -37,6 +42,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
 
     public FoodHandler(@Nullable NBTTagCompound nbt, float[] nutrients, float calories, float water, float decayModifier)
     {
+        this.foodTraits = new ArrayList<>();
         this.nutrients = new float[Nutrient.TOTAL];
         this.decayModifier = decayModifier;
         this.water = water;
@@ -49,7 +55,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     @Override
     public long getRottenDate()
     {
-        return creationDate + (long) (decayModifier * CapabilityFood.DEFAULT_ROT_TICKS);
+        return creationDate + (long) (calculateDecayModifier() * CapabilityFood.DEFAULT_ROT_TICKS);
     }
 
     @Override
@@ -110,15 +116,30 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setLong("creationDate", getCreationDate());
+        // Traits are sorted so they match when trying to stack them
+        if (!foodTraits.isEmpty())
+        {
+            nbt.setString("traits", foodTraits.stream().map(IFoodTrait::getName).sorted().collect(Collectors.joining(",")));
+        }
         return nbt;
     }
 
     @Override
     public void deserializeNBT(@Nullable NBTTagCompound nbt)
     {
+        foodTraits.clear();
         if (nbt != null && nbt.hasKey("creationDate"))
         {
             creationDate = nbt.getLong("creationDate");
+            // Read the traits and apply each one (if they exist)
+            if (nbt.hasKey("traits"))
+            {
+                String serializedFoodTraits = nbt.getString("traits");
+                for (String traitName : serializedFoodTraits.split(","))
+                {
+                    foodTraits.add(CapabilityFood.getTraits().get(traitName));
+                }
+            }
         }
         else
         {
@@ -126,5 +147,22 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
             // Food decay initially is synced with the hour. This allows items grabbed within a minute to stack
             creationDate = CalendarTFC.INSTANCE.getTotalHours() * CalendarTFC.TICKS_IN_HOUR;
         }
+    }
+
+    private float calculateDecayModifier()
+    {
+        float mod = decayModifier;
+        for (IFoodTrait trait : foodTraits)
+        {
+            mod *= trait.getDecayModifier();
+        }
+        return mod;
+    }
+
+    @Nonnull
+    @Override
+    public List<IFoodTrait> getTraits()
+    {
+        return foodTraits;
     }
 }

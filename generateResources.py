@@ -233,6 +233,7 @@ METAL_ITEMS = {
     'knife_blade': True,
     'scythe': True,
     'scythe_blade': True,
+    'shears': True,
     'unfinished_chestplate': True,
     'chestplate': True,
     'unfinished_greaves': True,
@@ -249,7 +250,7 @@ STEEL = {
     'black_steel',
 }
 TOOLS = [
-    'pick', 'propick', 'shovel', 'axe', 'hoe', 'chisel', 'sword', 'mace', 'saw', 'javelin', 'hammer', 'knife', 'scythe'
+    'pick', 'propick', 'shovel', 'axe', 'hoe', 'chisel', 'sword', 'mace', 'saw', 'shears', 'javelin', 'hammer', 'knife', 'scythe'
 ]
 FLUIDS = {
     'salt_water': 'salt_water',
@@ -292,7 +293,6 @@ SIMPLE_CROPS = {
     'onion': (False, 7),
     'potato': (False, 7),
     'soybean': (False, 7),
-    # 'squash': (False, 7),
     'sugarcane': (False, 8),
     'red_bell_pepper': (False, 7),
     'tomato': (False, 8),
@@ -365,12 +365,29 @@ FOODS = [
     'squash',
     'tomato',
     'yellow_bell_pepper',
+    'cheese',
+    'cooked_egg',
+    'sugarcane',
+    'beef',
+    'pork',
+    'chicken',
+    'mutton',
+    'fish',
+    'bear',
     'calamari',
     'horse_meat',
+    'pheasant',
     'venison',
-    'cheese',
-    'sugarcane',
-    'cooked_egg'
+    'cooked_beef',
+    'cooked_pork',
+    'cooked_chicken',
+    'cooked_mutton',
+    'cooked_fish',
+    'cooked_bear',
+    'cooked_calamari',
+    'cooked_horse_meat',
+    'cooked_pheasant',
+    'cooked_venison'
 ]
 
 # Special 'hardcoded' cases

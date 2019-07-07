@@ -71,7 +71,7 @@ public class TEBloomery extends TEInventory implements ITickable
 
         fuelStacks.clear();
         NBTTagList fuels = tag.getTagList("fuels", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < ores.tagCount(); i++)
+        for (int i = 0; i < fuels.tagCount(); i++)
         {
             fuelStacks.add(new ItemStack(fuels.getCompoundTagAt(i)));
         }
@@ -94,7 +94,7 @@ public class TEBloomery extends TEInventory implements ITickable
         {
             fuels.appendTag(stack.serializeNBT());
         }
-        tag.setTag("fuels", ores);
+        tag.setTag("fuels", fuels);
         tag.setLong("burnTicksLeft", burnTicksLeft);
         return super.writeToNBT(tag);
     }

@@ -35,6 +35,8 @@ public class TFCSoundEvents
     public static final SoundEvent CERAMIC_BREAK = getNull();
     @GameRegistry.ObjectHolder("anvil.metalimpact")
     public static final SoundEvent ANVIL_IMPACT = getNull();
+    @GameRegistry.ObjectHolder("item.throw")
+    public static final SoundEvent ITEM_THROW = getNull();
 
 
 
@@ -50,6 +52,7 @@ public class TFCSoundEvents
         register(r,"quern.stonedrag");
         register(r,"item.ceramicbreak");
         register(r,"anvil.metalimpact");
+        register(r, "item.throw");
     }
 
     private static void register(IForgeRegistry<SoundEvent> r, String name)
