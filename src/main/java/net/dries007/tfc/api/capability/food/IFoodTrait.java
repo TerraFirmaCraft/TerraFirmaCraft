@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public interface IFoodTrait
 {
-    default float getDecayModifier(ItemStack stack)
+    default float getDecayModifier()
     {
         return 1f;
     }
@@ -52,7 +52,7 @@ public interface IFoodTrait
         }
 
         @Override
-        public float getDecayModifier(ItemStack stack)
+        public float getDecayModifier()
         {
             return decayModifier;
         }

@@ -7,8 +7,11 @@ package net.dries007.tfc.api.recipes;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
@@ -39,5 +42,12 @@ public class BarrelRecipeFoodTraits extends BarrelRecipe
             }
         }
         return inputStack.copy();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public String getResultName()
+    {
+        return I18n.format("tfc.food_traits." + trait.getName() + "_active");
     }
 }

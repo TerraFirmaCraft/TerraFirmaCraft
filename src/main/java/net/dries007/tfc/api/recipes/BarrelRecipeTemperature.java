@@ -8,12 +8,15 @@ package net.dries007.tfc.api.recipes;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
@@ -73,5 +76,12 @@ public class BarrelRecipeTemperature extends BarrelRecipe
         {
             world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.8f, 0.8f + Constants.RNG.nextFloat() * 0.4f);
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public String getResultName()
+    {
+        return I18n.format("tfc.tooltip.barrel_cooling");
     }
 }

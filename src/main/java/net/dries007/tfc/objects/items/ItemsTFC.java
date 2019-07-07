@@ -85,6 +85,8 @@ public final class ItemsTFC
     public static final ItemSmallVessel CERAMICS_FIRED_VESSEL_GLAZED = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/jug")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_JUG = getNull();
+    @GameRegistry.ObjectHolder("ceramics/fired/jug")
+    public static final ItemFiredPottery CERAMICS_FIRED_JUG = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/pot")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_POT = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/bowl")
