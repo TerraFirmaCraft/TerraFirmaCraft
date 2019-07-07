@@ -16,18 +16,22 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.recipes.*;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.items.ItemAnimalHide;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
+import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
+import net.dries007.tfc.util.agriculture.Food;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.forge.ForgeRule;
 
@@ -56,20 +60,29 @@ public final class DefaultRecipes
             new BarrelRecipe(IIngredient.of(TANNIN, 500), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.LARGE)), null, new ItemStack(Items.LEATHER, 3), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("leather_large_hide"),
             // Misc
             new BarrelRecipe(IIngredient.of(FRESH_WATER, 1000), IIngredient.of("logWoodTannin"), new FluidStack(TANNIN, 10000), ItemStack.EMPTY, 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName(MOD_ID, "tannin"),
-            // todo: enslave Claycorp for recipe magics
             new BarrelRecipe(IIngredient.of(FRESH_WATER, 200), IIngredient.of(ItemsTFC.JUTE), null, new ItemStack(ItemsTFC.JUTE_FIBER), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName(MOD_ID, "jute_fiber"),
-            // todo: sugar
-            // todo: all alcohol recipes
-            // todo: vinegar (many variants, use "fruit" ore dict and IIngredient.of(int, Fluid...)
-            // todo: brine + food? (may have to have a discussion about how we should handle "traits" on food.)
-            // todo: pickling (same as above)
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 600), IIngredient.of(ItemsTFC.SUGARCANE, 5), null, new ItemStack(Items.SUGAR), 8 * CalendarTFC.TICKS_IN_HOUR),
+            // Alcohol
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.BARLEY_FLOUR)), new FluidStack(FluidsTFC.BEER, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of("apple"), new FluidStack(FluidsTFC.CIDER, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of("sugar"), new FluidStack(FluidsTFC.RUM, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.RICE_FLOUR)), new FluidStack(FluidsTFC.SAKE, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.POTATO)), new FluidStack(FluidsTFC.VODKA, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.WHEAT_FLOUR)), new FluidStack(FluidsTFC.WHISKEY, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.CORNMEAL_FLOUR)), new FluidStack(FluidsTFC.CORN_WHISKEY, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.RYE_FLOUR)), new FluidStack(FluidsTFC.RYE_WHISKEY, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR),
+            // Vinegar
+            new BarrelRecipe(IIngredient.of(200, FluidsTFC.BEER, FluidsTFC.CIDER, FluidsTFC.RUM, FluidsTFC.SAKE, FluidsTFC.VODKA, FluidsTFC.WHISKEY, FluidsTFC.CORN_WHISKEY, FluidsTFC.RYE_WHISKEY), IIngredient.of("fruit"), new FluidStack(FluidsTFC.VINEGAR, 200), ItemStack.EMPTY, 8 * CalendarTFC.TICKS_IN_HOUR),
+            // Food preservation
+            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR, 125), IIngredient.of("fruit"), CapabilityFood.PICKLED, 4 * CalendarTFC.TICKS_IN_HOUR),
+            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR, 125), IIngredient.of("meat"), CapabilityFood.PICKLED, 4 * CalendarTFC.TICKS_IN_HOUR),
+            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR, 125), IIngredient.of("vegetable"), CapabilityFood.PICKLED, 4 * CalendarTFC.TICKS_IN_HOUR),
+            // todo: brined food
             // todo: mortar
             // todo: curdled milk -> cheese (use an empty IIngredient for the item)
-            // todo: flavored cheese (figure out how to handle this?)
 
             // Instant recipes: set the duration to 0
             // todo: brine
-            // todo: limewater
             new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of("dustFlux"), new FluidStack(LIMEWATER, 500), ItemStack.EMPTY, 0).setRegistryName(MOD_ID, "limewater"),
             // todo: curdled milk (make it a simpler calculation)
 
@@ -166,14 +179,12 @@ public final class DefaultRecipes
             r.register(new PitKilnRecipe(IIngredient.of(new ItemStack(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, color.getMetadata())), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, color.getMetadata())).setRegistryName(MOD_ID, "fired_vessel_glazed_" + color.getName()));
         }
 
-        /*// Fired spindle
-        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_FIRED_SPINDLE)).setRegistryName(MOD_ID, "fired_spindle_fireable"));*/
-
-        // Spindle
-        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_UNFIRED_SPINDLE), new ItemStack(ItemsTFC.CERAMICS_FIRED_SPINDLE)).setRegistryName("fired_spindle"));
-
-        // Fire Brick
-        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.UNFIRED_FIRE_BRICK), new ItemStack(ItemsTFC.FIRE_BRICK)).setRegistryName(MOD_ID, "fire_brick"));
+        // Misc
+        r.registerAll(
+            // todo: ceramic jug
+            new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_UNFIRED_SPINDLE), new ItemStack(ItemsTFC.CERAMICS_FIRED_SPINDLE)).setRegistryName("fired_spindle"),
+            new PitKilnRecipe(IIngredient.of(ItemsTFC.UNFIRED_FIRE_BRICK), new ItemStack(ItemsTFC.FIRE_BRICK)).setRegistryName(MOD_ID, "fire_brick")
+        );
     }
 
     @SubscribeEvent
