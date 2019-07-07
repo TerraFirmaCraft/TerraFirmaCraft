@@ -234,18 +234,31 @@ tfc.enum.forgerule.shrink_second_last=Shrink Second Last
 tfc.enum.forgerule.shrink_third_last=Shrink Third Last
 
 
-tfc.enum.month.january=Winter
-tfc.enum.month.february=Late Winter
-tfc.enum.month.march=Early Spring
-tfc.enum.month.april=Spring
-tfc.enum.month.may=Late Spring
-tfc.enum.month.june=Early Summer
-tfc.enum.month.july=Summer
-tfc.enum.month.august=Late Summer
-tfc.enum.month.september=Early Autumn
-tfc.enum.month.october=Autumn
-tfc.enum.month.november=Late Autumn
-tfc.enum.month.december=Early Winter
+tfc.enum.season.january=Winter
+tfc.enum.season.february=Late Winter
+tfc.enum.season.march=Early Spring
+tfc.enum.season.april=Spring
+tfc.enum.season.may=Late Spring
+tfc.enum.season.june=Early Summer
+tfc.enum.season.july=Summer
+tfc.enum.season.august=Late Summer
+tfc.enum.season.september=Early Autumn
+tfc.enum.season.october=Autumn
+tfc.enum.season.november=Late Autumn
+tfc.enum.season.december=Early Winter
+
+tfc.enum.month.january=January
+tfc.enum.month.february=February
+tfc.enum.month.march=March
+tfc.enum.month.april=April
+tfc.enum.month.may=May
+tfc.enum.month.june=June
+tfc.enum.month.july=July
+tfc.enum.month.august=August
+tfc.enum.month.september=September
+tfc.enum.month.october=October
+tfc.enum.month.november=November
+tfc.enum.month.december=December
 
 tfc.enum.day.sunday=Sunday
 tfc.enum.day.monday=Monday
