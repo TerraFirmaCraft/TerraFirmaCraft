@@ -41,6 +41,8 @@ import net.dries007.tfc.objects.fluids.FluidMetal;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+
 public class ItemMold extends ItemFiredPottery
 {
     private static final EnumMap<Metal.ItemType, ItemMold> MAP = new EnumMap<>(Metal.ItemType.class);
@@ -91,26 +93,18 @@ public class ItemMold extends ItemFiredPottery
         return super.getTranslationKey(stack);
     }
 
-    @Override
-    @Nonnull
-    public ItemStack getContainerItem(@Nonnull ItemStack itemStack)
-    {
-        if (type.getMoldReturnRate() >= 1)
-            return new ItemStack(itemStack.getItem(), itemStack.getCount(), itemStack.getMetadata());
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public boolean hasContainerItem(ItemStack stack)
-    {
-        return type.getMoldReturnRate() >= 1;
-    }
-
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
         return new FilledMoldCapability(nbt);
+    }
+
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        IMoldHandler moldHandler = (IMoldHandler) stack.getCapability(FLUID_HANDLER_CAPABILITY, null);
+        return (moldHandler.getMetal() == null) ? super.getItemStackLimit(stack) : 1;
     }
 
     // Extends ItemHeatHandler for ease of use
