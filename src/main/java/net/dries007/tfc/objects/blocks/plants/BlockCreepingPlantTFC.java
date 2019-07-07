@@ -28,7 +28,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.Plant;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -166,13 +165,13 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         switch (rot)
         {
             case CLOCKWISE_180:
-                return state.withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]).withProperty(NORTH, state.getValue(SOUTH)).withProperty(EAST, state.getValue(WEST)).withProperty(SOUTH, state.getValue(NORTH)).withProperty(WEST, state.getValue(EAST));
+                return state.withProperty(growthStageProperty, plant.getStageForMonth()).withProperty(NORTH, state.getValue(SOUTH)).withProperty(EAST, state.getValue(WEST)).withProperty(SOUTH, state.getValue(NORTH)).withProperty(WEST, state.getValue(EAST));
             case COUNTERCLOCKWISE_90:
-                return state.withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]).withProperty(NORTH, state.getValue(EAST)).withProperty(EAST, state.getValue(SOUTH)).withProperty(SOUTH, state.getValue(WEST)).withProperty(WEST, state.getValue(NORTH));
+                return state.withProperty(growthStageProperty, plant.getStageForMonth()).withProperty(NORTH, state.getValue(EAST)).withProperty(EAST, state.getValue(SOUTH)).withProperty(SOUTH, state.getValue(WEST)).withProperty(WEST, state.getValue(NORTH));
             case CLOCKWISE_90:
-                return state.withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]).withProperty(NORTH, state.getValue(WEST)).withProperty(EAST, state.getValue(NORTH)).withProperty(SOUTH, state.getValue(EAST)).withProperty(WEST, state.getValue(SOUTH));
+                return state.withProperty(growthStageProperty, plant.getStageForMonth()).withProperty(NORTH, state.getValue(WEST)).withProperty(EAST, state.getValue(NORTH)).withProperty(SOUTH, state.getValue(EAST)).withProperty(WEST, state.getValue(SOUTH));
             default:
-                return state.withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]);
+                return state.withProperty(growthStageProperty, plant.getStageForMonth());
         }
     }
 
@@ -184,9 +183,9 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         switch (mirrorIn)
         {
             case LEFT_RIGHT:
-                return state.withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]).withProperty(NORTH, state.getValue(SOUTH)).withProperty(SOUTH, state.getValue(NORTH));
+                return state.withProperty(growthStageProperty, plant.getStageForMonth()).withProperty(NORTH, state.getValue(SOUTH)).withProperty(SOUTH, state.getValue(NORTH));
             case FRONT_BACK:
-                return state.withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]).withProperty(EAST, state.getValue(WEST)).withProperty(WEST, state.getValue(EAST));
+                return state.withProperty(growthStageProperty, plant.getStageForMonth()).withProperty(EAST, state.getValue(WEST)).withProperty(WEST, state.getValue(EAST));
             default:
                 return super.withMirror(state, mirrorIn);
         }

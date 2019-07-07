@@ -37,7 +37,7 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
-import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -192,7 +192,7 @@ public class ChunkGenTFC implements IChunkGenerator
         rockLayer3 = rocksGenLayer3.getInts(chunkX * 16, chunkZ * 16, 16, 16);
 
         final float latitudeFactor = ClimateTFC.latitudeFactor(chunkZ); // Range 0 - 1
-        final float monthFactor = 41f - 1.1f * CalendarTFC.Month.getAverageTempMod() * (1f - 0.8f * latitudeFactor);
+        final float monthFactor = 41f - 1.1f * Month.AVERAGE_TEMPERATURE_MODIFIER * (1f - 0.8f * latitudeFactor);
         final float regionalFactor = 15f * 0.09f * (float) noiseGen10.getValue(chunkX * 0.005, chunkZ * 0.005); // Range -15 <> 15
 
         baseTemp = 45f * latitudeFactor - 25f + regionalFactor; // Latitude + Regional Temp

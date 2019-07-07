@@ -19,6 +19,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.objects.blocks.plants.*;
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.Month;
 
 import static net.dries007.tfc.world.classic.ChunkGenTFC.FRESH_WATER;
 import static net.dries007.tfc.world.classic.ChunkGenTFC.SALT_WATER;
@@ -208,9 +210,14 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return maxGrowthTemp;
     }
 
-    public int[] getStages()
+    public int getStageForMonth(Month month)
     {
-        return stages;
+        return stages[month.ordinal()];
+    }
+
+    public int getStageForMonth()
+    {
+        return getStageForMonth(CalendarTFC.INSTANCE.getMonthOfYear());
     }
 
     public int getNumStages()

@@ -55,7 +55,7 @@ public class PacketCalendarUpdate implements IMessage
             World world = TerraFirmaCraft.getProxy().getWorld(ctx);
             if (world != null)
             {
-                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> CalendarTFC.CalendarWorldData.update(world, message.calendarOffset, message.daysInMonth, message.doCalendarCycle));
+                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> CalendarTFC.update(world, message.calendarOffset, message.daysInMonth, message.doCalendarCycle));
             }
             return null;
         }

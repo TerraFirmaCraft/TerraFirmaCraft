@@ -19,7 +19,6 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -56,8 +55,8 @@ public class GuiCalendar extends GuiContainerTFC
 
         String season, day, date;
 
-        season = I18n.format("tfc.tooltip.season", I18n.format(Helpers.getEnumName(CalendarTFC.INSTANCE.getMonthOfYear())));
-        day = I18n.format("tfc.tooltip.day", I18n.format(CalendarTFC.INSTANCE.getDayTranslationKey()));
+        season = I18n.format("tfc.tooltip.season", CalendarTFC.INSTANCE.getSeasonDisplayName());
+        day = I18n.format("tfc.tooltip.day", CalendarTFC.INSTANCE.getDisplayDayName());
         date = I18n.format("tfc.tooltip.date", CalendarTFC.INSTANCE.getTimeAndDate());
 
         fontRenderer.drawString(season, xSize / 2 - fontRenderer.getStringWidth(season) / 2, 25, 0x404040);
