@@ -233,6 +233,7 @@ METAL_ITEMS = {
     'knife_blade': True,
     'scythe': True,
     'scythe_blade': True,
+    'shears': True,
     'unfinished_chestplate': True,
     'chestplate': True,
     'unfinished_greaves': True,
@@ -249,7 +250,7 @@ STEEL = {
     'black_steel',
 }
 TOOLS = [
-    'pick', 'propick', 'shovel', 'axe', 'hoe', 'chisel', 'sword', 'mace', 'saw', 'javelin', 'hammer', 'knife', 'scythe'
+    'pick', 'propick', 'shovel', 'axe', 'hoe', 'chisel', 'sword', 'mace', 'saw', 'shears', 'javelin', 'hammer', 'knife', 'scythe'
 ]
 FLUIDS = {
     'salt_water': 'salt_water',

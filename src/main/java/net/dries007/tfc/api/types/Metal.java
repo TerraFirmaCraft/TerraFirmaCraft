@@ -187,7 +187,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         MACE_HEAD(true, 200, true, "XX XX", "X   X", "X   X", "X   X", "XX XX"),
         SAW(true, 100, ItemMetalTool::new),
         SAW_BLADE(true, 100, true, "XXX  ", "XX   ", "X   X", "    X", "  XXX"),
-        JAVELIN(true, 100, ItemMetalTool::new), // todo: special class?
+        JAVELIN(true, 100, ItemMetalJavelin::new),
         JAVELIN_HEAD(true, 100, true, "XX   ", "X    ", "     ", "X   X", "XX XX"),
         HAMMER(true, 100, ItemMetalTool::new),
         HAMMER_HEAD(true, 100, true, "XXXXX", "     ", "     ", "XX XX", "XXXXX"),
@@ -195,8 +195,9 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         PROPICK_HEAD(true, 100, true, "XXXXX", "    X", " XXX ", " XXXX", "XXXXX"),
         KNIFE(true, 100, ItemMetalTool::new),
         KNIFE_BLADE(true, 100, true, "XX X", "X  X", "X  X", "X  X", "X  X"),
-        SCYTHE(true, 100, ItemMetalTool::new), // todo: special class + implementation
+        SCYTHE(true, 100, ItemMetalTool::new),
         SCYTHE_BLADE(true, 100, true, "XXXXX", "X    ", "    X", "  XXX", "XXXXX"),
+        SHEARS(true, 200, ItemMetalShears::new),
 
         UNFINISHED_HELMET(true, 200),
         HELMET(true, 400, ItemMetalArmor::new),
@@ -205,7 +206,9 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         UNFINISHED_GREAVES(true, 400),
         GREAVES(true, 600, ItemMetalArmor::new),
         UNFINISHED_BOOTS(true, 200),
-        BOOTS(true, 200, ItemMetalArmor::new);
+        BOOTS(true, 200, ItemMetalArmor::new),
+
+        SHIELD(true, 400, ItemMetalShield::new);
 
         public static Item create(Metal metal, ItemType type)
         {
