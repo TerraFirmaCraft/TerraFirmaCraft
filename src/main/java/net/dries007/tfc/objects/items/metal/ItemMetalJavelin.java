@@ -29,6 +29,12 @@ public class ItemMetalJavelin extends ItemMetalTool
     public ItemMetalJavelin(Metal metal, Metal.ItemType type)
     {
         super(metal, type);
+
+        ToolMaterial material = metal.getToolMetal();
+        if (material != null)
+        {
+            setMaxDamage((int) (material.getMaxUses() * 0.1));
+        }
     }
 
     @Override

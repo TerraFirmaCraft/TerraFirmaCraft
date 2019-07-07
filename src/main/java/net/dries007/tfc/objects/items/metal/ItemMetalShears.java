@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.items.metal;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -14,11 +15,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Metal;
 
+@ParametersAreNonnullByDefault
 public class ItemMetalShears extends ItemMetalTool
 {
     public ItemMetalShears(Metal metal, Metal.ItemType type)
@@ -46,9 +49,12 @@ public class ItemMetalShears extends ItemMetalTool
                 for (ItemStack stack : drops)
                 {
                     EntityItem ent = entity.entityDropItem(stack, 1.0F);
-                    ent.motionY += rand.nextFloat() * 0.05F;
-                    ent.motionX += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
-                    ent.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                    if (ent != null)
+                    {
+                        ent.motionY += rand.nextFloat() * 0.05F;
+                        ent.motionX += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                        ent.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                    }
                 }
                 itemstack.damageItem(1, entity);
             }
@@ -86,7 +92,8 @@ public class ItemMetalShears extends ItemMetalTool
                 }
 
                 itemstack.damageItem(1, player);
-                player.addStat(net.minecraft.stats.StatList.getBlockStats(block));
+                //noinspection ConstantConditions
+                player.addStat(StatList.getBlockStats(block));
                 player.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
                 return true;
             }

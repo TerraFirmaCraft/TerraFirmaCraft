@@ -99,12 +99,14 @@ public class ItemMetalTool extends ItemMetal
                 break;
             case SCYTHE:
                 setHarvestLevel("scythe", harvestLevel);
+                setMaxDamage((int) (material.getMaxUses() * 1.5));
                 typeDamage = 1.5f;
                 areaOfEffect = 2;
                 attackSpeed = -3.5f;
                 break;
             case SHEARS:
                 setHarvestLevel("shears", harvestLevel);
+                setMaxDamage((int) (material.getMaxUses() * 0.3));
                 typeDamage = 0.5f;
                 areaOfEffect = 1;
                 attackSpeed = -3;
@@ -212,6 +214,7 @@ public class ItemMetalTool extends ItemMetal
                     st.getBlock().onPlayerDestroy(worldIn, extraPos, st);
                     st.getBlock().harvestBlock(worldIn, player, extraPos, st, worldIn.getTileEntity(extraPos), stack);
                     worldIn.setBlockToAir(extraPos);
+                    stack.damageItem(1, entityLiving);
                 }
             }
         }

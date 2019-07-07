@@ -76,10 +76,21 @@ public class EntityThrownWeapon extends EntityArrow implements IThrowableEntity,
     {
         Entity entity = raytraceResultIn.entityHit;
 
+        // Damage item
+        if (getThrower() instanceof EntityLivingBase)
+        {
+            EntityLivingBase thrower = (EntityLivingBase) getThrower();
+            int damageAmount = 1;
+            if (entity != null)
+            {
+                damageAmount += 1 + thrower.getRNG().nextInt(4);
+            }
+            weapon.damageItem(damageAmount, thrower);
+        }
+
         if (entity != null)
         {
             ItemStack weapon = this.getWeapon();
-            weapon.setItemDamage(10); //Todo how much damage this item receives after landing on entities?
             float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
             float finalDamage = f * (float) this.getDamage();
 
