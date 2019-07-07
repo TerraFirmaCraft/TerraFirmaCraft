@@ -87,6 +87,15 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
     float getCalories();
 
     /**
+     * Gets the current list of traits on this food
+     * Can also be used to add traits to the food
+     *
+     * @return the traits of the food
+     */
+    @Nonnull
+    List<IFoodTrait> getTraits();
+
+    /**
      * Tooltip added to the food item
      * Called from {@link net.dries007.tfc.client.ClientEvents}
      *
@@ -106,7 +115,11 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
             // Show nutrient values if not rotten
             for (Nutrient nutrient : Nutrient.values())
             {
-                text.add(nutrient.name().toLowerCase() + ": " + getNutrient(stack, nutrient));
+                float amount = getNutrient(stack, nutrient);
+                if (amount > 0)
+                {
+                    text.add(nutrient.name().toLowerCase() + ": " + amount);
+                }
             }
         }
         // todo: make this respect skills tiers
@@ -116,6 +129,12 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
         if (ConfigTFC.GENERAL.debug)
         {
             text.add("Created at " + getCreationDate());
+        }
+
+        // Add info for each trait
+        for (IFoodTrait trait : getTraits())
+        {
+            trait.addTraitInfo(stack, text);
         }
     }
 }

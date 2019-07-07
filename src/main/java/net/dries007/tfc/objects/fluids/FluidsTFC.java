@@ -38,6 +38,17 @@ public class FluidsTFC
     // Other fluids
     public static final Fluid LIMEWATER = new Fluid("limewater", STILL, FLOW, 0xFFB4B4B4);
     public static final Fluid TANNIN = new Fluid("tannin", STILL, FLOW, 0xFF63594E);
+    public static final Fluid VINEGAR = new Fluid("vinegar", STILL, FLOW, 0xFFC7C2AA);
+
+    // Alcohols
+    public static final Fluid CIDER = new Fluid("cider", STILL, FLOW, 0xFFB0AE32).setRarity(EnumRarity.UNCOMMON);
+    public static final Fluid VODKA = new Fluid("vodka", STILL, FLOW, 0xFFDCDCDC).setRarity(EnumRarity.UNCOMMON);
+    public static final Fluid SAKE = new Fluid("sake", STILL, FLOW, 0xFFB7D9BC).setRarity(EnumRarity.UNCOMMON);
+    public static final Fluid CORN_WHISKEY = new Fluid("corn_whiskey", STILL, FLOW, 0xFFD9C7B7).setRarity(EnumRarity.UNCOMMON);
+    public static final Fluid RYE_WHISKEY = new Fluid("rye_whiskey", STILL, FLOW, 0xFFC77D51).setRarity(EnumRarity.UNCOMMON);
+    public static final Fluid WHISKEY = new Fluid("whiskey", STILL, FLOW, 0xFF583719).setRarity(EnumRarity.UNCOMMON);
+    public static final Fluid BEER = new Fluid("beer", STILL, FLOW, 0xFFC39E37).setRarity(EnumRarity.UNCOMMON);
+    public static final Fluid RUM = new Fluid("rum", STILL, FLOW, 0xFF6E0123).setRarity(EnumRarity.UNCOMMON);
 
     private static final ResourceLocation LAVA_STILL = new ResourceLocation(MOD_ID, "blocks/lava_still");
     private static final ResourceLocation LAVA_FLOW = new ResourceLocation(MOD_ID, "blocks/lava_flow");
@@ -87,21 +98,21 @@ public class FluidsTFC
         {
             ImmutableSet.Builder<Fluid> b = ImmutableSet.builder();
 
-            registerFluid(b, new Fluid("rum", STILL, FLOW, 0xFF6E0123).setRarity(EnumRarity.UNCOMMON));
-            registerFluid(b, new Fluid("beer", STILL, FLOW, 0xFFC39E37).setRarity(EnumRarity.UNCOMMON));
-            registerFluid(b, new Fluid("whiskey", STILL, FLOW, 0xFF583719).setRarity(EnumRarity.UNCOMMON));
-            registerFluid(b, new Fluid("rye_whiskey", STILL, FLOW, 0xFFC77D51).setRarity(EnumRarity.UNCOMMON));
-            registerFluid(b, new Fluid("corn_whiskey", STILL, FLOW, 0xFFD9C7B7).setRarity(EnumRarity.UNCOMMON));
-            registerFluid(b, new Fluid("sake", STILL, FLOW, 0xFFB7D9BC).setRarity(EnumRarity.UNCOMMON));
-            registerFluid(b, new Fluid("vodka", STILL, FLOW, 0xFFDCDCDC).setRarity(EnumRarity.UNCOMMON));
-            registerFluid(b, new Fluid("cider", STILL, FLOW, 0xFFB0AE32).setRarity(EnumRarity.UNCOMMON));
+            registerFluid(b, RUM);
+            registerFluid(b, BEER);
+            registerFluid(b, WHISKEY);
+            registerFluid(b, RYE_WHISKEY);
+            registerFluid(b, CORN_WHISKEY);
+            registerFluid(b, SAKE);
+            registerFluid(b, VODKA);
+            registerFluid(b, CIDER);
 
             allAlcoholsFluids = b.build();
         }
         {
             ImmutableSet.Builder<Fluid> b = ImmutableSet.builder();
 
-            registerFluid(b, new Fluid("vinegar", STILL, FLOW, 0xFFC7C2AA));
+            registerFluid(b, VINEGAR);
             registerFluid(b, new Fluid("brine", STILL, FLOW, 0xFFDCD3C9));
             registerFluid(b, new Fluid("milk", STILL, FLOW, 0xFFFFFFFF));
             registerFluid(b, new Fluid("olive_oil", STILL, FLOW, 0xFF6A7537).setRarity(EnumRarity.RARE));
