@@ -41,6 +41,7 @@ import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -105,7 +106,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]);
+        return state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(growthStageProperty, plant.getStageForMonth());
     }
 
     @Override
@@ -118,9 +119,9 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
-        CalendarTFC.Month currentMonth = CalendarTFC.INSTANCE.getMonthOfYear();
+        Month currentMonth = CalendarTFC.INSTANCE.getMonthOfYear();
         int currentStage = state.getValue(growthStageProperty);
-        int expectedStage = plant.getStages()[currentMonth.id()];
+        int expectedStage = plant.getStageForMonth(currentMonth);
         int currentTime = state.getValue(DAYPERIOD);
         int expectedTime = getDayPeriod();
 
@@ -145,7 +146,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]));
+        world.setBlockState(pos, state.withProperty(DAYPERIOD, getDayPeriod()).withProperty(growthStageProperty, plant.getStageForMonth()));
         checkAndDropBlock(world, pos, state);
     }
 

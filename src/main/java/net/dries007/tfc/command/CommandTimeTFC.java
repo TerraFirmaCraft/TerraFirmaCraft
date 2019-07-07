@@ -74,12 +74,12 @@ public class CommandTimeTFC extends CommandBase
                 updateDaylightCycle = true;
                 break;
             case "monthlength":
-                int value = parseInt(args[2], 1, 1000);
+                int value = parseInt(args[2], 1, 100);
                 CalendarTFC.INSTANCE.setMonthLength(server.getEntityWorld(), value);
                 sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_month_length", value));
                 return;
             default:
-                throw new WrongUsageException("Second argument must be <day|month|year>");
+                throw new WrongUsageException("Second argument must be <day|month|year|monthlength>");
         }
 
         if (args[0].equals("add"))
@@ -93,13 +93,14 @@ public class CommandTimeTFC extends CommandBase
 
         CalendarTFC.INSTANCE.setCalendarTime(server.getEntityWorld(), time);
         ITextComponent month = new TextComponentTranslation(Helpers.getEnumName(CalendarTFC.INSTANCE.getMonthOfYear()));
-        sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_time", CalendarTFC.INSTANCE.getTotalYears(), month, CalendarTFC.INSTANCE.getDayOfMonth(), String.format("%02d:%02d", CalendarTFC.INSTANCE.getHourOfDay(), CalendarTFC.INSTANCE.getMinuteOfHour())));
+        sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_time", CalendarTFC.INSTANCE.getDisplayTotalYears(), month, CalendarTFC.INSTANCE.getDayOfMonth(), String.format("%02d:%02d", CalendarTFC.INSTANCE.getHourOfDay(), CalendarTFC.INSTANCE.getMinuteOfHour())));
 
         if (updateDaylightCycle)
         {
             for (int i = 0; i < server.worlds.length; ++i)
             {
-                server.worlds[i].setWorldTime(time);
+                // Since world time 0 = 6 am in the morning
+                server.worlds[i].setWorldTime(time - 6 * CalendarTFC.TICKS_IN_HOUR);
             }
         }
     }

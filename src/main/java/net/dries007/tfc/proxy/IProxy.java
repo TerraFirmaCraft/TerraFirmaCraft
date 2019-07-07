@@ -13,6 +13,8 @@ import net.minecraft.util.IThreadListener;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import net.dries007.tfc.util.calendar.Month;
+
 public interface IProxy
 {
     @Nonnull
@@ -31,4 +33,12 @@ public interface IProxy
             super(message);
         }
     }
+
+    // Calendar Translation / Localization Methods
+
+    @Nonnull
+    String getMonthName(Month month, boolean useSeasons);
+
+    @Nonnull
+    String getDayName(int dayOfMonth, long totalDays);
 }
