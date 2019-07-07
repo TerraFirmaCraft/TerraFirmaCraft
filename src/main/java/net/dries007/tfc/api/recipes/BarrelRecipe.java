@@ -12,6 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
@@ -142,4 +144,31 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
      * @param pos   The TE pos
      */
     public void onRecipeComplete(World world, BlockPos pos) {}
+
+    /**
+     * Gets the name of the recipe, to be displayed in the gui
+     *
+     * @return the name of the item stack produced, or the fluid produced, or a custom name if needed
+     */
+    @SideOnly(Side.CLIENT)
+    public String getResultName()
+    {
+        ItemStack resultStack = getOutputStack();
+        if (!resultStack.isEmpty())
+        {
+            return resultStack.getDisplayName();
+        }
+        else
+        {
+            FluidStack fluid = getOutputFluid();
+            if (fluid == null)
+            {
+                return "Empty";
+            }
+            else
+            {
+                return fluid.getFluid().getLocalizedName(fluid);
+            }
+        }
+    }
 }
