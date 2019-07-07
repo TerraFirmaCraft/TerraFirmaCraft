@@ -26,6 +26,12 @@
       "tfc:jugblow1"
     ]
   },
+  "item.throw": {
+    "category": "ambient",
+    "sounds": [
+      "tfc:itemthrow"
+    ]
+  },
   "mob.rooster.cry": {
     "category": "ambient",
     "sounds": [
