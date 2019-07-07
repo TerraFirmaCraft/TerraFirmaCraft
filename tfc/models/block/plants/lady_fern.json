@@ -1,6 +1,6 @@
 {
   "textures": {
-    "0": "plants/FernColorized",
+    "0": "tfc:blocks/plants/lady_fern/fern_single",
     "1": "tfc:blocks/plants/lady_fern/fern_single",
     "particle": "tfc:blocks/plants/lady_fern/fern_single"
   },
