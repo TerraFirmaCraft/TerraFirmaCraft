@@ -208,12 +208,19 @@ public final class DefaultRecipes
         r.register(new AnvilRecipeSplitting(new ResourceLocation(MOD_ID, "splitting_bloom"), IIngredient.of(ItemsTFC.REFINED_BLOOM), 100, Metal.Tier.TIER_II, PUNCH_LAST));
         r.register(new AnvilRecipeMeasurable(new ResourceLocation(MOD_ID, "refine_bloom_ingot"), IIngredient.of(ItemsTFC.REFINED_BLOOM), new ItemStack(ItemMetal.get(Metal.WROUGHT_IRON, INGOT)), 100, Metal.Tier.TIER_II, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST));
 
+        //Shields
+        addAnvil(r, DOUBLE_SHEET, SHIELD, true, UPSET_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
+
         // Steel Working
         addAnvil(r, PIG_IRON, HIGH_CARBON_STEEL);
         addAnvil(r, HIGH_CARBON_STEEL, STEEL);
         addAnvil(r, HIGH_CARBON_BLACK_STEEL, BLACK_STEEL);
         addAnvil(r, HIGH_CARBON_BLUE_STEEL, BLUE_STEEL);
         addAnvil(r, HIGH_CARBON_RED_STEEL, RED_STEEL);
+
+        //Vanilla iron bars and trap doors
+        addAnvil(r, "iron_bars", SHEET, WROUGHT_IRON, new ItemStack(Blocks.IRON_BARS, 8), Metal.Tier.TIER_III, UPSET_LAST, PUNCH_SECOND_LAST, PUNCH_THIRD_LAST);
+        addAnvil(r, "iron_trap_door", DOUBLE_SHEET, WROUGHT_IRON, new ItemStack(Blocks.IRON_TRAPDOOR), Metal.Tier.TIER_III, UPSET_LAST, PUNCH_SECOND_LAST, PUNCH_THIRD_LAST);
     }
 
     @SubscribeEvent
@@ -237,8 +244,7 @@ public final class DefaultRecipes
         addWelding(r, WEAK_RED_STEEL, BLACK_STEEL, HIGH_CARBON_RED_STEEL);
 
         // Special Recipes
-
-        // todo: shears
+        addWelding(r, KNIFE_BLADE, KNIFE_BLADE, SHEARS, true);
     }
 
     @SubscribeEvent
@@ -287,6 +293,20 @@ public final class DefaultRecipes
             {
                 //noinspection ConstantConditions
                 registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, ("ingot_" + outputMetal.getRegistryName().getPath()).toLowerCase()), IIngredient.of(input), output, outputMetal.getTier(), HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST));
+            }
+        }
+    }
+
+    private static void addAnvil(IForgeRegistry<AnvilRecipe> registry, String recipeName, Metal.ItemType inputType, ResourceLocation inputMetalRes, ItemStack output, Metal.Tier tier, ForgeRule... rules)
+    {
+        // Helper method for adding METAL -> STACK
+        Metal inputMetal = TFCRegistries.METALS.getValue(inputMetalRes);
+        if (inputMetal != null && !output.isEmpty())
+        {
+            ItemStack input = new ItemStack(ItemMetal.get(inputMetal, inputType));
+            if (!input.isEmpty() && !output.isEmpty())
+            {
+                registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, recipeName), IIngredient.of(input), output, tier, rules));
             }
         }
     }
