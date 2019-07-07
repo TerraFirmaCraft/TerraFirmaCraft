@@ -22,7 +22,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.Fluid;
@@ -133,24 +132,7 @@ public class GuiBarrel extends GuiContainerTE<TEBarrel>
             BarrelRecipe recipe = tile.getRecipe();
             if (recipe != null)
             {
-                ItemStack resultStack = recipe.getOutputStack();
-                String resultName;
-                if (!resultStack.isEmpty())
-                {
-                    resultName = resultStack.getDisplayName();
-                }
-                else
-                {
-                    FluidStack fluid = recipe.getOutputFluid();
-                    if (fluid == null)
-                    {
-                        resultName = "Empty";
-                    }
-                    else
-                    {
-                        resultName = fluid.getFluid().getLocalizedName(fluid);
-                    }
-                }
+                String resultName = recipe.getResultName();
                 fontRenderer.drawString(resultName, 59, 59, 0x404040);
             }
         }
