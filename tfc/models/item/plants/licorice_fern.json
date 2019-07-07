@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tfc:blocks/plants/licorice_fern/licorice3"
+    "layer0": "tfc:blocks/plants/licorice_fern/item"
   }
 }
