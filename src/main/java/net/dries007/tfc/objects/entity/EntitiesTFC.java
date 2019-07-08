@@ -23,11 +23,16 @@ public class EntitiesTFC
     {
         register("falling_block", EntityFallingBlockTFC.class);
         register("thrown_javelin", EntityThrownJavelin.class);
-        register("sheep", EntitySheepTFC.class);
+        register("sheep", EntitySheepTFC.class, 0x0, 0x757575);
     }
 
     private static void register(String name, Class<? extends Entity> cls)
     {
         EntityRegistry.registerModEntity(new ResourceLocation(MOD_ID, name), cls, name, id++, TerraFirmaCraft.getInstance(), 160, 20, true);
+    }
+
+    private static void register(String name, Class<? extends Entity> cls, int eggPrimaryColor, int eggSecondaryColor)
+    {
+        EntityRegistry.registerModEntity(new ResourceLocation(MOD_ID, name), cls, name, id++, TerraFirmaCraft.getInstance(), 160, 20, true, eggPrimaryColor, eggSecondaryColor);
     }
 }
