@@ -17,39 +17,47 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public abstract class EntityAnimalTFC extends EntityAnimal
 {
-    protected static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Long> BIRTHTIME = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializersTFC.LONG);
-    protected static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.FLOAT);
-    private boolean gender; //Male = true, Female = false
-    private long birthTime; //The time this entity was birth, from CalendarTFC#totalTime
-    private float familiarity;
+    //Values that has a visual effect on client
+    private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Long> BIRTHTIME = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializersTFC.LONG);
+    private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.FLOAT);
 
     public EntityAnimalTFC(World worldIn, boolean gender, long birthTime)
     {
         super(worldIn);
-        this.gender = gender;
-        this.birthTime = birthTime;
-        this.familiarity = 0;
+        this.setGender(gender);
+        this.setBirthTime(birthTime);
+        this.setFamiliarity(0);
     }
 
     public boolean getGender()
     {
-        return gender;
+        return this.dataManager.get(GENDER);
+    }
+
+    public void setGender(boolean gender)
+    {
+        this.dataManager.set(GENDER, gender);
     }
 
     public long getBirthTime()
     {
-        return birthTime;
+        return this.dataManager.get(BIRTHTIME);
+    }
+
+    public void setBirthTime(long value)
+    {
+        this.dataManager.set(BIRTHTIME, value);
     }
 
     public float getFamiliarity()
     {
-        return familiarity;
+        return this.dataManager.get(FAMILIARITY);
     }
 
-    public void addFamiliarity(float value)
+    public void setFamiliarity(float value)
     {
-        this.familiarity += value;
+        this.dataManager.set(FAMILIARITY, value);
     }
 
     @Override
@@ -58,11 +66,14 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         super.onLivingUpdate();
         if (!this.world.isRemote && this.ticksExisted % CalendarTFC.TICKS_IN_HOUR == 0)
         {
+            float familiarity = getFamiliarity();
             //Familiarity mechanics
-            if (familiarity < 0.3f)
+            if (familiarity > 0f && familiarity < 0.3f)
             {
                 familiarity -= 0.001f; //12.5 days to reset?
+                if (familiarity < 0) familiarity = 0;
             }
+            setFamiliarity(familiarity);
         }
     }
 
@@ -70,24 +81,32 @@ public abstract class EntityAnimalTFC extends EntityAnimal
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
-        nbt.setBoolean("gender", gender);
-        nbt.setLong("birthTime", birthTime);
-        nbt.setFloat("familiarity", familiarity);
+        nbt.setBoolean("gender", getGender());
+        nbt.setLong("birth", getBirthTime());
+        nbt.setFloat("familiarity", getFamiliarity());
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt)
     {
         super.readEntityFromNBT(nbt);
-        this.gender = nbt.getBoolean("gender");
-        this.birthTime = nbt.getLong("birthTime");
-        this.familiarity = nbt.getFloat("familiarity");
+        this.setGender(nbt.getBoolean("gender"));
+        this.setBirthTime(nbt.getLong("birth"));
+        this.setFamiliarity(nbt.getFloat("familiarity"));
+
     }
 
     /**
-     * Get this entity age, based on {@link #birthTime}
+     * Used by models renderer to scale the size of the animal
      *
-     * @return the Age of this entity
+     * @return float value between 0(birthday) to 1(full grown adult)
+     */
+    public abstract float getPercentToAdulthood();
+
+    /**
+     * Get this entity age, based on birth
+     *
+     * @return the Age enum of this entity
      */
     public abstract Age getAge();
 
@@ -95,9 +114,9 @@ public abstract class EntityAnimalTFC extends EntityAnimal
     protected void entityInit()
     {
         super.entityInit();
-        getDataManager().register(GENDER, gender);
-        getDataManager().register(BIRTHTIME, birthTime);
-        getDataManager().register(FAMILIARITY, familiarity);
+        getDataManager().register(GENDER, true);
+        getDataManager().register(BIRTHTIME, 0L);
+        getDataManager().register(FAMILIARITY, 0f);
     }
 
     @Override

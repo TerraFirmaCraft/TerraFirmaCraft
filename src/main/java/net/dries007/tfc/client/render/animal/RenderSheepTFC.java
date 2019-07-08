@@ -1,27 +1,30 @@
 package net.dries007.tfc.client.render.animal;
 
-import net.minecraft.client.model.ModelSheep2;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
+import net.dries007.tfc.client.model.animal.ModelSheepBodyTFC;
 import net.dries007.tfc.objects.entity.animal.EntitySheepTFC;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class RenderSheepTFC extends RenderLiving<EntitySheepTFC>
 {
-    private static final ResourceLocation SHEARED_SHEEP_TEXTURES = new ResourceLocation("textures/entity/sheep/sheep.png");
+    private static final ResourceLocation SHEEP_TEXTURES = new ResourceLocation(MOD_ID, "textures/entity/animal/sheep.png");
 
-    public RenderSheepTFC(RenderManager p_i47195_1_)
+    public RenderSheepTFC(RenderManager renderManager)
     {
-        super(p_i47195_1_, new ModelSheep2(), 0.7F);
-        //this.addLayer(new LayerSheepWool(this));
+        super(renderManager, new ModelSheepBodyTFC(), 0.7F);
+        this.addLayer(new LayerSheepWoolTFC(this));
     }
 
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
+    @Override
     protected ResourceLocation getEntityTexture(EntitySheepTFC entity)
     {
-        return SHEARED_SHEEP_TEXTURES;
+        return SHEEP_TEXTURES;
     }
 }

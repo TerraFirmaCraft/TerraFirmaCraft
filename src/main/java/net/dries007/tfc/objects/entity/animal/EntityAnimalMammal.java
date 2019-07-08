@@ -4,18 +4,13 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.util.DataSerializersTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public abstract class EntityAnimalMammal extends EntityAnimalTFC
 {
-    protected static final DataParameter<Long> BREEDTIME = EntityDataManager.createKey(EntityAnimalMammal.class, DataSerializersTFC.LONG);
-    protected static final DataParameter<Boolean> PREGNANT = EntityDataManager.createKey(EntityAnimalMammal.class, DataSerializers.BOOLEAN);
+    //No visual effect on client, no packet updates needed
     private long breedTime; //Controls pregnancy for females, cooldown to the next breeding for males
     private boolean pregnant;
 
@@ -38,14 +33,6 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
             birthChildren();
             pregnant = false;
         }
-    }
-
-    @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        getDataManager().register(BREEDTIME, breedTime);
-        getDataManager().register(PREGNANT, pregnant);
     }
 
     @Override
