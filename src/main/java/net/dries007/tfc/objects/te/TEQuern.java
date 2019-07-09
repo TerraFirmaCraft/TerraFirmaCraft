@@ -22,17 +22,11 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.network.PacketQuernUpdate;
-import net.dries007.tfc.network.PacketRequestQuernUpdate;
+import net.dries007.tfc.api.recipes.QuernRecipe;
 import net.dries007.tfc.objects.items.ItemHandstone;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.objects.recipes.QuernRecipeManager;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.minecraft.init.SoundEvents.*;
 
@@ -74,14 +68,15 @@ public class TEQuern extends TEInventory implements ITickable
         inventory.deserializeNBT(nbt);
     }
 
-    @Override
-    public void setAndUpdateSlots(int slot)
+    public void onHandstoneSlotChange()
     {
-        if (!world.isRemote)
-        {
-            TerraFirmaCraft.getNetwork().sendToAllTracking(new PacketQuernUpdate(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
-        }
-        super.setAndUpdateSlots(slot);
+        hasHandstone = inventory.getStackInSlot(SLOT_HANDSTONE).getItem() instanceof ItemHandstone;
+        setAndUpdateSlots(SLOT_HANDSTONE);
+    }
+
+    public void onInputSlotChange()
+    {
+        updateBlock();
     }
 
     @Override
@@ -91,14 +86,22 @@ public class TEQuern extends TEInventory implements ITickable
     }
 
     @Override
+    public void setAndUpdateSlots(int slot)
+    {
+        updateBlock();
+        hasHandstone = inventory.getStackInSlot(SLOT_HANDSTONE).getItem() instanceof ItemHandstone;
+        super.setAndUpdateSlots(slot);
+    }
+
+    @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
         switch (slot)
         {
             case SLOT_HANDSTONE:
-                return OreDictionaryHelper.doesStackMatchOre(stack, "quernHandstone");
+                return stack.getItem() instanceof ItemHandstone;
             case SLOT_INPUT:
-                return QuernRecipeManager.getInstance().getIsValidGrindingIngredient(stack);
+                return QuernRecipe.get(stack) != null;
             default:
                 return false;
         }
@@ -109,6 +112,7 @@ public class TEQuern extends TEInventory implements ITickable
     {
         rotationTimer = nbt.getInteger("rotationTimer");
         super.readFromNBT(nbt);
+        hasHandstone = inventory.getStackInSlot(SLOT_HANDSTONE).getItem() instanceof ItemHandstone;
     }
 
     @Override
@@ -137,13 +141,12 @@ public class TEQuern extends TEInventory implements ITickable
     public void grind()
     {
         this.rotationTimer = 90;
+        updateBlock();
     }
 
     @Override
     public void update()
     {
-        hasHandstone = inventory.getStackInSlot(SLOT_HANDSTONE).getItem() instanceof ItemHandstone;
-
         if (rotationTimer > 0)
         {
             rotationTimer--;
@@ -163,8 +166,9 @@ public class TEQuern extends TEInventory implements ITickable
                     world.playSound(null, pos, BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1.0f, 0.8f);
                     world.playSound(null, pos, ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1.0f, 0.6f);
                 }
+
+                setAndUpdateSlots(SLOT_HANDSTONE);
             }
-            setAndUpdateSlots(SLOT_HANDSTONE);
         }
     }
 
@@ -181,35 +185,20 @@ public class TEQuern extends TEInventory implements ITickable
         return new AxisAlignedBB(getPos(), getPos().add(1, 2, 1));
     }
 
-    @Override
-    public void onLoad()
-    {
-        if (world.isRemote)
-        {
-            TerraFirmaCraft.getNetwork().sendToServer(new PacketRequestQuernUpdate(this));
-        }
-    }
-
     public ItemStack takeCraftingResult(EntityPlayer player, ItemStack stack)
     {
         if (!player.world.isRemote)
         {
             int count = stack.getCount();
-            float xpValue = QuernRecipeManager.getInstance().getGrindingExperience(stack);
+            float xpValue = 0.05F;
 
-            if (xpValue == 0.0F)
+            int j = MathHelper.floor((float) count * xpValue);
+
+            if (j < MathHelper.ceil((float) count * xpValue) && Math.random() < (double) ((float) count * xpValue - (float) j))
             {
-                count = 0;
+                ++j;
             }
-            else if (xpValue < 1.0F)
-            {
-                int j = MathHelper.floor((float) count * xpValue);
-                if (j < MathHelper.ceil((float) count * xpValue) && Math.random() < (double) ((float) count * xpValue - (float) j))
-                {
-                    ++j;
-                }
-                count = j;
-            }
+            count = j;
 
             while (count > 0)
             {
@@ -225,28 +214,40 @@ public class TEQuern extends TEInventory implements ITickable
 
     private void grindItem()
     {
-        if (hasHandstone)
+        ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
+        if (!inputStack.isEmpty())
         {
-            ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
-            ItemStack resultStack = QuernRecipeManager.getInstance().getGrindingResult(inputStack);
+            ItemStack resultStack = QuernRecipe.get(inputStack).getOutputItem();
             ItemStack outputStack = inventory.getStackInSlot(SLOT_OUTPUT);
 
             if (outputStack.isEmpty())
             {
                 inventory.setStackInSlot(SLOT_OUTPUT, resultStack.copy());
+
+                inputStack.shrink(1);
             }
             else if (outputStack.getItem() == resultStack.getItem())
             {
-                if (!world.isRemote)
-                    Helpers.spawnItemStack(world, pos.add(0.5, 1.0D, 0.5), inventory.insertItem(SLOT_OUTPUT, resultStack, true));
-                inventory.insertItem(SLOT_OUTPUT, resultStack, false);
-            }
-            else if (!world.isRemote)
-            {
-                Helpers.spawnItemStack(world, pos.add(0.5, 1.0D, 0.5), resultStack);
-            }
+                if (outputStack.getCount() + resultStack.getCount() <= outputStack.getMaxStackSize())
+                {
+                    inventory.insertItem(SLOT_OUTPUT, resultStack, false);
 
-            inputStack.shrink(1);
+                    inputStack.shrink(1);
+                }
+            }
         }
+    }
+
+    public void updateBlock()
+    {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+        markDirty();
+    }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer player)
+    {
+        return super.canInteractWith(player) && rotationTimer == 0;
     }
 }

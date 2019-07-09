@@ -10,11 +10,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.types.Metal;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 

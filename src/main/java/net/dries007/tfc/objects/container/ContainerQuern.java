@@ -10,8 +10,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.objects.inventory.slot.SlotQuernHandstone;
+import net.dries007.tfc.objects.inventory.slot.SlotQuernInput;
 import net.dries007.tfc.objects.inventory.slot.SlotQuernOutput;
-import net.dries007.tfc.objects.inventory.slot.SlotTEInput;
 import net.dries007.tfc.objects.te.TEQuern;
 
 import static net.dries007.tfc.objects.te.TEQuern.*;
@@ -30,7 +30,7 @@ public class ContainerQuern extends ContainerTE<TEQuern>
         if (inventory != null)
         {
             addSlotToContainer(new SlotQuernHandstone(inventory, SLOT_HANDSTONE, 93, 20, tile));
-            addSlotToContainer(new SlotTEInput(inventory, SLOT_INPUT, 66, 47, tile));
+            addSlotToContainer(new SlotQuernInput(inventory, SLOT_INPUT, 66, 47, tile));
             addSlotToContainer(new SlotQuernOutput(player, inventory, SLOT_OUTPUT, 93, 47));
         }
     }

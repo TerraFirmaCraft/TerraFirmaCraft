@@ -13,11 +13,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.items.IItemHandler;
-
-import net.dries007.tfc.objects.recipes.QuernRecipeManager;
+import net.minecraftforge.items.SlotItemHandler;
 
 @ParametersAreNonnullByDefault
-public class SlotQuernOutput extends SlotOutput
+public class SlotQuernOutput extends SlotItemHandler
 {
     private final EntityPlayer player;
     private int removeCount;
@@ -54,30 +53,21 @@ public class SlotQuernOutput extends SlotOutput
 
         if (!this.player.world.isRemote)
         {
-            int i = this.removeCount;
-            float f = QuernRecipeManager.getInstance().getGrindingExperience(stack);
+            int count = this.removeCount;
+            float xpValue = 0.05F;
 
-            if (f == 0.0F)
+            int j = MathHelper.floor((float) count * xpValue);
+            if (j < MathHelper.ceil((float) count * xpValue) && Math.random() < (double) ((float) count * xpValue - (float) j))
             {
-                i = 0;
+                ++j;
             }
-            else if (f < 1.0F)
+            count = j;
+
+            while (count > 0)
             {
-                int j = MathHelper.floor((float) i * f);
-
-                if (j < MathHelper.ceil((float) i * f) && Math.random() < (double) ((float) i * f - (float) j))
-                {
-                    ++j;
-                }
-
-                i = j;
-            }
-
-            while (i > 0)
-            {
-                int k = EntityXPOrb.getXPSplit(i);
-                i -= k;
-                this.player.world.spawnEntity(new EntityXPOrb(this.player.world, this.player.posX, this.player.posY + 0.5D, this.player.posZ + 0.5D, k));
+                int k = EntityXPOrb.getXPSplit(count);
+                count -= k;
+                player.world.spawnEntity(new EntityXPOrb(player.world, player.posX, player.posY + 0.5D, player.posZ + 0.5D, k));
             }
         }
 
