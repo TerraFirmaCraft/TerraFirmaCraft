@@ -33,6 +33,7 @@ public class EntitiesTFC
 
     private static void register(String name, Class<? extends Entity> cls, int eggPrimaryColor, int eggSecondaryColor)
     {
+        //Register entity and create a spawn egg for creative
         EntityRegistry.registerModEntity(new ResourceLocation(MOD_ID, name), cls, name, id++, TerraFirmaCraft.getInstance(), 160, 20, true, eggPrimaryColor, eggSecondaryColor);
     }
 }
