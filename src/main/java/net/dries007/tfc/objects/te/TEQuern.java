@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -20,9 +19,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.api.recipes.QuernRecipe;
 import net.dries007.tfc.objects.items.ItemHandstone;
@@ -58,27 +55,6 @@ public class TEQuern extends TEInventory implements ITickable
         return quernStack;
     }
 
-    public ItemStackHandler getInventory()
-    {
-        return inventory;
-    }
-
-    public void setInventory(@Nonnull NBTTagCompound nbt)
-    {
-        inventory.deserializeNBT(nbt);
-    }
-
-    public void onHandstoneSlotChange()
-    {
-        hasHandstone = inventory.getStackInSlot(SLOT_HANDSTONE).getItem() instanceof ItemHandstone;
-        setAndUpdateSlots(SLOT_HANDSTONE);
-    }
-
-    public void onInputSlotChange()
-    {
-        updateBlock();
-    }
-
     @Override
     public int getSlotLimit(int slot)
     {
@@ -89,7 +65,10 @@ public class TEQuern extends TEInventory implements ITickable
     public void setAndUpdateSlots(int slot)
     {
         updateBlock();
-        hasHandstone = inventory.getStackInSlot(SLOT_HANDSTONE).getItem() instanceof ItemHandstone;
+        if (slot == SLOT_HANDSTONE)
+        {
+            hasHandstone = inventory.getStackInSlot(SLOT_HANDSTONE).getItem() instanceof ItemHandstone;
+        }
         super.setAndUpdateSlots(slot);
     }
 
@@ -185,30 +164,8 @@ public class TEQuern extends TEInventory implements ITickable
         return new AxisAlignedBB(getPos(), getPos().add(1, 2, 1));
     }
 
-    public ItemStack takeCraftingResult(EntityPlayer player, ItemStack stack)
+    public ItemStack takeCraftingResult(ItemStack stack)
     {
-        if (!player.world.isRemote)
-        {
-            int count = stack.getCount();
-            float xpValue = 0.05F;
-
-            int j = MathHelper.floor((float) count * xpValue);
-
-            if (j < MathHelper.ceil((float) count * xpValue) && Math.random() < (double) ((float) count * xpValue - (float) j))
-            {
-                ++j;
-            }
-            count = j;
-
-            while (count > 0)
-            {
-                int k = EntityXPOrb.getXPSplit(count);
-                count -= k;
-                player.world.spawnEntity(new EntityXPOrb(player.world, player.posX, player.posY + 0.5D, player.posZ + 0.5D, k));
-                world.playSound(null, player.getPosition(), ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 1.0F, 1.0F + ((world.rand.nextFloat() - world.rand.nextFloat()) / 16F));
-            }
-        }
-        stack.onCrafting(player.world, player, stack.getCount());
         return inventory.extractItem(SLOT_OUTPUT, stack.getCount(), false);
     }
 
