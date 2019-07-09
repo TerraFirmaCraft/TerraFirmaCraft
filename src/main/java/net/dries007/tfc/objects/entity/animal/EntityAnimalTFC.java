@@ -22,22 +22,23 @@ public abstract class EntityAnimalTFC extends EntityAnimal
     private static final DataParameter<Long> BIRTHTIME = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializersTFC.LONG);
     private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.FLOAT);
 
-    public EntityAnimalTFC(World worldIn, boolean gender, long birthTime)
+    public EntityAnimalTFC(World worldIn, Gender gender, long birthTime)
     {
         super(worldIn);
         this.setGender(gender);
         this.setBirthTime(birthTime);
         this.setFamiliarity(0);
+        this.setGrowingAge(0); //We don't use this
     }
 
-    public boolean getGender()
+    public Gender getGender()
     {
-        return this.dataManager.get(GENDER);
+        return Gender.fromBool(this.dataManager.get(GENDER));
     }
 
-    public void setGender(boolean gender)
+    public void setGender(Gender gender)
     {
-        this.dataManager.set(GENDER, gender);
+        this.dataManager.set(GENDER, gender.toBool());
     }
 
     public long getBirthTime()
@@ -81,7 +82,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
-        nbt.setBoolean("gender", getGender());
+        nbt.setBoolean("gender", getGender().toBool());
         nbt.setLong("birth", getBirthTime());
         nbt.setFloat("familiarity", getFamiliarity());
     }
@@ -90,7 +91,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal
     public void readEntityFromNBT(NBTTagCompound nbt)
     {
         super.readEntityFromNBT(nbt);
-        this.setGender(nbt.getBoolean("gender"));
+        this.setGender(Gender.fromBool(nbt.getBoolean("gender")));
         this.setBirthTime(nbt.getLong("birth"));
         this.setFamiliarity(nbt.getFloat("familiarity"));
 
@@ -128,5 +129,20 @@ public abstract class EntityAnimalTFC extends EntityAnimal
     public enum Age
     {
         CHILD, ADULT, OLD
+    }
+
+    public enum Gender
+    {
+        MALE, FEMALE;
+
+        public static Gender fromBool(boolean value)
+        {
+            return value ? MALE : FEMALE;
+        }
+
+        public boolean toBool()
+        {
+            return this == MALE;
+        }
     }
 }

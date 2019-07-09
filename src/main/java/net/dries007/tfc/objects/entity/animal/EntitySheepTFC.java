@@ -14,6 +14,7 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -42,19 +43,26 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     private static final DataParameter<Integer> DYE_COLOR = EntityDataManager.createKey(EntitySheepTFC.class, DataSerializers.VARINT);
     private static final DataParameter<Long> SHEARED = EntityDataManager.createKey(EntitySheepTFC.class, DataSerializersTFC.LONG);
 
+    private static long getRandomGrowth()
+    {
+        //Used when natural spawning sheeps
+        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4); // 3 out of 4 natural spawned sheeps will be adults
+        return CalendarTFC.TICKS_IN_DAY * lifeTimeDays;
+    }
+
     public EntitySheepTFC(World worldIn)
     {
-        this(worldIn, Constants.RNG.nextBoolean(),
-            CalendarTFC.INSTANCE.getTotalTime() - (Constants.RNG.nextBoolean() ? CalendarTFC.TICKS_IN_DAY * 360 : 0), //Adult or child
+        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
+            CalendarTFC.INSTANCE.getCalendarTime() - getRandomGrowth(),
             EntitySheep.getRandomSheepColor(Constants.RNG));
     }
 
-    public EntitySheepTFC(World worldIn, boolean gender, long birthTime, EnumDyeColor dye)
+    public EntitySheepTFC(World worldIn, Gender gender, long birthTime, EnumDyeColor dye)
     {
         super(worldIn, gender, birthTime);
         this.setSize(0.9F, 1.3F);
         this.setDyeColor(dye);
-        this.setShearedTime(birthTime - DAYS_TO_GROW_WOOL * CalendarTFC.TICKS_IN_DAY); //Spawn with wool
+        this.setShearedTime(0); //Spawn with wool
     }
 
     public EnumDyeColor getDyeColor()
@@ -78,6 +86,12 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     }
 
     @Override
+    public boolean isBreedingItem(ItemStack stack)
+    {
+        return stack.getItem() == Items.WHEAT;
+    }
+
+    @Override
     public boolean isShearable(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos)
     {
         return getAge() == Age.ADULT && hasWool();
@@ -87,7 +101,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     @Override
     public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
-        this.setShearedTime(CalendarTFC.INSTANCE.getTotalTime());
+        this.setShearedTime(CalendarTFC.INSTANCE.getCalendarTime());
         int i = 1 + this.rand.nextInt(3);
 
         java.util.List<ItemStack> ret = new java.util.ArrayList<>();
@@ -100,19 +114,10 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
 
     public boolean hasWool()
     {
-        return CalendarTFC.INSTANCE.getTotalTime() > getShearedtime() + CalendarTFC.TICKS_IN_DAY * DAYS_TO_GROW_WOOL;
+        return this.getShearedtime() == 0 || CalendarTFC.INSTANCE.getCalendarTime() > getShearedtime() + CalendarTFC.TICKS_IN_DAY * DAYS_TO_GROW_WOOL;
     }
 
-    /*@Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        if (!this.world.isRemote && !hasWool() && getShouldHaveWool())
-        {
-            setSheared(false);
-        }
-    }*/
-
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
@@ -120,9 +125,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
         compound.setInteger("dyecolor", this.getDyeColor().getMetadata());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
@@ -142,7 +145,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
         int numberOfChilds = Constants.RNG.nextInt(3) + 1; //1-3
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntitySheepTFC baby = new EntitySheepTFC(this.world, Constants.RNG.nextBoolean(), CalendarTFC.INSTANCE.getTotalTime(), this.getDyeColor());
+            EntitySheepTFC baby = new EntitySheepTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), CalendarTFC.INSTANCE.getCalendarTime(), this.getDyeColor());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.world.spawnEntity(baby);
         }
@@ -152,21 +155,18 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     @Override
     public float getPercentToAdulthood()
     {
-        long div = this.getBirthTime() + CalendarTFC.TICKS_IN_DAY * DAYS_TO_ADULTHOOD;
-        if (div == 0) return 1;
-        float value = CalendarTFC.INSTANCE.getTotalTime() / div;
+        if (this.getAge() != Age.CHILD) return 1;
+        long adulthoodTick = CalendarTFC.TICKS_IN_DAY * DAYS_TO_ADULTHOOD;
+        double value = (CalendarTFC.INSTANCE.getCalendarTime() - this.getBirthTime()) / (double) adulthoodTick;
         if (value > 1f) value = 1f;
-        return value;
+        if (value < 0f) value = 0;
+        return (float) value;
     }
 
     @Override
-    protected void initEntityAI()
+    public Age getAge()
     {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
-        this.tasks.addTask(2, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(4, new EntityAILookIdle(this));
+        return CalendarTFC.INSTANCE.getCalendarTime() > this.getBirthTime() + CalendarTFC.TICKS_IN_DAY * DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
     }
 
     @Override
@@ -187,15 +187,21 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
         return SoundEvents.ENTITY_SHEEP_DEATH;
     }
 
-    protected void playStepSound(BlockPos pos, Block blockIn)
+    @Override
+    protected void initEntityAI()
     {
-        this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
+        this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
+        this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
+        this.tasks.addTask(3, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+        this.tasks.addTask(5, new EntityAILookIdle(this));
     }
 
     @Override
-    public Age getAge()
+    protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        return CalendarTFC.INSTANCE.getTotalTime() > this.getBirthTime() + CalendarTFC.TICKS_IN_DAY * DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD; //1 Year to adulthood
+        this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
     }
 
     @Override

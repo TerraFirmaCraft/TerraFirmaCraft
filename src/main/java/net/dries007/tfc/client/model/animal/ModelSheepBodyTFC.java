@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntitySheepTFC;
 
 @SideOnly(Side.CLIENT)
@@ -88,7 +89,7 @@ public class ModelSheepBodyTFC extends ModelQuadruped
             }
         }
 
-        if (!sheep.getGender())
+        if (sheep.getGender() == EntityAnimalTFC.Gender.FEMALE)
         {
             horn1.isHidden = true;
             horn2.isHidden = true;
