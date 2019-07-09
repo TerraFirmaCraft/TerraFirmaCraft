@@ -1,0 +1,212 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
+package net.dries007.tfc.objects.entity.animal;
+
+import java.util.List;
+import javax.annotation.Nonnull;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.*;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.IShearable;
+
+import net.dries007.tfc.Constants;
+import net.dries007.tfc.util.calendar.CalendarTFC;
+
+public class EntityCowTFC extends EntityAnimalMammal
+{
+    private static final int DAYS_TO_ADULTHOOD = 1080;
+    private static final int DAYS_TO_FULL_GESTATION = 270;
+
+    private long lastMilked;
+
+    private static int getRandomGrowth()
+    {
+        //Used when natural spawning sheeps
+        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4); // 3 out of 4 natural spawned sheeps will be adults
+        return (int) (CalendarTFC.INSTANCE.getTotalDays() - lifeTimeDays);
+    }
+
+    public EntityCowTFC(World worldIn)
+    {
+        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
+            getRandomGrowth());
+    }
+
+    public EntityCowTFC(World worldIn, Gender gender, int birthDay)
+    {
+        super(worldIn, gender, birthDay);
+        this.setSize(0.9F, 1.3F);
+        this.setMilkedDay(-1); //Spawn with milk
+    }
+
+    @Override
+    public void onLivingUpdate()
+    {
+        super.onLivingUpdate();
+        if (!this.world.isRemote)
+        {
+            if (this.getMilkedDay() > CalendarTFC.INSTANCE.getTotalDays())
+            {
+                //Calendar went backwards by command! this need to update
+                this.setMilkedDay((int) CalendarTFC.INSTANCE.getTotalDays());
+            }
+        }
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound)
+    {
+        super.writeEntityToNBT(compound);
+        compound.setLong("milked", this.getMilkedDay());
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound)
+    {
+        super.readEntityFromNBT(compound);
+        this.setMilkedDay(compound.getInteger("milked"));
+    }
+
+    @Override
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
+    {
+        ItemStack itemstack = player.getHeldItem(hand);
+
+        if (itemstack.getItem() == Items.BUCKET && hasMilk())
+        {
+            player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
+            this.setMilkedDay(CalendarTFC.INSTANCE.getTotalDays());
+            itemstack.shrink(1);
+
+            if (itemstack.isEmpty())
+            {
+                player.setHeldItem(hand, new ItemStack(Items.MILK_BUCKET));
+            }
+            else if (!player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET)))
+            {
+                player.dropItem(new ItemStack(Items.MILK_BUCKET), false);
+            }
+
+            return true;
+        }
+        else
+        {
+            return super.processInteract(player, hand);
+        }
+    }
+
+    @Override
+    public void birthChildren()
+    {
+        int numberOfChilds = 1; //one always
+        for (int i = 0; i < numberOfChilds; i++)
+        {
+            EntityCowTFC baby = new EntityCowTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.INSTANCE.getTotalDays());
+            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+            this.world.spawnEntity(baby);
+        }
+
+    }
+
+    @Override
+    public long gestationDays()
+    {
+        return DAYS_TO_FULL_GESTATION;
+    }
+
+    public long getMilkedDay()
+    {
+        return this.lastMilked;
+    }
+
+    public void setMilkedDay(long value)
+    {
+        this.lastMilked = value;
+    }
+
+    public boolean hasMilk()
+    {
+        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && (this.getMilkedDay() == -1 || CalendarTFC.INSTANCE.getTotalDays() > getMilkedDay());
+    }
+
+    @Override
+    public float getPercentToAdulthood()
+    {
+        if (this.getAge() != Age.CHILD) return 1;
+        double value = (CalendarTFC.INSTANCE.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
+        if (value > 1f) value = 1f;
+        if (value < 0f) value = 0;
+        return (float) value;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return SoundEvents.ENTITY_COW_AMBIENT;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
+    {
+        return SoundEvents.ENTITY_COW_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound()
+    {
+        return SoundEvents.ENTITY_COW_DEATH;
+    }
+
+    @Override
+    protected void initEntityAI()
+    {
+        this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
+        this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
+        this.tasks.addTask(3, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+        this.tasks.addTask(5, new EntityAILookIdle(this));
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundEvents.ENTITY_COW_STEP, 0.15F, 1.0F);
+    }
+
+    @Override
+    public Age getAge()
+    {
+        return CalendarTFC.INSTANCE.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+    }
+
+    @Override
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000000298023224D);
+    }
+}
