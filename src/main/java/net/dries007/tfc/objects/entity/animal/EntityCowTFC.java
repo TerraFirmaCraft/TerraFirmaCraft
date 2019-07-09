@@ -34,8 +34,7 @@ public class EntityCowTFC extends EntityAnimalMammal
 
     private static int getRandomGrowth()
     {
-        //Used when natural spawning sheeps
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4); // 3 out of 4 natural spawned sheeps will be adults
+        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
         return (int) (CalendarTFC.INSTANCE.getTotalDays() - lifeTimeDays);
     }
 
