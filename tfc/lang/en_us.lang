@@ -325,6 +325,7 @@ tile.tfc.torch.name=Torch
 tile.tfc.blast_furnace.name=Blast Furnace
 tile.tfc.bloomery.name=Bloomery
 tile.tfc.fire_bricks.name=Fire Bricks
+tile.tfc.quern.name=Quern
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite
@@ -2136,6 +2137,7 @@ item.tfc.firestarter.name=Firestarter
 item.tfc.straw.name=Straw
 item.leather.name=Leather
 item.tfc.spindle.name=Spindle
+item.tfc.handstone.name=Quern Handstone
 
 item.tfc.ore.native_copper.name=Native Copper
 item.tfc.ore.native_gold.name=Native Gold
