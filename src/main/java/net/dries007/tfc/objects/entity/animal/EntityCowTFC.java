@@ -5,34 +5,25 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
-import java.util.List;
-import javax.annotation.Nonnull;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IShearable;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class EntityCowTFC extends EntityAnimalMammal
 {
@@ -94,21 +85,47 @@ public class EntityCowTFC extends EntityAnimalMammal
     {
         ItemStack itemstack = player.getHeldItem(hand);
 
-        if (itemstack.getItem() == Items.BUCKET && hasMilk())
+        if (itemstack.getItem() == Items.BUCKET)
         {
-            player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
-            this.setMilkedDay(CalendarTFC.INSTANCE.getTotalDays());
-            itemstack.shrink(1);
-
-            if (itemstack.isEmpty())
+            if (this.getFamiliarity() > 0.15f && hasMilk())
             {
-                player.setHeldItem(hand, new ItemStack(Items.MILK_BUCKET));
-            }
-            else if (!player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET)))
-            {
-                player.dropItem(new ItemStack(Items.MILK_BUCKET), false);
-            }
+                player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
+                this.setMilkedDay(CalendarTFC.INSTANCE.getTotalDays());
+                itemstack.shrink(1);
 
+                if (itemstack.isEmpty())
+                {
+                    player.setHeldItem(hand, new ItemStack(Items.MILK_BUCKET));
+                }
+                else if (!player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET)))
+                {
+                    player.dropItem(new ItemStack(Items.MILK_BUCKET), false);
+                }
+            }
+            else if (!this.world.isRemote)
+            {
+                //Return chat message indicating why this entity isn't giving milk
+                if (this.getGender() == Gender.MALE)
+                {
+                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.male"));
+                }
+                else if (this.getAge() == Age.OLD)
+                {
+                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.old"));
+                }
+                else if (this.getAge() == Age.CHILD)
+                {
+                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.child"));
+                }
+                else if (getFamiliarity() <= 0.15f)
+                {
+                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.lowfamiliarity"));
+                }
+                else if (!hasMilk())
+                {
+                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.empty"));
+                }
+            }
             return true;
         }
         else

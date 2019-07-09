@@ -61,7 +61,7 @@ public class ModelCowTFC extends ModelQuadruped
         this.body.setRotationPoint(0.0F, 5.0F, 2.0F);
         this.udders = new ModelRenderer(this, 18,4);
         this.udders.setRotationPoint(0.0F, 5.0F, 2.0F);
-        this.udders.setTextureOffset(52, 0).addBox(-2.0F, 2.0F, -8.0F, 4, 6, 1);
+        this.udders.setTextureOffset(52, 0).addBox(-2.0F, 0.0F, -8.0F, 4, 6, 1);
 
         --this.leg1.rotationPointX;
         ++this.leg2.rotationPointX;
