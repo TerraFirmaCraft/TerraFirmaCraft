@@ -11,18 +11,12 @@ import net.minecraft.util.math.BlockPos;
 
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemHandstone extends ItemMisc
+public class ItemHandstone extends ItemCraftingTool
 {
     ItemHandstone()
     {
-        super(Size.NORMAL, Weight.HEAVY);
-
-        setMaxDamage(250);
-        setNoRepair();
-
-        OreDictionaryHelper.register(this, "handstone");
+        super(250, Size.NORMAL, Weight.HEAVY, "handstone");
     }
 
     @Override

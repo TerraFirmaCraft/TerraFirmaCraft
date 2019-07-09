@@ -21,10 +21,12 @@ import net.dries007.tfc.api.recipes.*;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.Powder;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.items.ItemAnimalHide;
+import net.dries007.tfc.objects.items.ItemPowder;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
@@ -272,6 +274,57 @@ public final class DefaultRecipes
             new LoomRecipe(new ResourceLocation(MOD_ID, "silk_cloth"), IIngredient.of(Items.STRING), 24, new ItemStack(ItemsTFC.SILK_CLOTH), 24, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")),
 
             new LoomRecipe(new ResourceLocation(MOD_ID, "wool_block"), IIngredient.of(ItemsTFC.WOOL_CLOTH), 4, new ItemStack(Blocks.WOOL), 4, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png"))
+        );
+    }
+
+    @SubscribeEvent
+    public static void onRegisterQuernRecipeEvent(RegistryEvent.Register<QuernRecipe> event)
+    {
+        IForgeRegistry<QuernRecipe> r = event.getRegistry();
+
+        r.registerAll(
+            //Flux
+            new QuernRecipe(new ResourceLocation(MOD_ID, "boarx"), IIngredient.of("gemBorax"), new ItemStack(ItemPowder.get(Powder.FLUX), 6)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "chalk"), IIngredient.of("rockChalk"), new ItemStack(ItemPowder.get(Powder.FLUX), 2)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "dolomite"), IIngredient.of("rockDolomite"), new ItemStack(ItemPowder.get(Powder.FLUX), 2)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "limestone"), IIngredient.of("rockLimestone"), new ItemStack(ItemPowder.get(Powder.FLUX), 2)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "marble"), IIngredient.of("rockMarble"), new ItemStack(ItemPowder.get(Powder.FLUX), 2)),
+
+            //Redstone
+            new QuernRecipe(new ResourceLocation(MOD_ID, "cinnabar"), IIngredient.of("gemCinnabar"), new ItemStack(Items.REDSTONE, 8)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "cryolite"), IIngredient.of("gemCryolite"), new ItemStack(Items.REDSTONE, 8)),
+
+            //Hematite
+            new QuernRecipe(new ResourceLocation(MOD_ID, "hematite_small"), IIngredient.of("oreHematiteSmall"), new ItemStack(ItemPowder.get(Powder.HEMATITE_POWDER), 2)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "hematite_poor"), IIngredient.of("oreHematitePoor"), new ItemStack(ItemPowder.get(Powder.HEMATITE_POWDER), 3)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "hematite_normal"), IIngredient.of("oreHematiteNormal"), new ItemStack(ItemPowder.get(Powder.HEMATITE_POWDER), 5)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "hematite_rich"), IIngredient.of("oreHematiteRich"), new ItemStack(ItemPowder.get(Powder.HEMATITE_POWDER), 7)),
+
+            //Limonite
+            new QuernRecipe(new ResourceLocation(MOD_ID, "limonite_small"), IIngredient.of("oreLimoniteSmall"), new ItemStack(ItemPowder.get(Powder.LIMONITE_POWDER), 2)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "limonite_poor"), IIngredient.of("oreLimonitePoor"), new ItemStack(ItemPowder.get(Powder.LIMONITE_POWDER), 3)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "limonite_normal"), IIngredient.of("oreLimoniteNormal"), new ItemStack(ItemPowder.get(Powder.LIMONITE_POWDER), 5)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "limonite_rich"), IIngredient.of("oreLimoniteRich"), new ItemStack(ItemPowder.get(Powder.LIMONITE_POWDER), 7)),
+
+            //Malachite
+            new QuernRecipe(new ResourceLocation(MOD_ID, "malachite_small"), IIngredient.of("oreMalachiteSmall"), new ItemStack(ItemPowder.get(Powder.MALACHITE_POWDER), 2)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "malachite_poor"), IIngredient.of("oreMalachitePoor"), new ItemStack(ItemPowder.get(Powder.MALACHITE_POWDER), 3)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "malachite_normal"), IIngredient.of("oreMalachiteNormal"), new ItemStack(ItemPowder.get(Powder.MALACHITE_POWDER), 5)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "malachite_rich"), IIngredient.of("oreMalachiteRich"), new ItemStack(ItemPowder.get(Powder.MALACHITE_POWDER), 7)),
+
+            //Bone meal
+            new QuernRecipe(new ResourceLocation(MOD_ID, "bone"), IIngredient.of("bone"), new ItemStack(Items.DYE, 3, EnumDyeColor.WHITE.getDyeDamage())),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "bone_block"), IIngredient.of(Blocks.BONE_BLOCK), new ItemStack(Items.DYE, 9, EnumDyeColor.WHITE.getDyeDamage())),
+
+            //Misc
+            new QuernRecipe(new ResourceLocation(MOD_ID, "sylvite"), IIngredient.of("gemSylvite"), new ItemStack(ItemPowder.get(Powder.FERTILIZER), 4)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "sulfur"), IIngredient.of("gemSulfur"), new ItemStack(ItemPowder.get(Powder.SULFUR_POWDER), 4)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "saltpeter"), IIngredient.of("gemSaltpeter"), new ItemStack(ItemPowder.get(Powder.SALTPETER_POWDER), 4)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "rocksalt"), IIngredient.of("rockRocksalt"), new ItemStack(ItemPowder.get(Powder.SALT), 4)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "blaze_rod"), IIngredient.of(Items.BLAZE_ROD), new ItemStack(Items.BLAZE_POWDER, 2)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "lapis_lazuli"), IIngredient.of("gemLapis"), new ItemStack(ItemPowder.get(Powder.LAPIS_LAZULI_POWDER), 4)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "graphite"), IIngredient.of("gemGraphite"), new ItemStack(ItemPowder.get(Powder.GRAPHITE_POWDER), 4)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "kaolinite"), IIngredient.of("gemKaolinite"), new ItemStack(ItemPowder.get(Powder.KAOLINITE_POWDER), 4))
         );
     }
 

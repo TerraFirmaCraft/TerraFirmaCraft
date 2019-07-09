@@ -9,20 +9,24 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 import net.dries007.tfc.objects.items.ItemHandstone;
-import net.dries007.tfc.objects.te.TEInventory;
+import net.dries007.tfc.objects.te.TEQuern;
 
-public class SlotQuernHandstone extends SlotTEInput
+public class SlotQuernHandstone extends SlotItemHandler
 {
     private static boolean isHandstone(ItemStack stack)
     {
         return stack.getItem() instanceof ItemHandstone;
     }
 
-    public SlotQuernHandstone(@Nonnull IItemHandler inventory, int idx, int x, int y, @Nonnull TEInventory te)
+    TEQuern tile;
+
+    public SlotQuernHandstone(@Nonnull IItemHandler inventory, int idx, int x, int y, TEQuern tile)
     {
-        super(inventory, idx, x, y, te);
+        super(inventory, idx, x, y);
+        this.tile = tile;
     }
 
     @Override
@@ -35,5 +39,11 @@ public class SlotQuernHandstone extends SlotTEInput
     public int getItemStackLimit(@Nonnull ItemStack stack)
     {
         return 1;
+    }
+
+    @Override
+    public void onSlotChanged()
+    {
+        tile.onHandstoneSlotChange();
     }
 }

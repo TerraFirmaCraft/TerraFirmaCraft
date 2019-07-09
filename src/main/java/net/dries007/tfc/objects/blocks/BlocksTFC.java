@@ -579,6 +579,7 @@ public final class BlocksTFC
         register(TEBloomery.class, "bloomery");
         register(TEBloom.class, "bloom");
         register(TEMetalSheet.class, "metal_sheet");
+        register(TEQuern.class, "quern");
     }
 
     public static boolean isWater(IBlockState current)

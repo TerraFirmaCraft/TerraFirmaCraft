@@ -51,6 +51,7 @@ public final class Registries
         newRegistry(PIT_KILN_RECIPE, PitKilnRecipe.class, false);
         newRegistry(BARREL_RECIPE, BarrelRecipe.class, false);
         newRegistry(LOOM_RECIPE, LoomRecipe.class, false);
+        newRegistry(QUERN_RECIPE, QuernRecipe.class, false);
     }
 
     /**
