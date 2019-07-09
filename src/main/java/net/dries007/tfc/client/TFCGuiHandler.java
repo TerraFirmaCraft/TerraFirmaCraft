@@ -144,7 +144,7 @@ public class TFCGuiHandler implements IGuiHandler
             case KNAPPING_FIRE_CLAY:
                 return new GuiKnapping(container, player, KnappingRecipe.Type.FIRE_CLAY, FIRE_CLAY_TEXTURE);
             case QUERN:
-                return new GuiQuern(container, player.inventory, Helpers.getTE(world, pos, TEQuern.class));
+                return new GuiQuern(container, player.inventory, Helpers.getTE(world, pos, TEQuern.class), world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
             case CRUCIBLE:
                 return new GuiCrucible(container, player.inventory, Helpers.getTE(world, pos, TECrucible.class));
             case CALENDAR:

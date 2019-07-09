@@ -322,7 +322,7 @@ public final class DefaultRecipes
             new QuernRecipe(new ResourceLocation(MOD_ID, "saltpeter"), IIngredient.of("gemSaltpeter"), new ItemStack(ItemPowder.get(Powder.SALTPETER_POWDER), 4)),
             new QuernRecipe(new ResourceLocation(MOD_ID, "rocksalt"), IIngredient.of("rockRocksalt"), new ItemStack(ItemPowder.get(Powder.SALT), 4)),
             new QuernRecipe(new ResourceLocation(MOD_ID, "blaze_rod"), IIngredient.of(Items.BLAZE_ROD), new ItemStack(Items.BLAZE_POWDER, 2)),
-            new QuernRecipe(new ResourceLocation(MOD_ID, "lapis_lazuli"), IIngredient.of("gemLapis"), new ItemStack(ItemPowder.get(Powder.LAPIS_LAZULI_POWDER), 4)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "lapis_lazuli"), IIngredient.of("gemLapisLazuli"), new ItemStack(ItemPowder.get(Powder.LAPIS_LAZULI_POWDER), 4)),
             new QuernRecipe(new ResourceLocation(MOD_ID, "graphite"), IIngredient.of("gemGraphite"), new ItemStack(ItemPowder.get(Powder.GRAPHITE_POWDER), 4)),
             new QuernRecipe(new ResourceLocation(MOD_ID, "kaolinite"), IIngredient.of("gemKaolinite"), new ItemStack(ItemPowder.get(Powder.KAOLINITE_POWDER), 4))
         );
