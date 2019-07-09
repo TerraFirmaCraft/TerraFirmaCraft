@@ -1,5 +1,6 @@
 package net.dries007.tfc.api.recipes;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
@@ -32,6 +33,7 @@ public class QuernRecipe extends IForgeRegistryEntry.Impl<QuernRecipe>
         setRegistryName(name);
     }
 
+    @Nonnull
     public ItemStack getOutputItem()
     {
         return outputItem;
