@@ -48,11 +48,13 @@ import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
+import net.dries007.tfc.client.render.animal.RenderBearTFC;
 import net.dries007.tfc.client.render.animal.RenderCowTFC;
 import net.dries007.tfc.client.render.animal.RenderSheepTFC;
 import net.dries007.tfc.client.render.projectile.RenderThrownJavelin;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
+import net.dries007.tfc.objects.entity.animal.EntityBearTFC;
 import net.dries007.tfc.objects.entity.animal.EntityCowTFC;
 import net.dries007.tfc.objects.entity.animal.EntitySheepTFC;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
@@ -74,6 +76,7 @@ public class ClientEvents
         RenderingRegistry.registerEntityRenderingHandler(EntityThrownJavelin.class, RenderThrownJavelin::new);
         RenderingRegistry.registerEntityRenderingHandler(EntitySheepTFC.class, RenderSheepTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityCowTFC.class, RenderCowTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBearTFC.class, RenderBearTFC::new);
     }
 
     @SideOnly(Side.CLIENT)

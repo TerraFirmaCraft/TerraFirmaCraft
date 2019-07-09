@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.objects.entity.animal.EntityBearTFC;
 import net.dries007.tfc.objects.entity.animal.EntityCowTFC;
 import net.dries007.tfc.objects.entity.animal.EntitySheepTFC;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
@@ -26,6 +27,7 @@ public class EntitiesTFC
         register("thrown_javelin", EntityThrownJavelin.class);
         register("sheeptfc", EntitySheepTFC.class, 0xFFFFFF, 0xFF6347);
         register("cowtfc", EntityCowTFC.class, 0xA52A2A, 0xFFFFFF);
+        register("beartfc", EntityBearTFC.class, 0x557755, 0xFFFFFF);
     }
 
     private static void register(String name, Class<? extends Entity> cls)
