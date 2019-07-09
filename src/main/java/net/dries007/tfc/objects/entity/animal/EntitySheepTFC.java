@@ -14,7 +14,6 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -31,7 +30,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.util.DataSerializersTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
@@ -41,28 +39,42 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     private static final int DAYS_TO_FULL_GESTATION = 150;
 
     private static final DataParameter<Integer> DYE_COLOR = EntityDataManager.createKey(EntitySheepTFC.class, DataSerializers.VARINT);
-    private static final DataParameter<Long> SHEARED = EntityDataManager.createKey(EntitySheepTFC.class, DataSerializersTFC.LONG);
+    private static final DataParameter<Integer> SHEARED = EntityDataManager.createKey(EntitySheepTFC.class, DataSerializers.VARINT);
 
-    private static long getRandomGrowth()
+    private static int getRandomGrowth()
     {
         //Used when natural spawning sheeps
         int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4); // 3 out of 4 natural spawned sheeps will be adults
-        return CalendarTFC.TICKS_IN_DAY * lifeTimeDays;
+        return (int) (CalendarTFC.INSTANCE.getTotalDays() - lifeTimeDays);
     }
 
     public EntitySheepTFC(World worldIn)
     {
         this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
-            CalendarTFC.INSTANCE.getCalendarTime() - getRandomGrowth(),
+            getRandomGrowth(),
             EntitySheep.getRandomSheepColor(Constants.RNG));
     }
 
-    public EntitySheepTFC(World worldIn, Gender gender, long birthTime, EnumDyeColor dye)
+    public EntitySheepTFC(World worldIn, Gender gender, int birthDay, EnumDyeColor dye)
     {
-        super(worldIn, gender, birthTime);
+        super(worldIn, gender, birthDay);
         this.setSize(0.9F, 1.3F);
         this.setDyeColor(dye);
-        this.setShearedTime(0); //Spawn with wool
+        this.setShearedDay(-1); //Spawn with wool
+    }
+
+    @Override
+    public void onLivingUpdate()
+    {
+        super.onLivingUpdate();
+        if (!this.world.isRemote)
+        {
+            if (this.getShearedDay() > CalendarTFC.INSTANCE.getTotalDays())
+            {
+                //Calendar went backwards by command! this need to update
+                this.setShearedDay((int) CalendarTFC.INSTANCE.getTotalDays());
+            }
+        }
     }
 
     public EnumDyeColor getDyeColor()
@@ -75,20 +87,20 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
         this.dataManager.set(DYE_COLOR, color.getMetadata());
     }
 
-    public long getShearedtime()
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound)
     {
-        return this.dataManager.get(SHEARED);
-    }
-
-    public void setShearedTime(long value)
-    {
-        this.dataManager.set(SHEARED, value);
+        super.writeEntityToNBT(compound);
+        compound.setInteger("sheared", this.getShearedDay());
+        compound.setInteger("dyecolor", this.getDyeColor().getMetadata());
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack)
+    public void readEntityFromNBT(NBTTagCompound compound)
     {
-        return stack.getItem() == Items.WHEAT;
+        super.readEntityFromNBT(compound);
+        this.setShearedDay(compound.getInteger("sheared"));
+        this.setDyeColor(EnumDyeColor.byMetadata(compound.getByte("dyecolor")));
     }
 
     @Override
@@ -97,11 +109,40 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
         return getAge() == Age.ADULT && hasWool();
     }
 
+    @Override
+    public void birthChildren()
+    {
+        int numberOfChilds = Constants.RNG.nextInt(3) + 1; //1-3
+        for (int i = 0; i < numberOfChilds; i++)
+        {
+            EntitySheepTFC baby = new EntitySheepTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.INSTANCE.getTotalDays(), this.getDyeColor());
+            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+            this.world.spawnEntity(baby);
+        }
+
+    }
+
+    @Override
+    public long gestationDays()
+    {
+        return DAYS_TO_FULL_GESTATION;
+    }
+
+    public int getShearedDay()
+    {
+        return this.dataManager.get(SHEARED);
+    }
+
+    public void setShearedDay(int value)
+    {
+        this.dataManager.set(SHEARED, value);
+    }
+
     @Nonnull
     @Override
     public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
-        this.setShearedTime(CalendarTFC.INSTANCE.getCalendarTime());
+        this.setShearedDay((int) CalendarTFC.INSTANCE.getTotalDays());
         int i = 1 + this.rand.nextInt(3);
 
         java.util.List<ItemStack> ret = new java.util.ArrayList<>();
@@ -114,59 +155,25 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
 
     public boolean hasWool()
     {
-        return this.getShearedtime() == 0 || CalendarTFC.INSTANCE.getCalendarTime() > getShearedtime() + CalendarTFC.TICKS_IN_DAY * DAYS_TO_GROW_WOOL;
+        return this.getShearedDay() == -1 || CalendarTFC.INSTANCE.getTotalDays() >= getShearedDay() + DAYS_TO_GROW_WOOL;
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound compound)
+    protected void entityInit()
     {
-        super.writeEntityToNBT(compound);
-        compound.setLong("sheared", this.getShearedtime());
-        compound.setInteger("dyecolor", this.getDyeColor().getMetadata());
-    }
-
-    @Override
-    public void readEntityFromNBT(NBTTagCompound compound)
-    {
-        super.readEntityFromNBT(compound);
-        this.setShearedTime(compound.getLong("sheared"));
-        this.setDyeColor(EnumDyeColor.byMetadata(compound.getByte("dyecolor")));
-    }
-
-    @Override
-    public long gestationTicks()
-    {
-        return CalendarTFC.TICKS_IN_DAY * DAYS_TO_FULL_GESTATION;
-    }
-
-    @Override
-    public void birthChildren()
-    {
-        int numberOfChilds = Constants.RNG.nextInt(3) + 1; //1-3
-        for (int i = 0; i < numberOfChilds; i++)
-        {
-            EntitySheepTFC baby = new EntitySheepTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), CalendarTFC.INSTANCE.getCalendarTime(), this.getDyeColor());
-            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-            this.world.spawnEntity(baby);
-        }
-
+        super.entityInit();
+        this.dataManager.register(DYE_COLOR, 0);
+        this.dataManager.register(SHEARED, 0);
     }
 
     @Override
     public float getPercentToAdulthood()
     {
         if (this.getAge() != Age.CHILD) return 1;
-        long adulthoodTick = CalendarTFC.TICKS_IN_DAY * DAYS_TO_ADULTHOOD;
-        double value = (CalendarTFC.INSTANCE.getCalendarTime() - this.getBirthTime()) / (double) adulthoodTick;
+        double value = (CalendarTFC.INSTANCE.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
         if (value > 1f) value = 1f;
         if (value < 0f) value = 0;
         return (float) value;
-    }
-
-    @Override
-    public Age getAge()
-    {
-        return CalendarTFC.INSTANCE.getCalendarTime() > this.getBirthTime() + CalendarTFC.TICKS_IN_DAY * DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
     }
 
     @Override
@@ -205,11 +212,9 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     }
 
     @Override
-    protected void entityInit()
+    public Age getAge()
     {
-        super.entityInit();
-        this.dataManager.register(DYE_COLOR, 0);
-        this.dataManager.register(SHEARED, 0L);
+        return CalendarTFC.INSTANCE.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
     }
 
     @Override

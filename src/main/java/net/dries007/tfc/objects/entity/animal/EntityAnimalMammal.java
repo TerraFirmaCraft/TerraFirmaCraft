@@ -9,9 +9,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.util.calendar.CalendarTFC;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public abstract class EntityAnimalMammal extends EntityAnimalTFC
 {
@@ -19,10 +22,10 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
     private long breedTime; //Controls pregnancy for females, cooldown to the next breeding for males
     private boolean pregnant;
 
-    public EntityAnimalMammal(World worldIn, Gender gender, long birthTime)
+    public EntityAnimalMammal(World worldIn, Gender gender, int birthDay)
     {
-        super(worldIn, gender, birthTime);
-        this.breedTime = 0;
+        super(worldIn, gender, birthDay);
+        this.breedTime = -1;
         this.pregnant = false;
     }
 
@@ -35,10 +38,18 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
-        if (!this.world.isRemote && pregnant && CalendarTFC.INSTANCE.getCalendarTime() > breedTime + gestationTicks())
+        if (!this.world.isRemote)
         {
-            birthChildren();
-            pregnant = false;
+            if (pregnant && CalendarTFC.INSTANCE.getTotalDays() >= breedTime + gestationDays())
+            {
+                birthChildren();
+                pregnant = false;
+            }
+            if (breedTime > CalendarTFC.INSTANCE.getTotalDays())
+            {
+                //Calendar went backwards by command! this need to update
+                this.breedTime = (int) CalendarTFC.INSTANCE.getTotalDays();
+            }
         }
     }
 
@@ -58,23 +69,12 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
         this.breedTime = nbt.getLong("breedTime");
     }
 
-    /**
-     * Return the number of ticks for a full gestation
-     *
-     * @return long value in ticks
-     */
-    public abstract long gestationTicks();
-
-    /**
-     * Spawns children of this animal
-     */
-    public abstract void birthChildren();
-
     @Override
     public boolean processInteract(EntityPlayer player, @Nonnull EnumHand hand)
     {
-        ItemStack itemstack = player.getHeldItem(hand);
+        if (super.processInteract(player, hand)) return true; //If familiarity was done, cancel this
 
+        ItemStack itemstack = player.getHeldItem(hand);
         if (!itemstack.isEmpty())
         {
             if (this.isBreedingItem(itemstack))
@@ -83,18 +83,52 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
                 {
                     if (!this.world.isRemote)
                     {
-                        breedTime = CalendarTFC.INSTANCE.getCalendarTime();
+                        breedTime = CalendarTFC.INSTANCE.getTotalDays();
                         this.consumeItemFromStack(player, itemstack);
                         this.setInLove(player);
                     }
                     return true;
                 }
-                return false;
+                else
+                {
+                    if (!this.world.isRemote && !this.isInLove())
+                    {
+                        //Return chat message indicating why this entity isn't mating
+                        if (this.getAge() == Age.OLD)
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.old"));
+                        }
+                        else if (this.getFamiliarity() < 0.3f)
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.lowfamiliarity"));
+                        }
+                        else if (this.isPregnant())
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.pregnant"));
+                        }
+                        else if (CalendarTFC.INSTANCE.getTotalDays() <= this.breedTime)
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.resting"));
+                        }
+                    }
+                }
             }
         }
 
-        return super.processInteract(player, hand);
+        return false;
     }
+
+    /**
+     * Spawns children of this animal
+     */
+    public abstract void birthChildren();
+
+    /**
+     * Return the number of days for a full gestation
+     *
+     * @return long value in days
+     */
+    public abstract long gestationDays();
 
     @Override
     public boolean canMateWith(@Nonnull EntityAnimal otherAnimal)
@@ -121,10 +155,9 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
 
     private boolean isReadyToMate()
     {
-        if (this.getAge() != Age.ADULT) return false;
-        if (this.breedTime > 0 && CalendarTFC.INSTANCE.getCalendarTime() < this.breedTime + CalendarTFC.TICKS_IN_DAY)
+        if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f) return false;
+        if (this.breedTime > -1 && CalendarTFC.INSTANCE.getTotalDays() <= this.breedTime)
             return false; //Can try mating once per day
         return this.getGender() != Gender.FEMALE || !this.isPregnant(); //Females can't mate while pregnant, duh
-//todo add familiarity check
     }
 }
