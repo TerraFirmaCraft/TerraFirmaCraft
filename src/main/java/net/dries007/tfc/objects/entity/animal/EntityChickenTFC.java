@@ -15,9 +15,11 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class EntityChickenTFC extends EntityAnimalOviparous
@@ -25,6 +27,13 @@ public class EntityChickenTFC extends EntityAnimalOviparous
     private static final int DAYS_TO_ADULTHOOD = 124;
     private static final int DAYS_TO_HATCH_EGG = 21;
     private static final int DAYS_TO_LAY_EGGS = 1;
+
+    //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
+    public float wingRotation;
+    public float destPos;
+    public float oFlapSpeed;
+    public float oFlap;
+    public float wingRotDelta = 1.0F;
 
     private static int getRandomGrowth()
     {
@@ -45,9 +54,33 @@ public class EntityChickenTFC extends EntityAnimalOviparous
     }
 
     @Override
+    public void onLivingUpdate()
+    {
+        super.onLivingUpdate();
+        this.oFlap = this.wingRotation;
+        this.oFlapSpeed = this.destPos;
+        this.destPos = (float) ((double) this.destPos + (double) (this.onGround ? -1 : 4) * 0.3D);
+        this.destPos = MathHelper.clamp(this.destPos, 0.0F, 1.0F);
+
+        if (!this.onGround && this.wingRotDelta < 1.0F)
+        {
+            this.wingRotDelta = 1.0F;
+        }
+
+        this.wingRotDelta = (float) ((double) this.wingRotDelta * 0.9D);
+
+        if (!this.onGround && this.motionY < 0.0D)
+        {
+            this.motionY *= 0.6D;
+        }
+
+        this.wingRotation += this.wingRotDelta * 2.0F;
+    }
+
+    @Override
     public int eggDaysNeeded()
     {
-        return 1;
+        return DAYS_TO_LAY_EGGS;
     }
 
     @Override
@@ -90,10 +123,11 @@ public class EntityChickenTFC extends EntityAnimalOviparous
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
-        this.tasks.addTask(1, new EntityAIMate(this, 1D));
-        this.tasks.addTask(3, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(5, new EntityAILookIdle(this));
+        this.tasks.addTask(2, new EntityAIMate(this, 1D));
+        this.tasks.addTask(4, new EntityAIFindNest(this, 1D));
+        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+        this.tasks.addTask(7, new EntityAILookIdle(this));
     }
 
     @Override

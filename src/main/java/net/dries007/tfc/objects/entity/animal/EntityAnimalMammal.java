@@ -82,7 +82,7 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
         ItemStack itemstack = player.getHeldItem(hand);
         if (!itemstack.isEmpty())
         {
-            if (this.isBreedingItem(itemstack))
+            if (this.isBreedingItem(itemstack) && player.isSneaking())
             {
                 if (!this.isInLove() && this.isReadyToMate())
                 {

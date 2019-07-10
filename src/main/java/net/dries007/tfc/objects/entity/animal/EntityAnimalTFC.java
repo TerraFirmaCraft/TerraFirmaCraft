@@ -154,7 +154,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal
 
         if (!itemstack.isEmpty())
         {
-            if (this.isBreedingItem(itemstack))
+            if (this.isBreedingItem(itemstack) && player.isSneaking())
             {
                 if (this.canFeed())
                 {
