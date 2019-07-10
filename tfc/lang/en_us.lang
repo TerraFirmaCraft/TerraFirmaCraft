@@ -3367,3 +3367,6 @@ item.tfc.animal.product.silk_cloth.name=Silk Cloth
 entity.sheeptfc.name=Sheep
 entity.cowtfc.name=Cow
 entity.beartfc.name=Bear
+entity.pigtfc.name=Pig
+entity.chickentfc.name=Chicken
+entity.deertfc.name=Deer
