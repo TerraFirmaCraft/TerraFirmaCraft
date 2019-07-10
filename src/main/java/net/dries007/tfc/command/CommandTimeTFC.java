@@ -97,10 +97,10 @@ public class CommandTimeTFC extends CommandBase
 
         if (updateDaylightCycle)
         {
+            // Set world time (daylight cycle time)
             for (int i = 0; i < server.worlds.length; ++i)
             {
-                // Since world time 0 = 6 am in the morning
-                server.worlds[i].setWorldTime(time - 6 * CalendarTFC.TICKS_IN_HOUR);
+                server.worlds[i].setWorldTime(time - CalendarTFC.WORLD_TIME_OFFSET);
             }
         }
     }

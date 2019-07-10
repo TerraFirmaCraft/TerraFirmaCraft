@@ -9,7 +9,10 @@
     "url": "https://terrafirmacraft.github.io",
     "updateJson": "https://mc.dries007.net/terrafirmacraft.json",
     "authorList": [
-      "Dries007"
+      "Dries007",
+      "AlcatrazEscapee",
+      "Bunsan",
+      "et. al."
     ],
     "credits": "Bioxx, Dunkleosteus, Kittychanley for the original TerraFirmaCraft for 1.7.10 and before."
   }

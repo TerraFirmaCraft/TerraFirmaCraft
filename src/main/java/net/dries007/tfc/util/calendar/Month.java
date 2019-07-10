@@ -29,7 +29,7 @@ public enum Month
     @Nonnull
     public static Month valueOf(int id)
     {
-        return id >= 0 && id < VALUES.length ? VALUES[id] : MARCH;
+        return id >= 0 && id < VALUES.length ? VALUES[id] : JANUARY;
     }
 
     private final float temperatureModifier;

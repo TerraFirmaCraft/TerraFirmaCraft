@@ -43,6 +43,9 @@ public enum CalendarTFC
     public static final String[] DAY_NAMES = new String[] {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
     public static final Map<String, String> BIRTHDAYS = new HashMap<>();
 
+    /* The offset in ticks between the world time (sun position) and the calendar (since world time 0 = 6 AM) */
+    public static final int WORLD_TIME_OFFSET = 6 * TICKS_IN_HOUR;
+
     static final int DEFAULT_DAYS_IN_MONTH = 8;
     static final int DEFAULT_CALENDAR_OFFSET = (6 * DEFAULT_DAYS_IN_MONTH * TICKS_IN_DAY) + (6 * TICKS_IN_HOUR);
 
