@@ -36,6 +36,7 @@ public class ShapelessDamageAddItemRecipe extends ShapelessOreRecipe
     }
 
     @Override
+    @Nonnull
     public NonNullList<ItemStack> getRemainingItems(final InventoryCrafting inventoryCrafting)
     {
         final NonNullList<ItemStack> remainingItems = NonNullList.withSize(inventoryCrafting.getSizeInventory(), ItemStack.EMPTY);
@@ -65,6 +66,7 @@ public class ShapelessDamageAddItemRecipe extends ShapelessOreRecipe
     }
 
     @Override
+    @Nonnull
     public String getGroup()
     {
         return group == null ? "" : group.toString();
@@ -79,7 +81,6 @@ public class ShapelessDamageAddItemRecipe extends ShapelessOreRecipe
         return damagedStack;
     }
 
-    @SuppressWarnings("unused")
     public static class Factory implements IRecipeFactory
     {
         @Override

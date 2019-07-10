@@ -84,7 +84,9 @@ public class BlockRockVariant extends Block
         super(type.material);
 
         if (!TABLE.containsKey(rock))
+        {
             TABLE.put(rock, new EnumMap<>(Rock.Type.class));
+        }
         TABLE.get(rock).put(type, this);
 
         this.type = type;

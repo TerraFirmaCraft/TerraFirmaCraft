@@ -1,10 +1,14 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.api.recipes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
@@ -21,7 +25,7 @@ public class QuernRecipe extends IForgeRegistryEntry.Impl<QuernRecipe>
     private IIngredient<ItemStack> inputItem;
     private ItemStack outputItem;
 
-    public QuernRecipe(ResourceLocation name, IIngredient<ItemStack> input, ItemStack output)
+    public QuernRecipe(IIngredient<ItemStack> input, ItemStack output)
     {
         this.inputItem = input;
         this.outputItem = output;
@@ -30,7 +34,6 @@ public class QuernRecipe extends IForgeRegistryEntry.Impl<QuernRecipe>
         {
             throw new IllegalArgumentException("Input and output are not allowed to be empty");
         }
-        setRegistryName(name);
     }
 
     @Nonnull
