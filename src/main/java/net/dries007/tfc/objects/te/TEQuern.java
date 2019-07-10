@@ -151,12 +151,6 @@ public class TEQuern extends TEInventory implements ITickable
         }
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
-    {
-        return oldState.getBlock() != newSate.getBlock();
-    }
-
     @Nonnull
     @Override
     public AxisAlignedBB getRenderBoundingBox()
