@@ -76,7 +76,7 @@ public class CalendarEventHandler
     public static void onPlayerWakeUp(PlayerWakeUpEvent event)
     {
         // Set the calendar time to time=0. This will implicitly call CalendarTFC#update
-        long newCalendarTime = (CalendarTFC.INSTANCE.getTotalDays() + 1) * CalendarTFC.TICKS_IN_DAY;
+        long newCalendarTime = (CalendarTFC.INSTANCE.getTotalDays() + 1) * CalendarTFC.TICKS_IN_DAY + CalendarTFC.WORLD_TIME_OFFSET;
         CalendarTFC.INSTANCE.setCalendarTime(event.getEntityPlayer().getEntityWorld(), newCalendarTime);
     }
 
