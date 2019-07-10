@@ -285,10 +285,7 @@ public final class DefaultRecipes
         r.registerAll(
             //Flux
             new QuernRecipe(new ResourceLocation(MOD_ID, "boarx"), IIngredient.of("gemBorax"), new ItemStack(ItemPowder.get(Powder.FLUX), 6)),
-            new QuernRecipe(new ResourceLocation(MOD_ID, "chalk"), IIngredient.of("rockChalk"), new ItemStack(ItemPowder.get(Powder.FLUX), 2)),
-            new QuernRecipe(new ResourceLocation(MOD_ID, "dolomite"), IIngredient.of("rockDolomite"), new ItemStack(ItemPowder.get(Powder.FLUX), 2)),
-            new QuernRecipe(new ResourceLocation(MOD_ID, "limestone"), IIngredient.of("rockLimestone"), new ItemStack(ItemPowder.get(Powder.FLUX), 2)),
-            new QuernRecipe(new ResourceLocation(MOD_ID, "marble"), IIngredient.of("rockMarble"), new ItemStack(ItemPowder.get(Powder.FLUX), 2)),
+            new QuernRecipe(new ResourceLocation(MOD_ID, "flux"), IIngredient.of("rockFlux"), new ItemStack(ItemPowder.get(Powder.FLUX), 2)),
 
             //Redstone
             new QuernRecipe(new ResourceLocation(MOD_ID, "cinnabar"), IIngredient.of("gemCinnabar"), new ItemStack(Items.REDSTONE, 8)),
