@@ -86,8 +86,10 @@ public abstract class TEInventory extends TEBase implements ISlotCallback
     /**
      * Delegated from {@link net.minecraft.inventory.Container#canInteractWith(EntityPlayer)}
      */
+
+
     public boolean canInteractWith(EntityPlayer player)
     {
-        return true;
+        return this.world.getTileEntity(pos) == this && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
     }
 }

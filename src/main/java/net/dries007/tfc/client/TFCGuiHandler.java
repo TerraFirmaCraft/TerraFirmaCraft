@@ -87,6 +87,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new ContainerKnapping(KnappingRecipe.Type.LEATHER, player.inventory, stack.getItem() == Items.LEATHER ? stack : player.getHeldItemOffhand());
             case KNAPPING_FIRE_CLAY:
                 return new ContainerKnapping(KnappingRecipe.Type.FIRE_CLAY, player.inventory, stack.getItem() == ItemsTFC.FIRE_CLAY ? stack : player.getHeldItemOffhand());
+            case QUERN:
+                return new ContainerQuern(player.inventory, Helpers.getTE(world, pos, TEQuern.class));
             case CRUCIBLE:
                 return new ContainerCrucible(player.inventory, Helpers.getTE(world, pos, TECrucible.class));
             case CALENDAR:
@@ -141,6 +143,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiKnapping(container, player, KnappingRecipe.Type.LEATHER, LEATHER_TEXTURE);
             case KNAPPING_FIRE_CLAY:
                 return new GuiKnapping(container, player, KnappingRecipe.Type.FIRE_CLAY, FIRE_CLAY_TEXTURE);
+            case QUERN:
+                return new GuiQuern(container, player.inventory, Helpers.getTE(world, pos, TEQuern.class), world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
             case CRUCIBLE:
                 return new GuiCrucible(container, player.inventory, Helpers.getTE(world, pos, TECrucible.class));
             case CALENDAR:
@@ -166,6 +170,7 @@ public class TFCGuiHandler implements IGuiHandler
         MOLD,
         FIRE_PIT,
         BARREL,
+        QUERN,
         KNAPPING_STONE,
         KNAPPING_CLAY,
         KNAPPING_FIRE_CLAY,

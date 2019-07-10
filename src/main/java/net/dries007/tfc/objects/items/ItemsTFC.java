@@ -53,6 +53,7 @@ public final class ItemsTFC
     public static final ItemFireStarter FIRESTARTER = getNull();
     public static final ItemGoldPan GOLDPAN = getNull();
     public static final ItemMisc STRAW = getNull();
+    public static final ItemHandstone HANDSTONE = getNull();
 
     @GameRegistry.ObjectHolder("crop/product/jute")
     public static final ItemMisc JUTE = getNull();
@@ -242,6 +243,7 @@ public final class ItemsTFC
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
         simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "straw"), CT_MISC));
+        simpleItems.add(register(r, "handstone", new ItemHandstone(), CT_MISC));
 
         simpleItems.add(register(r, "spindle", new ItemCraftingTool(40, Size.NORMAL, Weight.MEDIUM, "spindle"), CT_MISC));
 
