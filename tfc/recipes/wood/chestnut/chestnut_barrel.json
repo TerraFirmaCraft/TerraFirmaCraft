@@ -7,7 +7,8 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/chestnut"
+      "type": "forge:ore_dict",
+      "ore": "lumberChestnut"
     }
   },
   "result": {

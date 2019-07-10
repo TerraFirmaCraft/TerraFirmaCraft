@@ -7,7 +7,8 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/rosewood"
+      "type": "forge:ore_dict",
+      "ore": "lumberRosewood"
     }
   },
   "result": {

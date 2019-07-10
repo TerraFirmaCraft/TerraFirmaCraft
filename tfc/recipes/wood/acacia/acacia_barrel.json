@@ -7,7 +7,8 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/acacia"
+      "type": "forge:ore_dict",
+      "ore": "lumberAcacia"
     }
   },
   "result": {

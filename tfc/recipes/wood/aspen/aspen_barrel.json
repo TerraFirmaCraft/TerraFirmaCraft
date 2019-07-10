@@ -7,7 +7,8 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/aspen"
+      "type": "forge:ore_dict",
+      "ore": "lumberAspen"
     }
   },
   "result": {

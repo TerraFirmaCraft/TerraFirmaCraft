@@ -7,7 +7,8 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/palm"
+      "type": "forge:ore_dict",
+      "ore": "lumberPalm"
     }
   },
   "result": {

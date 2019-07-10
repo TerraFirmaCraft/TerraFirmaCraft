@@ -1,12 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XXX"
+    "PPP",
+    "RRR"
   ],
   "key": {
-    "X": {
+    "P": {
       "type": "forge:ore_dict",
       "ore": "stonePolished"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "stone"
     }
   },
   "result": {
