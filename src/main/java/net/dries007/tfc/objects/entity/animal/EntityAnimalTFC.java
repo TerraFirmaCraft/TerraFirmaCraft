@@ -69,7 +69,14 @@ public abstract class EntityAnimalTFC extends EntityAnimal
 
     public void setFamiliarity(float value)
     {
+        if (value < 0f) value = 0f;
+        if (value > 1f) value = 1f;
         this.dataManager.set(FAMILIARITY, value);
+    }
+
+    public boolean getIsFedToday()
+    {
+        return this.lastFed == CalendarTFC.INSTANCE.getTotalDays();
     }
 
     @Override
