@@ -23,12 +23,12 @@ public class EntitiesTFC
     {
         register("falling_block", EntityFallingBlockTFC.class);
         register("thrown_javelin", EntityThrownJavelin.class);
-        register("sheeptfc", EntitySheepTFC.class, 0xFFFFFF, 0xFF6347);
-        register("cowtfc", EntityCowTFC.class, 0xA52A2A, 0xFFFFFF);
-        register("beartfc", EntityBearTFC.class, 0x557755, 0xFFFFFF);
-        register("chickentfc", EntityChickenTFC.class, 0x557755, 0xFFFFFF);
-        register("deertfc", EntityDeerTFC.class, 0x55FF55, 0x5FFAAF);
-        register("pigtfc", EntityPigTFC.class, 0x5577FF, 0xFFFA90);
+        registerLiving("sheeptfc", EntitySheepTFC.class, 0xFFFFFF, 0xFF6347);
+        registerLiving("cowtfc", EntityCowTFC.class, 0xA52A2A, 0xFFFFFF);
+        registerLiving("beartfc", EntityBearTFC.class, 0x557755, 0xFFFFFF);
+        registerLiving("chickentfc", EntityChickenTFC.class, 0x557755, 0xFFFFFF);
+        registerLiving("deertfc", EntityDeerTFC.class, 0x55FF55, 0x5FFAAF);
+        registerLiving("pigtfc", EntityPigTFC.class, 0x5577FF, 0xFFFA90);
     }
 
     private static void register(String name, Class<? extends Entity> cls)
@@ -36,9 +36,9 @@ public class EntitiesTFC
         EntityRegistry.registerModEntity(new ResourceLocation(MOD_ID, name), cls, name, id++, TerraFirmaCraft.getInstance(), 160, 20, true);
     }
 
-    private static void register(String name, Class<? extends Entity> cls, int eggPrimaryColor, int eggSecondaryColor)
+    private static void registerLiving(String name, Class<? extends Entity> cls, int eggPrimaryColor, int eggSecondaryColor)
     {
         //Register entity and create a spawn egg for creative
-        EntityRegistry.registerModEntity(new ResourceLocation(MOD_ID, name), cls, name, id++, TerraFirmaCraft.getInstance(), 160, 20, true, eggPrimaryColor, eggSecondaryColor);
+        EntityRegistry.registerModEntity(new ResourceLocation(MOD_ID, name), cls, name, id++, TerraFirmaCraft.getInstance(), 80, 3, true, eggPrimaryColor, eggSecondaryColor);
     }
 }

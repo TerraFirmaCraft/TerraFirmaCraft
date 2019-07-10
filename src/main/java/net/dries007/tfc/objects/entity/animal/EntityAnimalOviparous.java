@@ -37,10 +37,6 @@ public abstract class EntityAnimalOviparous extends EntityAnimalTFC
         super.onLivingUpdate();
         if (!this.world.isRemote)
         {
-            if (CalendarTFC.INSTANCE.getTotalDays() >= eggTime + eggDaysNeeded())
-            {
-                //TODO make ai lay eggs in place
-            }
             if (this.getGender() == Gender.MALE && this.getIsFedToday() && CalendarTFC.INSTANCE.getTotalTime() >= eggTime + CalendarTFC.TICKS_IN_HOUR * 2 && this.isReadyToMate())
             {
                 //Rooster, fertilize our chickens!
@@ -53,6 +49,11 @@ public abstract class EntityAnimalOviparous extends EntityAnimalTFC
                 this.eggTime = (int) CalendarTFC.INSTANCE.getTotalDays();
             }
         }
+    }
+
+    public boolean isReadyToLayEggs()
+    {
+        return this.getGender() == Gender.FEMALE && !this.isChild() && this.getFamiliarity() > 0.15f && CalendarTFC.INSTANCE.getTotalDays() >= eggTime + eggDaysNeeded();
     }
 
     @Override
