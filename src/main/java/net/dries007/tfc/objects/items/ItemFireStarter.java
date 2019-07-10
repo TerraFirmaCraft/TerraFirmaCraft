@@ -166,19 +166,19 @@ public class ItemFireStarter extends ItemTFC
                 final List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 2, 1)));
                 final List<EntityItem> stuffToUse = new ArrayList<>();
 
-                int sticks = 3, kindling = 1;
+                int sticks = 0, kindling = 0;
                 EntityItem log = null;
 
                 for (EntityItem entity : items)
                 {
                     if (OreDictionaryHelper.doesStackMatchOre(entity.getItem(), "stickWood"))
                     {
-                        sticks -= entity.getItem().getCount();
+                        sticks += entity.getItem().getCount();
                         stuffToUse.add(entity);
                     }
                     else if (OreDictionaryHelper.doesStackMatchOre(entity.getItem(), "kindling"))
                     {
-                        kindling -= entity.getItem().getCount();
+                        kindling += entity.getItem().getCount();
                         stuffToUse.add(entity);
                     }
                     else if (log == null && OreDictionaryHelper.doesStackMatchOre(entity.getItem(), "logWood"))
@@ -187,9 +187,9 @@ public class ItemFireStarter extends ItemTFC
                     }
                 }
 
-                if (sticks <= 0 && kindling <= 0 && log != null)
+                if (sticks >= 3 && log != null)
                 {
-                    final float kindlingModifier = Math.min(-0.1f * (float) kindling, 0.5f);
+                    final float kindlingModifier = Math.min(0.1f * (float) kindling, 0.5f);
                     if (itemRand.nextFloat() < chance + kindlingModifier)
                     {
                         world.setBlockState(pos, BlocksTFC.FIREPIT.getDefaultState().withProperty(LIT, true));
