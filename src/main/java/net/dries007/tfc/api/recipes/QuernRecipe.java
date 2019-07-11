@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
@@ -41,9 +42,12 @@ public class QuernRecipe extends IForgeRegistryEntry.Impl<QuernRecipe>
     public ItemStack getOutputItem(ItemStack stack)
     {
         ItemStack out = outputItem.copy();
-        if (stack.hasCapability(CapabilityFood.CAPABILITY, null) && out.hasCapability(CapabilityFood.CAPABILITY, null))
+
+        IFood capOut = out.getCapability(CapabilityFood.CAPABILITY, null);
+        IFood capIn = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (capIn != null && capOut != null)
         {
-            out.getCapability(CapabilityFood.CAPABILITY, null).setCreationDate(stack.getCapability(CapabilityFood.CAPABILITY, null).getCreationDate());
+            capOut.setCreationDate(capIn.getCreationDate());
         }
         return out;
     }
