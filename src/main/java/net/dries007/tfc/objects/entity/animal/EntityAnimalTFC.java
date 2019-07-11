@@ -5,8 +5,11 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -18,18 +21,26 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+
 public abstract class EntityAnimalTFC extends EntityAnimal
 {
+    private static final long DEFAULT_TICKS_COOLDOWN_MATING = CalendarTFC.TICKS_IN_HOUR * 2;
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.VARINT);
     private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.FLOAT);
-    private long lastFed;
-    private long lastFDecay;
+
+    private long lastFed; //Last time(in days) this entity was fed
+    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
+
+    private boolean fertilized; //Is this female fertilized? (in oviparous, the egg laying is fertilized, for mammals this is pregnancy)
+    private long matingTime; //The last time(in ticks) this male tried fertilizing females
 
     public EntityAnimalTFC(World worldIn, Gender gender, int birthDay)
     {
@@ -39,7 +50,9 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         this.setFamiliarity(0);
         this.setGrowingAge(0); //We don't use this
         this.lastFed = -1;
+        this.matingTime = -1;
         this.lastFDecay = CalendarTFC.INSTANCE.getTotalDays();
+        this.fertilized = false;
     }
 
     public Gender getGender()
@@ -79,6 +92,13 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         return this.lastFed == CalendarTFC.INSTANCE.getTotalDays();
     }
 
+    public boolean isFertilized() { return this.fertilized; }
+
+    public void setFertilized(boolean value)
+    {
+        this.fertilized = value;
+    }
+
     @Override
     public void onLivingUpdate()
     {
@@ -99,6 +119,14 @@ public abstract class EntityAnimalTFC extends EntityAnimal
                     this.setFamiliarity(familiarity);
                 }
             }
+            if (this.getGender() == Gender.MALE && this.isReadyToMate())
+            {
+                this.matingTime = CalendarTFC.INSTANCE.getCalendarTime();
+                if (findFemaleMate())
+                {
+                    this.setInLove(null);
+                }
+            }
             if (this.lastFDecay > CalendarTFC.INSTANCE.getTotalDays())
             {
                 //Calendar went backwards by command! this need to update
@@ -108,6 +136,11 @@ public abstract class EntityAnimalTFC extends EntityAnimal
             {
                 //Calendar went backwards by command! this need to update
                 this.lastFed = CalendarTFC.INSTANCE.getTotalDays();
+            }
+            if (this.matingTime > -1 && this.matingTime > CalendarTFC.INSTANCE.getCalendarTime())
+            {
+                //Calendar went backwards by command! this need to update
+                this.matingTime = CalendarTFC.INSTANCE.getCalendarTime();
             }
             if (this.getBirthDay() > CalendarTFC.INSTANCE.getTotalDays())
             {
@@ -125,6 +158,8 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         nbt.setInteger("birth", getBirthDay());
         nbt.setLong("fed", lastFed);
         nbt.setLong("decay", lastFDecay);
+        nbt.setBoolean("fertilized", this.fertilized);
+        nbt.setLong("mating", matingTime);
         nbt.setFloat("familiarity", getFamiliarity());
     }
 
@@ -136,6 +171,8 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         this.setBirthDay(nbt.getInteger("birth"));
         this.lastFed = nbt.getLong("fed");
         this.lastFDecay = nbt.getLong("decay");
+        this.matingTime = nbt.getLong("mating");
+        this.fertilized = nbt.getBoolean("fertilized");
         this.setFamiliarity(nbt.getFloat("familiarity"));
 
     }
@@ -148,7 +185,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, @Nonnull EnumHand hand)
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);
 
@@ -168,9 +205,28 @@ public abstract class EntityAnimalTFC extends EntityAnimal
                     }
                     return true;
                 }
+                else
+                {
+                    if (!this.world.isRemote)
+                    {
+                        //Show tooltips
+                        if (this.isFertilized() && this instanceof EntityAnimalMammal)
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.pregnant"));
+                        }
+                    }
+                }
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        if (otherAnimal.getClass() != this.getClass()) return false;
+        EntityAnimalTFC other = (EntityAnimalTFC) otherAnimal;
+        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
     }
 
     @Override
@@ -182,12 +238,44 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         getDataManager().register(FAMILIARITY, 0f);
     }
 
-    @Override
-    public boolean canMateWith(@Nonnull EntityAnimal otherAnimal)
+    /**
+     * Event, used by children of this class, to do things on fertilization of females
+     */
+    public void onFertilized(EntityAnimalTFC male)
     {
-        if (otherAnimal.getClass() != this.getClass()) return false;
-        EntityAnimalTFC other = (EntityAnimalTFC) otherAnimal;
-        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
+    }
+
+    @Nullable
+    @Override
+    public EntityAgeable createChild(@Nonnull EntityAgeable other)
+    {
+        if (this.getGender() == Gender.FEMALE)
+        {
+            this.fertilized = true;
+            this.resetInLove();
+            this.onFertilized((EntityAnimalTFC) other);
+        }
+        return null;
+    }
+
+    /**
+     * Find and charms a near female animal of this animal
+     * Used by males to try mating with females
+     *
+     * @return true if found and charmed a female
+     */
+    protected boolean findFemaleMate()
+    {
+        List<EntityAnimalTFC> list = this.world.getEntitiesWithinAABB(this.getClass(), this.getEntityBoundingBox().grow(8.0D));
+        for (EntityAnimalTFC ent : list)
+        {
+            if (ent.getGender() == Gender.FEMALE && !ent.isInLove() && ent.isReadyToMate())
+            {
+                ent.setInLove(null);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -208,6 +296,28 @@ public abstract class EntityAnimalTFC extends EntityAnimal
     {
         if (lastFed == -1) return true;
         return lastFed < CalendarTFC.INSTANCE.getTotalDays();
+    }
+
+    /**
+     * Check if this animal is ready to mate
+     *
+     * @return true if ready
+     */
+    protected boolean isReadyToMate()
+    {
+        if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || !this.getIsFedToday())
+            return false;
+        return this.matingTime == -1 || this.matingTime + getCooldownMating() <= CalendarTFC.INSTANCE.getCalendarTime();
+    }
+
+    /**
+     * The number of ticks this animal needs to rest before trying to mate again
+     *
+     * @return ticks needed to fully recover
+     */
+    protected long getCooldownMating()
+    {
+        return DEFAULT_TICKS_COOLDOWN_MATING;
     }
 
     @Override
