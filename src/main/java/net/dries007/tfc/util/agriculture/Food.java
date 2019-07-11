@@ -20,44 +20,44 @@ public enum Food
     CRANBERRY(FRUIT, 0.4f, 5f, 0f, 0f, 0f, 0.5f, 0f, 4f),
     ELDERBERRY(FRUIT, 0.4f, 5f, 0.5f, 0f, 0f, 0.5f, 0.5f, 4f),
     GOOSEBERRY(FRUIT, 0.4f, 5f, 0f, 0f, 0f, 0.5f, 0f, 4f),
-    GREEN_APPLE(FRUIT, 0.4f, 5f, 0.5f, 0f, 0f, 0.5f, 0f, 4f),
+    GREEN_APPLE(FRUIT, 0.4f, 5f, 0.5f, 0f, 0f, 0.5f, 0f, 4f, "apple"),
     LEMON(FRUIT, 0.2f, 5f, 0f, 0f, 0f, 1f, 0f, 4f),
     OLIVE(FRUIT, 0.6f, 5f, 0f, 1f, 0f, 0.5f, 0f, 4f),
     ORANGE(FRUIT, 0.4f, 7f, 0f, 0f, 0f, 1f, 0f, 4f),
     PEACH(FRUIT, 0.4f, 8f, 0f, 0f, 0f, 0.5f, 0f, 4f),
     PLUM(FRUIT, 0.4f, 5f, 0f, 0f, 0f, 0.5f, 0f, 4f),
     RASPBERRY(FRUIT, 0.4f, 5f, 0f, 0f, 0f, 0.5f, 0f, 4f),
-    RED_APPLE(FRUIT, 0.4f, 5f, 0.5f, 0f, 0f, 0.5f, 0f, 4f),
+    RED_APPLE(FRUIT, 0.4f, 5f, 0.5f, 0f, 0f, 0.5f, 0f, 4f, "apple"),
     SNOW_BERRY(FRUIT, 0.4f, 5f, 0f, 0f, 0f, 0.5f, 0f, 4f),
     STRAWBERRY(FRUIT, 0.4f, 8f, 0f, 0f, 0f, 1f, 0f, 4f),
     WINTERGREEN_BERRY(FRUIT, 0.4f, 5f, 0f, 0f, 0f, 0.5f, 0f, 4f),
-    BARLEY(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f),
-    BARLEY_GRAIN(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f),
-    BARLEY_FLOUR(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f),
+    BARLEY(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f, "barley"),
+    BARLEY_GRAIN(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f, "grain_barley"),
+    BARLEY_FLOUR(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f, "flour_barley"),
     BARLEY_DOUGH(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f, 1f, 200f),
     BARLEY_BREAD(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f),
-    MAIZE(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f),
+    MAIZE(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f, "maize"),
     CORNBREAD(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f),
-    CORNMEAL_FLOUR(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f),
+    CORNMEAL_FLOUR(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f, "flour_cornmeal"),
     CORNMEAL_DOUGH(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f, 1f, 200f),
-    OAT(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f),
-    OAT_GRAIN(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f),
-    OAT_FLOUR(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f),
+    OAT(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f, "oat"),
+    OAT_GRAIN(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f, "grain_oat"),
+    OAT_FLOUR(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f, "flour_oat"),
     OAT_DOUGH(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f, 1f, 200f),
     OAT_BREAD(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f),
-    RICE(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
-    RICE_GRAIN(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
-    RICE_FLOUR(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
+    RICE(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "rice"),
+    RICE_GRAIN(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "grain_rice"),
+    RICE_FLOUR(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "flour_rice"),
     RICE_DOUGH(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, 1f, 200f),
     RICE_BREAD(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
-    RYE(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
-    RYE_GRAIN(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
-    RYE_FLOUR(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
+    RYE(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "rye"),
+    RYE_GRAIN(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "grain_rye"),
+    RYE_FLOUR(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "flour_rye"),
     RYE_DOUGH(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, 1f, 200f),
     RYE_BREAD(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
-    WHEAT(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f),
-    WHEAT_GRAIN(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f),
-    WHEAT_FLOUR(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f),
+    WHEAT(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f, "wheat"),
+    WHEAT_GRAIN(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f, "grain_wheat"),
+    WHEAT_FLOUR(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f, "flour_wheat"),
     WHEAT_DOUGH(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f, 1f, 200f),
     WHEAT_BREAD(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f),
     BEET(VEGETABLE, 0.4f, 3f, 0f, 0f, 0f, 1f, 0f, 2.5f),
@@ -112,6 +112,15 @@ public enum Food
     private final float heatCapacity;
     private final float cookingTemp;
 
+    private Object[] oreDictNames;
+
+
+    Food(@Nonnull Category category, float calories, float water, float carbohydrates, float fat, float protein, float vitamins, float minerals, float decayModifier, float heatCapacity, float cookingTemp, Object... oreNameParts)
+    {
+        this(category, calories, water, carbohydrates, fat, protein, vitamins, minerals, decayModifier, heatCapacity, cookingTemp);
+
+        this.oreDictNames = oreNameParts;
+    }
 
     Food(@Nonnull Category category, float calories, float water, float carbohydrates, float fat, float protein, float vitamins, float minerals, float decayModifier, float heatCapacity, float cookingTemp)
     {
@@ -128,6 +137,15 @@ public enum Food
         this.heatable = true;
         this.heatCapacity = heatCapacity;
         this.cookingTemp = cookingTemp;
+
+        oreDictNames = null;
+    }
+
+    Food(@Nonnull Category category, float calories, float water, float carbohydrates, float fat, float protein, float vitamins, float minerals, float decayModifier, Object... oreNameParts)
+    {
+        this(category, calories, water, carbohydrates, fat, protein, vitamins, minerals, decayModifier);
+
+        this.oreDictNames = oreNameParts;
     }
 
     Food(@Nonnull Category category, float calories, float water, float carbohydrates, float fat, float protein, float vitamins, float minerals, float decayModifier)
@@ -145,6 +163,8 @@ public enum Food
         this.heatable = false;
         this.heatCapacity = 0;
         this.cookingTemp = 0;
+
+        oreDictNames = null;
     }
 
     public float getCalories()
@@ -186,6 +206,11 @@ public enum Food
     public float getCookingTemp()
     {
         return cookingTemp;
+    }
+
+    public Object[] getOreDictNames()
+    {
+        return oreDictNames;
     }
 
     public enum Category
