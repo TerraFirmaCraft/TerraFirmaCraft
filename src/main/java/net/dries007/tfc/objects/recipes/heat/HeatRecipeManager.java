@@ -38,16 +38,16 @@ public final class HeatRecipeManager
         recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.WHEAT_BREAD)), new ItemStack(ItemFoodTFC.get(Food.WHEAT_DOUGH))));
 
         //Meat
-        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.BEEF)), new ItemStack(ItemFoodTFC.get(Food.COOKED_BEEF))));
-        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.PORK)), new ItemStack(ItemFoodTFC.get(Food.COOKED_PORK))));
-        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.CHICKEN)), new ItemStack(ItemFoodTFC.get(Food.COOKED_CHICKEN))));
-        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.MUTTON)), new ItemStack(ItemFoodTFC.get(Food.COOKED_MUTTON))));
-        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.FISH)), new ItemStack(ItemFoodTFC.get(Food.COOKED_FISH))));
-        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.BEAR)), new ItemStack(ItemFoodTFC.get(Food.COOKED_BEAR))));
-        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.CALAMARI)), new ItemStack(ItemFoodTFC.get(Food.COOKED_CALAMARI))));
-        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.HORSE_MEAT)), new ItemStack(ItemFoodTFC.get(Food.COOKED_HORSE_MEAT))));
-        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.PHEASANT)), new ItemStack(ItemFoodTFC.get(Food.COOKED_PHEASANT))));
-        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.VENISON)), new ItemStack(ItemFoodTFC.get(Food.COOKED_VENISON))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.COOKED_BEEF)), new ItemStack(ItemFoodTFC.get(Food.BEEF))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.COOKED_PORK)), new ItemStack(ItemFoodTFC.get(Food.PORK))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.COOKED_CHICKEN)), new ItemStack(ItemFoodTFC.get(Food.CHICKEN))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.COOKED_MUTTON)), new ItemStack(ItemFoodTFC.get(Food.MUTTON))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.COOKED_FISH)), new ItemStack(ItemFoodTFC.get(Food.FISH))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.COOKED_BEAR)), new ItemStack(ItemFoodTFC.get(Food.BEAR))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.COOKED_CALAMARI)), new ItemStack(ItemFoodTFC.get(Food.CALAMARI))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.COOKED_HORSE_MEAT)), new ItemStack(ItemFoodTFC.get(Food.HORSE_MEAT))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.COOKED_PHEASANT)), new ItemStack(ItemFoodTFC.get(Food.PHEASANT))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.COOKED_VENISON)), new ItemStack(ItemFoodTFC.get(Food.VENISON))));
 
         // todo: craft tweaker supported recipes (See NTP for a nice-ish way to do it)
     }
