@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -134,14 +133,6 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
      * @return long value in days
      */
     public abstract long gestationDays();
-
-    @Override
-    public boolean canMateWith(@Nonnull EntityAnimal otherAnimal)
-    {
-        if (otherAnimal.getClass() != this.getClass()) return false;
-        EntityAnimalMammal other = (EntityAnimalMammal) otherAnimal;
-        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
-    }
 
     @Nullable
     @Override

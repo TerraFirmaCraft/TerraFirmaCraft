@@ -20,6 +20,8 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
+import net.dries007.tfc.objects.items.ItemEggTFC;
+import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class EntityChickenTFC extends EntityAnimalOviparous
@@ -86,8 +88,13 @@ public class EntityChickenTFC extends EntityAnimalOviparous
     @Override
     public NonNullList<ItemStack> layEggs()
     {
-        //Todo return eggs(fertilized or not)
-        return null;
+        NonNullList<ItemStack> eggs = super.layEggs();
+        ItemStack egg = new ItemStack(ItemsTFC.EGG);
+        if (this.isFertilized())
+            ItemEggTFC.setFertilized(egg, new EntityChickenTFC(this.world), DAYS_TO_HATCH_EGG + CalendarTFC.INSTANCE.getTotalDays());
+        this.setFertilized(false);
+        eggs.add(egg);
+        return eggs;
     }
 
     @Override
