@@ -72,6 +72,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
 
     /**
      * Only for GUI purposes - not intended as a crafting mechanic
+     *
      * @return the output item stack
      */
     @Nonnull

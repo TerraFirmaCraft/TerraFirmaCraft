@@ -316,7 +316,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
             }
 
             // Handle possible item output
-            ItemStack outputStack = recipe.getOutputStack();
+            ItemStack outputStack = recipe.getOutputStack(stack);
             if (outputStack != null && !outputStack.isEmpty())
             {
                 outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);

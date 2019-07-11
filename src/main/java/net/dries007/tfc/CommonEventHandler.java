@@ -296,6 +296,7 @@ public final class CommonEventHandler
 
     /**
      * Fired on server only when a player dies and respawns, or is cloned via other means (?)
+     *
      * @param event {@link net.minecraftforge.event.entity.player.PlayerEvent.Clone}
      */
     @SubscribeEvent

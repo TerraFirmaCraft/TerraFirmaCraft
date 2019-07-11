@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.items.food.ItemFoodTFC;
+import net.dries007.tfc.util.agriculture.Food;
 
 public final class HeatRecipeManager
 {
@@ -26,6 +28,14 @@ public final class HeatRecipeManager
 
         recipes.add(new HeatRecipe(new ItemStack(BlocksTFC.TORCH, 2), "stickWood"));
         recipes.add(new HeatRecipe(new ItemStack(Blocks.GLASS), "sand"));
+
+        //Bread
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.BARLEY_BREAD)), new ItemStack(ItemFoodTFC.get(Food.BARLEY_DOUGH))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.CORNBREAD)), new ItemStack(ItemFoodTFC.get(Food.CORNMEAL_DOUGH))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.OAT_BREAD)), new ItemStack(ItemFoodTFC.get(Food.OAT_DOUGH))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.RICE_BREAD)), new ItemStack(ItemFoodTFC.get(Food.RICE_DOUGH))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.RYE_BREAD)), new ItemStack(ItemFoodTFC.get(Food.RYE_DOUGH))));
+        recipes.add(new HeatRecipe(new ItemStack(ItemFoodTFC.get(Food.WHEAT_BREAD)), new ItemStack(ItemFoodTFC.get(Food.WHEAT_DOUGH))));
 
         // todo: craft tweaker supported recipes (See NTP for a nice-ish way to do it)
     }

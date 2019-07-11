@@ -29,9 +29,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -189,7 +187,7 @@ public class BlockQuern extends Block implements IItemSize
                 else if (!world.isRemote && playerIn.isSneaking())
                 {
                     IItemHandler inventory = teQuern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-                    if(inventory != null)
+                    if (inventory != null)
                     {
                         ItemStack inputStack = inventory.getStackInSlot(TEQuern.SLOT_INPUT);
                         ItemStack outputStack = inventory.getStackInSlot(TEQuern.SLOT_OUTPUT);

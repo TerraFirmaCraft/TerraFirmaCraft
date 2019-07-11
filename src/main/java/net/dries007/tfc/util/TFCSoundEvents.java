@@ -39,19 +39,17 @@ public class TFCSoundEvents
     public static final SoundEvent ITEM_THROW = getNull();
 
 
-
-
     @SubscribeEvent
     public static void registerSounds(RegistryEvent.Register<SoundEvent> event)
     {
         IForgeRegistry<SoundEvent> r = event.getRegistry();
-        register(r,"rock.slide.long");
-        register(r,"rock.slide.short");
-        register(r,"dirt.slide.short");
-        register(r,"bellows.blow.air");
-        register(r,"quern.stonedrag");
-        register(r,"item.ceramicbreak");
-        register(r,"anvil.metalimpact");
+        register(r, "rock.slide.long");
+        register(r, "rock.slide.short");
+        register(r, "dirt.slide.short");
+        register(r, "bellows.blow.air");
+        register(r, "quern.stonedrag");
+        register(r, "item.ceramicbreak");
+        register(r, "anvil.metalimpact");
         register(r, "item.throw");
     }
 

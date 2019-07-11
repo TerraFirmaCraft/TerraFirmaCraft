@@ -34,31 +34,31 @@ public enum Food
     BARLEY(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f),
     BARLEY_GRAIN(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f),
     BARLEY_FLOUR(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f),
-    BARLEY_DOUGH(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f),
+    BARLEY_DOUGH(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f, 1f, 100f),
     BARLEY_BREAD(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f),
     MAIZE(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f),
     CORNBREAD(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f),
     CORNMEAL_FLOUR(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f),
-    CORNMEAL_DOUGH(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f),
+    CORNMEAL_DOUGH(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f, 1f, 100f),
     OAT(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f),
     OAT_GRAIN(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f),
     OAT_FLOUR(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f),
-    OAT_DOUGH(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f),
+    OAT_DOUGH(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f, 1f, 100f),
     OAT_BREAD(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f),
     RICE(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
     RICE_GRAIN(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
     RICE_FLOUR(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
-    RICE_DOUGH(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
+    RICE_DOUGH(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, 1f, 100f),
     RICE_BREAD(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
     RYE(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
     RYE_GRAIN(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
     RYE_FLOUR(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
-    RYE_DOUGH(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
+    RYE_DOUGH(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, 1f, 100f),
     RYE_BREAD(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
     WHEAT(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f),
     WHEAT_GRAIN(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f),
     WHEAT_FLOUR(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f),
-    WHEAT_DOUGH(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f),
+    WHEAT_DOUGH(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f, 1f, 100f),
     WHEAT_BREAD(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f),
     BEET(VEGETABLE, 0.4f, 3f, 0f, 0f, 0f, 1f, 0f, 2.5f),
     CABBAGE(VEGETABLE, 0.4f, 5f, 0f, 0f, 0f, 1f, 0f, 2.5f),
@@ -108,6 +108,28 @@ public enum Food
     private final float minerals;
     private final float decayModifier;
 
+    private final boolean heatable;
+    private final float heatCapacity;
+    private final float cookingTemp;
+
+
+    Food(@Nonnull Category category, float calories, float water, float carbohydrates, float fat, float protein, float vitamins, float minerals, float decayModifier, float heatCapacity, float cookingTemp)
+    {
+        this.category = category;
+        this.calories = calories;
+        this.water = water;
+        this.carbohydrates = carbohydrates;
+        this.fat = fat;
+        this.protein = protein;
+        this.vitamins = vitamins;
+        this.minerals = minerals;
+        this.decayModifier = decayModifier;
+
+        this.heatable = true;
+        this.heatCapacity = heatCapacity;
+        this.cookingTemp = cookingTemp;
+    }
+
     Food(@Nonnull Category category, float calories, float water, float carbohydrates, float fat, float protein, float vitamins, float minerals, float decayModifier)
     {
         this.category = category;
@@ -119,6 +141,10 @@ public enum Food
         this.vitamins = vitamins;
         this.minerals = minerals;
         this.decayModifier = decayModifier;
+
+        this.heatable = false;
+        this.heatCapacity = 0;
+        this.cookingTemp = 0;
     }
 
     public float getCalories()
@@ -145,6 +171,21 @@ public enum Food
     public float[] getNutrients()
     {
         return new float[] {carbohydrates, fat, protein, vitamins, minerals};
+    }
+
+    public boolean isHeatable()
+    {
+        return heatable;
+    }
+
+    public float getHeatCapacity()
+    {
+        return heatCapacity;
+    }
+
+    public float getCookingTemp()
+    {
+        return cookingTemp;
     }
 
     public enum Category
