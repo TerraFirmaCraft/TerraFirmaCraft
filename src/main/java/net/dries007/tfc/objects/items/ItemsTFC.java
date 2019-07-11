@@ -103,6 +103,9 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("bloom/refined")
     public static final ItemBloom REFINED_BLOOM = getNull();
 
+    @GameRegistry.ObjectHolder("food/egg")
+    public static final ItemEggTFC EGG = getNull();
+
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
     private static ImmutableList<ItemGem> allGemItems;
@@ -241,6 +244,7 @@ public final class ItemsTFC
         }
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
+        simpleItems.add(register(r, "food/egg", new ItemEggTFC(), CT_FOOD));
         simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "straw"), CT_MISC));
 
         simpleItems.add(register(r, "spindle", new ItemCraftingTool(40, Size.NORMAL, Weight.MEDIUM, "spindle"), CT_MISC));

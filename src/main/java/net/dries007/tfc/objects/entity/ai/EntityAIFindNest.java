@@ -11,11 +11,15 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalOviparous;
+import net.dries007.tfc.objects.te.TENestBox;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class EntityAIFindNest extends EntityAIBase
@@ -59,13 +63,12 @@ public class EntityAIFindNest extends EntityAIBase
     public boolean shouldContinueExecuting()
     {
         if (nestPos == null) return false;
-        if (this.theCreature.getDistanceSq(nestPos) < 0.2)
-            this.theCreature.getNavigator().clearPath();
 
         if (this.end)
         {
             this.end = false;
-            return end;
+            this.theCreature.getNavigator().clearPath();
+            return false;
         }
         return this.currentTick <= this.maxSittingTicks && this.isNestBlock(this.theWorld, nestPos);
     }
@@ -81,7 +84,7 @@ public class EntityAIFindNest extends EntityAIBase
         this.compoundDistance = 0;
         this.lastCheckedTick = 0;
         this.end = false;
-        this.maxSittingTicks = this.theCreature.getRNG().nextInt(this.theCreature.getRNG().nextInt(1200) + 1200) + 1200;
+        this.maxSittingTicks = this.theCreature.getRNG().nextInt(600) + 600;
     }
 
     @Override
@@ -89,10 +92,10 @@ public class EntityAIFindNest extends EntityAIBase
     {
         ++this.currentTick;
         if (nestPos == null) return;
-        if (this.theCreature.getDistanceSq(nestPos.up()) > 1.0D)
+        if (this.theCreature.getDistanceSq(nestPos) > 1.5D)
         {
-            this.theCreature.getNavigator().tryMoveToXYZ(this.nestPos.getX() + 0.5D, this.nestPos.getY() + 1, this.nestPos.getZ() + 0.5D, this.speed);
-            this.compoundDistance += this.theCreature.getDistance(this.theCreature.lastTickPosX, this.theCreature.lastTickPosY, this.theCreature.lastTickPosZ);
+            this.theCreature.getNavigator().tryMoveToXYZ(this.nestPos.getX() + 0.5D, this.nestPos.getY(), this.nestPos.getZ() + 0.5D, this.speed);
+            /*this.compoundDistance += this.theCreature.getDistance(this.theCreature.lastTickPosX, this.theCreature.lastTickPosY, this.theCreature.lastTickPosZ);
             if (this.currentTick - 40 > this.lastCheckedTick)
             {
                 if (this.compoundDistance < 0.5)
@@ -104,12 +107,24 @@ public class EntityAIFindNest extends EntityAIBase
                 {
                     this.lastCheckedTick = this.currentTick;
                 }
-            }
+            }*/
         }
         else
         {
-            //todo Lay Eggs
-
+            if (theCreature instanceof EntityAnimalOviparous)
+            {
+                EntityAnimalOviparous ent = (EntityAnimalOviparous) theCreature;
+                NonNullList<ItemStack> eggs = ent.layEggs();
+                TENestBox te = Helpers.getTE(this.theWorld, nestPos, TENestBox.class);
+                if (te != null)
+                {
+                    for (ItemStack egg : eggs)
+                    {
+                        te.insertEgg(egg.copy());
+                    }
+                    this.end = true;
+                }
+            }
         }
     }
 
@@ -145,9 +160,9 @@ public class EntityAIFindNest extends EntityAIBase
         }
 
         Block block = world.getBlockState(pos).getBlock();
-        //Todo change to nest
+        //Todo check nest has slots/other bird
         //TENestBox tileentitynest = (TENestBox) world.getTileEntity(x, y, z);
         //if (!tileentitynest.hasBird() || tileentitynest.getBird() == theCreature)
-        return block == BlocksTFC.THATCH;
+        return block == BlocksTFC.NEST_BOX;
     }
 }

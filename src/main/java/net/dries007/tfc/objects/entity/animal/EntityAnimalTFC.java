@@ -182,6 +182,14 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         getDataManager().register(FAMILIARITY, 0f);
     }
 
+    @Override
+    public boolean canMateWith(@Nonnull EntityAnimal otherAnimal)
+    {
+        if (otherAnimal.getClass() != this.getClass()) return false;
+        EntityAnimalTFC other = (EntityAnimalTFC) otherAnimal;
+        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
+    }
+
     /**
      * Used by models renderer to scale the size of the animal
      *

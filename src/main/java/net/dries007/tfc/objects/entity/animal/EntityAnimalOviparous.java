@@ -5,11 +5,11 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,8 +22,9 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 public abstract class EntityAnimalOviparous extends EntityAnimalTFC
 {
     //No visual effect on client, no packet updates needed
-    private long eggTime; //Controls last time this entity laid eggs for females, for males, this controls last time it tried fertilizing females
-    private boolean fertilized; //Controls if the next egg laying will be fertilized
+    private long eggTime; //The last time this entity laid eggs
+    private boolean fertilized; //is the next egg laying fertilized?
+    private long matingTime; //The last time this male tried fertilizing a female
 
     public EntityAnimalOviparous(World worldIn, Gender gender, int birthDay)
     {
@@ -37,23 +38,24 @@ public abstract class EntityAnimalOviparous extends EntityAnimalTFC
         super.onLivingUpdate();
         if (!this.world.isRemote)
         {
-            if (this.getGender() == Gender.MALE && this.getIsFedToday() && CalendarTFC.INSTANCE.getTotalTime() >= eggTime + CalendarTFC.TICKS_IN_HOUR * 2 && this.isReadyToMate())
+            if (this.getGender() == Gender.MALE && this.getIsFedToday() && this.isReadyToMate())
             {
                 //Rooster, fertilize our chickens!
                 this.setInLove(null);
-                this.eggTime = CalendarTFC.INSTANCE.getTotalTime();
+                forceFemalesMating();
+                this.matingTime = CalendarTFC.INSTANCE.getTotalHours();
             }
             if (eggTime > CalendarTFC.INSTANCE.getTotalDays())
             {
                 //Calendar went backwards by command! this need to update
                 this.eggTime = (int) CalendarTFC.INSTANCE.getTotalDays();
             }
+            if (matingTime > CalendarTFC.INSTANCE.getTotalHours())
+            {
+                //Calendar went backwards by command! this need to update
+                this.matingTime = (int) CalendarTFC.INSTANCE.getTotalHours();
+            }
         }
-    }
-
-    public boolean isReadyToLayEggs()
-    {
-        return this.getGender() == Gender.FEMALE && !this.isChild() && this.getFamiliarity() > 0.15f && CalendarTFC.INSTANCE.getTotalDays() >= eggTime + eggDaysNeeded();
     }
 
     @Override
@@ -62,6 +64,12 @@ public abstract class EntityAnimalOviparous extends EntityAnimalTFC
         super.writeEntityToNBT(nbt);
         nbt.setBoolean("fertilized", fertilized);
         nbt.setLong("eggTime", eggTime);
+        nbt.setLong("matingTime", matingTime);
+    }
+
+    public boolean isReadyToLayEggs()
+    {
+        return this.getGender() == Gender.FEMALE && !this.isChild() && this.getFamiliarity() > 0.15f && CalendarTFC.INSTANCE.getTotalDays() >= eggTime + eggDaysNeeded();
     }
 
     @Override
@@ -70,6 +78,7 @@ public abstract class EntityAnimalOviparous extends EntityAnimalTFC
         super.readEntityFromNBT(nbt);
         this.fertilized = nbt.getBoolean("fertilized");
         this.eggTime = nbt.getLong("eggTime");
+        this.matingTime = nbt.getLong("matingTime");
     }
 
     @Override
@@ -80,16 +89,32 @@ public abstract class EntityAnimalOviparous extends EntityAnimalTFC
             if (this.isReadyToMate() && this.getGender() == Gender.MALE)
             {
                 this.setInLove(player); //Force rooster to breed chickens
-                this.eggTime = CalendarTFC.INSTANCE.getTotalTime();
+                this.eggTime = CalendarTFC.INSTANCE.getTotalHours();
             }
             return true;
         }
         return false;
     }
 
+    public void setFertilized(boolean value)
+    {
+        this.fertilized = value;
+    }
+
     public boolean isFertilized()
     {
         return this.fertilized;
+    }
+
+    /**
+     * Get a list of items containing eggs(fertilized or not) from this entity
+     *
+     * @return NonNullList containing egg ItemStacks
+     */
+    public NonNullList<ItemStack> layEggs()
+    {
+        this.eggTime = CalendarTFC.INSTANCE.getTotalDays();
+        return NonNullList.create();
     }
 
     /**
@@ -99,36 +124,34 @@ public abstract class EntityAnimalOviparous extends EntityAnimalTFC
      */
     public abstract int eggDaysNeeded();
 
-    /**
-     * Get a list of items containing eggs(fertilized or not) from this entity
-     *
-     * @return NonNullList containing egg ItemStacks
-     */
-    public abstract NonNullList<ItemStack> layEggs();
-
     @Nullable
     @Override
     public EntityAgeable createChild(EntityAgeable other)
     {
-        if (this.getGender() == Gender.MALE && other.getClass() == this.getClass())
+        if (this.getGender() == Gender.FEMALE)
         {
-            ((EntityAnimalOviparous) other).fertilized = true;
+            this.fertilized = true;
             this.resetInLove();
         }
         return null;
     }
 
-    @Override
-    public boolean canMateWith(@Nonnull EntityAnimal otherAnimal)
+    private void forceFemalesMating()
     {
-        if (otherAnimal.getClass() != this.getClass()) return false;
-        EntityAnimalOviparous other = (EntityAnimalOviparous) otherAnimal;
-        return this.getGender() != other.getGender() && this.isInLove() && other.isReadyToMate();
+        List<EntityAnimalOviparous> list = this.world.getEntitiesWithinAABB(this.getClass(), this.getEntityBoundingBox().grow(8.0D));
+        for (EntityAnimalOviparous ent : list)
+        {
+            if (ent.getGender() == Gender.FEMALE && !ent.isInLove() && ent.isReadyToMate())
+            {
+                ent.setInLove(null);
+            }
+        }
     }
 
     private boolean isReadyToMate()
     {
         if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f) return false;
-        return this.getGender() != Gender.FEMALE || !this.fertilized;
+        if (this.getGender() == Gender.FEMALE) return !this.fertilized;
+        return CalendarTFC.INSTANCE.getTotalHours() > this.matingTime + 2;
     }
 }

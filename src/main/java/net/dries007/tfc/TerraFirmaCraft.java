@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
+import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
@@ -34,7 +35,6 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
 import net.dries007.tfc.proxy.IProxy;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.dries007.tfc.util.TFCSoundEvents;
 import net.dries007.tfc.util.fuel.FuelManager;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
@@ -149,6 +149,7 @@ public final class TerraFirmaCraft
         CapabilityItemHeat.preInit();
         CapabilityForgeable.preInit();
         CapabilityFood.preInit();
+        CapabilityEgg.preInit();
         CapabilityPlayerSkills.preInit();
         CapabilityDamageResistance.preInit();
 
