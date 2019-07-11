@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.api.capability.food.FoodHandler;
+import net.dries007.tfc.api.capability.food.FoodHeatHandler;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.agriculture.Food;
@@ -49,8 +50,61 @@ public class ItemFoodTFC extends ItemFood
         OreDictionaryHelper.register(this, food.getCategory());
         switch (food)
         {
+
+            case BARLEY:
+                OreDictionaryHelper.register(this, "barley");
+                break;
+            case MAIZE:
+                OreDictionaryHelper.register(this, "maize");
+                break;
+            case OAT:
+                OreDictionaryHelper.register(this, "oat");
+                break;
+            case RICE:
+                OreDictionaryHelper.register(this, "rice");
+                break;
+            case RYE:
+                OreDictionaryHelper.register(this, "rye");
+                break;
+            case WHEAT:
+                OreDictionaryHelper.register(this, "wheat");
+                break;
+
+            case BARLEY_GRAIN:
+                OreDictionaryHelper.register(this, "grain_barley");
+                break;
+            case OAT_GRAIN:
+                OreDictionaryHelper.register(this, "grain_oat");
+                break;
+            case RICE_GRAIN:
+                OreDictionaryHelper.register(this, "grain_rice");
+                break;
+            case RYE_GRAIN:
+                OreDictionaryHelper.register(this, "grain_rye");
+                break;
+            case WHEAT_GRAIN:
+                OreDictionaryHelper.register(this, "grain_wheat");
+                break;
+
             case BARLEY_FLOUR:
                 OreDictionaryHelper.register(this, "flour_barley");
+                break;
+            case CORNMEAL_FLOUR:
+                OreDictionaryHelper.register(this, "flour_cornmeal");
+                break;
+            case OAT_FLOUR:
+                OreDictionaryHelper.register(this, "flour_oat");
+                break;
+            case RICE_FLOUR:
+                OreDictionaryHelper.register(this, "flour_rice");
+                break;
+            case RYE_FLOUR:
+                OreDictionaryHelper.register(this, "flour_rye");
+                break;
+            case WHEAT_FLOUR:
+                OreDictionaryHelper.register(this, "flour_wheat");
+                break;
+
             case GREEN_APPLE:
             case RED_APPLE:
                 OreDictionaryHelper.register(this, "apple");
@@ -61,6 +115,6 @@ public class ItemFoodTFC extends ItemFood
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new FoodHandler(nbt, food);
+        return (food.isHeatable()) ? new FoodHeatHandler(nbt, food) : new FoodHandler(nbt, food);
     }
 }

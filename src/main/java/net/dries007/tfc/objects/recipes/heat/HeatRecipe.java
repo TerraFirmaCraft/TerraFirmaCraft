@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.types.Metal;
@@ -82,9 +83,20 @@ public class HeatRecipe
     }
 
     @Nullable
-    public ItemStack getOutputStack()
+    public ItemStack getOutputStack(ItemStack inputStack)
     {
-        return outputType != OutputType.METAL ? outputStack.copy() : null;
+        if (outputType != OutputType.METAL)
+        {
+            ItemStack out = outputStack.copy();
+
+            if (inputStack.hasCapability(CapabilityFood.CAPABILITY, null) || out.hasCapability(CapabilityFood.CAPABILITY, null))
+            {
+                out.getCapability(CapabilityFood.CAPABILITY, null).setCreationDate(inputStack.getCapability(CapabilityFood.CAPABILITY, null).getCreationDate());
+            }
+
+            return out;
+        }
+        return null;
     }
 
     @Nullable

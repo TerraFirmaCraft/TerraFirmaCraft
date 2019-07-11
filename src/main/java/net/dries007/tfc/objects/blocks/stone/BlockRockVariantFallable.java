@@ -14,7 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -23,7 +22,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.util.IFallingBlock;
-import net.dries007.tfc.util.TFCSoundEvents;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -55,14 +53,14 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if(checkFalling(worldIn, pos, state))onRockSlide(worldIn, pos);
+        if (checkFalling(worldIn, pos, state)) onRockSlide(worldIn, pos);
     }
 
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         super.onBlockAdded(worldIn, pos, state);
-        if(checkFalling(worldIn, pos, state))onRockSlide(worldIn, pos);
+        if (checkFalling(worldIn, pos, state)) onRockSlide(worldIn, pos);
     }
 
     // What is the position that the block will fall at?

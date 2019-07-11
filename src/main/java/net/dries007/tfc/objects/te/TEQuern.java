@@ -18,8 +18,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import net.dries007.tfc.api.recipes.QuernRecipe;
 import net.dries007.tfc.objects.items.ItemHandstone;
@@ -168,7 +166,7 @@ public class TEQuern extends TEInventory implements ITickable
         ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
         if (!inputStack.isEmpty())
         {
-            ItemStack resultStack = QuernRecipe.get(inputStack).getOutputItem();
+            ItemStack resultStack = QuernRecipe.get(inputStack).getOutputItem(inputStack);
             ItemStack outputStack = inventory.getStackInSlot(SLOT_OUTPUT);
 
             if (outputStack.isEmpty())

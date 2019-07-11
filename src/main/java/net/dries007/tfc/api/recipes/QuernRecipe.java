@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
@@ -37,9 +38,14 @@ public class QuernRecipe extends IForgeRegistryEntry.Impl<QuernRecipe>
     }
 
     @Nonnull
-    public ItemStack getOutputItem()
+    public ItemStack getOutputItem(ItemStack stack)
     {
-        return outputItem;
+        ItemStack out = outputItem.copy();
+        if (stack.hasCapability(CapabilityFood.CAPABILITY, null) && out.hasCapability(CapabilityFood.CAPABILITY, null))
+        {
+            out.getCapability(CapabilityFood.CAPABILITY, null).setCreationDate(stack.getCapability(CapabilityFood.CAPABILITY, null).getCreationDate());
+        }
+        return out;
     }
 
     private boolean isValidInput(ItemStack inputItem)

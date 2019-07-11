@@ -320,7 +320,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
             }
 
             // Handle possible item output
-            ItemStack outputStack = recipe.getOutputStack();
+            ItemStack outputStack = recipe.getOutputStack(stack);
             if (outputStack != null && !outputStack.isEmpty())
             {
                 // Loop through all input slots

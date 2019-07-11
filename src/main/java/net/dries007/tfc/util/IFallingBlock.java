@@ -10,10 +10,8 @@ import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -41,8 +39,8 @@ public interface IFallingBlock
      * Check if this block gonna fall.
      *
      * @param worldIn the worldObj this block is in
-     * @param pos the BlockPos this block is in
-     * @param state this block state
+     * @param pos     the BlockPos this block is in
+     * @param state   this block state
      * @return true if this block has falled, false otherwise
      */
     default boolean checkFalling(World worldIn, BlockPos pos, IBlockState state)
