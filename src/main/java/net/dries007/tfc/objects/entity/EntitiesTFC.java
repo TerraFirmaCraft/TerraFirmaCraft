@@ -21,6 +21,7 @@ public class EntitiesTFC
 
     public static void preInit()
     {
+        register("sitblock", EntitySeatOn.class);
         register("falling_block", EntityFallingBlockTFC.class);
         register("thrown_javelin", EntityThrownJavelin.class);
         registerLiving("sheeptfc", EntitySheepTFC.class, 0xFFFFFF, 0xFF6347);

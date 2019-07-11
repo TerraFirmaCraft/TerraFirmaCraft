@@ -83,9 +83,12 @@ public class EggHandler implements IEgg, ICapabilitySerializable<NBTTagCompound>
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setBoolean("fertilized", fertilized);
-        nbt.setLong("hatchDay", hatchDay);
-        nbt.setTag("entity", entitytag);
+        if (entitytag != null)
+        {
+            nbt.setBoolean("fertilized", fertilized);
+            nbt.setLong("hatchDay", hatchDay);
+            nbt.setTag("entity", entitytag);
+        }
         return nbt;
     }
 

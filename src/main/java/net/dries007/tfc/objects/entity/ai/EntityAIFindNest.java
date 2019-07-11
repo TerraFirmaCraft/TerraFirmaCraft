@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.entity.ai;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.item.ItemStack;
@@ -16,7 +15,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalOviparous;
 import net.dries007.tfc.objects.te.TENestBox;
 import net.dries007.tfc.util.Helpers;
@@ -30,11 +28,8 @@ public class EntityAIFindNest extends EntityAIBase
     private World theWorld;
     private int maxSittingTicks;
 
-    //To prevent chickens from trying to sit in unreachable nests. See below in updateTask, if the chicken doesnt move >0.5 m in 40 ticks, it
-    //gives up, and waits 1 day before trying to sit in a nest box located at the specified coordinates
+    //This is a helper map to prevent chickens not choose unreachable nest boxes.
     private Map<BlockPos, Long> failureDepressionMap;
-    private double compoundDistance;
-    private int lastCheckedTick;
     private boolean end;
 
     private BlockPos nestPos = null;
@@ -62,29 +57,23 @@ public class EntityAIFindNest extends EntityAIBase
     @Override
     public boolean shouldContinueExecuting()
     {
-        if (nestPos == null) return false;
-
-        if (this.end)
+        if (this.end || !this.isNestBlock(this.theWorld, nestPos))
         {
             this.end = false;
             this.theCreature.getNavigator().clearPath();
+            if (this.theCreature.isRiding()) this.theCreature.dismountRidingEntity();
             return false;
         }
-        return this.currentTick <= this.maxSittingTicks && this.isNestBlock(this.theWorld, nestPos);
+        return true;
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
     public void startExecuting()
     {
         this.theCreature.getNavigator().tryMoveToXYZ(this.nestPos.getX() + 0.5D, this.nestPos.getY() + 1, this.nestPos.getZ() + 0.5D, this.speed);
         this.currentTick = 0;
-        this.compoundDistance = 0;
-        this.lastCheckedTick = 0;
         this.end = false;
-        this.maxSittingTicks = this.theCreature.getRNG().nextInt(600) + 600;
+        this.maxSittingTicks = this.theCreature.getRNG().nextInt(200) + 100;
     }
 
     @Override
@@ -92,36 +81,40 @@ public class EntityAIFindNest extends EntityAIBase
     {
         ++this.currentTick;
         if (nestPos == null) return;
-        if (this.theCreature.getDistanceSq(nestPos) > 1.5D)
+        if (this.theCreature.getDistanceSq(nestPos) > 1.25D)
         {
             this.theCreature.getNavigator().tryMoveToXYZ(this.nestPos.getX() + 0.5D, this.nestPos.getY(), this.nestPos.getZ() + 0.5D, this.speed);
-            /*this.compoundDistance += this.theCreature.getDistance(this.theCreature.lastTickPosX, this.theCreature.lastTickPosY, this.theCreature.lastTickPosZ);
-            if (this.currentTick - 40 > this.lastCheckedTick)
+            if (this.currentTick > 200)
             {
-                if (this.compoundDistance < 0.5)
-                {
-                    failureDepressionMap.put(nestPos, CalendarTFC.INSTANCE.getTotalTime() + CalendarTFC.TICKS_IN_DAY);
-                    this.end = true;
-                }
-                else
-                {
-                    this.lastCheckedTick = this.currentTick;
-                }
-            }*/
+                //We never reached it in 10 secs, lets give up on this nest box
+                failureDepressionMap.put(nestPos, CalendarTFC.INSTANCE.getTotalTime() + CalendarTFC.TICKS_IN_HOUR * 4);
+                this.end = true;
+            }
         }
         else
         {
-            if (theCreature instanceof EntityAnimalOviparous)
+            TENestBox te = Helpers.getTE(this.theWorld, nestPos, TENestBox.class);
+            if (te != null && theCreature instanceof EntityAnimalOviparous)
             {
                 EntityAnimalOviparous ent = (EntityAnimalOviparous) theCreature;
-                NonNullList<ItemStack> eggs = ent.layEggs();
-                TENestBox te = Helpers.getTE(this.theWorld, nestPos, TENestBox.class);
-                if (te != null)
+                if (!te.hasBird())
                 {
+                    te.seatOnThis(ent);
+                    this.currentTick = 0;
+                }
+                if (this.currentTick >= this.maxSittingTicks)
+                {
+                    NonNullList<ItemStack> eggs = ent.layEggs();
                     for (ItemStack egg : eggs)
                     {
-                        te.insertEgg(egg.copy());
+                        te.insertEgg(egg);
                     }
+                    this.end = true;
+                }
+                else if (te.getBird() != ent)
+                {
+                    //Used by another bird, give up on this one for now
+                    failureDepressionMap.put(nestPos, CalendarTFC.INSTANCE.getTotalTime() + CalendarTFC.TICKS_IN_HOUR * 4);
                     this.end = true;
                 }
             }
@@ -150,6 +143,7 @@ public class EntityAIFindNest extends EntityAIBase
 
     private boolean isNestBlock(World world, BlockPos pos)
     {
+        if (world == null || pos == null) return false;
         if (failureDepressionMap.containsKey(pos))
         {
             long time = failureDepressionMap.get(pos);
@@ -158,11 +152,7 @@ public class EntityAIFindNest extends EntityAIBase
             else
                 failureDepressionMap.remove(pos);
         }
-
-        Block block = world.getBlockState(pos).getBlock();
-        //Todo check nest has slots/other bird
-        //TENestBox tileentitynest = (TENestBox) world.getTileEntity(x, y, z);
-        //if (!tileentitynest.hasBird() || tileentitynest.getBird() == theCreature)
-        return block == BlocksTFC.NEST_BOX;
+        TENestBox te = Helpers.getTE(world, pos, TENestBox.class);
+        return te != null && te.hasFreeSlot() && (te.getBird() == this.theCreature || !te.hasBird());
     }
 }

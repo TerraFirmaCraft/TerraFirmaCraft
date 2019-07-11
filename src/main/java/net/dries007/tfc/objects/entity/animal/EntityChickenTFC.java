@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -19,16 +20,15 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.capability.egg.CapabilityEgg;
+import net.dries007.tfc.api.capability.egg.IEgg;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
-import net.dries007.tfc.objects.items.ItemEggTFC;
-import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class EntityChickenTFC extends EntityAnimalOviparous
 {
     private static final int DAYS_TO_ADULTHOOD = 124;
     private static final int DAYS_TO_HATCH_EGG = 21;
-    private static final int DAYS_TO_LAY_EGGS = 1;
 
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;
@@ -80,18 +80,18 @@ public class EntityChickenTFC extends EntityAnimalOviparous
     }
 
     @Override
-    public int eggDaysNeeded()
-    {
-        return DAYS_TO_LAY_EGGS;
-    }
-
-    @Override
     public NonNullList<ItemStack> layEggs()
     {
         NonNullList<ItemStack> eggs = super.layEggs();
-        ItemStack egg = new ItemStack(ItemsTFC.EGG);
+        ItemStack egg = new ItemStack(Items.EGG);
         if (this.isFertilized())
-            ItemEggTFC.setFertilized(egg, new EntityChickenTFC(this.world), DAYS_TO_HATCH_EGG + CalendarTFC.INSTANCE.getTotalDays());
+        {
+            IEgg cap = egg.getCapability(CapabilityEgg.CAPABILITY, null);
+            if (cap != null)
+            {
+                cap.setFertilized(new EntityChickenTFC(this.world), DAYS_TO_HATCH_EGG + CalendarTFC.INSTANCE.getTotalDays());
+            }
+        }
         this.setFertilized(false);
         eggs.add(egg);
         return eggs;

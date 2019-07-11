@@ -5,10 +5,7 @@
 
 package net.dries007.tfc.util;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -16,6 +13,7 @@ import javax.annotation.Nullable;
 import com.google.common.base.Joiner;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -23,10 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -43,6 +38,7 @@ import net.dries007.tfc.objects.blocks.BlockPeat;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockShortGrassTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.entity.EntitySeatOn;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -111,6 +107,48 @@ public final class Helpers
                 }
             }
         }
+    }
+
+    /**
+     * Makes an entity sit on a block
+     *
+     * @param world    the worldObj
+     * @param pos      the BlockPos of the block to sit on
+     * @param creature the entityLiving that will sit on this block
+     * @param yOffset  the y offset of the top facing
+     */
+    public static void sitOnBlock(World world, BlockPos pos, EntityLiving creature, double yOffset)
+    {
+        if (!world.isRemote && !world.getBlockState(pos).getMaterial().isReplaceable())
+        {
+            EntitySeatOn seat = new EntitySeatOn(world, pos, yOffset);
+            world.spawnEntity(seat);
+            creature.startRiding(seat);
+        }
+    }
+
+    /**
+     * Returns the entity which is sitting on this BlockPos.
+     *
+     * @param world the WorldObj
+     * @param pos   the BlockPos of this block
+     * @return the entity which is sitting on this block, or null if none
+     */
+    @Nullable
+    public static Entity getSittingEntity(World world, BlockPos pos)
+    {
+        if (!world.isRemote)
+        {
+            List<EntitySeatOn> seats = world.getEntitiesWithinAABB(EntitySeatOn.class, new AxisAlignedBB(pos).grow(1D));
+            for (EntitySeatOn seat : seats)
+            {
+                if (seat.getPos().equals(pos))
+                {
+                    return seat.getSittingEntity();
+                }
+            }
+        }
+        return null;
     }
 
     /**
