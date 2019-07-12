@@ -5,13 +5,19 @@
 
 package net.dries007.tfc.client.model.animal;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.client.model.ModelQuadruped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.entity.animal.EntitySheepTFC;
 
+@SideOnly(Side.CLIENT)
+@ParametersAreNonnullByDefault
 public class ModelSheepWoolTFC extends ModelQuadruped
 {
     public ModelSheepWoolTFC()
@@ -23,7 +29,6 @@ public class ModelSheepWoolTFC extends ModelQuadruped
         this.body = new ModelRenderer(this, 28, 8);
         this.body.addBox(-4.0F, -10.0F, -7.0F, 8, 16, 6, 1.75F);
         this.body.setRotationPoint(0.0F, 5.0F, 2.0F);
-        float f = 0.5F;
         this.leg1 = new ModelRenderer(this, 0, 16);
         this.leg1.addBox(-2.0F, 0.0F, -2.0F, 4, 6, 4, 0.5F);
         this.leg1.setRotationPoint(-3.0F, 12.0F, 7.0F);

@@ -5,17 +5,21 @@
 
 package net.dries007.tfc.client.render.animal;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.model.animal.ModelDeerTFC;
 import net.dries007.tfc.objects.entity.animal.EntityDeerTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SideOnly(Side.CLIENT)
+@ParametersAreNonnullByDefault
 public class RenderDeerTFC extends RenderLiving<EntityDeerTFC>
 {
     private static final ResourceLocation DEER_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/deer.png");
@@ -27,7 +31,7 @@ public class RenderDeerTFC extends RenderLiving<EntityDeerTFC>
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(@Nonnull EntityDeerTFC deer)
+    protected ResourceLocation getEntityTexture(EntityDeerTFC deer)
     {
         if (deer.isChild())
         {
