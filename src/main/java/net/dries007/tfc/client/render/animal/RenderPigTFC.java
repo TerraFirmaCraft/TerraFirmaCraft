@@ -7,7 +7,6 @@ package net.dries007.tfc.client.render.animal;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -40,12 +39,5 @@ public class RenderPigTFC extends RenderLiving<EntityPigTFC>
     protected ResourceLocation getEntityTexture(@Nonnull EntityPigTFC entity)
     {
         return PIG_TEXTURES;
-    }
-
-    @Override
-    protected void preRenderCallback(EntityPigTFC par1EntityLivingBase, float par2)
-    {
-        float scale = 1 / 2f + 0.5f;
-        GlStateManager.scale(scale, scale, scale);
     }
 }

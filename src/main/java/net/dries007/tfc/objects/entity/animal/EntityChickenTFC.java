@@ -5,16 +5,17 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -23,6 +24,8 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.IEgg;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
+import net.dries007.tfc.util.LootTableListTFC;
+import net.dries007.tfc.util.TFCSoundEvents;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class EntityChickenTFC extends EntityAnimalOviparous
@@ -59,6 +62,10 @@ public class EntityChickenTFC extends EntityAnimalOviparous
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
+        if (this.getGender() == Gender.MALE && !this.world.isRemote && !this.isChild() && CalendarTFC.INSTANCE.getHourOfDay() == 6 && CalendarTFC.INSTANCE.getMinuteOfHour() == 0)
+        {
+            this.world.playSound(null, this.getPosition(), TFCSoundEvents.ANIMAL_ROOSTER_CRY, SoundCategory.AMBIENT, 1.0F, 1.0F);
+        }
         this.oFlap = this.wingRotation;
         this.oFlapSpeed = this.destPos;
         this.destPos = (float) ((double) this.destPos + (double) (this.onGround ? -1 : 4) * 0.3D);
@@ -131,6 +138,10 @@ public class EntityChickenTFC extends EntityAnimalOviparous
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
         this.tasks.addTask(2, new EntityAIMate(this, 1D));
+        for (Item item : EntityAnimalTFC.DEFAULT_BREEDING_ITEMS)
+        {
+            this.tasks.addTask(3, new EntityAITempt(this, 1.1D, item, false));
+        }
         this.tasks.addTask(4, new EntityAIFindNest(this, 1D));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
@@ -155,5 +166,11 @@ public class EntityChickenTFC extends EntityAnimalOviparous
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundEvents.ENTITY_CHICKEN_STEP, 0.15F, 1.0F);
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable()
+    {
+        return LootTableListTFC.ANIMALS_CHICKEN;
     }
 }

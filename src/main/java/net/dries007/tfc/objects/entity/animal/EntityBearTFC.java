@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -15,12 +16,16 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.util.LootTableListTFC;
+import net.dries007.tfc.util.TFCSoundEvents;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class EntityBearTFC extends EntityAnimalMammal implements IMob
@@ -82,15 +87,15 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
+    public boolean isBreedingItem(ItemStack it)
     {
-        return SoundEvents.ENTITY_POLAR_BEAR_HURT;
+        return it.getItem() == Items.FISH;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return SoundEvents.ENTITY_POLAR_BEAR_DEATH;
+        return TFCSoundEvents.ANIMAL_BEAR_HURT;
     }
 
     @Override
@@ -100,16 +105,22 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     }
 
     @Override
+    protected SoundEvent getDeathSound()
+    {
+        return TFCSoundEvents.ANIMAL_BEAR_DEATH;
+    }
+
+    @Override
     protected void initEntityAI()
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(3, new EntityAITempt(this, 1.1D, Items.WHEAT, false));
+        this.tasks.addTask(2, new EntityAITempt(this, 1.1D, Items.FISH, false));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
     }
 
     @Override
@@ -125,12 +136,18 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return SoundEvents.ENTITY_POLAR_BEAR_AMBIENT;
+        return Constants.RNG.nextInt(100) < 5 ? TFCSoundEvents.ANIMAL_BEAR_CRY : TFCSoundEvents.ANIMAL_BEAR_SAY;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F);
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable()
+    {
+        return LootTableListTFC.ANIMALS_BEAR;
     }
 }

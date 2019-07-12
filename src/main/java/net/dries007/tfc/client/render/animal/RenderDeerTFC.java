@@ -7,7 +7,6 @@ package net.dries007.tfc.client.render.animal;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -44,11 +43,5 @@ public class RenderDeerTFC extends RenderLiving<EntityDeerTFC>
     protected float handleRotationFloat(EntityDeerTFC deer, float par2)
     {
         return 1.0f;
-    }
-
-    @Override
-    protected void preRenderCallback(EntityDeerTFC deer, float par2)
-    {
-        GlStateManager.scale(1 - 0.3f, 1 - 0.3f, 1 - 0.3f);
     }
 }

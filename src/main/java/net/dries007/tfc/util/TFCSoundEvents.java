@@ -38,8 +38,35 @@ public class TFCSoundEvents
     @GameRegistry.ObjectHolder("item.throw")
     public static final SoundEvent ITEM_THROW = getNull();
 
+    @GameRegistry.ObjectHolder("animal.bear.say")
+    public static final SoundEvent ANIMAL_BEAR_SAY = getNull();
+    @GameRegistry.ObjectHolder("animal.bear.cry")
+    public static final SoundEvent ANIMAL_BEAR_CRY = getNull();
+    @GameRegistry.ObjectHolder("animal.bear.hurt")
+    public static final SoundEvent ANIMAL_BEAR_HURT = getNull();
+    @GameRegistry.ObjectHolder("animal.bear.death")
+    public static final SoundEvent ANIMAL_BEAR_DEATH = getNull();
 
+    @GameRegistry.ObjectHolder("animal.deer.say")
+    public static final SoundEvent ANIMAL_DEER_SAY = getNull();
+    @GameRegistry.ObjectHolder("animal.deer.cry")
+    public static final SoundEvent ANIMAL_DEER_CRY = getNull();
+    @GameRegistry.ObjectHolder("animal.deer.hurt")
+    public static final SoundEvent ANIMAL_DEER_HURT = getNull();
+    @GameRegistry.ObjectHolder("animal.deer.death")
+    public static final SoundEvent ANIMAL_DEER_DEATH = getNull();
 
+    @GameRegistry.ObjectHolder("animal.pheasant.say")
+    public static final SoundEvent ANIMAL_PHEASANT_SAY = getNull();
+    @GameRegistry.ObjectHolder("animal.pheasant.cry")
+    public static final SoundEvent ANIMAL_PHEASANT_CRY = getNull();
+    @GameRegistry.ObjectHolder("animal.pheasant.hurt")
+    public static final SoundEvent ANIMAL_PHEASANT_HURT = getNull();
+    @GameRegistry.ObjectHolder("animal.pheasant.death")
+    public static final SoundEvent ANIMAL_PHEASANT_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder("animal.rooster.cry")
+    public static final SoundEvent ANIMAL_ROOSTER_CRY = getNull();
 
     @SubscribeEvent
     public static void registerSounds(RegistryEvent.Register<SoundEvent> event)
@@ -53,6 +80,20 @@ public class TFCSoundEvents
         register(r,"item.ceramicbreak");
         register(r,"anvil.metalimpact");
         register(r, "item.throw");
+
+        register(r, "animal.bear.cry");
+        register(r, "animal.bear.say");
+        register(r, "animal.bear.hurt");
+        register(r, "animal.bear.death");
+        register(r, "animal.deer.cry");
+        register(r, "animal.deer.say");
+        register(r, "animal.deer.hurt");
+        register(r, "animal.deer.death");
+        register(r, "animal.pheasant.cry");
+        register(r, "animal.pheasant.say");
+        register(r, "animal.pheasant.hurt");
+        register(r, "animal.pheasant.death");
+        register(r, "animal.rooster.cry");
     }
 
     private static void register(IForgeRegistry<SoundEvent> r, String name)
