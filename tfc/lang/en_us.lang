@@ -49,7 +49,10 @@ tfc.tooltip.blast_furnace_fuel_amount=Fuel
 tfc.tooltip.blast_furnace_melt_amount=Melt
 
 ## Animal Tooltips / Messages
+tfc.tooltip.animal.old=This animal is too old to mate
+tfc.tooltip.animal.lowfamiliarity=This animal has low familiarity to mate
 tfc.tooltip.animal.pregnant=This female is pregnant!
+tfc.tooltip.animal.resting=This animal is resting from today's mating
 
 tfc.tooltip.animal.milk.male=This is a bull!
 tfc.tooltip.animal.milk.old=This cow is too old to be milked
@@ -3367,3 +3370,4 @@ entity.beartfc.name=Bear
 entity.pigtfc.name=Pig
 entity.chickentfc.name=Chicken
 entity.deertfc.name=Deer
+entity.pheasanttfc.name=Pheasant
