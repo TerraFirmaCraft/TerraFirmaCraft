@@ -5,22 +5,27 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.util.LootTableListTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -201,7 +206,10 @@ public class EntityCowTFC extends EntityAnimalMammal
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 1.3D));
         this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
-        this.tasks.addTask(3, new EntityAITempt(this, 1.1D, Items.WHEAT, false));
+        for (Item item : EntityAnimalTFC.DEFAULT_BREEDING_ITEMS)
+        {
+            this.tasks.addTask(3, new EntityAITempt(this, 1.1D, item, false));
+        }
         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
@@ -226,5 +234,11 @@ public class EntityCowTFC extends EntityAnimalMammal
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000000298023224D);
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable()
+    {
+        return LootTableListTFC.ANIMALS_COW;
     }
 }

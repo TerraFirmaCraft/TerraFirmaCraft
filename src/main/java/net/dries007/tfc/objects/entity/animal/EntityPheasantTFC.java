@@ -1,8 +1,3 @@
-/*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
- */
-
 package net.dries007.tfc.objects.entity.animal;
 
 import javax.annotation.Nullable;
@@ -12,23 +7,21 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.LootTableListTFC;
 import net.dries007.tfc.util.TFCSoundEvents;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
-public class EntityDeerTFC extends EntityAnimalMammal
+public class EntityPheasantTFC extends EntityAnimalOviparous
 {
-    private static final int DAYS_TO_ADULTHOOD = 720;
-    private static final int DAYS_TO_FULL_GESTATION = 210;
+    private static final int DAYS_TO_ADULTHOOD = 60;
 
     private static int getRandomGrowth()
     {
@@ -36,35 +29,47 @@ public class EntityDeerTFC extends EntityAnimalMammal
         return (int) (CalendarTFC.INSTANCE.getTotalDays() - lifeTimeDays);
     }
 
-    public EntityDeerTFC(World worldIn)
+    //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
+    public float wingRotation;
+    public float destPos;
+    public float oFlapSpeed;
+    public float oFlap;
+    public float wingRotDelta = 1.0F;
+
+    public EntityPheasantTFC(World worldIn)
     {
         this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
             getRandomGrowth());
     }
 
-    public EntityDeerTFC(World worldIn, Gender gender, int birthDay)
+    public EntityPheasantTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(0.9F, 1.3F);
+        this.setSize(0.9F, 0.9F);
     }
 
     @Override
-    public void birthChildren()
+    public void onLivingUpdate()
     {
-        int numberOfChilds = 1; //one always
-        for (int i = 0; i < numberOfChilds; i++)
+        super.onLivingUpdate();
+        this.oFlap = this.wingRotation;
+        this.oFlapSpeed = this.destPos;
+        this.destPos = (float) ((double) this.destPos + (double) (this.onGround ? -1 : 4) * 0.3D);
+        this.destPos = MathHelper.clamp(this.destPos, 0.0F, 1.0F);
+
+        if (!this.onGround && this.wingRotDelta < 1.0F)
         {
-            EntityDeerTFC baby = new EntityDeerTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.INSTANCE.getTotalDays());
-            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-            this.world.spawnEntity(baby);
+            this.wingRotDelta = 1.0F;
         }
 
-    }
+        this.wingRotDelta = (float) ((double) this.wingRotDelta * 0.9D);
 
-    @Override
-    public long gestationDays()
-    {
-        return DAYS_TO_FULL_GESTATION;
+        if (!this.onGround && this.motionY < 0.0D)
+        {
+            this.motionY *= 0.6D;
+        }
+
+        this.wingRotation += this.wingRotDelta * 2.0F;
     }
 
     @Override
@@ -84,30 +89,22 @@ public class EntityDeerTFC extends EntityAnimalMammal
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack)
-    {
-        return stack.getItem() == ItemsTFC.SALT;
-    }
-
-    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return TFCSoundEvents.ANIMAL_DEER_HURT;
+        return TFCSoundEvents.ANIMAL_PHEASANT_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return TFCSoundEvents.ANIMAL_DEER_DEATH;
+        return TFCSoundEvents.ANIMAL_PHEASANT_DEATH;
     }
 
     @Override
     protected void initEntityAI()
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 1.3D));
-        this.tasks.addTask(3, new EntityAITempt(this, 1.1D, ItemsTFC.SALT, false));
-        this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
+        this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
@@ -117,25 +114,25 @@ public class EntityDeerTFC extends EntityAnimalMammal
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.33D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
     }
 
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSoundEvents.ANIMAL_DEER_CRY : TFCSoundEvents.ANIMAL_DEER_SAY;
-    }
-
-    @Override
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.15F, 1.0F);
+        return Constants.RNG.nextInt(100) < 5 ? TFCSoundEvents.ANIMAL_PHEASANT_CRY : TFCSoundEvents.ANIMAL_PHEASANT_SAY;
     }
 
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTableListTFC.ANIMALS_DEER;
+        return LootTableListTFC.ANIMALS_PHEASANT;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundEvents.ENTITY_CHICKEN_STEP, 0.15F, 1.0F);
     }
 }

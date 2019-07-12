@@ -7,14 +7,13 @@ package net.dries007.tfc.objects.entity.animal;
 
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -24,6 +23,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -31,6 +31,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.util.LootTableListTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
@@ -148,7 +150,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
 
         java.util.List<ItemStack> ret = new java.util.ArrayList<>();
         for (int j = 0; j < i; ++j)
-            ret.add(new ItemStack(Item.getItemFromBlock(Blocks.WOOL), 1, this.getDyeColor().getMetadata()));
+            ret.add(new ItemStack(ItemsTFC.WOOL, 1, this.getDyeColor().getMetadata()));
 
         this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
         return ret;
@@ -201,7 +203,10 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 1.3D));
         this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
-        this.tasks.addTask(3, new EntityAITempt(this, 1.1D, Items.WHEAT, false));
+        for (Item item : EntityAnimalTFC.DEFAULT_BREEDING_ITEMS)
+        {
+            this.tasks.addTask(3, new EntityAITempt(this, 1.1D, item, false));
+        }
         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
@@ -226,5 +231,11 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable()
+    {
+        return LootTableListTFC.ANIMALS_SHEEP;
     }
 }

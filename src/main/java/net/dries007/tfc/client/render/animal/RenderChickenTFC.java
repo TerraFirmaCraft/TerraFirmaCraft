@@ -57,10 +57,9 @@ public class RenderChickenTFC extends RenderLiving<EntityChickenTFC>
     }
 
     @Override
-    protected void preRenderCallback(EntityChickenTFC chicken, float par2)
+    protected void preRenderCallback(EntityChickenTFC bear, float par2)
     {
-        float scale = 1 / 3f + 0.5f;
-        GlStateManager.scale(scale, scale, scale);
+        GlStateManager.scale(0.7f, 0.7f, 0.7f);
     }
 
     @Override
