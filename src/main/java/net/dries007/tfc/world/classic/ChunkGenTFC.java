@@ -11,7 +11,6 @@ import java.util.Random;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.state.IBlockState;
@@ -38,7 +37,7 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
-import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -54,9 +53,6 @@ import net.dries007.tfc.world.classic.mapgen.MapGenRiverRavine;
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER2;
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER3;
 
-/**
- * todo: Find out how to make ocean bottoms not so super flat.
- */
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ChunkGenTFC implements IChunkGenerator
@@ -196,7 +192,7 @@ public class ChunkGenTFC implements IChunkGenerator
         rockLayer3 = rocksGenLayer3.getInts(chunkX * 16, chunkZ * 16, 16, 16);
 
         final float latitudeFactor = ClimateTFC.latitudeFactor(chunkZ); // Range 0 - 1
-        final float monthFactor = 41f - 1.1f * CalendarTFC.Month.getAverageTempMod() * (1f - 0.8f * latitudeFactor);
+        final float monthFactor = 41f - 1.1f * Month.AVERAGE_TEMPERATURE_MODIFIER * (1f - 0.8f * latitudeFactor);
         final float regionalFactor = 15f * 0.09f * (float) noiseGen10.getValue(chunkX * 0.005, chunkZ * 0.005); // Range -15 <> 15
 
         baseTemp = 45f * latitudeFactor - 25f + regionalFactor; // Latitude + Regional Temp
@@ -278,10 +274,11 @@ public class ChunkGenTFC implements IChunkGenerator
 
         biome.decorate(world, rand, blockpos);
 
-        /* todo
-        if (TerrainGen.populate(this, world, rand, chunkX, chunkZ, false, ANIMALS))
-            WorldEntitySpawner.performWorldGenSpawning(world, biome, worldX + 8, worldZ + 8, 16, 16, rand);
-        */
+        // todo: make this use TFC stuff / quick fix vanilla animals to drop TFC items
+        //if (TerrainGen.populate(this, world, rand, chunkX, chunkZ, false, ANIMALS))
+        //{
+        //    WorldEntitySpawner.performWorldGenSpawning(world, biome, worldX + 8, worldZ + 8, 16, 16, rand);
+        //}
 
         blockpos = blockpos.add(8, 0, 8);
         for (int x = 0; x < 16; x++)
@@ -313,7 +310,8 @@ public class ChunkGenTFC implements IChunkGenerator
     @Override
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        return ImmutableList.of(); //todo
+        // This is a temporary measure for making 1.12 closer to playable
+        return world.getBiome(pos).getSpawnableList(creatureType);
     }
 
     @Nullable

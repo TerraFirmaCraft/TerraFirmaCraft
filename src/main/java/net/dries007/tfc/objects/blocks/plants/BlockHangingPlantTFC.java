@@ -23,7 +23,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Plant;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -66,7 +65,7 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         worldIn.setBlockState(pos.down(), this.getDefaultState());
-        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]).withProperty(BOTTOM, false);
+        IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(growthStageProperty, plant.getStageForMonth()).withProperty(BOTTOM, false);
         worldIn.setBlockState(pos, iblockstate);
         iblockstate.neighborChanged(worldIn, pos.down(), this, pos);
     }
@@ -220,7 +219,7 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
                 if (rand.nextDouble() < 0.5D && worldIn.isAirBlock(sidePos) && worldIn.isAirBlock(sidePos.down()))
                 {
                     worldIn.setBlockState(sidePos.down(), this.getDefaultState());
-                    IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]);
+                    IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(growthStageProperty, plant.getStageForMonth());
                     worldIn.setBlockState(pos, iblockstate);
                     iblockstate.neighborChanged(worldIn, sidePos.down(), this, pos);
                     break;
@@ -255,7 +254,7 @@ public class BlockHangingPlantTFC extends BlockCreepingPlantTFC implements IGrow
             if (rand.nextDouble() < 0.01D && worldIn.isAirBlock(sidePos))
             {
                 worldIn.setBlockState(sidePos, this.getDefaultState());
-                IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(growthStageProperty, plant.getStages()[CalendarTFC.INSTANCE.getMonthOfYear().id()]);
+                IBlockState iblockstate = state.withProperty(AGE, 0).withProperty(growthStageProperty, plant.getStageForMonth());
                 worldIn.setBlockState(pos, iblockstate);
                 iblockstate.neighborChanged(worldIn, sidePos, this, pos);
                 break;

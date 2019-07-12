@@ -36,6 +36,8 @@ public class TELoom extends TEInventory implements ITickable
     private int progress = 0;
 
     private LoomRecipe recipe = null;
+    private long lastPushed = 0L;
+    private boolean needsUpdate = false;
 
     public TELoom()
     {
@@ -107,42 +109,32 @@ public class TELoom extends TEInventory implements ITickable
         return 0;
     }
 
-    private long lastPushed = 0L;
-
-    private void updateBlock()
-    {
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3);
-        markDirty();
-    }
-
     @SideOnly(Side.CLIENT)
     public String getAnimElement()
     {
         return (progress % 2 == 0) ? "u" : "l";
     }
 
-    private boolean needsUpdate = false;
-
     public boolean onRightClick(EntityPlayer player)
     {
         if (player.isSneaking())
         {
-            if (recipe != null)
+            if (!inventory.getStackInSlot(0).isEmpty() && progress == 0)
             {
-                if (recipe.getInputCount() == inventory.getStackInSlot(0).getCount() && progress < recipe.getStepCount() && !needsUpdate)
+                ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
+
+                if (heldItem.isEmpty())
                 {
-                    if (!world.isRemote)
+                    ItemStack temp = inventory.getStackInSlot(0).copy();
+                    temp.setCount(1);
+                    player.addItemStackToInventory(temp);
+                    inventory.getStackInSlot(0).shrink(1);
+
+                    if (inventory.getStackInSlot(0).isEmpty())
                     {
-                        long time = world.getTotalWorldTime() - lastPushed;
-                        if (time < 20)
-                            return true;
-                        lastPushed = world.getTotalWorldTime();
-
-                        needsUpdate = true;
-
-                        TerraFirmaCraft.getNetwork().sendToDimension(new PacketLoomUpdate(this, lastPushed), world.provider.getDimension());
+                        recipe = null;
                     }
+                    updateBlock();
                     return true;
                 }
             }
@@ -167,20 +159,41 @@ public class TELoom extends TEInventory implements ITickable
                 {
                     heldItem.shrink(1);
                     inventory.getStackInSlot(0).grow(1);
-                }
 
-                updateBlock();
-                return true;
+                    updateBlock();
+                    return true;
+                }
+            }
+
+            if (recipe != null && heldItem.isEmpty())
+            {
+                if (recipe.getInputCount() == inventory.getStackInSlot(0).getCount() && progress < recipe.getStepCount() && !needsUpdate)
+                {
+                    if (!world.isRemote)
+                    {
+                        long time = world.getTotalWorldTime() - lastPushed;
+                        if (time < 20)
+                            return true;
+                        lastPushed = world.getTotalWorldTime();
+                        needsUpdate = true;
+
+                        TerraFirmaCraft.getNetwork().sendToDimension(new PacketLoomUpdate(this, lastPushed), world.provider.getDimension());
+                    }
+                    return true;
+                }
             }
 
             if (!inventory.getStackInSlot(1).isEmpty())
             {
-                player.addItemStackToInventory(inventory.getStackInSlot(1).copy());
-                inventory.setStackInSlot(1, ItemStack.EMPTY);
-                progress = 0;
-                recipe = null;
-                updateBlock();
-                return true;
+                if (heldItem.isEmpty())
+                {
+                    player.addItemStackToInventory(inventory.getStackInSlot(1).copy());
+                    inventory.setStackInSlot(1, ItemStack.EMPTY);
+                    progress = 0;
+                    recipe = null;
+                    updateBlock();
+                    return true;
+                }
             }
         }
         return false;
@@ -237,5 +250,12 @@ public class TELoom extends TEInventory implements ITickable
     public ResourceLocation getInProgressTexture()
     {
         return recipe.getInProgressTexture();
+    }
+
+    private void updateBlock()
+    {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+        markDirty();
     }
 }

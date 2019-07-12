@@ -282,7 +282,7 @@ public final class CommonEventHandler
             player.inventoryContainer.addListener(new CapabilityContainerListener(player));
 
             // World Data (Calendar) Sync Handler
-            CalendarTFC.CalendarWorldData.update(player);
+            CalendarTFC.INSTANCE.update(player);
 
             // Food Stats
             FoodStats originalStats = event.player.getFoodStats();

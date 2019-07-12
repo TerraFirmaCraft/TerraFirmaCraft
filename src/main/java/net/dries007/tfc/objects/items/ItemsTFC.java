@@ -53,6 +53,7 @@ public final class ItemsTFC
     public static final ItemFireStarter FIRESTARTER = getNull();
     public static final ItemGoldPan GOLDPAN = getNull();
     public static final ItemMisc STRAW = getNull();
+    public static final ItemHandstone HANDSTONE = getNull();
 
     @GameRegistry.ObjectHolder("crop/product/jute")
     public static final ItemMisc JUTE = getNull();
@@ -66,10 +67,15 @@ public final class ItemsTFC
     public static final ItemMisc WOOL_CLOTH = getNull();
     @GameRegistry.ObjectHolder("animal/product/silk_cloth")
     public static final ItemMisc SILK_CLOTH = getNull();
-
+    @GameRegistry.ObjectHolder("food/sugarcane")
+    public static final Item SUGARCANE = getNull();
 
     @GameRegistry.ObjectHolder("ceramics/fire_clay")
     public static final ItemFireClay FIRE_CLAY = getNull();
+    @GameRegistry.ObjectHolder("ceramics/unfired/fire_brick")
+    public static final ItemUnfiredPottery UNFIRED_FIRE_BRICK = getNull();
+    @GameRegistry.ObjectHolder("ceramics/fired/fire_brick")
+    public static final ItemFiredPottery FIRE_BRICK = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/vessel")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_VESSEL = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/vessel")
@@ -80,6 +86,8 @@ public final class ItemsTFC
     public static final ItemSmallVessel CERAMICS_FIRED_VESSEL_GLAZED = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/jug")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_JUG = getNull();
+    @GameRegistry.ObjectHolder("ceramics/fired/jug")
+    public static final ItemFiredPottery CERAMICS_FIRED_JUG = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/pot")
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_POT = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/bowl")
@@ -220,7 +228,7 @@ public final class ItemsTFC
 
         simpleItems.add(register(r, "crop/product/jute", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
         simpleItems.add(register(r, "crop/product/jute_fiber", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
-        simpleItems.add(register(r, "crop/product/burlap_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth"), CT_MISC));
+        simpleItems.add(register(r, "crop/product/burlap_cloth", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
 
         for (Food food : Food.values())
         {
@@ -235,6 +243,7 @@ public final class ItemsTFC
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
         simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "straw"), CT_MISC));
+        simpleItems.add(register(r, "handstone", new ItemHandstone(), CT_MISC));
 
         simpleItems.add(register(r, "spindle", new ItemCraftingTool(40, Size.NORMAL, Weight.MEDIUM, "spindle"), CT_MISC));
 
@@ -259,8 +268,8 @@ public final class ItemsTFC
 
         simpleItems.add(register(r, "animal/product/wool", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
         simpleItems.add(register(r, "animal/product/wool_yarn", new ItemMisc(Size.TINY, Weight.LIGHT, "string"), CT_MISC));
-        simpleItems.add(register(r, "animal/product/wool_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth"), CT_MISC));
-        simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth"), CT_MISC));
+        simpleItems.add(register(r, "animal/product/wool_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
+        simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
 
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
 
@@ -283,7 +292,6 @@ public final class ItemsTFC
         // todo: mortar
         // todo: hides (raw, soaked, scraped, prepared)
         // todo: straw
-        // todo: fire clay & fire brick & fire bricks (block)
 
         // todo: jute & jute fiber
         // todo: quiver

@@ -20,6 +20,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -35,6 +36,7 @@ import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
+import net.dries007.tfc.util.TFCSoundEvents;
 
 import static net.dries007.tfc.objects.blocks.crops.BlockCropTFC.WILD;
 
@@ -82,7 +84,9 @@ public class BlockRockVariant extends Block
         super(type.material);
 
         if (!TABLE.containsKey(rock))
+        {
             TABLE.put(rock, new EnumMap<>(Rock.Type.class));
+        }
         TABLE.get(rock).put(type, this);
 
         this.type = type;
@@ -174,6 +178,24 @@ public class BlockRockVariant extends Block
                 }
             default:
                 return super.shouldSideBeRendered(blockState, world, pos, side);
+        }
+    }
+
+    protected void onRockSlide(World world, BlockPos pos)
+    {
+        switch (type)
+        {
+            case CLAY:
+            case DIRT:
+            case GRASS:
+            case CLAY_GRASS:
+            case FARMLAND:
+            case DRY_GRASS:
+                world.playSound(null, pos, TFCSoundEvents.DIRT_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                break;
+            case GRAVEL:
+            case COBBLE:
+                world.playSound(null, pos, TFCSoundEvents.ROCK_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
     }
 

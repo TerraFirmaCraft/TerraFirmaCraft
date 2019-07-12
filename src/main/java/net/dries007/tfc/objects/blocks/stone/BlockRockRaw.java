@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.blocks.stone;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,20 +19,49 @@ import net.minecraft.world.World;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.ICollapsableBlock;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockRockRaw extends BlockRockVariant
+public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
 {
-
     public BlockRockRaw(Rock.Type type, Rock rock)
     {
         super(type, rock);
     }
 
-    //todo: add collapsable mechanics
+    @Override
+    public BlockRockVariantFallable getFallingVariant()
+    {
+        return (BlockRockVariantFallable) BlockRockVariant.get(rock, Rock.Type.COBBLE);
+    }
 
+    @Override
+    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
+    {
+        // Trigger the collapsing mechanic!
+        checkCollapsingArea(worldIn, pos);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        for (EnumFacing face : EnumFacing.values())
+        {
+            if (!worldIn.getBlockState(pos.offset(face)).getBlock().isReplaceable(worldIn, pos))
+            {
+                return;
+            }
+        }
+
+        // No supporting solid blocks, so pop off as an item
+        worldIn.setBlockToAir(pos);
+        Helpers.spawnItemStack(worldIn, pos, new ItemStack(state.getBlock(), 1));
+    }
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)

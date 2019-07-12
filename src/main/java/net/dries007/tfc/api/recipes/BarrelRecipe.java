@@ -9,7 +9,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
@@ -21,7 +25,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
     @Nullable
     public static BarrelRecipe get(ItemStack stack, FluidStack fluidStack)
     {
-        return TFCRegistries.BARREL.getValuesCollection().stream().filter(x -> x.isValidInput(fluidStack, stack)).findFirst().orElse(null);
+        return TFCRegistries.BARREL.getValuesCollection().stream().filter(x -> x.isValidInput(fluidStack, stack) && x.getDuration() != 0).findFirst().orElse(null);
     }
 
     @Nullable
@@ -30,8 +34,8 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         return TFCRegistries.BARREL.getValuesCollection().stream().filter(x -> x.isValidInput(fluidStack, stack) && x.getDuration() == 0).findFirst().orElse(null);
     }
 
-    private final IIngredient<ItemStack> inputStack;
-    private final IIngredient<FluidStack> inputFluid;
+    protected final IIngredient<ItemStack> inputStack;
+    protected final IIngredient<FluidStack> inputFluid;
     private final FluidStack outputFluid;
     private final ItemStack outputStack;
     private final int duration;
@@ -130,5 +134,41 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
             return Math.min(inputFluid.amount / this.inputFluid.getAmount(), inputStack.getCount() / this.inputStack.getAmount());
         }
         return 0;
+    }
+
+    /**
+     * Called by TEBarrel when a recipe finishes
+     * Used if you want to play a sound / cause an update of some sort
+     *
+     * @param world The world
+     * @param pos   The TE pos
+     */
+    public void onRecipeComplete(World world, BlockPos pos) {}
+
+    /**
+     * Gets the name of the recipe, to be displayed in the gui
+     *
+     * @return the name of the item stack produced, or the fluid produced, or a custom name if needed
+     */
+    @SideOnly(Side.CLIENT)
+    public String getResultName()
+    {
+        ItemStack resultStack = getOutputStack();
+        if (!resultStack.isEmpty())
+        {
+            return resultStack.getDisplayName();
+        }
+        else
+        {
+            FluidStack fluid = getOutputFluid();
+            if (fluid == null)
+            {
+                return "Empty";
+            }
+            else
+            {
+                return fluid.getFluid().getLocalizedName(fluid);
+            }
+        }
     }
 }

@@ -15,6 +15,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.Month;
+
 @SuppressWarnings("unused")
 @SideOnly(Side.SERVER)
 public class ServerProxy implements IProxy
@@ -59,5 +62,19 @@ public class ServerProxy implements IProxy
         {
             throw new WrongSideException("Tried to get the player from a client-side MessageContext on the dedicated server");
         }
+    }
+
+    @Nonnull
+    @Override
+    public String getMonthName(Month month, boolean useSeasons)
+    {
+        return month.name().toLowerCase();
+    }
+
+    @Nonnull
+    @Override
+    public String getDayName(int dayOfMonth, long totalDays)
+    {
+        return CalendarTFC.DAY_NAMES[(int) (totalDays % 7)];
     }
 }

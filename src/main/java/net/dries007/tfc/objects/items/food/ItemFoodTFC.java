@@ -17,6 +17,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.agriculture.Food;
 
 public class ItemFoodTFC extends ItemFood
@@ -42,6 +43,17 @@ public class ItemFoodTFC extends ItemFood
         if (MAP.put(food, this) != null)
         {
             throw new IllegalStateException("There can only be one.");
+        }
+
+        // todo: make this better and work with all foods somehow
+        OreDictionaryHelper.register(this, food.getCategory());
+        switch (food)
+        {
+            case BARLEY_FLOUR:
+                OreDictionaryHelper.register(this, "flour_barley");
+            case GREEN_APPLE:
+            case RED_APPLE:
+                OreDictionaryHelper.register(this, "apple");
         }
     }
 

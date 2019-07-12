@@ -25,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.recipes.PitKilnRecipe;
@@ -186,13 +187,13 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
         }
 
         // Try and extract an item
-        if (stack.isEmpty() || player.isSneaking())
+        if (player.isSneaking())
         {
             // This will search through the logItems, then the strawItems
             ItemStack dropStack = logItems.stream().filter(i -> !i.isEmpty()).findFirst().orElseGet(() -> strawItems.stream().filter(i -> !i.isEmpty()).findFirst().orElse(ItemStack.EMPTY));
             if (!dropStack.isEmpty())
             {
-                player.addItemStackToInventory(dropStack.splitStack(1));
+                ItemHandlerHelper.giveItemToPlayer(player, dropStack.splitStack(1));
                 updateBlock();
 
                 if (getStrawCount() == 0)
@@ -202,7 +203,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 return true;
             }
         }
-        else
+        else if (!stack.isEmpty())
         {
             // Insert an item
             int strawCount = getStrawCount(), logCount = getLogCount();

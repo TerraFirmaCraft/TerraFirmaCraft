@@ -48,9 +48,10 @@ import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
+import net.dries007.tfc.client.render.projectile.RenderThrownJavelin;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.ClimateRenderHelper;
 import net.dries007.tfc.world.classic.ClimateTFC;
@@ -66,6 +67,7 @@ public class ClientEvents
     public static void preInit()
     {
         RenderingRegistry.registerEntityRenderingHandler(EntityFallingBlockTFC.class, RenderFallingBlockTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityThrownJavelin.class, RenderThrownJavelin::new);
     }
 
     @SideOnly(Side.CLIENT)
@@ -153,8 +155,8 @@ public class ClientEvents
                         WHITE, data.getAverageTemp(), GRAY,
                         WHITE, ClimateRenderHelper.get(blockpos).getTemperature(), GRAY,
                         WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)));
-                    String monthName = I18n.format(Helpers.getEnumName(CalendarTFC.INSTANCE.getMonthOfYear()));
-                    list.add(String.format("Year %04d, %s %02d %02d:%02d", CalendarTFC.INSTANCE.getTotalYears(), monthName, CalendarTFC.INSTANCE.getDayOfMonth(), CalendarTFC.INSTANCE.getHourOfDay(), CalendarTFC.INSTANCE.getMinuteOfHour()));
+
+                    list.add(I18n.format("tfc.tooltip.date", CalendarTFC.INSTANCE.getTimeAndDate()));
 
                     list.add(GRAY + "Biome: " + WHITE + mc.world.getBiome(blockpos).getBiomeName());
 

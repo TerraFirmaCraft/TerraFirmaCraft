@@ -43,11 +43,6 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
         setRegistryName(name);
     }
 
-    private boolean isValidInput(ItemStack inputItem)
-    {
-        return this.inputItem.testIgnoreCount(inputItem);
-    }
-
     public int getInputCount()
     {
         return inputAmount;
@@ -66,6 +61,11 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
     public ResourceLocation getInProgressTexture()
     {
         return inProgressTexture;
+    }
+
+    private boolean isValidInput(ItemStack inputItem)
+    {
+        return this.inputItem.testIgnoreCount(inputItem);
     }
 
 }

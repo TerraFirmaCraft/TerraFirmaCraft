@@ -122,29 +122,6 @@ public class BlockLeavesTFC extends BlockLeaves
     }
 
     @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-    {
-        int chance = this.getSaplingDropChance(state);
-        if (chance > 0)
-        {
-            if (fortune > 0)
-            {
-                chance -= 2 << fortune;
-                if (chance < 10) chance = 10;
-            }
-
-            if (RANDOM.nextInt(chance) == 0)
-            {
-                ItemStack drop = new ItemStack(getItemDropped(state, RANDOM, fortune), 1, damageDropped(state));
-                if (!drop.isEmpty())
-                {
-                    drops.add(drop);
-                }
-            }
-        }
-    }
-
-    @Override
     protected int getSaplingDropChance(IBlockState state)
     {
         return wood == Tree.SEQUOIA ? 0 : 25;
@@ -184,6 +161,29 @@ public class BlockLeavesTFC extends BlockLeaves
     public void beginLeavesDecay(IBlockState state, World world, BlockPos pos)
     {
         // Don't do vanilla decay
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        int chance = this.getSaplingDropChance(state);
+        if (chance > 0)
+        {
+            if (fortune > 0)
+            {
+                chance -= 2 << fortune;
+                if (chance < 10) chance = 10;
+            }
+
+            if (RANDOM.nextInt(chance) == 0)
+            {
+                ItemStack drop = new ItemStack(getItemDropped(state, RANDOM, fortune), 1, damageDropped(state));
+                if (!drop.isEmpty())
+                {
+                    drops.add(drop);
+                }
+            }
+        }
     }
 
     @SuppressWarnings("deprecation")

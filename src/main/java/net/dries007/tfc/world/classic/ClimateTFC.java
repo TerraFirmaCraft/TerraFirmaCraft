@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public final class ClimateTFC
@@ -155,10 +156,10 @@ public final class ClimateTFC
      * @param month    The month (from CalendarTFC)
      * @return the month factor for temp calculation
      */
-    public static float monthTemp(float baseTemp, CalendarTFC.Month month, int z)
+    public static float monthTemp(float baseTemp, Month month, int z)
     {
         //return month.getTempMod() + 0.2 * baseTemp;
-        return (41f - month.getTempMod() * 1.1f * (1 - 0.8f * latitudeFactor(z))) + 0.2f * baseTemp;
+        return (41f - month.getTemperatureModifier() * 1.1f * (1 - 0.8f * latitudeFactor(z))) + 0.2f * baseTemp;
     }
 
     /**
