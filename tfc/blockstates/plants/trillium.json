@@ -1,21 +1,52 @@
 {
   "multipart": [
     {
+      "when": {
+        "stage": "0"
+      },
       "apply": [
         {
-          "model": "tfc:plants/trillium"
-        },
+          "model": "tfc:plants/trillium_0"
+        }
+      ]
+    },
+	    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
         {
-          "model": "tfc:plants/trillium",
-          "y": 90
-        },
+          "model": "tfc:plants/trillium_1"
+        }
+      ]
+    },
+	    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
         {
-          "model": "tfc:plants/trillium",
-          "y": 180
-        },
+          "model": "tfc:plants/trillium_2"
+        }
+      ]
+    },
+	    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
         {
-          "model": "tfc:plants/trillium",
-          "y": 270
+          "model": "tfc:plants/trillium_3"
+        }
+      ]
+    },
+	    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/trillium_4"
         }
       ]
     }

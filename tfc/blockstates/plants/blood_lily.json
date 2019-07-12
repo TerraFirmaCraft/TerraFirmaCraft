@@ -1,9 +1,42 @@
 {
   "multipart": [
     {
+      "when": {
+        "stage": "0"
+      },
       "apply": [
         {
-          "model": "tfc:plants/blood_lily"
+          "model": "tfc:plants/blood_lily_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/blood_lily_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/blood_lily_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/blood_lily_3"
         }
       ]
     }
