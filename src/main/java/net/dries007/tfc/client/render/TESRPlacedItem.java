@@ -41,20 +41,37 @@ public class TESRPlacedItem extends TileEntitySpecialRenderer<TEPlacedItem>
         if (cap != null)
         {
             float timeD = (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
-            GlStateManager.scale(0.5F, 0.5F, 0.5F);
-            GlStateManager.translate(0.5, 0.5, 0.5);
+            GlStateManager.translate(0.25, 0.25, 0.25);
             RenderHelper.enableStandardItemLighting();
             GlStateManager.pushAttrib();
-            for (int i = 0; i < cap.getSlots(); i++)
+
+            if (te.holdingLargeItem())
             {
-                ItemStack stack = cap.getStackInSlot(i);
-                if (stack.isEmpty()) continue;
-                GlStateManager.pushMatrix();
-                GlStateManager.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));
-                GlStateManager.rotate(timeD, 0, 1, 0);
-                renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
-                GlStateManager.popMatrix();
+                ItemStack stack = cap.getStackInSlot(0);
+                if (!stack.isEmpty())
+                {
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(0.25, 0, 0.25);
+                    GlStateManager.rotate(timeD, 0, 1, 0);
+                    renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
+                    GlStateManager.popMatrix();
+                }
             }
+            else
+            {
+                GlStateManager.scale(0.5F, 0.5F, 0.5F);
+                for (int i = 0; i < cap.getSlots(); i++)
+                {
+                    ItemStack stack = cap.getStackInSlot(i);
+                    if (stack.isEmpty()) continue;
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));
+                    GlStateManager.rotate(timeD, 0, 1, 0);
+                    renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
+                    GlStateManager.popMatrix();
+                }
+            }
+
             RenderHelper.disableStandardItemLighting();
             GlStateManager.popAttrib();
             GlStateManager.popMatrix();
