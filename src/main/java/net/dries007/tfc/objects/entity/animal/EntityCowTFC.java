@@ -23,6 +23,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.util.LootTableListTFC;
@@ -206,8 +207,9 @@ public class EntityCowTFC extends EntityAnimalMammal
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 1.3D));
         this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
-        for (Item item : EntityAnimalTFC.DEFAULT_BREEDING_ITEMS)
+        for (ItemStack is : OreDictionary.getOres("grain"))
         {
+            Item item = is.getItem();
             this.tasks.addTask(3, new EntityAITempt(this, 1.1D, item, false));
         }
         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));

@@ -5,13 +5,15 @@
 
 package net.dries007.tfc.client.render.animal;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.model.animal.ModelPheasantTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
@@ -19,6 +21,8 @@ import net.dries007.tfc.objects.entity.animal.EntityPheasantTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SideOnly(Side.CLIENT)
+@ParametersAreNonnullByDefault
 public class RenderPheasantTFC extends RenderLiving<EntityPheasantTFC>
 {
     private static final ResourceLocation CHICK_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_chick.png");
@@ -38,7 +42,7 @@ public class RenderPheasantTFC extends RenderLiving<EntityPheasantTFC>
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(@Nonnull EntityPheasantTFC chicken)
+    protected ResourceLocation getEntityTexture(EntityPheasantTFC chicken)
     {
         float percent = chicken.getPercentToAdulthood();
 

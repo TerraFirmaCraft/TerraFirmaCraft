@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.client.model.animal;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.client.model.ModelQuadruped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -16,6 +18,7 @@ import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntitySheepTFC;
 
 @SideOnly(Side.CLIENT)
+@ParametersAreNonnullByDefault
 public class ModelSheepBodyTFC extends ModelQuadruped
 {
     private ModelRenderer horn1;

@@ -6,16 +6,21 @@
 package net.dries007.tfc.client.model.animal;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.model.ModelQuadruped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityCowTFC;
 
+@SideOnly(Side.CLIENT)
+@ParametersAreNonnullByDefault
 public class ModelCowTFC extends ModelQuadruped
 {
     private ModelRenderer udders;
@@ -23,6 +28,7 @@ public class ModelCowTFC extends ModelQuadruped
     private ModelRenderer horn2;
     private ModelRenderer horn1b;
     private ModelRenderer horn2b;
+
     public ModelCowTFC()
     {
         super(12, 0.0F);
@@ -62,16 +68,6 @@ public class ModelCowTFC extends ModelQuadruped
         this.udders = new ModelRenderer(this, 18,4);
         this.udders.setRotationPoint(0.0F, 5.0F, 2.0F);
         this.udders.setTextureOffset(52, 0).addBox(-2.0F, 0.0F, -8.0F, 4, 6, 1);
-
-        --this.leg1.rotationPointX;
-        ++this.leg2.rotationPointX;
-        this.leg1.rotationPointZ += 0.0F;
-        this.leg2.rotationPointZ += 0.0F;
-        --this.leg3.rotationPointX;
-        ++this.leg4.rotationPointX;
-        --this.leg3.rotationPointZ;
-        --this.leg4.rotationPointZ;
-        //this.field_78151_h += 2.0F;
     }
 
     @Override
@@ -85,7 +81,6 @@ public class ModelCowTFC extends ModelQuadruped
 
         float ageScale = 2.0F-percent;
         float ageHeadScale = (float)Math.pow(1/ageScale,0.66);
-        //float offset = 1.4f - percent;
         GlStateManager.pushMatrix();
 
         GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
@@ -93,8 +88,8 @@ public class ModelCowTFC extends ModelQuadruped
         GlStateManager.translate(0.0F, 0,0.1875f-(0.1875f*percent));
         if(percent < 0.5)
         {
-            horn1.isHidden = true;//rotateAngleX = (float)Math.PI;
-            horn2.isHidden = true;//rotateAngleX = -(float)Math.PI;
+            horn1.isHidden = true;
+            horn2.isHidden = true;
             if(percent < 0.75)
             {
                 horn1b.isHidden = true;

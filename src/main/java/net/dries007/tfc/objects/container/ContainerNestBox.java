@@ -7,7 +7,6 @@ package net.dries007.tfc.objects.container;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -25,12 +24,6 @@ public class ContainerNestBox extends ContainerTE<TENestBox>
     public ContainerNestBox(InventoryPlayer playerInv, TENestBox te)
     {
         super(playerInv, te);
-    }
-
-    @Override
-    public boolean canInteractWith(EntityPlayer player)
-    {
-        return tile.canInteractWith(player);
     }
 
     @Override

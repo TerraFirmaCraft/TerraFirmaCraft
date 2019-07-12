@@ -6,16 +6,13 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import java.util.List;
-import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Sets;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -26,7 +23,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -34,7 +31,6 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 public abstract class EntityAnimalTFC extends EntityAnimal
 {
     private static final long DEFAULT_TICKS_COOLDOWN_MATING = CalendarTFC.TICKS_IN_HOUR * 2;
-    protected static final Set<Item> DEFAULT_BREEDING_ITEMS = Sets.newHashSet(ItemsTFC.BARLEY_GRAIN, ItemsTFC.OAT_GRAIN, ItemsTFC.RICE_GRAIN, ItemsTFC.RYE_GRAIN, ItemsTFC.WHEAT_GRAIN, ItemsTFC.MAIZE);
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.VARINT);
@@ -184,7 +180,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal
     @Override
     public boolean isBreedingItem(ItemStack stack)
     {
-        return DEFAULT_BREEDING_ITEMS.contains(stack.getItem());
+        return OreDictionaryHelper.doesStackMatchOre(stack, "grain");
     }
 
     @SuppressWarnings("NullableProblems")

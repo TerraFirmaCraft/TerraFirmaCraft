@@ -5,15 +5,20 @@
 
 package net.dries007.tfc.client.model.animal;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
+@ParametersAreNonnullByDefault
 public class ModelBearTFC extends ModelBase
 {
-    //fields
     private ModelRenderer neck;
     private ModelRenderer bearHead;
     private ModelRenderer body;
@@ -173,7 +178,6 @@ public class ModelBearTFC extends ModelBase
         nose.rotateAngleX = f4 / (180F / (float) Math.PI);
         nose.rotateAngleY = f3 / (180F / (float) Math.PI);
 
-        //MainBody.rotateAngleX = ((float) Math.PI / 2F);
         leg1.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
         leg2.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.4F * f1;
         leg3.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.4F * f1;

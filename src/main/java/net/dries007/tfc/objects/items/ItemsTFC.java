@@ -108,19 +108,6 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("powder/salt")
     public static final ItemPowder SALT = getNull();
 
-    @GameRegistry.ObjectHolder("food/barley_grain")
-    public static final ItemFoodTFC BARLEY_GRAIN = getNull();
-    @GameRegistry.ObjectHolder("food/oat_grain")
-    public static final ItemFoodTFC OAT_GRAIN = getNull();
-    @GameRegistry.ObjectHolder("food/rice_grain")
-    public static final ItemFoodTFC RICE_GRAIN = getNull();
-    @GameRegistry.ObjectHolder("food/rye_grain")
-    public static final ItemFoodTFC RYE_GRAIN = getNull();
-    @GameRegistry.ObjectHolder("food/wheat_grain")
-    public static final ItemFoodTFC WHEAT_GRAIN = getNull();
-    @GameRegistry.ObjectHolder("food/maize")
-    public static final ItemFoodTFC MAIZE = getNull();
-
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
     private static ImmutableList<ItemGem> allGemItems;
