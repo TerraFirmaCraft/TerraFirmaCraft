@@ -36,7 +36,6 @@ tfc.tooltip.day=Day : %s
 tfc.tooltip.date=Date : %s
 tfc.tooltip.debug_times=TT: %d | PT: %d | CT: %d
 tfc.tooltip.food_expiry_date=Expires on: %s
-tfc.tooltip.food_spoiled=Spoiled! - Eww.
 tfc.tooltip.food_rotten=Rotten - I wouldn't eat that.
 tfc.tooltip.plant_cold=%sToo cold%s
 tfc.tooltip.plant_dry=%sToo dry%s
@@ -51,7 +50,7 @@ tfc.tooltip.blast_furnace_melt_amount=Melt
 
 ## Command Tooltips / Messages
 tfc.tooltip.set_month_length=Set Month Length to %d days
-tfc.tooltip.set_time=Set Calendar Time to Year %04d, %s %02d %s
+tfc.tooltip.time_command_complete=Success!
 tfc.tooltip.time_command_disabled=This command has been disabled by TFC. Use /timetfc instead!
 
 ## Prospecting Result Messages
