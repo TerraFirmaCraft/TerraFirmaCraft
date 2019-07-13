@@ -112,7 +112,7 @@ public final class ChunkDataTFC
     private boolean initialized = false;
     private int fishPopulation = FISH_POP_MAX; // todo: Set this based on biome? temp? rng?
     private float rainfall;
-    private float baseTemp;
+    private float regionalTemp;
     private float avgTemp;
     private float floraDensity;
     private float floraDiversity;
@@ -121,8 +121,7 @@ public final class ChunkDataTFC
      * INTERNAL USE ONLY.
      * No need to mark as dirty, since this will only ever be called on worldgen, before the first chunk save.
      */
-    public void setGenerationData(int[] rockLayer1, int[] rockLayer2, int[] rockLayer3, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset,
-                                  float rainfall, float baseTemp, float avgTemp, float floraDensity, float floraDiversity)
+    public void setGenerationData(int[] rockLayer1, int[] rockLayer2, int[] rockLayer3, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset, float rainfall, float regionalTemp, float avgTemp, float floraDensity, float floraDiversity)
     {
         this.initialized = true;
         System.arraycopy(rockLayer1, 0, this.rockLayer1, 0, 256);
@@ -133,7 +132,7 @@ public final class ChunkDataTFC
         System.arraycopy(seaLevelOffset, 0, this.seaLevelOffset, 0, 256);
 
         this.rainfall = rainfall;
-        this.baseTemp = baseTemp;
+        this.regionalTemp = regionalTemp;
         this.avgTemp = avgTemp;
         this.floraDensity = floraDensity;
         this.floraDiversity = floraDiversity;
@@ -214,9 +213,9 @@ public final class ChunkDataTFC
         return rainfall;
     }
 
-    public float getBaseTemp()
+    public float getRegionalTemp()
     {
-        return baseTemp;
+        return regionalTemp;
     }
 
     public float getAverageTemp()
@@ -322,7 +321,7 @@ public final class ChunkDataTFC
             root.setInteger("fishPopulation", instance.fishPopulation);
 
             root.setFloat("rainfall", instance.rainfall);
-            root.setFloat("baseTemp", instance.baseTemp);
+            root.setFloat("regionalTemp", instance.regionalTemp);
             root.setFloat("avgTemp", instance.avgTemp);
             root.setFloat("floraDensity", instance.floraDensity);
             root.setFloat("floraDiversity", instance.floraDiversity);
@@ -347,7 +346,7 @@ public final class ChunkDataTFC
                 instance.fishPopulation = root.getInteger("fishPopulation");
 
                 instance.rainfall = root.getFloat("rainfall");
-                instance.baseTemp = root.getFloat("baseTemp");
+                instance.regionalTemp = root.getFloat("regionalTemp");
                 instance.avgTemp = root.getFloat("avgTemp");
                 instance.floraDensity = root.getFloat("floraDensity");
                 instance.floraDiversity = root.getFloat("floraDiversity");

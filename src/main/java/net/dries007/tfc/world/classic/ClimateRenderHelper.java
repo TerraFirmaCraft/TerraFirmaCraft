@@ -19,7 +19,7 @@ import net.minecraft.util.math.ChunkPos;
 public final class ClimateRenderHelper
 {
     private static final Map<ChunkPos, ClimateData> MAP = new HashMap<>();
-    private static final ClimateData DEFAULT = new ClimateData(15, 250, 0);
+    private static final ClimateData DEFAULT = new ClimateData(0, 250, 0);
 
     @Nonnull
     public static ClimateData get(BlockPos pos)
@@ -40,20 +40,20 @@ public final class ClimateRenderHelper
 
     public static class ClimateData
     {
-        private final float baseTemp;
+        private final float regionalTemp;
         private final float rainfall;
         private final int z;
 
-        ClimateData(float baseTemp, float rainfall, int z)
+        ClimateData(float regionalTemp, float rainfall, int z)
         {
-            this.baseTemp = baseTemp;
+            this.regionalTemp = regionalTemp;
             this.rainfall = rainfall;
             this.z = z;
         }
 
         public float getTemperature()
         {
-            return ClimateTFC.getMonthAdjTemp(baseTemp, z);
+            return ClimateTFC.getMonthAdjTemp(regionalTemp, z);
         }
 
         public float getRainfall()

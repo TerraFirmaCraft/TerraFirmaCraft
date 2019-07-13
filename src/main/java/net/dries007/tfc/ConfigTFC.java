@@ -206,10 +206,9 @@ public class ConfigTFC
         @Config.RequiresWorldRestart
         public boolean debugMode = false;
 
-        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave.",
-            "The equation is roughly sin(pi * zCoord / (16 * zTemperatureModifier)). 2500 gives a total range of 40 km (peaks at +/- 20km)"})
-        @Config.RangeDouble(min = 100, max = 10000)
-        @Config.LangKey("config." + MOD_ID + ".world.zTemperatureModifier")
-        public double zTemperatureModifier = 2500f;
+        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents half the period of the wave = the distance between hot and cold bands, in blocks",})
+        @Config.RangeDouble(min = 1_000, max = 1_000_000)
+        @Config.LangKey("config." + MOD_ID + ".world.latitudeTemperatureModifier")
+        public int latitudeTemperatureModifier = 20_000;
     }
 }

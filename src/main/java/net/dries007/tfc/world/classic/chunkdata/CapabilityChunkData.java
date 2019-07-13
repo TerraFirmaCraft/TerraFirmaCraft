@@ -46,7 +46,7 @@ public final class CapabilityChunkData
             if (data != null && data.isInitialized())
             {
                 NBTTagCompound nbt = (NBTTagCompound) ChunkDataProvider.CHUNK_DATA_CAPABILITY.writeNBT(data, null);
-                TerraFirmaCraft.getNetwork().sendTo(new PacketChunkData(chunk.getPos(), nbt, data.getBaseTemp(), data.getRainfall()), event.getPlayer());
+                TerraFirmaCraft.getNetwork().sendTo(new PacketChunkData(chunk.getPos(), nbt, data.getRegionalTemp(), data.getRainfall()), event.getPlayer());
             }
         }
     }
