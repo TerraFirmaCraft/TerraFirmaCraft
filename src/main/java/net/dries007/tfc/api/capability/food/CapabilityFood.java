@@ -15,7 +15,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -23,7 +23,7 @@ public class CapabilityFood
 {
     @CapabilityInject(IFood.class)
     public static final Capability<IFood> CAPABILITY = Helpers.getNull();
-    public static final int DEFAULT_ROT_TICKS = CalendarTFC.TICKS_IN_DAY * 12;
+    public static final int DEFAULT_ROT_TICKS = ICalendar.TICKS_IN_DAY * 12;
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "food");
 
     public static final IFoodTrait.Impl SMOKED = new IFoodTrait.Impl("smoked", 0.5f);

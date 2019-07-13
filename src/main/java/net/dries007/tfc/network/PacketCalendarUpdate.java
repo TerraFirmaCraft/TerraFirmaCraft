@@ -16,35 +16,28 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class PacketCalendarUpdate implements IMessage
 {
-    private long calendarOffset;
-    private int daysInMonth;
-    private boolean doCalendarCycle;
+    private CalendarTFC instance;
 
     @SuppressWarnings("unused")
     @Deprecated
     public PacketCalendarUpdate() {}
 
-    public PacketCalendarUpdate(long calendarOffset, int daysInMonth, boolean doCalendarCycle)
+    public PacketCalendarUpdate(CalendarTFC instance)
     {
-        this.calendarOffset = calendarOffset;
-        this.daysInMonth = daysInMonth;
-        this.doCalendarCycle = doCalendarCycle;
+        this.instance = instance;
     }
 
     @Override
     public void fromBytes(ByteBuf buf)
     {
-        calendarOffset = buf.readLong();
-        daysInMonth = buf.readInt();
-        doCalendarCycle = buf.readBoolean();
+        instance = new CalendarTFC();
+        instance.read(buf);
     }
 
     @Override
     public void toBytes(ByteBuf buf)
     {
-        buf.writeLong(calendarOffset);
-        buf.writeInt(daysInMonth);
-        buf.writeBoolean(doCalendarCycle);
+        instance.write(buf);
     }
 
     public static class Handler implements IMessageHandler<PacketCalendarUpdate, IMessage>
@@ -55,7 +48,7 @@ public class PacketCalendarUpdate implements IMessage
             World world = TerraFirmaCraft.getProxy().getWorld(ctx);
             if (world != null)
             {
-                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> CalendarTFC.update(world, message.calendarOffset, message.daysInMonth, message.doCalendarCycle));
+                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> CalendarTFC.INSTANCE.reset(message.instance));
             }
             return null;
         }

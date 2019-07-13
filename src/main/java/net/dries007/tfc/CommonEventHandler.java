@@ -282,7 +282,7 @@ public final class CommonEventHandler
             player.inventoryContainer.addListener(new CapabilityContainerListener(player));
 
             // World Data (Calendar) Sync Handler
-            CalendarTFC.INSTANCE.update(player);
+            CalendarTFC.INSTANCE.updatePlayer(player);
 
             // Food Stats
             FoodStats originalStats = event.player.getFoodStats();
@@ -291,6 +291,21 @@ public final class CommonEventHandler
                 event.player.foodStats = new FoodStatsTFC(event.player, originalStats);
                 TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.player);
             }
+
+            // Check total players and reset calendar time ticking
+            int players = event.player.world.playerEntities.size();
+            CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, players > 0);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event)
+    {
+        if (event.player instanceof EntityPlayerMP)
+        {
+            // Check total players and reset calendar time ticking
+            int players = event.player.world.playerEntities.size();
+            CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, players > 0);
         }
     }
 

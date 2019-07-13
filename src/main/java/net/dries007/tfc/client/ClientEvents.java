@@ -156,7 +156,8 @@ public class ClientEvents
                         WHITE, ClimateRenderHelper.get(blockpos).getTemperature(), GRAY,
                         WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)));
 
-                    list.add(I18n.format("tfc.tooltip.date", CalendarTFC.INSTANCE.getTimeAndDate()));
+                    list.add(I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
+                    list.add(String.format("TT: %d | PT: %d | CT: %d", CalendarTFC.TOTAL_TIME.getTicks(), CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks()));
 
                     list.add(GRAY + "Biome: " + WHITE + mc.world.getBiome(blockpos).getBiomeName());
 

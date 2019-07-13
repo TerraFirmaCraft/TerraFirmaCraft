@@ -237,7 +237,7 @@ public final class ClientRegisterEvents
             if (pos != null)
             {
                 ClimateRenderHelper.ClimateData data = ClimateRenderHelper.get(pos);
-                // This internally will call CalendarTFC to get the month based temperature
+                // This internally will call Calendar to get the month based temperature
                 // Base Temp Range is <-25, 20>, Month Adj Range is <-30, 30>
                 double temp = MathHelper.clamp((data.getTemperature() + 30) / 30, 0, 1);
                 // Rainfall is in <0, 500>, although 99% of the time it is within a smaller range of <50, 450>, so trim and clamp as necessary
@@ -252,7 +252,7 @@ public final class ClientRegisterEvents
             if (pos != null)
             {
                 ClimateRenderHelper.ClimateData data = ClimateRenderHelper.get(pos);
-                // This internally will call CalendarTFC to get the month based temperature
+                // This internally will call Calendar to get the month based temperature
                 // Base Temp Range is <-25, 20>, Month Adj Range is <-30, 30>
                 double temp = MathHelper.clamp((data.getTemperature() + 30) / 30, 0, 1);
                 // Rainfall is in <0, 500>, although 99% of the time it is within a smaller range of <50, 450>, so trim and clamp as necessary

@@ -34,7 +34,7 @@ import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
 import net.dries007.tfc.util.agriculture.Food;
-import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.forge.ForgeRule;
 
 import static net.dries007.tfc.api.types.Metal.ItemType.*;
@@ -51,34 +51,34 @@ public final class DefaultRecipes
     {
         event.getRegistry().registerAll(
             // Hide Processing (all three conversions)
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 300), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.SCRAPED, ItemAnimalHide.HideSize.SMALL)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.SMALL)), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("small_prepared_hide"),
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 400), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.SCRAPED, ItemAnimalHide.HideSize.MEDIUM)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.MEDIUM)), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("medium_prepared_hide"),
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.SCRAPED, ItemAnimalHide.HideSize.LARGE)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.LARGE)), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("large_prepared_hide"),
-            new BarrelRecipe(IIngredient.of(LIMEWATER, 300), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.RAW, ItemAnimalHide.HideSize.SMALL)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.SOAKED, ItemAnimalHide.HideSize.SMALL)), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("small_soaked_hide"),
-            new BarrelRecipe(IIngredient.of(LIMEWATER, 400), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.RAW, ItemAnimalHide.HideSize.MEDIUM)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.SOAKED, ItemAnimalHide.HideSize.MEDIUM)), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("medium_soaked_hide"),
-            new BarrelRecipe(IIngredient.of(LIMEWATER, 500), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.RAW, ItemAnimalHide.HideSize.LARGE)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.SOAKED, ItemAnimalHide.HideSize.LARGE)), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("large_soaked_hide"),
-            new BarrelRecipe(IIngredient.of(TANNIN, 300), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.SMALL)), null, new ItemStack(Items.LEATHER), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("leather_small_hide"),
-            new BarrelRecipe(IIngredient.of(TANNIN, 400), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.MEDIUM)), null, new ItemStack(Items.LEATHER, 2), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("leather_medium_hide"),
-            new BarrelRecipe(IIngredient.of(TANNIN, 500), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.LARGE)), null, new ItemStack(Items.LEATHER, 3), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("leather_large_hide"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 300), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.SCRAPED, ItemAnimalHide.HideSize.SMALL)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.SMALL)), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("small_prepared_hide"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 400), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.SCRAPED, ItemAnimalHide.HideSize.MEDIUM)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.MEDIUM)), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("medium_prepared_hide"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.SCRAPED, ItemAnimalHide.HideSize.LARGE)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.LARGE)), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("large_prepared_hide"),
+            new BarrelRecipe(IIngredient.of(LIMEWATER, 300), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.RAW, ItemAnimalHide.HideSize.SMALL)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.SOAKED, ItemAnimalHide.HideSize.SMALL)), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("small_soaked_hide"),
+            new BarrelRecipe(IIngredient.of(LIMEWATER, 400), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.RAW, ItemAnimalHide.HideSize.MEDIUM)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.SOAKED, ItemAnimalHide.HideSize.MEDIUM)), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("medium_soaked_hide"),
+            new BarrelRecipe(IIngredient.of(LIMEWATER, 500), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.RAW, ItemAnimalHide.HideSize.LARGE)), null, new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.SOAKED, ItemAnimalHide.HideSize.LARGE)), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("large_soaked_hide"),
+            new BarrelRecipe(IIngredient.of(TANNIN, 300), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.SMALL)), null, new ItemStack(Items.LEATHER), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("leather_small_hide"),
+            new BarrelRecipe(IIngredient.of(TANNIN, 400), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.MEDIUM)), null, new ItemStack(Items.LEATHER, 2), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("leather_medium_hide"),
+            new BarrelRecipe(IIngredient.of(TANNIN, 500), IIngredient.of(ItemAnimalHide.get(ItemAnimalHide.HideType.PREPARED, ItemAnimalHide.HideSize.LARGE)), null, new ItemStack(Items.LEATHER, 3), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("leather_large_hide"),
             // Misc
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 1000), IIngredient.of("logWoodTannin"), new FluidStack(TANNIN, 10000), ItemStack.EMPTY, 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("tannin"),
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 200), IIngredient.of(ItemsTFC.JUTE), null, new ItemStack(ItemsTFC.JUTE_FIBER), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("jute_fiber"),
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 600), IIngredient.of(ItemsTFC.SUGARCANE, 5), null, new ItemStack(Items.SUGAR), 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("sugar"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 1000), IIngredient.of("logWoodTannin"), new FluidStack(TANNIN, 10000), ItemStack.EMPTY, 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("tannin"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 200), IIngredient.of(ItemsTFC.JUTE), null, new ItemStack(ItemsTFC.JUTE_FIBER), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("jute_fiber"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 600), IIngredient.of(ItemsTFC.SUGARCANE, 5), null, new ItemStack(Items.SUGAR), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("sugar"),
             // Alcohol
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.BARLEY_FLOUR)), new FluidStack(FluidsTFC.BEER, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("beer"),
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of("apple"), new FluidStack(FluidsTFC.CIDER, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("cider"),
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of("sugar"), new FluidStack(FluidsTFC.RUM, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("rum"),
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.RICE_FLOUR)), new FluidStack(FluidsTFC.SAKE, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("sake"),
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.POTATO)), new FluidStack(FluidsTFC.VODKA, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("vodka"),
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.WHEAT_FLOUR)), new FluidStack(FluidsTFC.WHISKEY, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("whiskey"),
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.CORNMEAL_FLOUR)), new FluidStack(FluidsTFC.CORN_WHISKEY, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("corn_whiskey"),
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.RYE_FLOUR)), new FluidStack(FluidsTFC.RYE_WHISKEY, 500), ItemStack.EMPTY, 72 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("rye_whiskey"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.BARLEY_FLOUR)), new FluidStack(FluidsTFC.BEER, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("beer"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of("apple"), new FluidStack(FluidsTFC.CIDER, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("cider"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of("sugar"), new FluidStack(FluidsTFC.RUM, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("rum"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.RICE_FLOUR)), new FluidStack(FluidsTFC.SAKE, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("sake"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.POTATO)), new FluidStack(FluidsTFC.VODKA, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("vodka"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.WHEAT_FLOUR)), new FluidStack(FluidsTFC.WHISKEY, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("whiskey"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.CORNMEAL_FLOUR)), new FluidStack(FluidsTFC.CORN_WHISKEY, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("corn_whiskey"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.RYE_FLOUR)), new FluidStack(FluidsTFC.RYE_WHISKEY, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("rye_whiskey"),
             // Vinegar
-            new BarrelRecipe(IIngredient.of(200, FluidsTFC.BEER, FluidsTFC.CIDER, FluidsTFC.RUM, FluidsTFC.SAKE, FluidsTFC.VODKA, FluidsTFC.WHISKEY, FluidsTFC.CORN_WHISKEY, FluidsTFC.RYE_WHISKEY), IIngredient.of("fruit"), new FluidStack(FluidsTFC.VINEGAR, 200), ItemStack.EMPTY, 8 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("vinegar"),
+            new BarrelRecipe(IIngredient.of(200, FluidsTFC.BEER, FluidsTFC.CIDER, FluidsTFC.RUM, FluidsTFC.SAKE, FluidsTFC.VODKA, FluidsTFC.WHISKEY, FluidsTFC.CORN_WHISKEY, FluidsTFC.RYE_WHISKEY), IIngredient.of("fruit"), new FluidStack(FluidsTFC.VINEGAR, 200), ItemStack.EMPTY, 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("vinegar"),
             // Food preservation
-            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR, 125), IIngredient.of("fruit"), CapabilityFood.PICKLED, 4 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("pickling_fruit"),
-            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR, 125), IIngredient.of("meat"), CapabilityFood.PICKLED, 4 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("pickling_meat"),
-            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR, 125), IIngredient.of("vegetable"), CapabilityFood.PICKLED, 4 * CalendarTFC.TICKS_IN_HOUR).setRegistryName("pickling_vegetable"),
+            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR, 125), IIngredient.of("fruit"), CapabilityFood.PICKLED, 4 * ICalendar.TICKS_IN_HOUR).setRegistryName("pickling_fruit"),
+            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR, 125), IIngredient.of("meat"), CapabilityFood.PICKLED, 4 * ICalendar.TICKS_IN_HOUR).setRegistryName("pickling_meat"),
+            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR, 125), IIngredient.of("vegetable"), CapabilityFood.PICKLED, 4 * ICalendar.TICKS_IN_HOUR).setRegistryName("pickling_vegetable"),
             // todo: brined food
             // todo: mortar
             // todo: curdled milk -> cheese (use an empty IIngredient for the item)

@@ -31,9 +31,6 @@ public class CalendarWorldData extends WorldSavedData
             {
                 // Unable to load data, so assign default values
                 data = new CalendarWorldData();
-                data.daysInMonth = CalendarTFC.DEFAULT_DAYS_IN_MONTH;
-                data.calendarOffset = CalendarTFC.DEFAULT_CALENDAR_OFFSET;
-                data.doCalendarCycle = true;
                 data.markDirty();
                 mapStorage.setData(NAME, data);
             }
@@ -42,37 +39,33 @@ public class CalendarWorldData extends WorldSavedData
         throw new IllegalStateException("Map Storage is NULL!");
     }
 
-    long calendarOffset;
-    int daysInMonth;
-    boolean doCalendarCycle;
+    CalendarTFC instance;
 
     @SuppressWarnings("WeakerAccess")
     public CalendarWorldData()
     {
         super(NAME);
+        instance = new CalendarTFC();
     }
 
     @SuppressWarnings("unused")
     public CalendarWorldData(String name)
     {
         super(name);
+        instance = new CalendarTFC();
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
-        this.calendarOffset = nbt.getLong("calendarOffset");
-        this.daysInMonth = nbt.getInteger("daysInMonth");
-        this.doCalendarCycle = nbt.getBoolean("doCalendarCycle");
+        instance.deserializeNBT(nbt.getCompoundTag("calendar"));
     }
 
     @Override
     @Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setLong("calendarOffset", calendarOffset);
-        nbt.setInteger("daysInMonth", daysInMonth);
-        nbt.setBoolean("doCalendarCycle", doCalendarCycle);
+        nbt.setTag("calendar", instance.serializeNBT());
         return nbt;
     }
 }
