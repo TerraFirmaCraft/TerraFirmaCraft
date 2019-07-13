@@ -23,8 +23,15 @@ public class CapabilityFood
 {
     @CapabilityInject(IFood.class)
     public static final Capability<IFood> CAPABILITY = Helpers.getNull();
-    public static final int DEFAULT_ROT_TICKS = ICalendar.TICKS_IN_DAY * 12;
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "food");
+
+    /**
+     * Most TFC foods have decay modifiers in the range [1, 4] (high = faster decay)
+     * That puts decay times at 25% - 100% of this value
+     * So meat / fruit will decay in ~4 days, grains take ~16 days
+     * Other modifiers are applied on top of that
+     */
+    public static final int DEFAULT_ROT_TICKS = ICalendar.TICKS_IN_DAY * 16;
 
     public static final IFoodTrait.Impl SMOKED = new IFoodTrait.Impl("smoked", 0.5f);
     public static final IFoodTrait.Impl BRINED = new IFoodTrait.Impl("brined", 0.5f);
