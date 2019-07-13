@@ -24,18 +24,18 @@ public class PacketChunkData implements IMessage
 {
     private NBTTagCompound nbt;
     private int x, z;
-    private float temperature, rainfall;
+    private float regionalTemp, rainfall;
 
     @SuppressWarnings("unused")
     @Deprecated
     public PacketChunkData() {}
 
-    public PacketChunkData(ChunkPos chunkPos, NBTTagCompound nbt, float temperature, float rainfall)
+    public PacketChunkData(ChunkPos chunkPos, NBTTagCompound nbt, float regionalTemp, float rainfall)
     {
         this.x = chunkPos.x;
         this.z = chunkPos.z;
         this.nbt = nbt;
-        this.temperature = temperature;
+        this.regionalTemp = regionalTemp;
         this.rainfall = rainfall;
     }
 
@@ -45,7 +45,7 @@ public class PacketChunkData implements IMessage
         x = buf.readInt();
         z = buf.readInt();
         nbt = ByteBufUtils.readTag(buf);
-        temperature = buf.readFloat();
+        regionalTemp = buf.readFloat();
         rainfall = buf.readFloat();
     }
 
@@ -55,7 +55,7 @@ public class PacketChunkData implements IMessage
         buf.writeInt(x);
         buf.writeInt(z);
         ByteBufUtils.writeTag(buf, nbt);
-        buf.writeFloat(temperature);
+        buf.writeFloat(regionalTemp);
         buf.writeFloat(rainfall);
     }
 
@@ -77,7 +77,7 @@ public class PacketChunkData implements IMessage
                     }
 
                     // Update rendering climate helper
-                    ClimateRenderHelper.update(chunk.getPos(), message.temperature, message.rainfall);
+                    ClimateRenderHelper.update(chunk.getPos(), message.regionalTemp, message.rainfall);
                 });
             }
             return null;
