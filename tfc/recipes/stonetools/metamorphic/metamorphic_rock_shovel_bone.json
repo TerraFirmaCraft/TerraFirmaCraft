@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "S"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:stone/shovel_head/metamorphic"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "bone"
+    }
+  },
+  "result": {
+    "item": "tfc:stone/shovel/metamorphic",
+    "count": 1
+  }
+}
