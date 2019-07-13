@@ -16,7 +16,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import mcp.MethodsReturnNonnullByDefault;
@@ -38,7 +37,7 @@ public class CommandTimeTFC extends CommandBase
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "/timetfc <set|add> <year|month|day|monthlength|playerticks|calendarticks> <value>";
+        return "/timetfc <set|add> <year|month|day|monthlength|playerticks|ticks> <value>";
     }
 
     @Override
@@ -68,8 +67,8 @@ public class CommandTimeTFC extends CommandBase
             case "days":
                 time *= parseInt(args[2], 0, CalendarTFC.INSTANCE.getDaysInMonth() * 12 * 1000);
                 break;
-            case "calendartick":
-            case "calendarticks":
+            case "tick":
+            case "ticks":
                 // This one is different, because it needs to update the actual sun cycle
                 time = parseInt(args[2], 0, Integer.MAX_VALUE);
                 updateDaylightCycle = true;
@@ -114,7 +113,7 @@ public class CommandTimeTFC extends CommandBase
         {
             CalendarTFC.INSTANCE.setCalendarTime(server.getEntityWorld(), time);
         }
-        sender.sendMessage(new TextComponentString("Executed Sucessfully!")); // todo: translation key
+        sender.sendMessage(new TextComponentTranslation("tfc.tooltip.time_command_complete"));
 
         if (updateDaylightCycle)
         {
@@ -141,7 +140,7 @@ public class CommandTimeTFC extends CommandBase
         }
         else if (args.length == 2 && ("set".equals(args[0]) || "add".equals(args[0])))
         {
-            return getListOfStringsMatchingLastWord(args, "year", "month", "day", "monthlength", "ticks");
+            return getListOfStringsMatchingLastWord(args, "year", "month", "day", "monthlength", "playerticks", "ticks");
         }
         else
         {
