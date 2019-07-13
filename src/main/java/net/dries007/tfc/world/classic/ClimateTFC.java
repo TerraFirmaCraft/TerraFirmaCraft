@@ -126,10 +126,10 @@ public final class ClimateTFC
      */
     public static float getMonthAdjTemp(float baseTemp, int z)
     {
-        final float currentMonthFactor = monthTemp(baseTemp, CalendarTFC.INSTANCE.getMonthOfYear(), z);
-        final float nextMonthFactor = monthTemp(baseTemp, CalendarTFC.INSTANCE.getMonthOfYear().next(), z);
+        final float currentMonthFactor = monthTemp(baseTemp, CalendarTFC.CALENDAR_TIME.getMonthOfYear(), z);
+        final float nextMonthFactor = monthTemp(baseTemp, CalendarTFC.CALENDAR_TIME.getMonthOfYear().next(), z);
 
-        final float delta = (float) CalendarTFC.INSTANCE.getDayOfMonth() / CalendarTFC.INSTANCE.getDaysInMonth();
+        final float delta = (float) CalendarTFC.CALENDAR_TIME.getDayOfMonth() / CalendarTFC.INSTANCE.getDaysInMonth();
         // Affine combination to smooth temperature transition
         return currentMonthFactor * (1 - delta) + nextMonthFactor * delta;
     }
@@ -153,7 +153,7 @@ public final class ClimateTFC
      * Range -32 to 35
      *
      * @param baseTemp The base temp for the current location
-     * @param month    The month (from CalendarTFC)
+     * @param month    The month (from Calendar)
      * @return the month factor for temp calculation
      */
     public static float monthTemp(float baseTemp, Month month, int z)
@@ -171,19 +171,21 @@ public final class ClimateTFC
      */
     private static float getTemp(float baseTemp, int z)
     {
-        int h = (int) ((CalendarTFC.INSTANCE.getTotalHours() - 6) % CalendarTFC.HOURS_IN_DAY);
-        if (h < 0) h += CalendarTFC.HOURS_IN_DAY;
+        // todo: this needs to be looked at, it is behaving really weirdly
+        // Also needs to be updated for the new calendar
+        //int h = (int) ((CalendarTFC.INSTANCE.getTotalHours() - 6) % ICalendar.HOURS_IN_DAY);
+        //if (h < 0) h += ICalendar.HOURS_IN_DAY;
 
-        float hourMod;
-        if (h < 12) hourMod = ((float) h / 11) * 0.3f;
-        else hourMod = 0.3f - ((((float) h - 12) / 11) * 0.3f);
+        //float hourMod;
+        //if (h < 12) hourMod = ((float) h / 11) * 0.3f;
+        //else hourMod = 0.3f - ((((float) h - 12) / 11) * 0.3f);
 
-        // Note: this does not use world seed, as that is not synced from server - client, resulting in the seed being different
-        long day = CalendarTFC.INSTANCE.getTotalDays();
-        RANDOM.setSeed(day);
-        final float dailyTemp = (RANDOM.nextInt(200) - 100) / 20f;
+        //// Note: this does not use world seed, as that is not synced from server - client, resulting in the seed being different
+        //long day = CalendarTFC.INSTANCE.getTotalDays();
+        //RANDOM.setSeed(day);
+        //final float dailyTemp = (RANDOM.nextInt(200) - 100) / 20f;
 
-        return getMonthAdjTemp(baseTemp, z) + dailyTemp + (hourMod * (baseTemp + dailyTemp));
+        return getMonthAdjTemp(baseTemp, z);// + dailyTemp + (hourMod * (baseTemp + dailyTemp));
     }
 
     private ClimateTFC() {}

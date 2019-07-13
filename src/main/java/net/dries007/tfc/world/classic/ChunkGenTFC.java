@@ -338,7 +338,7 @@ public class ChunkGenTFC implements IChunkGenerator
         if (!world.isAirBlock(pos) && !world.isAirBlock(pos.add(0, -1, 0)) && !SNOW.getBlock().canPlaceBlockAt(world, pos))
             return false;
         if (ClimateTFC.getHeightAdjustedTemp(world, pos) >= 0F) return false;
-        if (world.getLightFor(EnumSkyBlock.BLOCK, pos) < 10 /* todo: why? && CalendarTFC.getTotalMonths() < 1*/)
+        if (world.getLightFor(EnumSkyBlock.BLOCK, pos) < 10 /* todo: why? && Calendar.getTotalMonths() < 1*/)
             return false;
         return world.getBlockState(pos.add(0, -1, 0)).getMaterial().blocksMovement();
     }

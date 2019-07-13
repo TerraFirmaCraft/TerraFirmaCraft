@@ -5,7 +5,7 @@
 
 package net.dries007.tfc.api.capability.food;
 
-import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 public enum Nutrient
 {
@@ -20,6 +20,6 @@ public enum Nutrient
     public float getDecayModifier()
     {
         // Nutrients lost / tick
-        return 8f / CalendarTFC.TICKS_IN_DAY;
+        return 8f / ICalendar.TICKS_IN_DAY;
     }
 }

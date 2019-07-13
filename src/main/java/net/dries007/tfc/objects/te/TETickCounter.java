@@ -19,12 +19,12 @@ public class TETickCounter extends TEBase
 
     public long getTicksSinceUpdate()
     {
-        return CalendarTFC.INSTANCE.getCalendarTime() - lastUpdateTick;
+        return CalendarTFC.PLAYER_TIME.getTicks() - lastUpdateTick;
     }
 
     public void resetCounter()
     {
-        lastUpdateTick = CalendarTFC.INSTANCE.getCalendarTime();
+        lastUpdateTick = CalendarTFC.PLAYER_TIME.getTicks();
         markDirty();
     }
 

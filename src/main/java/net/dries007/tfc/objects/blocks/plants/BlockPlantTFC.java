@@ -41,6 +41,7 @@ import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -119,7 +120,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
-        Month currentMonth = CalendarTFC.INSTANCE.getMonthOfYear();
+        Month currentMonth = CalendarTFC.CALENDAR_TIME.getMonthOfYear();
         int currentStage = state.getValue(growthStageProperty);
         int expectedStage = plant.getStageForMonth(currentMonth);
         int currentTime = state.getValue(DAYPERIOD);
@@ -346,7 +347,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
 
     int getDayPeriod()
     {
-        return Math.floorDiv(CalendarTFC.INSTANCE.getHourOfDay(), CalendarTFC.HOURS_IN_DAY / 4);
+        return Math.floorDiv(CalendarTFC.CALENDAR_TIME.getHourOfDay(), ICalendar.HOURS_IN_DAY / 4);
     }
 
     private boolean isValidSoil(IBlockState state)

@@ -104,7 +104,11 @@ public class ItemMold extends ItemFiredPottery
     public int getItemStackLimit(ItemStack stack)
     {
         IMoldHandler moldHandler = (IMoldHandler) stack.getCapability(FLUID_HANDLER_CAPABILITY, null);
-        return (moldHandler.getMetal() == null) ? super.getItemStackLimit(stack) : 1;
+        if (moldHandler != null && moldHandler.getMetal() != null)
+        {
+            return 1;
+        }
+        return super.getItemStackLimit(stack);
     }
 
     // Extends ItemHeatHandler for ease of use
@@ -237,7 +241,7 @@ public class ItemMold extends ItemFiredPottery
             }
             else
             {
-                nbt.setLong("ticks", CalendarTFC.INSTANCE.getTotalTime());
+                nbt.setLong("ticks", CalendarTFC.TOTAL_TIME.getTicks());
             }
             return tank.writeToNBT(nbt);
         }
