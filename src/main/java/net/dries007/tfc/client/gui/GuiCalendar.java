@@ -55,9 +55,9 @@ public class GuiCalendar extends GuiContainerTFC
 
         String season, day, date;
 
-        season = I18n.format("tfc.tooltip.season", CalendarTFC.INSTANCE.getSeasonDisplayName());
-        day = I18n.format("tfc.tooltip.day", CalendarTFC.INSTANCE.getDisplayDayName());
-        date = I18n.format("tfc.tooltip.date", CalendarTFC.INSTANCE.getTimeAndDate());
+        season = I18n.format("tfc.tooltip.season", CalendarTFC.CALENDAR_TIME.getSeasonDisplayName());
+        day = I18n.format("tfc.tooltip.day", CalendarTFC.CALENDAR_TIME.getDisplayDayName());
+        date = I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate());
 
         fontRenderer.drawString(season, xSize / 2 - fontRenderer.getStringWidth(season) / 2, 25, 0x404040);
         fontRenderer.drawString(day, xSize / 2 - fontRenderer.getStringWidth(day) / 2, 34, 0x404040);

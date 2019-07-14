@@ -217,7 +217,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public int getStageForMonth()
     {
-        return getStageForMonth(CalendarTFC.INSTANCE.getMonthOfYear());
+        return getStageForMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear());
     }
 
     public int getNumStages()

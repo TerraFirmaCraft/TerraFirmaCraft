@@ -17,8 +17,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.agriculture.Food;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompound>
 {
@@ -145,18 +147,20 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         {
             // Don't default to zero
             // Food decay initially is synced with the hour. This allows items grabbed within a minute to stack
-            creationDate = CalendarTFC.INSTANCE.getTotalHours() * CalendarTFC.TICKS_IN_HOUR;
+            creationDate = CalendarTFC.PLAYER_TIME.getTotalHours() * ICalendar.TICKS_IN_HOUR;
         }
     }
 
     private float calculateDecayModifier()
     {
-        float mod = decayModifier;
+        // Decay modifiers are higher = shorter
+        float mod = decayModifier * (float) ConfigTFC.GENERAL.foodDecayModifier;
         for (IFoodTrait trait : foodTraits)
         {
             mod *= trait.getDecayModifier();
         }
-        return mod;
+        // The modifier returned is used to calculate time, so higher = longer
+        return mod == 0 ? Float.POSITIVE_INFINITY : 1 / mod;
     }
 
     @Nonnull

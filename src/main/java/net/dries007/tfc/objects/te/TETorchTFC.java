@@ -21,12 +21,12 @@ public class TETorchTFC extends TileEntity
 
     public TETorchTFC()
     {
-        lastLitTimestamp = CalendarTFC.INSTANCE.getTotalTime();
+        lastLitTimestamp = CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     public void onRandomTick()
     {
-        if (CalendarTFC.INSTANCE.getTotalTime() - lastLitTimestamp > (long) ConfigTFC.GENERAL.torchTime && ConfigTFC.GENERAL.torchTime > 0)
+        if (CalendarTFC.PLAYER_TIME.getTicks() - lastLitTimestamp > (long) ConfigTFC.GENERAL.torchTime && ConfigTFC.GENERAL.torchTime > 0)
         {
             extinguish();
         }
@@ -56,7 +56,7 @@ public class TETorchTFC extends TileEntity
     public void light()
     {
         world.setBlockState(pos, world.getBlockState(pos).withProperty(LIT, true));
-        lastLitTimestamp = CalendarTFC.INSTANCE.getTotalTime();
+        lastLitTimestamp = CalendarTFC.PLAYER_TIME.getTicks();
         this.markDirty();
     }
 }

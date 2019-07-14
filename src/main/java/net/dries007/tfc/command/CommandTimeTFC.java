@@ -16,12 +16,11 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -38,7 +37,7 @@ public class CommandTimeTFC extends CommandBase
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "/timetfc <set|add> <year|month|day|monthLength|ticks> <value>";
+        return "/timetfc <set|add> <year|month|day|monthlength|playerticks|ticks> <value>";
     }
 
     @Override
@@ -46,11 +45,12 @@ public class CommandTimeTFC extends CommandBase
     {
         if (args.length != 3)
         {
-            throw new WrongUsageException("Invalid arguments! /timetfc <set|add> <year|month|day|monthLength|ticks> <value>");
+            throw new WrongUsageException(getUsage(sender));
         }
 
-        long time = CalendarTFC.TICKS_IN_DAY;
+        long time = ICalendar.TICKS_IN_DAY;
         boolean updateDaylightCycle = false;
+        boolean isPlayerTime = false;
         switch (args[1].toLowerCase())
         {
             case "month":
@@ -73,6 +73,11 @@ public class CommandTimeTFC extends CommandBase
                 time = parseInt(args[2], 0, Integer.MAX_VALUE);
                 updateDaylightCycle = true;
                 break;
+            case "playertick":
+            case "playerticks":
+                time = parseInt(args[2], 0, Integer.MAX_VALUE);
+                isPlayerTime = true;
+                break;
             case "monthlength":
                 int value = parseInt(args[2], 1, 100);
                 CalendarTFC.INSTANCE.setMonthLength(server.getEntityWorld(), value);
@@ -82,18 +87,33 @@ public class CommandTimeTFC extends CommandBase
                 throw new WrongUsageException("Second argument must be <day|month|year|monthlength>");
         }
 
+        // Parse first argument
         if (args[0].equals("add"))
         {
-            time += CalendarTFC.INSTANCE.getCalendarTime();
+            time += isPlayerTime ? CalendarTFC.PLAYER_TIME.getTicks() : CalendarTFC.CALENDAR_TIME.getTicks();
         }
-        else if (!args[0].equals("set"))
+        else if (args[0].equals("set"))
+        {
+            if (isPlayerTime)
+            {
+                throw new WrongUsageException("Player time cannot be set, only incremented");
+            }
+        }
+        else
         {
             throw new WrongUsageException("First argument must be <add|set>");
         }
 
-        CalendarTFC.INSTANCE.setCalendarTime(server.getEntityWorld(), time);
-        ITextComponent month = new TextComponentTranslation(Helpers.getEnumName(CalendarTFC.INSTANCE.getMonthOfYear()));
-        sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_time", CalendarTFC.INSTANCE.getDisplayTotalYears(), month, CalendarTFC.INSTANCE.getDayOfMonth(), String.format("%02d:%02d", CalendarTFC.INSTANCE.getHourOfDay(), CalendarTFC.INSTANCE.getMinuteOfHour())));
+        // Update calendar
+        if (isPlayerTime)
+        {
+            CalendarTFC.INSTANCE.setPlayerTime(server.getEntityWorld(), time);
+        }
+        else
+        {
+            CalendarTFC.INSTANCE.setCalendarTime(server.getEntityWorld(), time);
+        }
+        sender.sendMessage(new TextComponentTranslation("tfc.tooltip.time_command_complete"));
 
         if (updateDaylightCycle)
         {
@@ -120,7 +140,7 @@ public class CommandTimeTFC extends CommandBase
         }
         else if (args.length == 2 && ("set".equals(args[0]) || "add".equals(args[0])))
         {
-            return getListOfStringsMatchingLastWord(args, "year", "month", "day", "monthlength", "ticks");
+            return getListOfStringsMatchingLastWord(args, "year", "month", "day", "monthlength", "playerticks", "ticks");
         }
         else
         {

@@ -53,7 +53,7 @@ public class CalendarEventHandler
         GameRules rules = event.getRules();
         if ("doDaylightCycle".equals(event.getRuleName()))
         {
-            CalendarTFC.update(event.getServer().getEntityWorld(), CalendarTFC.INSTANCE.getCalendarOffset(), CalendarTFC.INSTANCE.getDaysInMonth(), rules.getBoolean("doDaylightCycle"));
+            CalendarTFC.INSTANCE.setDoDaylightCycle(event.getServer().getEntityWorld(), rules.getBoolean("doDaylightCycle"));
         }
     }
 
@@ -68,16 +68,21 @@ public class CalendarEventHandler
     }
 
     /**
-     * This allows beds to function correctly with TFC's calendar
+     * This allows beds to function correctly with TFCs calendar
      *
      * @param event {@link PlayerWakeUpEvent}
      */
     @SubscribeEvent
     public static void onPlayerWakeUp(PlayerWakeUpEvent event)
     {
-        // Set the calendar time to time=0. This will implicitly call CalendarTFC#update
-        long newCalendarTime = (CalendarTFC.INSTANCE.getTotalDays() + 1) * CalendarTFC.TICKS_IN_DAY + CalendarTFC.WORLD_TIME_OFFSET;
+        // Calculate time to adjust by
+        long newCalendarTime = (CalendarTFC.CALENDAR_TIME.getTotalDays() + 1) * ICalendar.TICKS_IN_DAY + CalendarTFC.WORLD_TIME_OFFSET;
+        long sleepTimeJump = newCalendarTime - CalendarTFC.CALENDAR_TIME.getTicks();
+        long newPlayerTime = CalendarTFC.PLAYER_TIME.getTicks() + sleepTimeJump;
+
+        // Increment offsets
         CalendarTFC.INSTANCE.setCalendarTime(event.getEntityPlayer().getEntityWorld(), newCalendarTime);
+        CalendarTFC.INSTANCE.setPlayerTime(event.getEntityPlayer().getEntityWorld(), newPlayerTime);
     }
 
     @SubscribeEvent
@@ -87,7 +92,7 @@ public class CalendarEventHandler
         final World world = event.getWorld();
         if (world.provider.getDimension() == 0 && !world.isRemote)
         {
-            CalendarTFC.INSTANCE.update(event.getWorld());
+            CalendarTFC.INSTANCE.updateWorldDataAndSync(event.getWorld());
         }
     }
 }
