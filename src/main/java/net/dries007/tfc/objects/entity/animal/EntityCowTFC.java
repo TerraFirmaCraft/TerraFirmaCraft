@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -23,15 +24,18 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.util.LootTableListTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
-public class EntityCowTFC extends EntityAnimalMammal
+@ParametersAreNonnullByDefault
+public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
 {
     private static final int DAYS_TO_ADULTHOOD = 1080;
     private static final int DAYS_TO_FULL_GESTATION = 270;
@@ -44,6 +48,7 @@ public class EntityCowTFC extends EntityAnimalMammal
         return (int) (CalendarTFC.INSTANCE.getTotalDays() - lifeTimeDays);
     }
 
+    @SuppressWarnings("unused")
     public EntityCowTFC(World worldIn)
     {
         this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
@@ -55,6 +60,12 @@ public class EntityCowTFC extends EntityAnimalMammal
         super(worldIn, gender, birthDay);
         this.setSize(0.9F, 1.3F);
         this.setMilkedDay(-1); //Spawn with milk
+    }
+
+    @Override
+    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    {
+        return (biome == BiomesTFC.PLAINS || biome == BiomesTFC.HIGH_PLAINS) && temperature > -10 && rainfall > 100 && rainfall < 400;
     }
 
     @Override

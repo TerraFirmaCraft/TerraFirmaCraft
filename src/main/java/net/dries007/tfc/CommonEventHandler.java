@@ -22,8 +22,10 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
@@ -52,8 +54,11 @@ import net.dries007.tfc.network.PacketFoodStatsReplace;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
+import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -348,6 +353,27 @@ public final class CommonEventHandler
             // Capability Sync Handler
             final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
             event.getContainer().addListener(new CapabilityContainerListener(player));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingSpawnEvent(LivingSpawnEvent.CheckSpawn event)
+    {
+        // Check creature spawning
+        if (event.getEntity() instanceof IAnimalTFC)
+        {
+            IAnimalTFC animal = (IAnimalTFC) event.getEntity();
+            World world = event.getWorld();
+            BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
+
+            float rainfall = ChunkDataTFC.getRainfall(world, pos);
+            float temperature = ClimateTFC.getAverageBiomeTemp(world, pos);
+            Biome biome = world.getBiome(pos);
+
+            if (!animal.isValidSpawnConditions(biome, temperature, rainfall))
+            {
+                event.setResult(Event.Result.DENY);
+            }
         }
     }
 }

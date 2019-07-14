@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.entity.animal;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -22,13 +23,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.util.LootTableListTFC;
 import net.dries007.tfc.util.TFCSoundEvents;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
-public class EntityBearTFC extends EntityAnimalMammal implements IMob
+@ParametersAreNonnullByDefault
+public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTFC
 {
     private static final int DAYS_TO_ADULTHOOD = 1800;
     private static final int DAYS_TO_FULL_GESTATION = 210;
@@ -39,6 +43,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
         return (int) (CalendarTFC.INSTANCE.getTotalDays() - lifeTimeDays);
     }
 
+    @SuppressWarnings("unused")
     public EntityBearTFC(World worldIn)
     {
         this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
@@ -49,6 +54,13 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     {
         super(worldIn, gender, birthDay);
         this.setSize(1.2F, 1.2F);
+    }
+
+    @Override
+    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    {
+        return (temperature > -15 && temperature < 15 && rainfall > 100) ||
+            (temperature > -10 && temperature < 25 && biome == BiomesTFC.MOUNTAINS);
     }
 
     @Override

@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -19,6 +20,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.Constants;
@@ -29,7 +31,8 @@ import net.dries007.tfc.util.LootTableListTFC;
 import net.dries007.tfc.util.TFCSoundEvents;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
-public class EntityChickenTFC extends EntityAnimalOviparous
+@ParametersAreNonnullByDefault
+public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTFC
 {
     private static final int DAYS_TO_ADULTHOOD = 124;
     private static final int DAYS_TO_HATCH_EGG = 21;
@@ -57,6 +60,12 @@ public class EntityChickenTFC extends EntityAnimalOviparous
     {
         super(worldIn, gender, birthDay);
         this.setSize(0.9F, 0.9F);
+    }
+
+    @Override
+    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    {
+        return temperature > 18 && rainfall > 350;
     }
 
     @Override

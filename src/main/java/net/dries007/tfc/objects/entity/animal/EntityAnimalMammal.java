@@ -5,14 +5,23 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@ParametersAreNonnullByDefault
 public abstract class EntityAnimalMammal extends EntityAnimalTFC
 {
     private long pregnantTime; //The time(in days) this entity became pregnant
+
+    @SuppressWarnings("unused")
+    public EntityAnimalMammal(World worldIn)
+    {
+        super(worldIn);
+    }
 
     public EntityAnimalMammal(World worldIn, Gender gender, int birthDay)
     {

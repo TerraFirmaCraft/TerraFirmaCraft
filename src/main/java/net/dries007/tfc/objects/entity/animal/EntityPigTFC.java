@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -19,13 +20,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.util.LootTableListTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
-public class EntityPigTFC extends EntityAnimalMammal
+@ParametersAreNonnullByDefault
+public class EntityPigTFC extends EntityAnimalMammal implements IAnimalTFC
 {
     private static final int DAYS_TO_ADULTHOOD = 450;
     private static final int DAYS_TO_FULL_GESTATION = 111;
@@ -36,6 +39,7 @@ public class EntityPigTFC extends EntityAnimalMammal
         return (int) (CalendarTFC.INSTANCE.getTotalDays() - lifeTimeDays);
     }
 
+    @SuppressWarnings("unused")
     public EntityPigTFC(World worldIn)
     {
         this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
@@ -46,6 +50,12 @@ public class EntityPigTFC extends EntityAnimalMammal
     {
         super(worldIn, gender, birthDay);
         this.setSize(0.9F, 0.9F);
+    }
+
+    @Override
+    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    {
+        return temperature > -10 && rainfall > 150;
     }
 
     @Override
