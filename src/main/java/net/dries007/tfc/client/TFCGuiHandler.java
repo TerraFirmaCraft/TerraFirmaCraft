@@ -60,6 +60,9 @@ public class TFCGuiHandler implements IGuiHandler
         Type type = Type.valueOf(ID);
         switch (type)
         {
+            case NEST_BOX:
+                TENestBox teNestBox = Helpers.getTE(world, pos, TENestBox.class);
+                return teNestBox == null ? null : new ContainerNestBox(player.inventory, teNestBox);
             case LOG_PILE:
                 TELogPile teLogPile = Helpers.getTE(world, pos, TELogPile.class);
                 return teLogPile == null ? null : new ContainerLogPile(player.inventory, teLogPile);
@@ -113,6 +116,8 @@ public class TFCGuiHandler implements IGuiHandler
         BlockPos pos = new BlockPos(x, y, z);
         switch (type)
         {
+            case NEST_BOX:
+                return new GuiContainerTFC(container, player.inventory, SMALL_INVENTORY_BACKGROUND);
             case LOG_PILE:
                 return new GuiContainerTFC(container, player.inventory, SMALL_INVENTORY_BACKGROUND);
             case SMALL_VESSEL:
@@ -164,6 +169,7 @@ public class TFCGuiHandler implements IGuiHandler
 
     public enum Type
     {
+        NEST_BOX,
         LOG_PILE,
         SMALL_VESSEL,
         SMALL_VESSEL_LIQUID,

@@ -61,6 +61,8 @@ public final class ItemsTFC
     public static final ItemMisc JUTE_FIBER = getNull();
     @GameRegistry.ObjectHolder("crop/product/burlap_cloth")
     public static final ItemMisc BURLAP_CLOTH = getNull();
+    @GameRegistry.ObjectHolder("animal/product/wool")
+    public static final ItemMisc WOOL = getNull();
     @GameRegistry.ObjectHolder("animal/product/wool_yarn")
     public static final ItemMisc WOOL_YARN = getNull();
     @GameRegistry.ObjectHolder("animal/product/wool_cloth")
@@ -103,6 +105,9 @@ public final class ItemsTFC
     public static final ItemBloom UNREFINED_BLOOM = getNull();
     @GameRegistry.ObjectHolder("bloom/refined")
     public static final ItemBloom REFINED_BLOOM = getNull();
+
+    @GameRegistry.ObjectHolder("powder/salt")
+    public static final ItemPowder SALT = getNull();
 
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
