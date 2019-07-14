@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.te;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -16,6 +18,7 @@ import net.dries007.tfc.objects.entity.animal.EntityAnimalOviparous;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@ParametersAreNonnullByDefault
 public class TENestBox extends TEInventory implements ITickable
 {
     private static final int NUM_SLOTS = 4;
@@ -36,16 +39,19 @@ public class TENestBox extends TEInventory implements ITickable
                 if (!stack.isEmpty())
                 {
                     IEgg cap = stack.getCapability(CapabilityEgg.CAPABILITY, null);
-                    if (cap != null && cap.getHatchDay() > 0 && cap.getHatchDay() <= CalendarTFC.INSTANCE.getTotalDays())
+                    if (cap != null && cap.getHatchDay() > 0 && cap.getHatchDay() <= CalendarTFC.PLAYER_TIME.getTotalDays())
                     {
                         Entity baby = cap.getEntity(this.world);
-                        if (baby instanceof EntityAnimalOviparous)
+                        if (baby != null)
                         {
-                            ((EntityAnimalOviparous) baby).setBirthDay((int) CalendarTFC.INSTANCE.getTotalDays());
+                            if (baby instanceof EntityAnimalOviparous)
+                            {
+                                ((EntityAnimalOviparous) baby).setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+                            }
+                            baby.setLocationAndAngles(this.pos.getX(), this.pos.getY() + 0.5D, this.pos.getZ(), 0.0F, 0.0F);
+                            world.spawnEntity(baby);
+                            inventory.setStackInSlot(i, ItemStack.EMPTY);
                         }
-                        baby.setLocationAndAngles(this.pos.getX(), this.pos.getY() + 0.5D, this.pos.getZ(), 0.0F, 0.0F);
-                        this.world.spawnEntity(baby);
-                        inventory.setStackInSlot(i, ItemStack.EMPTY);
                     }
                 }
             }

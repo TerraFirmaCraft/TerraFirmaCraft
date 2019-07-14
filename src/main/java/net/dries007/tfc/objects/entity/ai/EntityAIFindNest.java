@@ -19,6 +19,7 @@ import net.dries007.tfc.objects.entity.animal.EntityAnimalOviparous;
 import net.dries007.tfc.objects.te.TENestBox;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 public class EntityAIFindNest extends EntityAIBase
 {
@@ -87,7 +88,7 @@ public class EntityAIFindNest extends EntityAIBase
             if (this.currentTick > 200)
             {
                 //We never reached it in 10 secs, lets give up on this nest box
-                failureDepressionMap.put(nestPos, CalendarTFC.INSTANCE.getTotalTime() + CalendarTFC.TICKS_IN_HOUR * 4);
+                failureDepressionMap.put(nestPos, CalendarTFC.TOTAL_TIME.getTicks() + ICalendar.TICKS_IN_HOUR * 4);
                 this.end = true;
             }
         }
@@ -114,7 +115,7 @@ public class EntityAIFindNest extends EntityAIBase
                 else if (te.getBird() != ent)
                 {
                     //Used by another bird, give up on this one for now
-                    failureDepressionMap.put(nestPos, CalendarTFC.INSTANCE.getTotalTime() + CalendarTFC.TICKS_IN_HOUR * 4);
+                    failureDepressionMap.put(nestPos, CalendarTFC.TOTAL_TIME.getTicks() + ICalendar.TICKS_IN_HOUR * 4);
                     this.end = true;
                 }
             }
@@ -147,7 +148,7 @@ public class EntityAIFindNest extends EntityAIBase
         if (failureDepressionMap.containsKey(pos))
         {
             long time = failureDepressionMap.get(pos);
-            if (time > CalendarTFC.INSTANCE.getTotalTime())
+            if (time > CalendarTFC.TOTAL_TIME.getTicks())
                 return false;
             else
                 failureDepressionMap.remove(pos);

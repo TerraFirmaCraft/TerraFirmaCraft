@@ -34,7 +34,7 @@ public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalT
     private static int getRandomGrowth()
     {
         int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.INSTANCE.getTotalDays() - lifeTimeDays);
+        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
 
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
@@ -92,7 +92,7 @@ public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalT
     public float getPercentToAdulthood()
     {
         if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.INSTANCE.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
+        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
         if (value > 1f) value = 1f;
         if (value < 0f) value = 0;
         return (float) value;
@@ -101,7 +101,7 @@ public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalT
     @Override
     public Age getAge()
     {
-        return CalendarTFC.INSTANCE.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
     }
 
     @Override
