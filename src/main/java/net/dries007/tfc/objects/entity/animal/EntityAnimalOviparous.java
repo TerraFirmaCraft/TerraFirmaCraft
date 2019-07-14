@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
@@ -12,10 +14,17 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@ParametersAreNonnullByDefault
 public abstract class EntityAnimalOviparous extends EntityAnimalTFC
 {
     private static final long DEFAULT_TICKS_TO_LAY_EGGS = CalendarTFC.TICKS_IN_DAY;
     private long lastLaying; //The last time(in ticks) this oviparous female laid eggs
+
+    @SuppressWarnings("unused")
+    public EntityAnimalOviparous(World worldIn)
+    {
+        super(worldIn);
+    }
 
     public EntityAnimalOviparous(World worldIn, Gender gender, int birthDay)
     {

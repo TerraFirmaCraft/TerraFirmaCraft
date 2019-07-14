@@ -10,6 +10,8 @@ import javax.annotation.Nonnull;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 
+import net.dries007.tfc.objects.entity.animal.*;
+
 public class BiomeTFC extends Biome
 {
     public final int waterPlantsPerChunk;
@@ -29,7 +31,14 @@ public class BiomeTFC extends Biome
         // throw out the first decorator, because it's missing the lilypad & plant settings
         this.decorator = createBiomeDecorator();
 
-        // todo: adjust the spawnable creatures lists, and spawn conditions
+        this.spawnableCreatureList.clear();
+        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntitySheepTFC.class, 12, 4, 4));
+        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityPigTFC.class, 10, 4, 4));
+        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityChickenTFC.class, 10, 4, 4));
+        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityCowTFC.class, 8, 4, 4));
+        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityDeerTFC.class, 14, 2, 4));
+        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityPheasantTFC.class, 14, 2, 4));
+        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBearTFC.class, 4, 1, 2));
     }
 
     @Override

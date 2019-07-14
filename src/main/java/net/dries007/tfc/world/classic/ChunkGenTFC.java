@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -28,6 +29,7 @@ import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.layer.IntCache;
+import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.registries.ForgeRegistry;
 
 import mcp.MethodsReturnNonnullByDefault;
@@ -52,6 +54,7 @@ import net.dries007.tfc.world.classic.mapgen.MapGenRiverRavine;
 
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER2;
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER3;
+import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -274,11 +277,10 @@ public class ChunkGenTFC implements IChunkGenerator
 
         biome.decorate(world, rand, blockpos);
 
-        // todo: make this use TFC stuff / quick fix vanilla animals to drop TFC items
-        //if (TerrainGen.populate(this, world, rand, chunkX, chunkZ, false, ANIMALS))
-        //{
-        //    WorldEntitySpawner.performWorldGenSpawning(world, biome, worldX + 8, worldZ + 8, 16, 16, rand);
-        //}
+        if (TerrainGen.populate(this, world, rand, chunkX, chunkZ, false, ANIMALS))
+        {
+            WorldEntitySpawner.performWorldGenSpawning(world, biome, worldX + 8, worldZ + 8, 16, 16, rand);
+        }
 
         blockpos = blockpos.add(8, 0, 8);
         for (int x = 0; x < 16; x++)

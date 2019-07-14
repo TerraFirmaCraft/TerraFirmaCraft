@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -18,6 +19,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -25,7 +27,8 @@ import net.dries007.tfc.util.LootTableListTFC;
 import net.dries007.tfc.util.TFCSoundEvents;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
-public class EntityDeerTFC extends EntityAnimalMammal
+@ParametersAreNonnullByDefault
+public class EntityDeerTFC extends EntityAnimalMammal implements IAnimalTFC
 {
     private static final int DAYS_TO_ADULTHOOD = 720;
     private static final int DAYS_TO_FULL_GESTATION = 210;
@@ -36,6 +39,7 @@ public class EntityDeerTFC extends EntityAnimalMammal
         return (int) (CalendarTFC.INSTANCE.getTotalDays() - lifeTimeDays);
     }
 
+    @SuppressWarnings("unused")
     public EntityDeerTFC(World worldIn)
     {
         this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
@@ -46,6 +50,12 @@ public class EntityDeerTFC extends EntityAnimalMammal
     {
         super(worldIn, gender, birthDay);
         this.setSize(0.9F, 1.3F);
+    }
+
+    @Override
+    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    {
+        return temperature > -20 && temperature < 20 && rainfall > 75;
     }
 
     @Override

@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.entity.animal;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -28,6 +29,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -35,8 +37,10 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.LootTableListTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
-public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
+@ParametersAreNonnullByDefault
+public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IAnimalTFC
 {
     private static final int DAYS_TO_ADULTHOOD = 360;
     private static final int DAYS_TO_GROW_WOOL = 7;
@@ -65,6 +69,13 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
         this.setSize(0.9F, 1.3F);
         this.setDyeColor(dye);
         this.setShearedDay(-1); //Spawn with wool
+    }
+
+    @Override
+    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    {
+        return (temperature > -20 && temperature < 0 && rainfall > 100) ||
+            (temperature > -10 && rainfall > 100 && biome == BiomesTFC.MOUNTAINS);
     }
 
     @Override

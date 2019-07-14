@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.entity.animal;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -28,6 +29,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@ParametersAreNonnullByDefault
 public abstract class EntityAnimalTFC extends EntityAnimal
 {
     private static final long DEFAULT_TICKS_COOLDOWN_MATING = CalendarTFC.TICKS_IN_HOUR * 2;
@@ -53,6 +55,12 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         this.matingTime = -1;
         this.lastFDecay = CalendarTFC.INSTANCE.getTotalDays();
         this.fertilized = false;
+    }
+
+    @SuppressWarnings("unused")
+    public EntityAnimalTFC(World worldIn)
+    {
+        super(worldIn);
     }
 
     public Gender getGender()
@@ -183,7 +191,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         return OreDictionaryHelper.doesStackMatchOre(stack, "grain");
     }
 
-    @SuppressWarnings("NullableProblems")
     @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
