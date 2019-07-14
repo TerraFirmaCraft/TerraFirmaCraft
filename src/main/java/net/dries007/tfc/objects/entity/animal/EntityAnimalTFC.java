@@ -26,13 +26,14 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @ParametersAreNonnullByDefault
 public abstract class EntityAnimalTFC extends EntityAnimal
 {
-    private static final long DEFAULT_TICKS_COOLDOWN_MATING = CalendarTFC.TICKS_IN_HOUR * 2;
+    private static final long DEFAULT_TICKS_COOLDOWN_MATING = ICalendar.TICKS_IN_HOUR * 2;
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.VARINT);
@@ -53,7 +54,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         this.setGrowingAge(0); //We don't use this
         this.lastFed = -1;
         this.matingTime = -1;
-        this.lastFDecay = CalendarTFC.INSTANCE.getTotalDays();
+        this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
         this.fertilized = false;
     }
 
@@ -97,7 +98,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal
 
     public boolean getIsFedToday()
     {
-        return this.lastFed == CalendarTFC.INSTANCE.getTotalDays();
+        return this.lastFed == CalendarTFC.PLAYER_TIME.getTotalDays();
     }
 
     public boolean isFertilized() { return this.fertilized; }
@@ -114,46 +115,26 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         if (!this.world.isRemote)
         {
             //Is it time to decay familiarity?
-            if (this.lastFDecay < CalendarTFC.INSTANCE.getTotalDays())
+            if (this.lastFDecay < CalendarTFC.PLAYER_TIME.getTotalDays())
             {
                 float familiarity = getFamiliarity();
                 //If this entity was never fed(eg: new born, wild)
                 //or wasn't fed yesterday(this is the starting of the second day)
-                if (familiarity < 0.3f && (this.lastFed == -1 || this.lastFed - 1 < CalendarTFC.INSTANCE.getTotalDays()))
+                if (familiarity < 0.3f && (this.lastFed == -1 || this.lastFed - 1 < CalendarTFC.PLAYER_TIME.getTotalDays()))
                 {
-                    familiarity -= 0.02 * (CalendarTFC.INSTANCE.getTotalDays() - this.lastFDecay);
-                    this.lastFDecay = CalendarTFC.INSTANCE.getTotalDays();
+                    familiarity -= 0.02 * (CalendarTFC.PLAYER_TIME.getTotalDays() - this.lastFDecay);
+                    this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
                     if (familiarity < 0) familiarity = 0f;
                     this.setFamiliarity(familiarity);
                 }
             }
             if (this.getGender() == Gender.MALE && this.isReadyToMate())
             {
-                this.matingTime = CalendarTFC.INSTANCE.getCalendarTime();
+                this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
                 if (findFemaleMate())
                 {
                     this.setInLove(null);
                 }
-            }
-            if (this.lastFDecay > CalendarTFC.INSTANCE.getTotalDays())
-            {
-                //Calendar went backwards by command! this need to update
-                this.lastFDecay = CalendarTFC.INSTANCE.getTotalDays();
-            }
-            if (this.lastFed > -1 && this.lastFed > CalendarTFC.INSTANCE.getTotalDays())
-            {
-                //Calendar went backwards by command! this need to update
-                this.lastFed = CalendarTFC.INSTANCE.getTotalDays();
-            }
-            if (this.matingTime > -1 && this.matingTime > CalendarTFC.INSTANCE.getCalendarTime())
-            {
-                //Calendar went backwards by command! this need to update
-                this.matingTime = CalendarTFC.INSTANCE.getCalendarTime();
-            }
-            if (this.getBirthDay() > CalendarTFC.INSTANCE.getTotalDays())
-            {
-                //Calendar went backwards by command! this need to update
-                this.setBirthDay((int) CalendarTFC.INSTANCE.getTotalDays());
             }
         }
     }
@@ -204,7 +185,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal
                 {
                     if (!this.world.isRemote)
                     {
-                        lastFed = CalendarTFC.INSTANCE.getTotalDays();
+                        lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                         lastFDecay = lastFed; //No decay needed
                         this.consumeItemFromStack(player, itemstack);
                         this.setFamiliarity(this.getFamiliarity() + 0.06f);
@@ -299,12 +280,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal
      */
     public abstract Age getAge();
 
-    private boolean canFeed()
-    {
-        if (lastFed == -1) return true;
-        return lastFed < CalendarTFC.INSTANCE.getTotalDays();
-    }
-
     /**
      * Check if this animal is ready to mate
      *
@@ -314,7 +289,13 @@ public abstract class EntityAnimalTFC extends EntityAnimal
     {
         if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || !this.getIsFedToday())
             return false;
-        return this.matingTime == -1 || this.matingTime + getCooldownMating() <= CalendarTFC.INSTANCE.getCalendarTime();
+        return this.matingTime == -1 || this.matingTime + getCooldownMating() <= CalendarTFC.PLAYER_TIME.getTicks();
+    }
+
+    private boolean canFeed()
+    {
+        if (lastFed == -1) return true;
+        return lastFed < CalendarTFC.PLAYER_TIME.getTotalDays();
     }
 
     /**

@@ -51,9 +51,9 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
 
     private static int getRandomGrowth()
     {
-        //Used when natural spawning sheeps
+        // Used when natural spawning sheeps
         int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4); // 3 out of 4 natural spawned sheeps will be adults
-        return (int) (CalendarTFC.INSTANCE.getTotalDays() - lifeTimeDays);
+        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
 
     public EntitySheepTFC(World worldIn)
@@ -84,10 +84,10 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
         super.onLivingUpdate();
         if (!this.world.isRemote)
         {
-            if (this.getShearedDay() > CalendarTFC.INSTANCE.getTotalDays())
+            if (this.getShearedDay() > CalendarTFC.PLAYER_TIME.getTotalDays())
             {
                 //Calendar went backwards by command! this need to update
-                this.setShearedDay((int) CalendarTFC.INSTANCE.getTotalDays());
+                this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
             }
         }
     }
@@ -130,7 +130,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
         int numberOfChilds = Constants.RNG.nextInt(3) + 1; //1-3
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntitySheepTFC baby = new EntitySheepTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.INSTANCE.getTotalDays(), this.getDyeColor());
+            EntitySheepTFC baby = new EntitySheepTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays(), this.getDyeColor());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.world.spawnEntity(baby);
         }
@@ -157,7 +157,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
     @Override
     public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
-        this.setShearedDay((int) CalendarTFC.INSTANCE.getTotalDays());
+        this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
         int i = 1 + this.rand.nextInt(3);
 
         java.util.List<ItemStack> ret = new java.util.ArrayList<>();
@@ -170,7 +170,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
 
     public boolean hasWool()
     {
-        return this.getShearedDay() == -1 || CalendarTFC.INSTANCE.getTotalDays() >= getShearedDay() + DAYS_TO_GROW_WOOL;
+        return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + DAYS_TO_GROW_WOOL;
     }
 
     @Override
@@ -185,7 +185,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
     public float getPercentToAdulthood()
     {
         if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.INSTANCE.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
+        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
         if (value > 1f) value = 1f;
         if (value < 0f) value = 0;
         return (float) value;
@@ -235,7 +235,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
     @Override
     public Age getAge()
     {
-        return CalendarTFC.INSTANCE.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
     }
 
     @Override

@@ -35,15 +35,10 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
         super.onLivingUpdate();
         if (!this.world.isRemote)
         {
-            if (this.isFertilized() && CalendarTFC.INSTANCE.getTotalDays() >= pregnantTime + gestationDays())
+            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= pregnantTime + gestationDays())
             {
                 birthChildren();
                 this.setFertilized(false);
-            }
-            if (pregnantTime > -1 && pregnantTime > CalendarTFC.INSTANCE.getTotalDays())
-            {
-                //Calendar went backwards by command! this need to update
-                this.pregnantTime = CalendarTFC.INSTANCE.getTotalDays();
             }
         }
     }
@@ -65,7 +60,7 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
     public void onFertilized(EntityAnimalTFC male)
     {
         //Mark the day this female became pregnant
-        this.pregnantTime = CalendarTFC.INSTANCE.getTotalDays();
+        this.pregnantTime = CalendarTFC.PLAYER_TIME.getTotalDays();
     }
 
     /**

@@ -47,7 +47,7 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
     private static int getRandomGrowth()
     {
         int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.INSTANCE.getTotalDays() - lifeTimeDays);
+        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
 
     public EntityChickenTFC(World worldIn)
@@ -72,7 +72,7 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
-        if (this.getGender() == Gender.MALE && !this.world.isRemote && !this.isChild() && CalendarTFC.INSTANCE.getHourOfDay() == 6 && CalendarTFC.INSTANCE.getMinuteOfHour() == 0)
+        if (this.getGender() == Gender.MALE && !this.world.isRemote && !this.isChild() && CalendarTFC.CALENDAR_TIME.getHourOfDay() == 6 && CalendarTFC.CALENDAR_TIME.getMinuteOfHour() == 0)
         {
             this.world.playSound(null, this.getPosition(), TFCSoundEvents.ANIMAL_ROOSTER_CRY, SoundCategory.AMBIENT, 1.0F, 1.0F);
         }
@@ -97,6 +97,22 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
     }
 
     @Override
+    public float getPercentToAdulthood()
+    {
+        if (this.getAge() != Age.CHILD) return 1;
+        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
+        if (value > 1f) value = 1f;
+        if (value < 0f) value = 0;
+        return (float) value;
+    }
+
+    @Override
+    public Age getAge()
+    {
+        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+    }
+
+    @Override
     public NonNullList<ItemStack> layEggs()
     {
         NonNullList<ItemStack> eggs = super.layEggs();
@@ -106,28 +122,12 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
             IEgg cap = egg.getCapability(CapabilityEgg.CAPABILITY, null);
             if (cap != null)
             {
-                cap.setFertilized(new EntityChickenTFC(this.world), DAYS_TO_HATCH_EGG + CalendarTFC.INSTANCE.getTotalDays());
+                cap.setFertilized(new EntityChickenTFC(this.world), DAYS_TO_HATCH_EGG + CalendarTFC.PLAYER_TIME.getTotalDays());
             }
         }
         this.setFertilized(false);
         eggs.add(egg);
         return eggs;
-    }
-
-    @Override
-    public float getPercentToAdulthood()
-    {
-        if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.INSTANCE.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
-        if (value > 1f) value = 1f;
-        if (value < 0f) value = 0;
-        return (float) value;
-    }
-
-    @Override
-    public Age getAge()
-    {
-        return CalendarTFC.INSTANCE.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
     }
 
     @Override

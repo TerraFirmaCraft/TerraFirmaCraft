@@ -13,11 +13,12 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 @ParametersAreNonnullByDefault
 public abstract class EntityAnimalOviparous extends EntityAnimalTFC
 {
-    private static final long DEFAULT_TICKS_TO_LAY_EGGS = CalendarTFC.TICKS_IN_DAY;
+    private static final long DEFAULT_TICKS_TO_LAY_EGGS = ICalendar.TICKS_IN_DAY;
     private long lastLaying; //The last time(in ticks) this oviparous female laid eggs
 
     @SuppressWarnings("unused")
@@ -30,20 +31,6 @@ public abstract class EntityAnimalOviparous extends EntityAnimalTFC
     {
         super(worldIn, gender, birthDay);
         this.lastLaying = -1;
-    }
-
-    @Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        if (!this.world.isRemote)
-        {
-            if (lastLaying > -1 && lastLaying > CalendarTFC.INSTANCE.getCalendarTime())
-            {
-                //Calendar went backwards by command! this need to update
-                this.lastLaying = CalendarTFC.INSTANCE.getCalendarTime();
-            }
-        }
     }
 
     @Override
@@ -67,7 +54,7 @@ public abstract class EntityAnimalOviparous extends EntityAnimalTFC
      */
     public boolean isReadyToLayEggs()
     {
-        return this.getGender() == Gender.FEMALE && !this.isChild() && this.getFamiliarity() > 0.15f && CalendarTFC.INSTANCE.getCalendarTime() >= this.lastLaying + getCooldownLaying();
+        return this.getGender() == Gender.FEMALE && !this.isChild() && this.getFamiliarity() > 0.15f && CalendarTFC.PLAYER_TIME.getTicks() >= this.lastLaying + getCooldownLaying();
     }
 
     /**
@@ -77,7 +64,7 @@ public abstract class EntityAnimalOviparous extends EntityAnimalTFC
      */
     public NonNullList<ItemStack> layEggs()
     {
-        this.lastLaying = CalendarTFC.INSTANCE.getCalendarTime();
+        this.lastLaying = CalendarTFC.PLAYER_TIME.getTicks();
         return NonNullList.create();
     }
 

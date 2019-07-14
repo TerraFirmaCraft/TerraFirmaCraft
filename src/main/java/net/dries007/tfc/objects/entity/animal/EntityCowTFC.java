@@ -45,7 +45,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
     private static int getRandomGrowth()
     {
         int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.INSTANCE.getTotalDays() - lifeTimeDays);
+        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
 
     @SuppressWarnings("unused")
@@ -74,10 +74,10 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
         super.onLivingUpdate();
         if (!this.world.isRemote)
         {
-            if (this.getMilkedDay() > CalendarTFC.INSTANCE.getTotalDays())
+            if (this.getMilkedDay() > CalendarTFC.PLAYER_TIME.getTotalDays())
             {
                 //Calendar went backwards by command! this need to update
-                this.setMilkedDay((int) CalendarTFC.INSTANCE.getTotalDays());
+                this.setMilkedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
             }
         }
     }
@@ -97,6 +97,19 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
     }
 
     @Override
+    public void birthChildren()
+    {
+        int numberOfChilds = 1; //one always
+        for (int i = 0; i < numberOfChilds; i++)
+        {
+            EntityCowTFC baby = new EntityCowTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+            this.world.spawnEntity(baby);
+        }
+
+    }
+
+    @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);
@@ -106,7 +119,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
             if (this.getFamiliarity() > 0.15f && hasMilk())
             {
                 player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
-                this.setMilkedDay(CalendarTFC.INSTANCE.getTotalDays());
+                this.setMilkedDay(CalendarTFC.PLAYER_TIME.getTotalDays());
                 itemstack.shrink(1);
 
                 if (itemstack.isEmpty())
@@ -151,19 +164,6 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
     }
 
     @Override
-    public void birthChildren()
-    {
-        int numberOfChilds = 1; //one always
-        for (int i = 0; i < numberOfChilds; i++)
-        {
-            EntityCowTFC baby = new EntityCowTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.INSTANCE.getTotalDays());
-            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-            this.world.spawnEntity(baby);
-        }
-
-    }
-
-    @Override
     public long gestationDays()
     {
         return DAYS_TO_FULL_GESTATION;
@@ -179,19 +179,20 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
         this.lastMilked = value;
     }
 
-    public boolean hasMilk()
-    {
-        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && (this.getMilkedDay() == -1 || CalendarTFC.INSTANCE.getTotalDays() > getMilkedDay());
-    }
-
     @Override
     public float getPercentToAdulthood()
     {
         if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.INSTANCE.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
+        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
         if (value > 1f) value = 1f;
         if (value < 0f) value = 0;
         return (float) value;
+    }
+
+    @Override
+    public Age getAge()
+    {
+        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
     }
 
     @Override
@@ -235,10 +236,9 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
         this.playSound(SoundEvents.ENTITY_COW_STEP, 0.15F, 1.0F);
     }
 
-    @Override
-    public Age getAge()
+    public boolean hasMilk()
     {
-        return CalendarTFC.INSTANCE.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && (this.getMilkedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() > getMilkedDay());
     }
 
     @Override

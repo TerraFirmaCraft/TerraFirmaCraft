@@ -40,7 +40,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
     private static int getRandomGrowth()
     {
         int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.INSTANCE.getTotalDays() - lifeTimeDays);
+        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
 
     @SuppressWarnings("unused")
@@ -69,7 +69,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
         int numberOfChilds = 1; //one always
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntityBearTFC baby = new EntityBearTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.INSTANCE.getTotalDays());
+            EntityBearTFC baby = new EntityBearTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.world.spawnEntity(baby);
         }
@@ -86,7 +86,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
     public float getPercentToAdulthood()
     {
         if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.INSTANCE.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
+        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
         if (value > 1f) value = 1f;
         if (value < 0f) value = 0;
         return (float) value;
@@ -95,7 +95,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
     @Override
     public Age getAge()
     {
-        return CalendarTFC.INSTANCE.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
     }
 
     @Override
