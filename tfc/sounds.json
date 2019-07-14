@@ -32,7 +32,7 @@
       "tfc:itemthrow"
     ]
   },
-  "mob.rooster.cry": {
+  "animal.rooster.cry": {
     "category": "ambient",
     "sounds": [
       "tfc:rooster1"
@@ -81,7 +81,7 @@
       "tfc:metalimpact4"
     ]
   },
-  "mob.deer.say": {
+  "animal.deer.say": {
     "category": "ambient",
     "sounds": [
       "tfc:deer1",
@@ -93,7 +93,7 @@
       "tfc:deer7"
     ]
   },
-  "mob.deer.cry": {
+  "animal.deer.cry": {
     "category": "ambient",
     "sounds": [
       "tfc:deercry1",
@@ -102,19 +102,19 @@
       "tfc:deercry4"
     ]
   },
-  "mob.deer.hurt": {
+  "animal.deer.hurt": {
     "category": "ambient",
     "sounds": [
       "tfc:deerhurt1"
     ]
   },
-  "mob.deer.death": {
+  "animal.deer.death": {
     "category": "ambient",
     "sounds": [
       "tfc:deerdeath1"
     ]
   },
-  "mob.bear.say": {
+  "animal.bear.say": {
     "category": "ambient",
     "sounds": [
       "tfc:bear1",
@@ -125,7 +125,7 @@
       "tfc:bear6"
     ]
   },
-  "mob.bear.cry": {
+  "animal.bear.cry": {
     "category": "ambient",
     "sounds": [
       "tfc:bearcry1",
@@ -134,50 +134,50 @@
       "tfc:bearcry4"
     ]
   },
-  "mob.bear.cub.cry": {
+  "animal.bear.cub.cry": {
     "category": "ambient",
     "sounds": [
       "tfc:bearcubcry1"
     ]
   },
-  "mob.bear.hurt": {
+  "animal.bear.hurt": {
     "category": "ambient",
     "sounds": [
       "tfc:bearhurt1"
     ]
   },
-  "mob.bear.death": {
+  "animal.bear.death": {
     "category": "ambient",
     "sounds": [
       "tfc:beardeath1"
     ]
   },
-  "mob.pheasant.say": {
+  "animal.pheasant.say": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasant1",
       "tfc:pheasant2"
     ]
   },
-  "mob.pheasant.chick.say": {
+  "animal.pheasant.chick.say": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasantchick1"
     ]
   },
-  "mob.pheasant.hurt": {
+  "animal.pheasant.hurt": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasanthurt1"
     ]
   },
-  "mob.pheasant.death": {
+  "animal.pheasant.death": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasantdeath1"
     ]
   },
-  "mob.cricket": {
+  "animal.cricket": {
     "category": "ambient",
     "sounds": [
       "tfc:cricket1",
@@ -186,7 +186,7 @@
       "tfc:cricket4"
     ]
   },
-  "mob.frog": {
+  "animal.frog": {
     "category": "ambient",
     "sounds": [
       "tfc:frog1"

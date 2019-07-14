@@ -48,6 +48,18 @@ tfc.tooltip.blast_furnace_ore_amount=Ore
 tfc.tooltip.blast_furnace_fuel_amount=Fuel
 tfc.tooltip.blast_furnace_melt_amount=Melt
 
+## Animal Tooltips / Messages
+tfc.tooltip.animal.old=This animal is too old to mate
+tfc.tooltip.animal.lowfamiliarity=This animal has low familiarity to mate
+tfc.tooltip.animal.pregnant=This female is pregnant!
+tfc.tooltip.animal.resting=This animal is resting from today's mating
+
+tfc.tooltip.animal.milk.male=This is a bull!
+tfc.tooltip.animal.milk.old=This cow is too old to be milked
+tfc.tooltip.animal.milk.child=This cow is too young to be milked
+tfc.tooltip.animal.milk.lowfamiliarity=This cow has low familiarity to let you milk it
+tfc.tooltip.animal.milk.empty=This cow has been milked today
+
 ## Command Tooltips / Messages
 tfc.tooltip.set_month_length=Set Month Length to %d days
 tfc.tooltip.set_time=Set Calendar Time to Year %04d, %s %02d %s
@@ -3366,3 +3378,11 @@ item.tfc.animal.product.wool.name=Wool
 item.tfc.animal.product.wool_yarn.name=Wool Yarn
 item.tfc.animal.product.wool_cloth.name=Wool Cloth
 item.tfc.animal.product.silk_cloth.name=Silk Cloth
+
+entity.sheeptfc.name=Sheep
+entity.cowtfc.name=Cow
+entity.beartfc.name=Bear
+entity.pigtfc.name=Pig
+entity.chickentfc.name=Chicken
+entity.deertfc.name=Deer
+entity.pheasanttfc.name=Pheasant
