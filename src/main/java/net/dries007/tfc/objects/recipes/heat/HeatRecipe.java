@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.types.Metal;
@@ -34,7 +35,9 @@ public class HeatRecipe
     {
         IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         if (cap == null)
-            throw new IllegalArgumentException("The input stack must implement IItemHeat capability for it to be used in a heat recipe!");
+        {
+            throw new IllegalArgumentException("Input stack " + inputStack + " must implement `IItemHeat`");
+        }
 
         this.outputStack = outputStack;
         this.inputStack = inputStack;
@@ -58,8 +61,9 @@ public class HeatRecipe
     {
         IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         if (cap == null)
-            throw new IllegalArgumentException("The input stack must implement IItemHeat capability for it to be used in a heat recipe!");
-
+        {
+            throw new IllegalArgumentException("Input stack " + inputStack + " must implement `IItemHeat`");
+        }
         this.outputMetal = outputMetal;
         this.inputStack = inputStack;
 
@@ -72,8 +76,9 @@ public class HeatRecipe
     {
         IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         if (cap == null)
-            throw new IllegalArgumentException("The input stack must implement IItemHeat capability for it to be used in a heat recipe!");
-
+        {
+            throw new IllegalArgumentException("Input stack " + inputStack + " must implement `IItemHeat`");
+        }
         this.outputMetal = outputMetal;
         this.outputStack = outputStack;
         this.inputStack = inputStack;
@@ -89,11 +94,12 @@ public class HeatRecipe
         {
             ItemStack out = outputStack.copy();
 
-            if (inputStack.hasCapability(CapabilityFood.CAPABILITY, null) || out.hasCapability(CapabilityFood.CAPABILITY, null))
+            IFood inputFood = inputStack.getCapability(CapabilityFood.CAPABILITY, null);
+            IFood outputFood = out.getCapability(CapabilityFood.CAPABILITY, null);
+            if (inputFood != null && outputFood != null)
             {
-                out.getCapability(CapabilityFood.CAPABILITY, null).setCreationDate(inputStack.getCapability(CapabilityFood.CAPABILITY, null).getCreationDate());
+                outputFood.setCreationDate(inputFood.getCreationDate());
             }
-
             return out;
         }
         return null;

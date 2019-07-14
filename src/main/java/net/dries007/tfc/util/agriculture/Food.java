@@ -6,6 +6,7 @@
 package net.dries007.tfc.util.agriculture;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import static net.dries007.tfc.util.agriculture.Food.Category.*;
 
@@ -32,32 +33,32 @@ public enum Food
     STRAWBERRY(FRUIT, 0.4f, 8f, 0f, 0f, 0f, 1f, 0f, 4f),
     WINTERGREEN_BERRY(FRUIT, 0.4f, 5f, 0f, 0f, 0f, 0.5f, 0f, 4f),
     BARLEY(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f, "barley"),
-    BARLEY_GRAIN(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f, "grain_barley"),
-    BARLEY_FLOUR(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f, "flour_barley"),
+    BARLEY_GRAIN(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f, "grain_barley", "grain"),
+    BARLEY_FLOUR(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f, "flour_barley", "flour"),
     BARLEY_DOUGH(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f, 1f, 200f),
     BARLEY_BREAD(GRAIN, 0.6f, 0f, 2f, 0.5f, 0f, 0f, 0f, 1f),
-    MAIZE(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f, "maize"),
+    MAIZE(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f, "maize", "grain"),
     CORNBREAD(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f),
-    CORNMEAL_FLOUR(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f, "flour_cornmeal"),
+    CORNMEAL_FLOUR(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f, "flour_cornmeal", "flour"),
     CORNMEAL_DOUGH(GRAIN, 0.6f, 0f, 2f, 1f, 0.5f, 0f, 0f, 1f, 1f, 200f),
     OAT(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f, "oat"),
-    OAT_GRAIN(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f, "grain_oat"),
-    OAT_FLOUR(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f, "flour_oat"),
+    OAT_GRAIN(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f, "grain_oat", "grain"),
+    OAT_FLOUR(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f, "flour_oat", "flour"),
     OAT_DOUGH(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f, 1f, 200f),
     OAT_BREAD(GRAIN, 0.6f, 0f, 2f, 1f, 1f, 0f, 0f, 1f),
     RICE(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "rice"),
-    RICE_GRAIN(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "grain_rice"),
-    RICE_FLOUR(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "flour_rice"),
+    RICE_GRAIN(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "grain_rice", "grain"),
+    RICE_FLOUR(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "flour_rice", "flour"),
     RICE_DOUGH(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, 1f, 200f),
     RICE_BREAD(GRAIN, 0.4f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
     RYE(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "rye"),
-    RYE_GRAIN(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "grain_rye"),
-    RYE_FLOUR(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "flour_rye"),
+    RYE_GRAIN(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "grain_rye", "grain"),
+    RYE_FLOUR(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, "flour_rye", "flour"),
     RYE_DOUGH(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f, 1f, 200f),
     RYE_BREAD(GRAIN, 0.6f, 0f, 1.5f, 0.5f, 0f, 0f, 0f, 1f),
     WHEAT(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f, "wheat"),
-    WHEAT_GRAIN(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f, "grain_wheat"),
-    WHEAT_FLOUR(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f, "flour_wheat"),
+    WHEAT_GRAIN(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f, "grain_wheat", "grian"),
+    WHEAT_FLOUR(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f, "flour_wheat", "flour"),
     WHEAT_DOUGH(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f, 1f, 200f),
     WHEAT_BREAD(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f),
     BEET(VEGETABLE, 0.4f, 3f, 0f, 0f, 0f, 1f, 0f, 2.5f),
@@ -112,17 +113,14 @@ public enum Food
     private final float heatCapacity;
     private final float cookingTemp;
 
-    private Object[] oreDictNames;
+    private final String[] oreDictNames;
 
-
-    Food(@Nonnull Category category, float calories, float water, float carbohydrates, float fat, float protein, float vitamins, float minerals, float decayModifier, float heatCapacity, float cookingTemp, Object... oreNameParts)
+    Food(@Nonnull Category category, float calories, float water, float carbohydrates, float fat, float protein, float vitamins, float minerals, float decayModifier, String... oreNames)
     {
-        this(category, calories, water, carbohydrates, fat, protein, vitamins, minerals, decayModifier, heatCapacity, cookingTemp);
-
-        this.oreDictNames = oreNameParts;
+        this(category, calories, water, carbohydrates, fat, protein, vitamins, minerals, decayModifier, 0, -1, oreNames);
     }
 
-    Food(@Nonnull Category category, float calories, float water, float carbohydrates, float fat, float protein, float vitamins, float minerals, float decayModifier, float heatCapacity, float cookingTemp)
+    Food(@Nonnull Category category, float calories, float water, float carbohydrates, float fat, float protein, float vitamins, float minerals, float decayModifier, float heatCapacity, float cookingTemp, String... oreNames)
     {
         this.category = category;
         this.calories = calories;
@@ -134,37 +132,11 @@ public enum Food
         this.minerals = minerals;
         this.decayModifier = decayModifier;
 
-        this.heatable = true;
+        this.heatable = cookingTemp >= 0;
         this.heatCapacity = heatCapacity;
         this.cookingTemp = cookingTemp;
 
-        oreDictNames = null;
-    }
-
-    Food(@Nonnull Category category, float calories, float water, float carbohydrates, float fat, float protein, float vitamins, float minerals, float decayModifier, Object... oreNameParts)
-    {
-        this(category, calories, water, carbohydrates, fat, protein, vitamins, minerals, decayModifier);
-
-        this.oreDictNames = oreNameParts;
-    }
-
-    Food(@Nonnull Category category, float calories, float water, float carbohydrates, float fat, float protein, float vitamins, float minerals, float decayModifier)
-    {
-        this.category = category;
-        this.calories = calories;
-        this.water = water;
-        this.carbohydrates = carbohydrates;
-        this.fat = fat;
-        this.protein = protein;
-        this.vitamins = vitamins;
-        this.minerals = minerals;
-        this.decayModifier = decayModifier;
-
-        this.heatable = false;
-        this.heatCapacity = 0;
-        this.cookingTemp = 0;
-
-        oreDictNames = null;
+        this.oreDictNames = oreNames == null || oreNames.length == 0 ? null : oreNames;
     }
 
     public float getCalories()
@@ -208,7 +180,8 @@ public enum Food
         return cookingTemp;
     }
 
-    public Object[] getOreDictNames()
+    @Nullable
+    public String[] getOreDictNames()
     {
         return oreDictNames;
     }
