@@ -115,8 +115,9 @@ public class TESRQuern extends TileEntitySpecialRenderer<TEQuern>
                 }
 
                 IBakedModel handstoneModel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(handstone, te.getWorld(), null);
-                handstoneModel = ForgeHooksClient.handleCameraTransforms(handstoneModel, ItemCameraTransforms.TransformType.GROUND, false);
+                handstoneModel = ForgeHooksClient.handleCameraTransforms(handstoneModel, ItemCameraTransforms.TransformType.FIXED, false);
 
+                GlStateManager.scale(1.25, 1.25, 1.25);
                 Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
                 Minecraft.getMinecraft().getRenderItem().renderItem(handstone, handstoneModel);
 

@@ -11,6 +11,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -99,7 +101,7 @@ public class TEPlacedItem extends TEInventory
     public boolean onRightClick(EntityPlayer player, ItemStack stack, boolean x, boolean z)
     {
         final int slot = (x ? 1 : 0) + (z ? 2 : 0);
-        if (stack.isEmpty() || player.isSneaking())
+        if ((player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).isEmpty()) || player.isSneaking())
         {
             ItemStack current;
             if (isHoldingLargeItem)
@@ -124,7 +126,7 @@ public class TEPlacedItem extends TEInventory
                 return true;
             }
         }
-        else
+        else if (!stack.isEmpty())
         {
             // Try and insert an item
             // Check the size of item to determine if insertion is possible, or if it requires the large slot
@@ -145,7 +147,7 @@ public class TEPlacedItem extends TEInventory
                     return true;
                 }
             }
-            else if (size == Size.LARGE)
+            else if (size == Size.HUGE)
             {
                 // Large items are placed in the single center slot
                 if (isEmpty())
@@ -188,5 +190,25 @@ public class TEPlacedItem extends TEInventory
             }
         }
         return true;
+    }
+
+    public boolean holdingLargeItem()
+    {
+        return isHoldingLargeItem;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        isHoldingLargeItem = nbt.getBoolean("itemSize");
+        super.readFromNBT(nbt);
+    }
+
+    @Override
+    @Nonnull
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        nbt.setBoolean("itemSize", isHoldingLargeItem);
+        return super.writeToNBT(nbt);
     }
 }
