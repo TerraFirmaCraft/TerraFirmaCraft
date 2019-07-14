@@ -1,0 +1,20 @@
+{
+  "type": "tfc:damage_item_shaped",
+  "pattern": [
+    "XB",
+    " B"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "saw"
+    },
+    "B": {
+      "item": "tfc:wood/log/white_cedar"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/support/white_cedar",
+    "count": 8
+  }
+}
