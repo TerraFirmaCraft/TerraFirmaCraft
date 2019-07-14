@@ -31,6 +31,7 @@ import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
 import net.dries007.tfc.util.FluidTransferHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendarFormatted;
 
 @ParametersAreNonnullByDefault
 public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback
@@ -107,7 +108,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
 
     public String getSealedDate()
     {
-        return CalendarTFC.INSTANCE.getTimeAndDate(sealedCalendarTick);
+        return ICalendarFormatted.getTimeAndDate(sealedCalendarTick, CalendarTFC.INSTANCE.getDaysInMonth());
     }
 
     /**
@@ -161,8 +162,8 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
 
     public void onSealed()
     {
-        sealedTick = CalendarTFC.INSTANCE.getTotalTime();
-        sealedCalendarTick = CalendarTFC.INSTANCE.getCalendarTime();
+        sealedTick = CalendarTFC.TOTAL_TIME.getTicks();
+        sealedCalendarTick = CalendarTFC.CALENDAR_TIME.getTicks();
         recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
         TerraFirmaCraft.getNetwork().sendToDimension(new PacketBarrelUpdate(this, recipe, sealedCalendarTick), world.provider.getDimension());
     }
@@ -215,7 +216,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
             // Check if recipe is complete
             if (recipe != null)
             {
-                int durationSealed = (int) (CalendarTFC.INSTANCE.getTotalTime() - sealedTick);
+                int durationSealed = (int) (CalendarTFC.TOTAL_TIME.getTicks() - sealedTick);
                 if (durationSealed > recipe.getDuration())
                 {
                     ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);

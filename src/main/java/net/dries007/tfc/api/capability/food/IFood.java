@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendarFormatted;
 
 /**
  * Capability for any food item
@@ -68,7 +69,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
      */
     default boolean isRotten()
     {
-        return getRottenDate() < CalendarTFC.INSTANCE.getCalendarTime();
+        return getRottenDate() < CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     /**
@@ -111,7 +112,10 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
         }
         else
         {
-            text.add(I18n.format("tfc.tooltip.food_expiry_date", CalendarTFC.INSTANCE.getTimeAndDate(getRottenDate())));
+            // Calculate the date to display in calendar time
+            long rottenCalendarTime = getRottenDate() - CalendarTFC.PLAYER_TIME.getTicks() + CalendarTFC.CALENDAR_TIME.getTicks();
+            text.add(I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.INSTANCE.getDaysInMonth())));
+
             // Show nutrient values if not rotten
             for (Nutrient nutrient : Nutrient.values())
             {

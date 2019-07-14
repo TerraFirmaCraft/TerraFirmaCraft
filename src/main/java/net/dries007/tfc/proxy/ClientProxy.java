@@ -78,7 +78,7 @@ public class ClientProxy implements IProxy
     @Override
     public String getDayName(int dayOfMonth, long totalDays)
     {
-        String date = CalendarTFC.INSTANCE.getMonthOfYear().name() + dayOfMonth;
+        String date = CalendarTFC.CALENDAR_TIME.getMonthOfYear().name() + dayOfMonth;
         String birthday = CalendarTFC.BIRTHDAYS.get(date);
         if (birthday != null)
         {

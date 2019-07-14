@@ -55,6 +55,7 @@ import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.objects.entity.animal.*;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.classic.ClimateRenderHelper;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
@@ -159,13 +160,17 @@ public class ClientEvents
                 if (data == null || !data.isInitialized()) list.add("No data ?!");
                 else
                 {
-                    list.add(String.format("%sTemp: Base: %s%.1f\u00b0C%s Biome Avg: %s%.1f\u00b0C%s Month: %s%.1f\u00b0C%s Daily: %s%.1f\u00b0C",
-                        GRAY, WHITE, data.getBaseTemp(), GRAY,
+                    list.add(String.format("%sRegion: %s%.1f\u00b0C%s Avg: %s%.1f\u00b0C%s Min: %s%.1f\u00b0C%s Max: %s%.1f\u00b0C",
+                        GRAY, WHITE, data.getRegionalTemp(), GRAY,
                         WHITE, data.getAverageTemp(), GRAY,
-                        WHITE, ClimateRenderHelper.get(blockpos).getTemperature(), GRAY,
+                        WHITE, ClimateTFC.monthTemp(data.getRegionalTemp(), Month.JANUARY, blockpos.getZ()), GRAY,
+                        WHITE, ClimateTFC.monthTemp(data.getRegionalTemp(), Month.JULY, blockpos.getZ())));
+                    list.add(String.format("%sTemperature: %s%.1f\u00b0C Daily: %s%.1f\u00b0C",
+                        GRAY, WHITE, ClimateRenderHelper.get(blockpos).getTemperature(),
                         WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)));
 
-                    list.add(I18n.format("tfc.tooltip.date", CalendarTFC.INSTANCE.getTimeAndDate()));
+                    list.add(I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
+                    list.add(I18n.format("tfc.tooltip.debug_times", CalendarTFC.TOTAL_TIME.getTicks(), CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks()));
 
                     list.add(GRAY + "Biome: " + WHITE + mc.world.getBiome(blockpos).getBiomeName());
 

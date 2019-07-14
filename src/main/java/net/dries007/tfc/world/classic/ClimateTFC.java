@@ -65,25 +65,11 @@ public final class ClimateTFC
         return data.isInitialized() && data.getRainfall() >= 375f && data.getFloraDiversity() >= 0.5f && data.getFloraDensity() >= 0.5f && world.getBiome(pos).getHeightVariation() < 0.15;
     }
 
-    public static float getBaseTemp(World world, BlockPos pos)
-    {
-        ChunkDataTFC data = ChunkDataTFC.get(world, pos);
-        if (!data.isInitialized()) return Float.NaN;
-        return data.getBaseTemp();
-    }
-
     public static float getAverageBiomeTemp(World world, BlockPos pos)
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (!data.isInitialized()) return Float.NaN;
         return data.getAverageTemp();
-    }
-
-    public static float getHeightAdjustedBiomeTemp(World world, BlockPos pos)
-    {
-        float temp = adjustTempByHeight(pos.getY(), getAverageBiomeTemp(world, pos));
-        if (temp <= 0 || !world.canBlockSeeSky(pos)) return temp;
-        return temp - (temp * (0.25f * (1 - (world.getLight(pos) / 15f))));
     }
 
     public static float getHeightAdjustedTemp(World world, BlockPos pos)
@@ -100,7 +86,7 @@ public final class ClimateTFC
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (!data.isInitialized()) return Float.NaN;
-        return getTemp(data.getBaseTemp(), pos.getZ());
+        return getTemp(data.getRegionalTemp(), pos.getZ());
     }
 
     public static float adjustTempByHeight(int y, float temp)
@@ -120,16 +106,16 @@ public final class ClimateTFC
     /**
      * Range -40 to 40
      *
-     * @param baseTemp The base temp for the current location
+     * @param regionalTemp The base temp for the current location
      * @param z        The z-coordinate of the location that is being queried
      * @return The month adjusted temperature. This gets the base temperature, before daily / hourly changes
      */
-    public static float getMonthAdjTemp(float baseTemp, int z)
+    public static float getMonthAdjTemp(float regionalTemp, int z)
     {
-        final float currentMonthFactor = monthTemp(baseTemp, CalendarTFC.INSTANCE.getMonthOfYear(), z);
-        final float nextMonthFactor = monthTemp(baseTemp, CalendarTFC.INSTANCE.getMonthOfYear().next(), z);
+        final float currentMonthFactor = monthTemp(regionalTemp, CalendarTFC.CALENDAR_TIME.getMonthOfYear(), z);
+        final float nextMonthFactor = monthTemp(regionalTemp, CalendarTFC.CALENDAR_TIME.getMonthOfYear().next(), z);
 
-        final float delta = (float) CalendarTFC.INSTANCE.getDayOfMonth() / CalendarTFC.INSTANCE.getDaysInMonth();
+        final float delta = (float) CalendarTFC.CALENDAR_TIME.getDayOfMonth() / CalendarTFC.INSTANCE.getDaysInMonth();
         // Affine combination to smooth temperature transition
         return currentMonthFactor * (1 - delta) + nextMonthFactor * delta;
     }
@@ -137,53 +123,63 @@ public final class ClimateTFC
     /**
      * Range 0 - 1
      *
-     * @param chunkZ the chunk z position
+     * @param chunkZ the chunk Z position (in block coordinates)
      * @return the latitude factor for temperature calculation
      */
     public static float latitudeFactor(int chunkZ)
     {
+        int tempRange = ConfigTFC.WORLD.latitudeTemperatureModifier;
         if (!ConfigTFC.WORLD.cyclicTemperatureRegions)
         {
-            chunkZ = MathHelper.clamp(chunkZ, -1250, 1250);
+            chunkZ = MathHelper.clamp(chunkZ, -tempRange, tempRange);
         }
-        return 0.5f + 0.5f * ConfigTFC.WORLD.hemisphereType * (float) Math.sin(Math.PI * chunkZ / ConfigTFC.WORLD.zTemperatureModifier);
+        return 0.5f + 0.5f * ConfigTFC.WORLD.hemisphereType * (float) Math.sin(Math.PI * chunkZ / tempRange);
     }
 
     /**
      * Range -32 to 35
      *
-     * @param baseTemp The base temp for the current location
-     * @param month    The month (from CalendarTFC)
+     * @param regionalTemp The base temp for the current location
+     * @param month    The month (from Calendar)
      * @return the month factor for temp calculation
      */
-    public static float monthTemp(float baseTemp, Month month, int z)
+    public static float monthTemp(float regionalTemp, Month month, int z)
     {
-        //return month.getTempMod() + 0.2 * baseTemp;
-        return (41f - month.getTemperatureModifier() * 1.1f * (1 - 0.8f * latitudeFactor(z))) + 0.2f * baseTemp;
+        return monthTemp(regionalTemp, month.getTemperatureModifier(), z);
+    }
+
+    public static float monthTemp(float regionalTemp, float monthTempModifier, int z)
+    {
+        return (41f - monthTempModifier * 1.1f * (1 - 0.8f * latitudeFactor(z))) + regionalTemp;
     }
 
     /**
      * Get the exact temperature for a location, including day + hour variation
      *
-     * @param baseTemp The base temperature, either from {@link ChunkDataTFC} or {@link ClimateRenderHelper}
+     * @param regionalTemp The base temperature, either from {@link ChunkDataTFC} or {@link ClimateRenderHelper}
      * @param z        the z-coordinate
      * @return A temperature, in the approximate range -35 to 35
      */
-    private static float getTemp(float baseTemp, int z)
+    private static float getTemp(float regionalTemp, int z)
     {
-        int h = (int) ((CalendarTFC.INSTANCE.getTotalHours() - 6) % CalendarTFC.HOURS_IN_DAY);
-        if (h < 0) h += CalendarTFC.HOURS_IN_DAY;
-
-        float hourMod;
-        if (h < 12) hourMod = ((float) h / 11) * 0.3f;
-        else hourMod = 0.3f - ((((float) h - 12) / 11) * 0.3f);
+        // Hottest part of the day at 12, coldest at 0
+        int hourOfDay = CalendarTFC.CALENDAR_TIME.getHourOfDay();
+        if (hourOfDay > 12)
+        {
+            // Range: 0 - 12
+            hourOfDay = 24 - hourOfDay;
+        }
+        // Range: -1 - 1
+        float hourModifier = 1f - (hourOfDay / 6f);
 
         // Note: this does not use world seed, as that is not synced from server - client, resulting in the seed being different
-        long day = CalendarTFC.INSTANCE.getTotalDays();
+        long day = CalendarTFC.CALENDAR_TIME.getTotalDays();
         RANDOM.setSeed(day);
-        final float dailyTemp = (RANDOM.nextInt(200) - 100) / 20f;
+        // Range: -1 - 1
+        final float dailyModifier = RANDOM.nextFloat() - RANDOM.nextFloat();
 
-        return getMonthAdjTemp(baseTemp, z) + dailyTemp + (hourMod * (baseTemp + dailyTemp));
+        // Max daily / hourly variance is +/- 4 C
+        return getMonthAdjTemp(regionalTemp, z) + (dailyModifier + 0.3f * hourModifier) * 3f;
     }
 
     private ClimateTFC() {}

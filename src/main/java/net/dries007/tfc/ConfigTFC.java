@@ -79,6 +79,11 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierHeating")
         public double temperatureModifierHeating = 1;
 
+        @Config.Comment("Modifier for how quickly food will decay. Larger values = faster decay. Set to 0 for infinite expiration time")
+        @Config.RangeDouble(min = 0, max = 10)
+        @Config.LangKey("config." + MOD_ID + ".general.foodDecayModifier")
+        public double foodDecayModifier = 1.0;
+
         @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.")
         @Config.RangeInt(min = 20)
         @Config.LangKey("config." + MOD_ID + ".general.pitKilnTime")
@@ -201,10 +206,9 @@ public class ConfigTFC
         @Config.RequiresWorldRestart
         public boolean debugMode = false;
 
-        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave.",
-            "The equation is roughly sin(pi * zCoord / (16 * zTemperatureModifier)). 2500 gives a total range of 40 km (peaks at +/- 20km)"})
-        @Config.RangeDouble(min = 100, max = 10000)
-        @Config.LangKey("config." + MOD_ID + ".world.zTemperatureModifier")
-        public double zTemperatureModifier = 2500f;
+        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents half the period of the wave = the distance between hot and cold bands, in blocks",})
+        @Config.RangeDouble(min = 1_000, max = 1_000_000)
+        @Config.LangKey("config." + MOD_ID + ".world.latitudeTemperatureModifier")
+        public int latitudeTemperatureModifier = 20_000;
     }
 }
