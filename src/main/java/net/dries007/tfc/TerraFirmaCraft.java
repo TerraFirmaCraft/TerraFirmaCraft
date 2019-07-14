@@ -128,6 +128,7 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketPlaceBlockSpecial.Handler(), PacketPlaceBlockSpecial.class, ++id, Side.SERVER);
         network.registerMessage(new PacketSwitchPlayerInventoryTab.Handler(), PacketSwitchPlayerInventoryTab.class, ++id, Side.SERVER);
         network.registerMessage(new PacketOpenCraftingGui.Handler(), PacketOpenCraftingGui.class, ++id, Side.SERVER);
+        network.registerMessage(new PacketSwitchLargeVesselModeTab.Handler(), PacketSwitchLargeVesselModeTab.class, ++id, Side.SERVER);
 
         // Received on client
         network.registerMessage(new PacketAnvilUpdate.Handler(), PacketAnvilUpdate.class, ++id, Side.CLIENT);
@@ -140,6 +141,7 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketBellowsUpdate.Handler(), PacketBellowsUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketFoodStatsUpdate.Handler(), PacketFoodStatsUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketFoodStatsReplace.Handler(), PacketFoodStatsReplace.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketLargeVesselUpdate.Handler(), PacketLargeVesselUpdate.class, ++id, Side.CLIENT);
 
         EntitiesTFC.preInit();
         VeinRegistry.INSTANCE.preInit(event.getModConfigurationDirectory());
