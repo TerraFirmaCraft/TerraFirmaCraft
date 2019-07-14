@@ -14,6 +14,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.SoundCategory;
@@ -285,10 +287,24 @@ public final class CommonEventHandler
             CalendarTFC.INSTANCE.update(player);
 
             // Food Stats
-            FoodStats originalStats = event.player.getFoodStats();
+            FoodStats originalStats = player.getFoodStats();
             if (!(originalStats instanceof FoodStatsTFC))
             {
-                event.player.foodStats = new FoodStatsTFC(event.player, originalStats);
+                player.foodStats = new FoodStatsTFC(player, originalStats);
+
+                // Also need to read the food stats from nbt, as they were not present when the player was loaded
+                MinecraftServer server = player.world.getMinecraftServer();
+                if (server != null)
+                {
+                    NBTTagCompound nbt = server.getPlayerList().getPlayerNBT(player);
+                    // This can be null if the server is unable to read the file
+                    //noinspection ConstantConditions
+                    if (nbt != null)
+                    {
+                        player.foodStats.readNBT(nbt);
+                    }
+                }
+
                 TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.player);
             }
         }
