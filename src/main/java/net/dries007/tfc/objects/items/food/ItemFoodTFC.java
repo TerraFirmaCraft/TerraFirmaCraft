@@ -46,14 +46,21 @@ public class ItemFoodTFC extends ItemFood
             throw new IllegalStateException("There can only be one.");
         }
 
-        OreDictionaryHelper.register(this, food.getCategory());
-        if (food.getOreDictNames() != null) OreDictionaryHelper.register(this, food.getOreDictNames());
+        // Use "category" here as to not conflict with actual items, i.e. grain
+        OreDictionaryHelper.register(this, "cateory", food.getCategory());
+        if (food.getOreDictNames() != null)
+        {
+            for (Object name : food.getOreDictNames())
+            {
+                OreDictionaryHelper.register(this, name);
+            }
+        }
     }
 
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return (food.isHeatable()) ? new FoodHeatHandler(nbt, food) : new FoodHandler(nbt, food);
+        return food.isHeatable() ? new FoodHeatHandler(nbt, food) : new FoodHandler(nbt, food);
     }
 }

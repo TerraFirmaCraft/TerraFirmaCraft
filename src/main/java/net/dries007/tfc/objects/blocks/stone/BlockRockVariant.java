@@ -108,27 +108,27 @@ public class BlockRockVariant extends Block
                 break;
             case SAND:
                 setSoundType(SoundType.SAND);
-                setHardness(0.5F);
+                setHardness(0.7F);
                 setHarvestLevel("shovel", 0);
                 break;
             case DIRT:
             case PATH:
             case FARMLAND:
                 setSoundType(SoundType.GROUND);
-                setHardness(0.5F);
+                setHardness(1.0F);
                 setHarvestLevel("shovel", 0);
                 break;
             case GRAVEL:
             case CLAY:
                 setSoundType(SoundType.GROUND);
-                setHardness(0.6F);
+                setHardness(0.8F);
                 setHarvestLevel("shovel", 0);
                 break;
             case CLAY_GRASS:
             case GRASS:
             case DRY_GRASS:
                 setSoundType(SoundType.PLANT);
-                setHardness(0.6F);
+                setHardness(1.1F);
                 setHarvestLevel("shovel", 0);
                 break;
         }
