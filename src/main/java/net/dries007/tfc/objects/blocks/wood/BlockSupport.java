@@ -69,19 +69,27 @@ public class BlockSupport extends Block
      */
     public static boolean isBeingSupported(World worldIn, BlockPos pos)
     {
-        if (!worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) return true; //If world isn't loaded...
-        for (BlockPos.MutableBlockPos searchSupport : BlockPos.getAllInBoxMutable(pos.add(-5, -1, -5), pos.add(5, 1, 5)))
+        if (!worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
+        {
+            return true; //If world isn't loaded...
+        }
+        for (BlockPos.MutableBlockPos searchSupport : BlockPos.getAllInBoxMutable(pos.add(-4, -1, -4), pos.add(4, 1, 4)))
         {
             IBlockState st = worldIn.getBlockState(searchSupport);
             if (st.getBlock() instanceof BlockSupport)
             {
                 if (((BlockSupport) st.getBlock()).canSupportBlocks(worldIn, searchSupport))
-                    return true; //Found support block that can support this BlockPos
+                {
+                    return true; //Found support block that can support this position
+                }
             }
         }
         return false;
     }
 
+    /**
+     * This is an optimized way to check for blocks that aren't supported during a cave in, instead of checking every single block individually and calling BlockSupper#isBeingSupported
+     */
     public static Set<BlockPos> getAllUnsupportedBlocksIn(World worldIn, BlockPos from, BlockPos to)
     {
         Set<BlockPos> listSupported = new HashSet<>();
@@ -94,16 +102,18 @@ public class BlockSupport extends Block
         int maxZ = Math.max(from.getZ(), to.getZ());
         BlockPos minPoint = new BlockPos(minX, minY, minZ);
         BlockPos maxPoint = new BlockPos(maxX, maxY, maxZ);
-        for (BlockPos.MutableBlockPos searchingPoint : BlockPos.getAllInBoxMutable(minPoint.add(-5, -1, -5), maxPoint.add(5, 1, 5)))
+        for (BlockPos.MutableBlockPos searchingPoint : BlockPos.getAllInBoxMutable(minPoint.add(-4, -1, -4), maxPoint.add(4, 1, 4)))
         {
             if (!listSupported.contains(searchingPoint))
+            {
                 listUnsupported.add(searchingPoint.toImmutable()); //Adding blocks that wasn't found supported
+            }
             IBlockState st = worldIn.getBlockState(searchingPoint);
             if (st.getBlock() instanceof BlockSupport)
             {
                 if (((BlockSupport) st.getBlock()).canSupportBlocks(worldIn, searchingPoint))
                 {
-                    for (BlockPos.MutableBlockPos supported : BlockPos.getAllInBoxMutable(searchingPoint.add(-5, -1, -5), searchingPoint.add(5, 1, 5)))
+                    for (BlockPos.MutableBlockPos supported : BlockPos.getAllInBoxMutable(searchingPoint.add(-4, -1, -4), searchingPoint.add(4, 1, 4)))
                     {
                         listSupported.add(supported.toImmutable()); //Adding all supported blocks by this support
                         listUnsupported.remove(supported); //Remove if this block was added earlier
