@@ -25,10 +25,10 @@ public interface IFallingBlock
         return state.getMaterial().isReplaceable();
     }
 
-    // Can the block fall at a particular position; ignore horizontal falling
-    default boolean shouldFall(World world, BlockPos pos)
+    default boolean shouldFall(World world, BlockPos posToFallAt, BlockPos originalPos)
     {
-        return canFallThrough(world.getBlockState(pos.down())) && !BlockSupport.isBeingSupported(world, pos);
+        // Can the block fall at a particular position; ignore horizontal falling
+        return canFallThrough(world.getBlockState(posToFallAt.down())) && !BlockSupport.isBeingSupported(world, originalPos);
     }
 
     // Get the position that the block will fall from (allows for horizontal falling)
@@ -62,7 +62,9 @@ public interface IFallingBlock
                 worldIn.setBlockToAir(pos);
                 pos1 = pos1.down();
                 while (canFallThrough(worldIn.getBlockState(pos1)) && pos1.getY() > 0)
+                {
                     pos1 = pos1.down();
+                }
                 if (pos1.getY() > 0) worldIn.setBlockState(pos1.up(), state); // Includes Forge's fix for data loss.
             }
             return true;
