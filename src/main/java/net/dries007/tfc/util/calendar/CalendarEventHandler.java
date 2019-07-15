@@ -19,6 +19,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.network.PacketCalendarUpdate;
+
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -92,7 +95,10 @@ public class CalendarEventHandler
         final World world = event.getWorld();
         if (world.provider.getDimension() == 0 && !world.isRemote)
         {
-            CalendarTFC.INSTANCE.updateWorldDataAndSync(event.getWorld());
+            // Load calendar from world data
+            CalendarWorldData data = CalendarWorldData.get(world);
+            CalendarTFC.INSTANCE.reset(data.instance);
+            TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalendarTFC.INSTANCE));
         }
     }
 }
