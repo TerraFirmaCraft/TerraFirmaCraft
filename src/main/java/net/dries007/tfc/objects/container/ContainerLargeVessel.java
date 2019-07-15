@@ -48,11 +48,11 @@ public class ContainerLargeVessel extends ContainerTE<TELargeVessel> implements 
 
             if (state.getValue(SEALED))
             {
-                tile.onSolidUnseal();
+                tile.onUnseal();
             }
             else
             {
-                tile.onSolidSeal();
+                tile.onSeal();
             }
 
             tile.getWorld().setBlockState(tile.getPos(), state.withProperty(SEALED, !state.getValue(SEALED)));
