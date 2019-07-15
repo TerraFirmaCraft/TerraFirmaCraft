@@ -37,6 +37,7 @@ import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.itemblock.*;
 import net.dries007.tfc.objects.te.*;
 import net.dries007.tfc.util.agriculture.Crop;
+import net.dries007.tfc.util.agriculture.FruitTree;
 
 import static net.dries007.tfc.api.types.Rock.Type.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -140,6 +141,11 @@ public final class BlocksTFC
     private static ImmutableList<BlockPlantTFC> allGrassBlocks;
     private static ImmutableList<BlockLoom> allLoomBlocks;
     private static ImmutableList<BlockSupport> allSupportBlocks;
+
+    private static ImmutableList<BlockFruitTreeSapling> allFruitTreeSaplingBlocks;
+    private static ImmutableList<BlockFruitTreeTrunk> allFruitTreeTrunkBlocks;
+    private static ImmutableList<BlockFruitTreeBranch> allFruitTreeBranchBlocks;
+    private static ImmutableList<BlockFruitTreeLeaves> allFruitTreeLeavesBlocks;
 
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
@@ -260,6 +266,26 @@ public final class BlocksTFC
     public static ImmutableList<BlockSupport> getAllSupportBlocks()
     {
         return allSupportBlocks;
+    }
+
+    public static ImmutableList<BlockFruitTreeSapling> getAllFruitTreeSaplingBlocks()
+    {
+        return allFruitTreeSaplingBlocks;
+    }
+
+    public static ImmutableList<BlockFruitTreeTrunk> getAllFruitTreeTrunkBlocks()
+    {
+        return allFruitTreeTrunkBlocks;
+    }
+
+    public static ImmutableList<BlockFruitTreeBranch> getAllFruitTreeBranchBlocks()
+    {
+        return allFruitTreeBranchBlocks;
+    }
+
+    public static ImmutableList<BlockFruitTreeLeaves> getAllFruitTreeLeavesBlocks()
+    {
+        return allFruitTreeLeavesBlocks;
     }
 
     @SubscribeEvent
@@ -473,6 +499,30 @@ public final class BlocksTFC
 
             allCropBlocks = b.build();
         }
+
+        {
+            Builder<BlockFruitTreeSapling> fSaplings = ImmutableList.builder();
+            Builder<BlockFruitTreeTrunk> fTrunks = ImmutableList.builder();
+            Builder<BlockFruitTreeBranch> fBranches = ImmutableList.builder();
+            Builder<BlockFruitTreeLeaves> fLeaves = ImmutableList.builder();
+
+            for (FruitTree tree : FruitTree.values())
+            {
+                fSaplings.add(register(r, "fruit_trees/sapling/" + tree.name().toLowerCase(), new BlockFruitTreeSapling(tree), CT_WOOD));
+                fTrunks.add(register(r, "fruit_trees/trunk/" + tree.name().toLowerCase(), new BlockFruitTreeTrunk(tree)));
+                fBranches.add(register(r, "fruit_trees/branch/" + tree.name().toLowerCase(), new BlockFruitTreeBranch(tree)));
+                fLeaves.add(register(r, "fruit_trees/leaves/" + tree.name().toLowerCase(), new BlockFruitTreeLeaves(tree)));
+            }
+
+            allFruitTreeSaplingBlocks = fSaplings.build();
+            allFruitTreeTrunkBlocks = fTrunks.build();
+            allFruitTreeBranchBlocks = fBranches.build();
+            allFruitTreeLeavesBlocks = fLeaves.build();
+
+            //Add ItemBlocks
+            allFruitTreeSaplingBlocks.forEach(x -> inventoryItemBlocks.add(new ItemBlockTFC(x)));
+        }
+
         {
 
             Builder<BlockPlantTFC> b = ImmutableList.builder();
