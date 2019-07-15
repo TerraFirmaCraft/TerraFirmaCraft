@@ -52,6 +52,7 @@ import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.wood.BlockFruitTreeLeaves;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
@@ -194,6 +195,9 @@ public final class ClientRegisterEvents
 
         for (Block block : BlocksTFC.getAllCropBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(WILD).build());
+
+        for (Block block : BlocksTFC.getAllFruitTreeLeavesBlocks())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockFruitTreeLeaves.DECAYABLE).ignore(BlockFruitTreeLeaves.HARVESTABLE).build());
 
         BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.getType() == Rock.Type.FARMLAND).forEach(e ->
             ModelLoader.setCustomStateMapper(e, new StateMap.Builder().ignore(BlockFarmlandTFC.MOISTURE).build())
