@@ -84,7 +84,7 @@ public class GuiLargeVessel extends GuiContainerTE<TELargeVessel>
             }
 
             // Draw the text displaying both the seal date, and the recipe name
-            fontRenderer.drawString(tile.getSealedDate(), 46, 73, 0x404040);
+            fontRenderer.drawString(tile.getSealedDate(), xSize / 2 - fontRenderer.getStringWidth(tile.getSealedDate()) / 2, 74, 0x404040);
         }
     }
 
