@@ -27,9 +27,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -38,6 +35,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.te.TELargeVessel;
 import net.dries007.tfc.util.Helpers;
 
@@ -135,24 +133,9 @@ public class BlockLargeVessel extends Block implements IItemSize
                     worldIn.setBlockState(pos, state.withProperty(SEALED, !state.getValue(SEALED)));
                     te.onSealed();
                 }
-                else if (heldItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
-                {
-                    te.updateSlots();
-                    if (!state.getValue(SEALED) && te.getGuiTabs() != TELargeVessel.GUI_TAB_SOLID)
-                    {
-                        IFluidHandler fluidHandler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-                        if (fluidHandler != null)
-                        {
-                            FluidUtil.interactWithFluidHandler(playerIn, hand, fluidHandler);
-                            te.markDirty();
-                            worldIn.notifyBlockUpdate(pos, state, state, 3);
-                        }
-                    }
-                }
                 else
                 {
-                    te.updateSlots();
-                    te.openGui(playerIn);
+                    TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.LARGE_VESSEL);
                 }
             }
 

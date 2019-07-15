@@ -11,8 +11,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -20,20 +18,13 @@ import net.dries007.tfc.objects.inventory.slot.SlotCallback;
 import net.dries007.tfc.objects.te.TELargeVessel;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockBarrel.SEALED;
-import static net.dries007.tfc.objects.te.TEBarrel.*;
 
-public class ContainerLargeVesselFluid extends ContainerTE<TELargeVessel> implements IButtonHandler
+public class ContainerLargeVessel extends ContainerTE<TELargeVessel> implements IButtonHandler
 {
 
-    public ContainerLargeVesselFluid(InventoryPlayer playerInv, TELargeVessel tile)
+    public ContainerLargeVessel(InventoryPlayer playerInv, TELargeVessel tile)
     {
         super(playerInv, tile, true);
-    }
-
-    @Nullable
-    public IFluidHandler getBarrelTank()
-    {
-        return tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
     }
 
     @Nullable
@@ -54,6 +45,16 @@ public class ContainerLargeVesselFluid extends ContainerTE<TELargeVessel> implem
         if (!tile.getWorld().isRemote)
         {
             IBlockState state = tile.getWorld().getBlockState(tile.getPos());
+
+            if (state.getValue(SEALED))
+            {
+                tile.onSolidUnseal();
+            }
+            else
+            {
+                tile.onSolidSeal();
+            }
+
             tile.getWorld().setBlockState(tile.getPos(), state.withProperty(SEALED, !state.getValue(SEALED)));
             tile.onSealed();
         }
@@ -66,9 +67,13 @@ public class ContainerLargeVesselFluid extends ContainerTE<TELargeVessel> implem
 
         if (inventory != null)
         {
-            addSlotToContainer(new SlotCallback(inventory, SLOT_FLUID_CONTAINER_IN, 35, 20, tile));
-            addSlotToContainer(new SlotCallback(inventory, SLOT_FLUID_CONTAINER_OUT, 35, 54, tile));
-            addSlotToContainer(new SlotCallback(inventory, SLOT_ITEM, 89, 37, tile));
+            for (int y = 0; y < 3; y++)
+            {
+                for (int x = 0; x < 3; x++)
+                {
+                    addSlotToContainer(new SlotCallback(inventory, x * 3 + y, 34 + x * 18, 19 + y * 18, tile));
+                }
+            }
         }
     }
 

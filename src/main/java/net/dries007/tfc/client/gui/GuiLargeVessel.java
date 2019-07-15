@@ -18,23 +18,19 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.recipes.BarrelRecipe;
-import net.dries007.tfc.client.TFCGuiHandler;
-import net.dries007.tfc.client.button.GuiButtonLargeVesselModeTab;
 import net.dries007.tfc.client.button.GuiButtonLargeVesselSeal;
 import net.dries007.tfc.client.button.IButtonTooltip;
 import net.dries007.tfc.network.PacketGuiButton;
-import net.dries007.tfc.network.PacketSwitchLargeVesselModeTab;
 import net.dries007.tfc.objects.te.TELargeVessel;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
-public class GuiLargeVesselSolid extends GuiContainerTE<TELargeVessel>
+public class GuiLargeVessel extends GuiContainerTE<TELargeVessel>
 {
     public static final ResourceLocation LARGE_VESSEL_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/large_vessel.png");
     private final String translationKey;
 
-    public GuiLargeVesselSolid(Container container, InventoryPlayer playerInv, TELargeVessel tile, String translationKey)
+    public GuiLargeVessel(Container container, InventoryPlayer playerInv, TELargeVessel tile, String translationKey)
     {
         super(container, playerInv, tile, LARGE_VESSEL_BACKGROUND);
 
@@ -46,9 +42,6 @@ public class GuiLargeVesselSolid extends GuiContainerTE<TELargeVessel>
     {
         super.initGui();
         addButton(new GuiButtonLargeVesselSeal(tile, 0, guiTop, guiLeft));
-
-        addButton(new GuiButtonLargeVesselModeTab(TFCGuiHandler.Type.LARGE_VESSEL_FLUID, tile, 1, guiTop, guiLeft, true));
-        addButton(new GuiButtonLargeVesselModeTab(TFCGuiHandler.Type.LARGE_VESSEL_SOLID, tile, 2, guiTop, guiLeft, false));
     }
 
     @Override
@@ -83,7 +76,7 @@ public class GuiLargeVesselSolid extends GuiContainerTE<TELargeVessel>
             if (handler != null)
             {
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
-                for (int slotId = 0; slotId < 9; slotId++)
+                for (int slotId = 0; slotId < handler.getSlots(); slotId++)
                 {
                     drawSlotOverlay(inventorySlots.getSlot(slotId));
                 }
@@ -92,36 +85,13 @@ public class GuiLargeVesselSolid extends GuiContainerTE<TELargeVessel>
 
             // Draw the text displaying both the seal date, and the recipe name
             fontRenderer.drawString(tile.getSealedDate(), 46, 73, 0x404040);
-
-            BarrelRecipe recipe = tile.getRecipe();
-            if (recipe != null)
-            {
-                String resultName = recipe.getResultName();
-                fontRenderer.drawString(resultName, 59, 19, 0x404040);
-            }
         }
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
-        switch (tile.getGuiTabs())
-        {
-            case TELargeVessel.GUI_TAB_ALL:
-                this.buttonList.get(TELargeVessel.GUI_TAB_FLUID).enabled = true;
-                this.buttonList.get(TELargeVessel.GUI_TAB_SOLID).enabled = true;
-                break;
-            case TELargeVessel.GUI_TAB_FLUID:
-                this.buttonList.get(TELargeVessel.GUI_TAB_SOLID).enabled = false;
-                break;
-            case TELargeVessel.GUI_TAB_SOLID:
-                this.buttonList.get(TELargeVessel.GUI_TAB_FLUID).enabled = false;
-                break;
-        }
-
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
-
-        drawTexturedModalRect(guiLeft, guiTop, 0, 166, 176, 83);
     }
 
     @Override
@@ -130,14 +100,6 @@ public class GuiLargeVesselSolid extends GuiContainerTE<TELargeVessel>
         if (button instanceof GuiButtonLargeVesselSeal)
         {
             TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id));
-        }
-        else if (button instanceof GuiButtonLargeVesselModeTab)
-        {
-            GuiButtonLargeVesselModeTab tabButton = (GuiButtonLargeVesselModeTab) button;
-            if (tabButton.isActive())
-            {
-                TerraFirmaCraft.getNetwork().sendToServer(new PacketSwitchLargeVesselModeTab(tile, tabButton.getGuiType()));
-            }
         }
         super.actionPerformed(button);
     }

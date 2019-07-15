@@ -61,7 +61,7 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
     @Override
     public void setPreservationFactor(float factor)
     {
-        setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long)((CalendarTFC.PLAYER_TIME.getTicks() - getCreationDate()) / getPreservationFactor() * factor));
+        setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - getCreationDate()) / getPreservationFactor() * factor));
         preservationFactor = factor;
     }
 
