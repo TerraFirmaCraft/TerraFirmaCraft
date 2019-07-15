@@ -46,91 +46,76 @@ public class ModelPheasantTFC extends ModelBase
         body.addBox(-4F, 0F, -2.5F, 9, 6, 5);
         body.setRotationPoint(0F, 12F, 0F);
         body.mirror = true;
-        setRotation(body, 0F, 0F, -0.5235988F);
 
         tail = new ModelRenderer(this, 0, 0);
         tail.addBox(-7F, 2F, -2F, 6, 3, 4);
         tail.setRotationPoint(0F, 12F, 0F);
         tail.mirror = true;
-        setRotation(tail, 0F, 0F, -0.1745329F);
 
         leftLeg = new ModelRenderer(this, 16, 24);
         leftLeg.addBox(1F, 4F, 1F, 3, 4, 2);
         leftLeg.setRotationPoint(0F, 12F, 0F);
         leftLeg.mirror = true;
-        setRotation(leftLeg, 0F, 0F, 0.3490659F);
 
         rightLeg = new ModelRenderer(this, 26, 24);
         rightLeg.addBox(1F, 4F, -3F, 3, 4, 2);
         rightLeg.setRotationPoint(0F, 12F, 0F);
         rightLeg.mirror = true;
-        setRotation(rightLeg, 0F, 0F, 0.3490659F);
 
         tailFeather = new ModelRenderer(this, 20, 0);
         tailFeather.addBox(-14.96F, 3F, -1F, 9, 1, 2);
         tailFeather.setRotationPoint(0F, 12F, 0F);
         tailFeather.mirror = true;
-        setRotation(tailFeather, 0F, 0F, -0.0872665F);
 
         leftLowerLeg = new ModelRenderer(this, 34, 19);
         leftLowerLeg.addBox(-1F, 8F, 1.5F, 1, 4, 1);
         leftLowerLeg.setRotationPoint(0F, 0F, 0F);
         leftLowerLeg.mirror = true;
-        setRotation(leftLowerLeg, 0F, 0F, 0F);
 
         rightLowerLeg = new ModelRenderer(this, 38, 19);
         rightLowerLeg.addBox(-1F, 8F, -2.5F, 1, 4, 1);
         rightLowerLeg.setRotationPoint(0F, 0F, 0F);
         rightLowerLeg.mirror = true;
-        setRotation(rightLowerLeg, 0F, 0F, 0F);
 
         neck = new ModelRenderer(this, 28, 13);
         neck.addBox(4F, 2F, -1.5F, 4, 3, 3, 0.05F);
         neck.setRotationPoint(-4F, 2F, 0F);
         neck.mirror = true;
-        setRotation(neck, 0F, 0F, -0.8726646F);
 
         head = new ModelRenderer(this, 16, 18);
         head.addBox(2.5F, -3F, -1.5F, 3, 3, 3, 0.1F);
         head.setRotationPoint(4F, 10F, 0F);
         head.mirror = true;
-        setRotation(head, 0F, 0F, 0F);
 
         beak = new ModelRenderer(this, 28, 19);
         beak.addBox(5F, -2F, -0.5F, 2, 1, 1);
         beak.setRotationPoint(4F, 10F, 0F);
         beak.mirror = true;
-        setRotation(beak, 0F, 0F, 0F);
 
         chest = new ModelRenderer(this, 28, 7);
         chest.addBox(-1F, 4.5F, -1.5F, 4, 3, 3);
         chest.setRotationPoint(-4F, 2F, 0F);
         chest.mirror = true;
-        setRotation(chest, 0F, 0F, -1.396263F);
 
         leftWing = new ModelRenderer(this, 0, 23);
         leftWing.addBox(-3F, 1F, 2.5F, 7, 4, 1);
         leftWing.setRotationPoint(0F, 12F, 0F);
         leftWing.mirror = true;
-        setRotation(leftWing, 0F, 0F, -0.5235988F);
 
         rightWing = new ModelRenderer(this, 0, 18);
         rightWing.addBox(-3F, 1F, -3.5F, 7, 4, 1);
         rightWing.setRotationPoint(0F, 12F, 0F);
         rightWing.mirror = true;
-        setRotation(rightWing, 0F, 0F, -0.5235988F);
 
         leftFoot = new ModelRenderer(this, 20, 3);
         leftFoot.addBox(-2F, 11.9F, 0.5F, 4, 0, 3, 0.001F);
         leftFoot.setRotationPoint(0F, 0F, 0F);
         leftFoot.mirror = true;
-        setRotation(leftFoot, 0F, 0F, 0F);
 
         rightFoot = new ModelRenderer(this, 20, 3);
         rightFoot.addBox(-2F, 11.9F, -3.5F, 4, 0, 3, 0.001F);
         rightFoot.setRotationPoint(0F, 0F, 0F);
         rightFoot.mirror = true;
-        setRotation(rightFoot, 0F, 0F, 0F);
 
         head.addChild(neck);
         head.addChild(chest);
@@ -217,13 +202,6 @@ public class ModelPheasantTFC extends ModelBase
         this.leftLowerLeg.rotateAngleZ = -((float) (Math.PI / 9F));
         this.rightFoot.rotateAngleZ = 0;
         this.leftFoot.rotateAngleZ = 0;
-    }
-
-    private void setRotation(ModelRenderer model, float x, float y, float z)
-    {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
     }
 
 }

@@ -72,5 +72,6 @@ public class RenderPheasantTFC extends RenderLiving<EntityPheasantTFC>
     protected void preRenderCallback(EntityPheasantTFC bear, float par2)
     {
         GlStateManager.scale(0.7f, 0.7f, 0.7f);
+        GlStateManager.rotate(90, 0, 1, 0);
     }
 }
