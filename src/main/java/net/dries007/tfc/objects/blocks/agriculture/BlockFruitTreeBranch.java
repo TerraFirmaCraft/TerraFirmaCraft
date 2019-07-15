@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.fruittrees;
+package net.dries007.tfc.objects.blocks.agriculture;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,13 +55,6 @@ public class BlockFruitTreeBranch extends Block
         return 0;
     }
 
-    @Override
-    @Nonnull
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(BlockFruitTreeSapling.get(tree));
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     @Nonnull
@@ -80,6 +73,13 @@ public class BlockFruitTreeBranch extends Block
         {
             worldIn.setBlockToAir(pos);
         }
+    }
+
+    @Override
+    @Nonnull
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Item.getItemFromBlock(BlockFruitTreeSapling.get(tree));
     }
 
     @Override

@@ -48,7 +48,7 @@ import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.fruittrees.BlockFruitTreeLeaves;
+import net.dries007.tfc.objects.blocks.agriculture.BlockFruitTreeLeaves;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
@@ -67,7 +67,7 @@ import net.dries007.tfc.world.classic.ClimateRenderHelper;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockPlacedHide.SIZE;
-import static net.dries007.tfc.objects.blocks.crops.BlockCropTFC.WILD;
+import static net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC.WILD;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)

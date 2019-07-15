@@ -17,11 +17,11 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.crops.BlockCropTFC;
+import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-import static net.dries007.tfc.objects.blocks.crops.BlockCropTFC.WILD;
+import static net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC.WILD;
 
 @ParametersAreNonnullByDefault
 public class WorldGenWildCrops extends WorldGenerator

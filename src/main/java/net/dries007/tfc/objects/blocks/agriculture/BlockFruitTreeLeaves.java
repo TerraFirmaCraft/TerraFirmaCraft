@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.fruittrees;
+package net.dries007.tfc.objects.blocks.agriculture;
 
 import java.util.*;
 import javax.annotation.Nonnull;
