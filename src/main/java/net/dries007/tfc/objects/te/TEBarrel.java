@@ -27,14 +27,16 @@ import net.dries007.tfc.network.PacketBarrelUpdate;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
 import net.dries007.tfc.objects.fluids.capability.FluidHandlerSided;
 import net.dries007.tfc.objects.fluids.capability.IFluidHandlerSidedCallback;
+import net.dries007.tfc.objects.inventory.capability.IFluidTankCallback;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
+import net.dries007.tfc.objects.inventory.fluid.FluidTankCallback;
 import net.dries007.tfc.util.FluidTransferHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
 
 @ParametersAreNonnullByDefault
-public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback
+public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback, IFluidTankCallback
 {
     public static final int SLOT_FLUID_CONTAINER_IN = 0;
     public static final int SLOT_FLUID_CONTAINER_OUT = 1;
@@ -42,7 +44,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     public static final int TANK_CAPACITY = 10000;
     public static final int BARREL_MAX_FLUID_TEMPERATURE = 500;
 
-    private FluidTank tank = new FluidTank(TANK_CAPACITY);
+    private FluidTank tank = new FluidTankCallback(this, TANK_CAPACITY);
     private boolean sealed;
     private long sealedTick, sealedCalendarTick;
     private BarrelRecipe recipe;
@@ -109,6 +111,13 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     public String getSealedDate()
     {
         return ICalendarFormatted.getTimeAndDate(sealedCalendarTick, CalendarTFC.INSTANCE.getDaysInMonth());
+    }
+
+    @Override
+    public void setAndUpdateFluidTank()
+    {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
     }
 
     /**
@@ -198,9 +207,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 if (result.isSuccess())
                 {
                     inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, result.getResult());
-
-                    IBlockState state = world.getBlockState(pos);
-                    world.notifyBlockUpdate(pos, state, state, 3);
                 }
 
                 Fluid freshWater = FluidRegistry.getFluid("fresh_water");
@@ -208,8 +214,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 if (!sealed && world.isRainingAt(pos.up()) && (tank.getFluid() == null || tank.getFluid().getFluid() == freshWater))
                 {
                     tank.fill(new FluidStack(freshWater, 10), true);
-                    IBlockState state = world.getBlockState(pos);
-                    world.notifyBlockUpdate(pos, state, state, 3);
                 }
             }
 
