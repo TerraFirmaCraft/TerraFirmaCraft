@@ -27,7 +27,7 @@ import net.dries007.tfc.api.types.IFruitTree;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -68,7 +68,7 @@ public class BlockFruitTreeSapling extends BlockBush implements IGrowable
             {
                 float temp = ClimateTFC.getTemp(world, pos);
                 float rainfall = ChunkDataTFC.getRainfall(world, pos);
-                long hours = te.getTicksSinceUpdate() / CalendarTFC.TICKS_IN_HOUR;
+                long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
                 if (hours > tree.getGrowthTime() && tree.isValidForGrowth(temp, rainfall))
                 {
                     te.resetCounter();
