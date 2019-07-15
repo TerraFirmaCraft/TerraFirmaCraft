@@ -23,6 +23,8 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
@@ -51,6 +53,8 @@ public class TELargeVessel extends TEInventory implements ITickable, IItemHandle
     public static final int SLOT_ITEM = 2;
     public static final int TANK_CAPACITY = 5000;
     public static final int LARGE_VESSEL_MAX_FLUID_TEMPERATURE = 500;
+
+    public static final float LARGE_VESSEL_PRESERVATION_FACTOR = 2.0f;
 
     private FluidTank tank = new FluidTank(TANK_CAPACITY);
     private boolean sealed;
@@ -179,6 +183,44 @@ public class TELargeVessel extends TEInventory implements ITickable, IItemHandle
         sealedCalendarTick = CalendarTFC.CALENDAR_TIME.getTicks();
         recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
         TerraFirmaCraft.getNetwork().sendToDimension(new PacketLargeVesselUpdate(this, recipe, sealedCalendarTick), world.provider.getDimension());
+    }
+
+    public void onSolidSeal()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            ItemStack stack = inventory.getStackInSlot(i + 3);
+            if (!stack.isEmpty())
+            {
+                IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+                if (cap != null)
+                {
+                    if (!cap.isRotten())
+                    {
+                        cap.setPreservationFactor(LARGE_VESSEL_PRESERVATION_FACTOR);
+                    }
+                }
+            }
+        }
+    }
+
+    public void onSolidUnseal()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            ItemStack stack = inventory.getStackInSlot(i + 3);
+            if (!stack.isEmpty())
+            {
+                IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+                if (cap != null)
+                {
+                    if (!cap.isRotten())
+                    {
+                        cap.setPreservationFactor(1.0f);
+                    }
+                }
+            }
+        }
     }
 
     public void onReceivePacket(@Nullable BarrelRecipe recipe, long sealedCalendarTick)

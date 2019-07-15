@@ -58,6 +58,24 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
     void setCreationDate(long creationDate);
 
     /**
+     * The factor that is used to calculate the preserved foods decay time
+     *
+     * @return the preservation factor
+     */
+    float getPreservationFactor();
+
+    /**
+     * Sets the preservation factor
+     * If it is equal to 1.0, there  is no preservation
+     * If it is larger than 1.0, it increases rotting time by the factor (it preserves food)
+     * If it is smaller than 1.0 but larger than 0, it decreases rotting time (so the opposite of preservation, decaying)
+     * If it is smaller or equal to 0, it rots instantly
+     *
+     * @param factor A float
+     */
+    void setPreservationFactor(float factor);
+
+    /**
      * Get the date at which this food item will rot
      *
      * @return a calendar time
@@ -114,7 +132,17 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
         {
             // Calculate the date to display in calendar time
             long rottenCalendarTime = getRottenDate() - CalendarTFC.PLAYER_TIME.getTicks() + CalendarTFC.CALENDAR_TIME.getTicks();
+
             text.add(I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.INSTANCE.getDaysInMonth())));
+
+            if (getPreservationFactor() > 1.0f)
+            {
+                text.add("(" + I18n.format("tfc.tooltip.food_preserved") + ")");
+            }
+            else if (getPreservationFactor() < 1.0f)
+            {
+                text.add("(" + I18n.format("tfc.tooltip.food_decaying") + ")");
+            }
 
             // Show nutrient values if not rotten
             for (Nutrient nutrient : Nutrient.values())

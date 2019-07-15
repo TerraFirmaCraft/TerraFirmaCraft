@@ -27,7 +27,7 @@ public class ContainerLargeVesselFluid extends ContainerTE<TELargeVessel> implem
 
     public ContainerLargeVesselFluid(InventoryPlayer playerInv, TELargeVessel tile)
     {
-        super(playerInv, tile);
+        super(playerInv, tile, true);
     }
 
     @Nullable

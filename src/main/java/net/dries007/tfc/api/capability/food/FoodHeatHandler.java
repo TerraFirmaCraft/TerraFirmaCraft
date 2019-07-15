@@ -32,6 +32,7 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
     private final float calories;
 
     private long creationDate;
+    private float preservationFactor;
 
     public FoodHeatHandler()
     {
@@ -55,6 +56,19 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
         System.arraycopy(nutrients, 0, this.nutrients, 0, nutrients.length);
 
         deserializeNBT(nbt);
+    }
+
+    @Override
+    public void setPreservationFactor(float factor)
+    {
+        setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long)((CalendarTFC.PLAYER_TIME.getTicks() - getCreationDate()) / getPreservationFactor() * factor));
+        preservationFactor = factor;
+    }
+
+    @Override
+    public float getPreservationFactor()
+    {
+        return preservationFactor;
     }
 
     @Override
@@ -123,6 +137,8 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
     {
         NBTTagCompound nbt = super.serializeNBT();
         nbt.setLong("creationDate", getCreationDate());
+        nbt.setFloat("preservationFactor", getPreservationFactor());
+
         // Traits are sorted so they match when trying to stack them
         if (!foodTraits.isEmpty())
         {
@@ -139,6 +155,8 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
         if (nbt != null && nbt.hasKey("creationDate"))
         {
             creationDate = nbt.getLong("creationDate");
+            preservationFactor = nbt.getFloat("preservationFactor");
+
             // Read the traits and apply each one (if they exist)
             if (nbt.hasKey("traits"))
             {
@@ -154,6 +172,7 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
             // Don't default to zero
             // Food decay initially is synced with the hour. This allows items grabbed within a minute to stack
             creationDate = CalendarTFC.PLAYER_TIME.getTotalHours() * ICalendar.TICKS_IN_HOUR;
+            preservationFactor = 1.0f;
         }
     }
 
