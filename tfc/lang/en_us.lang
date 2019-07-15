@@ -35,8 +35,6 @@ tfc.tooltip.season=Season : %s
 tfc.tooltip.day=Day : %s
 tfc.tooltip.date=Date : %s
 tfc.tooltip.food_expiry_date=Expires on: %s
-tfc.tooltip.food_preserved=Preserved
-tfc.tooltip.food_decaying=Decaying
 tfc.tooltip.food_spoiled=Spoiled! - Eww.
 tfc.tooltip.food_rotten=Rotten - I wouldn't eat that.
 tfc.tooltip.plant_cold=%sToo cold%s
@@ -51,8 +49,6 @@ tfc.tooltip.blast_furnace_fuel_amount=Fuel
 tfc.tooltip.blast_furnace_melt_amount=Melt
 tfc.tooltip.large_vessel_seal=Seal Large Vessel
 tfc.tooltip.large_vessel_unseal=Unseal Large Vessel
-tfc.tooltip.large_vessel_fluid=Fluid Storage
-tfc.tooltip.large_vessel_solid=Solid Storage
 
 ## Command Tooltips / Messages
 tfc.tooltip.set_month_length=Set Month Length to %d days
@@ -75,6 +71,7 @@ tfc.food_traits.brined_active=Brining
 tfc.food_traits.salted=Salted
 tfc.food_traits.pickled=Pickled
 tfc.food_traits.pickled_active=Pickling
+tfc.food_traits.preserved=Preserved
 
 ## Keybindings
 tfc.key.craft=Crafting GUI
