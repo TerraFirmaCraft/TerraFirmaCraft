@@ -3,7 +3,7 @@
   "defaults": {
     "model": "leaves",
     "textures": {
-      "all": "tfc:blocks/fruit_trees/leaves/banana"
+      "all": "tfc:blocks/fruit_trees/leaves/olive"
     }
   },
   "variants": {
@@ -17,16 +17,16 @@
       "flowering": {
         "model": "leaves",
         "textures": {
-          "all": "tfc:blocks/fruit_trees/leaves/banana",
-          "texture": "tfc:blocks/fruit_trees/flowers/banana"
+          "all": "tfc:blocks/fruit_trees/leaves/olive",
+          "texture": "tfc:blocks/fruit_trees/flowers/olive"
         },
         "submodel": "tfc:fruit_trees/leaves_overlay"
       },
       "fruit": {
         "model": "leaves",
         "textures": {
-          "all": "tfc:blocks/fruit_trees/leaves/banana",
-          "texture": "tfc:blocks/fruit_trees/fruit/banana"
+          "all": "tfc:blocks/fruit_trees/leaves/olive",
+          "texture": "tfc:blocks/fruit_trees/fruit/olive"
         },
         "submodel": "tfc:fruit_trees/leaves_overlay"
       }
