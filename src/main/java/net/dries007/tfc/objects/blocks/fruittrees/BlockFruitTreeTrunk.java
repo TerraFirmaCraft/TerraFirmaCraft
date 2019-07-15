@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.wood;
+package net.dries007.tfc.objects.blocks.fruittrees;
 
 import java.util.HashMap;
 import java.util.List;
