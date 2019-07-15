@@ -17,7 +17,16 @@ import net.dries007.tfc.util.calendar.Month;
 
 public enum FruitTree implements IFruitTree
 {
-    BANANA(Food.BANANA, Month.APRIL, 2, Month.SEPTEMBER, 1, 5f, 35f, 100f, 400f, 0.33f);
+    BANANA(Food.BANANA, Month.APRIL, 2, Month.SEPTEMBER, 1, 5f, 35f, 100f, 400f, 0.33f),
+    CHERRY(Food.CHERRY, Month.APRIL, 1, Month.JUNE, 1, 5f, 35f, 100f, 400f, 0.33f),
+    GREEN_APPLE(Food.GREEN_APPLE, Month.MAY, 2, Month.OCTOBER, 2, 5f, 35f, 100f, 400f, 0.33f),
+    LEMON(Food.LEMON, Month.MAY, 2, Month.AUGUST, 1, 5f, 35f, 100f, 400f, 0.33f),
+    OLIVE(Food.OLIVE, Month.JUNE, 1, Month.OCTOBER, 1, 5f, 35f, 100f, 400f, 0.33f),
+    ORANGE(Food.ORANGE, Month.FEBRUARY, 3, Month.NOVEMBER, 1, 5f, 35f, 100f, 400f, 0.33f),
+    PEACH(Food.PEACH, Month.APRIL, 2, Month.SEPTEMBER, 1, 5f, 35f, 100f, 400f, 0.33f),
+    PLUM(Food.PLUM, Month.MAY, 2, Month.JULY, 2, 5f, 35f, 100f, 400f, 0.33f),
+    RED_APPLE(Food.RED_APPLE, Month.MAY, 2, Month.OCTOBER, 2, 5f, 35f, 100f, 400f, 0.33f);
+
 
     @Nullable
     public static FruitTree getFromFruit(Food fruit)
