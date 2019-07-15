@@ -94,10 +94,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new ContainerQuern(player.inventory, Helpers.getTE(world, pos, TEQuern.class));
             case CRUCIBLE:
                 return new ContainerCrucible(player.inventory, Helpers.getTE(world, pos, TECrucible.class));
-            case LARGE_VESSEL_FLUID:
-                return new ContainerLargeVesselFluid(player.inventory, Helpers.getTE(world, pos, TELargeVessel.class));
-            case LARGE_VESSEL_SOLID:
-                return new ContainerLargeVesselSolid(player.inventory, Helpers.getTE(world, pos, TELargeVessel.class));
+            case LARGE_VESSEL:
+                return new ContainerLargeVessel(player.inventory, Helpers.getTE(world, pos, TELargeVessel.class));
             case CALENDAR:
             case SKILLS:
             case NUTRITION:
@@ -156,10 +154,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiQuern(container, player.inventory, Helpers.getTE(world, pos, TEQuern.class), world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
             case CRUCIBLE:
                 return new GuiCrucible(container, player.inventory, Helpers.getTE(world, pos, TECrucible.class));
-            case LARGE_VESSEL_FLUID:
-                return new GuiLargeVesselFluid(container, player.inventory, Helpers.getTE(world, pos, TELargeVessel.class), world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
-            case LARGE_VESSEL_SOLID:
-                return new GuiLargeVesselSolid(container, player.inventory, Helpers.getTE(world, pos, TELargeVessel.class), world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
+            case LARGE_VESSEL:
+                return new GuiLargeVessel(container, player.inventory, Helpers.getTE(world, pos, TELargeVessel.class), world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
             case CALENDAR:
                 return new GuiCalendar(container, player.inventory);
             case NUTRITION:
@@ -194,8 +190,7 @@ public class TFCGuiHandler implements IGuiHandler
         ANVIL_PLAN,
         CRUCIBLE,
         BLAST_FURNACE,
-        LARGE_VESSEL_FLUID,
-        LARGE_VESSEL_SOLID,
+        LARGE_VESSEL,
         CALENDAR,
         NUTRITION,
         SKILLS,
