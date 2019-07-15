@@ -30,7 +30,7 @@ public class ContainerLargeVesselSolid extends ContainerTE<TELargeVessel> implem
 
     public ContainerLargeVesselSolid(InventoryPlayer playerInv, TELargeVessel tile)
     {
-        super(playerInv, tile);
+        super(playerInv, tile,true);
     }
 
     @Nullable
@@ -51,6 +51,16 @@ public class ContainerLargeVesselSolid extends ContainerTE<TELargeVessel> implem
         if (!tile.getWorld().isRemote)
         {
             IBlockState state = tile.getWorld().getBlockState(tile.getPos());
+
+            if (state.getValue(SEALED))
+            {
+                tile.onSolidUnseal();
+            }
+            else
+            {
+                tile.onSolidSeal();
+            }
+
             tile.getWorld().setBlockState(tile.getPos(), state.withProperty(SEALED, !state.getValue(SEALED)));
             tile.onSealed();
         }
