@@ -28,20 +28,19 @@ import net.dries007.tfc.network.PacketLargeVesselUpdate;
 import net.dries007.tfc.objects.blocks.BlockLargeVessel;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
+import net.dries007.tfc.util.LargeVesselItemStackHandler;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
 
 @ParametersAreNonnullByDefault
 public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallback
 {
-    public static final float LARGE_VESSEL_PRESERVATION_FACTOR = 2.0f;
-
     private boolean sealed;
     private long sealedTick, sealedCalendarTick;
 
     public TELargeVessel()
     {
-        super(9);
+        super(new LargeVesselItemStackHandler(9));
     }
 
     /**
@@ -137,7 +136,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         TerraFirmaCraft.getNetwork().sendToDimension(new PacketLargeVesselUpdate(this, sealedCalendarTick), world.provider.getDimension());
     }
 
-    public void onSolidSeal()
+    public void onSeal()
     {
         for (int i = 0; i < 9; i++)
         {
@@ -149,14 +148,18 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
                 {
                     if (!cap.isRotten())
                     {
-                        cap.setPreservationFactor(LARGE_VESSEL_PRESERVATION_FACTOR);
+                        if (!cap.getTraits().contains(CapabilityFood.PRESERVED))
+                        {
+                            cap.getTraits().add(CapabilityFood.PRESERVED);
+                            cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long)((CalendarTFC.PLAYER_TIME.getTicks() - cap.getCreationDate()) / CapabilityFood.PRESERVED.getDecayModifier()));
+                        }
                     }
                 }
             }
         }
     }
 
-    public void onSolidUnseal()
+    public void onUnseal()
     {
         for (int i = 0; i < 9; i++)
         {
@@ -166,10 +169,8 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
                 IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
                 if (cap != null)
                 {
-                    if (!cap.isRotten())
-                    {
-                        cap.setPreservationFactor(1.0f);
-                    }
+                    cap.getTraits().remove(CapabilityFood.PRESERVED);
+                    cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long)((CalendarTFC.PLAYER_TIME.getTicks() - cap.getCreationDate()) * CapabilityFood.PRESERVED.getDecayModifier()));
                 }
             }
         }
