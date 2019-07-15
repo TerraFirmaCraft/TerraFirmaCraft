@@ -39,6 +39,7 @@ import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -88,14 +89,14 @@ public class BlockFruitTreeLeaves extends BlockLeaves
     {
         if (!world.isRemote)
         {
-            if (state.getValue(HARVESTABLE) && tree.isHarvestMonth(CalendarTFC.INSTANCE.getMonthOfYear()))
+            if (state.getValue(HARVESTABLE) && tree.isHarvestMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()))
             {
                 TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
                 if (te != null)
                 {
                     float temp = ClimateTFC.getTemp(world, pos);
                     float rainfall = ChunkDataTFC.getRainfall(world, pos);
-                    long hours = te.getTicksSinceUpdate() / CalendarTFC.TICKS_IN_HOUR;
+                    long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
                     if (hours > tree.getGrowthTime() && tree.isValidForGrowth(temp, rainfall))
                     {
                         world.setBlockState(pos, world.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.FRUIT));
@@ -103,7 +104,7 @@ public class BlockFruitTreeLeaves extends BlockLeaves
                     }
                 }
             }
-            else if (tree.isFlowerMonth(CalendarTFC.INSTANCE.getMonthOfYear()))
+            else if (tree.isFlowerMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()))
             {
                 if (world.getBlockState(pos).getValue(LEAF_STATE) != EnumLeafState.FLOWERING)
                 {
