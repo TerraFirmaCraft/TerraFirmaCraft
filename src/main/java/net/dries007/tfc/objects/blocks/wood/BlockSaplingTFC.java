@@ -36,7 +36,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
 public class BlockSaplingTFC extends BlockBush implements IGrowable
 {
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 4);
-    protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0, 0.1, 0.9, 0., 0.9);
+    protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0, 0.1, 0.9, 0.9, 0.9);
     private static final Map<Tree, BlockSaplingTFC> MAP = new HashMap<>();
 
     public static BlockSaplingTFC get(Tree wood)

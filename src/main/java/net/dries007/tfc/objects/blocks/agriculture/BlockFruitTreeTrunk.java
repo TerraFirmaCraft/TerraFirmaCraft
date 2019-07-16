@@ -153,41 +153,94 @@ public class BlockFruitTreeTrunk extends Block
                 long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
                 if (hours > tree.getGrowthTime() && tree.isValidForGrowth(temp, rainfall))
                 {
-                    if (this.getTrunkHeight(worldIn, pos) < 4)
+                    if (worldIn.getBlockState(pos.up()).getBlock() != this) //If the above block is a trunk, this one don't need to do anything
                     {
-                        if (worldIn.getBlockState(pos.up()).getMaterial().isReplaceable() || worldIn.getBlockState(pos.up()).getBlock() == BlockFruitTreeLeaves.get(tree))
+                        if (this.getTrunkHeight(worldIn, pos) < 4)
                         {
-                            worldIn.setBlockState(pos.up(), this.getDefaultState());
-                        }
-                        if (worldIn.getBlockState(pos.up(2)).getMaterial().isReplaceable())
-                        {
-                            worldIn.setBlockState(pos.up(2), BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, false));
-                        }
-                    }
-                    else
-                    {
-                        for (EnumFacing branchFacing : EnumFacing.VALUES)
-                        {
-                            if (branchFacing == EnumFacing.DOWN) continue;
-                            BlockPos branchPos = pos.offset(branchFacing);
-                            if (worldIn.getBlockState(branchPos).getMaterial().isReplaceable() || worldIn.getBlockState(branchPos).getBlock() == BlockFruitTreeLeaves.get(tree))
+                            BlockPos missingLeaf = getMissingLeaf(worldIn, pos);
+                            if (missingLeaf != null)
                             {
-                                worldIn.setBlockState(branchPos, BlockFruitTreeBranch.get(tree).getDefaultState());
-                            }
-                            for (BlockPos leafPos : BlockPos.getAllInBoxMutable(branchPos.add(-1, 0, -1), branchPos.add(1, 0, 1)))
-                            {
-                                if (leafPos.equals(branchPos)) continue;
-                                if (worldIn.getBlockState(leafPos).getMaterial().isReplaceable())
+                                //Missing leaf, spawn that first
+                                if (worldIn.getBlockState(missingLeaf).getMaterial().isReplaceable())
                                 {
-                                    worldIn.setBlockState(leafPos, BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, true));
+                                    worldIn.setBlockState(missingLeaf, BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, false));
                                 }
                             }
-                            if (branchFacing == EnumFacing.UP)
+                            else
                             {
-                                if (worldIn.getBlockState(branchPos.up()).getMaterial().isReplaceable())
+                                //Time to grow one trunk
+                                worldIn.setBlockState(pos.up(), this.getDefaultState());
+                                //Set all remaining leaf blocks to air
+                                levelUpLeaves(worldIn, pos, false);
+                            }
+                        }
+                        else
+                        {
+                            boolean flag = false; //If true, just grown a leaf/branch
+                            if (worldIn.getBlockState(pos.up()).getBlock() != BlockFruitTreeBranch.get(tree))
+                            {
+                                BlockPos missingLeaf = getMissingLeaf(worldIn, pos);
+                                if (missingLeaf != null)
                                 {
-                                    worldIn.setBlockState(branchPos.up(), BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, true));
+                                    //There is a missing leaf
+                                    flag = true;
+                                    if (worldIn.getBlockState(missingLeaf).getMaterial().isReplaceable())
+                                    {
+                                        worldIn.setBlockState(missingLeaf, BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, true));
+                                    }
                                 }
+                                else
+                                {
+                                    flag = true;
+                                    worldIn.setBlockState(pos.up(), BlockFruitTreeBranch.get(tree).getDefaultState());
+                                    levelUpLeaves(worldIn, pos, true);
+                                }
+                            }
+                            else
+                            {
+                                BlockPos missingLeaf = getMissingLeaf(worldIn, pos.up()); //Please note that this is pos.up()
+                                if (missingLeaf != null)
+                                {
+                                    //There is a missing leaf
+                                    flag = true;
+                                    if (worldIn.getBlockState(missingLeaf).getMaterial().isReplaceable())
+                                    {
+                                        worldIn.setBlockState(missingLeaf, BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, true));
+                                    }
+                                }
+                            }
+                            //Starting with top
+                            for (EnumFacing branchFacing : EnumFacing.VALUES)
+                            {
+                                if (flag) break;
+                                if (branchFacing == EnumFacing.DOWN) continue;
+                                BlockPos branchPos = pos.offset(branchFacing);
+                                if (worldIn.getBlockState(branchPos).getMaterial().isReplaceable() || worldIn.getBlockState(branchPos).getBlock() == BlockFruitTreeLeaves.get(tree))
+                                {
+                                    flag = true;
+                                    worldIn.setBlockState(branchPos, BlockFruitTreeBranch.get(tree).getDefaultState());
+                                }
+                                if (flag) break;
+                                for (BlockPos leafPos : BlockPos.getAllInBoxMutable(branchPos.add(-1, 0, -1), branchPos.add(1, 0, 1)))
+                                {
+                                    if (leafPos.equals(branchPos)) continue;
+                                    if (worldIn.getBlockState(leafPos).getMaterial().isReplaceable())
+                                    {
+                                        flag = true;
+                                        worldIn.setBlockState(leafPos, BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, true));
+                                    }
+                                    if (flag) break;
+                                }
+                                if (flag) break;
+                                if (branchFacing == EnumFacing.UP)
+                                {
+                                    if (worldIn.getBlockState(branchPos.up()).getMaterial().isReplaceable())
+                                    {
+                                        flag = true;
+                                        worldIn.setBlockState(branchPos.up(), BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, true));
+                                    }
+                                }
+                                if (flag) break;
                             }
                         }
                     }
@@ -195,6 +248,54 @@ public class BlockFruitTreeTrunk extends Block
                 }
             }
         }
+    }
+
+    @Nullable
+    private BlockPos getMissingLeaf(World world, BlockPos pos)
+    {
+        //Helper method, checks if all 5 leafs blocks(horizontals + above) has a missing block leaf
+
+        //Above first
+        if (world.getBlockState(pos.offset(EnumFacing.UP)).getBlock() != BlockFruitTreeLeaves.get(tree))
+        {
+            return pos.offset(EnumFacing.UP);
+        }
+        for (EnumFacing facing : EnumFacing.HORIZONTALS)
+        {
+            if (world.getBlockState(pos.offset(facing)).getBlock() != BlockFruitTreeLeaves.get(tree))
+            {
+                return pos.offset(facing);
+            }
+        }
+        return null;
+    }
+
+    private void levelUpLeaves(World world, BlockPos oldCenter, boolean hasvestable)
+    {
+        //Remove the old ones
+        for (EnumFacing facing : EnumFacing.HORIZONTALS)
+        {
+            if (world.getBlockState(oldCenter.offset(facing)).getBlock() == BlockFruitTreeLeaves.get(tree))
+            {
+                world.setBlockToAir(oldCenter.offset(facing));
+            }
+        }
+        BlockPos missingLeaf = null;
+        //noinspection ConstantConditions
+        do
+        {
+            //Respawn leafs in the new height
+            missingLeaf = getMissingLeaf(world, oldCenter.up());
+            if (missingLeaf != null && world.getBlockState(missingLeaf).getMaterial().isReplaceable())
+            {
+                world.setBlockState(missingLeaf, BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, hasvestable));
+            }
+            else
+            {
+                //Found a block(ceiling?) that prevents this tree to grow leafs, aborting
+                break;
+            }
+        } while (missingLeaf != null);
     }
 
     @Override

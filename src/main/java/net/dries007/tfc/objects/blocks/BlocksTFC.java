@@ -523,6 +523,7 @@ public final class BlocksTFC
 
             //Add ItemBlocks
             allFruitTreeSaplingBlocks.forEach(x -> inventoryItemBlocks.add(new ItemBlockTFC(x)));
+            allFruitTreeLeavesBlocks.forEach(x -> inventoryItemBlocks.add(new ItemBlockTFC(x)));
         }
 
         {

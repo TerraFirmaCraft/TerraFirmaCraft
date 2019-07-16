@@ -23,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.IFruitTree;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
@@ -31,10 +32,12 @@ import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
+@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class BlockFruitTreeSapling extends BlockBush implements IGrowable
 {
-    protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0, 0.1, 0.9, 0., 0.9);
+    private static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0, 0.1, 0.9, 0.9, 0.9);
+
     private static final Map<IFruitTree, BlockFruitTreeSapling> MAP = new HashMap<>();
 
     public static BlockFruitTreeSapling get(IFruitTree tree)
@@ -100,6 +103,7 @@ public class BlockFruitTreeSapling extends BlockBush implements IGrowable
     {
         return new TETickCounter();
     }
+
 
     @SuppressWarnings("deprecation")
     @Override
