@@ -3,8 +3,8 @@
   "defaults": {
     "model": "tfc:berry_bush_1",
     "textures": {
-      "texture": "tfc:blocks/berry_bush/bush/blackberry",
-      "particle": "tfc:blocks/berry_bush/bush/blackberry"
+      "texture": "tfc:blocks/berry_bush/bush/blueberry",
+      "particle": "tfc:blocks/berry_bush/bush/blueberry"
     }
   },
   "variants": {
@@ -31,7 +31,7 @@
       "4": {
         "model": "tfc:berry_bush_4",
         "textures": {
-          "texture": "tfc:blocks/berry_bush/berry/blackberry"
+          "texture": "tfc:blocks/berry_bush/berry/blueberry"
         }
       }
     }

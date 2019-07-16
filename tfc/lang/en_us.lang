@@ -2128,6 +2128,18 @@ tile.tfc.fruit_trees.leaves.peach.name=Peach Leaves
 tile.tfc.fruit_trees.leaves.plum.name=Plum Leaves
 tile.tfc.fruit_trees.leaves.red_apple.name=Red Apple Leaves
 
+tile.tfc.berry_bush.blackberry.name=Blackberry Bush
+tile.tfc.berry_bush.blueberry.name=Blueberry Bush
+tile.tfc.berry_bush.bunch_berry.name=Bunch Berry Bush
+tile.tfc.berry_bush.cloud_berry.name=Cloud Berry Bush
+tile.tfc.berry_bush.cranberry.name=Cranberry Bush
+tile.tfc.berry_bush.elderberry.name=Elderberry Bush
+tile.tfc.berry_bush.gooseberry.name=Gooseberry Bush
+tile.tfc.berry_bush.raspberry.name=Raspberry Bush
+tile.tfc.berry_bush.snow_berry.name=Snow Berry Bush
+tile.tfc.berry_bush.strawberry.name=Strawberry Bush
+tile.tfc.berry_bush.wintergreen_berry.name=Wintergreen Berry Bush
+
 tile.tfc.stone.button.granite.name=Granite Button
 tile.tfc.stone.button.diorite.name=Diorite Button
 tile.tfc.stone.button.gabbro.name=Gabbro Button
