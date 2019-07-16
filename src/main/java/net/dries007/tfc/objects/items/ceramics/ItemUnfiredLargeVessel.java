@@ -20,7 +20,6 @@ public class ItemUnfiredLargeVessel extends ItemPottery
     public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
     {
         ItemStack output = new ItemStack(new BlockLargeVessel());
-        if (input.getHasSubtypes() && output.getHasSubtypes()) output.setItemDamage(input.getMetadata());
         return output;
     }
 

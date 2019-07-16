@@ -10,7 +10,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -25,17 +24,6 @@ public class ContainerLargeVessel extends ContainerTE<TELargeVessel> implements 
     public ContainerLargeVessel(InventoryPlayer playerInv, TELargeVessel tile)
     {
         super(playerInv, tile, true);
-    }
-
-    @Nullable
-    public IItemHandler getLargeVesselInventory()
-    {
-        return tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-    }
-
-    public boolean isLargeVesselSealed()
-    {
-        return tile.isSealed();
     }
 
     @Override
@@ -75,10 +63,5 @@ public class ContainerLargeVessel extends ContainerTE<TELargeVessel> implements 
                 }
             }
         }
-    }
-
-    public BlockPos getTilePos()
-    {
-        return tile.getPos();
     }
 }
