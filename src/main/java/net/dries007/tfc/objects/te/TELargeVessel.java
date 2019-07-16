@@ -151,7 +151,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
                         if (!cap.getTraits().contains(CapabilityFood.PRESERVED))
                         {
                             cap.getTraits().add(CapabilityFood.PRESERVED);
-                            cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long)((CalendarTFC.PLAYER_TIME.getTicks() - cap.getCreationDate()) / CapabilityFood.PRESERVED.getDecayModifier()));
+                            cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - cap.getCreationDate()) / CapabilityFood.PRESERVED.getDecayModifier()));
                         }
                     }
                 }
@@ -170,7 +170,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
                 if (cap != null)
                 {
                     cap.getTraits().remove(CapabilityFood.PRESERVED);
-                    cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long)((CalendarTFC.PLAYER_TIME.getTicks() - cap.getCreationDate()) * CapabilityFood.PRESERVED.getDecayModifier()));
+                    cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - cap.getCreationDate()) * CapabilityFood.PRESERVED.getDecayModifier()));
                 }
             }
         }
@@ -184,12 +184,6 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
     public boolean isSealed()
     {
         return sealed;
-    }
-
-    @Override
-    public void setAndUpdateSlots(int slot)
-    {
-
     }
 
     /**

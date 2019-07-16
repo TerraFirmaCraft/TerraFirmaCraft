@@ -1,4 +1,4 @@
-package net.dries007.tfc.objects.inventory.capability;
+package net.dries007.tfc.objects.fluids.capability;
 
 public interface IFluidTankCallback
 {

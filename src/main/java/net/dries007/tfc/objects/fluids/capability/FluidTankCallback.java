@@ -1,8 +1,6 @@
-package net.dries007.tfc.objects.inventory.fluid;
+package net.dries007.tfc.objects.fluids.capability;
 
 import net.minecraftforge.fluids.FluidTank;
-
-import net.dries007.tfc.objects.inventory.capability.IFluidTankCallback;
 
 public class FluidTankCallback extends FluidTank
 {
