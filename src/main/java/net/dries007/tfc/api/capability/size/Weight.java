@@ -22,6 +22,6 @@ public enum Weight
 
     public boolean isSmallerThan(Weight other)
     {
-        return this.multiplier >= other.multiplier;
+        return this.multiplier > other.multiplier;
     }
 }

@@ -137,7 +137,7 @@ public class TEPlacedItem extends TEInventory
                 size = sizeCap.getSize(stack);
             }
 
-            if (size.isSmallerThan(Size.LARGE) && !isHoldingLargeItem)
+            if (size.isSmallerThan(Size.HUGE) && !isHoldingLargeItem)
             {
                 // Normal and smaller can be placed normally
                 if (inventory.getStackInSlot(slot).isEmpty())

@@ -22,6 +22,9 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.recipes.BarrelRecipe;
 import net.dries007.tfc.network.PacketBarrelUpdate;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
@@ -327,12 +330,20 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        //TODO: validate items that go in the item storage slot (based on size?)
         switch (slot)
         {
             case SLOT_FLUID_CONTAINER_IN:
                 return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
             case SLOT_ITEM:
+                IItemSize sizeCap = CapabilityItemSize.getIItemSize(stack);
+                if (sizeCap != null)
+                {
+                    if (sizeCap.getSize(stack).isSmallerThan(Size.VERY_LARGE))
+                    {
+                        return true;
+                    }
+                    return false;
+                }
                 return true;
             default:
                 return false;
@@ -342,6 +353,5 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     private void updateLockStatus()
     {
         sealed = world.getBlockState(pos).getValue(BlockBarrel.SEALED);
-
     }
 }
