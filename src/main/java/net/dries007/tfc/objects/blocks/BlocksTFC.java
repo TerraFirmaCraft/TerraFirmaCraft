@@ -36,6 +36,7 @@ import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.itemblock.*;
 import net.dries007.tfc.objects.te.*;
+import net.dries007.tfc.util.agriculture.BerryBush;
 import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.agriculture.FruitTree;
 
@@ -147,6 +148,8 @@ public final class BlocksTFC
     private static ImmutableList<BlockFruitTreeTrunk> allFruitTreeTrunkBlocks;
     private static ImmutableList<BlockFruitTreeBranch> allFruitTreeBranchBlocks;
     private static ImmutableList<BlockFruitTreeLeaves> allFruitTreeLeavesBlocks;
+
+    private static ImmutableList<BlockBerryBush> allBerryBushBlocks;
 
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
@@ -287,6 +290,11 @@ public final class BlocksTFC
     public static ImmutableList<BlockFruitTreeLeaves> getAllFruitTreeLeavesBlocks()
     {
         return allFruitTreeLeavesBlocks;
+    }
+
+    public static ImmutableList<BlockBerryBush> getAllBerryBushBlocks()
+    {
+        return allBerryBushBlocks;
     }
 
     @SubscribeEvent
@@ -513,7 +521,7 @@ public final class BlocksTFC
                 fSaplings.add(register(r, "fruit_trees/sapling/" + tree.name().toLowerCase(), new BlockFruitTreeSapling(tree), CT_WOOD));
                 fTrunks.add(register(r, "fruit_trees/trunk/" + tree.name().toLowerCase(), new BlockFruitTreeTrunk(tree)));
                 fBranches.add(register(r, "fruit_trees/branch/" + tree.name().toLowerCase(), new BlockFruitTreeBranch(tree)));
-                fLeaves.add(register(r, "fruit_trees/leaves/" + tree.name().toLowerCase(), new BlockFruitTreeLeaves(tree)));
+                fLeaves.add(register(r, "fruit_trees/leaves/" + tree.name().toLowerCase(), new BlockFruitTreeLeaves(tree), CT_WOOD));
             }
 
             allFruitTreeSaplingBlocks = fSaplings.build();
@@ -521,9 +529,19 @@ public final class BlocksTFC
             allFruitTreeBranchBlocks = fBranches.build();
             allFruitTreeLeavesBlocks = fLeaves.build();
 
+            Builder<BlockBerryBush> fBerry = ImmutableList.builder();
+
+            for (BerryBush bush : BerryBush.values())
+            {
+                fBerry.add(register(r, "berry_bush/" + bush.name().toLowerCase(), new BlockBerryBush(bush), CT_FOOD));
+            }
+
+            allBerryBushBlocks = fBerry.build();
+
             //Add ItemBlocks
             allFruitTreeSaplingBlocks.forEach(x -> inventoryItemBlocks.add(new ItemBlockTFC(x)));
             allFruitTreeLeavesBlocks.forEach(x -> inventoryItemBlocks.add(new ItemBlockTFC(x)));
+            allBerryBushBlocks.forEach(x -> inventoryItemBlocks.add(new ItemBlockTFC(x)));
         }
 
         {

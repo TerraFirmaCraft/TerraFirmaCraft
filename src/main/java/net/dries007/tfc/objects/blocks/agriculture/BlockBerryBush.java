@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.blocks.agriculture;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -16,15 +15,21 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.IBerryBush;
 import net.dries007.tfc.objects.te.TETickCounter;
@@ -38,6 +43,11 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 public class BlockBerryBush extends Block
 {
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 4); //last one is for fruits
+
+    private static final AxisAlignedBB STAGE_1_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 0.375D, 0.6875D);
+    private static final AxisAlignedBB STAGE_2_AABB = new AxisAlignedBB(0.21875D, 0.0D, 0.21875D, 0.78125D, 0.5625D, 0.78125D);
+    private static final AxisAlignedBB STAGE_3_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.75D, 0.875D);
+    private static final AxisAlignedBB STAGE_4_AABB = FULL_BLOCK_AABB;
 
     private static final Map<IBerryBush, BlockBerryBush> MAP = new HashMap<>();
 
@@ -55,6 +65,7 @@ public class BlockBerryBush extends Block
         if (MAP.put(bush, this) != null) throw new IllegalStateException("There can only be one.");
         Blocks.FIRE.setFireInfo(this, 30, 60);
         setTickRandomly(true);
+        setDefaultState(blockState.getBaseState().withProperty(STAGE, 0));
     }
 
     @Override
@@ -65,6 +76,60 @@ public class BlockBerryBush extends Block
         {
             tile.resetCounter();
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    @Nonnull
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(STAGE, meta);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(STAGE);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch (state.getValue(STAGE))
+        {
+            case 0:
+                return STAGE_1_AABB;
+            case 1:
+                return STAGE_2_AABB;
+            case 2:
+                return STAGE_3_AABB;
+            default:
+                return STAGE_4_AABB;
+        }
+    }
+
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
     }
 
     @Override
@@ -94,6 +159,14 @@ public class BlockBerryBush extends Block
                 }
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    @Nonnull
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
     @Override
