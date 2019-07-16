@@ -2,5 +2,5 @@ package net.dries007.tfc.objects.fluids.capability;
 
 public interface IFluidTankCallback
 {
-    void setAndUpdateFluidTank();
+    void setAndUpdateFluidTank(int fluidTankID);
 }
