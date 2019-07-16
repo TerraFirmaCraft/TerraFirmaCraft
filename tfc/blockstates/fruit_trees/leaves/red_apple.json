@@ -10,6 +10,10 @@
     "normal": [
       {}
     ],
+    "inventory": {
+      "model": "leaves",
+      "transform": "forge:default-item"
+    },
     "state": {
       "normal": {
         "model": "leaves"

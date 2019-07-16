@@ -15,6 +15,9 @@
       "up": {
         "model": "tfc:fruit_trees/branch_vertical"
       },
+      "down": {
+        "model": "tfc:fruit_trees/branch_vertical"
+      },
       "north": {
         "model": "tfc:fruit_trees/branch_horizontal"
       },
