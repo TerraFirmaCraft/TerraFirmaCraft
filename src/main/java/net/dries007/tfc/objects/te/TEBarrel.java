@@ -44,7 +44,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     public static final int TANK_CAPACITY = 10000;
     public static final int BARREL_MAX_FLUID_TEMPERATURE = 500;
 
-    private FluidTank tank = new FluidTankCallback(this, TANK_CAPACITY);
+    private FluidTank tank = new FluidTankCallback(this, 0, TANK_CAPACITY);
     private boolean sealed;
     private long sealedTick, sealedCalendarTick;
     private BarrelRecipe recipe;
@@ -114,7 +114,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     }
 
     @Override
-    public void setAndUpdateFluidTank()
+    public void setAndUpdateFluidTank(int fluidTankID)
     {
         IBlockState state = world.getBlockState(pos);
         world.notifyBlockUpdate(pos, state, state, 3);
