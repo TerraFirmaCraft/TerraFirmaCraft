@@ -32,7 +32,7 @@ public class ContainerSmallVessel extends ContainerItemStack implements ISlotCal
         IItemSize size = CapabilityItemSize.getIItemSize(stack);
         if (size != null)
         {
-            return size.getSize(stack).isSmallerThan(Size.NORMAL);
+            return size.getSize(stack).isSmallerThan(Size.LARGE);
         }
         return false;
     }
