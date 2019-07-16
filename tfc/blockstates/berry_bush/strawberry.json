@@ -12,7 +12,7 @@
       {}
     ],
     "inventory": {
-      "model": "tfc:berry_bush_1",
+      "model": "tfc:berry_bush_4",
       "transform": "forge:default-item"
     },
     "stage": {
