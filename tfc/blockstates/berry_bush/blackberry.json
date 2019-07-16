@@ -1,0 +1,38 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:berry_bush_1",
+    "textures": {
+      "texture": "tfc:blocks/berry_bush/bush"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": {
+      "model": "tfc:berry_bush_1",
+      "transform": "forge:default-item"
+    },
+    "stage": {
+      "0": {
+        "model": "tfc:berry_bush_1"
+      },
+      "1": {
+        "model": "tfc:berry_bush_2"
+      },
+      "2": {
+        "model": "tfc:berry_bush_3"
+      },
+      "3": {
+        "model": "tfc:berry_bush_4"
+      },
+      "4": {
+        "model": "tfc:berry_bush_4",
+        "textures": {
+          "texture": "tfc:blocks/berry_bush/berry/blackberry"
+        }
+      }
+    }
+  }
+}
