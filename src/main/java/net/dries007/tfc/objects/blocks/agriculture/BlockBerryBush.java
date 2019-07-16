@@ -64,6 +64,7 @@ public class BlockBerryBush extends Block
         this.bush = bush;
         if (MAP.put(bush, this) != null) throw new IllegalStateException("There can only be one.");
         Blocks.FIRE.setFireInfo(this, 30, 60);
+        setHardness(1.0F);
         setTickRandomly(true);
         setDefaultState(blockState.getBaseState().withProperty(STAGE, 0));
     }
@@ -96,7 +97,14 @@ public class BlockBerryBush extends Block
     @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState state)
     {
-        return false;
+        return state.getValue(STAGE) > 2;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return NULL_AABB;
     }
 
     @Override
@@ -123,6 +131,17 @@ public class BlockBerryBush extends Block
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
+    {
+        if (super.canPlaceBlockAt(worldIn, pos))
+        {
+            IBlockState state = worldIn.getBlockState(pos.down());
+            return state.getBlock().canPlaceTorchOnTop(state, worldIn, pos);
+        }
+        return false;
     }
 
     @Override

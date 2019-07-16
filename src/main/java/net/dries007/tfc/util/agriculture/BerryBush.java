@@ -17,7 +17,17 @@ import net.dries007.tfc.util.calendar.Month;
 
 public enum BerryBush implements IBerryBush
 {
-    BLACKBERRY(Food.BLACKBERRY, Month.MAY, 4, 5f, 35f, 100f, 400f, 0.5f);
+    BLACKBERRY(Food.BLACKBERRY, Month.MAY, 4, 5f, 35f, 100f, 400f, 0.8f),
+    BLUEBERRY(Food.BLUEBERRY, Month.JUNE, 3, 5f, 35f, 100f, 400f, 0.8f),
+    BUNCH_BERRY(Food.BUNCH_BERRY, Month.JUNE, 3, 5f, 35f, 100f, 400f, 0.8f),
+    CLOUD_BERRY(Food.CLOUD_BERRY, Month.JUNE, 2, 5f, 35f, 100f, 400f, 0.8f),
+    CRANBERRY(Food.CRANBERRY, Month.AUGUST, 3, 5f, 35f, 100f, 400f, 0.8f),
+    ELDERBERRY(Food.ELDERBERRY, Month.JULY, 2, 5f, 35f, 100f, 400f, 0.8f),
+    GOOSEBERRY(Food.GOOSEBERRY, Month.MARCH, 4, 5f, 35f, 100f, 400f, 0.8f),
+    RASPBERRY(Food.RASPBERRY, Month.JUNE, 2, 5f, 35f, 100f, 400f, 0.8f),
+    SNOW_BERRY(Food.SNOW_BERRY, Month.JULY, 2, -5f, 25f, 100f, 400f, 0.8f),
+    STRAWBERRY(Food.STRAWBERRY, Month.MARCH, 3, 5f, 35f, 100f, 400f, 0.8f),
+    WINTERGREEN_BERRY(Food.WINTERGREEN_BERRY, Month.AUGUST, 2, -5f, 25f, 100f, 400f, 0.8f);
 
     @Nullable
     public static BerryBush getFromFruit(Food fruit)
