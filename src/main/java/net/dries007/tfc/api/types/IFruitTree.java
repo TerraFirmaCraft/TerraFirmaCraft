@@ -5,8 +5,11 @@
 
 package net.dries007.tfc.api.types;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 
+import net.dries007.tfc.api.util.IFruitTreeGenerator;
 import net.dries007.tfc.util.calendar.Month;
 
 public interface IFruitTree
@@ -63,4 +66,15 @@ public interface IFruitTree
      * @return the name of this fruit tree
      */
     String getName();
+
+    /**
+     * Return the tree generator used to generate this fruit tree.
+     *
+     * @return
+     */
+    @Nonnull
+    default IFruitTreeGenerator getGenerator()
+    {
+        return IFruitTreeGenerator.DEFAULT;
+    }
 }

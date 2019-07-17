@@ -24,6 +24,7 @@ import net.dries007.tfc.api.util.ITreeGenerator;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.world.classic.StructureHelper;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 import static net.minecraft.block.BlockLog.LOG_AXIS;
@@ -31,7 +32,7 @@ import static net.minecraft.block.BlockVine.*;
 
 public class TreeGenKapok implements ITreeGenerator
 {
-    private static final PlacementSettings settings = ITreeGenerator.getDefaultSettings();
+    private static final PlacementSettings settings = StructureHelper.getDefaultSettings();
     private static final BlockPos[] trunkPos = new BlockPos[] {
         new BlockPos(0, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 0, -1), new BlockPos(-1, 0, -1)
     };
@@ -105,7 +106,7 @@ public class TreeGenKapok implements ITreeGenerator
         BlockPos size = structureBase.getSize();
         pos = pos.add(-size.getX() / 2, 0, -size.getZ() / 2);
 
-        ITreeGenerator.addStructureToWorld(world, pos, structureBase, settings);
+        StructureHelper.addStructureToWorld(world, pos, structureBase, settings);
     }
 
     private void placeTrunk(World world, BlockPos pos)

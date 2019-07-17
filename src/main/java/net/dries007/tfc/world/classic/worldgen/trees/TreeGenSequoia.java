@@ -21,6 +21,7 @@ import net.dries007.tfc.api.util.ITreeGenerator;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.world.classic.StructureHelper;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 
@@ -29,7 +30,7 @@ public class TreeGenSequoia implements ITreeGenerator
     private static final BlockPos[] OFFSETS = new BlockPos[] {
         new BlockPos(0, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 0, -1), new BlockPos(-1, 0, -1)
     };
-    private final PlacementSettings settings = ITreeGenerator.getDefaultSettings();
+    private final PlacementSettings settings = StructureHelper.getDefaultSettings();
     private IBlockState trunk;
 
     @Override
@@ -97,7 +98,7 @@ public class TreeGenSequoia implements ITreeGenerator
         BlockPos size = structureBase.getSize();
         pos = pos.add(-size.getX() / 2, 0, -size.getZ() / 2);
 
-        ITreeGenerator.addStructureToWorld(world, pos, structureBase, settings);
+        StructureHelper.addStructureToWorld(world, pos, structureBase, settings);
         return size.getY();
     }
 

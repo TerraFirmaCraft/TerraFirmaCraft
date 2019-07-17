@@ -12,11 +12,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
-import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.api.types.IFruitTree;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.world.classic.worldgen.trees.FruitTreeGen;
 
-public interface ITreeGenerator
+public interface IFruitTreeGenerator
 {
+    IFruitTreeGenerator DEFAULT = new FruitTreeGen();
 
     /**
      * Called to generate a tree. Each Tree must have one of these. Used for world gen and sapling growth
@@ -27,7 +29,7 @@ public interface ITreeGenerator
      * @param tree    The tree type to spawn
      * @param rand    A random to use in generation
      */
-    void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand);
+    void generateTree(TemplateManager manager, World world, BlockPos pos, IFruitTree tree, Random rand);
 
     /**
      * Checks if a tree can be generated. This implementation checks height, radius, and light level
@@ -37,24 +39,10 @@ public interface ITreeGenerator
      * @param treeType The tree type (for checking if the tree can generate)
      * @return true if the tree can generate.
      */
-    default boolean canGenerateTree(World world, BlockPos pos, Tree treeType)
+    default boolean canGenerateTree(World world, BlockPos pos, IFruitTree treeType)
     {
-        // Check if ground is flat enough
-        final int radius = treeType.getMaxGrowthRadius();
-        for (int x = -radius; x <= radius; x++)
-        {
-            for (int z = -radius; z <= radius; z++)
-            {
-                if ((x == 0 && z == 0) ||
-                    world.getBlockState(pos.add(x, 0, z)).getMaterial().isReplaceable() ||
-                    ((x > 1 || z > 1) && world.getBlockState(pos.add(x, 1, z)).getMaterial().isReplaceable()))
-                    continue;
-                return false;
-            }
-        }
         // Check if there is room directly upwards
-        final int height = treeType.getMaxHeight();
-        for (int y = 1; y <= height; y++)
+        for (int y = 1; y <= 5; y++)
             if (!world.getBlockState(pos.up(y)).getMaterial().isReplaceable())
                 return false;
 
