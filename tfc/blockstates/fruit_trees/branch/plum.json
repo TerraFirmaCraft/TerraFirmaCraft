@@ -1,0 +1,38 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:fruit_trees/branch_vertical",
+    "textures": {
+      "texture": "tfc:blocks/fruit_trees/bark/plum",
+      "particle": "tfc:blocks/fruit_trees/bark/plum"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "facing": {
+      "up": {
+        "model": "tfc:fruit_trees/branch_vertical"
+      },
+      "down": {
+        "model": "tfc:fruit_trees/branch_vertical"
+      },
+      "north": {
+        "model": "tfc:fruit_trees/branch_horizontal"
+      },
+      "south": {
+        "model": "tfc:fruit_trees/branch_horizontal",
+        "y": 180
+      },
+      "east": {
+        "model": "tfc:fruit_trees/branch_horizontal",
+        "y": 90
+      },
+      "west": {
+        "model": "tfc:fruit_trees/branch_horizontal",
+        "y": 270
+      }
+    }
+  }
+}

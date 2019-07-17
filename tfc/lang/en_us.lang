@@ -2108,6 +2108,25 @@ tile.tfc.wood.sapling.rosewood.name=Rosewood Sapling
 tile.tfc.wood.sapling.blackwood.name=Blackwood Sapling
 tile.tfc.wood.sapling.palm.name=Palm Sapling
 
+tile.tfc.fruit_trees.sapling.banana.name=Banana Sapling
+tile.tfc.fruit_trees.sapling.cherry.name=Cherry Sapling
+tile.tfc.fruit_trees.sapling.green_apple.name=Green Apple Sapling
+tile.tfc.fruit_trees.sapling.lemon.name=Lemon Sapling
+tile.tfc.fruit_trees.sapling.olive.name=Olive Sapling
+tile.tfc.fruit_trees.sapling.orange.name=Orange Sapling
+tile.tfc.fruit_trees.sapling.peach.name=Peach Sapling
+tile.tfc.fruit_trees.sapling.plum.name=Plum Sapling
+tile.tfc.fruit_trees.sapling.red_apple.name=Red Apple Sapling
+
+tile.tfc.fruit_trees.leaves.banana.name=Banana Leaves
+tile.tfc.fruit_trees.leaves.cherry.name=Cherry Leaves
+tile.tfc.fruit_trees.leaves.green_apple.name=Green Apple Leaves
+tile.tfc.fruit_trees.leaves.lemon.name=Lemon Leaves
+tile.tfc.fruit_trees.leaves.olive.name=Olive Leaves
+tile.tfc.fruit_trees.leaves.orange.name=Orange Leaves
+tile.tfc.fruit_trees.leaves.peach.name=Peach Leaves
+tile.tfc.fruit_trees.leaves.plum.name=Plum Leaves
+tile.tfc.fruit_trees.leaves.red_apple.name=Red Apple Leaves
 
 tile.tfc.stone.button.granite.name=Granite Button
 tile.tfc.stone.button.diorite.name=Diorite Button
