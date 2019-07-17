@@ -44,7 +44,7 @@ def fruit_tree(ftree):
         elif block['Name'] == 'tfc:fruit_trees/leaves/peach':
             block['Name'] = String('tfc:fruit_trees/leaves/' + ftree)
         elif block['Name'] == 'tfc:fruit_trees/trunk/peach':
-            block['Name'] = String('tfc:fruit_trees/trunk' + ftree)
+            block['Name'] = String('tfc:fruit_trees/trunk/' + ftree)
 
     if not os.path.exists('src/main/resources/assets/tfc/structures/fruit_trees'):
         os.makedirs('src/main/resources/assets/tfc/structures/fruit_trees')
@@ -126,7 +126,7 @@ FRUIT_TREES = [
     'banana',
     'cherry',
     'olive',
-    'apple',
+    'red_apple',
     'green_apple',
     'lemon',
     'orange',

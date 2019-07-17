@@ -33,8 +33,7 @@ public class WorldGenFruitTrees implements IWorldGenerator
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
-        // todo: reduce
-        if (random.nextInt(Math.max(20 - TREES.size(), 20)) == 0)
+        if (random.nextInt(Math.max(40 - TREES.size(), 20)) == 0)
         {
             IFruitTree tree = TREES.get(random.nextInt(TREES.size()));
             BlockPos chunkBlockPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
@@ -46,8 +45,8 @@ public class WorldGenFruitTrees implements IWorldGenerator
             {
                 TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
 
-                final int x = chunkX * 16 + random.nextInt(16) + 8;
-                final int z = chunkZ * 16 + random.nextInt(16) + 8;
+                final int x = (chunkX << 4) + random.nextInt(16) + 8;
+                final int z = (chunkZ << 4) + random.nextInt(16) + 8;
                 final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
 
                 if (tree.getGenerator().canGenerateTree(world, pos, tree))

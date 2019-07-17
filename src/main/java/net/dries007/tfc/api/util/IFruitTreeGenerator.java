@@ -7,7 +7,6 @@ package net.dries007.tfc.api.util;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockSapling;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.TemplateManager;
@@ -52,8 +51,9 @@ public interface IFruitTreeGenerator
 
         // Check the position for liquids, etc.
         if (world.getBlockState(pos).getMaterial().isLiquid() || !world.getBlockState(pos).getMaterial().isReplaceable())
-            if (!(world.getBlockState(pos).getBlock() instanceof BlockSapling))
-                return false;
+        {
+            return false;
+        }
 
         // Check if there is sufficient light level
         return world.getLightFromNeighbors(pos) >= 7;
