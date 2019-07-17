@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.wood;
+package net.dries007.tfc.objects.blocks.agriculture;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,8 +15,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -25,52 +23,62 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.types.Tree;
+import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.types.IFruitTree;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
+@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockSaplingTFC extends BlockBush implements IGrowable
+public class BlockFruitTreeSapling extends BlockBush implements IGrowable
 {
-    public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 4);
-    protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0, 0.1, 0.9, 0.9, 0.9);
-    private static final Map<Tree, BlockSaplingTFC> MAP = new HashMap<>();
+    private static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0, 0.1, 0.9, 0.9, 0.9);
 
-    public static BlockSaplingTFC get(Tree wood)
+    private static final Map<IFruitTree, BlockFruitTreeSapling> MAP = new HashMap<>();
+
+    public static BlockFruitTreeSapling get(IFruitTree tree)
     {
-        return MAP.get(wood);
+        return MAP.get(tree);
     }
 
-    public final Tree wood;
+    public final IFruitTree tree;
 
-    public BlockSaplingTFC(Tree wood)
+    public BlockFruitTreeSapling(IFruitTree tree)
     {
-        if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
-        this.wood = wood;
-        setDefaultState(blockState.getBaseState().withProperty(STAGE, 0));
+        if (MAP.put(tree, this) != null) throw new IllegalStateException("There can only be one.");
+        this.tree = tree;
         setSoundType(SoundType.PLANT);
         setHardness(0.0F);
+        setTickRandomly(true);
         OreDictionaryHelper.register(this, "tree", "sapling");
-        //noinspection ConstantConditions
-        OreDictionaryHelper.register(this, "tree", "sapling", wood.getRegistryName().getPath());
+        OreDictionaryHelper.register(this, "tree", "sapling", tree.getName());
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    @Nonnull
-    public IBlockState getStateFromMeta(int meta)
+    public void randomTick(World world, BlockPos pos, IBlockState state, Random random)
     {
-        return this.getDefaultState().withProperty(STAGE, meta);
-    }
+        super.updateTick(world, pos, state, random);
 
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(STAGE);
+        if (!world.isRemote)
+        {
+            TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
+            if (te != null)
+            {
+                float temp = ClimateTFC.getTemp(world, pos);
+                float rainfall = ChunkDataTFC.getRainfall(world, pos);
+                long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
+                if (hours > tree.getGrowthTime() && tree.isValidForGrowth(temp, rainfall))
+                {
+                    te.resetCounter();
+                    grow(world, random, pos, state);
+                }
+            }
+        }
     }
 
     @Override
@@ -81,13 +89,6 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
         {
             te.resetCounter();
         }
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, STAGE);
     }
 
     @Override
@@ -103,24 +104,6 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
         return new TETickCounter();
     }
 
-    @Override
-    public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
-    {
-        super.updateTick(world, pos, state, random);
-
-        if (!world.isRemote)
-        {
-            TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
-            if (te != null)
-            {
-                long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
-                if (days > wood.getMinGrowthTime())
-                {
-                    grow(world, random, pos, state);
-                }
-            }
-        }
-    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -139,13 +122,19 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     @Override
     public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, IBlockState iBlockState)
     {
-        TerraFirmaCraft.getLog().debug("canUseBoneMeal called");
-        return true;
+        return true; //Only on sapling tho, so trunk still has to grow
     }
 
     @Override
     public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
     {
-        wood.makeTree(world, blockPos, random);
+        if (!world.isRemote)
+        {
+            world.setBlockState(blockPos, BlockFruitTreeTrunk.get(this.tree).getDefaultState());
+            if (world.getBlockState(blockPos.up()).getMaterial().isReplaceable())
+            {
+                world.setBlockState(blockPos.up(), BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, false));
+            }
+        }
     }
 }

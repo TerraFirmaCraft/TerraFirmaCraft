@@ -25,7 +25,7 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 
 import net.dries007.tfc.api.types.ICrop;
-import net.dries007.tfc.objects.blocks.crops.BlockCropTFC;
+import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
 
 public class ItemSeedsTFC extends Item implements IPlantable
