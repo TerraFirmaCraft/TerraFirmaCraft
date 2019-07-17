@@ -13,9 +13,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.types.ICrop;
-import net.dries007.tfc.objects.blocks.crops.BlockCropSimple;
-import net.dries007.tfc.objects.blocks.crops.BlockCropSpreading;
-import net.dries007.tfc.objects.blocks.crops.BlockCropTFC;
+import net.dries007.tfc.objects.blocks.agriculture.BlockCropSimple;
+import net.dries007.tfc.objects.blocks.agriculture.BlockCropSpreading;
+import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;

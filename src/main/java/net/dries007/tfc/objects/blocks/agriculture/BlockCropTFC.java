@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.crops;
+package net.dries007.tfc.objects.blocks.agriculture;
 
 import java.util.HashMap;
 import java.util.Map;
