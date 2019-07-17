@@ -31,7 +31,6 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
-import scala.actors.threadpool.Arrays;
 
 @ParametersAreNonnullByDefault
 public class BlockFruitTreeTrunk extends Block
@@ -227,7 +226,7 @@ public class BlockFruitTreeTrunk extends Block
                                     return; //Done what we needed to do on this stage
                                 }
                             }
-                            List<EnumFacing> shuffledList = Arrays.asList(EnumFacing.HORIZONTALS.clone()); //if i don't clone, the original array shuffes!
+                            List<EnumFacing> shuffledList = Arrays.asList(EnumFacing.HORIZONTALS.clone()); //if we don't clone, the original array shuffes!
                             Collections.shuffle(shuffledList, new Random(pos.toLong()));
                             for (EnumFacing branchFacing : shuffledList)
                             {
@@ -300,12 +299,11 @@ public class BlockFruitTreeTrunk extends Block
         }
 
         //The rest is shuffled
-        List<BlockPos> positions = Arrays.asList(new BlockPos[]
-            {branchPos.offset(branchFacing.rotateY()),
+        List<BlockPos> positions = Arrays.asList(branchPos.offset(branchFacing.rotateY()),
                 branchPos.offset(branchFacing.rotateY().getOpposite()),
                 branchPos.offset(branchFacing).offset(branchFacing.rotateY()),
                 branchPos.offset(branchFacing).offset(branchFacing.rotateY().getOpposite())
-            });
+        );
         Collections.shuffle(positions);
         for (BlockPos pos : positions)
         {

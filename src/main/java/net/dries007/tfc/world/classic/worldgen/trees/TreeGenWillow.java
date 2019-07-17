@@ -21,6 +21,7 @@ import net.dries007.tfc.api.util.ITreeGenerator;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.world.classic.StructureHelper;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 import static net.minecraft.block.BlockLog.LOG_AXIS;
@@ -32,8 +33,8 @@ import static net.minecraft.block.BlockLog.LOG_AXIS;
  */
 public class TreeGenWillow implements ITreeGenerator
 {
-    private static final PlacementSettings settingsFull = ITreeGenerator.getDefaultSettings();
-    private static final PlacementSettings settingsWeak = ITreeGenerator.getDefaultSettings().setIntegrity(0.5F);
+    private static final PlacementSettings settingsFull = StructureHelper.getDefaultSettings();
+    private static final PlacementSettings settingsWeak = StructureHelper.getDefaultSettings().setIntegrity(0.5F);
     private Template structureBase;
     private Template structureOverlay;
 
@@ -93,8 +94,8 @@ public class TreeGenWillow implements ITreeGenerator
         BlockPos size = structureBase.getSize();
         pos = pos.add(-size.getX() / 2, -size.getY() / 2, -size.getZ() / 2);
 
-        ITreeGenerator.addStructureToWorld(world, pos, structureBase, settingsFull);
-        ITreeGenerator.addStructureToWorld(world, pos, structureOverlay, settingsWeak);
+        StructureHelper.addStructureToWorld(world, pos, structureBase, settingsFull);
+        StructureHelper.addStructureToWorld(world, pos, structureOverlay, settingsWeak);
     }
 
     private void tryPlaceLog(World world, BlockPos pos, Tree tree, BlockLog.EnumAxis axis)

@@ -5,8 +5,6 @@
 
 package net.dries007.tfc.util.agriculture;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.types.IFruitTree;
@@ -14,6 +12,7 @@ import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
+import net.dries007.tfc.world.classic.worldgen.WorldGenFruitTrees;
 
 public enum FruitTree implements IFruitTree
 {
@@ -27,15 +26,12 @@ public enum FruitTree implements IFruitTree
     PLUM(Food.PLUM, Month.MAY, 2, Month.JULY, 2, 5f, 35f, 100f, 400f, 0.33f),
     RED_APPLE(Food.RED_APPLE, Month.MAY, 2, Month.OCTOBER, 2, 5f, 35f, 100f, 400f, 0.33f);
 
-
-    @Nullable
-    public static FruitTree getFromFruit(Food fruit)
+    static
     {
-        for (FruitTree tree : FruitTree.values())
+        for (IFruitTree tree : values())
         {
-            if (tree.getFruit().equals(fruit)) return tree;
+            WorldGenFruitTrees.register(tree);
         }
-        return null;
     }
 
     private final Food fruit;

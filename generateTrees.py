@@ -1,18 +1,11 @@
 import os
 
-# noinspection PyUnresolvedReferences
 from nbtlib import nbt
-# noinspection PyUnresolvedReferences
 from nbtlib.tag import *
 
 
-# noinspection PyUnresolvedReferences
 def tree(origin, wood, nameout):
     f = nbt.load(origin + '.nbt')
-
-    # remove all air blocks in the block list
-    # keep a count
-
     for block in f.root['palette']:
 
         if block['Name'] == 'minecraft:log':
@@ -41,6 +34,21 @@ def tree(origin, wood, nameout):
     if not os.path.exists('src/main/resources/assets/tfc/structures/' + wood):
         os.makedirs('src/main/resources/assets/tfc/structures/' + wood)
     f.save('src/main/resources/assets/tfc/structures/' + wood + '/' + nameout + '.nbt')
+
+
+def fruit_tree(ftree):
+    f = nbt.load('structure_templates/fruit_tree_base.nbt')
+    for block in f.root['palette']:
+        if block['Name'] == 'tfc:fruit_trees/branch/peach':
+            block['Name'] = String('tfc:fruit_trees/branch/' + ftree)
+        elif block['Name'] == 'tfc:fruit_trees/leaves/peach':
+            block['Name'] = String('tfc:fruit_trees/leaves/' + ftree)
+        elif block['Name'] == 'tfc:fruit_trees/trunk/peach':
+            block['Name'] = String('tfc:fruit_trees/trunk' + ftree)
+
+    if not os.path.exists('src/main/resources/assets/tfc/structures/fruit_trees'):
+        os.makedirs('src/main/resources/assets/tfc/structures/fruit_trees')
+    f.save('src/main/resources/assets/tfc/structures/fruit_trees/' + ftree + '.nbt')
 
 
 WOOD_TYPES = {
@@ -113,3 +121,18 @@ for wood, key in WOOD_TYPES.items():
             tree('structure_templates/jungle_' + s, wood, s)
         tree('structure_templates/normal', wood, 'base')
         tree('structure_templates/normal_overlay', wood, 'overlay')
+
+FRUIT_TREES = [
+    'banana',
+    'cherry',
+    'olive',
+    'apple',
+    'green_apple',
+    'lemon',
+    'orange',
+    'peach',
+    'plum'
+]
+
+for tree in FRUIT_TREES:
+    fruit_tree(tree)

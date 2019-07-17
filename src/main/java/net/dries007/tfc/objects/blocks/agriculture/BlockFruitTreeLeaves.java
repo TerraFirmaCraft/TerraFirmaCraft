@@ -24,10 +24,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -233,6 +230,13 @@ public class BlockFruitTreeLeaves extends BlockLeaves
     public void beginLeavesDecay(IBlockState state, World world, BlockPos pos)
     {
         // Don't do vanilla decay
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        // Stops dropping oak saplings inherited from BlockLeaves
+        drops.clear();
     }
 
     @SuppressWarnings("deprecation")
