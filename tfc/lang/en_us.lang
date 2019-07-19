@@ -286,6 +286,10 @@ tfc.enum.nutrient.protein=Protein
 tfc.enum.nutrient.minerals=Minerals
 tfc.enum.nutrient.vitamins=Vitamins
 
+#JEI
+tfc.jei.category.quern=Quern recipes
+tfc.jei.category.anvil=Anvil recipes
+
 # Fluids
 fluid.salt_water=Salt Water
 fluid.fresh_water=Fresh Water
