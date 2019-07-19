@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.inventory.ingredient;
 
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -55,5 +56,17 @@ public class IngredientMultipleFluidStack implements IIngredient<FluidStack>
     public int getAmount()
     {
         return amount;
+    }
+
+    @Override
+    public NonNullList<FluidStack> getValidInputList()
+    {
+        NonNullList<FluidStack> output = NonNullList.create();
+        for (Fluid fluid : fluids)
+        {
+            FluidStack out = new FluidStack(fluid, amount);
+            output.add(out);
+        }
+        return output;
     }
 }
