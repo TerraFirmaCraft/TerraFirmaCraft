@@ -185,15 +185,16 @@ public class BlockRockVariant extends Block
     {
         switch (type)
         {
+            case SAND:
             case CLAY:
             case DIRT:
             case GRASS:
+            case GRAVEL:
             case CLAY_GRASS:
             case FARMLAND:
             case DRY_GRASS:
                 world.playSound(null, pos, TFCSoundEvents.DIRT_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 break;
-            case GRAVEL:
             case COBBLE:
                 world.playSound(null, pos, TFCSoundEvents.ROCK_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
