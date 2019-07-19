@@ -52,16 +52,16 @@ tfc.tooltip.large_vessel_seal=Seal Large Vessel
 tfc.tooltip.large_vessel_unseal=Unseal Large Vessel
 
 ## Animal Tooltips / Messages
-tfc.tooltip.animal.old=This animal is too old to mate
-tfc.tooltip.animal.lowfamiliarity=This animal has low familiarity to mate
+tfc.tooltip.animal.old=This animal is too old to mate.
+tfc.tooltip.animal.lowfamiliarity=This animal has low familiarity to mate.
 tfc.tooltip.animal.pregnant=This female is pregnant!
-tfc.tooltip.animal.resting=This animal is resting from today's mating
+tfc.tooltip.animal.resting=This animal is resting from today's mating.
 
 tfc.tooltip.animal.milk.male=This is a bull!
-tfc.tooltip.animal.milk.old=This cow is too old to be milked
-tfc.tooltip.animal.milk.child=This cow is too young to be milked
-tfc.tooltip.animal.milk.lowfamiliarity=This cow has low familiarity to let you milk it
-tfc.tooltip.animal.milk.empty=This cow has been milked today
+tfc.tooltip.animal.milk.old=This cow is too old to be milked.
+tfc.tooltip.animal.milk.child=This cow is too young to be milked.
+tfc.tooltip.animal.milk.lowfamiliarity=This cow has low familiarity to let you milk it.
+tfc.tooltip.animal.milk.empty=This cow has been milked today.
 
 ## Command Tooltips / Messages
 tfc.tooltip.set_month_length=Set Month Length to %d days
@@ -302,7 +302,7 @@ fluid.rum=Rum
 fluid.beer=Beer
 fluid.whiskey=Whiskey
 fluid.rye_whiskey=Rye Whiskey
-fluid.corn_whiskey= Corn Whiskey
+fluid.corn_whiskey=Corn Whiskey
 fluid.sake=Sake
 fluid.vodka=Vodka
 fluid.cider=Cider
