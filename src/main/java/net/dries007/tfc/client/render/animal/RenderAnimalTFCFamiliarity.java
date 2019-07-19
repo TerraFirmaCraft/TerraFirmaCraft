@@ -51,14 +51,16 @@ public final class RenderAnimalTFCFamiliarity
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOW)
-	public void renderAnimaFamiliarity(RenderLivingEvent.Pre<EntityAnimalTFC> event)
+	public void renderAnimalFamiliarity(RenderLivingEvent.Post<EntityAnimalTFC> event)
 	{
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayer player = mc.player.inventory.player;
 
-		if (player.isSneaking()) {
+		if (player.isSneaking())
+		{
 			EntityLivingBase entity = event.getEntity();
-			if (entity instanceof EntityAnimalTFC) {
+			if (entity instanceof EntityAnimalTFC)
+			{
 				double x, y, z;
 				x = event.getX();
 				y = event.getY();
@@ -69,7 +71,8 @@ public final class RenderAnimalTFCFamiliarity
 				double d3 = entity.getDistance(player);
 				float f2 = 5.0F;
 
-				if (d3 < f2) {
+				if (d3 < f2)
+				{
 					EntityAnimalTFC animal = (EntityAnimalTFC) entity;
 					RenderManager rendermanager = mc.getRenderManager();
 
@@ -94,11 +97,9 @@ public final class RenderAnimalTFCFamiliarity
 					GL11.glTranslatef(0, 0, -0.001F);
 
 					if (familiarity == 1.0F) {
-						this.drawTexturedModalRect(-6, 14 - (int) (12 * familiarity), 114,
-								74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
+						this.drawTexturedModalRect(-6, 14 - (int) (12 * familiarity), 114, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
 					} else {
-						this.drawTexturedModalRect(-6, 14 - (int) (12 * familiarity), 94, 74 - (int) (12 * familiarity),
-								12, (int) (12 * familiarity));
+						this.drawTexturedModalRect(-6, 14 - (int) (12 * familiarity), 94, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
 					}
 
 					GL11.glDepthMask(true);
