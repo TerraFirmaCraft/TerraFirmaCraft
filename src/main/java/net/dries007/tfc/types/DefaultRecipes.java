@@ -406,7 +406,7 @@ public final class DefaultRecipes
             {
                 // Note: Welding recipes require one less than the tier of the metal
                 //noinspection ConstantConditions
-                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), input1, input2, output, metal.getTier().previous()));
+                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), IIngredient.of(input1), IIngredient.of(input2), output, metal.getTier().previous()));
             }
         }
     }
@@ -426,7 +426,7 @@ public final class DefaultRecipes
             {
                 // Note: Welding recipes require one less than the tier of the metal
                 //noinspection ConstantConditions
-                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, ("ingot_" + outputMetal.getRegistryName().getPath()).toLowerCase()), input1, input2, output, outputMetal.getTier().previous()));
+                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, ("ingot_" + outputMetal.getRegistryName().getPath()).toLowerCase()), IIngredient.of(input1), IIngredient.of(input2), output, outputMetal.getTier().previous()));
             }
         }
     }
