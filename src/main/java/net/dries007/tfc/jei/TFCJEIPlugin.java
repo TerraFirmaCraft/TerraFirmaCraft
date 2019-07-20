@@ -23,6 +23,7 @@ import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.jei.categories.*;
 import net.dries007.tfc.jei.wrappers.AlloyWrapper;
+import net.dries007.tfc.jei.wrappers.BarrelWrapper;
 import net.dries007.tfc.jei.wrappers.KnappingWrapper;
 import net.dries007.tfc.jei.wrappers.SimpleRecipeWrapper;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -34,31 +35,33 @@ import net.dries007.tfc.objects.items.rock.ItemRock;
 @JEIPlugin
 public final class TFCJEIPlugin implements IModPlugin
 {
-    private static final String QUERN_UID = TFCConstants.MOD_ID + ".quern";
-    private static final String ANVIL_UID = TFCConstants.MOD_ID + ".anvil";
-    private static final String WELDING_UID = TFCConstants.MOD_ID + ".welding";
-    private static final String PITKILN_UID = TFCConstants.MOD_ID + ".pitkiln";
-    private static final String LOOM_UID = TFCConstants.MOD_ID + ".loom";
     private static final String ALLOY_UID = TFCConstants.MOD_ID + ".alloy";
+    private static final String ANVIL_UID = TFCConstants.MOD_ID + ".anvil";
+    private static final String BARREL_UID = TFCConstants.MOD_ID + ".barrel";
     private static final String KNAP_CLAY_UID = TFCConstants.MOD_ID + ".knap.clay";
     private static final String KNAP_FIRECLAY_UID = TFCConstants.MOD_ID + ".knap.fireclay";
     private static final String KNAP_LEATHER_UID = TFCConstants.MOD_ID + ".knap.leather";
     private static final String KNAP_STONE_UID = TFCConstants.MOD_ID + ".knap.stone";
+    private static final String LOOM_UID = TFCConstants.MOD_ID + ".loom";
+    private static final String PITKILN_UID = TFCConstants.MOD_ID + ".pitkiln";
+    private static final String QUERN_UID = TFCConstants.MOD_ID + ".quern";
+    private static final String WELDING_UID = TFCConstants.MOD_ID + ".welding";
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry)
     {
         //Add new JEI recipe categories
-        registry.addRecipeCategories(new QuernCategory(registry.getJeiHelpers().getGuiHelper(), QUERN_UID));
-        registry.addRecipeCategories(new AnvilCategory(registry.getJeiHelpers().getGuiHelper(), ANVIL_UID));
-        registry.addRecipeCategories(new WeldingCategory(registry.getJeiHelpers().getGuiHelper(), WELDING_UID));
-        registry.addRecipeCategories(new PitKilnCategory(registry.getJeiHelpers().getGuiHelper(), PITKILN_UID));
-        registry.addRecipeCategories(new LoomCategory(registry.getJeiHelpers().getGuiHelper(), LOOM_UID));
         registry.addRecipeCategories(new AlloyCategory(registry.getJeiHelpers().getGuiHelper(), ALLOY_UID));
+        registry.addRecipeCategories(new AnvilCategory(registry.getJeiHelpers().getGuiHelper(), ANVIL_UID));
+        registry.addRecipeCategories(new BarrelCategory(registry.getJeiHelpers().getGuiHelper(), BARREL_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_CLAY_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_FIRECLAY_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_LEATHER_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_STONE_UID));
+        registry.addRecipeCategories(new LoomCategory(registry.getJeiHelpers().getGuiHelper(), LOOM_UID));
+        registry.addRecipeCategories(new PitKilnCategory(registry.getJeiHelpers().getGuiHelper(), PITKILN_UID));
+        registry.addRecipeCategories(new QuernCategory(registry.getJeiHelpers().getGuiHelper(), QUERN_UID));
+        registry.addRecipeCategories(new WeldingCategory(registry.getJeiHelpers().getGuiHelper(), WELDING_UID));
     }
 
     @Override
@@ -160,5 +163,14 @@ public final class TFCJEIPlugin implements IModPlugin
 
         registry.addRecipes(stoneknapRecipes, KNAP_STONE_UID);
         registry.addRecipeCatalyst(new ItemStack(ItemRock.get(Rock.GRANITE)), KNAP_STONE_UID);
+
+        //Wraps all barrel recipes
+        List<BarrelWrapper> barrelRecipes = TFCRegistries.BARREL.getValuesCollection()
+            .stream().filter(recipe -> recipe.getOutputStack() != ItemStack.EMPTY || recipe.getOutputFluid() != null)
+            .map(BarrelWrapper::new)
+            .collect(Collectors.toList());
+
+        registry.addRecipes(barrelRecipes, BARREL_UID);
+        registry.addRecipeCatalyst(new ItemStack(BlocksTFC.getAllBarrelItemBlocks().get(0)), BARREL_UID);
     }
 }

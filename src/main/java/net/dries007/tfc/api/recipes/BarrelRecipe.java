@@ -81,6 +81,18 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         return outputStack;
     }
 
+    @Nonnull
+    public IIngredient<ItemStack> getItemIngredient()
+    {
+        return inputStack;
+    }
+
+    @Nonnull
+    public IIngredient<FluidStack> getFluidIngredient()
+    {
+        return inputFluid;
+    }
+
     @Nullable
     public FluidStack getOutputFluid(FluidStack inputFluid, ItemStack inputStack)
     {
