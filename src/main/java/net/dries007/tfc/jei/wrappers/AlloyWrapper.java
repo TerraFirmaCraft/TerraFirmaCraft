@@ -6,42 +6,56 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fluids.FluidStack;
 
 import mcp.MethodsReturnNonnullByDefault;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
-import net.dries007.tfc.jei.IJEIRecipeWrapper;
-import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import net.dries007.tfc.api.recipes.AlloyRecipe;
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.objects.items.metal.ItemIngot;
+import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class AlloyWrapper extends TFCRecipeWrapper
+public class AlloyWrapper implements IRecipeWrapper
 {
     private String[] slotContent = {"", "", "", ""};
+    private AlloyRecipe recipe;
 
-    public AlloyWrapper(IJEIRecipeWrapper recipe)
+    public AlloyWrapper(AlloyRecipe recipe)
     {
-        super(recipe);
+        this.recipe = recipe;
     }
 
     @Override
     public void getIngredients(IIngredients ingredients)
     {
-        NonNullList<IIngredient<FluidStack>> fluidIngredients = getRecipeWrapper().getFluidIngredients();
-        List<List<FluidStack>> allInputs = new ArrayList<>();
-        for (int i = 0; i < fluidIngredients.size(); i += 2)
+        int i = 0;
+        List<List<ItemStack>> allInputs = new ArrayList<>();
+        for (Metal metal : recipe.getMetals().keySet())
         {
-            FluidStack min = fluidIngredients.get(i).getValidInputList().get(0);
-            FluidStack max = fluidIngredients.get(i + 1).getValidInputList().get(0);
-            NonNullList<FluidStack> input = NonNullList.create();
-            slotContent[i / 2] = min.amount + "-" + max.amount + "%";
-            input.add(min);
-            allInputs.add(input);
+            int min = (int) (recipe.getMetals().get(metal).getMin() * 100);
+            int max = (int) (recipe.getMetals().get(metal).getMax() * 100);
+            slotContent[i] = min + "-" + max + "%";
+            NonNullList<ItemStack> possibleSmeltable = NonNullList.create();
+            possibleSmeltable.add(new ItemStack(ItemIngot.get(metal, Metal.ItemType.INGOT)));
+            for (Ore ore : TFCRegistries.ORES.getValuesCollection())
+            {
+                if (ore.getMetal() == metal)
+                {
+                    possibleSmeltable.add(new ItemStack(ItemOreTFC.get(ore)));
+                }
+            }
+            allInputs.add(possibleSmeltable);
+            i++;
         }
-        ingredients.setInputLists(VanillaTypes.FLUID, allInputs);
-        ingredients.setOutput(VanillaTypes.ITEM, getRecipeWrapper().getItemOutputs().get(0));
+        ingredients.setInputLists(VanillaTypes.ITEM, allInputs);
+        ingredients.setOutput(VanillaTypes.ITEM, new ItemStack(ItemIngot.get(this.recipe.getResult(), Metal.ItemType.INGOT)));
     }
 
     @Override

@@ -11,17 +11,16 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
-import mcp.MethodsReturnNonnullByDefault;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import net.dries007.tfc.api.util.TFCConstants;
-import net.dries007.tfc.jei.wrappers.PitKilnWrapper;
+import net.dries007.tfc.jei.BaseRecipeCategory;
+import net.dries007.tfc.jei.wrappers.SimpleRecipeWrapper;
 
 @ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-public class PitKilnCategory extends TFCRecipeCategory<PitKilnWrapper>
+public class PitKilnCategory extends BaseRecipeCategory<SimpleRecipeWrapper>
 {
     private static final ResourceLocation ICONS = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/jei/icons.png");
 
@@ -58,7 +57,7 @@ public class PitKilnCategory extends TFCRecipeCategory<PitKilnWrapper>
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, PitKilnWrapper recipeWrapper, IIngredients ingredients)
+    public void setRecipe(IRecipeLayout recipeLayout, SimpleRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
         itemStackGroup.init(0, true, 20, 16);

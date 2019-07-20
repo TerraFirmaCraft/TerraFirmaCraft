@@ -13,10 +13,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.jei.IJEIRecipeWrapper;
+import net.dries007.tfc.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
-public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe> implements IJEIRecipeWrapper
+public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe> implements IJEISimpleRecipe
 {
     @Nullable
     public static LoomRecipe get(ItemStack item)
@@ -71,13 +71,13 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe> implements 
     }
 
     @Override
-    public NonNullList<IIngredient<ItemStack>> getItemIngredients()
+    public NonNullList<IIngredient<ItemStack>> getIngredients()
     {
         return NonNullList.withSize(1, inputItem);
     }
 
     @Override
-    public NonNullList<ItemStack> getItemOutputs()
+    public NonNullList<ItemStack> getOutputs()
     {
         return NonNullList.withSize(1, outputItem);
     }

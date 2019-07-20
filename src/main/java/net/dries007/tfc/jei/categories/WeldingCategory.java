@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
-import mcp.MethodsReturnNonnullByDefault;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -19,12 +18,12 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.TFCConstants;
-import net.dries007.tfc.jei.wrappers.WeldingWrapper;
+import net.dries007.tfc.jei.BaseRecipeCategory;
+import net.dries007.tfc.jei.wrappers.SimpleRecipeWrapper;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 
 @ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-public class WeldingCategory extends TFCRecipeCategory<WeldingWrapper>
+public class WeldingCategory extends BaseRecipeCategory<SimpleRecipeWrapper>
 {
     private static final ResourceLocation ANVIL_TEXTURES = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/anvil.png");
 
@@ -34,7 +33,7 @@ public class WeldingCategory extends TFCRecipeCategory<WeldingWrapper>
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, WeldingWrapper recipeWrapper, IIngredients ingredients)
+    public void setRecipe(IRecipeLayout recipeLayout, SimpleRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
         itemStackGroup.init(0, true, 1, 60);

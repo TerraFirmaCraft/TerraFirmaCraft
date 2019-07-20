@@ -109,6 +109,16 @@ public class SimpleCraftMatrix
         return index >= 0 && index < area && matrix[index];
     }
 
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
     /**
      * @param other Another craft matrix
      * @return if the matrices are identical. Not used for checking if recipe matches
