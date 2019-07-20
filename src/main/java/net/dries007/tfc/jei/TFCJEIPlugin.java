@@ -32,6 +32,7 @@ public final class TFCJEIPlugin implements IModPlugin
     private static final String WELDING_UID = TFCConstants.MOD_ID + ".welding";
     private static final String PITKILN_UID = TFCConstants.MOD_ID + ".pitkiln";
     private static final String LOOM_UID = TFCConstants.MOD_ID + ".loom";
+    private static final String ALLOY_UID = TFCConstants.MOD_ID + ".alloy";
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry)
@@ -42,6 +43,7 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipeCategories(new WeldingCategory(registry.getJeiHelpers().getGuiHelper(), WELDING_UID));
         registry.addRecipeCategories(new PitKilnCategory(registry.getJeiHelpers().getGuiHelper(), PITKILN_UID));
         registry.addRecipeCategories(new LoomCategory(registry.getJeiHelpers().getGuiHelper(), LOOM_UID));
+        registry.addRecipeCategories(new AlloyCategory(registry.getJeiHelpers().getGuiHelper(), ALLOY_UID));
     }
 
     @Override
@@ -87,7 +89,7 @@ public final class TFCJEIPlugin implements IModPlugin
             .collect(Collectors.toList());
 
         registry.addRecipes(pitkilnRecipes, PITKILN_UID);
-        //No "Device" to wrap this
+        //No "Device" to wrap this to
 
         //Wraps all loom recipes
         List<LoomWrapper> loomRecipes = TFCRegistries.LOOM.getValuesCollection()
@@ -97,5 +99,14 @@ public final class TFCJEIPlugin implements IModPlugin
 
         registry.addRecipes(loomRecipes, LOOM_UID);
         registry.addRecipeCatalyst(new ItemStack(BlockLoom.get(Tree.SEQUOIA)), LOOM_UID);
+
+        //Wraps all alloy recipes
+        List<AlloyWrapper> alloyRecipes = TFCRegistries.ALLOYS.getValuesCollection()
+            .stream()
+            .map(AlloyWrapper::new)
+            .collect(Collectors.toList());
+
+        registry.addRecipes(alloyRecipes, ALLOY_UID);
+        registry.addRecipeCatalyst(new ItemStack(BlocksTFC.CRUCIBLE), ALLOY_UID);
     }
 }
