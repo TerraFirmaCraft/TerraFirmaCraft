@@ -293,6 +293,10 @@ jei.category.tfc.welding=Welding recipes
 jei.category.tfc.loom=Loom recipes
 jei.category.tfc.pitkiln=Pit Kiln recipes
 jei.category.tfc.alloy=Alloying recipes
+jei.category.tfc.knap.clay=Clay knapping
+jei.category.tfc.knap.fireclay=Fire clay knapping
+jei.category.tfc.knap.leather=Leather knapping
+jei.category.tfc.knap.stone=Stone knapping
 
 # Fluids
 fluid.salt_water=Salt Water
