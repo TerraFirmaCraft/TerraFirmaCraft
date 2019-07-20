@@ -16,26 +16,32 @@ import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.api.util.TFCConstants;
-import net.dries007.tfc.jei.categories.AnvilCategory;
-import net.dries007.tfc.jei.categories.QuernCategory;
-import net.dries007.tfc.jei.wrappers.AnvilWrapper;
-import net.dries007.tfc.jei.wrappers.QuernWrapper;
+import net.dries007.tfc.jei.categories.*;
+import net.dries007.tfc.jei.wrappers.*;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockLoom;
+import net.dries007.tfc.objects.items.metal.ItemAnvil;
 
 @JEIPlugin
 public final class TFCJEIPlugin implements IModPlugin
 {
-    public static final String QUERN_UID = TFCConstants.MOD_ID + ".quern";
-    public static final String ANVIL_UID = TFCConstants.MOD_ID + ".anvil";
+    private static final String QUERN_UID = TFCConstants.MOD_ID + ".quern";
+    private static final String ANVIL_UID = TFCConstants.MOD_ID + ".anvil";
+    private static final String WELDING_UID = TFCConstants.MOD_ID + ".welding";
+    private static final String PITKILN_UID = TFCConstants.MOD_ID + ".pitkiln";
+    private static final String LOOM_UID = TFCConstants.MOD_ID + ".loom";
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry)
     {
         //Add new JEI recipe categories
-        registry.addRecipeCategories(new QuernCategory(registry.getJeiHelpers().getGuiHelper())); //Quern
-        registry.addRecipeCategories(new AnvilCategory(registry.getJeiHelpers().getGuiHelper())); //Anvil
+        registry.addRecipeCategories(new QuernCategory(registry.getJeiHelpers().getGuiHelper(), QUERN_UID));
+        registry.addRecipeCategories(new AnvilCategory(registry.getJeiHelpers().getGuiHelper(), ANVIL_UID));
+        registry.addRecipeCategories(new WeldingCategory(registry.getJeiHelpers().getGuiHelper(), WELDING_UID));
+        registry.addRecipeCategories(new PitKilnCategory(registry.getJeiHelpers().getGuiHelper(), PITKILN_UID));
+        registry.addRecipeCategories(new LoomCategory(registry.getJeiHelpers().getGuiHelper(), LOOM_UID));
     }
 
     @Override
@@ -57,6 +63,39 @@ public final class TFCJEIPlugin implements IModPlugin
             .collect(Collectors.toList());
 
         registry.addRecipes(anvilList, ANVIL_UID);
-        registry.addRecipeCatalyst(BlockAnvilTFC.get(Metal.WROUGHT_IRON, 1), ANVIL_UID); //This is returning air :/
+
+        //Wraps all welding recipes
+        List<WeldingWrapper> weldList = TFCRegistries.WELDING.getValuesCollection()
+            .stream()
+            .map(WeldingWrapper::new)
+            .collect(Collectors.toList());
+
+        registry.addRecipes(weldList, WELDING_UID);
+        for (Metal metal : TFCRegistries.METALS.getValuesCollection())
+        {
+            if (Metal.ItemType.ANVIL.hasType(metal))
+            {
+                registry.addRecipeCatalyst(new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL)), ANVIL_UID);
+                registry.addRecipeCatalyst(new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL)), WELDING_UID);
+            }
+        }
+
+        //Wraps all pit kiln recipes
+        List<PitKilnWrapper> pitkilnRecipes = TFCRegistries.PIT_KILN.getValuesCollection()
+            .stream()
+            .map(PitKilnWrapper::new)
+            .collect(Collectors.toList());
+
+        registry.addRecipes(pitkilnRecipes, PITKILN_UID);
+        //No "Device" to wrap this
+
+        //Wraps all loom recipes
+        List<LoomWrapper> loomRecipes = TFCRegistries.LOOM.getValuesCollection()
+            .stream()
+            .map(LoomWrapper::new)
+            .collect(Collectors.toList());
+
+        registry.addRecipes(loomRecipes, LOOM_UID);
+        registry.addRecipeCatalyst(new ItemStack(BlockLoom.get(Tree.SEQUOIA)), LOOM_UID);
     }
 }

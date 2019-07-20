@@ -8,7 +8,6 @@ package net.dries007.tfc.jei.categories;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import mcp.MethodsReturnNonnullByDefault;
@@ -20,12 +19,11 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import net.dries007.tfc.api.util.TFCConstants;
-import net.dries007.tfc.jei.wrappers.QuernWrapper;
-import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.jei.wrappers.LoomWrapper;
 
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class QuernCategory extends TFCRecipeCategory<QuernWrapper>
+@MethodsReturnNonnullByDefault
+public class LoomCategory extends TFCRecipeCategory<LoomWrapper>
 {
     private static final ResourceLocation ICONS = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/jei/icons.png");
 
@@ -33,7 +31,7 @@ public class QuernCategory extends TFCRecipeCategory<QuernWrapper>
     private final IDrawableStatic arrow;
     private final IDrawableAnimated arrowAnimated;
 
-    public QuernCategory(IGuiHelper helper, String Uid)
+    public LoomCategory(IGuiHelper helper, String Uid)
     {
         super(helper.createBlankDrawable(120, 38), Uid);
         arrow = helper.createDrawable(ICONS, 0, 14, 22, 16);
@@ -47,21 +45,18 @@ public class QuernCategory extends TFCRecipeCategory<QuernWrapper>
     {
         arrow.draw(minecraft, 50, 16);
         arrowAnimated.draw(minecraft, 50, 16);
-        slot.draw(minecraft, 0, 16);
         slot.draw(minecraft, 20, 16);
         slot.draw(minecraft, 84, 16);
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, QuernWrapper recipeWrapper, IIngredients ingredients)
+    public void setRecipe(IRecipeLayout recipeLayout, LoomWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
-        itemStackGroup.init(0, true, 0, 16);
-        itemStackGroup.init(1, true, 20, 16);
-        itemStackGroup.init(2, false, 84, 16);
+        itemStackGroup.init(0, true, 20, 16);
+        itemStackGroup.init(1, false, 84, 16);
 
         itemStackGroup.set(0, ingredients.getInputs(VanillaTypes.ITEM).get(0));
-        itemStackGroup.set(1, new ItemStack(ItemsTFC.HANDSTONE));
-        itemStackGroup.set(2, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
+        itemStackGroup.set(1, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
     }
 }

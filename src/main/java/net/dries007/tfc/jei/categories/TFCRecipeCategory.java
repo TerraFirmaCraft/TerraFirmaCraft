@@ -17,11 +17,19 @@ public abstract class TFCRecipeCategory<T extends IRecipeWrapper> implements IRe
 {
     private final IDrawable background;
     private final String localizedName;
+    private final String Uid;
 
-    public TFCRecipeCategory(IDrawable background, String categoryName)
+    public TFCRecipeCategory(IDrawable background, String Uid)
     {
         this.background = background;
-        this.localizedName = Translator.translateToLocal(TFCConstants.MOD_ID + ".jei.category." + categoryName);
+        this.localizedName = Translator.translateToLocal("jei.category." + Uid);
+        this.Uid = Uid;
+    }
+
+    @Override
+    public String getUid()
+    {
+        return Uid;
     }
 
     @Override
