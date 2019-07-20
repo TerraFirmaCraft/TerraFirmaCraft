@@ -287,8 +287,11 @@ tfc.enum.nutrient.minerals=Minerals
 tfc.enum.nutrient.vitamins=Vitamins
 
 #JEI
-tfc.jei.category.quern=Quern recipes
-tfc.jei.category.anvil=Anvil recipes
+jei.category.tfc.quern=Quern recipes
+jei.category.tfc.anvil=Anvil recipes
+jei.category.tfc.welding=Welding recipes
+jei.category.tfc.loom=Loom recipes
+jei.category.tfc.pitkiln=Pit Kiln recipes
 
 # Fluids
 fluid.salt_water=Salt Water
