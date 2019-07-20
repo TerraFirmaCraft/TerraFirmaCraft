@@ -292,6 +292,7 @@ jei.category.tfc.anvil=Anvil recipes
 jei.category.tfc.welding=Welding recipes
 jei.category.tfc.loom=Loom recipes
 jei.category.tfc.pitkiln=Pit Kiln recipes
+jei.category.tfc.alloy=Alloying recipes
 
 # Fluids
 fluid.salt_water=Salt Water
