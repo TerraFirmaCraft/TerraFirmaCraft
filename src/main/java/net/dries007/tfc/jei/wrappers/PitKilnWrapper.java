@@ -5,9 +5,6 @@
 
 package net.dries007.tfc.jei.wrappers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
@@ -15,9 +12,9 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import net.dries007.tfc.jei.IJEIRecipeWrapper;
 
-public class WeldingWrapper extends TFCRecipeWrapper
+public class PitKilnWrapper extends TFCRecipeWrapper
 {
-    public WeldingWrapper(IJEIRecipeWrapper recipe)
+    public PitKilnWrapper(IJEIRecipeWrapper recipe)
     {
         super(recipe);
     }
@@ -25,12 +22,8 @@ public class WeldingWrapper extends TFCRecipeWrapper
     @Override
     public void getIngredients(IIngredients ingredients)
     {
-        NonNullList<ItemStack> inputs1 = getRecipeWrapper().getItemIngredients().get(0).getValidInputList();
-        NonNullList<ItemStack> inputs2 = getRecipeWrapper().getItemIngredients().get(1).getValidInputList();
-        List<List<ItemStack>> allInputs = new ArrayList<>(2);
-        allInputs.add(inputs1);
-        allInputs.add(inputs2);
-        ingredients.setInputLists(VanillaTypes.ITEM, allInputs);
+        NonNullList<ItemStack> inputs = getRecipeWrapper().getItemIngredients().get(0).getValidInputList();
+        ingredients.setInputs(VanillaTypes.ITEM, inputs);
         ingredients.setOutput(VanillaTypes.ITEM, getRecipeWrapper().getItemOutputs().get(0));
     }
 }

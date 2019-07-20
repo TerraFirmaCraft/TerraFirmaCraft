@@ -8,13 +8,15 @@ package net.dries007.tfc.api.recipes;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.jei.IJEIRecipeWrapper;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
-public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
+public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe> implements IJEIRecipeWrapper
 {
     @Nullable
     public static LoomRecipe get(ItemStack item)
@@ -66,6 +68,18 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
     private boolean isValidInput(ItemStack inputItem)
     {
         return this.inputItem.testIgnoreCount(inputItem);
+    }
+
+    @Override
+    public NonNullList<IIngredient<ItemStack>> getItemIngredients()
+    {
+        return NonNullList.withSize(1, inputItem);
+    }
+
+    @Override
+    public NonNullList<ItemStack> getItemOutputs()
+    {
+        return NonNullList.withSize(1, outputItem);
     }
 
 }

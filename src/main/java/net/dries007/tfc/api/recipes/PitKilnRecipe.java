@@ -10,12 +10,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IFireable;
+import net.dries007.tfc.jei.IJEIRecipeWrapper;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 /**
@@ -23,7 +25,7 @@ import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
  * todo: in 1.13+ move this to a json recipe type
  */
 @ParametersAreNonnullByDefault
-public class PitKilnRecipe extends IForgeRegistryEntry.Impl<PitKilnRecipe>
+public class PitKilnRecipe extends IForgeRegistryEntry.Impl<PitKilnRecipe> implements IJEIRecipeWrapper
 {
     @Nullable
     public static PitKilnRecipe get(ItemStack stack)
@@ -73,5 +75,17 @@ public class PitKilnRecipe extends IForgeRegistryEntry.Impl<PitKilnRecipe>
             TerraFirmaCraft.getLog().warn("A recipe that specified to use IFireable was supplied with an input that did not match! This is most likely caused my a badly specified recipe!");
         }
         return output.copy();
+    }
+
+    @Override
+    public NonNullList<IIngredient<ItemStack>> getItemIngredients()
+    {
+        return NonNullList.withSize(1, ingredient);
+    }
+
+    @Override
+    public NonNullList<ItemStack> getItemOutputs()
+    {
+        return NonNullList.withSize(1, getOutput(ingredient.getValidInputList().get(0), Metal.Tier.TIER_I));
     }
 }

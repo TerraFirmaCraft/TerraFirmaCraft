@@ -179,7 +179,7 @@ public final class DefaultRecipes
         r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_UNFIRED_VESSEL), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL)).setRegistryName("fired_vessel"));
         for (EnumDyeColor color : EnumDyeColor.values())
         {
-            r.register(new PitKilnRecipe(IIngredient.of(new ItemStack(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, color.getMetadata())), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, color.getMetadata())).setRegistryName("fired_vessel_glazed_" + color.getName()));
+            r.register(new PitKilnRecipe(IIngredient.of(new ItemStack(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, 1, color.getMetadata())), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, 1, color.getMetadata())).setRegistryName("fired_vessel_glazed_" + color.getName()));
         }
 
         // Misc
