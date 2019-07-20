@@ -57,8 +57,8 @@ public class AlloyCategory extends TFCRecipeCategory<AlloyWrapper>
         slot.draw(minecraft, 30, 16);
         slot.draw(minecraft, 60, 16);
         slot.draw(minecraft, 90, 16);
-        fire.draw(minecraft, 122, 16);
-        fireAnimated.draw(minecraft, 122, 16);
+        fire.draw(minecraft, 118, 16);
+        fireAnimated.draw(minecraft, 118, 16);
         slot.draw(minecraft, 138, 16);
     }
 

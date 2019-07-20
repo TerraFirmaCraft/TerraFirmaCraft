@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -48,11 +49,14 @@ public class AlloyWrapper extends TFCRecipeWrapper
     {
         for (int i = 0; i < 4; i++)
         {
-            int x = 15 + i * 30;
-            int y = 13;
+            float x = 14f + i * 60f;
+            float y = 15f;
             String text = slotContent[i];
-            int stringWidth = minecraft.fontRenderer.getStringWidth(text);
-            minecraft.fontRenderer.drawString(text, x - stringWidth / 2, y, 0x000000, false);
+            x = x - minecraft.fontRenderer.getStringWidth(text) / 3.0f;
+            GlStateManager.pushMatrix();
+            GlStateManager.scale(0.5f, 0.5f, 0.5f);
+            minecraft.fontRenderer.drawString(text, x, y, 0x000000, false);
+            GlStateManager.popMatrix();
         }
     }
 }

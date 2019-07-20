@@ -22,6 +22,7 @@ import net.dries007.tfc.jei.categories.*;
 import net.dries007.tfc.jei.wrappers.*;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLoom;
+import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 
 @JEIPlugin
@@ -108,5 +109,6 @@ public final class TFCJEIPlugin implements IModPlugin
 
         registry.addRecipes(alloyRecipes, ALLOY_UID);
         registry.addRecipeCatalyst(new ItemStack(BlocksTFC.CRUCIBLE), ALLOY_UID);
+        registry.addRecipeCatalyst(new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL), ALLOY_UID);
     }
 }
