@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.jei.IJEIRecipeWrapper;
+import net.dries007.tfc.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 /**
@@ -23,7 +23,7 @@ import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
  * todo: in 1.13+ move this to a json recipe type
  */
 @ParametersAreNonnullByDefault
-public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe> implements IJEIRecipeWrapper
+public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe> implements IJEISimpleRecipe
 {
     private final Metal.Tier minTier;
     private final IIngredient<ItemStack> input1;
@@ -59,7 +59,7 @@ public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe> imple
     }
 
     @Override
-    public NonNullList<IIngredient<ItemStack>> getItemIngredients()
+    public NonNullList<IIngredient<ItemStack>> getIngredients()
     {
         NonNullList<IIngredient<ItemStack>> list = NonNullList.create();
         list.add(input1);
@@ -68,7 +68,7 @@ public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe> imple
     }
 
     @Override
-    public NonNullList<ItemStack> getItemOutputs()
+    public NonNullList<ItemStack> getOutputs()
     {
         return NonNullList.withSize(1, output);
     }

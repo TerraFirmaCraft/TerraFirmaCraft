@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.jei.categories;
+package net.dries007.tfc.jei;
 
 import mcp.MethodsReturnNonnullByDefault;
 import mezz.jei.api.gui.IDrawable;
@@ -13,13 +13,13 @@ import mezz.jei.util.Translator;
 import net.dries007.tfc.api.util.TFCConstants;
 
 @MethodsReturnNonnullByDefault
-public abstract class TFCRecipeCategory<T extends IRecipeWrapper> implements IRecipeCategory<T>
+public abstract class BaseRecipeCategory<T extends IRecipeWrapper> implements IRecipeCategory<T>
 {
     private final IDrawable background;
     private final String localizedName;
     private final String Uid;
 
-    public TFCRecipeCategory(IDrawable background, String Uid)
+    public BaseRecipeCategory(IDrawable background, String Uid)
     {
         this.background = background;
         this.localizedName = Translator.translateToLocal("jei.category." + Uid);

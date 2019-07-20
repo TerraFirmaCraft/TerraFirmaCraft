@@ -8,23 +8,16 @@ package net.dries007.tfc.api.recipes;
 import javax.annotation.Nonnull;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.jei.IJEIRecipeWrapper;
-import net.dries007.tfc.objects.fluids.FluidsTFC;
-import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
-import net.dries007.tfc.objects.items.metal.ItemIngot;
 
 /**
  * todo: in 1.13+ move this to a json recipe type
  */
-public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe> implements IJEIRecipeWrapper
+public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
 {
     private final ImmutableMap<Metal, AlloyRange> metalMap;
     private final Metal result;
@@ -55,26 +48,6 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe> implement
     public ImmutableMap<Metal, AlloyRange> getMetals()
     {
         return metalMap;
-    }
-
-    @Override
-    public NonNullList<IIngredient<FluidStack>> getFluidIngredients()
-    {
-        NonNullList<IIngredient<FluidStack>> list = NonNullList.create();
-        for (Metal metal : this.getMetals().keySet())
-        {
-            int min = (int) (this.getMetals().get(metal).getMin() * 100);
-            int max = (int) (this.getMetals().get(metal).getMax() * 100);
-            list.add(IIngredient.of(FluidsTFC.getMetalFluid(metal), min));
-            list.add(IIngredient.of(FluidsTFC.getMetalFluid(metal), max));
-        }
-        return list;
-    }
-
-    @Override
-    public NonNullList<ItemStack> getItemOutputs()
-    {
-        return NonNullList.withSize(1, new ItemStack(ItemIngot.get(result, Metal.ItemType.INGOT)));
     }
 
     public static class Builder

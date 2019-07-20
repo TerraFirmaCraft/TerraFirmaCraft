@@ -15,10 +15,10 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.jei.IJEIRecipeWrapper;
+import net.dries007.tfc.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
-public class QuernRecipe extends IForgeRegistryEntry.Impl<QuernRecipe> implements IJEIRecipeWrapper
+public class QuernRecipe extends IForgeRegistryEntry.Impl<QuernRecipe> implements IJEISimpleRecipe
 {
     @Nullable
     public static QuernRecipe get(ItemStack item)
@@ -55,13 +55,13 @@ public class QuernRecipe extends IForgeRegistryEntry.Impl<QuernRecipe> implement
     }
 
     @Override
-    public NonNullList<IIngredient<ItemStack>> getItemIngredients()
+    public NonNullList<IIngredient<ItemStack>> getIngredients()
     {
         return NonNullList.withSize(1, inputItem);
     }
 
     @Override
-    public NonNullList<ItemStack> getItemOutputs()
+    public NonNullList<ItemStack> getOutputs()
     {
         return NonNullList.withSize(1, outputItem);
     }

@@ -17,7 +17,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IFireable;
-import net.dries007.tfc.jei.IJEIRecipeWrapper;
+import net.dries007.tfc.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 /**
@@ -25,7 +25,7 @@ import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
  * todo: in 1.13+ move this to a json recipe type
  */
 @ParametersAreNonnullByDefault
-public class PitKilnRecipe extends IForgeRegistryEntry.Impl<PitKilnRecipe> implements IJEIRecipeWrapper
+public class PitKilnRecipe extends IForgeRegistryEntry.Impl<PitKilnRecipe> implements IJEISimpleRecipe
 {
     @Nullable
     public static PitKilnRecipe get(ItemStack stack)
@@ -78,13 +78,13 @@ public class PitKilnRecipe extends IForgeRegistryEntry.Impl<PitKilnRecipe> imple
     }
 
     @Override
-    public NonNullList<IIngredient<ItemStack>> getItemIngredients()
+    public NonNullList<IIngredient<ItemStack>> getIngredients()
     {
         return NonNullList.withSize(1, ingredient);
     }
 
     @Override
-    public NonNullList<ItemStack> getItemOutputs()
+    public NonNullList<ItemStack> getOutputs()
     {
         return NonNullList.withSize(1, getOutput(ingredient.getValidInputList().get(0), Metal.Tier.TIER_I));
     }
