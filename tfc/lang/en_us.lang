@@ -82,6 +82,17 @@ tfc.food_traits.salted=Salted
 tfc.food_traits.pickled=Pickled
 tfc.food_traits.pickled_active=Pickling
 
+## Skills
+tfc.skill.prospecting=Prospecting: %s
+tfc.skill.smithing=Smithing: %s
+tfc.skill.agriculture=Agriculture: %s
+tfc.skill.butchering=Butchering: %s
+
+tfc.enum.skilltier.novice=Novice
+tfc.enum.skilltier.adept=Adept
+tfc.enum.skilltier.expert=Expert
+tfc.enum.skilltier.master=Master
+
 ## Keybindings
 tfc.key.craft=Crafting GUI
 tfc.key.placeblock=Place Item Holder Block
