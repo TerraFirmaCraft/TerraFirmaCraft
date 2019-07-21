@@ -107,7 +107,7 @@ public abstract class ContainerItemStack extends Container
     @Nonnull
     public ItemStack slotClick(int slotID, int dragType, ClickType clickType, EntityPlayer player)
     {
-        if ((clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP || clickType == ClickType.SWAP) && slotID == itemIndex)
+        if ((clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP || clickType == ClickType.SWAP || clickType == ClickType.THROW) && slotID == itemIndex)
         {
             return ItemStack.EMPTY;
         }
@@ -126,12 +126,6 @@ public abstract class ContainerItemStack extends Container
             stack.setTagCompound(((ItemStackHandler) cap).serializeNBT());
         }
         super.onContainerClosed(player);
-    }
-
-    @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer player)
-    {
-        return true;
     }
 
     protected abstract void addContainerSlots();

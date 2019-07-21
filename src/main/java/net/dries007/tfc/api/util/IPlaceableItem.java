@@ -69,25 +69,41 @@ public interface IPlaceableItem
             // This is also where charcoal piles grow
             placeableInstances.put(stack -> stack.getItem() == Items.COAL && stack.getMetadata() == 1, (world, pos, stack, player, facing, hitVec) ->
             {
-                if (facing == null) return false;
-                IBlockState state = world.getBlockState(pos);
-                if (state.getBlock() == BlocksTFC.CHARCOAL_PILE)
+                if (facing != null)
                 {
-                    if (state.getValue(LAYERS) < 8)
+                    IBlockState state = world.getBlockState(pos);
+                    if (state.getBlock() == BlocksTFC.CHARCOAL_PILE && state.getValue(LAYERS) < 8)
                     {
-                        world.setBlockState(pos, state.withProperty(LAYERS, state.getValue(LAYERS) + 1));
-                        world.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0f, 0.5f);
-                        return true;
+                        // Check the player isn't standing inside the placement area for the next layer
+                        IBlockState stateToPlace = state.withProperty(LAYERS, state.getValue(LAYERS) + 1);
+                        if (world.checkNoEntityCollision(stateToPlace.getBoundingBox(world, pos).offset(pos)))
+                        {
+                            if (!world.isRemote)
+                            {
+                                world.setBlockState(pos, state.withProperty(LAYERS, state.getValue(LAYERS) + 1));
+                                world.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0f, 0.5f);
+                            }
+                            return true;
+                        }
                     }
-                }
-                if (facing == EnumFacing.UP && world.getBlockState(pos).isNormalCube() && world.mayPlace(BlocksTFC.CHARCOAL_PILE, pos.up(), false, EnumFacing.UP, null))
-                {
-                    // Create a new charcoal pile
-                    if (!world.isRemote)
+                    BlockPos posAt = pos;
+                    if (!state.getBlock().isReplaceable(world, pos))
                     {
-                        world.setBlockState(pos.up(), BlocksTFC.CHARCOAL_PILE.getDefaultState());
-                        world.playSound(null, pos.up(), SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0f, 0.5f);
-                        return true;
+                        posAt = posAt.offset(facing);
+                    }
+                    if (world.getBlockState(posAt.down()).isSideSolid(world, posAt.down(), EnumFacing.UP) && world.getBlockState(posAt).getBlock().isReplaceable(world, pos))
+                    {
+                        IBlockState stateToPlace = BlocksTFC.CHARCOAL_PILE.getDefaultState().withProperty(LAYERS, 1);
+                        if (world.checkNoEntityCollision(stateToPlace.getBoundingBox(world, posAt).offset(posAt)))
+                        {
+                            // Create a new charcoal pile
+                            if (!world.isRemote)
+                            {
+                                world.setBlockState(posAt, stateToPlace);
+                                world.playSound(null, posAt, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0f, 0.5f);
+                            }
+                            return true;
+                        }
                     }
                 }
                 return false;
@@ -97,9 +113,10 @@ public interface IPlaceableItem
             placeableInstances.put(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "logWood"), (world, pos, stack, player, facing, hitVec) -> {
                 if (facing != null)
                 {
-                    if (world.getBlockState(pos).getBlock() == BlocksTFC.LOG_PILE)
+                    IBlockState stateAt = world.getBlockState(pos);
+                    if (stateAt.getBlock() == BlocksTFC.LOG_PILE)
                     {
-                        // Clicked on a log pile, so try an insert or grow the original pile
+                        // Clicked on a log pile, so try to insert into the original
                         TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
                         if (te != null)
                         {
@@ -111,29 +128,12 @@ public interface IPlaceableItem
                                 }
                                 return true;
                             }
-                            else if (facing == EnumFacing.UP && te.countLogs() == 16 || (facing != EnumFacing.UP && world.getBlockState(pos.down().offset(facing)).isNormalCube()
-                                && world.getBlockState(pos.offset(facing)).getBlock().isReplaceable(world, pos.offset(facing))))
-                            {
-                                if (!world.isRemote)
-                                {
-                                    // Insert log didn't work, see if trying to place another log pile
-                                    world.setBlockState(pos.offset(facing), BlocksTFC.LOG_PILE.getStateForPlacement(world, pos, facing, 0, 0, 0, 0, player));
-
-                                    TELogPile te2 = Helpers.getTE(world, pos.offset(facing), TELogPile.class);
-                                    if (te2 != null)
-                                    {
-                                        te2.insertLog(stack.copy());
-                                    }
-
-                                    world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                                }
-                                return true;
-                            }
                         }
                     }
-                    else if (player.isSneaking())
+
+                    // Try and place a log pile - if you were sneaking or you clicked on a log pile
+                    if (stateAt.getBlock() == BlocksTFC.LOG_PILE || player.isSneaking())
                     {
-                        IBlockState stateAt = world.getBlockState(pos);
                         BlockPos posAt = pos;
                         if (!stateAt.getBlock().isReplaceable(world, pos))
                         {

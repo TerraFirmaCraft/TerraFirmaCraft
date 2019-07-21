@@ -38,8 +38,6 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
-import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
-import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
@@ -202,106 +200,95 @@ public class ClientEvents
     public static void onItemTooltip(ItemTooltipEvent event)
     {
         ItemStack stack = event.getItemStack();
-        if (stack.isEmpty())
-        {
-            TerraFirmaCraft.getLog().warn("ItemTooltipEvent with empty stack??", new Exception());
-            return;
-        }
         Item item = stack.getItem();
         List<String> tt = event.getToolTip();
-
-        // Stuff that should always be shown as part of the tooltip
-        IItemSize size = CapabilityItemSize.getIItemSize(stack);
-        if (size != null)
+        if (!stack.isEmpty())
         {
-            size.addSizeInfo(stack, tt);
-        }
-        IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        if (heat != null)
-        {
-            heat.addHeatInfo(stack, tt);
-        }
-        IFood nutrients = stack.getCapability(CapabilityFood.CAPABILITY, null);
-        if (nutrients != null)
-        {
-            nutrients.addNutrientInfo(stack, tt);
-        }
-
-        if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
-        {
-            if (item instanceof IMetalObject)
+            // Stuff that should always be shown as part of the tooltip
+            IItemSize size = CapabilityItemSize.getIItemSize(stack);
+            if (size != null)
             {
-                ((IMetalObject) item).addMetalInfo(stack, tt);
+                size.addSizeInfo(stack, tt);
             }
-            else if (item instanceof ItemBlock)
+            IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+            if (heat != null)
             {
-                Block block = ((ItemBlock) item).getBlock();
-                if (block instanceof IMetalObject)
+                heat.addHeatInfo(stack, tt);
+            }
+            IFood nutrients = stack.getCapability(CapabilityFood.CAPABILITY, null);
+            if (nutrients != null)
+            {
+                nutrients.addNutrientInfo(stack, tt);
+            }
+
+            if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
+            {
+                if (item instanceof IMetalObject)
                 {
-                    ((IMetalObject) block).addMetalInfo(stack, tt);
+                    ((IMetalObject) item).addMetalInfo(stack, tt);
                 }
-            }
-            if (item instanceof IRockObject)
-            {
-                ((IRockObject) item).addRockInfo(stack, tt);
-            }
-            else if (item instanceof ItemBlock)
-            {
-                Block block = ((ItemBlock) item).getBlock();
-                if (block instanceof IRockObject)
+                else if (item instanceof ItemBlock)
                 {
-                    ((IRockObject) block).addRockInfo(stack, tt);
-                }
-            }
-
-            // todo: remove this debug tooltip
-            if (stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null))
-            {
-                IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-                assert cap != null;
-                tt.add("Forge Stuff: " + cap.serializeNBT());
-            }
-
-            if (ConfigTFC.CLIENT.showToolClassTooltip)
-            {
-                Set<String> toolClasses = item.getToolClasses(stack);
-                if (toolClasses.size() == 1)
-                {
-                    tt.add(I18n.format("tfc.tooltip.toolclass", toolClasses.iterator().next()));
-                }
-                else if (toolClasses.size() > 1)
-                {
-                    tt.add(I18n.format("tfc.tooltip.toolclasses"));
-                    for (String toolClass : toolClasses)
+                    Block block = ((ItemBlock) item).getBlock();
+                    if (block instanceof IMetalObject)
                     {
-                        tt.add("+ " + toolClass);
+                        ((IMetalObject) block).addMetalInfo(stack, tt);
                     }
                 }
-            }
-            if (ConfigTFC.CLIENT.showOreDictionaryTooltip)
-            {
-                int[] ids = OreDictionary.getOreIDs(stack);
-                if (ids.length == 1)
+                if (item instanceof IRockObject)
                 {
-                    tt.add(I18n.format("tfc.tooltip.oredictionaryentry", OreDictionary.getOreName(ids[0])));
+                    ((IRockObject) item).addRockInfo(stack, tt);
                 }
-                else if (ids.length > 1)
+                else if (item instanceof ItemBlock)
                 {
-                    tt.add(I18n.format("tfc.tooltip.oredictionaryentries"));
-                    ArrayList<String> names = new ArrayList<>(ids.length);
-                    for (int id : ids)
+                    Block block = ((ItemBlock) item).getBlock();
+                    if (block instanceof IRockObject)
                     {
-                        names.add("+ " + OreDictionary.getOreName(id));
+                        ((IRockObject) block).addRockInfo(stack, tt);
                     }
-                    names.sort(null); // Natural order (String.compare)
-                    tt.addAll(names);
                 }
-            }
-            if (ConfigTFC.CLIENT.showNBTTooltip)
-            {
-                if (stack.hasTagCompound())
+
+                if (ConfigTFC.CLIENT.showToolClassTooltip)
                 {
-                    tt.add("NBT: " + stack.getTagCompound());
+                    Set<String> toolClasses = item.getToolClasses(stack);
+                    if (toolClasses.size() == 1)
+                    {
+                        tt.add(I18n.format("tfc.tooltip.toolclass", toolClasses.iterator().next()));
+                    }
+                    else if (toolClasses.size() > 1)
+                    {
+                        tt.add(I18n.format("tfc.tooltip.toolclasses"));
+                        for (String toolClass : toolClasses)
+                        {
+                            tt.add("+ " + toolClass);
+                        }
+                    }
+                }
+                if (ConfigTFC.CLIENT.showOreDictionaryTooltip)
+                {
+                    int[] ids = OreDictionary.getOreIDs(stack);
+                    if (ids.length == 1)
+                    {
+                        tt.add(I18n.format("tfc.tooltip.oredictionaryentry", OreDictionary.getOreName(ids[0])));
+                    }
+                    else if (ids.length > 1)
+                    {
+                        tt.add(I18n.format("tfc.tooltip.oredictionaryentries"));
+                        ArrayList<String> names = new ArrayList<>(ids.length);
+                        for (int id : ids)
+                        {
+                            names.add("+ " + OreDictionary.getOreName(id));
+                        }
+                        names.sort(null); // Natural order (String.compare)
+                        tt.addAll(names);
+                    }
+                }
+                if (ConfigTFC.CLIENT.showNBTTooltip)
+                {
+                    if (stack.hasTagCompound())
+                    {
+                        tt.add("NBT: " + stack.getTagCompound());
+                    }
                 }
             }
         }

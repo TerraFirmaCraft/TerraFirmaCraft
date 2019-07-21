@@ -46,6 +46,20 @@ public class BlockPitKiln extends Block implements ILightableBlock
 {
     public static final PropertyBool FULL = PropertyBool.create("full");
 
+    private static final AxisAlignedBB[] AABB_LEVELS = new AxisAlignedBB[] {
+        PLACED_ITEM_AABB,
+        new AxisAlignedBB(0, 0, 0, 1, 0.0625, 1),
+        new AxisAlignedBB(0, 0, 0, 1, 0.125, 1),
+        new AxisAlignedBB(0, 0, 0, 1, 0.1875, 1),
+        new AxisAlignedBB(0, 0, 0, 1, 0.25, 1),
+        new AxisAlignedBB(0, 0, 0, 1, 0.3125, 1),
+        new AxisAlignedBB(0, 0, 0, 1, 0.375, 1),
+        new AxisAlignedBB(0, 0, 0, 1, 0.4375, 1),
+        new AxisAlignedBB(0, 0, 0, 1, 0.5, 1),
+        new AxisAlignedBB(0, 0, 0, 1, 0.75, 1),
+        FULL_BLOCK_AABB
+    };
+
     public BlockPitKiln()
     {
         super(Material.CIRCUITS);
@@ -104,8 +118,21 @@ public class BlockPitKiln extends Block implements ILightableBlock
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        // todo: depend on fill level?
-        return state.getActualState(source, pos).getValue(FULL) ? FULL_BLOCK_AABB : PLACED_ITEM_AABB;
+        TEPitKiln tile = Helpers.getTE(source, pos, TEPitKiln.class);
+        if (tile != null)
+        {
+            int height = tile.getStrawCount();
+            if (tile.getLogCount() > 4)
+            {
+                height = 10; // Full block
+            }
+            else if (tile.getLogCount() > 0)
+            {
+                height = 9; // 75% of block
+            }
+            return AABB_LEVELS[height];
+        }
+        return PLACED_ITEM_AABB;
     }
 
     @Override
@@ -147,7 +174,7 @@ public class BlockPitKiln extends Block implements ILightableBlock
         {
             te.onBreakBlock(worldIn, pos);
         }
-        super.breakBlock(worldIn, pos, state); // todo: drop items
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
