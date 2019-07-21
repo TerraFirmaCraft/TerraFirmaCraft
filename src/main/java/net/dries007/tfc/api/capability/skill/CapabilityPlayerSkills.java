@@ -5,10 +5,9 @@
 
 package net.dries007.tfc.api.capability.skill;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javax.annotation.Nullable;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -23,22 +22,29 @@ public final class CapabilityPlayerSkills
 {
     @CapabilityInject(IPlayerSkills.class)
     public static final Capability<IPlayerSkills> CAPABILITY = Helpers.getNull();
-
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "player_skills");
-    private static final List<ISkill> SKILLS = new ArrayList<>(Arrays.asList(Skill.values()));
-
-    /**
-     * Get the current list of skills
-     * If you want to add your own, or modify TFC ones, this is where it should happen
-     */
-    public static List<ISkill> getAllSkills()
-    {
-        return SKILLS;
-    }
 
     public static void preInit()
     {
         // Player skills
-        CapabilityManager.INSTANCE.register(IPlayerSkills.class, new DumbStorage<>(), PlayerSkillsHandler::new);
+        CapabilityManager.INSTANCE.register(IPlayerSkills.class, new DumbStorage<>(), () -> null);
+    }
+
+    /**
+     * Helper method to get a skill instance
+     *
+     * @param player       The player to get skills fromm
+     * @param skillType    The skill type
+     * @param <S>          The skill class
+     */
+    @Nullable
+    public static <S extends Skill> S getSkill(EntityPlayer player, SkillType<S> skillType)
+    {
+        IPlayerSkills skills = player.getCapability(CAPABILITY, null);
+        if (skills != null)
+        {
+            return skills.getSkill(skillType);
+        }
+        return null;
     }
 }
