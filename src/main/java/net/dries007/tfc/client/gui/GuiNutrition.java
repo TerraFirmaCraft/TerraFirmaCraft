@@ -61,17 +61,6 @@ public class GuiNutrition extends GuiContainerTFC
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-    {
-        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
-        for (Nutrient n : Nutrient.values())
-        {
-            int scaledNutrient = (int) (cachedNutrients[n.ordinal()] / 2f);
-            drawTexturedModalRect(guiLeft + 118, guiTop + 21 + 13 * n.ordinal(), 176, 0, scaledNutrient, 5);
-        }
-    }
-
-    @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
@@ -79,6 +68,17 @@ public class GuiNutrition extends GuiContainerTFC
         {
             String caption = I18n.format(Helpers.getEnumName(n));
             fontRenderer.drawString(caption, 112 - fontRenderer.getStringWidth(caption), 19 + 13 * n.ordinal(), 0x404040);
+        }
+    }
+
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+    {
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+        for (Nutrient n : Nutrient.values())
+        {
+            int scaledNutrient = (int) (cachedNutrients[n.ordinal()] / 2f);
+            drawTexturedModalRect(guiLeft + 118, guiTop + 21 + 13 * n.ordinal(), 176, 0, scaledNutrient, 5);
         }
     }
 

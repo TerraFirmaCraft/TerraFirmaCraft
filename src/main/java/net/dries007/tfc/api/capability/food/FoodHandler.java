@@ -55,18 +55,6 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     }
 
     @Override
-    public long getRottenDate()
-    {
-        return creationDate + (long) (calculateDecayModifier() * CapabilityFood.DEFAULT_ROT_TICKS);
-    }
-
-    @Override
-    public float getWater()
-    {
-        return water;
-    }
-
-    @Override
     public float getNutrient(ItemStack stack, Nutrient nutrient)
     {
         if (isRotten())
@@ -94,9 +82,28 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     }
 
     @Override
+    public long getRottenDate()
+    {
+        return creationDate + (long) (calculateDecayModifier() * CapabilityFood.DEFAULT_ROT_TICKS);
+    }
+
+    @Override
+    public float getWater()
+    {
+        return water;
+    }
+
+    @Override
     public float getCalories()
     {
         return calories;
+    }
+
+    @Nonnull
+    @Override
+    public List<IFoodTrait> getTraits()
+    {
+        return foodTraits;
     }
 
     @Override
@@ -161,12 +168,5 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         }
         // The modifier returned is used to calculate time, so higher = longer
         return mod == 0 ? Float.POSITIVE_INFINITY : 1 / mod;
-    }
-
-    @Nonnull
-    @Override
-    public List<IFoodTrait> getTraits()
-    {
-        return foodTraits;
     }
 }

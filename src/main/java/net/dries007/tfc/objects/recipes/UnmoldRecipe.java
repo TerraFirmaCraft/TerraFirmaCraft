@@ -79,15 +79,57 @@ public class UnmoldRecipe extends ShapelessOreRecipe
     }
 
     @Override
-    @Nonnull
-    public String getGroup()
+    public boolean isDynamic()
     {
-        return group == null ? "" : group.toString();
+        return true;
     }
 
     @Override
     @Nonnull
     public ItemStack getRecipeOutput() { return ItemStack.EMPTY; }
+
+    @Override
+    @Nonnull
+    public ItemStack getCraftingResult(InventoryCrafting inv)
+    {
+        ItemStack moldStack = null;
+        for (int slot = 0; slot < inv.getSizeInventory(); slot++)
+        {
+            ItemStack stack = inv.getStackInSlot(slot);
+            if (!stack.isEmpty())
+            {
+                if (stack.getItem() instanceof ItemMold)
+                {
+                    ItemMold tmp = ((ItemMold) stack.getItem());
+                    if (tmp.type.equals(this.type) && moldStack == null)
+                    {
+                        moldStack = stack;
+                    }
+                    else
+                    {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                else
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+        }
+        if (moldStack != null)
+        {
+            IFluidHandler moldCap = moldStack.getCapability(FLUID_HANDLER_CAPABILITY, null);
+            if (moldCap instanceof IMoldHandler)
+            {
+                IMoldHandler moldHandler = (IMoldHandler) moldCap;
+                if (!moldHandler.isMolten() && moldHandler.getAmount() == 100)
+                {
+                    return getOutputItem(moldHandler, this.type);
+                }
+            }
+        }
+        return ItemStack.EMPTY;
+    }
 
     @Override
     public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world)
@@ -139,55 +181,13 @@ public class UnmoldRecipe extends ShapelessOreRecipe
 
     @Override
     @Nonnull
-    public ItemStack getCraftingResult(InventoryCrafting inv)
+    public String getGroup()
     {
-        ItemStack moldStack = null;
-        for (int slot = 0; slot < inv.getSizeInventory(); slot++)
-        {
-            ItemStack stack = inv.getStackInSlot(slot);
-            if (!stack.isEmpty())
-            {
-                if (stack.getItem() instanceof ItemMold)
-                {
-                    ItemMold tmp = ((ItemMold) stack.getItem());
-                    if (tmp.type.equals(this.type) && moldStack == null)
-                    {
-                        moldStack = stack;
-                    }
-                    else
-                    {
-                        return ItemStack.EMPTY;
-                    }
-                }
-                else
-                {
-                    return ItemStack.EMPTY;
-                }
-            }
-        }
-        if (moldStack != null)
-        {
-            IFluidHandler moldCap = moldStack.getCapability(FLUID_HANDLER_CAPABILITY, null);
-            if (moldCap instanceof IMoldHandler)
-            {
-                IMoldHandler moldHandler = (IMoldHandler) moldCap;
-                if (!moldHandler.isMolten() && moldHandler.getAmount() == 100)
-                {
-                    return getOutputItem(moldHandler, this.type);
-                }
-            }
-        }
-        return ItemStack.EMPTY;
+        return group == null ? "" : group.toString();
     }
 
     @Override
     public boolean canFit(int width, int height)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isDynamic()
     {
         return true;
     }

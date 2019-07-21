@@ -58,18 +58,6 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
     }
 
     @Override
-    public long getRottenDate()
-    {
-        return creationDate + (long) (calculateDecayModifier() * CapabilityFood.DEFAULT_ROT_TICKS);
-    }
-
-    @Override
-    public float getWater()
-    {
-        return water;
-    }
-
-    @Override
     public float getNutrient(ItemStack stack, Nutrient nutrient)
     {
         if (isRotten())
@@ -97,9 +85,28 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
     }
 
     @Override
+    public long getRottenDate()
+    {
+        return creationDate + (long) (calculateDecayModifier() * CapabilityFood.DEFAULT_ROT_TICKS);
+    }
+
+    @Override
+    public float getWater()
+    {
+        return water;
+    }
+
+    @Override
     public float getCalories()
     {
         return calories;
+    }
+
+    @Nonnull
+    @Override
+    public List<IFoodTrait> getTraits()
+    {
+        return foodTraits;
     }
 
     @Override
@@ -165,12 +172,5 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
             mod *= trait.getDecayModifier();
         }
         return mod;
-    }
-
-    @Nonnull
-    @Override
-    public List<IFoodTrait> getTraits()
-    {
-        return foodTraits;
     }
 }

@@ -61,16 +61,16 @@ public class RenderChickenTFC extends RenderLiving<EntityChickenTFC>
     }
 
     @Override
-    protected void preRenderCallback(EntityChickenTFC bear, float par2)
-    {
-        GlStateManager.scale(0.7f, 0.7f, 0.7f);
-    }
-
-    @Override
     protected float handleRotationFloat(EntityChickenTFC livingBase, float partialTicks)
     {
         float f = livingBase.oFlap + (livingBase.wingRotation - livingBase.oFlap) * partialTicks;
         float f1 = livingBase.oFlapSpeed + (livingBase.destPos - livingBase.oFlapSpeed) * partialTicks;
         return (MathHelper.sin(f) + 1.0F) * f1;
+    }
+
+    @Override
+    protected void preRenderCallback(EntityChickenTFC bear, float par2)
+    {
+        GlStateManager.scale(0.7f, 0.7f, 0.7f);
     }
 }

@@ -107,7 +107,7 @@ public final class ClimateTFC
      * Range -40 to 40
      *
      * @param regionalTemp The base temp for the current location
-     * @param z        The z-coordinate of the location that is being queried
+     * @param z            The z-coordinate of the location that is being queried
      * @return The month adjusted temperature. This gets the base temperature, before daily / hourly changes
      */
     public static float getMonthAdjTemp(float regionalTemp, int z)
@@ -140,7 +140,7 @@ public final class ClimateTFC
      * Range -32 to 35
      *
      * @param regionalTemp The base temp for the current location
-     * @param month    The month (from Calendar)
+     * @param month        The month (from Calendar)
      * @return the month factor for temp calculation
      */
     public static float monthTemp(float regionalTemp, Month month, int z)
@@ -157,7 +157,7 @@ public final class ClimateTFC
      * Get the exact temperature for a location, including day + hour variation
      *
      * @param regionalTemp The base temperature, either from {@link ChunkDataTFC} or {@link ClimateRenderHelper}
-     * @param z        the z-coordinate
+     * @param z            the z-coordinate
      * @return A temperature, in the approximate range -35 to 35
      */
     private static float getTemp(float regionalTemp, int z)

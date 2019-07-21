@@ -260,6 +260,16 @@ public class BlockFruitTreeTrunk extends Block
     }
 
     @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
+        if (tile != null)
+        {
+            tile.resetCounter();
+        }
+    }
+
+    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         super.breakBlock(worldIn, pos, state);
@@ -291,6 +301,33 @@ public class BlockFruitTreeTrunk extends Block
         }
     }
 
+    @Override
+    @Nonnull
+    public BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, NORTH, SOUTH, EAST, WEST);
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TETickCounter();
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        return new ItemStack(BlockFruitTreeSapling.get(tree));
+    }
+
     private BlockPos getMissingLeaf(World world, BlockPos branchPos, EnumFacing branchFacing)
     {
         //Helper method, gets a missing leaf block position that connects to this branch
@@ -303,9 +340,9 @@ public class BlockFruitTreeTrunk extends Block
 
         //The rest is shuffled
         List<BlockPos> positions = Arrays.asList(branchPos.offset(branchFacing.rotateY()),
-                branchPos.offset(branchFacing.rotateY().getOpposite()),
-                branchPos.offset(branchFacing).offset(branchFacing.rotateY()),
-                branchPos.offset(branchFacing).offset(branchFacing.rotateY().getOpposite())
+            branchPos.offset(branchFacing.rotateY().getOpposite()),
+            branchPos.offset(branchFacing).offset(branchFacing.rotateY()),
+            branchPos.offset(branchFacing).offset(branchFacing.rotateY().getOpposite())
         );
         Collections.shuffle(positions);
         for (BlockPos pos : positions)
@@ -368,36 +405,6 @@ public class BlockFruitTreeTrunk extends Block
         } while (missingLeaf != null);
     }
 
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
-        if (tile != null)
-        {
-            tile.resetCounter();
-        }
-    }
-
-    @Override
-    @Nonnull
-    public BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, NORTH, SOUTH, EAST, WEST);
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TETickCounter();
-    }
-
     private int getTrunkHeight(World world, BlockPos pos)
     {
         for (int i = 1; i < 4; i++)
@@ -405,12 +412,5 @@ public class BlockFruitTreeTrunk extends Block
             if (world.getBlockState(pos.down(i)).getBlock() != this) return i;
         }
         return 4;
-    }
-
-    @Override
-    @Nonnull
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        return new ItemStack(BlockFruitTreeSapling.get(tree));
     }
 }

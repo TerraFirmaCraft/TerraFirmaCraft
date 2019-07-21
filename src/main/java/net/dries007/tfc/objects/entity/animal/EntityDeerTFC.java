@@ -78,6 +78,12 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IAnimalTFC
     }
 
     @Override
+    public boolean isBreedingItem(ItemStack stack)
+    {
+        return stack.getItem() == ItemsTFC.SALT;
+    }
+
+    @Override
     public float getPercentToAdulthood()
     {
         if (this.getAge() != Age.CHILD) return 1;
@@ -91,12 +97,6 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IAnimalTFC
     public Age getAge()
     {
         return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
-    }
-
-    @Override
-    public boolean isBreedingItem(ItemStack stack)
-    {
-        return stack.getItem() == ItemsTFC.SALT;
     }
 
     @Override
@@ -137,15 +137,15 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IAnimalTFC
         return Constants.RNG.nextInt(100) < 5 ? TFCSoundEvents.ANIMAL_DEER_CRY : TFCSoundEvents.ANIMAL_DEER_SAY;
     }
 
-    @Override
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.15F, 1.0F);
-    }
-
     @Nullable
     protected ResourceLocation getLootTable()
     {
         return LootTableListTFC.ANIMALS_DEER;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.15F, 1.0F);
     }
 }

@@ -136,15 +136,15 @@ public class EntityPigTFC extends EntityAnimalMammal implements IAnimalTFC
         return SoundEvents.ENTITY_PIG_AMBIENT;
     }
 
-    @Override
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        this.playSound(SoundEvents.ENTITY_PIG_STEP, 0.15F, 1.0F);
-    }
-
     @Nullable
     protected ResourceLocation getLootTable()
     {
         return LootTableListTFC.ANIMALS_PIG;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundEvents.ENTITY_PIG_STEP, 0.15F, 1.0F);
     }
 }

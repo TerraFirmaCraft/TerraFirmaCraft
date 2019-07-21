@@ -158,13 +158,6 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    public void onReceivePacket(float[] nutrients, float thirst)
-    {
-        System.arraycopy(nutrients, 0, this.nutrients, 0, this.nutrients.length);
-        this.thirst = thirst;
-    }
-
     @Override
     public void readNBT(NBTTagCompound nbt)
     {
@@ -223,29 +216,18 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         originalStats.setFoodLevel(foodLevelIn);
     }
 
-    /**
-     * Sets the nutrient value directly. Used by command nutrients and for debug purposes
-     *
-     * @param nutrient the nutrient to set
-     * @param value    the value to set to, in [0, 100]
-     */
-    @Override
-    public void setNutrient(@Nonnull Nutrient nutrient, float value)
-    {
-        setNutrient(nutrient.ordinal(), value);
-    }
-
-    @Override
-    public float getThirst()
-    {
-        return thirst;
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public void setFoodSaturationLevel(float foodSaturationLevelIn)
     {
         originalStats.setFoodSaturationLevel(foodSaturationLevelIn);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void onReceivePacket(float[] nutrients, float thirst)
+    {
+        System.arraycopy(nutrients, 0, this.nutrients, 0, this.nutrients.length);
+        this.thirst = thirst;
     }
 
     @Override
@@ -257,6 +239,12 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             totalNutrients += nutrient;
         }
         return 0.2f + totalNutrients / (MAX_PLAYER_NUTRIENTS * Nutrient.TOTAL);
+    }
+
+    @Override
+    public float getThirst()
+    {
+        return thirst;
     }
 
     @Override
@@ -274,9 +262,35 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     }
 
     @Override
+    public void addThirst(float value)
+    {
+        this.thirst += value;
+        if (thirst < 0)
+        {
+            thirst = 0;
+        }
+        if (thirst > MAX_PLAYER_THIRST)
+        {
+            thirst = MAX_PLAYER_THIRST;
+        }
+    }
+
+    @Override
     public float getNutrient(@Nonnull Nutrient nutrient)
     {
         return nutrients[nutrient.ordinal()];
+    }
+
+    /**
+     * Sets the nutrient value directly. Used by command nutrients and for debug purposes
+     *
+     * @param nutrient the nutrient to set
+     * @param value    the value to set to, in [0, 100]
+     */
+    @Override
+    public void setNutrient(@Nonnull Nutrient nutrient, float value)
+    {
+        setNutrient(nutrient.ordinal(), value);
     }
 
     private void addNutrient(int index, float amount)
@@ -294,20 +308,6 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         else if (nutrients[index] > MAX_PLAYER_NUTRIENTS)
         {
             nutrients[index] = MAX_PLAYER_NUTRIENTS;
-        }
-    }
-
-    @Override
-    public void addThirst(float value)
-    {
-        this.thirst += value;
-        if (thirst < 0)
-        {
-            thirst = 0;
-        }
-        if (thirst > MAX_PLAYER_THIRST)
-        {
-            thirst = MAX_PLAYER_THIRST;
         }
     }
 }

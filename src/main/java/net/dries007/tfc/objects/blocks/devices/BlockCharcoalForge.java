@@ -157,23 +157,6 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     }
 
     @Override
-    public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
-    {
-        IBlockState state = worldIn.getBlockState(pos);
-        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
-        {
-            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 2.0F);
-        }
-        super.onEntityWalk(worldIn, pos, entityIn);
-    }
-
-    @Override
-    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return state.getValue(LIT) ? 15 : 0;
-    }
-
-    @Override
     @Nonnull
     @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
@@ -261,6 +244,17 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     }
 
     @Override
+    public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
+    {
+        IBlockState state = worldIn.getBlockState(pos);
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
+        {
+            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 2.0F);
+        }
+        super.onEntityWalk(worldIn, pos, entityIn);
+    }
+
+    @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
         if (!worldIn.isRemote && te instanceof TEInventory)
@@ -275,6 +269,12 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, LIT);
+    }
+
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return state.getValue(LIT) ? 15 : 0;
     }
 
     @Override

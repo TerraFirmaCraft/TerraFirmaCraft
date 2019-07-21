@@ -90,17 +90,6 @@ public class BlockMolten extends Block implements ILightableBlock
         return false;
     }
 
-    @Override
-    public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
-    {
-        IBlockState state = worldIn.getBlockState(pos);
-        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
-        {
-            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 4.0f);
-        }
-        super.onEntityWalk(worldIn, pos, entityIn);
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public boolean isFullCube(IBlockState state)
@@ -138,6 +127,17 @@ public class BlockMolten extends Block implements ILightableBlock
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
+    {
+        IBlockState state = worldIn.getBlockState(pos);
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
+        {
+            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 4.0f);
+        }
+        super.onEntityWalk(worldIn, pos, entityIn);
     }
 
     @Override

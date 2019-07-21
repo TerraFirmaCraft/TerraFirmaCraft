@@ -162,6 +162,26 @@ public class TEPlacedItem extends TEInventory
         return false;
     }
 
+    public boolean holdingLargeItem()
+    {
+        return isHoldingLargeItem;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        isHoldingLargeItem = nbt.getBoolean("itemSize");
+        super.readFromNBT(nbt);
+    }
+
+    @Override
+    @Nonnull
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        nbt.setBoolean("itemSize", isHoldingLargeItem);
+        return super.writeToNBT(nbt);
+    }
+
     protected void updateBlock()
     {
         if (isEmpty())
@@ -190,25 +210,5 @@ public class TEPlacedItem extends TEInventory
             }
         }
         return true;
-    }
-
-    public boolean holdingLargeItem()
-    {
-        return isHoldingLargeItem;
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        isHoldingLargeItem = nbt.getBoolean("itemSize");
-        super.readFromNBT(nbt);
-    }
-
-    @Override
-    @Nonnull
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-    {
-        nbt.setBoolean("itemSize", isHoldingLargeItem);
-        return super.writeToNBT(nbt);
     }
 }

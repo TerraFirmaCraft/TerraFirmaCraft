@@ -83,6 +83,12 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
     }
 
     @Override
+    public boolean isBreedingItem(ItemStack it)
+    {
+        return it.getItem() == Items.FISH;
+    }
+
+    @Override
     public float getPercentToAdulthood()
     {
         if (this.getAge() != Age.CHILD) return 1;
@@ -99,27 +105,21 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack it)
-    {
-        return it.getItem() == Items.FISH;
-    }
-
-    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         return TFCSoundEvents.ANIMAL_BEAR_HURT;
     }
 
     @Override
-    public boolean attackEntityAsMob(@Nonnull Entity entityIn)
-    {
-        return entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (getAge() == Age.CHILD ? 2 : 4));
-    }
-
-    @Override
     protected SoundEvent getDeathSound()
     {
         return TFCSoundEvents.ANIMAL_BEAR_DEATH;
+    }
+
+    @Override
+    public boolean attackEntityAsMob(@Nonnull Entity entityIn)
+    {
+        return entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (getAge() == Age.CHILD ? 2 : 4));
     }
 
     @Override
@@ -151,15 +151,15 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
         return Constants.RNG.nextInt(100) < 5 ? TFCSoundEvents.ANIMAL_BEAR_CRY : TFCSoundEvents.ANIMAL_BEAR_SAY;
     }
 
-    @Override
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F);
-    }
-
     @Nullable
     protected ResourceLocation getLootTable()
     {
         return LootTableListTFC.ANIMALS_BEAR;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F);
     }
 }

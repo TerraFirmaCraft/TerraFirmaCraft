@@ -74,6 +74,28 @@ public class TELogPile extends TEInventory implements ITickable
     }
 
     @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        burnTicks = nbt.getInteger("burn_ticks");
+        burning = nbt.getBoolean("burning");
+        super.readFromNBT(nbt);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        nbt.setInteger("burn_ticks", burnTicks);
+        nbt.setBoolean("burning", burning);
+        return super.writeToNBT(nbt);
+    }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer player)
+    {
+        return !burning && world.getTileEntity(pos) == this;
+    }
+
+    @Override
     public void update()
     {
         if (!world.isRemote)
@@ -98,28 +120,6 @@ public class TELogPile extends TEInventory implements ITickable
                 }
             }
         }
-    }
-
-    @Override
-    public boolean canInteractWith(EntityPlayer player)
-    {
-        return !burning && world.getTileEntity(pos) == this;
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        burnTicks = nbt.getInteger("burn_ticks");
-        burning = nbt.getBoolean("burning");
-        super.readFromNBT(nbt);
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-    {
-        nbt.setInteger("burn_ticks", burnTicks);
-        nbt.setBoolean("burning", burning);
-        return super.writeToNBT(nbt);
     }
 
     @Override

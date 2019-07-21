@@ -217,15 +217,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
     }
 
-    @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        getDataManager().register(GENDER, true);
-        getDataManager().register(BIRTHDAY, 0);
-        getDataManager().register(FAMILIARITY, 0f);
-    }
-
     /**
      * Event, used by children of this class, to do things on fertilization of females
      */
@@ -245,6 +236,35 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         }
         return null;
     }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        getDataManager().register(GENDER, true);
+        getDataManager().register(BIRTHDAY, 0);
+        getDataManager().register(FAMILIARITY, 0f);
+    }
+
+    @Override
+    public boolean isChild()
+    {
+        return this.getAge() == Age.CHILD;
+    }
+
+    /**
+     * Used by models renderer to scale the size of the animal
+     *
+     * @return float value between 0(birthday) to 1(full grown adult)
+     */
+    public abstract float getPercentToAdulthood();
+
+    /**
+     * Get this entity age, based on birth
+     *
+     * @return the Age enum of this entity
+     */
+    public abstract Age getAge();
 
     /**
      * Find and charms a near female animal of this animal
@@ -267,20 +287,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal
     }
 
     /**
-     * Used by models renderer to scale the size of the animal
-     *
-     * @return float value between 0(birthday) to 1(full grown adult)
-     */
-    public abstract float getPercentToAdulthood();
-
-    /**
-     * Get this entity age, based on birth
-     *
-     * @return the Age enum of this entity
-     */
-    public abstract Age getAge();
-
-    /**
      * Check if this animal is ready to mate
      *
      * @return true if ready
@@ -290,12 +296,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || !this.getIsFedToday())
             return false;
         return this.matingTime == -1 || this.matingTime + getCooldownMating() <= CalendarTFC.PLAYER_TIME.getTicks();
-    }
-
-    private boolean canFeed()
-    {
-        if (lastFed == -1) return true;
-        return lastFed < CalendarTFC.PLAYER_TIME.getTotalDays();
     }
 
     /**
@@ -308,10 +308,10 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         return DEFAULT_TICKS_COOLDOWN_MATING;
     }
 
-    @Override
-    public boolean isChild()
+    private boolean canFeed()
     {
-        return this.getAge() == Age.CHILD;
+        if (lastFed == -1) return true;
+        return lastFed < CalendarTFC.PLAYER_TIME.getTotalDays();
     }
 
     public enum Age

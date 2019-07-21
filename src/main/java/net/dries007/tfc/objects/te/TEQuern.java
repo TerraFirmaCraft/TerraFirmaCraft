@@ -60,17 +60,6 @@ public class TEQuern extends TEInventory implements ITickable
     }
 
     @Override
-    public void setAndUpdateSlots(int slot)
-    {
-        updateBlock();
-        if (slot == SLOT_HANDSTONE)
-        {
-            hasHandstone = inventory.getStackInSlot(SLOT_HANDSTONE).getItem() instanceof ItemHandstone;
-        }
-        super.setAndUpdateSlots(slot);
-    }
-
-    @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
         switch (slot)
@@ -82,6 +71,17 @@ public class TEQuern extends TEInventory implements ITickable
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void setAndUpdateSlots(int slot)
+    {
+        updateBlock();
+        if (slot == SLOT_HANDSTONE)
+        {
+            hasHandstone = inventory.getStackInSlot(SLOT_HANDSTONE).getItem() instanceof ItemHandstone;
+        }
+        super.setAndUpdateSlots(slot);
     }
 
     @Override
@@ -98,6 +98,12 @@ public class TEQuern extends TEInventory implements ITickable
     {
         nbt.setInteger("rotationTimer", rotationTimer);
         return super.writeToNBT(nbt);
+    }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer player)
+    {
+        return super.canInteractWith(player) && rotationTimer == 0;
     }
 
     public int getRotationTimer()
@@ -161,6 +167,13 @@ public class TEQuern extends TEInventory implements ITickable
         return inventory.extractItem(SLOT_OUTPUT, stack.getCount(), false);
     }
 
+    public void updateBlock()
+    {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+        markDirty();
+    }
+
     private void grindItem()
     {
         ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
@@ -185,18 +198,5 @@ public class TEQuern extends TEInventory implements ITickable
                 }
             }
         }
-    }
-
-    public void updateBlock()
-    {
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3);
-        markDirty();
-    }
-
-    @Override
-    public boolean canInteractWith(EntityPlayer player)
-    {
-        return super.canInteractWith(player) && rotationTimer == 0;
     }
 }

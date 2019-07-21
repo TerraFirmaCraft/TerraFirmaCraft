@@ -59,6 +59,56 @@ public class BlockFruitTreeBranch extends Block
         this.tree = tree;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isTopSolid(IBlockState state)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isFullBlock(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return 0;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    @Nonnull
+    public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        EnumFacing face = getFacing(worldIn, pos);
+        return face != null ? state.withProperty(FACING, face) : state.withProperty(FACING, EnumFacing.UP);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isBlockNormalCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isNormalCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     @Nonnull
@@ -87,19 +137,11 @@ public class BlockFruitTreeBranch extends Block
         return BlockFaceShape.UNDEFINED;
     }
 
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return 0;
-    }
-
     @SuppressWarnings("deprecation")
     @Override
-    @Nonnull
-    public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public boolean isOpaqueCube(IBlockState state)
     {
-        EnumFacing face = getFacing(worldIn, pos);
-        return face != null ? state.withProperty(FACING, face) : state.withProperty(FACING, EnumFacing.UP);
+        return false;
     }
 
     @SuppressWarnings("deprecation")
@@ -127,60 +169,6 @@ public class BlockFruitTreeBranch extends Block
         return new BlockStateContainer(this, FACING);
     }
 
-    private EnumFacing getFacing(IBlockAccess worldIn, BlockPos pos)
-    {
-        for (EnumFacing facing : EnumFacing.VALUES)
-        {
-            if (worldIn.getBlockState(pos.offset(facing)).getBlock() == BlockFruitTreeTrunk.get(tree))
-            {
-                return facing.getOpposite();
-            }
-        }
-        return null;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isTopSolid(IBlockState state)
-    {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isFullBlock(IBlockState state)
-    {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isBlockNormalCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isNormalCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
     @Override
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
     {
@@ -199,5 +187,17 @@ public class BlockFruitTreeBranch extends Block
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(BlockFruitTreeSapling.get(tree));
+    }
+
+    private EnumFacing getFacing(IBlockAccess worldIn, BlockPos pos)
+    {
+        for (EnumFacing facing : EnumFacing.VALUES)
+        {
+            if (worldIn.getBlockState(pos.offset(facing)).getBlock() == BlockFruitTreeTrunk.get(tree))
+            {
+                return facing.getOpposite();
+            }
+        }
+        return null;
     }
 }

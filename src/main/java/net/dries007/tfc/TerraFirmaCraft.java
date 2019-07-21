@@ -104,8 +104,8 @@ public final class TerraFirmaCraft
         return TerraFirmaCraft.getState().ordinal() >= state.ordinal();
     }
 
-    private boolean isSignedBuild = true;
     private final Logger log = LogManager.getLogger(MOD_ID);
+    private boolean isSignedBuild = true;
     private WorldTypeTFC worldTypeTFC;
     private SimpleNetworkWrapper network;
 
