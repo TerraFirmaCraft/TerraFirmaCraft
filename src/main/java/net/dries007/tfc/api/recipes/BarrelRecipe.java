@@ -128,15 +128,6 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         return ItemStack.EMPTY;
     }
 
-    private int getMultiplier(FluidStack inputFluid, ItemStack inputStack)
-    {
-        if (isValidInput(inputFluid, inputStack))
-        {
-            return Math.min(inputFluid.amount / this.inputFluid.getAmount(), inputStack.getCount() / this.inputStack.getAmount());
-        }
-        return 0;
-    }
-
     /**
      * Called by TEBarrel when a recipe finishes
      * Used if you want to play a sound / cause an update of some sort
@@ -171,5 +162,14 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
                 return fluid.getFluid().getLocalizedName(fluid);
             }
         }
+    }
+
+    private int getMultiplier(FluidStack inputFluid, ItemStack inputStack)
+    {
+        if (isValidInput(inputFluid, inputStack))
+        {
+            return Math.min(inputFluid.amount / this.inputFluid.getAmount(), inputStack.getCount() / this.inputStack.getAmount());
+        }
+        return 0;
     }
 }

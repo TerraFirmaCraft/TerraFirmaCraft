@@ -181,25 +181,6 @@ public class BlockRockVariant extends Block
         }
     }
 
-    protected void onRockSlide(World world, BlockPos pos)
-    {
-        switch (type)
-        {
-            case SAND:
-            case CLAY:
-            case DIRT:
-            case GRASS:
-            case GRAVEL:
-            case CLAY_GRASS:
-            case FARMLAND:
-            case DRY_GRASS:
-                world.playSound(null, pos, TFCSoundEvents.DIRT_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                break;
-            case COBBLE:
-                world.playSound(null, pos, TFCSoundEvents.ROCK_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
-        }
-    }
-
     @Override
     public void randomTick(World world, BlockPos pos, IBlockState state, Random rand)
     {
@@ -361,5 +342,24 @@ public class BlockRockVariant extends Block
     public Rock getRock()
     {
         return rock;
+    }
+
+    protected void onRockSlide(World world, BlockPos pos)
+    {
+        switch (type)
+        {
+            case SAND:
+            case CLAY:
+            case DIRT:
+            case GRASS:
+            case GRAVEL:
+            case CLAY_GRASS:
+            case FARMLAND:
+            case DRY_GRASS:
+                world.playSound(null, pos, TFCSoundEvents.DIRT_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                break;
+            case COBBLE:
+                world.playSound(null, pos, TFCSoundEvents.ROCK_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        }
     }
 }

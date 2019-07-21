@@ -63,6 +63,12 @@ public class ShapelessFluidFoodRecipe extends ShapelessOreRecipe
     }
 
     @Override
+    public boolean isDynamic()
+    {
+        return true;
+    }
+
+    @Override
     public ItemStack getCraftingResult(InventoryCrafting inv)
     {
         ItemStack out = output.copy();
@@ -92,12 +98,6 @@ public class ShapelessFluidFoodRecipe extends ShapelessOreRecipe
         }
 
         return out;
-    }
-
-    @Override
-    public boolean isDynamic()
-    {
-        return true;
     }
 
     public static class Factory implements IRecipeFactory

@@ -71,29 +71,6 @@ public class BlockFruitTreeLeaves extends BlockLeaves
 
     @SuppressWarnings("deprecation")
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        return NULL_AABB;
-    }
-
-    @Override
-    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
-    {
-        //Copy-paste from BlockLeavesTFC
-        //Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
-        entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
-        entityIn.fallDistance = 0;
-        //Entity motion is reduced by leaves.
-        entityIn.motionX *= 0.1D;
-        if (entityIn.motionY < 0)
-        {
-            entityIn.motionY *= 0.1D;
-        }
-        entityIn.motionZ *= 0.1D;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
@@ -104,6 +81,13 @@ public class BlockFruitTreeLeaves extends BlockLeaves
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(LEAF_STATE).ordinal() + (state.getValue(HARVESTABLE) ? 4 : 0);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return NULL_AABB;
     }
 
     @Override
@@ -178,6 +162,22 @@ public class BlockFruitTreeLeaves extends BlockLeaves
             }
         }
         return true;
+    }
+
+    @Override
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        //Copy-paste from BlockLeavesTFC
+        //Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
+        entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
+        entityIn.fallDistance = 0;
+        //Entity motion is reduced by leaves.
+        entityIn.motionX *= 0.1D;
+        if (entityIn.motionY < 0)
+        {
+            entityIn.motionY *= 0.1D;
+        }
+        entityIn.motionZ *= 0.1D;
     }
 
     @Override

@@ -45,18 +45,6 @@ public class BarrelRecipeTemperature extends BarrelRecipe
     }
 
     @Override
-    @Nonnull
-    public ItemStack getOutputItem(FluidStack inputFluid, ItemStack inputStack)
-    {
-        IItemHeat heat = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        if (heat != null)
-        {
-            heat.setTemperature(heat.getTemperature() - coolAmount);
-        }
-        return inputStack;
-    }
-
-    @Override
     @Nullable
     public FluidStack getOutputFluid(FluidStack inputFluid, ItemStack inputStack)
     {
@@ -67,6 +55,18 @@ public class BarrelRecipeTemperature extends BarrelRecipe
             return new FluidStack(inputFluid.getFluid(), retainAmount);
         }
         return null;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getOutputItem(FluidStack inputFluid, ItemStack inputStack)
+    {
+        IItemHeat heat = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+        if (heat != null)
+        {
+            heat.setTemperature(heat.getTemperature() - coolAmount);
+        }
+        return inputStack;
     }
 
     @Override

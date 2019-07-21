@@ -265,6 +265,13 @@ public class ItemMetalTool extends ItemMetal
     }
 
     @Override
+    public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
+    {
+        //This stops swords and other weapons breaking blocks in creative
+        return canHarvestBlock(world.getBlockState(pos));
+    }
+
+    @Override
     public boolean canHarvestBlock(IBlockState state, ItemStack stack)
     {
         for (String type : getToolClasses(stack))
@@ -288,13 +295,6 @@ public class ItemMetalTool extends ItemMetal
     {
         // Hammers need to activate anvils for welding
         return this.type == Metal.ItemType.HAMMER || super.doesSneakBypassUse(stack, world, pos, player);
-    }
-
-    @Override
-    public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
-    {
-        //This stops swords and other weapons breaking blocks in creative
-        return canHarvestBlock(world.getBlockState(pos));
     }
 
     public double getAttackDamage() { return this.attackDamage; }

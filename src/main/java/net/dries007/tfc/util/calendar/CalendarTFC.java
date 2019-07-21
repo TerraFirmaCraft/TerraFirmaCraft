@@ -213,6 +213,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
     /**
      * Called to set the total world time from tick events
+     *
      * @param worldTotalTime the total world time
      */
     public void setTotalTime(long worldTotalTime)
@@ -248,6 +249,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     /**
      * Sets the player time by resetting the offset.
      * This should only be used for debugging purposes
+     *
      * @param world      The world
      * @param playerTime The calendar time
      */

@@ -37,18 +37,17 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
     private static final int DAYS_TO_ADULTHOOD = 124;
     private static final int DAYS_TO_HATCH_EGG = 21;
 
+    private static int getRandomGrowth()
+    {
+        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
+        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
+    }
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;
     public float destPos;
     public float oFlapSpeed;
     public float oFlap;
     public float wingRotDelta = 1.0F;
-
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
 
     public EntityChickenTFC(World worldIn)
     {
@@ -173,15 +172,15 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
         return SoundEvents.ENTITY_CHICKEN_AMBIENT;
     }
 
-    @Override
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        this.playSound(SoundEvents.ENTITY_CHICKEN_STEP, 0.15F, 1.0F);
-    }
-
     @Nullable
     protected ResourceLocation getLootTable()
     {
         return LootTableListTFC.ANIMALS_CHICKEN;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundEvents.ENTITY_CHICKEN_STEP, 0.15F, 1.0F);
     }
 }

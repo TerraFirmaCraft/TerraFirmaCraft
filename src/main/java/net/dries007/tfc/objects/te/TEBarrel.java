@@ -47,6 +47,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     private long sealedTick, sealedCalendarTick;
     private BarrelRecipe recipe;
     private int tickCounter;
+    private boolean checkInstantRecipe = false;
 
     public TEBarrel()
     {
@@ -136,6 +137,18 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         updateLockStatus();
     }
 
+    /**
+     * Called on clients when this TileEntity received an update from the server on load.
+     *
+     * @param tag An NBTTagCompound containing the TE's data.
+     */
+    @Override
+    public void handleUpdateTag(NBTTagCompound tag)
+    {
+        readFromNBT(tag);
+        updateLockStatus();
+    }
+
     @Override
     public boolean canInsert(int slot, ItemStack stack, EnumFacing side)
     {
@@ -173,8 +186,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         this.recipe = recipe;
         this.sealedCalendarTick = sealedCalendarTick;
     }
-
-    private boolean checkInstantRecipe = false;
 
     @Override
     public void update()
@@ -262,19 +273,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     {
         checkInstantRecipe = true;
     }
-
-    /**
-     * Called on clients when this TileEntity received an update from the server on load.
-     *
-     * @param tag An NBTTagCompound containing the TE's data.
-     */
-    @Override
-    public void handleUpdateTag(NBTTagCompound tag)
-    {
-        readFromNBT(tag);
-        updateLockStatus();
-    }
-
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)

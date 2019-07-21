@@ -92,16 +92,6 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
         }
     }
 
-    public EnumDyeColor getDyeColor()
-    {
-        return EnumDyeColor.byMetadata(this.dataManager.get(DYE_COLOR));
-    }
-
-    public void setDyeColor(EnumDyeColor color)
-    {
-        this.dataManager.set(DYE_COLOR, color.getMetadata());
-    }
-
     @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
@@ -116,12 +106,6 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
         super.readEntityFromNBT(compound);
         this.setShearedDay(compound.getInteger("sheared"));
         this.setDyeColor(EnumDyeColor.byMetadata(compound.getByte("dyecolor")));
-    }
-
-    @Override
-    public boolean isShearable(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos)
-    {
-        return getAge() == Age.ADULT && hasWool();
     }
 
     @Override
@@ -143,14 +127,20 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
         return DAYS_TO_FULL_GESTATION;
     }
 
-    public int getShearedDay()
+    public EnumDyeColor getDyeColor()
     {
-        return this.dataManager.get(SHEARED);
+        return EnumDyeColor.byMetadata(this.dataManager.get(DYE_COLOR));
     }
 
-    public void setShearedDay(int value)
+    public void setDyeColor(EnumDyeColor color)
     {
-        this.dataManager.set(SHEARED, value);
+        this.dataManager.set(DYE_COLOR, color.getMetadata());
+    }
+
+    @Override
+    public boolean isShearable(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos)
+    {
+        return getAge() == Age.ADULT && hasWool();
     }
 
     @Nonnull
@@ -166,6 +156,16 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
 
         this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
         return ret;
+    }
+
+    public int getShearedDay()
+    {
+        return this.dataManager.get(SHEARED);
+    }
+
+    public void setShearedDay(int value)
+    {
+        this.dataManager.set(SHEARED, value);
     }
 
     public boolean hasWool()
@@ -192,9 +192,9 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
     }
 
     @Override
-    protected SoundEvent getAmbientSound()
+    public Age getAge()
     {
-        return SoundEvents.ENTITY_SHEEP_AMBIENT;
+        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
     }
 
     @Override
@@ -227,18 +227,6 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
     }
 
     @Override
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
-    }
-
-    @Override
-    public Age getAge()
-    {
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
-    }
-
-    @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -246,9 +234,21 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
     }
 
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return SoundEvents.ENTITY_SHEEP_AMBIENT;
+    }
+
     @Nullable
     protected ResourceLocation getLootTable()
     {
         return LootTableListTFC.ANIMALS_SHEEP;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
     }
 }

@@ -70,13 +70,6 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
         OreDictionaryHelper.register(this, "javelin", "stone", category);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-    {
-        tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
-    }
-
     @Nonnull
     @Override
     public Size getSize(ItemStack stack)
@@ -156,5 +149,12 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
                 player.addStat(StatList.getObjectUseStats(this));
             }
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
     }
 }

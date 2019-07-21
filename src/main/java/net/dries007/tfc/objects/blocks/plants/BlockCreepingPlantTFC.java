@@ -157,6 +157,13 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
         return NULL_AABB;
     }
 
+    @Override
+    @Nonnull
+    protected BlockStateContainer createPlantBlockState()
+    {
+        return new BlockStateContainer(this, DOWN, UP, NORTH, EAST, WEST, SOUTH, growthStageProperty, DAYPERIOD, AGE);
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     @Nonnull
@@ -189,13 +196,6 @@ public class BlockCreepingPlantTFC extends BlockPlantTFC
             default:
                 return super.withMirror(state, mirrorIn);
         }
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createPlantBlockState()
-    {
-        return new BlockStateContainer(this, DOWN, UP, NORTH, EAST, WEST, SOUTH, growthStageProperty, DAYPERIOD, AGE);
     }
 
     @Override

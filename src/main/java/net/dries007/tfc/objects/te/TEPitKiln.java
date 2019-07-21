@@ -139,26 +139,6 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        burnTicksToGo = nbt.getInteger("burnTicksToGo");
-        ItemStackHelper.loadAllItems(nbt.getCompoundTag("strawItems"), strawItems);
-        ItemStackHelper.loadAllItems(nbt.getCompoundTag("logItems"), logItems);
-
-        super.readFromNBT(nbt);
-    }
-
-    @Override
-    @Nonnull
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-    {
-        nbt.setLong("burnTicksToGo", burnTicksToGo);
-        nbt.setTag("strawItems", ItemStackHelper.saveAllItems(new NBTTagCompound(), strawItems));
-        nbt.setTag("logItems", ItemStackHelper.saveAllItems(new NBTTagCompound(), logItems));
-        return super.writeToNBT(nbt);
-    }
-
-    @Override
     public void onBreakBlock(World worldIn, BlockPos pos)
     {
         strawItems.forEach(i -> InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), i));
@@ -243,6 +223,26 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             }
         }
         return false;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        burnTicksToGo = nbt.getInteger("burnTicksToGo");
+        ItemStackHelper.loadAllItems(nbt.getCompoundTag("strawItems"), strawItems);
+        ItemStackHelper.loadAllItems(nbt.getCompoundTag("logItems"), logItems);
+
+        super.readFromNBT(nbt);
+    }
+
+    @Override
+    @Nonnull
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        nbt.setLong("burnTicksToGo", burnTicksToGo);
+        nbt.setTag("strawItems", ItemStackHelper.saveAllItems(new NBTTagCompound(), strawItems));
+        nbt.setTag("logItems", ItemStackHelper.saveAllItems(new NBTTagCompound(), logItems));
+        return super.writeToNBT(nbt);
     }
 
     public int getLogCount()

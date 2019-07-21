@@ -20,7 +20,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
-public class RenderCowTFC  extends RenderLiving<EntityCowTFC>
+public class RenderCowTFC extends RenderLiving<EntityCowTFC>
 {
     private static final ResourceLocation COW_TEXTURES = new ResourceLocation(MOD_ID, "textures/entity/animal/cow.png");
 

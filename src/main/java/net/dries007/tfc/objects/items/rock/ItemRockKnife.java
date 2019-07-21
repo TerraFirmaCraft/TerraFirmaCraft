@@ -66,6 +66,12 @@ public class ItemRockKnife extends ItemTool implements IItemSize, IRockObject
         tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
     }
 
+    @Override
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
+    {
+        return true;
+    }
+
     @Nonnull
     @Override
     public Size getSize(ItemStack stack)
@@ -108,12 +114,6 @@ public class ItemRockKnife extends ItemTool implements IItemSize, IRockObject
         {
             stack.damageItem(1, entityLiving);
         }
-        return true;
-    }
-
-    @Override
-    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
-    {
         return true;
     }
 }

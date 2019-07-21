@@ -26,6 +26,14 @@ public interface IProxy
     @Nullable
     World getWorld(MessageContext context);
 
+    @Nonnull
+    String getMonthName(Month month, boolean useSeasons);
+
+    // Calendar Translation / Localization Methods
+
+    @Nonnull
+    String getDayName(int dayOfMonth, long totalDays);
+
     class WrongSideException extends RuntimeException
     {
         WrongSideException(String message)
@@ -33,12 +41,4 @@ public interface IProxy
             super(message);
         }
     }
-
-    // Calendar Translation / Localization Methods
-
-    @Nonnull
-    String getMonthName(Month month, boolean useSeasons);
-
-    @Nonnull
-    String getDayName(int dayOfMonth, long totalDays);
 }
