@@ -1,4 +1,4 @@
-package net.dries007.tfc.jei.wrappers;
+package net.dries007.tfc.compat.jei.wrappers;
 
 import java.util.ArrayList;
 import java.util.List;

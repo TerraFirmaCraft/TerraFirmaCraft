@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.jei.wrappers;
+package net.dries007.tfc.compat.jei.wrappers;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -37,7 +37,7 @@ public class KnappingWrapper implements IRecipeWrapper
     @Override
     public void getIngredients(IIngredients ingredients)
     {
-        ItemStack output = recipe.getOutput(new ItemStack(ItemRock.get(Rock.GRANITE))); //
+        ItemStack output = recipe.getOutput(new ItemStack(ItemRock.get(Rock.GRANITE))); //check for all?
         ingredients.setOutput(VanillaTypes.ITEM, output);
     }
 

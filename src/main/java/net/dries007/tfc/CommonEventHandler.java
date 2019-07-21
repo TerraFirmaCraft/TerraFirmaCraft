@@ -44,6 +44,7 @@ import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.ItemSizeHandler;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
@@ -236,7 +237,12 @@ public final class CommonEventHandler
             boolean canStack = stack.getMaxStackSize() > 1; // This is necessary so it isn't accidentally overridden by a default implementation
 
             // todo: Add more items here
-            if (item == Items.COAL)
+            if (CapabilityItemSize.CUSTOM_ITEMS.containsKey(item))
+            {
+                ItemSizeHandler handler = CapabilityItemSize.CUSTOM_ITEMS.get(item).copy();
+                CapabilityItemSize.add(event, item, handler.getSize(stack), handler.getWeight(stack), canStack);
+            }
+            else if (item == Items.COAL)
                 CapabilityItemSize.add(event, Items.COAL, Size.SMALL, Weight.MEDIUM, canStack);
             else if (item == Items.STICK)
                 event.addCapability(ItemStickCapability.KEY, new ItemStickCapability(event.getObject().getTagCompound()));
@@ -258,7 +264,17 @@ public final class CommonEventHandler
         // future plans: add via craft tweaker or json (1.14)
         if (stack.getItem() instanceof ItemFood && !stack.hasCapability(CapabilityFood.CAPABILITY, null))
         {
-            event.addCapability(CapabilityFood.KEY, new FoodHandler(stack.getTagCompound(), new float[] {1, 0, 0, 0, 0}, 0, 0, 1));
+            //noinspection SuspiciousMethodCalls
+            if (CapabilityFood.CUSTOM_FOODS.containsKey(item))
+            {
+                //noinspection SuspiciousMethodCalls
+                FoodHandler handler = CapabilityFood.CUSTOM_FOODS.get(item).copy();
+                event.addCapability(CapabilityFood.KEY, handler);
+            }
+            else
+            {
+                event.addCapability(CapabilityFood.KEY, new FoodHandler(stack.getTagCompound(), new float[] {1, 0, 0, 0, 0}, 0, 0, 1));
+            }
         }
         if (stack.getItem() == Items.EGG && !stack.hasCapability(CapabilityEgg.CAPABILITY, null))
         {

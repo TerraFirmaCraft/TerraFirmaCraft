@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.jei.wrappers;
+package net.dries007.tfc.compat.jei.wrappers;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -27,8 +27,8 @@ public class BarrelWrapper implements IRecipeWrapper
     @Override
     public void getIngredients(IIngredients ingredients)
     {
-        ingredients.setInputs(VanillaTypes.ITEM, recipe.getItemIngredient().getValidInputList());
-        ingredients.setInputs(VanillaTypes.FLUID, recipe.getFluidIngredient().getValidInputList());
+        ingredients.setInputs(VanillaTypes.ITEM, recipe.getItemIngredient().getValidIngredients());
+        ingredients.setInputs(VanillaTypes.FLUID, recipe.getFluidIngredient().getValidIngredients());
         if (recipe.getOutputStack() != ItemStack.EMPTY)
         {
             ingredients.setOutput(VanillaTypes.ITEM, recipe.getOutputStack());

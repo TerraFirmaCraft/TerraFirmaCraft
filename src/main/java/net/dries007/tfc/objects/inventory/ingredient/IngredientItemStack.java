@@ -54,7 +54,7 @@ public class IngredientItemStack implements IIngredient<ItemStack>
     }
 
     @Override
-    public NonNullList<ItemStack> getValidInputList()
+    public NonNullList<ItemStack> getValidIngredients()
     {
         return NonNullList.withSize(1, inputStack);
     }

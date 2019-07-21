@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.jei;
+package net.dries007.tfc.compat.jei;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;

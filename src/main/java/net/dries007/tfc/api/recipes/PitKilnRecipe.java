@@ -17,7 +17,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IFireable;
-import net.dries007.tfc.jei.IJEISimpleRecipe;
+import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 /**
@@ -86,6 +86,7 @@ public class PitKilnRecipe extends IForgeRegistryEntry.Impl<PitKilnRecipe> imple
     @Override
     public NonNullList<ItemStack> getOutputs()
     {
-        return NonNullList.withSize(1, getOutput(ingredient.getValidInputList().get(0), Metal.Tier.TIER_I));
+        NonNullList<ItemStack> list = ingredient.getValidIngredients();
+        return NonNullList.withSize(1, getOutput(list.size() > 0 ? list.get(0) : ItemStack.EMPTY, Metal.Tier.TIER_I));
     }
 }

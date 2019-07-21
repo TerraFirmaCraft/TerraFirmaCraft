@@ -56,7 +56,7 @@ public class IngredientOreDict implements IIngredient<ItemStack>
     }
 
     @Override
-    public NonNullList<ItemStack> getValidInputList()
+    public NonNullList<ItemStack> getValidIngredients()
     {
         NonNullList<ItemStack> output = NonNullList.create();
         for (ItemStack out : OreDictionary.getOres(oreName))

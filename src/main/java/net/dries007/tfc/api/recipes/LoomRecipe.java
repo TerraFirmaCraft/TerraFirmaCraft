@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.jei.IJEISimpleRecipe;
+import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe> implements IJEISimpleRecipe

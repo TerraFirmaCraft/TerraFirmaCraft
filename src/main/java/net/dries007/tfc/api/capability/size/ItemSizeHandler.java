@@ -45,6 +45,17 @@ public class ItemSizeHandler implements ICapabilityProvider, IItemSize
         return capability == CapabilityItemSize.ITEM_SIZE_CAPABILITY ? (T) this : null;
     }
 
+    /**
+     * Makes a copy of this ItemSizeHandler instance.
+     * (eg: Used to apply custom set sizes to item, set by CT scripts)
+     *
+     * @return a copy of this object
+     */
+    public ItemSizeHandler copy()
+    {
+        return new ItemSizeHandler(this.size, this.weight, this.canStack);
+    }
+
     @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)

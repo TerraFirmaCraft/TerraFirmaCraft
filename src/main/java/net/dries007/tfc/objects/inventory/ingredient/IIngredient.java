@@ -80,11 +80,11 @@ public interface IIngredient<T> extends Predicate<T>
 
 
     /**
-     * This is used by JEI, return a valid list of inputs for this IIngredient
+     * This is used by JEI-CT hooks, return a valid list of inputs for this IIngredient
      *
-     * @return NonNullList containing valid inputs for this IIngredient
+     * @return NonNullList containing valid ingredients(fluidstack/itemstack) for this IIngredient
      */
-    default NonNullList<T> getValidInputList()
+    default NonNullList<T> getValidIngredients()
     {
         return NonNullList.create();
     }

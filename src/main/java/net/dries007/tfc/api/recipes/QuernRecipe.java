@@ -15,7 +15,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.jei.IJEISimpleRecipe;
+import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 public class QuernRecipe extends IForgeRegistryEntry.Impl<QuernRecipe> implements IJEISimpleRecipe
