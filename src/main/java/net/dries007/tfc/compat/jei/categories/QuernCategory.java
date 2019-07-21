@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.jei.categories;
+package net.dries007.tfc.compat.jei.categories;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -19,8 +19,8 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import net.dries007.tfc.api.util.TFCConstants;
-import net.dries007.tfc.jei.BaseRecipeCategory;
-import net.dries007.tfc.jei.wrappers.SimpleRecipeWrapper;
+import net.dries007.tfc.compat.jei.BaseRecipeCategory;
+import net.dries007.tfc.compat.jei.wrappers.SimpleRecipeWrapper;
 import net.dries007.tfc.objects.items.ItemsTFC;
 
 @ParametersAreNonnullByDefault

@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.jei;
+package net.dries007.tfc.compat.jei;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,11 +21,12 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.api.util.TFCConstants;
-import net.dries007.tfc.jei.categories.*;
-import net.dries007.tfc.jei.wrappers.AlloyWrapper;
-import net.dries007.tfc.jei.wrappers.BarrelWrapper;
-import net.dries007.tfc.jei.wrappers.KnappingWrapper;
-import net.dries007.tfc.jei.wrappers.SimpleRecipeWrapper;
+import net.dries007.tfc.client.gui.*;
+import net.dries007.tfc.compat.jei.categories.*;
+import net.dries007.tfc.compat.jei.wrappers.AlloyWrapper;
+import net.dries007.tfc.compat.jei.wrappers.BarrelWrapper;
+import net.dries007.tfc.compat.jei.wrappers.KnappingWrapper;
+import net.dries007.tfc.compat.jei.wrappers.SimpleRecipeWrapper;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLoom;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -172,5 +173,12 @@ public final class TFCJEIPlugin implements IModPlugin
 
         registry.addRecipes(barrelRecipes, BARREL_UID);
         registry.addRecipeCatalyst(new ItemStack(BlocksTFC.getAllBarrelItemBlocks().get(0)), BARREL_UID);
+
+        //Click areas
+        registry.addRecipeClickArea(GuiKnapping.class, 97, 42, 22, 19, KNAP_CLAY_UID, KNAP_FIRECLAY_UID, KNAP_LEATHER_UID, KNAP_STONE_UID);
+        registry.addRecipeClickArea(GuiAnvilTFC.class, 12, 96, 152, 7, ANVIL_UID, WELDING_UID);
+        registry.addRecipeClickArea(GuiBarrel.class, 36, 38, 14, 14, BARREL_UID);
+        registry.addRecipeClickArea(GuiQuern.class, 83, 19, 9, 46, QUERN_UID);
+        registry.addRecipeClickArea(GuiCrucible.class, 137, 23, 15, 66, ALLOY_UID);
     }
 }

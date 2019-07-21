@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.api.capability.size;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.Item;
@@ -24,6 +26,8 @@ public final class CapabilityItemSize
     @CapabilityInject(IItemSize.class)
     public static final Capability<IItemSize> ITEM_SIZE_CAPABILITY = Helpers.getNull();
     private static final ResourceLocation ID = new ResourceLocation(TFCConstants.MOD_ID, "item_size");
+
+    public static final Map<Item, ItemSizeHandler> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IItemSize for items outside TFC
 
     public static void preInit()
     {

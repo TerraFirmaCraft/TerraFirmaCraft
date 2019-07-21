@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.jei.wrappers;
+package net.dries007.tfc.compat.jei.wrappers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import net.minecraft.util.NonNullList;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.dries007.tfc.jei.IJEISimpleRecipe;
+import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 public class SimpleRecipeWrapper implements IRecipeWrapper
@@ -33,7 +33,7 @@ public class SimpleRecipeWrapper implements IRecipeWrapper
         List<IIngredient<ItemStack>> listInputs = recipeWrapper.getIngredients();
         for (IIngredient<ItemStack> input : listInputs)
         {
-            allInputs.add(input.getValidInputList());
+            allInputs.add(input.getValidIngredients());
         }
         ingredients.setInputLists(VanillaTypes.ITEM, allInputs);
 

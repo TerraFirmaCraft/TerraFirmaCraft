@@ -163,6 +163,17 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         return mod == 0 ? Float.POSITIVE_INFINITY : 1 / mod;
     }
 
+    /**
+     * Makes a copy of this FoodHandler instance.
+     * (eg: Used to apply custom set nutrients to food item, set by CT scripts)
+     *
+     * @return a copy of this object
+     */
+    public FoodHandler copy()
+    {
+        return new FoodHandler(this.serializeNBT(), this.nutrients, this.calories, this.water, this.decayModifier);
+    }
+
     @Nonnull
     @Override
     public List<IFoodTrait> getTraits()

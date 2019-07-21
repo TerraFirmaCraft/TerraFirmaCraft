@@ -65,7 +65,7 @@ public final class Registries
 
     private static <T extends IForgeRegistryEntry<T>> void newRegistry(ResourceLocation name, Class<T> tClass, boolean isPreBlockRegistry)
     {
-        IForgeRegistry<T> reg = new RegistryBuilder<T>().setName(name).setType(tClass).create();
+        IForgeRegistry<T> reg = new RegistryBuilder<T>().setName(name).allowModification().setType(tClass).create();
         if (isPreBlockRegistry)
         {
             preBlockRegistries.put(name, reg);

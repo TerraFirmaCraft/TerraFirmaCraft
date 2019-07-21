@@ -8,6 +8,7 @@ package net.dries007.tfc.api.capability.food;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.item.ItemFood;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -24,6 +25,8 @@ public class CapabilityFood
     @CapabilityInject(IFood.class)
     public static final Capability<IFood> CAPABILITY = Helpers.getNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "food");
+
+    public static final Map<ItemFood, FoodHandler> CUSTOM_FOODS = new HashMap<>(); //Used inside CT, set custom IFood for food items outside TFC
 
     /**
      * Most TFC foods have decay modifiers in the range [1, 4] (high = faster decay)

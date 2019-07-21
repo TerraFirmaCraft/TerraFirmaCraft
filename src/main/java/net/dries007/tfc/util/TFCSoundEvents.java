@@ -58,8 +58,6 @@ public class TFCSoundEvents
 
     @GameRegistry.ObjectHolder("animal.pheasant.say")
     public static final SoundEvent ANIMAL_PHEASANT_SAY = getNull();
-    @GameRegistry.ObjectHolder("animal.pheasant.cry")
-    public static final SoundEvent ANIMAL_PHEASANT_CRY = getNull();
     @GameRegistry.ObjectHolder("animal.pheasant.hurt")
     public static final SoundEvent ANIMAL_PHEASANT_HURT = getNull();
     @GameRegistry.ObjectHolder("animal.pheasant.death")
@@ -89,7 +87,6 @@ public class TFCSoundEvents
         register(r, "animal.deer.say");
         register(r, "animal.deer.hurt");
         register(r, "animal.deer.death");
-        register(r, "animal.pheasant.cry");
         register(r, "animal.pheasant.say");
         register(r, "animal.pheasant.hurt");
         register(r, "animal.pheasant.death");

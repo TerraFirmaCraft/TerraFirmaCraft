@@ -59,7 +59,7 @@ public class IngredientMultipleFluidStack implements IIngredient<FluidStack>
     }
 
     @Override
-    public NonNullList<FluidStack> getValidInputList()
+    public NonNullList<FluidStack> getValidIngredients()
     {
         NonNullList<FluidStack> output = NonNullList.create();
         for (Fluid fluid : fluids)

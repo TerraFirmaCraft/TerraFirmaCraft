@@ -1,4 +1,4 @@
-package net.dries007.tfc.jei.categories;
+package net.dries007.tfc.compat.jei.categories;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -12,8 +12,8 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.TFCConstants;
-import net.dries007.tfc.jei.BaseRecipeCategory;
-import net.dries007.tfc.jei.wrappers.SimpleRecipeWrapper;
+import net.dries007.tfc.compat.jei.BaseRecipeCategory;
+import net.dries007.tfc.compat.jei.wrappers.SimpleRecipeWrapper;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 
 @ParametersAreNonnullByDefault

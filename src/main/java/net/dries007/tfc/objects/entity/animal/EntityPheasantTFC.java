@@ -137,7 +137,7 @@ public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalT
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSoundEvents.ANIMAL_PHEASANT_CRY : TFCSoundEvents.ANIMAL_PHEASANT_SAY;
+        return TFCSoundEvents.ANIMAL_PHEASANT_SAY;
     }
 
     @Nullable
