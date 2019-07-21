@@ -5,41 +5,51 @@
 
 package net.dries007.tfc.api.capability.skill;
 
-public enum Skill implements ISkill
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.INBTSerializable;
+
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.network.PacketSkillsUpdate;
+
+/**
+ * A wrapper interface for a single skill. The individual skill class should have methods to add skill
+ *
+ * @see SkillType
+ */
+public abstract class Skill implements INBTSerializable<NBTTagCompound>
 {
-    PROSPECTING(10, 100),
-    BUTCHERY(10, 5),
-    AGRICULTURE(10, 20),
-    COOKING(10, 40),
-    WEAPON_SMITHING(10, 2),
-    ARMOR_SMITHING(10, 2),
-    TOOL_SMITHING(10, 4),
-    GENERAL_SMITHING(10, 8);
+    private final IPlayerSkills rootSkills;
 
-    private final int levels;
-    private final int levelValue;
-
-    Skill(int levels, int levelValue)
+    public Skill(IPlayerSkills rootSkills)
     {
-        this.levels = levels;
-        this.levelValue = levelValue;
+        this.rootSkills = rootSkills;
     }
 
-    @Override
-    public String getName()
-    {
-        return name().toLowerCase();
-    }
+    /**
+     * @return the current tier of the skill
+     */
+    @Nonnull
+    public abstract SkillTier getTier();
 
-    @Override
-    public int getLevels()
-    {
-        return levels;
-    }
+    /**
+     * This is the progress per skill tier, not the total skill.
+     * Should return a value between [0, 1)
+     *
+     * @return the current level of the skill
+     */
+    public abstract float getLevel();
 
-    @Override
-    public int getLevelValue()
+    /**
+     * Subclasses should call this when the skill updates
+     */
+    protected void updateAndSync()
     {
-        return levelValue;
+        if (rootSkills.getPlayer() instanceof EntityPlayerMP)
+        {
+            TerraFirmaCraft.getNetwork().sendTo(new PacketSkillsUpdate(rootSkills.serializeNBT()), (EntityPlayerMP) rootSkills.getPlayer());
+        }
     }
 }

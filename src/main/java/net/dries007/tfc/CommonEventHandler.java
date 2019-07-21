@@ -47,10 +47,12 @@ import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
+import net.dries007.tfc.api.capability.skill.IPlayerSkills;
 import net.dries007.tfc.api.capability.skill.PlayerSkillsHandler;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketFoodStatsReplace;
+import net.dries007.tfc.network.PacketSkillsUpdate;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
@@ -275,7 +277,7 @@ public final class CommonEventHandler
             EntityPlayer player = (EntityPlayer) event.getObject();
             if (!player.hasCapability(CapabilityPlayerSkills.CAPABILITY, null))
             {
-                event.addCapability(CapabilityPlayerSkills.KEY, new PlayerSkillsHandler());
+                event.addCapability(CapabilityPlayerSkills.KEY, new PlayerSkillsHandler(player));
             }
         }
     }
@@ -317,6 +319,13 @@ public final class CommonEventHandler
                 }
 
                 TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.player);
+            }
+
+            // Skills
+            IPlayerSkills skills = player.getCapability(CapabilityPlayerSkills.CAPABILITY, null);
+            if (skills != null)
+            {
+                TerraFirmaCraft.getNetwork().sendTo(new PacketSkillsUpdate(skills.serializeNBT()), player);
             }
 
             // Check total players and reset calendar time ticking
