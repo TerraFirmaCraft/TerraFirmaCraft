@@ -146,7 +146,7 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
                 }
                 return;
             }
-            if (!stateUnder.isNormalCube())
+            if (!stateUnder.isSideSolid(worldIn, pos, EnumFacing.UP))
             {
                 this.dropBlockAsItem(worldIn, pos, state, 0);
                 worldIn.setBlockToAir(pos);

@@ -8,6 +8,7 @@ package net.dries007.tfc.api.capability.size;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
@@ -55,10 +56,18 @@ public final class CapabilityItemSize
     @Nullable
     public static IItemSize getIItemSize(ItemStack stack)
     {
-        if (stack.getItem() instanceof IItemSize)
+        if (!stack.isEmpty())
         {
-            return (IItemSize) stack.getItem();
+            if (stack.getItem() instanceof IItemSize)
+            {
+                return (IItemSize) stack.getItem();
+            }
+            else if (stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock() instanceof IItemSize)
+            {
+                return (IItemSize) ((ItemBlock) stack.getItem()).getBlock();
+            }
+            return stack.getCapability(ITEM_SIZE_CAPABILITY, null);
         }
-        return stack.getCapability(ITEM_SIZE_CAPABILITY, null);
+        return null;
     }
 }

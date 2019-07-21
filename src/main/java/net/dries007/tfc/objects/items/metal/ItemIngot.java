@@ -11,6 +11,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
@@ -43,27 +44,29 @@ public class ItemIngot extends ItemMetal implements IPlaceableItem
         ItemIngot item = (ItemIngot) stack.getItem();
         if (world.getBlockState(pos).getBlock() != BlocksTFC.INGOT_PILE)
         {
-            if (facing == EnumFacing.UP && world.getBlockState(pos).isSideSolid(world, pos.down(), EnumFacing.UP))
+            if (facing == EnumFacing.UP && world.getBlockState(pos).isSideSolid(world, pos, EnumFacing.UP))
             {
-                if (!world.isRemote)
+                BlockPos up = pos.up();
+                if (world.mayPlace(BlocksTFC.INGOT_PILE, up, false, EnumFacing.UP, null))
                 {
-                    BlockPos up = pos.up();
-                    world.setBlockState(up, BlocksTFC.INGOT_PILE.getDefaultState());
-                    TEIngotPile te = Helpers.getTE(world, up, TEIngotPile.class);
-                    if (te != null)
+                    if (!world.isRemote)
                     {
-                        te.setMetal(item.metal);
-                        te.setCount(1);
+                        world.setBlockState(up, BlocksTFC.INGOT_PILE.getDefaultState());
+                        TEIngotPile te = Helpers.getTE(world, up, TEIngotPile.class);
+                        if (te != null)
+                        {
+                            te.setMetal(item.metal);
+                            te.setCount(1);
+                        }
+                        world.playSound(null, up, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.3F, 1.5F);
                     }
-                    world.playSound(null, up, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.3F, 1.5F);
-
+                    return true;
                 }
-                return true;
             }
         }
         else
         {
-            // Place an ingot pile ONTOP of the existing one
+            // Place an ingot pile on top of the existing one
             BlockPos posTop = pos.down();
             IBlockState stateTop;
             do
@@ -73,14 +76,14 @@ public class ItemIngot extends ItemMetal implements IPlaceableItem
                 if (stateTop.getBlock() == BlocksTFC.INGOT_PILE)
                 {
                     TEIngotPile te = Helpers.getTE(world, posTop, TEIngotPile.class);
-                    if (te != null && te.getCount() < 64 && (te.getMetal() == item.metal))
+                    if (te != null && te.getCount() < 64 && (te.getMetal() == item.metal) && world.checkNoEntityCollision(new AxisAlignedBB(0, 0, 0, 1, (1 + te.getCount()) / 64d, 1).offset(posTop)))
                     {
                         te.setCount(te.getCount() + 1);
                         world.playSound(null, posTop, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.3F, 1.5F);
                         return true;
                     }
                 }
-                else if (stateTop.getBlock().isReplaceable(world, posTop))
+                else if (stateTop.getBlock().isReplaceable(world, posTop) && world.mayPlace(BlocksTFC.INGOT_PILE, posTop, false, EnumFacing.UP, null))
                 {
                     world.setBlockState(posTop, BlocksTFC.INGOT_PILE.getDefaultState());
                     TEIngotPile te = Helpers.getTE(world, posTop, TEIngotPile.class);

@@ -37,6 +37,8 @@ import net.dries007.tfc.util.Helpers;
 @ParametersAreNonnullByDefault
 public class BlockIngotPile extends Block
 {
+    private static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.125, 1);
+
     public BlockIngotPile()
     {
         super(Material.IRON);
@@ -58,8 +60,13 @@ public class BlockIngotPile extends Block
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         TEIngotPile te = Helpers.getTE(source, pos, TEIngotPile.class);
-        double y = te != null ? 0.125 * (te.getCount() / 8.0) : 1;
-        return new AxisAlignedBB(0d, 0d, 0d, 1d, y, 1d);
+        if (te != null)
+        {
+            double y = te.getCount() / 64f;
+            return new AxisAlignedBB(0d, 0d, 0d, 1d, y, 1d);
+        }
+        // Default is here for the default state bounding box query (comes from world#mayPlace)
+        return DEFAULT_AABB;
     }
 
     @Override

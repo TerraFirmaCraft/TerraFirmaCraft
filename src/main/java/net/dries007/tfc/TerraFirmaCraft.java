@@ -5,6 +5,7 @@
 
 package net.dries007.tfc;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.common.MinecraftForge;
@@ -104,14 +105,13 @@ public final class TerraFirmaCraft
     }
 
     private boolean isSignedBuild = true;
-    private Logger log;
+    private final Logger log = LogManager.getLogger(MOD_ID);
     private WorldTypeTFC worldTypeTFC;
     private SimpleNetworkWrapper network;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        log = event.getModLog();
         log.debug("If you can see this, debug logging is working :)");
         if (!isSignedBuild)
         {
