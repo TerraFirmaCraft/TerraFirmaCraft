@@ -39,6 +39,9 @@ public class WorldGenLooseRocks implements IWorldGenerator
         // Check dimension is overworld
         if (world.provider.getDimension() != 0) return;
 
+        // Set constant values here
+        int xoff = chunkX * 16 + 8;
+        int zoff = chunkZ * 16 + 8;
         // Get the proper list of veins
         List<Vein> veins = WorldGenOreVeins.getNearbyVeins(chunkX, chunkZ, world.getSeed(), 1);
         if (!veins.isEmpty())
@@ -48,14 +51,13 @@ public class WorldGenLooseRocks implements IWorldGenerator
 
                 int minScanY = (WorldTypeTFC.ROCKLAYER2 + WorldTypeTFC.ROCKLAYER3) / 2;
                 int maxScanY = WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos);
-                return v.pos.getY() <= minScanY || v.pos.getY() >= maxScanY || !v.type.baseRocks.contains(chunkData.getRock1(0, 0));
-
+                for (BlockPos.MutableBlockPos pos : BlockPos.getAllInBoxMutable(xoff, minScanY, zoff, xoff + 15, maxScanY, zoff))
+                {
+                    if (v.type.isOreBlock(world.getBlockState(pos))) return false;
+                }
+                return true;
             });
         }
-
-        // Set constant values here
-        int xoff = chunkX * 16 + 8;
-        int zoff = chunkZ * 16 + 8;
 
         for (int i = 0; i < 12; i++)
         {
