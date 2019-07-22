@@ -51,7 +51,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
 
                 int minScanY = (WorldTypeTFC.ROCKLAYER2 + WorldTypeTFC.ROCKLAYER3) / 2;
                 int maxScanY = WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos);
-                for (BlockPos.MutableBlockPos pos : BlockPos.getAllInBoxMutable(xoff, minScanY, zoff, xoff + 15, maxScanY, zoff))
+                for (BlockPos.MutableBlockPos pos : BlockPos.getAllInBoxMutable(xoff, minScanY, zoff, xoff + 15, maxScanY, zoff + 15))
                 {
                     if (v.type.isOreBlock(world.getBlockState(pos))) return false;
                 }
