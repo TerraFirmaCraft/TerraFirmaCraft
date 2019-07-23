@@ -7,14 +7,11 @@
         {
           "type": "item",
           "weight": 1,
-          "name": "tfc:food/pork",
+          "name": "tfc:food/rabbit",
           "functions": [
             {
               "function": "set_count",
-              "count": {
-                "min": 1,
-                "max": 2
-              }
+              "count": 1
             },
             {
               "function": "looting_enchant",
@@ -34,7 +31,7 @@
         {
           "type": "item",
           "weight": 1,
-          "name": "tfc:hide/raw/medium",
+          "name": "tfc:hide/raw/small",
           "functions": [
             {
               "function": "set_count",
