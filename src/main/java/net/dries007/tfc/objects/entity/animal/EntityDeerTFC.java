@@ -49,7 +49,7 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IAnimalTFC
     public EntityDeerTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(0.9F, 1.3F);
+        this.setSize(1.3F, 1.9F);
     }
 
     @Override

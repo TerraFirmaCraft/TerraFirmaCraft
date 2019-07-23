@@ -252,6 +252,13 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         return this.getAge() == Age.CHILD;
     }
 
+    @Override
+    public void setScaleForAge(boolean child)
+    {
+        float ageScale = 1 / (2.0F - getPercentToAdulthood());
+        this.setScale(ageScale);
+    }
+
     /**
      * Used by models renderer to scale the size of the animal
      *
