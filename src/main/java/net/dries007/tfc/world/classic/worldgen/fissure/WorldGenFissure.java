@@ -11,6 +11,7 @@ import java.util.Random;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -80,8 +81,7 @@ public class WorldGenFissure implements IWorldGenerator
         if (checkStability && stable)
             return;
 
-        int creviceDepth = 1;
-        if (rng.nextInt(100) < 50) creviceDepth += 2 + rng.nextInt(8);
+        int creviceDepth = 3 + rng.nextInt(5);
 
         int poolDepth = 1 + rng.nextInt(Math.max(creviceDepth - 1, 1));
 
@@ -93,7 +93,7 @@ public class WorldGenFissure implements IWorldGenerator
         final IBlockState rock = BlockRockVariant.get(getRock3(world, start), Rock.Type.RAW).getDefaultState();
         final IBlockState localFillBlock = (!stable && BlocksTFC.isWater(fillBlock)) ? ChunkGenTFC.HOT_WATER : fillBlock;
 
-        List<BlockPos> list = getCollapseMap(world, start.add(0, -creviceDepth, 0), fillBlock, poolDepth);
+        List<BlockPos> list = getCollapseMap(world, start, fillBlock, poolDepth);
 
         for (BlockPos pos : list)
         {
@@ -217,22 +217,12 @@ public class WorldGenFissure implements IWorldGenerator
 
     private void fill(World world, BlockPos pos, IBlockState rock, IBlockState fillBlock)
     {
-        // todo: check if this should even update the blocks (flags = 3 means update) I think this only causes lag. (if not also replace `setBlockToAir`)
-        world.setBlockState(pos, fillBlock, 2);
-        BlockPos p = pos.add(-1, 0, 0);
-        if (world.isAirBlock(p)) world.setBlockState(p, rock, 3);
-        p = pos.add(-1, 0, 0);
-        if (world.isAirBlock(p)) world.setBlockState(p, rock, 3);
-        p = pos.add(1, 0, 0);
-        if (world.isAirBlock(p)) world.setBlockState(p, rock, 3);
-        p = pos.add(0, 0, -1);
-        if (world.isAirBlock(p)) world.setBlockState(p, rock, 3);
-        p = pos.add(0, 0, 1);
-        if (world.isAirBlock(p)) world.setBlockState(p, rock, 3);
-        p = pos.add(0, -1, 0);
-        if (world.isAirBlock(p)) world.setBlockState(p, rock, 3);
-        p = pos.add(0, 1, 0);
-        if (world.isAirBlock(p)) world.setBlockState(p, rock, 3);
+        world.setBlockState(pos, fillBlock);
+        for (EnumFacing facing : EnumFacing.VALUES)
+        {
+            if (facing == EnumFacing.UP || world.getBlockState(pos.offset(facing)) == fillBlock) continue;
+            world.setBlockState(pos.offset(facing), rock);
+        }
     }
 
 
