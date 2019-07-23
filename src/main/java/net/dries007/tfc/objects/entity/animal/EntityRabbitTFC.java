@@ -8,22 +8,13 @@ package net.dries007.tfc.objects.entity.animal;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.Constants;
-import net.dries007.tfc.util.LootTableListTFC;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCarrot;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.EntityJumpHelper;
-import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -34,11 +25,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.Path;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -47,6 +34,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import net.dries007.tfc.Constants;
+import net.dries007.tfc.util.LootTableListTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
 public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
@@ -373,8 +364,13 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
 	}
 
 	private int getRandomRabbitType() {
-		// TODO: by TFC biome?
-		int type = this.rand.nextInt(7);
+        int type = 0;
+        if (this.rand.nextInt(100) < 10) { // killer skin chance
+            type = 7;
+        }
+        else {
+            type = this.rand.nextInt(6);
+        }
 		return type;
 	}
 
