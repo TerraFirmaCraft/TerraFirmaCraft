@@ -378,6 +378,7 @@ FOODS = [
     'horse_meat',
     'pheasant',
     'venison',
+    'rabbit',
     'cooked_beef',
     'cooked_pork',
     'cooked_chicken',
@@ -387,7 +388,8 @@ FOODS = [
     'cooked_calamari',
     'cooked_horse_meat',
     'cooked_pheasant',
-    'cooked_venison'
+    'cooked_venison',
+    'cooked_rabbit'
 ]
 
 # Special 'hardcoded' cases
