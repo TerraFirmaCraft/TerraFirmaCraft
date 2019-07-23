@@ -39,6 +39,7 @@ public class BiomeTFC extends Biome
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityDeerTFC.class, 14, 2, 4));
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityPheasantTFC.class, 14, 2, 4));
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBearTFC.class, 4, 1, 2));
+        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityRabbitTFC.class, 15, 3, 4));
     }
 
     @Override
