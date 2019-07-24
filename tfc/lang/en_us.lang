@@ -47,6 +47,8 @@ tfc.tooltip.plant_wet=%sToo wet%s
 tfc.tooltip.blast_furnace_ore_amount=Ore
 tfc.tooltip.blast_furnace_fuel_amount=Fuel
 tfc.tooltip.blast_furnace_melt_amount=Melt
+tfc.tooltip.large_vessel_seal=Seal Large Vessel
+tfc.tooltip.large_vessel_unseal=Unseal Large Vessel
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.old=This animal is too old to mate
@@ -81,6 +83,7 @@ tfc.food_traits.brined_active=Brining
 tfc.food_traits.salted=Salted
 tfc.food_traits.pickled=Pickled
 tfc.food_traits.pickled_active=Pickling
+tfc.food_traits.preserved=Preserved
 
 ## Keybindings
 tfc.key.craft=Crafting GUI
@@ -351,6 +354,7 @@ tile.tfc.blast_furnace.name=Blast Furnace
 tile.tfc.bloomery.name=Bloomery
 tile.tfc.fire_bricks.name=Fire Bricks
 tile.tfc.quern.name=Quern
+tile.tfc.ceramics.fired.large_vessel.name=Large Vessel
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite
@@ -3247,6 +3251,7 @@ item.tfc.ceramics.unfired.vessel_glazed.brown.name=Small Unfired Brown Vessel
 item.tfc.ceramics.unfired.vessel_glazed.green.name=Small Unfired Green Vessel
 item.tfc.ceramics.unfired.vessel_glazed.red.name=Small Unfired Red Vessel
 item.tfc.ceramics.unfired.vessel_glazed.black.name=Small Unfired Black Vessel
+item.tfc.ceramics.unfired.large_vessel.name=Unfired Large Vessel
 
 item.tfc.ceramics.fired.spindle.name=Spindle Head
 item.tfc.ceramics.unfired.spindle.name=Unfired Spindle Head
