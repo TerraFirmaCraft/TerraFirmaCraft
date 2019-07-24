@@ -11,10 +11,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCarrot;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -109,12 +108,14 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
 	}
 
 	@Override
+    @SuppressWarnings("unchecked")
 	protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
-        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(1, new EntityRabbitTFC.AIPanic(this, 2.2D));
+        this.tasks.addTask(4, new EntityAIAvoidEntity(this, EntityPlayer.class, 8.0F, 2.0D, 2.0D));
+        this.tasks.addTask(4, new EntityAIAvoidEntity(this, EntityMob.class, 4.0F, 2.0D, 2.0D));
+        this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.6D));
+        this.tasks.addTask(11, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
 	}
 
 	@Override
@@ -435,4 +436,21 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
 			this.typeData = type;
 		}
 	}
+	
+    static class AIPanic extends EntityAIPanic
+    {
+        private final EntityRabbitTFC rabbit;
+
+        public AIPanic(EntityRabbitTFC rabbit, double speedIn)
+        {
+            super(rabbit, speedIn);
+            this.rabbit = rabbit;
+        }
+
+        public void updateTask()
+        {
+            super.updateTask();
+            this.rabbit.setMovementSpeed(this.speed);
+        }
+    }
 }
