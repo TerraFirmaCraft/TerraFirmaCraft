@@ -34,15 +34,6 @@ public class TEChestTFC extends TileEntityChest
     }
 
     @Override
-    public BlockChestTFC getBlockType()
-    {
-        Block block = super.getBlockType();
-        if (!(block instanceof BlockChestTFC))
-            throw new IllegalArgumentException("Block type is invalid; must be instance of BlockChestTFC");
-        return ((BlockChestTFC) block);
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     @Nonnull
     public AxisAlignedBB getRenderBoundingBox()
@@ -55,9 +46,10 @@ public class TEChestTFC extends TileEntityChest
     {
         if (cachedWood == null)
         {
-            if (world == null)
-                return null;
-            cachedWood = getBlockType().wood;
+            if (world != null)
+            {
+                cachedWood = ((BlockChestTFC) world.getBlockState(pos).getBlock()).wood;
+            }
         }
         return cachedWood;
     }
