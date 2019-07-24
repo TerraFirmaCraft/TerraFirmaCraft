@@ -47,7 +47,7 @@ public class ItemFoodTFC extends ItemFood
         }
 
         // Use "category" here as to not conflict with actual items, i.e. grain
-        OreDictionaryHelper.register(this, "cateory", food.getCategory());
+        OreDictionaryHelper.register(this, "category", food.getCategory());
         if (food.getOreDictNames() != null)
         {
             for (Object name : food.getOreDictNames())
