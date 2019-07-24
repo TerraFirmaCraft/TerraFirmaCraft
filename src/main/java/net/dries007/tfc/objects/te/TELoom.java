@@ -25,6 +25,7 @@ import net.dries007.tfc.api.recipes.LoomRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.network.PacketLoomUpdate;
+import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLoom;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
@@ -61,7 +62,7 @@ public class TELoom extends TEInventory implements ITickable
         {
             if (world != null)
             {
-                cachedWood = getBlockType().wood;
+                cachedWood = ((BlockChestTFC) world.getBlockState(pos).getBlock()).wood;
             }
         }
         return cachedWood;
