@@ -20,6 +20,8 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.recipes.PitKilnRecipe;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipe;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
 import net.dries007.tfc.util.fuel.Fuel;
@@ -126,9 +128,16 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
                         CapabilityItemHeat.addTemp(cap);
                     }
 
-                    // This will melt + consume the input stack
-                    // Output stacks are assumed to not melt (see the case of ceramic molds in the output)
-                    if (cap.isMolten() && i == SLOT_ITEM_INPUT)
+                    PitKilnRecipe recipe = PitKilnRecipe.get(stack);
+                    if (recipe != null)
+                    {
+                        //Found a pit kiln recipe for this, let's use it
+                        if (itemTemp >= 1599f) //Brilliant white
+                        {
+                            inventory.setStackInSlot(i, recipe.getOutput(stack, Metal.Tier.TIER_I));
+                        }
+                    }
+                    else if (cap.isMolten() && i == SLOT_ITEM_INPUT)
                     {
                         handleInputMelting(stack);
                     }
@@ -182,7 +191,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         switch (slot)
         {
             case SLOT_FUEL_INPUT: // Valid fuel if it is registered correctly
-                return FuelManager.isItemFuel(stack);
+                return FuelManager.isItemFuel(stack) && !FuelManager.isItemForgeFuel(stack);
             case SLOT_ITEM_INPUT: // Valid input as long as it can be heated
                 return stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
             case SLOT_OUTPUT_1:
