@@ -96,7 +96,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return Size.LARGE;
+        return Size.HUGE;
     }
 
     @Nonnull

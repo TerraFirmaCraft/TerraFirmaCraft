@@ -114,6 +114,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
         {
             // Calculate the date to display in calendar time
             long rottenCalendarTime = getRottenDate() - CalendarTFC.PLAYER_TIME.getTicks() + CalendarTFC.CALENDAR_TIME.getTicks();
+
             text.add(I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.INSTANCE.getDaysInMonth())));
 
             // Show nutrient values if not rotten

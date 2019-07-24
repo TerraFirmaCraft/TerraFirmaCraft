@@ -93,6 +93,8 @@ public final class BlocksTFC
     public static final BlockFluidBase FLUID_MILK_CURDLED = getNull();
     @GameRegistry.ObjectHolder("fluid/milk_vinegar")
     public static final BlockFluidBase FLUID_MILK_VINEGAR = getNull();
+    @GameRegistry.ObjectHolder("ceramics/fired/large_vessel")
+    public static final BlockLargeVessel LARGE_VESSEL = getNull();
 
     public static final BlockDebug DEBUG = getNull();
     public static final BlockPeat PEAT = getNull();
@@ -315,6 +317,8 @@ public final class BlocksTFC
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bellows", new BlockBellows(), CT_MISC)));
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bloomery", new BlockBloomery(), CT_MISC)));
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "nest_box", new BlockNestBox(), CT_MISC)));
+
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
 
         {
             Builder<BlockFluidBase> b = ImmutableList.builder();
@@ -633,6 +637,7 @@ public final class BlocksTFC
         register(TEBloom.class, "bloom");
         register(TEMetalSheet.class, "metal_sheet");
         register(TEQuern.class, "quern");
+        register(TELargeVessel.class, "large_vessel");
     }
 
     public static boolean isWater(IBlockState current)

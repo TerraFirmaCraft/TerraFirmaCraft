@@ -129,9 +129,8 @@ public final class DefaultRecipes
             new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_JUG), " X   ", "XXXX ", "XXX X", "XXXX ", "XXX  ").setRegistryName("clay_jug"),
             new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_POT), "X   X", "X   X", "X   X", "XXXXX", " XXX ").setRegistryName("clay_pot"),
             new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_BOWL, 2), "X   X", " XXX ").setRegistryName(MOD_ID, "clay_bowl"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_BOWL, 4), "X   X", " XXX ", "     ", "X   X", " XXX ").setRegistryName("clay_bowl_2")
-            // todo: add once large ceramic vessel has been added
-            //new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(BlocksTFC.CERAMICS_LARGE_VESSEL), "XXXX", "X  X", "X  X", "X  X", "XXXX").setRegistryName(MOD_ID, "clay_large_vessel"),
+            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_BOWL, 4), "X   X", " XXX ", "     ", "X   X", " XXX ").setRegistryName("clay_bowl_2"),
+            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_LARGE_VESSEL), "X   X", "X   X", "X   X", "X   X", "XXXXX").setRegistryName("clay_large_vessel")
         );
 
         /* LEATHER ITEMS */
@@ -170,6 +169,8 @@ public final class DefaultRecipes
                 r.register(new PitKilnRecipe(IIngredient.of(ItemUnfiredMold.get(type)), new ItemStack(ItemMold.get(type))).setRegistryName("mold_" + type.name().toLowerCase()));
             }
         }
+
+        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_UNFIRED_LARGE_VESSEL), new ItemStack(BlocksTFC.LARGE_VESSEL)).setRegistryName("large_vessel"));
 
         // Fired ceramic vessels
         r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_FIRED_VESSEL)).setRegistryName("fired_vessel_fireable"));
