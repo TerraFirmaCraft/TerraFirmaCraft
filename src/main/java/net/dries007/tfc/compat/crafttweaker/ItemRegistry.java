@@ -18,6 +18,8 @@ import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.ItemSizeHandler;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.util.fuel.Fuel;
+import net.dries007.tfc.util.fuel.FuelManager;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -56,6 +58,23 @@ public class ItemRegistry
         else
         {
             CraftTweakerAPI.apply(new RegisterFood(stack, nutrients, calories, water, decay));
+        }
+    }
+
+    @ZenMethod
+    public static void registerFuel(IItemStack itemStack, int burnTicks, float temperature, boolean forgeFuel)
+    {
+        if (itemStack == null) throw new IllegalArgumentException("Item not allowed to be empty!");
+        if (burnTicks <= 0 || temperature <= 0)
+            throw new IllegalArgumentException("Temp and burn ticks must be higher than 0!");
+        ItemStack stack = ((ItemStack) itemStack.getInternal());
+        if (FuelManager.isItemFuel(stack))
+        {
+            throw new IllegalStateException("Fuel stack registered more than once!");
+        }
+        else
+        {
+            CraftTweakerAPI.apply(new RegisterFuel(stack, burnTicks, temperature, forgeFuel));
         }
     }
 
@@ -120,4 +139,27 @@ public class ItemRegistry
         }
     }
 
+    private static class RegisterFuel implements IAction
+    {
+        private final Fuel fuel;
+        private final String stackName;
+
+        RegisterFuel(ItemStack stack, int burnTicks, float temperature, boolean forgeFuel)
+        {
+            stackName = stack.getDisplayName();
+            fuel = new Fuel(stack, burnTicks, temperature, forgeFuel);
+        }
+
+        @Override
+        public void apply()
+        {
+            FuelManager.addFuel(fuel);
+        }
+
+        @Override
+        public String describe()
+        {
+            return "Registered fuel stats for " + stackName;
+        }
+    }
 }
