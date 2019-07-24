@@ -146,14 +146,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
                 IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
                 if (cap != null)
                 {
-                    if (!cap.isRotten())
-                    {
-                        if (!cap.getTraits().contains(CapabilityFood.PRESERVED))
-                        {
-                            cap.getTraits().add(CapabilityFood.PRESERVED);
-                            cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - cap.getCreationDate()) / CapabilityFood.PRESERVED.getDecayModifier()));
-                        }
-                    }
+                    CapabilityFood.applyTrait(cap, CapabilityFood.LARGE_VESSEL_PRESERVED);
                 }
             }
         }
@@ -169,8 +162,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
                 IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
                 if (cap != null)
                 {
-                    cap.getTraits().remove(CapabilityFood.PRESERVED);
-                    cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - cap.getCreationDate()) * CapabilityFood.PRESERVED.getDecayModifier()));
+                    CapabilityFood.removeTrait(cap, CapabilityFood.LARGE_VESSEL_PRESERVED);
                 }
             }
         }
@@ -242,11 +234,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         IItemSize sizeCap = CapabilityItemSize.getIItemSize(stack);
         if (sizeCap != null)
         {
-            if (sizeCap.getSize(stack).isSmallerThan(Size.VERY_LARGE))
-            {
-                return true;
-            }
-            return false;
+            return sizeCap.getSize(stack).isSmallerThan(Size.VERY_LARGE);
         }
         return true;
     }

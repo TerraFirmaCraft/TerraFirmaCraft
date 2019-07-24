@@ -48,7 +48,7 @@ public class BlockLargeVessel extends Block implements IItemSize
 
     public BlockLargeVessel()
     {
-        super(Material.ROCK);
+        super(Material.CIRCUITS);
         setSoundType(SoundType.STONE);
         setHardness(2F);
 

@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.util;
 
 import javax.annotation.Nonnull;
@@ -25,10 +30,10 @@ public class LargeVesselItemStackHandler extends ItemStackHandler
 
         if (cap != null)
         {
-            if(cap.getTraits().contains(CapabilityFood.PRESERVED))
+            if (cap.getTraits().contains(CapabilityFood.LARGE_VESSEL_PRESERVED))
             {
-                cap.getTraits().remove(CapabilityFood.PRESERVED);
-                cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long)((CalendarTFC.PLAYER_TIME.getTicks() - cap.getCreationDate()) * CapabilityFood.PRESERVED.getDecayModifier()));
+                cap.getTraits().remove(CapabilityFood.LARGE_VESSEL_PRESERVED);
+                cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - cap.getCreationDate()) * CapabilityFood.LARGE_VESSEL_PRESERVED.getDecayModifier()));
             }
         }
 
