@@ -3352,6 +3352,7 @@ item.tfc.food.calamari.name=Raw Calamari
 item.tfc.food.horse_meat.name=Raw Horse Meat
 item.tfc.food.pheasant.name=Raw Pheasant
 item.tfc.food.venison.name=Raw Venison
+item.tfc.food.rabit.name=Raw Rabbit Meat
 item.tfc.food.cooked_beef.name=Cooked Beef
 item.tfc.food.cooked_pork.name=Cooked Pork
 item.tfc.food.cooked_chicken.name=Cooked Chicken
@@ -3362,6 +3363,7 @@ item.tfc.food.cooked_calamari.name=Cooked Calamari
 item.tfc.food.cooked_horse_meat.name=Cooked Horse Meat
 item.tfc.food.cooked_pheasant.name=Cooked Pheasant
 item.tfc.food.cooked_venison.name=Cooked Venison
+item.tfc.food.cooked_rabbit.name=Cooked Rabbit Meat
 
 item.tfc.crop.seeds.barley.name=Barley Seeds
 item.tfc.crop.seeds.beet.name=Beet Seeds
