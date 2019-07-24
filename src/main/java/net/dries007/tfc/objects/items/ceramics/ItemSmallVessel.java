@@ -130,6 +130,11 @@ public class ItemSmallVessel extends ItemFiredPottery
             Alloy alloy = new Alloy().add(cap);
             if (alloy.isValid())
             {
+                //Empty contents
+                for (int i = 0; i < cap.getSlots(); i++)
+                {
+                    cap.extractItem(i, cap.getStackInSlot(i).getCount(), false);
+                }
                 // Fill with the liquid metal
                 cap.setFluidMode(true);
                 cap.fill(new FluidStack(FluidsTFC.getMetalFluid(alloy.getResult()), alloy.getAmount()), true);
