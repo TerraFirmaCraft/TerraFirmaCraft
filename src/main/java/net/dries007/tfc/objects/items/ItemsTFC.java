@@ -100,6 +100,8 @@ public final class ItemsTFC
     public static final ItemUnfiredPottery CERAMICS_UNFIRED_SPINDLE = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/spindle")
     public static final ItemFiredPottery CERAMICS_FIRED_SPINDLE = getNull();
+    @GameRegistry.ObjectHolder("ceramics/unfired/large_vessel")
+    public static final ItemUnfiredLargeVessel CERAMICS_UNFIRED_LARGE_VESSEL = getNull();
 
     @GameRegistry.ObjectHolder("bloom/unrefined")
     public static final ItemBloom UNREFINED_BLOOM = getNull();
@@ -212,6 +214,8 @@ public final class ItemsTFC
                     simpleItems.add(register(r, "ceramics/unfired/mold/" + type.name().toLowerCase(), new ItemUnfiredMold(item, type), CT_POTTERY));
                 }
             }
+
+            simpleItems.add(register(r, "ceramics/unfired/large_vessel", new ItemUnfiredLargeVessel(), CT_POTTERY));
 
             registerPottery(simpleItems, r, "ceramics/unfired/vessel", "ceramics/fired/vessel", new ItemUnfiredSmallVessel(new ItemSmallVessel(false)));
             registerPottery(null, r, "ceramics/unfired/vessel_glazed", "ceramics/fired/vessel_glazed", new ItemUnfiredSmallVessel(new ItemSmallVessel(true)));

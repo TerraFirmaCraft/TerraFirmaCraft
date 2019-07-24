@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.wood;
+package net.dries007.tfc.objects.blocks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,32 +27,48 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCGuiHandler;
-import net.dries007.tfc.objects.te.TEBarrel;
+import net.dries007.tfc.objects.te.TELargeVessel;
 import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
-public class BlockBarrel extends Block
+public class BlockLargeVessel extends Block implements IItemSize
 {
     public static final PropertyBool SEALED = PropertyBool.create("sealed");
-    private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
+    private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.625D, 0.8125D);
+    private static final AxisAlignedBB BOUNDING_BOX_SEALED = new AxisAlignedBB(0.15625D, 0.0D, 0.15625D, 0.84375D, 0.6875D, 0.84375D);
 
-    public BlockBarrel()
+    public BlockLargeVessel()
     {
-        super(Material.WOOD);
-        setSoundType(SoundType.WOOD);
+        super(Material.ROCK);
+        setSoundType(SoundType.STONE);
         setHardness(2F);
 
         setDefaultState(blockState.getBaseState().withProperty(SEALED, false));
     }
+
+    @Override
+    @Nonnull
+    public Size getSize(ItemStack stack)
+    {
+        return Size.HUGE;
+    }
+
+    @Override
+    @Nonnull
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.HEAVY;
+    }
+
 
     @Override
     @Nonnull
@@ -83,7 +99,7 @@ public class BlockBarrel extends Block
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return BOUNDING_BOX;
+        return state.getValue(SEALED) ? BOUNDING_BOX_SEALED : BOUNDING_BOX;
     }
 
     @Override
@@ -107,7 +123,7 @@ public class BlockBarrel extends Block
         if (!worldIn.isRemote)
         {
             ItemStack heldItem = playerIn.getHeldItem(hand);
-            TEBarrel te = Helpers.getTE(worldIn, pos, TEBarrel.class);
+            TELargeVessel te = Helpers.getTE(worldIn, pos, TELargeVessel.class);
 
             if (te != null)
             {
@@ -117,21 +133,9 @@ public class BlockBarrel extends Block
                     worldIn.setBlockState(pos, state.withProperty(SEALED, !state.getValue(SEALED)));
                     te.onSealed();
                 }
-                else if (heldItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
-                {
-                    if (!state.getValue(SEALED))
-                    {
-                        IFluidHandler fluidHandler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-                        if (fluidHandler != null)
-                        {
-                            FluidUtil.interactWithFluidHandler(playerIn, hand, fluidHandler);
-                            te.markDirty();
-                        }
-                    }
-                }
                 else
                 {
-                    TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.BARREL);
+                    TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.LARGE_VESSEL);
                 }
             }
 
@@ -162,19 +166,17 @@ public class BlockBarrel extends Block
             return;
         }
 
-        if (stack.getMetadata() == 1)
+
+        NBTTagCompound compound = stack.getTagCompound();
+
+        if (compound != null)
         {
-            NBTTagCompound compound = stack.getTagCompound();
+            TELargeVessel te = Helpers.getTE(worldIn, pos, TELargeVessel.class);
 
-            if (compound != null)
+            if (te != null)
             {
-                TEBarrel te = Helpers.getTE(worldIn, pos, TEBarrel.class);
-
-                if (te != null)
-                {
-                    te.readFromItemTag(compound);
-                    //worldIn.notifyBlockUpdate(pos, state, state, 3);
-                }
+                te.readFromItemTag(compound);
+                worldIn.setBlockState(pos, state.withProperty(SEALED, true));
             }
         }
     }
@@ -206,19 +208,19 @@ public class BlockBarrel extends Block
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        return new TEBarrel();
+        return new TELargeVessel();
     }
 
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        TEBarrel te = Helpers.getTE(world, pos, TEBarrel.class);
+        TELargeVessel te = Helpers.getTE(world, pos, TELargeVessel.class);
 
         if (te != null)
         {
             if (state.getValue(SEALED))
             {
-                ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1, 1);
+                ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1);
                 stack.setTagCompound(te.getItemTag());
 
                 drops.add(stack);

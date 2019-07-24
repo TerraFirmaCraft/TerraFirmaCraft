@@ -140,6 +140,7 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketBellowsUpdate.Handler(), PacketBellowsUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketFoodStatsUpdate.Handler(), PacketFoodStatsUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketFoodStatsReplace.Handler(), PacketFoodStatsReplace.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketLargeVesselUpdate.Handler(), PacketLargeVesselUpdate.class, ++id, Side.CLIENT);
 
         EntitiesTFC.preInit();
         VeinRegistry.INSTANCE.preInit(event.getModConfigurationDirectory());
