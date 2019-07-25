@@ -131,4 +131,15 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
             lastUpdateTick = nbt.getLong("ticks");
         }
     }
+
+    /**
+     * Makes a copy of this ItemHeatHandler instance.
+     * (eg: Used to apply custom set heat capability to item, set by CT scripts)
+     *
+     * @return a copy of this object
+     */
+    public ItemHeatHandler copy()
+    {
+        return new ItemHeatHandler(null, heatCapacity, meltTemp);
+    }
 }

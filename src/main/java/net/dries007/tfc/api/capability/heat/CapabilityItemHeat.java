@@ -5,6 +5,11 @@
 
 package net.dries007.tfc.api.capability.heat;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -13,10 +18,15 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+
 public final class CapabilityItemHeat
 {
     @CapabilityInject(IItemHeat.class)
     public static final Capability<IItemHeat> ITEM_HEAT_CAPABILITY = Helpers.getNull();
+    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_heat");
+
+    public static final Map<Item, ItemHeatHandler> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IItemHeat for items outside TFC
 
     public static final float MIN_TEMPERATURE = 0f;
     /**
