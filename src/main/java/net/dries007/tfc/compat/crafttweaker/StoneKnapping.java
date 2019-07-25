@@ -34,11 +34,13 @@ public class StoneKnapping
     @ZenMethod
     public static void addRecipe(IItemStack[] output, String[] rockCategories, String... pattern)
     {
-        if (output == null || output.length == 0 || output.length != rockCategories.length || pattern.length == 0)
-            throw new IllegalArgumentException("You must supply one pattern, at least one item and one category per item");
+        if (output == null) throw new IllegalArgumentException("Input not allowed to be empty");
+        if (rockCategories == null || rockCategories.length != output.length)
+            throw new IllegalArgumentException("You must specify a rock category for each output!");
+        if (pattern.length == 0) throw new IllegalArgumentException("You must specify the pattern to craft!");
         Function<RockCategory, ItemStack> supplier;
         ResourceLocation registryName;
-        if (rockCategories[0].equals("all"))
+        if (rockCategories[0].equalsIgnoreCase("all"))
         {
             ItemStack outputStack = (ItemStack) output[0].getInternal();
             supplier = c -> outputStack;

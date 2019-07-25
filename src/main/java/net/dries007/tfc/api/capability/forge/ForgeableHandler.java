@@ -127,4 +127,15 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
         }
         super.deserializeNBT(nbt);
     }
+
+    /**
+     * Makes a copy of this ForgeableHandler instance.
+     * (eg: Used to apply custom set forgeable capability to item, set by CT scripts)
+     *
+     * @return a copy of this object
+     */
+    public ForgeableHandler copy()
+    {
+        return new ForgeableHandler(null, heatCapacity, meltTemp);
+    }
 }

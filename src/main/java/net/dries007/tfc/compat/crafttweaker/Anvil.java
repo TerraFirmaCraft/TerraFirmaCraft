@@ -31,7 +31,7 @@ public class Anvil
 {
     @SuppressWarnings("unchecked")
     @ZenMethod
-    public static void addRecipe(IItemStack output, int minTier, crafttweaker.api.item.IIngredient input, String... rules)
+    public static void addRecipe(crafttweaker.api.item.IIngredient input, IItemStack output, int minTier, String... rules)
     {
         if (output == null || input == null)
             throw new IllegalArgumentException("Input and output are not allowed to be empty");

@@ -31,7 +31,7 @@ public class Barrel
 {
     @SuppressWarnings("unchecked")
     @ZenMethod
-    public static void addRecipe(IItemStack itemOutput, ILiquidStack fluidOutput, crafttweaker.api.item.IIngredient itemInput, ILiquidStack fluidInput, int hours)
+    public static void addRecipe(crafttweaker.api.item.IIngredient itemInput, ILiquidStack fluidInput, IItemStack itemOutput, ILiquidStack fluidOutput, int hours)
     {
         if (itemOutput == null && fluidOutput == null)
             throw new IllegalArgumentException("At least one output must be supplied");

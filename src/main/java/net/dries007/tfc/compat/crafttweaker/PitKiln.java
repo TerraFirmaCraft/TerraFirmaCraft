@@ -29,7 +29,7 @@ public class PitKiln
 {
     @SuppressWarnings("unchecked")
     @ZenMethod
-    public static void addRecipe(IItemStack output, crafttweaker.api.item.IIngredient input)
+    public static void addRecipe(crafttweaker.api.item.IIngredient input, IItemStack output)
     {
         if (output == null || input == null)
             throw new IllegalArgumentException("Input and output are not allowed to be empty");

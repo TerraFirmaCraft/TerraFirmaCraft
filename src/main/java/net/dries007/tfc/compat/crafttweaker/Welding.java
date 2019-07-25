@@ -30,7 +30,7 @@ public class Welding
 {
     @SuppressWarnings("unchecked")
     @ZenMethod
-    public static void addRecipe(IItemStack output, int minTier, crafttweaker.api.item.IIngredient input1, crafttweaker.api.item.IIngredient input2)
+    public static void addRecipe(crafttweaker.api.item.IIngredient input1, crafttweaker.api.item.IIngredient input2, IItemStack output, int minTier)
     {
         if (output == null || input1 == null || input2 == null)
             throw new IllegalArgumentException("Both inputs and output are not allowed to be empty");

@@ -43,6 +43,10 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
+import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
+import net.dries007.tfc.api.capability.forge.ForgeableHandler;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.ItemSizeHandler;
 import net.dries007.tfc.api.capability.size.Size;
@@ -275,6 +279,16 @@ public final class CommonEventHandler
             {
                 event.addCapability(CapabilityFood.KEY, new FoodHandler(stack.getTagCompound(), new float[] {1, 0, 0, 0, 0}, 0, 0, 1));
             }
+        }
+        if (!stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null) && CapabilityForgeable.CUSTOM_ITEMS.get(item) != null)
+        {
+            ForgeableHandler handler = CapabilityForgeable.CUSTOM_ITEMS.get(item).copy();
+            event.addCapability(CapabilityForgeable.KEY, handler);
+        }
+        else if (!stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null) && CapabilityItemHeat.CUSTOM_ITEMS.get(item) != null)
+        {
+            ItemHeatHandler handler = CapabilityItemHeat.CUSTOM_ITEMS.get(item).copy();
+            event.addCapability(CapabilityItemHeat.KEY, handler);
         }
         if (stack.getItem() == Items.EGG && !stack.hasCapability(CapabilityEgg.CAPABILITY, null))
         {

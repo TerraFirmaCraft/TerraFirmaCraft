@@ -24,8 +24,6 @@ public final class HeatRecipeManager
 
     public static void postInit()
     {
-        recipes.clear();
-
         recipes.add(new HeatRecipe(new ItemStack(BlocksTFC.TORCH, 2), "stickWood"));
         recipes.add(new HeatRecipe(new ItemStack(Blocks.GLASS), "sand"));
 
