@@ -84,7 +84,9 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     @Override
     public long getRottenDate()
     {
-        return creationDate + (long) (calculateDecayModifier() * CapabilityFood.DEFAULT_ROT_TICKS);
+        // This avoids overflow which breaks when calculateDecayModifier() returns infinity, which happens if decay modifier = 0
+        float decayMod = calculateDecayModifier();
+        return decayMod == Float.POSITIVE_INFINITY ? Long.MAX_VALUE : creationDate + (long) (decayMod * CapabilityFood.DEFAULT_ROT_TICKS);
     }
 
     @Override
