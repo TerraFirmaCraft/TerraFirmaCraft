@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.api.capability.food.CapabilityFood;
@@ -17,11 +18,13 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IMetalObject;
+import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class HeatRecipe
+public class HeatRecipe implements IJEISimpleRecipe
 {
     private final InputType inputType;
     private final OutputType outputType;
@@ -132,6 +135,18 @@ public class HeatRecipe
         {
             return OreDictionaryHelper.doesStackMatchOre(stack, inputOre);
         }
+    }
+
+    @Override
+    public NonNullList<IIngredient<ItemStack>> getIngredients()
+    {
+        return NonNullList.withSize(1, IIngredient.of(inputStack));
+    }
+
+    @Override
+    public NonNullList<ItemStack> getOutputs()
+    {
+        return NonNullList.withSize(1, outputStack);
     }
 
     private enum OutputType

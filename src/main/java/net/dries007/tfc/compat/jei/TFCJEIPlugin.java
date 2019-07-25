@@ -32,6 +32,7 @@ import net.dries007.tfc.objects.blocks.wood.BlockLoom;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 import net.dries007.tfc.objects.items.rock.ItemRock;
+import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
 
 @JEIPlugin
 public final class TFCJEIPlugin implements IModPlugin
@@ -39,6 +40,7 @@ public final class TFCJEIPlugin implements IModPlugin
     private static final String ALLOY_UID = TFCConstants.MOD_ID + ".alloy";
     private static final String ANVIL_UID = TFCConstants.MOD_ID + ".anvil";
     private static final String BARREL_UID = TFCConstants.MOD_ID + ".barrel";
+    private static final String HEAT_UID = TFCConstants.MOD_ID + ".heat";
     private static final String KNAP_CLAY_UID = TFCConstants.MOD_ID + ".knap.clay";
     private static final String KNAP_FIRECLAY_UID = TFCConstants.MOD_ID + ".knap.fireclay";
     private static final String KNAP_LEATHER_UID = TFCConstants.MOD_ID + ".knap.leather";
@@ -55,6 +57,7 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipeCategories(new AlloyCategory(registry.getJeiHelpers().getGuiHelper(), ALLOY_UID));
         registry.addRecipeCategories(new AnvilCategory(registry.getJeiHelpers().getGuiHelper(), ANVIL_UID));
         registry.addRecipeCategories(new BarrelCategory(registry.getJeiHelpers().getGuiHelper(), BARREL_UID));
+        registry.addRecipeCategories(new HeatCategory(registry.getJeiHelpers().getGuiHelper(), HEAT_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_CLAY_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_FIRECLAY_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_LEATHER_UID));
@@ -76,6 +79,15 @@ public final class TFCJEIPlugin implements IModPlugin
 
         registry.addRecipes(quernList, QUERN_UID); //Register recipes to quern category
         registry.addRecipeCatalyst(new ItemStack(BlocksTFC.QUERN), QUERN_UID); //Register BlockQuern as the device that do quern recipes
+
+        //Wraps all heat recipes
+        List<SimpleRecipeWrapper> heatRecipes = HeatRecipeManager.RECIPES
+            .stream()
+            .map(SimpleRecipeWrapper::new)
+            .collect(Collectors.toList());
+
+        registry.addRecipes(heatRecipes, HEAT_UID);
+        //No "device" block/item for this recipe category
 
         //Wraps all anvil recipes
         List<SimpleRecipeWrapper> anvilList = TFCRegistries.ANVIL.getValuesCollection()
