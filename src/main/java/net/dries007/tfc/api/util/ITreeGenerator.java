@@ -7,13 +7,13 @@ package net.dries007.tfc.api.util;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockSapling;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
 
 public interface ITreeGenerator
 {
@@ -64,7 +64,7 @@ public interface ITreeGenerator
 
         // Check the position for liquids, etc.
         if (world.getBlockState(pos).getMaterial().isLiquid() || !world.getBlockState(pos).getMaterial().isReplaceable())
-            if (!(world.getBlockState(pos).getBlock() instanceof BlockSapling))
+            if (!(world.getBlockState(pos).getBlock() instanceof BlockSaplingTFC))
                 return false;
 
         // Check if there is sufficient light level

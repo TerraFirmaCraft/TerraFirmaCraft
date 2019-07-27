@@ -10,7 +10,6 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -40,6 +39,9 @@ public class WorldGenLooseRocks implements IWorldGenerator
         // Check dimension is overworld
         if (world.provider.getDimension() != 0) return;
 
+        // Set constant values here
+        int xoff = chunkX * 16 + 8;
+        int zoff = chunkZ * 16 + 8;
         // Get the proper list of veins
         List<Vein> veins = WorldGenOreVeins.getNearbyVeins(chunkX, chunkZ, world.getSeed(), 1);
         if (!veins.isEmpty())
@@ -49,14 +51,13 @@ public class WorldGenLooseRocks implements IWorldGenerator
 
                 int minScanY = (WorldTypeTFC.ROCKLAYER2 + WorldTypeTFC.ROCKLAYER3) / 2;
                 int maxScanY = WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos);
-                return v.pos.getY() <= minScanY || v.pos.getY() >= maxScanY || !v.type.baseRocks.contains(chunkData.getRock1(0, 0));
-
+                for (BlockPos.MutableBlockPos pos : BlockPos.getAllInBoxMutable(xoff, minScanY, zoff, xoff + 15, maxScanY, zoff + 15))
+                {
+                    if (v.type.isOreBlock(world.getBlockState(pos))) return false;
+                }
+                return true;
             });
         }
-
-        // Set constant values here
-        int xoff = chunkX * 16 + 8;
-        int zoff = chunkZ * 16 + 8;
 
         for (int i = 0; i < 12; i++)
         {
@@ -74,7 +75,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
     {
         // Use air, so it doesn't replace other replaceable world gen
         // This matches the check in BlockPlacedItemFlat for if the block can stay
-        if (world.isAirBlock(pos) && world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP))
+        if (world.isAirBlock(pos) && world.getBlockState(pos.down()).isFullBlock())
         {
             world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState(), 2);
             TEPlacedItemFlat tile = Helpers.getTE(world, pos, TEPlacedItemFlat.class);

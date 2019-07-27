@@ -21,6 +21,8 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.recipes.PitKilnRecipe;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IHeatConsumerBlock;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipe;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
@@ -145,7 +147,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
 
             // Update items in slots
             // Loop through input + 2 output slots
-            for (int i = SLOT_INPUT_MIN; i <= SLOT_EXTRA_MAX; i++)
+            for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
             {
                 ItemStack stack = inventory.getStackInSlot(i);
                 IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
@@ -158,9 +160,16 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
                         CapabilityItemHeat.addTemp(cap);
                     }
 
-                    // This will melt + consume the input stack
-                    // Output stacks are assumed to not melt (see the case of ceramic molds in the output)
-                    if (cap.isMolten() && i <= SLOT_INPUT_MAX)
+                    PitKilnRecipe recipe = PitKilnRecipe.get(stack);
+                    if (recipe != null)
+                    {
+                        //Found a pit kiln recipe for this, let's use it
+                        if (itemTemp >= 1599f) //Brilliant white
+                        {
+                            inventory.setStackInSlot(i, recipe.getOutput(stack, Metal.Tier.TIER_I));
+                        }
+                    }
+                    else if (cap.isMolten())
                     {
                         handleInputMelting(stack, i);
                     }
