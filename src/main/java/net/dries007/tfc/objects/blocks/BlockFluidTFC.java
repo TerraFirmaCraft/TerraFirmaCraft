@@ -52,6 +52,7 @@ public class BlockFluidTFC extends BlockFluidClassic
             EntityLivingBase e = ((EntityLivingBase) entityIn);
             if (Constants.RNG.nextInt(25) == 0 && e.getHealth() < e.getMaxHealth())
             {
+                // todo: adjust this once health adjustements / regeneration changes have been made
                 float healing = (e.getMaxHealth() - e.getHealth()) * 0.01f;
                 e.heal(Math.max(healing, 0.05f));
             }

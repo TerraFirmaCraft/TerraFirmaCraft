@@ -133,7 +133,7 @@ public class ItemSmallVessel extends ItemFiredPottery
                 //Empty contents
                 for (int i = 0; i < cap.getSlots(); i++)
                 {
-                    cap.extractItem(i, cap.getStackInSlot(i).getCount(), false);
+                    cap.setStackInSlot(i, ItemStack.EMPTY);
                 }
                 // Fill with the liquid metal
                 cap.setFluidMode(true);
