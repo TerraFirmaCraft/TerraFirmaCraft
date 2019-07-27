@@ -5,20 +5,26 @@
 
 package net.dries007.tfc.world.classic;
 
-import java.util.Collections;
 import java.util.List;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.Lists;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.GenLayer;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class BiomeProviderTFC extends BiomeProvider
 {
+    private List<Biome> biomesToSpawnIn;
+
     public BiomeProviderTFC(World world)
     {
         super(world.getWorldInfo());
@@ -26,15 +32,19 @@ public class BiomeProviderTFC extends BiomeProvider
         if (!(world.getWorldType() instanceof WorldTypeTFC))
             throw new RuntimeException("Terrible things have gone wrong here.");
 
-        List<Biome> biomesToSpawnIn = getBiomesToSpawnIn();
-        biomesToSpawnIn.clear();
-        Collections.addAll(biomesToSpawnIn, BiomesTFC.getPlayerSpawnBiomes());
+        biomesToSpawnIn = Lists.newArrayList(BiomesTFC.getPlayerSpawnBiomes());
     }
 
     @Override
     public float getTemperatureAtHeight(float p_76939_1_, int p_76939_2_)
     {
         return super.getTemperatureAtHeight(p_76939_1_, p_76939_2_);
+    }
+
+    @Override
+    public List<Biome> getBiomesToSpawnIn()
+    {
+        return biomesToSpawnIn;
     }
 
     /**

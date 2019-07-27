@@ -8,7 +8,6 @@ package net.dries007.tfc.world.classic.worldgen.trees;
 import java.util.Random;
 
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockSapling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -20,6 +19,7 @@ import net.dries007.tfc.api.util.ITreeGenerator;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
 import static net.minecraft.block.BlockLeaves.DECAYABLE;
@@ -61,7 +61,7 @@ public class TreeGenBushes implements ITreeGenerator
 
         // Check the position for liquids, etc.
         if (world.getBlockState(pos).getMaterial().isLiquid() || !world.getBlockState(pos).getMaterial().isReplaceable())
-            if (!(world.getBlockState(pos) instanceof BlockSapling))
+            if (!(world.getBlockState(pos) instanceof BlockSaplingTFC))
                 return false;
 
         // Check if there is sufficient light level

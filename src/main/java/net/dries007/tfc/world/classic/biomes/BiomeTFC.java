@@ -16,6 +16,7 @@ public class BiomeTFC extends Biome
 {
     public final int waterPlantsPerChunk;
     public final int lilyPadPerChunk;
+    private boolean canBeSpawn;
 
     public BiomeTFC(BiomeProperties properties)
     {
@@ -39,6 +40,7 @@ public class BiomeTFC extends Biome
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityDeerTFC.class, 14, 2, 4));
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityPheasantTFC.class, 14, 2, 4));
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBearTFC.class, 4, 1, 2));
+        canBeSpawn = false;
     }
 
     @Override
@@ -53,5 +55,17 @@ public class BiomeTFC extends Biome
     {
         // todo: Forge event wrap this
         return new BiomeDecoratorTFC(lilyPadPerChunk, waterPlantsPerChunk);
+    }
+
+    public Biome setCanBeSpawn()
+    {
+        this.canBeSpawn = true;
+        return this;
+    }
+
+    @Override
+    public boolean ignorePlayerSpawnSuitability()
+    {
+        return canBeSpawn;
     }
 }
