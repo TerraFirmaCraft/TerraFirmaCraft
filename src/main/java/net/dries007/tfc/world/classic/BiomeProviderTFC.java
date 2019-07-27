@@ -8,7 +8,6 @@ package net.dries007.tfc.world.classic;
 import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.google.common.collect.Lists;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
@@ -23,16 +22,14 @@ import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 @MethodsReturnNonnullByDefault
 public class BiomeProviderTFC extends BiomeProvider
 {
-    private List<Biome> biomesToSpawnIn;
-
     public BiomeProviderTFC(World world)
     {
         super(world.getWorldInfo());
 
         if (!(world.getWorldType() instanceof WorldTypeTFC))
+        {
             throw new RuntimeException("Terrible things have gone wrong here.");
-
-        biomesToSpawnIn = Lists.newArrayList(BiomesTFC.getPlayerSpawnBiomes());
+        }
     }
 
     @Override
@@ -44,7 +41,7 @@ public class BiomeProviderTFC extends BiomeProvider
     @Override
     public List<Biome> getBiomesToSpawnIn()
     {
-        return biomesToSpawnIn;
+        return BiomesTFC.getPlayerSpawnBiomes();
     }
 
     /**

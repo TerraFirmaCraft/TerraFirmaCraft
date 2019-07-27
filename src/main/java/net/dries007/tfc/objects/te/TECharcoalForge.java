@@ -160,11 +160,11 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
                         CapabilityItemHeat.addTemp(cap);
                     }
 
-                    PitKilnRecipe recipe = PitKilnRecipe.get(stack);
-                    if (recipe != null)
+                    // Handle possible melting, or conversion (if reach 1599 = pit kiln temperature)
+                    if (itemTemp >= 1599f) //Brilliant white
                     {
-                        //Found a pit kiln recipe for this, let's use it
-                        if (itemTemp >= 1599f) //Brilliant white
+                        PitKilnRecipe recipe = PitKilnRecipe.get(stack);
+                        if (recipe != null)
                         {
                             inventory.setStackInSlot(i, recipe.getOutput(stack, Metal.Tier.TIER_I));
                         }
