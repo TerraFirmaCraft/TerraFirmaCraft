@@ -26,11 +26,11 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.terrafirmacraft.Welding")
 @ZenRegister
-public class Welding
+public class CTWelding
 {
     @SuppressWarnings("unchecked")
     @ZenMethod
-    public static void addRecipe(crafttweaker.api.item.IIngredient input1, crafttweaker.api.item.IIngredient input2, IItemStack output, int minTier)
+    public static void addRecipe(String registryName, crafttweaker.api.item.IIngredient input1, crafttweaker.api.item.IIngredient input2, IItemStack output, int minTier)
     {
         if (output == null || input1 == null || input2 == null)
             throw new IllegalArgumentException("Both inputs and output are not allowed to be empty");
@@ -40,8 +40,21 @@ public class Welding
         IIngredient ingredient2 = CTHelper.getInternalIngredient(input2);
         Metal.Tier tier = Metal.Tier.valueOf(minTier);
         ItemStack outputStack = (ItemStack) output.getInternal();
-        WeldingRecipe recipe = new WeldingRecipe(new ResourceLocation("crafttweaker", outputStack.getTranslationKey()), ingredient1, ingredient2, outputStack, tier);
-        CraftTweakerAPI.apply(new Add(recipe));
+        WeldingRecipe recipe = new WeldingRecipe(new ResourceLocation(registryName), ingredient1, ingredient2, outputStack, tier);
+        CraftTweakerAPI.apply(new IAction()
+        {
+            @Override
+            public void apply()
+            {
+                TFCRegistries.WELDING.register(recipe);
+            }
+
+            @Override
+            public String describe()
+            {
+                return "Adding welding recipe for " + recipe.getOutputs().get(0).getDisplayName();
+            }
+        });
     }
 
     @ZenMethod
@@ -49,59 +62,29 @@ public class Welding
     {
         if (output == null) throw new IllegalArgumentException("Output not allowed to be empty");
         ItemStack item = (ItemStack) output.getInternal();
-        List<Remove> removeList = new ArrayList<>();
+        List<WeldingRecipe> removeList = new ArrayList<>();
         TFCRegistries.WELDING.getValuesCollection()
             .stream()
             .filter(x -> x.getOutputs().get(0).isItemEqual(item))
-            .forEach(x -> removeList.add(new Remove(x.getRegistryName())));
-        for (Remove rem : removeList)
+            .forEach(removeList::add);
+        for (WeldingRecipe rem : removeList)
         {
-            CraftTweakerAPI.apply(rem);
-        }
-    }
+            CraftTweakerAPI.apply(new IAction()
+            {
+                @Override
+                public void apply()
+                {
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.WELDING;
+                    modRegistry.remove(rem.getRegistryName());
+                }
 
-    private static class Add implements IAction
-    {
-        private final WeldingRecipe recipe;
-
-        Add(WeldingRecipe recipe)
-        {
-            this.recipe = recipe;
-        }
-
-        @Override
-        public void apply()
-        {
-            TFCRegistries.WELDING.register(recipe);
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Adding welding recipe for " + recipe.getOutputs().get(0).getDisplayName();
-        }
-    }
-
-    private static class Remove implements IAction
-    {
-        private final ResourceLocation location;
-
-        Remove(ResourceLocation location)
-        {
-            this.location = location;
-        }
-
-        @Override
-        public void apply()
-        {
-            IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.WELDING;
-            modRegistry.remove(location);
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Removing welding recipe " + location.toString();
+                @Override
+                public String describe()
+                {
+                    //noinspection ConstantConditions
+                    return "Removing welding recipe " + rem.getRegistryName().toString();
+                }
+            });
         }
     }
 }

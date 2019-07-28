@@ -7,14 +7,18 @@ package net.dries007.tfc.api.capability.food;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Supplier;
+import javax.annotation.Nullable;
 
-import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.api.capability.DumbStorage;
+import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -26,7 +30,7 @@ public class CapabilityFood
     public static final Capability<IFood> CAPABILITY = Helpers.getNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "food");
 
-    public static final Map<ItemFood, FoodHandler> CUSTOM_FOODS = new HashMap<>(); //Used inside CT, set custom IFood for food items outside TFC
+    public static final Map<IIngredient<ItemStack>, Supplier<IFood>> CUSTOM_FOODS = new HashMap<>(); //Used inside CT, set custom IFood for food items outside TFC
 
     /**
      * Most TFC foods have decay modifiers in the range [1, 4] (high = faster decay)
@@ -56,5 +60,19 @@ public class CapabilityFood
     public static Map<String, IFoodTrait> getTraits()
     {
         return TRAITS;
+    }
+
+    @Nullable
+    public static IFood getCustomFood(ItemStack stack)
+    {
+        Set<IIngredient<ItemStack>> itemFoodSet = CUSTOM_FOODS.keySet();
+        for (IIngredient<ItemStack> ingredient : itemFoodSet)
+        {
+            if (ingredient.testIgnoreCount(stack))
+            {
+                return CUSTOM_FOODS.get(ingredient).get();
+            }
+        }
+        return null;
     }
 }

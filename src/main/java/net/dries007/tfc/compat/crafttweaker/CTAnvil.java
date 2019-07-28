@@ -27,11 +27,11 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.terrafirmacraft.Anvil")
 @ZenRegister
-public class Anvil
+public class CTAnvil
 {
     @SuppressWarnings("unchecked")
     @ZenMethod
-    public static void addRecipe(crafttweaker.api.item.IIngredient input, IItemStack output, int minTier, String... rules)
+    public static void addRecipe(String registryName, crafttweaker.api.item.IIngredient input, IItemStack output, int minTier, String... rules)
     {
         if (output == null || input == null)
             throw new IllegalArgumentException("Input and output are not allowed to be empty");
@@ -49,9 +49,22 @@ public class Anvil
         }
         Metal.Tier tier = Metal.Tier.valueOf(minTier);
         ItemStack outputItem = (ItemStack) output.getInternal();
-        AnvilRecipe recipe = new AnvilRecipe(new ResourceLocation("crafttweaker", outputItem.getTranslationKey()),
+        AnvilRecipe recipe = new AnvilRecipe(new ResourceLocation(registryName),
             ingredient, outputItem, tier, forgeRules);
-        CraftTweakerAPI.apply(new Add(recipe));
+        CraftTweakerAPI.apply(new IAction()
+        {
+            @Override
+            public void apply()
+            {
+                TFCRegistries.ANVIL.register(recipe);
+            }
+
+            @Override
+            public String describe()
+            {
+                return "Adding anvil recipe for " + recipe.getOutputs().get(0).getDisplayName();
+            }
+        });
     }
 
     @ZenMethod
@@ -59,59 +72,29 @@ public class Anvil
     {
         if (output == null) throw new IllegalArgumentException("Output not allowed to be empty");
         ItemStack item = (ItemStack) output.getInternal();
-        List<Remove> removeList = new ArrayList<>();
+        List<AnvilRecipe> removeList = new ArrayList<>();
         TFCRegistries.ANVIL.getValuesCollection()
             .stream()
             .filter(x -> x.getOutputs().get(0).isItemEqual(item))
-            .forEach(x -> removeList.add(new Remove(x.getRegistryName())));
-        for (Remove rem : removeList)
+            .forEach(removeList::add);
+        for (AnvilRecipe rem : removeList)
         {
-            CraftTweakerAPI.apply(rem);
-        }
-    }
+            CraftTweakerAPI.apply(new IAction()
+            {
+                @Override
+                public void apply()
+                {
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.ANVIL;
+                    modRegistry.remove(rem.getRegistryName());
+                }
 
-    private static class Add implements IAction
-    {
-        private final AnvilRecipe recipe;
-
-        Add(AnvilRecipe recipe)
-        {
-            this.recipe = recipe;
-        }
-
-        @Override
-        public void apply()
-        {
-            TFCRegistries.ANVIL.register(recipe);
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Adding anvil recipe for " + recipe.getOutputs().get(0).getDisplayName();
-        }
-    }
-
-    private static class Remove implements IAction
-    {
-        private final ResourceLocation location;
-
-        Remove(ResourceLocation location)
-        {
-            this.location = location;
-        }
-
-        @Override
-        public void apply()
-        {
-            IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.ANVIL;
-            modRegistry.remove(location);
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Removing anvil recipe " + location.toString();
+                @Override
+                public String describe()
+                {
+                    //noinspection ConstantConditions
+                    return "Removing anvil recipe " + rem.getRegistryName().toString();
+                }
+            });
         }
     }
 }

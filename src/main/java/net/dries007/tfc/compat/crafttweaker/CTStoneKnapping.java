@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 import crafttweaker.CraftTweakerAPI;
@@ -28,23 +27,21 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.terrafirmacraft.StoneKnapping")
 @ZenRegister
-public class StoneKnapping
+public class CTStoneKnapping
 {
     @SuppressWarnings("ConstantConditions")
     @ZenMethod
-    public static void addRecipe(IItemStack[] output, String[] rockCategories, String... pattern)
+    public static void addRecipe(String registryName, IItemStack[] output, String[] rockCategories, String... pattern)
     {
         if (output == null) throw new IllegalArgumentException("Input not allowed to be empty");
         if (rockCategories == null || rockCategories.length != output.length)
             throw new IllegalArgumentException("You must specify a rock category for each output!");
         if (pattern.length == 0) throw new IllegalArgumentException("You must specify the pattern to craft!");
         Function<RockCategory, ItemStack> supplier;
-        ResourceLocation registryName;
         if (rockCategories[0].equalsIgnoreCase("all"))
         {
             ItemStack outputStack = (ItemStack) output[0].getInternal();
             supplier = c -> outputStack;
-            registryName = new ResourceLocation("crafttweaker", outputStack.getItem().getRegistryName().getPath());
         }
         else
         {
@@ -70,11 +67,23 @@ public class StoneKnapping
                 }
             }
             ItemStack dummy = (ItemStack) output[0].getInternal();
-            registryName = new ResourceLocation("crafttweaker", dummy.getItem().getRegistryName().getPath());
             supplier = c -> outputMap.get(c) != null ? outputMap.get(c) : ItemStack.EMPTY;
         }
         KnappingRecipe recipe = new KnappingRecipe.Stone(KnappingRecipe.Type.STONE, supplier, pattern).setRegistryName(registryName);
-        CraftTweakerAPI.apply(new Add(recipe));
+        CraftTweakerAPI.apply(new IAction()
+        {
+            @Override
+            public void apply()
+            {
+                TFCRegistries.KNAPPING.register(recipe);
+            }
+
+            @Override
+            public String describe()
+            {
+                return "Adding stone knapping recipe for " + recipe.getOutput(new ItemStack(ItemRock.get(Rock.GRANITE))).getDisplayName();
+            }
+        });
     }
 
     @ZenMethod
@@ -91,7 +100,7 @@ public class StoneKnapping
             }
         });
         ItemStack item = (ItemStack) output.getInternal();
-        List<Remove> removeList = new ArrayList<>();
+        List<KnappingRecipe> removeList = new ArrayList<>();
         TFCRegistries.KNAPPING.getValuesCollection()
             .stream()
             .filter(x -> {
@@ -109,55 +118,25 @@ public class StoneKnapping
                     return false;
                 }
             })
-            .forEach(x -> removeList.add(new Remove(x.getRegistryName())));
-        for (Remove rem : removeList)
+            .forEach(removeList::add);
+        for (KnappingRecipe rem : removeList)
         {
-            CraftTweakerAPI.apply(rem);
-        }
-    }
+            CraftTweakerAPI.apply(new IAction()
+            {
+                @Override
+                public void apply()
+                {
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.KNAPPING;
+                    modRegistry.remove(rem.getRegistryName());
+                }
 
-    private static class Add implements IAction
-    {
-        private final KnappingRecipe recipe;
-
-        Add(KnappingRecipe recipe)
-        {
-            this.recipe = recipe;
-        }
-
-        @Override
-        public void apply()
-        {
-            TFCRegistries.KNAPPING.register(recipe);
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Adding stone knapping recipe for " + recipe.getOutput(new ItemStack(ItemRock.get(Rock.GRANITE))).getDisplayName();
-        }
-    }
-
-    private static class Remove implements IAction
-    {
-        private final ResourceLocation location;
-
-        Remove(ResourceLocation location)
-        {
-            this.location = location;
-        }
-
-        @Override
-        public void apply()
-        {
-            IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.KNAPPING;
-            modRegistry.remove(location);
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Removing stone knapping recipe " + location.toString();
+                @Override
+                public String describe()
+                {
+                    //noinspection ConstantConditions
+                    return "Removing stone knapping recipe " + rem.getRegistryName().toString();
+                }
+            });
         }
     }
 }
