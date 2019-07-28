@@ -36,7 +36,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
+import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
+import net.dries007.tfc.api.capability.damage.DamageResistance;
 import net.dries007.tfc.api.capability.damage.DamageType;
+import net.dries007.tfc.api.capability.damage.IDamageResistance;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.EggHandler;
 import net.dries007.tfc.api.capability.food.*;
@@ -290,6 +293,15 @@ public final class CommonEventHandler
                 {
                     event.addCapability(CapabilityItemHeat.KEY, (ItemHeatHandler) heatHandler);
                 }
+            }
+        }
+
+        if (item instanceof ItemArmor && !stack.hasCapability(CapabilityDamageResistance.CAPABILITY, null))
+        {
+            IDamageResistance damageResistance = CapabilityDamageResistance.getCustomDamageResistance(stack);
+            if (damageResistance instanceof DamageResistance)
+            {
+                event.addCapability(CapabilityDamageResistance.KEY, (DamageResistance) damageResistance);
             }
         }
         if (stack.getItem() == Items.EGG && !stack.hasCapability(CapabilityEgg.CAPABILITY, null))

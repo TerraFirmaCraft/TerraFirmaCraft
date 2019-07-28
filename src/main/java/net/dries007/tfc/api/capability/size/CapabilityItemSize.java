@@ -72,8 +72,8 @@ public final class CapabilityItemSize
     @Nullable
     public static IItemSize getCustomSize(ItemStack stack)
     {
-        Set<IIngredient<ItemStack>> itemFoodSet = CUSTOM_ITEMS.keySet();
-        for (IIngredient<ItemStack> ingredient : itemFoodSet)
+        Set<IIngredient<ItemStack>> itemItemSet = CUSTOM_ITEMS.keySet();
+        for (IIngredient<ItemStack> ingredient : itemItemSet)
         {
             if (ingredient.testIgnoreCount(stack))
             {
