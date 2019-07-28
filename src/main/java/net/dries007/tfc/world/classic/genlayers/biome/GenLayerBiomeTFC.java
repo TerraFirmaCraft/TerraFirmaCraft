@@ -21,7 +21,7 @@ public class GenLayerBiomeTFC extends GenLayerTFC
         super(seed);
         this.parent = parent;
 
-        biomes = BiomesTFC.getOverworldGenerateBiomes().toArray(new Biome[0]);
+        biomes = BiomesTFC.getWorldGenBiomes().toArray(new Biome[0]);
     }
 
     @Override
