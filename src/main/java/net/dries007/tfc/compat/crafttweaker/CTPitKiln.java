@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 import crafttweaker.CraftTweakerAPI;
@@ -25,11 +24,11 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.terrafirmacraft.PitKiln")
 @ZenRegister
-public class PitKiln
+public class CTPitKiln
 {
     @SuppressWarnings("unchecked")
     @ZenMethod
-    public static void addRecipe(crafttweaker.api.item.IIngredient input, IItemStack output)
+    public static void addRecipe(String registryName, crafttweaker.api.item.IIngredient input, IItemStack output)
     {
         if (output == null || input == null)
             throw new IllegalArgumentException("Input and output are not allowed to be empty");
@@ -37,8 +36,21 @@ public class PitKiln
             throw new IllegalArgumentException("There is a fluid where it's supposed to be an item!");
         IIngredient ingredient = CTHelper.getInternalIngredient(input);
         ItemStack outputStack = (ItemStack) output.getInternal();
-        PitKilnRecipe recipe = new PitKilnRecipe(ingredient, outputStack).setRegistryName("crafttweaker", outputStack.getTranslationKey());
-        CraftTweakerAPI.apply(new Add(recipe));
+        PitKilnRecipe recipe = new PitKilnRecipe(ingredient, outputStack).setRegistryName(registryName);
+        CraftTweakerAPI.apply(new IAction()
+        {
+            @Override
+            public void apply()
+            {
+                TFCRegistries.PIT_KILN.register(recipe);
+            }
+
+            @Override
+            public String describe()
+            {
+                return "Adding pit kiln recipe for " + recipe.getOutputs().get(0).getDisplayName();
+            }
+        });
     }
 
     @ZenMethod
@@ -46,59 +58,29 @@ public class PitKiln
     {
         if (output == null) throw new IllegalArgumentException("Output not allowed to be empty");
         ItemStack item = (ItemStack) output.getInternal();
-        List<Remove> removeList = new ArrayList<>();
+        List<PitKilnRecipe> removeList = new ArrayList<>();
         TFCRegistries.PIT_KILN.getValuesCollection()
             .stream()
             .filter(x -> x.getOutputs().get(0).isItemEqual(item))
-            .forEach(x -> removeList.add(new Remove(x.getRegistryName())));
-        for (Remove rem : removeList)
+            .forEach(removeList::add);
+        for (PitKilnRecipe rem : removeList)
         {
-            CraftTweakerAPI.apply(rem);
-        }
-    }
+            CraftTweakerAPI.apply(new IAction()
+            {
+                @Override
+                public void apply()
+                {
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.PIT_KILN;
+                    modRegistry.remove(rem.getRegistryName());
+                }
 
-    private static class Add implements IAction
-    {
-        private final PitKilnRecipe recipe;
-
-        Add(PitKilnRecipe recipe)
-        {
-            this.recipe = recipe;
-        }
-
-        @Override
-        public void apply()
-        {
-            TFCRegistries.PIT_KILN.register(recipe);
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Adding pit kiln recipe for " + recipe.getOutputs().get(0).getDisplayName();
-        }
-    }
-
-    private static class Remove implements IAction
-    {
-        private final ResourceLocation location;
-
-        Remove(ResourceLocation location)
-        {
-            this.location = location;
-        }
-
-        @Override
-        public void apply()
-        {
-            IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.PIT_KILN;
-            modRegistry.remove(location);
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Removing pit kiln recipe " + location.toString();
+                @Override
+                public String describe()
+                {
+                    //noinspection ConstantConditions
+                    return "Removing pit kiln recipe " + rem.getRegistryName().toString();
+                }
+            });
         }
     }
 }

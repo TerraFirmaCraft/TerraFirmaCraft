@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
 
@@ -27,11 +26,11 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.terrafirmacraft.Barrel")
 @ZenRegister
-public class Barrel
+public class CTBarrel
 {
     @SuppressWarnings("unchecked")
     @ZenMethod
-    public static void addRecipe(crafttweaker.api.item.IIngredient itemInput, ILiquidStack fluidInput, IItemStack itemOutput, ILiquidStack fluidOutput, int hours)
+    public static void addRecipe(String registryName, crafttweaker.api.item.IIngredient itemInput, ILiquidStack fluidInput, IItemStack itemOutput, ILiquidStack fluidOutput, int hours)
     {
         if (itemOutput == null && fluidOutput == null)
             throw new IllegalArgumentException("At least one output must be supplied");
@@ -42,10 +41,22 @@ public class Barrel
         IIngredient fluidIngredient = CTHelper.getInternalIngredient(fluidInput);
         ItemStack outputStack = itemOutput == null ? ItemStack.EMPTY : (ItemStack) itemOutput.getInternal();
         FluidStack outputFluid = fluidOutput == null ? null : (FluidStack) fluidOutput.getInternal();
-        String registryName = outputStack != ItemStack.EMPTY ? outputStack.getTranslationKey() : "empty";
         if (outputFluid != null) registryName += "_" + outputFluid.getUnlocalizedName();
-        BarrelRecipe recipe = new BarrelRecipe(fluidIngredient, itemIngredient, outputFluid, outputStack, hours * ICalendar.TICKS_IN_HOUR).setRegistryName("crafttweaker", registryName);
-        CraftTweakerAPI.apply(new Add(recipe));
+        BarrelRecipe recipe = new BarrelRecipe(fluidIngredient, itemIngredient, outputFluid, outputStack, hours * ICalendar.TICKS_IN_HOUR).setRegistryName(registryName);
+        CraftTweakerAPI.apply(new IAction()
+        {
+            @Override
+            public void apply()
+            {
+                TFCRegistries.BARREL.register(recipe);
+            }
+
+            @Override
+            public String describe()
+            {
+                return "Adding barrel recipe for " + recipe.getResultName();
+            }
+        });
     }
 
     @ZenMethod
@@ -55,59 +66,29 @@ public class Barrel
         FluidStack fluid = outputLiquid != null ? (FluidStack) outputLiquid.getInternal() : null;
         if (fluid == null && item == ItemStack.EMPTY)
             throw new IllegalArgumentException("At least one output must be supplied");
-        List<Remove> removeList = new ArrayList<>();
+        List<BarrelRecipe> removeList = new ArrayList<>();
         TFCRegistries.BARREL.getValuesCollection()
             .stream()
             .filter(x -> (x.getOutputStack() == item || x.getOutputStack().isItemEqual(item)) && ((fluid == null && x.getOutputFluid() == null) || (fluid != null && fluid.isFluidEqual(x.getOutputFluid()))))
-            .forEach(x -> removeList.add(new Remove(x.getRegistryName())));
-        for (Remove rem : removeList)
+            .forEach(removeList::add);
+        for (BarrelRecipe rem : removeList)
         {
-            CraftTweakerAPI.apply(rem);
-        }
-    }
+            CraftTweakerAPI.apply(new IAction()
+            {
+                @Override
+                public void apply()
+                {
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.BARREL;
+                    modRegistry.remove(rem.getRegistryName());
+                }
 
-    private static class Add implements IAction
-    {
-        private final BarrelRecipe recipe;
-
-        Add(BarrelRecipe recipe)
-        {
-            this.recipe = recipe;
-        }
-
-        @Override
-        public void apply()
-        {
-            TFCRegistries.BARREL.register(recipe);
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Adding barrel recipe for " + recipe.getResultName();
-        }
-    }
-
-    private static class Remove implements IAction
-    {
-        private final ResourceLocation location;
-
-        Remove(ResourceLocation location)
-        {
-            this.location = location;
-        }
-
-        @Override
-        public void apply()
-        {
-            IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.BARREL;
-            modRegistry.remove(location);
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Removing barrel recipe " + location.toString();
+                @Override
+                public String describe()
+                {
+                    //noinspection ConstantConditions
+                    return "Removing barrel recipe " + rem.getRegistryName().toString();
+                }
+            });
         }
     }
 }
