@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 import crafttweaker.CraftTweakerAPI;
@@ -79,6 +80,31 @@ public class CTPitKiln
                 {
                     //noinspection ConstantConditions
                     return "Removing pit kiln recipe " + rem.getRegistryName().toString();
+                }
+            });
+        }
+    }
+
+    @ZenMethod
+    public static void removeRecipe(String registryName)
+    {
+        PitKilnRecipe recipe = TFCRegistries.PIT_KILN.getValue(new ResourceLocation(registryName));
+        if (recipe != null)
+        {
+            CraftTweakerAPI.apply(new IAction()
+            {
+                @Override
+                public void apply()
+                {
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.ANVIL;
+                    modRegistry.remove(recipe.getRegistryName());
+                }
+
+                @Override
+                public String describe()
+                {
+                    //noinspection ConstantConditions
+                    return "Removing pit kiln recipe " + recipe.getRegistryName().toString();
                 }
             });
         }

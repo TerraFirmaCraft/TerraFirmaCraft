@@ -84,4 +84,29 @@ public class CTLoom
             });
         }
     }
+
+    @ZenMethod
+    public static void removeRecipe(String registryName)
+    {
+        LoomRecipe recipe = TFCRegistries.LOOM.getValue(new ResourceLocation(registryName));
+        if (recipe != null)
+        {
+            CraftTweakerAPI.apply(new IAction()
+            {
+                @Override
+                public void apply()
+                {
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.ANVIL;
+                    modRegistry.remove(recipe.getRegistryName());
+                }
+
+                @Override
+                public String describe()
+                {
+                    //noinspection ConstantConditions
+                    return "Removing loom recipe " + recipe.getRegistryName().toString();
+                }
+            });
+        }
+    }
 }

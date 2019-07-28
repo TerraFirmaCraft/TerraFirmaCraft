@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
 
@@ -87,6 +88,31 @@ public class CTBarrel
                 {
                     //noinspection ConstantConditions
                     return "Removing barrel recipe " + rem.getRegistryName().toString();
+                }
+            });
+        }
+    }
+
+    @ZenMethod
+    public static void removeRecipe(String registryName)
+    {
+        BarrelRecipe recipe = TFCRegistries.BARREL.getValue(new ResourceLocation(registryName));
+        if (recipe != null)
+        {
+            CraftTweakerAPI.apply(new IAction()
+            {
+                @Override
+                public void apply()
+                {
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.ANVIL;
+                    modRegistry.remove(recipe.getRegistryName());
+                }
+
+                @Override
+                public String describe()
+                {
+                    //noinspection ConstantConditions
+                    return "Removing barrel recipe " + recipe.getRegistryName().toString();
                 }
             });
         }
