@@ -12,6 +12,8 @@ import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
+import net.dries007.tfc.api.capability.damage.DamageResistance;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
@@ -175,6 +177,37 @@ public class CTItemRegistry
     }
 
     @ZenMethod
+    public static void registerArmor(crafttweaker.api.item.IIngredient input, float crushingModifier, float piercingModifier, float slashingModifier)
+    {
+        if (input == null) throw new IllegalArgumentException("Input not allowed to be empty!");
+        if (input instanceof ILiquidStack)
+            throw new IllegalArgumentException("There is a fluid where it's supposed to be an item!");
+        IIngredient inputIngredient = CTHelper.getInternalIngredient(input);
+        if (CapabilityDamageResistance.CUSTOM_ARMOR.get(inputIngredient) != null)
+        {
+            throw new IllegalStateException("Armor registered more than once!");
+        }
+        else
+        {
+            CraftTweakerAPI.apply(new IAction()
+            {
+                @SuppressWarnings("unchecked")
+                @Override
+                public void apply()
+                {
+                    CapabilityDamageResistance.CUSTOM_ARMOR.put(inputIngredient, () -> new DamageResistance(crushingModifier, piercingModifier, slashingModifier));
+                }
+
+                @Override
+                public String describe()
+                {
+                    return "Registered armor stats for " + input.toCommandString();
+                }
+            });
+        }
+    }
+
+    @ZenMethod
     public static void registerFuel(IItemStack itemStack, int burnTicks, float temperature, boolean forgeFuel)
     {
         if (itemStack == null) throw new IllegalArgumentException("Item not allowed to be empty!");
@@ -204,7 +237,4 @@ public class CTItemRegistry
             });
         }
     }
-
-    //TODO add register for damage types?
-    //TODO add register for armor resistances?
 }

@@ -140,7 +140,7 @@ public class HeatRecipe implements IJEISimpleRecipe
     @Override
     public NonNullList<IIngredient<ItemStack>> getIngredients()
     {
-        return NonNullList.withSize(1, IIngredient.of(inputStack));
+        return NonNullList.withSize(1, inputStack != null ? IIngredient.of(inputStack) : IIngredient.of(inputOre));
     }
 
     @Override

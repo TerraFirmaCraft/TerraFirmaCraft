@@ -29,7 +29,7 @@ public final class CapabilityForgeable
     public static final Capability<IForgeable> FORGEABLE_CAPABILITY = Helpers.getNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_forge");
 
-    public static final Map<IIngredient<ItemStack>, Supplier<IForgeable>> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IItemHeat for items outside TFC
+    public static final Map<IIngredient<ItemStack>, Supplier<IForgeable>> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IForgeable for items outside TFC
 
     public static void preInit()
     {
@@ -39,8 +39,8 @@ public final class CapabilityForgeable
     @Nullable
     public static IForgeable getCustomForgeable(ItemStack stack)
     {
-        Set<IIngredient<ItemStack>> itemFoodSet = CUSTOM_ITEMS.keySet();
-        for (IIngredient<ItemStack> ingredient : itemFoodSet)
+        Set<IIngredient<ItemStack>> itemItemSet = CUSTOM_ITEMS.keySet();
+        for (IIngredient<ItemStack> ingredient : itemItemSet)
         {
             if (ingredient.testIgnoreCount(stack))
             {
