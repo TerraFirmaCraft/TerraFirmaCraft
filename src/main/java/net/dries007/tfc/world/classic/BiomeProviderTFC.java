@@ -41,7 +41,7 @@ public class BiomeProviderTFC extends BiomeProvider
     @Override
     public List<Biome> getBiomesToSpawnIn()
     {
-        return BiomesTFC.getPlayerSpawnBiomes();
+        return BiomesTFC.getSpawnBiomes();
     }
 
     /**
