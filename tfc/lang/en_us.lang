@@ -37,6 +37,7 @@ tfc.tooltip.date=Date : %s
 tfc.tooltip.debug_times=TT: %d | PT: %d | CT: %d
 tfc.tooltip.food_expiry_date=Expires on: %s
 tfc.tooltip.food_rotten=Rotten - I wouldn't eat that.
+tfc.tooltip.food_infinite_expiry=Never Expires
 tfc.tooltip.plant_cold=%sToo cold%s
 tfc.tooltip.plant_dry=%sToo dry%s
 tfc.tooltip.plant_hot=%sToo hot%s
@@ -123,6 +124,10 @@ config.tfc.client.toolip=Client side only.
 
 config.tfc.client.makeWorldTypeClassicDefault=Default to tfc_classic world gen
 config.tfc.client.makeWorldTypeClassicDefault.tooltip=Only works in Single Player
+
+## Config.World
+config.tfc.world=World Gen Settings
+config.tfc.world.tooltip=Various aspects of world generation
 
 # Misc
 itemGroup.tfc.misc=TFC Misc
