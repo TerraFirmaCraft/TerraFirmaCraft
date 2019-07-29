@@ -61,6 +61,48 @@ public class CTBarrel
     }
 
     @ZenMethod
+    public static void addRecipe(String registryName, ILiquidStack fluidInput, IItemStack itemOutput, ILiquidStack fluidOutput, int hours)
+    {
+        addRecipe(registryName, null, fluidInput, itemOutput, fluidOutput, hours);
+    }
+
+    @ZenMethod
+    public static void addRecipe(String registryName, ILiquidStack fluidInput, IItemStack itemOutput, int hours)
+    {
+        addRecipe(registryName, null, fluidInput, itemOutput, null, hours);
+    }
+
+    @ZenMethod
+    public static void addRecipe(String registryName, ILiquidStack fluidInput, ILiquidStack fluidOutput, int hours)
+    {
+        addRecipe(registryName, null, fluidInput, null, fluidOutput, hours);
+    }
+
+    @ZenMethod
+    public static void addRecipe(String registryName, crafttweaker.api.item.IIngredient itemInput, ILiquidStack fluidInput, IItemStack itemOutput, int hours)
+    {
+        addRecipe(registryName, itemInput, fluidInput, itemOutput, null, hours);
+    }
+
+    @ZenMethod
+    public static void addRecipe(String registryName, crafttweaker.api.item.IIngredient itemInput, ILiquidStack fluidInput, ILiquidStack fluidOutput, int hours)
+    {
+        addRecipe(registryName, itemInput, fluidInput, null, fluidOutput, hours);
+    }
+
+    @ZenMethod
+    public static void removeRecipe(ILiquidStack outputLiquid)
+    {
+        removeRecipe(null, outputLiquid);
+    }
+
+    @ZenMethod
+    public static void removeRecipe(IItemStack outputItem)
+    {
+        removeRecipe(outputItem, null);
+    }
+
+    @ZenMethod
     public static void removeRecipe(IItemStack outputItem, ILiquidStack outputLiquid)
     {
         ItemStack item = outputItem != null ? (ItemStack) outputItem.getInternal() : ItemStack.EMPTY;
