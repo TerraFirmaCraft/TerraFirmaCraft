@@ -17,26 +17,26 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 public class LargeVesselItemStackHandler extends ItemStackHandler
 {
 
-	public LargeVesselItemStackHandler(int slots)
-	{
-		super(slots);
-	}
+    public LargeVesselItemStackHandler(int slots)
+    {
+        super(slots);
+    }
 
-	@Override
-	@Nonnull
-	public ItemStack extractItem(int slot, int amount, boolean simulate)
-	{
-		IFood cap = getStackInSlot(slot).getCapability(CapabilityFood.CAPABILITY, null);
+    @Override
+    @Nonnull
+    public ItemStack extractItem(int slot, int amount, boolean simulate)
+    {
+        IFood cap = getStackInSlot(slot).getCapability(CapabilityFood.CAPABILITY, null);
 
-		if (cap != null)
-		{
-			if (cap.getTraits().contains(CapabilityFood.LARGE_VESSEL_PRESERVED))
-			{
-				cap.getTraits().remove(CapabilityFood.LARGE_VESSEL_PRESERVED);
-				cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - cap.getCreationDate()) * CapabilityFood.LARGE_VESSEL_PRESERVED.getDecayModifier()));
-			}
-		}
+        if (cap != null)
+        {
+            if (cap.getTraits().contains(CapabilityFood.LARGE_VESSEL_PRESERVED))
+            {
+                cap.getTraits().remove(CapabilityFood.LARGE_VESSEL_PRESERVED);
+                cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - cap.getCreationDate()) * CapabilityFood.LARGE_VESSEL_PRESERVED.getDecayModifier()));
+            }
+        }
 
-		return super.extractItem(slot, amount, simulate);
-	}
+        return super.extractItem(slot, amount, simulate);
+    }
 }

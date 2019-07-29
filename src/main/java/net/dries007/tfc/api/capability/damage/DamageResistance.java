@@ -14,51 +14,51 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class DamageResistance implements IDamageResistance, ICapabilityProvider
 {
-	private final float crushingModifier;
-	private final float piercingModifier;
-	private final float slashingModifier;
+    private final float crushingModifier;
+    private final float piercingModifier;
+    private final float slashingModifier;
 
-	public DamageResistance()
-	{
-		this(0, 0, 0);
-	}
+    public DamageResistance()
+    {
+        this(0, 0, 0);
+    }
 
-	public DamageResistance(float crushingModifier, float piercingModifier, float slashingModifier)
-	{
-		this.crushingModifier = crushingModifier;
-		this.piercingModifier = piercingModifier;
-		this.slashingModifier = slashingModifier;
-	}
+    public DamageResistance(float crushingModifier, float piercingModifier, float slashingModifier)
+    {
+        this.crushingModifier = crushingModifier;
+        this.piercingModifier = piercingModifier;
+        this.slashingModifier = slashingModifier;
+    }
 
-	@Override
-	public float getCrushingModifier()
-	{
-		return crushingModifier;
-	}
+    @Override
+    public float getCrushingModifier()
+    {
+        return crushingModifier;
+    }
 
-	@Override
-	public float getPiercingModifier()
-	{
-		return piercingModifier;
-	}
+    @Override
+    public float getPiercingModifier()
+    {
+        return piercingModifier;
+    }
 
-	@Override
-	public float getSlashingModifier()
-	{
-		return slashingModifier;
-	}
+    @Override
+    public float getSlashingModifier()
+    {
+        return slashingModifier;
+    }
 
-	@Override
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-	{
-		return capability == CapabilityDamageResistance.CAPABILITY;
-	}
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
+    {
+        return capability == CapabilityDamageResistance.CAPABILITY;
+    }
 
-	@SuppressWarnings("unchecked")
-	@Nullable
-	@Override
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-	{
-		return hasCapability(capability, facing) ? (T) this : null;
-	}
+    @SuppressWarnings("unchecked")
+    @Nullable
+    @Override
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        return hasCapability(capability, facing) ? (T) this : null;
+    }
 }

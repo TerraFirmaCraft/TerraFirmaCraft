@@ -13,30 +13,30 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 
 /**
- * This is an interface for the capability that is returned by a Small Vessel.
- * You can safely cast it to this.
+ * This is an interface for the capability that is returned by a Small Vessel. You can safely cast it to this.
  */
 public interface ISmallVesselHandler extends IItemHandlerModifiable, IFluidHandler, INBTSerializable<NBTTagCompound>, IItemHeat, IMoldHandler
 {
 
-	/**
-	 * This gets the fluid mode, including liquid temperature status
-	 *
-	 * @return INVENTORY = items, LIQUID = fluids molten or solid based on
-	 *         temperature
-	 */
-	Mode getFluidMode();
+    /**
+     * This gets the fluid mode, including liquid temperature status
+     *
+     * @return INVENTORY = items, LIQUID = fluids molten or solid based on temperature
+     */
+    Mode getFluidMode();
 
-	/**
-	 * This sets the fluid mode. When fluid is empty, it defaults to item mode
-	 *
-	 * @param fluidMode true = fluids, false = items
-	 */
-	void setFluidMode(boolean fluidMode);
+    /**
+     * This sets the fluid mode. When fluid is empty, it defaults to item mode
+     *
+     * @param fluidMode true = fluids, false = items
+     */
+    void setFluidMode(boolean fluidMode);
 
-	enum Mode
-	{
-		INVENTORY, LIQUID_MOLTEN, LIQUID_SOLID
-	}
+    enum Mode
+    {
+        INVENTORY,
+        LIQUID_MOLTEN,
+        LIQUID_SOLID
+    }
 
 }

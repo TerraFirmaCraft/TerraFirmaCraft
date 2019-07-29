@@ -49,238 +49,252 @@ import net.dries007.tfc.util.Multiblock;
 @ParametersAreNonnullByDefault
 public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, ILightableBlock
 {
-	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
-	private static final Multiblock CHARCOAL_FORGE_MULTIBLOCK;
+    private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
+    private static final Multiblock CHARCOAL_FORGE_MULTIBLOCK;
 
-	static
-	{
-		BiPredicate<World, BlockPos> skyMatcher = World::canBlockSeeSky;
-		BiPredicate<World, BlockPos> stoneMatcher = (world, pos) ->
-		{
-			IBlockState state = world.getBlockState(pos);
-			return state.getMaterial() == Material.ROCK && state.isOpaqueCube() && state.isNormalCube();
-		};
-		CHARCOAL_FORGE_MULTIBLOCK = new Multiblock()
-				// Top block
-				.match(new BlockPos(0, 1, 0), state -> state.getBlock() == BlocksTFC.CRUCIBLE || state.getBlock() == Blocks.AIR)
-				// Chimney
-				.matchOneOf(new BlockPos(0, 1, 0), new Multiblock().match(new BlockPos(0, 0, 0), skyMatcher).match(new BlockPos(0, 0, 1), skyMatcher).match(new BlockPos(0, 0, 2), skyMatcher).match(new BlockPos(0, 0, -1), skyMatcher).match(new BlockPos(0, 0, -2), skyMatcher).match(new BlockPos(1, 0, 0), skyMatcher).match(new BlockPos(2, 0, 0), skyMatcher).match(new BlockPos(-1, 0, 0), skyMatcher).match(new BlockPos(-2, 0, 0), skyMatcher))
-				// Underneath
-				.match(new BlockPos(1, 0, 0), stoneMatcher).match(new BlockPos(-1, 0, 0), stoneMatcher).match(new BlockPos(0, 0, 1), stoneMatcher).match(new BlockPos(0, 0, -1), stoneMatcher).match(new BlockPos(0, -1, 0), stoneMatcher);
-	}
+    static
+    {
+        BiPredicate<World, BlockPos> skyMatcher = World::canBlockSeeSky;
+        BiPredicate<World, BlockPos> stoneMatcher = (world, pos) ->
+        {
+            IBlockState state = world.getBlockState(pos);
+            return state.getMaterial() == Material.ROCK && state.isOpaqueCube() && state.isNormalCube();
+        };
+        CHARCOAL_FORGE_MULTIBLOCK = new Multiblock()
+            // Top block
+            .match(new BlockPos(0, 1, 0), state -> state.getBlock() == BlocksTFC.CRUCIBLE || state.getBlock() == Blocks.AIR)
+            // Chimney
+            .matchOneOf(new BlockPos(0, 1, 0), new Multiblock()
+                .match(new BlockPos(0, 0, 0), skyMatcher)
+                .match(new BlockPos(0, 0, 1), skyMatcher)
+                .match(new BlockPos(0, 0, 2), skyMatcher)
+                .match(new BlockPos(0, 0, -1), skyMatcher)
+                .match(new BlockPos(0, 0, -2), skyMatcher)
+                .match(new BlockPos(1, 0, 0), skyMatcher)
+                .match(new BlockPos(2, 0, 0), skyMatcher)
+                .match(new BlockPos(-1, 0, 0), skyMatcher)
+                .match(new BlockPos(-2, 0, 0), skyMatcher)
+            )
+            // Underneath
+            .match(new BlockPos(1, 0, 0), stoneMatcher)
+            .match(new BlockPos(-1, 0, 0), stoneMatcher)
+            .match(new BlockPos(0, 0, 1), stoneMatcher)
+            .match(new BlockPos(0, 0, -1), stoneMatcher)
+            .match(new BlockPos(0, -1, 0), stoneMatcher);
+    }
 
-	public static boolean isValid(World world, BlockPos pos)
-	{
-		return CHARCOAL_FORGE_MULTIBLOCK.test(world, pos);
-	}
+    public static boolean isValid(World world, BlockPos pos)
+    {
+        return CHARCOAL_FORGE_MULTIBLOCK.test(world, pos);
+    }
 
-	public static boolean hasValidChimney(World world, BlockPos pos)
-	{
-		return CHARCOAL_FORGE_MULTIBLOCK.test(world, pos);
-	}
+    public static boolean hasValidChimney(World world, BlockPos pos)
+    {
+        return CHARCOAL_FORGE_MULTIBLOCK.test(world, pos);
+    }
 
-	public BlockCharcoalForge()
-	{
-		super(Material.GROUND);
+    public BlockCharcoalForge()
+    {
+        super(Material.GROUND);
 
-		setSoundType(SoundType.GROUND);
-		setHarvestLevel("shovel", 0);
-		setHardness(1.0F);
-		setTickRandomly(true); // Used for chimney checks -> extinguish
-		this.setDefaultState(this.blockState.getBaseState().withProperty(LIT, false));
-	}
+        setSoundType(SoundType.GROUND);
+        setHarvestLevel("shovel", 0);
+        setHardness(1.0F);
+        setTickRandomly(true); // Used for chimney checks -> extinguish
+        this.setDefaultState(this.blockState.getBaseState().withProperty(LIT, false));
+    }
 
-	@Override
-	public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
-	{
-		return offset.equals(TEBellows.OFFSET_INSET);
-	}
+    @Override
+    public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
+    {
+        return offset.equals(TEBellows.OFFSET_INSET);
+    }
 
-	@Override
-	public void onAirIntake(TEBellows te, World world, BlockPos pos, int airAmount)
-	{
-		TECharcoalForge teForge = Helpers.getTE(world, pos, TECharcoalForge.class);
-		if (teForge != null)
-		{
-			teForge.onAirIntake(airAmount);
-		}
-	}
+    @Override
+    public void onAirIntake(TEBellows te, World world, BlockPos pos, int airAmount)
+    {
+        TECharcoalForge teForge = Helpers.getTE(world, pos, TECharcoalForge.class);
+        if (teForge != null)
+        {
+            teForge.onAirIntake(airAmount);
+        }
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public boolean isTopSolid(IBlockState state)
-	{
-		return false;
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isTopSolid(IBlockState state)
+    {
+        return false;
+    }
 
-	@Nonnull
-	@SuppressWarnings("deprecation")
-	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return getDefaultState().withProperty(LIT, meta == 1);
-	}
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(LIT, meta == 1);
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return state.getValue(LIT) ? 1 : 0;
-	}
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(LIT) ? 1 : 0;
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public boolean isFullCube(IBlockState state)
-	{
-		return false;
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
 
-	@Override
-	@Nonnull
-	@SuppressWarnings("deprecation")
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-	{
-		return AABB;
-	}
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return AABB;
+    }
 
-	@Override
-	@Nonnull
-	@SuppressWarnings("deprecation")
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-	{
-		return face.getAxis() == EnumFacing.Axis.Y ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
-	}
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return face.getAxis() == EnumFacing.Axis.Y ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+    }
 
-	@Override
-	@Nullable
-	@SuppressWarnings("deprecation")
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
-	{
-		return AABB;
-	}
+    @Override
+    @Nullable
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        return AABB;
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
 
-	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-	{
-		if (!isValid(worldIn, pos))
-		{
-			worldIn.setBlockState(pos, state.withProperty(LIT, false));
-		}
-	}
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        if (!isValid(worldIn, pos))
+        {
+            worldIn.setBlockState(pos, state.withProperty(LIT, false));
+        }
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-	{
-		if (!worldIn.isRemote)
-		{
-			if (state.getValue(LIT) && !isValid(worldIn, pos))
-			{
-				// This is not a valid pit, therefor extinguish it
-				worldIn.setBlockState(pos, state.withProperty(LIT, false));
-			}
-		}
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        if (!worldIn.isRemote)
+        {
+            if (state.getValue(LIT) && !isValid(worldIn, pos))
+            {
+                // This is not a valid pit, therefor extinguish it
+                worldIn.setBlockState(pos, state.withProperty(LIT, false));
+            }
+        }
+    }
 
-	@Override
-	public int quantityDropped(Random random)
-	{
-		return 7;
-	}
+    @Override
+    public int quantityDropped(Random random)
+    {
+        return 7;
+    }
 
-	@Override
-	@Nonnull
-	public Item getItemDropped(IBlockState state, Random rand, int fortune)
-	{
-		return Items.COAL;
-	}
+    @Override
+    @Nonnull
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Items.COAL;
+    }
 
-	@Override
-	public int damageDropped(IBlockState state)
-	{
-		return 1;
-	}
+    @Override
+    public int damageDropped(IBlockState state)
+    {
+        return 1;
+    }
 
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
-	{
-		if (!world.isRemote)
-		{
-			if (!state.getValue(LIT))
-			{
-				ItemStack held = player.getHeldItem(hand);
-				if (ItemFireStarter.canIgnite(held) && isValid(world, pos))
-				{
-					world.setBlockState(pos, state.withProperty(LIT, true));
-					return true;
-				}
-			}
-			if (!player.isSneaking())
-			{
-				TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.CHARCOAL_FORGE);
-			}
-		}
-		return true;
-	}
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        if (!world.isRemote)
+        {
+            if (!state.getValue(LIT))
+            {
+                ItemStack held = player.getHeldItem(hand);
+                if (ItemFireStarter.canIgnite(held) && isValid(world, pos))
+                {
+                    world.setBlockState(pos, state.withProperty(LIT, true));
+                    return true;
+                }
+            }
+            if (!player.isSneaking())
+            {
+                TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.CHARCOAL_FORGE);
+            }
+        }
+        return true;
+    }
 
-	@Override
-	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
-	{
-		IBlockState state = worldIn.getBlockState(pos);
-		if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
-		{
-			entityIn.attackEntityFrom(DamageSource.IN_FIRE, 2.0F);
-		}
-		super.onEntityWalk(worldIn, pos, entityIn);
-	}
+    @Override
+    public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
+    {
+        IBlockState state = worldIn.getBlockState(pos);
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
+        {
+            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 2.0F);
+        }
+        super.onEntityWalk(worldIn, pos, entityIn);
+    }
 
-	@Override
-	public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
-	{
-		if (!worldIn.isRemote && te instanceof TEInventory)
-		{
-			((TEInventory) te).onBreakBlock(worldIn, pos);
-		}
-		super.harvestBlock(worldIn, player, pos, state, te, stack);
-	}
+    @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    {
+        if (!worldIn.isRemote && te instanceof TEInventory)
+        {
+            ((TEInventory) te).onBreakBlock(worldIn, pos);
+        }
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
+    }
 
-	@Override
-	@Nonnull
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, LIT);
-	}
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, LIT);
+    }
 
-	@Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
-		return state.getValue(LIT) ? 15 : 0;
-	}
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return state.getValue(LIT) ? 15 : 0;
+    }
 
-	@Override
-	public boolean hasTileEntity(IBlockState state)
-	{
-		return true;
-	}
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
 
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState state)
-	{
-		return new TECharcoalForge();
-	}
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TECharcoalForge();
+    }
 
-	@Override
-	@Nonnull
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-	{
-		return new ItemStack(Items.COAL, 1, 1);
-	}
+    @Override
+    @Nonnull
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        return new ItemStack(Items.COAL, 1, 1);
+    }
 
 }

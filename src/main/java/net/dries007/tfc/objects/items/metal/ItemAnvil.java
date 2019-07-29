@@ -31,51 +31,51 @@ import static net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC.AXIS;
 @ParametersAreNonnullByDefault
 public class ItemAnvil extends ItemMetal implements IPlaceableItem
 {
-	public ItemAnvil(Metal metal, Metal.ItemType type)
-	{
-		super(metal, type);
-	}
+    public ItemAnvil(Metal metal, Metal.ItemType type)
+    {
+        super(metal, type);
+    }
 
-	@Override
-	public Size getSize(ItemStack stack)
-	{
-		return Size.HUGE;
-	}
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.HUGE;
+    }
 
-	@Override
-	public Weight getWeight(ItemStack stack)
-	{
-		return Weight.HEAVY;
-	}
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.HEAVY;
+    }
 
-	@Override
-	public boolean canStack(ItemStack stack)
-	{
-		return false;
-	}
+    @Override
+    public boolean canStack(ItemStack stack)
+    {
+        return false;
+    }
 
-	@Override
-	public boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, @Nullable EnumFacing facing, @Nullable Vec3d hitVec)
-	{
-		if (!(stack.getItem() instanceof ItemAnvil))
-		{
-			return false;
-		}
-		if (facing != null)
-		{
-			IBlockState state = world.getBlockState(pos.offset(facing));
-			if (state.getBlock().isReplaceable(world, pos.offset(facing)))
-			{
-				if (!world.isRemote)
-				{
-					ItemAnvil anvil = (ItemAnvil) stack.getItem();
-					world.setBlockState(pos.offset(facing), BlockAnvilTFC.get(anvil.metal).getDefaultState().withProperty(AXIS, player.getHorizontalFacing()));
+    @Override
+    public boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, @Nullable EnumFacing facing, @Nullable Vec3d hitVec)
+    {
+        if (!(stack.getItem() instanceof ItemAnvil))
+        {
+            return false;
+        }
+        if (facing != null)
+        {
+            IBlockState state = world.getBlockState(pos.offset(facing));
+            if (state.getBlock().isReplaceable(world, pos.offset(facing)))
+            {
+                if (!world.isRemote)
+                {
+                    ItemAnvil anvil = (ItemAnvil) stack.getItem();
+                    world.setBlockState(pos.offset(facing), BlockAnvilTFC.get(anvil.metal).getDefaultState().withProperty(AXIS, player.getHorizontalFacing()));
 
-					world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				}
-				return true;
-			}
-		}
-		return false;
-	}
+                    world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
 }

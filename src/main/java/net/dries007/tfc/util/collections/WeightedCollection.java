@@ -12,40 +12,39 @@ import java.util.TreeMap;
 import javax.annotation.Nonnull;
 
 /**
- * Modified from
- * https://stackoverflow.com/questions/6409652/random-weighted-selection-in-java
+ * Modified from https://stackoverflow.com/questions/6409652/random-weighted-selection-in-java
  *
  * @param <E> the type of the collection
  */
 public class WeightedCollection<E>
 {
-	private final NavigableMap<Double, E> backingMap = new TreeMap<>();
-	private double totalWeight = 0;
+    private final NavigableMap<Double, E> backingMap = new TreeMap<>();
+    private double totalWeight = 0;
 
-	public WeightedCollection<E> add(double weight, @Nonnull E result)
-	{
-		if (weight > 0)
-		{
-			totalWeight += weight;
-			backingMap.put(totalWeight, result);
-		}
-		return this;
-	}
+    public WeightedCollection<E> add(double weight, @Nonnull E result)
+    {
+        if (weight > 0)
+        {
+            totalWeight += weight;
+            backingMap.put(totalWeight, result);
+        }
+        return this;
+    }
 
-	@Nonnull
-	public E getRandomEntry(Random random)
-	{
-		double value = random.nextDouble() * totalWeight;
-		return backingMap.higherEntry(value).getValue();
-	}
+    @Nonnull
+    public E getRandomEntry(Random random)
+    {
+        double value = random.nextDouble() * totalWeight;
+        return backingMap.higherEntry(value).getValue();
+    }
 
-	public Collection<E> values()
-	{
-		return backingMap.values();
-	}
+    public Collection<E> values()
+    {
+        return backingMap.values();
+    }
 
-	public double getTotalWeight()
-	{
-		return totalWeight;
-	}
+    public double getTotalWeight()
+    {
+        return totalWeight;
+    }
 }

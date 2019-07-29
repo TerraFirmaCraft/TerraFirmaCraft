@@ -17,19 +17,19 @@ import static net.dries007.tfc.objects.te.TECrucible.SLOT_OUTPUT;
 
 public class ContainerCrucible extends ContainerTE<TECrucible>
 {
-	public ContainerCrucible(InventoryPlayer playerInv, TECrucible tile)
-	{
-		super(playerInv, tile, true, 26);
-	}
+    public ContainerCrucible(InventoryPlayer playerInv, TECrucible tile)
+    {
+        super(playerInv, tile, true, 26);
+    }
 
-	@Override
-	protected void addContainerSlots()
-	{
-		IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		if (inventory != null)
-		{
-			addSlotToContainer(new SlotCallback(inventory, SLOT_INPUT, 152, 7, tile));
-			addSlotToContainer(new SlotCallback(inventory, SLOT_OUTPUT, 152, 90, tile));
-		}
-	}
+    @Override
+    protected void addContainerSlots()
+    {
+        IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (inventory != null)
+        {
+            addSlotToContainer(new SlotCallback(inventory, SLOT_INPUT, 152, 7, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_OUTPUT, 152, 90, tile));
+        }
+    }
 }

@@ -27,51 +27,50 @@ import static net.minecraft.block.BlockLog.LOG_AXIS;
 
 public class TreeGenBushes implements ITreeGenerator
 {
-	@Override
-	public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
-	{
-		IBlockState leaves = BlockLeavesTFC.get(tree).getDefaultState().withProperty(DECAYABLE, true);
+    @Override
+    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
+    {
+        IBlockState leaves = BlockLeavesTFC.get(tree).getDefaultState().withProperty(DECAYABLE, true);
 
-		// Has to fake being placed, otherwise the log will just poof out of existence.
-		// todo: better fix for this.
-		checkAndPlace(BlockLogTFC.get(tree).getDefaultState().withProperty(PLACED, true).withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE), world, pos);
-		checkAndPlace(leaves, world, pos.add(0, 1, 0));
+        // Has to fake being placed, otherwise the log will just poof out of existence. todo: better fix for this.
+        checkAndPlace(BlockLogTFC.get(tree).getDefaultState().withProperty(PLACED, true).withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE), world, pos);
+        checkAndPlace(leaves, world, pos.add(0, 1, 0));
 
-		for (EnumFacing face : EnumFacing.HORIZONTALS)
-		{
-			if (rand.nextFloat() < 0.9)
-			{
-				checkAndPlace(leaves, world, pos.offset(face));
-				checkAndPlace(leaves, world, pos.offset(face).add(0, -1, 0));
-				if (rand.nextFloat() < 0.7)
-					checkAndPlace(leaves, world, pos.offset(face).add(0, 1, 0));
+        for (EnumFacing face : EnumFacing.HORIZONTALS)
+        {
+            if (rand.nextFloat() < 0.9)
+            {
+                checkAndPlace(leaves, world, pos.offset(face));
+                checkAndPlace(leaves, world, pos.offset(face).add(0, -1, 0));
+                if (rand.nextFloat() < 0.7)
+                    checkAndPlace(leaves, world, pos.offset(face).add(0, 1, 0));
 
-				if (rand.nextFloat() < 0.5)
-					checkAndPlace(leaves, world, pos.offset(face).offset(face.rotateY()));
-			}
+                if (rand.nextFloat() < 0.5)
+                    checkAndPlace(leaves, world, pos.offset(face).offset(face.rotateY()));
+            }
 
-		}
-	}
+        }
+    }
 
-	@Override
-	public boolean canGenerateTree(World world, BlockPos pos, Tree treeType)
-	{
-		// Check if there is soil beneath
-		if (!BlocksTFC.isSoil(world.getBlockState(pos.down())))
-			return false;
+    @Override
+    public boolean canGenerateTree(World world, BlockPos pos, Tree treeType)
+    {
+        // Check if there is soil beneath
+        if (!BlocksTFC.isSoil(world.getBlockState(pos.down())))
+            return false;
 
-		// Check the position for liquids, etc.
-		if (world.getBlockState(pos).getMaterial().isLiquid() || !world.getBlockState(pos).getMaterial().isReplaceable())
-			if (!(world.getBlockState(pos) instanceof BlockSaplingTFC))
-				return false;
+        // Check the position for liquids, etc.
+        if (world.getBlockState(pos).getMaterial().isLiquid() || !world.getBlockState(pos).getMaterial().isReplaceable())
+            if (!(world.getBlockState(pos) instanceof BlockSaplingTFC))
+                return false;
 
-		// Check if there is sufficient light level
-		return world.getLightFromNeighbors(pos) >= 7;
-	}
+        // Check if there is sufficient light level
+        return world.getLightFromNeighbors(pos) >= 7;
+    }
 
-	private void checkAndPlace(IBlockState state, World world, BlockPos pos)
-	{
-		if (world.getBlockState(pos).getMaterial().isReplaceable())
-			world.setBlockState(pos, state);
-	}
+    private void checkAndPlace(IBlockState state, World world, BlockPos pos)
+    {
+        if (world.getBlockState(pos).getMaterial().isReplaceable())
+            world.setBlockState(pos, state);
+    }
 }

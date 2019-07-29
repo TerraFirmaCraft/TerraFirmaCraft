@@ -21,24 +21,24 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public final class CapabilityPlayerSkills
 {
-	@CapabilityInject(IPlayerSkills.class)
-	public static final Capability<IPlayerSkills> CAPABILITY = Helpers.getNull();
+    @CapabilityInject(IPlayerSkills.class)
+    public static final Capability<IPlayerSkills> CAPABILITY = Helpers.getNull();
 
-	public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "player_skills");
-	private static final List<ISkill> SKILLS = new ArrayList<>(Arrays.asList(Skill.values()));
+    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "player_skills");
+    private static final List<ISkill> SKILLS = new ArrayList<>(Arrays.asList(Skill.values()));
 
-	/**
-	 * Get the current list of skills If you want to add your own, or modify TFC
-	 * ones, this is where it should happen
-	 */
-	public static List<ISkill> getAllSkills()
-	{
-		return SKILLS;
-	}
+    /**
+     * Get the current list of skills
+     * If you want to add your own, or modify TFC ones, this is where it should happen
+     */
+    public static List<ISkill> getAllSkills()
+    {
+        return SKILLS;
+    }
 
-	public static void preInit()
-	{
-		// Player skills
-		CapabilityManager.INSTANCE.register(IPlayerSkills.class, new DumbStorage<>(), PlayerSkillsHandler::new);
-	}
+    public static void preInit()
+    {
+        // Player skills
+        CapabilityManager.INSTANCE.register(IPlayerSkills.class, new DumbStorage<>(), PlayerSkillsHandler::new);
+    }
 }

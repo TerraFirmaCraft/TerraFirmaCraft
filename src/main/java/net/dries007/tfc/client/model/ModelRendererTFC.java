@@ -14,19 +14,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ModelRendererTFC extends ModelRenderer
 {
 
-	public ModelBase modelBase;
-	public int textureOffsetX;
-	public int textureOffsetY;
+    public ModelBase modelBase;
+    public int textureOffsetX;
+    public int textureOffsetY;
 
-	public ModelRendererTFC(ModelBase par1)
-	{
-		super(par1);
-		modelBase = par1;
-	}
+    public ModelRendererTFC(ModelBase par1)
+    {
+        super(par1);
+        modelBase = par1;
+    }
 
-	public ModelRendererTFC(ModelBase par1ModelBase, int par2, int par3)
-	{
-		this(par1ModelBase);
-		this.setTextureOffset(par2, par3);
-	}
+    public ModelRendererTFC(ModelBase par1ModelBase, int par2, int par3)
+    {
+        this(par1ModelBase);
+        this.setTextureOffset(par2, par3);
+    }
 }

@@ -23,123 +23,127 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class HeatRecipe
 {
-	private final InputType inputType;
-	private final OutputType outputType;
-	private ItemStack outputStack;
-	private IMetalObject outputMetal;
-	private ItemStack inputStack;
-	private String inputOre;
+    private final InputType inputType;
+    private final OutputType outputType;
+    private ItemStack outputStack;
+    private IMetalObject outputMetal;
+    private ItemStack inputStack;
+    private String inputOre;
 
-	// Single item stack input and output
-	public HeatRecipe(ItemStack outputStack, ItemStack inputStack)
-	{
-		IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-		if (cap == null)
-		{
-			throw new IllegalArgumentException("Input stack " + inputStack + " must implement `IItemHeat`");
-		}
+    // Single item stack input and output
+    public HeatRecipe(ItemStack outputStack, ItemStack inputStack)
+    {
+        IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+        if (cap == null)
+        {
+            throw new IllegalArgumentException("Input stack " + inputStack + " must implement `IItemHeat`");
+        }
 
-		this.outputStack = outputStack;
-		this.inputStack = inputStack;
+        this.outputStack = outputStack;
+        this.inputStack = inputStack;
 
-		inputType = InputType.ITEM;
-		outputType = OutputType.ITEM;
-	}
+        inputType = InputType.ITEM;
+        outputType = OutputType.ITEM;
+    }
 
-	// Ore Dictionary input, item stack output
-	public HeatRecipe(ItemStack outputStack, String inputOre)
-	{
-		this.outputStack = outputStack;
-		this.inputOre = inputOre;
+    // Ore Dictionary input, item stack output
+    public HeatRecipe(ItemStack outputStack, String inputOre)
+    {
+        this.outputStack = outputStack;
+        this.inputOre = inputOre;
 
-		inputType = InputType.ORE_DICT;
-		outputType = OutputType.ITEM;
-	}
+        inputType = InputType.ORE_DICT;
+        outputType = OutputType.ITEM;
+    }
 
-	// Single item stack input, Liquid metal output
-	public HeatRecipe(IMetalObject outputMetal, ItemStack inputStack)
-	{
-		IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-		if (cap == null)
-		{
-			throw new IllegalArgumentException("Input stack " + inputStack + " must implement `IItemHeat`");
-		}
-		this.outputMetal = outputMetal;
-		this.inputStack = inputStack;
+    // Single item stack input, Liquid metal output
+    public HeatRecipe(IMetalObject outputMetal, ItemStack inputStack)
+    {
+        IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+        if (cap == null)
+        {
+            throw new IllegalArgumentException("Input stack " + inputStack + " must implement `IItemHeat`");
+        }
+        this.outputMetal = outputMetal;
+        this.inputStack = inputStack;
 
-		inputType = InputType.ITEM;
-		outputType = OutputType.METAL;
-	}
+        inputType = InputType.ITEM;
+        outputType = OutputType.METAL;
+    }
 
-	// Single item stack input, Liquid metal + item stack output
-	public HeatRecipe(IMetalObject outputMetal, ItemStack outputStack, ItemStack inputStack)
-	{
-		IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-		if (cap == null)
-		{
-			throw new IllegalArgumentException("Input stack " + inputStack + " must implement `IItemHeat`");
-		}
-		this.outputMetal = outputMetal;
-		this.outputStack = outputStack;
-		this.inputStack = inputStack;
+    // Single item stack input, Liquid metal + item stack output
+    public HeatRecipe(IMetalObject outputMetal, ItemStack outputStack, ItemStack inputStack)
+    {
+        IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+        if (cap == null)
+        {
+            throw new IllegalArgumentException("Input stack " + inputStack + " must implement `IItemHeat`");
+        }
+        this.outputMetal = outputMetal;
+        this.outputStack = outputStack;
+        this.inputStack = inputStack;
 
-		inputType = InputType.ITEM;
-		outputType = OutputType.METAL_AND_ITEM;
-	}
+        inputType = InputType.ITEM;
+        outputType = OutputType.METAL_AND_ITEM;
+    }
 
-	@Nullable
-	public ItemStack getOutputStack(ItemStack inputStack)
-	{
-		if (outputType != OutputType.METAL)
-		{
-			ItemStack out = outputStack.copy();
+    @Nullable
+    public ItemStack getOutputStack(ItemStack inputStack)
+    {
+        if (outputType != OutputType.METAL)
+        {
+            ItemStack out = outputStack.copy();
 
-			IFood inputFood = inputStack.getCapability(CapabilityFood.CAPABILITY, null);
-			IFood outputFood = out.getCapability(CapabilityFood.CAPABILITY, null);
-			if (inputFood != null && outputFood != null)
-			{
-				outputFood.setCreationDate(inputFood.getCreationDate());
-			}
-			return out;
-		}
-		return null;
-	}
+            IFood inputFood = inputStack.getCapability(CapabilityFood.CAPABILITY, null);
+            IFood outputFood = out.getCapability(CapabilityFood.CAPABILITY, null);
+            if (inputFood != null && outputFood != null)
+            {
+                outputFood.setCreationDate(inputFood.getCreationDate());
+            }
+            return out;
+        }
+        return null;
+    }
 
-	@Nullable
-	public FluidStack getOutputMetal(ItemStack stack)
-	{
-		if (outputType == OutputType.ITEM)
-		{
-			return null;
-		}
-		Metal metal = outputMetal.getMetal(stack);
-		return metal != null ? new FluidStack(FluidsTFC.getMetalFluid(metal), outputMetal.getSmeltAmount(stack)) : null;
-	}
+    @Nullable
+    public FluidStack getOutputMetal(ItemStack stack)
+    {
+        if (outputType == OutputType.ITEM)
+        {
+            return null;
+        }
+        Metal metal = outputMetal.getMetal(stack);
+        return metal != null ? new FluidStack(FluidsTFC.getMetalFluid(metal), outputMetal.getSmeltAmount(stack)) : null;
+    }
 
-	@Nonnull
-	public ItemStack consumeInput(ItemStack input)
-	{
-		return Helpers.consumeItem(input, 1);
-	}
+    @Nonnull
+    public ItemStack consumeInput(ItemStack input)
+    {
+        return Helpers.consumeItem(input, 1);
+    }
 
-	public boolean matchesInput(ItemStack stack)
-	{
-		if (inputType == InputType.ITEM)
-		{
-			return stack.isItemEqual(inputStack);
-		} else
-		{
-			return OreDictionaryHelper.doesStackMatchOre(stack, inputOre);
-		}
-	}
+    public boolean matchesInput(ItemStack stack)
+    {
+        if (inputType == InputType.ITEM)
+        {
+            return stack.isItemEqual(inputStack);
+        }
+        else
+        {
+            return OreDictionaryHelper.doesStackMatchOre(stack, inputOre);
+        }
+    }
 
-	private enum OutputType
-	{
-		METAL, ITEM, METAL_AND_ITEM
-	}
+    private enum OutputType
+    {
+        METAL,
+        ITEM,
+        METAL_AND_ITEM
+    }
 
-	private enum InputType
-	{
-		ITEM, ORE_DICT
-	}
+    private enum InputType
+    {
+        ITEM,
+        ORE_DICT
+    }
 }

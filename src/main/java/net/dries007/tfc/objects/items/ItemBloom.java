@@ -33,68 +33,68 @@ import net.dries007.tfc.api.util.IMetalObject;
 @ParametersAreNonnullByDefault
 public class ItemBloom extends ItemTFC implements IMetalObject
 {
-	@Nonnull
-	@Override
-	public Size getSize(@Nonnull ItemStack stack)
-	{
-		return Size.LARGE;
-	}
+    @Nonnull
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.LARGE;
+    }
 
-	@Nonnull
-	@Override
-	public Weight getWeight(@Nonnull ItemStack stack)
-	{
-		return Weight.HEAVY;
-	}
+    @Nonnull
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return Weight.HEAVY;
+    }
 
-	@Nullable
-	@Override
-	public Metal getMetal(ItemStack stack)
-	{
-		return Metal.UNKNOWN;
-	}
+    @Nullable
+    @Override
+    public Metal getMetal(ItemStack stack)
+    {
+        return Metal.UNKNOWN;
+    }
 
-	@Override
-	public int getSmeltAmount(ItemStack stack)
-	{
-		IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-		if (cap instanceof IForgeableMeasurable)
-		{
-			return ((IForgeableMeasurable) cap).getMetalAmount();
-		}
-		return 0;
-	}
+    @Override
+    public int getSmeltAmount(ItemStack stack)
+    {
+        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        if (cap instanceof IForgeableMeasurable)
+        {
+            return ((IForgeableMeasurable) cap).getMetalAmount();
+        }
+        return 0;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-	{
-		tooltip.add(I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        tooltip.add(I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
-	{
-		if (isInCreativeTab(tab))
-		{
-			for (int i = 100; i <= 400; i += 100)
-			{
-				ItemStack stack = new ItemStack(this);
-				IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-				if (cap instanceof IForgeableMeasurable)
-				{
-					((IForgeableMeasurable) cap).setMetalAmount(i);
-					items.add(stack);
-				}
-			}
-		}
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    {
+        if (isInCreativeTab(tab))
+        {
+            for (int i = 100; i <= 400; i += 100)
+            {
+                ItemStack stack = new ItemStack(this);
+                IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+                if (cap instanceof IForgeableMeasurable)
+                {
+                    ((IForgeableMeasurable) cap).setMetalAmount(i);
+                    items.add(stack);
+                }
+            }
+        }
+    }
 
-	@Nullable
-	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-	{
-		return new ForgeableMeasurableHandler(nbt, Metal.WROUGHT_IRON.getSpecificHeat(), Metal.WROUGHT_IRON.getMeltTemp(), 100);
-	}
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new ForgeableMeasurableHandler(nbt, Metal.WROUGHT_IRON.getSpecificHeat(), Metal.WROUGHT_IRON.getMeltTemp(), 100);
+    }
 }

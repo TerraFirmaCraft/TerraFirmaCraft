@@ -21,47 +21,47 @@ import static net.dries007.tfc.client.gui.GuiAnvilPlan.PLAN_BACKGROUND;
 @SideOnly(Side.CLIENT)
 public class GuiButtonAnvilPlanIcon extends GuiButtonTFC implements IButtonTooltip
 {
-	private final ItemStack displayItem;
-	private final ResourceLocation recipeName;
-	private final String tooltip;
+    private final ItemStack displayItem;
+    private final ResourceLocation recipeName;
+    private final String tooltip;
 
-	public GuiButtonAnvilPlanIcon(AnvilRecipe recipe, int id, int x, int y)
-	{
-		super(id, x, y, 18, 18, "");
+    public GuiButtonAnvilPlanIcon(AnvilRecipe recipe, int id, int x, int y)
+    {
+        super(id, x, y, 18, 18, "");
 
-		this.displayItem = recipe.getPlanIcon();
-		this.recipeName = recipe.getRegistryName();
-		this.tooltip = displayItem.getDisplayName();
-	}
+        this.displayItem = recipe.getPlanIcon();
+        this.recipeName = recipe.getRegistryName();
+        this.tooltip = displayItem.getDisplayName();
+    }
 
-	@Override
-	public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks)
-	{
-		if (this.visible)
-		{
-			GlStateManager.color(1, 1, 1, 1);
-			mc.getTextureManager().bindTexture(PLAN_BACKGROUND);
-			hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-			drawModalRectWithCustomSizedTexture(x, y, 176, 0, 18, 18, 256, 256);
-			drawItemStack(displayItem, x + 1, y + 1);
-			mouseDragged(mc, mouseX, mouseY);
-		}
-	}
+    @Override
+    public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks)
+    {
+        if (this.visible)
+        {
+            GlStateManager.color(1, 1, 1, 1);
+            mc.getTextureManager().bindTexture(PLAN_BACKGROUND);
+            hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+            drawModalRectWithCustomSizedTexture(x, y, 176, 0, 18, 18, 256, 256);
+            drawItemStack(displayItem, x + 1, y + 1);
+            mouseDragged(mc, mouseX, mouseY);
+        }
+    }
 
-	public ResourceLocation getRecipeName()
-	{
-		return recipeName;
-	}
+    public ResourceLocation getRecipeName()
+    {
+        return recipeName;
+    }
 
-	@Override
-	public String getTooltip()
-	{
-		return tooltip;
-	}
+    @Override
+    public String getTooltip()
+    {
+        return tooltip;
+    }
 
-	@Override
-	public boolean hasTooltip()
-	{
-		return tooltip != null;
-	}
+    @Override
+    public boolean hasTooltip()
+    {
+        return tooltip != null;
+    }
 }

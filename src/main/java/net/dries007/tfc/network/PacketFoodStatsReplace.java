@@ -17,30 +17,29 @@ import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 
 /**
- * This packet is send to client to signal that it may need to replace the
- * vanilla FoodStats with a TFC version Since all the relevant events where this
- * is listened for are server only {@link CapabilityFood}
+ * This packet is send to client to signal that it may need to replace the vanilla FoodStats with a TFC version
+ * Since all the relevant events where this is listened for are server only
+ * {@link CapabilityFood}
  */
 public class PacketFoodStatsReplace implements IMessageEmpty
 {
-	public static final class Handler implements IMessageHandler<PacketFoodStatsReplace, IMessage>
-	{
-		@Override
-		public IMessage onMessage(PacketFoodStatsReplace message, MessageContext ctx)
-		{
-			TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() ->
-			{
-				EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
-				if (player != null)
-				{
-					FoodStats stats = player.getFoodStats();
-					if (!(stats instanceof IFoodStatsTFC))
-					{
-						player.foodStats = new FoodStatsTFC(player, stats);
-					}
-				}
-			});
-			return null;
-		}
-	}
+    public static final class Handler implements IMessageHandler<PacketFoodStatsReplace, IMessage>
+    {
+        @Override
+        public IMessage onMessage(PacketFoodStatsReplace message, MessageContext ctx)
+        {
+            TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
+                EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
+                if (player != null)
+                {
+                    FoodStats stats = player.getFoodStats();
+                    if (!(stats instanceof IFoodStatsTFC))
+                    {
+                        player.foodStats = new FoodStatsTFC(player, stats);
+                    }
+                }
+            });
+            return null;
+        }
+    }
 }

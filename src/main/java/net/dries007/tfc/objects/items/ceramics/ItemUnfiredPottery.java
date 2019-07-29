@@ -11,19 +11,18 @@ import net.dries007.tfc.api.types.Metal;
 
 public class ItemUnfiredPottery extends ItemPottery
 {
-	public final ItemFiredPottery firedVersion;
+    public final ItemFiredPottery firedVersion;
 
-	public ItemUnfiredPottery(ItemFiredPottery firedVersion)
-	{
-		this.firedVersion = firedVersion;
-	}
+    public ItemUnfiredPottery(ItemFiredPottery firedVersion)
+    {
+        this.firedVersion = firedVersion;
+    }
 
-	@Override
-	public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
-	{
-		ItemStack output = new ItemStack(firedVersion);
-		if (input.getHasSubtypes() && output.getHasSubtypes())
-			output.setItemDamage(input.getMetadata());
-		return output;
-	}
+    @Override
+    public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
+    {
+        ItemStack output = new ItemStack(firedVersion);
+        if (input.getHasSubtypes() && output.getHasSubtypes()) output.setItemDamage(input.getMetadata());
+        return output;
+    }
 }

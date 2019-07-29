@@ -37,211 +37,207 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class BlockLeavesTFC extends BlockLeaves
 {
-	private static final Map<Tree, BlockLeavesTFC> MAP = new HashMap<>();
+    private static final Map<Tree, BlockLeavesTFC> MAP = new HashMap<>();
 
-	public static BlockLeavesTFC get(Tree wood)
-	{
-		return MAP.get(wood);
-	}
+    public static BlockLeavesTFC get(Tree wood)
+    {
+        return MAP.get(wood);
+    }
 
-	public final Tree wood;
+    public final Tree wood;
 
-	public BlockLeavesTFC(Tree wood)
-	{
-		this.wood = wood;
-		if (MAP.put(wood, this) != null)
-			throw new IllegalStateException("There can only be one.");
-		setDefaultState(blockState.getBaseState().withProperty(DECAYABLE, false)); // TFC leaves don't use CHECK_DECAY, so just don't use it
-		leavesFancy = true; // Fast / Fancy graphics works correctly
-		OreDictionaryHelper.register(this, "tree", "leaves");
-		OreDictionaryHelper.register(this, "tree", "leaves", wood.getRegistryName().getPath());
-		Blocks.FIRE.setFireInfo(this, 30, 60);
-		setTickRandomly(true);
-	}
+    public BlockLeavesTFC(Tree wood)
+    {
+        this.wood = wood;
+        if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+        setDefaultState(blockState.getBaseState().withProperty(DECAYABLE, false)); // TFC leaves don't use CHECK_DECAY, so just don't use it
+        leavesFancy = true; // Fast / Fancy graphics works correctly
+        OreDictionaryHelper.register(this, "tree", "leaves");
+        OreDictionaryHelper.register(this, "tree", "leaves", wood.getRegistryName().getPath());
+        Blocks.FIRE.setFireInfo(this, 30, 60);
+        setTickRandomly(true);
+    }
 
-	@SuppressWarnings("deprecation")
-	@Override
-	@Nonnull
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return this.getDefaultState().withProperty(DECAYABLE, (meta & 0b01) == 0b01);
-	}
+    @SuppressWarnings("deprecation")
+    @Override
+    @Nonnull
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(DECAYABLE, (meta & 0b01) == 0b01);
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return (state.getValue(DECAYABLE) ? 1 : 0);
-	}
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return (state.getValue(DECAYABLE) ? 1 : 0);
+    }
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-	{
-		return NULL_AABB;
-	}
+    @SuppressWarnings("deprecation")
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return NULL_AABB;
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, @Nullable Block blockIn, @Nullable BlockPos fromPos)
-	{
-		doLeafDecay(world, pos, state);
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, @Nullable Block blockIn, @Nullable BlockPos fromPos)
+    {
+        doLeafDecay(world, pos, state);
+    }
 
-	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
-	{
-		// Player will take damage when falling through leaves if fall is over 9 blocks,
-		// fall damage is then set to 0.
-		entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
-		entityIn.fallDistance = 0;
-		// Entity motion is reduced by leaves.
-		entityIn.motionX *= 0.1D;
-		if (entityIn.motionY < 0)
-		{
-			entityIn.motionY *= 0.1D;
-		}
-		entityIn.motionZ *= 0.1D;
-	}
+    @Override
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        //Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
+        entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
+        entityIn.fallDistance = 0;
+        //Entity motion is reduced by leaves.
+        entityIn.motionX *= 0.1D;
+        if (entityIn.motionY < 0)
+        {
+            entityIn.motionY *= 0.1D;
+        }
+        entityIn.motionZ *= 0.1D;
+    }
 
-	@Override
-	@Nonnull
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, DECAYABLE);
-	}
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, DECAYABLE);
+    }
 
-	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-	{
-		doLeafDecay(worldIn, pos, state);
-	}
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        doLeafDecay(worldIn, pos, state);
+    }
 
-	@Override
-	@Nonnull
-	public Item getItemDropped(IBlockState state, Random rand, int fortune)
-	{
-		return Item.getItemFromBlock(BlockSaplingTFC.get(wood));
-	}
+    @Override
+    @Nonnull
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Item.getItemFromBlock(BlockSaplingTFC.get(wood));
+    }
 
-	@Override
-	protected int getSaplingDropChance(IBlockState state)
-	{
-		return wood == Tree.SEQUOIA ? 0 : 25;
-	}
+    @Override
+    protected int getSaplingDropChance(IBlockState state)
+    {
+        return wood == Tree.SEQUOIA ? 0 : 25;
+    }
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
-	}
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	@Nonnull
-	public BlockRenderLayer getRenderLayer()
-	{
-		/*
-		 * This is a way to make sure the leave settings are updated. The result of this
-		 * call is cached somewhere, so it's not that important, but: The alternative
-		 * would be to use `Minecraft.getMinecraft().gameSettings.fancyGraphics`
-		 * directly in the 2 relevant methods. It's better to do that than to refer to
-		 * Blocks.LEAVES, for performance reasons.
-		 */
-		leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
-		return super.getRenderLayer();
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    @Nonnull
+    public BlockRenderLayer getRenderLayer()
+    {
+        /*
+         * This is a way to make sure the leave settings are updated.
+         * The result of this call is cached somewhere, so it's not that important, but:
+         * The alternative would be to use `Minecraft.getMinecraft().gameSettings.fancyGraphics` directly in the 2 relevant methods.
+         * It's better to do that than to refer to Blocks.LEAVES, for performance reasons.
+         */
+        leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
+        return super.getRenderLayer();
+    }
 
-	@Override
-	@Nonnull
-	public BlockPlanks.EnumType getWoodType(int meta)
-	{
-		// Unused so return whatever
-		return BlockPlanks.EnumType.OAK;
-	}
+    @Override
+    @Nonnull
+    public BlockPlanks.EnumType getWoodType(int meta)
+    {
+        // Unused so return whatever
+        return BlockPlanks.EnumType.OAK;
+    }
 
-	@Override
-	public void beginLeavesDecay(IBlockState state, World world, BlockPos pos)
-	{
-		// Don't do vanilla decay
-	}
+    @Override
+    public void beginLeavesDecay(IBlockState state, World world, BlockPos pos)
+    {
+        // Don't do vanilla decay
+    }
 
-	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-	{
-		int chance = this.getSaplingDropChance(state);
-		if (chance > 0)
-		{
-			if (fortune > 0)
-			{
-				chance -= 2 << fortune;
-				if (chance < 10)
-					chance = 10;
-			}
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        int chance = this.getSaplingDropChance(state);
+        if (chance > 0)
+        {
+            if (fortune > 0)
+            {
+                chance -= 2 << fortune;
+                if (chance < 10) chance = 10;
+            }
 
-			if (RANDOM.nextInt(chance) == 0)
-			{
-				ItemStack drop = new ItemStack(getItemDropped(state, RANDOM, fortune), 1, damageDropped(state));
-				if (!drop.isEmpty())
-				{
-					drops.add(drop);
-				}
-			}
-		}
-	}
+            if (RANDOM.nextInt(chance) == 0)
+            {
+                ItemStack drop = new ItemStack(getItemDropped(state, RANDOM, fortune), 1, damageDropped(state));
+                if (!drop.isEmpty())
+                {
+                    drops.add(drop);
+                }
+            }
+        }
+    }
 
-	@SuppressWarnings("deprecation")
-	@SideOnly(Side.CLIENT)
-	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-	{
-		/*
-		 * See comment on getRenderLayer()
-		 */
-		leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
-		return true;// super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-	}
+    @SuppressWarnings("deprecation")
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
+        /*
+         * See comment on getRenderLayer()
+         */
+        leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
+        return true;// super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+    }
 
-	@Override
-	@Nonnull
-	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
-	{
-		return ImmutableList.of(new ItemStack(this));
-	}
+    @Override
+    @Nonnull
+    public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
+    {
+        return ImmutableList.of(new ItemStack(this));
+    }
 
-	private void doLeafDecay(World world, BlockPos pos, IBlockState state)
-	{
-		// TFC Leaf Decay
-		if (world.isRemote || !state.getValue(DECAYABLE))
-			return;
+    private void doLeafDecay(World world, BlockPos pos, IBlockState state)
+    {
+        // TFC Leaf Decay
+        if (world.isRemote || !state.getValue(DECAYABLE))
+            return;
 
-		List<BlockPos> paths = new ArrayList<>();
-		List<BlockPos> pathsToAdd;
-		BlockPos.MutableBlockPos pos1 = new BlockPos.MutableBlockPos(pos);
-		IBlockState state1;
-		paths.add(pos); // Center block
+        List<BlockPos> paths = new ArrayList<>();
+        List<BlockPos> pathsToAdd;
+        BlockPos.MutableBlockPos pos1 = new BlockPos.MutableBlockPos(pos);
+        IBlockState state1;
+        paths.add(pos); // Center block
 
-		for (int i = 0; i < wood.getMaxDecayDistance(); i++)
-		{
-			pathsToAdd = new ArrayList<>();
-			for (BlockPos p1 : paths)
-			{
-				for (EnumFacing face : EnumFacing.values())
-				{
-					pos1.setPos(p1).move(face);
-					if (paths.contains(pos1.toImmutable()))
-						continue;
-					state1 = world.getBlockState(pos1);
-					if (state1.getBlock() == BlockLogTFC.get(wood))
-						return;
-					if (state1.getBlock() == this)
-						pathsToAdd.add(pos1.toImmutable());
+        for (int i = 0; i < wood.getMaxDecayDistance(); i++)
+        {
+            pathsToAdd = new ArrayList<>();
+            for (BlockPos p1 : paths)
+            {
+                for (EnumFacing face : EnumFacing.values())
+                {
+                    pos1.setPos(p1).move(face);
+                    if (paths.contains(pos1.toImmutable()))
+                        continue;
+                    state1 = world.getBlockState(pos1);
+                    if (state1.getBlock() == BlockLogTFC.get(wood))
+                        return;
+                    if (state1.getBlock() == this)
+                        pathsToAdd.add(pos1.toImmutable());
 
-				}
-			}
-			paths.addAll(pathsToAdd);
-		}
+                }
+            }
+            paths.addAll(pathsToAdd);
+        }
 
-		world.setBlockToAir(pos);
-	}
+        world.setBlockToAir(pos);
+    }
 }

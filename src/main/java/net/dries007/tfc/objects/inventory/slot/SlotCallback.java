@@ -15,33 +15,32 @@ import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
 
 public class SlotCallback extends SlotItemHandler
 {
-	private final ISlotCallback callback;
+    private final ISlotCallback callback;
 
-	public SlotCallback(@Nonnull IItemHandler inventory, int idx, int x, int y, @Nonnull ISlotCallback callback)
-	{
-		super(inventory, idx, x, y);
-		this.callback = callback;
-	}
+    public SlotCallback(@Nonnull IItemHandler inventory, int idx, int x, int y, @Nonnull ISlotCallback callback)
+    {
+        super(inventory, idx, x, y);
+        this.callback = callback;
+    }
 
-	@Override
-	public void onSlotChanged()
-	{
-		// Calling this only happens here
-		// If called in the container / item handler it can call during the middle of
-		// slot transfers, resulting in strange behavior
-		callback.setAndUpdateSlots(getSlotIndex());
-		super.onSlotChanged();
-	}
+    @Override
+    public void onSlotChanged()
+    {
+        // Calling this only happens here
+        // If called in the container / item handler it can call during the middle of slot transfers, resulting in strange behavior
+        callback.setAndUpdateSlots(getSlotIndex());
+        super.onSlotChanged();
+    }
 
-	@Override
-	public boolean isItemValid(@Nonnull ItemStack stack)
-	{
-		return callback.isItemValid(this.slotNumber, stack) && super.isItemValid(stack);
-	}
+    @Override
+    public boolean isItemValid(@Nonnull ItemStack stack)
+    {
+        return callback.isItemValid(this.slotNumber, stack) && super.isItemValid(stack);
+    }
 
-	@Override
-	public int getSlotStackLimit()
-	{
-		return Math.min(callback.getSlotLimit(getSlotIndex()), super.getSlotStackLimit());
-	}
+    @Override
+    public int getSlotStackLimit()
+    {
+        return Math.min(callback.getSlotLimit(getSlotIndex()), super.getSlotStackLimit());
+    }
 }

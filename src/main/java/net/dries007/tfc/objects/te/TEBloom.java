@@ -19,21 +19,21 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 @ParametersAreNonnullByDefault
 public class TEBloom extends TEInventory
 {
-	public TEBloom()
-	{
-		super(1);
+    public TEBloom()
+    {
+        super(1);
 
-		setMetalAmount(100);
-	}
+        setMetalAmount(100);
+    }
 
-	public void setMetalAmount(int metalAmount)
-	{
-		ItemStack stack = new ItemStack(ItemsTFC.UNREFINED_BLOOM);
-		inventory.setStackInSlot(0, stack);
-		IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-		if (cap instanceof IForgeableMeasurable)
-		{
-			((IForgeableMeasurable) cap).setMetalAmount(metalAmount);
-		}
-	}
+    public void setMetalAmount(int metalAmount)
+    {
+        ItemStack stack = new ItemStack(ItemsTFC.UNREFINED_BLOOM);
+        inventory.setStackInSlot(0, stack);
+        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        if (cap instanceof IForgeableMeasurable)
+        {
+            ((IForgeableMeasurable) cap).setMetalAmount(metalAmount);
+        }
+    }
 }

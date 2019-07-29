@@ -23,47 +23,47 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @SideOnly(Side.CLIENT)
 public class GuiSkills extends GuiContainerTFC
 {
-	private static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/player_skills.png");
+    private static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/player_skills.png");
 
-	public GuiSkills(Container container, InventoryPlayer playerInv)
-	{
-		super(container, playerInv, BACKGROUND);
-	}
+    public GuiSkills(Container container, InventoryPlayer playerInv)
+    {
+        super(container, playerInv, BACKGROUND);
+    }
 
-	@Override
-	public void initGui()
-	{
-		super.initGui();
+    @Override
+    public void initGui()
+    {
+        super.initGui();
 
-		int buttonId = 0;
-		addButton(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.INVENTORY, guiLeft, guiTop, ++buttonId, true));
-		addButton(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.SKILLS, guiLeft, guiTop, ++buttonId, false));
-		addButton(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.CALENDAR, guiLeft, guiTop, ++buttonId, true));
-		addButton(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.NUTRITION, guiLeft, guiTop, ++buttonId, true));
-	}
+        int buttonId = 0;
+        addButton(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.INVENTORY, guiLeft, guiTop, ++buttonId, true));
+        addButton(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.SKILLS, guiLeft, guiTop, ++buttonId, false));
+        addButton(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.CALENDAR, guiLeft, guiTop, ++buttonId, true));
+        addButton(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.NUTRITION, guiLeft, guiTop, ++buttonId, true));
+    }
 
-	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
-		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
-		// todo: draw skill bars (first add skills obviously)
-	}
+        // todo: draw skill bars (first add skills obviously)
+    }
 
-	@Override
-	protected void actionPerformed(GuiButton button)
-	{
-		if (button instanceof GuiButtonPlayerInventoryTab && ((GuiButtonPlayerInventoryTab) button).isActive())
-		{
-			GuiButtonPlayerInventoryTab tabButton = (GuiButtonPlayerInventoryTab) button;
-			if (tabButton.isActive())
-			{
-				if (tabButton.getGuiType() == TFCGuiHandler.Type.INVENTORY)
-				{
-					this.mc.displayGuiScreen(new GuiInventory(playerInv.player));
-				}
-				TerraFirmaCraft.getNetwork().sendToServer(new PacketSwitchPlayerInventoryTab(tabButton.getGuiType()));
-			}
-		}
-	}
+    @Override
+    protected void actionPerformed(GuiButton button)
+    {
+        if (button instanceof GuiButtonPlayerInventoryTab && ((GuiButtonPlayerInventoryTab) button).isActive())
+        {
+            GuiButtonPlayerInventoryTab tabButton = (GuiButtonPlayerInventoryTab) button;
+            if (tabButton.isActive())
+            {
+                if (tabButton.getGuiType() == TFCGuiHandler.Type.INVENTORY)
+                {
+                    this.mc.displayGuiScreen(new GuiInventory(playerInv.player));
+                }
+                TerraFirmaCraft.getNetwork().sendToServer(new PacketSwitchPlayerInventoryTab(tabButton.getGuiType()));
+            }
+        }
+    }
 }

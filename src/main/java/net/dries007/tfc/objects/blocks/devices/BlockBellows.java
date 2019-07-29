@@ -33,95 +33,96 @@ import static net.minecraft.block.BlockHorizontal.FACING;
 @ParametersAreNonnullByDefault
 public class BlockBellows extends Block
 {
-	public BlockBellows()
-	{
-		super(Material.CIRCUITS, MapColor.GRAY);
-		setSoundType(SoundType.WOOD);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-	}
+    public BlockBellows()
+    {
+        super(Material.CIRCUITS, MapColor.GRAY);
+        setSoundType(SoundType.WOOD);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	@Nonnull
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return state.getValue(FACING).getHorizontalIndex();
-	}
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(FACING).getHorizontalIndex();
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public boolean isFullCube(IBlockState state)
-	{
-		return false;
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	@Nonnull
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-	{
-		return face == state.getValue(FACING) ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return face == state.getValue(FACING) ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
 
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
-		TEBellows te = Helpers.getTE(worldIn, pos, TEBellows.class);
-		if (te != null)
-		{
-			return te.onRightClick();
-		}
-		return true;
-	}
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        TEBellows te = Helpers.getTE(worldIn, pos, TEBellows.class);
+        if (te != null)
+        {
+            return te.onRightClick();
+        }
+        return true;
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	@Nonnull
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-	{
-		if (facing.getAxis() == EnumFacing.Axis.Y)
-		{
-			if (placer.isSneaking())
-			{
-				facing = placer.getHorizontalFacing().getOpposite();
-			} else
-			{
-				facing = placer.getHorizontalFacing();
-			}
-		}
-		return getDefaultState().withProperty(FACING, facing);
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
+        if (facing.getAxis() == EnumFacing.Axis.Y)
+        {
+            if (placer.isSneaking())
+            {
+                facing = placer.getHorizontalFacing().getOpposite();
+            }
+            else
+            {
+                facing = placer.getHorizontalFacing();
+            }
+        }
+        return getDefaultState().withProperty(FACING, facing);
+    }
 
-	@Override
-	@Nonnull
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, FACING);
-	}
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, FACING);
+    }
 
-	@Override
-	public boolean hasTileEntity(IBlockState state)
-	{
-		return true;
-	}
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
 
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState state)
-	{
-		return new TEBellows();
-	}
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TEBellows();
+    }
 
 }

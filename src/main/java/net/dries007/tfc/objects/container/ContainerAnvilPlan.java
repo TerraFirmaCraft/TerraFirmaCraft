@@ -20,32 +20,30 @@ import net.dries007.tfc.objects.te.TEAnvilTFC;
 
 public class ContainerAnvilPlan extends ContainerTE<TEAnvilTFC> implements IButtonHandler
 {
-	public ContainerAnvilPlan(InventoryPlayer playerInv, TEAnvilTFC tile)
-	{
-		super(playerInv, tile, true);
-	}
+    public ContainerAnvilPlan(InventoryPlayer playerInv, TEAnvilTFC tile)
+    {
+        super(playerInv, tile, true);
+    }
 
-	@Override
-	public void onButtonPress(int buttonID, @Nullable NBTTagCompound extraNBT)
-	{
-		if (extraNBT != null)
-		{
-			// Set the tile recipe
-			String recipeName = extraNBT.getString("recipe");
-			AnvilRecipe recipe = TFCRegistries.ANVIL.getValue(new ResourceLocation(recipeName));
-			if (tile.setRecipe(recipe))
-			{
-				// Send an update to the client
-				TerraFirmaCraft.getNetwork().sendToDimension(new PacketAnvilUpdate(tile), tile.getWorld().provider.getDimension());
-			}
+    @Override
+    public void onButtonPress(int buttonID, @Nullable NBTTagCompound extraNBT)
+    {
+        if (extraNBT != null)
+        {
+            // Set the tile recipe
+            String recipeName = extraNBT.getString("recipe");
+            AnvilRecipe recipe = TFCRegistries.ANVIL.getValue(new ResourceLocation(recipeName));
+            if (tile.setRecipe(recipe))
+            {
+                // Send an update to the client
+                TerraFirmaCraft.getNetwork().sendToDimension(new PacketAnvilUpdate(tile), tile.getWorld().provider.getDimension());
+            }
 
-			// Switch to anvil GUI
-			TFCGuiHandler.openGui(player.world, tile.getPos(), player, TFCGuiHandler.Type.ANVIL);
-		}
-	}
+            // Switch to anvil GUI
+            TFCGuiHandler.openGui(player.world, tile.getPos(), player, TFCGuiHandler.Type.ANVIL);
+        }
+    }
 
-	@Override
-	protected void addContainerSlots()
-	{
-	}
+    @Override
+    protected void addContainerSlots() {}
 }

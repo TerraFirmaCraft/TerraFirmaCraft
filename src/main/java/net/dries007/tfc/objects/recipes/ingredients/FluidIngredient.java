@@ -23,49 +23,49 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 @SuppressWarnings("unused")
 public class FluidIngredient extends Ingredient
 {
-	private FluidStack fluid;
+    private FluidStack fluid;
 
-	public FluidIngredient(String fluidName)
-	{
+    public FluidIngredient(String fluidName)
+    {
 
-		super(FluidUtil.getFilledBucket(new FluidStack(FluidRegistry.getFluid(fluidName), Fluid.BUCKET_VOLUME)));
-		fluid = FluidRegistry.getFluidStack(fluidName, Fluid.BUCKET_VOLUME);
-	}
+        super(FluidUtil.getFilledBucket(new FluidStack(FluidRegistry.getFluid(fluidName), Fluid.BUCKET_VOLUME)));
+        fluid = FluidRegistry.getFluidStack(fluidName, Fluid.BUCKET_VOLUME);
+    }
 
-	@Override
-	public boolean apply(@Nullable ItemStack input)
-	{
-		if (input == null || input.isEmpty())
-		{
-			return false;
-		}
+    @Override
+    public boolean apply(@Nullable ItemStack input)
+    {
+        if (input == null || input.isEmpty())
+        {
+            return false;
+        }
 
-		ItemStack stack = input.copy();
-		stack.setCount(1);
-		IFluidHandler handler = input.getCount() > 1 ? FluidUtil.getFluidHandler(stack) : FluidUtil.getFluidHandler(input);
+        ItemStack stack = input.copy();
+        stack.setCount(1);
+        IFluidHandler handler = input.getCount() > 1 ? FluidUtil.getFluidHandler(stack) : FluidUtil.getFluidHandler(input);
 
-		if (handler == null)
-		{
-			return false;
-		}
-		return fluid.isFluidStackIdentical(handler.drain(Fluid.BUCKET_VOLUME, false));
-	}
+        if (handler == null)
+        {
+            return false;
+        }
+        return fluid.isFluidStackIdentical(handler.drain(Fluid.BUCKET_VOLUME, false));
+    }
 
-	@Override
-	public boolean isSimple()
-	{
-		return false;
-	}
+    @Override
+    public boolean isSimple()
+    {
+        return false;
+    }
 
-	public static class Factory implements IIngredientFactory
-	{
-		@Nonnull
-		@Override
-		public Ingredient parse(JsonContext context, JsonObject json)
-		{
-			String fluidName = JsonUtils.getString(json, "fluid", "");
+    public static class Factory implements IIngredientFactory
+    {
+        @Nonnull
+        @Override
+        public Ingredient parse(JsonContext context, JsonObject json)
+        {
+            String fluidName = JsonUtils.getString(json, "fluid", "");
 
-			return new FluidIngredient(fluidName);
-		}
-	}
+            return new FluidIngredient(fluidName);
+        }
+    }
 }

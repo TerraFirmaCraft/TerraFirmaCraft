@@ -19,49 +19,49 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public interface IFoodTrait
 {
-	default float getDecayModifier()
-	{
-		return 1f;
-	}
+    default float getDecayModifier()
+    {
+        return 1f;
+    }
 
-	@Nonnull
-	String getName();
+    @Nonnull
+    String getName();
 
-	/**
-	 * Adds information about the trait to the food stack
-	 *
-	 * @param stack The stack
-	 * @param text  The tooltip strings
-	 */
-	@SideOnly(Side.CLIENT)
-	default void addTraitInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
-	{
-		text.add(I18n.format("tfc.food_traits." + getName()));
-	}
+    /**
+     * Adds information about the trait to the food stack
+     *
+     * @param stack The stack
+     * @param text  The tooltip strings
+     */
+    @SideOnly(Side.CLIENT)
+    default void addTraitInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
+    {
+        text.add(I18n.format("tfc.food_traits." + getName()));
+    }
 
-	class Impl implements IFoodTrait
-	{
-		private final String name;
-		private final float decayModifier;
+    class Impl implements IFoodTrait
+    {
+        private final String name;
+        private final float decayModifier;
 
-		public Impl(@Nonnull String name, float decayModifier)
-		{
+        public Impl(@Nonnull String name, float decayModifier)
+        {
 
-			this.name = name;
-			this.decayModifier = decayModifier;
-		}
+            this.name = name;
+            this.decayModifier = decayModifier;
+        }
 
-		@Override
-		public float getDecayModifier()
-		{
-			return decayModifier;
-		}
+        @Override
+        public float getDecayModifier()
+        {
+            return decayModifier;
+        }
 
-		@Nonnull
-		@Override
-		public String getName()
-		{
-			return name;
-		}
-	}
+        @Nonnull
+        @Override
+        public String getName()
+        {
+            return name;
+        }
+    }
 }

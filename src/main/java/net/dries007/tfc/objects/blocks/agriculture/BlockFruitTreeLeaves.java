@@ -46,268 +46,267 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @ParametersAreNonnullByDefault
 public class BlockFruitTreeLeaves extends BlockLeaves
 {
-	public static final PropertyEnum<EnumLeafState> LEAF_STATE = PropertyEnum.create("state", BlockFruitTreeLeaves.EnumLeafState.class);
-	public static final PropertyBool HARVESTABLE = PropertyBool.create("harvestable");
-	private static final Map<IFruitTree, BlockFruitTreeLeaves> MAP = new HashMap<>();
+    public static final PropertyEnum<EnumLeafState> LEAF_STATE = PropertyEnum.create("state", BlockFruitTreeLeaves.EnumLeafState.class);
+    public static final PropertyBool HARVESTABLE = PropertyBool.create("harvestable");
+    private static final Map<IFruitTree, BlockFruitTreeLeaves> MAP = new HashMap<>();
 
-	public static BlockFruitTreeLeaves get(IFruitTree tree)
-	{
-		return MAP.get(tree);
-	}
+    public static BlockFruitTreeLeaves get(IFruitTree tree)
+    {
+        return MAP.get(tree);
+    }
 
-	public final IFruitTree tree;
+    public final IFruitTree tree;
 
-	public BlockFruitTreeLeaves(IFruitTree tree)
-	{
-		this.tree = tree;
-		if (MAP.put(tree, this) != null)
-			throw new IllegalStateException("There can only be one.");
-		setDefaultState(blockState.getBaseState().withProperty(DECAYABLE, false).withProperty(LEAF_STATE, EnumLeafState.NORMAL).withProperty(HARVESTABLE, false));
-		leavesFancy = true; // Fast / Fancy graphics works correctly
-		OreDictionaryHelper.register(this, "tree", "leaves");
-		OreDictionaryHelper.register(this, "tree", "leaves", tree.getName());
-		Blocks.FIRE.setFireInfo(this, 30, 60);
-		setTickRandomly(true);
-	}
+    public BlockFruitTreeLeaves(IFruitTree tree)
+    {
+        this.tree = tree;
+        if (MAP.put(tree, this) != null) throw new IllegalStateException("There can only be one.");
+        setDefaultState(blockState.getBaseState().withProperty(DECAYABLE, false).withProperty(LEAF_STATE, EnumLeafState.NORMAL).withProperty(HARVESTABLE, false));
+        leavesFancy = true; // Fast / Fancy graphics works correctly
+        OreDictionaryHelper.register(this, "tree", "leaves");
+        OreDictionaryHelper.register(this, "tree", "leaves", tree.getName());
+        Blocks.FIRE.setFireInfo(this, 30, 60);
+        setTickRandomly(true);
+    }
 
-	@SuppressWarnings("deprecation")
-	@Override
-	@Nonnull
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return getDefaultState().withProperty(HARVESTABLE, meta > 3).withProperty(LEAF_STATE, EnumLeafState.valueOf(meta & 0b11));
-	}
+    @SuppressWarnings("deprecation")
+    @Override
+    @Nonnull
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(HARVESTABLE, meta > 3).withProperty(LEAF_STATE, EnumLeafState.valueOf(meta & 0b11));
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return state.getValue(LEAF_STATE).ordinal() + (state.getValue(HARVESTABLE) ? 4 : 0);
-	}
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(LEAF_STATE).ordinal() + (state.getValue(HARVESTABLE) ? 4 : 0);
+    }
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-	{
-		return NULL_AABB;
-	}
+    @SuppressWarnings("deprecation")
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return NULL_AABB;
+    }
 
-	@Override
-	public void randomTick(World world, BlockPos pos, IBlockState state, Random random)
-	{
-		if (!world.isRemote)
-		{
-			if (state.getValue(HARVESTABLE) && tree.isHarvestMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()))
-			{
-				TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
-				if (te != null)
-				{
-					float temp = ClimateTFC.getTemp(world, pos);
-					float rainfall = ChunkDataTFC.getRainfall(world, pos);
-					long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
-					if (hours > tree.getGrowthTime() && tree.isValidForGrowth(temp, rainfall))
-					{
-						world.setBlockState(pos, world.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.FRUIT));
-						te.resetCounter();
-					}
-				}
-			} else if (tree.isFlowerMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()))
-			{
-				if (world.getBlockState(pos).getValue(LEAF_STATE) != EnumLeafState.FLOWERING)
-				{
-					world.setBlockState(pos, world.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.FLOWERING));
-				}
-			} else
-			{
-				if (world.getBlockState(pos).getValue(LEAF_STATE) != EnumLeafState.NORMAL)
-				{
-					world.setBlockState(pos, world.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.NORMAL));
-				}
-			}
-			doLeafDecay(world, pos, state);
-		}
-	}
+    @Override
+    public void randomTick(World world, BlockPos pos, IBlockState state, Random random)
+    {
+        if (!world.isRemote)
+        {
+            if (state.getValue(HARVESTABLE) && tree.isHarvestMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()))
+            {
+                TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
+                if (te != null)
+                {
+                    float temp = ClimateTFC.getTemp(world, pos);
+                    float rainfall = ChunkDataTFC.getRainfall(world, pos);
+                    long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
+                    if (hours > tree.getGrowthTime() && tree.isValidForGrowth(temp, rainfall))
+                    {
+                        world.setBlockState(pos, world.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.FRUIT));
+                        te.resetCounter();
+                    }
+                }
+            }
+            else if (tree.isFlowerMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()))
+            {
+                if (world.getBlockState(pos).getValue(LEAF_STATE) != EnumLeafState.FLOWERING)
+                {
+                    world.setBlockState(pos, world.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.FLOWERING));
+                }
+            }
+            else
+            {
+                if (world.getBlockState(pos).getValue(LEAF_STATE) != EnumLeafState.NORMAL)
+                {
+                    world.setBlockState(pos, world.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.NORMAL));
+                }
+            }
+            doLeafDecay(world, pos, state);
+        }
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, @Nullable Block blockIn, @Nullable BlockPos fromPos)
-	{
-		doLeafDecay(world, pos, state);
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, @Nullable Block blockIn, @Nullable BlockPos fromPos)
+    {
+        doLeafDecay(world, pos, state);
+    }
 
-	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-	{
-		TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
-		if (tile != null)
-		{
-			tile.resetCounter();
-		}
-	}
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
+        if (tile != null)
+        {
+            tile.resetCounter();
+        }
+    }
 
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
-		if (!worldIn.isRemote)
-		{
-			if (worldIn.getBlockState(pos).getValue(LEAF_STATE) == EnumLeafState.FRUIT)
-			{
-				Helpers.spawnItemStack(worldIn, pos, tree.getFoodDrop());
-				worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.NORMAL));
-				TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
-				if (te != null)
-				{
-					te.resetCounter();
-				}
-			}
-		}
-		return true;
-	}
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if (!worldIn.isRemote)
+        {
+            if (worldIn.getBlockState(pos).getValue(LEAF_STATE) == EnumLeafState.FRUIT)
+            {
+                Helpers.spawnItemStack(worldIn, pos, tree.getFoodDrop());
+                worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.NORMAL));
+                TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
+                if (te != null)
+                {
+                    te.resetCounter();
+                }
+            }
+        }
+        return true;
+    }
 
-	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
-	{
-		// Copy-paste from BlockLeavesTFC
-		// Player will take damage when falling through leaves if fall is over 9 blocks,
-		// fall damage is then set to 0.
-		entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
-		entityIn.fallDistance = 0;
-		// Entity motion is reduced by leaves.
-		entityIn.motionX *= 0.1D;
-		if (entityIn.motionY < 0)
-		{
-			entityIn.motionY *= 0.1D;
-		}
-		entityIn.motionZ *= 0.1D;
-	}
+    @Override
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        //Copy-paste from BlockLeavesTFC
+        //Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
+        entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
+        entityIn.fallDistance = 0;
+        //Entity motion is reduced by leaves.
+        entityIn.motionX *= 0.1D;
+        if (entityIn.motionY < 0)
+        {
+            entityIn.motionY *= 0.1D;
+        }
+        entityIn.motionZ *= 0.1D;
+    }
 
-	@Override
-	@Nonnull
-	public BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, DECAYABLE, LEAF_STATE, HARVESTABLE);
-	}
+    @Override
+    @Nonnull
+    public BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, DECAYABLE, LEAF_STATE, HARVESTABLE);
+    }
 
-	@Override
-	public boolean hasTileEntity(IBlockState state)
-	{
-		return true;
-	}
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
 
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState state)
-	{
-		return new TETickCounter();
-	}
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TETickCounter();
+    }
 
-	@Override
-	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
-	{
-		return ImmutableList.of(new ItemStack(this));
-	}
+    @Override
+    public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
+    {
+        return ImmutableList.of(new ItemStack(this));
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public BlockRenderLayer getRenderLayer()
-	{
-		/*
-		 * This is a way to make sure the leave settings are updated. The result of this
-		 * call is cached somewhere, so it's not that important, but: The alternative
-		 * would be to use `Minecraft.getMinecraft().gameSettings.fancyGraphics`
-		 * directly in the 2 relevant methods. It's better to do that than to refer to
-		 * Blocks.LEAVES, for performance reasons.
-		 */
-		leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
-		return super.getRenderLayer();
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public BlockRenderLayer getRenderLayer()
+    {
+        /*
+         * This is a way to make sure the leave settings are updated.
+         * The result of this call is cached somewhere, so it's not that important, but:
+         * The alternative would be to use `Minecraft.getMinecraft().gameSettings.fancyGraphics` directly in the 2 relevant methods.
+         * It's better to do that than to refer to Blocks.LEAVES, for performance reasons.
+         */
+        leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
+        return super.getRenderLayer();
+    }
 
-	@Override
-	public BlockPlanks.EnumType getWoodType(int meta)
-	{
-		return BlockPlanks.EnumType.OAK;
-	}
+    @Override
+    public BlockPlanks.EnumType getWoodType(int meta)
+    {
+        return BlockPlanks.EnumType.OAK;
+    }
 
-	@Override
-	public void beginLeavesDecay(IBlockState state, World world, BlockPos pos)
-	{
-		// Don't do vanilla decay
-	}
+    @Override
+    public void beginLeavesDecay(IBlockState state, World world, BlockPos pos)
+    {
+        // Don't do vanilla decay
+    }
 
-	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-	{
-		// Stops dropping oak saplings inherited from BlockLeaves
-		drops.clear();
-	}
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        // Stops dropping oak saplings inherited from BlockLeaves
+        drops.clear();
+    }
 
-	@SuppressWarnings("deprecation")
-	@SideOnly(Side.CLIENT)
-	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-	{
-		/*
-		 * See comment on getRenderLayer()
-		 */
-		leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
-		return true;// super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-	}
+    @SuppressWarnings("deprecation")
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
+        /*
+         * See comment on getRenderLayer()
+         */
+        leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
+        return true;// super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+    }
 
-	private void doLeafDecay(World world, BlockPos pos, IBlockState state)
-	{
-		// TFC Leaf Decay, modified for fruit trees
-		if (world.isRemote)
-			return;
+    private void doLeafDecay(World world, BlockPos pos, IBlockState state)
+    {
+        // TFC Leaf Decay, modified for fruit trees
+        if (world.isRemote)
+            return;
 
-		List<BlockPos> paths = new ArrayList<>();
-		List<BlockPos> pathsToAdd;
-		BlockPos.MutableBlockPos pos1 = new BlockPos.MutableBlockPos(pos);
-		IBlockState state1;
-		paths.add(pos); // Center block
+        List<BlockPos> paths = new ArrayList<>();
+        List<BlockPos> pathsToAdd;
+        BlockPos.MutableBlockPos pos1 = new BlockPos.MutableBlockPos(pos);
+        IBlockState state1;
+        paths.add(pos); // Center block
 
-		for (int i = 0; i < 5; i++)
-		{
-			pathsToAdd = new ArrayList<>();
-			for (BlockPos p1 : paths)
-			{
-				for (EnumFacing face : EnumFacing.values())
-				{
-					pos1.setPos(p1).move(face);
-					if (paths.contains(pos1.toImmutable()))
-						continue;
-					state1 = world.getBlockState(pos1);
-					if (state1.getBlock() == BlockFruitTreeTrunk.get(tree) || state1.getBlock() == BlockFruitTreeBranch.get(tree))
-						return;
-					if (state1.getBlock() == this)
-						pathsToAdd.add(pos1.toImmutable());
+        for (int i = 0; i < 5; i++)
+        {
+            pathsToAdd = new ArrayList<>();
+            for (BlockPos p1 : paths)
+            {
+                for (EnumFacing face : EnumFacing.values())
+                {
+                    pos1.setPos(p1).move(face);
+                    if (paths.contains(pos1.toImmutable()))
+                        continue;
+                    state1 = world.getBlockState(pos1);
+                    if (state1.getBlock() == BlockFruitTreeTrunk.get(tree) || state1.getBlock() == BlockFruitTreeBranch.get(tree))
+                        return;
+                    if (state1.getBlock() == this)
+                        pathsToAdd.add(pos1.toImmutable());
 
-				}
-			}
-			paths.addAll(pathsToAdd);
-		}
+                }
+            }
+            paths.addAll(pathsToAdd);
+        }
 
-		world.setBlockToAir(pos);
-	}
+        world.setBlockToAir(pos);
+    }
 
-	/**
-	 * Enum state for blockstate Used to render the correct texture of this leaf
-	 * block
-	 */
-	public enum EnumLeafState implements IStringSerializable
-	{
-		NORMAL, FLOWERING, FRUIT;
+    /**
+     * Enum state for blockstate
+     * Used to render the correct texture of this leaf block
+     */
+    public enum EnumLeafState implements IStringSerializable
+    {
+        NORMAL, FLOWERING, FRUIT;
 
-		private static final EnumLeafState[] VALUES = values();
+        private static final EnumLeafState[] VALUES = values();
 
-		@Nonnull
-		public static EnumLeafState valueOf(int index)
-		{
-			return index < 0 || index > VALUES.length ? NORMAL : VALUES[index];
-		}
+        @Nonnull
+        public static EnumLeafState valueOf(int index)
+        {
+            return index < 0 || index > VALUES.length ? NORMAL : VALUES[index];
+        }
 
-		@Override
-		public String getName()
-		{
-			return this.name().toLowerCase();
-		}
-	}
+        @Override
+        public String getName()
+        {
+            return this.name().toLowerCase();
+        }
+    }
 }

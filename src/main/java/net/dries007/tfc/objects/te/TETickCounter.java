@@ -15,31 +15,31 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 @ParametersAreNonnullByDefault
 public class TETickCounter extends TEBase
 {
-	private long lastUpdateTick;
+    private long lastUpdateTick;
 
-	public long getTicksSinceUpdate()
-	{
-		return CalendarTFC.PLAYER_TIME.getTicks() - lastUpdateTick;
-	}
+    public long getTicksSinceUpdate()
+    {
+        return CalendarTFC.PLAYER_TIME.getTicks() - lastUpdateTick;
+    }
 
-	public void resetCounter()
-	{
-		lastUpdateTick = CalendarTFC.PLAYER_TIME.getTicks();
-		markDirty();
-	}
+    public void resetCounter()
+    {
+        lastUpdateTick = CalendarTFC.PLAYER_TIME.getTicks();
+        markDirty();
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
-		lastUpdateTick = nbt.getLong("tick");
-		super.readFromNBT(nbt);
-	}
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        lastUpdateTick = nbt.getLong("tick");
+        super.readFromNBT(nbt);
+    }
 
-	@Nonnull
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-	{
-		nbt.setLong("tick", lastUpdateTick);
-		return super.writeToNBT(nbt);
-	}
+    @Nonnull
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        nbt.setLong("tick", lastUpdateTick);
+        return super.writeToNBT(nbt);
+    }
 }

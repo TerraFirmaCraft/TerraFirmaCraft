@@ -18,26 +18,25 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockPlanksTFC extends Block
 {
-	private static final Map<Tree, BlockPlanksTFC> MAP = new HashMap<>();
+    private static final Map<Tree, BlockPlanksTFC> MAP = new HashMap<>();
 
-	public static BlockPlanksTFC get(Tree wood)
-	{
-		return MAP.get(wood);
-	}
+    public static BlockPlanksTFC get(Tree wood)
+    {
+        return MAP.get(wood);
+    }
 
-	public final Tree wood;
+    public final Tree wood;
 
-	public BlockPlanksTFC(Tree wood)
-	{
-		super(Material.WOOD);
-		if (MAP.put(wood, this) != null)
-			throw new IllegalStateException("There can only be one.");
-		this.wood = wood;
-		setSoundType(SoundType.WOOD);
-		setHardness(2.0F).setResistance(5.0F);
-		setHarvestLevel("axe", 0);
-		OreDictionaryHelper.register(this, "plank", "wood");
-		OreDictionaryHelper.register(this, "plank", "wood", wood.getRegistryName().getPath());
-		Blocks.FIRE.setFireInfo(this, 5, 20);
-	}
+    public BlockPlanksTFC(Tree wood)
+    {
+        super(Material.WOOD);
+        if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+        this.wood = wood;
+        setSoundType(SoundType.WOOD);
+        setHardness(2.0F).setResistance(5.0F);
+        setHarvestLevel("axe", 0);
+        OreDictionaryHelper.register(this, "plank", "wood");
+        OreDictionaryHelper.register(this, "plank", "wood", wood.getRegistryName().getPath());
+        Blocks.FIRE.setFireInfo(this, 5, 20);
+    }
 }

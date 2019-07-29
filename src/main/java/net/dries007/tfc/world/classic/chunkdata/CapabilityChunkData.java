@@ -22,32 +22,32 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public final class CapabilityChunkData
 {
-	public static final ResourceLocation CHUNK_DATA = new ResourceLocation(MOD_ID, "chunkdata");
+    public static final ResourceLocation CHUNK_DATA = new ResourceLocation(MOD_ID, "chunkdata");
 
-	public static void preInit()
-	{
-		CapabilityManager.INSTANCE.register(ChunkDataTFC.class, new ChunkDataTFC.ChunkDataStorage(), ChunkDataTFC::new);
-	}
+    public static void preInit()
+    {
+        CapabilityManager.INSTANCE.register(ChunkDataTFC.class, new ChunkDataTFC.ChunkDataStorage(), ChunkDataTFC::new);
+    }
 
-	@SubscribeEvent
-	public static void onAttachCapabilitiesChunk(AttachCapabilitiesEvent<Chunk> event)
-	{
-		if (event.getObject().getWorld().getWorldType() == TerraFirmaCraft.getWorldTypeTFC())
-			event.addCapability(CHUNK_DATA, new ChunkDataProvider());
-	}
+    @SubscribeEvent
+    public static void onAttachCapabilitiesChunk(AttachCapabilitiesEvent<Chunk> event)
+    {
+        if (event.getObject().getWorld().getWorldType() == TerraFirmaCraft.getWorldTypeTFC())
+            event.addCapability(CHUNK_DATA, new ChunkDataProvider());
+    }
 
-	@SubscribeEvent
-	public static void onChunkWatchWatch(ChunkWatchEvent.Watch event)
-	{
-		Chunk chunk = event.getChunkInstance();
-		if (chunk != null)
-		{
-			ChunkDataTFC data = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
-			if (data != null && data.isInitialized())
-			{
-				NBTTagCompound nbt = (NBTTagCompound) ChunkDataProvider.CHUNK_DATA_CAPABILITY.writeNBT(data, null);
-				TerraFirmaCraft.getNetwork().sendTo(new PacketChunkData(chunk.getPos(), nbt, data.getRegionalTemp(), data.getRainfall()), event.getPlayer());
-			}
-		}
-	}
+    @SubscribeEvent
+    public static void onChunkWatchWatch(ChunkWatchEvent.Watch event)
+    {
+        Chunk chunk = event.getChunkInstance();
+        if (chunk != null)
+        {
+            ChunkDataTFC data = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
+            if (data != null && data.isInitialized())
+            {
+                NBTTagCompound nbt = (NBTTagCompound) ChunkDataProvider.CHUNK_DATA_CAPABILITY.writeNBT(data, null);
+                TerraFirmaCraft.getNetwork().sendTo(new PacketChunkData(chunk.getPos(), nbt, data.getRegionalTemp(), data.getRainfall()), event.getPlayer());
+            }
+        }
+    }
 }

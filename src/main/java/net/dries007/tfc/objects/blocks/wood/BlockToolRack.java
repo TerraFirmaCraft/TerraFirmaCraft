@@ -41,183 +41,175 @@ import static net.minecraft.block.material.Material.WOOD;
 
 public class BlockToolRack extends BlockContainer implements IItemSize
 {
-	protected static final AxisAlignedBB RACK_EAST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.125D, 1.0D, 1.0D);
-	protected static final AxisAlignedBB RACK_WEST_AABB = new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-	protected static final AxisAlignedBB RACK_SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D);
-	protected static final AxisAlignedBB RACK_NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.875D, 1.0D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB RACK_EAST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.125D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB RACK_WEST_AABB = new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB RACK_SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D);
+    protected static final AxisAlignedBB RACK_NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.875D, 1.0D, 1.0D, 1.0D);
 
-	public Tree wood;
+    public Tree wood;
 
-	public BlockToolRack(Tree wood)
-	{
-		super(WOOD, MapColor.AIR);
-		this.wood = wood;
-		setSoundType(SoundType.WOOD);
-		setHarvestLevel("axe", 0);
-		setHardness(0.5f);
-		setResistance(3f);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-	}
+    public BlockToolRack(Tree wood)
+    {
+        super(WOOD, MapColor.AIR);
+        this.wood = wood;
+        setSoundType(SoundType.WOOD);
+        setHarvestLevel("axe", 0);
+        setHardness(0.5f);
+        setResistance(3f);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+    }
 
-	@Nonnull
-	@Override
-	public Size getSize(@Nonnull ItemStack stack)
-	{
-		return Size.LARGE;
-	}
+    @Nonnull
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.LARGE;
+    }
 
-	@Nonnull
-	@Override
-	public Weight getWeight(@Nonnull ItemStack stack)
-	{
-		return Weight.HEAVY;
-	}
+    @Nonnull
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return Weight.HEAVY;
+    }
 
-	@Nullable
-	@Override
-	public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
-	{
-		return new TEToolRack();
-	}
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
+    {
+        return new TEToolRack();
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	@Nonnull
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return state.getValue(FACING).getHorizontalIndex();
-	}
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(FACING).getHorizontalIndex();
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public boolean isFullCube(IBlockState state)
-	{
-		return false;
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	@Nonnull
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-	{
-		switch (state.getValue(FACING))
-		{
-			case NORTH:
-			default:
-				return RACK_NORTH_AABB;
-			case SOUTH:
-				return RACK_SOUTH_AABB;
-			case WEST:
-				return RACK_WEST_AABB;
-			case EAST:
-				return RACK_EAST_AABB;
-		}
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch (state.getValue(FACING))
+        {
+            case NORTH:
+            default:
+                return RACK_NORTH_AABB;
+            case SOUTH:
+                return RACK_SOUTH_AABB;
+            case WEST:
+                return RACK_WEST_AABB;
+            case EAST:
+                return RACK_EAST_AABB;
+        }
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	@Nonnull
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-	{
-		return BlockFaceShape.UNDEFINED;
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-	{
-		super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-		if (Helpers.canHangAt(worldIn, pos, state.getValue(FACING)))
-			return;
-		dropBlockAsItem(worldIn, pos, state, 0);
-		TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
-		if (te != null)
-			te.onBreakBlock();
-		worldIn.setBlockToAir(pos);
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if (Helpers.canHangAt(worldIn, pos, state.getValue(FACING))) return;
+        dropBlockAsItem(worldIn, pos, state, 0);
+        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
+        if (te != null) te.onBreakBlock();
+        worldIn.setBlockToAir(pos);
+    }
 
-	@Override
-	public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
-	{
-		return super.canPlaceBlockAt(worldIn, pos) && Helpers.getASolidFacing(worldIn, pos, null, EnumFacing.HORIZONTALS) != null;
-	}
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
+    {
+        return super.canPlaceBlockAt(worldIn, pos) && Helpers.getASolidFacing(worldIn, pos, null, EnumFacing.HORIZONTALS) != null;
+    }
 
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
-		TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
-		if (te == null)
-			return true;
-		return te.onRightClick(playerIn, hand, getSlotFromPos(state, hitX, hitY, hitZ));
-	}
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
+        if (te == null) return true;
+        return te.onRightClick(playerIn, hand, getSlotFromPos(state, hitX, hitY, hitZ));
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	@Nonnull
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-	{
-		if (facing.getAxis() == EnumFacing.Axis.Y)
-			facing = placer.getHorizontalFacing().getOpposite();
-		return this.getDefaultState().withProperty(FACING, Helpers.getASolidFacing(worldIn, pos, facing, EnumFacing.HORIZONTALS));
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
+        if (facing.getAxis() == EnumFacing.Axis.Y)
+            facing = placer.getHorizontalFacing().getOpposite();
+        return this.getDefaultState().withProperty(FACING, Helpers.getASolidFacing(worldIn, pos, facing, EnumFacing.HORIZONTALS));
+    }
 
-	@Override
-	@Nonnull
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, FACING);
-	}
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, FACING);
+    }
 
-	@Override
-	@Nonnull
-	public ItemStack getPickBlock(@Nonnull IBlockState state, RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, EntityPlayer player)
-	{
-		Vec3d vec = target.hitVec.subtract(pos.getX(), pos.getY(), pos.getZ());
-		TEToolRack te = Helpers.getTE(world, pos, TEToolRack.class);
-		if (te == null)
-			return new ItemStack(this);
-		ItemStack item = te.getItems().get(getSlotFromPos(state, (float) vec.x, (float) vec.y, (float) vec.z));
-		if (item.isEmpty())
-			return new ItemStack(this);
-		return item;
-	}
+    @Override
+    @Nonnull
+    public ItemStack getPickBlock(@Nonnull IBlockState state, RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, EntityPlayer player)
+    {
+        Vec3d vec = target.hitVec.subtract(pos.getX(), pos.getY(), pos.getZ());
+        TEToolRack te = Helpers.getTE(world, pos, TEToolRack.class);
+        if (te == null) return new ItemStack(this);
+        ItemStack item = te.getItems().get(getSlotFromPos(state, (float) vec.x, (float) vec.y, (float) vec.z));
+        if (item.isEmpty()) return new ItemStack(this);
+        return item;
+    }
 
-	public int getSlotFromPos(IBlockState state, float x, float y, float z)
-	{
-		int slot = 0;
-		if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f)
-			slot += 1;
-		if (y < .5f)
-			slot += 2;
-		return slot;
-	}
+    public int getSlotFromPos(IBlockState state, float x, float y, float z)
+    {
+        int slot = 0;
+        if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f) slot += 1;
+        if (y < .5f) slot += 2;
+        return slot;
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	@Nonnull
-	public EnumBlockRenderType getRenderType(IBlockState state)
-	{
-		return EnumBlockRenderType.MODEL;
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
+        return EnumBlockRenderType.MODEL;
+    }
 
-	@Override
-	public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
-	{
-		TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
-		if (te != null)
-			te.onBreakBlock();
-		super.breakBlock(worldIn, pos, state);
-	}
+    @Override
+    public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
+    {
+        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
+        if (te != null) te.onBreakBlock();
+        super.breakBlock(worldIn, pos, state);
+    }
 }

@@ -15,20 +15,19 @@ import net.dries007.tfc.client.TFCGuiHandler;
 
 public class PacketOpenCraftingGui implements IMessageEmpty
 {
-	public static final class Handler implements IMessageHandler<PacketOpenCraftingGui, IMessage>
-	{
-		@Override
-		public IMessage onMessage(PacketOpenCraftingGui message, MessageContext ctx)
-		{
-			TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() ->
-			{
-				EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
-				if (player != null)
-				{
-					TFCGuiHandler.openGui(player.world, player, TFCGuiHandler.Type.CRAFTING);
-				}
-			});
-			return null;
-		}
-	}
+    public static final class Handler implements IMessageHandler<PacketOpenCraftingGui, IMessage>
+    {
+        @Override
+        public IMessage onMessage(PacketOpenCraftingGui message, MessageContext ctx)
+        {
+            TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
+                EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
+                if (player != null)
+                {
+                    TFCGuiHandler.openGui(player.world, player, TFCGuiHandler.Type.CRAFTING);
+                }
+            });
+            return null;
+        }
+    }
 }

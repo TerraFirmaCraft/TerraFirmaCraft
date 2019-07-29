@@ -21,41 +21,40 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class ItemPowder extends ItemTFC
 {
-	private static final EnumMap<Powder, ItemPowder> MAP = new EnumMap<>(Powder.class);
+    private static final EnumMap<Powder, ItemPowder> MAP = new EnumMap<>(Powder.class);
 
-	public static ItemPowder get(Powder Powder)
-	{
-		return MAP.get(Powder);
-	}
+    public static ItemPowder get(Powder Powder)
+    {
+        return MAP.get(Powder);
+    }
 
-	public static ItemStack get(Powder Powder, int amount)
-	{
-		return new ItemStack(MAP.get(Powder), amount);
-	}
+    public static ItemStack get(Powder Powder, int amount)
+    {
+        return new ItemStack(MAP.get(Powder), amount);
+    }
 
-	public final Powder Powder;
+    public final Powder Powder;
 
-	public ItemPowder(Powder Powder)
-	{
-		this.Powder = Powder;
-		if (MAP.put(Powder, this) != null)
-			throw new IllegalStateException("There can only be one.");
-		setMaxDamage(0);
-		OreDictionaryHelper.register(this, "dust");
-		OreDictionaryHelper.register(this, "dust", Powder);
-	}
+    public ItemPowder(Powder Powder)
+    {
+        this.Powder = Powder;
+        if (MAP.put(Powder, this) != null) throw new IllegalStateException("There can only be one.");
+        setMaxDamage(0);
+        OreDictionaryHelper.register(this, "dust");
+        OreDictionaryHelper.register(this, "dust", Powder);
+    }
 
-	@Nonnull
-	@Override
-	public Size getSize(ItemStack stack)
-	{
-		return Size.TINY;
-	}
+    @Nonnull
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.TINY;
+    }
 
-	@Nonnull
-	@Override
-	public Weight getWeight(ItemStack stack)
-	{
-		return Weight.LIGHT;
-	}
+    @Nonnull
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.LIGHT;
+    }
 }

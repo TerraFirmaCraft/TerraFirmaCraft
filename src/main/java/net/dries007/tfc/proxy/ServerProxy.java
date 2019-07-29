@@ -22,56 +22,59 @@ import net.dries007.tfc.util.calendar.Month;
 @SideOnly(Side.SERVER)
 public class ServerProxy implements IProxy
 {
-	@Override
-	@Nonnull
-	public IThreadListener getThreadListener(MessageContext context)
-	{
-		if (context.side.isServer())
-		{
-			return context.getServerHandler().player.server;
-		} else
-		{
-			throw new WrongSideException("Tried to get the IThreadListener from a client-side MessageContext on the dedicated server");
-		}
-	}
+    @Override
+    @Nonnull
+    public IThreadListener getThreadListener(MessageContext context)
+    {
+        if (context.side.isServer())
+        {
+            return context.getServerHandler().player.server;
+        }
+        else
+        {
+            throw new WrongSideException("Tried to get the IThreadListener from a client-side MessageContext on the dedicated server");
+        }
+    }
 
-	@Override
-	@Nullable
-	public EntityPlayer getPlayer(MessageContext context)
-	{
-		if (context.side.isServer())
-		{
-			return context.getServerHandler().player;
-		} else
-		{
-			throw new WrongSideException("Tried to get the player from a client-side MessageContext on the dedicated server");
-		}
-	}
+    @Override
+    @Nullable
+    public EntityPlayer getPlayer(MessageContext context)
+    {
+        if (context.side.isServer())
+        {
+            return context.getServerHandler().player;
+        }
+        else
+        {
+            throw new WrongSideException("Tried to get the player from a client-side MessageContext on the dedicated server");
+        }
+    }
 
-	@Override
-	@Nullable
-	public World getWorld(MessageContext context)
-	{
-		if (context.side.isServer())
-		{
-			return context.getServerHandler().player.getServerWorld();
-		} else
-		{
-			throw new WrongSideException("Tried to get the player from a client-side MessageContext on the dedicated server");
-		}
-	}
+    @Override
+    @Nullable
+    public World getWorld(MessageContext context)
+    {
+        if (context.side.isServer())
+        {
+            return context.getServerHandler().player.getServerWorld();
+        }
+        else
+        {
+            throw new WrongSideException("Tried to get the player from a client-side MessageContext on the dedicated server");
+        }
+    }
 
-	@Nonnull
-	@Override
-	public String getMonthName(Month month, boolean useSeasons)
-	{
-		return month.name().toLowerCase();
-	}
+    @Nonnull
+    @Override
+    public String getMonthName(Month month, boolean useSeasons)
+    {
+        return month.name().toLowerCase();
+    }
 
-	@Nonnull
-	@Override
-	public String getDayName(int dayOfMonth, long totalDays)
-	{
-		return CalendarTFC.DAY_NAMES[(int) (totalDays % 7)];
-	}
+    @Nonnull
+    @Override
+    public String getDayName(int dayOfMonth, long totalDays)
+    {
+        return CalendarTFC.DAY_NAMES[(int) (totalDays % 7)];
+    }
 }

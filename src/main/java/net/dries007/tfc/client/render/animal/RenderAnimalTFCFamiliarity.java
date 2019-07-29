@@ -30,10 +30,7 @@ public final class RenderAnimalTFCFamiliarity
 	private static final ResourceLocation ICONS = new ResourceLocation(MOD_ID, "textures/gui/overlay/icons.png");
 	private static final RenderAnimalTFCFamiliarity INSTANCE = new RenderAnimalTFCFamiliarity();
 
-	public static RenderAnimalTFCFamiliarity getInstance()
-	{
-		return INSTANCE;
-	}
+	public static RenderAnimalTFCFamiliarity getInstance() { return INSTANCE; }
 
 	@SuppressWarnings("PointlessArithmeticExpression")
 	public void drawTexturedModalRect(float xCoord, float yCoord, int minU, int minV, int maxU, int maxV)
@@ -43,9 +40,12 @@ public final class RenderAnimalTFCFamiliarity
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder vb = tessellator.getBuffer();
 		vb.begin(7, DefaultVertexFormats.POSITION_TEX);
-		vb.pos(xCoord + 0.0F, yCoord + maxV, 0).tex((minU + 0) * textureScaleU, (minV + maxV) * textureScaleV).endVertex();
-		vb.pos(xCoord + maxU, yCoord + maxV, 0).tex((minU + maxU) * textureScaleU, (minV + maxV) * textureScaleV).endVertex();
-		vb.pos(xCoord + maxU, yCoord + 0.0F, 0).tex((minU + maxU) * textureScaleU, (minV + 0) * textureScaleV).endVertex();
+		vb.pos(xCoord + 0.0F, yCoord + maxV, 0).tex((minU + 0) * textureScaleU, (minV + maxV) * textureScaleV)
+				.endVertex();
+		vb.pos(xCoord + maxU, yCoord + maxV, 0).tex((minU + maxU) * textureScaleU, (minV + maxV) * textureScaleV)
+				.endVertex();
+		vb.pos(xCoord + maxU, yCoord + 0.0F, 0).tex((minU + maxU) * textureScaleU, (minV + 0) * textureScaleV)
+				.endVertex();
 		vb.pos(xCoord + 0.0F, yCoord + 0.0F, 0).tex((minU + 0) * textureScaleU, (minV + 0) * textureScaleV).endVertex();
 		tessellator.draw();
 	}
@@ -88,21 +88,17 @@ public final class RenderAnimalTFCFamiliarity
 					GL11.glScalef(0.33F, 0.33F, 0.33F);
 
 					float familiarity = Math.max(0.0F, Math.min(1.0F, animal.getFamiliarity()));
-					if (familiarity >= 0.3F)
-					{
+					if (familiarity >= 0.3F) {
 						this.drawTexturedModalRect(-8, 0, 112, 40, 16, 16);
-					} else
-					{
+					} else {
 						this.drawTexturedModalRect(-8, 0, 92, 40, 16, 16);
 					}
 
 					GL11.glTranslatef(0, 0, -0.001F);
 
-					if (familiarity == 1.0F)
-					{
+					if (familiarity == 1.0F) {
 						this.drawTexturedModalRect(-6, 14 - (int) (12 * familiarity), 114, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
-					} else
-					{
+					} else {
 						this.drawTexturedModalRect(-6, 14 - (int) (12 * familiarity), 94, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
 					}
 

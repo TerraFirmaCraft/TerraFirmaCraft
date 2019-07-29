@@ -9,13 +9,17 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 public enum Nutrient
 {
-	CARBOHYDRATES, FAT, PROTEIN, VITAMINS, MINERALS;
+    CARBOHYDRATES,
+    FAT,
+    PROTEIN,
+    VITAMINS,
+    MINERALS;
 
-	public static final int TOTAL = values().length;
+    public static final int TOTAL = values().length;
 
-	public float getDecayModifier()
-	{
-		// Nutrients lost / tick
-		return 8f / ICalendar.TICKS_IN_DAY;
-	}
+    public float getDecayModifier()
+    {
+        // Nutrients lost / tick
+        return 8f / ICalendar.TICKS_IN_DAY;
+    }
 }

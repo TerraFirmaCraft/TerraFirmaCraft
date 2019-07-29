@@ -30,65 +30,66 @@ import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
 
 public class ItemSeedsTFC extends Item implements IPlantable
 {
-	private static final Map<ICrop, ItemSeedsTFC> MAP = new HashMap<>();
+    private static final Map<ICrop, ItemSeedsTFC> MAP = new HashMap<>();
 
-	public static ItemSeedsTFC get(ICrop crop)
-	{
-		return MAP.get(crop);
-	}
+    public static ItemSeedsTFC get(ICrop crop)
+    {
+        return MAP.get(crop);
+    }
 
-	public static ItemStack get(ICrop crop, int amount)
-	{
-		return new ItemStack(MAP.get(crop), amount);
-	}
+    public static ItemStack get(ICrop crop, int amount)
+    {
+        return new ItemStack(MAP.get(crop), amount);
+    }
 
-	private final ICrop crop;
+    private final ICrop crop;
 
-	public ItemSeedsTFC(ICrop crop)
-	{
-		this.crop = crop;
-		if (MAP.put(crop, this) != null)
-		{
-			throw new IllegalStateException("There can only be one.");
-		}
-	}
+    public ItemSeedsTFC(ICrop crop)
+    {
+        this.crop = crop;
+        if (MAP.put(crop, this) != null)
+        {
+            throw new IllegalStateException("There can only be one.");
+        }
+    }
 
-	@Nonnull
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
-		ItemStack itemstack = player.getHeldItem(hand);
-		IBlockState state = worldIn.getBlockState(pos);
-		if (facing == EnumFacing.UP && player.canPlayerEdit(pos.offset(facing), facing, itemstack) && state.getBlock().canSustainPlant(state, worldIn, pos, EnumFacing.UP, this) && worldIn.isAirBlock(pos.up()) && state.getBlock() instanceof BlockFarmlandTFC)
-		{
-			worldIn.setBlockState(pos.up(), BlockCropTFC.get(crop).getDefaultState());
+    @Nonnull
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        ItemStack itemstack = player.getHeldItem(hand);
+        IBlockState state = worldIn.getBlockState(pos);
+        if (facing == EnumFacing.UP && player.canPlayerEdit(pos.offset(facing), facing, itemstack) && state.getBlock().canSustainPlant(state, worldIn, pos, EnumFacing.UP, this) && worldIn.isAirBlock(pos.up()) && state.getBlock() instanceof BlockFarmlandTFC)
+        {
+            worldIn.setBlockState(pos.up(), BlockCropTFC.get(crop).getDefaultState());
 
-			if (player instanceof EntityPlayerMP)
-			{
-				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos.up(), itemstack);
-			}
+            if (player instanceof EntityPlayerMP)
+            {
+                CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos.up(), itemstack);
+            }
 
-			itemstack.shrink(1);
-			return EnumActionResult.SUCCESS;
-		} else
-		{
-			return EnumActionResult.FAIL;
-		}
-	}
+            itemstack.shrink(1);
+            return EnumActionResult.SUCCESS;
+        }
+        else
+        {
+            return EnumActionResult.FAIL;
+        }
+    }
 
-	@Override
-	public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
-	{
-		return EnumPlantType.Crop;
-	}
+    @Override
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
+    {
+        return EnumPlantType.Crop;
+    }
 
-	@Override
-	public IBlockState getPlant(IBlockAccess world, BlockPos pos)
-	{
-		IBlockState state = world.getBlockState(pos);
-		if (state.getBlock() instanceof BlockCropTFC && ((BlockCropTFC) state.getBlock()).getCrop() == this.crop)
-		{
-			return state;
-		}
-		return BlockCropTFC.get(crop).getDefaultState();
-	}
+    @Override
+    public IBlockState getPlant(IBlockAccess world, BlockPos pos)
+    {
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof BlockCropTFC && ((BlockCropTFC) state.getBlock()).getCrop() == this.crop)
+        {
+            return state;
+        }
+        return BlockCropTFC.get(crop).getDefaultState();
+    }
 }

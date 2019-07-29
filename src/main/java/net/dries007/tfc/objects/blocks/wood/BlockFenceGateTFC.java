@@ -17,24 +17,23 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockFenceGateTFC extends BlockFenceGate
 {
-	private static final Map<Tree, BlockFenceGateTFC> MAP = new HashMap<>();
+    private static final Map<Tree, BlockFenceGateTFC> MAP = new HashMap<>();
 
-	public static BlockFenceGateTFC get(Tree wood)
-	{
-		return MAP.get(wood);
-	}
+    public static BlockFenceGateTFC get(Tree wood)
+    {
+        return MAP.get(wood);
+    }
 
-	public final Tree wood;
+    public final Tree wood;
 
-	public BlockFenceGateTFC(Tree wood)
-	{
-		super(BlockPlanks.EnumType.OAK);
-		if (MAP.put(wood, this) != null)
-			throw new IllegalStateException("There can only be one.");
-		this.wood = wood;
-		setHarvestLevel("axe", 0);
-		OreDictionaryHelper.register(this, "fence", "gate");
-		OreDictionaryHelper.register(this, "fence", "gate", wood.getRegistryName().getPath());
-		Blocks.FIRE.setFireInfo(this, 5, 20);
-	}
+    public BlockFenceGateTFC(Tree wood)
+    {
+        super(BlockPlanks.EnumType.OAK);
+        if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+        this.wood = wood;
+        setHarvestLevel("axe", 0);
+        OreDictionaryHelper.register(this, "fence", "gate");
+        OreDictionaryHelper.register(this, "fence", "gate", wood.getRegistryName().getPath());
+        Blocks.FIRE.setFireInfo(this, 5, 20);
+    }
 }

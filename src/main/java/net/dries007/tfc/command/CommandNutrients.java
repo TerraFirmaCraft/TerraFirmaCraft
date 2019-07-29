@@ -26,59 +26,61 @@ import net.dries007.tfc.api.capability.food.Nutrient;
 @ParametersAreNonnullByDefault
 public class CommandNutrients extends CommandBase
 {
-	@Override
-	@Nonnull
-	public String getName()
-	{
-		return "nutrients";
-	}
+    @Override
+    @Nonnull
+    public String getName()
+    {
+        return "nutrients";
+    }
 
-	@Override
-	@Nonnull
-	public String getUsage(ICommandSender sender)
-	{
-		return "/nutrients <carbohydrates|fat|protein|minerals|vitamins> <value>";
-	}
+    @Override
+    @Nonnull
+    public String getUsage(ICommandSender sender)
+    {
+        return "/nutrients <carbohydrates|fat|protein|minerals|vitamins> <value>";
+    }
 
-	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
-	{
-		// todo: make this use a player selector as the target (@a / @p, etc.)
-		if (args.length != 2)
-		{
-			throw new WrongUsageException("Invalid arguments! /nutrients <carbohydrates|fat|protein|minerals|vitamins> <value>");
-		}
+    @Override
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
+    {
+        // todo: make this use a player selector as the target (@a / @p, etc.)
+        if (args.length != 2)
+        {
+            throw new WrongUsageException("Invalid arguments! /nutrients <carbohydrates|fat|protein|minerals|vitamins> <value>");
+        }
 
-		if (!(sender.getCommandSenderEntity() instanceof EntityPlayer))
-		{
-			throw new WrongUsageException("Can only be used by a player!");
-		}
+        if (!(sender.getCommandSenderEntity() instanceof EntityPlayer))
+        {
+            throw new WrongUsageException("Can only be used by a player!");
+        }
 
-		try
-		{
-			Nutrient nutrient = Nutrient.valueOf(args[0].toUpperCase());
-			FoodStats stats = ((EntityPlayer) sender.getCommandSenderEntity()).getFoodStats();
-			if (stats instanceof IFoodStatsTFC)
-			{
-				float nutrientValue = (float) parseDouble(args[1]);
-				((IFoodStatsTFC) stats).setNutrient(nutrient, nutrientValue);
-			}
-		} catch (IllegalArgumentException e)
-		{
-			throw new WrongUsageException("Unknown nutrient: " + args[0]);
-		}
-	}
+        try
+        {
+            Nutrient nutrient = Nutrient.valueOf(args[0].toUpperCase());
+            FoodStats stats = ((EntityPlayer) sender.getCommandSenderEntity()).getFoodStats();
+            if (stats instanceof IFoodStatsTFC)
+            {
+                float nutrientValue = (float) parseDouble(args[1]);
+                ((IFoodStatsTFC) stats).setNutrient(nutrient, nutrientValue);
+            }
+        }
+        catch (IllegalArgumentException e)
+        {
+            throw new WrongUsageException("Unknown nutrient: " + args[0]);
+        }
+    }
 
-	@Nonnull
-	@Override
-	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
-	{
-		if (args.length == 1)
-		{
-			return getListOfStringsMatchingLastWord(args, "carbohydrates", "fat", "protein", "minerals", "vitamins");
-		} else
-		{
-			return Collections.emptyList();
-		}
-	}
+    @Nonnull
+    @Override
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
+    {
+        if (args.length == 1)
+        {
+            return getListOfStringsMatchingLastWord(args, "carbohydrates", "fat", "protein", "minerals", "vitamins");
+        }
+        else
+        {
+            return Collections.emptyList();
+        }
+    }
 }

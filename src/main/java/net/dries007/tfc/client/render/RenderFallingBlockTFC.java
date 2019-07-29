@@ -30,63 +30,60 @@ import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 @SideOnly(Side.CLIENT)
 public class RenderFallingBlockTFC extends Render<EntityFallingBlockTFC>
 {
-	public RenderFallingBlockTFC(RenderManager manager)
-	{
-		super(manager);
-		this.shadowSize = 0.5F;
-	}
+    public RenderFallingBlockTFC(RenderManager manager)
+    {
+        super(manager);
+        this.shadowSize = 0.5F;
+    }
 
-	@Override
-	public void doRender(EntityFallingBlockTFC entity, double x, double y, double z, float entityYaw, float partialTicks)
-	{
-		IBlockState state = entity.getState();
+    @Override
+    public void doRender(EntityFallingBlockTFC entity, double x, double y, double z, float entityYaw, float partialTicks)
+    {
+        IBlockState state = entity.getState();
 
-		if (state == null)
-			return;
+        if (state == null) return;
 
-		if (state.getRenderType() != EnumBlockRenderType.MODEL)
-			return;
+        if (state.getRenderType() != EnumBlockRenderType.MODEL) return;
 
-		World world = entity.world;
-		if (state == world.getBlockState(new BlockPos(entity)))
-			return;
+        World world = entity.world;
+        if (state == world.getBlockState(new BlockPos(entity))) return;
 
-		bindEntityTexture(entity);
+        bindEntityTexture(entity);
 
-		GlStateManager.pushMatrix();
-		GlStateManager.disableLighting();
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
+        GlStateManager.pushMatrix();
+        GlStateManager.disableLighting();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
 
-		if (this.renderOutlines)
-		{
-			GlStateManager.enableColorMaterial();
-			GlStateManager.enableOutlineMode(this.getTeamColor(entity));
-		}
+        if (this.renderOutlines)
+        {
+            GlStateManager.enableColorMaterial();
+            GlStateManager.enableOutlineMode(this.getTeamColor(entity));
+        }
 
-		bufferbuilder.begin(7, DefaultVertexFormats.BLOCK);
-		BlockPos posTop = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
-		GlStateManager.translate((float) (x - (double) posTop.getX() - 0.5D), (float) (y - (double) posTop.getY()), (float) (z - (double) posTop.getZ() - 0.5D));
-		BlockRendererDispatcher brd = Minecraft.getMinecraft().getBlockRendererDispatcher();
-		brd.getBlockModelRenderer().renderModel(world, brd.getModelForState(state), state, posTop, bufferbuilder, false, MathHelper.getPositionRandom(entity.getOrigin()));
-		tessellator.draw();
+        bufferbuilder.begin(7, DefaultVertexFormats.BLOCK);
+        BlockPos posTop = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
+        GlStateManager.translate((float) (x - (double) posTop.getX() - 0.5D), (float) (y - (double) posTop.getY()), (float) (z - (double) posTop.getZ() - 0.5D));
+        BlockRendererDispatcher brd = Minecraft.getMinecraft().getBlockRendererDispatcher();
+        brd.getBlockModelRenderer().renderModel(world, brd.getModelForState(state), state, posTop, bufferbuilder, false, MathHelper.getPositionRandom(entity.getOrigin()));
+        tessellator.draw();
 
-		if (this.renderOutlines)
-		{
-			GlStateManager.disableOutlineMode();
-			GlStateManager.disableColorMaterial();
-		}
+        if (this.renderOutlines)
+        {
+            GlStateManager.disableOutlineMode();
+            GlStateManager.disableColorMaterial();
+        }
 
-		GlStateManager.enableLighting();
-		GlStateManager.popMatrix();
+        GlStateManager.enableLighting();
+        GlStateManager.popMatrix();
 
-		super.doRender(entity, x, y, z, entityYaw, partialTicks);
-	}
+        super.doRender(entity, x, y, z, entityYaw, partialTicks);
+    }
 
-	@Nullable
-	@Override
-	protected ResourceLocation getEntityTexture(EntityFallingBlockTFC entity)
-	{
-		return TextureMap.LOCATION_BLOCKS_TEXTURE;
-	}
+    @Nullable
+    @Override
+    protected ResourceLocation getEntityTexture(EntityFallingBlockTFC entity)
+    {
+        return TextureMap.LOCATION_BLOCKS_TEXTURE;
+    }
 }

@@ -25,42 +25,41 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @MethodsReturnNonnullByDefault
 public class ItemDoorTFC extends ItemDoor implements IItemSize
 {
-	private static final Map<Tree, ItemDoorTFC> MAP = new HashMap<>();
+    private static final Map<Tree, ItemDoorTFC> MAP = new HashMap<>();
 
-	public static ItemDoorTFC get(Tree wood)
-	{
-		return MAP.get(wood);
-	}
+    public static ItemDoorTFC get(Tree wood)
+    {
+        return MAP.get(wood);
+    }
 
-	public final Tree wood;
+    public final Tree wood;
 
-	public ItemDoorTFC(BlockDoorTFC block)
-	{
-		super(block);
-		if (MAP.put(block.wood, this) != null)
-			throw new IllegalStateException("There can only be one.");
-		wood = block.wood;
-		OreDictionaryHelper.register(this, "door");
-		OreDictionaryHelper.register(this, "door", wood.getRegistryName().getPath());
-	}
+    public ItemDoorTFC(BlockDoorTFC block)
+    {
+        super(block);
+        if (MAP.put(block.wood, this) != null) throw new IllegalStateException("There can only be one.");
+        wood = block.wood;
+        OreDictionaryHelper.register(this, "door");
+        OreDictionaryHelper.register(this, "door", wood.getRegistryName().getPath());
+    }
 
-	@Nonnull
-	@Override
-	public Size getSize(ItemStack stack)
-	{
-		return Size.HUGE;
-	}
+    @Nonnull
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.HUGE;
+    }
 
-	@Nonnull
-	@Override
-	public Weight getWeight(ItemStack stack)
-	{
-		return Weight.MEDIUM;
-	}
+    @Nonnull
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.MEDIUM;
+    }
 
-	@Override
-	public int getItemStackLimit(ItemStack stack)
-	{
-		return getStackSize(stack);
-	}
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        return getStackSize(stack);
+    }
 }

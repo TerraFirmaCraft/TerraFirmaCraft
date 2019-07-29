@@ -22,65 +22,63 @@ import net.minecraft.world.World;
  */
 public class Multiblock implements BiPredicate<World, BlockPos>
 {
-	private final List<BiPredicate<World, BlockPos>> conditions;
+    private final List<BiPredicate<World, BlockPos>> conditions;
 
-	public Multiblock()
-	{
-		this.conditions = new ArrayList<>();
-	}
+    public Multiblock()
+    {
+        this.conditions = new ArrayList<>();
+    }
 
-	public Multiblock match(BlockPos posOffset, BiPredicate<World, BlockPos> condition)
-	{
-		conditions.add((world, pos) -> condition.test(world, pos.add(posOffset)));
-		return this;
-	}
+    public Multiblock match(BlockPos posOffset, BiPredicate<World, BlockPos> condition)
+    {
+        conditions.add((world, pos) -> condition.test(world, pos.add(posOffset)));
+        return this;
+    }
 
-	public Multiblock match(BlockPos posOffset, Predicate<IBlockState> stateMatcher)
-	{
-		conditions.add((world, pos) -> stateMatcher.test(world.getBlockState(pos.add(posOffset))));
-		return this;
-	}
+    public Multiblock match(BlockPos posOffset, Predicate<IBlockState> stateMatcher)
+    {
+        conditions.add((world, pos) -> stateMatcher.test(world.getBlockState(pos.add(posOffset))));
+        return this;
+    }
 
-	public <T extends TileEntity> Multiblock match(BlockPos posOffset, Predicate<T> tileEntityPredicate, Class<T> teClass)
-	{
-		conditions.add((world, pos) ->
-		{
-			T tile = Helpers.getTE(world, pos.add(posOffset), teClass);
-			if (tile != null)
-			{
-				return tileEntityPredicate.test(tile);
-			}
-			return false;
-		});
-		return this;
-	}
+    public <T extends TileEntity> Multiblock match(BlockPos posOffset, Predicate<T> tileEntityPredicate, Class<T> teClass)
+    {
+        conditions.add((world, pos) -> {
+            T tile = Helpers.getTE(world, pos.add(posOffset), teClass);
+            if (tile != null)
+            {
+                return tileEntityPredicate.test(tile);
+            }
+            return false;
+        });
+        return this;
+    }
 
-	public Multiblock matchOneOf(BlockPos baseOffset, Multiblock subMultiblock)
-	{
-		conditions.add((world, pos) ->
-		{
-			for (BiPredicate<World, BlockPos> condition : subMultiblock.conditions)
-			{
-				if (condition.test(world, pos.add(baseOffset)))
-				{
-					return true;
-				}
-			}
-			return false;
-		});
-		return this;
-	}
+    public Multiblock matchOneOf(BlockPos baseOffset, Multiblock subMultiblock)
+    {
+        conditions.add((world, pos) -> {
+            for (BiPredicate<World, BlockPos> condition : subMultiblock.conditions)
+            {
+                if (condition.test(world, pos.add(baseOffset)))
+                {
+                    return true;
+                }
+            }
+            return false;
+        });
+        return this;
+    }
 
-	@Override
-	public boolean test(World world, BlockPos pos)
-	{
-		for (BiPredicate<World, BlockPos> condition : conditions)
-		{
-			if (!condition.test(world, pos))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
+    @Override
+    public boolean test(World world, BlockPos pos)
+    {
+        for (BiPredicate<World, BlockPos> condition : conditions)
+        {
+            if (!condition.test(world, pos))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }

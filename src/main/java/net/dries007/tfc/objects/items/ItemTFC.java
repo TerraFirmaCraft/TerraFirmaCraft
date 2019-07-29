@@ -12,14 +12,14 @@ import net.dries007.tfc.api.capability.size.IItemSize;
 
 public abstract class ItemTFC extends Item implements IItemSize
 {
-	public ItemTFC()
-	{
-		super();
-	}
+    public ItemTFC()
+    {
+        super();
+    }
 
-	@Override
-	public int getItemStackLimit(ItemStack stack)
-	{
-		return getStackSize(stack);
-	}
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        return getStackSize(stack);
+    }
 }

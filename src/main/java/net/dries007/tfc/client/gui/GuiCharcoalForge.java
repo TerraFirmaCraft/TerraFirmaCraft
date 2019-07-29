@@ -19,23 +19,23 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @SideOnly(Side.CLIENT)
 public class GuiCharcoalForge extends GuiContainerTE<TECharcoalForge>
 {
-	private static final ResourceLocation CHARCOAL_FORGE_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/charcoal_forge.png");
+    private static final ResourceLocation CHARCOAL_FORGE_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/charcoal_forge.png");
 
-	public GuiCharcoalForge(Container container, InventoryPlayer playerInv, TECharcoalForge tile)
-	{
-		super(container, playerInv, tile, CHARCOAL_FORGE_BACKGROUND);
-	}
+    public GuiCharcoalForge(Container container, InventoryPlayer playerInv, TECharcoalForge tile)
+    {
+        super(container, playerInv, tile, CHARCOAL_FORGE_BACKGROUND);
+    }
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-	{
-		super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+    {
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
-		// Draw the temperature indicator
-		int temperature = (int) (51 * tile.getField(TECharcoalForge.FIELD_TEMPERATURE) / MAX_TEMPERATURE);
-		if (temperature > 0)
-		{
-			drawTexturedModalRect(guiLeft + 8, guiTop + 66 - temperature, 176, 0, 15, 5);
-		}
-	}
+        // Draw the temperature indicator
+        int temperature = (int) (51 * tile.getField(TECharcoalForge.FIELD_TEMPERATURE) / MAX_TEMPERATURE);
+        if (temperature > 0)
+        {
+            drawTexturedModalRect(guiLeft + 8, guiTop + 66 - temperature, 176, 0, 15, 5);
+        }
+    }
 }

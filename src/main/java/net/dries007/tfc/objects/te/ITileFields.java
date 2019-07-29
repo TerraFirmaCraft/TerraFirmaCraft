@@ -7,9 +7,9 @@ package net.dries007.tfc.objects.te;
 
 public interface ITileFields
 {
-	int getFieldCount();
+    int getFieldCount();
 
-	void setField(int index, int value);
+    void setField(int index, int value);
 
-	int getField(int index);
+    int getField(int index);
 }

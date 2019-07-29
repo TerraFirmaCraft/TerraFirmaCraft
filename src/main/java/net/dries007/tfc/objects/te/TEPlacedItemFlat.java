@@ -21,68 +21,68 @@ import net.dries007.tfc.util.Helpers;
 @ParametersAreNonnullByDefault
 public class TEPlacedItemFlat extends TEBase
 {
-	private byte rotation;
-	private ItemStack inventory;
+    private byte rotation;
+    private ItemStack inventory;
 
-	public TEPlacedItemFlat()
-	{
-		rotation = (byte) Constants.RNG.nextInt(4);
-		inventory = ItemStack.EMPTY;
-	}
+    public TEPlacedItemFlat()
+    {
+        rotation = (byte) Constants.RNG.nextInt(4);
+        inventory = ItemStack.EMPTY;
+    }
 
-	public void onBreakBlock(BlockPos pos)
-	{
-		if (!world.isRemote && !inventory.isEmpty())
-		{
-			Helpers.spawnItemStack(world, pos, getStack());
-		}
-	}
+    public void onBreakBlock(BlockPos pos)
+    {
+        if (!world.isRemote && !inventory.isEmpty())
+        {
+            Helpers.spawnItemStack(world, pos, getStack());
+        }
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
-		rotation = nbt.hasKey("rotation") ? nbt.getByte("rotation") : 0;
-		inventory = new ItemStack(nbt.getCompoundTag("stack"));
-		super.readFromNBT(nbt);
-	}
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        rotation = nbt.hasKey("rotation") ? nbt.getByte("rotation") : 0;
+        inventory = new ItemStack(nbt.getCompoundTag("stack"));
+        super.readFromNBT(nbt);
+    }
 
-	@Override
-	@Nonnull
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-	{
-		nbt.setByte("rotation", rotation);
-		nbt.setTag("stack", inventory.serializeNBT());
-		return super.writeToNBT(nbt);
-	}
+    @Override
+    @Nonnull
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        nbt.setByte("rotation", rotation);
+        nbt.setTag("stack", inventory.serializeNBT());
+        return super.writeToNBT(nbt);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public double getMaxRenderDistanceSquared()
-	{
-		return 1024.0D;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return 1024.0D;
+    }
 
-	@Override
-	@Nonnull
-	@SideOnly(Side.CLIENT)
-	public AxisAlignedBB getRenderBoundingBox()
-	{
-		return new AxisAlignedBB(getPos(), getPos().add(1D, 1D, 1D));
-	}
+    @Override
+    @Nonnull
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return new AxisAlignedBB(getPos(), getPos().add(1D, 1D, 1D));
+    }
 
-	public byte getRotation()
-	{
-		return rotation;
-	}
+    public byte getRotation()
+    {
+        return rotation;
+    }
 
-	public ItemStack getStack()
-	{
-		return inventory;
-	}
+    public ItemStack getStack()
+    {
+        return inventory;
+    }
 
-	public void setStack(ItemStack stack)
-	{
-		this.inventory = stack;
-		markDirty();
-	}
+    public void setStack(ItemStack stack)
+    {
+        this.inventory = stack;
+        markDirty();
+    }
 }

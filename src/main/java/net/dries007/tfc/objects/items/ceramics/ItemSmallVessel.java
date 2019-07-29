@@ -48,348 +48,353 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class ItemSmallVessel extends ItemFiredPottery
 {
-	public final boolean glazed;
+    public final boolean glazed;
 
-	public ItemSmallVessel(boolean glazed)
-	{
-		this.glazed = glazed;
-		setHasSubtypes(glazed);
-	}
+    public ItemSmallVessel(boolean glazed)
+    {
+        this.glazed = glazed;
+        setHasSubtypes(glazed);
+    }
 
-	@Override
-	@Nonnull
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn)
-	{
-		ItemStack stack = playerIn.getHeldItem(handIn);
-		if (!worldIn.isRemote && !playerIn.isSneaking())
-		{
-			IFluidHandler cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-			if (cap instanceof ISmallVesselHandler)
-			{
-				ISmallVesselHandler.Mode mode = ((ISmallVesselHandler) cap).getFluidMode();
-				switch (mode)
-				{
-					case INVENTORY:
-						TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.SMALL_VESSEL);
-						break;
-					case LIQUID_MOLTEN:
-						TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.SMALL_VESSEL_LIQUID);
-						break;
-					case LIQUID_SOLID:
-						break;
-				}
-			}
-		}
-		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-	}
+    @Override
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn)
+    {
+        ItemStack stack = playerIn.getHeldItem(handIn);
+        if (!worldIn.isRemote && !playerIn.isSneaking())
+        {
+            IFluidHandler cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+            if (cap instanceof ISmallVesselHandler)
+            {
+                ISmallVesselHandler.Mode mode = ((ISmallVesselHandler) cap).getFluidMode();
+                switch (mode)
+                {
+                    case INVENTORY:
+                        TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.SMALL_VESSEL);
+                        break;
+                    case LIQUID_MOLTEN:
+                        TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.SMALL_VESSEL_LIQUID);
+                        break;
+                    case LIQUID_SOLID:
+                        break;
+                }
+            }
+        }
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+    }
 
-	@Override
-	@Nonnull
-	public String getTranslationKey(ItemStack stack)
-	{
-		if (!glazed)
-			return super.getTranslationKey(stack);
-		return super.getTranslationKey(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
-	}
+    @Override
+    @Nonnull
+    public String getTranslationKey(ItemStack stack)
+    {
+        if (!glazed)
+            return super.getTranslationKey(stack);
+        return super.getTranslationKey(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
+    }
 
-	@Override
-	public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
-	{
-		if (!isInCreativeTab(tab))
-			return;
+    @Override
+    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
+    {
+        if (!isInCreativeTab(tab)) return;
 
-		if (!glazed)
-			items.add(new ItemStack(this));
-		else
-			for (EnumDyeColor color : EnumDyeColor.values())
-				items.add(new ItemStack(this, 1, color.getDyeDamage()));
-	}
+        if (!glazed)
+            items.add(new ItemStack(this));
+        else
+            for (EnumDyeColor color : EnumDyeColor.values())
+                items.add(new ItemStack(this, 1, color.getDyeDamage()));
+    }
 
-	@Nullable
-	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-	{
-		return new SmallVesselCapability(nbt);
-	}
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new SmallVesselCapability(nbt);
+    }
 
-	@Override
-	public boolean canStack(@Nonnull ItemStack stack)
-	{
-		return false;
-	}
+    @Override
+    public boolean canStack(@Nonnull ItemStack stack)
+    {
+        return false;
+    }
 
-	@Override
-	public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
-	{
-		// Case 1: The input is a filled vessel
-		IItemHandler capItemHandler = input.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		if (capItemHandler instanceof ISmallVesselHandler)
-		{
-			ISmallVesselHandler cap = (ISmallVesselHandler) capItemHandler;
+    @Override
+    public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
+    {
+        // Case 1: The input is a filled vessel
+        IItemHandler capItemHandler = input.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (capItemHandler instanceof ISmallVesselHandler)
+        {
+            ISmallVesselHandler cap = (ISmallVesselHandler) capItemHandler;
 
-			// Check if it can transform into liquid metal
-			Alloy alloy = new Alloy().add(cap);
-			if (alloy.isValid())
-			{
-				// Empty contents
-				for (int i = 0; i < cap.getSlots(); i++)
-				{
-					cap.setStackInSlot(i, ItemStack.EMPTY);
-				}
-				// Fill with the liquid metal
-				cap.setFluidMode(true);
-				cap.fill(new FluidStack(FluidsTFC.getMetalFluid(alloy.getResult()), alloy.getAmount()), true);
-				cap.setTemperature(1600f);
-			}
+            // Check if it can transform into liquid metal
+            Alloy alloy = new Alloy().add(cap);
+            if (alloy.isValid())
+            {
+                //Empty contents
+                for (int i = 0; i < cap.getSlots(); i++)
+                {
+                    cap.setStackInSlot(i, ItemStack.EMPTY);
+                }
+                // Fill with the liquid metal
+                cap.setFluidMode(true);
+                cap.fill(new FluidStack(FluidsTFC.getMetalFluid(alloy.getResult()), alloy.getAmount()), true);
+                cap.setTemperature(1600f);
+            }
 
-		}
-		return input;
-	}
+        }
+        return input;
+    }
 
-	@Nonnull
-	@Override
-	public Size getSize(@Nonnull ItemStack stack)
-	{
-		return Size.VERY_LARGE;
-	}
+    @Nonnull
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.VERY_LARGE;
+    }
 
-	@Nonnull
-	@Override
-	public Weight getWeight(@Nonnull ItemStack stack)
-	{
-		return Weight.HEAVY;
-	}
+    @Nonnull
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return Weight.HEAVY;
+    }
 
-	// Extends ItemStackHandler for ease of use. Duplicates most of ItemHeatHandler
-	// functionality
-	private class SmallVesselCapability extends ItemStackHandler implements ICapabilityProvider, ISmallVesselHandler
-	{
-		private final FluidTank tank;
+    // Extends ItemStackHandler for ease of use. Duplicates most of ItemHeatHandler functionality
+    private class SmallVesselCapability extends ItemStackHandler implements ICapabilityProvider, ISmallVesselHandler
+    {
+        private final FluidTank tank;
 
-		private float heatCapacity;
-		private float meltTemp;
-		private float temperature;
-		private long lastUpdateTick;
+        private float heatCapacity;
+        private float meltTemp;
+        private float temperature;
+        private long lastUpdateTick;
 
-		private boolean fluidMode; // Does the stack contain molten metal?
-		private IFluidTankProperties[] fluidTankProperties;
+        private boolean fluidMode; // Does the stack contain molten metal?
+        private IFluidTankProperties[] fluidTankProperties;
 
-		SmallVesselCapability(@Nullable NBTTagCompound nbt)
-		{
-			super(4);
+        SmallVesselCapability(@Nullable NBTTagCompound nbt)
+        {
+            super(4);
 
-			tank = new FluidTank(4000);
-			fluidMode = false;
-			if (nbt != null)
-			{
-				deserializeNBT(nbt);
-			}
-			updateFluidData(tank.getFluid());
-		}
+            tank = new FluidTank(4000);
+            fluidMode = false;
+            if (nbt != null)
+            {
+                deserializeNBT(nbt);
+            }
+            updateFluidData(tank.getFluid());
+        }
 
-		@Override
-		public Mode getFluidMode()
-		{
-			if (fluidMode)
-			{
-				return getTemperature() < meltTemp ? Mode.LIQUID_SOLID : Mode.LIQUID_MOLTEN;
-			}
-			return Mode.INVENTORY;
-		}
+        @Override
+        public Mode getFluidMode()
+        {
+            if (fluidMode)
+            {
+                return getTemperature() < meltTemp ? Mode.LIQUID_SOLID : Mode.LIQUID_MOLTEN;
+            }
+            return Mode.INVENTORY;
+        }
 
-		@Override
-		public void setFluidMode(boolean fluidMode)
-		{
-			this.fluidMode = fluidMode;
-		}
+        @Override
+        public void setFluidMode(boolean fluidMode)
+        {
+            this.fluidMode = fluidMode;
+        }
 
-		@Override
-		public float getTemperature()
-		{
-			return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.TOTAL_TIME.getTicks() - lastUpdateTick);
-		}
+        @Override
+        public float getTemperature()
+        {
+            return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.TOTAL_TIME.getTicks() - lastUpdateTick);
+        }
 
-		@Override
-		public void setTemperature(float temperature)
-		{
-			this.temperature = temperature;
-			this.lastUpdateTick = CalendarTFC.TOTAL_TIME.getTicks();
-		}
+        @Override
+        public void setTemperature(float temperature)
+        {
+            this.temperature = temperature;
+            this.lastUpdateTick = CalendarTFC.TOTAL_TIME.getTicks();
+        }
 
-		@Override
-		public float getHeatCapacity()
-		{
-			return heatCapacity;
-		}
+        @Override
+        public float getHeatCapacity()
+        {
+            return heatCapacity;
+        }
 
-		@Override
-		public float getMeltTemp()
-		{
-			return meltTemp;
-		}
+        @Override
+        public float getMeltTemp()
+        {
+            return meltTemp;
+        }
 
-		@SideOnly(Side.CLIENT)
-		@Override
-		public void addHeatInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
-		{
-			Metal metal = getMetal();
-			if (metal != null)
-			{
-				String desc = TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount());
-				if (isMolten())
-					desc += " - " + I18n.format("tfc.tooltip.liquid");
-				text.add(desc);
-			} else
-			{
-				boolean hasContent = false;
-				for (int i = 0; i < super.stacks.size(); i++)
-				{
-					ItemStack slot = super.stacks.get(i);
-					if (!slot.isEmpty())
-					{
-						text.add(1, I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_item", slot.getCount(), slot.getItem().getItemStackDisplayName(slot)));
-						hasContent = true;
-					}
-				}
+        @SideOnly(Side.CLIENT)
+        @Override
+        public void addHeatInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
+        {
+            Metal metal = getMetal();
+            if (metal != null)
+            {
+                String desc = TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount());
+                if (isMolten())
+                    desc += " - " + I18n.format("tfc.tooltip.liquid");
+                text.add(desc);
+            }
+            else
+            {
+                boolean hasContent = false;
+                for (int i = 0; i < super.stacks.size(); i++)
+                {
+                    ItemStack slot = super.stacks.get(i);
+                    if (!slot.isEmpty())
+                    {
+                        text.add(1, I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_item", slot.getCount(), slot.getItem().getItemStackDisplayName(slot)));
+                        hasContent = true;
+                    }
+                }
 
-				if (!hasContent)
-				{
-					text.add(1, I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_empty"));
-				}
-			}
-			ISmallVesselHandler.super.addHeatInfo(stack, text);
-		}
+                if (!hasContent)
+                {
+                    text.add(1, I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_empty"));
+                }
+            }
+            ISmallVesselHandler.super.addHeatInfo(stack, text);
+        }
 
-		@Nullable
-		@Override
-		public Metal getMetal()
-		{
-			return fluidMode && tank.getFluid() != null ? ((FluidMetal) tank.getFluid().getFluid()).getMetal() : null;
-		}
+        @Nullable
+        @Override
+        public Metal getMetal()
+        {
+            return fluidMode && tank.getFluid() != null ? ((FluidMetal) tank.getFluid().getFluid()).getMetal() : null;
+        }
 
-		@Override
-		public int getAmount()
-		{
-			return fluidMode ? tank.getFluidAmount() : 0;
-		}
+        @Override
+        public int getAmount()
+        {
+            return fluidMode ? tank.getFluidAmount() : 0;
+        }
 
-		@Override
-		public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-		{
-			return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityItemHeat.ITEM_HEAT_CAPABILITY;
-		}
+        @Override
+        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
+        {
+            return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+                || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+                || capability == CapabilityItemHeat.ITEM_HEAT_CAPABILITY;
+        }
 
-		@Nullable
-		@Override
-		@SuppressWarnings("unchecked")
-		public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-		{
-			return hasCapability(capability, facing) ? (T) this : null;
-		}
+        @Nullable
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
+        {
+            return hasCapability(capability, facing) ? (T) this : null;
+        }
 
-		@Override
-		public NBTTagCompound serializeNBT()
-		{
-			NBTTagCompound nbt = new NBTTagCompound();
-			fluidMode = tank.getFluidAmount() > 0;
-			nbt.setBoolean("fluidMode", fluidMode);
+        @Override
+        public NBTTagCompound serializeNBT()
+        {
+            NBTTagCompound nbt = new NBTTagCompound();
+            fluidMode = tank.getFluidAmount() > 0;
+            nbt.setBoolean("fluidMode", fluidMode);
 
-			float temp = getTemperature();
-			nbt.setFloat("heat", temp);
-			if (temp <= 0)
-			{
-				nbt.setLong("ticks", -1);
-			} else
-			{
-				nbt.setLong("ticks", CalendarTFC.TOTAL_TIME.getTicks());
-			}
+            float temp = getTemperature();
+            nbt.setFloat("heat", temp);
+            if (temp <= 0)
+            {
+                nbt.setLong("ticks", -1);
+            }
+            else
+            {
+                nbt.setLong("ticks", CalendarTFC.TOTAL_TIME.getTicks());
+            }
 
-			if (fluidMode)
-			{
-				// Save fluid data
-				NBTTagCompound fluidData = new NBTTagCompound();
-				tank.writeToNBT(fluidData);
-				nbt.setTag("fluids", fluidData);
-			} else
-			{
-				// Save item data
-				nbt.setTag("items", super.serializeNBT());
-			}
-			return nbt;
-		}
+            if (fluidMode)
+            {
+                // Save fluid data
+                NBTTagCompound fluidData = new NBTTagCompound();
+                tank.writeToNBT(fluidData);
+                nbt.setTag("fluids", fluidData);
+            }
+            else
+            {
+                // Save item data
+                nbt.setTag("items", super.serializeNBT());
+            }
+            return nbt;
+        }
 
-		@Override
-		public void deserializeNBT(NBTTagCompound nbt)
-		{
-			temperature = nbt.getFloat("heat");
-			lastUpdateTick = nbt.getLong("ticks");
-			fluidMode = nbt.getBoolean("fluidMode");
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt)
+        {
+            temperature = nbt.getFloat("heat");
+            lastUpdateTick = nbt.getLong("ticks");
+            fluidMode = nbt.getBoolean("fluidMode");
 
-			if (fluidMode && nbt.hasKey("fluids", Constants.NBT.TAG_COMPOUND))
-			{
-				// Read fluid contents
-				tank.readFromNBT(nbt.getCompoundTag("fluids"));
-			} else if (!fluidMode && nbt.hasKey("items", Constants.NBT.TAG_COMPOUND))
-			{
-				// Read item contents
-				super.deserializeNBT(nbt.getCompoundTag("items"));
-			}
+            if (fluidMode && nbt.hasKey("fluids", Constants.NBT.TAG_COMPOUND))
+            {
+                // Read fluid contents
+                tank.readFromNBT(nbt.getCompoundTag("fluids"));
+            }
+            else if (!fluidMode && nbt.hasKey("items", Constants.NBT.TAG_COMPOUND))
+            {
+                // Read item contents
+                super.deserializeNBT(nbt.getCompoundTag("items"));
+            }
 
-		}
+        }
 
-		@Override
-		public IFluidTankProperties[] getTankProperties()
-		{
-			if (fluidTankProperties == null)
-			{
-				fluidTankProperties = new IFluidTankProperties[] { new FluidTankPropertiesWrapper(tank) };
-			}
-			return fluidTankProperties;
-		}
+        @Override
+        public IFluidTankProperties[] getTankProperties()
+        {
+            if (fluidTankProperties == null)
+            {
+                fluidTankProperties = new IFluidTankProperties[] {new FluidTankPropertiesWrapper(tank)};
+            }
+            return fluidTankProperties;
+        }
 
-		@Override
-		public int fill(FluidStack resource, boolean doFill)
-		{
-			if (resource.getFluid() instanceof FluidMetal)
-			{
-				updateFluidData(resource);
-				return tank.fill(resource, doFill);
-			}
-			return 0;
-		}
+        @Override
+        public int fill(FluidStack resource, boolean doFill)
+        {
+            if (resource.getFluid() instanceof FluidMetal)
+            {
+                updateFluidData(resource);
+                return tank.fill(resource, doFill);
+            }
+            return 0;
+        }
 
-		@Nullable
-		@Override
-		public FluidStack drain(FluidStack resource, boolean doDrain)
-		{
-			if (getFluidMode() == Mode.LIQUID_MOLTEN)
-				return tank.drain(resource, doDrain);
-			return null;
-		}
+        @Nullable
+        @Override
+        public FluidStack drain(FluidStack resource, boolean doDrain)
+        {
+            if (getFluidMode() == Mode.LIQUID_MOLTEN)
+                return tank.drain(resource, doDrain);
+            return null;
+        }
 
-		@Nullable
-		@Override
-		public FluidStack drain(int maxDrain, boolean doDrain)
-		{
-			if (getFluidMode() == Mode.LIQUID_MOLTEN)
-				return tank.drain(maxDrain, doDrain);
-			return null;
-		}
+        @Nullable
+        @Override
+        public FluidStack drain(int maxDrain, boolean doDrain)
+        {
+            if (getFluidMode() == Mode.LIQUID_MOLTEN)
+                return tank.drain(maxDrain, doDrain);
+            return null;
+        }
 
-		private void updateFluidData(@Nullable FluidStack fluid)
-		{
-			if (fluid != null && fluid.getFluid() instanceof FluidMetal)
-			{
-				Metal metal = ((FluidMetal) fluid.getFluid()).getMetal();
-				this.meltTemp = metal.getMeltTemp();
-				this.heatCapacity = metal.getSpecificHeat();
-			} else
-			{
-				this.meltTemp = 1000;
-				this.heatCapacity = 1;
-			}
+        private void updateFluidData(@Nullable FluidStack fluid)
+        {
+            if (fluid != null && fluid.getFluid() instanceof FluidMetal)
+            {
+                Metal metal = ((FluidMetal) fluid.getFluid()).getMetal();
+                this.meltTemp = metal.getMeltTemp();
+                this.heatCapacity = metal.getSpecificHeat();
+            }
+            else
+            {
+                this.meltTemp = 1000;
+                this.heatCapacity = 1;
+            }
 
-		}
-	}
+        }
+    }
 
 }

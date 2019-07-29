@@ -5,17 +5,12 @@
 
 package net.dries007.tfc;
 
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+
+import java.io.File;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraftforge.client.GuiIngameForge;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.*;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
@@ -30,8 +25,27 @@ import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCKeybindings;
 import net.dries007.tfc.client.gui.overlay.PlayerDataOverlay;
 import net.dries007.tfc.client.render.animal.RenderAnimalTFCFamiliarity;
-import net.dries007.tfc.command.*;
-import net.dries007.tfc.network.*;
+import net.dries007.tfc.command.CommandFindVeins;
+import net.dries007.tfc.command.CommandGenTree;
+import net.dries007.tfc.command.CommandHeat;
+import net.dries007.tfc.command.CommandNutrients;
+import net.dries007.tfc.command.CommandStripWorld;
+import net.dries007.tfc.command.CommandTimeTFC;
+import net.dries007.tfc.network.PacketAnvilUpdate;
+import net.dries007.tfc.network.PacketBarrelUpdate;
+import net.dries007.tfc.network.PacketBellowsUpdate;
+import net.dries007.tfc.network.PacketCalendarUpdate;
+import net.dries007.tfc.network.PacketCapabilityContainerUpdate;
+import net.dries007.tfc.network.PacketChunkData;
+import net.dries007.tfc.network.PacketCrucibleUpdate;
+import net.dries007.tfc.network.PacketFoodStatsReplace;
+import net.dries007.tfc.network.PacketFoodStatsUpdate;
+import net.dries007.tfc.network.PacketGuiButton;
+import net.dries007.tfc.network.PacketLargeVesselUpdate;
+import net.dries007.tfc.network.PacketLoomUpdate;
+import net.dries007.tfc.network.PacketOpenCraftingGui;
+import net.dries007.tfc.network.PacketPlaceBlockSpecial;
+import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
@@ -40,225 +54,255 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.fuel.FuelManager;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
-import net.dries007.tfc.world.classic.worldgen.*;
+import net.dries007.tfc.world.classic.fluids.FluidThirstRegistry;
+import net.dries007.tfc.world.classic.worldgen.RarityBasedWorldGen;
+import net.dries007.tfc.world.classic.worldgen.WorldGenFruitTrees;
+import net.dries007.tfc.world.classic.worldgen.WorldGenLargeRocks;
+import net.dries007.tfc.world.classic.worldgen.WorldGenLooseRocks;
+import net.dries007.tfc.world.classic.worldgen.WorldGenOreVeins;
+import net.dries007.tfc.world.classic.worldgen.WorldGenSoilPits;
+import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
 import net.dries007.tfc.world.classic.worldgen.fissure.WorldGenFissure;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
-
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
+import net.minecraftforge.client.GuiIngameForge;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.ICrashCallable;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.LoaderState;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ModMetadata;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 @SuppressWarnings("DefaultAnnotationParam")
 @Mod(modid = MOD_ID, name = TFCConstants.MOD_NAME, useMetadata = true, guiFactory = Constants.GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = TFCConstants.SIGNING_KEY)
 @Mod.EventBusSubscriber
 public final class TerraFirmaCraft
 {
-	@Mod.Instance
-	private static TerraFirmaCraft instance = null;
+    @Mod.Instance
+    private static TerraFirmaCraft instance = null;
 
-	@Mod.Metadata
-	private static ModMetadata metadata = null;
+    @Mod.Metadata
+    private static ModMetadata metadata = null;
 
-	@SidedProxy(modId = MOD_ID, clientSide = "net.dries007.tfc.proxy.ClientProxy", serverSide = "net.dries007.tfc.proxy.ServerProxy")
-	private static IProxy proxy = null;
+    @SidedProxy(modId = MOD_ID, clientSide = "net.dries007.tfc.proxy.ClientProxy", serverSide = "net.dries007.tfc.proxy.ServerProxy")
+    private static IProxy proxy = null;
 
-	static
-	{
-		FluidRegistry.enableUniversalBucket();
-	}
+    private static File configDir;
+    
+    static
+    {
+        FluidRegistry.enableUniversalBucket();
+    }
 
-	public static Logger getLog()
-	{
-		return instance.log;
-	}
+    public static Logger getLog()
+    {
+        return instance.log;
+    }
 
-	public static IProxy getProxy()
-	{
-		return proxy;
-	}
+    public static File getConfigDirectory()
+    {
+        return configDir;
+    }
 
-	public static String getVersion()
-	{
-		return metadata.version;
-	}
+    public static IProxy getProxy()
+    {
+        return proxy;
+    }
 
-	public static WorldTypeTFC getWorldTypeTFC()
-	{
-		return instance.worldTypeTFC;
-	}
+    public static String getVersion()
+    {
+        return metadata.version;
+    }
 
-	public static SimpleNetworkWrapper getNetwork()
-	{
-		return instance.network;
-	}
+    public static WorldTypeTFC getWorldTypeTFC()
+    {
+        return instance.worldTypeTFC;
+    }
 
-	public static TerraFirmaCraft getInstance()
-	{
-		return instance;
-	}
+    public static SimpleNetworkWrapper getNetwork()
+    {
+        return instance.network;
+    }
 
-	public static LoaderState.ModState getState()
-	{
-		return Loader.instance().getModState(Loader.instance().getModObjectList().inverse().get(instance));
-	}
+    public static TerraFirmaCraft getInstance()
+    {
+        return instance;
+    }
 
-	public static boolean pastState(LoaderState.ModState state)
-	{
-		return TerraFirmaCraft.getState().ordinal() >= state.ordinal();
-	}
+    public static LoaderState.ModState getState()
+    {
+        return Loader.instance().getModState(Loader.instance().getModObjectList().inverse().get(instance));
+    }
 
-	private final Logger log = LogManager.getLogger(MOD_ID);
-	private boolean isSignedBuild = true;
-	private WorldTypeTFC worldTypeTFC;
-	private SimpleNetworkWrapper network;
+    public static boolean pastState(LoaderState.ModState state)
+    {
+        return TerraFirmaCraft.getState().ordinal() >= state.ordinal();
+    }
 
-	@Mod.EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{
-		log.debug("If you can see this, debug logging is working :)");
-		if (!isSignedBuild)
-		{
-			log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
-		}
+    private final Logger log = LogManager.getLogger(MOD_ID);
+    private boolean isSignedBuild = true;
+    private WorldTypeTFC worldTypeTFC;
+    private SimpleNetworkWrapper network;
 
-		// No need to sync config here, forge magic
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event)
+    {
+    	configDir = event.getModConfigurationDirectory();
+    	
+        log.debug("If you can see this, debug logging is working :)");
+        if (!isSignedBuild)
+        {
+            log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
+        }
 
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, new TFCGuiHandler());
-		network = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
-		int id = 0;
-		// Received on server
-		network.registerMessage(new PacketGuiButton.Handler(), PacketGuiButton.class, ++id, Side.SERVER);
-		network.registerMessage(new PacketPlaceBlockSpecial.Handler(), PacketPlaceBlockSpecial.class, ++id, Side.SERVER);
-		network.registerMessage(new PacketSwitchPlayerInventoryTab.Handler(), PacketSwitchPlayerInventoryTab.class, ++id, Side.SERVER);
-		network.registerMessage(new PacketOpenCraftingGui.Handler(), PacketOpenCraftingGui.class, ++id, Side.SERVER);
+        // No need to sync config here, forge magic
 
-		// Received on client
-		network.registerMessage(new PacketAnvilUpdate.Handler(), PacketAnvilUpdate.class, ++id, Side.CLIENT);
-		network.registerMessage(new PacketCrucibleUpdate.Handler(), PacketCrucibleUpdate.class, ++id, Side.CLIENT);
-		network.registerMessage(new PacketChunkData.Handler(), PacketChunkData.class, ++id, Side.CLIENT);
-		network.registerMessage(new PacketCapabilityContainerUpdate.Handler(), PacketCapabilityContainerUpdate.class, ++id, Side.CLIENT);
-		network.registerMessage(new PacketCalendarUpdate.Handler(), PacketCalendarUpdate.class, ++id, Side.CLIENT);
-		network.registerMessage(new PacketBarrelUpdate.Handler(), PacketBarrelUpdate.class, ++id, Side.CLIENT);
-		network.registerMessage(new PacketLoomUpdate.Handler(), PacketLoomUpdate.class, ++id, Side.CLIENT);
-		network.registerMessage(new PacketBellowsUpdate.Handler(), PacketBellowsUpdate.class, ++id, Side.CLIENT);
-		network.registerMessage(new PacketFoodStatsUpdate.Handler(), PacketFoodStatsUpdate.class, ++id, Side.CLIENT);
-		network.registerMessage(new PacketFoodStatsReplace.Handler(), PacketFoodStatsReplace.class, ++id, Side.CLIENT);
-		network.registerMessage(new PacketLargeVesselUpdate.Handler(), PacketLargeVesselUpdate.class, ++id, Side.CLIENT);
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new TFCGuiHandler());
+        network = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
+        int id = 0;
+        // Received on server
+        network.registerMessage(new PacketGuiButton.Handler(), PacketGuiButton.class, ++id, Side.SERVER);
+        network.registerMessage(new PacketPlaceBlockSpecial.Handler(), PacketPlaceBlockSpecial.class, ++id, Side.SERVER);
+        network.registerMessage(new PacketSwitchPlayerInventoryTab.Handler(), PacketSwitchPlayerInventoryTab.class, ++id, Side.SERVER);
+        network.registerMessage(new PacketOpenCraftingGui.Handler(), PacketOpenCraftingGui.class, ++id, Side.SERVER);
 
-		EntitiesTFC.preInit();
-		VeinRegistry.INSTANCE.preInit(event.getModConfigurationDirectory());
+        // Received on client
+        network.registerMessage(new PacketAnvilUpdate.Handler(), PacketAnvilUpdate.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketCrucibleUpdate.Handler(), PacketCrucibleUpdate.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketChunkData.Handler(), PacketChunkData.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketCapabilityContainerUpdate.Handler(), PacketCapabilityContainerUpdate.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketCalendarUpdate.Handler(), PacketCalendarUpdate.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketBarrelUpdate.Handler(), PacketBarrelUpdate.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketLoomUpdate.Handler(), PacketLoomUpdate.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketBellowsUpdate.Handler(), PacketBellowsUpdate.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketFoodStatsUpdate.Handler(), PacketFoodStatsUpdate.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketFoodStatsReplace.Handler(), PacketFoodStatsReplace.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketLargeVesselUpdate.Handler(), PacketLargeVesselUpdate.class, ++id, Side.CLIENT);
 
-		CapabilityChunkData.preInit();
-		CapabilityItemSize.preInit();
-		CapabilityItemHeat.preInit();
-		CapabilityForgeable.preInit();
-		CapabilityFood.preInit();
-		CapabilityEgg.preInit();
-		CapabilityPlayerSkills.preInit();
-		CapabilityDamageResistance.preInit();
+        EntitiesTFC.preInit();
+        VeinRegistry.INSTANCE.preInit(getConfigDirectory());
+        FluidThirstRegistry.INSTANCE.preInit(getConfigDirectory());
 
-		if (event.getSide().isClient())
-		{
-			ClientEvents.preInit();
-		}
-	}
+        CapabilityChunkData.preInit();
+        CapabilityItemSize.preInit();
+        CapabilityItemHeat.preInit();
+        CapabilityForgeable.preInit();
+        CapabilityFood.preInit();
+        CapabilityEgg.preInit();
+        CapabilityPlayerSkills.preInit();
+        CapabilityDamageResistance.preInit();
 
-	@Mod.EventHandler
-	public void init(FMLInitializationEvent event)
-	{
-		if (!isSignedBuild)
-		{
-			log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
-		}
+        if (event.getSide().isClient())
+        {
+            ClientEvents.preInit();
+        }
+    }
 
-		OreDictionaryHelper.init();
-		ItemsTFC.init();
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event)
+    {
+        if (!isSignedBuild)
+        {
+            log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
+        }
 
-		if (event.getSide().isClient())
-		{
-			TFCKeybindings.init();
-			// Enable overlay to render health, thirst and hunger bars, TFC style.
-			MinecraftForge.EVENT_BUS.register(PlayerDataOverlay.getInstance());
-			// Enable to render animals familiarity
-			MinecraftForge.EVENT_BUS.register(RenderAnimalTFCFamiliarity.getInstance());
-			GuiIngameForge.renderHealth = false;
-			GuiIngameForge.renderArmor = false;
-			GuiIngameForge.renderExperiance = false;
-		}
+        OreDictionaryHelper.init();
+        ItemsTFC.init();
 
-		worldTypeTFC = new WorldTypeTFC();
+        if (event.getSide().isClient())
+        {
+            TFCKeybindings.init();
+            //Enable overlay to render health, thirst and hunger bars, TFC style.
+            MinecraftForge.EVENT_BUS.register(PlayerDataOverlay.getInstance());
+            //Enable to render animals familiarity
+            MinecraftForge.EVENT_BUS.register(RenderAnimalTFCFamiliarity.getInstance());
+            GuiIngameForge.renderHealth = false;
+            GuiIngameForge.renderArmor = false;
+            GuiIngameForge.renderExperiance = false;
+        }
 
-		GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true, 20)), 0);
-		GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureRarity, new WorldGenFissure(false, -1)), 0);
-		// todo: fix these. They are commented out due to significant cascading lag
-		// problems. They need to be rewritten
-		// GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x ->
-		// x.lavaFissureClusterRarity, new WorldGenSurfaceFissureCluster(true)), 1);
-		// GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x ->
-		// x.waterFissureClusterRarity, new WorldGenSurfaceFissureCluster(false)), 1);
-		GameRegistry.registerWorldGenerator(new WorldGenOreVeins(), 2);
-		GameRegistry.registerWorldGenerator(new WorldGenSoilPits(), 3);
-		GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 4);
-		// todo: add cave decorator
-		GameRegistry.registerWorldGenerator(new WorldGenTrees(), 5);
-		GameRegistry.registerWorldGenerator(new WorldGenFruitTrees(), 6);
-		GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 7);
-	}
+        worldTypeTFC = new WorldTypeTFC();
 
-	@Mod.EventHandler
-	public void postInit(FMLPostInitializationEvent event) throws UnsupportedEncodingException, FileNotFoundException
-	{
-		if (!isSignedBuild)
-		{
-			log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
-		}
+        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true, 20)), 0);
+        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureRarity, new WorldGenFissure(false, -1)), 0);
+        // todo: fix these. They are commented out due to significant cascading lag problems. They need to be rewritten
+        //GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureClusterRarity, new WorldGenSurfaceFissureCluster(true)), 1);
+        //GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureClusterRarity, new WorldGenSurfaceFissureCluster(false)), 1);
+        GameRegistry.registerWorldGenerator(new WorldGenOreVeins(), 2);
+        GameRegistry.registerWorldGenerator(new WorldGenSoilPits(), 3);
+        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 4);
+        //todo: add cave decorator
+        GameRegistry.registerWorldGenerator(new WorldGenTrees(), 5);
+        GameRegistry.registerWorldGenerator(new WorldGenFruitTrees(), 6);
+        GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 7);
+    }
 
-		HeatRecipeManager.postInit();
-		FuelManager.postInit();
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event)
+    {
+        if (!isSignedBuild)
+        {
+            log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
+        }
 
-		VeinRegistry.INSTANCE.reloadOreGen();
-	}
+        HeatRecipeManager.postInit();
+        FuelManager.postInit();
 
-	@Mod.EventHandler
-	public void onServerStarting(FMLServerStartingEvent event)
-	{
-		if (!isSignedBuild)
-		{
-			log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
-		}
+        VeinRegistry.INSTANCE.reloadOreGen();
+        FluidThirstRegistry.INSTANCE.reloadFluidThirst();
+    }
 
-		event.registerServerCommand(new CommandStripWorld());
-		event.registerServerCommand(new CommandGenTree());
-		event.registerServerCommand(new CommandHeat());
-		event.registerServerCommand(new CommandTimeTFC());
-		event.registerServerCommand(new CommandFindVeins());
-		event.registerServerCommand(new CommandNutrients());
-	}
+    @Mod.EventHandler
+    public void onServerStarting(FMLServerStartingEvent event)
+    {
+        if (!isSignedBuild)
+        {
+            log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
+        }
 
-	@Mod.EventHandler
-	public void onIMC(FMLInterModComms.IMCEvent event)
-	{
-		// todo: provide nice API here.
-	}
+        event.registerServerCommand(new CommandStripWorld());
+        event.registerServerCommand(new CommandGenTree());
+        event.registerServerCommand(new CommandHeat());
+        event.registerServerCommand(new CommandTimeTFC());
+        event.registerServerCommand(new CommandFindVeins());
+        event.registerServerCommand(new CommandNutrients());
+    }
 
-	@Mod.EventHandler
-	public void onFingerprintViolation(FMLFingerprintViolationEvent event)
-	{
-		isSignedBuild = false;
-		FMLCommonHandler.instance().registerCrashCallable(new ICrashCallable()
-		{
-			@Override
-			public String getLabel()
-			{
-				return TFCConstants.MOD_NAME;
-			}
+    @Mod.EventHandler
+    public void onIMC(FMLInterModComms.IMCEvent event)
+    {
+        //todo: provide nice API here.
+    }
 
-			@Override
-			public String call()
-			{
-				return "You are not running an official build. Please do not use this and then report bugs or issues.";
-			}
-		});
-	}
+    @Mod.EventHandler
+    public void onFingerprintViolation(FMLFingerprintViolationEvent event)
+    {
+        isSignedBuild = false;
+        FMLCommonHandler.instance().registerCrashCallable(new ICrashCallable()
+        {
+            @Override
+            public String getLabel()
+            {
+                return TFCConstants.MOD_NAME;
+            }
+
+            @Override
+            public String call()
+            {
+                return "You are not running an official build. Please do not use this and then report bugs or issues.";
+            }
+        });
+    }
 }

@@ -15,18 +15,15 @@ import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
 @SideOnly(Side.CLIENT)
 public class RenderThrownJavelin extends RenderThrownWeapon<EntityThrownJavelin>
 {
-	public RenderThrownJavelin(RenderManager renderManagerIn)
-	{
-		super(renderManagerIn);
-	}
+    public RenderThrownJavelin(RenderManager renderManagerIn) { super(renderManagerIn); }
 
-	@Override
-	protected void doRenderTransformations(EntityThrownJavelin entity, float partialTicks)
-	{
-		GlStateManager.translate(0.55D, 0.55D, 0.0D);
-		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
-		GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks - 135.0F, 0.0F, 0.0F, 1.0F);
+    @Override
+    protected void doRenderTransformations(EntityThrownJavelin entity, float partialTicks)
+    {
+        GlStateManager.translate(0.55D, 0.55D, 0.0D);
+        GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks - 135.0F, 0.0F, 0.0F, 1.0F);
 
-		GlStateManager.scale(2.0d, 2.0d, 1);
-	}
+        GlStateManager.scale(2.0d, 2.0d, 1);
+    }
 }

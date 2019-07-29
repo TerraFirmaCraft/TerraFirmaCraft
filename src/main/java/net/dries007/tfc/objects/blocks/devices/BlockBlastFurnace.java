@@ -41,133 +41,155 @@ import net.dries007.tfc.util.Multiblock;
 @ParametersAreNonnullByDefault
 public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, ILightableBlock
 {
-	private static final Multiblock BLAST_FURNACE_CHIMNEY;
+    private static final Multiblock BLAST_FURNACE_CHIMNEY;
 
-	static
-	{
-		Predicate<IBlockState> stoneMatcher = state -> state.getBlock() instanceof BlockFireBrick;
-		Predicate<IBlockState> ironSheetMatcher = state -> (state.getBlock() instanceof BlockMetalSheet) && ((BlockMetalSheet) state.getBlock()).getMetal() == Metal.WROUGHT_IRON;
-		BLAST_FURNACE_CHIMNEY = new Multiblock().match(new BlockPos(0, 0, 0), state -> state.getBlock() == BlocksTFC.MOLTEN || state.getBlock() == Blocks.AIR).match(new BlockPos(0, 0, 1), stoneMatcher).match(new BlockPos(0, 0, -1), stoneMatcher).match(new BlockPos(1, 0, 0), stoneMatcher).match(new BlockPos(-1, 0, 0), stoneMatcher).match(new BlockPos(0, 0, -2), ironSheetMatcher).match(new BlockPos(0, 0, -2), tile -> tile.getFace(EnumFacing.NORTH), TEMetalSheet.class).match(new BlockPos(0, 0, 2), ironSheetMatcher).match(new BlockPos(0, 0, 2), tile -> tile.getFace(EnumFacing.SOUTH), TEMetalSheet.class).match(new BlockPos(2, 0, 0), ironSheetMatcher).match(new BlockPos(2, 0, 0), tile -> tile.getFace(EnumFacing.EAST), TEMetalSheet.class).match(new BlockPos(-2, 0, 0), ironSheetMatcher).match(new BlockPos(-2, 0, 0), tile -> tile.getFace(EnumFacing.WEST), TEMetalSheet.class).match(new BlockPos(-1, 0, -1), ironSheetMatcher)
-				.match(new BlockPos(-1, 0, -1), tile -> tile.getFace(EnumFacing.NORTH) && tile.getFace(EnumFacing.WEST), TEMetalSheet.class).match(new BlockPos(1, 0, -1), ironSheetMatcher).match(new BlockPos(1, 0, -1), tile -> tile.getFace(EnumFacing.NORTH) && tile.getFace(EnumFacing.EAST), TEMetalSheet.class).match(new BlockPos(-1, 0, 1), ironSheetMatcher).match(new BlockPos(-1, 0, 1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.WEST), TEMetalSheet.class).match(new BlockPos(1, 0, 1), ironSheetMatcher).match(new BlockPos(1, 0, 1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.EAST), TEMetalSheet.class);
-	}
+    static
+    {
+        Predicate<IBlockState> stoneMatcher = state -> state.getBlock() instanceof BlockFireBrick;
+        Predicate<IBlockState> ironSheetMatcher = state -> (state.getBlock() instanceof BlockMetalSheet)
+            && ((BlockMetalSheet) state.getBlock()).getMetal() == Metal.WROUGHT_IRON;
+        BLAST_FURNACE_CHIMNEY = new Multiblock()
+            .match(new BlockPos(0, 0, 0), state -> state.getBlock() == BlocksTFC.MOLTEN || state.getBlock() == Blocks.AIR)
+            .match(new BlockPos(0, 0, 1), stoneMatcher)
+            .match(new BlockPos(0, 0, -1), stoneMatcher)
+            .match(new BlockPos(1, 0, 0), stoneMatcher)
+            .match(new BlockPos(-1, 0, 0), stoneMatcher)
+            .match(new BlockPos(0, 0, -2), ironSheetMatcher)
+            .match(new BlockPos(0, 0, -2), tile -> tile.getFace(EnumFacing.NORTH), TEMetalSheet.class)
+            .match(new BlockPos(0, 0, 2), ironSheetMatcher)
+            .match(new BlockPos(0, 0, 2), tile -> tile.getFace(EnumFacing.SOUTH), TEMetalSheet.class)
+            .match(new BlockPos(2, 0, 0), ironSheetMatcher)
+            .match(new BlockPos(2, 0, 0), tile -> tile.getFace(EnumFacing.EAST), TEMetalSheet.class)
+            .match(new BlockPos(-2, 0, 0), ironSheetMatcher)
+            .match(new BlockPos(-2, 0, 0), tile -> tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
+            .match(new BlockPos(-1, 0, -1), ironSheetMatcher)
+            .match(new BlockPos(-1, 0, -1), tile -> tile.getFace(EnumFacing.NORTH) && tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
+            .match(new BlockPos(1, 0, -1), ironSheetMatcher)
+            .match(new BlockPos(1, 0, -1), tile -> tile.getFace(EnumFacing.NORTH) && tile.getFace(EnumFacing.EAST), TEMetalSheet.class)
+            .match(new BlockPos(-1, 0, 1), ironSheetMatcher)
+            .match(new BlockPos(-1, 0, 1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
+            .match(new BlockPos(1, 0, 1), ironSheetMatcher)
+            .match(new BlockPos(1, 0, 1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.EAST), TEMetalSheet.class);
+    }
 
-	public BlockBlastFurnace()
-	{
-		super(Material.IRON);
-	}
+    public BlockBlastFurnace()
+    {
+        super(Material.IRON);
+    }
 
-	public int getChimneyLevels(World world, BlockPos pos)
-	{
-		if (world.getBlockState(pos.down()).getBlock() != BlocksTFC.CRUCIBLE)
-		{
-			// no crucible
-			return 0;
-		}
-		for (int i = 1; i < 6; i++)
-		{
-			BlockPos center = pos.up(i);
-			if (!BLAST_FURNACE_CHIMNEY.test(world, center))
-			{
-				return i - 1;
-			}
-		}
-		// Maximum levels
-		return 5;
-	}
+    public int getChimneyLevels(World world, BlockPos pos)
+    {
+        if (world.getBlockState(pos.down()).getBlock() != BlocksTFC.CRUCIBLE)
+        {
+            // no crucible
+            return 0;
+        }
+        for (int i = 1; i < 6; i++)
+        {
+            BlockPos center = pos.up(i);
+            if (!BLAST_FURNACE_CHIMNEY.test(world, center))
+            {
+                return i - 1;
+            }
+        }
+        // Maximum levels
+        return 5;
+    }
 
-	@SuppressWarnings("deprecation")
-	@Nonnull
-	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return getDefaultState().withProperty(LIT, meta == 1);
-	}
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(LIT, meta == 1);
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return state.getValue(LIT) ? 1 : 0;
-	}
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(LIT) ? 1 : 0;
+    }
 
-	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-	{
-		TEBlastFurnace te = Helpers.getTE(worldIn, pos, TEBlastFurnace.class);
-		if (te != null)
-		{
-			te.onBreakBlock(worldIn, pos);
-		}
-		super.breakBlock(worldIn, pos, state);
-	}
 
-	@Override
-	public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
-	{
-		if (!super.canPlaceBlockAt(worldIn, pos))
-			return false;
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TEBlastFurnace te = Helpers.getTE(worldIn, pos, TEBlastFurnace.class);
+        if (te != null)
+        {
+            te.onBreakBlock(worldIn, pos);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
 
-		return getChimneyLevels(worldIn, pos) > 0;
-	}
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
+    {
+        if (!super.canPlaceBlockAt(worldIn, pos))
+            return false;
 
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
-		if (!worldIn.isRemote)
-		{
-			if (!state.getValue(LIT))
-			{
-				TEBlastFurnace te = Helpers.getTE(worldIn, pos, TEBlastFurnace.class);
-				if (te == null)
-					return true;
-				ItemStack held = playerIn.getHeldItem(hand);
-				if (ItemFireStarter.canIgnite(held) && te.canIgnite())
-				{
-					worldIn.setBlockState(pos, state.withProperty(LIT, true));
-					// te.onIgnite();
-					return true;
-				}
-			}
-			if (!playerIn.isSneaking())
-			{
-				TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.BLAST_FURNACE);
-			}
-		}
-		return true;
-	}
+        return getChimneyLevels(worldIn, pos) > 0;
+    }
 
-	@Override
-	@Nonnull
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, LIT);
-	}
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if (!worldIn.isRemote)
+        {
+            if (!state.getValue(LIT))
+            {
+                TEBlastFurnace te = Helpers.getTE(worldIn, pos, TEBlastFurnace.class);
+                if (te == null)
+                    return true;
+                ItemStack held = playerIn.getHeldItem(hand);
+                if (ItemFireStarter.canIgnite(held) && te.canIgnite())
+                {
+                    worldIn.setBlockState(pos, state.withProperty(LIT, true));
+                    //te.onIgnite();
+                    return true;
+                }
+            }
+            if (!playerIn.isSneaking())
+            {
+                TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.BLAST_FURNACE);
+            }
+        }
+        return true;
+    }
 
-	@Override
-	public boolean hasTileEntity(IBlockState state)
-	{
-		return true;
-	}
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, LIT);
+    }
 
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState state)
-	{
-		return new TEBlastFurnace();
-	}
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
 
-	@Override
-	public boolean canIntakeFrom(@Nonnull TEBellows te, @Nonnull Vec3i offset, @Nonnull EnumFacing facing)
-	{
-		return offset.equals(TEBellows.OFFSET_LEVEL);
-	}
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TEBlastFurnace();
+    }
 
-	@Override
-	public void onAirIntake(@Nonnull TEBellows te, @Nonnull World world, @Nonnull BlockPos pos, int airAmount)
-	{
-		TEBlastFurnace teBlastFurnace = Helpers.getTE(world, pos, TEBlastFurnace.class);
-		if (teBlastFurnace != null)
-		{
-			teBlastFurnace.onAirIntake(airAmount);
-		}
-	}
+    @Override
+    public boolean canIntakeFrom(@Nonnull TEBellows te, @Nonnull Vec3i offset, @Nonnull EnumFacing facing)
+    {
+        return offset.equals(TEBellows.OFFSET_LEVEL);
+    }
+
+    @Override
+    public void onAirIntake(@Nonnull TEBellows te, @Nonnull World world, @Nonnull BlockPos pos, int airAmount)
+    {
+        TEBlastFurnace teBlastFurnace = Helpers.getTE(world, pos, TEBlastFurnace.class);
+        if (teBlastFurnace != null)
+        {
+            teBlastFurnace.onAirIntake(airAmount);
+        }
+    }
 }

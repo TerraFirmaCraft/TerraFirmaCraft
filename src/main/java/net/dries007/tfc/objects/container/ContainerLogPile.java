@@ -21,45 +21,44 @@ import net.dries007.tfc.objects.te.TELogPile;
 @MethodsReturnNonnullByDefault
 public class ContainerLogPile extends ContainerTE<TELogPile>
 {
-	private static final int[] SLOT_SHIFT_ORDER = new int[] { 0, 1, 2, 3 };
+    private static final int[] SLOT_SHIFT_ORDER = new int[] {0, 1, 2, 3};
 
-	public ContainerLogPile(InventoryPlayer playerInv, TELogPile te)
-	{
-		super(playerInv, te);
-		te.setContainerOpen(true);
-	}
+    public ContainerLogPile(InventoryPlayer playerInv, TELogPile te)
+    {
+        super(playerInv, te);
+        te.setContainerOpen(true);
+    }
 
-	@Override
-	public boolean canInteractWith(@Nonnull EntityPlayer player)
-	{
-		return tile.canInteractWith(player);
-	}
+    @Override
+    public boolean canInteractWith(@Nonnull EntityPlayer player)
+    {
+        return tile.canInteractWith(player);
+    }
 
-	@Override
-	protected void addContainerSlots()
-	{
-		IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		if (inventory != null)
-		{
-			addSlotToContainer(new SlotCallback(inventory, 0, 71, 23, tile));
-			addSlotToContainer(new SlotCallback(inventory, 1, 89, 23, tile));
-			addSlotToContainer(new SlotCallback(inventory, 2, 71, 41, tile));
-			addSlotToContainer(new SlotCallback(inventory, 3, 89, 41, tile));
-		}
-	}
+    @Override
+    protected void addContainerSlots()
+    {
+        IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (inventory != null)
+        {
+            addSlotToContainer(new SlotCallback(inventory, 0, 71, 23, tile));
+            addSlotToContainer(new SlotCallback(inventory, 1, 89, 23, tile));
+            addSlotToContainer(new SlotCallback(inventory, 2, 71, 41, tile));
+            addSlotToContainer(new SlotCallback(inventory, 3, 89, 41, tile));
+        }
+    }
 
-	@Override
-	protected int[] getSlotShiftOrder(int containerSlots)
-	{
-		return SLOT_SHIFT_ORDER;
-	}
+    @Override
+    protected int[] getSlotShiftOrder(int containerSlots)
+    {
+        return SLOT_SHIFT_ORDER;
+    }
 
-	@Override
-	public void onContainerClosed(EntityPlayer playerIn)
-	{
-		// Marks the log pile as closed, allows it to delete itself if there aren't any
-		// logs in it
-		tile.setContainerOpen(false);
-		super.onContainerClosed(playerIn);
-	}
+    @Override
+    public void onContainerClosed(EntityPlayer playerIn)
+    {
+        // Marks the log pile as closed, allows it to delete itself if there aren't any logs in it
+        tile.setContainerOpen(false);
+        super.onContainerClosed(playerIn);
+    }
 }

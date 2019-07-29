@@ -23,41 +23,40 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class ItemLumberTFC extends ItemTFC
 {
-	private static final Map<Tree, ItemLumberTFC> MAP = new HashMap<>();
+    private static final Map<Tree, ItemLumberTFC> MAP = new HashMap<>();
 
-	public static ItemLumberTFC get(Tree wood)
-	{
-		return MAP.get(wood);
-	}
+    public static ItemLumberTFC get(Tree wood)
+    {
+        return MAP.get(wood);
+    }
 
-	public static ItemStack get(Tree wood, int amount)
-	{
-		return new ItemStack(MAP.get(wood), amount);
-	}
+    public static ItemStack get(Tree wood, int amount)
+    {
+        return new ItemStack(MAP.get(wood), amount);
+    }
 
-	public final Tree wood;
+    public final Tree wood;
 
-	public ItemLumberTFC(Tree wood)
-	{
-		this.wood = wood;
-		if (MAP.put(wood, this) != null)
-			throw new IllegalStateException("There can only be one.");
-		setMaxDamage(0);
-		OreDictionaryHelper.register(this, "lumber");
-		OreDictionaryHelper.register(this, "lumber", wood.getRegistryName().getPath());
-	}
+    public ItemLumberTFC(Tree wood)
+    {
+        this.wood = wood;
+        if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+        setMaxDamage(0);
+        OreDictionaryHelper.register(this, "lumber");
+        OreDictionaryHelper.register(this, "lumber", wood.getRegistryName().getPath());
+    }
 
-	@Nonnull
-	@Override
-	public Size getSize(ItemStack stack)
-	{
-		return Size.NORMAL;
-	}
+    @Nonnull
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return Size.NORMAL;
+    }
 
-	@Nonnull
-	@Override
-	public Weight getWeight(ItemStack stack)
-	{
-		return Weight.LIGHT;
-	}
+    @Nonnull
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.LIGHT;
+    }
 }

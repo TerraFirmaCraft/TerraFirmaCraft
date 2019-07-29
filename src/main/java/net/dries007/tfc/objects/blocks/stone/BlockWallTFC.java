@@ -21,49 +21,49 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 //todo: actually by-pass the variant? or would it be worth adding a mossy texture for nice looking walls
 public class BlockWallTFC extends BlockWall
 {
-	private static final Map<Rock, EnumMap<Rock.Type, BlockWallTFC>> TABLE = new HashMap<>();
+    private static final Map<Rock, EnumMap<Rock.Type, BlockWallTFC>> TABLE = new HashMap<>();
 
-	public static BlockWallTFC get(Rock rock, Rock.Type type)
-	{
-		return TABLE.get(rock).get(type);
-	}
+    public static BlockWallTFC get(Rock rock, Rock.Type type)
+    {
+        return TABLE.get(rock).get(type);
+    }
 
-	public final BlockRockVariant parent;
+    public final BlockRockVariant parent;
 
-	public BlockWallTFC(BlockRockVariant modelBlock)
-	{
-		super(modelBlock);
+    public BlockWallTFC(BlockRockVariant modelBlock)
+    {
+        super(modelBlock);
 
-		if (!TABLE.containsKey(modelBlock.rock))
-			TABLE.put(modelBlock.rock, new EnumMap<>(Rock.Type.class));
-		TABLE.get(modelBlock.rock).put(modelBlock.type, this);
+        if (!TABLE.containsKey(modelBlock.rock))
+            TABLE.put(modelBlock.rock, new EnumMap<>(Rock.Type.class));
+        TABLE.get(modelBlock.rock).put(modelBlock.type, this);
 
-		parent = modelBlock;
-		OreDictionaryHelper.register(this, "wall");
-		OreDictionaryHelper.registerRockType(this, modelBlock.type, modelBlock.rock, "wall");
-	}
+        parent = modelBlock;
+        OreDictionaryHelper.register(this, "wall");
+        OreDictionaryHelper.registerRockType(this, modelBlock.type, modelBlock.rock, "wall");
+    }
 
-	@Override
-	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
-	{
-		items.add(new ItemStack(this));
-	}
+    @Override
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
+    {
+        items.add(new ItemStack(this));
+    }
 
-	@Override
-	public int damageDropped(IBlockState state)
-	{
-		return 0;
-	}
+    @Override
+    public int damageDropped(IBlockState state)
+    {
+        return 0;
+    }
 
-	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return this.getDefaultState();
-	}
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState();
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return 0;
-	}
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return 0;
+    }
 }

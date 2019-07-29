@@ -22,34 +22,37 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 @ParametersAreNonnullByDefault
 public class BlockRockVariantConnected extends BlockRockVariantFallable
 {
-	// Used for connected textures only.
-	public static final PropertyBool NORTH = PropertyBool.create("north");
-	public static final PropertyBool EAST = PropertyBool.create("east");
-	public static final PropertyBool SOUTH = PropertyBool.create("south");
-	public static final PropertyBool WEST = PropertyBool.create("west");
+    // Used for connected textures only.
+    public static final PropertyBool NORTH = PropertyBool.create("north");
+    public static final PropertyBool EAST = PropertyBool.create("east");
+    public static final PropertyBool SOUTH = PropertyBool.create("south");
+    public static final PropertyBool WEST = PropertyBool.create("west");
 
-	public BlockRockVariantConnected(Rock.Type type, Rock rock)
-	{
-		super(type, rock);
-	}
+    public BlockRockVariantConnected(Rock.Type type, Rock rock)
+    {
+        super(type, rock);
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return 0;
-	}
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return 0;
+    }
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
-		pos = pos.add(0, -1, 0);
-		return state.withProperty(NORTH, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.NORTH)))).withProperty(EAST, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.EAST)))).withProperty(SOUTH, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.SOUTH)))).withProperty(WEST, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.WEST))));
-	}
+    @SuppressWarnings("deprecation")
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        pos = pos.add(0, -1, 0);
+        return state.withProperty(NORTH, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.NORTH))))
+            .withProperty(EAST, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.EAST))))
+            .withProperty(SOUTH, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.SOUTH))))
+            .withProperty(WEST, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.WEST))));
+    }
 
-	@Override
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
-	}
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
+    }
 }

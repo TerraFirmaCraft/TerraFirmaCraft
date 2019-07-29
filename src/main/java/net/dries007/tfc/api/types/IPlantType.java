@@ -11,7 +11,7 @@ import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 
 public interface IPlantType
 {
-	BlockPlantTFC create(Plant plant);
+    BlockPlantTFC create(Plant plant);
 
-	Material getPlantMaterial();
+    Material getPlantMaterial();
 }

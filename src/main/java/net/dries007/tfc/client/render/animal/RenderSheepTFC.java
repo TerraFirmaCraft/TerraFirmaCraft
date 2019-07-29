@@ -23,17 +23,17 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderSheepTFC extends RenderLiving<EntitySheepTFC>
 {
-	private static final ResourceLocation SHEEP_TEXTURES = new ResourceLocation(MOD_ID, "textures/entity/animal/sheep.png");
+    private static final ResourceLocation SHEEP_TEXTURES = new ResourceLocation(MOD_ID, "textures/entity/animal/sheep.png");
 
-	public RenderSheepTFC(RenderManager renderManager)
-	{
-		super(renderManager, new ModelSheepBodyTFC(), 0.7F);
-		this.addLayer(new LayerSheepWoolTFC(this));
-	}
+    public RenderSheepTFC(RenderManager renderManager)
+    {
+        super(renderManager, new ModelSheepBodyTFC(), 0.7F);
+        this.addLayer(new LayerSheepWoolTFC(this));
+    }
 
-	@Override
-	protected ResourceLocation getEntityTexture(@Nonnull EntitySheepTFC entity)
-	{
-		return SHEEP_TEXTURES;
-	}
+    @Override
+    protected ResourceLocation getEntityTexture(@Nonnull EntitySheepTFC entity)
+    {
+        return SHEEP_TEXTURES;
+    }
 }

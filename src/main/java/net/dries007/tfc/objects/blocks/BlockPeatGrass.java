@@ -30,64 +30,66 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class BlockPeatGrass extends BlockPeat
 {
-	// Used for connected textures only.
-	public static final PropertyBool NORTH = PropertyBool.create("north");
-	public static final PropertyBool EAST = PropertyBool.create("east");
-	public static final PropertyBool SOUTH = PropertyBool.create("south");
-	public static final PropertyBool WEST = PropertyBool.create("west");
+    // Used for connected textures only.
+    public static final PropertyBool NORTH = PropertyBool.create("north");
+    public static final PropertyBool EAST = PropertyBool.create("east");
+    public static final PropertyBool SOUTH = PropertyBool.create("south");
+    public static final PropertyBool WEST = PropertyBool.create("west");
 
-	public BlockPeatGrass(Material material)
-	{
-		super(material);
-		setSoundType(SoundType.GROUND);
-		setTickRandomly(true);
-		OreDictionaryHelper.register(this, "peat");
-		OreDictionaryHelper.register(this, "peat", "grass");
-		Blocks.FIRE.setFireInfo(this, 5, 5);
-	}
+    public BlockPeatGrass(Material material)
+    {
+        super(material);
+        setSoundType(SoundType.GROUND);
+        setTickRandomly(true);
+        OreDictionaryHelper.register(this, "peat");
+        OreDictionaryHelper.register(this, "peat", "grass");
+        Blocks.FIRE.setFireInfo(this, 5, 5);
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return 0;
-	}
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return 0;
+    }
 
-	@SuppressWarnings("deprecation")
-	@Nonnull
-	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
-		pos = pos.add(0, -1, 0);
-		return state.withProperty(NORTH, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.NORTH)))).withProperty(EAST, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.EAST)))).withProperty(SOUTH, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.SOUTH)))).withProperty(WEST, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.WEST))));
-	}
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        pos = pos.add(0, -1, 0);
+        return state.withProperty(NORTH, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.NORTH))))
+            .withProperty(EAST, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.EAST))))
+            .withProperty(SOUTH, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.SOUTH))))
+            .withProperty(WEST, BlocksTFC.isGrass(world.getBlockState(pos.offset(EnumFacing.WEST))));
+    }
 
-	@Override
-	public void randomTick(World world, BlockPos pos, IBlockState state, Random rand)
-	{
-		if (world.isRemote)
-			return;
-		Helpers.spreadGrass(world, pos, state, rand);
-	}
+    @Override
+    public void randomTick(World world, BlockPos pos, IBlockState state, Random rand)
+    {
+        if (world.isRemote) return;
+        Helpers.spreadGrass(world, pos, state, rand);
+    }
 
-	@Override
-	@Nonnull
-	public Item getItemDropped(IBlockState state, Random rand, int fortune)
-	{
-		return Item.getItemFromBlock(BlocksTFC.PEAT);
-	}
+    @Override
+    @Nonnull
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Item.getItemFromBlock(BlocksTFC.PEAT);
+    }
 
-	@Override
-	@Nonnull
-	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getRenderLayer()
-	{
-		return BlockRenderLayer.CUTOUT;
-	}
+    @Override
+    @Nonnull
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
+    }
 
-	@Override
-	@Nonnull
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
-	}
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
+    }
 }

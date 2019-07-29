@@ -23,42 +23,41 @@ import net.minecraft.world.World;
 @ParametersAreNonnullByDefault
 public abstract class TEBase extends TileEntity
 {
-	/**
-	 * Gets the update packet that is used to sync the TE on load
-	 */
-	@Override
-	@Nullable
-	public SPacketUpdateTileEntity getUpdatePacket()
-	{
-		return new SPacketUpdateTileEntity(getPos(), 1, getUpdateTag());
-	}
+    /**
+     * Gets the update packet that is used to sync the TE on load
+     */
+    @Override
+    @Nullable
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        return new SPacketUpdateTileEntity(getPos(), 1, getUpdateTag());
+    }
 
-	/**
-	 * Gets the update tag send by packets. Contains base data (i.e. position), as
-	 * well as TE specific data
-	 */
-	@Nonnull
-	@Override
-	public NBTTagCompound getUpdateTag()
-	{
-		return writeToNBT(super.getUpdateTag());
-	}
+    /**
+     * Gets the update tag send by packets. Contains base data (i.e. position), as well as TE specific data
+     */
+    @Nonnull
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return writeToNBT(super.getUpdateTag());
+    }
 
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-	{
-		readFromNBT(pkt.getNbtCompound());
-	}
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
+    {
+        readFromNBT(pkt.getNbtCompound());
+    }
 
-	@Override
-	public void handleUpdateTag(NBTTagCompound nbt)
-	{
-		readFromNBT(nbt);
-	}
+    @Override
+    public void handleUpdateTag(NBTTagCompound nbt)
+    {
+        readFromNBT(nbt);
+    }
 
-	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
-	{
-		return oldState.getBlock() != newSate.getBlock();
-	}
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return oldState.getBlock() != newSate.getBlock();
+    }
 }

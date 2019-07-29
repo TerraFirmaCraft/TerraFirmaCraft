@@ -17,28 +17,28 @@ import net.dries007.tfc.util.calendar.Month;
 
 public interface IProxy
 {
-	@Nonnull
-	IThreadListener getThreadListener(MessageContext context);
+    @Nonnull
+    IThreadListener getThreadListener(MessageContext context);
 
-	@Nullable
-	EntityPlayer getPlayer(MessageContext context);
+    @Nullable
+    EntityPlayer getPlayer(MessageContext context);
 
-	@Nullable
-	World getWorld(MessageContext context);
+    @Nullable
+    World getWorld(MessageContext context);
 
-	@Nonnull
-	String getMonthName(Month month, boolean useSeasons);
+    @Nonnull
+    String getMonthName(Month month, boolean useSeasons);
 
-	// Calendar Translation / Localization Methods
+    // Calendar Translation / Localization Methods
 
-	@Nonnull
-	String getDayName(int dayOfMonth, long totalDays);
+    @Nonnull
+    String getDayName(int dayOfMonth, long totalDays);
 
-	class WrongSideException extends RuntimeException
-	{
-		WrongSideException(String message)
-		{
-			super(message);
-		}
-	}
+    class WrongSideException extends RuntimeException
+    {
+        WrongSideException(String message)
+        {
+            super(message);
+        }
+    }
 }

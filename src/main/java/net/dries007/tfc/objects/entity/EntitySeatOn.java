@@ -22,75 +22,74 @@ import mcp.MethodsReturnNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class EntitySeatOn extends Entity
 {
-	private BlockPos pos;
+    private BlockPos pos;
 
-	public EntitySeatOn(World world)
-	{
-		super(world);
-		this.noClip = true;
-		this.height = 0.01F;
-		this.width = 0.01F;
-	}
+    public EntitySeatOn(World world)
+    {
+        super(world);
+        this.noClip = true;
+        this.height = 0.01F;
+        this.width = 0.01F;
+    }
 
-	public EntitySeatOn(World world, BlockPos pos, double y0ffset)
-	{
-		this(world);
-		this.pos = pos;
-		setPosition(pos.getX() + 0.5D, pos.getY() + y0ffset, pos.getZ() + 0.5D);
-	}
+    public EntitySeatOn(World world, BlockPos pos, double y0ffset)
+    {
+        this(world);
+        this.pos = pos;
+        setPosition(pos.getX() + 0.5D, pos.getY() + y0ffset, pos.getZ() + 0.5D);
+    }
 
-	public BlockPos getPos()
-	{
-		return this.pos;
-	}
+    public BlockPos getPos()
+    {
+        return this.pos;
+    }
 
-	public Entity getSittingEntity()
-	{
-		for (Entity ent : this.getPassengers())
-		{
-			if (ent instanceof EntityLiving)
-				return ent;
-		}
-		return null;
-	}
+    public Entity getSittingEntity()
+    {
+        for (Entity ent : this.getPassengers())
+        {
+            if (ent instanceof EntityLiving) return ent;
+        }
+        return null;
+    }
 
-	@Override
-	protected void entityInit()
-	{
-	}
+    @Override
+    protected void entityInit()
+    {
+    }
 
-	@Override
-	public void onEntityUpdate()
-	{
-		if (!this.world.isRemote)
-		{
-			if (pos == null || !this.isBeingRidden() || this.world.isAirBlock(pos))
-			{
-				this.setDead();
-			}
-		}
-	}
+    @Override
+    public void onEntityUpdate()
+    {
+        if (!this.world.isRemote)
+        {
+            if (pos == null || !this.isBeingRidden() || this.world.isAirBlock(pos))
+            {
+                this.setDead();
+            }
+        }
+    }
 
-	@Override
-	protected boolean shouldSetPosAfterLoading()
-	{
-		return false;
-	}
+    @Override
+    protected boolean shouldSetPosAfterLoading()
+    {
+        return false;
+    }
 
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound)
-	{
-	}
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound compound)
+    {
+    }
 
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound)
-	{
-	}
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound compound)
+    {
+    }
 
-	@Override
-	public double getMountedYOffset()
-	{
-		return this.height * 0.0D;
-	}
+    @Override
+    public double getMountedYOffset()
+    {
+        return this.height * 0.0D;
+    }
 
 }

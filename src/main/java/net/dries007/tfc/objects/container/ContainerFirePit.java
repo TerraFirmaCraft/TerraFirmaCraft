@@ -16,33 +16,33 @@ import static net.dries007.tfc.objects.te.TEFirePit.*;
 
 public class ContainerFirePit extends ContainerTE<TEFirePit>
 {
-	private static final int[] SLOT_SHIFT_ORDER = { SLOT_FUEL_INPUT, SLOT_ITEM_INPUT };
+    private static final int[] SLOT_SHIFT_ORDER = {SLOT_FUEL_INPUT, SLOT_ITEM_INPUT};
 
-	public ContainerFirePit(InventoryPlayer playerInv, TEFirePit te)
-	{
-		super(playerInv, te, true);
-	}
+    public ContainerFirePit(InventoryPlayer playerInv, TEFirePit te)
+    {
+        super(playerInv, te, true);
+    }
 
-	@Override
-	protected void addContainerSlots()
-	{
-		IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		if (inventory != null)
-		{
-			// fuel slots
-			for (int i = 0; i < 4; i++)
-				addSlotToContainer(new SlotCallback(inventory, i, 8, 62 - 18 * i, tile));
-			// input slot
-			addSlotToContainer(new SlotCallback(inventory, SLOT_ITEM_INPUT, 80, 20, tile));
-			// output slots
-			addSlotToContainer(new SlotCallback(inventory, SLOT_OUTPUT_1, 71, 48, tile));
-			addSlotToContainer(new SlotCallback(inventory, SLOT_OUTPUT_2, 89, 48, tile));
-		}
-	}
+    @Override
+    protected void addContainerSlots()
+    {
+        IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (inventory != null)
+        {
+            // fuel slots
+            for (int i = 0; i < 4; i++)
+                addSlotToContainer(new SlotCallback(inventory, i, 8, 62 - 18 * i, tile));
+            // input slot
+            addSlotToContainer(new SlotCallback(inventory, SLOT_ITEM_INPUT, 80, 20, tile));
+            // output slots
+            addSlotToContainer(new SlotCallback(inventory, SLOT_OUTPUT_1, 71, 48, tile));
+            addSlotToContainer(new SlotCallback(inventory, SLOT_OUTPUT_2, 89, 48, tile));
+        }
+    }
 
-	@Override
-	protected int[] getSlotShiftOrder(int containerSlots)
-	{
-		return SLOT_SHIFT_ORDER;
-	}
+    @Override
+    protected int[] getSlotShiftOrder(int containerSlots)
+    {
+        return SLOT_SHIFT_ORDER;
+    }
 }

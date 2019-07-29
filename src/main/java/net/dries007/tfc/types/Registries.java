@@ -29,46 +29,46 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public final class Registries
 {
-	private static final Map<ResourceLocation, IForgeRegistry<?>> preBlockRegistries = new LinkedHashMap<>(); // Needs to respect insertion order
+    private static final Map<ResourceLocation, IForgeRegistry<?>> preBlockRegistries = new LinkedHashMap<>(); // Needs to respect insertion order
 
-	@SubscribeEvent
-	public static void onNewRegistryEvent(RegistryEvent.NewRegistry event)
-	{
-		// Pre Block registries (dirty hack)
+    @SubscribeEvent
+    public static void onNewRegistryEvent(RegistryEvent.NewRegistry event)
+    {
+        // Pre Block registries (dirty hack)
 
-		newRegistry(ROCK_TYPE, RockCategory.class, true); // Required before: ROCK
-		newRegistry(ROCK, Rock.class, true);
-		newRegistry(METAL, Metal.class, true);// Required before: ORE, ALLOY_RECIPE, WELDING_RECIPE
-		newRegistry(ORE, Ore.class, true);
-		newRegistry(TREE, Tree.class, true);
-		newRegistry(PLANT, Plant.class, true);
+        newRegistry(ROCK_TYPE, RockCategory.class, true); // Required before: ROCK
+        newRegistry(ROCK, Rock.class, true);
+        newRegistry(METAL, Metal.class, true);// Required before: ORE, ALLOY_RECIPE, WELDING_RECIPE
+        newRegistry(ORE, Ore.class, true);
+        newRegistry(TREE, Tree.class, true);
+        newRegistry(PLANT, Plant.class, true);
 
-		// Normal registries
-		newRegistry(ALLOY_RECIPE, AlloyRecipe.class, false);
-		newRegistry(KNAPPING_RECIPE, KnappingRecipe.class, false);
-		newRegistry(ANVIL_RECIPE, AnvilRecipe.class, false);
-		newRegistry(WELDING_RECIPE, WeldingRecipe.class, false);
-		newRegistry(PIT_KILN_RECIPE, PitKilnRecipe.class, false);
-		newRegistry(BARREL_RECIPE, BarrelRecipe.class, false);
-		newRegistry(LOOM_RECIPE, LoomRecipe.class, false);
-		newRegistry(QUERN_RECIPE, QuernRecipe.class, false);
-	}
+        // Normal registries
+        newRegistry(ALLOY_RECIPE, AlloyRecipe.class, false);
+        newRegistry(KNAPPING_RECIPE, KnappingRecipe.class, false);
+        newRegistry(ANVIL_RECIPE, AnvilRecipe.class, false);
+        newRegistry(WELDING_RECIPE, WeldingRecipe.class, false);
+        newRegistry(PIT_KILN_RECIPE, PitKilnRecipe.class, false);
+        newRegistry(BARREL_RECIPE, BarrelRecipe.class, false);
+        newRegistry(LOOM_RECIPE, LoomRecipe.class, false);
+        newRegistry(QUERN_RECIPE, QuernRecipe.class, false);
+    }
 
-	/**
-	 * Danger: dirty hack.
-	 */
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void onRegisterBlock(RegistryEvent.Register<Block> event)
-	{
-		preBlockRegistries.forEach((e, r) -> MinecraftForge.EVENT_BUS.post(new TFCRegistryEvent.RegisterPreBlock<>(e, r)));
-	}
+    /**
+     * Danger: dirty hack.
+     */
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onRegisterBlock(RegistryEvent.Register<Block> event)
+    {
+        preBlockRegistries.forEach((e, r) -> MinecraftForge.EVENT_BUS.post(new TFCRegistryEvent.RegisterPreBlock<>(e, r)));
+    }
 
-	private static <T extends IForgeRegistryEntry<T>> void newRegistry(ResourceLocation name, Class<T> tClass, boolean isPreBlockRegistry)
-	{
-		IForgeRegistry<T> reg = new RegistryBuilder<T>().setName(name).setType(tClass).create();
-		if (isPreBlockRegistry)
-		{
-			preBlockRegistries.put(name, reg);
-		}
-	}
+    private static <T extends IForgeRegistryEntry<T>> void newRegistry(ResourceLocation name, Class<T> tClass, boolean isPreBlockRegistry)
+    {
+        IForgeRegistry<T> reg = new RegistryBuilder<T>().setName(name).setType(tClass).create();
+        if (isPreBlockRegistry)
+        {
+            preBlockRegistries.put(name, reg);
+        }
+    }
 }

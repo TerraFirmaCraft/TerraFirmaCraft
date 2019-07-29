@@ -27,88 +27,88 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class GuiLargeVessel extends GuiContainerTE<TELargeVessel>
 {
-	public static final ResourceLocation LARGE_VESSEL_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/large_vessel.png");
-	private final String translationKey;
+    public static final ResourceLocation LARGE_VESSEL_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/large_vessel.png");
+    private final String translationKey;
 
-	public GuiLargeVessel(Container container, InventoryPlayer playerInv, TELargeVessel tile, String translationKey)
-	{
-		super(container, playerInv, tile, LARGE_VESSEL_BACKGROUND);
+    public GuiLargeVessel(Container container, InventoryPlayer playerInv, TELargeVessel tile, String translationKey)
+    {
+        super(container, playerInv, tile, LARGE_VESSEL_BACKGROUND);
 
-		this.translationKey = translationKey;
-	}
+        this.translationKey = translationKey;
+    }
 
-	@Override
-	public void initGui()
-	{
-		super.initGui();
-		addButton(new GuiButtonLargeVesselSeal(tile, 0, guiTop, guiLeft));
-	}
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+        addButton(new GuiButtonLargeVesselSeal(tile, 0, guiTop, guiLeft));
+    }
 
-	@Override
-	protected void renderHoveredToolTip(int mouseX, int mouseY)
-	{
-		super.renderHoveredToolTip(mouseX, mouseY);
+    @Override
+    protected void renderHoveredToolTip(int mouseX, int mouseY)
+    {
+        super.renderHoveredToolTip(mouseX, mouseY);
 
-		// Button Tooltips
-		for (GuiButton button : buttonList)
-		{
-			if (button instanceof IButtonTooltip && button.isMouseOver())
-			{
-				IButtonTooltip tooltip = (IButtonTooltip) button;
-				if (tooltip.hasTooltip())
-				{
-					drawHoveringText(I18n.format(tooltip.getTooltip()), mouseX, mouseY);
-				}
-			}
-		}
-	}
+        // Button Tooltips
+        for (GuiButton button : buttonList)
+        {
+            if (button instanceof IButtonTooltip && button.isMouseOver())
+            {
+                IButtonTooltip tooltip = (IButtonTooltip) button;
+                if (tooltip.hasTooltip())
+                {
+                    drawHoveringText(I18n.format(tooltip.getTooltip()), mouseX, mouseY);
+                }
+            }
+        }
+    }
 
-	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
-		String name = I18n.format(translationKey + ".name");
-		fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+        String name = I18n.format(translationKey + ".name");
+        fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
 
-		if (tile.isSealed())
-		{
-			// Draw over the input items, making them look unavailable
-			IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			if (handler != null)
-			{
-				GL11.glDisable(GL11.GL_DEPTH_TEST);
-				for (int slotId = 0; slotId < handler.getSlots(); slotId++)
-				{
-					drawSlotOverlay(inventorySlots.getSlot(slotId));
-				}
-				GL11.glEnable(GL11.GL_DEPTH_TEST);
-			}
+        if (tile.isSealed())
+        {
+            // Draw over the input items, making them look unavailable
+            IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            if (handler != null)
+            {
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                for (int slotId = 0; slotId < handler.getSlots(); slotId++)
+                {
+                    drawSlotOverlay(inventorySlots.getSlot(slotId));
+                }
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+            }
 
-			// Draw the text displaying both the seal date, and the recipe name
-			fontRenderer.drawString(tile.getSealedDate(), xSize / 2 - fontRenderer.getStringWidth(tile.getSealedDate()) / 2, 74, 0x404040);
-		}
-	}
+            // Draw the text displaying both the seal date, and the recipe name
+            fontRenderer.drawString(tile.getSealedDate(), xSize / 2 - fontRenderer.getStringWidth(tile.getSealedDate()) / 2, 74, 0x404040);
+        }
+    }
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-	{
-		super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
-	}
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+    {
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+    }
 
-	@Override
-	protected void actionPerformed(GuiButton button) throws IOException
-	{
-		if (button instanceof GuiButtonLargeVesselSeal)
-		{
-			TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id));
-		}
-		super.actionPerformed(button);
-	}
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException
+    {
+        if (button instanceof GuiButtonLargeVesselSeal)
+        {
+            TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id));
+        }
+        super.actionPerformed(button);
+    }
 
-	private void drawSlotOverlay(Slot slot)
-	{
-		int xPos = slot.xPos - 1;
-		int yPos = slot.yPos - 1;
+    private void drawSlotOverlay(Slot slot)
+    {
+        int xPos = slot.xPos - 1;
+        int yPos = slot.yPos - 1;
 
-		this.drawGradientRect(xPos, yPos, xPos + 18, yPos + 18, 0x75FFFFFF, 0x75FFFFFF);
-	}
+        this.drawGradientRect(xPos, yPos, xPos + 18, yPos + 18, 0x75FFFFFF, 0x75FFFFFF);
+    }
 }

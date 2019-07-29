@@ -18,93 +18,94 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 public class EggHandler implements IEgg, ICapabilitySerializable<NBTTagCompound>
 {
-	private boolean fertilized;
-	private long hatchDay;
-	private NBTTagCompound entitytag;
+    private boolean fertilized;
+    private long hatchDay;
+    private NBTTagCompound entitytag;
 
-	public EggHandler()
-	{
-		this(null);
-	}
+    public EggHandler()
+    {
+        this(null);
+    }
 
-	public EggHandler(@Nullable NBTTagCompound nbt)
-	{
-		deserializeNBT(nbt);
-	}
+    public EggHandler(@Nullable NBTTagCompound nbt)
+    {
+        deserializeNBT(nbt);
+    }
 
-	public EggHandler(boolean fertilized, long hatchDay, Entity entity)
-	{
-		this.fertilized = fertilized;
-		this.hatchDay = hatchDay;
-		this.entitytag = entity.serializeNBT();
-	}
+    public EggHandler(boolean fertilized, long hatchDay, Entity entity)
+    {
+        this.fertilized = fertilized;
+        this.hatchDay = hatchDay;
+        this.entitytag = entity.serializeNBT();
+    }
 
-	@Override
-	public long getHatchDay()
-	{
-		return hatchDay;
-	}
+    @Override
+    public long getHatchDay()
+    {
+        return hatchDay;
+    }
 
-	@Nullable
-	@Override
-	public Entity getEntity(World world)
-	{
-		return entitytag != null ? EntityList.createEntityFromNBT(entitytag, world) : null;
-	}
+    @Nullable
+    @Override
+    public Entity getEntity(World world)
+    {
+        return entitytag != null ? EntityList.createEntityFromNBT(entitytag, world) : null;
+    }
 
-	@Override
-	public boolean isFertilized()
-	{
-		return fertilized;
-	}
+    @Override
+    public boolean isFertilized()
+    {
+        return fertilized;
+    }
 
-	public void setFertilized(@Nonnull Entity entity, long hatchDay)
-	{
-		this.fertilized = true;
-		this.entitytag = entity.serializeNBT();
-		this.hatchDay = hatchDay;
-	}
+    public void setFertilized(@Nonnull Entity entity, long hatchDay)
+    {
+        this.fertilized = true;
+        this.entitytag = entity.serializeNBT();
+        this.hatchDay = hatchDay;
+    }
 
-	@Override
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-	{
-		return capability == CapabilityEgg.CAPABILITY;
-	}
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
+    {
+        return capability == CapabilityEgg.CAPABILITY;
+    }
 
-	@Nullable
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-	{
-		return capability == CapabilityEgg.CAPABILITY ? (T) this : null;
-	}
+    @Nullable
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        return capability == CapabilityEgg.CAPABILITY ? (T) this : null;
+    }
 
-	@Override
-	public NBTTagCompound serializeNBT()
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		if (entitytag != null)
-		{
-			nbt.setBoolean("fertilized", fertilized);
-			nbt.setLong("hatchDay", hatchDay);
-			nbt.setTag("entity", entitytag);
-		}
-		return nbt;
-	}
+    @Override
+    public NBTTagCompound serializeNBT()
+    {
+        NBTTagCompound nbt = new NBTTagCompound();
+        if (entitytag != null)
+        {
+            nbt.setBoolean("fertilized", fertilized);
+            nbt.setLong("hatchDay", hatchDay);
+            nbt.setTag("entity", entitytag);
+        }
+        return nbt;
+    }
 
-	@Override
-	public void deserializeNBT(NBTTagCompound nbt)
-	{
-		if (nbt != null && nbt.hasKey("entity"))
-		{
-			fertilized = nbt.getBoolean("fertilized");
-			hatchDay = nbt.getLong("hatchDay");
-			entitytag = nbt.getCompoundTag("entity");
-		} else
-		{
-			fertilized = false;
-			entitytag = null;
-			hatchDay = 0;
-		}
-	}
+    @Override
+    public void deserializeNBT(NBTTagCompound nbt)
+    {
+        if (nbt != null && nbt.hasKey("entity"))
+        {
+            fertilized = nbt.getBoolean("fertilized");
+            hatchDay = nbt.getLong("hatchDay");
+            entitytag = nbt.getCompoundTag("entity");
+        }
+        else
+        {
+            fertilized = false;
+            entitytag = null;
+            hatchDay = 0;
+        }
+    }
 }

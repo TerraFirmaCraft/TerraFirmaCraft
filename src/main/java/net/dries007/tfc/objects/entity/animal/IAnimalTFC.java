@@ -9,5 +9,5 @@ import net.minecraft.world.biome.Biome;
 
 public interface IAnimalTFC
 {
-	boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall);
+    boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall);
 }

@@ -27,36 +27,35 @@ import net.dries007.tfc.objects.fluids.FluidsTFC;
 @ParametersAreNonnullByDefault
 public class BlockFluidTFC extends BlockFluidClassic
 {
-	public BlockFluidTFC(Fluid fluid, Material material, boolean canCreateSources)
-	{
-		super(fluid, material);
-		this.canCreateSources = canCreateSources;
-	}
+    public BlockFluidTFC(Fluid fluid, Material material, boolean canCreateSources)
+    {
+        super(fluid, material);
+        this.canCreateSources = canCreateSources;
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
-	{
-		if (definedFluid == FluidsTFC.HOT_WATER && rand.nextInt(4) == 0)
-		{
-			worldIn.spawnParticle(EnumParticleTypes.WATER_BUBBLE, (double) (pos.getX() + rand.nextFloat()), pos.getY() + 0.50D, (double) (pos.getZ() + rand.nextFloat()), 0.0D, 0.0D, 0.0D, Block.getStateId(stateIn));
-		}
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    {
+        if (definedFluid == FluidsTFC.HOT_WATER && rand.nextInt(4) == 0)
+        {
+            worldIn.spawnParticle(EnumParticleTypes.WATER_BUBBLE, (double) (pos.getX() + rand.nextFloat()), pos.getY() + 0.50D, (double) (pos.getZ() + rand.nextFloat()), 0.0D, 0.0D, 0.0D, Block.getStateId(stateIn));
+        }
+    }
 
-	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
-	{
-		super.onEntityCollision(worldIn, pos, state, entityIn);
-		if (definedFluid == FluidsTFC.HOT_WATER && entityIn instanceof EntityLivingBase)
-		{
-			EntityLivingBase e = ((EntityLivingBase) entityIn);
-			if (Constants.RNG.nextInt(25) == 0 && e.getHealth() < e.getMaxHealth())
-			{
-				// todo: adjust this once health adjustements / regeneration changes have been
-				// made
-				float healing = (e.getMaxHealth() - e.getHealth()) * 0.01f;
-				e.heal(Math.max(healing, 0.05f));
-			}
-		}
-	}
+    @Override
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        super.onEntityCollision(worldIn, pos, state, entityIn);
+        if (definedFluid == FluidsTFC.HOT_WATER && entityIn instanceof EntityLivingBase)
+        {
+            EntityLivingBase e = ((EntityLivingBase) entityIn);
+            if (Constants.RNG.nextInt(25) == 0 && e.getHealth() < e.getMaxHealth())
+            {
+                // todo: adjust this once health adjustements / regeneration changes have been made
+                float healing = (e.getMaxHealth() - e.getHealth()) * 0.01f;
+                e.heal(Math.max(healing, 0.05f));
+            }
+        }
+    }
 }
