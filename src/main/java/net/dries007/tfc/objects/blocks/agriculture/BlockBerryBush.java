@@ -14,14 +14,18 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -31,6 +35,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.IBerryBush;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
@@ -40,14 +45,14 @@ import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class BlockBerryBush extends Block
 {
-    public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 4); //last one is for fruits
+    public static final PropertyInteger SIZE = PropertyInteger.create("size", 1, 3);
+    public static final PropertyBool FRUITING = PropertyBool.create("fruiting");
 
-    private static final AxisAlignedBB STAGE_1_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 0.375D, 0.6875D);
-    private static final AxisAlignedBB STAGE_2_AABB = new AxisAlignedBB(0.21875D, 0.0D, 0.21875D, 0.78125D, 0.5625D, 0.78125D);
-    private static final AxisAlignedBB STAGE_3_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.75D, 0.875D);
-    private static final AxisAlignedBB STAGE_4_AABB = FULL_BLOCK_AABB;
+    private static final AxisAlignedBB SMALL_SIZE_AABB = new AxisAlignedBB(0D, 0.0D, 0, 1D, 0.25D, 1D);
+    private static final AxisAlignedBB MEDIUM_SIZE_AABB = new AxisAlignedBB(0D, 0.0D, 0, 1D, 0.5D, 1D);
 
     private static final Map<IBerryBush, BlockBerryBush> MAP = new HashMap<>();
 
@@ -66,7 +71,7 @@ public class BlockBerryBush extends Block
         Blocks.FIRE.setFireInfo(this, 30, 60);
         setHardness(1.0F);
         setTickRandomly(true);
-        setDefaultState(blockState.getBaseState().withProperty(STAGE, 0));
+        setDefaultState(blockState.getBaseState().withProperty(SIZE, bush.getBushSize().ordinal() + 1).withProperty(FRUITING, false));
     }
 
     @Override
@@ -84,20 +89,20 @@ public class BlockBerryBush extends Block
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return getDefaultState().withProperty(STAGE, meta);
+        return getDefaultState().withProperty(SIZE, meta % 3 + 1).withProperty(FRUITING, meta >= 3);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(STAGE);
+        return state.getValue(SIZE) - 1 + (state.getValue(FRUITING) ? 3 : 0);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState state)
     {
-        return state.getValue(STAGE) > 2;
+        return state.getValue(SIZE) == 3;
     }
 
     @SuppressWarnings("deprecation")
@@ -112,16 +117,14 @@ public class BlockBerryBush extends Block
     @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        switch (state.getValue(STAGE))
+        switch (state.getValue(SIZE))
         {
-            case 0:
-                return STAGE_1_AABB;
             case 1:
-                return STAGE_2_AABB;
+                return SMALL_SIZE_AABB;
             case 2:
-                return STAGE_3_AABB;
+                return MEDIUM_SIZE_AABB;
             default:
-                return STAGE_4_AABB;
+                return FULL_BLOCK_AABB;
         }
     }
 
@@ -130,7 +133,51 @@ public class BlockBerryBush extends Block
     @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
-        return BlockFaceShape.UNDEFINED;
+        return state.getValue(SIZE) < 3 ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
+    }
+
+    @Override
+    public void randomTick(World world, BlockPos pos, IBlockState state, Random random)
+    {
+        if (!world.isRemote)
+        {
+            TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
+            if (te != null)
+            {
+                float temp = ClimateTFC.getTemp(world, pos);
+                float rainfall = ChunkDataTFC.getRainfall(world, pos);
+                long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
+                if (hours > bush.getGrowthTime() && bush.isValidForGrowth(temp, rainfall))
+                {
+                    if (bush.isHarvestMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()))
+                    {
+                        //Fruiting
+                        world.setBlockState(pos, world.getBlockState(pos).withProperty(FRUITING, true));
+                    }
+                    te.resetCounter();
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if (worldIn.getBlockState(pos).getValue(FRUITING))
+        {
+            if (!worldIn.isRemote)
+            {
+                Helpers.spawnItemStack(worldIn, pos, bush.getFoodDrop());
+                worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(FRUITING, false));
+                TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
+                if (te != null)
+                {
+                    te.resetCounter();
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -152,31 +199,18 @@ public class BlockBerryBush extends Block
     }
 
     @Override
-    public void randomTick(World world, BlockPos pos, IBlockState state, Random random)
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        if (!world.isRemote)
+        //Entity motion is reduced (like leaves).
+        entityIn.motionX *= 0.1D;
+        if (entityIn.motionY < 0)
         {
-            TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
-            if (te != null)
-            {
-                float temp = ClimateTFC.getTemp(world, pos);
-                float rainfall = ChunkDataTFC.getRainfall(world, pos);
-                long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
-                if (hours > bush.getGrowthTime() && bush.isValidForGrowth(temp, rainfall))
-                {
-                    int stage = world.getBlockState(pos).getValue(STAGE);
-                    if(stage < 3)
-                    {
-                        world.setBlockState(pos, world.getBlockState(pos).withProperty(STAGE, ++stage));
-                    }
-                    if(stage == 3 && bush.isHarvestMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()))
-                    {
-                        //Fruiting
-                        world.setBlockState(pos, world.getBlockState(pos).withProperty(STAGE, 4));
-                    }
-                    te.resetCounter();
-                }
-            }
+            entityIn.motionY *= 0.1D;
+        }
+        entityIn.motionZ *= 0.1D;
+        if (bush.isSpiky())
+        {
+            entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
         }
     }
 
@@ -192,7 +226,7 @@ public class BlockBerryBush extends Block
     @Nonnull
     public BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, STAGE);
+        return new BlockStateContainer(this, SIZE, FRUITING);
     }
 
     @Override
@@ -209,22 +243,8 @@ public class BlockBerryBush extends Block
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
     {
-        if (worldIn.getBlockState(pos).getValue(STAGE) == 4)
-        {
-            if (!worldIn.isRemote)
-            {
-                Helpers.spawnItemStack(worldIn, pos, bush.getFoodDrop());
-                worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(STAGE, 3));
-                TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
-                if (te != null)
-                {
-                    te.resetCounter();
-                }
-            }
-            return true;
-        }
-        return false;
+        return getDefaultState().withProperty(SIZE, bush.getBushSize().ordinal() + 1).withProperty(FRUITING, false);
     }
 }
