@@ -28,8 +28,8 @@ public class CTLeatherKnapping
     @ZenMethod
     public static void addRecipe(String registryName, IItemStack output, String... pattern)
     {
-        if (output == null || pattern.length == 0)
-            throw new IllegalArgumentException("Output item must be non-null and at least one pattern must be supplied");
+        if (output == null || pattern.length < 1 || pattern.length > 5)
+            throw new IllegalArgumentException("Output item must be non-null and pattern must be a closed interval [1, 5]");
         ItemStack outputStack = (ItemStack) output.getInternal();
         KnappingRecipe recipe = new KnappingRecipe.Simple(KnappingRecipe.Type.LEATHER, true, outputStack, pattern).setRegistryName(registryName);
         CraftTweakerAPI.apply(new IAction()

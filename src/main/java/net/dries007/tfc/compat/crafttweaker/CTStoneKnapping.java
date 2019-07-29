@@ -37,7 +37,8 @@ public class CTStoneKnapping
         if (output == null) throw new IllegalArgumentException("Input not allowed to be empty");
         if (rockCategories == null || rockCategories.length != output.length)
             throw new IllegalArgumentException("You must specify a rock category for each output!");
-        if (pattern.length == 0) throw new IllegalArgumentException("You must specify the pattern to craft!");
+        if (pattern.length < 1 || pattern.length > 5)
+            throw new IllegalArgumentException("Pattern must be a closed interval [1, 5]!");
         Function<RockCategory, ItemStack> supplier;
         if (rockCategories[0].equalsIgnoreCase("all"))
         {
