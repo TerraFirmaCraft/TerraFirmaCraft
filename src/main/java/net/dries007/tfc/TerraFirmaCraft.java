@@ -192,7 +192,8 @@ public final class TerraFirmaCraft
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 4);
         //todo: add cave decorator
         GameRegistry.registerWorldGenerator(new WorldGenTrees(), 5);
-        GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 6);
+        GameRegistry.registerWorldGenerator(new WorldGenBerryBushes(), 7);
+        GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 8);
     }
 
     @Mod.EventHandler
