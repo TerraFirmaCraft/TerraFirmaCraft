@@ -21,8 +21,8 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.client.TFCSoundEvents;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
-import net.dries007.tfc.util.TFCSoundEvents;
 
 public class ItemMetalJavelin extends ItemMetalTool
 {

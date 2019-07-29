@@ -47,11 +47,11 @@ public class ConfigTFC
 
     public static class GeneralCFG
     {
-        @Config.Comment("Various debug options. Activates some extra wand features.")
+        @Config.Comment("Various debug options. Activates some extra wand features. Enables extra item tooltips.")
         @Config.LangKey("config." + MOD_ID + ".general.debug")
         public boolean debug = Launch.blackboard.get("fml.deobfuscatedEnvironment") != null;
 
-        @Config.Comment({"Enable/Disable the vanilla recipe removal spam. False = Those recipes are left in place."})
+        @Config.Comment("Enable/Disable the vanilla recipe removal spam. False = Those recipes are left in place.")
         @Config.LangKey("config." + MOD_ID + ".general.removeVanillaRecipes")
         public boolean removeVanillaRecipes = true;
 
@@ -206,8 +206,8 @@ public class ConfigTFC
         @Config.RequiresWorldRestart
         public boolean debugMode = false;
 
-        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents half the period of the wave = the distance between hot and cold bands, in blocks",})
-        @Config.RangeDouble(min = 1_000, max = 1_000_000)
+        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents half the period of the wave = the distance between hot and cold bands, in blocks"})
+        @Config.RangeInt(min = 1_000, max = 1_000_000)
         @Config.LangKey("config." + MOD_ID + ".world.latitudeTemperatureModifier")
         public int latitudeTemperatureModifier = 20_000;
     }

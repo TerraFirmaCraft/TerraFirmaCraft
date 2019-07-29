@@ -34,10 +34,10 @@ import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.client.TFCSoundEvents;
 import net.dries007.tfc.objects.items.ItemHandstone;
 import net.dries007.tfc.objects.te.TEQuern;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.TFCSoundEvents;
 
 @ParametersAreNonnullByDefault
 public class BlockQuern extends Block implements IItemSize

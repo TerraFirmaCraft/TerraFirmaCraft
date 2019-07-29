@@ -112,18 +112,26 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
         }
         else
         {
-            // Calculate the date to display in calendar time
-            long rottenCalendarTime = getRottenDate() - CalendarTFC.PLAYER_TIME.getTicks() + CalendarTFC.CALENDAR_TIME.getTicks();
+            long rottenDate = getRottenDate();
 
-            text.add(I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.INSTANCE.getDaysInMonth())));
-
-            // Show nutrient values if not rotten
-            for (Nutrient nutrient : Nutrient.values())
+            if (rottenDate == Long.MAX_VALUE)
             {
-                float amount = getNutrient(stack, nutrient);
-                if (amount > 0)
+                text.add(I18n.format("tfc.tooltip.food_infinite_expiry"));
+            }
+            else
+            {
+                // Calculate the date to display in calendar time
+                long rottenCalendarTime = rottenDate - CalendarTFC.PLAYER_TIME.getTicks() + CalendarTFC.CALENDAR_TIME.getTicks();
+                text.add(I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.INSTANCE.getDaysInMonth())));
+
+                // Show nutrient values if not rotten
+                for (Nutrient nutrient : Nutrient.values())
                 {
-                    text.add(nutrient.name().toLowerCase() + ": " + amount);
+                    float amount = getNutrient(stack, nutrient);
+                    if (amount > 0)
+                    {
+                        text.add(nutrient.name().toLowerCase() + ": " + amount);
+                    }
                 }
             }
         }
