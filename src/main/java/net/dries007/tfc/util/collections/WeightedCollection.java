@@ -47,4 +47,9 @@ public class WeightedCollection<E>
     {
         return totalWeight;
     }
+
+    public void clear()
+    {
+        backingMap.clear();
+    }
 }
