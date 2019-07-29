@@ -20,7 +20,8 @@ public class SimpleCraftMatrix
     private static final int MAX_HEIGHT = 5;
     private static final int MAX_AREA = MAX_WIDTH * MAX_HEIGHT;
 
-    private static void logMatrix(boolean[] matrix)
+    @SuppressWarnings("unused")
+	private static void logMatrix(boolean[] matrix)
     {
         StringBuilder b = new StringBuilder();
         for (boolean m : matrix) b.append(m ? "X" : " ");

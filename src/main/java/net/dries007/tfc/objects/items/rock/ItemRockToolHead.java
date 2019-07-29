@@ -31,6 +31,7 @@ public class ItemRockToolHead extends ItemTFC implements IRockObject
     }
 
     private final RockCategory category;
+    @SuppressWarnings("unused")
     private final Rock.ToolType type;
 
     public ItemRockToolHead(RockCategory category, Rock.ToolType type)

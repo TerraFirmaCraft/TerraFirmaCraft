@@ -219,6 +219,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                                 plantGen.generate(world, rng, blockPos);
                             }
                         }
+                        default:
                     }
                 }
             }
@@ -252,6 +253,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                                 plantGen.generate(world, rng, blockPos);
                             }
                         }
+                        default:
                     }
                 }
             }
@@ -332,6 +334,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                                 plantGen.generate(world, rng, blockPos);
                             }
                         }
+                        default:
                     }
                 }
             }
@@ -365,6 +368,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                                 plantGen.generate(world, rng, blockPos);
                             }
                         }
+                        default:
                     }
                 }
             }
@@ -396,6 +400,7 @@ public class BiomeDecoratorTFC extends BiomeDecorator
                                 plantGen.generate(world, rng, blockPos);
                             }
                         }
+                        default:
                     }
                 }
             }

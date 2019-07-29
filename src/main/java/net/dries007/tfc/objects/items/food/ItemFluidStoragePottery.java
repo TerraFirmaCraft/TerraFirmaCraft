@@ -81,7 +81,7 @@ public abstract class ItemFluidStoragePottery extends ItemFiredPottery
 				
 				TerraFirmaCraft.getLog().info(fluidType.getUnlocalizedName());
 				FluidThirstConfig config = FluidThirstRegistry.INSTANCE.getThirstConfig(fluidType.getUnlocalizedName());
-				if(config != null)
+				if(!worldIn.isRemote && config != null)
 				{
 					foodStackTFC.addThirst(config.getThirstAmount());
 				}
@@ -120,7 +120,7 @@ public abstract class ItemFluidStoragePottery extends ItemFiredPottery
 
 		FoodStatsTFC foodStatsTfc = (FoodStatsTFC) foodStats;
 
-		if (true || foodStatsTfc.needWater())
+		if (foodStatsTfc.needWater())
 		{
 			playerIn.setActiveHand(handIn);
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);

@@ -206,6 +206,7 @@ public final class ClientRegisterEvents
         // Empty Models
         final ModelResourceLocation empty = new ModelResourceLocation(MOD_ID + ":empty");
         // todo: switch to hide rack (involves changing mechanics, etc)
+        @SuppressWarnings("unused")
         final ModelResourceLocation hideRack = new ModelResourceLocation(MOD_ID + ":hide_rack");
 
         ModelLoader.setCustomStateMapper(BlocksTFC.PIT_KILN, blockIn -> ImmutableMap.of(BlocksTFC.PIT_KILN.getDefaultState(), empty));
@@ -320,7 +321,7 @@ public final class ClientRegisterEvents
      * Turns "gem/diamond" + enum NORMAL into "gem/normal/diamond"
      */
     @SideOnly(Side.CLIENT)
-    private static void registerEnumBasedMetaItems(String prefix, Enum e, Item item)
+    private static void registerEnumBasedMetaItems(String prefix, Enum<?> e, Item item)
     {
         //noinspection ConstantConditions
         String registryName = item.getRegistryName().getPath();

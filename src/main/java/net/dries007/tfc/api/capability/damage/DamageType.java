@@ -165,6 +165,7 @@ public enum DamageType
                     return resistSource.getPiercingModifier();
                 case SLASHING:
                     return resistSource.getSlashingModifier();
+                default:
             }
         }
         return 1f;
