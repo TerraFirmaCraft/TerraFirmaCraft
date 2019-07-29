@@ -22,35 +22,37 @@ import static net.dries007.tfc.api.types.Rock.Type.SAND;
 @ParametersAreNonnullByDefault
 public class WorldGenSandTFC extends WorldGenerator
 {
-    private final int radius;
+	private final int radius;
 
-    public WorldGenSandTFC(int radius)
-    {
-        this.radius = radius;
-    }
+	public WorldGenSandTFC(int radius)
+	{
+		this.radius = radius;
+	}
 
-    @Override
-    public boolean generate(World world, Random rng, BlockPos pos)
-    {
-        if (BlocksTFC.isWater(world.getBlockState(pos))) return false;
+	@Override
+	public boolean generate(World world, Random rng, BlockPos pos)
+	{
+		if (BlocksTFC.isWater(world.getBlockState(pos)))
+			return false;
 
-        final BlockRockVariant sand = BlockRockVariant.get(ChunkDataTFC.getRock1(world, pos), SAND);
-        final int rnd = rng.nextInt(this.radius - 2) + 2;
+		final BlockRockVariant sand = BlockRockVariant.get(ChunkDataTFC.getRock1(world, pos), SAND);
+		final int rnd = rng.nextInt(this.radius - 2) + 2;
 
-        for (int x = -rnd; x <= rnd; x++)
-        {
-            for (int z = -rnd; z <= rnd; z++)
-            {
-                if (x * x + z * z > rnd * rnd) continue;
-                for (int y = -2; y <= 2; y++)
-                {
-                    final IBlockState s = world.getBlockState(pos.add(x, y, z));
-                    if (BlocksTFC.isSoil(s) || BlocksTFC.isSand(s))
-                        world.setBlockState(pos.add(x, y, z), sand.getDefaultState(), 2);
-                }
-            }
-        }
+		for (int x = -rnd; x <= rnd; x++)
+		{
+			for (int z = -rnd; z <= rnd; z++)
+			{
+				if (x * x + z * z > rnd * rnd)
+					continue;
+				for (int y = -2; y <= 2; y++)
+				{
+					final IBlockState s = world.getBlockState(pos.add(x, y, z));
+					if (BlocksTFC.isSoil(s) || BlocksTFC.isSand(s))
+						world.setBlockState(pos.add(x, y, z), sand.getDefaultState(), 2);
+				}
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

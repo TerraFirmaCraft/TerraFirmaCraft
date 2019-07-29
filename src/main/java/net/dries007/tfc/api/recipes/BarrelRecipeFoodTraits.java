@@ -20,34 +20,34 @@ import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 public class BarrelRecipeFoodTraits extends BarrelRecipe
 {
-    private final IFoodTrait trait;
+	private final IFoodTrait trait;
 
-    public BarrelRecipeFoodTraits(@Nonnull IIngredient<FluidStack> inputFluid, @Nonnull IIngredient<ItemStack> inputStack, IFoodTrait trait, int duration)
-    {
-        super(inputFluid, inputStack, null, ItemStack.EMPTY, duration);
-        this.trait = trait;
-    }
+	public BarrelRecipeFoodTraits(@Nonnull IIngredient<FluidStack> inputFluid, @Nonnull IIngredient<ItemStack> inputStack, IFoodTrait trait, int duration)
+	{
+		super(inputFluid, inputStack, null, ItemStack.EMPTY, duration);
+		this.trait = trait;
+	}
 
-    @Nonnull
-    @Override
-    public ItemStack getOutputItem(FluidStack inputFluid, ItemStack inputStack)
-    {
-        // Apply the trait to the input and copy it to output
-        IFood food = inputStack.getCapability(CapabilityFood.CAPABILITY, null);
-        if (food != null)
-        {
-            if (!food.getTraits().contains(trait))
-            {
-                food.getTraits().add(trait);
-            }
-        }
-        return inputStack.copy();
-    }
+	@Nonnull
+	@Override
+	public ItemStack getOutputItem(FluidStack inputFluid, ItemStack inputStack)
+	{
+		// Apply the trait to the input and copy it to output
+		IFood food = inputStack.getCapability(CapabilityFood.CAPABILITY, null);
+		if (food != null)
+		{
+			if (!food.getTraits().contains(trait))
+			{
+				food.getTraits().add(trait);
+			}
+		}
+		return inputStack.copy();
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public String getResultName()
-    {
-        return I18n.format("tfc.food_traits." + trait.getName() + "_active");
-    }
+	@SideOnly(Side.CLIENT)
+	@Override
+	public String getResultName()
+	{
+		return I18n.format("tfc.food_traits." + trait.getName() + "_active");
+	}
 }

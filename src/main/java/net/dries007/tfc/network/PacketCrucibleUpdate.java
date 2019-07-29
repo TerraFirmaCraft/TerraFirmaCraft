@@ -24,51 +24,54 @@ import net.dries007.tfc.util.Helpers;
  */
 public class PacketCrucibleUpdate implements IMessage
 {
-    private NBTTagCompound alloyNBT;
-    private BlockPos pos;
+	private NBTTagCompound alloyNBT;
+	private BlockPos pos;
 
-    @SuppressWarnings("unused")
-    @Deprecated
-    public PacketCrucibleUpdate() {}
+	@SuppressWarnings("unused")
+	@Deprecated
+	public PacketCrucibleUpdate()
+	{
+	}
 
-    public PacketCrucibleUpdate(TECrucible tile)
-    {
-        this.pos = tile.getPos();
-        this.alloyNBT = tile.getAlloy().serializeNBT();
-    }
+	public PacketCrucibleUpdate(TECrucible tile)
+	{
+		this.pos = tile.getPos();
+		this.alloyNBT = tile.getAlloy().serializeNBT();
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf)
-    {
-        pos = BlockPos.fromLong(buf.readLong());
-        alloyNBT = ByteBufUtils.readTag(buf);
-    }
+	@Override
+	public void fromBytes(ByteBuf buf)
+	{
+		pos = BlockPos.fromLong(buf.readLong());
+		alloyNBT = ByteBufUtils.readTag(buf);
+	}
 
-    @Override
-    public void toBytes(ByteBuf buf)
-    {
-        buf.writeLong(pos.toLong());
-        ByteBufUtils.writeTag(buf, alloyNBT);
-    }
+	@Override
+	public void toBytes(ByteBuf buf)
+	{
+		buf.writeLong(pos.toLong());
+		ByteBufUtils.writeTag(buf, alloyNBT);
+	}
 
-    public static class Handler implements IMessageHandler<PacketCrucibleUpdate, IMessage>
-    {
-        @Override
-        public IMessage onMessage(PacketCrucibleUpdate message, MessageContext ctx)
-        {
-            EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
-            if (player != null)
-            {
-                World world = player.getEntityWorld();
-                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
-                    TECrucible te = Helpers.getTE(world, message.pos, TECrucible.class);
-                    if (te != null)
-                    {
-                        te.setAlloy(message.alloyNBT);
-                    }
-                });
-            }
-            return null;
-        }
-    }
+	public static class Handler implements IMessageHandler<PacketCrucibleUpdate, IMessage>
+	{
+		@Override
+		public IMessage onMessage(PacketCrucibleUpdate message, MessageContext ctx)
+		{
+			EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
+			if (player != null)
+			{
+				World world = player.getEntityWorld();
+				TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() ->
+				{
+					TECrucible te = Helpers.getTE(world, message.pos, TECrucible.class);
+					if (te != null)
+					{
+						te.setAlloy(message.alloyNBT);
+					}
+				});
+			}
+			return null;
+		}
+	}
 }

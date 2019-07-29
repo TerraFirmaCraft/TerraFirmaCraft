@@ -21,22 +21,22 @@ import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 @ParametersAreNonnullByDefault
 public class ItemSlabTFC extends ItemSlab implements IItemSize
 {
-    public ItemSlabTFC(BlockSlabTFC.Half slab, BlockSlabTFC.Half slab1, BlockSlabTFC.Double doubleSlab)
-    {
-        super(slab, slab1, doubleSlab);
-    }
+	public ItemSlabTFC(BlockSlabTFC.Half slab, BlockSlabTFC.Half slab1, BlockSlabTFC.Double doubleSlab)
+	{
+		super(slab, slab1, doubleSlab);
+	}
 
-    @Nonnull
-    @Override
-    public Size getSize(ItemStack stack)
-    {
-        return Size.SMALL;
-    }
+	@Nonnull
+	@Override
+	public Size getSize(ItemStack stack)
+	{
+		return Size.SMALL;
+	}
 
-    @Nonnull
-    @Override
-    public Weight getWeight(ItemStack stack)
-    {
-        return Weight.MEDIUM;
-    }
+	@Nonnull
+	@Override
+	public Weight getWeight(ItemStack stack)
+	{
+		return Weight.MEDIUM;
+	}
 }

@@ -35,117 +35,118 @@ import net.dries007.tfc.util.calendar.ICalendar;
 @ParametersAreNonnullByDefault
 public class BlockSaplingTFC extends BlockBush implements IGrowable
 {
-    public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 4);
-    protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0, 0.1, 0.9, 0.9, 0.9);
-    private static final Map<Tree, BlockSaplingTFC> MAP = new HashMap<>();
+	public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 4);
+	protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0, 0.1, 0.9, 0.9, 0.9);
+	private static final Map<Tree, BlockSaplingTFC> MAP = new HashMap<>();
 
-    public static BlockSaplingTFC get(Tree wood)
-    {
-        return MAP.get(wood);
-    }
+	public static BlockSaplingTFC get(Tree wood)
+	{
+		return MAP.get(wood);
+	}
 
-    public final Tree wood;
+	public final Tree wood;
 
-    public BlockSaplingTFC(Tree wood)
-    {
-        if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
-        this.wood = wood;
-        setDefaultState(blockState.getBaseState().withProperty(STAGE, 0));
-        setSoundType(SoundType.PLANT);
-        setHardness(0.0F);
-        OreDictionaryHelper.register(this, "tree", "sapling");
-        //noinspection ConstantConditions
-        OreDictionaryHelper.register(this, "tree", "sapling", wood.getRegistryName().getPath());
-        Blocks.FIRE.setFireInfo(this, 5, 20);
-    }
+	public BlockSaplingTFC(Tree wood)
+	{
+		if (MAP.put(wood, this) != null)
+			throw new IllegalStateException("There can only be one.");
+		this.wood = wood;
+		setDefaultState(blockState.getBaseState().withProperty(STAGE, 0));
+		setSoundType(SoundType.PLANT);
+		setHardness(0.0F);
+		OreDictionaryHelper.register(this, "tree", "sapling");
+		// noinspection ConstantConditions
+		OreDictionaryHelper.register(this, "tree", "sapling", wood.getRegistryName().getPath());
+		Blocks.FIRE.setFireInfo(this, 5, 20);
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nonnull
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(STAGE, meta);
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	@Nonnull
+	public IBlockState getStateFromMeta(int meta)
+	{
+		return this.getDefaultState().withProperty(STAGE, meta);
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(STAGE);
-    }
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		return state.getValue(STAGE);
+	}
 
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
-        if (te != null)
-        {
-            te.resetCounter();
-        }
-    }
+	@Override
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+	{
+		TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
+		if (te != null)
+		{
+			te.resetCounter();
+		}
+	}
 
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, STAGE);
-    }
+	@Override
+	@Nonnull
+	protected BlockStateContainer createBlockState()
+	{
+		return new BlockStateContainer(this, STAGE);
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state)
+	{
+		return true;
+	}
 
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TETickCounter();
-    }
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state)
+	{
+		return new TETickCounter();
+	}
 
-    @Override
-    public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
-    {
-        super.updateTick(world, pos, state, random);
+	@Override
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
+	{
+		super.updateTick(world, pos, state, random);
 
-        if (!world.isRemote)
-        {
-            TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
-            if (te != null)
-            {
-                long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
-                if (days > wood.getMinGrowthTime())
-                {
-                    grow(world, random, pos, state);
-                }
-            }
-        }
-    }
+		if (!world.isRemote)
+		{
+			TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
+			if (te != null)
+			{
+				long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
+				if (days > wood.getMinGrowthTime())
+				{
+					grow(world, random, pos, state);
+				}
+			}
+		}
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nonnull
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return SAPLING_AABB;
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	@Nonnull
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
+		return SAPLING_AABB;
+	}
 
-    @Override
-    public boolean canGrow(World world, BlockPos blockPos, IBlockState iBlockState, boolean b)
-    {
-        return true;
-    }
+	@Override
+	public boolean canGrow(World world, BlockPos blockPos, IBlockState iBlockState, boolean b)
+	{
+		return true;
+	}
 
-    @Override
-    public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, IBlockState iBlockState)
-    {
-        TerraFirmaCraft.getLog().debug("canUseBoneMeal called");
-        return true;
-    }
+	@Override
+	public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, IBlockState iBlockState)
+	{
+		TerraFirmaCraft.getLog().debug("canUseBoneMeal called");
+		return true;
+	}
 
-    @Override
-    public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
-    {
-        wood.makeTree(world, blockPos, random);
-    }
+	@Override
+	public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
+	{
+		wood.makeTree(world, blockPos, random);
+	}
 }

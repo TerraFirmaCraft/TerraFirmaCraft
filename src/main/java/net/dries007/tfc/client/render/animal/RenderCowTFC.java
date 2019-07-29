@@ -22,16 +22,16 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderCowTFC extends RenderLiving<EntityCowTFC>
 {
-    private static final ResourceLocation COW_TEXTURES = new ResourceLocation(MOD_ID, "textures/entity/animal/cow.png");
+	private static final ResourceLocation COW_TEXTURES = new ResourceLocation(MOD_ID, "textures/entity/animal/cow.png");
 
-    public RenderCowTFC(RenderManager renderManager)
-    {
-        super(renderManager, new ModelCowTFC(), 0.7F);
-    }
+	public RenderCowTFC(RenderManager renderManager)
+	{
+		super(renderManager, new ModelCowTFC(), 0.7F);
+	}
 
-    @Override
-    protected ResourceLocation getEntityTexture(EntityCowTFC entity)
-    {
-        return COW_TEXTURES;
-    }
+	@Override
+	protected ResourceLocation getEntityTexture(EntityCowTFC entity)
+	{
+		return COW_TEXTURES;
+	}
 }

@@ -16,18 +16,18 @@ import net.dries007.tfc.api.types.Metal;
 @ParametersAreNonnullByDefault
 public class FluidMetal extends Fluid
 {
-    private final Metal metal;
+	private final Metal metal;
 
-    public FluidMetal(Metal metal, String fluidName, ResourceLocation still, ResourceLocation flowing, int color)
-    {
-        super(fluidName, still, flowing, color);
+	public FluidMetal(Metal metal, String fluidName, ResourceLocation still, ResourceLocation flowing, int color)
+	{
+		super(fluidName, still, flowing, color);
 
-        this.metal = metal;
-    }
+		this.metal = metal;
+	}
 
-    @Nonnull
-    public Metal getMetal()
-    {
-        return metal;
-    }
+	@Nonnull
+	public Metal getMetal()
+	{
+		return metal;
+	}
 }

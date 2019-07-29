@@ -35,126 +35,125 @@ import static net.minecraft.item.ItemArmor.DISPENSER_BEHAVIOR;
 
 public class ItemMetalArmor extends ItemMetal implements ISpecialArmor
 {
-    //todo: render items
+	// todo: render items
 
-    public final EntityEquipmentSlot slot;
-    public final double damageReduceAmount = 5; //todo: actual numbers
-    public final double toughness = 1; //todo: actual numbers
-    private final ToolMaterial toolMaterial;
-    private final UUID uuid;
+	public final EntityEquipmentSlot slot;
+	public final double damageReduceAmount = 5; // todo: actual numbers
+	public final double toughness = 1; // todo: actual numbers
+	private final ToolMaterial toolMaterial;
+	private final UUID uuid;
 
-    public ItemMetalArmor(Metal metal, Metal.ItemType type)
-    {
-        super(metal, type);
-        toolMaterial = metal.getToolMetal();
-        switch (type)
-        {
-            case HELMET:
-                slot = EntityEquipmentSlot.HEAD;
-                uuid = UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B");
-                setMaxDamage(2500);
-                break;
-            case CHESTPLATE:
-                slot = EntityEquipmentSlot.CHEST;
-                uuid = UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D");
-                setMaxDamage(3750);
-                break;
-            case GREAVES:
-                slot = EntityEquipmentSlot.LEGS;
-                uuid = UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E");
-                setMaxDamage(3000);
-                break;
-            case BOOTS:
-                slot = EntityEquipmentSlot.FEET;
-                uuid = UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150");
-                setMaxDamage(2500);
-                break;
-            default:
-                throw new IllegalArgumentException("You cannot make armor out of non armor item types.");
-        }
-        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, DISPENSER_BEHAVIOR);
-    }
+	public ItemMetalArmor(Metal metal, Metal.ItemType type)
+	{
+		super(metal, type);
+		toolMaterial = metal.getToolMetal();
+		switch (type)
+		{
+			case HELMET:
+				slot = EntityEquipmentSlot.HEAD;
+				uuid = UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B");
+				setMaxDamage(2500);
+				break;
+			case CHESTPLATE:
+				slot = EntityEquipmentSlot.CHEST;
+				uuid = UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D");
+				setMaxDamage(3750);
+				break;
+			case GREAVES:
+				slot = EntityEquipmentSlot.LEGS;
+				uuid = UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E");
+				setMaxDamage(3000);
+				break;
+			case BOOTS:
+				slot = EntityEquipmentSlot.FEET;
+				uuid = UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150");
+				setMaxDamage(2500);
+				break;
+			default:
+				throw new IllegalArgumentException("You cannot make armor out of non armor item types.");
+		}
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, DISPENSER_BEHAVIOR);
+	}
 
-    @Override
-    @Nonnull
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn)
-    {
-        ItemStack heldItem = playerIn.getHeldItem(handIn);
-        if (playerIn.getItemStackFromSlot(slot).isEmpty())
-        {
-            playerIn.setItemStackToSlot(slot, heldItem.copy());
-            heldItem.shrink(1);
-            return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
-        }
-        else
-        {
-            return new ActionResult<>(EnumActionResult.FAIL, heldItem);
-        }
-    }
+	@Override
+	@Nonnull
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn)
+	{
+		ItemStack heldItem = playerIn.getHeldItem(handIn);
+		if (playerIn.getItemStackFromSlot(slot).isEmpty())
+		{
+			playerIn.setItemStackToSlot(slot, heldItem.copy());
+			heldItem.shrink(1);
+			return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
+		} else
+		{
+			return new ActionResult<>(EnumActionResult.FAIL, heldItem);
+		}
+	}
 
-    @Override
-    public int getItemEnchantability()
-    {
-        return toolMaterial.getEnchantability();
-    }
+	@Override
+	public int getItemEnchantability()
+	{
+		return toolMaterial.getEnchantability();
+	}
 
-    @Override
-    @Nonnull
-    public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot slot, ItemStack stack)
-    {
-        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
-        if (slot == this.slot)
-        {
-            multimap.put(ARMOR.getName(), new AttributeModifier(uuid, "Armor modifier", damageReduceAmount, 0));
-            multimap.put(ARMOR_TOUGHNESS.getName(), new AttributeModifier(uuid, "Armor toughness", toughness, 0));
-        }
-        return multimap;
-    }
+	@Override
+	@Nonnull
+	public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot slot, ItemStack stack)
+	{
+		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+		if (slot == this.slot)
+		{
+			multimap.put(ARMOR.getName(), new AttributeModifier(uuid, "Armor modifier", damageReduceAmount, 0));
+			multimap.put(ARMOR_TOUGHNESS.getName(), new AttributeModifier(uuid, "Armor toughness", toughness, 0));
+		}
+		return multimap;
+	}
 
-    @Nullable
-    @Override
-    public EntityEquipmentSlot getEquipmentSlot(ItemStack stack)
-    {
-        return slot;
-    }
+	@Nullable
+	@Override
+	public EntityEquipmentSlot getEquipmentSlot(ItemStack stack)
+	{
+		return slot;
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Nullable
-    @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
-    {
-        return super.getArmorTexture(stack, entity, slot, type); // todo
-    }
+	@SideOnly(Side.CLIENT)
+	@Nullable
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
+	{
+		return super.getArmorTexture(stack, entity, slot, type); // todo
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Nullable
-    @Override
-    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default)
-    {
-        return super.getArmorModel(entityLiving, itemStack, armorSlot, _default); // todo
-    }
+	@SideOnly(Side.CLIENT)
+	@Nullable
+	@Override
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default)
+	{
+		return super.getArmorModel(entityLiving, itemStack, armorSlot, _default); // todo
+	}
 
-    @Override
-    public ArmorProperties getProperties(EntityLivingBase player, @Nonnull ItemStack armor, DamageSource source, double damage, int slot)
-    {
-        return new ArmorProperties(1, 0.5, 10); // todo: vary on damage source //todo: remove junk data
-    }
+	@Override
+	public ArmorProperties getProperties(EntityLivingBase player, @Nonnull ItemStack armor, DamageSource source, double damage, int slot)
+	{
+		return new ArmorProperties(1, 0.5, 10); // todo: vary on damage source //todo: remove junk data
+	}
 
-    @Override
-    public int getArmorDisplay(EntityPlayer player, @Nonnull ItemStack armor, int slot)
-    {
-        return 7; //todo
-    }
+	@Override
+	public int getArmorDisplay(EntityPlayer player, @Nonnull ItemStack armor, int slot)
+	{
+		return 7; // todo
+	}
 
-    @Override
-    public void damageArmor(EntityLivingBase entity, @Nonnull ItemStack stack, DamageSource source, int damage, int slot)
-    {
-        //todo
-    }
+	@Override
+	public void damageArmor(EntityLivingBase entity, @Nonnull ItemStack stack, DamageSource source, int damage, int slot)
+	{
+		// todo
+	}
 
-    @Override
-    public boolean canStack(@Nonnull ItemStack stack)
-    {
-        return false;
-    }
+	@Override
+	public boolean canStack(@Nonnull ItemStack stack)
+	{
+		return false;
+	}
 }

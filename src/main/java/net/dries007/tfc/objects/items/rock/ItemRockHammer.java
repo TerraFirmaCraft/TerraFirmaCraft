@@ -33,64 +33,65 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @MethodsReturnNonnullByDefault
 public class ItemRockHammer extends ItemTool implements IItemSize, IRockObject
 {
-    private static final Map<RockCategory, ItemRockHammer> MAP = new HashMap<>();
+	private static final Map<RockCategory, ItemRockHammer> MAP = new HashMap<>();
 
-    public static ItemRockHammer get(RockCategory category)
-    {
-        return MAP.get(category);
-    }
+	public static ItemRockHammer get(RockCategory category)
+	{
+		return MAP.get(category);
+	}
 
-    public final RockCategory category;
+	public final RockCategory category;
 
-    public ItemRockHammer(RockCategory category)
-    {
-        super(2f * category.getToolMaterial().getAttackDamage(), -3.5f, category.getToolMaterial(), ImmutableSet.of());
-        this.category = category;
-        if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
-        setHarvestLevel("hammer", category.getToolMaterial().getHarvestLevel());
-        OreDictionaryHelper.register(this, "hammer");
-        OreDictionaryHelper.register(this, "hammer", "stone");
-        OreDictionaryHelper.register(this, "hammer", "stone", category);
-    }
+	public ItemRockHammer(RockCategory category)
+	{
+		super(2f * category.getToolMaterial().getAttackDamage(), -3.5f, category.getToolMaterial(), ImmutableSet.of());
+		this.category = category;
+		if (MAP.put(category, this) != null)
+			throw new IllegalStateException("There can only be one.");
+		setHarvestLevel("hammer", category.getToolMaterial().getHarvestLevel());
+		OreDictionaryHelper.register(this, "hammer");
+		OreDictionaryHelper.register(this, "hammer", "stone");
+		OreDictionaryHelper.register(this, "hammer", "stone", category);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-    {
-        tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+	{
+		tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
+	}
 
-    @Nonnull
-    @Override
-    public Size getSize(ItemStack stack)
-    {
-        return Size.LARGE;
-    }
+	@Nonnull
+	@Override
+	public Size getSize(ItemStack stack)
+	{
+		return Size.LARGE;
+	}
 
-    @Nonnull
-    @Override
-    public Weight getWeight(ItemStack stack)
-    {
-        return Weight.MEDIUM;
-    }
+	@Nonnull
+	@Override
+	public Weight getWeight(ItemStack stack)
+	{
+		return Weight.MEDIUM;
+	}
 
-    @Override
-    public boolean canStack(ItemStack stack)
-    {
-        return false;
-    }
+	@Override
+	public boolean canStack(ItemStack stack)
+	{
+		return false;
+	}
 
-    @Nullable
-    @Override
-    public Rock getRock(ItemStack stack)
-    {
-        return null;
-    }
+	@Nullable
+	@Override
+	public Rock getRock(ItemStack stack)
+	{
+		return null;
+	}
 
-    @Nonnull
-    @Override
-    public RockCategory getRockCategory(ItemStack stack)
-    {
-        return category;
-    }
+	@Nonnull
+	@Override
+	public RockCategory getRockCategory(ItemStack stack)
+	{
+		return category;
+	}
 }

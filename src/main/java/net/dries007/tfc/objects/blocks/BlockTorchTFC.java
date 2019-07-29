@@ -39,100 +39,101 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBlock
 {
-    public static boolean canLight(ItemStack stack)
-    {
-        return stack.getItem() == Item.getItemFromBlock(BlocksTFC.TORCH) || ItemFireStarter.canIgnite(stack);
-    }
+	public static boolean canLight(ItemStack stack)
+	{
+		return stack.getItem() == Item.getItemFromBlock(BlocksTFC.TORCH) || ItemFireStarter.canIgnite(stack);
+	}
 
-    public BlockTorchTFC()
-    {
-        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(LIT, true));
-        setLightLevel(0.9375F);
-        setTickRandomly(true);
-        setSoundType(SoundType.WOOD);
+	public BlockTorchTFC()
+	{
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(LIT, true));
+		setLightLevel(0.9375F);
+		setTickRandomly(true);
+		setSoundType(SoundType.WOOD);
 
-        Blocks.FIRE.setFireInfo(this, 5, 20);
+		Blocks.FIRE.setFireInfo(this, 5, 20);
 
-        OreDictionaryHelper.register(this, "torch");
-    }
+		OreDictionaryHelper.register(this, "torch");
+	}
 
-    @Nonnull
-    @Override
-    public Size getSize(@Nonnull ItemStack stack)
-    {
-        return Size.NORMAL;
-    }
+	@Nonnull
+	@Override
+	public Size getSize(@Nonnull ItemStack stack)
+	{
+		return Size.NORMAL;
+	}
 
-    @Nonnull
-    @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
-    {
-        return Weight.LIGHT;
-    }
+	@Nonnull
+	@Override
+	public Weight getWeight(@Nonnull ItemStack stack)
+	{
+		return Weight.LIGHT;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
-    {
-        if (!stateIn.getValue(LIT)) return;
-        super.randomDisplayTick(stateIn, worldIn, pos, rand);
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
+	{
+		if (!stateIn.getValue(LIT))
+			return;
+		super.randomDisplayTick(stateIn, worldIn, pos, rand);
+	}
 
-    @Override
-    @Nonnull
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return getDefaultState().withProperty(LIT, meta >= 8).withProperty(FACING, EnumFacing.byIndex(meta & 0b111));
-    }
+	@Override
+	@Nonnull
+	public IBlockState getStateFromMeta(int meta)
+	{
+		return getDefaultState().withProperty(LIT, meta >= 8).withProperty(FACING, EnumFacing.byIndex(meta & 0b111));
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return (state.getValue(LIT) ? 8 : 0) + state.getValue(FACING).getIndex();
-    }
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		return (state.getValue(LIT) ? 8 : 0) + state.getValue(FACING).getIndex();
+	}
 
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING, LIT);
-    }
+	@Override
+	@Nonnull
+	protected BlockStateContainer createBlockState()
+	{
+		return new BlockStateContainer(this, FACING, LIT);
+	}
 
-    @Override
-    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
-    {
-        TETorchTFC te = Helpers.getTE(worldIn, pos, TETorchTFC.class);
-        if (te != null)
-        {
-            te.onRandomTick();
-        }
-    }
+	@Override
+	public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
+	{
+		TETorchTFC te = Helpers.getTE(worldIn, pos, TETorchTFC.class);
+		if (te != null)
+		{
+			te.onRandomTick();
+		}
+	}
 
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        if (!worldIn.isRemote)
-        {
-            TETorchTFC te = Helpers.getTE(worldIn, pos, TETorchTFC.class);
-            ItemStack stack = playerIn.getHeldItem(hand);
-            if (te != null && BlockTorchTFC.canLight(stack))
-            {
-                te.light();
-            }
-        }
-        return true;
-    }
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	{
+		if (!worldIn.isRemote)
+		{
+			TETorchTFC te = Helpers.getTE(worldIn, pos, TETorchTFC.class);
+			ItemStack stack = playerIn.getHeldItem(hand);
+			if (te != null && BlockTorchTFC.canLight(stack))
+			{
+				te.light();
+			}
+		}
+		return true;
+	}
 
-    @Override
-    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
-    }
+	@Override
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
+	}
 
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TETorchTFC();
-    }
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state)
+	{
+		return new TETorchTFC();
+	}
 }

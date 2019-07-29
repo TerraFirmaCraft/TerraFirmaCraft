@@ -22,35 +22,36 @@ import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 @MethodsReturnNonnullByDefault
 public class BiomeProviderTFC extends BiomeProvider
 {
-    public BiomeProviderTFC(World world)
-    {
-        super(world.getWorldInfo());
+	public BiomeProviderTFC(World world)
+	{
+		super(world.getWorldInfo());
 
-        if (!(world.getWorldType() instanceof WorldTypeTFC))
-        {
-            throw new RuntimeException("Terrible things have gone wrong here.");
-        }
-    }
+		if (!(world.getWorldType() instanceof WorldTypeTFC))
+		{
+			throw new RuntimeException("Terrible things have gone wrong here.");
+		}
+	}
 
-    @Override
-    public float getTemperatureAtHeight(float p_76939_1_, int p_76939_2_)
-    {
-        return super.getTemperatureAtHeight(p_76939_1_, p_76939_2_);
-    }
+	@Override
+	public float getTemperatureAtHeight(float p_76939_1_, int p_76939_2_)
+	{
+		return super.getTemperatureAtHeight(p_76939_1_, p_76939_2_);
+	}
 
-    @Override
-    public List<Biome> getBiomesToSpawnIn()
-    {
-        return BiomesTFC.getSpawnBiomes();
-    }
+	@Override
+	public List<Biome> getBiomesToSpawnIn()
+	{
+		return BiomesTFC.getSpawnBiomes();
+	}
 
-    /**
-     * This is where we do the actual override of the generation, we discard the original and insert our own.
-     */
-    @Override
-    public GenLayer[] getModdedBiomeGenerators(WorldType worldType, long seed, GenLayer[] original)
-    {
-        original = GenLayerTFC.initialize2(seed);
-        return super.getModdedBiomeGenerators(worldType, seed, original);
-    }
+	/**
+	 * This is where we do the actual override of the generation, we discard the
+	 * original and insert our own.
+	 */
+	@Override
+	public GenLayer[] getModdedBiomeGenerators(WorldType worldType, long seed, GenLayer[] original)
+	{
+		original = GenLayerTFC.initialize2(seed);
+		return super.getModdedBiomeGenerators(worldType, seed, original);
+	}
 }

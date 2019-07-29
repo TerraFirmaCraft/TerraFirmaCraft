@@ -10,19 +10,19 @@ import net.dries007.tfc.api.capability.size.Weight;
 
 public class ItemCraftingTool extends ItemMisc
 {
-    public ItemCraftingTool(int durability, Size size, Weight weight, Object... oreNameParts)
-    {
-        super(size, weight, oreNameParts);
-        setMaxDamage(durability);
-        setMaxStackSize(1);
-        setNoRepair();
-    }
+	public ItemCraftingTool(int durability, Size size, Weight weight, Object... oreNameParts)
+	{
+		super(size, weight, oreNameParts);
+		setMaxDamage(durability);
+		setMaxStackSize(1);
+		setNoRepair();
+	}
 
-    public ItemCraftingTool(int durability, Size size, Weight weight)
-    {
-        super(size, weight);
-        setMaxDamage(durability);
-        setMaxStackSize(1);
-        setNoRepair();
-    }
+	public ItemCraftingTool(int durability, Size size, Weight weight)
+	{
+		super(size, weight);
+		setMaxDamage(durability);
+		setMaxStackSize(1);
+		setNoRepair();
+	}
 }

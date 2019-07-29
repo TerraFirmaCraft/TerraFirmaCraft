@@ -18,13 +18,9 @@ import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
 
 public final class Constants
 {
-    public static final Gson GSON = new GsonBuilder().disableHtmlEscaping()
-        .registerTypeAdapter(ResourceLocation.class, new ResourceLocationJson())
-        .registerTypeAdapterFactory(new LowercaseEnumTypeAdapterFactory())
-        .registerTypeAdapter(VeinType.class, new VeinTypeJson())
-        .create();
-    public static final String GUI_FACTORY = "net.dries007.tfc.client.TFCModGuiFactory";
+	public static final Gson GSON = new GsonBuilder().disableHtmlEscaping().registerTypeAdapter(ResourceLocation.class, new ResourceLocationJson()).registerTypeAdapterFactory(new LowercaseEnumTypeAdapterFactory()).registerTypeAdapter(VeinType.class, new VeinTypeJson()).create();
+	public static final String GUI_FACTORY = "net.dries007.tfc.client.TFCModGuiFactory";
 
-    public static final Random RNG = new Random();
+	public static final Random RNG = new Random();
 
 }

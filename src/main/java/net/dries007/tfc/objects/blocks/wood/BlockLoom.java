@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.objects.blocks.wood;
 
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -41,146 +40,146 @@ import static net.minecraft.block.material.Material.WOOD;
 @ParametersAreNonnullByDefault
 public class BlockLoom extends BlockContainer implements IItemSize
 {
-    protected static final AxisAlignedBB LOOM_EAST_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.0625D, 0.5625D, 1.0D, 0.9375D);
-    protected static final AxisAlignedBB LOOM_WEST_AABB = new AxisAlignedBB(0.4375D, 0.0D, 0.0625D, 0.875D, 1.0D, 0.9375D);
-    protected static final AxisAlignedBB LOOM_SOUTH_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.125D, 0.9375D, 1.0D, 0.5625D);
-    protected static final AxisAlignedBB LOOM_NORTH_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.4375D, 0.9375D, 1.0D, 0.875D);
+	protected static final AxisAlignedBB LOOM_EAST_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.0625D, 0.5625D, 1.0D, 0.9375D);
+	protected static final AxisAlignedBB LOOM_WEST_AABB = new AxisAlignedBB(0.4375D, 0.0D, 0.0625D, 0.875D, 1.0D, 0.9375D);
+	protected static final AxisAlignedBB LOOM_SOUTH_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.125D, 0.9375D, 1.0D, 0.5625D);
+	protected static final AxisAlignedBB LOOM_NORTH_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.4375D, 0.9375D, 1.0D, 0.875D);
 
-    public Tree wood;
+	public Tree wood;
 
-    public BlockLoom(Tree wood)
-    {
-        super(WOOD, MapColor.AIR);
-        this.wood = wood;
-        setSoundType(SoundType.WOOD);
-        setHarvestLevel("axe", 0);
-        setHardness(0.5f);
-        setResistance(3f);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-    }
+	public BlockLoom(Tree wood)
+	{
+		super(WOOD, MapColor.AIR);
+		this.wood = wood;
+		setSoundType(SoundType.WOOD);
+		setHarvestLevel("axe", 0);
+		setHardness(0.5f);
+		setResistance(3f);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+	}
 
-    @Nonnull
-    @Override
-    public Size getSize(@Nonnull ItemStack stack)
-    {
-        return Size.LARGE;
-    }
+	@Nonnull
+	@Override
+	public Size getSize(@Nonnull ItemStack stack)
+	{
+		return Size.LARGE;
+	}
 
-    @Nonnull
-    @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
-    {
-        return Weight.HEAVY;
-    }
+	@Nonnull
+	@Override
+	public Weight getWeight(@Nonnull ItemStack stack)
+	{
+		return Weight.HEAVY;
+	}
 
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
-    {
-        return new TELoom();
-    }
+	@Nullable
+	@Override
+	public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
+	{
+		return new TELoom();
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	@Nonnull
+	public IBlockState getStateFromMeta(int meta)
+	{
+		return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(FACING).getHorizontalIndex();
-    }
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		return state.getValue(FACING).getHorizontalIndex();
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean isFullCube(IBlockState state)
+	{
+		return false;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        switch (state.getValue(FACING))
-        {
-            case NORTH:
-            default:
-                return LOOM_NORTH_AABB;
-            case SOUTH:
-                return LOOM_SOUTH_AABB;
-            case WEST:
-                return LOOM_WEST_AABB;
-            case EAST:
-                return LOOM_EAST_AABB;
-        }
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	@Nonnull
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
+		switch (state.getValue(FACING))
+		{
+			case NORTH:
+			default:
+				return LOOM_NORTH_AABB;
+			case SOUTH:
+				return LOOM_SOUTH_AABB;
+			case WEST:
+				return LOOM_WEST_AABB;
+			case EAST:
+				return LOOM_EAST_AABB;
+		}
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	@Nonnull
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+	{
+		return BlockFaceShape.UNDEFINED;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean isOpaqueCube(IBlockState state)
+	{
+		return false;
+	}
 
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        TELoom te = Helpers.getTE(worldIn, pos, TELoom.class);
-        if (te != null)
-        {
-            return te.onRightClick(playerIn);
-        }
-        return true;
-    }
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	{
+		TELoom te = Helpers.getTE(worldIn, pos, TELoom.class);
+		if (te != null)
+		{
+			return te.onRightClick(playerIn);
+		}
+		return true;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        if (facing.getAxis() == EnumFacing.Axis.Y)
-        {
-            facing = placer.getHorizontalFacing().getOpposite();
-        }
-        return getDefaultState().withProperty(FACING, facing);
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	@Nonnull
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	{
+		if (facing.getAxis() == EnumFacing.Axis.Y)
+		{
+			facing = placer.getHorizontalFacing().getOpposite();
+		}
+		return getDefaultState().withProperty(FACING, facing);
+	}
 
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING);
-    }
+	@Override
+	@Nonnull
+	protected BlockStateContainer createBlockState()
+	{
+		return new BlockStateContainer(this, FACING);
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-        return EnumBlockRenderType.MODEL;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	@Nonnull
+	public EnumBlockRenderType getRenderType(IBlockState state)
+	{
+		return EnumBlockRenderType.MODEL;
+	}
 
-    @Override
-    public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
-    {
-        TELoom te = Helpers.getTE(worldIn, pos, TELoom.class);
-        if (te != null)
-        {
-            te.onBreakBlock(worldIn, pos);
-        }
-        super.breakBlock(worldIn, pos, state);
-    }
+	@Override
+	public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
+	{
+		TELoom te = Helpers.getTE(worldIn, pos, TELoom.class);
+		if (te != null)
+		{
+			te.onBreakBlock(worldIn, pos);
+		}
+		super.breakBlock(worldIn, pos, state);
+	}
 }

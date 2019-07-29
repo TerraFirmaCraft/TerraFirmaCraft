@@ -26,27 +26,27 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_NAME;
 @SideOnly(Side.CLIENT)
 public class TFCKeybindings
 {
-    private static final KeyBinding OPEN_CRAFTING_TABLE = new KeyBinding("tfc.key.craft", KeyConflictContext.IN_GAME, Keyboard.KEY_C, MOD_NAME);
-    private static final KeyBinding PLACE_BLOCK = new KeyBinding("tfc.key.placeblock", KeyConflictContext.IN_GAME, Keyboard.KEY_V, MOD_NAME);
+	private static final KeyBinding OPEN_CRAFTING_TABLE = new KeyBinding("tfc.key.craft", KeyConflictContext.IN_GAME, Keyboard.KEY_C, MOD_NAME);
+	private static final KeyBinding PLACE_BLOCK = new KeyBinding("tfc.key.placeblock", KeyConflictContext.IN_GAME, Keyboard.KEY_V, MOD_NAME);
 
-    public static void init()
-    {
-        ClientRegistry.registerKeyBinding(OPEN_CRAFTING_TABLE);
-        ClientRegistry.registerKeyBinding(PLACE_BLOCK);
-    }
+	public static void init()
+	{
+		ClientRegistry.registerKeyBinding(OPEN_CRAFTING_TABLE);
+		ClientRegistry.registerKeyBinding(PLACE_BLOCK);
+	}
 
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent()
-    public static void onKeyEvent(InputEvent.KeyInputEvent event)
-    {
-        if (OPEN_CRAFTING_TABLE.isPressed())
-        {
-            TerraFirmaCraft.getNetwork().sendToServer(new PacketOpenCraftingGui());
-        }
-        if (PLACE_BLOCK.isPressed())
-        {
-            TerraFirmaCraft.getLog().info("Place block key pressed");
-            TerraFirmaCraft.getNetwork().sendToServer(new PacketPlaceBlockSpecial());
-        }
-    }
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent()
+	public static void onKeyEvent(InputEvent.KeyInputEvent event)
+	{
+		if (OPEN_CRAFTING_TABLE.isPressed())
+		{
+			TerraFirmaCraft.getNetwork().sendToServer(new PacketOpenCraftingGui());
+		}
+		if (PLACE_BLOCK.isPressed())
+		{
+			TerraFirmaCraft.getLog().info("Place block key pressed");
+			TerraFirmaCraft.getNetwork().sendToServer(new PacketPlaceBlockSpecial());
+		}
+	}
 }

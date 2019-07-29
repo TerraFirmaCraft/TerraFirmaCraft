@@ -22,30 +22,29 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderDeerTFC extends RenderLiving<EntityDeerTFC>
 {
-    private static final ResourceLocation DEER_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/deer.png");
-    private static final ResourceLocation FAWN_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/deer_fawn.png");
+	private static final ResourceLocation DEER_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/deer.png");
+	private static final ResourceLocation FAWN_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/deer_fawn.png");
 
-    public RenderDeerTFC(RenderManager manager)
-    {
-        super(manager, new ModelDeerTFC(), 0.7F);
-    }
+	public RenderDeerTFC(RenderManager manager)
+	{
+		super(manager, new ModelDeerTFC(), 0.7F);
+	}
 
-    @Override
-    protected ResourceLocation getEntityTexture(EntityDeerTFC deer)
-    {
-        if (deer.isChild())
-        {
-            return FAWN_TEXTURE;
-        }
-        else
-        {
-            return DEER_TEXTURE;
-        }
-    }
+	@Override
+	protected ResourceLocation getEntityTexture(EntityDeerTFC deer)
+	{
+		if (deer.isChild())
+		{
+			return FAWN_TEXTURE;
+		} else
+		{
+			return DEER_TEXTURE;
+		}
+	}
 
-    @Override
-    protected float handleRotationFloat(EntityDeerTFC deer, float par2)
-    {
-        return 1.0f;
-    }
+	@Override
+	protected float handleRotationFloat(EntityDeerTFC deer, float par2)
+	{
+		return 1.0f;
+	}
 }

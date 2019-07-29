@@ -21,47 +21,46 @@ import static net.dries007.tfc.objects.blocks.wood.BlockBarrel.SEALED;
 public class ContainerLargeVessel extends ContainerTE<TELargeVessel> implements IButtonHandler
 {
 
-    public ContainerLargeVessel(InventoryPlayer playerInv, TELargeVessel tile)
-    {
-        super(playerInv, tile, true);
-    }
+	public ContainerLargeVessel(InventoryPlayer playerInv, TELargeVessel tile)
+	{
+		super(playerInv, tile, true);
+	}
 
-    @Override
-    public void onButtonPress(int buttonID, @Nullable NBTTagCompound extraNBT)
-    {
-        // Slot will always be 0, extraNBT will be empty
-        if (!tile.getWorld().isRemote)
-        {
-            IBlockState state = tile.getWorld().getBlockState(tile.getPos());
+	@Override
+	public void onButtonPress(int buttonID, @Nullable NBTTagCompound extraNBT)
+	{
+		// Slot will always be 0, extraNBT will be empty
+		if (!tile.getWorld().isRemote)
+		{
+			IBlockState state = tile.getWorld().getBlockState(tile.getPos());
 
-            if (state.getValue(SEALED))
-            {
-                tile.onUnseal();
-            }
-            else
-            {
-                tile.onSeal();
-            }
+			if (state.getValue(SEALED))
+			{
+				tile.onUnseal();
+			} else
+			{
+				tile.onSeal();
+			}
 
-            tile.getWorld().setBlockState(tile.getPos(), state.withProperty(SEALED, !state.getValue(SEALED)));
-            tile.onSealed();
-        }
-    }
+			tile.getWorld().setBlockState(tile.getPos(), state.withProperty(SEALED, !state.getValue(SEALED)));
+			tile.onSealed();
+		}
+	}
 
-    @Override
-    protected void addContainerSlots()
-    {
-        IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+	@Override
+	protected void addContainerSlots()
+	{
+		IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
-        if (inventory != null)
-        {
-            for (int y = 0; y < 3; y++)
-            {
-                for (int x = 0; x < 3; x++)
-                {
-                    addSlotToContainer(new SlotCallback(inventory, x * 3 + y, 34 + x * 18, 19 + y * 18, tile));
-                }
-            }
-        }
-    }
+		if (inventory != null)
+		{
+			for (int y = 0; y < 3; y++)
+			{
+				for (int x = 0; x < 3; x++)
+				{
+					addSlotToContainer(new SlotCallback(inventory, x * 3 + y, 34 + x * 18, 19 + y * 18, tile));
+				}
+			}
+		}
+	}
 }

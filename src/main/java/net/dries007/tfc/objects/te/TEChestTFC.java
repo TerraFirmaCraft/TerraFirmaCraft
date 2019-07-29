@@ -25,47 +25,48 @@ import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 @MethodsReturnNonnullByDefault
 public class TEChestTFC extends TileEntityChest
 {
-    public static final int SIZE = 18;
+	public static final int SIZE = 18;
 
-    private Tree cachedWood;
+	private Tree cachedWood;
 
-    {
-        chestContents = NonNullList.withSize(SIZE, ItemStack.EMPTY); // todo: make chest size configurable.
-    }
+	{
+		chestContents = NonNullList.withSize(SIZE, ItemStack.EMPTY); // todo: make chest size configurable.
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    @Nonnull
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-        return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	@Nonnull
+	public AxisAlignedBB getRenderBoundingBox()
+	{
+		return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
+	}
 
-    @Nullable
-    public Tree getWood()
-    {
-        if (cachedWood == null)
-        {
-            if (world != null)
-            {
-                cachedWood = ((BlockChestTFC) world.getBlockState(pos).getBlock()).wood;
-            }
-        }
-        return cachedWood;
-    }
+	@Nullable
+	public Tree getWood()
+	{
+		if (cachedWood == null)
+		{
+			if (world != null)
+			{
+				cachedWood = ((BlockChestTFC) world.getBlockState(pos).getBlock()).wood;
+			}
+		}
+		return cachedWood;
+	}
 
-    @Override
-    public int getSizeInventory()
-    {
-        return SIZE;
-    }
+	@Override
+	public int getSizeInventory()
+	{
+		return SIZE;
+	}
 
-    @Override
-    protected boolean isChestAt(@Nonnull BlockPos posIn)
-    {
-        if (world == null) return false;
+	@Override
+	protected boolean isChestAt(@Nonnull BlockPos posIn)
+	{
+		if (world == null)
+			return false;
 
-        Block block = this.world.getBlockState(posIn).getBlock();
-        return block instanceof BlockChestTFC && ((BlockChestTFC) block).wood == getWood() && ((BlockChest) block).chestType == getChestType();
-    }
+		Block block = this.world.getBlockState(posIn).getBlock();
+		return block instanceof BlockChestTFC && ((BlockChestTFC) block).wood == getWood() && ((BlockChest) block).chestType == getChestType();
+	}
 }

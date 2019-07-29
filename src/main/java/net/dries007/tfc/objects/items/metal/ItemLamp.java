@@ -17,14 +17,14 @@ import net.dries007.tfc.api.util.IPlaceableItem;
 
 public class ItemLamp extends ItemMetal implements IPlaceableItem
 {
-    public ItemLamp(Metal metal, Metal.ItemType type)
-    {
-        super(metal, type);
-    }
+	public ItemLamp(Metal metal, Metal.ItemType type)
+	{
+		super(metal, type);
+	}
 
-    @Override
-    public boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, EnumFacing facing, Vec3d hitVec)
-    {
-        return false;
-    }
+	@Override
+	public boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, EnumFacing facing, Vec3d hitVec)
+	{
+		return false;
+	}
 }

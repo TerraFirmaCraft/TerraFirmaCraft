@@ -14,14 +14,14 @@ import net.dries007.tfc.api.capability.size.Weight;
 
 public class ItemHandstone extends ItemCraftingTool
 {
-    ItemHandstone()
-    {
-        super(250, Size.NORMAL, Weight.HEAVY, "handstone");
-    }
+	ItemHandstone()
+	{
+		super(250, Size.NORMAL, Weight.HEAVY, "handstone");
+	}
 
-    @Override
-    public boolean doesSneakBypassUse(ItemStack stack, net.minecraft.world.IBlockAccess world, BlockPos pos, EntityPlayer player)
-    {
-        return true;
-    }
+	@Override
+	public boolean doesSneakBypassUse(ItemStack stack, net.minecraft.world.IBlockAccess world, BlockPos pos, EntityPlayer player)
+	{
+		return true;
+	}
 }

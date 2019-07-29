@@ -16,27 +16,27 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class GuiQuern extends GuiContainerTE<TEQuern>
 {
-    private static final ResourceLocation QUERN_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/quern.png");
-    private final String translationKey;
+	private static final ResourceLocation QUERN_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/quern.png");
+	private final String translationKey;
 
-    public GuiQuern(Container container, InventoryPlayer playerInv, TEQuern tile, String translationKey)
-    {
-        super(container, playerInv, tile, QUERN_BACKGROUND);
+	public GuiQuern(Container container, InventoryPlayer playerInv, TEQuern tile, String translationKey)
+	{
+		super(container, playerInv, tile, QUERN_BACKGROUND);
 
-        this.translationKey = translationKey;
-    }
+		this.translationKey = translationKey;
+	}
 
-    @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-    {
-        String name = I18n.format(translationKey + ".name");
-        fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
-        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-    }
+	@Override
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
+		String name = I18n.format(translationKey + ".name");
+		fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
+		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+	}
 
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-    {
-        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
-    }
+	@Override
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+	{
+		super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+	}
 }

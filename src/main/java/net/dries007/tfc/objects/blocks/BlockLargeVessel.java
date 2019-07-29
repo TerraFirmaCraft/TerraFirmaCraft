@@ -42,208 +42,205 @@ import net.dries007.tfc.util.Helpers;
 @ParametersAreNonnullByDefault
 public class BlockLargeVessel extends Block implements IItemSize
 {
-    public static final PropertyBool SEALED = PropertyBool.create("sealed");
-    private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.625D, 0.8125D);
-    private static final AxisAlignedBB BOUNDING_BOX_SEALED = new AxisAlignedBB(0.15625D, 0.0D, 0.15625D, 0.84375D, 0.6875D, 0.84375D);
+	public static final PropertyBool SEALED = PropertyBool.create("sealed");
+	private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.625D, 0.8125D);
+	private static final AxisAlignedBB BOUNDING_BOX_SEALED = new AxisAlignedBB(0.15625D, 0.0D, 0.15625D, 0.84375D, 0.6875D, 0.84375D);
 
-    public BlockLargeVessel()
-    {
-        super(Material.CIRCUITS);
-        setSoundType(SoundType.STONE);
-        setHardness(2F);
+	public BlockLargeVessel()
+	{
+		super(Material.CIRCUITS);
+		setSoundType(SoundType.STONE);
+		setHardness(2F);
 
-        setDefaultState(blockState.getBaseState().withProperty(SEALED, false));
-    }
+		setDefaultState(blockState.getBaseState().withProperty(SEALED, false));
+	}
 
-    @Override
-    @Nonnull
-    public Size getSize(ItemStack stack)
-    {
-        return Size.HUGE;
-    }
+	@Override
+	@Nonnull
+	public Size getSize(ItemStack stack)
+	{
+		return Size.HUGE;
+	}
 
-    @Override
-    @Nonnull
-    public Weight getWeight(ItemStack stack)
-    {
-        return Weight.HEAVY;
-    }
+	@Override
+	@Nonnull
+	public Weight getWeight(ItemStack stack)
+	{
+		return Weight.HEAVY;
+	}
 
+	@Override
+	@Nonnull
+	@SuppressWarnings("deprecation")
+	public IBlockState getStateFromMeta(int meta)
+	{
+		return this.getDefaultState().withProperty(SEALED, meta == 1);
+	}
 
-    @Override
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(SEALED, meta == 1);
-    }
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		if (state.getValue(SEALED))
+		{
+			return 1;
+		}
+		return 0;
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        if (state.getValue(SEALED))
-        {
-            return 1;
-        }
-        return 0;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean isFullCube(IBlockState state)
+	{
+		return false;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
+	@Nonnull
+	@SuppressWarnings("deprecation")
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
+		return state.getValue(SEALED) ? BOUNDING_BOX_SEALED : BOUNDING_BOX;
+	}
 
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return state.getValue(SEALED) ? BOUNDING_BOX_SEALED : BOUNDING_BOX;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean isOpaqueCube(IBlockState state)
+	{
+		return false;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	@Nonnull
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getRenderLayer()
+	{
+		return BlockRenderLayer.CUTOUT;
+	}
 
-    @Override
-    @Nonnull
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	{
+		if (!worldIn.isRemote)
+		{
+			ItemStack heldItem = playerIn.getHeldItem(hand);
+			TELargeVessel te = Helpers.getTE(worldIn, pos, TELargeVessel.class);
 
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        if (!worldIn.isRemote)
-        {
-            ItemStack heldItem = playerIn.getHeldItem(hand);
-            TELargeVessel te = Helpers.getTE(worldIn, pos, TELargeVessel.class);
+			if (te != null)
+			{
+				if (heldItem.isEmpty() && playerIn.isSneaking())
+				{
+					worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 0.85F);
+					worldIn.setBlockState(pos, state.withProperty(SEALED, !state.getValue(SEALED)));
+					te.onSealed();
+				} else
+				{
+					TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.LARGE_VESSEL);
+				}
+			}
 
-            if (te != null)
-            {
-                if (heldItem.isEmpty() && playerIn.isSneaking())
-                {
-                    worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 0.85F);
-                    worldIn.setBlockState(pos, state.withProperty(SEALED, !state.getValue(SEALED)));
-                    te.onSealed();
-                }
-                else
-                {
-                    TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.LARGE_VESSEL);
-                }
-            }
+			return true;
+		} else
+		{
+			return true;
+		}
 
-            return true;
-        }
-        else
-        {
-            return true;
-        }
+	}
 
-    }
+	/**
+	 * The Block needs to be removed here since we prevented its removal earlier in
+	 * {@link #removedByPlayer(IBlockState, World, BlockPos, EntityPlayer, boolean)}.
+	 */
+	@Override
+	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack tool)
+	{
+		super.harvestBlock(world, player, pos, state, te, tool);
+		world.setBlockToAir(pos);
+	}
 
-    /**
-     * The Block needs to be removed here since we prevented its removal earlier in {@link #removedByPlayer(IBlockState, World, BlockPos, EntityPlayer, boolean)}.
-     */
-    @Override
-    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack tool)
-    {
-        super.harvestBlock(world, player, pos, state, te, tool);
-        world.setBlockToAir(pos);
-    }
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+	{
+		if (worldIn.isRemote)
+		{
+			return;
+		}
 
-    @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-    {
-        if (worldIn.isRemote)
-        {
-            return;
-        }
+		NBTTagCompound compound = stack.getTagCompound();
 
+		if (compound != null)
+		{
+			TELargeVessel te = Helpers.getTE(worldIn, pos, TELargeVessel.class);
 
-        NBTTagCompound compound = stack.getTagCompound();
+			if (te != null)
+			{
+				te.readFromItemTag(compound);
+				worldIn.setBlockState(pos, state.withProperty(SEALED, true));
+			}
+		}
+	}
 
-        if (compound != null)
-        {
-            TELargeVessel te = Helpers.getTE(worldIn, pos, TELargeVessel.class);
+	@Override
+	@Nonnull
+	public BlockStateContainer createBlockState()
+	{
+		return new BlockStateContainer(this, SEALED);
+	}
 
-            if (te != null)
-            {
-                te.readFromItemTag(compound);
-                worldIn.setBlockState(pos, state.withProperty(SEALED, true));
-            }
-        }
-    }
+	/**
+	 * Prevents removal of the Block & TileEntity before getDrops(...) is called.
+	 * Using this we'll have to remove the block later, which happens in
+	 * {@link #harvestBlock(World, EntityPlayer, BlockPos, IBlockState, TileEntity, ItemStack)}.
+	 */
+	@Override
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+	{
+		return willHarvest || super.removedByPlayer(state, world, pos, player, false);
+	}
 
-    @Override
-    @Nonnull
-    public BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, SEALED);
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state)
+	{
+		return true;
+	}
 
-    /**
-     * Prevents removal of the Block & TileEntity before getDrops(...) is called.
-     * Using this we'll have to remove the block later, which happens in {@link #harvestBlock(World, EntityPlayer, BlockPos, IBlockState, TileEntity, ItemStack)}.
-     */
-    @Override
-    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
-    {
-        return willHarvest || super.removedByPlayer(state, world, pos, player, false);
-    }
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state)
+	{
+		return new TELargeVessel();
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
+	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+	{
+		TELargeVessel te = Helpers.getTE(world, pos, TELargeVessel.class);
 
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TELargeVessel();
-    }
+		if (te != null)
+		{
+			if (state.getValue(SEALED))
+			{
+				ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1);
+				stack.setTagCompound(te.getItemTag());
 
-    @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-    {
-        TELargeVessel te = Helpers.getTE(world, pos, TELargeVessel.class);
+				drops.add(stack);
+			} else
+			{
+				drops.add(new ItemStack(Item.getItemFromBlock(this)));
 
-        if (te != null)
-        {
-            if (state.getValue(SEALED))
-            {
-                ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1);
-                stack.setTagCompound(te.getItemTag());
+				IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
-                drops.add(stack);
-            }
-            else
-            {
-                drops.add(new ItemStack(Item.getItemFromBlock(this)));
+				if (inventory != null)
+				{
+					for (int slot = 0; slot < inventory.getSlots(); slot++)
+					{
+						ItemStack stack = inventory.getStackInSlot(slot);
 
-                IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-
-                if (inventory != null)
-                {
-                    for (int slot = 0; slot < inventory.getSlots(); slot++)
-                    {
-                        ItemStack stack = inventory.getStackInSlot(slot);
-
-                        if (!stack.isEmpty())
-                        {
-                            drops.add(stack);
-                        }
-                    }
-                }
-            }
-        }
-    }
+						if (!stack.isEmpty())
+						{
+							drops.add(stack);
+						}
+					}
+				}
+			}
+		}
+	}
 }

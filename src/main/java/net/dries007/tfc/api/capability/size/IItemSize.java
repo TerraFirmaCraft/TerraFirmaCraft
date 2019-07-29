@@ -16,40 +16,41 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.util.Helpers;
 
 /**
- * Interface for item size.
- * To implement this, you can (preferred) implement this interface on your Item / Block and return the size or
- * Expose this capability via Item#initCapabilities()
- * Note: if you implement this via an interface, you must also change the stack-size of the item to agree with {@link IItemSize#getStackSize}
- * If you implement the capability, the game will try and auto-adjust the max stacksize of the item for you
- * Otherwise, your item will be assigned a default capability on creation
+ * Interface for item size. To implement this, you can (preferred) implement
+ * this interface on your Item / Block and return the size or Expose this
+ * capability via Item#initCapabilities() Note: if you implement this via an
+ * interface, you must also change the stack-size of the item to agree with
+ * {@link IItemSize#getStackSize} If you implement the capability, the game will
+ * try and auto-adjust the max stacksize of the item for you Otherwise, your
+ * item will be assigned a default capability on creation
  */
 public interface IItemSize
 {
-    static int getStackSize(Size size, Weight weight, boolean canStack)
-    {
-        return canStack ? Math.min(size.stackSize * weight.multiplier, 64) : 1;
-    }
+	static int getStackSize(Size size, Weight weight, boolean canStack)
+	{
+		return canStack ? Math.min(size.stackSize * weight.multiplier, 64) : 1;
+	}
 
-    @Nonnull
-    Size getSize(@Nonnull ItemStack stack);
+	@Nonnull
+	Size getSize(@Nonnull ItemStack stack);
 
-    @Nonnull
-    Weight getWeight(@Nonnull ItemStack stack);
+	@Nonnull
+	Weight getWeight(@Nonnull ItemStack stack);
 
-    default boolean canStack(@Nonnull ItemStack stack)
-    {
-        return true;
-    }
+	default boolean canStack(@Nonnull ItemStack stack)
+	{
+		return true;
+	}
 
-    @SideOnly(Side.CLIENT)
-    default void addSizeInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
-    {
-        text.add("\u2696 " + I18n.format(Helpers.getEnumName(getWeight(stack))) + " \u21F2 " + I18n.format(Helpers.getEnumName(getSize(stack))));
-    }
+	@SideOnly(Side.CLIENT)
+	default void addSizeInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
+	{
+		text.add("\u2696 " + I18n.format(Helpers.getEnumName(getWeight(stack))) + " \u21F2 " + I18n.format(Helpers.getEnumName(getSize(stack))));
+	}
 
-    default int getStackSize(@Nonnull ItemStack stack)
-    {
-        return getStackSize(getSize(stack), getWeight(stack), canStack(stack));
-    }
+	default int getStackSize(@Nonnull ItemStack stack)
+	{
+		return getStackSize(getSize(stack), getWeight(stack), canStack(stack));
+	}
 
 }

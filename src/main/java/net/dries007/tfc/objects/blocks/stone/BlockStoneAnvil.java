@@ -49,240 +49,240 @@ import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
 @ParametersAreNonnullByDefault
 public class BlockStoneAnvil extends Block implements IRockObject
 {
-    private static final Map<Rock, BlockStoneAnvil> MAP = new HashMap<>();
-    private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 0.875, 1);
+	private static final Map<Rock, BlockStoneAnvil> MAP = new HashMap<>();
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 0.875, 1);
 
-    public static BlockStoneAnvil get(Rock rock)
-    {
-        return MAP.get(rock);
-    }
+	public static BlockStoneAnvil get(Rock rock)
+	{
+		return MAP.get(rock);
+	}
 
-    private final Rock rock;
+	private final Rock rock;
 
-    public BlockStoneAnvil(Rock rock)
-    {
-        super(Material.ROCK);
+	public BlockStoneAnvil(Rock rock)
+	{
+		super(Material.ROCK);
 
-        setSoundType(SoundType.STONE);
-        setHardness(2.0F);
-        setResistance(10.0F);
-        setHarvestLevel("pickaxe", 0);
+		setSoundType(SoundType.STONE);
+		setHardness(2.0F);
+		setResistance(10.0F);
+		setHarvestLevel("pickaxe", 0);
 
-        this.rock = rock;
-        MAP.put(rock, this);
-    }
+		this.rock = rock;
+		MAP.put(rock, this);
+	}
 
-    @Nonnull
-    @Override
-    public Rock getRock(ItemStack stack)
-    {
-        return rock;
-    }
+	@Nonnull
+	@Override
+	public Rock getRock(ItemStack stack)
+	{
+		return rock;
+	}
 
-    @Nonnull
-    @Override
-    public RockCategory getRockCategory(ItemStack stack)
-    {
-        return rock.getRockCategory();
-    }
+	@Nonnull
+	@Override
+	public RockCategory getRockCategory(ItemStack stack)
+	{
+		return rock.getRockCategory();
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isTopSolid(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean isTopSolid(IBlockState state)
+	{
+		return false;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isFullBlock(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean isFullBlock(IBlockState state)
+	{
+		return false;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isBlockNormalCube(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean isBlockNormalCube(IBlockState state)
+	{
+		return false;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isNormalCube(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean isNormalCube(IBlockState state)
+	{
+		return false;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean isFullCube(IBlockState state)
+	{
+		return false;
+	}
 
-    @Override
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return AABB;
-    }
+	@Override
+	@Nonnull
+	@SuppressWarnings("deprecation")
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
+		return AABB;
+	}
 
-    @Nullable
-    @Override
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        return AABB;
-    }
+	@Nullable
+	@Override
+	@SuppressWarnings("deprecation")
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+	{
+		return AABB;
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
-    {
-        return AABB;
-    }
+	@SideOnly(Side.CLIENT)
+	@Override
+	@Nonnull
+	@SuppressWarnings("deprecation")
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
+	{
+		return AABB;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean isOpaqueCube(IBlockState state)
+	{
+		return false;
+	}
 
-    @Override
-    public int quantityDropped(Random random)
-    {
-        return 1 + random.nextInt(3);
-    }
+	@Override
+	public int quantityDropped(Random random)
+	{
+		return 1 + random.nextInt(3);
+	}
 
-    @Override
-    @Nonnull
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return ItemRock.get(rock);
-    }
+	@Override
+	@Nonnull
+	public Item getItemDropped(IBlockState state, Random rand, int fortune)
+	{
+		return ItemRock.get(rock);
+	}
 
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        TEAnvilTFC te = Helpers.getTE(worldIn, pos, TEAnvilTFC.class);
-        if (te == null)
-        {
-            return false;
-        }
-        IItemHandler cap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (cap == null)
-        {
-            return false;
-        }
-        ItemStack heldItem = playerIn.getHeldItem(hand);
-        // First check for a possible recipe action (welding)
-        if (te.isItemValid(SLOT_HAMMER, heldItem))
-        {
-            if (te.attemptWelding(playerIn))
-            {
-                // Valid welding occurred.
-                worldIn.playSound(null, pos, TFCSoundEvents.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                return true;
-            }
-        }
-        if (playerIn.isSneaking())
-        {
-            // Extract requires an empty hand
-            if (heldItem.isEmpty())
-            {
-                // Only check the input slots
-                for (int i = 0; i < 2; i++)
-                {
-                    ItemStack stack = cap.getStackInSlot(i);
-                    if (!stack.isEmpty())
-                    {
-                        // Give the item to player in the main hand
-                        ItemStack result = cap.extractItem(i, 1, false);
-                        playerIn.setHeldItem(hand, result);
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	{
+		TEAnvilTFC te = Helpers.getTE(worldIn, pos, TEAnvilTFC.class);
+		if (te == null)
+		{
+			return false;
+		}
+		IItemHandler cap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		if (cap == null)
+		{
+			return false;
+		}
+		ItemStack heldItem = playerIn.getHeldItem(hand);
+		// First check for a possible recipe action (welding)
+		if (te.isItemValid(SLOT_HAMMER, heldItem))
+		{
+			if (te.attemptWelding(playerIn))
+			{
+				// Valid welding occurred.
+				worldIn.playSound(null, pos, TFCSoundEvents.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+				return true;
+			}
+		}
+		if (playerIn.isSneaking())
+		{
+			// Extract requires an empty hand
+			if (heldItem.isEmpty())
+			{
+				// Only check the input slots
+				for (int i = 0; i < 2; i++)
+				{
+					ItemStack stack = cap.getStackInSlot(i);
+					if (!stack.isEmpty())
+					{
+						// Give the item to player in the main hand
+						ItemStack result = cap.extractItem(i, 1, false);
+						playerIn.setHeldItem(hand, result);
 
-                    }
-                }
-            }
-        }
-        else
-        {
-            // Not sneaking = insert items
-            ItemStack stack = playerIn.getHeldItem(hand);
-            if (!stack.isEmpty())
-            {
-                for (int i = 0; i <= 4; i++)
-                {
-                    // Check the input slots and flux. Do NOT check the hammer slot
-                    if (i == SLOT_HAMMER) continue;
-                    // Try to insert an item
-                    // Do not insert hammers into the input slots
-                    if (te.isItemValid(i, stack) && cap.getStackInSlot(i).isEmpty() && !te.isItemValid(SLOT_HAMMER, stack))
-                    {
-                        if (!worldIn.isRemote)
-                        {
-                            ItemStack result = cap.insertItem(i, stack, false);
-                            playerIn.setHeldItem(hand, result);
-                            TerraFirmaCraft.getLog().info("Inserted {} into slot {}", stack.getDisplayName(), i);
-                        }
-                        return true;
-                    }
-                }
-            }
+					}
+				}
+			}
+		} else
+		{
+			// Not sneaking = insert items
+			ItemStack stack = playerIn.getHeldItem(hand);
+			if (!stack.isEmpty())
+			{
+				for (int i = 0; i <= 4; i++)
+				{
+					// Check the input slots and flux. Do NOT check the hammer slot
+					if (i == SLOT_HAMMER)
+						continue;
+					// Try to insert an item
+					// Do not insert hammers into the input slots
+					if (te.isItemValid(i, stack) && cap.getStackInSlot(i).isEmpty() && !te.isItemValid(SLOT_HAMMER, stack))
+					{
+						if (!worldIn.isRemote)
+						{
+							ItemStack result = cap.insertItem(i, stack, false);
+							playerIn.setHeldItem(hand, result);
+							TerraFirmaCraft.getLog().info("Inserted {} into slot {}", stack.getDisplayName(), i);
+						}
+						return true;
+					}
+				}
+			}
 
-            // No insertion happened, so try and open GUI
-            if (!worldIn.isRemote)
-            {
-                TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.ANVIL);
-            }
-            return true;
-        }
-        return false;
-    }
+			// No insertion happened, so try and open GUI
+			if (!worldIn.isRemote)
+			{
+				TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.ANVIL);
+			}
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
-    {
-        if (!worldIn.isRemote && te instanceof TEInventory)
-        {
-            ((TEInventory) te).onBreakBlock(worldIn, pos);
-        }
-    }
+	@Override
+	public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+	{
+		if (!worldIn.isRemote && te instanceof TEInventory)
+		{
+			((TEInventory) te).onBreakBlock(worldIn, pos);
+		}
+	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return false;
-    }
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		return false;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
-    {
-        return side == EnumFacing.DOWN;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
+	{
+		return side == EnumFacing.DOWN;
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state)
+	{
+		return true;
+	}
 
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TEAnvilTFC();
-    }
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state)
+	{
+		return new TEAnvilTFC();
+	}
 
-    @Override
-    @Nonnull
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        return new ItemStack(BlockRockRaw.get(rock, Rock.Type.RAW));
-    }
+	@Override
+	@Nonnull
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+	{
+		return new ItemStack(BlockRockRaw.get(rock, Rock.Type.RAW));
+	}
 }

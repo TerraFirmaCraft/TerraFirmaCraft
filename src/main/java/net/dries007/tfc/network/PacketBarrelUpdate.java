@@ -25,56 +25,59 @@ import net.dries007.tfc.util.Helpers;
 
 public class PacketBarrelUpdate implements IMessage
 {
-    private BlockPos pos;
-    private long calendarTick;
-    private ResourceLocation recipeName;
+	private BlockPos pos;
+	private long calendarTick;
+	private ResourceLocation recipeName;
 
-    @SuppressWarnings("unused")
-    @Deprecated
-    public PacketBarrelUpdate() {}
+	@SuppressWarnings("unused")
+	@Deprecated
+	public PacketBarrelUpdate()
+	{
+	}
 
-    public PacketBarrelUpdate(@Nonnull TEBarrel tile, @Nullable BarrelRecipe currentRecipe, long calendarTick)
-    {
-        this.pos = tile.getPos();
-        this.calendarTick = calendarTick;
-        this.recipeName = currentRecipe != null ? currentRecipe.getRegistryName() : null;
-    }
+	public PacketBarrelUpdate(@Nonnull TEBarrel tile, @Nullable BarrelRecipe currentRecipe, long calendarTick)
+	{
+		this.pos = tile.getPos();
+		this.calendarTick = calendarTick;
+		this.recipeName = currentRecipe != null ? currentRecipe.getRegistryName() : null;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf)
-    {
-        pos = BlockPos.fromLong(buf.readLong());
-        calendarTick = buf.readLong();
-        recipeName = Helpers.readResourceLocation(buf);
-    }
+	@Override
+	public void fromBytes(ByteBuf buf)
+	{
+		pos = BlockPos.fromLong(buf.readLong());
+		calendarTick = buf.readLong();
+		recipeName = Helpers.readResourceLocation(buf);
+	}
 
-    @Override
-    public void toBytes(ByteBuf buf)
-    {
-        buf.writeLong(pos.toLong());
-        buf.writeLong(calendarTick);
-        Helpers.writeResourceLocation(buf, recipeName);
-    }
+	@Override
+	public void toBytes(ByteBuf buf)
+	{
+		buf.writeLong(pos.toLong());
+		buf.writeLong(calendarTick);
+		Helpers.writeResourceLocation(buf, recipeName);
+	}
 
-    public static final class Handler implements IMessageHandler<PacketBarrelUpdate, IMessage>
-    {
-        @Override
-        public IMessage onMessage(PacketBarrelUpdate message, MessageContext ctx)
-        {
-            EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
-            if (player != null)
-            {
-                World world = player.getEntityWorld();
-                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
-                    TEBarrel te = Helpers.getTE(world, message.pos, TEBarrel.class);
-                    if (te != null)
-                    {
-                        BarrelRecipe recipe = message.recipeName == null ? null : TFCRegistries.BARREL.getValue(message.recipeName);
-                        te.onReceivePacket(recipe, message.calendarTick);
-                    }
-                });
-            }
-            return null;
-        }
-    }
+	public static final class Handler implements IMessageHandler<PacketBarrelUpdate, IMessage>
+	{
+		@Override
+		public IMessage onMessage(PacketBarrelUpdate message, MessageContext ctx)
+		{
+			EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
+			if (player != null)
+			{
+				World world = player.getEntityWorld();
+				TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() ->
+				{
+					TEBarrel te = Helpers.getTE(world, message.pos, TEBarrel.class);
+					if (te != null)
+					{
+						BarrelRecipe recipe = message.recipeName == null ? null : TFCRegistries.BARREL.getValue(message.recipeName);
+						te.onReceivePacket(recipe, message.calendarTick);
+					}
+				});
+			}
+			return null;
+		}
+	}
 }

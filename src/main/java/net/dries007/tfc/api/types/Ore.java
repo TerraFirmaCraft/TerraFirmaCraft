@@ -19,67 +19,67 @@ import net.dries007.tfc.api.registries.TFCRegistries;
  */
 public class Ore extends IForgeRegistryEntry.Impl<Ore>
 {
-    private final boolean graded;
-    private final Metal metal;
+	private final boolean graded;
+	private final Metal metal;
 
-    public Ore(ResourceLocation name, @Nullable Metal metal)
-    {
-        this.graded = (metal != null);
-        this.metal = metal;
-        setRegistryName(name);
-    }
+	public Ore(ResourceLocation name, @Nullable Metal metal)
+	{
+		this.graded = (metal != null);
+		this.metal = metal;
+		setRegistryName(name);
+	}
 
-    public Ore(ResourceLocation name, @Nonnull ResourceLocation metal)
-    {
-        this(name, TFCRegistries.METALS.getValue(metal));
-    }
+	public Ore(ResourceLocation name, @Nonnull ResourceLocation metal)
+	{
+		this(name, TFCRegistries.METALS.getValue(metal));
+	}
 
-    public Ore(ResourceLocation name)
-    {
-        this(name, (Metal) null);
-    }
+	public Ore(ResourceLocation name)
+	{
+		this(name, (Metal) null);
+	}
 
-    public boolean isGraded()
-    {
-        return graded;
-    }
+	public boolean isGraded()
+	{
+		return graded;
+	}
 
-    public Metal getMetal()
-    {
-        return metal;
-    }
+	public Metal getMetal()
+	{
+		return metal;
+	}
 
-    @Override
-    public String toString()
-    {
-        return getRegistryName().getPath();
-    }
+	@Override
+	public String toString()
+	{
+		return getRegistryName().getPath();
+	}
 
-    public enum Grade implements IStringSerializable
-    {
-        NORMAL(25), POOR(15), RICH(35);
+	public enum Grade implements IStringSerializable
+	{
+		NORMAL(25), POOR(15), RICH(35);
 
-        public static Grade byMetadata(int meta)
-        {
-            return Grade.values()[meta];
-        }
+		public static Grade byMetadata(int meta)
+		{
+			return Grade.values()[meta];
+		}
 
-        public final int smeltAmount;
+		public final int smeltAmount;
 
-        Grade(int smeltAmount)
-        {
-            this.smeltAmount = smeltAmount;
-        }
+		Grade(int smeltAmount)
+		{
+			this.smeltAmount = smeltAmount;
+		}
 
-        @Override
-        public String getName()
-        {
-            return this.name().toLowerCase();
-        }
+		@Override
+		public String getName()
+		{
+			return this.name().toLowerCase();
+		}
 
-        public int getMeta()
-        {
-            return this.ordinal();
-        }
-    }
+		public int getMeta()
+		{
+			return this.ordinal();
+		}
+	}
 }

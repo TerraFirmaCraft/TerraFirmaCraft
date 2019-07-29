@@ -15,26 +15,26 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiButtonTFC extends GuiButton
 {
-    public GuiButtonTFC(int buttonId, int x, int y, String buttonText)
-    {
-        super(buttonId, x, y, buttonText);
-    }
+	public GuiButtonTFC(int buttonId, int x, int y, String buttonText)
+	{
+		super(buttonId, x, y, buttonText);
+	}
 
-    public GuiButtonTFC(int buttonId, int x, int y, int w, int h, String buttonText)
-    {
-        super(buttonId, x, y, w, h, buttonText);
-    }
+	public GuiButtonTFC(int buttonId, int x, int y, int w, int h, String buttonText)
+	{
+		super(buttonId, x, y, w, h, buttonText);
+	}
 
-    protected void drawItemStack(ItemStack stack, int x, int y)
-    {
-        RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
-        this.zLevel = 200.0F;
-        itemRender.zLevel = 200.0F;
-        //FontRenderer font = stack.getItem().getFontRenderer(stack);
-        itemRender.renderItemAndEffectIntoGUI(stack, x, y);
-        //itemRender.renderItemOverlayIntoGUI(font, stack, x, y, "");
-        this.zLevel = 0.0F;
-        itemRender.zLevel = 0.0F;
-    }
+	protected void drawItemStack(ItemStack stack, int x, int y)
+	{
+		RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
+		this.zLevel = 200.0F;
+		itemRender.zLevel = 200.0F;
+		// FontRenderer font = stack.getItem().getFontRenderer(stack);
+		itemRender.renderItemAndEffectIntoGUI(stack, x, y);
+		// itemRender.renderItemOverlayIntoGUI(font, stack, x, y, "");
+		this.zLevel = 0.0F;
+		itemRender.zLevel = 0.0F;
+	}
 
 }

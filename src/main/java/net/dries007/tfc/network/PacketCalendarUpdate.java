@@ -16,41 +16,43 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class PacketCalendarUpdate implements IMessage
 {
-    private CalendarTFC instance;
+	private CalendarTFC instance;
 
-    @SuppressWarnings("unused")
-    @Deprecated
-    public PacketCalendarUpdate() {}
+	@SuppressWarnings("unused")
+	@Deprecated
+	public PacketCalendarUpdate()
+	{
+	}
 
-    public PacketCalendarUpdate(CalendarTFC instance)
-    {
-        this.instance = instance;
-    }
+	public PacketCalendarUpdate(CalendarTFC instance)
+	{
+		this.instance = instance;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf)
-    {
-        instance = new CalendarTFC();
-        instance.read(buf);
-    }
+	@Override
+	public void fromBytes(ByteBuf buf)
+	{
+		instance = new CalendarTFC();
+		instance.read(buf);
+	}
 
-    @Override
-    public void toBytes(ByteBuf buf)
-    {
-        instance.write(buf);
-    }
+	@Override
+	public void toBytes(ByteBuf buf)
+	{
+		instance.write(buf);
+	}
 
-    public static class Handler implements IMessageHandler<PacketCalendarUpdate, IMessage>
-    {
-        @Override
-        public IMessage onMessage(PacketCalendarUpdate message, MessageContext ctx)
-        {
-            World world = TerraFirmaCraft.getProxy().getWorld(ctx);
-            if (world != null)
-            {
-                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> CalendarTFC.INSTANCE.reset(message.instance));
-            }
-            return null;
-        }
-    }
+	public static class Handler implements IMessageHandler<PacketCalendarUpdate, IMessage>
+	{
+		@Override
+		public IMessage onMessage(PacketCalendarUpdate message, MessageContext ctx)
+		{
+			World world = TerraFirmaCraft.getProxy().getWorld(ctx);
+			if (world != null)
+			{
+				TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> CalendarTFC.INSTANCE.reset(message.instance));
+			}
+			return null;
+		}
+	}
 }

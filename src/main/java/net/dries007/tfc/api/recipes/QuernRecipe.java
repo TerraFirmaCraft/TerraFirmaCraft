@@ -18,42 +18,42 @@ import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 public class QuernRecipe extends IForgeRegistryEntry.Impl<QuernRecipe>
 {
-    @Nullable
-    public static QuernRecipe get(ItemStack item)
-    {
-        return TFCRegistries.QUERN.getValuesCollection().stream().filter(x -> x.isValidInput(item)).findFirst().orElse(null);
-    }
+	@Nullable
+	public static QuernRecipe get(ItemStack item)
+	{
+		return TFCRegistries.QUERN.getValuesCollection().stream().filter(x -> x.isValidInput(item)).findFirst().orElse(null);
+	}
 
-    private IIngredient<ItemStack> inputItem;
-    private ItemStack outputItem;
+	private IIngredient<ItemStack> inputItem;
+	private ItemStack outputItem;
 
-    public QuernRecipe(IIngredient<ItemStack> input, ItemStack output)
-    {
-        this.inputItem = input;
-        this.outputItem = output;
+	public QuernRecipe(IIngredient<ItemStack> input, ItemStack output)
+	{
+		this.inputItem = input;
+		this.outputItem = output;
 
-        if (inputItem == null || outputItem == null)
-        {
-            throw new IllegalArgumentException("Input and output are not allowed to be empty");
-        }
-    }
+		if (inputItem == null || outputItem == null)
+		{
+			throw new IllegalArgumentException("Input and output are not allowed to be empty");
+		}
+	}
 
-    @Nonnull
-    public ItemStack getOutputItem(ItemStack stack)
-    {
-        ItemStack out = outputItem.copy();
+	@Nonnull
+	public ItemStack getOutputItem(ItemStack stack)
+	{
+		ItemStack out = outputItem.copy();
 
-        IFood capOut = out.getCapability(CapabilityFood.CAPABILITY, null);
-        IFood capIn = stack.getCapability(CapabilityFood.CAPABILITY, null);
-        if (capIn != null && capOut != null)
-        {
-            capOut.setCreationDate(capIn.getCreationDate());
-        }
-        return out;
-    }
+		IFood capOut = out.getCapability(CapabilityFood.CAPABILITY, null);
+		IFood capIn = stack.getCapability(CapabilityFood.CAPABILITY, null);
+		if (capIn != null && capOut != null)
+		{
+			capOut.setCreationDate(capIn.getCreationDate());
+		}
+		return out;
+	}
 
-    private boolean isValidInput(ItemStack inputItem)
-    {
-        return this.inputItem.testIgnoreCount(inputItem);
-    }
+	private boolean isValidInput(ItemStack inputItem)
+	{
+		return this.inputItem.testIgnoreCount(inputItem);
+	}
 }

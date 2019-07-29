@@ -38,82 +38,83 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class ItemRockKnife extends ItemTool implements IItemSize, IRockObject
 {
-    private static final Map<RockCategory, ItemRockKnife> MAP = new HashMap<>();
+	private static final Map<RockCategory, ItemRockKnife> MAP = new HashMap<>();
 
-    public static ItemRockKnife get(RockCategory category)
-    {
-        return MAP.get(category);
-    }
+	public static ItemRockKnife get(RockCategory category)
+	{
+		return MAP.get(category);
+	}
 
-    public final RockCategory category;
+	public final RockCategory category;
 
-    public ItemRockKnife(RockCategory category)
-    {
-        super(0.5f * category.getToolMaterial().getAttackDamage(), 3, category.getToolMaterial(), ImmutableSet.of());
-        this.category = category;
-        if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
-        setHarvestLevel("knife", category.getToolMaterial().getHarvestLevel());
+	public ItemRockKnife(RockCategory category)
+	{
+		super(0.5f * category.getToolMaterial().getAttackDamage(), 3, category.getToolMaterial(), ImmutableSet.of());
+		this.category = category;
+		if (MAP.put(category, this) != null)
+			throw new IllegalStateException("There can only be one.");
+		setHarvestLevel("knife", category.getToolMaterial().getHarvestLevel());
 
-        OreDictionaryHelper.register(this, "knife");
-        OreDictionaryHelper.register(this, "knife", "stone");
-        OreDictionaryHelper.register(this, "knife", "stone", category);
-    }
+		OreDictionaryHelper.register(this, "knife");
+		OreDictionaryHelper.register(this, "knife", "stone");
+		OreDictionaryHelper.register(this, "knife", "stone", category);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-    {
-        tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+	{
+		tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
+	}
 
-    @Override
-    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
-    {
-        return true;
-    }
+	@Override
+	public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
+	{
+		return true;
+	}
 
-    @Nonnull
-    @Override
-    public Size getSize(ItemStack stack)
-    {
-        return Size.NORMAL;
-    }
+	@Nonnull
+	@Override
+	public Size getSize(ItemStack stack)
+	{
+		return Size.NORMAL;
+	}
 
-    @Nonnull
-    @Override
-    public Weight getWeight(ItemStack stack)
-    {
-        return Weight.MEDIUM;
-    }
+	@Nonnull
+	@Override
+	public Weight getWeight(ItemStack stack)
+	{
+		return Weight.MEDIUM;
+	}
 
-    @Override
-    public boolean canStack(ItemStack stack)
-    {
-        return false;
-    }
+	@Override
+	public boolean canStack(ItemStack stack)
+	{
+		return false;
+	}
 
-    @Nullable
-    @Override
-    public Rock getRock(ItemStack stack)
-    {
-        return null;
-    }
+	@Nullable
+	@Override
+	public Rock getRock(ItemStack stack)
+	{
+		return null;
+	}
 
-    @Nonnull
-    @Override
-    public RockCategory getRockCategory(ItemStack stack)
-    {
-        return category;
-    }
+	@Nonnull
+	@Override
+	public RockCategory getRockCategory(ItemStack stack)
+	{
+		return category;
+	}
 
-    @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
-    {
-        // Knives always take damage
-        if (!worldIn.isRemote)
-        {
-            stack.damageItem(1, entityLiving);
-        }
-        return true;
-    }
+	@Override
+	public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
+	{
+		// Knives always take damage
+		if (!worldIn.isRemote)
+		{
+			stack.damageItem(1, entityLiving);
+		}
+		return true;
+	}
 }

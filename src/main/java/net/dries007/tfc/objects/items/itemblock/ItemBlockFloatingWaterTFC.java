@@ -30,71 +30,70 @@ import net.dries007.tfc.objects.blocks.plants.BlockFloatingWaterTFC;
 @ParametersAreNonnullByDefault
 public class ItemBlockFloatingWaterTFC extends ItemBlockPlant
 {
-    protected BlockFloatingWaterTFC block;
+	protected BlockFloatingWaterTFC block;
 
-    public ItemBlockFloatingWaterTFC(BlockFloatingWaterTFC block)
-    {
-        super(block);
-        this.block = block;
-    }
+	public ItemBlockFloatingWaterTFC(BlockFloatingWaterTFC block)
+	{
+		super(block);
+		this.block = block;
+	}
 
-    @Override
-    @Nonnull
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
-    {
-        ItemStack itemstack = playerIn.getHeldItem(handIn);
-        RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, true);
+	@Override
+	@Nonnull
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
+	{
+		ItemStack itemstack = playerIn.getHeldItem(handIn);
+		RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, true);
 
-        //noinspection ConstantConditions
-        if (raytraceresult == null)
-        {
-            return new ActionResult<>(EnumActionResult.PASS, itemstack);
-        }
-        else
-        {
-            if (raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK)
-            {
-                BlockPos blockpos = raytraceresult.getBlockPos();
+		// noinspection ConstantConditions
+		if (raytraceresult == null)
+		{
+			return new ActionResult<>(EnumActionResult.PASS, itemstack);
+		} else
+		{
+			if (raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK)
+			{
+				BlockPos blockpos = raytraceresult.getBlockPos();
 
-                if (!worldIn.isBlockModifiable(playerIn, blockpos) || !playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemstack))
-                {
-                    return new ActionResult<>(EnumActionResult.FAIL, itemstack);
-                }
+				if (!worldIn.isBlockModifiable(playerIn, blockpos) || !playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemstack))
+				{
+					return new ActionResult<>(EnumActionResult.FAIL, itemstack);
+				}
 
-                BlockPos blockpos1 = blockpos.up();
-                IBlockState iblockstate = worldIn.getBlockState(blockpos);
+				BlockPos blockpos1 = blockpos.up();
+				IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-                if (iblockstate.getMaterial() == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0 && worldIn.isAirBlock(blockpos1) && iblockstate == block.getPlant().getWaterType())
-                {
-                    // special case for handling block placement with water lilies
-                    net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(worldIn, blockpos1);
-                    worldIn.setBlockState(blockpos1, block.getDefaultState());
-                    if (net.minecraftforge.event.ForgeEventFactory.onPlayerBlockPlace(playerIn, blocksnapshot, net.minecraft.util.EnumFacing.UP, handIn).isCanceled())
-                    {
-                        blocksnapshot.restore(true, false);
-                        return new ActionResult<>(EnumActionResult.FAIL, itemstack);
-                    }
+				if (iblockstate.getMaterial() == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0 && worldIn.isAirBlock(blockpos1) && iblockstate == block.getPlant().getWaterType())
+				{
+					// special case for handling block placement with water lilies
+					net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(worldIn, blockpos1);
+					worldIn.setBlockState(blockpos1, block.getDefaultState());
+					if (net.minecraftforge.event.ForgeEventFactory.onPlayerBlockPlace(playerIn, blocksnapshot, net.minecraft.util.EnumFacing.UP, handIn).isCanceled())
+					{
+						blocksnapshot.restore(true, false);
+						return new ActionResult<>(EnumActionResult.FAIL, itemstack);
+					}
 
-                    worldIn.setBlockState(blockpos1, block.getDefaultState(), 11);
+					worldIn.setBlockState(blockpos1, block.getDefaultState(), 11);
 
-                    if (playerIn instanceof EntityPlayerMP)
-                    {
-                        CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) playerIn, blockpos1, itemstack);
-                    }
+					if (playerIn instanceof EntityPlayerMP)
+					{
+						CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) playerIn, blockpos1, itemstack);
+					}
 
-                    if (!playerIn.capabilities.isCreativeMode)
-                    {
-                        itemstack.shrink(1);
-                    }
+					if (!playerIn.capabilities.isCreativeMode)
+					{
+						itemstack.shrink(1);
+					}
 
-                    //noinspection ConstantConditions
-                    playerIn.addStat(StatList.getObjectUseStats(this));
-                    worldIn.playSound(playerIn, blockpos, SoundEvents.BLOCK_WATERLILY_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
-                }
-            }
+					// noinspection ConstantConditions
+					playerIn.addStat(StatList.getObjectUseStats(this));
+					worldIn.playSound(playerIn, blockpos, SoundEvents.BLOCK_WATERLILY_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
+				}
+			}
 
-            return new ActionResult<>(EnumActionResult.FAIL, itemstack);
-        }
-    }
+			return new ActionResult<>(EnumActionResult.FAIL, itemstack);
+		}
+	}
 }

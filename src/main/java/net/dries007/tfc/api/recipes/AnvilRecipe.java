@@ -26,83 +26,83 @@ import net.dries007.tfc.util.forge.ForgeSteps;
 /**
  * Anvil Recipe
  * <p>
- * They all take a single item input and will produce a single item output
- * todo: in 1.13+ move this to a json recipe type
+ * They all take a single item input and will produce a single item output todo:
+ * in 1.13+ move this to a json recipe type
  */
 @ParametersAreNonnullByDefault
 public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
 {
-    public static final NonNullList<ItemStack> EMPTY = NonNullList.create();
-    private static final Random RNG = new Random();
-    private static long SEED = 0;
+	public static final NonNullList<ItemStack> EMPTY = NonNullList.create();
+	private static final Random RNG = new Random();
+	private static long SEED = 0;
 
-    @Nonnull
-    public static List<AnvilRecipe> getAllFor(ItemStack stack)
-    {
-        return TFCRegistries.ANVIL.getValuesCollection().stream().filter(x -> x.matches(stack)).collect(Collectors.toList());
-    }
+	@Nonnull
+	public static List<AnvilRecipe> getAllFor(ItemStack stack)
+	{
+		return TFCRegistries.ANVIL.getValuesCollection().stream().filter(x -> x.matches(stack)).collect(Collectors.toList());
+	}
 
-    protected final ForgeRule[] rules;
-    protected final ItemStack output;
-    protected final IIngredient<ItemStack> ingredient;
-    protected final Metal.Tier minTier;
-    protected final long workingSeed;
+	protected final ForgeRule[] rules;
+	protected final ItemStack output;
+	protected final IIngredient<ItemStack> ingredient;
+	protected final Metal.Tier minTier;
+	protected final long workingSeed;
 
-    public AnvilRecipe(ResourceLocation name, IIngredient<ItemStack> ingredient, ItemStack output, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
-    {
-        this.ingredient = ingredient;
-        this.output = output;
-        this.minTier = minTier;
-        this.rules = rules;
-        if (rules.length == 0 || rules.length > 3)
-            throw new IllegalArgumentException("Rules length must be within the closed interval [1, 3]");
+	public AnvilRecipe(ResourceLocation name, IIngredient<ItemStack> ingredient, ItemStack output, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
+	{
+		this.ingredient = ingredient;
+		this.output = output;
+		this.minTier = minTier;
+		this.rules = rules;
+		if (rules.length == 0 || rules.length > 3)
+			throw new IllegalArgumentException("Rules length must be within the closed interval [1, 3]");
 
-        setRegistryName(name);
-        workingSeed = ++SEED;
-    }
+		setRegistryName(name);
+		workingSeed = ++SEED;
+	}
 
-    public boolean matches(ItemStack input)
-    {
-        return ingredient.test(input);
-    }
+	public boolean matches(ItemStack input)
+	{
+		return ingredient.test(input);
+	}
 
-    public boolean matches(ForgeSteps steps)
-    {
-        for (ForgeRule rule : rules)
-        {
-            if (!rule.matches(steps))
-                return false;
-        }
-        return true;
-    }
+	public boolean matches(ForgeSteps steps)
+	{
+		for (ForgeRule rule : rules)
+		{
+			if (!rule.matches(steps))
+				return false;
+		}
+		return true;
+	}
 
-    @Nonnull
-    public NonNullList<ItemStack> getOutput(ItemStack input)
-    {
-        return matches(input) ? NonNullList.withSize(1, output.copy()) : EMPTY;
-    }
+	@Nonnull
+	public NonNullList<ItemStack> getOutput(ItemStack input)
+	{
+		return matches(input) ? NonNullList.withSize(1, output.copy()) : EMPTY;
+	}
 
-    @Nonnull
-    public ItemStack getPlanIcon()
-    {
-        return output;
-    }
+	@Nonnull
+	public ItemStack getPlanIcon()
+	{
+		return output;
+	}
 
-    @Nonnull
-    public ForgeRule[] getRules()
-    {
-        return rules;
-    }
+	@Nonnull
+	public ForgeRule[] getRules()
+	{
+		return rules;
+	}
 
-    @Nonnull
-    public Metal.Tier getTier()
-    {
-        return minTier;
-    }
+	@Nonnull
+	public Metal.Tier getTier()
+	{
+		return minTier;
+	}
 
-    public int getTarget(long worldSeed)
-    {
-        RNG.setSeed(worldSeed + workingSeed);
-        return 40 + RNG.nextInt(TEAnvilTFC.WORK_MAX + -2 * 40);
-    }
+	public int getTarget(long worldSeed)
+	{
+		RNG.setSeed(worldSeed + workingSeed);
+		return 40 + RNG.nextInt(TEAnvilTFC.WORK_MAX + -2 * 40);
+	}
 }

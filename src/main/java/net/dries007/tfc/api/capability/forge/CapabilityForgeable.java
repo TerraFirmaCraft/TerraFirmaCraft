@@ -14,11 +14,11 @@ import net.dries007.tfc.util.Helpers;
 
 public final class CapabilityForgeable
 {
-    @CapabilityInject(IForgeable.class)
-    public static final Capability<IForgeable> FORGEABLE_CAPABILITY = Helpers.getNull();
+	@CapabilityInject(IForgeable.class)
+	public static final Capability<IForgeable> FORGEABLE_CAPABILITY = Helpers.getNull();
 
-    public static void preInit()
-    {
-        CapabilityManager.INSTANCE.register(IForgeable.class, new DumbStorage<>(), ForgeableHandler::new);
-    }
+	public static void preInit()
+	{
+		CapabilityManager.INSTANCE.register(IForgeable.class, new DumbStorage<>(), ForgeableHandler::new);
+	}
 }

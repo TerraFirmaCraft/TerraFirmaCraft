@@ -45,116 +45,116 @@ import net.dries007.tfc.util.TFCSoundEvents;
 @ParametersAreNonnullByDefault
 public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
 {
-    private static final Map<RockCategory, ItemRockJavelin> MAP = new HashMap<>();
+	private static final Map<RockCategory, ItemRockJavelin> MAP = new HashMap<>();
 
-    public static ItemRockJavelin get(RockCategory category)
-    {
-        return MAP.get(category);
-    }
+	public static ItemRockJavelin get(RockCategory category)
+	{
+		return MAP.get(category);
+	}
 
-    public final RockCategory category;
+	public final RockCategory category;
 
-    public ItemRockJavelin(RockCategory category)
-    {
-        super(1f * category.getToolMaterial().getAttackDamage(), -1, category.getToolMaterial(), ImmutableSet.of());
-        this.category = category;
-        if (MAP.put(category, this) != null)
-        {
-            throw new IllegalStateException("There can only be one.");
-        }
+	public ItemRockJavelin(RockCategory category)
+	{
+		super(1f * category.getToolMaterial().getAttackDamage(), -1, category.getToolMaterial(), ImmutableSet.of());
+		this.category = category;
+		if (MAP.put(category, this) != null)
+		{
+			throw new IllegalStateException("There can only be one.");
+		}
 
-        setMaxDamage((int) (category.getToolMaterial().getMaxUses() * 0.1));
+		setMaxDamage((int) (category.getToolMaterial().getMaxUses() * 0.1));
 
-        OreDictionaryHelper.register(this, "javelin");
-        OreDictionaryHelper.register(this, "javelin", "stone");
-        OreDictionaryHelper.register(this, "javelin", "stone", category);
-    }
+		OreDictionaryHelper.register(this, "javelin");
+		OreDictionaryHelper.register(this, "javelin", "stone");
+		OreDictionaryHelper.register(this, "javelin", "stone", category);
+	}
 
-    @Nonnull
-    @Override
-    public Size getSize(ItemStack stack)
-    {
-        return Size.LARGE;
-    }
+	@Nonnull
+	@Override
+	public Size getSize(ItemStack stack)
+	{
+		return Size.LARGE;
+	}
 
-    @Nonnull
-    @Override
-    public Weight getWeight(ItemStack stack)
-    {
-        return Weight.MEDIUM;
-    }
+	@Nonnull
+	@Override
+	public Weight getWeight(ItemStack stack)
+	{
+		return Weight.MEDIUM;
+	}
 
-    @Override
-    public boolean canStack(ItemStack stack)
-    {
-        return false;
-    }
+	@Override
+	public boolean canStack(ItemStack stack)
+	{
+		return false;
+	}
 
-    @Nullable
-    @Override
-    public Rock getRock(ItemStack stack)
-    {
-        return null;
-    }
+	@Nullable
+	@Override
+	public Rock getRock(ItemStack stack)
+	{
+		return null;
+	}
 
-    @Nonnull
-    @Override
-    public RockCategory getRockCategory(ItemStack stack)
-    {
-        return category;
-    }
+	@Nonnull
+	@Override
+	public RockCategory getRockCategory(ItemStack stack)
+	{
+		return category;
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
-    {
-        ItemStack itemstack = playerIn.getHeldItem(handIn);
-        playerIn.setActiveHand(handIn);
-        return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
-    }
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
+	{
+		ItemStack itemstack = playerIn.getHeldItem(handIn);
+		playerIn.setActiveHand(handIn);
+		return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
+	}
 
-    @Override
-    public EnumAction getItemUseAction(ItemStack stack)
-    {
-        return EnumAction.BOW;
-    }
+	@Override
+	public EnumAction getItemUseAction(ItemStack stack)
+	{
+		return EnumAction.BOW;
+	}
 
-    @Override
-    public int getMaxItemUseDuration(ItemStack stack)
-    {
-        return 72000;
-    }
+	@Override
+	public int getMaxItemUseDuration(ItemStack stack)
+	{
+		return 72000;
+	}
 
-    @SuppressWarnings("ConstantConditions")
-    @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
-    {
-        if (entityLiving instanceof EntityPlayer)
-        {
-            EntityPlayer player = (EntityPlayer) entityLiving;
-            int charge = this.getMaxItemUseDuration(stack) - timeLeft;
-            if (charge > 5)
-            {
-                float f = ItemBow.getArrowVelocity(charge); //Same charge time as bow
+	@SuppressWarnings("ConstantConditions")
+	@Override
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
+	{
+		if (entityLiving instanceof EntityPlayer)
+		{
+			EntityPlayer player = (EntityPlayer) entityLiving;
+			int charge = this.getMaxItemUseDuration(stack) - timeLeft;
+			if (charge > 5)
+			{
+				float f = ItemBow.getArrowVelocity(charge); // Same charge time as bow
 
-                if (!worldIn.isRemote)
-                {
-                    EntityThrownJavelin javelin = new EntityThrownJavelin(worldIn, player);
-                    javelin.setDamage(attackDamage);
-                    javelin.setWeapon(stack);
-                    javelin.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, f * 1.5F, 0.5F);
-                    worldIn.spawnEntity(javelin);
-                    worldIn.playSound(null, player.posX, player.posY, player.posZ, TFCSoundEvents.ITEM_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F / (Constants.RNG.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
-                }
-                player.inventory.deleteStack(stack);
-                player.addStat(StatList.getObjectUseStats(this));
-            }
-        }
-    }
+				if (!worldIn.isRemote)
+				{
+					EntityThrownJavelin javelin = new EntityThrownJavelin(worldIn, player);
+					javelin.setDamage(attackDamage);
+					javelin.setWeapon(stack);
+					javelin.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, f * 1.5F, 0.5F);
+					worldIn.spawnEntity(javelin);
+					worldIn.playSound(null, player.posX, player.posY, player.posZ, TFCSoundEvents.ITEM_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F / (Constants.RNG.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+				}
+				player.inventory.deleteStack(stack);
+				player.addStat(StatList.getObjectUseStats(this));
+			}
+		}
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-    {
-        tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+	{
+		tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
+	}
 }

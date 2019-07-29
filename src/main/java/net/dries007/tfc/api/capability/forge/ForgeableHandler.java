@@ -19,112 +19,112 @@ import net.dries007.tfc.util.forge.ForgeSteps;
 
 public class ForgeableHandler extends ItemHeatHandler implements IForgeable
 {
-    protected final ForgeSteps steps;
-    protected int work;
-    protected ResourceLocation recipeName;
+	protected final ForgeSteps steps;
+	protected int work;
+	protected ResourceLocation recipeName;
 
-    public ForgeableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltTemp)
-    {
-        this.heatCapacity = heatCapacity;
-        this.meltTemp = meltTemp;
+	public ForgeableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltTemp)
+	{
+		this.heatCapacity = heatCapacity;
+		this.meltTemp = meltTemp;
 
-        steps = new ForgeSteps();
+		steps = new ForgeSteps();
 
-        deserializeNBT(nbt);
-    }
+		deserializeNBT(nbt);
+	}
 
-    public ForgeableHandler()
-    {
-        // for custom implementations
-        steps = new ForgeSteps();
-    }
+	public ForgeableHandler()
+	{
+		// for custom implementations
+		steps = new ForgeSteps();
+	}
 
-    @Override
-    public int getWork()
-    {
-        return work;
-    }
+	@Override
+	public int getWork()
+	{
+		return work;
+	}
 
-    @Override
-    public void setWork(int work)
-    {
-        this.work = work;
-    }
+	@Override
+	public void setWork(int work)
+	{
+		this.work = work;
+	}
 
-    @Override
-    @Nullable
-    public ResourceLocation getRecipeName()
-    {
-        return recipeName;
-    }
+	@Override
+	@Nullable
+	public ResourceLocation getRecipeName()
+	{
+		return recipeName;
+	}
 
-    @Override
-    public void setRecipe(@Nullable ResourceLocation recipeName)
-    {
-        this.recipeName = recipeName;
-    }
+	@Override
+	public void setRecipe(@Nullable ResourceLocation recipeName)
+	{
+		this.recipeName = recipeName;
+	}
 
-    @Override
-    @Nonnull
-    public ForgeSteps getSteps()
-    {
-        return steps;
-    }
+	@Override
+	@Nonnull
+	public ForgeSteps getSteps()
+	{
+		return steps;
+	}
 
-    @Override
-    public void addStep(ForgeStep step)
-    {
-        steps.addStep(step);
-        work += step.getStepAmount();
-    }
+	@Override
+	public void addStep(ForgeStep step)
+	{
+		steps.addStep(step);
+		work += step.getStepAmount();
+	}
 
-    @Override
-    public void reset()
-    {
-        steps.reset();
-        recipeName = null;
-        work = 0;
-    }
+	@Override
+	public void reset()
+	{
+		steps.reset();
+		recipeName = null;
+		work = 0;
+	}
 
-    @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        return capability == CapabilityForgeable.FORGEABLE_CAPABILITY || super.hasCapability(capability, facing);
-    }
+	@Override
+	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
+	{
+		return capability == CapabilityForgeable.FORGEABLE_CAPABILITY || super.hasCapability(capability, facing);
+	}
 
-    @SuppressWarnings("unchecked")
-    @Nullable
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        return hasCapability(capability, facing) ? (T) this : null;
-    }
+	@SuppressWarnings("unchecked")
+	@Nullable
+	@Override
+	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
+	{
+		return hasCapability(capability, facing) ? (T) this : null;
+	}
 
-    @Override
-    @Nonnull
-    public NBTTagCompound serializeNBT()
-    {
-        NBTTagCompound nbt = super.serializeNBT();
+	@Override
+	@Nonnull
+	public NBTTagCompound serializeNBT()
+	{
+		NBTTagCompound nbt = super.serializeNBT();
 
-        nbt.setInteger("work", work);
-        nbt.setTag("steps", steps.serializeNBT());
-        if (recipeName != null)
-        {
-            nbt.setString("recipe", recipeName.toString());
-        }
+		nbt.setInteger("work", work);
+		nbt.setTag("steps", steps.serializeNBT());
+		if (recipeName != null)
+		{
+			nbt.setString("recipe", recipeName.toString());
+		}
 
-        return nbt;
-    }
+		return nbt;
+	}
 
-    @Override
-    public void deserializeNBT(@Nullable NBTTagCompound nbt)
-    {
-        if (nbt != null)
-        {
-            work = nbt.getInteger("work");
-            recipeName = nbt.hasKey("recipe") ? new ResourceLocation(nbt.getString("recipe")) : null; // stops defaulting to empty string
-            steps.deserializeNBT(nbt.getCompoundTag("steps"));
-        }
-        super.deserializeNBT(nbt);
-    }
+	@Override
+	public void deserializeNBT(@Nullable NBTTagCompound nbt)
+	{
+		if (nbt != null)
+		{
+			work = nbt.getInteger("work");
+			recipeName = nbt.hasKey("recipe") ? new ResourceLocation(nbt.getString("recipe")) : null; // stops defaulting to empty string
+			steps.deserializeNBT(nbt.getCompoundTag("steps"));
+		}
+		super.deserializeNBT(nbt);
+	}
 }

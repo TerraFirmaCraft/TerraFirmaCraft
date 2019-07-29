@@ -17,46 +17,46 @@ import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 
 public class TETorchTFC extends TileEntity
 {
-    private long lastLitTimestamp;
+	private long lastLitTimestamp;
 
-    public TETorchTFC()
-    {
-        lastLitTimestamp = CalendarTFC.PLAYER_TIME.getTicks();
-    }
+	public TETorchTFC()
+	{
+		lastLitTimestamp = CalendarTFC.PLAYER_TIME.getTicks();
+	}
 
-    public void onRandomTick()
-    {
-        if (CalendarTFC.PLAYER_TIME.getTicks() - lastLitTimestamp > (long) ConfigTFC.GENERAL.torchTime && ConfigTFC.GENERAL.torchTime > 0)
-        {
-            extinguish();
-        }
-    }
+	public void onRandomTick()
+	{
+		if (CalendarTFC.PLAYER_TIME.getTicks() - lastLitTimestamp > (long) ConfigTFC.GENERAL.torchTime && ConfigTFC.GENERAL.torchTime > 0)
+		{
+			extinguish();
+		}
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound compound)
-    {
-        lastLitTimestamp = compound.getLong("ticks");
-        super.readFromNBT(compound);
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound compound)
+	{
+		lastLitTimestamp = compound.getLong("ticks");
+		super.readFromNBT(compound);
+	}
 
-    @Override
-    @Nonnull
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
-    {
-        compound.setLong("ticks", lastLitTimestamp);
-        return super.writeToNBT(compound);
-    }
+	@Override
+	@Nonnull
+	public NBTTagCompound writeToNBT(NBTTagCompound compound)
+	{
+		compound.setLong("ticks", lastLitTimestamp);
+		return super.writeToNBT(compound);
+	}
 
-    public void extinguish()
-    {
-        world.setBlockState(pos, world.getBlockState(pos).withProperty(LIT, false));
-        this.markDirty();
-    }
+	public void extinguish()
+	{
+		world.setBlockState(pos, world.getBlockState(pos).withProperty(LIT, false));
+		this.markDirty();
+	}
 
-    public void light()
-    {
-        world.setBlockState(pos, world.getBlockState(pos).withProperty(LIT, true));
-        lastLitTimestamp = CalendarTFC.PLAYER_TIME.getTicks();
-        this.markDirty();
-    }
+	public void light()
+	{
+		world.setBlockState(pos, world.getBlockState(pos).withProperty(LIT, true));
+		lastLitTimestamp = CalendarTFC.PLAYER_TIME.getTicks();
+		this.markDirty();
+	}
 }

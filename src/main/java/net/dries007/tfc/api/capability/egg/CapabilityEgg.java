@@ -17,13 +17,13 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class CapabilityEgg
 {
-    @CapabilityInject(IEgg.class)
-    public static final Capability<IEgg> CAPABILITY = Helpers.getNull();
+	@CapabilityInject(IEgg.class)
+	public static final Capability<IEgg> CAPABILITY = Helpers.getNull();
 
-    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "egg");
+	public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "egg");
 
-    public static void preInit()
-    {
-        CapabilityManager.INSTANCE.register(IEgg.class, new DumbStorage<>(), EggHandler::new);
-    }
+	public static void preInit()
+	{
+		CapabilityManager.INSTANCE.register(IEgg.class, new DumbStorage<>(), EggHandler::new);
+	}
 }

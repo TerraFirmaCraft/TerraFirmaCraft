@@ -20,53 +20,53 @@ import net.dries007.tfc.objects.te.TEPlacedItem;
 import net.dries007.tfc.util.Helpers;
 
 /**
- * This packet is send when the client player presses the "Place Block Special" keybind. It has no special information
+ * This packet is send when the client player presses the "Place Block Special"
+ * keybind. It has no special information
  */
 public class PacketPlaceBlockSpecial implements IMessageEmpty
 {
-    public static final class Handler implements IMessageHandler<PacketPlaceBlockSpecial, IMessage>
-    {
-        @Override
-        public IMessage onMessage(PacketPlaceBlockSpecial message, MessageContext ctx)
-        {
-            final EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
-            if (player != null)
-            {
-                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
+	public static final class Handler implements IMessageHandler<PacketPlaceBlockSpecial, IMessage>
+	{
+		@Override
+		public IMessage onMessage(PacketPlaceBlockSpecial message, MessageContext ctx)
+		{
+			final EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
+			if (player != null)
+			{
+				TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() ->
+				{
 
-                    final World world = player.getEntityWorld();
-                    final RayTraceResult rayTrace = Helpers.rayTrace(player, player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue(), 1);
-                    final ItemStack stack = player.getHeldItemMainhand().isEmpty() ? player.getHeldItemOffhand() : player.getHeldItemMainhand();
+					final World world = player.getEntityWorld();
+					final RayTraceResult rayTrace = Helpers.rayTrace(player, player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue(), 1);
+					final ItemStack stack = player.getHeldItemMainhand().isEmpty() ? player.getHeldItemOffhand() : player.getHeldItemMainhand();
 
-                    if (!stack.isEmpty() && rayTrace != null)
-                    {
-                        BlockPos pos = rayTrace.getBlockPos();
-                        double placeReach = player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
-                        if (player.getDistanceSq(pos) <= placeReach * placeReach)
-                        {
-                            if (world.getBlockState(pos).isNormalCube() && world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos))
-                            {
-                                world.setBlockState(pos.up(), BlocksTFC.PLACED_ITEM.getDefaultState());
-                                TEPlacedItem tile = Helpers.getTE(world, pos.up(), TEPlacedItem.class);
-                                if (tile != null)
-                                {
-                                    tile.onRightClick(player, stack, rayTrace);
-                                }
-                            }
-                            else if (world.getBlockState(pos).getBlock() == BlocksTFC.PLACED_ITEM)
-                            {
-                                TEPlacedItem tile = Helpers.getTE(world, pos, TEPlacedItem.class);
-                                if (tile != null)
-                                {
-                                    tile.onRightClick(player, stack, rayTrace);
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-            return null;
-        }
-    }
+					if (!stack.isEmpty() && rayTrace != null)
+					{
+						BlockPos pos = rayTrace.getBlockPos();
+						double placeReach = player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
+						if (player.getDistanceSq(pos) <= placeReach * placeReach)
+						{
+							if (world.getBlockState(pos).isNormalCube() && world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos))
+							{
+								world.setBlockState(pos.up(), BlocksTFC.PLACED_ITEM.getDefaultState());
+								TEPlacedItem tile = Helpers.getTE(world, pos.up(), TEPlacedItem.class);
+								if (tile != null)
+								{
+									tile.onRightClick(player, stack, rayTrace);
+								}
+							} else if (world.getBlockState(pos).getBlock() == BlocksTFC.PLACED_ITEM)
+							{
+								TEPlacedItem tile = Helpers.getTE(world, pos, TEPlacedItem.class);
+								if (tile != null)
+								{
+									tile.onRightClick(player, stack, rayTrace);
+								}
+							}
+						}
+					}
+				});
+			}
+			return null;
+		}
+	}
 }
-

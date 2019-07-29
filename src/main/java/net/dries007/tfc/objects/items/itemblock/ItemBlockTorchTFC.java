@@ -21,48 +21,45 @@ import net.dries007.tfc.util.Helpers;
 public class ItemBlockTorchTFC extends ItemBlockTFC
 {
 
-    public ItemBlockTorchTFC(Block b)
-    {
-        super(b);
-    }
+	public ItemBlockTorchTFC(Block b)
+	{
+		super(b);
+	}
 
-    @Override
-    public boolean onEntityItemUpdate(EntityItem entityItem)
-    {
-        BlockPos pos = entityItem.getPosition().down();
-        World world = entityItem.getEntityWorld();
-        IBlockState state = entityItem.getEntityWorld().getBlockState(pos);
+	@Override
+	public boolean onEntityItemUpdate(EntityItem entityItem)
+	{
+		BlockPos pos = entityItem.getPosition().down();
+		World world = entityItem.getEntityWorld();
+		IBlockState state = entityItem.getEntityWorld().getBlockState(pos);
 
-        if (state.getBlock() == BlocksTFC.LOG_PILE || state.getBlock() == BlocksTFC.PIT_KILN)
-        {
-            int count = entityItem.getEntityData().getInteger("torchCount");
-            if (count > 160)
-            {
-                if (state.getBlock() == BlocksTFC.LOG_PILE)
-                {
-                    TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
-                    if (te != null)
-                        te.light();
-                    // This happens automatically for Pit Kiln
-                    if (!Blocks.FIRE.canPlaceBlockAt(world, pos))
-                        world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
-                }
-                else if (state.getBlock() == BlocksTFC.PIT_KILN)
-                {
-                    TEPitKiln te = Helpers.getTE(world, pos, TEPitKiln.class);
-                    if (te != null)
-                        te.tryLight();
-                }
-                entityItem.setDead();
-            }
-            else
-            {
-                if (Math.random() <= 0.1)
-                    world.spawnParticle(EnumParticleTypes.LAVA, entityItem.posX, entityItem.posY, entityItem.posZ,
-                        -0.5F + Math.random(), -0.5F + Math.random(), -0.5F + Math.random());
-                entityItem.getEntityData().setInteger("torchCount", count + 1);
-            }
-        }
-        return super.onEntityItemUpdate(entityItem);
-    }
+		if (state.getBlock() == BlocksTFC.LOG_PILE || state.getBlock() == BlocksTFC.PIT_KILN)
+		{
+			int count = entityItem.getEntityData().getInteger("torchCount");
+			if (count > 160)
+			{
+				if (state.getBlock() == BlocksTFC.LOG_PILE)
+				{
+					TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
+					if (te != null)
+						te.light();
+					// This happens automatically for Pit Kiln
+					if (!Blocks.FIRE.canPlaceBlockAt(world, pos))
+						world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
+				} else if (state.getBlock() == BlocksTFC.PIT_KILN)
+				{
+					TEPitKiln te = Helpers.getTE(world, pos, TEPitKiln.class);
+					if (te != null)
+						te.tryLight();
+				}
+				entityItem.setDead();
+			} else
+			{
+				if (Math.random() <= 0.1)
+					world.spawnParticle(EnumParticleTypes.LAVA, entityItem.posX, entityItem.posY, entityItem.posZ, -0.5F + Math.random(), -0.5F + Math.random(), -0.5F + Math.random());
+				entityItem.getEntityData().setInteger("torchCount", count + 1);
+			}
+		}
+		return super.onEntityItemUpdate(entityItem);
+	}
 }

@@ -17,42 +17,41 @@ import net.dries007.tfc.api.capability.size.Weight;
 
 public class ItemBlockTFC extends ItemBlock implements IItemSize
 {
-    private final Size size;
-    private final Weight weight;
+	private final Size size;
+	private final Weight weight;
 
-    public ItemBlockTFC(Block block)
-    {
-        super(block);
+	public ItemBlockTFC(Block block)
+	{
+		super(block);
 
-        if (block instanceof IItemSize)
-        {
-            size = ((IItemSize) block).getSize(new ItemStack(block));
-            weight = ((IItemSize) block).getWeight(new ItemStack(block));
-        }
-        else
-        {
-            size = Size.VERY_SMALL;
-            weight = Weight.HEAVY;
-        }
-    }
+		if (block instanceof IItemSize)
+		{
+			size = ((IItemSize) block).getSize(new ItemStack(block));
+			weight = ((IItemSize) block).getWeight(new ItemStack(block));
+		} else
+		{
+			size = Size.VERY_SMALL;
+			weight = Weight.HEAVY;
+		}
+	}
 
-    @Nonnull
-    @Override
-    public Size getSize(@Nonnull ItemStack stack)
-    {
-        return size;
-    }
+	@Nonnull
+	@Override
+	public Size getSize(@Nonnull ItemStack stack)
+	{
+		return size;
+	}
 
-    @Nonnull
-    @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
-    {
-        return weight;
-    }
+	@Nonnull
+	@Override
+	public Weight getWeight(@Nonnull ItemStack stack)
+	{
+		return weight;
+	}
 
-    @Override
-    public int getItemStackLimit(ItemStack stack)
-    {
-        return getStackSize(stack);
-    }
+	@Override
+	public int getItemStackLimit(ItemStack stack)
+	{
+		return getStackSize(stack);
+	}
 }

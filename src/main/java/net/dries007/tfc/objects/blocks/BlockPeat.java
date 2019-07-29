@@ -14,13 +14,13 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockPeat extends Block
 {
-    public BlockPeat(Material material)
-    {
-        super(material);
-        setSoundType(SoundType.GROUND);
-        setHardness(0.6F);
-        setHarvestLevel("shovel", 0);
-        OreDictionaryHelper.register(this, "peat");
-        Blocks.FIRE.setFireInfo(this, 5, 10);
-    }
+	public BlockPeat(Material material)
+	{
+		super(material);
+		setSoundType(SoundType.GROUND);
+		setHardness(0.6F);
+		setHarvestLevel("shovel", 0);
+		OreDictionaryHelper.register(this, "peat");
+		Blocks.FIRE.setFireInfo(this, 5, 10);
+	}
 }

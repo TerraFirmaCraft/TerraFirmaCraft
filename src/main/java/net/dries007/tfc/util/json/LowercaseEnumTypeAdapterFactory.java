@@ -19,59 +19,58 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 /**
- * Thanks https://stackoverflow.com/questions/9064433/gson-non-case-sensitive-enum-deserialization
+ * Thanks
+ * https://stackoverflow.com/questions/9064433/gson-non-case-sensitive-enum-deserialization
  */
 public class LowercaseEnumTypeAdapterFactory implements TypeAdapterFactory
 {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type)
-    {
-        Class<T> rawType = (Class<T>) type.getRawType();
-        if (!rawType.isEnum())
-        {
-            return null;
-        }
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type)
+	{
+		Class<T> rawType = (Class<T>) type.getRawType();
+		if (!rawType.isEnum())
+		{
+			return null;
+		}
 
-        final Map<String, T> lowercaseToConstant = new HashMap<>();
-        for (T constant : rawType.getEnumConstants())
-        {
-            lowercaseToConstant.put(toLowercase(constant), constant);
-        }
+		final Map<String, T> lowercaseToConstant = new HashMap<>();
+		for (T constant : rawType.getEnumConstants())
+		{
+			lowercaseToConstant.put(toLowercase(constant), constant);
+		}
 
-        return new TypeAdapter<T>()
-        {
-            @Override
-            public void write(JsonWriter out, T value) throws IOException
-            {
-                if (value == null)
-                {
-                    out.nullValue();
-                }
-                else
-                {
-                    out.value(toLowercase(value));
-                }
-            }
+		return new TypeAdapter<T>()
+		{
+			@Override
+			public void write(JsonWriter out, T value) throws IOException
+			{
+				if (value == null)
+				{
+					out.nullValue();
+				} else
+				{
+					out.value(toLowercase(value));
+				}
+			}
 
-            @Override
-            public T read(JsonReader reader) throws IOException
-            {
-                if (reader.peek() == JsonToken.NULL)
-                {
-                    reader.nextNull();
-                    return null;
-                }
-                else
-                {
-                    return lowercaseToConstant.get(reader.nextString());
-                }
-            }
-        };
-    }
+			@Override
+			public T read(JsonReader reader) throws IOException
+			{
+				if (reader.peek() == JsonToken.NULL)
+				{
+					reader.nextNull();
+					return null;
+				} else
+				{
+					return lowercaseToConstant.get(reader.nextString());
+				}
+			}
+		};
+	}
 
-    private String toLowercase(Object o)
-    {
-        return o.toString().toLowerCase(Locale.US);
-    }
+	private String toLowercase(Object o)
+	{
+		return o.toString().toLowerCase(Locale.US);
+	}
 }

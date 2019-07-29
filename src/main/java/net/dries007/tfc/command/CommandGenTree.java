@@ -29,41 +29,45 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @ParametersAreNonnullByDefault
 public class CommandGenTree extends CommandBase
 {
-    private static final Random random = new Random();
+	private static final Random random = new Random();
 
-    @Override
-    public String getName()
-    {
-        return "maketree";
-    }
+	@Override
+	public String getName()
+	{
+		return "maketree";
+	}
 
-    @Override
-    public String getUsage(ICommandSender sender)
-    {
-        return "/maketree [wood] -> Grows a tree of the type specified";
-    }
+	@Override
+	public String getUsage(ICommandSender sender)
+	{
+		return "/maketree [wood] -> Grows a tree of the type specified";
+	}
 
-    @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
-    {
-        if (args.length != 1) throw new WrongUsageException("1 argument required.");
+	@Override
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
+	{
+		if (args.length != 1)
+			throw new WrongUsageException("1 argument required.");
 
-        Tree tree = TFCRegistries.TREES.getValue(new ResourceLocation(args[0]));
-        if (tree == null) tree = TFCRegistries.TREES.getValue(new ResourceLocation(MOD_ID, args[0]));
-        if (tree == null) throw new WrongUsageException("Tree type " + args[0] + " not found");
+		Tree tree = TFCRegistries.TREES.getValue(new ResourceLocation(args[0]));
+		if (tree == null)
+			tree = TFCRegistries.TREES.getValue(new ResourceLocation(MOD_ID, args[0]));
+		if (tree == null)
+			throw new WrongUsageException("Tree type " + args[0] + " not found");
 
-        if (sender.getCommandSenderEntity() == null) return;
+		if (sender.getCommandSenderEntity() == null)
+			return;
 
-        final World world = sender.getEntityWorld();
-        final BlockPos center = new BlockPos(sender.getCommandSenderEntity());
-        final TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
+		final World world = sender.getEntityWorld();
+		final BlockPos center = new BlockPos(sender.getCommandSenderEntity());
+		final TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
 
-        tree.makeTreeWithoutChecking(manager, world, center, random);
-    }
+		tree.makeTreeWithoutChecking(manager, world, center, random);
+	}
 
-    @Override
-    public int getRequiredPermissionLevel()
-    {
-        return 2;
-    }
+	@Override
+	public int getRequiredPermissionLevel()
+	{
+		return 2;
+	}
 }

@@ -11,9 +11,9 @@ import net.dries007.tfc.api.types.Metal;
 
 public class ItemFiredPottery extends ItemPottery
 {
-    @Override
-    public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
-    {
-        return input; // Already fired pottery does nothing.
-    }
+	@Override
+	public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
+	{
+		return input; // Already fired pottery does nothing.
+	}
 }

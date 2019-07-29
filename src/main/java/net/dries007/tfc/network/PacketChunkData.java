@@ -22,65 +22,68 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class PacketChunkData implements IMessage
 {
-    private NBTTagCompound nbt;
-    private int x, z;
-    private float regionalTemp, rainfall;
+	private NBTTagCompound nbt;
+	private int x, z;
+	private float regionalTemp, rainfall;
 
-    @SuppressWarnings("unused")
-    @Deprecated
-    public PacketChunkData() {}
+	@SuppressWarnings("unused")
+	@Deprecated
+	public PacketChunkData()
+	{
+	}
 
-    public PacketChunkData(ChunkPos chunkPos, NBTTagCompound nbt, float regionalTemp, float rainfall)
-    {
-        this.x = chunkPos.x;
-        this.z = chunkPos.z;
-        this.nbt = nbt;
-        this.regionalTemp = regionalTemp;
-        this.rainfall = rainfall;
-    }
+	public PacketChunkData(ChunkPos chunkPos, NBTTagCompound nbt, float regionalTemp, float rainfall)
+	{
+		this.x = chunkPos.x;
+		this.z = chunkPos.z;
+		this.nbt = nbt;
+		this.regionalTemp = regionalTemp;
+		this.rainfall = rainfall;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf)
-    {
-        x = buf.readInt();
-        z = buf.readInt();
-        nbt = ByteBufUtils.readTag(buf);
-        regionalTemp = buf.readFloat();
-        rainfall = buf.readFloat();
-    }
+	@Override
+	public void fromBytes(ByteBuf buf)
+	{
+		x = buf.readInt();
+		z = buf.readInt();
+		nbt = ByteBufUtils.readTag(buf);
+		regionalTemp = buf.readFloat();
+		rainfall = buf.readFloat();
+	}
 
-    @Override
-    public void toBytes(ByteBuf buf)
-    {
-        buf.writeInt(x);
-        buf.writeInt(z);
-        ByteBufUtils.writeTag(buf, nbt);
-        buf.writeFloat(regionalTemp);
-        buf.writeFloat(rainfall);
-    }
+	@Override
+	public void toBytes(ByteBuf buf)
+	{
+		buf.writeInt(x);
+		buf.writeInt(z);
+		ByteBufUtils.writeTag(buf, nbt);
+		buf.writeFloat(regionalTemp);
+		buf.writeFloat(rainfall);
+	}
 
-    public static class Handler implements IMessageHandler<PacketChunkData, IMessage>
-    {
-        @Override
-        public IMessage onMessage(PacketChunkData message, MessageContext ctx)
-        {
-            final World world = TerraFirmaCraft.getProxy().getWorld(ctx);
-            if (world != null)
-            {
-                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
-                    // Update client-side chunk data capability
-                    Chunk chunk = world.getChunk(message.x, message.z);
-                    ChunkDataTFC data = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
-                    if (data != null)
-                    {
-                        ChunkDataProvider.CHUNK_DATA_CAPABILITY.readNBT(data, null, message.nbt);
-                    }
+	public static class Handler implements IMessageHandler<PacketChunkData, IMessage>
+	{
+		@Override
+		public IMessage onMessage(PacketChunkData message, MessageContext ctx)
+		{
+			final World world = TerraFirmaCraft.getProxy().getWorld(ctx);
+			if (world != null)
+			{
+				TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() ->
+				{
+					// Update client-side chunk data capability
+					Chunk chunk = world.getChunk(message.x, message.z);
+					ChunkDataTFC data = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
+					if (data != null)
+					{
+						ChunkDataProvider.CHUNK_DATA_CAPABILITY.readNBT(data, null, message.nbt);
+					}
 
-                    // Update rendering climate helper
-                    ClimateRenderHelper.update(chunk.getPos(), message.regionalTemp, message.rainfall);
-                });
-            }
-            return null;
-        }
-    }
+					// Update rendering climate helper
+					ClimateRenderHelper.update(chunk.getPos(), message.regionalTemp, message.rainfall);
+				});
+			}
+			return null;
+		}
+	}
 }

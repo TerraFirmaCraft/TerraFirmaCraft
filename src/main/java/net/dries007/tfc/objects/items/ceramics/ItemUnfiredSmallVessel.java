@@ -14,33 +14,34 @@ import net.minecraft.util.NonNullList;
 
 public class ItemUnfiredSmallVessel extends ItemUnfiredPottery
 {
-    public final boolean glazed;
+	public final boolean glazed;
 
-    public ItemUnfiredSmallVessel(ItemSmallVessel firedVersion)
-    {
-        super(firedVersion);
-        glazed = firedVersion.glazed;
-        setHasSubtypes(glazed);
-    }
+	public ItemUnfiredSmallVessel(ItemSmallVessel firedVersion)
+	{
+		super(firedVersion);
+		glazed = firedVersion.glazed;
+		setHasSubtypes(glazed);
+	}
 
-    @Override
-    @Nonnull
-    public String getTranslationKey(ItemStack stack)
-    {
-        if (!glazed)
-            return super.getTranslationKey(stack);
-        return super.getTranslationKey(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
-    }
+	@Override
+	@Nonnull
+	public String getTranslationKey(ItemStack stack)
+	{
+		if (!glazed)
+			return super.getTranslationKey(stack);
+		return super.getTranslationKey(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
+	}
 
-    @Override
-    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
-    {
-        if (!isInCreativeTab(tab)) return;
+	@Override
+	public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
+	{
+		if (!isInCreativeTab(tab))
+			return;
 
-        if (!glazed)
-            items.add(new ItemStack(this));
-        else
-            for (EnumDyeColor color : EnumDyeColor.values())
-                items.add(new ItemStack(this, 1, color.getDyeDamage()));
-    }
+		if (!glazed)
+			items.add(new ItemStack(this));
+		else
+			for (EnumDyeColor color : EnumDyeColor.values())
+				items.add(new ItemStack(this, 1, color.getDyeDamage()));
+	}
 }

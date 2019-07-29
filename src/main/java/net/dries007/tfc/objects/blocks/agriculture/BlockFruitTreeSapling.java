@@ -36,105 +36,105 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @ParametersAreNonnullByDefault
 public class BlockFruitTreeSapling extends BlockBush implements IGrowable
 {
-    private static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0, 0.1, 0.9, 0.9, 0.9);
+	private static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0, 0.1, 0.9, 0.9, 0.9);
 
-    private static final Map<IFruitTree, BlockFruitTreeSapling> MAP = new HashMap<>();
+	private static final Map<IFruitTree, BlockFruitTreeSapling> MAP = new HashMap<>();
 
-    public static BlockFruitTreeSapling get(IFruitTree tree)
-    {
-        return MAP.get(tree);
-    }
+	public static BlockFruitTreeSapling get(IFruitTree tree)
+	{
+		return MAP.get(tree);
+	}
 
-    public final IFruitTree tree;
+	public final IFruitTree tree;
 
-    public BlockFruitTreeSapling(IFruitTree tree)
-    {
-        if (MAP.put(tree, this) != null) throw new IllegalStateException("There can only be one.");
-        this.tree = tree;
-        setSoundType(SoundType.PLANT);
-        setHardness(0.0F);
-        setTickRandomly(true);
-        OreDictionaryHelper.register(this, "tree", "sapling");
-        OreDictionaryHelper.register(this, "tree", "sapling", tree.getName());
-        Blocks.FIRE.setFireInfo(this, 5, 20);
-    }
+	public BlockFruitTreeSapling(IFruitTree tree)
+	{
+		if (MAP.put(tree, this) != null)
+			throw new IllegalStateException("There can only be one.");
+		this.tree = tree;
+		setSoundType(SoundType.PLANT);
+		setHardness(0.0F);
+		setTickRandomly(true);
+		OreDictionaryHelper.register(this, "tree", "sapling");
+		OreDictionaryHelper.register(this, "tree", "sapling", tree.getName());
+		Blocks.FIRE.setFireInfo(this, 5, 20);
+	}
 
-    @Override
-    public void randomTick(World world, BlockPos pos, IBlockState state, Random random)
-    {
-        super.updateTick(world, pos, state, random);
+	@Override
+	public void randomTick(World world, BlockPos pos, IBlockState state, Random random)
+	{
+		super.updateTick(world, pos, state, random);
 
-        if (!world.isRemote)
-        {
-            TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
-            if (te != null)
-            {
-                float temp = ClimateTFC.getTemp(world, pos);
-                float rainfall = ChunkDataTFC.getRainfall(world, pos);
-                long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
-                if (hours > tree.getGrowthTime() && tree.isValidForGrowth(temp, rainfall))
-                {
-                    te.resetCounter();
-                    grow(world, random, pos, state);
-                }
-            }
-        }
-    }
+		if (!world.isRemote)
+		{
+			TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
+			if (te != null)
+			{
+				float temp = ClimateTFC.getTemp(world, pos);
+				float rainfall = ChunkDataTFC.getRainfall(world, pos);
+				long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
+				if (hours > tree.getGrowthTime() && tree.isValidForGrowth(temp, rainfall))
+				{
+					te.resetCounter();
+					grow(world, random, pos, state);
+				}
+			}
+		}
+	}
 
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
-        if (te != null)
-        {
-            te.resetCounter();
-        }
-    }
+	@Override
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+	{
+		TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
+		if (te != null)
+		{
+			te.resetCounter();
+		}
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state)
+	{
+		return true;
+	}
 
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TETickCounter();
-    }
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state)
+	{
+		return new TETickCounter();
+	}
 
+	@SuppressWarnings("deprecation")
+	@Override
+	@Nonnull
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
+		return SAPLING_AABB;
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nonnull
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return SAPLING_AABB;
-    }
+	@Override
+	public boolean canGrow(World world, BlockPos blockPos, IBlockState iBlockState, boolean b)
+	{
+		return true;
+	}
 
-    @Override
-    public boolean canGrow(World world, BlockPos blockPos, IBlockState iBlockState, boolean b)
-    {
-        return true;
-    }
+	@Override
+	public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, IBlockState iBlockState)
+	{
+		return true; // Only on sapling tho, so trunk still has to grow
+	}
 
-    @Override
-    public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, IBlockState iBlockState)
-    {
-        return true; //Only on sapling tho, so trunk still has to grow
-    }
-
-    @Override
-    public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
-    {
-        if (!world.isRemote)
-        {
-            world.setBlockState(blockPos, BlockFruitTreeTrunk.get(this.tree).getDefaultState());
-            if (world.getBlockState(blockPos.up()).getMaterial().isReplaceable())
-            {
-                world.setBlockState(blockPos.up(), BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, false));
-            }
-        }
-    }
+	@Override
+	public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
+	{
+		if (!world.isRemote)
+		{
+			world.setBlockState(blockPos, BlockFruitTreeTrunk.get(this.tree).getDefaultState());
+			if (world.getBlockState(blockPos.up()).getMaterial().isReplaceable())
+			{
+				world.setBlockState(blockPos.up(), BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, false));
+			}
+		}
+	}
 }

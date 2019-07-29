@@ -19,29 +19,29 @@ import net.dries007.tfc.objects.te.TENestBox;
 @MethodsReturnNonnullByDefault
 public class ContainerNestBox extends ContainerTE<TENestBox>
 {
-    private static final int[] SLOT_SHIFT_ORDER = new int[] {0, 1, 2, 3};
+	private static final int[] SLOT_SHIFT_ORDER = new int[] { 0, 1, 2, 3 };
 
-    public ContainerNestBox(InventoryPlayer playerInv, TENestBox te)
-    {
-        super(playerInv, te);
-    }
+	public ContainerNestBox(InventoryPlayer playerInv, TENestBox te)
+	{
+		super(playerInv, te);
+	}
 
-    @Override
-    protected void addContainerSlots()
-    {
-        IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (inventory != null)
-        {
-            addSlotToContainer(new SlotCallback(inventory, 0, 71, 23, tile));
-            addSlotToContainer(new SlotCallback(inventory, 1, 89, 23, tile));
-            addSlotToContainer(new SlotCallback(inventory, 2, 71, 41, tile));
-            addSlotToContainer(new SlotCallback(inventory, 3, 89, 41, tile));
-        }
-    }
+	@Override
+	protected void addContainerSlots()
+	{
+		IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		if (inventory != null)
+		{
+			addSlotToContainer(new SlotCallback(inventory, 0, 71, 23, tile));
+			addSlotToContainer(new SlotCallback(inventory, 1, 89, 23, tile));
+			addSlotToContainer(new SlotCallback(inventory, 2, 71, 41, tile));
+			addSlotToContainer(new SlotCallback(inventory, 3, 89, 41, tile));
+		}
+	}
 
-    @Override
-    protected int[] getSlotShiftOrder(int containerSlots)
-    {
-        return SLOT_SHIFT_ORDER;
-    }
+	@Override
+	protected int[] getSlotShiftOrder(int containerSlots)
+	{
+		return SLOT_SHIFT_ORDER;
+	}
 }

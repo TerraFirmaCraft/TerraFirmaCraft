@@ -15,42 +15,42 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public class ForgeableMeasurableHandler extends ForgeableHandler implements IForgeableMeasurable
 {
-    protected int metalAmount;
+	protected int metalAmount;
 
-    public ForgeableMeasurableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltTemp, int metalAmount)
-    {
-        super(nbt, heatCapacity, meltTemp);
-        this.metalAmount = metalAmount;
-    }
+	public ForgeableMeasurableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltTemp, int metalAmount)
+	{
+		super(nbt, heatCapacity, meltTemp);
+		this.metalAmount = metalAmount;
+	}
 
-    @Override
-    public int getMetalAmount()
-    {
-        return this.metalAmount;
-    }
+	@Override
+	public int getMetalAmount()
+	{
+		return this.metalAmount;
+	}
 
-    @Override
-    public void setMetalAmount(int metalAmount)
-    {
-        this.metalAmount = metalAmount;
-    }
+	@Override
+	public void setMetalAmount(int metalAmount)
+	{
+		this.metalAmount = metalAmount;
+	}
 
-    @Override
-    @Nonnull
-    public NBTTagCompound serializeNBT()
-    {
-        NBTTagCompound nbt = super.serializeNBT();
-        nbt.setInteger("metalAmount", metalAmount);
-        return nbt;
-    }
+	@Override
+	@Nonnull
+	public NBTTagCompound serializeNBT()
+	{
+		NBTTagCompound nbt = super.serializeNBT();
+		nbt.setInteger("metalAmount", metalAmount);
+		return nbt;
+	}
 
-    @Override
-    public void deserializeNBT(@Nullable NBTTagCompound nbt)
-    {
-        if (nbt != null)
-        {
-            metalAmount = nbt.getInteger("metalAmount");
-        }
-        super.deserializeNBT(nbt);
-    }
+	@Override
+	public void deserializeNBT(@Nullable NBTTagCompound nbt)
+	{
+		if (nbt != null)
+		{
+			metalAmount = nbt.getInteger("metalAmount");
+		}
+		super.deserializeNBT(nbt);
+	}
 }

@@ -25,72 +25,69 @@ import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
 
 public class VeinTypeJson implements JsonDeserializer<VeinType>
 {
-    @SuppressWarnings("deprecation")
-    @Override
-    public VeinType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
-    {
-        JsonObject jsonObject = JsonUtils.getJsonObject(json, "vein");
+	@SuppressWarnings("deprecation")
+	@Override
+	public VeinType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+	{
+		JsonObject jsonObject = JsonUtils.getJsonObject(json, "vein");
 
-        int minY = JsonUtils.getInt(jsonObject, "minimum_height");
-        int maxY = JsonUtils.getInt(jsonObject, "maximum_height");
-        if (minY > maxY)
-        {
-            throw new JsonParseException("minimum height cannot be greater than maximum height!");
-        }
-        int rarity = JsonUtils.getInt(jsonObject, "rarity");
-        int density = JsonUtils.getInt(jsonObject, "density");
+		int minY = JsonUtils.getInt(jsonObject, "minimum_height");
+		int maxY = JsonUtils.getInt(jsonObject, "maximum_height");
+		if (minY > maxY)
+		{
+			throw new JsonParseException("minimum height cannot be greater than maximum height!");
+		}
+		int rarity = JsonUtils.getInt(jsonObject, "rarity");
+		int density = JsonUtils.getInt(jsonObject, "density");
 
-        VeinType.Size size = VeinType.Size.valueOf(JsonUtils.getString(jsonObject, "size").toUpperCase());
-        VeinType.Shape shape = VeinType.Shape.valueOf(JsonUtils.getString(jsonObject, "shape").toUpperCase());
+		VeinType.Size size = VeinType.Size.valueOf(JsonUtils.getString(jsonObject, "size").toUpperCase());
+		VeinType.Shape shape = VeinType.Shape.valueOf(JsonUtils.getString(jsonObject, "shape").toUpperCase());
 
-        JsonArray rocks = JsonUtils.getJsonArray(jsonObject, "base_rocks");
-        Set<Rock> blocks = new HashSet<>();
-        rocks.forEach(e -> {
-            ResourceLocation name = new ResourceLocation(e.getAsString());
-            Rock rock = TFCRegistries.ROCKS.getValue(name);
-            if (rock == null)
-            {
-                RockCategory category = TFCRegistries.ROCK_CATEGORIES.getValue(name);
-                if (category == null)
-                {
-                    TerraFirmaCraft.getLog().warn("Problem parsing ore entry '{}'. Rock / Rock Category '{}' is not defined. Skipping.", name, e);
-                }
-                else
-                {
-                    blocks.addAll(category.getRocks());
-                }
-            }
-            else
-            {
-                blocks.add(rock);
-            }
-        });
+		JsonArray rocks = JsonUtils.getJsonArray(jsonObject, "base_rocks");
+		Set<Rock> blocks = new HashSet<>();
+		rocks.forEach(e ->
+		{
+			ResourceLocation name = new ResourceLocation(e.getAsString());
+			Rock rock = TFCRegistries.ROCKS.getValue(name);
+			if (rock == null)
+			{
+				RockCategory category = TFCRegistries.ROCK_CATEGORIES.getValue(name);
+				if (category == null)
+				{
+					TerraFirmaCraft.getLog().warn("Problem parsing ore entry '{}'. Rock / Rock Category '{}' is not defined. Skipping.", name, e);
+				} else
+				{
+					blocks.addAll(category.getRocks());
+				}
+			} else
+			{
+				blocks.add(rock);
+			}
+		});
 
-        ResourceLocation oreName = new ResourceLocation(JsonUtils.getString(jsonObject, "ore"));
-        Ore ore = TFCRegistries.ORES.getValue(oreName);
-        if (ore == null)
-        {
-            Block block = ForgeRegistries.BLOCKS.getValue(oreName);
-            if (block != null)
-            {
-                //todo: remove metadata in 1.13
-                int meta = JsonUtils.getInt(jsonObject, "meta", 0);
-                IBlockState oreState;
-                try
-                {
-                    oreState = block.getStateFromMeta(meta);
-                }
-                catch (RuntimeException e)
-                {
-                    throw new JsonParseException("Unable to find a matching IBlockState for block " + oreName + " and metadata: " + meta);
-                }
-                return new VeinType.Special(oreState, size, shape, blocks, rarity, minY, maxY, density);
-            }
-            else
-            {
-                throw new JsonParseException("Unrecognized ore '" + oreName + "'");
-            }
-        }
-        return new VeinType(ore, size, shape, blocks, rarity, minY, maxY, density);
-    }
+		ResourceLocation oreName = new ResourceLocation(JsonUtils.getString(jsonObject, "ore"));
+		Ore ore = TFCRegistries.ORES.getValue(oreName);
+		if (ore == null)
+		{
+			Block block = ForgeRegistries.BLOCKS.getValue(oreName);
+			if (block != null)
+			{
+				// todo: remove metadata in 1.13
+				int meta = JsonUtils.getInt(jsonObject, "meta", 0);
+				IBlockState oreState;
+				try
+				{
+					oreState = block.getStateFromMeta(meta);
+				} catch (RuntimeException e)
+				{
+					throw new JsonParseException("Unable to find a matching IBlockState for block " + oreName + " and metadata: " + meta);
+				}
+				return new VeinType.Special(oreState, size, shape, blocks, rarity, minY, maxY, density);
+			} else
+			{
+				throw new JsonParseException("Unrecognized ore '" + oreName + "'");
+			}
+		}
+		return new VeinType(ore, size, shape, blocks, rarity, minY, maxY, density);
+	}
 }

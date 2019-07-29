@@ -16,17 +16,17 @@ import net.dries007.tfc.objects.items.ItemTFC;
 
 public abstract class ItemPottery extends ItemTFC implements IFireable
 {
-    @Nonnull
-    @Override
-    public Size getSize(@Nonnull ItemStack stack)
-    {
-        return Size.SMALL;
-    }
+	@Nonnull
+	@Override
+	public Size getSize(@Nonnull ItemStack stack)
+	{
+		return Size.SMALL;
+	}
 
-    @Nonnull
-    @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
-    {
-        return Weight.MEDIUM;
-    }
+	@Nonnull
+	@Override
+	public Weight getWeight(@Nonnull ItemStack stack)
+	{
+		return Weight.MEDIUM;
+	}
 }

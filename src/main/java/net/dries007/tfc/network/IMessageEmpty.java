@@ -14,9 +14,13 @@ import io.netty.buffer.ByteBuf;
  */
 public interface IMessageEmpty extends IMessage
 {
-    @Override
-    default void fromBytes(ByteBuf buf) {}
+	@Override
+	default void fromBytes(ByteBuf buf)
+	{
+	}
 
-    @Override
-    default void toBytes(ByteBuf buf) {}
+	@Override
+	default void toBytes(ByteBuf buf)
+	{
+	}
 }

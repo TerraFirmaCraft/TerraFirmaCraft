@@ -18,23 +18,24 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockTrapDoorWoodTFC extends BlockTrapDoor
 {
-    private static final Map<Tree, BlockTrapDoorWoodTFC> MAP = new HashMap<>();
+	private static final Map<Tree, BlockTrapDoorWoodTFC> MAP = new HashMap<>();
 
-    public static BlockTrapDoorWoodTFC get(Tree wood)
-    {
-        return MAP.get(wood);
-    }
+	public static BlockTrapDoorWoodTFC get(Tree wood)
+	{
+		return MAP.get(wood);
+	}
 
-    public final Tree wood;
+	public final Tree wood;
 
-    public BlockTrapDoorWoodTFC(Tree wood)
-    {
-        super(Material.WOOD);
-        this.wood = wood;
-        if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
-        setHardness(0.5F);
-        setSoundType(SoundType.WOOD);
-        OreDictionaryHelper.register(this, "wood", "trapdoor");
-        Blocks.FIRE.setFireInfo(this, 5, 20);
-    }
+	public BlockTrapDoorWoodTFC(Tree wood)
+	{
+		super(Material.WOOD);
+		this.wood = wood;
+		if (MAP.put(wood, this) != null)
+			throw new IllegalStateException("There can only be one.");
+		setHardness(0.5F);
+		setSoundType(SoundType.WOOD);
+		OreDictionaryHelper.register(this, "wood", "trapdoor");
+		Blocks.FIRE.setFireInfo(this, 5, 20);
+	}
 }

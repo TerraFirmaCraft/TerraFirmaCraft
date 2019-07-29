@@ -15,20 +15,21 @@ import net.dries007.tfc.api.types.Rock;
 
 public class BlockButtonStoneTFC extends BlockButtonStone
 {
-    private static final Map<Rock, BlockButtonStoneTFC> MAP = new HashMap<>();
+	private static final Map<Rock, BlockButtonStoneTFC> MAP = new HashMap<>();
 
-    public static BlockButtonStoneTFC get(Rock rock)
-    {
-        return MAP.get(rock);
-    }
+	public static BlockButtonStoneTFC get(Rock rock)
+	{
+		return MAP.get(rock);
+	}
 
-    public final Rock rock;
+	public final Rock rock;
 
-    public BlockButtonStoneTFC(Rock rock)
-    {
-        this.rock = rock;
-        if (MAP.put(rock, this) != null) throw new IllegalStateException("There can only be one.");
-        setHardness(0.5F);
-        setSoundType(SoundType.STONE);
-    }
+	public BlockButtonStoneTFC(Rock rock)
+	{
+		this.rock = rock;
+		if (MAP.put(rock, this) != null)
+			throw new IllegalStateException("There can only be one.");
+		setHardness(0.5F);
+		setSoundType(SoundType.STONE);
+	}
 }

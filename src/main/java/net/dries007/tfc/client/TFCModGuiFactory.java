@@ -21,35 +21,35 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_NAME;
 @SuppressWarnings("unused")
 public class TFCModGuiFactory implements IModGuiFactory
 {
-    @Override
-    public void initialize(Minecraft minecraftInstance)
-    {
+	@Override
+	public void initialize(Minecraft minecraftInstance)
+	{
 
-    }
+	}
 
-    @Override
-    public boolean hasConfigGui()
-    {
-        return true;
-    }
+	@Override
+	public boolean hasConfigGui()
+	{
+		return true;
+	}
 
-    @Override
-    public GuiScreen createConfigGui(GuiScreen parentScreen)
-    {
-        return new TFCModGui(parentScreen);
-    }
+	@Override
+	public GuiScreen createConfigGui(GuiScreen parentScreen)
+	{
+		return new TFCModGui(parentScreen);
+	}
 
-    @Override
-    public Set<RuntimeOptionCategoryElement> runtimeGuiCategories()
-    {
-        return null;
-    }
+	@Override
+	public Set<RuntimeOptionCategoryElement> runtimeGuiCategories()
+	{
+		return null;
+	}
 
-    public final class TFCModGui extends GuiConfig
-    {
-        public TFCModGui(GuiScreen parentScreen)
-        {
-            super(parentScreen, MOD_ID, MOD_NAME);
-        }
-    }
+	public final class TFCModGui extends GuiConfig
+	{
+		public TFCModGui(GuiScreen parentScreen)
+		{
+			super(parentScreen, MOD_ID, MOD_NAME);
+		}
+	}
 }

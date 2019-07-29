@@ -23,44 +23,44 @@ import net.dries007.tfc.util.agriculture.Food;
 
 public class ItemFoodTFC extends ItemFood
 {
-    private static final Map<Food, ItemFoodTFC> MAP = new HashMap<>();
+	private static final Map<Food, ItemFoodTFC> MAP = new HashMap<>();
 
-    public static ItemFoodTFC get(Food food)
-    {
-        return MAP.get(food);
-    }
+	public static ItemFoodTFC get(Food food)
+	{
+		return MAP.get(food);
+	}
 
-    public static ItemStack get(Food food, int amount)
-    {
-        return new ItemStack(MAP.get(food), amount);
-    }
+	public static ItemStack get(Food food, int amount)
+	{
+		return new ItemStack(MAP.get(food), amount);
+	}
 
-    private final Food food;
+	private final Food food;
 
-    public ItemFoodTFC(@Nonnull Food food)
-    {
-        super(IFoodStatsTFC.FOOD_HUNGER_AMOUNT, food.getCalories(), food.getCategory() == Food.Category.MEAT);
-        this.food = food;
-        if (MAP.put(food, this) != null)
-        {
-            throw new IllegalStateException("There can only be one.");
-        }
+	public ItemFoodTFC(@Nonnull Food food)
+	{
+		super(IFoodStatsTFC.FOOD_HUNGER_AMOUNT, food.getCalories(), food.getCategory() == Food.Category.MEAT);
+		this.food = food;
+		if (MAP.put(food, this) != null)
+		{
+			throw new IllegalStateException("There can only be one.");
+		}
 
-        // Use "category" here as to not conflict with actual items, i.e. grain
-        OreDictionaryHelper.register(this, "category", food.getCategory());
-        if (food.getOreDictNames() != null)
-        {
-            for (Object name : food.getOreDictNames())
-            {
-                OreDictionaryHelper.register(this, name);
-            }
-        }
-    }
+		// Use "category" here as to not conflict with actual items, i.e. grain
+		OreDictionaryHelper.register(this, "category", food.getCategory());
+		if (food.getOreDictNames() != null)
+		{
+			for (Object name : food.getOreDictNames())
+			{
+				OreDictionaryHelper.register(this, name);
+			}
+		}
+	}
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        return food.isHeatable() ? new FoodHeatHandler(nbt, food) : new FoodHandler(nbt, food);
-    }
+	@Nullable
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+	{
+		return food.isHeatable() ? new FoodHeatHandler(nbt, food) : new FoodHandler(nbt, food);
+	}
 }

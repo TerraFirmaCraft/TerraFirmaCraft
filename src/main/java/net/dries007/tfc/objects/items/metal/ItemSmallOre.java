@@ -21,62 +21,62 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class ItemSmallOre extends ItemTFC implements IMetalObject
 {
-    private static final Map<Ore, ItemSmallOre> MAP = new HashMap<>();
+	private static final Map<Ore, ItemSmallOre> MAP = new HashMap<>();
 
-    public static ItemSmallOre get(Ore ore)
-    {
-        return MAP.get(ore);
-    }
+	public static ItemSmallOre get(Ore ore)
+	{
+		return MAP.get(ore);
+	}
 
-    public static ItemStack get(Ore ore, int amount)
-    {
-        return new ItemStack(MAP.get(ore), amount);
-    }
+	public static ItemStack get(Ore ore, int amount)
+	{
+		return new ItemStack(MAP.get(ore), amount);
+	}
 
-    private final Ore ore;
+	private final Ore ore;
 
-    public ItemSmallOre(Ore ore)
-    {
-        this.ore = ore;
-        if (MAP.put(ore, this) != null)
-        {
-            throw new IllegalStateException("There can only be one.");
-        }
-        setMaxDamage(0);
-        OreDictionaryHelper.register(this, "ore");
-        OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath());
-        OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath(), "small");
-    }
+	public ItemSmallOre(Ore ore)
+	{
+		this.ore = ore;
+		if (MAP.put(ore, this) != null)
+		{
+			throw new IllegalStateException("There can only be one.");
+		}
+		setMaxDamage(0);
+		OreDictionaryHelper.register(this, "ore");
+		OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath());
+		OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath(), "small");
+	}
 
-    @Override
-    public Metal getMetal(ItemStack stack)
-    {
-        return ore.getMetal();
-    }
+	@Override
+	public Metal getMetal(ItemStack stack)
+	{
+		return ore.getMetal();
+	}
 
-    @Override
-    public int getSmeltAmount(ItemStack stack)
-    {
-        return 10; //todo: config
-    }
+	@Override
+	public int getSmeltAmount(ItemStack stack)
+	{
+		return 10; // todo: config
+	}
 
-    @Nonnull
-    @Override
-    public Size getSize(@Nonnull ItemStack stack)
-    {
-        return Size.SMALL;
-    }
+	@Nonnull
+	@Override
+	public Size getSize(@Nonnull ItemStack stack)
+	{
+		return Size.SMALL;
+	}
 
-    @Nonnull
-    @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
-    {
-        return Weight.HEAVY;
-    }
+	@Nonnull
+	@Override
+	public Weight getWeight(@Nonnull ItemStack stack)
+	{
+		return Weight.HEAVY;
+	}
 
-    @Nonnull
-    public Ore getOre()
-    {
-        return ore;
-    }
+	@Nonnull
+	public Ore getOre()
+	{
+		return ore;
+	}
 }

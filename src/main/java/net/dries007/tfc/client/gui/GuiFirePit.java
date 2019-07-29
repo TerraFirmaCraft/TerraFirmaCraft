@@ -16,23 +16,23 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class GuiFirePit extends GuiContainerTE<TEFirePit>
 {
-    private static final ResourceLocation FIRE_PIT_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/fire_pit.png");
+	private static final ResourceLocation FIRE_PIT_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/fire_pit.png");
 
-    public GuiFirePit(Container container, InventoryPlayer playerInv, TEFirePit tile)
-    {
-        super(container, playerInv, tile, FIRE_PIT_BACKGROUND);
-    }
+	public GuiFirePit(Container container, InventoryPlayer playerInv, TEFirePit tile)
+	{
+		super(container, playerInv, tile, FIRE_PIT_BACKGROUND);
+	}
 
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-    {
-        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+	@Override
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+	{
+		super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
-        // Draw the fire / burn time indicator
-        int temperature = (int) (51 * tile.getField(TEFirePit.FIELD_TEMPERATURE) / MAX_TEMPERATURE);
-        if (temperature > 0)
-        {
-            drawTexturedModalRect(guiLeft + 30, guiTop + 66 - temperature, 176, 0, 15, 5);
-        }
-    }
+		// Draw the fire / burn time indicator
+		int temperature = (int) (51 * tile.getField(TEFirePit.FIELD_TEMPERATURE) / MAX_TEMPERATURE);
+		if (temperature > 0)
+		{
+			drawTexturedModalRect(guiLeft + 30, guiTop + 66 - temperature, 176, 0, 15, 5);
+		}
+	}
 }

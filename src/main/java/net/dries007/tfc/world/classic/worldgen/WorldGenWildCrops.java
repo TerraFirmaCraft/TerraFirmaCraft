@@ -26,46 +26,46 @@ import static net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC.WILD;
 @ParametersAreNonnullByDefault
 public class WorldGenWildCrops extends WorldGenerator
 {
-    private final List<ICrop> crops;
+	private final List<ICrop> crops;
 
-    public WorldGenWildCrops()
-    {
-        this.crops = new ArrayList<>(BlockCropTFC.getCrops());
-        if (crops.size() == 0)
-        {
-            TerraFirmaCraft.getLog().warn("There are no wild crops registered to world gen!");
-        }
-    }
+	public WorldGenWildCrops()
+	{
+		this.crops = new ArrayList<>(BlockCropTFC.getCrops());
+		if (crops.size() == 0)
+		{
+			TerraFirmaCraft.getLog().warn("There are no wild crops registered to world gen!");
+		}
+	}
 
-    @Override
-    public boolean generate(World world, Random rng, BlockPos start)
-    {
-        if (crops.size() <= 0)
-        {
-            return false;
-        }
+	@Override
+	public boolean generate(World world, Random rng, BlockPos start)
+	{
+		if (crops.size() <= 0)
+		{
+			return false;
+		}
 
-        ICrop crop = crops.get(rng.nextInt(crops.size()));
-        BlockCropTFC cropBlock = BlockCropTFC.get(crop);
+		ICrop crop = crops.get(rng.nextInt(crops.size()));
+		BlockCropTFC cropBlock = BlockCropTFC.get(crop);
 
-        float temperature = ClimateTFC.getAverageBiomeTemp(world, start);
-        float rainfall = ChunkDataTFC.getRainfall(world, start);
-        if (crop.isValidConditions(temperature, rainfall))
-        {
-            for (int i = 0; i < 14 + rng.nextInt(5); ++i)
-            {
-                BlockPos pos = start.add(rng.nextInt(8) - rng.nextInt(8), rng.nextInt(4) - rng.nextInt(4), rng.nextInt(8) - rng.nextInt(8));
-                if (world.isAirBlock(pos) || cropBlock.canPlaceBlockAt(world, pos))
-                {
-                    if (BlocksTFC.isSoil(world.getBlockState(pos.add(0, -1, 0))))
-                    {
-                        int growth = 2 + rng.nextInt(crop.getMaxStage() - 2);
-                        world.setBlockState(pos, cropBlock.getDefaultState().withProperty(cropBlock.getStageProperty(), growth).withProperty(WILD, true), 2);
-                    }
+		float temperature = ClimateTFC.getAverageBiomeTemp(world, start);
+		float rainfall = ChunkDataTFC.getRainfall(world, start);
+		if (crop.isValidConditions(temperature, rainfall))
+		{
+			for (int i = 0; i < 14 + rng.nextInt(5); ++i)
+			{
+				BlockPos pos = start.add(rng.nextInt(8) - rng.nextInt(8), rng.nextInt(4) - rng.nextInt(4), rng.nextInt(8) - rng.nextInt(8));
+				if (world.isAirBlock(pos) || cropBlock.canPlaceBlockAt(world, pos))
+				{
+					if (BlocksTFC.isSoil(world.getBlockState(pos.add(0, -1, 0))))
+					{
+						int growth = 2 + rng.nextInt(crop.getMaxStage() - 2);
+						world.setBlockState(pos, cropBlock.getDefaultState().withProperty(cropBlock.getStageProperty(), growth).withProperty(WILD, true), 2);
+					}
 
-                }
-            }
-        }
-        return true;
-    }
+				}
+			}
+		}
+		return true;
+	}
 }

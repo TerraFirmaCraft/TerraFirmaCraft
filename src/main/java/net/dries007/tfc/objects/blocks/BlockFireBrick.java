@@ -20,24 +20,24 @@ import net.dries007.tfc.api.capability.size.Weight;
 @ParametersAreNonnullByDefault
 public class BlockFireBrick extends Block implements IItemSize
 {
-    public BlockFireBrick()
-    {
-        super(Material.ROCK);
-        setSoundType(SoundType.STONE);
-        setHardness(1.0F);
-    }
+	public BlockFireBrick()
+	{
+		super(Material.ROCK);
+		setSoundType(SoundType.STONE);
+		setHardness(1.0F);
+	}
 
-    @Nonnull
-    @Override
-    public Size getSize(ItemStack stack)
-    {
-        return Size.VERY_SMALL;
-    }
+	@Nonnull
+	@Override
+	public Size getSize(ItemStack stack)
+	{
+		return Size.VERY_SMALL;
+	}
 
-    @Nonnull
-    @Override
-    public Weight getWeight(ItemStack stack)
-    {
-        return Weight.HEAVY;
-    }
+	@Nonnull
+	@Override
+	public Weight getWeight(ItemStack stack)
+	{
+		return Weight.HEAVY;
+	}
 }

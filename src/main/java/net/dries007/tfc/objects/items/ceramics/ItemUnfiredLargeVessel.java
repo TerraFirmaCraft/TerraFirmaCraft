@@ -16,24 +16,24 @@ import net.dries007.tfc.objects.blocks.BlockLargeVessel;
 
 public class ItemUnfiredLargeVessel extends ItemPottery
 {
-    @Override
-    public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
-    {
-        ItemStack output = new ItemStack(new BlockLargeVessel());
-        return output;
-    }
+	@Override
+	public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
+	{
+		ItemStack output = new ItemStack(new BlockLargeVessel());
+		return output;
+	}
 
-    @Nonnull
-    @Override
-    public Size getSize(@Nonnull ItemStack stack)
-    {
-        return Size.HUGE;
-    }
+	@Nonnull
+	@Override
+	public Size getSize(@Nonnull ItemStack stack)
+	{
+		return Size.HUGE;
+	}
 
-    @Nonnull
-    @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
-    {
-        return Weight.HEAVY;
-    }
+	@Nonnull
+	@Override
+	public Weight getWeight(@Nonnull ItemStack stack)
+	{
+		return Weight.HEAVY;
+	}
 }
