@@ -1,18 +1,18 @@
 {
+  "parent": "block/block",
   "credit": "Made with Blockbench",
   "elements": [
     {
       "from": [
-        2,
         0,
-        2
+        0,
+        0
       ],
       "to": [
-        14,
-        12,
-        14
+        16,
+        16,
+        16
       ],
-      "color": 1,
       "faces": {
         "north": {
           "uv": [
