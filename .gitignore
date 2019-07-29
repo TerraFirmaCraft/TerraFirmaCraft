@@ -25,3 +25,4 @@ bin/
 venv/
 
 /assets/
+logs
