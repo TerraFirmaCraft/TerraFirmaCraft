@@ -157,6 +157,58 @@ public class WorldGenFissure implements IWorldGenerator
                 }
             }
         }
+        //Now, let's make a "tunnel" all way down so this is gonna look a bit more like a fissure
+        int tunnelDepth = depth + 20 + random.nextInt(60);
+        int tunnelY = center.down(tunnelDepth).getY();
+        if (tunnelY < 20) tunnelY = 20;
+        BlockPos tunnelPos = center.down(depth);
+        radius = 7; //this is so we keep our tunnel under control(not wander too far and cause cascading lag
+        while (tunnelPos.getY() > tunnelY)
+        {
+            blocks.add(tunnelPos);
+            for (EnumFacing horiz : EnumFacing.HORIZONTALS)
+            {
+                blocks.add(tunnelPos.offset(horiz));
+            }
+            int value = random.nextInt(8); //50% down, 12.5% each side
+            if (value < 1)
+            {
+                tunnelPos = tunnelPos.offset(EnumFacing.NORTH);
+            }
+            else if (value < 2)
+            {
+                tunnelPos = tunnelPos.offset(EnumFacing.SOUTH);
+            }
+            else if (value < 3)
+            {
+                tunnelPos = tunnelPos.offset(EnumFacing.EAST);
+            }
+            else if (value < 4)
+            {
+                tunnelPos = tunnelPos.offset(EnumFacing.WEST);
+            }
+            else
+            {
+                tunnelPos = tunnelPos.down();
+            }
+            //Keep it under control
+            if (tunnelPos.getX() > center.getX() + radius)
+            {
+                tunnelPos.add(-1, 0, 0);
+            }
+            if (tunnelPos.getX() < center.getX() + radius)
+            {
+                tunnelPos.add(1, 0, 0);
+            }
+            if (tunnelPos.getZ() > center.getZ() + radius)
+            {
+                tunnelPos.add(0, 0, -1);
+            }
+            if (tunnelPos.getZ() < center.getZ() + radius)
+            {
+                tunnelPos.add(0, 0, 1);
+            }
+        }
         return blocks;
     }
 
