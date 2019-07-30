@@ -162,14 +162,10 @@ public class WorldGenFissure implements IWorldGenerator
         int tunnelY = center.down(tunnelDepth).getY();
         if (tunnelY < 20) tunnelY = 20;
         BlockPos tunnelPos = center.down(depth);
-        radius = 7; //this is so we keep our tunnel under control(not wander too far and cause cascading lag
+        float startingY = tunnelPos.getY();
+        blocks.add(tunnelPos);
         while (tunnelPos.getY() > tunnelY)
         {
-            blocks.add(tunnelPos);
-            for (EnumFacing horiz : EnumFacing.HORIZONTALS)
-            {
-                blocks.add(tunnelPos.offset(horiz));
-            }
             int value = random.nextInt(8); //50% down, 12.5% each side
             if (value < 1)
             {
@@ -191,12 +187,14 @@ public class WorldGenFissure implements IWorldGenerator
             {
                 tunnelPos = tunnelPos.down();
             }
+            float remaining = (tunnelPos.getY() - tunnelY) / startingY;
+            radius = Math.max(1, (int) (8 * remaining)); //Lowering radius makes it look better
             //Keep it under control
             if (tunnelPos.getX() > center.getX() + radius)
             {
                 tunnelPos.add(-1, 0, 0);
             }
-            if (tunnelPos.getX() < center.getX() + radius)
+            if (tunnelPos.getX() < center.getX() - radius)
             {
                 tunnelPos.add(1, 0, 0);
             }
@@ -204,9 +202,14 @@ public class WorldGenFissure implements IWorldGenerator
             {
                 tunnelPos.add(0, 0, -1);
             }
-            if (tunnelPos.getZ() < center.getZ() + radius)
+            if (tunnelPos.getZ() < center.getZ() - radius)
             {
                 tunnelPos.add(0, 0, 1);
+            }
+            blocks.add(tunnelPos);
+            for (EnumFacing horiz : EnumFacing.HORIZONTALS)
+            {
+                blocks.add(tunnelPos.offset(horiz));
             }
         }
         return blocks;
