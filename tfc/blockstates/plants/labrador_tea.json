@@ -32,7 +32,7 @@
     },
 	    {
       "when": {
-        "stage": "1"
+        "stage": "3"
       },
       "apply": [
         {
@@ -42,7 +42,7 @@
     },
 	    {
       "when": {
-        "stage": "1"
+        "stage": "4"
       },
       "apply": [
         {
@@ -52,7 +52,7 @@
     },
 	    {
       "when": {
-        "stage": "1"
+        "stage": "5"
       },
       "apply": [
         {
@@ -62,7 +62,7 @@
     },
 	    {
       "when": {
-        "stage": "1"
+        "stage": "6"
       },
       "apply": [
         {

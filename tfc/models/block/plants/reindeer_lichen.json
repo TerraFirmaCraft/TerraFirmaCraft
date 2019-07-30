@@ -1,10 +1,10 @@
 {
   "ambientocclusion": false,
   "textures": {
-    "layer0": "tfc:blocks/plants/moss/reindeer_lichen_layer0",
-    "layer1": "tfc:blocks/plants/moss/reindeer_lichen_layer1",
-    "layer2": "tfc:blocks/plants/moss/reindeer_lichen_layer2",
-    "particle": "tfc:blocks/plants/moss/reindeer_lichen_layer0"
+    "layer0": "tfc:blocks/plants/reindeer_lichen/reindeer_lichen_layer0",
+    "layer1": "tfc:blocks/plants/reindeer_lichen/reindeer_lichen_layer1",
+    "layer2": "tfc:blocks/plants/reindeer_lichen/reindeer_lichen_layer2",
+    "particle": "tfc:blocks/plants/reindeer_lichen/reindeer_lichen_layer0"
   },
   "elements": [
     {
@@ -26,8 +26,7 @@
             16,
             0
           ],
-          "texture": "#layer0",
-          "tintindex": 0
+          "texture": "#layer0"
         },
         "up": {
           "uv": [
@@ -36,8 +35,7 @@
             16,
             16
           ],
-          "texture": "#layer0",
-          "tintindex": 0
+          "texture": "#layer0"
         }
       }
     },
@@ -60,8 +58,7 @@
             16,
             0
           ],
-          "texture": "#layer1",
-          "tintindex": 1
+          "texture": "#layer1"
         },
         "up": {
           "uv": [
@@ -70,8 +67,7 @@
             16,
             16
           ],
-          "texture": "#layer1",
-          "tintindex": 1
+          "texture": "#layer1"
         }
       }
     },
@@ -94,8 +90,7 @@
             16,
             0
           ],
-          "texture": "#layer2",
-          "tintindex": 2
+          "texture": "#layer2"
         },
         "up": {
           "uv": [
@@ -104,8 +99,7 @@
             16,
             16
           ],
-          "texture": "#layer2",
-          "tintindex": 2
+          "texture": "#layer2"
         }
       }
     }

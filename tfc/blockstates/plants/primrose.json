@@ -22,7 +22,7 @@
     },
     {
       "when": {
-        "stage": "1"
+        "stage": "2"
       },
       "apply": [
         {
