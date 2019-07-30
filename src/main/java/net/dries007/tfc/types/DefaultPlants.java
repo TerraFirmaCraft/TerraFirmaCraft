@@ -147,7 +147,7 @@ public final class DefaultPlants
             new Plant(YUCCA, Plant.PlantType.DESERT, new int[] {0, 0, 1, 2, 2, 2, 2, 2, 3, 0, 0, 0}, true, false, 20f, 30f, -34f, 36f, 0f, 75f, 9, 15, 1, 1.0D, null),
 
             // Double Plants
-            new Plant(FOXGLOVE, Plant.PlantType.STANDARD, new int[] {0, 0, 1, 1, 2, 3, 3, 3, 4, 0, 0, 0}, false, false, 15f, 25f, -34f, 34f, 150f, 300f, 9, 15, 2, 1.0D, null),
+            new Plant(FOXGLOVE, Plant.PlantType.TALL_PLANT, new int[] {0, 0, 1, 1, 2, 3, 3, 3, 4, 0, 0, 0}, false, false, 15f, 25f, -34f, 34f, 150f, 300f, 9, 15, 2, 1.0D, null),
             new Plant(OSTRICH_FERN, Plant.PlantType.TALL_PLANT, new int[] {0, 1, 2, 3, 3, 3, 3, 4, 0, 0, 0, 0}, false, false, 10f, 18f, -40f, 33f, 300f, 500f, 4, 11, 2, 0.5D, null),
             new Plant(ROSE, Plant.PlantType.TALL_PLANT, new int[] {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0}, true, false, 11f, 21f, -29f, 34f, 150f, 300f, 9, 15, 2, 1.0D, null),
             new Plant(SAPPHIRE_TOWER, Plant.PlantType.TALL_PLANT, new int[] {0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 3, 0}, false, false, 21f, 31f, -6f, 38f, 75f, 200f, 9, 15, 2, 0.5D, null),
