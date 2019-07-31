@@ -13,14 +13,13 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -48,7 +47,6 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @MethodsReturnNonnullByDefault
 public class BlockBerryBush extends Block
 {
-    public static final PropertyInteger SIZE = PropertyInteger.create("size", 1, 3);
     public static final PropertyBool FRUITING = PropertyBool.create("fruiting");
 
     private static final AxisAlignedBB SMALL_SIZE_AABB = new AxisAlignedBB(0D, 0.0D, 0, 1D, 0.25D, 1D);
@@ -65,13 +63,14 @@ public class BlockBerryBush extends Block
 
     public BlockBerryBush(IBerryBush bush)
     {
-        super(Material.LEAVES, Material.LEAVES.getMaterialMapColor());
+        super(Material.LEAVES);
         this.bush = bush;
         if (MAP.put(bush, this) != null) throw new IllegalStateException("There can only be one.");
         Blocks.FIRE.setFireInfo(this, 30, 60);
         setHardness(1.0F);
         setTickRandomly(true);
-        setDefaultState(blockState.getBaseState().withProperty(SIZE, bush.getBushSize().ordinal() + 1).withProperty(FRUITING, false));
+        setSoundType(SoundType.PLANT);
+        setDefaultState(blockState.getBaseState().withProperty(FRUITING, false));
     }
 
     @Override
@@ -89,20 +88,20 @@ public class BlockBerryBush extends Block
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return getDefaultState().withProperty(SIZE, meta % 3 + 1).withProperty(FRUITING, meta >= 3);
+        return getDefaultState().withProperty(FRUITING, meta == 1);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(SIZE) - 1 + (state.getValue(FRUITING) ? 3 : 0);
+        return state.getValue(FRUITING) ? 1 : 0;
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState state)
     {
-        return state.getValue(SIZE) == 3;
+        return bush.getSize() == IBerryBush.Size.LARGE;
     }
 
     @SuppressWarnings("deprecation")
@@ -117,11 +116,11 @@ public class BlockBerryBush extends Block
     @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        switch (state.getValue(SIZE))
+        switch (bush.getSize())
         {
-            case 1:
+            case SMALL:
                 return SMALL_SIZE_AABB;
-            case 2:
+            case MEDIUM:
                 return MEDIUM_SIZE_AABB;
             default:
                 return FULL_BLOCK_AABB;
@@ -133,7 +132,7 @@ public class BlockBerryBush extends Block
     @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
-        return state.getValue(SIZE) < 3 ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
+        return bush.getSize() == IBerryBush.Size.LARGE ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
     }
 
     @Override
@@ -226,7 +225,7 @@ public class BlockBerryBush extends Block
     @Nonnull
     public BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, SIZE, FRUITING);
+        return new BlockStateContainer(this, FRUITING);
     }
 
     @Override
@@ -240,11 +239,5 @@ public class BlockBerryBush extends Block
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TETickCounter();
-    }
-
-    @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-    {
-        return getDefaultState().withProperty(SIZE, bush.getBushSize().ordinal() + 1).withProperty(FRUITING, false);
     }
 }
