@@ -150,6 +150,19 @@ WOOD_TYPES = [
     'blackwood',
     'palm',
 ]
+BERRY_TYPES = [
+    'blackberry',
+    'blueberry',
+    'bunch_berry',
+    'cloud_berry',
+    'cranberry',
+    'elderberry',
+    'gooseberry',
+    'raspberry',
+    'snow_berry',
+    'strawberry',
+    'wintergreen_berry',
+]
 GEM_TYPES = [
     'agate',
     'amethyst',
@@ -748,6 +761,16 @@ for rock_type in ['granite', 'rhyolite', 'basalt', 'gabbro', 'diorite', 'andesit
         ('all', 'particle'): 'tfc:blocks/stonetypes/raw/%s' % rock_type,
     })
 
+for berry_type in BERRY_TYPES:
+    # BERRY BUSH
+    blockstate(('berry_bush', berry_type), 'tfc:berry_bush_1', textures={
+        'texture': 'tfc:blocks/berry_bush/bush/%s' % berry_type,
+        'particle': 'tfc:blocks/berry_bush/bush/%s' % berry_type,
+    }, variants={
+        'inventory': {'model': 'tfc:berry_bush_3'},
+		'size': {'1': {'model': 'tfc:berry_bush_1'}, '2': {'model': 'tfc:berry_bush_2'}, '3': {'model': 'tfc:berry_bush_3'}},
+        'fruiting': {'true': {'textures': {'texture': 'tfc:blocks/berry_bush/berry/%s' % berry_type}}, 'false': {}},
+    })
 
 # WOOD STUFF
 for wood_type in WOOD_TYPES:
