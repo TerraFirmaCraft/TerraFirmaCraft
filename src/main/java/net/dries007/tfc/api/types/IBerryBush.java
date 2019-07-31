@@ -48,4 +48,23 @@ public interface IBerryBush
      * @return the itemstack that should be dropped in world
      */
     ItemStack getFoodDrop();
+
+    /**
+     * Get the bush size, used by bush block to determine it's height
+     *
+     * @return BushSize enum
+     */
+    BushSize getBushSize();
+
+    /**
+     * Determines if this bush has spikes (eg: Damage the player/entity on collision)
+     *
+     * @return true if this damages entities
+     */
+    boolean isSpiky();
+
+    enum BushSize
+    {
+        SMALL, MEDIUM, LARGE
+    }
 }
