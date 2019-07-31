@@ -52,9 +52,9 @@ public interface IBerryBush
     /**
      * Get the bush size, used by bush block to determine it's height
      *
-     * @return BushSize enum
+     * @return Size enum
      */
-    BushSize getBushSize();
+    Size getSize();
 
     /**
      * Determines if this bush has spikes (eg: Damage the player/entity on collision)
@@ -63,7 +63,7 @@ public interface IBerryBush
      */
     boolean isSpiky();
 
-    enum BushSize
+    enum Size
     {
         SMALL, MEDIUM, LARGE
     }

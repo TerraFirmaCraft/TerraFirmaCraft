@@ -14,7 +14,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.classic.worldgen.WorldGenBerryBushes;
 
-import static net.dries007.tfc.api.types.IBerryBush.BushSize.*;
+import static net.dries007.tfc.api.types.IBerryBush.Size.*;
 
 public enum BerryBush implements IBerryBush
 {
@@ -46,10 +46,10 @@ public enum BerryBush implements IBerryBush
     private final float maxTemp;
     private final float minRain;
     private final float maxRain;
-    private final BushSize size;
+    private final Size size;
     private final boolean hasSpikes;
 
-    BerryBush(Food fruit, Month harvestMonthStart, int harvestingMonths, float minTemp, float maxTemp, float minRain, float maxRain, float growthTime, BushSize size, boolean spiky)
+    BerryBush(Food fruit, Month harvestMonthStart, int harvestingMonths, float minTemp, float maxTemp, float minRain, float maxRain, float growthTime, Size size, boolean spiky)
     {
         this.fruit = fruit;
         this.harvestMonthStart = harvestMonthStart;
@@ -63,14 +63,6 @@ public enum BerryBush implements IBerryBush
 
         this.size = size;
         this.hasSpikes = spiky;
-    }
-
-    public BushSize getBushSize() { return this.size; }
-
-    @Override
-    public boolean isSpiky()
-    {
-        return hasSpikes;
     }
 
     public Food getFruit()
@@ -111,6 +103,14 @@ public enum BerryBush implements IBerryBush
     @Override
     public ItemStack getFoodDrop()
     {
-        return new ItemStack(ItemFoodTFC.get(this.getFruit()));
+        return new ItemStack(ItemFoodTFC.get(getFruit()));
+    }
+
+    public Size getSize() { return this.size; }
+
+    @Override
+    public boolean isSpiky()
+    {
+        return hasSpikes;
     }
 }
