@@ -103,7 +103,7 @@ public final class DefaultPlants
             new Plant(ALLIUM, Plant.PlantType.STANDARD, new int[] {0, 1, 1, 2, 2, 3, 4, 5, 6, 6, 6, 7}, false, false, 8f, 20f, -40f, 33f, 150f, 500f, 12, 15, 1, 1.0D, null),
             new Plant(ATHYRIUM_FERN, Plant.PlantType.STANDARD, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, true, false, 13f, 25f, -35f, 31f, 200f, 500f, 9, 15, 1, 0.5D, null),
             new Plant(BLACK_ORCHID, Plant.PlantType.STANDARD, new int[] {2, 2, 2, 0, 1, 1, 1, 2, 2, 2, 2, 2}, false, false, 20.0f, 35.0f, 10.0f, 50.0f, 300f, 500f, 12, 15, 1, 1.0D, null),
-            new Plant(BLOOD_LILY, Plant.PlantType.STANDARD, new int[] {2, 2, 2, 2, 0, 0, 0, 0, 1, 2, 2, 2}, false, false, 18f, 30f, 10f, 50f, 200f, 500f, 9, 15, 1, 1.0D, null),
+            new Plant(BLOOD_LILY, Plant.PlantType.STANDARD, new int[] {2, 2, 2, 3, 0, 0, 0, 0, 1, 2, 2, 2}, false, false, 18f, 30f, 10f, 50f, 200f, 500f, 9, 15, 1, 1.0D, null),
             new Plant(BLUE_ORCHID, Plant.PlantType.STANDARD, new int[] {0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2}, false, false, 20f, 35f, 10f, 50f, 300f, 500f, 12, 15, 1, 1.0D, null),
             new Plant(BUTTERFLY_MILKWEED, Plant.PlantType.STANDARD, new int[] {0, 1, 2, 3, 3, 3, 3, 4, 5, 6, 6, 6}, false, false, 18f, 24f, -40f, 32f, 75f, 300f, 12, 15, 1, 1.0D, null),
             new Plant(CALENDULA, Plant.PlantType.STANDARD, new int[] {0, 1, 2, 3, 3, 3, 3, 4, 5, 6, 6, 6}, false, false, 15f, 20f, -46f, 30f, 130f, 300f, 9, 15, 1, 1.0D, null),
