@@ -6,12 +6,15 @@
 package net.dries007.tfc.objects.items.ceramics;
 
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.items.food.ItemFluidStoragePottery;
+import net.dries007.tfc.objects.te.TEBarrel;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -19,6 +22,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class ItemJug extends ItemFluidStoragePottery
 {
@@ -36,20 +42,50 @@ public class ItemJug extends ItemFluidStoragePottery
 	{
 		if(!worldIn.isRemote)
 		{
-			final IBlockState up = worldIn.getBlockState(pos.up());
-//			TerraFirmaCraft.getLog().info(String.format("Using item on block [%s] with type %s", up.getBlock().getRegistryName(), up.getBlock() instanceof BlockFluidBase));
-//			TerraFirmaCraft.getLog().info(up.getClass());
-			if(!filled && up.getBlock() instanceof BlockFluidBase)
+			IBlockState fluidBlock = worldIn.getBlockState(pos.up());
+			Fluid fluid = null;
+			
+			final Block block = worldIn.getBlockState(pos).getBlock();
+			if(block != Blocks.AIR && block.hasTileEntity(worldIn.getBlockState(pos)))
 			{
-				final BlockFluidBase fluidBase = (BlockFluidBase) up.getBlock();
-				TerraFirmaCraft.getLog().info(String.format("Filling jug with fluid of type: [%s]", fluidBase.getFluid().getUnlocalizedName()));
-				fluidType = fluidBase.getFluid();
-				filled = justFilled = true;
-				return EnumActionResult.FAIL;
+				TileEntity te = worldIn.getTileEntity(pos);
+				System.out.printf("Has tank tag: %s\n", te.getTileData());
+				if(te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
+				{
+					if(te instanceof TEBarrel)
+					{
+						FluidTank tank = new FluidTank(0).readFromNBT(((TEBarrel) te).getTileData().getCompoundTag("tank"));
+						fluid = (tank == null || tank.getFluid() == null) ? null : tank.getFluid().getFluid();
+						System.out.printf("Got fluid: %s\n", tank.getFluid());
+					}
+				}
+			}
+			else if(fluidBlock != null && fluidBlock.getBlock() instanceof BlockFluidBase)
+			{
+				fluid = ((BlockFluidBase) fluidBlock.getBlock()).getFluid();
+			}
+			
+			if(fluid != null)
+			{
+				ItemStack stack = player.getHeldItem(hand);
+				ItemJug jug = (ItemJug) stack.getItem();
+				
+				if(!jug.isFilled(stack) && fluidBlock.getBlock() instanceof BlockFluidBase)
+				{
+					final BlockFluidBase fluidBase = (BlockFluidBase) fluidBlock.getBlock();
+					jug.setFluid(stack, fluidBase.getFluid());
+					jug.setJustFilled(stack, true);
+					return EnumActionResult.FAIL;
+				}
 			}
 		}
 		
 		return EnumActionResult.PASS;
+	}
+	
+	@Override
+	public String getTranslationKey() {
+		return super.getTranslationKey();
 	}
 
 	@Override
