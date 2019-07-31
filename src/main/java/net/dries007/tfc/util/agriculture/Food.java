@@ -63,7 +63,7 @@ public enum Food
     WHEAT_BREAD(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f),
     BEET(VEGETABLE, 0.4f, 3f, 0f, 0f, 0f, 1f, 0f, 2.5f),
     CABBAGE(VEGETABLE, 0.4f, 5f, 0f, 0f, 0f, 1f, 0f, 2.5f),
-    CARROT(VEGETABLE, 0.4f, 3f, 0f, 0f, 0f, 1f, 0f, 2.5f),
+    CARROT(VEGETABLE, 0.4f, 3f, 0f, 0f, 0f, 1f, 0f, 2.5f, "carrot"),
     GARLIC(VEGETABLE, 0.6f, 0f, 1f, 0f, 1f, 1f, 0f, 2.5f),
     GREEN_BEAN(VEGETABLE, 0.4f, 3f, 0f, 0f, 0f, 1f, 0f, 3.5f),
     GREEN_BELL_PEPPER(VEGETABLE, 0.4f, 3f, 0f, 0f, 0f, 1f, 0f, 2.5f),

@@ -1,6 +1,5 @@
 package net.dries007.tfc.client.model.animal;
 
-import net.dries007.tfc.objects.entity.animal.EntityRabbitTFC;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -10,32 +9,22 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.objects.entity.animal.EntityRabbitTFC;
+
 @SideOnly(Side.CLIENT)
 public class ModelRabbitTFC extends ModelBase
 {
-    /** The Rabbit's Left Foot */
     private final ModelRenderer rabbitLeftFoot;
-    /** The Rabbit's Right Foot */
     private final ModelRenderer rabbitRightFoot;
-    /** The Rabbit's Left Thigh */
     private final ModelRenderer rabbitLeftThigh;
-    /** The Rabbit's Right Thigh */
     private final ModelRenderer rabbitRightThigh;
-    /** The Rabbit's Body */
     private final ModelRenderer rabbitBody;
-    /** The Rabbit's Left Arm */
     private final ModelRenderer rabbitLeftArm;
-    /** The Rabbit's Right Arm */
     private final ModelRenderer rabbitRightArm;
-    /** The Rabbit's Head */
     private final ModelRenderer rabbitHead;
-    /** The Rabbit's Right Ear */
     private final ModelRenderer rabbitRightEar;
-    /** The Rabbit's Left Ear */
     private final ModelRenderer rabbitLeftEar;
-    /** The Rabbit's Tail */
     private final ModelRenderer rabbitTail;
-    /** The Rabbit's Nose */
     private final ModelRenderer rabbitNose;
     private float jumpRotation;
 
@@ -107,16 +96,6 @@ public class ModelRabbitTFC extends ModelBase
         this.setRotationOffset(this.rabbitNose, 0.0F, 0.0F, 0.0F);
     }
 
-    private void setRotationOffset(ModelRenderer renderer, float x, float y, float z)
-    {
-        renderer.rotateAngleX = x;
-        renderer.rotateAngleY = y;
-        renderer.rotateAngleZ = z;
-    }
-
-    /**
-     * Sets the models various rotation angles then renders the model.
-     */
     public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
         this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
@@ -167,8 +146,8 @@ public class ModelRabbitTFC extends ModelBase
 
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {
-        float f = ageInTicks - (float)entityIn.ticksExisted;
-        EntityRabbitTFC EntityRabbitTFC = (EntityRabbitTFC)entityIn;
+        float f = ageInTicks - (float) entityIn.ticksExisted;
+        EntityRabbitTFC EntityRabbitTFC = (EntityRabbitTFC) entityIn;
         this.rabbitNose.rotateAngleX = headPitch * 0.017453292F;
         this.rabbitHead.rotateAngleX = headPitch * 0.017453292F;
         this.rabbitRightEar.rotateAngleX = headPitch * 0.017453292F;
@@ -177,7 +156,7 @@ public class ModelRabbitTFC extends ModelBase
         this.rabbitHead.rotateAngleY = netHeadYaw * 0.017453292F;
         this.rabbitRightEar.rotateAngleY = this.rabbitNose.rotateAngleY - 0.2617994F;
         this.rabbitLeftEar.rotateAngleY = this.rabbitNose.rotateAngleY + 0.2617994F;
-        this.jumpRotation = MathHelper.sin(EntityRabbitTFC.getJumpCompletion(f) * (float)Math.PI);
+        this.jumpRotation = MathHelper.sin(EntityRabbitTFC.getJumpCompletion(f) * (float) Math.PI);
         this.rabbitLeftThigh.rotateAngleX = (this.jumpRotation * 50.0F - 21.0F) * 0.017453292F;
         this.rabbitRightThigh.rotateAngleX = (this.jumpRotation * 50.0F - 21.0F) * 0.017453292F;
         this.rabbitLeftFoot.rotateAngleX = this.jumpRotation * 50.0F * 0.017453292F;
@@ -189,6 +168,13 @@ public class ModelRabbitTFC extends ModelBase
     public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime)
     {
         super.setLivingAnimations(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTickTime);
-        this.jumpRotation = MathHelper.sin(((EntityRabbitTFC)entitylivingbaseIn).getJumpCompletion(partialTickTime) * (float)Math.PI);
+        this.jumpRotation = MathHelper.sin(((EntityRabbitTFC) entitylivingbaseIn).getJumpCompletion(partialTickTime) * (float) Math.PI);
+    }
+
+    private void setRotationOffset(ModelRenderer renderer, float x, float y, float z)
+    {
+        renderer.rotateAngleX = x;
+        renderer.rotateAngleY = y;
+        renderer.rotateAngleZ = z;
     }
 }
