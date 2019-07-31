@@ -130,12 +130,12 @@ public class ModelDeerTFC extends ModelBase
         setRotation(thigh1, -0.1745329F, 0F, 0.1745329F);
         ear2 = new ModelRenderer(this, 54, 16);
         ear2.mirror = true;
-        ear2.addBox(-9F, -10F, -2F, 5, 3, 1);
+        ear2.addBox(-9F, -10F, -2F, 5, 2, 1);
         ear2.setRotationPoint(0F, 0F, 0F);
         ear2.setTextureSize(128, 64);
         setRotation(ear2, 0F, 0.3490659F, 0.34906585F);
         ear1 = new ModelRenderer(this, 54, 16);
-        ear1.addBox(4F, -10F, -2F, 5, 3, 1);
+        ear1.addBox(4F, -10F, -2F, 5, 2, 1);
         ear1.setRotationPoint(0F, 0F, 0F);
         ear1.setTextureSize(128, 64);
         setRotation(ear1, 0F, -0.3490659F, -0.34906585F);
