@@ -22,6 +22,7 @@ tfc.json
 /bin/
 /run/
 /logs/
+logs/
 
 # Python
 venv/
