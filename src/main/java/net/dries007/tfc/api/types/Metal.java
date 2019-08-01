@@ -207,14 +207,14 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         SCYTHE_BLADE(true, 100, true, "XXXXX", "X    ", "    X", "  XXX", "XXXXX"),
         SHEARS(true, 200, ItemMetalShears::new),
 
-        UNFINISHED_HELMET(true, 200),
-        HELMET(true, 0, 400, ItemMetalArmor::new),
+        UNFINISHED_HELMET(true, 400),
+        HELMET(true, 0, 600, ItemMetalArmor::new),
         UNFINISHED_CHESTPLATE(true, 400),
         CHESTPLATE(true, 1, 800, ItemMetalArmor::new),
         UNFINISHED_GREAVES(true, 400),
         GREAVES(true, 2, 600, ItemMetalArmor::new),
         UNFINISHED_BOOTS(true, 200),
-        BOOTS(true, 3, 200, ItemMetalArmor::new),
+        BOOTS(true, 3, 400, ItemMetalArmor::new),
 
         SHIELD(true, 400, ItemMetalShield::new);
 
