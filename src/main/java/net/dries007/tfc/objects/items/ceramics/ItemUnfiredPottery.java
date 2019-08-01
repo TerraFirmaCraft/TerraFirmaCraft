@@ -7,8 +7,6 @@ package net.dries007.tfc.objects.items.ceramics;
 
 import net.minecraft.item.ItemStack;
 
-import net.dries007.tfc.api.types.Metal;
-
 public class ItemUnfiredPottery extends ItemPottery
 {
     public final ItemFiredPottery firedVersion;
@@ -19,7 +17,7 @@ public class ItemUnfiredPottery extends ItemPottery
     }
 
     @Override
-    public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
+    public ItemStack getFiringResult(ItemStack input)
     {
         ItemStack output = new ItemStack(firedVersion);
         if (input.getHasSubtypes() && output.getHasSubtypes()) output.setItemDamage(input.getMetadata());

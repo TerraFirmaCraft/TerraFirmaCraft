@@ -21,11 +21,9 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.api.recipes.PitKilnRecipe;
+import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IHeatConsumerBlock;
-import net.dries007.tfc.objects.recipes.heat.HeatRecipe;
-import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
 
@@ -44,6 +42,9 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
 
     public static final int FIELD_TEMPERATURE = 0;
 
+    public static final Metal.Tier CHARCOAL_FORGE_TIER = Metal.Tier.TIER_II;
+
+    private HeatRecipe[] cachedRecipes = new HeatRecipe[5];
     private boolean requiresSlotUpdate = false;
     private float temperature; // Current Temperature
     private int burnTicks; // Ticks remaining on the current item of fuel
@@ -61,6 +62,11 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
         burnTemperature = 0;
         burnTicks = 0;
         airTicks = 0;
+
+        for (int i = 0; i < cachedRecipes.length; i++)
+        {
+            cachedRecipes[i] = null;
+        }
     }
 
     public void onAirIntake(int amount)
@@ -161,18 +167,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
                     }
 
                     // Handle possible melting, or conversion (if reach 1599 = pit kiln temperature)
-                    if (itemTemp >= 1599f) //Brilliant white
-                    {
-                        PitKilnRecipe recipe = PitKilnRecipe.get(stack);
-                        if (recipe != null)
-                        {
-                            inventory.setStackInSlot(i, recipe.getOutput(stack, Metal.Tier.TIER_I));
-                        }
-                    }
-                    else if (cap.isMolten())
-                    {
-                        handleInputMelting(stack, i);
-                    }
+                    handleInputMelting(stack, i);
                 }
             }
         }
@@ -195,6 +190,17 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     {
         this.markDirty();
         requiresSlotUpdate = true;
+
+        // cache heat recipes for each input
+        for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
+        {
+            cachedRecipes[i - SLOT_INPUT_MIN] = null;
+            ItemStack inputStack = inventory.getStackInSlot(i);
+            if (!inputStack.isEmpty())
+            {
+                cachedRecipes[i - SLOT_INPUT_MIN] = HeatRecipe.get(inputStack, Metal.Tier.TIER_II);
+            }
+        }
     }
 
     @Override
@@ -288,13 +294,13 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
 
     private void handleInputMelting(ItemStack stack, int startIndex)
     {
-        HeatRecipe recipe = HeatRecipeManager.get(stack);
+        HeatRecipe recipe = HeatRecipe.get(stack, CHARCOAL_FORGE_TIER);
         IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
 
-        if (recipe != null && cap != null)
+        if (recipe != null && cap != null && recipe.isValidTemperature(temperature))
         {
             // Handle possible metal output
-            FluidStack fluidStack = recipe.getOutputMetal(stack);
+            FluidStack fluidStack = recipe.getOutputFluid(stack);
             float itemTemperature = cap.getTemperature();
             if (fluidStack != null)
             {
@@ -329,23 +335,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
             }
 
             // Handle possible item output
-            ItemStack outputStack = recipe.getOutputStack(stack);
-            if (outputStack != null && !outputStack.isEmpty())
-            {
-                // Loop through all input slots
-                for (int i = SLOT_EXTRA_MAX; i <= SLOT_EXTRA_MAX; i++)
-                {
-                    outputStack = inventory.insertItem(i, outputStack, false);
-                    if (!outputStack.isEmpty())
-                    {
-                        inventory.insertItem(i, outputStack, false);
-                    }
-                }
-            }
-
-            // Handle removal of input
-            ItemStack inputStack = recipe.consumeInput(stack);
-            inventory.setStackInSlot(startIndex, inputStack);
+            inventory.setStackInSlot(startIndex, recipe.getOutputStack(stack));
         }
     }
 

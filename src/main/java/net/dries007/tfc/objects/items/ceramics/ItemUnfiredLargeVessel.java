@@ -11,16 +11,14 @@ import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlockLargeVessel;
 
 public class ItemUnfiredLargeVessel extends ItemPottery
 {
     @Override
-    public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
+    public ItemStack getFiringResult(ItemStack input)
     {
-        ItemStack output = new ItemStack(new BlockLargeVessel());
-        return output;
+        return new ItemStack(new BlockLargeVessel());
     }
 
     @Nonnull

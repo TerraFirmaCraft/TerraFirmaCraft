@@ -28,7 +28,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.recipes.PitKilnRecipe;
+import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -40,6 +40,8 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
 {
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
+
+    public static final Metal.Tier PIT_KILN_TIER = Metal.Tier.TIER_I;
 
     public static void convertPlacedItemToPitKiln(World world, BlockPos pos, ItemStack strawStack)
     {
@@ -123,10 +125,10 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 for (int i = 0; i < inventory.getSlots(); i++)
                 {
                     ItemStack stack = inventory.getStackInSlot(i);
-                    PitKilnRecipe recipe = PitKilnRecipe.get(stack);
+                    HeatRecipe recipe = HeatRecipe.get(stack, PIT_KILN_TIER);
                     if (recipe != null)
                     {
-                        inventory.setStackInSlot(i, recipe.getOutput(stack, Metal.Tier.TIER_I));
+                        inventory.setStackInSlot(i, recipe.getOutputStack(stack));
                     }
                 }
 

@@ -12,7 +12,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 
-import net.dries007.tfc.api.recipes.KnappingRecipe;
+import net.dries007.tfc.api.recipes.knapping.IKnappingType;
+import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
 import net.dries007.tfc.client.button.GuiButtonKnapping;
 import net.dries007.tfc.objects.container.ContainerKnapping;
 
@@ -24,7 +25,7 @@ public class GuiKnapping extends GuiContainerTFC
     private static final ResourceLocation ALT_BG_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping_clay.png");
     private final ResourceLocation buttonTexture;
 
-    public GuiKnapping(Container container, EntityPlayer player, KnappingRecipe.Type type, ResourceLocation buttonTexture)
+    public GuiKnapping(Container container, EntityPlayer player, IKnappingType type, ResourceLocation buttonTexture)
     {
         super(container, player.inventory, type == KnappingRecipe.Type.CLAY || type == KnappingRecipe.Type.FIRE_CLAY ? ALT_BG_TEXTURE : BG_TEXTURE);
         this.buttonTexture = buttonTexture;

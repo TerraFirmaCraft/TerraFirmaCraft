@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.container;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -15,21 +16,23 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.api.recipes.KnappingRecipe;
+import net.dries007.tfc.api.recipes.knapping.IKnappingType;
+import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.inventory.slot.SlotKnappingOutput;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.SimpleCraftMatrix;
 
+@ParametersAreNonnullByDefault
 public class ContainerKnapping extends ContainerItemStack implements IButtonHandler
 {
     private final SimpleCraftMatrix matrix;
-    private final KnappingRecipe.Type type;
+    private final IKnappingType type;
     private final ItemStack stackCopy;
     public boolean requiresReset;
     private boolean hasBeenModified;
 
-    public ContainerKnapping(KnappingRecipe.Type type, InventoryPlayer playerInv, ItemStack stack)
+    public ContainerKnapping(IKnappingType type, InventoryPlayer playerInv, ItemStack stack)
     {
         super(playerInv, stack);
         this.itemIndex += 1;

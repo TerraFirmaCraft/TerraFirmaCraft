@@ -107,7 +107,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     }
 
     /**
-     * Metals:
+     * Metals / Anvils:
      * T0 - Stone - Work None, Weld T1
      * T1 - Copper - Work T1, Weld T2
      * T2 - Bronze / Bismuth Bronze / Black Bronze - Work T2, Weld T3
@@ -118,7 +118,8 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
      *
      * Devices:
      * T0 - Stone Anvil
-     * T1 - Pit Kiln
+     * T1 - Pit Kiln / Fire pit
+     * T2 - Forge
      * T3 - Bloomery
      * T4 - Blast Furnace
      */
