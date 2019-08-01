@@ -5,11 +5,12 @@
 
 package net.dries007.tfc.objects.items.ceramics;
 
+import java.util.List;
+
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.objects.items.food.ItemFluidStoragePottery;
-import net.dries007.tfc.objects.te.TEBarrel;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -23,12 +24,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class ItemJug extends ItemFluidStoragePottery
 {
 
+	private static final int MAX_FLUID_AMOUNT = 1000;
 	private static final float BREAK_CHANCE = 0.02f;
 	private static final int USE_DURATION = 32;
 
@@ -36,46 +39,71 @@ public class ItemJug extends ItemFluidStoragePottery
 	{
 		super(USE_DURATION);
 	}
+	
+	@Override
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+	{
+		super.addInformation(stack, worldIn, tooltip, flagIn);
+		if(isFilled(stack))
+		{
+			tooltip.add(String.format("Amount: %dmb", MAX_FLUID_AMOUNT));
+		}
+	}
 
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		if(!worldIn.isRemote)
 		{
+			ItemStack stack = player.getHeldItem(hand);
+			ItemJug jug = (ItemJug) stack.getItem();
 			IBlockState fluidBlock = worldIn.getBlockState(pos.up());
 			Fluid fluid = null;
 			
 			final Block block = worldIn.getBlockState(pos).getBlock();
-			if(block != Blocks.AIR && block.hasTileEntity(worldIn.getBlockState(pos)))
+
+			if(!jug.isFilled(stack))
 			{
-				TileEntity te = worldIn.getTileEntity(pos);
-				System.out.printf("Has tank tag: %s\n", te.getTileData());
-				if(te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
+				if(block != Blocks.AIR && block.hasTileEntity(worldIn.getBlockState(pos)))
 				{
-					if(te instanceof TEBarrel)
+					TileEntity te = worldIn.getTileEntity(pos);
+					if(te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
 					{
-						FluidTank tank = new FluidTank(0).readFromNBT(((TEBarrel) te).getTileData().getCompoundTag("tank"));
-						fluid = (tank == null || tank.getFluid() == null) ? null : tank.getFluid().getFluid();
-						System.out.printf("Got fluid: %s\n", tank.getFluid());
+						IFluidHandler cap = (IFluidHandler) te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+						FluidStack fluidStack = cap.drain(MAX_FLUID_AMOUNT, false);
+						fluid = fluidStack == null ? null : fluidStack.getFluid();
+						if(fluid != null)
+						{
+							// Drain from the fluid storage into the jug
+							cap.drain(MAX_FLUID_AMOUNT, true);
+						}
 					}
 				}
-			}
-			else if(fluidBlock != null && fluidBlock.getBlock() instanceof BlockFluidBase)
-			{
-				fluid = ((BlockFluidBase) fluidBlock.getBlock()).getFluid();
-			}
-			
-			if(fluid != null)
-			{
-				ItemStack stack = player.getHeldItem(hand);
-				ItemJug jug = (ItemJug) stack.getItem();
-				
-				if(!jug.isFilled(stack) && fluidBlock.getBlock() instanceof BlockFluidBase)
+				else if(fluidBlock != null && fluidBlock.getBlock() instanceof BlockFluidBase)
 				{
-					final BlockFluidBase fluidBase = (BlockFluidBase) fluidBlock.getBlock();
-					jug.setFluid(stack, fluidBase.getFluid());
+					fluid = ((BlockFluidBase) fluidBlock.getBlock()).getFluid();
+				}
+				
+				if(fluid != null)
+				{	
+					jug.setFluid(stack, fluid);
 					jug.setJustFilled(stack, true);
 					return EnumActionResult.FAIL;
+				}
+			}
+			else if(block.hasTileEntity(worldIn.getBlockState(pos)))
+			{
+				TileEntity te = worldIn.getTileEntity(pos);
+				if(te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
+				{
+					IFluidHandler cap = (IFluidHandler) te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+					FluidStack fluidStack = new FluidStack(jug.getFluid(stack), MAX_FLUID_AMOUNT);
+					if(cap.fill(fluidStack, false) == MAX_FLUID_AMOUNT)
+					{
+						// Empty from the jug into the fluid storage
+						cap.fill(fluidStack, true);
+						jug.setFluid(stack, null);
+					}
 				}
 			}
 		}
