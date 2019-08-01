@@ -36,7 +36,7 @@ public interface IProxy
 
     class WrongSideException extends RuntimeException
     {
-		WrongSideException(String message)
+        WrongSideException(String message)
         {
             super(message);
         }
