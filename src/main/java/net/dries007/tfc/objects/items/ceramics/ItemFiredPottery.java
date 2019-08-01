@@ -7,12 +7,10 @@ package net.dries007.tfc.objects.items.ceramics;
 
 import net.minecraft.item.ItemStack;
 
-import net.dries007.tfc.api.types.Metal;
-
 public class ItemFiredPottery extends ItemPottery
 {
     @Override
-    public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
+    public ItemStack getFiringResult(ItemStack input)
     {
         return input; // Already fired pottery does nothing.
     }

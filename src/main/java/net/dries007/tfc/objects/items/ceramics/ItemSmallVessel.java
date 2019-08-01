@@ -118,7 +118,7 @@ public class ItemSmallVessel extends ItemFiredPottery
     }
 
     @Override
-    public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
+    public ItemStack getFiringResult(ItemStack input)
     {
         // Case 1: The input is a filled vessel
         IItemHandler capItemHandler = input.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -241,9 +241,8 @@ public class ItemSmallVessel extends ItemFiredPottery
             else
             {
                 boolean hasContent = false;
-                for (int i = 0; i < super.stacks.size(); i++)
+                for (ItemStack slot : super.stacks)
                 {
-                    ItemStack slot = super.stacks.get(i);
                     if (!slot.isEmpty())
                     {
                         text.add(1, I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_item", slot.getCount(), slot.getItem().getItemStackDisplayName(slot)));

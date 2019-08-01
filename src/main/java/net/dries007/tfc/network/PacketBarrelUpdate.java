@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.recipes.BarrelRecipe;
+import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.Helpers;

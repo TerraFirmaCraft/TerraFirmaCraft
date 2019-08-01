@@ -19,7 +19,14 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
 
-import net.dries007.tfc.api.recipes.*;
+import net.dries007.tfc.api.recipes.AlloyRecipe;
+import net.dries007.tfc.api.recipes.LoomRecipe;
+import net.dries007.tfc.api.recipes.QuernRecipe;
+import net.dries007.tfc.api.recipes.WeldingRecipe;
+import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
+import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
+import net.dries007.tfc.api.recipes.heat.HeatRecipe;
+import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistryEvent;
 import net.dries007.tfc.api.types.*;
 
@@ -48,7 +55,7 @@ public final class Registries
         newRegistry(KNAPPING_RECIPE, KnappingRecipe.class, false);
         newRegistry(ANVIL_RECIPE, AnvilRecipe.class, false);
         newRegistry(WELDING_RECIPE, WeldingRecipe.class, false);
-        newRegistry(PIT_KILN_RECIPE, PitKilnRecipe.class, false);
+        newRegistry(HEAT_RECIPE, HeatRecipe.class, false);
         newRegistry(BARREL_RECIPE, BarrelRecipe.class, false);
         newRegistry(LOOM_RECIPE, LoomRecipe.class, false);
         newRegistry(QUERN_RECIPE, QuernRecipe.class, false);

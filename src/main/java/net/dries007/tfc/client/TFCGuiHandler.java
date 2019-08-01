@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.recipes.KnappingRecipe;
+import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.gui.*;

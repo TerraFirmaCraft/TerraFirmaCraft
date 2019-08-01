@@ -15,7 +15,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.recipes.AnvilRecipe;
+import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.client.button.GuiButtonAnvilPlan;
 import net.dries007.tfc.client.button.GuiButtonAnvilStep;
 import net.dries007.tfc.client.button.IButtonTooltip;

@@ -20,10 +20,8 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.api.recipes.PitKilnRecipe;
+import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.recipes.heat.HeatRecipe;
-import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
 
@@ -42,6 +40,9 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
 
     public static final int FIELD_TEMPERATURE = 0;
 
+    public static final Metal.Tier FIRE_PIT_TIER = Metal.Tier.TIER_I;
+
+    private HeatRecipe cachedRecipe;
     private boolean requiresSlotUpdate = false;
     private float temperature; // Current Temperature
     private int burnTicks; // Ticks remaining on the current item of fuel
@@ -55,6 +56,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         temperature = 0;
         burnTemperature = 0;
         burnTicks = 0;
+        cachedRecipe = null;
     }
 
     @Override
@@ -128,20 +130,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
                         CapabilityItemHeat.addTemp(cap);
                     }
 
-
-                    // Handle possible melting, or conversion (if reach 1599 = pit kiln temperature)
-                    if (itemTemp >= 1599f) //Brilliant white
-                    {
-                        PitKilnRecipe recipe = PitKilnRecipe.get(stack);
-                        if (recipe != null)
-                        {
-                            inventory.setStackInSlot(i, recipe.getOutput(stack, Metal.Tier.TIER_I));
-                        }
-                    }
-                    else if (cap.isMolten() && i == SLOT_ITEM_INPUT)
-                    {
-                        handleInputMelting(stack);
-                    }
+                    handleInputMelting(stack);
                 }
             }
         }
@@ -158,6 +147,9 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
     {
         this.markDirty();
         requiresSlotUpdate = true;
+
+        // Update cached recipe
+        cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_ITEM_INPUT), FIRE_PIT_TIER);
     }
 
     @Override
@@ -279,13 +271,12 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
 
     private void handleInputMelting(ItemStack stack)
     {
-        HeatRecipe recipe = HeatRecipeManager.get(stack);
         IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
 
-        if (recipe != null && cap != null)
+        if (cachedRecipe != null && cap != null && cachedRecipe.isValidTemperature(temperature))
         {
             // Handle possible metal output
-            FluidStack fluidStack = recipe.getOutputMetal(stack);
+            FluidStack fluidStack = cachedRecipe.getOutputFluid(stack);
             float itemTemperature = cap.getTemperature();
             if (fluidStack != null)
             {
@@ -325,9 +316,12 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
                 }
             }
 
-            // Handle possible item output
-            ItemStack outputStack = recipe.getOutputStack(stack);
-            if (outputStack != null && !outputStack.isEmpty())
+            // Handle removal of input
+            ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM_INPUT);
+            ItemStack outputStack = cachedRecipe.getOutputStack(inputStack);
+
+            inputStack.shrink(1);
+            if (!outputStack.isEmpty())
             {
                 outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);
                 if (!outputStack.isEmpty())
@@ -335,10 +329,6 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
                     inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
                 }
             }
-
-            // Handle removal of input
-            ItemStack inputStack = recipe.consumeInput(stack);
-            inventory.setStackInSlot(SLOT_ITEM_INPUT, inputStack);
         }
     }
 }
