@@ -6,8 +6,12 @@
 package net.dries007.tfc.objects.items.ceramics;
 
 import java.util.List;
+
 import javax.annotation.Nonnull;
 
+import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.capability.food.FoodStatsTFC;
+import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -20,51 +24,33 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.FoodStats;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-import net.dries007.tfc.Constants;
-import net.dries007.tfc.api.capability.food.FoodStatsTFC;
-import net.dries007.tfc.objects.fluids.FluidsTFC;
-
-public class ItemJug extends ItemFiredPottery
+public class ItemJug extends ItemFiredPottery implements ICapabilityProvider
 {
 
     private static final int MAX_USE_DURATION = 32;
 	private static final int MAX_FLUID_AMOUNT = 1000;
 	private static final float BREAK_CHANCE = 0.02f;
-
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt)
-    {
-        // TODO: replace with capability implementation
-        if (nbt == null) stack.setTagCompound(nbt = new NBTTagCompound());
-        NBTTagCompound fluidFill = nbt.hasKey("FluidFill") ? nbt.getCompoundTag("FluidFill") : new NBTTagCompound();
-        if (!fluidFill.hasKey("Filled"))
-        {
-            fluidFill.setBoolean("Filled", false);
-        }
-        if (!fluidFill.hasKey("JustFilled"))
-        {
-            fluidFill.setBoolean("JustFilled", false);
-        }
-        if (!fluidFill.hasKey("Fluid"))
-        {
-            fluidFill.setString("Fluid", "Empty");
-        }
-        nbt.setTag("FluidFill", fluidFill);
-        stack.setTagCompound(nbt);
-        return super.initCapabilities(stack, nbt);
-    }
 
     private NBTTagCompound getFluidFill(ItemStack stack)
     {
@@ -298,5 +284,140 @@ public class ItemJug extends ItemFiredPottery
 
         return FAILED;
     }
+
+	@Override
+	public NBTTagCompound getNBTShareTag(ItemStack stack)
+	{
+		NBTTagCompound nbt = stack.getTagCompound();
+		if(nbt == null)
+		{
+			nbt = new NBTTagCompound();
+		}
+		if(!nbt.hasKey("tank"))
+		{
+			new FluidTank(MAX_FLUID_AMOUNT).writeToNBT(nbt);
+		}
+		stack.setTagCompound(nbt);
+		return nbt;
+	}
+	
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt)
+    {
+    	ItemJug jug = (ItemJug) stack.getItem();
+    	if(stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
+    	{
+    		FluidHandlerCapability cap = (FluidHandlerCapability) jug.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+    		cap.writeToNBT(nbt);
+    	}
+        stack.setTagCompound(nbt);
+        return super.initCapabilities(stack, nbt);
+    }
+    
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+    	return capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
+    }
+    
+	@Override
+    @SuppressWarnings("unchecked")
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
+    	if(capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+    	{
+    		return (T) new FluidHandlerCapability(); 
+    	}
+    	return null;
+    }
+	
+	public static final class FluidHandlerCapability implements IFluidHandlerItem
+	{
+		
+		ItemStack stack;
+		FluidTank tank;
+		
+		public FluidHandlerCapability(ItemStack stack, Fluid fluid)
+		{
+			this.stack = stack;
+			this.tank = fluid == null ? null : new FluidTank(fluid, MAX_FLUID_AMOUNT, MAX_FLUID_AMOUNT);
+		}
+		
+		public FluidHandlerCapability()
+		{
+			this(null, null);
+		}
+		
+		public void setStack(ItemStack stack)
+		{
+			this.stack = stack;
+		}
+		
+		public void setFluid(Fluid fluid)
+		{
+			tank.fill(new FluidStack(fluid, MAX_FLUID_AMOUNT), true);
+		}
+		
+		public boolean canFill(Fluid fluid)
+		{
+			return tank.canFillFluidType(new FluidStack(fluid, MAX_FLUID_AMOUNT));
+		}
+		
+		public boolean isEmpty(Fluid fluid)
+		{
+			return this.tank.getFluidAmount() > 0;
+		}
+		
+		public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+		{
+			if(nbt == null)
+			{
+				nbt = new NBTTagCompound();
+			}
+			this.tank.writeToNBT(nbt);
+			return nbt;
+		}
+		
+		public FluidTank readFromNBT(NBTTagCompound nbt)
+		{
+			if(nbt == null) return null;
+			if(nbt.hasKey("tank"))
+			{
+				return new FluidTank(0).readFromNBT((NBTTagCompound) nbt.getTag("tank"));
+			}
+			return null;
+		}
+
+		@Override
+		public IFluidTankProperties[] getTankProperties()
+		{
+			return null;
+		}
+
+		@Override
+		public int fill(FluidStack resource, boolean doFill)
+		{
+			return 0;
+		}
+
+		@Override
+		public FluidStack drain(FluidStack resource, boolean doDrain)
+		{
+			return null;
+		}
+
+		@Override
+		public FluidStack drain(int maxDrain, boolean doDrain)
+		{
+			return null;
+		}
+
+		@Override
+		public ItemStack getContainer()
+		{
+			return null;
+		}
+		
+	}
 
 }
