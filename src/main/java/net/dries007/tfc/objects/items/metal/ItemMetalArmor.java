@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.items.metal;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -23,11 +24,11 @@ import net.dries007.tfc.objects.items.ItemArmorTFC;
 
 public class ItemMetalArmor extends ItemArmorTFC implements IMetalObject, IItemSize
 {
-    private static final Map<Metal, ItemMetalArmor> TABLE = new HashMap<>();
+    private static final Map<Metal, EnumMap<Metal.ItemType, ItemMetalArmor>> TABLE = new HashMap<>();
 
-    public static ItemMetalArmor get(Metal metal)
+    public static ItemMetalArmor get(Metal metal, Metal.ItemType type)
     {
-        return TABLE.get(metal);
+        return TABLE.get(metal).get(type);
     }
 
     private final Metal metal;
@@ -35,10 +36,13 @@ public class ItemMetalArmor extends ItemArmorTFC implements IMetalObject, IItemS
 
     public ItemMetalArmor(Metal metal, Metal.ItemType type)
     {
+        //noinspection ConstantConditions
         super(metal.getArmorMetal(), type.getArmorSlot(), type.getEquipmentSlot());
         this.metal = metal;
         this.type = type;
-        TABLE.put(metal, this);
+        if (!TABLE.containsKey(metal))
+            TABLE.put(metal, new EnumMap<>(Metal.ItemType.class));
+        TABLE.get(metal).put(type, this);
     }
 
     @Nullable

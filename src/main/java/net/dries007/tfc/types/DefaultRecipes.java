@@ -32,6 +32,7 @@ import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
+import net.dries007.tfc.objects.items.metal.ItemMetalArmor;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
 import net.dries007.tfc.util.agriculture.Food;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -217,7 +218,7 @@ public final class DefaultRecipes
         addAnvil(r, DOUBLE_SHEET, UNFINISHED_HELMET, true, HIT_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
         addAnvil(r, DOUBLE_SHEET, UNFINISHED_CHESTPLATE, true, HIT_LAST, HIT_SECOND_LAST, UPSET_THIRD_LAST);
         addAnvil(r, DOUBLE_SHEET, UNFINISHED_GREAVES, true, BEND_ANY, DRAW_ANY, HIT_ANY);
-        addAnvil(r, DOUBLE_SHEET, UNFINISHED_BOOTS, true, BEND_LAST, BEND_SECOND_LAST, SHRINK_THIRD_LAST);
+        addAnvil(r, SHEET, UNFINISHED_BOOTS, true, BEND_LAST, BEND_SECOND_LAST, SHRINK_THIRD_LAST);
 
         r.register(new AnvilRecipeMeasurable(new ResourceLocation(MOD_ID, "refining_bloom"), IIngredient.of(ItemsTFC.UNREFINED_BLOOM), new ItemStack(ItemsTFC.REFINED_BLOOM), Metal.Tier.TIER_II, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST));
         r.register(new AnvilRecipeSplitting(new ResourceLocation(MOD_ID, "splitting_bloom"), IIngredient.of(ItemsTFC.REFINED_BLOOM), 100, Metal.Tier.TIER_II, PUNCH_LAST));
@@ -252,7 +253,7 @@ public final class DefaultRecipes
         // Armor
         addWelding(r, UNFINISHED_HELMET, SHEET, HELMET, true);
         addWelding(r, UNFINISHED_CHESTPLATE, DOUBLE_SHEET, CHESTPLATE, true);
-        addWelding(r, UNFINISHED_GREAVES, DOUBLE_SHEET, GREAVES, true);
+        addWelding(r, UNFINISHED_GREAVES, SHEET, GREAVES, true);
         addWelding(r, UNFINISHED_BOOTS, SHEET, BOOTS, true);
 
         // Steel Welding
@@ -402,7 +403,7 @@ public final class DefaultRecipes
             // Create a recipe for each metal / item type combination
             ItemStack input1 = new ItemStack(ItemMetal.get(metal, inputType1));
             ItemStack input2 = new ItemStack(ItemMetal.get(metal, inputType2));
-            ItemStack output = new ItemStack(ItemMetal.get(metal, outputType));
+            ItemStack output = new ItemStack(outputType.isArmor() ? ItemMetalArmor.get(metal, outputType) : ItemMetal.get(metal, outputType));
             if (!input1.isEmpty() && !input2.isEmpty() && !output.isEmpty())
             {
                 // Note: Welding recipes require one less than the tier of the metal

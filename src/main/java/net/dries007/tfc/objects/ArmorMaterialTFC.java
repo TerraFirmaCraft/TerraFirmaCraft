@@ -20,11 +20,12 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 public enum ArmorMaterialTFC implements IArmorMaterialTFC
 {
     //todo tweak all these values
-    //currently, modifiers = classic / 40.
+    //currently, modifiers = classic / 40. Should give about 45% resistance(damage = 55%) to red/blue steel before letting vanilla mechanic do the rest.
     //red/blue steel has the same base resistance(eg: the damage you take on generic/the "base" reduction using vanilla mechanics) as vanilla's diamond armor
     //black and normal steel has the same as vanilla's iron armor
     //wrought iron is equivalent to chain mail
     //copper is a little better than vanilla's leather and bronzes are in between wrought iron and copper.
+
     //LEATHER?
     COPPER(EnumHelper.addArmorMaterial("copper", MOD_ID + ":copper", 14, new int[] {1, 3, 4, 1}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F), 10, 10, 6.25f),
     BISMUTH_BRONZE(EnumHelper.addArmorMaterial("bismuth_bronze", MOD_ID + ":bismuth_bronze", 21, new int[] {1, 4, 4, 1}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F), 15, 10, 8.25f),
