@@ -20,9 +20,11 @@ tfc.json
 .project
 *.launch
 bin/
+run/
+logs/
 
 # Python
 venv/
 
-/assets/
-logs
+# Other
+*.log

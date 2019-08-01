@@ -204,11 +204,6 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         return originalStats.needFood();
     }
 
-    public boolean needWater()
-    {
-        return thirst < MAX_PLAYER_THIRST;
-    }
-
     @Override
     public void addExhaustion(float exhaustion)
     {

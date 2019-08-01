@@ -5,12 +5,19 @@
 
 package net.dries007.tfc;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-
 import java.io.File;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraftforge.client.GuiIngameForge;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
@@ -25,27 +32,8 @@ import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCKeybindings;
 import net.dries007.tfc.client.gui.overlay.PlayerDataOverlay;
 import net.dries007.tfc.client.render.animal.RenderAnimalTFCFamiliarity;
-import net.dries007.tfc.command.CommandFindVeins;
-import net.dries007.tfc.command.CommandGenTree;
-import net.dries007.tfc.command.CommandHeat;
-import net.dries007.tfc.command.CommandNutrients;
-import net.dries007.tfc.command.CommandStripWorld;
-import net.dries007.tfc.command.CommandTimeTFC;
-import net.dries007.tfc.network.PacketAnvilUpdate;
-import net.dries007.tfc.network.PacketBarrelUpdate;
-import net.dries007.tfc.network.PacketBellowsUpdate;
-import net.dries007.tfc.network.PacketCalendarUpdate;
-import net.dries007.tfc.network.PacketCapabilityContainerUpdate;
-import net.dries007.tfc.network.PacketChunkData;
-import net.dries007.tfc.network.PacketCrucibleUpdate;
-import net.dries007.tfc.network.PacketFoodStatsReplace;
-import net.dries007.tfc.network.PacketFoodStatsUpdate;
-import net.dries007.tfc.network.PacketGuiButton;
-import net.dries007.tfc.network.PacketLargeVesselUpdate;
-import net.dries007.tfc.network.PacketLoomUpdate;
-import net.dries007.tfc.network.PacketOpenCraftingGui;
-import net.dries007.tfc.network.PacketPlaceBlockSpecial;
-import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
+import net.dries007.tfc.command.*;
+import net.dries007.tfc.network.*;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
@@ -54,36 +42,11 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.fuel.FuelManager;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
-import net.dries007.tfc.world.classic.fluids.FluidThirstRegistry;
-import net.dries007.tfc.world.classic.worldgen.RarityBasedWorldGen;
-import net.dries007.tfc.world.classic.worldgen.WorldGenFruitTrees;
-import net.dries007.tfc.world.classic.worldgen.WorldGenLargeRocks;
-import net.dries007.tfc.world.classic.worldgen.WorldGenLooseRocks;
-import net.dries007.tfc.world.classic.worldgen.WorldGenOreVeins;
-import net.dries007.tfc.world.classic.worldgen.WorldGenSoilPits;
-import net.dries007.tfc.world.classic.worldgen.WorldGenTrees;
+import net.dries007.tfc.world.classic.worldgen.*;
 import net.dries007.tfc.world.classic.worldgen.fissure.WorldGenFissure;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
-import net.minecraftforge.client.GuiIngameForge;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.ICrashCallable;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.LoaderState;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ModMetadata;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @SuppressWarnings("DefaultAnnotationParam")
 @Mod(modid = MOD_ID, name = TFCConstants.MOD_NAME, useMetadata = true, guiFactory = Constants.GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = TFCConstants.SIGNING_KEY)
@@ -111,7 +74,7 @@ public final class TerraFirmaCraft
         return instance.log;
     }
 
-    public static File getConfigDirectory()
+    private static File getConfigDirectory()
     {
         return configDir;
     }
@@ -193,7 +156,6 @@ public final class TerraFirmaCraft
 
         EntitiesTFC.preInit();
         VeinRegistry.INSTANCE.preInit(getConfigDirectory());
-        FluidThirstRegistry.INSTANCE.preInit(getConfigDirectory());
 
         CapabilityChunkData.preInit();
         CapabilityItemSize.preInit();
@@ -261,7 +223,6 @@ public final class TerraFirmaCraft
         FuelManager.postInit();
 
         VeinRegistry.INSTANCE.reloadOreGen();
-        FluidThirstRegistry.INSTANCE.reloadFluidThirst();
     }
 
     @Mod.EventHandler

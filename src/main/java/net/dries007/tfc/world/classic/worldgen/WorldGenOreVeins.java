@@ -58,11 +58,6 @@ public class WorldGenOreVeins implements IWorldGenerator
     {
         Random rand = new Random(worldSeed + chunkX * 341873128712L + chunkZ * 132897987541L);
         List<Vein> veins = new ArrayList<>();
-        
-        if(VeinRegistry.INSTANCE.getVeins() == null)
-        {
-        	return veins;
-        }
 
         for (int i = 0; i < NUM_ROLLS; i++)
         {
