@@ -38,7 +38,6 @@ import net.dries007.tfc.objects.items.itemblock.*;
 import net.dries007.tfc.objects.te.*;
 import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.agriculture.FruitTree;
-import net.dries007.tfc.world.classic.fluids.FluidThirstRegistry;
 
 import static net.dries007.tfc.api.types.Rock.Type.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;

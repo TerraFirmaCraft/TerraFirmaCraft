@@ -28,3 +28,10 @@ venv/
 
 # Other
 *.log
+
+# Minecraft stuff
+config/
+options.txt
+saves/
+usercache.json
+usernamecache.json

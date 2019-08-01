@@ -155,7 +155,7 @@ public class ItemJug extends ItemFiredPottery
         return String.format(
             "%s (%s)",
             name,
-            new TextComponentTranslation(getFluidFill(stack).getString("Fluid")).getFormattedText()
+            new TextComponentTranslation(getFluid(stack).getUnlocalizedName()).getFormattedText()
         );
     }
 
