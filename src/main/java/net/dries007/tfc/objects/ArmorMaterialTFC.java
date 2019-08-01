@@ -17,17 +17,17 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
  */
 public enum ArmorMaterialTFC
 {
-    //todo tweak durability, "base" reduction(vanilla mechanic) and toughness
+    //todo tweak all these values
 
-    COPPER(EnumHelper.addArmorMaterial("copper", MOD_ID + ":copper", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 0.5f, 0.5f, 0.5f),
-    BISMUTH_BRONZE(EnumHelper.addArmorMaterial("bismuth_bronze", MOD_ID + ":bismuth_bronze", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 0.5f, 0.5f, 0.5f),
-    BLACK_BRONZE(EnumHelper.addArmorMaterial("black_bronze", MOD_ID + ":black_bronze", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 0.5f, 0.5f, 0.5f),
-    BRONZE(EnumHelper.addArmorMaterial("bronze", MOD_ID + ":bronze", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 0.5f, 0.5f, 0.5f),
-    WROUGHT_IRON(EnumHelper.addArmorMaterial("wrought_iron", MOD_ID + ":wrought_iron", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 0.5f, 0.5f, 0.5f),
-    STEEL(EnumHelper.addArmorMaterial("steel", MOD_ID + ":steel", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 0.5f, 0.5f, 0.5f),
-    BLACK_STEEL(EnumHelper.addArmorMaterial("black_steel", MOD_ID + ":black_steel", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 0.5f, 0.5f, 0.5f),
-    BLUE_STEEL(EnumHelper.addArmorMaterial("blue_steel", MOD_ID + ":blue_steel", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 0.5f, 0.5f, 0.5f),
-    RED_STEEL(EnumHelper.addArmorMaterial("red_steel", MOD_ID + ":red_steel", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 0.5f, 0.5f, 0.5f);
+    COPPER(EnumHelper.addArmorMaterial("copper", MOD_ID + ":copper", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 10, 10, 10),
+    BISMUTH_BRONZE(EnumHelper.addArmorMaterial("bismuth_bronze", MOD_ID + ":bismuth_bronze", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 10, 10, 10),
+    BLACK_BRONZE(EnumHelper.addArmorMaterial("black_bronze", MOD_ID + ":black_bronze", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 10, 10, 10),
+    BRONZE(EnumHelper.addArmorMaterial("bronze", MOD_ID + ":bronze", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 10, 10, 10),
+    WROUGHT_IRON(EnumHelper.addArmorMaterial("wrought_iron", MOD_ID + ":wrought_iron", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 10, 10, 10),
+    STEEL(EnumHelper.addArmorMaterial("steel", MOD_ID + ":steel", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 10, 10, 10),
+    BLACK_STEEL(EnumHelper.addArmorMaterial("black_steel", MOD_ID + ":black_steel", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 10, 10, 10),
+    BLUE_STEEL(EnumHelper.addArmorMaterial("blue_steel", MOD_ID + ":blue_steel", 15, new int[] {2, 5, 6, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F), 50, 50, 50),
+    RED_STEEL(EnumHelper.addArmorMaterial("red_steel", MOD_ID + ":red_steel", 21, new int[] {3, 6, 8, 3}, 7, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F), 10, 10, 10);
 
     private final float crushingRes, slashingRes, piercingRes;
     private final ArmorMaterial material;

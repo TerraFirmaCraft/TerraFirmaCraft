@@ -46,7 +46,15 @@ public enum DamageType
             {
                 for (ItemStack stack : entityUnderAttack.getArmorInventoryList())
                 {
-                    IDamageResistance resist = stack.getCapability(CapabilityDamageResistance.CAPABILITY, null);
+                    IDamageResistance resist = null;
+                    if (stack.getItem() instanceof IDamageResistance)
+                    {
+                        resist = (IDamageResistance) stack.getItem();
+                    }
+                    else
+                    {
+                        resist = stack.getCapability(CapabilityDamageResistance.CAPABILITY, null);
+                    }
                     resistance += type.getModifier(resist);
                 }
             }
