@@ -19,19 +19,18 @@ tfc.json
 .settings
 .project
 *.launch
-bin/
-run/
-logs/
+/bin/
+/run/
+/logs/
 
 # Python
 venv/
 
-# Other
-*.log
-
 # Minecraft stuff
-config/
+/config/
 options.txt
-saves/
+/saves/
+/mods/
+/resourcepacks/
 usercache.json
 usernamecache.json
