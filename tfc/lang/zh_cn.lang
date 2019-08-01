@@ -41,8 +41,9 @@ tfc.tooltip.season=季节：%s
 tfc.tooltip.day=日：%s
 tfc.tooltip.date=日期：%s
 tfc.tooltip.debug_times=总刻：%d | 玩家刻：%d | 日历刻：%d
-tfc.tooltip.food_expiry_date=在 %s 过期
+tfc.tooltip.food_expiry_date=于 %s 过期
 tfc.tooltip.food_rotten=腐烂了 - 我绝对不吃。
+tfc.tooltip.food_infinite_expiry=永不过期
 tfc.tooltip.plant_cold=%s过冷%s
 tfc.tooltip.plant_dry=%s过干%s
 tfc.tooltip.plant_hot=%s过热%s
@@ -53,6 +54,8 @@ tfc.tooltip.plant_wet=%s过湿%s
 tfc.tooltip.blast_furnace_ore_amount=矿石
 tfc.tooltip.blast_furnace_fuel_amount=燃料
 tfc.tooltip.blast_furnace_melt_amount=熔化
+tfc.tooltip.large_vessel_seal=密封大缸
+tfc.tooltip.large_vessel_unseal=解封大缸
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.old=这只动物太老了，不能给它配种。
@@ -67,8 +70,9 @@ tfc.tooltip.animal.milk.lowfamiliarity=这头牛和你的亲密度太低，不�
 tfc.tooltip.animal.milk.empty=这头牛今天挤过奶了。
 
 ## Command Tooltips / Messages
-tfc.tooltip.set_month_length=将月长度设置为 %d 天
-tfc.tooltip.time_command_complete=成功！
+tfc.tooltip.set_month_length=将月长度设置为 %d 天。
+tfc.tooltip.time_command_set_player_time=将玩家时间设置为 %d 。
+tfc.tooltip.time_command_set_calendar_time=将日历时间设置为 %s 。
 tfc.tooltip.time_command_disabled=此命令已被群峦传说禁用。作为替代，请使用 /timetfc ！
 
 ## Prospecting Result Messages
@@ -87,6 +91,7 @@ tfc.food_traits.brined_active=盐渍中
 tfc.food_traits.salted=抹盐
 tfc.food_traits.pickled=腌制
 tfc.food_traits.pickled_active=腌制中
+tfc.food_traits.preserved=储存
 
 ## Keybindings
 tfc.key.craft=合成面板
@@ -126,6 +131,10 @@ config.tfc.client.toolip=仅作用于客户端。
 
 config.tfc.client.makeWorldTypeClassicDefault=默认使用 tfc_classic 群峦传说经典世界生成。
 config.tfc.client.makeWorldTypeClassicDefault.tooltip=仅在单人世界有效。
+
+## Config.World
+config.tfc.world=世界生成设置
+config.tfc.world.tooltip=世界生成的各个方面
 
 # Misc
 itemGroup.tfc.misc=群峦传说|杂项
@@ -175,11 +184,13 @@ tfc.types.metal.high_carbon_black_steel=高碳黑钢
 tfc.types.metal.high_carbon_blue_steel=高碳蓝钢
 tfc.types.metal.high_carbon_red_steel=高碳红钢
 
-tfc.enum.tier.tier_i=坑窑
-tfc.enum.tier.tier_ii=蜂巢窑
-tfc.enum.tier.tier_iii=锻铁炉
-tfc.enum.tier.tier_iv=高炉
-tfc.enum.tier.tier_v=坩埚
+tfc.enum.tier.tier_0=第零级
+tfc.enum.tier.tier_i=第一级
+tfc.enum.tier.tier_ii=第二级
+tfc.enum.tier.tier_iii=第三级
+tfc.enum.tier.tier_iv=第四级
+tfc.enum.tier.tier_v=第五级
+tfc.enum.tier.tier_vi=第六级
 
 ## Size
 tfc.enum.size.tiny=极小
@@ -357,6 +368,7 @@ tile.tfc.blast_furnace.name=高炉
 tile.tfc.bloomery.name=锻铁炉
 tile.tfc.fire_bricks.name=防火砖
 tile.tfc.quern.name=手推磨
+tile.tfc.ceramics.fired.large_vessel.name=大缸
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=未加工花岗岩
@@ -1928,6 +1940,7 @@ tile.tfc.plants.allium.name=绒球葱
 tile.tfc.plants.athyrium_fern.name=蹄盖蕨
 tile.tfc.plants.badderlocks.name=翅藻
 tile.tfc.plants.barrel_cactus.name=圆筒掌
+tile.tfc.plants.black_orchid.name=黑兰花
 tile.tfc.plants.blood_lily.name=血百合
 tile.tfc.plants.blue_orchid.name=兰花
 tile.tfc.plants.butterfly_milkweed.name=蝶乳草
@@ -1944,6 +1957,7 @@ tile.tfc.plants.grape_hyacinth.name=葡萄风信子
 tile.tfc.plants.gutweed.name=肠浒苔
 tile.tfc.plants.guzmania.name=果子蔓
 tile.tfc.plants.houstonia.name=茜草花
+tile.tfc.plants.labrador_tea.name=拉布拉多茶
 tile.tfc.plants.lady_fern.name=夫人蕨
 tile.tfc.plants.licorice_fern.name=甘草蕨
 tile.tfc.plants.lotus.name=莲花
@@ -1960,7 +1974,9 @@ tile.tfc.plants.pistia.name=水芙蓉
 tile.tfc.plants.poppy.name=虞美人
 tile.tfc.plants.porcini.name=牛肝菌
 tile.tfc.plants.primrose.name=报春花
+tile.tfc.plants.pulsatilla.name=白头翁花
 tile.tfc.plants.rattan.name=藤
+tile.tfc.plants.reindeer_lichen.name=石蕊
 tile.tfc.plants.rose.name=玫瑰
 tile.tfc.plants.rough_horsetail.name=木贼
 tile.tfc.plants.ryegrass.name=黑麦草
@@ -1975,6 +1991,7 @@ tile.tfc.plants.snapdragon_red.name=红色金鱼草
 tile.tfc.plants.snapdragon_white.name=白色金鱼草
 tile.tfc.plants.snapdragon_yellow.name=黄色金鱼草
 tile.tfc.plants.spanish_moss.name=松萝凤梨
+tile.tfc.plants.strelitzia.name=鹤望兰
 tile.tfc.plants.sugar_cane.name=甘蔗
 tile.tfc.plants.switchgrass.name=柳枝稷
 tile.tfc.plants.sword_fern.name=刺羽耳蕨
@@ -2133,6 +2150,18 @@ tile.tfc.fruit_trees.leaves.orange.name=橙子叶
 tile.tfc.fruit_trees.leaves.peach.name=桃子叶
 tile.tfc.fruit_trees.leaves.plum.name=李子叶
 tile.tfc.fruit_trees.leaves.red_apple.name=红苹果叶
+
+tile.tfc.berry_bush.blackberry.name=黑莓灌木
+tile.tfc.berry_bush.blueberry.name=蓝莓灌木
+tile.tfc.berry_bush.bunch_berry.name=御膳橘灌木
+tile.tfc.berry_bush.cloud_berry.name=云莓灌木
+tile.tfc.berry_bush.cranberry.name=蔓越莓灌木
+tile.tfc.berry_bush.elderberry.name=接骨木莓灌木
+tile.tfc.berry_bush.gooseberry.name=鹅莓灌木
+tile.tfc.berry_bush.raspberry.name=树莓灌木
+tile.tfc.berry_bush.snow_berry.name=雪果灌木
+tile.tfc.berry_bush.strawberry.name=草莓灌木
+tile.tfc.berry_bush.wintergreen_berry.name=冬青浆果灌木
 
 tile.tfc.stone.button.granite.name=花岗岩按钮
 tile.tfc.stone.button.diorite.name=闪长岩按钮
@@ -3253,6 +3282,7 @@ item.tfc.ceramics.unfired.vessel_glazed.brown.name=未烧制棕色小缸
 item.tfc.ceramics.unfired.vessel_glazed.green.name=未烧制绿色小缸
 item.tfc.ceramics.unfired.vessel_glazed.red.name=未烧制红色小缸
 item.tfc.ceramics.unfired.vessel_glazed.black.name=未烧制黑色小缸
+item.tfc.ceramics.unfired.large_vessel.name=未烧制大缸
 
 item.tfc.ceramics.fired.spindle.name=纺锤头
 item.tfc.ceramics.unfired.spindle.name=未烧制纺锤头
@@ -3297,7 +3327,7 @@ item.tfc.food.olive.name=橄榄
 item.tfc.food.orange.name=橙子
 item.tfc.food.peach.name=桃子
 item.tfc.food.plum.name=李子
-item.tfc.food.raspberry.name=木莓
+item.tfc.food.raspberry.name=树莓
 item.tfc.food.red_apple.name=红苹果
 item.tfc.food.snow_berry.name=雪果
 item.tfc.food.strawberry.name=草莓
@@ -3390,7 +3420,7 @@ item.tfc.crop.seeds.tomato.name=番茄种子
 item.tfc.crop.seeds.wheat.name=小麦种子
 item.tfc.crop.seeds.yellow_bell_pepper.name=黄甜椒种子
 item.tfc.crop.seeds.pumpkin.name=西葫芦籽
-item.tfc.crop.seeds.melon.name=瓜子
+item.tfc.crop.seeds.melon.name=西瓜种子
 
 item.tfc.crop.product.jute.name=黄麻
 item.tfc.crop.product.jute_fiber.name=黄麻纤维
