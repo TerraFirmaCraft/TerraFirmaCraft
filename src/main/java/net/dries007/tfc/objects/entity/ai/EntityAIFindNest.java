@@ -124,6 +124,7 @@ public class EntityAIFindNest extends EntityAIBase
 
     private boolean getNearbyNest()
     {
+        int i = (int) this.theCreature.posY;
         double d0 = Double.MAX_VALUE;
         for (BlockPos.MutableBlockPos pos : BlockPos.getAllInBoxMutable(theCreature.getPosition().add(-16, 0, -16), theCreature.getPosition().add(16, 4, 16)))
         {

@@ -77,7 +77,6 @@ public class ItemMetalHoe extends ItemMetalTool
                         case COARSE_DIRT:
                             setBlock(stack, player, worldIn, pos, Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT));
                             return EnumActionResult.SUCCESS;
-                        default:
                     }
                 }
             }

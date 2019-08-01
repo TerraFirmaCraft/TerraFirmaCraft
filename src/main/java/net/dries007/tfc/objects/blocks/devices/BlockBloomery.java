@@ -167,7 +167,6 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
                 return GATE_EAST.test(world, centerPos);
             case WEST:
                 return GATE_WEST.test(world, centerPos);
-            default:
         }
         return false;
     }

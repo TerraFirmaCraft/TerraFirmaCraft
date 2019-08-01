@@ -37,7 +37,6 @@ public class TESRCrucible extends TileEntitySpecialRenderer<TECrucible>
         if (amount < 1) return;
         Metal metal = te.getAlloyResult();
         Fluid metalFluid = FluidsTFC.getMetalFluid(metal);
-        @SuppressWarnings("unused")
         FluidStack moltenMetal = new FluidStack(metalFluid, amount);
 
         GlStateManager.pushMatrix();

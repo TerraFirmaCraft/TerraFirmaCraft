@@ -100,7 +100,6 @@ public class BlockLogTFC extends BlockLog implements IItemSize
                 return SMALL_AABB_Y;
             case Z:
                 return SMALL_AABB_Z;
-            default:
         }
         return FULL_BLOCK_AABB;
     }

@@ -172,7 +172,6 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
                     return DIRT;
                 case CLAY_GRASS:
                     return CLAY;
-                default:
             }
             throw new IllegalStateException("Someone forgot to add enum constants to this switch case...");
         }
@@ -186,7 +185,6 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
                     return spreader == DRY_GRASS ? DRY_GRASS : GRASS;
                 case CLAY:
                     return CLAY_GRASS;
-                default:
             }
             throw new IllegalArgumentException("You cannot get grass from rock types.");
         }

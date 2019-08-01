@@ -27,7 +27,7 @@ public class RecipeRegistryEvents
         // See https://github.com/MinecraftForge/MinecraftForge/pull/4541#issuecomment-354033516
         if (ConfigTFC.GENERAL.removeVanillaRecipes)
         {
-            IForgeRegistryModifiable<IRecipe> modRegistry = (IForgeRegistryModifiable<IRecipe>) event.getRegistry();
+            IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) event.getRegistry();
 
             //misc AKA too lazy to categorize somehow
             modRegistry.remove(new ResourceLocation("minecraft:sugar"));

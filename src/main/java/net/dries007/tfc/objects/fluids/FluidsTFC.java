@@ -5,16 +5,12 @@
 
 package net.dries007.tfc.objects.fluids;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-
 import javax.annotation.Nonnull;
 
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.Metal;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
@@ -22,6 +18,11 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Metal;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class FluidsTFC
 {

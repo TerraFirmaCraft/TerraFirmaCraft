@@ -71,7 +71,6 @@ public class ItemBlockPlant extends ItemBlockTFC
                     return 5636095;
                 case HOT:
                     return 16733525;
-                default:
             }
             switch (rainValidity)
             {
@@ -79,7 +78,6 @@ public class ItemBlockPlant extends ItemBlockTFC
                     return 16755200;
                 case WET:
                     return 5592575;
-                default:
             }
             return 43520;
         }

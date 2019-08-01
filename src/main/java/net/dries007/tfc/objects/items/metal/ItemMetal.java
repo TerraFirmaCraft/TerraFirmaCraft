@@ -193,7 +193,6 @@ public class ItemMetal extends ItemTFC implements IMetalObject
                 return EnumRarity.RARE;
             case TIER_V:
                 return EnumRarity.EPIC;
-            default:
         }
         return super.getRarity(stack);
     }

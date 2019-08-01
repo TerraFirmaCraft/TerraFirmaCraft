@@ -22,7 +22,6 @@ import net.dries007.tfc.world.classic.WorldGenSettings.WorldGenSettingsBuilder;
  * todo: remove, won't be supported in 1.13 by vanilla anyway, there will be something else in 1.14.
  */
 @SideOnly(Side.CLIENT)
-@SuppressWarnings("unused")
 public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelper, GuiPageButtonList.GuiResponder
 {
     private static final int ID_DONE = 0;

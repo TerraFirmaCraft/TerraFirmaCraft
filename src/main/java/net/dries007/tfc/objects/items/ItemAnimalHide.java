@@ -40,7 +40,6 @@ public class ItemAnimalHide extends ItemTFC
     }
 
     protected final HideSize size;
-    @SuppressWarnings("unused")
     private final HideType type;
 
     ItemAnimalHide(HideType type, HideSize size)

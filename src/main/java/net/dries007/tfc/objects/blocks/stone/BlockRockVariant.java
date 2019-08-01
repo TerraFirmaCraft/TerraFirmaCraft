@@ -283,7 +283,6 @@ public class BlockRockVariant extends Block
                     }
                     return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && flag;
                 }
-				default:
             }
         }
         else if (plantable instanceof BlockCropTFC)
@@ -361,7 +360,6 @@ public class BlockRockVariant extends Block
                 break;
             case COBBLE:
                 world.playSound(null, pos, TFCSoundEvents.ROCK_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
-            default:
         }
     }
 }

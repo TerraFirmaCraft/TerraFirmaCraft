@@ -36,8 +36,6 @@ public interface IProxy
 
     class WrongSideException extends RuntimeException
     {
-		private static final long serialVersionUID = 1L;
-
 		WrongSideException(String message)
         {
             super(message);

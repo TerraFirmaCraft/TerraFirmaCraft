@@ -82,7 +82,6 @@ public class ItemGoldPan extends ItemTFC
     }
 
     @Override
-    @SuppressWarnings("unused")
     public void onUsingTick(ItemStack stack, EntityLivingBase entityLivingBase, int countLeft)
     {
         if (!(entityLivingBase instanceof EntityPlayer)) return;
@@ -123,7 +122,6 @@ public class ItemGoldPan extends ItemTFC
     }
 
     @Nullable
-    @SuppressWarnings("unused")
     private RayTraceResult canPan(World world, EntityPlayer player)
     {
         RayTraceResult result = rayTrace(world, player, true);

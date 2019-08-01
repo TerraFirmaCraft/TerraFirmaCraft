@@ -188,7 +188,6 @@ public class ItemMetalTool extends ItemMetal
             case KNIFE:
                 stack.damageItem(1, attacker);
                 break;
-            default:
         }
         return true;
     }

@@ -58,7 +58,6 @@ import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.Ev
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-@SuppressWarnings("unused")
 public class ChunkGenTFC implements IChunkGenerator
 {
     public static final IBlockState STONE = Blocks.STONE.getDefaultState();

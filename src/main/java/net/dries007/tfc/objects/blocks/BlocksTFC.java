@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.dries007.tfc.TerraFirmaCraft;
+
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.blocks.agriculture.*;
