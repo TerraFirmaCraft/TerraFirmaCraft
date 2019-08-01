@@ -15,7 +15,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import net.dries007.tfc.objects.ArmorMaterialTFC;
 import net.dries007.tfc.objects.items.metal.*;
 import net.dries007.tfc.util.Helpers;
 
@@ -40,7 +39,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     private final int color;
 
     private final Item.ToolMaterial toolMetal;
-    private final ArmorMaterialTFC armorMetal;
+    private final IArmorMaterialTFC armorMetal;
 
     /**
      * This is a registry object that will create a number of things.
@@ -53,7 +52,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
      * @param color        color of the metal when in fluid form. Used to auto generate a fluid texture. In future this may be used to color items as well
      * @param toolMetal    The tool material. Null if metal is not able to create tools
      */
-    public Metal(@Nonnull ResourceLocation name, Tier tier, boolean usable, float specificHeat, float meltTemp, int color, @Nullable Item.ToolMaterial toolMetal, @Nullable ArmorMaterialTFC armorMetal)
+    public Metal(@Nonnull ResourceLocation name, Tier tier, boolean usable, float specificHeat, float meltTemp, int color, @Nullable Item.ToolMaterial toolMetal, @Nullable IArmorMaterialTFC armorMetal)
     {
         this.usable = usable;
         this.tier = tier;
@@ -73,7 +72,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     }
 
     @Nullable
-    public ArmorMaterialTFC getArmorMetal() { return armorMetal; }
+    public IArmorMaterialTFC getArmorMetal() { return armorMetal; }
 
     public boolean isToolMetal()
     {

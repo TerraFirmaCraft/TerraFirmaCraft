@@ -9,13 +9,15 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 
+import net.dries007.tfc.api.types.IArmorMaterialTFC;
+
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
  * This is an extension enum for the vanilla's ArmorMaterials.
  * We register a new material in vanilla and bind crushing, slashing and piercing resistances.
  */
-public enum ArmorMaterialTFC
+public enum ArmorMaterialTFC implements IArmorMaterialTFC
 {
     //todo tweak all these values
     //currently, modifiers = classic / 40.
@@ -41,21 +43,25 @@ public enum ArmorMaterialTFC
         this.slashingRes = slashingRes;
     }
 
+    @Override
     public float getCrushingModifier()
     {
         return crushingRes;
     }
 
+    @Override
     public float getPiercingModifier()
     {
         return piercingRes;
     }
 
+    @Override
     public float getSlashingModifier()
     {
         return slashingRes;
     }
 
+    @Override
     public ArmorMaterial getMaterial()
     {
         return material;

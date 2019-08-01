@@ -10,13 +10,13 @@ import net.dries007.tfc.api.capability.damage.IDamageResistance;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.objects.ArmorMaterialTFC;
+import net.dries007.tfc.api.types.IArmorMaterialTFC;
 
 public class ItemArmorTFC extends ItemArmor implements IItemSize, IDamageResistance
 {
-    private ArmorMaterialTFC materialTFC;
+    private IArmorMaterialTFC materialTFC;
 
-    public ItemArmorTFC(ArmorMaterialTFC materialTFC, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn)
+    public ItemArmorTFC(IArmorMaterialTFC materialTFC, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn)
     {
         super(materialTFC.getMaterial(), renderIndexIn, equipmentSlotIn);
         this.materialTFC = materialTFC;
