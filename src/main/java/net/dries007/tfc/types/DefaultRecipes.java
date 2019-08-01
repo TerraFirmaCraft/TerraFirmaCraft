@@ -172,39 +172,40 @@ public final class DefaultRecipes
         IForgeRegistry<HeatRecipe> r = event.getRegistry();
 
         // Dynamic recipe types - single instances
-        r.register(new HeatRecipeFireable());
+        r.register(new HeatRecipeFireable().setRegistryName("fireable"));
 
         // todo: remove IFireable from pottery items where it is not needed and replace with simple recipes
 
         for (Metal metal : TFCRegistries.METALS.getValuesCollection())
         {
-            r.register(new HeatRecipeMetalMelting(metal));
+            //noinspection ConstantConditions
+            r.register(new HeatRecipeMetalMelting(metal).setRegistryName(metal.getRegistryName().getPath() + "_melting"));
         }
 
         // Standard / Simple recipes
         r.registerAll(
-            new HeatRecipeSimple(IIngredient.of("stickWood"), new ItemStack(BlocksTFC.TORCH, 2), 40),
-            new HeatRecipeSimple(IIngredient.of("sand"), new ItemStack(Blocks.GLASS), 600),
+            new HeatRecipeSimple(IIngredient.of("stickWood"), new ItemStack(BlocksTFC.TORCH, 2), 40).setRegistryName("torch"),
+            new HeatRecipeSimple(IIngredient.of("sand"), new ItemStack(Blocks.GLASS), 600).setRegistryName("glass"),
 
             // Bread
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.BARLEY_BREAD)), new ItemStack(ItemFoodTFC.get(Food.BARLEY_DOUGH)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.CORNBREAD)), new ItemStack(ItemFoodTFC.get(Food.CORNMEAL_DOUGH)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.OAT_BREAD)), new ItemStack(ItemFoodTFC.get(Food.OAT_DOUGH)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.RICE_BREAD)), new ItemStack(ItemFoodTFC.get(Food.RICE_DOUGH)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.RYE_BREAD)), new ItemStack(ItemFoodTFC.get(Food.RYE_DOUGH)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.WHEAT_BREAD)), new ItemStack(ItemFoodTFC.get(Food.WHEAT_DOUGH)), 200),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.BARLEY_DOUGH)), new ItemStack(ItemFoodTFC.get(Food.BARLEY_BREAD)), 200).setRegistryName("barley_bread"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.CORNMEAL_DOUGH)), new ItemStack(ItemFoodTFC.get(Food.CORNBREAD)), 200).setRegistryName("cornbread"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.OAT_DOUGH)), new ItemStack(ItemFoodTFC.get(Food.OAT_BREAD)), 200).setRegistryName("oat_bread"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.RICE_DOUGH)), new ItemStack(ItemFoodTFC.get(Food.RICE_BREAD)), 200).setRegistryName("rice_bread"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.RYE_DOUGH)), new ItemStack(ItemFoodTFC.get(Food.RYE_BREAD)), 200).setRegistryName("rye_bread"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.WHEAT_DOUGH)), new ItemStack(ItemFoodTFC.get(Food.WHEAT_BREAD)), 200).setRegistryName("wheat_bread"),
 
             // Meat
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.COOKED_BEEF)), new ItemStack(ItemFoodTFC.get(Food.BEEF)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.COOKED_PORK)), new ItemStack(ItemFoodTFC.get(Food.PORK)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.COOKED_CHICKEN)), new ItemStack(ItemFoodTFC.get(Food.CHICKEN)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.COOKED_MUTTON)), new ItemStack(ItemFoodTFC.get(Food.MUTTON)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.COOKED_FISH)), new ItemStack(ItemFoodTFC.get(Food.FISH)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.COOKED_BEAR)), new ItemStack(ItemFoodTFC.get(Food.BEAR)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.COOKED_CALAMARI)), new ItemStack(ItemFoodTFC.get(Food.CALAMARI)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.COOKED_HORSE_MEAT)), new ItemStack(ItemFoodTFC.get(Food.HORSE_MEAT)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.COOKED_PHEASANT)), new ItemStack(ItemFoodTFC.get(Food.PHEASANT)), 200),
-            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.COOKED_VENISON)), new ItemStack(ItemFoodTFC.get(Food.VENISON)), 200)
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.BEEF)), new ItemStack(ItemFoodTFC.get(Food.COOKED_BEEF)), 200).setRegistryName("cooked_beef"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.PORK)), new ItemStack(ItemFoodTFC.get(Food.COOKED_PORK)), 200).setRegistryName("cooked_pork"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.CHICKEN)), new ItemStack(ItemFoodTFC.get(Food.COOKED_CHICKEN)), 200).setRegistryName("cooked_chicken"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.MUTTON)), new ItemStack(ItemFoodTFC.get(Food.COOKED_MUTTON)), 200).setRegistryName("cooked_mutton"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.FISH)), new ItemStack(ItemFoodTFC.get(Food.COOKED_FISH)), 200).setRegistryName("cooked_fish"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.BEAR)), new ItemStack(ItemFoodTFC.get(Food.COOKED_BEAR)), 200).setRegistryName("cooked_bear"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.CALAMARI)), new ItemStack(ItemFoodTFC.get(Food.COOKED_CALAMARI)), 200).setRegistryName("cooked_calamari"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.HORSE_MEAT)), new ItemStack(ItemFoodTFC.get(Food.COOKED_HORSE_MEAT)), 200).setRegistryName("cooked_horse_meat"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.PHEASANT)), new ItemStack(ItemFoodTFC.get(Food.COOKED_PHEASANT)), 200).setRegistryName("cooked_pheasant"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.VENISON)), new ItemStack(ItemFoodTFC.get(Food.COOKED_VENISON)), 200).setRegistryName("cooked_venison")
         );
     }
 
