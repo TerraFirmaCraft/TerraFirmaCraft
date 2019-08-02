@@ -7,11 +7,12 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/ash"
+      "type": "forge:ore_dict",
+      "ore": "lumberAsh"
     }
   },
   "result": {
     "item": "tfc:wood/door/ash",
-    "count": 7
+    "count": 2
   }
 }

@@ -7,11 +7,12 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/willow"
+      "type": "forge:ore_dict",
+      "ore": "lumberWillow"
     }
   },
   "result": {
     "item": "tfc:wood/door/willow",
-    "count": 7
+    "count": 2
   }
 }

@@ -7,11 +7,12 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/sycamore"
+      "type": "forge:ore_dict",
+      "ore": "lumberSycamore"
     }
   },
   "result": {
     "item": "tfc:wood/door/sycamore",
-    "count": 7
+    "count": 2
   }
 }
