@@ -39,14 +39,14 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                     final RayTraceResult rayTrace = Helpers.rayTrace(player, player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue(), 1);
                     final ItemStack stack = player.getHeldItemMainhand().isEmpty() ? player.getHeldItemOffhand() : player.getHeldItemMainhand();
 
-                    if (!stack.isEmpty() && rayTrace != null)
+                    if (rayTrace != null)
                     {
                         BlockPos pos = rayTrace.getBlockPos();
                         EnumFacing hitFace = rayTrace.sideHit;
                         double placeReach = player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
                         if (player.getDistanceSq(pos) <= placeReach * placeReach && hitFace != null)
                         {
-                            if (world.getBlockState(pos).isNormalCube() && world.getBlockState(pos.offset(hitFace)).getBlock().isReplaceable(world, pos))
+                            if (!stack.isEmpty() && world.getBlockState(pos).isNormalCube() && world.getBlockState(pos.offset(hitFace)).getBlock().isReplaceable(world, pos))
                             {
                                 world.setBlockState(pos.up(), BlocksTFC.PLACED_ITEM.getDefaultState());
                                 TEPlacedItem tile = Helpers.getTE(world, pos.up(), TEPlacedItem.class);
