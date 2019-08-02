@@ -39,7 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.util.LootTableListTFC;
+import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
@@ -295,7 +295,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTableListTFC.ANIMALS_RABBIT;
+        return LootTablesTFC.ANIMALS_RABBIT;
     }
 
     @Nullable
