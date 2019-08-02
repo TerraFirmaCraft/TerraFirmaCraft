@@ -7,11 +7,12 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/douglas_fir"
+      "type": "forge:ore_dict",
+      "ore": "lumberDouglasFir"
     }
   },
   "result": {
     "item": "tfc:wood/door/douglas_fir",
-    "count": 7
+    "count": 2
   }
 }

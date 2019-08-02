@@ -7,11 +7,12 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/acacia"
+      "type": "forge:ore_dict",
+      "ore": "lumberAcacia"
     }
   },
   "result": {
     "item": "tfc:wood/door/acacia",
-    "count": 7
+    "count": 2
   }
 }

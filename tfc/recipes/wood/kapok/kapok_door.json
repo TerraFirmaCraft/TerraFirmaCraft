@@ -7,11 +7,12 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/kapok"
+      "type": "forge:ore_dict",
+      "ore": "lumberKapok"
     }
   },
   "result": {
     "item": "tfc:wood/door/kapok",
-    "count": 7
+    "count": 2
   }
 }
