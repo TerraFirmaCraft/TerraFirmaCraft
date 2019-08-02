@@ -28,7 +28,9 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.recipes.PitKilnRecipe;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -123,11 +125,22 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 for (int i = 0; i < inventory.getSlots(); i++)
                 {
                     ItemStack stack = inventory.getStackInSlot(i);
-                    PitKilnRecipe recipe = PitKilnRecipe.get(stack);
-                    if (recipe != null)
+                    ItemStack outputStack = ItemStack.EMPTY;
+                    // First, heat up the item to max temperature, so the recipe can properly check the temperature of the item
+                    IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                    if (heat != null)
                     {
-                        inventory.setStackInSlot(i, recipe.getOutput(stack, Metal.Tier.TIER_I));
+                        heat.setTemperature(CapabilityItemHeat.MAX_TEMPERATURE);
+                        // Only Tier I and below can be melted in a pit kiln
+                        HeatRecipe recipe = HeatRecipe.get(stack, Metal.Tier.TIER_I);
+                        if (recipe != null)
+                        {
+                            outputStack = recipe.getOutputStack(stack);
+                        }
                     }
+
+                    // Reset item in inventory
+                    inventory.setStackInSlot(i, outputStack);
                 }
 
                 world.setBlockToAir(above);

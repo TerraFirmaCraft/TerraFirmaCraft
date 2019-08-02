@@ -95,7 +95,7 @@ public final class BlocksTFC
     @GameRegistry.ObjectHolder("fluid/milk_vinegar")
     public static final BlockFluidBase FLUID_MILK_VINEGAR = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/large_vessel")
-    public static final BlockLargeVessel LARGE_VESSEL = getNull();
+    public static final BlockLargeVessel FIRED_LARGE_VESSEL = getNull();
 
     public static final BlockDebug DEBUG = getNull();
     public static final BlockPeat PEAT = getNull();
