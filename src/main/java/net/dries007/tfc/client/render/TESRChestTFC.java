@@ -8,17 +8,19 @@ package net.dries007.tfc.client.render;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.block.BlockChest;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.dries007.tfc.objects.te.TEChestTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -51,28 +53,13 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
         GlStateManager.enableDepth();
         GlStateManager.depthFunc(515);
         GlStateManager.depthMask(true);
-        int meta = 0;
-        Tree wood = null;
-
-        if (te.hasWorld())
-        {
-            BlockChest block = (BlockChest) te.getWorld().getBlockState(te.getPos()).getBlock();
-            meta = te.getBlockMetadata();
-            wood = te.getWood();
-
-            if (meta == 0)
-            {
-                block.checkForSurroundingChests(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()));
-                meta = te.getBlockMetadata();
-            }
-
-            te.checkForAdjacentChests();
-        }
-
-        if (te.adjacentChestZNeg != null || te.adjacentChestXNeg != null) return;
+        Tree wood = te.getWood();
+        if (!te.hasWorld()) return;
+        IBlockState chestState = te.getWorld().getBlockState(te.getPos());
+        EnumFacing connectionFacing = te.getConnection();
 
         ModelChest modelchest;
-        if (te.adjacentChestXPos == null && te.adjacentChestZPos == null)
+        if (connectionFacing == null)
         {
             modelchest = simpleChest;
 
@@ -85,7 +72,7 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
                 GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                 GlStateManager.matrixMode(5888);
             }
-            else if (te.getChestType() == BlockChest.Type.TRAP && wood != null)
+            else if (te.isTrapChest() && wood != null)
             {
                 bindTexture(TRAP_SINGLE_TEXTURES.get(wood));
             }
@@ -107,7 +94,7 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
                 GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                 GlStateManager.matrixMode(5888);
             }
-            else if (te.getChestType() == BlockChest.Type.TRAP && wood != null)
+            else if (te.isTrapChest() && wood != null)
             {
                 bindTexture(TRAP_DOUBLE_TEXTURES.get(wood));
             }
@@ -127,43 +114,29 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
         GlStateManager.translate(0.5F, 0.5F, 0.5F);
         int rotation = 0;
 
-        switch (meta)
+        switch (chestState.getValue(BlockChestTFC.FACING))
         {
-            case 2:
+            case NORTH:
                 rotation = 180;
-                if (te.adjacentChestXPos != null) GlStateManager.translate(1.0F, 0.0F, 0.0F);
                 break;
-            case 3:
+            case SOUTH:
                 rotation = 0;
                 break;
-            case 4:
+            case WEST:
                 rotation = 90;
                 break;
-            case 5:
+            case EAST:
                 rotation = -90;
-                if (te.adjacentChestZPos != null) GlStateManager.translate(0.0F, 0.0F, -1.0F);
                 break;
         }
 
         GlStateManager.rotate((float) rotation, 0.0F, 1.0F, 0.0F);
         GlStateManager.translate(-0.5F, -0.5F, -0.5F);
-        float lidAngle = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
 
-        if (te.adjacentChestZNeg != null)
-        {
-            float f1 = te.adjacentChestZNeg.prevLidAngle + (te.adjacentChestZNeg.lidAngle - te.adjacentChestZNeg.prevLidAngle) * partialTicks;
-            if (f1 > lidAngle) lidAngle = f1;
-        }
-
-        if (te.adjacentChestXNeg != null)
-        {
-            float f2 = te.adjacentChestXNeg.prevLidAngle + (te.adjacentChestXNeg.lidAngle - te.adjacentChestXNeg.prevLidAngle) * partialTicks;
-            if (f2 > lidAngle) lidAngle = f2;
-        }
-
-        lidAngle = 1.0F - lidAngle;
-        lidAngle = 1.0F - lidAngle * lidAngle * lidAngle;
-        modelchest.chestLid.rotateAngleX = -(lidAngle * ((float) Math.PI / 2F));
+        float f = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
+        f = 1.0F - f;
+        f = 1.0F - f * f * f;
+        modelchest.chestLid.rotateAngleX = -(f * ((float) Math.PI / 2F));
         modelchest.renderAll();
         GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
