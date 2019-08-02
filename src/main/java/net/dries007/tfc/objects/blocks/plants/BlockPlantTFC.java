@@ -172,7 +172,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
-        if (!plant.getOreDictName().isPresent() && !worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1 && plant.getPlantType() != Plant.PlantType.SHORT_GRASS && plant.getPlantType() != Plant.PlantType.TALL_GRASS)
+        if (!plant.getOreDictName().isPresent() && !worldIn.isRemote && (stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1 || stack.getItem().getHarvestLevel(stack, "scythe", player, state) != -1) && plant.getPlantType() != Plant.PlantType.SHORT_GRASS && plant.getPlantType() != Plant.PlantType.TALL_GRASS)
         {
             spawnAsEntity(worldIn, pos, new ItemStack(this, 1));
         }
