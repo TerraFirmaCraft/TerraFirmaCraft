@@ -139,7 +139,7 @@ public class BlockTallGrassTFC extends BlockShortGrassTFC implements IGrowable, 
         if (!worldIn.isRemote && player != null)
         {
             ItemStack stack = player.getHeldItemMainhand();
-            if (stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1)
+            if (stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1 || stack.getItem().getHarvestLevel(stack, "scythe", player, state) != -1)
             {
                 for (int i = 1; worldIn.getBlockState(pos.up(i)).getBlock() == this; ++i)
                 {

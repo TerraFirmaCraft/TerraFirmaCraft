@@ -74,34 +74,37 @@ public final class ItemsTFC
 
     @GameRegistry.ObjectHolder("ceramics/fire_clay")
     public static final ItemFireClay FIRE_CLAY = getNull();
+
     @GameRegistry.ObjectHolder("ceramics/unfired/fire_brick")
-    public static final ItemUnfiredPottery UNFIRED_FIRE_BRICK = getNull();
+    public static final ItemPottery UNFIRED_FIRE_BRICK = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/fire_brick")
-    public static final ItemFiredPottery FIRE_BRICK = getNull();
+    public static final ItemPottery FIRED_FIRE_BRICK = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/vessel")
-    public static final ItemUnfiredPottery CERAMICS_UNFIRED_VESSEL = getNull();
+    public static final ItemPottery UNFIRED_VESSEL = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/vessel")
-    public static final ItemSmallVessel CERAMICS_FIRED_VESSEL = getNull();
+    public static final ItemPottery FIRED_VESSEL = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/vessel_glazed")
-    public static final ItemUnfiredSmallVessel CERAMICS_UNFIRED_VESSEL_GLAZED = getNull();
+    public static final ItemPottery UNFIRED_VESSEL_GLAZED = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/vessel_glazed")
-    public static final ItemSmallVessel CERAMICS_FIRED_VESSEL_GLAZED = getNull();
+    public static final ItemPottery FIRED_VESSEL_GLAZED = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/jug")
-    public static final ItemUnfiredPottery CERAMICS_UNFIRED_JUG = getNull();
+    public static final ItemPottery UNFIRED_JUG = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/jug")
-    public static final ItemFiredPottery CERAMICS_FIRED_JUG = getNull();
+    public static final ItemPottery FIRED_JUG = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/pot")
-    public static final ItemUnfiredPottery CERAMICS_UNFIRED_POT = getNull();
+    public static final ItemPottery UNFIRED_POT = getNull();
+    @GameRegistry.ObjectHolder("ceramics/fired/pot")
+    public static final ItemPottery FIRED_POT = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/bowl")
-    public static final ItemUnfiredPottery CERAMICS_UNFIRED_BOWL = getNull();
-    @GameRegistry.ObjectHolder("ceramics/unfired/fire_brick")
-    public static final ItemUnfiredPottery CERAMICS_UNFIRED_FIRE_BRICK = getNull();
+    public static final ItemPottery UNFIRED_BOWL = getNull();
+    @GameRegistry.ObjectHolder("ceramics/fired/bowl")
+    public static final ItemPottery FIRED_BOWL = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/spindle")
-    public static final ItemUnfiredPottery CERAMICS_UNFIRED_SPINDLE = getNull();
+    public static final ItemPottery UNFIRED_SPINDLE = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/spindle")
-    public static final ItemFiredPottery CERAMICS_FIRED_SPINDLE = getNull();
+    public static final ItemPottery FIRED_SPINDLE = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/large_vessel")
-    public static final ItemUnfiredLargeVessel CERAMICS_UNFIRED_LARGE_VESSEL = getNull();
+    public static final ItemPottery UNFIRED_LARGE_VESSEL = getNull();
 
     @GameRegistry.ObjectHolder("bloom/unrefined")
     public static final ItemBloom UNREFINED_BLOOM = getNull();
@@ -209,22 +212,22 @@ public final class ItemsTFC
                 if (type.hasMold(null))
                 {
                     // Not using registerPottery here because the ItemMold uses a custom ItemModelMesher, meaning it can't be in simpleItems
-                    ItemFiredPottery item = new ItemMold(type);
+                    ItemPottery item = new ItemMold(type);
                     register(r, "ceramics/fired/mold/" + type.name().toLowerCase(), item, CT_POTTERY);
-                    simpleItems.add(register(r, "ceramics/unfired/mold/" + type.name().toLowerCase(), new ItemUnfiredMold(item, type), CT_POTTERY));
+                    simpleItems.add(register(r, "ceramics/unfired/mold/" + type.name().toLowerCase(), new ItemUnfiredMold(type), CT_POTTERY));
                 }
             }
 
             simpleItems.add(register(r, "ceramics/unfired/large_vessel", new ItemUnfiredLargeVessel(), CT_POTTERY));
 
-            registerPottery(simpleItems, r, "ceramics/unfired/vessel", "ceramics/fired/vessel", new ItemUnfiredSmallVessel(new ItemSmallVessel(false)));
-            registerPottery(null, r, "ceramics/unfired/vessel_glazed", "ceramics/fired/vessel_glazed", new ItemUnfiredSmallVessel(new ItemSmallVessel(true)));
+            registerPottery(simpleItems, r, "ceramics/unfired/vessel", "ceramics/fired/vessel", new ItemUnfiredSmallVessel(false), new ItemSmallVessel(false));
+            registerPottery(null, r, "ceramics/unfired/vessel_glazed", "ceramics/fired/vessel_glazed", new ItemUnfiredSmallVessel(true), new ItemSmallVessel(true));
 
-            registerPottery(simpleItems, r, "ceramics/unfired/spindle", "ceramics/fired/spindle", new ItemUnfiredPottery(new ItemFiredPottery()));
-            registerPottery(simpleItems, r, "ceramics/unfired/pot", "ceramics/fired/pot", new ItemUnfiredPottery(new ItemFiredPottery()));
-            registerPottery(simpleItems, r, "ceramics/unfired/jug", "ceramics/fired/jug", new ItemUnfiredPottery(new ItemFiredPottery()));
-            registerPottery(simpleItems, r, "ceramics/unfired/bowl", "ceramics/fired/bowl", new ItemUnfiredPottery(new ItemFiredPottery()));
-            registerPottery(simpleItems, r, "ceramics/unfired/fire_brick", "ceramics/fired/fire_brick", new ItemUnfiredPottery(new ItemFiredPottery()));
+            registerPottery(simpleItems, r, "ceramics/unfired/spindle", "ceramics/fired/spindle");
+            registerPottery(simpleItems, r, "ceramics/unfired/pot", "ceramics/fired/pot");
+            registerPottery(simpleItems, r, "ceramics/unfired/jug", "ceramics/fired/jug");
+            registerPottery(simpleItems, r, "ceramics/unfired/bowl", "ceramics/fired/bowl");
+            registerPottery(simpleItems, r, "ceramics/unfired/fire_brick", "ceramics/fired/fire_brick");
 
             simpleItems.add(register(r, "ceramics/fire_clay", new ItemFireClay(), CT_MISC));
 
@@ -318,11 +321,20 @@ public final class ItemsTFC
                 metal.getToolMetal().setRepairItem(new ItemStack(ItemMetal.get(metal, Metal.ItemType.SCRAP)));
     }
 
-    private static void registerPottery(Builder<Item> items, IForgeRegistry<Item> r, String nameUnfired, String nameFired, ItemUnfiredPottery unfiredPottery)
+    private static void registerPottery(Builder<Item> items, IForgeRegistry<Item> r, String nameUnfired, String nameFired)
     {
-        register(r, nameFired, unfiredPottery.firedVersion, CT_POTTERY);
-        register(r, nameUnfired, unfiredPottery, CT_POTTERY);
-        if (items != null) items.add(unfiredPottery.firedVersion, unfiredPottery);
+        registerPottery(items, r, nameUnfired, nameFired, new ItemPottery(), new ItemPottery());
+    }
+
+    private static void registerPottery(Builder<Item> items, IForgeRegistry<Item> r, String nameUnfired, String nameFired, ItemPottery unfiredItem, ItemPottery firedItem)
+    {
+        register(r, nameFired, firedItem, CT_POTTERY);
+        register(r, nameUnfired, unfiredItem, CT_POTTERY);
+
+        if (items != null)
+        {
+            items.add(firedItem, unfiredItem);
+        }
     }
 
     @SuppressWarnings("ConstantConditions")
