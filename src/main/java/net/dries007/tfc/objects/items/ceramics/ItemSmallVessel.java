@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.items.ceramics;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
@@ -46,7 +47,8 @@ import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
-public class ItemSmallVessel extends ItemFiredPottery
+@ParametersAreNonnullByDefault
+public class ItemSmallVessel extends ItemPottery
 {
     public final boolean glazed;
 
@@ -58,7 +60,7 @@ public class ItemSmallVessel extends ItemFiredPottery
 
     @Override
     @Nonnull
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         ItemStack stack = playerIn.getHeldItem(handIn);
         if (!worldIn.isRemote && !playerIn.isSneaking())
@@ -93,7 +95,7 @@ public class ItemSmallVessel extends ItemFiredPottery
     }
 
     @Override
-    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
         if (!isInCreativeTab(tab)) return;
 
@@ -112,12 +114,12 @@ public class ItemSmallVessel extends ItemFiredPottery
     }
 
     @Override
-    public boolean canStack(@Nonnull ItemStack stack)
+    public boolean canStack(ItemStack stack)
     {
         return false;
     }
 
-    @Override
+    @Nonnull
     public ItemStack getFiringResult(ItemStack input)
     {
         // Case 1: The input is a filled vessel
@@ -147,14 +149,14 @@ public class ItemSmallVessel extends ItemFiredPottery
 
     @Nonnull
     @Override
-    public Size getSize(@Nonnull ItemStack stack)
+    public Size getSize(ItemStack stack)
     {
         return Size.VERY_LARGE;
     }
 
     @Nonnull
     @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
+    public Weight getWeight(ItemStack stack)
     {
         return Weight.HEAVY;
     }

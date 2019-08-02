@@ -42,7 +42,7 @@ public class HeatRecipeMetalMelting extends HeatRecipe
                 return metalObject.getMetal(input) == metal;
             }
             return false;
-        }, metal.getMeltTemp());
+        }, metal.getMeltTemp(), metal.getTier());
     }
 
     @Nullable

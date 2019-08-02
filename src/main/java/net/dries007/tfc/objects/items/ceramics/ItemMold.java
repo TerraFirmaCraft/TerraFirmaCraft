@@ -43,7 +43,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 
-public class ItemMold extends ItemFiredPottery
+public class ItemMold extends ItemPottery
 {
     private static final EnumMap<Metal.ItemType, ItemMold> MAP = new EnumMap<>(Metal.ItemType.class);
 

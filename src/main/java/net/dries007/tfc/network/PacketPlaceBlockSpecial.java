@@ -7,6 +7,7 @@ package net.dries007.tfc.network;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -41,10 +42,11 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                     if (!stack.isEmpty() && rayTrace != null)
                     {
                         BlockPos pos = rayTrace.getBlockPos();
+                        EnumFacing hitFace = rayTrace.sideHit;
                         double placeReach = player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
-                        if (player.getDistanceSq(pos) <= placeReach * placeReach)
+                        if (player.getDistanceSq(pos) <= placeReach * placeReach && hitFace != null)
                         {
-                            if (world.getBlockState(pos).isNormalCube() && world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos))
+                            if (world.getBlockState(pos).isNormalCube() && world.getBlockState(pos.offset(hitFace)).getBlock().isReplaceable(world, pos))
                             {
                                 world.setBlockState(pos.up(), BlocksTFC.PLACED_ITEM.getDefaultState());
                                 TEPlacedItem tile = Helpers.getTE(world, pos.up(), TEPlacedItem.class);
@@ -56,6 +58,14 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                             else if (world.getBlockState(pos).getBlock() == BlocksTFC.PLACED_ITEM)
                             {
                                 TEPlacedItem tile = Helpers.getTE(world, pos, TEPlacedItem.class);
+                                if (tile != null)
+                                {
+                                    tile.onRightClick(player, stack, rayTrace);
+                                }
+                            }
+                            else if (world.getBlockState(pos.offset(hitFace)).getBlock() == BlocksTFC.PLACED_ITEM)
+                            {
+                                TEPlacedItem tile = Helpers.getTE(world, pos.offset(hitFace), TEPlacedItem.class);
                                 if (tile != null)
                                 {
                                     tile.onRightClick(player, stack, rayTrace);

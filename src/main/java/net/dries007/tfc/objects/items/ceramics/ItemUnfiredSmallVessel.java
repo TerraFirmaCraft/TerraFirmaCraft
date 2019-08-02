@@ -12,14 +12,13 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-public class ItemUnfiredSmallVessel extends ItemUnfiredPottery
+public class ItemUnfiredSmallVessel extends ItemPottery
 {
     public final boolean glazed;
 
-    public ItemUnfiredSmallVessel(ItemSmallVessel firedVersion)
+    public ItemUnfiredSmallVessel(boolean glazed)
     {
-        super(firedVersion);
-        glazed = firedVersion.glazed;
+        this.glazed = glazed;
         setHasSubtypes(glazed);
     }
 
@@ -28,19 +27,28 @@ public class ItemUnfiredSmallVessel extends ItemUnfiredPottery
     public String getTranslationKey(ItemStack stack)
     {
         if (!glazed)
+        {
             return super.getTranslationKey(stack);
+        }
         return super.getTranslationKey(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
     }
 
     @Override
     public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
     {
-        if (!isInCreativeTab(tab)) return;
-
-        if (!glazed)
-            items.add(new ItemStack(this));
-        else
-            for (EnumDyeColor color : EnumDyeColor.values())
-                items.add(new ItemStack(this, 1, color.getDyeDamage()));
+        if (isInCreativeTab(tab))
+        {
+            if (!glazed)
+            {
+                items.add(new ItemStack(this));
+            }
+            else
+            {
+                for (EnumDyeColor color : EnumDyeColor.values())
+                {
+                    items.add(new ItemStack(this, 1, color.getDyeDamage()));
+                }
+            }
+        }
     }
 }
