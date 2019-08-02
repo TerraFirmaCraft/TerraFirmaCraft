@@ -195,7 +195,9 @@ public class ItemMold extends ItemFiredPottery
             {
                 String desc = TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount());
                 if (isMolten())
+                {
                     desc += " - " + I18n.format("tfc.tooltip.liquid");
+                }
                 text.add(desc);
             }
             IMoldHandler.super.addHeatInfo(stack, text);

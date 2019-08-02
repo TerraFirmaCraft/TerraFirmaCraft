@@ -22,7 +22,6 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
-import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IHeatConsumerBlock;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
@@ -41,8 +40,6 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     public static final int SLOT_EXTRA_MAX = 13;
 
     public static final int FIELD_TEMPERATURE = 0;
-
-    public static final Metal.Tier CHARCOAL_FORGE_TIER = Metal.Tier.TIER_II;
 
     private HeatRecipe[] cachedRecipes = new HeatRecipe[5];
     private boolean requiresSlotUpdate = false;
@@ -190,17 +187,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     {
         this.markDirty();
         requiresSlotUpdate = true;
-
-        // cache heat recipes for each input
-        for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
-        {
-            cachedRecipes[i - SLOT_INPUT_MIN] = null;
-            ItemStack inputStack = inventory.getStackInSlot(i);
-            if (!inputStack.isEmpty())
-            {
-                cachedRecipes[i - SLOT_INPUT_MIN] = HeatRecipe.get(inputStack, Metal.Tier.TIER_II);
-            }
-        }
+        updateCachedRecipes();
     }
 
     @Override
@@ -211,6 +198,8 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
         airTicks = nbt.getInteger("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
         super.readFromNBT(nbt);
+
+        updateCachedRecipes();
     }
 
     @Override
@@ -251,17 +240,6 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
         }
     }
 
-    public void debug()
-    {
-        TerraFirmaCraft.getLog().debug("Debugging Charcoal Forge:");
-        TerraFirmaCraft.getLog().debug("Temp {} | Burn Temp {} | Fuel Ticks {}", temperature, burnTemperature, burnTicks);
-        TerraFirmaCraft.getLog().debug("Burning? {}", world.getBlockState(pos).getValue(LIT));
-        for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
-        {
-            TerraFirmaCraft.getLog().debug("Slot: {} - NBT: {}", i, inventory.getStackInSlot(i).serializeNBT().toString());
-        }
-    }
-
     @Override
     public int getFieldCount()
     {
@@ -294,10 +272,10 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
 
     private void handleInputMelting(ItemStack stack, int startIndex)
     {
-        HeatRecipe recipe = HeatRecipe.get(stack, CHARCOAL_FORGE_TIER);
+        HeatRecipe recipe = HeatRecipe.get(stack);
         IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
 
-        if (recipe != null && cap != null && recipe.isValidTemperature(temperature))
+        if (recipe != null && cap != null && recipe.isValidTemperature(cap.getTemperature()))
         {
             // Handle possible metal output
             FluidStack fluidStack = recipe.getOutputFluid(stack);
@@ -358,5 +336,19 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
             }
         }
         requiresSlotUpdate = false;
+    }
+
+    private void updateCachedRecipes()
+    {
+        // cache heat recipes for each input
+        for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
+        {
+            cachedRecipes[i - SLOT_INPUT_MIN] = null;
+            ItemStack inputStack = inventory.getStackInSlot(i);
+            if (!inputStack.isEmpty())
+            {
+                cachedRecipes[i - SLOT_INPUT_MIN] = HeatRecipe.get(inputStack);
+            }
+        }
     }
 }

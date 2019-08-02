@@ -21,7 +21,6 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
-import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
 
@@ -39,8 +38,6 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
     public static final int SLOT_OUTPUT_2 = 6;
 
     public static final int FIELD_TEMPERATURE = 0;
-
-    public static final Metal.Tier FIRE_PIT_TIER = Metal.Tier.TIER_I;
 
     private HeatRecipe cachedRecipe;
     private boolean requiresSlotUpdate = false;
@@ -149,7 +146,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         requiresSlotUpdate = true;
 
         // Update cached recipe
-        cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_ITEM_INPUT), FIRE_PIT_TIER);
+        cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_ITEM_INPUT));
     }
 
     @Override
@@ -160,6 +157,9 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         airTicks = nbt.getInteger("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
         super.readFromNBT(nbt);
+
+        // Update recipe cache
+        cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_ITEM_INPUT));
     }
 
     @Override
@@ -273,7 +273,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
     {
         IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
 
-        if (cachedRecipe != null && cap != null && cachedRecipe.isValidTemperature(temperature))
+        if (cachedRecipe != null && cap != null && cachedRecipe.isValidTemperature(cap.getTemperature()))
         {
             // Handle possible metal output
             FluidStack fluidStack = cachedRecipe.getOutputFluid(stack);

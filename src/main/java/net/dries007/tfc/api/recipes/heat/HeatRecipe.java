@@ -26,6 +26,15 @@ import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 @ParametersAreNonnullByDefault
 public abstract class HeatRecipe extends IForgeRegistryEntry.Impl<HeatRecipe>
 {
+    /**
+     * Overload that ignores the tier requirement by passing in the maximum tier
+     */
+    @Nullable
+    public static HeatRecipe get(ItemStack stack)
+    {
+        return get(stack, Metal.Tier.TIER_VI);
+    }
+
     @Nullable
     public static HeatRecipe get(ItemStack stack, Metal.Tier tier)
     {
@@ -33,14 +42,14 @@ public abstract class HeatRecipe extends IForgeRegistryEntry.Impl<HeatRecipe>
     }
 
     protected final IIngredient<ItemStack> ingredient;
-    protected final Metal.Tier minTier;
-    protected final float transformTemp;
+    private final float transformTemp;
+    private final Metal.Tier minTier;
 
-    protected HeatRecipe(IIngredient<ItemStack> ingredient, Metal.Tier minTier, float transformTemp)
+    protected HeatRecipe(IIngredient<ItemStack> ingredient, float transformTemp)
     {
         this.ingredient = ingredient;
-        this.minTier = minTier;
         this.transformTemp = transformTemp;
+        this.minTier = Metal.Tier.TIER_0;
     }
 
     /**

@@ -13,7 +13,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IFireable;
 
 @ParametersAreNonnullByDefault
@@ -35,7 +34,7 @@ public class HeatRecipeFireable extends HeatRecipe
 
     public HeatRecipeFireable()
     {
-        super(input -> getFireable(input) != null, Metal.Tier.TIER_I, 1599f);
+        super(input -> getFireable(input) != null, 1599f);
     }
 
     @Override
