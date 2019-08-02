@@ -21,13 +21,17 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.network.PacketChestUpdate;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.dries007.tfc.util.Helpers;
 
@@ -42,7 +46,6 @@ public class TEChestTFC extends TEInventory implements ITickable, IInventory
     private int numPlayersUsing;
     private int ticksSinceSync;
     private int connectedTo;
-    private boolean priority; //used to control which one is the first tile entity(eg: which one takes the first two lines of items)
 
     private Tree cachedWood;
 
@@ -50,9 +53,22 @@ public class TEChestTFC extends TEInventory implements ITickable, IInventory
     {
         super(SIZE);
         connectedTo = 0;
-        priority = true;
         lidAngle = 0;
         prevLidAngle = 0;
+    }
+
+    @Override
+    public void onBreakBlock(World world, BlockPos pos)
+    {
+        super.onBreakBlock(world, pos);
+        if (getConnection() != null)
+        {
+            TEChestTFC teConnected = Helpers.getTE(world, pos.offset(getConnection()), TEChestTFC.class);
+            if (teConnected != null)
+            {
+                teConnected.setConnectedTo(null);
+            }
+        }
     }
 
     @Nullable
@@ -62,26 +78,45 @@ public class TEChestTFC extends TEInventory implements ITickable, IInventory
         return EnumFacing.byIndex(connectedTo + 1);
     }
 
-    public void setConnectedTo(EnumFacing facing)
+    public void setConnectedTo(@Nullable EnumFacing facing)
     {
-        TEChestTFC connecting = Helpers.getTE(this.world, pos.offset(facing), TEChestTFC.class);
-        if (connecting != null)
-        {
-            this.connectedTo = facing.getIndex() - 1;
-            this.priority = false;
-            connecting.priority = true;
-        }
-        else
+        if (facing == null)
         {
             this.connectedTo = 0;
         }
+        else
+        {
+            TEChestTFC connecting = Helpers.getTE(this.world, pos.offset(facing), TEChestTFC.class);
+            if (connecting != null)
+            {
+                this.connectedTo = facing.getIndex() - 1;
+            }
+            else
+            {
+                this.connectedTo = 0;
+            }
+        }
+        TerraFirmaCraft.getNetwork().sendToDimension(new PacketChestUpdate(this), world.provider.getDimension());
+        this.markDirty();
     }
 
+    //Received on client to update the connection(used to render this chest as double/single sized)
+    public void onReceivePacket(int connectedTo)
+    {
+        this.connectedTo = connectedTo;
+    }
+
+    /**
+     * Return the priority TE (eg: the one that should have the first two lines in GUI).
+     * The order of priority is from left to right from the facing
+     *
+     * @return the instance of TEChestTFC with highest priority
+     */
     public TEChestTFC getPriorityTE()
     {
-        if (priority || getConnection() == null) return this;
+        if (getConnection() == null) return this;
         TEChestTFC connecting = Helpers.getTE(this.world, pos.offset(getConnection()), TEChestTFC.class);
-        if (connecting != null && connecting.priority)
+        if (connecting != null && this.world.getBlockState(pos).getValue(BlockChestTFC.FACING).rotateY() == getConnection())
         {
             return connecting;
         }
@@ -93,7 +128,6 @@ public class TEChestTFC extends TEInventory implements ITickable, IInventory
     {
         super.readFromNBT(nbt);
         connectedTo = nbt.getInteger("connection");
-        priority = nbt.getBoolean("priority");
     }
 
     @Nonnull
@@ -101,7 +135,6 @@ public class TEChestTFC extends TEInventory implements ITickable, IInventory
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         nbt.setInteger("connection", connectedTo);
-        nbt.setBoolean("priority", priority);
         return super.writeToNBT(nbt);
     }
 

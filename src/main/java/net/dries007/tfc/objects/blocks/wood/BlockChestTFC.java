@@ -92,6 +92,17 @@ public class BlockChestTFC extends BlockContainer
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TEChestTFC te = Helpers.getTE(worldIn, pos, TEChestTFC.class);
+        if (!worldIn.isRemote && te != null)
+        {
+            te.onBreakBlock(worldIn, pos);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state)
@@ -185,12 +196,62 @@ public class BlockChestTFC extends BlockContainer
         return true;
     }
 
+    /**
+     * if you wish to allow placement side by side, delete the function below and uncomment
+     * the lines in {@link BlockChestTFC#getStateForPlacement}
+     * also, use the commented out onBlockPlacedBy
+     */
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        for (EnumFacing face : EnumFacing.HORIZONTALS)
+        {
+            IBlockState facingState = worldIn.getBlockState(pos.offset(face));
+            if (facingState.getBlock() == this)
+            {
+                TEChestTFC te = Helpers.getTE(worldIn, pos.offset(face), TEChestTFC.class);
+                if (te == null || te.getConnection() != null)
+                {
+                    return false;
+                }
+            }
+        }
+        return super.canPlaceBlockAt(worldIn, pos);
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        //todo check if the facing player clicked has a chest. try to place this one at the same facing if positive
+        //Use the commented out lines to allow single/double chests side by side.
+        /*
+        IBlockState facingState = worldIn.getBlockState(pos.offset(placer.getHorizontalFacing()));
+        if(facingState.getBlock() == this)
+        {
+            TEChestTFC te = Helpers.getTE(worldIn, pos.offset(placer.getHorizontalFacing()), TEChestTFC.class);
+            if(te != null && te.getConnection() == null)
+            {
+                return this.getDefaultState().withProperty(FACING, facingState.getValue(FACING));
+            }
+        }
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+         */
+        //=========Remove the lines below if you wish to allow side-by-side placement=========
+        for (EnumFacing face : EnumFacing.HORIZONTALS)
+        {
+            IBlockState facingState = worldIn.getBlockState(pos.offset(face));
+            if (facingState.getBlock() == this)
+            {
+                if (facingState.getValue(FACING) == face || facingState.getValue(FACING) == face.getOpposite())
+                {
+                    //Special case, placing in front or in the back of a currently placed chest
+                    return this.getDefaultState().withProperty(FACING, face.rotateY());
+                }
+                return this.getDefaultState().withProperty(FACING, facingState.getValue(FACING));
+            }
+        }
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+        //=====================================End Removal======================================
     }
 
     @Override
@@ -205,7 +266,7 @@ public class BlockChestTFC extends BlockContainer
             BlockPos neighborChestPos = pos.offset(connectFacing);
             IBlockState neighborChestState = worldIn.getBlockState(neighborChestPos);
             neighborChestTE = Helpers.getTE(worldIn, neighborChestPos, TEChestTFC.class);
-            if (neighborChestTE == null || neighborChestTE.getConnection() != null || neighborChestState.getValue(FACING) != placedFacing)
+            if (neighborChestTE == null || neighborChestTE.getConnection() != null)// || neighborChestState.getValue(FACING) != placedFacing) //uncomment this if you wish to allow side-by-side placement
             {
                 neighborChestTE = null;
             }
@@ -220,6 +281,15 @@ public class BlockChestTFC extends BlockContainer
             //found a connectable chest!
             placedTE.setConnectedTo(connectFacing);
             neighborChestTE.setConnectedTo(connectFacing.getOpposite());
+
+            //======Remove the lines below if you wish to allow connection side by side===
+            BlockPos neighborChestPos = pos.offset(connectFacing);
+            IBlockState neighborChestState = worldIn.getBlockState(neighborChestPos);
+            if (neighborChestState.getValue(FACING) != placedFacing)
+            {
+                worldIn.setBlockState(neighborChestPos, neighborChestState.withProperty(FACING, placedFacing));
+            }
+            //======end removal for side-by-side placement logic==========================
         }
     }
 

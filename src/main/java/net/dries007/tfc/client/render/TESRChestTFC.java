@@ -55,6 +55,7 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
         GlStateManager.depthMask(true);
         Tree wood = te.getWood();
         if (!te.hasWorld()) return;
+        if (te.getPriorityTE() != te) return;
         IBlockState chestState = te.getWorld().getBlockState(te.getPos());
         EnumFacing connectionFacing = te.getConnection();
 
@@ -112,25 +113,43 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
         GlStateManager.translate((float) x, (float) y + 1.0F, (float) z + 1.0F);
         GlStateManager.scale(1.0F, -1.0F, -1.0F);
         GlStateManager.translate(0.5F, 0.5F, 0.5F);
-        int rotation = 0;
+        float rotation = 0;
+        //This is to stop the tearing effect on client while the packet for connection(what determines if TE is a double chest) hasn't arrived
+        boolean flag = chestState.getValue(BlockChestTFC.FACING).rotateY() == te.getConnection();
 
         switch (chestState.getValue(BlockChestTFC.FACING))
         {
             case NORTH:
                 rotation = 180;
+                if (flag)
+                {
+                    GlStateManager.translate(1F, 0F, 0F);
+                }
                 break;
             case SOUTH:
                 rotation = 0;
+                if (flag)
+                {
+                    GlStateManager.translate(-1F, 0F, 0F);
+                }
                 break;
             case WEST:
                 rotation = 90;
+                if (flag)
+                {
+                    GlStateManager.translate(0.0F, 0F, 1F);
+                }
                 break;
             case EAST:
                 rotation = -90;
+                if (flag)
+                {
+                    GlStateManager.translate(0.0F, 0F, -1F);
+                }
                 break;
         }
 
-        GlStateManager.rotate((float) rotation, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(rotation, 0.0F, 1.0F, 0.0F);
         GlStateManager.translate(-0.5F, -0.5F, -0.5F);
 
         float f = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
