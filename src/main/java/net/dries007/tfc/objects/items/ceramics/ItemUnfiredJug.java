@@ -5,12 +5,23 @@
 
 package net.dries007.tfc.objects.items.ceramics;
 
-public class ItemUnfiredJug extends ItemUnfiredPottery
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.minecraft.item.ItemStack;
+
+public class ItemUnfiredJug extends ItemPottery
 {
 
-	public ItemUnfiredJug(ItemJug firedVersion)
+	@Override
+	public Size getSize(ItemStack stack)
 	{
-		super(firedVersion);
+		return Size.SMALL;
 	}
-
+	
+	@Override
+	public Weight getWeight(ItemStack stack)
+	{
+		return Weight.MEDIUM;
+	}
+	
 }

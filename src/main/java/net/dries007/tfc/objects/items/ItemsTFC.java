@@ -225,7 +225,7 @@ public final class ItemsTFC
 
             registerPottery(simpleItems, r, "ceramics/unfired/spindle", "ceramics/fired/spindle");
             registerPottery(simpleItems, r, "ceramics/unfired/pot", "ceramics/fired/pot");
-            registerPottery(simpleItems, r, "ceramics/unfired/jug", "ceramics/fired/jug", new ItemUnfiredJug(new ItemJug()));
+            registerPottery(simpleItems, r, "ceramics/unfired/jug", "ceramics/fired/jug", new ItemUnfiredJug(), new ItemJug());
             registerPottery(simpleItems, r, "ceramics/unfired/bowl", "ceramics/fired/bowl");
             registerPottery(simpleItems, r, "ceramics/unfired/fire_brick", "ceramics/fired/fire_brick");
 

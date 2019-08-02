@@ -42,7 +42,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class ItemJug extends ItemFiredPottery implements ICapabilityProvider
+public class ItemJug extends ItemPottery implements ICapabilityProvider
 {
 
 	public static final int MAX_FLUID_AMOUNT = 1000;
