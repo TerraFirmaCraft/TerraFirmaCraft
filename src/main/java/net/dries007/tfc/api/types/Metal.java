@@ -121,7 +121,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
      * T1 - Pit Kiln / Fire pit
      * T2 - Forge
      * T3 - Bloomery
-     * T4 - Blast Furnace
+     * T4 - Blast Furnace / Crucible
      */
     public enum Tier
     {

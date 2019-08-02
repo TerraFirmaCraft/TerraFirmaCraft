@@ -45,7 +45,6 @@ public class TFCKeybindings
         }
         if (PLACE_BLOCK.isPressed())
         {
-            TerraFirmaCraft.getLog().info("Place block key pressed");
             TerraFirmaCraft.getNetwork().sendToServer(new PacketPlaceBlockSpecial());
         }
     }

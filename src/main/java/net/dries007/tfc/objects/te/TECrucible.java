@@ -21,6 +21,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.network.PacketCrucibleUpdate;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
@@ -37,6 +38,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
     public static final int CRUCIBLE_MAX_METAL_FLUID = 3000; // = 30 Ingots worth
 
     private final Alloy alloy;
+    private HeatRecipe cachedRecipe;
     private Metal alloyResult;
     private float temperature;
     private float targetTemperature;
@@ -48,6 +50,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         this.temperature = 0;
         this.alloy = new Alloy(CRUCIBLE_MAX_METAL_FLUID);
         this.lastFillTimer = 0;
+        this.cachedRecipe = null;
     }
 
     public void acceptHeat(float temperature)
@@ -126,15 +129,11 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
             }
 
         }
-        else if (cap != null)
+        else if (cap != null && cachedRecipe != null)
         {
-            // Try and melt object
-            if (cap.isMolten())
+            if (cachedRecipe.isValidTemperature(cap.getTemperature()))
             {
-                // Melt item(s) into crucible
-                alloy.add(inputStack);
-                inventory.setStackInSlot(SLOT_INPUT, ItemStack.EMPTY);
-                needsClientUpdate = true;
+                alloy.add(inputStack, cachedRecipe);
             }
             else if (cap.getTemperature() < temperature)
             {
@@ -192,15 +191,11 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void setAndUpdateSlots(int slot)
     {
-        alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
-        temperature = nbt.getFloat("temp");
+        super.setAndUpdateSlots(slot);
 
-        // Also set the cached alloyResult:
-        alloyResult = alloy.getResult();
-
-        super.readFromNBT(nbt);
+        cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_INPUT));
     }
 
     @Override
@@ -211,6 +206,21 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         nbt.setFloat("temp", temperature);
 
         return super.writeToNBT(nbt);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
+        temperature = nbt.getFloat("temp");
+
+        // Also set the cached alloyResult:
+        alloyResult = alloy.getResult();
+
+        super.readFromNBT(nbt);
+
+        // Update the recipe cache
+        cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_INPUT));
     }
 
     @Override
