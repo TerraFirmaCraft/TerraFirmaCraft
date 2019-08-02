@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.container;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -23,6 +24,7 @@ import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemStackHandlerCallback;
 import net.dries007.tfc.util.Helpers;
 
+@ParametersAreNonnullByDefault
 public class ContainerLiquidTransfer extends ContainerItemStack implements ISlotCallback
 {
     private IItemHandlerModifiable inventory;

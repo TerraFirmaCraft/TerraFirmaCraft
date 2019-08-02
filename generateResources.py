@@ -150,6 +150,19 @@ WOOD_TYPES = [
     'blackwood',
     'palm',
 ]
+BERRY_TYPES = {
+    'blackberry': 'large',
+    'blueberry': 'large',
+    'bunch_berry': 'small',
+    'cloud_berry': 'medium',
+    'cranberry': 'medium',
+    'elderberry': 'large',
+    'gooseberry': 'medium',
+    'raspberry': 'large',
+    'snow_berry': 'small',
+    'strawberry': 'small',
+    'wintergreen_berry': 'small',
+}
 GEM_TYPES = [
     'agate',
     'amethyst',
@@ -250,7 +263,8 @@ STEEL = {
     'black_steel',
 }
 TOOLS = [
-    'pick', 'propick', 'shovel', 'axe', 'hoe', 'chisel', 'sword', 'mace', 'saw', 'shears', 'javelin', 'hammer', 'knife', 'scythe'
+    'pick', 'propick', 'shovel', 'axe', 'hoe', 'chisel', 'sword', 'mace', 'saw', 'shears', 'javelin', 'hammer', 'knife',
+    'scythe'
 ]
 FLUIDS = {
     'salt_water': 'salt_water',
@@ -556,7 +570,8 @@ def model(filename_parts, parent, textures):
 
 
 def item(filename_parts, *layers, parent='item/generated'):
-    model(('item', *filename_parts), parent, None if len(layers) == 0 else {'layer%d' % i: v for i, v in enumerate(layers)})
+    model(('item', *filename_parts), parent,
+          None if len(layers) == 0 else {'layer%d' % i: v for i, v in enumerate(layers)})
 
 
 #   ____  _            _        _        _
@@ -630,12 +645,12 @@ for key in METAL_TYPES:
         ('all', 'particle'): 'tfc:blocks/metal/%s' % key
     }, variants={
         'normal': None,
-        "north": { "true": { "submodel": { "north": { "model": "tfc:sheet", "x": 90 } } }, "false": {} },
-        "south": { "true": { "submodel": { "south": { "model": "tfc:sheet", "y": 180, "x": 90 } } }, "false": {} },
-        "east": { "true": { "submodel": { "east": { "model": "tfc:sheet", "y": 90, "x": 90 } } }, "false": {} },
-        "west": { "true": { "submodel": { "west": { "model": "tfc:sheet", "y": 270, "x": 90 } } }, "false": {} },
-        "up": { "true": { "submodel": { "up": { "model": "tfc:sheet" } } }, "false": {} },
-        "down": { "true": { "submodel": { "down": { "model": "tfc:sheet", "x": 180 } } }, "false": {} }
+        "north": {"true": {"submodel": {"north": {"model": "tfc:sheet", "x": 90}}}, "false": {}},
+        "south": {"true": {"submodel": {"south": {"model": "tfc:sheet", "y": 180, "x": 90}}}, "false": {}},
+        "east": {"true": {"submodel": {"east": {"model": "tfc:sheet", "y": 90, "x": 90}}}, "false": {}},
+        "west": {"true": {"submodel": {"west": {"model": "tfc:sheet", "y": 270, "x": 90}}}, "false": {}},
+        "up": {"true": {"submodel": {"up": {"model": "tfc:sheet"}}}, "false": {}},
+        "down": {"true": {"submodel": {"down": {"model": "tfc:sheet", "x": 180}}}, "false": {}}
     })
 
 # ROCK STUFF
@@ -748,6 +763,15 @@ for rock_type in ['granite', 'rhyolite', 'basalt', 'gabbro', 'diorite', 'andesit
         ('all', 'particle'): 'tfc:blocks/stonetypes/raw/%s' % rock_type,
     })
 
+for berry_type, size in BERRY_TYPES.items():
+    # BERRY BUSH
+    blockstate(('berry_bush', berry_type), 'tfc:berry_bush_%s' % size, textures={
+        'texture': 'tfc:blocks/berry_bush/bush/%s' % berry_type,
+        'particle': 'tfc:blocks/berry_bush/bush/%s' % berry_type,
+    }, variants={
+        'inventory': {'model': 'tfc:berry_bush_large'},
+        'fruiting': {'true': {'textures': {'texture': 'tfc:blocks/berry_bush/berry/%s' % berry_type}}, 'false': {}},
+    })
 
 # WOOD STUFF
 for wood_type in WOOD_TYPES:
@@ -850,7 +874,7 @@ for wood_type in WOOD_TYPES:
     # (WOOD) TRAPDOORS
     blockstate(('wood', 'trapdoor', wood_type), None, textures={
         'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type
-        }, variants=TRAPDOOR_VARIANTS)
+    }, variants=TRAPDOOR_VARIANTS)
 
     # CHESTS
     blockstate(('wood', 'chest', wood_type), 'tfc:chest', textures={
@@ -921,14 +945,17 @@ for wood_type in WOOD_TYPES:
             'east': {'y': 270},
         }
     })
-	
-	# SUPPORT
+
+    # SUPPORT
     blockstate(('wood', 'support', wood_type), 'tfc:support/vertical', textures={
         'texture': 'tfc:blocks/wood/sheets/%s' % wood_type,
         'particle': 'tfc:blocks/wood/sheets/%s' % wood_type,
     }, variants={
         'inventory': {'model': 'tfc:support/inventory'},
-		'axis': {'y': {'model': 'tfc:support/vertical'}, 'x': {'model': 'tfc:support/horizontal'}, 'z': {'model': 'tfc:support/horizontal', 'y': 90}},
+        'axis': {
+            'y': {'model': 'tfc:support/vertical'}, 'x': {'model': 'tfc:support/horizontal'},
+            'z': {'model': 'tfc:support/horizontal', 'y': 90}
+        },
         'north': {'true': {'submodel': 'tfc:support/connection', 'y': 270}, 'false': {}},
         'east': {'true': {'submodel': 'tfc:support/connection'}, 'false': {}},
         'south': {'true': {'submodel': 'tfc:support/connection', 'y': 90}, 'false': {}},
@@ -993,12 +1020,14 @@ for item_type, tool_item in METAL_ITEMS.items():
         if tool_item and not tool_metal:
             continue
         if item_type == 'anvil':
-            model(('item', 'metal', 'anvil', metal), 'tfc:item/metal/anvil/transformations', {'all': 'tfc:blocks/metal/%s' % metal})
+            model(('item', 'metal', 'anvil', metal), 'tfc:item/metal/anvil/transformations',
+                  {'all': 'tfc:blocks/metal/%s' % metal})
         else:
             parent = 'item/handheld' if item_type in TOOLS else 'item/generated'
             if item_type in ['knife', 'javelin']:
                 parent = 'tfc:item/handheld_flipped'
-            item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal), parent=parent)
+            item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal),
+                 parent=parent)
 for metal in STEEL:
     for type in ['high_carbon', 'weak']:
         item(('metal', 'ingot', type + '_' + metal), 'tfc:items/metal/ingot/%s' % metal)

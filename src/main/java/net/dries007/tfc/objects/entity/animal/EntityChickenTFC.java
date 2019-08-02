@@ -26,9 +26,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.IEgg;
+import net.dries007.tfc.client.TFCSoundEvents;
+import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
-import net.dries007.tfc.util.LootTableListTFC;
-import net.dries007.tfc.util.TFCSoundEvents;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
@@ -175,7 +175,7 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTableListTFC.ANIMALS_CHICKEN;
+        return LootTablesTFC.ANIMALS_CHICKEN;
     }
 
     @Override

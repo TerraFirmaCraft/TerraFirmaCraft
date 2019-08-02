@@ -22,8 +22,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.util.LootTableListTFC;
-import net.dries007.tfc.util.TFCSoundEvents;
+import net.dries007.tfc.client.TFCSoundEvents;
+import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
@@ -143,7 +143,7 @@ public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalT
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTableListTFC.ANIMALS_PHEASANT;
+        return LootTablesTFC.ANIMALS_PHEASANT;
     }
 
     @Override

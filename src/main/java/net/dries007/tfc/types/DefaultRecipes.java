@@ -17,7 +17,22 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.recipes.*;
+import net.dries007.tfc.api.recipes.LoomRecipe;
+import net.dries007.tfc.api.recipes.QuernRecipe;
+import net.dries007.tfc.api.recipes.WeldingRecipe;
+import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
+import net.dries007.tfc.api.recipes.anvil.AnvilRecipeMeasurable;
+import net.dries007.tfc.api.recipes.anvil.AnvilRecipeSplitting;
+import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
+import net.dries007.tfc.api.recipes.barrel.BarrelRecipeFoodTraits;
+import net.dries007.tfc.api.recipes.barrel.BarrelRecipeTemperature;
+import net.dries007.tfc.api.recipes.heat.HeatRecipe;
+import net.dries007.tfc.api.recipes.heat.HeatRecipeMetalMelting;
+import net.dries007.tfc.api.recipes.heat.HeatRecipeSimple;
+import net.dries007.tfc.api.recipes.heat.HeatRecipeVessel;
+import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
+import net.dries007.tfc.api.recipes.knapping.KnappingRecipeSimple;
+import net.dries007.tfc.api.recipes.knapping.KnappingRecipeStone;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
@@ -28,10 +43,10 @@ import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.items.ItemAnimalHide;
 import net.dries007.tfc.objects.items.ItemPowder;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
+import net.dries007.tfc.objects.items.metal.ItemMetalArmor;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
 import net.dries007.tfc.util.agriculture.Food;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -100,17 +115,17 @@ public final class DefaultRecipes
         for (Rock.ToolType type : Rock.ToolType.values())
         {
             // This covers all stone -> single tool head recipes
-            KnappingRecipe r = new KnappingRecipe.Stone(KnappingRecipe.Type.STONE, c -> new ItemStack(ItemRockToolHead.get(c, type)), type.getPattern());
+            KnappingRecipe r = new KnappingRecipeStone(KnappingRecipe.Type.STONE, c -> new ItemStack(ItemRockToolHead.get(c, type)), type.getPattern());
             event.getRegistry().register(r.setRegistryName(type.name().toLowerCase() + "_head"));
         }
         // these recipes cover all cases where multiple stone items can be made
         // recipes are already mirror checked
         event.getRegistry().registerAll(
-            new KnappingRecipe.Stone(KnappingRecipe.Type.STONE, c -> new ItemStack(ItemRockToolHead.get(c, Rock.ToolType.KNIFE), 2), "X  X ", "XX XX", "XX XX", "XX XX", "XX XX").setRegistryName("knife_head_1"),
-            new KnappingRecipe.Stone(KnappingRecipe.Type.STONE, c -> new ItemStack(ItemRockToolHead.get(c, Rock.ToolType.KNIFE), 2), "X   X", "XX XX", "XX XX", "XX XX", "XX XX").setRegistryName("knife_head_2"),
-            new KnappingRecipe.Stone(KnappingRecipe.Type.STONE, c -> new ItemStack(ItemRockToolHead.get(c, Rock.ToolType.KNIFE), 2), " X X ", "XX XX", "XX XX", "XX XX", "XX XX").setRegistryName("knife_head_3"),
-            new KnappingRecipe.Stone(KnappingRecipe.Type.STONE, c -> new ItemStack(ItemRockToolHead.get(c, Rock.ToolType.HOE), 2), "XXXXX", "XX   ", "     ", "XXXXX", "XX   ").setRegistryName("hoe_head_1"),
-            new KnappingRecipe.Stone(KnappingRecipe.Type.STONE, c -> new ItemStack(ItemRockToolHead.get(c, Rock.ToolType.HOE), 2), "XXXXX", "XX   ", "     ", "XXXXX", "   XX").setRegistryName("hoe_head_2")
+            new KnappingRecipeStone(KnappingRecipe.Type.STONE, c -> new ItemStack(ItemRockToolHead.get(c, Rock.ToolType.KNIFE), 2), "X  X ", "XX XX", "XX XX", "XX XX", "XX XX").setRegistryName("knife_head_1"),
+            new KnappingRecipeStone(KnappingRecipe.Type.STONE, c -> new ItemStack(ItemRockToolHead.get(c, Rock.ToolType.KNIFE), 2), "X   X", "XX XX", "XX XX", "XX XX", "XX XX").setRegistryName("knife_head_2"),
+            new KnappingRecipeStone(KnappingRecipe.Type.STONE, c -> new ItemStack(ItemRockToolHead.get(c, Rock.ToolType.KNIFE), 2), " X X ", "XX XX", "XX XX", "XX XX", "XX XX").setRegistryName("knife_head_3"),
+            new KnappingRecipeStone(KnappingRecipe.Type.STONE, c -> new ItemStack(ItemRockToolHead.get(c, Rock.ToolType.HOE), 2), "XXXXX", "XX   ", "     ", "XXXXX", "XX   ").setRegistryName("hoe_head_1"),
+            new KnappingRecipeStone(KnappingRecipe.Type.STONE, c -> new ItemStack(ItemRockToolHead.get(c, Rock.ToolType.HOE), 2), "XXXXX", "XX   ", "     ", "XXXXX", "   XX").setRegistryName("hoe_head_2")
         );
 
         /* CLAY ITEMS */
@@ -120,74 +135,101 @@ public final class DefaultRecipes
             if (type.hasMold(null))
             {
                 int amount = type == INGOT ? 2 : 1;
-                event.getRegistry().register(new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemUnfiredMold.get(type), amount), type.getPattern()).setRegistryName(type.name().toLowerCase() + "_mold"));
+                event.getRegistry().register(new KnappingRecipeSimple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemUnfiredMold.get(type), amount), type.getPattern()).setRegistryName(type.name().toLowerCase() + "_mold"));
             }
         }
 
         event.getRegistry().registerAll(
-            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_VESSEL), " XXX ", "XXXXX", "XXXXX", "XXXXX", " XXX ").setRegistryName("clay_small_vessel"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_JUG), " X   ", "XXXX ", "XXX X", "XXXX ", "XXX  ").setRegistryName("clay_jug"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_POT), "X   X", "X   X", "X   X", "XXXXX", " XXX ").setRegistryName("clay_pot"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_BOWL, 2), "X   X", " XXX ").setRegistryName(MOD_ID, "clay_bowl"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_BOWL, 4), "X   X", " XXX ", "     ", "X   X", " XXX ").setRegistryName("clay_bowl_2"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_LARGE_VESSEL), "X   X", "X   X", "X   X", "X   X", "XXXXX").setRegistryName("clay_large_vessel")
+            new KnappingRecipeSimple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.UNFIRED_VESSEL), " XXX ", "XXXXX", "XXXXX", "XXXXX", " XXX ").setRegistryName("clay_small_vessel"),
+            new KnappingRecipeSimple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.UNFIRED_JUG), " X   ", "XXXX ", "XXX X", "XXXX ", "XXX  ").setRegistryName("clay_jug"),
+            new KnappingRecipeSimple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.UNFIRED_POT), "X   X", "X   X", "X   X", "XXXXX", " XXX ").setRegistryName("clay_pot"),
+            new KnappingRecipeSimple(KnappingRecipe.Type.CLAY, false, new ItemStack(ItemsTFC.UNFIRED_BOWL, 2), "X   X", " XXX ").setRegistryName(MOD_ID, "clay_bowl"),
+            new KnappingRecipeSimple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.UNFIRED_BOWL, 4), "X   X", " XXX ", "     ", "X   X", " XXX ").setRegistryName("clay_bowl_2"),
+            new KnappingRecipeSimple(KnappingRecipe.Type.CLAY, true, new ItemStack(ItemsTFC.UNFIRED_LARGE_VESSEL), "X   X", "X   X", "X   X", "X   X", "XXXXX").setRegistryName("clay_large_vessel")
         );
 
         /* LEATHER ITEMS */
 
         event.getRegistry().registerAll(
-            new KnappingRecipe.Simple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.LEATHER_HELMET), "XXXXX", "X   X", "X   X", "     ", "     ").setRegistryName("leather_helmet"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.LEATHER_CHESTPLATE), "X   X", "XXXXX", "XXXXX", "XXXXX", "XXXXX").setRegistryName("leather_chestplate"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.LEATHER_LEGGINGS), "XXXXX", "XXXXX", "XX XX", "XX XX", "XX XX").setRegistryName("leather_leggings"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.LEATHER_BOOTS), "XX   ", "XX   ", "XX   ", "XXXX ", "XXXXX").setRegistryName("leather_boots"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.SADDLE), "  X  ", "XXXXX", "XXXXX", "XXXXX", "  X  ").setRegistryName("leather_saddle")
+            new KnappingRecipeSimple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.LEATHER_HELMET), "XXXXX", "X   X", "X   X", "     ", "     ").setRegistryName("leather_helmet"),
+            new KnappingRecipeSimple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.LEATHER_CHESTPLATE), "X   X", "XXXXX", "XXXXX", "XXXXX", "XXXXX").setRegistryName("leather_chestplate"),
+            new KnappingRecipeSimple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.LEATHER_LEGGINGS), "XXXXX", "XXXXX", "XX XX", "XX XX", "XX XX").setRegistryName("leather_leggings"),
+            new KnappingRecipeSimple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.LEATHER_BOOTS), "XX   ", "XX   ", "XX   ", "XXXX ", "XXXXX").setRegistryName("leather_boots"),
+            new KnappingRecipeSimple(KnappingRecipe.Type.LEATHER, true, new ItemStack(Items.SADDLE), "  X  ", "XXXXX", "XXXXX", "XXXXX", "  X  ").setRegistryName("leather_saddle")
         );
 
         /* FIRE CLAY ITEMS */
 
         event.getRegistry().registerAll(
-            new KnappingRecipe.Simple(KnappingRecipe.Type.FIRE_CLAY, true, new ItemStack(BlocksTFC.CRUCIBLE), "X   X", "X   X", "X   X", "X   X", "XXXXX").setRegistryName("fire_clay_crucible"),
-            new KnappingRecipe.Simple(KnappingRecipe.Type.FIRE_CLAY, true, new ItemStack(ItemsTFC.CERAMICS_UNFIRED_FIRE_BRICK, 2), "XX XX", "XX XX", "XX XX", "XX XX", "XX XX").setRegistryName("fire_clay_fire_brick")
+            new KnappingRecipeSimple(KnappingRecipe.Type.FIRE_CLAY, true, new ItemStack(BlocksTFC.CRUCIBLE), "X   X", "X   X", "X   X", "X   X", "XXXXX").setRegistryName("fire_clay_crucible"),
+            new KnappingRecipeSimple(KnappingRecipe.Type.FIRE_CLAY, true, new ItemStack(ItemsTFC.UNFIRED_FIRE_BRICK, 2), "XX XX", "XX XX", "XX XX", "XX XX", "XX XX").setRegistryName("fire_clay_fire_brick")
         );
 
     }
 
     @SubscribeEvent
-    public static void onRegisterPitKilnRecipeEvent(RegistryEvent.Register<PitKilnRecipe> event)
+    public static void onRegisterHeatRecipeEvent(RegistryEvent.Register<HeatRecipe> event)
     {
-        IForgeRegistry<PitKilnRecipe> r = event.getRegistry();
+        IForgeRegistry<HeatRecipe> r = event.getRegistry();
 
-        /* Pottery Items */
-
-        for (Metal.ItemType type : Metal.ItemType.values())
+        for (Metal metal : TFCRegistries.METALS.getValuesCollection())
         {
-            if (type.hasMold(null))
-            {
-                // Fired molds
-                r.register(new PitKilnRecipe(IIngredient.of(ItemMold.get(type))).setRegistryName("mold_" + type.name().toLowerCase() + "_fireable"));
-                // Unfired molds
-                r.register(new PitKilnRecipe(IIngredient.of(ItemUnfiredMold.get(type)), new ItemStack(ItemMold.get(type))).setRegistryName("mold_" + type.name().toLowerCase()));
-            }
+            //noinspection ConstantConditions
+            r.register(new HeatRecipeMetalMelting(metal).setRegistryName(metal.getRegistryName().getPath() + "_melting"));
         }
 
-        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_UNFIRED_LARGE_VESSEL), new ItemStack(BlocksTFC.LARGE_VESSEL)).setRegistryName("large_vessel"));
-
-        // Fired ceramic vessels
-        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_FIRED_VESSEL)).setRegistryName("fired_vessel_fireable"));
-        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED)).setRegistryName("fired_vessel_fireable_glazed"));
-
-        // Unfired ceramic vessels
-        r.register(new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_UNFIRED_VESSEL), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL)).setRegistryName("fired_vessel"));
-        for (EnumDyeColor color : EnumDyeColor.values())
+        // Pottery Items with metadata
+        for (EnumDyeColor dye : EnumDyeColor.values())
         {
-            r.register(new PitKilnRecipe(IIngredient.of(new ItemStack(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, color.getMetadata())), new ItemStack(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, color.getMetadata())).setRegistryName("fired_vessel_glazed_" + color.getName()));
+            r.register(
+                new HeatRecipeSimple(IIngredient.of(new ItemStack(ItemsTFC.UNFIRED_VESSEL_GLAZED, 1, dye.getMetadata())), new ItemStack(ItemsTFC.FIRED_VESSEL_GLAZED, 1, dye.getMetadata()), 1599f, Metal.Tier.TIER_I).setRegistryName("unfired_vessel_glazed_" + dye.getName())
+            );
         }
 
-        // Misc
+        // Standard / Simple recipes
         r.registerAll(
-            new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_UNFIRED_JUG), new ItemStack(ItemsTFC.CERAMICS_FIRED_JUG)).setRegistryName("fired_jug"),
-            new PitKilnRecipe(IIngredient.of(ItemsTFC.CERAMICS_UNFIRED_SPINDLE), new ItemStack(ItemsTFC.CERAMICS_FIRED_SPINDLE)).setRegistryName("fired_spindle"),
-            new PitKilnRecipe(IIngredient.of(ItemsTFC.UNFIRED_FIRE_BRICK), new ItemStack(ItemsTFC.FIRE_BRICK)).setRegistryName("fire_brick")
+            // Pottery
+            new HeatRecipeSimple(IIngredient.of(ItemsTFC.UNFIRED_FIRE_BRICK), new ItemStack(ItemsTFC.FIRED_FIRE_BRICK), 1599f, Metal.Tier.TIER_I).setRegistryName("unfired_fire_brick"),
+            new HeatRecipeSimple(IIngredient.of(ItemsTFC.UNFIRED_VESSEL), new ItemStack(ItemsTFC.FIRED_VESSEL), 1599f, Metal.Tier.TIER_I).setRegistryName("unfired_vessel"),
+            new HeatRecipeSimple(IIngredient.of(ItemsTFC.UNFIRED_JUG), new ItemStack(ItemsTFC.FIRED_JUG), 1599f, Metal.Tier.TIER_I).setRegistryName("unfired_jug"),
+            new HeatRecipeSimple(IIngredient.of(ItemsTFC.UNFIRED_POT), new ItemStack(ItemsTFC.FIRED_POT), 1599f, Metal.Tier.TIER_I).setRegistryName("unfired_pot"),
+            new HeatRecipeSimple(IIngredient.of(ItemsTFC.UNFIRED_BOWL), new ItemStack(ItemsTFC.FIRED_BOWL), 1599f, Metal.Tier.TIER_I).setRegistryName("unfired_bowl"),
+            new HeatRecipeSimple(IIngredient.of(ItemsTFC.UNFIRED_SPINDLE), new ItemStack(ItemsTFC.FIRED_SPINDLE), 1599f, Metal.Tier.TIER_I).setRegistryName("unfired_spindle"),
+            new HeatRecipeSimple(IIngredient.of(ItemsTFC.UNFIRED_LARGE_VESSEL), new ItemStack(BlocksTFC.FIRED_LARGE_VESSEL), 1599f, Metal.Tier.TIER_I).setRegistryName("unfired_large_vessel"),
+
+            // Fired Pottery - doesn't burn up
+            new HeatRecipeSimple(IIngredient.of(ItemsTFC.FIRED_FIRE_BRICK), new ItemStack(ItemsTFC.FIRED_FIRE_BRICK), 1599f, Metal.Tier.TIER_I).setRegistryName("fired_fire_brick"),
+            new HeatRecipeVessel(IIngredient.of(ItemsTFC.FIRED_VESSEL), 1599f, Metal.Tier.TIER_I).setRegistryName("fired_vessel"),
+            new HeatRecipeVessel(IIngredient.of(ItemsTFC.FIRED_VESSEL_GLAZED), 1599f, Metal.Tier.TIER_I).setRegistryName("fired_vessel_glazed_all"),
+            new HeatRecipeSimple(IIngredient.of(ItemsTFC.FIRED_JUG), new ItemStack(ItemsTFC.FIRED_JUG), 1599f, Metal.Tier.TIER_I).setRegistryName("fired_jug"),
+            new HeatRecipeSimple(IIngredient.of(ItemsTFC.FIRED_POT), new ItemStack(ItemsTFC.FIRED_POT), 1599f, Metal.Tier.TIER_I).setRegistryName("fired_pot"),
+            new HeatRecipeSimple(IIngredient.of(ItemsTFC.FIRED_BOWL), new ItemStack(ItemsTFC.FIRED_BOWL), 1599f, Metal.Tier.TIER_I).setRegistryName("fired_bowl"),
+            new HeatRecipeSimple(IIngredient.of(ItemsTFC.FIRED_SPINDLE), new ItemStack(ItemsTFC.FIRED_SPINDLE), 1599f, Metal.Tier.TIER_I).setRegistryName("fired_spindle"),
+            new HeatRecipeSimple(IIngredient.of(BlocksTFC.FIRED_LARGE_VESSEL), new ItemStack(BlocksTFC.FIRED_LARGE_VESSEL), 1599f, Metal.Tier.TIER_I).setRegistryName("fired_large_vessel"),
+
+            // Misc
+            new HeatRecipeSimple(IIngredient.of("stickWood"), new ItemStack(BlocksTFC.TORCH, 2), 40).setRegistryName("torch"),
+            new HeatRecipeSimple(IIngredient.of("sand"), new ItemStack(Blocks.GLASS), 600).setRegistryName("glass"),
+
+            // Bread
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.BARLEY_DOUGH)), new ItemStack(ItemFoodTFC.get(Food.BARLEY_BREAD)), 200, 400).setRegistryName("barley_bread"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.CORNMEAL_DOUGH)), new ItemStack(ItemFoodTFC.get(Food.CORNBREAD)), 200, 400).setRegistryName("cornbread"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.OAT_DOUGH)), new ItemStack(ItemFoodTFC.get(Food.OAT_BREAD)), 200, 400).setRegistryName("oat_bread"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.RICE_DOUGH)), new ItemStack(ItemFoodTFC.get(Food.RICE_BREAD)), 200, 400).setRegistryName("rice_bread"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.RYE_DOUGH)), new ItemStack(ItemFoodTFC.get(Food.RYE_BREAD)), 200, 400).setRegistryName("rye_bread"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.WHEAT_DOUGH)), new ItemStack(ItemFoodTFC.get(Food.WHEAT_BREAD)), 200, 400).setRegistryName("wheat_bread"),
+
+            // Meat
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.BEEF)), new ItemStack(ItemFoodTFC.get(Food.COOKED_BEEF)), 200, 400).setRegistryName("cooked_beef"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.PORK)), new ItemStack(ItemFoodTFC.get(Food.COOKED_PORK)), 200, 400).setRegistryName("cooked_pork"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.CHICKEN)), new ItemStack(ItemFoodTFC.get(Food.COOKED_CHICKEN)), 200, 400).setRegistryName("cooked_chicken"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.MUTTON)), new ItemStack(ItemFoodTFC.get(Food.COOKED_MUTTON)), 200, 400).setRegistryName("cooked_mutton"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.FISH)), new ItemStack(ItemFoodTFC.get(Food.COOKED_FISH)), 200, 400).setRegistryName("cooked_fish"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.BEAR)), new ItemStack(ItemFoodTFC.get(Food.COOKED_BEAR)), 200, 400).setRegistryName("cooked_bear"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.CALAMARI)), new ItemStack(ItemFoodTFC.get(Food.COOKED_CALAMARI)), 200, 400).setRegistryName("cooked_calamari"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.HORSE_MEAT)), new ItemStack(ItemFoodTFC.get(Food.COOKED_HORSE_MEAT)), 200, 400).setRegistryName("cooked_horse_meat"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.PHEASANT)), new ItemStack(ItemFoodTFC.get(Food.COOKED_PHEASANT)), 200, 400).setRegistryName("cooked_pheasant"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.VENISON)), new ItemStack(ItemFoodTFC.get(Food.COOKED_VENISON)), 200, 400).setRegistryName("cooked_venison")
         );
     }
 
@@ -217,7 +259,7 @@ public final class DefaultRecipes
         addAnvil(r, DOUBLE_SHEET, UNFINISHED_HELMET, true, HIT_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
         addAnvil(r, DOUBLE_SHEET, UNFINISHED_CHESTPLATE, true, HIT_LAST, HIT_SECOND_LAST, UPSET_THIRD_LAST);
         addAnvil(r, DOUBLE_SHEET, UNFINISHED_GREAVES, true, BEND_ANY, DRAW_ANY, HIT_ANY);
-        addAnvil(r, DOUBLE_SHEET, UNFINISHED_BOOTS, true, BEND_LAST, BEND_SECOND_LAST, SHRINK_THIRD_LAST);
+        addAnvil(r, SHEET, UNFINISHED_BOOTS, true, BEND_LAST, BEND_SECOND_LAST, SHRINK_THIRD_LAST);
 
         r.register(new AnvilRecipeMeasurable(new ResourceLocation(MOD_ID, "refining_bloom"), IIngredient.of(ItemsTFC.UNREFINED_BLOOM), new ItemStack(ItemsTFC.REFINED_BLOOM), Metal.Tier.TIER_II, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST));
         r.register(new AnvilRecipeSplitting(new ResourceLocation(MOD_ID, "splitting_bloom"), IIngredient.of(ItemsTFC.REFINED_BLOOM), 100, Metal.Tier.TIER_II, PUNCH_LAST));
@@ -252,7 +294,7 @@ public final class DefaultRecipes
         // Armor
         addWelding(r, UNFINISHED_HELMET, SHEET, HELMET, true);
         addWelding(r, UNFINISHED_CHESTPLATE, DOUBLE_SHEET, CHESTPLATE, true);
-        addWelding(r, UNFINISHED_GREAVES, DOUBLE_SHEET, GREAVES, true);
+        addWelding(r, UNFINISHED_GREAVES, SHEET, GREAVES, true);
         addWelding(r, UNFINISHED_BOOTS, SHEET, BOOTS, true);
 
         // Steel Welding
@@ -402,7 +444,7 @@ public final class DefaultRecipes
             // Create a recipe for each metal / item type combination
             ItemStack input1 = new ItemStack(ItemMetal.get(metal, inputType1));
             ItemStack input2 = new ItemStack(ItemMetal.get(metal, inputType2));
-            ItemStack output = new ItemStack(ItemMetal.get(metal, outputType));
+            ItemStack output = new ItemStack(outputType.isArmor() ? ItemMetalArmor.get(metal, outputType) : ItemMetal.get(metal, outputType));
             if (!input1.isEmpty() && !input2.isEmpty() && !output.isEmpty())
             {
                 // Note: Welding recipes require one less than the tier of the metal

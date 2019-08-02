@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.api.recipes.AnvilRecipe;
+import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 
 import static net.dries007.tfc.client.gui.GuiAnvilTFC.ANVIL_BACKGROUND;

@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.items.ceramics;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
@@ -46,7 +47,8 @@ import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
-public class ItemSmallVessel extends ItemFiredPottery
+@ParametersAreNonnullByDefault
+public class ItemSmallVessel extends ItemPottery
 {
     public final boolean glazed;
 
@@ -58,7 +60,7 @@ public class ItemSmallVessel extends ItemFiredPottery
 
     @Override
     @Nonnull
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         ItemStack stack = playerIn.getHeldItem(handIn);
         if (!worldIn.isRemote && !playerIn.isSneaking())
@@ -93,7 +95,7 @@ public class ItemSmallVessel extends ItemFiredPottery
     }
 
     @Override
-    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
         if (!isInCreativeTab(tab)) return;
 
@@ -112,13 +114,13 @@ public class ItemSmallVessel extends ItemFiredPottery
     }
 
     @Override
-    public boolean canStack(@Nonnull ItemStack stack)
+    public boolean canStack(ItemStack stack)
     {
         return false;
     }
 
-    @Override
-    public ItemStack getFiringResult(ItemStack input, Metal.Tier tier)
+    @Nonnull
+    public ItemStack getFiringResult(ItemStack input)
     {
         // Case 1: The input is a filled vessel
         IItemHandler capItemHandler = input.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -147,14 +149,14 @@ public class ItemSmallVessel extends ItemFiredPottery
 
     @Nonnull
     @Override
-    public Size getSize(@Nonnull ItemStack stack)
+    public Size getSize(ItemStack stack)
     {
         return Size.VERY_LARGE;
     }
 
     @Nonnull
     @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
+    public Weight getWeight(ItemStack stack)
     {
         return Weight.HEAVY;
     }
@@ -235,15 +237,16 @@ public class ItemSmallVessel extends ItemFiredPottery
             {
                 String desc = TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount());
                 if (isMolten())
+                {
                     desc += " - " + I18n.format("tfc.tooltip.liquid");
+                }
                 text.add(desc);
             }
             else
             {
                 boolean hasContent = false;
-                for (int i = 0; i < super.stacks.size(); i++)
+                for (ItemStack slot : super.stacks)
                 {
-                    ItemStack slot = super.stacks.get(i);
                     if (!slot.isEmpty())
                     {
                         text.add(1, I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_item", slot.getCount(), slot.getItem().getItemStackDisplayName(slot)));

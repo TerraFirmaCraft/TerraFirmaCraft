@@ -36,7 +36,6 @@ import net.dries007.tfc.command.*;
 import net.dries007.tfc.network.*;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
 import net.dries007.tfc.proxy.IProxy;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.fuel.FuelManager;
@@ -207,8 +206,9 @@ public final class TerraFirmaCraft
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 4);
         //todo: add cave decorator
         GameRegistry.registerWorldGenerator(new WorldGenTrees(), 5);
-        GameRegistry.registerWorldGenerator(new WorldGenFruitTrees(), 6);
-        GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 7);
+        GameRegistry.registerWorldGenerator(new WorldGenBerryBushes(), 6);
+        GameRegistry.registerWorldGenerator(new WorldGenFruitTrees(), 7);
+        GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 8);
     }
 
     @Mod.EventHandler
@@ -219,7 +219,6 @@ public final class TerraFirmaCraft
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
         }
 
-        HeatRecipeManager.postInit();
         FuelManager.postInit();
 
         VeinRegistry.INSTANCE.reloadOreGen();

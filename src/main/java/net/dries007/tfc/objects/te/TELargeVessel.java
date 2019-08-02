@@ -17,6 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
@@ -28,7 +29,6 @@ import net.dries007.tfc.network.PacketLargeVesselUpdate;
 import net.dries007.tfc.objects.blocks.BlockLargeVessel;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
-import net.dries007.tfc.util.LargeVesselItemStackHandler;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
 
@@ -242,5 +242,25 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
     private void updateLockStatus()
     {
         sealed = world.getBlockState(pos).getValue(BlockLargeVessel.SEALED);
+    }
+
+    static class LargeVesselItemStackHandler extends ItemStackHandler
+    {
+        LargeVesselItemStackHandler(int slots)
+        {
+            super(slots);
+        }
+
+        @Override
+        @Nonnull
+        public ItemStack extractItem(int slot, int amount, boolean simulate)
+        {
+            IFood cap = getStackInSlot(slot).getCapability(CapabilityFood.CAPABILITY, null);
+            if (cap != null)
+            {
+                CapabilityFood.removeTrait(cap, CapabilityFood.LARGE_VESSEL_PRESERVED);
+            }
+            return super.extractItem(slot, amount, simulate);
+        }
     }
 }

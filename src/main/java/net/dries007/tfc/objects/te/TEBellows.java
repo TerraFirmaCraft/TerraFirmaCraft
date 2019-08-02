@@ -20,10 +20,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.util.IBellowsConsumerBlock;
+import net.dries007.tfc.client.TFCSoundEvents;
 import net.dries007.tfc.network.PacketBellowsUpdate;
 import net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge;
 import net.dries007.tfc.objects.blocks.devices.BlockFirePit;
-import net.dries007.tfc.util.TFCSoundEvents;
 
 import static net.minecraft.block.BlockHorizontal.FACING;
 

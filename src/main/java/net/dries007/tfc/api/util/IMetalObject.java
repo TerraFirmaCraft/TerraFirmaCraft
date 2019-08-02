@@ -38,7 +38,7 @@ public interface IMetalObject
         if (isSmeltable(stack))
         {
             text.add(I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));
-            text.add(I18n.format("tfc.tooltip.smelting", I18n.format(Helpers.getEnumName(metal.getTier()))));
+            text.add(I18n.format(Helpers.getEnumName(metal.getTier())));
         }
     }
 

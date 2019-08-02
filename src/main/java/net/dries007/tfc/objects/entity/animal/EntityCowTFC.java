@@ -28,7 +28,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.util.LootTableListTFC;
+import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -245,7 +245,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTableListTFC.ANIMALS_COW;
+        return LootTablesTFC.ANIMALS_COW;
     }
 
     @Override
