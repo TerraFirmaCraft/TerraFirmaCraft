@@ -272,7 +272,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
 
     private void handleInputMelting(ItemStack stack, int startIndex)
     {
-        HeatRecipe recipe = HeatRecipe.get(stack);
+        HeatRecipe recipe = cachedRecipes[startIndex - SLOT_INPUT_MIN];
         IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
 
         if (recipe != null && cap != null && recipe.isValidTemperature(cap.getTemperature()))
