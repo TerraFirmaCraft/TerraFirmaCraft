@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.entity.animal;
 
 import java.util.UUID;
@@ -37,9 +42,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import jdk.nashorn.internal.ir.Block;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.*;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
-import net.dries007.tfc.util.LootTableListTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
@@ -437,7 +442,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTableListTFC.ANIMALS_WOLF;
+        return LootTablesTFC.ANIMALS_WOLF;
     }
 
     public int getVerticalFaceSpeed()
