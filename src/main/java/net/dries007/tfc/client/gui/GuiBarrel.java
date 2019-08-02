@@ -32,7 +32,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.recipes.BarrelRecipe;
+import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.client.FluidSpriteCache;
 import net.dries007.tfc.client.button.GuiButtonBarrelSeal;
 import net.dries007.tfc.client.button.IButtonTooltip;

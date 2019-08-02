@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.recipes.AlloyRecipe;
+import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IMetalObject;
@@ -96,23 +97,54 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
 
     /**
      * Add metal to an alloy from an item stack
-     * Note if the an item doesn't implement {@link IMetalObject} it will be ignored, and {@link Alloy#isValid} will be set to false
+     * Note if the an item doesn't match a recipe it will be ignored, and {@link Alloy#isValid} will be set to false
      *
      * @param stack an item stack
      * @return the alloy, for method chaining
      */
     public Alloy add(@Nonnull ItemStack stack)
     {
-        if (stack.isEmpty())
-            return this;
-        if (stack.getItem() instanceof IMetalObject)
+        return add(stack, Metal.Tier.TIER_VI);
+    }
+
+    /**
+     * Add metal to an alloy from an item stack
+     * Note if the an item doesn't match a heat recipe it will be ignored, and {@link Alloy#isValid} will be set to false
+     *
+     * @param stack an item stack
+     * @param deviceTier the tier of the device doing the heating
+     * @return the alloy, for method chaining
+     */
+    public Alloy add(@Nonnull ItemStack stack, @Nonnull Metal.Tier deviceTier)
+    {
+        if (!stack.isEmpty())
         {
-            IMetalObject m = (IMetalObject) stack.getItem();
-            add(m.getMetal(stack), m.getSmeltAmount(stack) * stack.getCount());
-        }
-        else
-        {
+            HeatRecipe recipe = HeatRecipe.get(stack, deviceTier);
+            if (recipe != null)
+            {
+                return add(stack, recipe);
+            }
             isValid = false;
+        }
+        return this;
+    }
+
+    /**
+     * Add metal to an alloy from an item stack
+     *
+     * @param stack  an item stack
+     * @param recipe the recipe to use to convert the stack into fluid
+     * @return the alloy, for method chaining
+     */
+    public Alloy add(@Nonnull ItemStack stack, @Nonnull HeatRecipe recipe)
+    {
+        if (!stack.isEmpty())
+        {
+            FluidStack fluidStack = recipe.getOutputFluid(stack);
+            if (fluidStack != null)
+            {
+                add(fluidStack);
+            }
         }
         return this;
     }

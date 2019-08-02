@@ -25,7 +25,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
-import net.dries007.tfc.api.recipes.BarrelRecipe;
+import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.network.PacketBarrelUpdate;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
 import net.dries007.tfc.objects.fluids.capability.FluidHandlerSided;
@@ -336,11 +336,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 IItemSize sizeCap = CapabilityItemSize.getIItemSize(stack);
                 if (sizeCap != null)
                 {
-                    if (sizeCap.getSize(stack).isSmallerThan(Size.VERY_LARGE))
-                    {
-                        return true;
-                    }
-                    return false;
+                    return sizeCap.getSize(stack).isSmallerThan(Size.VERY_LARGE);
                 }
                 return true;
             default:
