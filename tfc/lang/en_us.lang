@@ -177,11 +177,13 @@ tfc.types.metal.high_carbon_black_steel=Black High Carbon Steel
 tfc.types.metal.high_carbon_blue_steel=Blue High Carbon Steel
 tfc.types.metal.high_carbon_red_steel=Red High Carbon Steel
 
-tfc.enum.tier.tier_i=Pit Kiln
-tfc.enum.tier.tier_ii=Beehive Kiln
-tfc.enum.tier.tier_iii=Bloomery
-tfc.enum.tier.tier_iv=Blast Furnace
-tfc.enum.tier.tier_v=Crucible
+tfc.enum.tier.tier_0=Tier 0
+tfc.enum.tier.tier_i=Tier I
+tfc.enum.tier.tier_ii=Tier II
+tfc.enum.tier.tier_iii=Tier III
+tfc.enum.tier.tier_iv=Tier IV
+tfc.enum.tier.tier_v=Tier V
+tfc.enum.tier.tier_vi=Tier VI
 
 ## Size
 tfc.enum.size.tiny=Tiny
