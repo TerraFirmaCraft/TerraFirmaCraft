@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
+import org.lwjgl.opengl.GL14;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -77,25 +78,48 @@ public final class PlayerDataOverlay
 
         if (mc.playerController.gameIsSurvivalOrAdventure())
         {
-            //Draw Health
-            GL11.glEnable(GL11.GL_BLEND);
-            this.drawTexturedModalRect(mid - 91, healthRowHeight, 0, 0, 90, 10);
             float curHealth = player.getHealth() * baseMaxHealth / (float) 20;
             float percentHealth = curHealth / baseMaxHealth;
             float surplusPercent = Math.max(percentHealth - 1, 0);
-            int uSurplus = 90;
             if (percentHealth > 1) percentHealth = 1;
 
+            GL11.glEnable(GL11.GL_BLEND);
+
+            //Draw Health Background Bar
+            this.drawTexturedModalRect(mid - 91, healthRowHeight, 0, 0, 90, 10);
+
+            //Draw Health Bar
+            GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
+
+            //What's our "background" health bar color?
+            //If there's only 10 hearts (or less), draw Red and only Red.
+            int healthColor = surplusPercent > 0 ? (int) Math.floor(surplusPercent) % 7 : 0;
+
+            //Draw base color
+            setHealthBarColor(healthColor);
             this.drawTexturedModalRect(mid - 91, healthRowHeight, 0, 10, (int) (90 * percentHealth), 10);
-            while (surplusPercent > 0)
+            //Draw additive shading texture
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glBlendFunc(1, 1);
+            GL14.glBlendEquation(GL14.GL_FUNC_ADD);
+            this.drawTexturedModalRect(mid - 91, healthRowHeight, 90, 10, (int) (90 * percentHealth), 10);
+            GL11.glPopAttrib();
+
+            // Add "extra" health bar overlay (for mods adding health)
+            if (surplusPercent > 0)
             {
-                //Draw beyond max health bar(if other mods adds more health)
-                float percent = Math.min(surplusPercent, 1);
-                this.drawTexturedModalRect(mid - 91, healthRowHeight, uSurplus, 10, (int) (90 * percent), 10);
-                surplusPercent -= 1.0f;
-                uSurplus = uSurplus == 90 ? 0 : 90; //To alternate between red and yellow bars (if mods adds that much surplus health)
-                //To anyone seeing this: feel free to make a colorize(Hue tweaking?) function to get other color bars
-                //Or just add more color bars to overlay icons.
+                float percent = surplusPercent % 1;
+
+                GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
+                //Draw base color
+                setHealthBarColor((healthColor + 1) % 7);
+                this.drawTexturedModalRect(mid - 91, healthRowHeight, 0, 10, (int) (90 * percent), 10);
+                //Draw additive shading texture
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GL11.glBlendFunc(1, 1);
+                GL14.glBlendEquation(GL14.GL_FUNC_ADD);
+                this.drawTexturedModalRect(mid - 91, healthRowHeight, 90, 10, (int) (90 * percent), 10);
+                GL11.glPopAttrib();
             }
             //Draw Food and Water
             float foodLevel = player.getFoodStats().getFoodLevel();
@@ -114,6 +138,13 @@ public final class PlayerDataOverlay
 
             //Draw Notifications
             String healthString = ((int) curHealth) + "/" + ((int) (baseMaxHealth));
+            //Render health string border
+            int healthStringBorder = new Color(0.0F, 0.0F, 0.0F, 0.25F).getRGB();
+            fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2) - 1, healthRowHeight + 2, healthStringBorder);
+            fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2) + 1, healthRowHeight + 2, healthStringBorder);
+            fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2 - 1, healthStringBorder);
+            fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2 + 1, healthStringBorder);
+            //Render health string itself
             fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2, Color.white.getRGB());
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -185,5 +216,31 @@ public final class PlayerDataOverlay
         vb.pos(xCoord + maxU, yCoord + 0.0F, 0).tex((minU + maxU) * textureScaleU, (minV + 0) * textureScaleV).endVertex();
         vb.pos(xCoord + 0.0F, yCoord + 0.0F, 0).tex((minU + 0) * textureScaleU, (minV + 0) * textureScaleV).endVertex();
         tessellator.draw();
+    }
+
+    private void setHealthBarColor(int col) {
+        switch (col) {
+            case 0: //Red
+                GL11.glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
+                break;
+            case 1: //Orange
+                GL11.glColor4f(0.8F, 0.3F, 0.0F, 1.0F);
+                break;
+            case 2: //Yellow
+                GL11.glColor4f(0.5F, 0.5F, 0.0F, 1.0F);
+                break;
+            case 3: //Green
+                GL11.glColor4f(0.0F, 0.5F, 0.0F, 1.0F);
+                break;
+            case 4: //Cyan
+                GL11.glColor4f(0.0F, 0.5F, 0.6F, 1.0F);
+                break;
+            case 5: //Blue
+                GL11.glColor4f(0.0F, 0.2F, 0.8F, 1.0F);
+                break;
+            case 6: //Purple
+                GL11.glColor4f(0.6F, 0.0F, 0.6F, 1.0F);
+                break;
+        }
     }
 }
