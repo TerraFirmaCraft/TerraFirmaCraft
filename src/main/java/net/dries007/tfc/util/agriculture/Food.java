@@ -63,7 +63,7 @@ public enum Food
     WHEAT_BREAD(GRAIN, 0.6f, 0f, 2f, 0.5f, 0.5f, 0f, 0f, 1f),
     BEET(VEGETABLE, 0.4f, 3f, 0f, 0f, 0f, 1f, 0f, 2.5f),
     CABBAGE(VEGETABLE, 0.4f, 5f, 0f, 0f, 0f, 1f, 0f, 2.5f),
-    CARROT(VEGETABLE, 0.4f, 3f, 0f, 0f, 0f, 1f, 0f, 2.5f),
+    CARROT(VEGETABLE, 0.4f, 3f, 0f, 0f, 0f, 1f, 0f, 2.5f, "carrot"),
     GARLIC(VEGETABLE, 0.6f, 0f, 1f, 0f, 1f, 1f, 0f, 2.5f),
     GREEN_BEAN(VEGETABLE, 0.4f, 3f, 0f, 0f, 0f, 1f, 0f, 3.5f),
     GREEN_BELL_PEPPER(VEGETABLE, 0.4f, 3f, 0f, 0f, 0f, 1f, 0f, 2.5f),
@@ -88,6 +88,7 @@ public enum Food
     HORSE_MEAT(MEAT, 0.2f, 1f, 0f, 1f, 2.5f, 0f, 0f, 3f, 1f, 200f),
     PHEASANT(MEAT, 0.2f, 1f, 0f, 2f, 2.5f, 0f, 0f, 3f, 1f, 200f),
     VENISON(MEAT, 0.2f, 1f, 0f, 0.5f, 2f, 0f, 0f, 3f, 1f, 200f),
+    RABBIT(MEAT, 0.2f, 1f, 0f, 0.5f, 2.5f, 0f, 0f, 3f, 1f, 200f),
     COOKED_BEEF(MEAT, 0.8f, 2f, 0f, 2f, 2.5f, 0f, 0f, 3f),
     COOKED_PORK(MEAT, 0.8f, 2f, 0f, 2f, 2.5f, 0f, 0f, 3f),
     COOKED_CHICKEN(MEAT, 0.6f, 2f, 0f, 0.5f, 2.5f, 0f, 0f, 3f),
@@ -97,7 +98,8 @@ public enum Food
     COOKED_CALAMARI(MEAT, 0.4f, 2f, 0f, 0.5f, 1.5f, 0f, 0f, 3f),
     COOKED_HORSE_MEAT(MEAT, 0.8f, 2f, 0f, 1f, 2.5f, 0f, 0f, 3f),
     COOKED_PHEASANT(MEAT, 0.8f, 2f, 0f, 2f, 2.5f, 0f, 0f, 3f),
-    COOKED_VENISON(MEAT, 0.6f, 2f, 0f, 0.5f, 2f, 0f, 0f, 3f);
+    COOKED_VENISON(MEAT, 0.6f, 2f, 0f, 0.5f, 2f, 0f, 0f, 3f),
+    COOKED_RABBIT(MEAT, 0.6f, 2f, 0f, 0.5f, 2.5f, 0f, 0f, 3f);
 
     private final Category category;
     private final float calories;

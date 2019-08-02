@@ -19,6 +19,7 @@ public class LootTablesTFC
     public static final ResourceLocation ANIMALS_PHEASANT = register("animals/pheasant");
     public static final ResourceLocation ANIMALS_PIG = register("animals/pig");
     public static final ResourceLocation ANIMALS_SHEEP = register("animals/sheep");
+    public static final ResourceLocation ANIMALS_RABBIT = register("animals/rabbit");
 
     private static ResourceLocation register(String id)
     {
