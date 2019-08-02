@@ -393,6 +393,7 @@ FOODS = [
     'pheasant',
     'venison',
     'rabbit',
+    'wolf',
     'cooked_beef',
     'cooked_pork',
     'cooked_chicken',
@@ -402,6 +403,7 @@ FOODS = [
     'cooked_calamari',
     'cooked_horse_meat',
     'cooked_pheasant',
+    'cooked_wolf',
     'cooked_venison',
     'cooked_rabbit'
 ]
