@@ -29,6 +29,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.client.TFCSoundEvents;
 import net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -39,6 +40,7 @@ import net.dries007.tfc.util.Helpers;
 public class BlockCharcoalPile extends Block implements ILightableBlock
 {
     public static final PropertyInteger LAYERS = PropertyInteger.create("type", 1, 8);
+    public static final SoundType CHARCOAL_PILE = new SoundType(1.0F, 1.0F, TFCSoundEvents.CHARCOAL_PILE_BREAK, TFCSoundEvents.CHARCOAL_PILE_STEP, TFCSoundEvents.CHARCOAL_PILE_PLACE, TFCSoundEvents.CHARCOAL_PILE_HIT, TFCSoundEvents.CHARCOAL_PILE_FALL);
     private static final AxisAlignedBB[] PILE_AABB = new AxisAlignedBB[] {
         new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0D, 1.0D),
         new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D),
@@ -54,7 +56,7 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
     {
         super(Material.GROUND);
 
-        setSoundType(SoundType.GROUND);
+        setSoundType(CHARCOAL_PILE);
         setHarvestLevel("shovel", 0);
         setHardness(1.0F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(LAYERS, 1));
