@@ -16,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.DumbStorage;
@@ -30,7 +31,7 @@ public final class CapabilityItemHeat
     public static final Capability<IItemHeat> ITEM_HEAT_CAPABILITY = Helpers.getNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_heat");
 
-    public static final Map<IIngredient<ItemStack>, Supplier<IItemHeat>> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IItemHeat for items outside TFC
+    public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IItemHeat for items outside TFC
 
     public static final float MIN_TEMPERATURE = 0f;
     /**
@@ -72,7 +73,7 @@ public final class CapabilityItemHeat
     }
 
     @Nullable
-    public static IItemHeat getCustomHeat(ItemStack stack)
+    public static ICapabilityProvider getCustomHeat(ItemStack stack)
     {
         Set<IIngredient<ItemStack>> itemItemSet = CUSTOM_ITEMS.keySet();
         for (IIngredient<ItemStack> ingredient : itemItemSet)

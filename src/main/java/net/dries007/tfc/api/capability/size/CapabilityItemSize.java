@@ -18,6 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 
 import net.dries007.tfc.api.capability.DumbStorage;
@@ -31,7 +32,7 @@ public final class CapabilityItemSize
     public static final Capability<IItemSize> ITEM_SIZE_CAPABILITY = Helpers.getNull();
     public static final ResourceLocation KEY = new ResourceLocation(TFCConstants.MOD_ID, "item_size");
 
-    public static final Map<IIngredient<ItemStack>, Supplier<IItemSize>> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IItemSize for items outside TFC
+    public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IItemSize for items outside TFC
 
     public static void preInit()
     {
@@ -79,7 +80,7 @@ public final class CapabilityItemSize
     }
 
     @Nullable
-    public static IItemSize getCustomSize(ItemStack stack)
+    public static ICapabilityProvider getCustomSize(ItemStack stack)
     {
         Set<IIngredient<ItemStack>> itemItemSet = CUSTOM_ITEMS.keySet();
         for (IIngredient<ItemStack> ingredient : itemItemSet)

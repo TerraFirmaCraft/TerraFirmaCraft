@@ -18,6 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -34,7 +35,7 @@ public final class CapabilityDamageResistance
     public static final Capability<IDamageResistance> CAPABILITY = Helpers.getNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "damage_resistance");
 
-    public static final Map<IIngredient<ItemStack>, Supplier<IDamageResistance>> CUSTOM_ARMOR = new HashMap<>(); //Used inside CT, set custom IDamageResistance for armor items outside TFC
+    public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ARMOR = new HashMap<>(); //Used inside CT, set custom IDamageResistance for armor items outside TFC
 
     public static void preInit()
     {
@@ -77,7 +78,7 @@ public final class CapabilityDamageResistance
     }
 
     @Nullable
-    public static IDamageResistance getCustomDamageResistance(ItemStack stack)
+    public static ICapabilityProvider getCustomDamageResistance(ItemStack stack)
     {
         Set<IIngredient<ItemStack>> itemArmorSet = CUSTOM_ARMOR.keySet();
         for (IIngredient<ItemStack> ingredient : itemArmorSet)
