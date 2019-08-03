@@ -12,6 +12,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.registries.TFCRegistries;
 
 /**
@@ -21,22 +22,37 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
 {
     private final boolean graded;
     private final Metal metal;
+    private final boolean canMelt;
 
-    public Ore(ResourceLocation name, @Nullable Metal metal)
+    /**
+     * Creates a registry object for an ore type
+     *
+     * @param name    The registry name of the ore
+     * @param metal   The metal, or null if it's a non-metal ore
+     * @param canMelt If the metal can be melted directly from the ore
+     */
+    public Ore(ResourceLocation name, @Nullable Metal metal, boolean canMelt)
     {
         this.graded = (metal != null);
         this.metal = metal;
+        this.canMelt = canMelt;
+
         setRegistryName(name);
+    }
+
+    public Ore(ResourceLocation name, @Nonnull ResourceLocation metal, boolean canMelt)
+    {
+        this(name, TFCRegistries.METALS.getValue(metal), canMelt);
     }
 
     public Ore(ResourceLocation name, @Nonnull ResourceLocation metal)
     {
-        this(name, TFCRegistries.METALS.getValue(metal));
+        this(name, TFCRegistries.METALS.getValue(metal), true);
     }
 
     public Ore(ResourceLocation name)
     {
-        this(name, (Metal) null);
+        this(name, (Metal) null, false);
     }
 
     public boolean isGraded()
@@ -44,31 +60,45 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
         return graded;
     }
 
+    @Nullable
     public Metal getMetal()
     {
         return metal;
     }
 
+    public boolean canMelt()
+    {
+        return canMelt;
+    }
+
     @Override
     public String toString()
     {
+        //noinspection ConstantConditions
         return getRegistryName().getPath();
     }
 
     public enum Grade implements IStringSerializable
     {
-        NORMAL(25), POOR(15), RICH(35);
+        NORMAL, POOR, RICH;
 
         public static Grade byMetadata(int meta)
         {
             return Grade.values()[meta];
         }
 
-        public final int smeltAmount;
-
-        Grade(int smeltAmount)
+        public int getSmeltAmount()
         {
-            this.smeltAmount = smeltAmount;
+            switch (this)
+            {
+                case POOR:
+                    return ConfigTFC.GENERAL.poorOreMetalAmount;
+                case RICH:
+                    return ConfigTFC.GENERAL.richOreMetalAmount;
+                case NORMAL:
+                default:
+                    return ConfigTFC.GENERAL.normalOreMetalAmount;
+            }
         }
 
         @Override

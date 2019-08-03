@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -62,7 +63,13 @@ public class ItemSmallOre extends ItemTFC implements IMetalObject
     @Override
     public int getSmeltAmount(ItemStack stack)
     {
-        return 10; //todo: config
+        return ConfigTFC.GENERAL.smallOreMetalAmount;
+    }
+
+    @Override
+    public boolean canMelt(ItemStack stack)
+    {
+        return ore.canMelt();
     }
 
     @Nonnull
@@ -89,6 +96,6 @@ public class ItemSmallOre extends ItemTFC implements IMetalObject
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new ItemHeatHandler(nbt, ore.getMetal().getSpecificHeat(), ore.getMetal().getMeltTemp());
+        return ore.getMetal() != null ? new ItemHeatHandler(nbt, ore.getMetal().getSpecificHeat(), ore.getMetal().getMeltTemp()) : null;
     }
 }

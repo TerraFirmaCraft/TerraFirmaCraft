@@ -162,6 +162,22 @@ public class ConfigTFC
         @Config.Comment("Damage Source Entities that will default to Crushing damage")
         @Config.LangKey("config." + MOD_ID + ".general.crushingDamageEntities")
         public String[] crushingDamageEntities = new String[] {"minecraft:husk", "minecraft:skeleton_horse", "minecraft:zombie_horse", "minecraft:spider", "minecraft:giant", "minecraft:zombie", "minecraft:slime", "minecraft:cave_spider", "minecraft:silverfish", "minecraft:villager_golem", "minecraft:zombie_villager"};
+
+        @Config.Comment("The amount of metal contained in a small ore / nugget")
+        @Config.LangKey("config." + MOD_ID + ".general.smallOreMetalAmount")
+        public int smallOreMetalAmount = 10;
+
+        @Config.Comment("The amount of metal contained in a poor ore")
+        @Config.LangKey("config." + MOD_ID + ".general.poorOreMetalAmount")
+        public int poorOreMetalAmount = 15;
+
+        @Config.Comment("The amount of metal contained in a normal ore")
+        @Config.LangKey("config." + MOD_ID + ".general.normalOreMetalAmount")
+        public int normalOreMetalAmount = 25;
+
+        @Config.Comment("The amount of metal contained in a rich ore")
+        @Config.LangKey("config." + MOD_ID + ".general.richOreMetalAmount")
+        public int richOreMetalAmount = 35;
     }
 
     public static class ClientCFG
