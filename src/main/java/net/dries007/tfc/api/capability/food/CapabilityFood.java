@@ -16,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
@@ -31,7 +32,7 @@ public class CapabilityFood
     public static final Capability<IFood> CAPABILITY = Helpers.getNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "food");
 
-    public static final Map<IIngredient<ItemStack>, Supplier<IFood>> CUSTOM_FOODS = new HashMap<>(); //Used inside CT, set custom IFood for food items outside TFC
+    public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_FOODS = new HashMap<>(); //Used inside CT, set custom IFood for food items outside TFC
 
     /**
      * Most TFC foods have decay modifiers in the range [1, 4] (high = faster decay)
@@ -101,7 +102,7 @@ public class CapabilityFood
     }
 
     @Nullable
-    public static IFood getCustomFood(ItemStack stack)
+    public static ICapabilityProvider getCustomFood(ItemStack stack)
     {
         Set<IIngredient<ItemStack>> itemFoodSet = CUSTOM_FOODS.keySet();
         for (IIngredient<ItemStack> ingredient : itemFoodSet)

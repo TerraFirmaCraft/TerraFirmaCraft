@@ -23,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -37,19 +38,19 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
-import net.dries007.tfc.api.capability.damage.DamageResistance;
 import net.dries007.tfc.api.capability.damage.DamageType;
-import net.dries007.tfc.api.capability.damage.IDamageResistance;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.EggHandler;
-import net.dries007.tfc.api.capability.food.*;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.FoodHandler;
+import net.dries007.tfc.api.capability.food.FoodStatsTFC;
+import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
-import net.dries007.tfc.api.capability.forge.ForgeableHandler;
-import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
-import net.dries007.tfc.api.capability.size.*;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.capability.skill.PlayerSkillsHandler;
 import net.dries007.tfc.api.types.Rock;
@@ -240,11 +241,14 @@ public final class CommonEventHandler
             boolean canStack = stack.getMaxStackSize() > 1; // This is necessary so it isn't accidentally overridden by a default implementation
 
             // todo: Add more items here
-            IItemSize sizeHandler = CapabilityItemSize.getCustomSize(stack);
-            if (sizeHandler instanceof ItemSizeHandler)
+            ICapabilityProvider sizeHandler = CapabilityItemSize.getCustomSize(stack);
+            if (sizeHandler != null)
             {
-                event.addCapability(CapabilityItemSize.KEY, (ItemSizeHandler) sizeHandler);
-                item.setMaxStackSize(sizeHandler.getStackSize(stack));
+                event.addCapability(CapabilityItemSize.KEY, sizeHandler);
+                if (sizeHandler instanceof IItemSize)
+                {
+                    item.setMaxStackSize(((IItemSize) sizeHandler).getStackSize(stack));
+                }
             }
             else if (item == Items.COAL)
                 CapabilityItemSize.add(event, Items.COAL, Size.SMALL, Weight.MEDIUM, canStack);
@@ -268,10 +272,10 @@ public final class CommonEventHandler
         // future plans: add via craft tweaker or json (1.14)
         if (stack.getItem() instanceof ItemFood && !stack.hasCapability(CapabilityFood.CAPABILITY, null))
         {
-            IFood foodHandler = CapabilityFood.getCustomFood(stack);
-            if (foodHandler instanceof FoodHandler)
+            ICapabilityProvider foodHandler = CapabilityFood.getCustomFood(stack);
+            if (foodHandler != null)
             {
-                event.addCapability(CapabilityFood.KEY, (FoodHandler) foodHandler);
+                event.addCapability(CapabilityFood.KEY, foodHandler);
             }
             else
             {
@@ -281,27 +285,27 @@ public final class CommonEventHandler
 
         if (!stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null) && !stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
         {
-            IForgeable forgeHandler = CapabilityForgeable.getCustomForgeable(stack);
-            if (forgeHandler instanceof ForgeableHandler)
+            ICapabilityProvider forgeHandler = CapabilityForgeable.getCustomForgeable(stack);
+            if (forgeHandler != null)
             {
-                event.addCapability(CapabilityForgeable.KEY, (ForgeableHandler) forgeHandler);
+                event.addCapability(CapabilityForgeable.KEY, forgeHandler);
             }
             else
             {
-                IItemHeat heatHandler = CapabilityItemHeat.getCustomHeat(stack);
-                if (heatHandler instanceof ItemHeatHandler)
+                ICapabilityProvider heatHandler = CapabilityItemHeat.getCustomHeat(stack);
+                if (heatHandler != null)
                 {
-                    event.addCapability(CapabilityItemHeat.KEY, (ItemHeatHandler) heatHandler);
+                    event.addCapability(CapabilityItemHeat.KEY, heatHandler);
                 }
             }
         }
 
         if (item instanceof ItemArmor && !stack.hasCapability(CapabilityDamageResistance.CAPABILITY, null))
         {
-            IDamageResistance damageResistance = CapabilityDamageResistance.getCustomDamageResistance(stack);
-            if (damageResistance instanceof DamageResistance)
+            ICapabilityProvider damageResistance = CapabilityDamageResistance.getCustomDamageResistance(stack);
+            if (damageResistance != null)
             {
-                event.addCapability(CapabilityDamageResistance.KEY, (DamageResistance) damageResistance);
+                event.addCapability(CapabilityDamageResistance.KEY, damageResistance);
             }
         }
         if (stack.getItem() == Items.EGG && !stack.hasCapability(CapabilityEgg.CAPABILITY, null))
