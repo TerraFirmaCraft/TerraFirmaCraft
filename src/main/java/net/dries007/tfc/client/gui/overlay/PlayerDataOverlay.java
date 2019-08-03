@@ -91,11 +91,10 @@ public final class PlayerDataOverlay
             //Draw Health Bar
             GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
 
-            //What's our "background" health bar color?
-            //If there's only 10 hearts (or less), draw Red and only Red.
-            int healthColor = surplusPercent > 0 ? (int) Math.floor(surplusPercent) % 7 : 0;
+            //Color of base health bar
+            int healthColor = surplusPercent > 0 ? (int) Math.floor(surplusPercent) : 0;
 
-            //Draw base color
+            //Draw base bar color
             setHealthBarColor(healthColor);
             this.drawTexturedModalRect(mid - 91, healthRowHeight, 0, 10, (int) (90 * percentHealth), 10);
             //Draw additive shading texture
@@ -111,8 +110,8 @@ public final class PlayerDataOverlay
                 float percent = surplusPercent % 1;
 
                 GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
-                //Draw base color
-                setHealthBarColor((healthColor + 1) % 7);
+                //Draw the "next" color
+                setHealthBarColor(healthColor + 1);
                 this.drawTexturedModalRect(mid - 91, healthRowHeight, 0, 10, (int) (90 * percent), 10);
                 //Draw additive shading texture
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -219,15 +218,15 @@ public final class PlayerDataOverlay
     }
 
     private void setHealthBarColor(int col) {
-        switch (col) {
+        switch (col % 7) {
             case 0: //Red
-                GL11.glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
+                GL11.glColor4f(0.9F, 0.0F, 0.0F, 1.0F);
                 break;
             case 1: //Orange
                 GL11.glColor4f(0.8F, 0.3F, 0.0F, 1.0F);
                 break;
             case 2: //Yellow
-                GL11.glColor4f(0.5F, 0.5F, 0.0F, 1.0F);
+                GL11.glColor4f(0.65F, 0.5F, 0.0F, 1.0F);
                 break;
             case 3: //Green
                 GL11.glColor4f(0.0F, 0.5F, 0.0F, 1.0F);
@@ -239,7 +238,7 @@ public final class PlayerDataOverlay
                 GL11.glColor4f(0.0F, 0.2F, 0.8F, 1.0F);
                 break;
             case 6: //Purple
-                GL11.glColor4f(0.6F, 0.0F, 0.6F, 1.0F);
+                GL11.glColor4f(0.4F, 0.0F, 0.6F, 1.0F);
                 break;
         }
     }
