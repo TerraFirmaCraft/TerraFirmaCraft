@@ -33,7 +33,6 @@ import net.dries007.tfc.api.util.IHeatConsumerBlock;
 import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.objects.blocks.BlockMolten;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.fuel.Fuel;
@@ -399,10 +398,11 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
                     }
                 }
             }
-            else if (stack.getItem() instanceof ItemOreTFC)
+            else if (stack.getItem() instanceof IMetalObject)
             {
-                ItemOreTFC metal = (ItemOreTFC) stack.getItem();
-                if (metal.getMetal(stack) == Metal.WROUGHT_IRON || metal.getMetal(stack) == Metal.PIG_IRON)
+                IMetalObject metalItem = (IMetalObject) stack.getItem();
+                Metal metal = metalItem.getMetal(stack);
+                if (metal == Metal.WROUGHT_IRON || metal == Metal.PIG_IRON)
                 {
                     oreEntity = entityItem;
                 }
@@ -412,7 +412,8 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
                 fluxEntity = entityItem;
             }
         }
-        //Add each ore consuming flux
+
+        // Add each ore consuming flux
         while (maxOre > oreStacks.size())
         {
             if (fluxEntity == null || oreEntity == null)
