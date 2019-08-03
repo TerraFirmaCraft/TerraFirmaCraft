@@ -91,7 +91,7 @@ public class SimpleCraftMatrix
 
     public void set(int xPos, int yPos, boolean value)
     {
-        set(xPos * width + yPos, value);
+        set(xPos + yPos * width, value);
     }
 
     public void set(int index, boolean value)
@@ -101,12 +101,22 @@ public class SimpleCraftMatrix
 
     public boolean get(int xPos, int yPos)
     {
-        return get(xPos * width + yPos);
+        return get(xPos + yPos * width);
     }
 
     public boolean get(int index)
     {
         return index >= 0 && index < area && matrix[index];
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public int getWidth()
+    {
+        return width;
     }
 
     /**
