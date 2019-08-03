@@ -43,7 +43,7 @@ public class TEChestTFC extends TEInventory implements ITickable, IInventory
 
     //copy paste from TileEntityChest, handles the open/close chest animation
     public float lidAngle, prevLidAngle;
-    private int numPlayersUsing;
+    public int numPlayersUsing;
     private int ticksSinceSync;
     private int connectedTo;
 

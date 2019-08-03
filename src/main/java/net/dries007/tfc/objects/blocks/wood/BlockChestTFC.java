@@ -30,6 +30,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -90,6 +91,34 @@ public class BlockChestTFC extends BlockContainer
         }
         Blocks.FIRE.setFireInfo(this, 5, 20);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
+        if (!blockState.canProvidePower())
+        {
+            return 0;
+        }
+        else
+        {
+            int i = 0;
+            TEChestTFC te = Helpers.getTE(blockAccess, pos, TEChestTFC.class);
+            if (te != null)
+            {
+                i = te.numPlayersUsing;
+            }
+
+            return MathHelper.clamp(i, 0, 15);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean canProvidePower(IBlockState state)
+    {
+        return this.type == BlockChest.Type.TRAP;
     }
 
     @Override
