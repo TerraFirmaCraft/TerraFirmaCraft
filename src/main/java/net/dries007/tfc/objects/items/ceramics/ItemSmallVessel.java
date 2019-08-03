@@ -35,6 +35,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.api.capability.ISmallVesselHandler;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -90,20 +92,29 @@ public class ItemSmallVessel extends ItemPottery
     public String getTranslationKey(ItemStack stack)
     {
         if (!glazed)
+        {
             return super.getTranslationKey(stack);
+        }
         return super.getTranslationKey(stack) + "." + EnumDyeColor.byDyeDamage(stack.getItemDamage()).getName();
     }
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        if (!isInCreativeTab(tab)) return;
-
-        if (!glazed)
-            items.add(new ItemStack(this));
-        else
-            for (EnumDyeColor color : EnumDyeColor.values())
-                items.add(new ItemStack(this, 1, color.getDyeDamage()));
+        if (isInCreativeTab(tab))
+        {
+            if (!glazed)
+            {
+                items.add(new ItemStack(this));
+            }
+            else
+            {
+                for (EnumDyeColor color : EnumDyeColor.values())
+                {
+                    items.add(new ItemStack(this, 1, color.getDyeDamage()));
+                }
+            }
+        }
     }
 
     @Nullable
@@ -381,6 +392,44 @@ public class ItemSmallVessel extends ItemPottery
             if (getFluidMode() == Mode.LIQUID_MOLTEN)
                 return tank.drain(maxDrain, doDrain);
             return null;
+        }
+
+        @Override
+        public void setStackInSlot(int slot, @Nonnull ItemStack stack)
+        {
+            IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+            if (cap != null)
+            {
+                CapabilityFood.applyTrait(cap, CapabilityFood.PRESERVED);
+            }
+            super.setStackInSlot(slot, stack);
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
+        {
+            if (!simulate)
+            {
+                IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+                if (cap != null)
+                {
+                    CapabilityFood.applyTrait(cap, CapabilityFood.PRESERVED);
+                }
+            }
+            return super.insertItem(slot, stack, simulate);
+        }
+
+        @Override
+        @Nonnull
+        public ItemStack extractItem(int slot, int amount, boolean simulate)
+        {
+            IFood cap = getStackInSlot(slot).getCapability(CapabilityFood.CAPABILITY, null);
+            if (cap != null)
+            {
+                CapabilityFood.removeTrait(cap, CapabilityFood.PRESERVED);
+            }
+            return super.extractItem(slot, amount, simulate);
         }
 
         private void updateFluidData(@Nullable FluidStack fluid)

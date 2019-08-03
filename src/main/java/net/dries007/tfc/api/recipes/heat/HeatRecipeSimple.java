@@ -18,6 +18,7 @@ import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 @ParametersAreNonnullByDefault
 public class HeatRecipeSimple extends HeatRecipe
 {
+
     private final ItemStack output;
     private final float maxTemp;
 
@@ -50,7 +51,14 @@ public class HeatRecipeSimple extends HeatRecipe
         IItemHeat heat = input.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         if (heat != null && heat.getTemperature() <= maxTemp)
         {
-            return output.copy();
+            ItemStack outputStack = output.copy();
+            IItemHeat outputHeat = outputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+            if (outputHeat != null)
+            {
+                // Copy heat if possible
+                outputHeat.setTemperature(heat.getTemperature());
+            }
+            return outputStack;
         }
         return ItemStack.EMPTY;
     }

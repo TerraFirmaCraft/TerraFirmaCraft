@@ -113,22 +113,18 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
                 temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
             }
 
-            // Update items in slots
-            // Loop through input + 2 output slots
-            for (int i = SLOT_ITEM_INPUT; i < SLOT_ITEM_INPUT + 3; i++)
+            // The fire pit is nice: it will automatically move input to output for you, saving the trouble of losing the input due to melting / burning
+            ItemStack stack = inventory.getStackInSlot(SLOT_ITEM_INPUT);
+            IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+            if (cap != null)
             {
-                ItemStack stack = inventory.getStackInSlot(i);
-                IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                if (cap != null)
+                float itemTemp = cap.getTemperature();
+                if (temperature > itemTemp)
                 {
-                    float itemTemp = cap.getTemperature();
-                    if (temperature > itemTemp)
-                    {
-                        CapabilityItemHeat.addTemp(cap);
-                    }
-
-                    handleInputMelting(stack);
+                    CapabilityItemHeat.addTemp(cap);
                 }
+
+                handleInputMelting(stack);
             }
         }
 

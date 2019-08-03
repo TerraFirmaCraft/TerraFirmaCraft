@@ -337,25 +337,25 @@ public final class CommonEventHandler
     }
 
     /**
-     * Fired on server only when a player dies and respawns, or is cloned via other means (?)
+     * Fired on server only when a player dies and respawns, or travels through dimensions
      *
      * @param event {@link net.minecraftforge.event.entity.player.PlayerEvent.Clone}
      */
     @SubscribeEvent
-    public static void onPlayerClone(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event)
     {
-        if (event.getEntityPlayer() instanceof EntityPlayerMP)
+        if (event.player instanceof EntityPlayerMP)
         {
             // Capability Sync Handler
-            final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
+            final EntityPlayerMP player = (EntityPlayerMP) event.player;
             player.inventoryContainer.addListener(new CapabilityContainerListener(player));
 
             // Food Stats
-            FoodStats originalStats = event.getEntityPlayer().getFoodStats();
+            FoodStats originalStats = event.player.getFoodStats();
             if (!(originalStats instanceof FoodStatsTFC))
             {
-                event.getEntityPlayer().foodStats = new FoodStatsTFC(event.getEntityPlayer(), originalStats);
-                TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.getEntityPlayer());
+                event.player.foodStats = new FoodStatsTFC(event.player, originalStats);
+                TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.player);
             }
         }
     }

@@ -146,7 +146,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
                 IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
                 if (cap != null)
                 {
-                    CapabilityFood.applyTrait(cap, CapabilityFood.LARGE_VESSEL_PRESERVED);
+                    CapabilityFood.applyTrait(cap, CapabilityFood.PRESERVED);
                 }
             }
         }
@@ -162,7 +162,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
                 IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
                 if (cap != null)
                 {
-                    CapabilityFood.removeTrait(cap, CapabilityFood.LARGE_VESSEL_PRESERVED);
+                    CapabilityFood.removeTrait(cap, CapabilityFood.PRESERVED);
                 }
             }
         }
@@ -258,7 +258,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
             IFood cap = getStackInSlot(slot).getCapability(CapabilityFood.CAPABILITY, null);
             if (cap != null)
             {
-                CapabilityFood.removeTrait(cap, CapabilityFood.LARGE_VESSEL_PRESERVED);
+                CapabilityFood.removeTrait(cap, CapabilityFood.PRESERVED);
             }
             return super.extractItem(slot, amount, simulate);
         }

@@ -142,6 +142,12 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         if (nbt != null && nbt.hasKey("creationDate"))
         {
             creationDate = nbt.getLong("creationDate");
+            if (creationDate == 0)
+            {
+                // Stop defaulting to zero, in cases where the item stack is cloned or copied from one that was initialized at load (and thus was before the calendar was initialized)
+                creationDate = CalendarTFC.PLAYER_TIME.getTotalHours() * ICalendar.TICKS_IN_HOUR;
+            }
+
             // Read the traits and apply each one (if they exist)
             if (nbt.hasKey("traits"))
             {

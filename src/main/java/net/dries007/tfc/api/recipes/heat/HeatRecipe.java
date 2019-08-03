@@ -41,6 +41,16 @@ public abstract class HeatRecipe extends IForgeRegistryEntry.Impl<HeatRecipe>
         return TFCRegistries.HEAT.getValuesCollection().stream().filter(r -> r.isValidInput(stack, tier)).findFirst().orElse(null);
     }
 
+    /**
+     * Wrapper constructor around a recipe that will destroy / melt an item at a specific temperature without producing any output
+     *
+     * @return a new recipe for the provided ingredient
+     */
+    public static HeatRecipeSimple destroy(IIngredient<ItemStack> ingredient, float destroyTemperature)
+    {
+        return new HeatRecipeSimple(ingredient, ItemStack.EMPTY, destroyTemperature, 0f, Metal.Tier.TIER_0);
+    }
+
     protected final IIngredient<ItemStack> ingredient;
     private final float transformTemp;
     private final Metal.Tier minTier;
