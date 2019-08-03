@@ -152,12 +152,15 @@ public final class ItemsTFC
         {
             Builder<ItemOreTFC> b = new Builder<>();
             for (Ore ore : TFCRegistries.ORES.getValuesCollection())
+            {
                 b.add(register(r, "ore/" + ore.getRegistryName().getPath(), new ItemOreTFC(ore), CT_ROCK_ITEMS));
+                if (ore.isGraded())
+                {
+                    simpleItems.add(register(r, "ore/small/" + ore.getRegistryName().getPath(), new ItemSmallOre(ore), CT_ROCK_ITEMS));
+                }
+            }
             allOreItems = b.build();
 
-            for (Ore ore : TFCRegistries.ORES.getValuesCollection())
-                if (ore.isGraded())
-                    simpleItems.add(register(r, "ore/small/" + ore.getRegistryName().getPath(), new ItemSmallOre(ore), CT_ROCK_ITEMS));
         }
 
         {

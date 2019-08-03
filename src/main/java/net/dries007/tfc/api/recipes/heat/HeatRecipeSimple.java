@@ -9,14 +9,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 @ParametersAreNonnullByDefault
-public class HeatRecipeSimple extends HeatRecipe
+public class HeatRecipeSimple extends HeatRecipe implements IJEISimpleRecipe
 {
     private final ItemStack output;
     private final float maxTemp;
@@ -53,5 +55,17 @@ public class HeatRecipeSimple extends HeatRecipe
             return output.copy();
         }
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public NonNullList<IIngredient<ItemStack>> getIngredients()
+    {
+        return NonNullList.withSize(1, this.ingredient);
+    }
+
+    @Override
+    public NonNullList<ItemStack> getOutputs()
+    {
+        return NonNullList.withSize(1, output);
     }
 }

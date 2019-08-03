@@ -372,7 +372,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
         {
             if (!metalMap.containsKey(metal) ||
                 !recipe.getMetals().containsKey(metal) ||
-                !recipe.getMetals().get(metal).test(metalMap.get(metal) / totalAmount))
+                !recipe.getMetals().get(metal).isValid(metalMap.get(metal) / totalAmount))
                 return false;
         }
         return true;
