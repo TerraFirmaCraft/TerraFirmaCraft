@@ -5,9 +5,7 @@
 
 package net.dries007.tfc.api.capability.food;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -20,18 +18,15 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.util.agriculture.Food;
-import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.util.calendar.ICalendar;
 
+/**
+ * This is a combined capability class that delegates to two implementations:
+ * - super = ItemHeatHandler
+ * - internalFoodCap = FoodHandler
+ */
 public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabilitySerializable<NBTTagCompound>
 {
-    private final List<IFoodTrait> foodTraits;
-    private final float[] nutrients;
-    private final float decayModifier;
-    private final float water;
-    private final float calories;
-
-    private long creationDate;
+    private final FoodHandler internalFoodCap;
 
     public FoodHeatHandler()
     {
@@ -43,16 +38,12 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
         this(nbt, food.getNutrients(), food.getCalories(), food.getWater(), food.getDecayModifier(), food.getHeatCapacity(), food.getCookingTemp());
     }
 
-    public FoodHeatHandler(@Nullable NBTTagCompound nbt, float[] nutrients, float calories, float water, float decayModifier, float heatCapacity, float cookingTemp)
+    public FoodHeatHandler(@Nullable NBTTagCompound nbt, float[] nutrients, float calories, float water, float decayModifier, float heatCapacity, float meltTemp)
     {
         this.heatCapacity = heatCapacity;
-        this.meltTemp = cookingTemp;
-        this.foodTraits = new ArrayList<>();
-        this.nutrients = new float[Nutrient.TOTAL];
-        this.decayModifier = decayModifier;
-        this.water = water;
-        this.calories = calories;
-        System.arraycopy(nutrients, 0, this.nutrients, 0, nutrients.length);
+        this.meltTemp = meltTemp;
+
+        this.internalFoodCap = new FoodHandler(nbt, nutrients, calories, water, decayModifier);
 
         deserializeNBT(nbt);
     }
@@ -60,62 +51,50 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
     @Override
     public float getNutrient(ItemStack stack, Nutrient nutrient)
     {
-        if (isRotten())
-        {
-            return 0;
-        }
-        return nutrients[nutrient.ordinal()];
+        return internalFoodCap.getNutrient(stack, nutrient);
     }
 
     @Override
     public long getCreationDate()
     {
-        if (isRotten())
-        {
-            // All rotten food is equally rotten
-            this.creationDate = Long.MIN_VALUE;
-        }
-        return creationDate;
+        return internalFoodCap.getCreationDate();
     }
 
     @Override
     public void setCreationDate(long creationDate)
     {
-        this.creationDate = creationDate;
+        internalFoodCap.setCreationDate(creationDate);
     }
 
     @Override
     public long getRottenDate()
     {
-        // This avoids overflow which breaks when calculateDecayModifier() returns infinity, which happens if decay modifier = 0
-        float decayMod = calculateDecayModifier();
-        return decayMod == Float.POSITIVE_INFINITY ? Long.MAX_VALUE : creationDate + (long) (decayMod * CapabilityFood.DEFAULT_ROT_TICKS);
+        return internalFoodCap.getRottenDate();
     }
 
     @Override
     public float getWater()
     {
-        return water;
+        return internalFoodCap.getWater();
     }
 
     @Override
     public float getCalories()
     {
-        return calories;
+        return internalFoodCap.getCalories();
     }
 
     @Nonnull
     @Override
     public List<IFoodTrait> getTraits()
     {
-        return foodTraits;
+        return internalFoodCap.getTraits();
     }
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityFood.CAPABILITY
-            || capability == CapabilityItemHeat.ITEM_HEAT_CAPABILITY;
+        return capability == CapabilityFood.CAPABILITY || capability == CapabilityItemHeat.ITEM_HEAT_CAPABILITY;
     }
 
     @Nullable
@@ -131,48 +110,17 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound nbt = super.serializeNBT();
-        nbt.setLong("creationDate", getCreationDate());
-        // Traits are sorted so they match when trying to stack them
-        if (!foodTraits.isEmpty())
-        {
-            nbt.setString("traits", foodTraits.stream().map(IFoodTrait::getName).sorted().collect(Collectors.joining(",")));
-        }
+        nbt.setTag("food", internalFoodCap.serializeNBT());
         return nbt;
     }
 
     @Override
     public void deserializeNBT(@Nullable NBTTagCompound nbt)
     {
-        super.deserializeNBT(nbt);
-        foodTraits.clear();
-        if (nbt != null && nbt.hasKey("creationDate"))
+        if (nbt != null)
         {
-            creationDate = nbt.getLong("creationDate");
-            // Read the traits and apply each one (if they exist)
-            if (nbt.hasKey("traits"))
-            {
-                String serializedFoodTraits = nbt.getString("traits");
-                for (String traitName : serializedFoodTraits.split(","))
-                {
-                    foodTraits.add(CapabilityFood.getTraits().get(traitName));
-                }
-            }
+            internalFoodCap.deserializeNBT(nbt.getCompoundTag("food"));
+            super.deserializeNBT(nbt);
         }
-        else
-        {
-            // Don't default to zero
-            // Food decay initially is synced with the hour. This allows items grabbed within a minute to stack
-            creationDate = CalendarTFC.PLAYER_TIME.getTotalHours() * ICalendar.TICKS_IN_HOUR;
-        }
-    }
-
-    private float calculateDecayModifier()
-    {
-        float mod = decayModifier;
-        for (IFoodTrait trait : foodTraits)
-        {
-            mod *= trait.getDecayModifier();
-        }
-        return mod;
     }
 }
