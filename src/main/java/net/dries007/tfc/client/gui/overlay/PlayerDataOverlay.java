@@ -55,11 +55,13 @@ public final class PlayerDataOverlay
 
         FoodStats foodStats = player.getFoodStats();
         float baseMaxHealth = 1000;
+        float calcMaxHealth = 1000;
         float currentThirst = 100;
         if (foodStats instanceof IFoodStatsTFC)
         {
             IFoodStatsTFC foodStatsTFC = (IFoodStatsTFC) foodStats;
-            baseMaxHealth = 20 * foodStatsTFC.getHealthModifier() * 50; //20 = 1000 HP in overlay
+            baseMaxHealth = 20 * foodStatsTFC.getHealthModifier() * 50; //20 = default health
+            calcMaxHealth = player.getMaxHealth() * foodStatsTFC.getHealthModifier() * 50;
             currentThirst = foodStatsTFC.getThirst();
         }
         // This is for air to be drawn above our bars
@@ -78,10 +80,17 @@ public final class PlayerDataOverlay
 
         if (mc.playerController.gameIsSurvivalOrAdventure())
         {
-            float curHealth = player.getHealth() * baseMaxHealth / (float) 20;
-            float percentHealth = curHealth / baseMaxHealth;
-            float surplusPercent = Math.max(percentHealth - 1, 0);
-            if (percentHealth > 1) percentHealth = 1;
+            float curHealth = (player.getHealth() + player.getAbsorptionAmount()) * calcMaxHealth / player.getMaxHealth();
+            float percentHealth = 0;
+            float surplusPercent = 0; //Used for drawing "extra" health bars if enabled
+
+            if (false) //TODO config for "extra bars" mode
+            {
+                percentHealth = curHealth / baseMaxHealth;
+                surplusPercent = Math.max(percentHealth - 1, 0);
+            }
+            //also accounts for absorption in single bar mode
+            percentHealth = Math.min(curHealth / calcMaxHealth, 1);
 
             GL11.glEnable(GL11.GL_BLEND);
 
@@ -89,12 +98,15 @@ public final class PlayerDataOverlay
             this.drawTexturedModalRect(mid - 91, healthRowHeight, 0, 0, 90, 10);
 
             //Draw Health Bar
-            GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
-
-            //Color of base health bar
-            int healthColor = surplusPercent > 0 ? (int) Math.floor(surplusPercent) : 0;
+            //Color of base health bar; red by default
+            int healthColor = 0;
+            if (false) //TODO config for "extra bars" mode
+            {
+                healthColor = surplusPercent > 0 ? (int) Math.floor(surplusPercent) : 0;
+            }
 
             //Draw base bar color
+            GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
             setHealthBarColor(healthColor);
             this.drawTexturedModalRect(mid - 91, healthRowHeight, 0, 10, (int) (90 * percentHealth), 10);
             //Draw additive shading texture
@@ -104,8 +116,8 @@ public final class PlayerDataOverlay
             this.drawTexturedModalRect(mid - 91, healthRowHeight, 90, 10, (int) (90 * percentHealth), 10);
             GL11.glPopAttrib();
 
-            // Add "extra" health bar overlay (for mods adding health)
-            if (surplusPercent > 0)
+            //Add "extra" health bars if enabled
+            if (surplusPercent > 0 && false) //TODO config for "extra bars" mode
             {
                 float percent = surplusPercent % 1;
 
@@ -136,15 +148,21 @@ public final class PlayerDataOverlay
             this.drawTexturedModalRect(mid + 1, healthRowHeight + 5, 90, 25, (int) (90 * percentThirst), 5);
 
             //Draw Notifications
-            String healthString = ((int) curHealth) + "/" + ((int) (baseMaxHealth));
+            String curHealthString = String.valueOf((int) curHealth);
+            String maxHealthString = String.valueOf((int) calcMaxHealth);
+            String healthString = curHealthString + "/" + maxHealthString;
             //Render health string border
-            int healthStringBorder = new Color(0.0F, 0.0F, 0.0F, 0.25F).getRGB();
+            int healthStringBorder = new Color(0.0F, 0.0F, 0.0F, 0.3F).getRGB();
             fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2) - 1, healthRowHeight + 2, healthStringBorder);
             fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2) + 1, healthRowHeight + 2, healthStringBorder);
             fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2 - 1, healthStringBorder);
             fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2 + 1, healthStringBorder);
+
             //Render health string itself
-            fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2, Color.white.getRGB());
+            int healthStringColor = player.getAbsorptionAmount() > 0 ? Color.yellow.getRGB() : Color.white.getRGB();
+            int maxHealthOffset = fontrenderer.getStringWidth(curHealthString);
+            fontrenderer.drawString(curHealthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2, healthStringColor);
+            fontrenderer.drawString("/" + maxHealthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2) + maxHealthOffset, healthRowHeight + 2, Color.white.getRGB());
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             mc.renderEngine.bindTexture(new ResourceLocation("minecraft:textures/gui/icons.png"));
