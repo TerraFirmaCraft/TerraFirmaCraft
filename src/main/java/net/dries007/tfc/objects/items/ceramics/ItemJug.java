@@ -37,10 +37,11 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class ItemJug extends ItemPottery implements ICapabilityProvider
 {
@@ -49,42 +50,39 @@ public class ItemJug extends ItemPottery implements ICapabilityProvider
     private static final int MAX_USE_DURATION = 32;
 	private static final float BREAK_CHANCE = 0.02f;
 	
-	private NBTTagCompound getFluidTank(ItemStack stack)
+	private FluidHandlerItemJug getFluidTank(ItemStack stack)
 	{
-		return stack.getTagCompound().getCompoundTag("tank");
+		FluidHandlerItemJug handler = new FluidHandlerItemJug().readFromNBT(stack, stack.getTagCompound());
+		return handler;
 	}
 
     private boolean isFilled(ItemStack stack)
     {
-        return getFluidTank(stack).getBoolean("Filled");
-    }
-
-    private void setFluid(ItemStack stack, Fluid fluidType)
-    {
-    	getFluidTank(stack).setString("Fluid", fluidType == null ? "None" : FluidRegistry.getFluidName(fluidType));
-    	getFluidTank(stack).setBoolean("Filled", fluidType != null);
+        return getFluidTank(stack).isFilled();
     }
 
     private Fluid getFluid(ItemStack stack)
     {
-    	String fluidName = getFluidTank(stack).getString("Fluid");
-    	return fluidName == "None" ? null : FluidRegistry.getFluid(fluidName);
+    	return getFluidTank(stack).getFluid();
     }
 
-    private void setJustFilled(ItemStack stack, boolean justFilled)
+    @Override
+    @Nonnull
+    public String getItemStackDisplayName(@Nonnull ItemStack stack)
     {
-        getFluidTank(stack).setBoolean("JustFilled", justFilled);
-    }
-
-    private boolean isJustFilled(ItemStack stack)
-    {
-        return getFluidTank(stack).getBoolean("JustFilled");
+        String name = super.getItemStackDisplayName(stack);
+        if (!isFilled(stack)) return name;
+        return String.format(
+            "%s (%s)",
+            name,
+            new TextComponentTranslation(getFluid(stack).getUnlocalizedName()).getFormattedText()
+        );
     }
 
     @Override
     public void addSizeInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
     {
-        super.addSizeInfo(stack, text);
+    	super.addSizeInfo(stack, text);
         if (isFilled(stack))
         {
             text.add(String.format("Temperature: %sK", getFluid(stack).getTemperature()));
@@ -110,19 +108,6 @@ public class ItemJug extends ItemPottery implements ICapabilityProvider
     {
         return EnumAction.DRINK;
     }
-
-    @Override
-    @Nonnull
-    public String getItemStackDisplayName(@Nonnull ItemStack stack)
-    {
-        String name = super.getItemStackDisplayName(stack).replaceAll(" %s", "");
-        if (!isFilled(stack)) return name;
-        return String.format(
-            "%s (%s)",
-            name,
-            new TextComponentTranslation(getFluid(stack).getUnlocalizedName()).getFormattedText()
-        );
-    }
     
 	@Override
     @Nonnull
@@ -137,7 +122,7 @@ public class ItemJug extends ItemPottery implements ICapabilityProvider
 			
 			final Block block = worldIn.getBlockState(pos).getBlock();
 
-			if(!jug.isFilled(stack))
+			if(!isFilled(stack))
 			{
 				if(block != Blocks.AIR && block.hasTileEntity(worldIn.getBlockState(pos)))
 				{
@@ -164,14 +149,18 @@ public class ItemJug extends ItemPottery implements ICapabilityProvider
 				
 				if(fluid != null)
 				{	
-                    setFluid(stack, fluid);
-                    setJustFilled(stack, true);
-					System.out.println(String.format("Got fluid: %s", getFluid(stack)));
+					NBTTagCompound nbt = stack.getTagCompound();
+					FluidHandlerItemJug cap = getFluidTank(stack);
+					cap.setFluid(fluid);
+                    cap.setJustFilled(true);
+                    nbt = cap.writeToNBT(nbt);
+                    stack.setTagCompound(nbt);
 					return EnumActionResult.FAIL;
 				}
 			}
 			else if(!block.hasTileEntity(worldIn.getBlockState(pos)) &&
-					(fluid = jug.getFluid(stack)).canBePlacedInWorld())
+					(fluid = getFluid(stack)) != null &&
+					fluid.canBePlacedInWorld())
 			{
 				BlockFluidBase bf = (BlockFluidBase) fluid.getBlock();				
 				IBlockState state = bf.getDefaultState().withProperty(BlockFluidBase.LEVEL, 1);
@@ -183,7 +172,11 @@ public class ItemJug extends ItemPottery implements ICapabilityProvider
 					worldIn.setBlockState(targetPos.offset(side), state.withProperty(BlockFluidBase.LEVEL, 2), 3);	
 				}
 				worldIn.scheduleBlockUpdate(targetPos, bf, 2, 1);
-				jug.setFluid(stack, null);
+				NBTTagCompound nbt = stack.getTagCompound();
+				FluidHandlerItemJug cap = getFluidTank(stack);
+				cap.setFluid(null);
+				nbt = cap.writeToNBT(nbt);
+                stack.setTagCompound(nbt);
 			}
 			else if(block.hasTileEntity(worldIn.getBlockState(pos)))
 			{
@@ -194,9 +187,12 @@ public class ItemJug extends ItemPottery implements ICapabilityProvider
 					FluidStack fluidStack = new FluidStack(jug.getFluid(stack), MAX_FLUID_AMOUNT);
                     if (cap != null && cap.fill(fluidStack, false) == MAX_FLUID_AMOUNT)
 					{
-						// Empty from the jug into the fluid storage
 						cap.fill(fluidStack, true);
-						jug.setFluid(stack, null);
+						NBTTagCompound nbt = stack.getTagCompound();
+						FluidHandlerItemJug capJug = getFluidTank(stack);
+						capJug.setFluid(null);
+						nbt = capJug.writeToNBT(nbt);
+		                stack.setTagCompound(nbt);
 					}
 				}
 			}
@@ -226,7 +222,12 @@ public class ItemJug extends ItemPottery implements ICapabilityProvider
                     foodStackTFC.addThirst(getFluid(stack) == FluidsTFC.FRESH_WATER ? 50 : 0);
                 }
 
-                this.empty(stack);
+                NBTTagCompound nbt = stack.getTagCompound();
+                FluidHandlerItemJug cap = getFluidTank(stack);
+                cap.setFluid(null);
+                cap.setJustFilled(false);
+                nbt = cap.writeToNBT(nbt);
+                stack.writeToNBT(nbt);
                 this.onDrink(stack, worldIn, entityplayer);
             }
 
@@ -247,33 +248,30 @@ public class ItemJug extends ItemPottery implements ICapabilityProvider
         }
     }
 
-    private void empty(ItemStack stack)
-    {
-        setFluid(stack, null);
-        setJustFilled(stack, false);
-    }
-
     @Override
     @Nonnull
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn)
     {
         ItemStack stack = playerIn.getHeldItem(handIn);
-
+        FluidHandlerItemJug cap = getFluidTank(stack);
         FoodStats foodStats = playerIn.getFoodStats();
 
         final ActionResult<ItemStack> FAILED = new ActionResult<>(EnumActionResult.FAIL, stack);
 
-        if (!(foodStats instanceof FoodStatsTFC) || !isFilled(stack) || isJustFilled(stack))
+        if (!(foodStats instanceof FoodStatsTFC) || !cap.isFilled()) // || cap.isJustFilled()
         {
-            setJustFilled(stack, false);
+        	NBTTagCompound nbt = stack.getTagCompound();
+            cap.setJustFilled(false);
+        	nbt = cap.writeToNBT(nbt);
+            stack.writeToNBT(nbt);
             return FAILED;
         }
 
         FoodStatsTFC foodStatsTfc = (FoodStatsTFC) foodStats;
-
-        if (!isJustFilled(stack) && foodStatsTfc.attemptDrink(getFluid(stack) == FluidsTFC.FRESH_WATER ? 50 : 0))
+        if (foodStatsTfc.attemptDrink(getFluid(stack) == FluidsTFC.FRESH_WATER ? 50 : 0)) // !cap.isJustFilled() && 
         {
             playerIn.setActiveHand(handIn);
+            System.out.println("Trying to drink!");
             return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
 
@@ -286,29 +284,14 @@ public class ItemJug extends ItemPottery implements ICapabilityProvider
     	ItemJug jug = (ItemJug) stack.getItem();
     	if(jug.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
     	{
+    		FluidHandlerItemJug cap = (FluidHandlerItemJug) jug.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+    		cap.setItemStack(stack);
+    		
 	    	if(nbt == null)
 	    	{
 	    		nbt = new NBTTagCompound();
 	    	}
-	    	NBTTagCompound tank;
-    		if(!nbt.hasKey("tank"))
-    		{
-    			nbt.setTag("tank", tank = new NBTTagCompound());
-    		}
-    		if(!(tank = nbt.getCompoundTag("tank")).hasKey("Filled"))
-    		{
-    			tank.setBoolean("Filled", false);
-    		}
-    		if(!tank.hasKey("Fluid"))
-    		{
-    			tank.setString("Fluid", "None");
-    		}
-    		if(!tank.hasKey("JustFilled"))
-    		{
-    			tank.setBoolean("JustFilled", false);
-    		}
-    		nbt.setTag("tank", tank);
-            stack.setTagCompound(nbt);
+            stack.setTagCompound(cap.writeToNBT(nbt));
     	}
         return super.initCapabilities(stack, nbt);
     }
@@ -323,7 +306,132 @@ public class ItemJug extends ItemPottery implements ICapabilityProvider
     @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, EnumFacing facing)
     {
+		if(capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+		{
+			return (T) new FluidHandlerItemJug();
+		}
     	return null;
     }
+	
+	private static final class FluidHandlerItemJug implements IFluidHandlerItem
+	{
+		
+		private ItemStack stack;
+		private FluidStack fluidStack;
+		private boolean justFilled;
+		
+		public FluidHandlerItemJug() {
+			this.fluidStack = null;
+		}
+
+	    public void setFluid(Fluid fluid)
+	    {
+	    	this.fluidStack = fluid == null ? null : new FluidStack(fluid, MAX_FLUID_AMOUNT);
+	    }
+	    
+	    public boolean isFilled()
+	    {
+	    	return this.fluidStack != null;
+	    }
+	    
+	    public Fluid getFluid()
+	    {
+	    	return this.fluidStack == null ? null : this.fluidStack.getFluid();
+	    }
+	    
+	    public void setItemStack(ItemStack stack)
+	    {
+	    	if(this.stack != null) return;
+	    	if(!stack.hasTagCompound())
+	    	{
+	    		stack.setTagCompound(new NBTTagCompound());
+	    	}
+	    	this.stack = stack;
+	    }
+	    
+	    public void setJustFilled(boolean justFilled)
+	    {
+	    	this.justFilled = justFilled;
+	    }
+	    
+	    @SuppressWarnings("unused")
+	    public boolean isJustFilled()
+	    {
+	    	return this.justFilled;
+	    }
+
+	    public FluidHandlerItemJug readFromNBT(ItemStack stack, NBTTagCompound nbt)
+	    {
+	    	setItemStack(stack);
+	        this.fluidStack = !nbt.hasKey("Empty") ? FluidStack.loadFluidStackFromNBT(nbt) : null;
+	        this.justFilled = nbt.hasKey("JustFilled") ? nbt.getBoolean("JustFilled") : false;
+	        return this;
+	    }
+
+	    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+	    {
+	    	nbt = new NBTTagCompound();
+	        if(fluidStack != null)
+	        {
+	            fluidStack.writeToNBT(nbt);
+	        }
+	        else
+	        {
+	            nbt.setString("Empty", "");
+	        }
+	        nbt.setBoolean("JustFilled", justFilled);
+	        return nbt;
+	    }
+		
+		@Override
+		public int fill(FluidStack resource, boolean doFill)
+		{
+			if(this.isFilled() || resource.getFluid() == null || resource.amount > 0)
+			{
+				return 0;
+			}
+			if(doFill) this.fluidStack = resource;
+			return MAX_FLUID_AMOUNT;
+		}
+		
+		@Override
+		public FluidStack drain(FluidStack resource, boolean doDrain)
+		{
+			if(this.isFilled())
+			{
+				if(doDrain) this.fluidStack.amount = 0;
+				return this.fluidStack;
+			}
+			return null;
+		}
+		
+		@Override
+		public FluidStack drain(int maxDrain, boolean doDrain)
+		{
+			if(this.fluidStack.getFluid() == null)
+			{
+				return null;
+			}
+			if(doDrain)
+			{
+				this.fluidStack.amount = Math.max(0, fluidStack.amount - maxDrain);
+				return this.fluidStack;
+			}
+			return null;
+		}
+		
+		@Override
+		public IFluidTankProperties[] getTankProperties()
+		{
+			return null;
+		}
+
+		@Override
+		public ItemStack getContainer()
+		{
+			return stack;
+		}
+		
+	}
 
 }
