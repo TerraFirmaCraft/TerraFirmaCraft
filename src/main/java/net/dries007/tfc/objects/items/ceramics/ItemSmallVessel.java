@@ -133,7 +133,6 @@ public class ItemSmallVessel extends ItemPottery
     @Nonnull
     public ItemStack getFiringResult(ItemStack input)
     {
-        // Case 1: The input is a filled vessel
         IItemHandler capItemHandler = input.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (capItemHandler instanceof ISmallVesselHandler)
         {

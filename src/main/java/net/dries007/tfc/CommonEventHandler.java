@@ -422,4 +422,16 @@ public final class CommonEventHandler
             TerraFirmaCraft.getLog().warn("Updating gamerule naturalRegeneration to false!");
         }
     }
+
+    /**
+     * This will disable the bonus chest, cheaty cheaty players >:(
+     *
+     * @param event {@link net.minecraftforge.event.world.WorldEvent.CreateSpawnPosition}
+     */
+    @SubscribeEvent
+    public static void onCreateSpawn(WorldEvent.CreateSpawnPosition event)
+    {
+        event.getSettings().bonusChestEnabled = false;
+        TerraFirmaCraft.getLog().info("Disabling bonus chest, you cheaty cheater!");
+    }
 }

@@ -134,6 +134,8 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
             if (cachedRecipe.isValidTemperature(cap.getTemperature()))
             {
                 alloy.add(inputStack, cachedRecipe);
+                inventory.setStackInSlot(SLOT_INPUT, cachedRecipe.getOutputStack(inputStack));
+                needsClientUpdate = true;
             }
             else if (cap.getTemperature() < temperature)
             {
@@ -188,6 +190,12 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
             return false;
         }
         return slot == SLOT_INPUT || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+    }
+
+    @Override
+    public int getSlotLimit(int slot)
+    {
+        return 1;
     }
 
     @Override
