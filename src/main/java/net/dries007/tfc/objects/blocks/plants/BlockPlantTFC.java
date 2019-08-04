@@ -347,7 +347,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
 
     int getDayPeriod()
     {
-        return Math.floorDiv(CalendarTFC.CALENDAR_TIME.getHourOfDay(), ICalendar.HOURS_IN_DAY / 4);
+        return CalendarTFC.CALENDAR_TIME.getHourOfDay() / (ICalendar.HOURS_IN_DAY / 4);
     }
 
     private boolean isValidSoil(IBlockState state)

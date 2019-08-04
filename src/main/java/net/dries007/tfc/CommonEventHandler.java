@@ -404,7 +404,7 @@ public final class CommonEventHandler
             // This is only called on server, so it needs to sync to client
             CalendarTFC.INSTANCE.setDoDaylightCycle(event.getServer().getEntityWorld(), rules.getBoolean("doDaylightCycle"));
         }
-        if ("naturalRegeneration".equals(event.getRuleName()) && ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
+        else if ("naturalRegeneration".equals(event.getRuleName()) && ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
         {
             // Natural regeneration should be disabled, allows TFC to have custom regeneration
             event.getRules().setOrCreateGameRule("naturalRegeneration", "false");

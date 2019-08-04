@@ -37,7 +37,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
-import net.dries007.tfc.client.TFCSoundEvents;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.objects.te.TEInventory;
@@ -166,7 +166,7 @@ public class BlockAnvilTFC extends Block
                 if (te.attemptWelding(playerIn))
                 {
                     // Valid welding occurred.
-                    worldIn.playSound(null, pos, TFCSoundEvents.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    worldIn.playSound(null, pos, TFCSounds.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
                     return true;
                 }
             }

@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.client.TFCSoundEvents;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariantFallable;
 import net.dries007.tfc.objects.blocks.wood.BlockSupport;
 
@@ -54,7 +54,7 @@ public interface ICollapsableBlock
                     {
                         //Trigger collapse!
                         block.collapseArea(worldIn, checking);
-                        worldIn.playSound(null, pos, TFCSoundEvents.ROCK_SLIDE_LONG, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                        worldIn.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG, SoundCategory.BLOCKS, 1.0F, 1.0F);
                         return; //Don't need to check other blocks
                     }
                 }

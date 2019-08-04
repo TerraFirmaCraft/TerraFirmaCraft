@@ -34,7 +34,7 @@ import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCGuiHandler;
-import net.dries007.tfc.client.TFCSoundEvents;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.items.ItemHandstone;
 import net.dries007.tfc.objects.te.TEQuern;
 import net.dries007.tfc.util.Helpers;
@@ -176,7 +176,7 @@ public class BlockQuern extends Block implements IItemSize
                     if (playerStack.isEmpty() && facing == EnumFacing.UP && hitX > 0.2f && hitX < 0.4f && hitZ > 0.2f && hitZ < 0.4f && hitY >= 0.875)
                     {
                         teQuern.grind();
-                        world.playSound(null, pos, TFCSoundEvents.QUERN_USE, SoundCategory.BLOCKS, 1, 1 + ((world.rand.nextFloat() - world.rand.nextFloat()) / 16));
+                        world.playSound(null, pos, TFCSounds.QUERN_USE, SoundCategory.BLOCKS, 1, 1 + ((world.rand.nextFloat() - world.rand.nextFloat()) / 16));
                     }
                     else if (!world.isRemote)
                     {

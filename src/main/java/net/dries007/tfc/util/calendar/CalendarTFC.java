@@ -108,6 +108,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
         nbt.setInteger("daysInMonth", daysInMonth);
 
+        nbt.setLong("worldTotalTime", worldTotalTime);
         nbt.setLong("playerTimeOffset", playerTimeOffset);
         nbt.setLong("calendarTimeOffset", calendarTimeOffset);
 
@@ -124,6 +125,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
         {
             daysInMonth = nbt.getInteger("daysInMonth");
 
+            worldTotalTime = nbt.getLong("worldTotalTime");
             playerTimeOffset = nbt.getLong("playerTimeOffset");
             calendarTimeOffset = nbt.getLong("calendarTimeOffset");
 
@@ -140,6 +142,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     {
         buffer.writeInt(daysInMonth);
 
+        buffer.writeLong(worldTotalTime);
         buffer.writeLong(playerTimeOffset);
         buffer.writeLong(calendarTimeOffset);
 
@@ -151,6 +154,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     {
         daysInMonth = buffer.readInt();
 
+        worldTotalTime = buffer.readLong();
         playerTimeOffset = buffer.readLong();
         calendarTimeOffset = buffer.readLong();
 
@@ -166,6 +170,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     {
         this.daysInMonth = resetTo.daysInMonth;
 
+        this.worldTotalTime = resetTo.worldTotalTime;
         this.playerTimeOffset = resetTo.playerTimeOffset;
         this.calendarTimeOffset = resetTo.calendarTimeOffset;
 

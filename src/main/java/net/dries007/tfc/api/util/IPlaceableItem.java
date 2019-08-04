@@ -22,6 +22,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
@@ -81,7 +82,7 @@ public interface IPlaceableItem
                             if (!world.isRemote)
                             {
                                 world.setBlockState(pos, state.withProperty(LAYERS, state.getValue(LAYERS) + 1));
-                                world.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0f, 0.5f);
+                                world.playSound(null, pos, TFCSounds.CHARCOAL_PILE.getPlaceSound(), SoundCategory.BLOCKS, 1.0f, 1.0f);
                             }
                             return true;
                         }
@@ -100,7 +101,7 @@ public interface IPlaceableItem
                             if (!world.isRemote)
                             {
                                 world.setBlockState(posAt, stateToPlace);
-                                world.playSound(null, posAt, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1.0f, 0.5f);
+                                world.playSound(null, posAt, TFCSounds.CHARCOAL_PILE.getPlaceSound(), SoundCategory.BLOCKS, 1.0f, 1.0f);
                             }
                             return true;
                         }
