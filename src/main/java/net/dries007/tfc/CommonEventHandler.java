@@ -21,15 +21,18 @@ import net.minecraft.util.FoodStats;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.GameRuleChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -389,6 +392,34 @@ public final class CommonEventHandler
             {
                 event.setResult(Event.Result.DENY);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onGameRuleChange(GameRuleChangeEvent event)
+    {
+        GameRules rules = event.getRules();
+        if ("doDaylightCycle".equals(event.getRuleName()))
+        {
+            // This is only called on server, so it needs to sync to client
+            CalendarTFC.INSTANCE.setDoDaylightCycle(event.getServer().getEntityWorld(), rules.getBoolean("doDaylightCycle"));
+        }
+        if ("naturalRegeneration".equals(event.getRuleName()) && ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
+        {
+            // Natural regeneration should be disabled, allows TFC to have custom regeneration
+            event.getRules().setOrCreateGameRule("naturalRegeneration", "false");
+            TerraFirmaCraft.getLog().warn("Something tried to set natural regeneration to true, reverting!");
+        }
+    }
+
+    @SubscribeEvent
+    public static void onWorldLoad(WorldEvent.Load event)
+    {
+        if (ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
+        {
+            // Natural regeneration should be disabled, allows TFC to have custom regeneration
+            event.getWorld().getGameRules().setOrCreateGameRule("naturalRegeneration", "false");
+            TerraFirmaCraft.getLog().warn("Updating gamerule naturalRegeneration to false!");
         }
     }
 }

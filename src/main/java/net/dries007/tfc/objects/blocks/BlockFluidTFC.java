@@ -22,6 +22,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 
 @ParametersAreNonnullByDefault
@@ -49,12 +50,10 @@ public class BlockFluidTFC extends BlockFluidClassic
         super.onEntityCollision(worldIn, pos, state, entityIn);
         if (definedFluid == FluidsTFC.HOT_WATER && entityIn instanceof EntityLivingBase)
         {
-            EntityLivingBase e = ((EntityLivingBase) entityIn);
-            if (Constants.RNG.nextInt(25) == 0 && e.getHealth() < e.getMaxHealth())
+            EntityLivingBase entityLiving = (EntityLivingBase) entityIn;
+            if (Constants.RNG.nextInt(10) == 0 && entityLiving.getHealth() < entityLiving.getMaxHealth())
             {
-                // todo: adjust this once health adjustements / regeneration changes have been made
-                float healing = (e.getMaxHealth() - e.getHealth()) * 0.01f;
-                e.heal(Math.max(healing, 0.05f));
+                entityLiving.heal(FoodStatsTFC.PASSIVE_HEAL_AMOUNT * 3.5f);
             }
         }
     }

@@ -7,10 +7,8 @@ package net.dries007.tfc.util.calendar;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.event.CommandEvent;
-import net.minecraftforge.event.GameRuleChangeEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -46,17 +44,6 @@ public class CalendarEventHandler
         if (event.phase == TickEvent.Phase.START && !Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().player != null)
         {
             CalendarTFC.INSTANCE.setTotalTime(Minecraft.getMinecraft().world.getTotalWorldTime());
-        }
-    }
-
-    @SubscribeEvent
-    public static void onGameRuleChange(GameRuleChangeEvent event)
-    {
-        // This is only called on server, so it needs to sync to client
-        GameRules rules = event.getRules();
-        if ("doDaylightCycle".equals(event.getRuleName()))
-        {
-            CalendarTFC.INSTANCE.setDoDaylightCycle(event.getServer().getEntityWorld(), rules.getBoolean("doDaylightCycle"));
         }
     }
 

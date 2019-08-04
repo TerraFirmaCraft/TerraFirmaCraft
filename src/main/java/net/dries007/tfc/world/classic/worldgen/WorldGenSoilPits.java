@@ -15,6 +15,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.api.types.Rock;
@@ -29,12 +30,11 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 /**
  * todo: make these bigger without causing cascading lag.
  * This will require larger re-writes on the scale of oregen
- * Wait for 1.13+ as AlcatrazEscapee is doing a worldgen rewrite anyway
+ * Wait for 1.14+ as AlcatrazEscapee is doing a worldgen rewrite anyway
  */
 public class WorldGenSoilPits implements IWorldGenerator
 {
     private static final float CLAY_RAINFALL_THREHOLD = 100f;
-    private static final int CLAY_CHUNK_RARITY = 30;
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
@@ -46,14 +46,7 @@ public class WorldGenSoilPits implements IWorldGenerator
         generateClay(world, random, pos);
 
         pos = world.getTopSolidOrLiquidBlock(chunkBlockPos.add(8 + random.nextInt(16), 0, 8 + random.nextInt(16)));
-        if (generatePeat(world, random, pos))
-        {
-            if (random.nextInt(5) == 0)
-            {
-//                if (!cloudberryGen.generate(world, random, pos)) //todo add berry gen
-//                    cranberryGen.generate(world, random, pos);
-            }
-        }
+        generatePeat(world, random, pos);
     }
 
     private void generateClay(World world, Random rng, BlockPos start)
@@ -62,7 +55,7 @@ public class WorldGenSoilPits implements IWorldGenerator
         // Otherwise, do not change this unless you are prepared to do some fairly large re-writes, similar to how ore gen is handled
         int radius = rng.nextInt(6) + 2;
         int depth = rng.nextInt(3) + 1;
-        if (rng.nextInt(CLAY_CHUNK_RARITY) != 0 || start.getY() > WorldTypeTFC.SEALEVEL + 6) return;
+        if (rng.nextInt(ConfigTFC.WORLD.clayRarity) != 0 || start.getY() > WorldTypeTFC.SEALEVEL + 6) return;
         if (ChunkDataTFC.getRainfall(world, start) < CLAY_RAINFALL_THREHOLD) return;
 
         for (int x = -radius; x <= radius; x++)
