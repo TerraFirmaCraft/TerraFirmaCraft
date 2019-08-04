@@ -68,6 +68,17 @@ public class TFCSoundEvents
     @GameRegistry.ObjectHolder("animal.rooster.cry")
     public static final SoundEvent ANIMAL_ROOSTER_CRY = getNull();
 
+    @GameRegistry.ObjectHolder("block.charcoal.break")
+    public static final SoundEvent CHARCOAL_PILE_BREAK = createSoundEvent("block.charcoal.break");
+    @GameRegistry.ObjectHolder("block.charcoal.fall")
+    public static final SoundEvent CHARCOAL_PILE_FALL = createSoundEvent("block.charcoal.fall");
+    @GameRegistry.ObjectHolder("block.charcoal.hit")
+    public static final SoundEvent CHARCOAL_PILE_HIT = createSoundEvent("block.charcoal.hit");
+    @GameRegistry.ObjectHolder("block.charcoal.place")
+    public static final SoundEvent CHARCOAL_PILE_PLACE = createSoundEvent("block.charcoal.place");
+    @GameRegistry.ObjectHolder("block.charcoal.step")
+    public static final SoundEvent CHARCOAL_PILE_STEP = createSoundEvent("block.charcoal.step");
+
     @SubscribeEvent
     public static void registerSounds(RegistryEvent.Register<SoundEvent> event)
     {
@@ -100,5 +111,27 @@ public class TFCSoundEvents
     {
         ResourceLocation soundID = new ResourceLocation(MOD_ID, name);
         r.register(new SoundEvent(soundID).setRegistryName(soundID));
+    }
+
+    private static SoundEvent createSoundEvent(String name)
+    {
+        final ResourceLocation soundID = new ResourceLocation(MOD_ID, name);
+        return new SoundEvent(soundID).setRegistryName(soundID);
+    }
+
+    @Mod.EventBusSubscriber
+    public static class RegistrationHandler
+    {
+        @SubscribeEvent
+        public static void registerSoundEvents(RegistryEvent.Register<SoundEvent> event)
+        {
+            event.getRegistry().registerAll(
+                CHARCOAL_PILE_BREAK,
+                CHARCOAL_PILE_FALL,
+                CHARCOAL_PILE_HIT,
+                CHARCOAL_PILE_PLACE,
+                CHARCOAL_PILE_STEP
+            );
+        }
     }
 }
