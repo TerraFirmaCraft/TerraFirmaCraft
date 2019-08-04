@@ -98,11 +98,7 @@ public final class PlayerDataOverlay
 
             //Draw Health Bar
             //Color of base health bar; red by default
-            int healthColor = 0;
-            if (ConfigTFC.CLIENT.showExtraHealthWithOverlays)
-            {
-                healthColor = surplusPercent > 0 ? (int) Math.floor(surplusPercent) : 0;
-            }
+            int healthColor = surplusPercent > 0 ? (int) Math.floor(surplusPercent) : 0;
 
             //Draw base bar color
             GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
@@ -115,8 +111,8 @@ public final class PlayerDataOverlay
             this.drawTexturedModalRect(mid - 91, healthRowHeight, 90, 10, (int) (90 * percentHealth), 10);
             GL11.glPopAttrib();
 
-            //Add "extra" health bars if enabled
-            if (surplusPercent > 0 && ConfigTFC.CLIENT.showExtraHealthWithOverlays)
+            //Add the "extra" health bar if enabled + needed
+            if (surplusPercent > 0)
             {
                 float percent = surplusPercent % 1;
 
@@ -205,11 +201,11 @@ public final class PlayerDataOverlay
                 GuiIngameForge.renderHealthMount = false;
                 mc.renderEngine.bindTexture(ICONS);
                 EntityLivingBase mount = ((EntityLivingBase) player.getRidingEntity());
-                this.drawTexturedModalRect(mid + 1, armorRowHeight, 90, 0, 90, 10);
+                this.drawTexturedModalRect(mid + 1, armorRowHeight, 0, 0, 90, 10);
                 double mountMaxHealth = mount.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
                 double mountCurrentHealth = mount.getHealth();
                 float mountPercentHealth = (float) Math.min(mountCurrentHealth / mountMaxHealth, 1.0f);
-                this.drawTexturedModalRect(mid + 1, armorRowHeight, 90, 10, (int) (90 * mountPercentHealth), 10);
+                this.drawTexturedModalRect(mid + 1, armorRowHeight, 90, 0, (int) (90 * mountPercentHealth), 10);
 
                 String mountHealthString = (int) Math.min(mountCurrentHealth, mountMaxHealth) + "/" + (int) mountMaxHealth;
                 fontrenderer.drawString(mountHealthString, mid + 47 - (fontrenderer.getStringWidth(mountHealthString) / 2), armorRowHeight + 2, Color.white.getRGB());
