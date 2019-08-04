@@ -64,8 +64,9 @@ tfc.tooltip.animal.milk.lowfamiliarity=This cow has low familiarity to let you m
 tfc.tooltip.animal.milk.empty=This cow has been milked today.
 
 ## Command Tooltips / Messages
-tfc.tooltip.set_month_length=Set Month Length to %d days
-tfc.tooltip.time_command_complete=Success!
+tfc.tooltip.set_month_length=Set Month Length to %d days.
+tfc.tooltip.time_command_set_player_time=Set Player Time to %d.
+tfc.tooltip.time_command_set_calendar_time=Set Calendar Time to %s.
 tfc.tooltip.time_command_disabled=This command has been disabled by TFC. Use /timetfc instead!
 
 ## Prospecting Result Messages
