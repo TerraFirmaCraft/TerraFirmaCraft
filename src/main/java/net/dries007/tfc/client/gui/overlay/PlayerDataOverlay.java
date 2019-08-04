@@ -8,6 +8,7 @@ package net.dries007.tfc.client.gui.overlay;
 import java.awt.*;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -28,7 +29,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
-import org.lwjgl.opengl.GL14;
+import net.dries007.tfc.ConfigTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -81,16 +82,14 @@ public final class PlayerDataOverlay
         if (mc.playerController.gameIsSurvivalOrAdventure())
         {
             float curHealth = (player.getHealth() + player.getAbsorptionAmount()) * calcMaxHealth / player.getMaxHealth();
-            float percentHealth = 0;
-            float surplusPercent = 0; //Used for drawing "extra" health bars if enabled
+            float percentHealth = Math.min(curHealth / calcMaxHealth, 1);
 
-            if (false) //TODO config for "extra bars" mode
-            {
-                percentHealth = curHealth / baseMaxHealth;
-                surplusPercent = Math.max(percentHealth - 1, 0);
+            //Used for drawing "extra" health bars if enabled
+            float surplusPercent = 0;
+            if (ConfigTFC.CLIENT.showExtraHealthWithOverlays) {
+                percentHealth = Math.min(curHealth / baseMaxHealth, 1);
+                surplusPercent = Math.max((curHealth / baseMaxHealth) - 1, 0);
             }
-            //also accounts for absorption in single bar mode
-            percentHealth = Math.min(curHealth / calcMaxHealth, 1);
 
             GL11.glEnable(GL11.GL_BLEND);
 
@@ -100,7 +99,7 @@ public final class PlayerDataOverlay
             //Draw Health Bar
             //Color of base health bar; red by default
             int healthColor = 0;
-            if (false) //TODO config for "extra bars" mode
+            if (ConfigTFC.CLIENT.showExtraHealthWithOverlays)
             {
                 healthColor = surplusPercent > 0 ? (int) Math.floor(surplusPercent) : 0;
             }
@@ -117,7 +116,7 @@ public final class PlayerDataOverlay
             GL11.glPopAttrib();
 
             //Add "extra" health bars if enabled
-            if (surplusPercent > 0 && false) //TODO config for "extra bars" mode
+            if (surplusPercent > 0 && ConfigTFC.CLIENT.showExtraHealthWithOverlays)
             {
                 float percent = surplusPercent % 1;
 

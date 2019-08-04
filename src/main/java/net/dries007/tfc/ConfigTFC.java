@@ -186,6 +186,10 @@ public class ConfigTFC
         @Config.Comment("Should the prospectors pick output to the actionbar? (the space just above the hotbar)")
         @Config.LangKey("config." + MOD_ID + ".client.propickOutputToActionBar")
         public boolean propickOutputToActionBar = true;
+
+        @Config.Comment("Show extra player health using additional health bar overlays? (for Absorption or increased max health)")
+        @Config.LangKey("config." + MOD_ID + ".client.showExtraHealthWithOverlays")
+        public boolean showExtraHealthWithOverlays = true;
     }
 
     public static class WorldCFG
