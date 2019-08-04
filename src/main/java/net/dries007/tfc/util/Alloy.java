@@ -143,6 +143,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
             FluidStack fluidStack = recipe.getOutputFluid(stack);
             if (fluidStack != null)
             {
+                fluidStack.amount *= stack.getCount();
                 add(fluidStack);
             }
         }
