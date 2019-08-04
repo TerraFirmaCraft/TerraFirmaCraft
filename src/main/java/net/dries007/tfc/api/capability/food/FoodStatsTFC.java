@@ -30,11 +30,14 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 @ParametersAreNonnullByDefault
 public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
 {
+    public static final float PASSIVE_HEAL_AMOUNT = 20 * 0.0002f; // On the display: 1 HP / 5 second
+
     private final EntityPlayer sourcePlayer;
     private final FoodStats originalStats;
     private final float[] nutrients;
     private long lastDrinkTick;
     private float thirst;
+    private int healTimer;
 
     public FoodStatsTFC(EntityPlayer sourcePlayer, FoodStats originalStats)
     {
@@ -127,6 +130,18 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
 
         // Next, update the original food stats
         originalStats.onUpdate(player);
+
+        // Apply custom TFC regeneration
+        if (player.shouldHeal() && getFoodLevel() >= 16.0f && getThirst() > 60f)
+        {
+            healTimer++;
+
+            if (healTimer > 10)
+            {
+                player.heal(PASSIVE_HEAL_AMOUNT * (float) ConfigTFC.GENERAL.playerNaturalRegenerationModifier);
+                healTimer = 0;
+            }
+        }
 
         // Last, apply negative effects due to thirst
         if (!player.capabilities.isCreativeMode)
