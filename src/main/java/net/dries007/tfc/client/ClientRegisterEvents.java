@@ -79,6 +79,18 @@ public final class ClientRegisterEvents
     {
         // ITEMS //
 
+        // Bucket needs a custom mesh for fluids
+        ModelLoader.setCustomMeshDefinition(ItemsTFC.WOODEN_BUCKET, new ItemMeshDefinition()
+        {
+            @Nonnull
+            @Override
+            public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack)
+            {
+                return new ModelResourceLocation(ItemsTFC.WOODEN_BUCKET.getRegistryName(), "inventory");
+            }
+        });
+        ModelLoader.registerItemVariants(ItemsTFC.WOODEN_BUCKET, ItemsTFC.WOODEN_BUCKET.getRegistryName());
+
         // Simple Items
         for (Item item : ItemsTFC.getAllSimpleItems())
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName().toString()));
