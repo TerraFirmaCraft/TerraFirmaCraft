@@ -131,6 +131,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                     if (heat != null)
                     {
                         heat.setTemperature(CapabilityItemHeat.MAX_TEMPERATURE);
+
                         // Only Tier I and below can be melted in a pit kiln
                         HeatRecipe recipe = HeatRecipe.get(stack, Metal.Tier.TIER_I);
                         if (recipe != null)

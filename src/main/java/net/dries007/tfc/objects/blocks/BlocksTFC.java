@@ -326,7 +326,7 @@ public final class BlocksTFC
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bloomery", new BlockBloomery(), CT_MISC)));
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "nest_box", new BlockNestBox(), CT_MISC)));
 
-        normalItemBlocks.add(new ItemBlockTFC(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
+        normalItemBlocks.add(new ItemBlockLargeVessel(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
 
         {
             Builder<BlockFluidBase> b = ImmutableList.builder();
