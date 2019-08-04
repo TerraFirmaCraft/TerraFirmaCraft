@@ -243,8 +243,8 @@ public final class ClientRegisterEvents
             {
                 ClimateRenderHelper.ClimateData data = ClimateRenderHelper.get(pos);
                 // This internally will call Calendar to get the month based temperature
-                // Base Temp Range is <-25, 20>, Month Adj Range is <-30, 30>
-                double temp = MathHelper.clamp((data.getTemperature() + 30) / 30, 0, 1);
+                // Actual temp is usually between +30 / -30, so adjust and clamp as necessary
+                double temp = MathHelper.clamp((data.getTemperature() + 30) / 60, 0, 1);
                 // Rainfall is in <0, 500>, although 99% of the time it is within a smaller range of <50, 450>, so trim and clamp as necessary
                 double rain = MathHelper.clamp((data.getRainfall() - 50) / 400, 0, 1);
                 return ColorizerGrass.getGrassColor(temp, rain);
