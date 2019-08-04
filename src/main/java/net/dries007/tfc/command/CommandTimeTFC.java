@@ -37,7 +37,7 @@ public class CommandTimeTFC extends CommandBase
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "/timetfc <set|add> <year|month|day|monthlength|playerticks|ticks> <value>";
+        return "/timetfc <set|add> <<year|month|day|monthlength|playerticks> <value>|ticks <value|calendar_start>>";
     }
 
     @Override
@@ -70,7 +70,14 @@ public class CommandTimeTFC extends CommandBase
             case "tick":
             case "ticks":
                 // This one is different, because it needs to update the actual sun cycle
-                time = parseInt(args[2], 0, Integer.MAX_VALUE);
+                if ("calendar_start".equals(args[2].toLowerCase()))
+                {
+                    time = CalendarTFC.DEFAULT_CALENDAR_TIME_OFFSET;
+                }
+                else
+                {
+                    time = parseInt(args[2], 0, Integer.MAX_VALUE);
+                }
                 updateDaylightCycle = true;
                 break;
             case "playertick":
@@ -84,7 +91,7 @@ public class CommandTimeTFC extends CommandBase
                 sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_month_length", value));
                 return;
             default:
-                throw new WrongUsageException("Second argument must be <day|month|year|monthlength>");
+                throw new WrongUsageException("Second argument must be <year|month|day|monthlength|playerticks|ticks>");
         }
 
         // Parse first argument
@@ -108,19 +115,26 @@ public class CommandTimeTFC extends CommandBase
         if (isPlayerTime)
         {
             CalendarTFC.INSTANCE.setPlayerTime(server.getEntityWorld(), time);
+            sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.time_command_set_player_time", time));
         }
         else
         {
             CalendarTFC.INSTANCE.setCalendarTime(server.getEntityWorld(), time);
+            sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.time_command_set_calendar_time", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
         }
-        sender.sendMessage(new TextComponentTranslation("tfc.tooltip.time_command_complete"));
 
         if (updateDaylightCycle)
         {
             // Set world time (daylight cycle time)
             for (int i = 0; i < server.worlds.length; ++i)
             {
-                server.worlds[i].setWorldTime(time - CalendarTFC.WORLD_TIME_OFFSET);
+                long worldTime = time - CalendarTFC.WORLD_TIME_OFFSET;
+                while (worldTime < 0)
+                {
+                    // Should only need to run once, but just to be safe
+                    worldTime += ICalendar.TICKS_IN_DAY;
+                }
+                server.worlds[i].setWorldTime(worldTime);
             }
         }
     }

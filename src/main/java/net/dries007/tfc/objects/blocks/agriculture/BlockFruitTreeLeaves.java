@@ -129,6 +129,12 @@ public class BlockFruitTreeLeaves extends BlockLeaves
     }
 
     @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        doLeafDecay(worldIn, pos, state);
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public void neighborChanged(IBlockState state, World world, BlockPos pos, @Nullable Block blockIn, @Nullable BlockPos fromPos)
     {

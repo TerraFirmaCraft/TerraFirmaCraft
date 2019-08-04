@@ -48,6 +48,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
      * Calendar time. Advances when player sleeps, stops when doDaylightCycle is false
      * Synced with the daylight cycle
      * Players can see this via the calendar GUI tab
+     * Calendar Time 0 = Midnight, January 1, 1000
      */
     public static final ICalendarFormatted CALENDAR_TIME = new ICalendarFormatted()
     {
@@ -64,8 +65,8 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
         }
     };
 
-    private static final int DEFAULT_DAYS_IN_MONTH = 8;
-    private static final int DEFAULT_CALENDAR_TIME_OFFSET = (6 * DEFAULT_DAYS_IN_MONTH * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
+    public static final int DEFAULT_DAYS_IN_MONTH = 8;
+    public static final int DEFAULT_CALENDAR_TIME_OFFSET = (6 * DEFAULT_DAYS_IN_MONTH * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
 
     static
     {

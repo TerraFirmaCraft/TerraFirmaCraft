@@ -23,6 +23,9 @@ public class ItemUnfiredMold extends ItemPottery
     public ItemUnfiredMold(Metal.ItemType type)
     {
         this.type = type;
-        if (MAP.put(type, this) != null) throw new IllegalStateException("There can only be one.");
+        if (MAP.put(type, this) != null)
+        {
+            throw new IllegalStateException("There can only be one.");
+        }
     }
 }

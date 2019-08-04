@@ -43,6 +43,7 @@ import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.items.ItemAnimalHide;
 import net.dries007.tfc.objects.items.ItemPowder;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
@@ -184,6 +185,17 @@ public final class DefaultRecipes
             r.register(
                 new HeatRecipeSimple(IIngredient.of(new ItemStack(ItemsTFC.UNFIRED_VESSEL_GLAZED, 1, dye.getMetadata())), new ItemStack(ItemsTFC.FIRED_VESSEL_GLAZED, 1, dye.getMetadata()), 1599f, Metal.Tier.TIER_I).setRegistryName("unfired_vessel_glazed_" + dye.getName())
             );
+        }
+
+        // Molds
+        for (Metal.ItemType type : Metal.ItemType.values())
+        {
+            ItemUnfiredMold unfiredMold = ItemUnfiredMold.get(type);
+            ItemMold firedMold = ItemMold.get(type);
+            if (unfiredMold != null && firedMold != null)
+            {
+                r.register(new HeatRecipeSimple(IIngredient.of(unfiredMold), new ItemStack(firedMold), 1599f, Metal.Tier.TIER_I).setRegistryName("fired_mold_" + type.name().toLowerCase()));
+            }
         }
 
         // Standard / Simple recipes
