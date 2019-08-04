@@ -154,7 +154,7 @@ public final class PlayerDataOverlay
             fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2 + 1, healthStringBorder);
 
             //Render health string itself
-            int healthStringColor = player.getAbsorptionAmount() > 0 ? Color.yellow.getRGB() : Color.white.getRGB();
+            int healthStringColor = player.getAbsorptionAmount() > 0 ? 16777088 : Color.white.getRGB(); //#ffff80
             int maxHealthOffset = fontrenderer.getStringWidth(curHealthString);
             fontrenderer.drawString(curHealthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2, healthStringColor);
             fontrenderer.drawString("/" + maxHealthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2) + maxHealthOffset, healthRowHeight + 2, Color.white.getRGB());
