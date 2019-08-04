@@ -192,6 +192,91 @@
       "tfc:frog1"
     ]
   },
+  "block.charcoal.break": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:charcoaldig1",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:charcoaldig1",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:charcoaldig1",
+        "pitch": 1.1
+      }
+    ]
+  },
+  "block.charcoal.fall": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:charcoaldig1",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:charcoaldig1",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:charcoaldig1",
+        "pitch": 1.1
+      }
+    ]
+  },
+  "block.charcoal.hit": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:charcoalstep1",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:charcoalstep1",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:charcoalstep1",
+        "pitch": 1.1
+      }
+    ]
+  },
+  "block.charcoal.place": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:charcoaldig1",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:charcoaldig1",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:charcoaldig1",
+        "pitch": 1.1
+      }
+    ]
+  },
+  "block.charcoal.step": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:charcoalstep1",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:charcoalstep1",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:charcoalstep1",
+        "pitch": 1.1
+      }
+    ]
+  },
   "music.tfc": {
     "category": "music",
     "sounds": [
