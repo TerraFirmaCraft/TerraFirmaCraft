@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.client.TFCSoundEvents;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
@@ -107,13 +107,13 @@ public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalT
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return TFCSoundEvents.ANIMAL_PHEASANT_HURT;
+        return TFCSounds.ANIMAL_PHEASANT_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return TFCSoundEvents.ANIMAL_PHEASANT_DEATH;
+        return TFCSounds.ANIMAL_PHEASANT_DEATH;
     }
 
     @Override
@@ -137,7 +137,7 @@ public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalT
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSoundEvents.ANIMAL_PHEASANT_CRY : TFCSoundEvents.ANIMAL_PHEASANT_SAY;
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_PHEASANT_CRY : TFCSounds.ANIMAL_PHEASANT_SAY;
     }
 
     @Nullable

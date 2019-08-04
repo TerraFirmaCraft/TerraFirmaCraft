@@ -29,7 +29,7 @@ import net.dries007.tfc.api.recipes.WeldingRecipe;
 import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.client.TFCSoundEvents;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.network.PacketAnvilUpdate;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
@@ -240,7 +240,7 @@ public class TEAnvilTFC extends TEInventory
                 steps = cap.getSteps().copy();
                 workingProgress += step.getStepAmount();
                 //The line below should be changed to a "HIT" sound, not 3 hits(minecraft default)
-                world.playSound(null, pos, TFCSoundEvents.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                world.playSound(null, pos, TFCSounds.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
             }
 
             // Handle possible recipe completion
@@ -272,7 +272,7 @@ public class TEAnvilTFC extends TEInventory
 
                     }
 
-                    world.playSound(null, pos, TFCSoundEvents.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    world.playSound(null, pos, TFCSounds.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
 
                     // Reset forge stuff
                     resetFields();
