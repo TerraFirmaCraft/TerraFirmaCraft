@@ -26,6 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -54,6 +55,7 @@ public class ItemRockKnife extends ItemTool implements IItemSize, IRockObject
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
         setHarvestLevel("knife", category.getToolMaterial().getHarvestLevel());
 
+        OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
         OreDictionaryHelper.register(this, "knife");
         OreDictionaryHelper.register(this, "knife", "stone");
         OreDictionaryHelper.register(this, "knife", "stone", category);
