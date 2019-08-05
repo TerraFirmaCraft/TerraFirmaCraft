@@ -65,6 +65,7 @@ public final class PlayerDataOverlay
             calcMaxHealth = player.getMaxHealth() * foodStatsTFC.getHealthModifier() * 50;
             currentThirst = foodStatsTFC.getThirst();
         }
+
         // This is for air to be drawn above our bars
         GuiIngameForge.right_height += 10;
 
@@ -86,7 +87,8 @@ public final class PlayerDataOverlay
 
             //Used for drawing "extra" health bars if enabled
             float surplusPercent = 0;
-            if (ConfigTFC.CLIENT.showExtraHealthWithOverlays) {
+            if (ConfigTFC.CLIENT.showExtraHealthWithOverlays)
+            {
                 percentHealth = Math.min(curHealth / baseMaxHealth, 1);
                 surplusPercent = Math.max((curHealth / baseMaxHealth) - 1, 0);
             }
@@ -127,16 +129,14 @@ public final class PlayerDataOverlay
                 this.drawTexturedModalRect(mid - 91, healthRowHeight, 90, 10, (int) (90 * percent), 10);
                 GL11.glPopAttrib();
             }
+
             //Draw Food and Water
             float foodLevel = player.getFoodStats().getFoodLevel();
             float percentFood = foodLevel / 20f;
             float percentThirst = currentThirst / 100f;
 
-
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.drawTexturedModalRect(mid + 1, healthRowHeight, 0, 20, 90, 5);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
             this.drawTexturedModalRect(mid + 1, healthRowHeight, 0, 25, (int) (90 * percentFood), 5);
 
             this.drawTexturedModalRect(mid + 1, healthRowHeight + 5, 90, 20, 90, 5);
@@ -146,6 +146,7 @@ public final class PlayerDataOverlay
             String curHealthString = String.valueOf((int) curHealth);
             String maxHealthString = String.valueOf((int) calcMaxHealth);
             String healthString = curHealthString + "/" + maxHealthString;
+
             //Render health string border
             int healthStringBorder = new Color(0.0F, 0.0F, 0.0F, 0.3F).getRGB();
             fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2) - 1, healthRowHeight + 2, healthStringBorder);
@@ -230,8 +231,10 @@ public final class PlayerDataOverlay
         tessellator.draw();
     }
 
-    private void setHealthBarColor(int col) {
-        switch (col % 7) {
+    private void setHealthBarColor(int col)
+    {
+        switch (col % 7)
+        {
             case 0: //Red
                 GL11.glColor4f(0.9F, 0.0F, 0.0F, 1.0F);
                 break;
