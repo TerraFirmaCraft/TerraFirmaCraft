@@ -19,16 +19,11 @@ import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.ForgeableHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.ItemSizeHandler;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.api.recipes.heat.HeatRecipe;
-import net.dries007.tfc.api.recipes.heat.HeatRecipeSimple;
-import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
@@ -110,33 +105,6 @@ public class CTItemRegistry
                 }
             });
         }
-    }
-
-    @ZenMethod
-    public static void registerHeatRecipe(String registryName, IItemStack input, IItemStack output, float transformTemp, float maxTemp)
-    {
-        if (input == null || output == null)
-            throw new IllegalArgumentException("Input and output are not allowed to be empty!");
-        ItemStack istack = ((ItemStack) input.getInternal());
-        ItemStack ostack = ((ItemStack) output.getInternal());
-        IItemHeat icap = istack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        IItemHeat ocap = ostack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        if (icap == null || ocap == null) throw new IllegalStateException("Input and output must have heat registry!");
-        HeatRecipe recipe = new HeatRecipeSimple(IIngredient.of(istack), ostack, transformTemp, maxTemp, Metal.Tier.TIER_I).setRegistryName(registryName);
-        CraftTweakerAPI.apply(new IAction()
-        {
-            @Override
-            public void apply()
-            {
-                TFCRegistries.HEAT.register(recipe);
-            }
-
-            @Override
-            public String describe()
-            {
-                return "Adding heating recipe for " + ostack.getDisplayName();
-            }
-        });
     }
 
     @ZenMethod
