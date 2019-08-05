@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability;
+package net.dries007.tfc.objects.fluids.capability;
 
 import java.util.Set;
 import javax.annotation.Nonnull;

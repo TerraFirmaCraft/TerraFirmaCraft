@@ -115,7 +115,6 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("powder/salt")
     public static final ItemPowder SALT = getNull();
 
-    @GameRegistry.ObjectHolder("wooden_bucket")
     public static final ItemBucketTFC WOODEN_BUCKET = getNull();
 
     private static ImmutableList<Item> allSimpleItems;
