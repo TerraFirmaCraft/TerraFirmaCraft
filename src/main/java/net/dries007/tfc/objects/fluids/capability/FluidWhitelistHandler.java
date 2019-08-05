@@ -5,19 +5,28 @@
 
 package net.dries007.tfc.objects.fluids.capability;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 
-public class FluidWhitelistCapability extends FluidHandlerItemStack
+public class FluidWhitelistHandler extends FluidHandlerItemStack
 {
     private final Set<Fluid> whitelist;
 
-    public FluidWhitelistCapability(@Nonnull ItemStack container, int capacity, Set<Fluid> whitelist)
+    public FluidWhitelistHandler(@Nonnull ItemStack container, int capacity, String[] fluidNames)
+    {
+        this(container, capacity, Arrays.stream(fluidNames).map(FluidRegistry::getFluid).filter(Objects::nonNull).collect(Collectors.toSet()));
+    }
+
+    public FluidWhitelistHandler(@Nonnull ItemStack container, int capacity, Set<Fluid> whitelist)
     {
         super(container, capacity);
         this.whitelist = whitelist;

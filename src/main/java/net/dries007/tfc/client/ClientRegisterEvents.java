@@ -73,7 +73,6 @@ import static net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC.WILD;
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)
 public final class ClientRegisterEvents
 {
-    private static final ModelResourceLocation WOODEN_BUCKET_MODEL = new ModelResourceLocation(new ResourceLocation(MOD_ID, "wooden_bucket"), "inventory");
     @SubscribeEvent
     @SuppressWarnings("ConstantConditions")
     public static void registerModels(ModelRegistryEvent event)
@@ -81,7 +80,7 @@ public final class ClientRegisterEvents
         // ITEMS //
 
         // Bucket needs a custom mesh for fluids
-        ModelLoader.setCustomMeshDefinition(ItemsTFC.WOODEN_BUCKET, stack -> WOODEN_BUCKET_MODEL);
+        ModelLoader.setCustomModelResourceLocation(ItemsTFC.WOODEN_BUCKET, 0, new ModelResourceLocation(ItemsTFC.WOODEN_BUCKET.getRegistryName(), "inventory"));
 
         // Simple Items
         for (Item item : ItemsTFC.getAllSimpleItems())
