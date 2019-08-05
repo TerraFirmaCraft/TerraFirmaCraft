@@ -207,6 +207,10 @@ config.tfc.general.peacefulDifficultyPassiveRegeneration=Peaceful Difficulty Pas
 config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?
 
 ## Client Config
+config.tfc.general.woodenBucketWhitelist=Wooden Bucket Fluid Whitelist
+config.tfc.general.woodenBucketWhitelist.tooltip=Allowed fluids to be picked up by the wooden bucket.
+
+## Config.Client
 config.tfc.client=Client Settings
 config.tfc.client.toolip=Client side only.
 
@@ -2325,6 +2329,7 @@ item.tfc.straw.name=Straw
 item.leather.name=Leather
 item.tfc.spindle.name=Spindle
 item.tfc.handstone.name=Quern Handstone
+item.tfc.wooden_bucket.name=Bucket
 
 item.tfc.ore.native_copper.name=Native Copper
 item.tfc.ore.native_gold.name=Native Gold
