@@ -34,26 +34,16 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.capability.FluidWhitelistCapability;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.objects.fluids.capability.FluidWhitelistCapability;
 import net.dries007.tfc.objects.items.ItemTFC;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemBucketTFC extends ItemTFC
 {
-    public static final Set<Fluid> ALLOWED_BUCKET_FLUIDS;
     private static final int CAPACITY = 1000;
-
-    static
-    {
-        ALLOWED_BUCKET_FLUIDS = new HashSet<>();
-        for (String fluidName : ConfigTFC.GENERAL.woodenBucketWhitelist)
-        {
-            ALLOWED_BUCKET_FLUIDS.add(FluidRegistry.getFluid(fluidName));
-        }
-    }
 
     @Nonnull
     @Override
@@ -154,6 +144,11 @@ public class ItemBucketTFC extends ItemTFC
     @Override
     public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new FluidWhitelistCapability(stack, CAPACITY, ALLOWED_BUCKET_FLUIDS);
+        final Set<Fluid> fluidWhitelist = new HashSet<>();
+        for (String fluidName : ConfigTFC.GENERAL.woodenBucketWhitelist)
+        {
+            fluidWhitelist.add(FluidRegistry.getFluid(fluidName));
+        }
+        return new FluidWhitelistCapability(stack, CAPACITY, fluidWhitelist);
     }
 }
