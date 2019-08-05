@@ -106,29 +106,143 @@ createWorld.customize.custom.riverRavineRarity=River Ravine Rarity
 config.tfc=TerraFirmaCraft
 config.tfc.tooltip=Settings for TerraFirmaCraft
 
-## Config.General
+## General Config
 config.tfc.general=General Settings
 config.tfc.general.toolip=Non side specific settings.
 
-config.tfc.general.debug=Enable debug features
-config.tfc.general.debug.tooltip=Various debug options. Use the wand item to activate them individually.
+config.tfc.general.debug=Debug Mode
+config.tfc.general.debug.tooltip=Various debug options. Activates some extra wand features. Enables extra item tooltips.
 
-config.tfc.general.debugWorldGen=Debug worldgen. [DANGER]
-config.tfc.general.debugWorldGen.tooltip=Your world will be affected! Do not use on your proper world files!
+config.tfc.general.removeVanillaRecipes=Remove Vanilla Recipes
+config.tfc.general.removeVanillaRecipes.tooltip=Enable/Disable the vanilla recipe removal spam. False = Those recipes are left in place.
 
-config.tfc.general.yearLength=Year length (in days)
-config.tfc.general.yearLength.tooltip=Must be set as multiple of 12.
+config.tfc.general.leafStickDropChance=Leaf Stick Drop Chance
+config.tfc.general.leafStickDropChance.tooltip=Normal leaf drop chance for sticks
 
-## Config.Client
+config.tfc.general.leafStickDropChanceBonus=Bonus Leaf Stick Drop Chance
+config.tfc.general.leafStickDropChanceBonus.tooltip=Bonus leaf drop chance for sticks
+
+config.tfc.general.leafStickDropChanceBonusClasses=Leaf Stick Drop Chance Tool Classes
+config.tfc.general.leafStickDropChanceBonusClasses.tooltip=Bonus leaf drop stick chance for sticks tool classes
+
+config.tfc.general.temperatureModifierGlobal=Global Temperature Modifier
+config.tfc.general.temperatureModifierGlobal.tooltip=Modifier for how quickly items gains and loses heat. Smaller number = slower temperature changes.
+
+config.tfc.general.temperatureModifierHeating=Heating Temperature Modifier
+config.tfc.general.temperatureModifierHeating.tooltip=Modifier for how quickly devices (i.e. charcoal forge, firepit) gain and lose heat. Smaller number = slower temperature changes.
+
+config.tfc.general.foodDecayModifier=Food Decay Modifier
+config.tfc.general.foodDecayModifier.tooltip=Modifier for how quickly food will decay. Larger values = faster decay. Set to 0 for infinite expiration time
+
+config.tfc.general.pitKilnTime=Pit Kiln Time
+config.tfc.general.pitKilnTime.tooltip=Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.
+
+config.tfc.general.torchTime=Torch Burnout Time
+config.tfc.general.torchTime.tooltip=Number of ticks required for a torch to burn out (1000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.
+
+config.tfc.general.bloomeryTime=Bloomery Time
+config.tfc.general.bloomeryTime.tooltip=Number of ticks required for a bloomery to complete. (1000 = 1 in game hour = 50 seconds), default is 15 hours.
+
+config.tfc.general.plantGrowthRate=Plant Growth Rate
+config.tfc.general.plantGrowthRate.tooltip=Percentage chance that plants will grow each update. Smaller number = slower.
+
+config.tfc.general.fireStarterChance=Firestarter Success Chance
+config.tfc.general.fireStarterChance.tooltip=Chance for the fire starter to be successful
+
+config.tfc.general.playerNutritionDecayModifier=Player Nutrition Decay Modifier
+config.tfc.general.playerNutritionDecayModifier.tooltip=Modifier for how quickly the players nutrition values will decay
+
+config.tfc.general.playerMinHealthModifier=Player Minimum Health Modifier
+config.tfc.general.playerMinHealthModifier.tooltip=Minimum health modifier player can obtain with low nutrition.
+
+config.tfc.general.playerMaxHealthModifier=Player Maximum Health Modifier
+config.tfc.general.playerMaxHealthModifier.tooltip=Maximum health modifier player can obtain with high nutrition.
+
+config.tfc.general.playerThirstModifier=Player Thirst Decay Modifier
+config.tfc.general.playerThirstModifier.tooltip=Modifier for how quickly the players becomes thirsty.
+
+config.tfc.general.playerNaturalRegenerationModifier=Player Natural Regeneration Modifier
+config.tfc.general.playerNaturalRegenerationModifier.tooltip=Modifier for how quickly the player will naturally regenerate health.
+
+config.tfc.general.collapseChance=Rock Collapse Chance
+config.tfc.general.collapseChance.tooltip=Chance that mining a raw rock triggers a collapse.
+
+config.tfc.general.propagateCollapseChance=Propagate Collapse Chance
+config.tfc.general.propagateCollapseChance.tooltip=Chance that collapsing blocks propagate the collapse. Influenced by distance from epicenter of collapse.
+
+config.tfc.general.slashingDamageSources=Slashing Damage Sources
+config.tfc.general.slashingDamageSources.tooltip=Damage Source Types that will default to Slashing damage.
+
+config.tfc.general.piercingDamageSources=Piercing Damage Sources
+config.tfc.general.piercingDamageSources.tooltip=Damage Source Types that will default to Piercing damage.
+
+config.tfc.general.crushingDamageSources=Crushing Damage Sources
+config.tfc.general.crushingDamageSources.tooltip=Damage Source Types that will default to Crushing damage.
+
+config.tfc.general.slashingDamageEntities=Slashing Damage Entities
+config.tfc.general.slashingDamageEntities.tooltip=Damage Source Entities that will default to Slashing damage.
+
+config.tfc.general.piercingDamageEntities=Piercing Damage Entities
+config.tfc.general.piercingDamageEntities.tooltip=Damage Source Entities that will default to Piercing damage.
+
+config.tfc.general.crushingDamageEntities=Crushing Damage Entities
+config.tfc.general.crushingDamageEntities.tooltip=Damage Source Entities that will default to Crushing damage.
+
+config.tfc.general.smallOreMetalAmount=Nugget Metal Amount
+config.tfc.general.smallOreMetalAmount.tooltip=The amount of metal contained in a small ore / nugget.
+
+config.tfc.general.poorOreMetalAmount=Poor Ore Metal Amount
+config.tfc.general.poorOreMetalAmount.tooltip=The amount of metal contained in a poor ore.
+
+config.tfc.general.normalOreMetalAmount=Normal Ore Metal Amount
+config.tfc.general.normalOreMetalAmount.tooltip=The amount of metal contained in a normal ore.
+
+config.tfc.general.richOreMetalAmount=Rich Ore Metal Amount
+config.tfc.general.richOreMetalAmount.tooltip=The amount of metal contained in a rich ore.
+
+config.tfc.general.forceNoVanillaNaturalRegeneration=Force No Vanilla Natural Regeneration
+config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=If true, this will force the gamerule naturalRegeneration to be false. Note: this DOES NOT AFFECT TFC's natural regeneration. If you set naturalRegeneration to true, then you will have both TFC regeneration and normal vanilla regeneration (which is much faster).
+
+config.tfc.general.peacefulDifficultyPassiveRegeneration=Peaceful Difficulty Passive Stats Regen
+config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?
+
+## Client Config
 config.tfc.client=Client Settings
 config.tfc.client.toolip=Client side only.
 
-config.tfc.client.makeWorldTypeClassicDefault=Default to tfc_classic world gen
-config.tfc.client.makeWorldTypeClassicDefault.tooltip=Only works in Single Player
+config.tfc.client.makeWorldTypeClassicDefault=Make TFC Classic World Type Default
+config.tfc.client.makeWorldTypeClassicDefault.tooltip=Only works client side! Servers require the world type to be set to 'tfc_classic'
 
-## Config.World
+config.tfc.client.showToolClassTooltip=Show Item Tool Class Tooltip
+config.tfc.client.showToolClassTooltip.tooltip=Show ItemStack tool classes when advanced tooltips are enabled. (F3+H)
+
+config.tfc.client.showOreDictionaryTooltip=Show Item Ore Dictionary Tooltip
+config.tfc.client.showOreDictionaryTooltip.tooltip=Show ItemStack OreDictionary matches when advanced tooltips are enabled. (F3+H)
+
+config.tfc.client.showNBTTooltip=Show Item NBT Tooltip
+config.tfc.client.showNBTTooltip.tooltip=Show ItemStack NBT on the tooltip when advanced tooltips are enabled. (F3+H)
+
+config.tfc.client.propickOutputToActionBar=Prospectors Pick Output to Actionbar
+config.tfc.client.propickOutputToActionBar.tooltip=Should the prospectors pick output to the actionbar? (the space just above the hotbar)
+
+## World Config
 config.tfc.world=World Gen Settings
 config.tfc.world.tooltip=Various aspects of world generation
+
+config.tfc.world.hemisphereType=Hemisphere Type
+config.tfc.world.hemisphereType.tooltip=This controls how the temperature gradient appears near the equator. 1: south of equator is hot, north of equator is cold. -1: south of equator is cold, north of equator is hot.
+
+config.tfc.world.cyclicTemperatureRegions=Enable Cyclie Temperature Regions
+config.tfc.world.cyclicTemperatureRegions.tooltip=This controls the appearance of cyclic temperature regions. If you want an endless north / south with a temperate equator, set this to false.
+
+config.tfc.world.debugMode=Debug Mode (DANGER)
+config.tfc.world.debugMode.tooltip=Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!
+
+config.tfc.world.latitudeTemperatureModifier=Latitude Temperature Modifier
+config.tfc.world.latitudeTemperatureModifier.tooltip=This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents half the period of the wave = the distance between hot and cold bands, in blocks
+
+config.tfc.world.clayRarity=Clay Deposity Rarity
+config.tfc.world.clayRarity.tooltip=The rarity for clay pits to occur. On average 1 / N chunks will have a clay deposit, if the chunk in question is valid for clay to spawn.
 
 # Misc
 itemGroup.tfc.misc=TFC Misc
