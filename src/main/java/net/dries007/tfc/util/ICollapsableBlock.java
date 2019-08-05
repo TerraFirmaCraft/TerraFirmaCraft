@@ -82,7 +82,7 @@ public interface ICollapsableBlock
                     Math.pow(centerPoint.getX() - cavein.getX(), 2)
                         + Math.pow(centerPoint.getY() - cavein.getY(), 2)
                         + Math.pow(centerPoint.getZ() - cavein.getZ(), 2);
-                double chance = ConfigTFC.GENERAL.propogateCollapseChance - 0.01 * Math.sqrt(distSqrd);
+                double chance = ConfigTFC.GENERAL.propagateCollapseChance - 0.01 * Math.sqrt(distSqrd);
                 if (Constants.RNG.nextDouble() < chance)
                 {
                     BlockRockVariantFallable fallingBlock = ((ICollapsableBlock) st.getBlock()).getFallingVariant();
