@@ -118,6 +118,9 @@ config.tfc.general.debugWorldGen.tooltip=Your world will be affected! Do not use
 config.tfc.general.yearLength=Year length (in days)
 config.tfc.general.yearLength.tooltip=Must be set as multiple of 12.
 
+config.tfc.general.woodenBucketWhitelist=Wooden Bucket Fluid Whitelist
+config.tfc.general.woodenBucketWhitelist.tooltip=Allowed fluids to be picked up by the wooden bucket.
+
 ## Config.Client
 config.tfc.client=Client Settings
 config.tfc.client.toolip=Client side only.
