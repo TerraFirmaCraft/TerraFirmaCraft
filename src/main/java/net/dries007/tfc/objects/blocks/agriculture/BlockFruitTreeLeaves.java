@@ -269,7 +269,8 @@ public class BlockFruitTreeLeaves extends BlockLeaves
         IBlockState state1;
         paths.add(pos); // Center block
 
-        for (int i = 0; i < 5; i++)
+        // Fruit Tree Leaves need branches or full blocks within 2 blocks
+        for (int i = 0; i < 2; i++)
         {
             pathsToAdd = new ArrayList<>();
             for (BlockPos p1 : paths)

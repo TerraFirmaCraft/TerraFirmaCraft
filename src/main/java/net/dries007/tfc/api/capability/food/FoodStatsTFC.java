@@ -113,7 +113,35 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     {
         EnumDifficulty difficulty = player.world.getDifficulty();
 
-        if (difficulty != EnumDifficulty.PEACEFUL)
+        // Extra-Peaceful Difficulty
+        if (difficulty == EnumDifficulty.PEACEFUL && ConfigTFC.GENERAL.peacefulDifficultyPassiveRegeneration)
+        {
+            // Copied / Modified from EntityPlayer#onLivingUpdate
+            if (player.shouldHeal() && player.ticksExisted % 20 == 0)
+            {
+                player.heal(1.0F);
+            }
+
+            if (player.ticksExisted % 10 == 0)
+            {
+                if (needFood())
+                {
+                    player.foodStats.setFoodLevel(player.foodStats.getFoodLevel() + 1);
+                }
+
+                if (thirst < MAX_PLAYER_THIRST)
+                {
+                    addThirst(5f);
+                }
+
+                // Then, we decrement nutrients
+                for (int i = 0; i < nutrients.length; i++)
+                {
+                    addNutrient(i, 5f);
+                }
+            }
+        }
+        else
         {
             // First, we check exhaustion, to decrement thirst
             if (originalStats.foodExhaustionLevel >= 4.0F)
