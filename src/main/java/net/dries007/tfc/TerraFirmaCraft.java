@@ -40,7 +40,6 @@ import net.dries007.tfc.util.fuel.FuelManager;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
 import net.dries007.tfc.world.classic.worldgen.*;
-import net.dries007.tfc.world.classic.worldgen.fissure.WorldGenFissure;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -184,9 +183,10 @@ public final class TerraFirmaCraft
         }
 
         worldTypeTFC = new WorldTypeTFC();
-
-        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true, 20)), 0);
-        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureRarity, new WorldGenFissure(false, -1)), 0);
+        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true)), 0);
+        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(false)), 0);
+        //GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true, 20)), 0);
+        //GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureRarity, new WorldGenFissure(false, -1)), 0);
         // todo: fix these. They are commented out due to significant cascading lag problems. They need to be rewritten
         //GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureClusterRarity, new WorldGenSurfaceFissureCluster(true)), 1);
         //GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureClusterRarity, new WorldGenSurfaceFissureCluster(false)), 1);
