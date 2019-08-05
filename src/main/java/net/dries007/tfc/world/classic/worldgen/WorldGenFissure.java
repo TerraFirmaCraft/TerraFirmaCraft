@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.world.classic.worldgen;
 
 import java.util.*;
@@ -27,7 +32,6 @@ import static net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC.getRock3;
  */
 public class WorldGenFissure implements IWorldGenerator
 {
-
     private final IBlockState fillBlock;
     private final boolean checkStability;
 
@@ -44,20 +48,25 @@ public class WorldGenFissure implements IWorldGenerator
         Biome biome = world.getBiome(start);
 
         if (biome == BiomesTFC.BEACH || biome == BiomesTFC.OCEAN || biome == BiomesTFC.GRAVEL_BEACH || biome == BiomesTFC.LAKE || biome == BiomesTFC.RIVER || biome == BiomesTFC.DEEP_OCEAN)
+        {
             return;
+        }
+
         start = world.getTopSolidOrLiquidBlock(start).down(3);
 
         IBlockState block = world.getBlockState(start);
         if (BlocksTFC.isWater(block) && !BlocksTFC.isGround(block)) return;
         final boolean stable = ChunkDataTFC.isStable(world, start);
         if (checkStability && stable)
+        {
             return;
+        }
 
         final IBlockState rock = BlockRockVariant.get(getRock3(world, start), Rock.Type.RAW).getDefaultState();
 
         int depth = 2 + random.nextInt(3);
         int radius = 1 + random.nextInt(2);
-        //Clear blocks above the fissure
+        // Clear blocks above the fissure
         List<BlockPos> clearing = getCircle(start, radius + 2);
         for (int y = 1; y < 4; y++)
         {
@@ -66,16 +75,16 @@ public class WorldGenFissure implements IWorldGenerator
                 world.setBlockToAir(clear.up(y));
             }
         }
-        //Actually fills the fissure
-        //This is left here for testing.
+        // Actually fills the fissure
+        // This is left here for testing.
         Set<BlockPos> blocks = getCollapseSet(random, start, radius, depth);
         for (BlockPos filling : blocks)
         {
             smartFill(world, filling, blocks, rock, fillBlock);
         }
-        //This is an experimental way of fixing "missing" rocks
-        //I disabled it because the looks is more man-made
-        //Replaces the blocks not filled by water/lava
+        //T his is an experimental way of fixing "missing" rocks
+        // I disabled it because the looks is more man-made
+        // Replaces the blocks not filled by water/lava
         /*
         for(int y = 0; y <= depth + 1; y++)
         {
@@ -91,7 +100,7 @@ public class WorldGenFissure implements IWorldGenerator
     }
 
     /**
-     * Gives a list of blockpos for a circle.
+     * Gives a list of block positions for a circle.
      * Used to clear the blocks above the fissure
      *
      * @param center the center block
@@ -157,7 +166,7 @@ public class WorldGenFissure implements IWorldGenerator
                 }
             }
         }
-        //Now, let's make a "tunnel" all way down so this is gonna look a bit more like a fissure
+        // Now, let's make a "tunnel" all way down so this is gonna look a bit more like a fissure
         int tunnelDepth = depth + 20 + random.nextInt(60);
         int tunnelY = center.down(tunnelDepth).getY();
         if (tunnelY < 20) tunnelY = 20;
@@ -166,7 +175,7 @@ public class WorldGenFissure implements IWorldGenerator
         blocks.add(tunnelPos);
         while (tunnelPos.getY() > tunnelY)
         {
-            int value = random.nextInt(8); //50% down, 12.5% each side
+            int value = random.nextInt(8); // 50% down, 12.5% each side
             if (value < 1)
             {
                 tunnelPos = tunnelPos.offset(EnumFacing.NORTH);
@@ -188,8 +197,8 @@ public class WorldGenFissure implements IWorldGenerator
                 tunnelPos = tunnelPos.down();
             }
             float remaining = (tunnelPos.getY() - tunnelY) / startingY;
-            radius = Math.max(1, (int) (8 * remaining)); //Lowering radius makes it look better
-            //Keep it under control
+            radius = Math.max(1, (int) (8 * remaining)); // Lowering radius makes it look better
+            // Keep it under control
             if (tunnelPos.getX() > center.getX() + radius)
             {
                 tunnelPos.add(-1, 0, 0);
@@ -215,19 +224,8 @@ public class WorldGenFissure implements IWorldGenerator
         return blocks;
     }
 
-    //Previous fill method
-    private void fill(World world, BlockPos pos, IBlockState rock, IBlockState fillBlock)
-    {
-        world.setBlockState(pos, fillBlock);
-        for (EnumFacing facing : EnumFacing.VALUES)
-        {
-            if (facing == EnumFacing.UP || world.getBlockState(pos.offset(facing)) == fillBlock) continue;
-            world.setBlockState(pos.offset(facing), rock);
-        }
-    }
-
-    //A bit smarter fill, try to not fill the "insides" with rock
-    //Needs more tweaking
+    // A bit smarter fill, try to not fill the "insides" with rock
+    // Needs more tweaking
     private void smartFill(World world, BlockPos pos, Set<BlockPos> fillBlockPos, IBlockState rock, IBlockState fillBlock)
     {
         world.setBlockState(pos, fillBlock);

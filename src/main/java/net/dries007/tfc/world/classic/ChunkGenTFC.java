@@ -252,20 +252,6 @@ public class ChunkGenTFC implements IChunkGenerator
         final Biome biome = world.getBiome(blockpos.add(16, 0, 16));
         rand.setSeed(world.getSeed());
         rand.setSeed((long) chunkX * (rand.nextLong() / 2L * 2L + 1L) + (long) chunkZ * (rand.nextLong() / 2L * 2L + 1L) ^ world.getSeed());
-//        ChunkPos chunkpos = new ChunkPos(chunkX, chunkZ);
-//        net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(true, this, world, rand, chunkX, chunkZ, false); //todo
-
-//        Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
-//        ChunkDataTFC chunkData = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
-//        if (chunkData == null) throw new IllegalStateException("ChunkData capability is missing.");
-
-        /* fissue gen, is commented out in 1.7.10
-        if (this.rand.nextInt(chunkData.isStable(0, 0) ? 4 : 6) == 0)
-        {
-            x = xCoord + this.rand.nextInt(16) + 8;
-            z = zCoord + this.rand.nextInt(16) + 8;
-            y = Global.SEALEVEL - rand.nextInt(45);
-        } */
 
         biome.decorate(world, rand, blockpos);
 
@@ -288,9 +274,9 @@ public class ChunkGenTFC implements IChunkGenerator
             }
         }
 
-//        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(chunkProvider, worldObj, rand, chunkX, chunkZ, var11)); //todo
+        //MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(chunkProvider, worldObj, rand, chunkX, chunkZ, var11)); //todo
 
-//        net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, world, rand, chunkX, chunkZ, false); //todo
+        //net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, world, rand, chunkX, chunkZ, false); //todo
 
         BlockFalling.fallInstantly = false;
     }

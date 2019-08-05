@@ -185,19 +185,14 @@ public final class TerraFirmaCraft
         worldTypeTFC = new WorldTypeTFC();
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true)), 0);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(false)), 0);
-        //GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true, 20)), 0);
-        //GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureRarity, new WorldGenFissure(false, -1)), 0);
-        // todo: fix these. They are commented out due to significant cascading lag problems. They need to be rewritten
-        //GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureClusterRarity, new WorldGenSurfaceFissureCluster(true)), 1);
-        //GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureClusterRarity, new WorldGenSurfaceFissureCluster(false)), 1);
-        GameRegistry.registerWorldGenerator(new WorldGenOreVeins(), 2);
-        GameRegistry.registerWorldGenerator(new WorldGenSoilPits(), 3);
-        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 4);
+        GameRegistry.registerWorldGenerator(new WorldGenOreVeins(), 1);
+        GameRegistry.registerWorldGenerator(new WorldGenSoilPits(), 2);
+        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 3);
         //todo: add cave decorator
-        GameRegistry.registerWorldGenerator(new WorldGenTrees(), 5);
-        GameRegistry.registerWorldGenerator(new WorldGenBerryBushes(), 6);
-        GameRegistry.registerWorldGenerator(new WorldGenFruitTrees(), 7);
-        GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 8);
+        GameRegistry.registerWorldGenerator(new WorldGenTrees(), 4);
+        GameRegistry.registerWorldGenerator(new WorldGenBerryBushes(), 5);
+        GameRegistry.registerWorldGenerator(new WorldGenFruitTrees(), 6);
+        GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 7);
     }
 
     @Mod.EventHandler
