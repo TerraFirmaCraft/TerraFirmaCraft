@@ -15,7 +15,7 @@ import net.dries007.tfc.compat.jei.BaseRecipeCategory;
 import net.dries007.tfc.compat.jei.wrappers.SimpleRecipeWrapper;
 
 @ParametersAreNonnullByDefault
-public class HeatSimpleCategory extends BaseRecipeCategory<SimpleRecipeWrapper>
+public class HeatCategory extends BaseRecipeCategory<SimpleRecipeWrapper>
 {
     private static final ResourceLocation ICONS = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/jei/icons.png");
 
@@ -23,7 +23,7 @@ public class HeatSimpleCategory extends BaseRecipeCategory<SimpleRecipeWrapper>
     private final IDrawableStatic fire, icon;
     private final IDrawableAnimated fireAnimated;
 
-    public HeatSimpleCategory(IGuiHelper helper, String Uid)
+    public HeatCategory(IGuiHelper helper, String Uid)
     {
         super(helper.createBlankDrawable(120, 38), Uid);
         icon = helper.createDrawable(ICONS, 0, 30, 18, 18);
@@ -43,9 +43,8 @@ public class HeatSimpleCategory extends BaseRecipeCategory<SimpleRecipeWrapper>
     @Override
     public void drawExtras(Minecraft minecraft)
     {
-        icon.draw(minecraft, 52, 16);
-        fire.draw(minecraft, 54, 2);
-        fireAnimated.draw(minecraft, 54, 2);
+        fire.draw(minecraft, 54, 16);
+        fireAnimated.draw(minecraft, 54, 16);
         slot.draw(minecraft, 20, 16);
         slot.draw(minecraft, 84, 16);
     }

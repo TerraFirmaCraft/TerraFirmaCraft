@@ -14,11 +14,10 @@ import net.minecraft.util.NonNullList;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 @ParametersAreNonnullByDefault
-public class HeatRecipeSimple extends HeatRecipe implements IJEISimpleRecipe
+public class HeatRecipeSimple extends HeatRecipe
 {
     private final ItemStack output;
     private final float maxTemp;
