@@ -31,6 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -65,6 +66,7 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
 
         setMaxDamage((int) (category.getToolMaterial().getMaxUses() * 0.1));
 
+        OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
         OreDictionaryHelper.register(this, "javelin");
         OreDictionaryHelper.register(this, "javelin", "stone");
         OreDictionaryHelper.register(this, "javelin", "stone", category);
