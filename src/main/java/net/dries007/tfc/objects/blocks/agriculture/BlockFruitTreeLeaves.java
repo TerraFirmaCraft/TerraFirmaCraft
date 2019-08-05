@@ -91,6 +91,12 @@ public class BlockFruitTreeLeaves extends BlockLeaves
     }
 
     @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        //This is here so it won't cause issues with check_decay
+    }
+
+    @Override
     public void randomTick(World world, BlockPos pos, IBlockState state, Random random)
     {
         if (!world.isRemote)
