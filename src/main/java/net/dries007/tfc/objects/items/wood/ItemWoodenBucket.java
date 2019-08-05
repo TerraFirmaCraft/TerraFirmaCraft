@@ -173,6 +173,7 @@ public class ItemWoodenBucket extends ItemTFC
     {
         if (isInCreativeTab(tab))
         {
+            items.add(new ItemStack(this));
             for (String fluidName : ConfigTFC.GENERAL.woodenBucketWhitelist)
             {
                 Fluid fluid = FluidRegistry.getFluid(fluidName);
