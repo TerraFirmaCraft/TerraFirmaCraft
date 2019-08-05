@@ -36,9 +36,9 @@ import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.objects.items.rock.ItemBrickTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
-import net.dries007.tfc.objects.items.wood.ItemBucketTFC;
 import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 import net.dries007.tfc.objects.items.wood.ItemLumberTFC;
+import net.dries007.tfc.objects.items.wood.ItemWoodenBucket;
 import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.agriculture.Food;
 
@@ -115,7 +115,7 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("powder/salt")
     public static final ItemPowder SALT = getNull();
 
-    public static final ItemBucketTFC WOODEN_BUCKET = getNull();
+    public static final ItemWoodenBucket WOODEN_BUCKET = getNull();
 
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
@@ -144,7 +144,7 @@ public final class ItemsTFC
         Builder<Item> simpleItems = ImmutableList.builder();
 
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
-        register(r, "wooden_bucket", new ItemBucketTFC(), CT_WOOD); //not a simple item, use a custom model
+        register(r, "wooden_bucket", new ItemWoodenBucket(), CT_WOOD); //not a simple item, use a custom model
 
         {
             for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
