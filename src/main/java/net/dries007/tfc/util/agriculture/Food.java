@@ -88,6 +88,8 @@ public enum Food
     HORSE_MEAT(MEAT, 0.2f, 1f, 0f, 1f, 2.5f, 0f, 0f, 3f, 1f, 200f),
     PHEASANT(MEAT, 0.2f, 1f, 0f, 2f, 2.5f, 0f, 0f, 3f, 1f, 200f),
     VENISON(MEAT, 0.2f, 1f, 0f, 0.5f, 2f, 0f, 0f, 3f, 1f, 200f),
+    WOLF(MEAT, 0.2f, 1f, 0f, 0.5f, 2f, 0f, 0f, 3f, 1f, 200f),
+    RABBIT(MEAT, 0.2f, 1f, 0f, 0.5f, 2.5f, 0f, 0f, 3f, 1f, 200f),
     COOKED_BEEF(MEAT, 0.8f, 2f, 0f, 2f, 2.5f, 0f, 0f, 3f),
     COOKED_PORK(MEAT, 0.8f, 2f, 0f, 2f, 2.5f, 0f, 0f, 3f),
     COOKED_CHICKEN(MEAT, 0.6f, 2f, 0f, 0.5f, 2.5f, 0f, 0f, 3f),
@@ -97,7 +99,9 @@ public enum Food
     COOKED_CALAMARI(MEAT, 0.4f, 2f, 0f, 0.5f, 1.5f, 0f, 0f, 3f),
     COOKED_HORSE_MEAT(MEAT, 0.8f, 2f, 0f, 1f, 2.5f, 0f, 0f, 3f),
     COOKED_PHEASANT(MEAT, 0.8f, 2f, 0f, 2f, 2.5f, 0f, 0f, 3f),
-    COOKED_VENISON(MEAT, 0.6f, 2f, 0f, 0.5f, 2f, 0f, 0f, 3f);
+    COOKED_WOLF(MEAT, 0.6f, 2f, 0f, 0.5f, 2f, 0f, 0f, 3f),
+    COOKED_VENISON(MEAT, 0.6f, 2f, 0f, 0.5f, 2f, 0f, 0f, 3f),
+    COOKED_RABBIT(MEAT, 0.6f, 2f, 0f, 0.5f, 2.5f, 0f, 0f, 3f);
 
     private final Category category;
     private final float calories;
