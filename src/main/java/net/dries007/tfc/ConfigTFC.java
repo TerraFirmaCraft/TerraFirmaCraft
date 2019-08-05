@@ -55,17 +55,17 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.removeVanillaRecipes")
         public boolean removeVanillaRecipes = true;
 
-        @Config.Comment("Normal decay leaf drop chance for sticks")
+        @Config.Comment("Normal leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChance")
         public double leafStickDropChance = 0.1;
 
-        @Config.Comment("Bonus decay leaf drop chance for sticks")
+        @Config.Comment("Bonus leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonus")
         public double leafStickDropChanceBonus = 0.25;
 
-        @Config.Comment("Bonus decay leaf drop chance for sticks tool classes")
+        @Config.Comment("Bonus leaf drop stick chance for sticks tool classes")
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonusClasses")
         public String[] leafStickDropChanceBonusClasses = new String[] {"knife", "scythe"};
 
@@ -89,7 +89,7 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.pitKilnTime")
         public int pitKilnTime = 8000;
 
-        @Config.Comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour), default is 72 hours. Set to -1 to disable torch burnout.")
+        @Config.Comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.")
         @Config.RangeInt(min = 20)
         @Config.LangKey("config." + MOD_ID + ".general.torchTime")
         public int torchTime = 72000;
@@ -110,26 +110,26 @@ public class ConfigTFC
         public double fireStarterChance = 0.5d;
 
         @Config.Comment("Modifier for how quickly the players nutrition values will decay")
-        @Config.RangeDouble(min = 0, max = 10)
+        @Config.RangeDouble(min = 0, max = 1)
         @Config.LangKey("config." + MOD_ID + ".general.playerNutritionDecayModifier")
         public double playerNutritionDecayModifier = 0.0003;
 
-        @Config.Comment("Minimum health modifier player can obtain with low stats")
+        @Config.Comment("Minimum health modifier player can obtain with low nutrition.")
         @Config.RangeDouble(min = 0.1d, max = 1d)
         @Config.LangKey("config." + MOD_ID + ".general.playerMinHealthModifier")
         public double playerMinHealthModifier = 0.2d;
 
-        @Config.Comment("Maximum health modifier player can obtain with high stats")
+        @Config.Comment("Maximum health modifier player can obtain with high nutrition.")
         @Config.RangeDouble(min = 1d, max = 5d)
         @Config.LangKey("config." + MOD_ID + ".general.playerMaxHealthModifier")
         public double playerMaxHealthModifier = 3d;
 
-        @Config.Comment("Modifier for how quickly the players becomes thirsty")
+        @Config.Comment("Modifier for how quickly the players becomes thirsty.")
         @Config.RangeDouble(min = 0, max = 100)
         @Config.LangKey("config." + MOD_ID + ".general.playerThirstModifier")
         public double playerThirstModifier = 8.0;
 
-        @Config.Comment("Modifier for how quickly the player will naturally regenerate.")
+        @Config.Comment("Modifier for how quickly the player will naturally regenerate health.")
         @Config.LangKey("config." + MOD_ID + ".general.playerNaturalRegenerationModifier")
         @Config.RangeDouble(min = 0, max = 100)
         public double playerNaturalRegenerationModifier = 1.0;
@@ -137,53 +137,53 @@ public class ConfigTFC
         @Config.Comment("Chance that mining a raw rock triggers a collapse.")
         @Config.RangeDouble(min = 0, max = 1)
         @Config.LangKey("config." + MOD_ID + ".general.collapseChance")
-        public double collapseChance = 0.10;
+        public double collapseChance = 0.1;
 
-        @Config.Comment("Chance that collapsing blocks propagade the collapse. Influenced by distance from epicenter of collapse.")
+        @Config.Comment("Chance that collapsing blocks propagate the collapse. Influenced by distance from epicenter of collapse.")
         @Config.RangeDouble(min = 0, max = 1)
-        @Config.LangKey("config." + MOD_ID + ".general.propogateCollapseChance")
-        public double propogateCollapseChance = 0.55;
+        @Config.LangKey("config." + MOD_ID + ".general.propagateCollapseChance")
+        public double propagateCollapseChance = 0.55;
 
-        @Config.Comment("Damage Source Types that will default to Slashing damage")
+        @Config.Comment("Damage Source Types that will default to Slashing damage.")
         @Config.LangKey("config." + MOD_ID + ".general.slashingDamageSources")
         public String[] slashingDamageSources = new String[] {};
 
-        @Config.Comment("Damage Source Types that will default to Piercing damage")
+        @Config.Comment("Damage Source Types that will default to Piercing damage.")
         @Config.LangKey("config." + MOD_ID + ".general.piercingDamageSources")
         public String[] piercingDamageSources = new String[] {"arrow", "cactus", "thorns"};
 
-        @Config.Comment("Damage Source Types that will default to Crushing damage")
+        @Config.Comment("Damage Source Types that will default to Crushing damage.")
         @Config.LangKey("config." + MOD_ID + ".general.crushingDamageSources")
         public String[] crushingDamageSources = new String[] {"anvil", "falling_block"};
 
-        @Config.Comment("Damage Source Entities that will default to Slashing damage")
+        @Config.Comment("Damage Source Entities that will default to Slashing damage.")
         @Config.LangKey("config." + MOD_ID + ".general.slashingDamageEntities")
         public String[] slashingDamageEntities = new String[] {"minecraft:wither_skeleton", "minecraft:vex", "minecraft:vindication_illager", "minecraft:zombie_pigman", "minecraft:wolf", "minecraft:polar_bear"};
 
-        @Config.Comment("Damage Source Entities that will default to Piercing damage")
+        @Config.Comment("Damage Source Entities that will default to Piercing damage.")
         @Config.LangKey("config." + MOD_ID + ".general.piercingDamageEntities")
         public String[] piercingDamageEntities = new String[] {"minecraft:stray", "minecraft:skeleton"};
 
-        @Config.Comment("Damage Source Entities that will default to Crushing damage")
+        @Config.Comment("Damage Source Entities that will default to Crushing damage.")
         @Config.LangKey("config." + MOD_ID + ".general.crushingDamageEntities")
         public String[] crushingDamageEntities = new String[] {"minecraft:husk", "minecraft:skeleton_horse", "minecraft:zombie_horse", "minecraft:spider", "minecraft:giant", "minecraft:zombie", "minecraft:slime", "minecraft:cave_spider", "minecraft:silverfish", "minecraft:villager_golem", "minecraft:zombie_villager"};
 
-        @Config.Comment("The amount of metal contained in a small ore / nugget")
+        @Config.Comment("The amount of metal contained in a small ore / nugget.")
         @Config.LangKey("config." + MOD_ID + ".general.smallOreMetalAmount")
         @Config.RangeInt(min = 1, max = 10_000)
         public int smallOreMetalAmount = 10;
 
-        @Config.Comment("The amount of metal contained in a poor ore")
+        @Config.Comment("The amount of metal contained in a poor ore.")
         @Config.LangKey("config." + MOD_ID + ".general.poorOreMetalAmount")
         @Config.RangeInt(min = 1, max = 10_000)
         public int poorOreMetalAmount = 15;
 
-        @Config.Comment("The amount of metal contained in a normal ore")
+        @Config.Comment("The amount of metal contained in a normal ore.")
         @Config.LangKey("config." + MOD_ID + ".general.normalOreMetalAmount")
         @Config.RangeInt(min = 1, max = 10_000)
         public int normalOreMetalAmount = 25;
 
-        @Config.Comment("The amount of metal contained in a rich ore")
+        @Config.Comment("The amount of metal contained in a rich ore.")
         @Config.LangKey("config." + MOD_ID + ".general.richOreMetalAmount")
         @Config.RangeInt(min = 1, max = 10_000)
         public int richOreMetalAmount = 35;
@@ -192,7 +192,7 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.forceNoVanillaNaturalRegeneration")
         public boolean forceNoVanillaNaturalRegeneration = true;
 
-        @Config.Comment("Should the player receive passive regeneration of health, food, and thirst, similar to vanilla's peaceful mode?")
+        @Config.Comment("Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?")
         @Config.LangKey("config." + MOD_ID + ".general.peacefulDifficultyPassiveRegeneration")
         public boolean peacefulDifficultyPassiveRegeneration = false;
     }
@@ -229,7 +229,7 @@ public class ConfigTFC
         @Config.RequiresMcRestart
         public int hemisphereType = 1;
 
-        @Config.Comment("This controls the appearance of cyclic temperature regions. If you want an endless north / south with a temperate equator, set this to false")
+        @Config.Comment("This controls the appearance of cyclic temperature regions. If you want an endless north / south with a temperate equator, set this to false.")
         @Config.LangKey("config." + MOD_ID + ".world.cyclicTemperatureRegions")
         @Config.RequiresMcRestart
         public boolean cyclicTemperatureRegions = true;
