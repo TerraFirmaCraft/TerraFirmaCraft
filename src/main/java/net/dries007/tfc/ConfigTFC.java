@@ -191,6 +191,10 @@ public class ConfigTFC
         @Config.Comment({"If true, this will force the gamerule naturalRegeneration to be false. ", "Note: this DOES NOT AFFECT TFC's natural regeneration. If you set naturalRegeneration to true, then you will have both TFC regeneration and normal vanilla regeneration (which is much faster)"})
         @Config.LangKey("config." + MOD_ID + ".general.forceNoVanillaNaturalRegeneration")
         public boolean forceNoVanillaNaturalRegeneration = true;
+
+        @Config.Comment("Should the player receive passive regeneration of health, food, and thirst, similar to vanilla's peaceful mode?")
+        @Config.LangKey("config." + MOD_ID + ".general.peacefulDifficultyPassiveRegeneration")
+        public boolean peacefulDifficultyPassiveRegeneration = false;
     }
 
     public static class ClientCFG
