@@ -7,6 +7,7 @@ package net.dries007.tfc.compat.jei.wrappers;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -17,6 +18,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
+@ParametersAreNonnullByDefault
 public class SimpleRecipeWrapper implements IRecipeWrapper
 {
     private IJEISimpleRecipe recipeWrapper;

@@ -15,8 +15,6 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
-import net.dries007.tfc.api.recipes.heat.HeatRecipeMetalMelting;
-import net.dries007.tfc.api.recipes.heat.HeatRecipeSimple;
 import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
@@ -29,7 +27,6 @@ import net.dries007.tfc.compat.jei.wrappers.*;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLoom;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 
@@ -39,8 +36,7 @@ public final class TFCJEIPlugin implements IModPlugin
     private static final String ALLOY_UID = TFCConstants.MOD_ID + ".alloy";
     private static final String ANVIL_UID = TFCConstants.MOD_ID + ".anvil";
     private static final String BARREL_UID = TFCConstants.MOD_ID + ".barrel";
-    private static final String HEAT_SIMPLE_UID = TFCConstants.MOD_ID + ".heat.simple";
-    private static final String HEAT_METAL_UID = TFCConstants.MOD_ID + ".heat.metal";
+    private static final String HEAT_UID = TFCConstants.MOD_ID + ".heat";
     private static final String KNAP_CLAY_UID = TFCConstants.MOD_ID + ".knap.clay";
     private static final String KNAP_FIRECLAY_UID = TFCConstants.MOD_ID + ".knap.fireclay";
     private static final String KNAP_LEATHER_UID = TFCConstants.MOD_ID + ".knap.leather";
@@ -56,8 +52,7 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipeCategories(new AlloyCategory(registry.getJeiHelpers().getGuiHelper(), ALLOY_UID));
         registry.addRecipeCategories(new AnvilCategory(registry.getJeiHelpers().getGuiHelper(), ANVIL_UID));
         registry.addRecipeCategories(new BarrelCategory(registry.getJeiHelpers().getGuiHelper(), BARREL_UID));
-        registry.addRecipeCategories(new HeatSimpleCategory(registry.getJeiHelpers().getGuiHelper(), HEAT_SIMPLE_UID));
-        registry.addRecipeCategories(new HeatMetalCategory(registry.getJeiHelpers().getGuiHelper(), HEAT_METAL_UID));
+        registry.addRecipeCategories(new HeatCategory(registry.getJeiHelpers().getGuiHelper(), HEAT_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_CLAY_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_FIRECLAY_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_LEATHER_UID));
@@ -79,26 +74,15 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipes(quernList, QUERN_UID); //Register recipes to quern category
         registry.addRecipeCatalyst(new ItemStack(BlocksTFC.QUERN), QUERN_UID); //Register BlockQuern as the device that do quern recipes
 
-        //Wraps all simple heating recipes
-        List<SimpleRecipeWrapper> heatSimpleList = TFCRegistries.HEAT.getValuesCollection()
+        //Wraps all heating recipes, if they return ingredients(1 or more) -> itemstacks(1 or more)
+        List<HeatRecipeWrapper> heatList = TFCRegistries.HEAT.getValuesCollection()
             .stream()
-            .filter(r -> r instanceof HeatRecipeSimple)
-            .map(r -> new SimpleRecipeWrapper((HeatRecipeSimple) r))
+            .filter(r -> r.getOutputs().size() > 0 && r.getIngredients().size() > 0)
+            .map(HeatRecipeWrapper::new)
             .collect(Collectors.toList());
 
-        registry.addRecipes(heatSimpleList, HEAT_SIMPLE_UID);
+        registry.addRecipes(heatList, HEAT_UID);
         //No block/item to wrap this one
-
-        //Wraps all metal heating recipes
-        List<HeatMetalWrapper> heatMetalList = TFCRegistries.HEAT.getValuesCollection()
-            .stream()
-            .filter(r -> r instanceof HeatRecipeMetalMelting)
-            .filter(r -> Metal.ItemType.INGOT.hasMold(((HeatRecipeMetalMelting) r).getMetal()))
-            .map(r -> new HeatMetalWrapper((HeatRecipeMetalMelting) r))
-            .collect(Collectors.toList());
-
-        registry.addRecipes(heatMetalList, HEAT_METAL_UID);
-        registry.addRecipeCatalyst(new ItemStack(ItemMold.get(Metal.ItemType.INGOT)), HEAT_METAL_UID);
 
         //Wraps all anvil recipes
         List<SimpleRecipeWrapper> anvilList = TFCRegistries.ANVIL.getValuesCollection()
