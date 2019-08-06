@@ -195,7 +195,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
     @Override
     public int getSlotLimit(int slot)
     {
-        return 1;
+        return slot == SLOT_INPUT ? 64 : 1;
     }
 
     @Override
