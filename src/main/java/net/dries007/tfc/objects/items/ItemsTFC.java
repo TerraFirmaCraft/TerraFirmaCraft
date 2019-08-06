@@ -5,29 +5,41 @@
 
 package net.dries007.tfc.objects.items;
 
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.objects.CreativeTabsTFC.CT_DECORATIONS;
+import static net.dries007.tfc.objects.CreativeTabsTFC.CT_FOOD;
+import static net.dries007.tfc.objects.CreativeTabsTFC.CT_GEMS;
+import static net.dries007.tfc.objects.CreativeTabsTFC.CT_METAL;
+import static net.dries007.tfc.objects.CreativeTabsTFC.CT_MISC;
+import static net.dries007.tfc.objects.CreativeTabsTFC.CT_POTTERY;
+import static net.dries007.tfc.objects.CreativeTabsTFC.CT_ROCK_ITEMS;
+import static net.dries007.tfc.objects.CreativeTabsTFC.CT_WOOD;
+import static net.dries007.tfc.util.Helpers.getNull;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.*;
+import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.Powder;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
-import net.dries007.tfc.objects.items.ceramics.*;
+import net.dries007.tfc.objects.items.ceramics.ItemJug;
+import net.dries007.tfc.objects.items.ceramics.ItemMold;
+import net.dries007.tfc.objects.items.ceramics.ItemPottery;
+import net.dries007.tfc.objects.items.ceramics.ItemSmallVessel;
+import net.dries007.tfc.objects.items.ceramics.ItemUnfiredLargeVessel;
+import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
+import net.dries007.tfc.objects.items.ceramics.ItemUnfiredSmallVessel;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
@@ -40,10 +52,15 @@ import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 import net.dries007.tfc.objects.items.wood.ItemLumberTFC;
 import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.agriculture.Food;
-
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-import static net.dries007.tfc.objects.CreativeTabsTFC.*;
-import static net.dries007.tfc.util.Helpers.getNull;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 @GameRegistry.ObjectHolder(MOD_ID)
@@ -225,7 +242,7 @@ public final class ItemsTFC
 
             registerPottery(simpleItems, r, "ceramics/unfired/spindle", "ceramics/fired/spindle");
             registerPottery(simpleItems, r, "ceramics/unfired/pot", "ceramics/fired/pot");
-            registerPottery(simpleItems, r, "ceramics/unfired/jug", "ceramics/fired/jug", new ItemUnfiredJug(), new ItemJug());
+            registerPottery(simpleItems, r, "ceramics/unfired/jug", "ceramics/fired/jug", new ItemPottery(), new ItemJug());
             registerPottery(simpleItems, r, "ceramics/unfired/bowl", "ceramics/fired/bowl");
             registerPottery(simpleItems, r, "ceramics/unfired/fire_brick", "ceramics/fired/fire_brick");
 
