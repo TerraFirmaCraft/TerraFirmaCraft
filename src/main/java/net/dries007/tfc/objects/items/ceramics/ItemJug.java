@@ -46,7 +46,7 @@ import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandler;
 @ParametersAreNonnullByDefault
 public class ItemJug extends ItemPottery
 {
-    private static final int CAPACITY = 100;
+    private static final int CAPACITY = 1000;
 
     private static final Map<Fluid, Consumer<EntityLivingBase>> DRINKABLES;
 
