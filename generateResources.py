@@ -969,19 +969,6 @@ for wood_type in WOOD_TYPES:
 # LEATHER / HIDES
 blockstate(('placed_hide',), 'tfc:hide_rack', {})
 
-# AGRICULTURE
-
-for crop in SIMPLE_CROPS.keys():
-    tall = SIMPLE_CROPS[crop][0]
-    stages = SIMPLE_CROPS[crop][1]
-    blockstate(('crop', crop), 'tfc:crop_tall' if tall else 'crop', {'crop': 'tfc:blocks/crop/%s_0' % crop}, {
-        'stage': dict(('%d' % i, {'textures': {'crop': 'tfc:blocks/crop/%s_%d' % (crop, i)}}) for i in range(stages))
-    })
-
-for crop in SPREADING_CROPS:
-    blockstate(('crop', crop), 'crop', {'crop': 'tfc:blocks/crop/%s_0' % crop}, {
-        'stage': dict(('%d' % i, {'textures': {'crop': 'tfc:blocks/crop/%s_%d' % (crop, i)}}) for i in range(8))
-    })
 
 #   _____ _
 #  |_   _| |

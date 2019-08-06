@@ -154,9 +154,9 @@ public class BlockFruitTreeLeaves extends BlockLeaves
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (!worldIn.isRemote)
+        if (worldIn.getBlockState(pos).getValue(LEAF_STATE) == EnumLeafState.FRUIT)
         {
-            if (worldIn.getBlockState(pos).getValue(LEAF_STATE) == EnumLeafState.FRUIT)
+            if (!worldIn.isRemote)
             {
                 Helpers.spawnItemStack(worldIn, pos, tree.getFoodDrop());
                 worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.NORMAL));
@@ -166,8 +166,9 @@ public class BlockFruitTreeLeaves extends BlockLeaves
                     te.resetCounter();
                 }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
