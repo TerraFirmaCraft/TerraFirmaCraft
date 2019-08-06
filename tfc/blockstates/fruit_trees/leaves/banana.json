@@ -14,7 +14,7 @@
     ],
     "inventory": {
       "model": "tfc:leaves_palm",
-      "transform": "forge:default-item"
+      "transform": "forge:default-block"
     },
     "state": {
       "normal": {
