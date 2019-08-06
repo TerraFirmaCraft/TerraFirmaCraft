@@ -15,9 +15,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStackSimple;
 
-public class FluidWhitelistHandler extends FluidHandlerItemStack
+public class FluidWhitelistHandler extends FluidHandlerItemStackSimple
 {
     private final Set<Fluid> whitelist;
 

@@ -17,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -27,6 +26,7 @@ import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
@@ -63,6 +63,17 @@ public class ItemWoodenBucket extends ItemTFC
     }
 
     @Override
+    public boolean canStack(@Nonnull ItemStack stack)
+    {
+        IFluidHandler bucketCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        if (bucketCap != null)
+        {
+            return bucketCap.drain(CAPACITY, false) == null;
+        }
+        return true;
+    }
+
+    @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         ItemStack stack = playerIn.getHeldItem(handIn);
@@ -75,35 +86,20 @@ public class ItemWoodenBucket extends ItemTFC
             if (rayTrace != null && bucketCap != null && rayTrace.typeOfHit == RayTraceResult.Type.BLOCK)
             {
                 BlockPos pos = rayTrace.getBlockPos();
-                TileEntity te = worldIn.getTileEntity(pos);
-                if (te instanceof IFluidHandler)
-                {
-                    IFluidHandler tank = (IFluidHandler) te;
-                    FluidStack fluidStack = tank.drain(CAPACITY, false);
-
-                    if (bucketCap.fill(fluidStack, true) > 0)
-                    {
-                        tank.drain(CAPACITY, true);
-                        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
-                    }
-                    else
-                    {
-                        return ActionResult.newResult(EnumActionResult.FAIL, stack);
-                    }
-                }
-
                 if (bucketCap.drain(CAPACITY, false) == null) //Empty bucket, try to fill it
                 {
-                    IFluidHandler fluidHandlerBlock = FluidUtil.getFluidHandler(worldIn, pos, null);
-                    if (fluidHandlerBlock != null)
+                    ItemStack single = stack.copy();
+                    single.setCount(1);
+                    FluidActionResult result = FluidUtil.tryPickUpFluid(single, playerIn, worldIn, pos, rayTrace.sideHit);
+                    if (result.isSuccess())
                     {
-                        FluidStack drainStack = fluidHandlerBlock.drain(Integer.MAX_VALUE, false);
-                        if (drainStack != null && drainStack.amount >= CAPACITY && bucketCap.fill(drainStack, true) > 0)
+                        stack.shrink(1);
+                        if (stack.isEmpty())
                         {
-                            worldIn.setBlockToAir(pos);
-                            worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                            return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+                            return ActionResult.newResult(EnumActionResult.SUCCESS, result.getResult());
                         }
+                        ItemHandlerHelper.giveItemToPlayer(playerIn, result.getResult());
+                        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
                     }
                 }
                 else
