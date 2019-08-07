@@ -56,8 +56,6 @@ public class TFCSounds
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.pheasant.say")
     public static final SoundEvent ANIMAL_PHEASANT_SAY = getNull();
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.pheasant.cry")
-    public static final SoundEvent ANIMAL_PHEASANT_CRY = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.pheasant.hurt")
     public static final SoundEvent ANIMAL_PHEASANT_HURT = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.pheasant.death")
