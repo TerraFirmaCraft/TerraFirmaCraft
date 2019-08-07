@@ -85,9 +85,9 @@ public final class TFCJEIPlugin implements IModPlugin
         //No block/item to wrap this one
 
         //Wraps all anvil recipes
-        List<SimpleRecipeWrapper> anvilList = TFCRegistries.ANVIL.getValuesCollection()
+        List<AnvilRecipeWrapper> anvilList = TFCRegistries.ANVIL.getValuesCollection()
             .stream()
-            .map(SimpleRecipeWrapper::new)
+            .map(AnvilRecipeWrapper::new)
             .collect(Collectors.toList());
 
         registry.addRecipes(anvilList, ANVIL_UID);

@@ -2,25 +2,22 @@ package net.dries007.tfc.compat.jei.categories;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.util.ResourceLocation;
-
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
-import net.dries007.tfc.api.util.TFCConstants;
+import net.dries007.tfc.client.gui.GuiAnvilTFC;
 import net.dries007.tfc.compat.jei.BaseRecipeCategory;
 import net.dries007.tfc.compat.jei.wrappers.SimpleRecipeWrapper;
 
 @ParametersAreNonnullByDefault
 public class AnvilCategory extends BaseRecipeCategory<SimpleRecipeWrapper>
 {
-    private static final ResourceLocation ANVIL_TEXTURES = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/anvil.png");
 
     public AnvilCategory(IGuiHelper helper, String Uid)
     {
-        super(helper.createDrawable(ANVIL_TEXTURES, 11, 7, 154, 80), Uid);
+        super(helper.createDrawable(GuiAnvilTFC.ANVIL_BACKGROUND, 11, 7, 154, 80), Uid);
     }
 
     @Override
