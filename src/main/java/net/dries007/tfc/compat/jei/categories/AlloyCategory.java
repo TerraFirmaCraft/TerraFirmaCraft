@@ -32,7 +32,7 @@ public class AlloyCategory extends BaseRecipeCategory<AlloyWrapper>
 
     public AlloyCategory(IGuiHelper helper, String Uid)
     {
-        super(helper.createBlankDrawable(156, 38), Uid);
+        super(helper.createBlankDrawable(156, 64), Uid);
         fire = helper.createDrawable(ICONS, 0, 0, 14, 14);
         IDrawableStatic arrowAnimated = helper.createDrawable(ICONS, 14, 0, 14, 14);
         this.fireAnimated = helper.createAnimatedDrawable(arrowAnimated, 160, IDrawableAnimated.StartDirection.TOP, true);
@@ -42,24 +42,24 @@ public class AlloyCategory extends BaseRecipeCategory<AlloyWrapper>
     @Override
     public void drawExtras(Minecraft minecraft)
     {
-        slot.draw(minecraft, 0, 16);
-        slot.draw(minecraft, 30, 16);
-        slot.draw(minecraft, 60, 16);
-        slot.draw(minecraft, 90, 16);
-        fire.draw(minecraft, 118, 16);
-        fireAnimated.draw(minecraft, 118, 16);
-        slot.draw(minecraft, 138, 16);
+        slot.draw(minecraft, 0, 12); //1st ingot
+        slot.draw(minecraft, 60, 12); //2nd ingot
+        slot.draw(minecraft, 0, 38); //3rd ingot
+        slot.draw(minecraft, 60, 38); //4th ingot
+        fire.draw(minecraft, 118, 25);
+        fireAnimated.draw(minecraft, 118, 25);
+        slot.draw(minecraft, 138, 25); //output
     }
 
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, AlloyWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
-        itemStackGroup.init(0, true, 0, 16);
-        itemStackGroup.init(1, true, 30, 16);
-        itemStackGroup.init(2, true, 60, 16);
-        itemStackGroup.init(3, true, 90, 16);
-        itemStackGroup.init(4, false, 138, 16);
+        itemStackGroup.init(0, true, 0, 12);
+        itemStackGroup.init(1, true, 60, 12);
+        itemStackGroup.init(2, true, 0, 38);
+        itemStackGroup.init(3, true, 60, 38);
+        itemStackGroup.init(4, false, 138, 25);
 
         for (int i = 0; i < ingredients.getInputs(VanillaTypes.ITEM).size(); i++)
         {
