@@ -64,7 +64,6 @@ public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe> imple
         NonNullList<IIngredient<ItemStack>> list = NonNullList.create();
         list.add(input1);
         list.add(input2);
-        list.add(IIngredient.of("hammer"));
         list.add(IIngredient.of("dustFlux"));
         return list;
     }

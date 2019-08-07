@@ -7,9 +7,12 @@ package net.dries007.tfc.compat.jei.categories;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 import mezz.jei.api.IGuiHelper;
+import mezz.jei.api.gui.IDrawableAnimated;
+import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
@@ -21,27 +24,44 @@ import net.dries007.tfc.compat.jei.wrappers.SimpleRecipeWrapper;
 @ParametersAreNonnullByDefault
 public class WeldingCategory extends BaseRecipeCategory<SimpleRecipeWrapper>
 {
-    private static final ResourceLocation ANVIL_TEXTURES = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/anvil.png");
+    private static final ResourceLocation ICONS = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/jei/icons.png");
+
+    private final IDrawableStatic slot;
+    private final IDrawableStatic arrow;
+    private final IDrawableAnimated arrowAnimated;
 
     public WeldingCategory(IGuiHelper helper, String Uid)
     {
-        super(helper.createDrawable(ANVIL_TEXTURES, 11, 7, 154, 80), Uid);
+        super(helper.createBlankDrawable(140, 38), Uid);
+        arrow = helper.createDrawable(ICONS, 0, 14, 22, 16);
+        IDrawableStatic arrowAnimated = helper.createDrawable(ICONS, 22, 14, 22, 16);
+        this.arrowAnimated = helper.createAnimatedDrawable(arrowAnimated, 80, IDrawableAnimated.StartDirection.LEFT, false);
+        this.slot = helper.getSlotDrawable();
+    }
+
+    @Override
+    public void drawExtras(Minecraft minecraft)
+    {
+        arrow.draw(minecraft, 77, 16);
+        arrowAnimated.draw(minecraft, 77, 16);
+        slot.draw(minecraft, 7, 16);
+        slot.draw(minecraft, 27, 16);
+        slot.draw(minecraft, 47, 16);
+        slot.draw(minecraft, 111, 16);
     }
 
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, SimpleRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
-        itemStackGroup.init(0, true, 1, 60);
-        itemStackGroup.init(1, true, 19, 60);
-        itemStackGroup.init(2, true, 117, 60);
-        itemStackGroup.init(3, true, 135, 60);
-        itemStackGroup.init(4, false, 19, 42);
+        itemStackGroup.init(0, true, 7, 16);
+        itemStackGroup.init(1, true, 27, 16);
+        itemStackGroup.init(2, true, 47, 16);
+        itemStackGroup.init(3, false, 111, 16);
 
         itemStackGroup.set(0, ingredients.getInputs(VanillaTypes.ITEM).get(0));
         itemStackGroup.set(1, ingredients.getInputs(VanillaTypes.ITEM).get(1));
         itemStackGroup.set(2, ingredients.getInputs(VanillaTypes.ITEM).get(2));
-        itemStackGroup.set(3, ingredients.getInputs(VanillaTypes.ITEM).get(3));
-        itemStackGroup.set(4, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
+        itemStackGroup.set(3, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
     }
 }
