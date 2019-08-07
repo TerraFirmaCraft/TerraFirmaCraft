@@ -25,6 +25,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.GameRuleChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -40,6 +41,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import net.dries007.tfc.api.capability.ItemStickCapability;
+import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.EggHandler;
@@ -47,7 +49,10 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
+import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
@@ -241,7 +246,16 @@ public final class CommonEventHandler
             boolean canStack = stack.getMaxStackSize() > 1; // This is necessary so it isn't accidentally overridden by a default implementation
 
             // todo: Add more items here
-            if (item == Items.COAL)
+            ICapabilityProvider sizeHandler = CapabilityItemSize.getCustomSize(stack);
+            if (sizeHandler != null)
+            {
+                event.addCapability(CapabilityItemSize.KEY, sizeHandler);
+                if (sizeHandler instanceof IItemSize)
+                {
+                    item.setMaxStackSize(((IItemSize) sizeHandler).getStackSize(stack));
+                }
+            }
+            else if (item == Items.COAL)
                 CapabilityItemSize.add(event, Items.COAL, Size.SMALL, Weight.MEDIUM, canStack);
             else if (item == Items.STICK)
                 event.addCapability(ItemStickCapability.KEY, new ItemStickCapability(event.getObject().getTagCompound()));
@@ -263,7 +277,41 @@ public final class CommonEventHandler
         // future plans: add via craft tweaker or json (1.14)
         if (stack.getItem() instanceof ItemFood && !stack.hasCapability(CapabilityFood.CAPABILITY, null))
         {
-            event.addCapability(CapabilityFood.KEY, new FoodHandler(stack.getTagCompound(), new float[] {1, 0, 0, 0, 0}, 0, 0, 1));
+            ICapabilityProvider foodHandler = CapabilityFood.getCustomFood(stack);
+            if (foodHandler != null)
+            {
+                event.addCapability(CapabilityFood.KEY, foodHandler);
+            }
+            else
+            {
+                event.addCapability(CapabilityFood.KEY, new FoodHandler(stack.getTagCompound(), new float[] {1, 0, 0, 0, 0}, 0, 0, 1));
+            }
+        }
+
+        if (!stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null) && !stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
+        {
+            ICapabilityProvider forgeHandler = CapabilityForgeable.getCustomForgeable(stack);
+            if (forgeHandler != null)
+            {
+                event.addCapability(CapabilityForgeable.KEY, forgeHandler);
+            }
+            else
+            {
+                ICapabilityProvider heatHandler = CapabilityItemHeat.getCustomHeat(stack);
+                if (heatHandler != null)
+                {
+                    event.addCapability(CapabilityItemHeat.KEY, heatHandler);
+                }
+            }
+        }
+
+        if (item instanceof ItemArmor && !stack.hasCapability(CapabilityDamageResistance.CAPABILITY, null))
+        {
+            ICapabilityProvider damageResistance = CapabilityDamageResistance.getCustomDamageResistance(stack);
+            if (damageResistance != null)
+            {
+                event.addCapability(CapabilityDamageResistance.KEY, damageResistance);
+            }
         }
         if (stack.getItem() == Items.EGG && !stack.hasCapability(CapabilityEgg.CAPABILITY, null))
         {

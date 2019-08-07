@@ -9,10 +9,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
+import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 /**
  * Welding Recipe
@@ -20,21 +23,18 @@ import net.dries007.tfc.api.types.Metal;
  * todo: in 1.13+ move this to a json recipe type
  */
 @ParametersAreNonnullByDefault
-public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe>
+public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe> implements IJEISimpleRecipe
 {
     private final Metal.Tier minTier;
-    private final ItemStack input1;
-    private final ItemStack input2;
+    private final IIngredient<ItemStack> input1;
+    private final IIngredient<ItemStack> input2;
     private final ItemStack output;
 
-    public WeldingRecipe(ResourceLocation name, ItemStack input1, ItemStack input2, ItemStack output, Metal.Tier minTier)
+    public WeldingRecipe(ResourceLocation name, IIngredient<ItemStack> input1, IIngredient<ItemStack> input2, ItemStack output, Metal.Tier minTier)
     {
         this.input1 = input1;
         this.input2 = input2;
         this.output = output;
-        if (input1.isEmpty() || input2.isEmpty() || output.isEmpty())
-            throw new IllegalArgumentException("Input and output are not allowed to be empty");
-
         this.minTier = minTier;
 
         setRegistryName(name);
@@ -55,7 +55,22 @@ public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe>
     public boolean matches(ItemStack input1, ItemStack input2)
     {
         // Need to check both orientations
-        return (this.input1.isItemEqual(input1) && this.input2.isItemEqual(input2)) || (this.input1.isItemEqual(input2) && this.input2.isItemEqual(input1));
+        return (this.input1.test(input1) && this.input2.test(input2)) || (this.input1.test(input2) && this.input2.test(input1));
     }
 
+    @Override
+    public NonNullList<IIngredient<ItemStack>> getIngredients()
+    {
+        NonNullList<IIngredient<ItemStack>> list = NonNullList.create();
+        list.add(input1);
+        list.add(input2);
+        list.add(IIngredient.of("dustFlux"));
+        return list;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getOutputs()
+    {
+        return NonNullList.withSize(1, output);
+    }
 }

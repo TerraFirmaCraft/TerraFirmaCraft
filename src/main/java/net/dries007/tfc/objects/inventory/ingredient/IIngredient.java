@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -75,6 +76,17 @@ public interface IIngredient<T> extends Predicate<T>
     static IIngredient<FluidStack> of(int amount, @Nonnull Fluid... fluids)
     {
         return new IngredientMultipleFluidStack(amount, fluids);
+    }
+
+
+    /**
+     * This is used by JEI-CT hooks, return a valid list of inputs for this IIngredient
+     *
+     * @return NonNullList containing valid ingredients(fluidstack/itemstack) for this IIngredient
+     */
+    default NonNullList<T> getValidIngredients()
+    {
+        return NonNullList.create();
     }
 
     /**

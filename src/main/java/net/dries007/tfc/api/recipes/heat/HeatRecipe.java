@@ -10,11 +10,13 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 /**
@@ -24,7 +26,7 @@ import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
  * As of currently, all inventories that use this recipe also have a stack size limit of 1, which is as intended
  */
 @ParametersAreNonnullByDefault
-public abstract class HeatRecipe extends IForgeRegistryEntry.Impl<HeatRecipe>
+public abstract class HeatRecipe extends IForgeRegistryEntry.Impl<HeatRecipe> implements IJEISimpleRecipe
 {
     /**
      * Overload that ignores the tier requirement by passing in the maximum tier
@@ -107,5 +109,22 @@ public abstract class HeatRecipe extends IForgeRegistryEntry.Impl<HeatRecipe>
     public FluidStack getOutputFluid(ItemStack input)
     {
         return null;
+    }
+
+    @Override
+    public NonNullList<IIngredient<ItemStack>> getIngredients()
+    {
+        return NonNullList.create();
+    }
+
+    @Override
+    public NonNullList<ItemStack> getOutputs()
+    {
+        return NonNullList.create();
+    }
+
+    public float getTransformTemp()
+    {
+        return transformTemp;
     }
 }
