@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:cobble/diorite"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/diorite",
+    "count": 4
+  }
+}
