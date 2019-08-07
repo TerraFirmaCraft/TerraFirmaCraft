@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
@@ -63,14 +62,12 @@ public class AlloyWrapper implements IRecipeWrapper
     {
         for (int i = 0; i < 4; i++)
         {
-            float x = 14f + i * 60f;
-            float y = 15f;
+            int row = i / 2;
+            int column = i % 2;
+            float x = 20f + column * 60f;
+            float y = 17f + row * 26f;
             String text = slotContent[i];
-            x = x - minecraft.fontRenderer.getStringWidth(text) / 3.0f;
-            GlStateManager.pushMatrix();
-            GlStateManager.scale(0.5f, 0.5f, 0.5f);
             minecraft.fontRenderer.drawString(text, x, y, 0x000000, false);
-            GlStateManager.popMatrix();
         }
     }
 }
