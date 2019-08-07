@@ -110,7 +110,10 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe> implement
     @Override
     public NonNullList<IIngredient<ItemStack>> getIngredients()
     {
-        return NonNullList.withSize(1, ingredient);
+        NonNullList<IIngredient<ItemStack>> list = NonNullList.create();
+        list.add(ingredient);
+        list.add(IIngredient.of("hammer"));
+        return list;
     }
 
     @Override

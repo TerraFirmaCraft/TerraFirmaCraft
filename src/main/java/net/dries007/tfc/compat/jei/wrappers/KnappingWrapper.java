@@ -28,7 +28,8 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class KnappingWrapper implements IRecipeWrapper
 {
-    private static final ResourceLocation CLAY_DISABLED_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping_clay.png");
+    private static final ResourceLocation CLAY_DISABLED_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_disabled.png");
+    private static final ResourceLocation FIRE_CLAY_DISABLED_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_fire_disabled.png");
 
     private static final ResourceLocation CLAY_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button.png");
     private static final ResourceLocation FIRE_CLAY_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_fire.png");
@@ -81,7 +82,7 @@ public class KnappingWrapper implements IRecipeWrapper
             else if (recipe.getType() == FIRE_CLAY)
             {
                 high = FIRE_CLAY_TEXTURE;
-                low = CLAY_DISABLED_TEXTURE;
+                low = FIRE_CLAY_DISABLED_TEXTURE;
             }
             else if (recipe.getType() == LEATHER)
             {
@@ -110,7 +111,7 @@ public class KnappingWrapper implements IRecipeWrapper
                         if (low != null)
                         {
                             minecraft.renderEngine.bindTexture(low);
-                            Gui.drawModalRectWithCustomSizedTexture(1 + x * 16, 1 + y * 16, 12, 12, 16, 16, 256, 256);
+                            Gui.drawModalRectWithCustomSizedTexture(1 + x * 16, 1 + y * 16, 0, 0, 16, 16, 16, 16);
                         }
                     }
                 }
