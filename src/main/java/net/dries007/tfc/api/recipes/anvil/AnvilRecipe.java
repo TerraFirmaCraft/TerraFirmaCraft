@@ -18,6 +18,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.forge.ForgeRule;
@@ -30,7 +31,7 @@ import net.dries007.tfc.util.forge.ForgeSteps;
  * todo: in 1.13+ move this to a json recipe type
  */
 @ParametersAreNonnullByDefault
-public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
+public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe> implements IJEISimpleRecipe
 {
     public static final NonNullList<ItemStack> EMPTY = NonNullList.create();
     private static final Random RNG = new Random();
@@ -104,5 +105,20 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe>
     {
         RNG.setSeed(worldSeed + workingSeed);
         return 40 + RNG.nextInt(TEAnvilTFC.WORK_MAX + -2 * 40);
+    }
+
+    @Override
+    public NonNullList<IIngredient<ItemStack>> getIngredients()
+    {
+        NonNullList<IIngredient<ItemStack>> list = NonNullList.create();
+        list.add(ingredient);
+        list.add(IIngredient.of("hammer"));
+        return list;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getOutputs()
+    {
+        return NonNullList.withSize(1, output);
     }
 }

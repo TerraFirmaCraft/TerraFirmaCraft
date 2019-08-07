@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
@@ -61,5 +62,17 @@ public class HeatRecipeSimple extends HeatRecipe
             return outputStack;
         }
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public NonNullList<IIngredient<ItemStack>> getIngredients()
+    {
+        return NonNullList.withSize(1, this.ingredient);
+    }
+
+    @Override
+    public NonNullList<ItemStack> getOutputs()
+    {
+        return NonNullList.withSize(1, output);
     }
 }

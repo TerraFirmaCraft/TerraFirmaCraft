@@ -27,6 +27,13 @@ buildscript {
 // Go Forge go!
 apply plugin: "net.minecraftforge.gradle.forge"
 
+// Load properties file, easier to manage versions of required dependencies
+file "build.properties" withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
 /**
  * Versioning rules: (Highly based on Semantic Versioning 2.0.0, https://semver.org/)
  *
@@ -61,7 +68,7 @@ ext.getChangeLog = { -> // Create a new function that gets the changelog from gi
 }
 
 minecraft { // Only change any of this with prior approval from the dev team!
-    version = "1.12.2-14.23.5.2768"
+    version = "${config.minecraft.version}-${config.forge.version}"
     runDir = "run"
     mappings = "snapshot_20180814"
 }
@@ -69,11 +76,24 @@ minecraft { // Only change any of this with prior approval from the dev team!
 repositories {
     // Repositories required for dependencies, not ForgeGradle go here.
     mavenCentral()
+    maven {
+        name = "CraftTweaker Maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+    // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
 }
 
+String mcVersion = config.minecraft.version
+String shortVersion = mcVersion.substring(0, mcVersion.lastIndexOf('.'))
+String strippedVersion = shortVersion.replace(".", "") + "0"
+
 dependencies {
-    // Mod dependencies go here.
-    // Do not add dependencies without prior approval from the dev team. You can update existing ones.
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
+    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
 }
 
 processResources {
