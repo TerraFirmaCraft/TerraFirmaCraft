@@ -6,7 +6,8 @@
       "top": "tfc:blocks/wood/planks/chestnut",
       "bottom": "tfc:blocks/wood/planks/chestnut",
       "side": "tfc:blocks/wood/planks/chestnut"
-    }
+    },
+	"uvlock": true 
   },
   "variants": {
     "normal": {

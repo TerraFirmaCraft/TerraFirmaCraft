@@ -6,7 +6,8 @@
       "top": "tfc:blocks/wood/planks/sycamore",
       "bottom": "tfc:blocks/wood/planks/sycamore",
       "side": "tfc:blocks/wood/planks/sycamore"
-    }
+    },
+	"uvlock": true 
   },
   "variants": {
     "normal": {

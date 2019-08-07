@@ -6,7 +6,8 @@
       "top": "tfc:blocks/wood/planks/acacia",
       "bottom": "tfc:blocks/wood/planks/acacia",
       "side": "tfc:blocks/wood/planks/acacia"
-    }
+    },
+	"uvlock": true 
   },
   "variants": {
     "normal": {

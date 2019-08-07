@@ -6,7 +6,8 @@
       "top": "tfc:blocks/wood/planks/sequoia",
       "bottom": "tfc:blocks/wood/planks/sequoia",
       "side": "tfc:blocks/wood/planks/sequoia"
-    }
+    },
+	"uvlock": true 
   },
   "variants": {
     "normal": {

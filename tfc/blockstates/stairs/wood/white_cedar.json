@@ -6,7 +6,8 @@
       "top": "tfc:blocks/wood/planks/white_cedar",
       "bottom": "tfc:blocks/wood/planks/white_cedar",
       "side": "tfc:blocks/wood/planks/white_cedar"
-    }
+    },
+	"uvlock": true 
   },
   "variants": {
     "normal": {

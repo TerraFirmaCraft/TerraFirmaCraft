@@ -6,7 +6,8 @@
       "top": "tfc:blocks/wood/planks/kapok",
       "bottom": "tfc:blocks/wood/planks/kapok",
       "side": "tfc:blocks/wood/planks/kapok"
-    }
+    },
+	"uvlock": true 
   },
   "variants": {
     "normal": {

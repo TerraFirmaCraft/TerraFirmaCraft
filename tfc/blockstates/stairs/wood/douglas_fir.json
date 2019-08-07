@@ -6,7 +6,8 @@
       "top": "tfc:blocks/wood/planks/douglas_fir",
       "bottom": "tfc:blocks/wood/planks/douglas_fir",
       "side": "tfc:blocks/wood/planks/douglas_fir"
-    }
+    },
+	"uvlock": true 
   },
   "variants": {
     "normal": {

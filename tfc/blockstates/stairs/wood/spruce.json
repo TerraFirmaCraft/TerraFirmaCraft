@@ -6,7 +6,8 @@
       "top": "tfc:blocks/wood/planks/spruce",
       "bottom": "tfc:blocks/wood/planks/spruce",
       "side": "tfc:blocks/wood/planks/spruce"
-    }
+    },
+	"uvlock": true 
   },
   "variants": {
     "normal": {

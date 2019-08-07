@@ -6,7 +6,8 @@
       "top": "tfc:blocks/wood/planks/blackwood",
       "bottom": "tfc:blocks/wood/planks/blackwood",
       "side": "tfc:blocks/wood/planks/blackwood"
-    }
+    },
+	"uvlock": true 
   },
   "variants": {
     "normal": {

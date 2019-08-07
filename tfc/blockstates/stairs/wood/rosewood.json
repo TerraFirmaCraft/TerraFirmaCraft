@@ -6,7 +6,8 @@
       "top": "tfc:blocks/wood/planks/rosewood",
       "bottom": "tfc:blocks/wood/planks/rosewood",
       "side": "tfc:blocks/wood/planks/rosewood"
-    }
+    },
+	"uvlock": true 
   },
   "variants": {
     "normal": {

@@ -6,7 +6,8 @@
       "top": "tfc:blocks/wood/planks/aspen",
       "bottom": "tfc:blocks/wood/planks/aspen",
       "side": "tfc:blocks/wood/planks/aspen"
-    }
+    },
+	"uvlock": true 
   },
   "variants": {
     "normal": {

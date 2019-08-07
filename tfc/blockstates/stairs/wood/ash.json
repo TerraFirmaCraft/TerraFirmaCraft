@@ -6,7 +6,8 @@
       "top": "tfc:blocks/wood/planks/ash",
       "bottom": "tfc:blocks/wood/planks/ash",
       "side": "tfc:blocks/wood/planks/ash"
-    }
+    },
+	"uvlock": true 
   },
   "variants": {
     "normal": {
