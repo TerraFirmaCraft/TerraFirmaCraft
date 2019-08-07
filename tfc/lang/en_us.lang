@@ -415,6 +415,22 @@ tfc.enum.nutrient.protein=Protein
 tfc.enum.nutrient.minerals=Minerals
 tfc.enum.nutrient.vitamins=Vitamins
 
+#JEI
+jei.category.tfc.alloy=Alloying recipes
+jei.category.tfc.anvil=Anvil recipes
+jei.category.tfc.barrel=Barrel recipes
+jei.category.tfc.heat=Heating recipes
+jei.category.tfc.knap.clay=Clay knapping
+jei.category.tfc.knap.fireclay=Fire clay knapping
+jei.category.tfc.knap.leather=Leather knapping
+jei.category.tfc.knap.stone=Stone knapping
+jei.category.tfc.loom=Loom recipes
+jei.category.tfc.quern=Quern recipes
+jei.category.tfc.welding=Welding recipes
+
+jei.tooltips.tfc.barrel.instant=Instant
+jei.tooltips.tfc.barrel.duration=%d hours
+
 # Fluids
 fluid.salt_water=Salt Water
 fluid.fresh_water=Fresh Water
