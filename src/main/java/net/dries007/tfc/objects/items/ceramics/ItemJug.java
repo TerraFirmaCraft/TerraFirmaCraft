@@ -30,7 +30,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -41,6 +40,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandler;
+import net.dries007.tfc.util.FluidTransferHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -120,7 +120,7 @@ public class ItemJug extends ItemPottery
                 {
                     ItemStack single = stack.copy();
                     single.setCount(1);
-                    FluidActionResult result = FluidUtil.tryPickUpFluid(single, player, world, rayTrace.getBlockPos(), rayTrace.sideHit);
+                    FluidActionResult result = FluidTransferHelper.tryPickUpFluidGreedy(single, player, world, rayTrace.getBlockPos(), rayTrace.sideHit, Fluid.BUCKET_VOLUME);
                     if (result.isSuccess())
                     {
                         stack.shrink(1);

@@ -8,13 +8,20 @@ package net.dries007.tfc.util;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.IItemHandler;
@@ -22,8 +29,98 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import static net.minecraftforge.fluids.FluidUtil.getFluidHandler;
 
-public class FluidTransferHelper
+public final class FluidTransferHelper
 {
+    /**
+     * Attempts to pick up a fluid in the world and put it in an empty container item.
+     * Copied from {@link FluidUtil#tryPickUpFluid(ItemStack, EntityPlayer, World, BlockPos, EnumFacing)} with one key difference: this will always pick up the block if any amount can be filled. Used for the ceramic jug, as it has < 1 B of storage, but still needs to be able to pick up some fluid
+     *
+     * @param emptyContainer The empty container to fill.
+     *                       Will not be modified directly, if modifications are necessary a modified copy is returned in the result.
+     * @param playerIn       The player filling the container. Optional.
+     * @param worldIn        The world the fluid is in.
+     * @param pos            The position of the fluid in the world.
+     * @param side           The side of the fluid that is being drained.
+     * @return a {@link FluidActionResult} holding the result and the resulting container.
+     */
+    @Nonnull
+    public static FluidActionResult tryPickUpFluidGreedy(@Nonnull ItemStack emptyContainer, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, int maxAmount)
+    {
+        if (emptyContainer.isEmpty() || worldIn == null || pos == null)
+        {
+            return FluidActionResult.FAILURE;
+        }
+
+        IBlockState state = worldIn.getBlockState(pos);
+        Block block = state.getBlock();
+
+        if (block instanceof IFluidBlock || block instanceof BlockLiquid)
+        {
+            // Fluid handler wrapper for a block in the world
+            IFluidHandler targetFluidHandler = getFluidHandler(worldIn, pos, side);
+            if (targetFluidHandler != null)
+            {
+                ItemStack containerCopy = ItemHandlerHelper.copyStackWithSize(emptyContainer, 1);
+                IFluidHandlerItem containerFluidHandler = getFluidHandler(containerCopy);
+                if (containerFluidHandler != null)
+                {
+                    FluidStack drained = targetFluidHandler.drain(maxAmount, true);
+                    if (drained != null)
+                    {
+                        containerFluidHandler.fill(drained, true);
+                        SoundEvent soundevent = drained.getFluid().getFillSound(drained);
+                        playerIn.world.playSound(null, playerIn.posX, playerIn.posY + 0.5, playerIn.posZ, soundevent, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    }
+
+                    ItemStack resultContainer = containerFluidHandler.getContainer();
+                    return new FluidActionResult(resultContainer);
+                }
+            }
+        }
+        return FluidActionResult.FAILURE;
+    }
+
+    /**
+     * Fill a container from the given fluidSource.
+     *
+     * @param container   The container to be filled. Will not be modified.
+     * @param fluidSource The fluid handler to be drained.
+     * @param maxAmount   The largest amount of fluid that should be transferred.
+     * @param player      The player to make the filling noise. Pass null for no noise.
+     * @param doFill      true if the container should actually be filled, false if it should be simulated.
+     * @return a {@link FluidActionResult} holding the filled container if successful.
+     */
+    @Nonnull
+    public static FluidActionResult tryFillContainer(@Nonnull ItemStack container, IFluidHandler fluidSource, int maxAmount, @Nullable EntityPlayer player, boolean doFill)
+    {
+        ItemStack containerCopy = ItemHandlerHelper.copyStackWithSize(container, 1); // do not modify the input
+        IFluidHandlerItem containerFluidHandler = getFluidHandler(containerCopy);
+        if (containerFluidHandler != null)
+        {
+            FluidStack simulatedTransfer = tryFluidTransfer(containerFluidHandler, fluidSource, maxAmount, false);
+            if (simulatedTransfer != null)
+            {
+                if (doFill)
+                {
+                    tryFluidTransfer(containerFluidHandler, fluidSource, maxAmount, true);
+                    if (player != null)
+                    {
+                        SoundEvent soundevent = simulatedTransfer.getFluid().getFillSound(simulatedTransfer);
+                        player.world.playSound(null, player.posX, player.posY + 0.5, player.posZ, soundevent, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    }
+                }
+                else
+                {
+                    containerFluidHandler.fill(simulatedTransfer, true);
+                }
+
+                ItemStack resultContainer = containerFluidHandler.getContainer();
+                return new FluidActionResult(resultContainer);
+            }
+        }
+        return FluidActionResult.FAILURE;
+    }
+
     /**
      * Tries to empty a fluid container item into the fluid handler, then stores the remainder in the given inventory.
      * If the fluid can't be transferred into the tank or the remainder can't fit into the return inventory, the action will be aborted.

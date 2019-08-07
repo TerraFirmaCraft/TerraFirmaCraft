@@ -17,6 +17,7 @@ import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -129,7 +130,8 @@ public final class CommonEventHandler
         }
 
         // Try to drink water
-        if (!player.isCreative() && stack.isEmpty() && player.getFoodStats() instanceof IFoodStatsTFC)
+        // Only possible with main hand - fixes attempting to drink even when it doesn't make sense
+        if (!player.isCreative() && stack.isEmpty() && player.getFoodStats() instanceof IFoodStatsTFC && event.getHand() == EnumHand.MAIN_HAND)
         {
             IFoodStatsTFC foodStats = (IFoodStatsTFC) player.getFoodStats();
             RayTraceResult result = Helpers.rayTrace(event.getWorld(), player, true);

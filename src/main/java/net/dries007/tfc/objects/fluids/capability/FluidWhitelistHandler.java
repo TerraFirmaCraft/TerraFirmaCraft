@@ -37,32 +37,4 @@ public class FluidWhitelistHandler extends FluidHandlerItemStackSimple
     {
         return whitelist.contains(fluid.getFluid());
     }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill)
-    {
-        if (container.getCount() != 1 || resource == null || resource.amount <= 0 || !canFillFluidType(resource))
-        {
-            return 0;
-        }
-
-        FluidStack contained = getFluid();
-        if (contained == null)
-        {
-            int fillAmount = resource.amount;
-            if (fillAmount >= capacity)
-            {
-                if (doFill)
-                {
-                    FluidStack filled = resource.copy();
-                    filled.amount = capacity;
-                    setFluid(filled);
-                }
-
-                return fillAmount;
-            }
-        }
-
-        return 0;
-    }
 }
