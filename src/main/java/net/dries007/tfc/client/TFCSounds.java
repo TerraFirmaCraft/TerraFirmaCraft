@@ -101,7 +101,6 @@ public class TFCSounds
             createSoundEvent("animal.deer.say"),
             createSoundEvent("animal.deer.hurt"),
             createSoundEvent("animal.deer.death"),
-            createSoundEvent("animal.pheasant.cry"),
             createSoundEvent("animal.pheasant.say"),
             createSoundEvent("animal.pheasant.hurt"),
             createSoundEvent("animal.pheasant.death"),
