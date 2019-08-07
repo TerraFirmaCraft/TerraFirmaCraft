@@ -110,9 +110,9 @@ public class ItemProspectorPick extends ItemMetalTool
 
                         if (ConfigTFC.GENERAL.debug)
                         {
-                            for (int i = 0; i < results.size(); i++)
+                            for (ProspectResult debugResult : results)
                             {
-                                player.sendStatusMessage(new TextComponentString(result.ore.getDisplayName() + ": " + String.format("%.02f", result.score)), false);
+                                player.sendStatusMessage(new TextComponentString(debugResult.ore.getDisplayName() + ": " + String.format("%.02f", debugResult.score)), false);
                             }
                         }
                     }
