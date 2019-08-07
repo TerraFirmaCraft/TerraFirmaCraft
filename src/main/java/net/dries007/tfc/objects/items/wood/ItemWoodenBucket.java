@@ -98,7 +98,11 @@ public class ItemWoodenBucket extends ItemTFC
                         {
                             return ActionResult.newResult(EnumActionResult.SUCCESS, result.getResult());
                         }
-                        ItemHandlerHelper.giveItemToPlayer(playerIn, result.getResult());
+                        if (!playerIn.isCreative())
+                        {
+                            // In creative, buckets function but don't give new items
+                            ItemHandlerHelper.giveItemToPlayer(playerIn, result.getResult());
+                        }
                         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
                     }
                 }
