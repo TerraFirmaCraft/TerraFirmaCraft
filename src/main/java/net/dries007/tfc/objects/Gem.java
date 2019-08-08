@@ -51,6 +51,7 @@ public enum Gem
          * @param random Random generator for rolling the odds
          * @return null if no gem, otherwise the grade of the gem that should be dropped
          */
+         @Nullable
         public static Grade randomGrade(Random random)
         {
             double roll = random.nextDouble();
