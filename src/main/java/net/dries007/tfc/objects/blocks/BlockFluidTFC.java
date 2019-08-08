@@ -38,7 +38,7 @@ public class BlockFluidTFC extends BlockFluidClassic
     @Override
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        if (definedFluid == FluidsTFC.HOT_WATER && rand.nextInt(4) == 0)
+        if (definedFluid == FluidsTFC.HOT_WATER.get() && rand.nextInt(4) == 0)
         {
             worldIn.spawnParticle(EnumParticleTypes.WATER_BUBBLE, (double) (pos.getX() + rand.nextFloat()), pos.getY() + 0.50D, (double) (pos.getZ() + rand.nextFloat()), 0.0D, 0.0D, 0.0D, Block.getStateId(stateIn));
         }
@@ -48,7 +48,7 @@ public class BlockFluidTFC extends BlockFluidClassic
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         super.onEntityCollision(worldIn, pos, state, entityIn);
-        if (definedFluid == FluidsTFC.HOT_WATER && entityIn instanceof EntityLivingBase)
+        if (definedFluid == FluidsTFC.HOT_WATER.get() && entityIn instanceof EntityLivingBase)
         {
             EntityLivingBase entityLiving = (EntityLivingBase) entityIn;
             if (Constants.RNG.nextInt(10) == 0 && entityLiving.getHealth() < entityLiving.getMaxHealth())

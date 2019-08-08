@@ -52,7 +52,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 @ParametersAreNonnullByDefault
 public class ItemSmallVessel extends ItemPottery
 {
-    public final boolean glazed;
+    private final boolean glazed;
 
     public ItemSmallVessel(boolean glazed)
     {
@@ -149,7 +149,7 @@ public class ItemSmallVessel extends ItemPottery
                 }
                 // Fill with the liquid metal
                 cap.setFluidMode(true);
-                cap.fill(new FluidStack(FluidsTFC.getMetalFluid(alloy.getResult()), alloy.getAmount()), true);
+                cap.fill(new FluidStack(FluidsTFC.getFluidFromMetal(alloy.getResult()), alloy.getAmount()), true);
                 cap.setTemperature(1600f);
             }
 
