@@ -112,13 +112,13 @@ public final class FluidsTFC
     {
         allInfiniteFluids = ImmutableSet.<FluidWrapper>builder()
             .add(
-                HOT_WATER = registerFluid(new Fluid("hot_water", STILL, FLOW, 0xFF345FDA).setTemperature(350), (fluid, isDefault) -> new DrinkableFluidWrapper(fluid, isDefault, player -> {
+                FRESH_WATER = registerFluid(new Fluid("fresh_water", STILL, FLOW, 0xFF1F32DA), (fluid, isDefault) -> new DrinkableFluidWrapper(fluid, isDefault, player -> {
                     if (player.getFoodStats() instanceof FoodStatsTFC)
                     {
                         ((FoodStatsTFC) player.getFoodStats()).addThirst(40);
                     }
                 })),
-                FRESH_WATER = registerFluid(new Fluid("fresh_water", STILL, FLOW, 0xFF1F32DA)),
+                HOT_WATER = registerFluid(new Fluid("hot_water", STILL, FLOW, 0xFF345FDA).setTemperature(350)),
                 registerFluid(new Fluid("salt_water", STILL, FLOW, 0xFF1F5099), (fluid, isDefault) -> new DrinkableFluidWrapper(fluid, isDefault, player -> {
                     if (player.getFoodStats() instanceof FoodStatsTFC)
                     {
