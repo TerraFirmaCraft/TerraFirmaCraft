@@ -37,7 +37,12 @@ public enum Gem
     // list of gems that can drop
     private static final Gem[] RANDOM_DROP_GEMS = Arrays.stream(values()).filter(x -> x.canDrop).toArray(Gem[]::new);
 
-
+    /**
+     * Returns a random gem type according to gem type availabilities
+     *
+     * @param random Random generator for rolling odds
+     * @return a random drop gem type
+     */
     public static Gem getRandomDropGem(Random random)
     {
         return RANDOM_DROP_GEMS[random.nextInt(RANDOM_DROP_GEMS.length)];
@@ -65,16 +70,17 @@ public enum Gem
         // cache grade weight odds
         private static final WeightedCollection<Grade> GRADE_ODDS = new WeightedCollection<>();
 
+        // populate static grade odds with odds from grade weights
         static
         {
             Arrays.stream(VALUES).forEach((grade) -> GRADE_ODDS.add(grade.dropWeight, grade));
         }
 
         /**
-         * Calculates the chances of a gem dropping from stone with dug
+         * Returns a random gem grade according to gem grade weights
          *
          * @param random Random generator for rolling the odds
-         * @return null if no gem, otherwise the grade of the gem that should be dropped
+         * @return a random drop gem grade
          */
         public static Grade randomGrade(Random random)
         {
