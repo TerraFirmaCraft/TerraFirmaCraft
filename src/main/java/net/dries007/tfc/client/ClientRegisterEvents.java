@@ -217,9 +217,11 @@ public final class ClientRegisterEvents
         ModelLoader.setCustomStateMapper(BlocksTFC.INGOT_PILE, blockIn -> ImmutableMap.of(BlocksTFC.INGOT_PILE.getDefaultState(), empty));
         ModelLoader.setCustomStateMapper(BlocksTFC.PLACED_ITEM, blockIn -> ImmutableMap.of(BlocksTFC.PLACED_ITEM.getDefaultState(), empty));
         ModelLoader.setCustomStateMapper(BlocksTFC.PLACED_HIDE, blockIn -> ImmutableMap.of(BlocksTFC.PLACED_HIDE.getDefaultState().withProperty(SIZE, ItemAnimalHide.HideSize.SMALL), empty, BlocksTFC.PLACED_HIDE.getDefaultState().withProperty(SIZE, ItemAnimalHide.HideSize.MEDIUM), empty, BlocksTFC.PLACED_HIDE.getDefaultState().withProperty(SIZE, ItemAnimalHide.HideSize.LARGE), empty));
+        ModelLoader.setCustomStateMapper(BlocksTFC.THATCH_BED, blockIn -> ImmutableMap.of(BlocksTFC.THATCH_BED.getDefaultState(), empty));
 
         // TESRs //
 
+        ClientRegistry.bindTileEntitySpecialRenderer(TEThatchBed.class, new TESRThatchBed());
         ClientRegistry.bindTileEntitySpecialRenderer(TEChestTFC.class, new TESRChestTFC());
         ClientRegistry.bindTileEntitySpecialRenderer(TEToolRack.class, new TESRToolRack());
         ClientRegistry.bindTileEntitySpecialRenderer(TEPitKiln.class, new TESRPitKiln());
