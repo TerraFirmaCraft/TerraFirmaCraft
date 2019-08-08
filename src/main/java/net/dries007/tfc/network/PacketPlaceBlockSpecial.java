@@ -46,7 +46,7 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                         double placeReach = player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
                         if (player.getDistanceSq(pos) <= placeReach * placeReach && hitFace != null)
                         {
-                            if (!stack.isEmpty() && world.getBlockState(pos).isNormalCube() && world.getBlockState(pos.offset(hitFace)).getBlock().isReplaceable(world, pos))
+                            if (!stack.isEmpty() && world.getBlockState(pos).isNormalCube() && hitFace == EnumFacing.UP && world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos))
                             {
                                 world.setBlockState(pos.up(), BlocksTFC.PLACED_ITEM.getDefaultState());
                                 TEPlacedItem tile = Helpers.getTE(world, pos.up(), TEPlacedItem.class);
