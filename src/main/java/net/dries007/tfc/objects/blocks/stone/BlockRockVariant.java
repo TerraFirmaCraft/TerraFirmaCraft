@@ -31,6 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.Gem;
@@ -250,17 +251,11 @@ public class BlockRockVariant extends Block
         // if the block is raw, then this block could also rarely drop gems
         if (type == Rock.Type.RAW)
         {
-            // Get Gem to roll the odds of whether a gem drops
-            Gem.Grade gemGrade = Gem.Grade.randomGrade(RANDOM);
-
-            // if a gem grade dropped, choose the gem type
-            if (gemGrade != null)
+            // roll must first pass the drop chance odds
+            if (RANDOM.nextDouble() < ConfigTFC.GENERAL.stoneGemDropChance)
             {
-                // we have the gem grade, but we need a random type of gem as well.
-                Gem gemType = Gem.getRandomDropGem(RANDOM);
-
-                // add one gem with the listed grade and type to the list of drops
-                drops.add(ItemGem.get(gemType, gemGrade, 1));
+                // add one gem with a random grade and type to the list of drops
+                drops.add(ItemGem.get(Gem.getRandomDropGem(RANDOM), Gem.Grade.randomGrade(RANDOM), 1));
             }
         }   // done checking/adding gem chance
     }

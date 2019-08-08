@@ -8,7 +8,6 @@ package net.dries007.tfc.objects;
 import java.util.Arrays;
 import java.util.Random;
 
-import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.collections.WeightedCollection;
 
 public enum Gem
@@ -39,7 +38,8 @@ public enum Gem
     private static final Gem[] RANDOM_DROP_GEMS = Arrays.stream(values()).filter(x -> x.canDrop).toArray(Gem[]::new);
 
 
-    public static Gem getRandomDropGem(Random random) {
+    public static Gem getRandomDropGem(Random random)
+    {
         return RANDOM_DROP_GEMS[random.nextInt(RANDOM_DROP_GEMS.length)];
     }
 
@@ -62,6 +62,14 @@ public enum Gem
         // cache grades statically for in house use
         private static final Grade[] VALUES = values();
 
+        // cache grade weight odds
+        private static final WeightedCollection<Grade> GRADE_ODDS = new WeightedCollection<>();
+
+        static
+        {
+            Arrays.stream(VALUES).forEach((grade) -> GRADE_ODDS.add(grade.dropWeight, grade));
+        }
+
         /**
          * Calculates the chances of a gem dropping from stone with dug
          *
@@ -70,25 +78,8 @@ public enum Gem
          */
         public static Grade randomGrade(Random random)
         {
-            double roll = random.nextDouble();
-            double dropChance = ConfigTFC.GENERAL.stoneGemDropChance;
-
-            // roll must first pass the drop chance odds
-            if(roll < dropChance)
-            {
-                // Create a weighted collection to handle odds of gem drops for us
-                WeightedCollection<Grade> gradeOdds = new WeightedCollection<>();
-
-                // add each grade with its associated drop weight
-                for (Grade grade : VALUES)
-                    gradeOdds.add(grade.dropWeight, grade);
-
-                // pick out a gem grade
-                return gradeOdds.getRandomEntry(random);
-            }
-
-            // if roll did not pass the first check, return null, because no gem should drop.
-            return null;
+            // pick out a gem grade
+            return GRADE_ODDS.getRandomEntry(random);
         }
 
         public static Grade fromMeta(int meta)
