@@ -40,7 +40,7 @@ public enum Gem
 
         // the probability of this gem grade dropping compared to the other grades. higher is more likely.
         private int dropWeight;
-        private static int totalWeight = 31; // modify this if you change the individual drop weights
+        private static final int TOTAL_WEIGHT = Arrays.stream(Grade.values()).mapToInt(g -> g.dropWeight).sum();
 
         // chance of any gem dropping is determined by the general configs.
         private static double dropChance = ConfigTFC.GENERAL.stoneGemDropChance;
