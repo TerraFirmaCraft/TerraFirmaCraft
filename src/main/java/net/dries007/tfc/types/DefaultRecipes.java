@@ -96,7 +96,7 @@ public final class DefaultRecipes
             new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR, 125), IIngredient.of("meat"), CapabilityFood.PICKLED, 4 * ICalendar.TICKS_IN_HOUR).setRegistryName("pickling_meat"),
             new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR, 125), IIngredient.of("vegetable"), CapabilityFood.PICKLED, 4 * ICalendar.TICKS_IN_HOUR).setRegistryName("pickling_vegetable"),
             // todo: brined food
-            // todo: mortar
+            new BarrelRecipe(IIngredient.of(LIMEWATER, 100), IIngredient.of("sand"), null, new ItemStack(ItemsTFC.MORTAR, 16), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("mortar"),
             // todo: curdled milk -> cheese (use an empty IIngredient for the item)
 
             // Instant recipes: set the duration to 0
