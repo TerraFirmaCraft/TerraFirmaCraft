@@ -102,6 +102,7 @@ public final class BlocksTFC
     public static final BlockPeat PEAT_GRASS = getNull();
     public static final BlockFirePit FIREPIT = getNull();
     public static final BlockThatch THATCH = getNull();
+    public static final BlockThatchBed THATCH_BED = getNull();
     public static final BlockPitKiln PIT_KILN = getNull();
     public static final BlockPlacedItemFlat PLACED_ITEM_FLAT = getNull();
     public static final BlockPlacedItem PLACED_ITEM = getNull();
@@ -601,6 +602,7 @@ public final class BlocksTFC
         register(r, "pit_kiln", new BlockPitKiln());
         register(r, "molten", new BlockMolten());
         register(r, "bloom", new BlockBloom());
+        register(r, "thatch_bed", new BlockThatchBed());
 
         // Note: if you add blocks you don't need to put them in this list of todos. Feel free to add them where they make sense :)
         // todo: pumpkin/melon ?
@@ -657,6 +659,7 @@ public final class BlocksTFC
         register(TEMetalSheet.class, "metal_sheet");
         register(TEQuern.class, "quern");
         register(TELargeVessel.class, "large_vessel");
+        register(TEThatchBed.class, "thatch_bed");
     }
 
     public static boolean isWater(IBlockState current)
