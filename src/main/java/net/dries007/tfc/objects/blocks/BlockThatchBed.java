@@ -11,14 +11,21 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.items.ItemAnimalHide;
@@ -31,12 +38,50 @@ public class BlockThatchBed extends BlockBed
     public BlockThatchBed()
     {
         super();
+        setHardness(0.2F);
     }
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(BlocksTFC.THATCH);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager)
+    {
+        return true; //prevent particles
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager)
+    {
+        return true; //prevent particles
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if (worldIn.isRemote)
+        {
+            return true;
+        }
+        playerIn.setSpawnPoint(pos, false);
+        playerIn.sendMessage(new TextComponentTranslation("tfc.thatch_bed.spawnpoint"));
+        if (!worldIn.isThundering())
+        {
+            playerIn.sendStatusMessage(new TextComponentTranslation("tfc.thatch_bed.not_thundering"), true);
+            return true;
+        }
+        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+    }
+
+    @Override
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
+    {
+        return new ItemStack(BlocksTFC.THATCH);
     }
 
     @Override
