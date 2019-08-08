@@ -83,7 +83,7 @@ public final class DefaultRecipes
             // Alcohol
             new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.BARLEY_FLOUR)), new FluidStack(FluidsTFC.BEER, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("beer"),
             new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of("apple"), new FluidStack(FluidsTFC.CIDER, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("cider"),
-            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of("sugar"), new FluidStack(FluidsTFC.RUM, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("rum"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(Items.SUGAR), new FluidStack(FluidsTFC.RUM, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("rum"),
             new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.RICE_FLOUR)), new FluidStack(FluidsTFC.SAKE, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("sake"),
             new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.POTATO)), new FluidStack(FluidsTFC.VODKA, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("vodka"),
             new BarrelRecipe(IIngredient.of(FRESH_WATER, 500), IIngredient.of(ItemFoodTFC.get(Food.WHEAT_FLOUR)), new FluidStack(FluidsTFC.WHISKEY, 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("whiskey"),
