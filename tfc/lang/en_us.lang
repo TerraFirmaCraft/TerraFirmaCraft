@@ -2346,6 +2346,7 @@ item.leather.name=Leather
 item.tfc.spindle.name=Spindle
 item.tfc.handstone.name=Quern Handstone
 item.tfc.wooden_bucket.name=Bucket
+item.tfc.mortar.name=Mortar
 
 item.tfc.ore.native_copper.name=Native Copper
 item.tfc.ore.native_gold.name=Native Gold
