@@ -78,6 +78,10 @@ tfc.propick.found_large=Found a large sample of
 tfc.propick.found_very_large=Found a very large sample of
 tfc.propick.found_nothing=Found nothing of interest.
 
+## Thatch Bed
+tfc.thatch_bed.spawnpoint=Spawn point set.
+tfc.thatch_bed.not_thundering=This bed is too uncomfortable to sleep.
+
 ## Food Traits
 tfc.food_traits.smoked=Smoked
 tfc.food_traits.brined=Brined
