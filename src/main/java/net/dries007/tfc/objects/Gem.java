@@ -41,7 +41,10 @@ public enum Gem
 
         // the probability of this gem grade dropping compared to the other grades. higher is more likely.
         private int dropWeight;
-        
+
+        // cache grades statically for in house use
+        private static final Grade[] VALUES = values();
+
         /**
          * Calculates the chances of a gem dropping from stone with dug
          *
@@ -56,18 +59,12 @@ public enum Gem
             // roll must first pass the drop chance odds
             if(roll < dropChance)
             {
-                // divide by limiting drop chance to bring into range of 0-1
-                roll /= dropChance;
-
                 // Create a weighted collection to handle odds of gem drops for us
                 WeightedCollection<Grade> gradeOdds = new WeightedCollection<>();
 
                 // add each grade with its associated drop weight
-                for (Grade grade : Grade.values())
+                for (Grade grade : VALUES)
                     gradeOdds.add(grade.dropWeight, grade);
-
-                // multiply by total drop weight since we're comparing ints now
-                roll *= gradeOdds.getTotalWeight();
 
                 // pick out a gem grade
                 return gradeOdds.getRandomEntry(random);
@@ -79,7 +76,7 @@ public enum Gem
 
         public static Grade fromMeta(int meta)
         {
-            return values()[meta];
+            return VALUES[meta];
         }
 
         public int getMeta()
