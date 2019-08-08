@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -29,15 +28,13 @@ import net.dries007.tfc.objects.te.TECrucible;
 @SideOnly(Side.CLIENT)
 public class TESRCrucible extends TileEntitySpecialRenderer<TECrucible>
 {
-
     @Override
     public void render(TECrucible te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         int amount = te.getAlloy().getAmount();
         if (amount < 1) return;
         Metal metal = te.getAlloyResult();
-        Fluid metalFluid = FluidsTFC.getMetalFluid(metal);
-        FluidStack moltenMetal = new FluidStack(metalFluid, amount);
+        Fluid metalFluid = FluidsTFC.getFluidFromMetal(metal);
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);

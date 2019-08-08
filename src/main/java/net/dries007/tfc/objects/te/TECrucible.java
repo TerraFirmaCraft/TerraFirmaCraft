@@ -159,7 +159,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
                 if (amountToFill > 0)
                 {
                     // Do fill of the mold
-                    Fluid metalFluid = FluidsTFC.getMetalFluid(alloyMetal);
+                    Fluid metalFluid = FluidsTFC.getFluidFromMetal(alloyMetal);
                     FluidStack fluidStack = new FluidStack(metalFluid, amountToFill);
                     int amountFilled = mold.fill(fluidStack, true);
 

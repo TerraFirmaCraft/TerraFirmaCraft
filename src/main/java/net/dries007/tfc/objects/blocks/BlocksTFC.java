@@ -16,7 +16,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -34,6 +33,7 @@ import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.*;
 import net.dries007.tfc.objects.blocks.wood.*;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.fluids.properties.FluidWrapper;
 import net.dries007.tfc.objects.items.itemblock.*;
 import net.dries007.tfc.objects.te.*;
 import net.dries007.tfc.util.agriculture.BerryBush;
@@ -331,14 +331,34 @@ public final class BlocksTFC
 
         {
             Builder<BlockFluidBase> b = ImmutableList.builder();
-            for (Fluid fluid : FluidsTFC.getAllInfiniteFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidTFC(fluid, Material.WATER, true)));
-            for (Fluid fluid : FluidsTFC.getAllAlcoholsFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidTFC(fluid, FluidsTFC.MATERIAL_ALCOHOL, false)));
-            for (Fluid fluid : FluidsTFC.getAllOtherFiniteFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidTFC(fluid, Material.WATER, false)));
-            for (Fluid fluid : FluidsTFC.getAllMetalFluids())
-                b.add(register(r, "fluid/" + fluid.getName(), new BlockFluidTFC(fluid, Material.LAVA, false)));
+            for (FluidWrapper wrapper : FluidsTFC.getAllInfiniteFluids())
+            {
+                if (wrapper.isDefault())
+                {
+                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER, true)));
+                }
+            }
+            for (FluidWrapper wrapper : FluidsTFC.getAllAlcoholsFluids())
+            {
+                if (wrapper.isDefault())
+                {
+                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), FluidsTFC.MATERIAL_ALCOHOL, false)));
+                }
+            }
+            for (FluidWrapper wrapper : FluidsTFC.getAllOtherFiniteFluids())
+            {
+                if (wrapper.isDefault())
+                {
+                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER, false)));
+                }
+            }
+            for (FluidWrapper wrapper : FluidsTFC.getAllMetalFluids())
+            {
+                if (wrapper.isDefault())
+                {
+                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.LAVA, false)));
+                }
+            }
             allFluidBlocks = b.build();
         }
 
