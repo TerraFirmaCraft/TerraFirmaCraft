@@ -256,13 +256,8 @@ public class BlockRockVariant extends Block
             // if a gem grade dropped, choose the gem type
             if (gemGrade != null)
             {
-                // we have the gem quality, but we need a random type of gem as well.
-                Gem gemType;
-                do
-                {
-                    gemType = Gem.values()[RANDOM.nextInt(Gem.values().length)];
-                }
-                while (gemType == Gem.DIAMOND); // no diamonds!
+                // we have the gem grade, but we need a random type of gem as well.
+                Gem gemType = Gem.getRandomDropGem(RANDOM);
 
                 // add one gem with the listed grade and type to the list of drops
                 drops.add(ItemGem.get(gemType, gemGrade, 1));
