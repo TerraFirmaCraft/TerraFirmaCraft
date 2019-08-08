@@ -25,16 +25,16 @@ tfc.tooltip.barrel_item_in_fluid=和 %1$dx %2$s
 tfc.tooltip.small_vessel_empty=空
 tfc.tooltip.small_vessel_item=%1$dx %2$s
 tfc.tooltip.weldable=可焊接
-tfc.tooltip.workable=可工作
+tfc.tooltip.workable=可加工
 tfc.tooltip.danger=危险！！
-tfc.tooltip.anvil_plan=设计图
+tfc.tooltip.anvil_plan=目标
 tfc.tooltip.anvil_tier_too_low=此砧等级过低！
 tfc.tooltip.anvil_no_flux=砧里没有焊剂！
 tfc.tooltip.anvil_too_cold=物品不够热，无法开工！
 tfc.tooltip.anvil_no_hammer=砧里没有锤子！
-tfc.tooltip.crucible_result=结果：
+tfc.tooltip.crucible_result=产物：
 tfc.tooltip.barrel_seal=密封桶
-tfc.tooltip.barrel_unseal=解封桶
+tfc.tooltip.barrel_unseal=启封桶
 tfc.tooltip.barrel_cooling=冷却中
 tfc.tooltip.calendar=日历
 tfc.tooltip.season=季节：%s
@@ -55,7 +55,8 @@ tfc.tooltip.blast_furnace_ore_amount=矿石
 tfc.tooltip.blast_furnace_fuel_amount=燃料
 tfc.tooltip.blast_furnace_melt_amount=熔化
 tfc.tooltip.large_vessel_seal=密封大缸
-tfc.tooltip.large_vessel_unseal=解封大缸
+tfc.tooltip.large_vessel_unseal=启封大缸
+tfc.tooltip.goldpan.chunkworked=这片地区似乎已被过度开采。你或许发现不了什么。
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.old=这只动物太老了，不能给它配种。
@@ -83,6 +84,10 @@ tfc.propick.found_medium=发现中量
 tfc.propick.found_large=发现大量
 tfc.propick.found_very_large=发现巨量
 tfc.propick.found_nothing=没发现什么有意思的。
+
+## Thatch Bed
+tfc.thatch_bed.spawnpoint=出生点已设置。
+tfc.thatch_bed.not_thundering=这张床太不舒服了，难以入睡。
 
 ## Food Traits
 tfc.food_traits.smoked=熏制
@@ -120,16 +125,22 @@ config.tfc.general.debug=调试模式
 config.tfc.general.debug.tooltip=各种调试选项。激活一些额外的调试魔杖特性。启用额外的物品提示。
 
 config.tfc.general.removeVanillaRecipes=移除原版合成配方
-config.tfc.general.removeVanillaRecipes.tooltip=启用/禁用原版配方移除。false = 保留所有原版配方
+config.tfc.general.removeVanillaRecipes.tooltip=启用/禁用原版配方移除。false = 保留所有原版配方。
+
+config.tfc.general.removeVanillaLoots=移除原版掠夺表
+config.tfc.general.removeVanillaLoots.tooltip=启用/禁用与群峦传说冲突的原版掠夺表入口（例如马铃薯）。false = 保留这些掠夺表。
 
 config.tfc.general.leafStickDropChance=树叶掉落木棍几率
-config.tfc.general.leafStickDropChance.tooltip=树叶正常掉落木棍的几率
+config.tfc.general.leafStickDropChance.tooltip=破坏树叶正常掉落木棍的几率
 
 config.tfc.general.leafStickDropChanceBonus=树叶额外掉落木棍几率
-config.tfc.general.leafStickDropChanceBonus.tooltip=树叶额外掉落木棍的几率
+config.tfc.general.leafStickDropChanceBonus.tooltip=破坏树叶额外掉落木棍的几率
 
 config.tfc.general.leafStickDropChanceBonusClasses=工具类树叶掉落木棍几率
-config.tfc.general.leafStickDropChanceBonusClasses.tooltip=使用对应工具树叶额外掉落木棍的几率
+config.tfc.general.leafStickDropChanceBonusClasses.tooltip=使用对应工具破坏树叶额外掉落木棍的几率
+
+config.tfc.general.stoneGemDropChance=岩石掉落宝石几率
+config.tfc.general.stoneGemDropChance.tooltip=任何宝石从未加工岩石中掉落的几率
 
 config.tfc.general.temperatureModifierGlobal=全局温度修改
 config.tfc.general.temperatureModifierGlobal.tooltip=修改物品获得和失去热量的速度。较小的值 = 较慢的温度变化。
@@ -203,14 +214,44 @@ config.tfc.general.poorOreMetalAmount.tooltip=贫瘠矿中含有的金属量。
 config.tfc.general.normalOreMetalAmount=正常矿金属含量
 config.tfc.general.normalOreMetalAmount.tooltip=正常矿中含有的金属量。
 
-config.tfc.general.richOreMetalAmount=富矿金属含量
-config.tfc.general.richOreMetalAmount.tooltip=富矿中含有的金属量。
+config.tfc.general.richOreMetalAmount=富集矿金属含量
+config.tfc.general.richOreMetalAmount.tooltip=富集矿中含有的金属量。
+
+config.tfc.general.maxWorkChunk=区块最大开采量
+config.tfc.general.maxWorkChunk.tooltip=一个区块能被开采的次数。注意：洗矿槽增加 1 而淘金盘增加 6 。
+
+config.tfc.general.sluiceRadius=洗矿槽半径
+config.tfc.general.sluiceRadius.tooltip=以区块为单位的洗矿槽工作半径。
+
+config.tfc.general.sluiceTicks=洗矿槽刻
+config.tfc.general.sluiceTicks.tooltip=洗矿槽工作一次所用的刻。
+
+config.tfc.general.sluiceOreChance=洗矿槽矿石几率
+config.tfc.general.sluiceOreChance.tooltip=洗矿槽作业产生小矿石的几率。
+
+config.tfc.general.sluiceGemChance=洗矿槽宝石几率
+config.tfc.general.sluiceGemChance.tooltip=洗矿槽作业产生宝石的几率。
+
+config.tfc.general.sluiceDiamondGemChance=洗矿槽钻石几率
+config.tfc.general.sluiceDiamondGemChance.tooltip=当洗矿槽作业产生宝石时，掉落钻石的几率。
+
+config.tfc.general.overworkChunk=区块可过度开采
+config.tfc.general.overworkChunk.tooltip=若为 true，忽略对淘金盘和洗矿槽的限制。
 
 config.tfc.general.forceNoVanillaNaturalRegeneration=强制无原版自然恢复
 config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=若为 true，将把游戏规则 naturalRegeneration 强制设置为 false 。注意：这不会影响群峦的自然恢复。若将 naturalRegeneration 设置为 true ，将同时有群峦和正常原版（比群峦快多了）的恢复。
 
 config.tfc.general.peacefulDifficultyPassiveRegeneration=和平难度被动恢复
-config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=玩家是否应在和平难度下收到与原版相似的生命值，饱食度，口渴值的被动恢复？
+config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=玩家是否应在和平难度下与原版相似地被动恢复生命值，饱食度，口渴值？
+
+config.tfc.general.regenSticksRocks=木棍&岩石重生成
+config.tfc.general.regenSticksRocks.tooltip=木棍和岩石重生成多快，以天为单位。设置为 0 以完全禁用。
+
+config.tfc.general.regenPlants=植物重生成
+config.tfc.general.regenPlants.tooltip=植物重生成多快，以月为单位。设置为 0 以完全禁用。
+
+config.tfc.general.regenCrops=野生作物&浆果灌木重生成
+config.tfc.general.regenCrops.tooltip=野生作物&浆果灌木重生成多快，以月为单位。设置为 0 以完全禁用。
 
 ## Client Config
 config.tfc.general.woodenBucketWhitelist=木桶液体白名单
@@ -235,6 +276,9 @@ config.tfc.client.showNBTTooltip.tooltip=启用高级提示时在提示中显示
 config.tfc.client.propickOutputToActionBar=探矿输出到动作栏
 config.tfc.client.propickOutputToActionBar.tooltip=探矿应该输出到动作栏吗？（快捷栏上方的空间）
 
+config.tfc.client.rottenFoodOverlayColor=腐烂食物文字颜色
+config.tfc.client.rottenFoodOverlayColor.tooltip=腐烂食物文字的颜色。以 256 位颜色值表示：0xFFFFFF = 白色，0x000000 = 黑色
+
 ## Config.World
 config.tfc.world=世界生成设置
 config.tfc.world.tooltip=世界生成的各个方面
@@ -243,16 +287,19 @@ config.tfc.world.hemisphereType=半球类型
 config.tfc.world.hemisphereType.tooltip=控制赤道附近的温度梯度。1：赤道以南热，赤道以北冷。-1：赤道以南冷，赤道以北热。
 
 config.tfc.world.cyclicTemperatureRegions=启用温度区域循环
-config.tfc.world.cyclicTemperatureRegions.tooltip=控制循环温度区域的出现。 如果想要带有温带赤道的无尽北/南，将此设置为 false。
+config.tfc.world.cyclicTemperatureRegions.tooltip=控制循环温度区域的出现。如果想要带有温带赤道的无尽北/南，将此设置为 false。
 
-config.tfc.world.debugMode=调试模式（危险）
-config.tfc.world.debugMode.tooltip=调试世界生成 [危险] 你的世界将会受到影响！不要在你正常的世界里使用！
+config.tfc.world.debugWorldGen=调试模式（危险）
+config.tfc.world.debugWorldGen.tooltip=调试世界生成 [危险] 你的世界将会受到影响！不要在你正常的世界里使用！
 
 config.tfc.world.latitudeTemperatureModifier=纬度温度修改
 config.tfc.world.latitudeTemperatureModifier.tooltip=控制温度区域的大小。每个温度区域的大小由正弦波确定。波周期的一半 = 热带和冷带之间的距离，以方块为单位
 
 config.tfc.world.clayRarity=粘土矿床稀有度
 config.tfc.world.clayRarity.tooltip=粘土坑产生的稀有度。平均 1 / N 区块（若可产生粘土）将含有粘土矿床。
+
+config.tfc.world.looseRocksFrequency=石子频率
+config.tfc.world.looseRocksFrequency.tooltip=每个区块生成地表石子的尝试次数。包括地表矿石样本。
 
 # Misc
 itemGroup.tfc.misc=群峦传说|杂项
@@ -321,7 +368,7 @@ tfc.enum.size.huge=极大
 
 ## Weight
 tfc.enum.weight.light=轻
-tfc.enum.weight.medium=中等
+tfc.enum.weight.medium=中
 tfc.enum.weight.heavy=重
 
 ## Heat
@@ -421,6 +468,22 @@ tfc.enum.nutrient.protein=蛋白质
 tfc.enum.nutrient.minerals=矿物质
 tfc.enum.nutrient.vitamins=维生素
 
+#JEI
+jei.category.tfc.alloy=合金配方
+jei.category.tfc.anvil=砧类配方
+jei.category.tfc.barrel=桶类配方
+jei.category.tfc.heat=加热配方
+jei.category.tfc.knap.clay=粘土塑形
+jei.category.tfc.knap.fireclay=耐火粘土塑形
+jei.category.tfc.knap.leather=皮革塑形
+jei.category.tfc.knap.stone=石子塑形
+jei.category.tfc.loom=织布机配方
+jei.category.tfc.quern=手推磨配方
+jei.category.tfc.welding=焊接配方
+
+jei.tooltips.tfc.barrel.instant=立即
+jei.tooltips.tfc.barrel.duration=%d 小时
+
 # Fluids
 fluid.salt_water=咸水
 fluid.fresh_water=淡水
@@ -475,9 +538,12 @@ fluid.unknown=未知熔融金属
 
 
 tile.tfc.debug.name=群峦传说调试方块
+tile.tfc.placed_item.name=放置的物品
+tile.tfc.placed_item_flat.name=杂物
+tile.tfc.pit_kiln.name=坑窑
 tile.tfc.peat.name=泥炭
 tile.tfc.peat_grass.name=长草的泥炭
-tile.tfc.thatch.name=茅草
+tile.tfc.thatch.name=干草块
 tile.tfc.firepit.name=壁炉
 tile.tfc.bellows.name=风箱
 tile.tfc.crucible.name=坩埚
@@ -487,6 +553,9 @@ tile.tfc.bloomery.name=锻铁炉
 tile.tfc.fire_bricks.name=防火砖
 tile.tfc.quern.name=手推磨
 tile.tfc.ceramics.fired.large_vessel.name=大缸
+tile.tfc.sluice.name=洗矿槽
+tile.tfc.ice.name=冰
+tile.tfc.sea_ice.name=海冰
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=未加工花岗岩
@@ -2331,11 +2400,15 @@ tile.tfc.crop.yellow_bell_pepper.name=黄甜椒
 
 item.tfc.wand.name=群峦传说调试魔杖
 item.tfc.firestarter.name=起火器
-item.tfc.straw.name=稻草
+item.tfc.straw.name=干草
 item.leather.name=皮革
 item.tfc.spindle.name=纺锤
 item.tfc.handstone.name=手推磨磨盘
 item.tfc.wooden_bucket.name=木桶
+item.tfc.wooden_bucket.filled=%s木桶
+item.tfc.ceramics.fired.jug.name=罐
+item.tfc.ceramics.fired.jug.filled=%s罐
+item.tfc.mortar.name=砂浆
 
 item.tfc.ore.native_copper.name=原生铜
 item.tfc.ore.native_gold.name=原生金
@@ -2445,11 +2518,11 @@ item.tfc.ore.borax.rich.name=富集硼砂
 item.tfc.ore.olivine.rich.name=富集橄榄石
 item.tfc.ore.lapis_lazuli.rich.name=富集青金石
 
-item.tfc.ore.small.native_copper.name=小型原生铜
-item.tfc.ore.small.native_gold.name=小型原生金
-item.tfc.ore.small.native_platinum.name=小型原生铂
+item.tfc.ore.small.native_copper.name=原生铜粒
+item.tfc.ore.small.native_gold.name=原生金粒
+item.tfc.ore.small.native_platinum.name=原生铂粒
 item.tfc.ore.small.hematite.name=小型赤铁矿
-item.tfc.ore.small.native_silver.name=小型原生银
+item.tfc.ore.small.native_silver.name=原生银粒
 item.tfc.ore.small.cassiterite.name=小型锡石
 item.tfc.ore.small.galena.name=小型方铅矿
 item.tfc.ore.small.bismuthinite.name=小型辉铋矿
@@ -3407,7 +3480,6 @@ item.tfc.ceramics.fired.spindle.name=纺锤头
 item.tfc.ceramics.unfired.spindle.name=未烧制纺锤头
 item.tfc.ceramics.fired.pot.name=锅
 item.tfc.ceramics.unfired.pot.name=未烧制锅
-item.tfc.ceramics.fired.jug.name=罐
 item.tfc.ceramics.unfired.jug.name=未烧制罐
 item.tfc.ceramics.fired.bowl.name=碗
 item.tfc.ceramics.unfired.bowl.name=未烧制碗
@@ -3566,3 +3638,6 @@ entity.deertfc.name=鹿
 entity.pheasanttfc.name=雉鸡
 entity.rabbittfc.name=兔子
 entity.wolftfc.name=狼
+entity.horsetfc.name=马
+entity.donkeytfc.name=驴
+entity.muletfc.name=骡
