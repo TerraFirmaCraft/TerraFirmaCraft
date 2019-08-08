@@ -8,6 +8,7 @@ package net.dries007.tfc.objects;
 import java.util.Random;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.util.collections.WeightedCollection;
 
 public enum Gem
 {
@@ -40,11 +41,7 @@ public enum Gem
 
         // the probability of this gem grade dropping compared to the other grades. higher is more likely.
         private int dropWeight;
-        private static int totalWeight = 31; // modify this if you change the individual drop weights
-
-        // chance of any gem dropping is determined by the general configs.
-        private static double dropChance = ConfigTFC.GENERAL.stoneGemDropChance;
-
+        
         /**
          * Calculates the chances of a gem dropping from stone with dug
          *
@@ -54,22 +51,26 @@ public enum Gem
         public static Grade randomGrade(Random random)
         {
             double roll = random.nextDouble();
+            double dropChance = ConfigTFC.GENERAL.stoneGemDropChance;
 
             // roll must first pass the drop chance odds
             if(roll < dropChance)
             {
-                // divide by limiting config to bring into range of 0-1
+                // divide by limiting drop chance to bring into range of 0-1
                 roll /= dropChance;
-                // multiply by total drop weight since we're comparing ints now
-                roll *= totalWeight;
 
-                // subtract by each grade's weight until the roll passes 0.
+                // Create a weighted collection to handle odds of gem drops for us
+                WeightedCollection<Grade> gradeOdds = new WeightedCollection<>();
+
+                // add each grade with its associated drop weight
                 for (Grade grade : Grade.values())
-                {
-                    roll -= grade.dropWeight;
-                    if (roll < 0)
-                        return grade;
-                }
+                    gradeOdds.add(grade.dropWeight, grade);
+
+                // multiply by total drop weight since we're comparing ints now
+                roll *= gradeOdds.getTotalWeight();
+
+                // pick out a gem grade
+                return gradeOdds.getRandomEntry(random);
             }
 
             // if roll did not pass the first check, return null, because no gem should drop.
