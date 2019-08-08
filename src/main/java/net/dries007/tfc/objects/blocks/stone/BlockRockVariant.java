@@ -18,8 +18,10 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -31,9 +33,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
+import net.dries007.tfc.objects.items.ItemGem;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -234,6 +238,36 @@ public class BlockRockVariant extends Block
             default:
                 return super.quantityDropped(state, fortune, random);
         }
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        // call the default getDrops method in order to make sure quantityDropped
+        // and getItemDropped are still used for adding the rock drops.
+        super.getDrops(drops, world, pos, state, fortune);
+
+        // if the block is raw, then this block could also rarely drop gems
+        if (type == Rock.Type.RAW)
+        {
+            // Get Gem to roll the odds of whether a gem drops
+            Gem.Grade gemGrade = Gem.Grade.randomGrade(RANDOM);
+
+            // if a gem grade dropped, choose the gem type
+            if (gemGrade != null)
+            {
+                // we have the gem quality, but we need a random type of gem as well.
+                Gem gemType;
+                do
+                {
+                    gemType = Gem.values()[RANDOM.nextInt(Gem.values().length)];
+                }
+                while (gemType == Gem.DIAMOND); // no diamonds!
+
+                // add one gem with the listed grade and type to the list of drops
+                drops.add(ItemGem.get(gemType, gemGrade, 1));
+            }
+        }   // done checking/adding gem chance
     }
 
     @Override

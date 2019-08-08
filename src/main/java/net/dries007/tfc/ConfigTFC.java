@@ -65,6 +65,11 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonus")
         public double leafStickDropChanceBonus = 0.25;
 
+        @Config.Comment("Drop chance for gem from raw stone")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.stoneGemDropChance")
+        public double stoneGemDropChance = 31.0 / 8000.0; // 0.003875
+
         @Config.Comment("Bonus leaf drop stick chance for sticks tool classes")
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonusClasses")
         public String[] leafStickDropChanceBonusClasses = new String[] {"knife", "scythe"};
