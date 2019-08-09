@@ -116,6 +116,9 @@ config.tfc.general.debug.tooltip=Various debug options. Activates some extra wan
 config.tfc.general.removeVanillaRecipes=Remove Vanilla Recipes
 config.tfc.general.removeVanillaRecipes.tooltip=Enable/Disable the vanilla recipe removal spam. False = Those recipes are left in place.
 
+config.tfc.general.removeVanillaLoots=Remove Vanilla Loots
+config.tfc.general.removeVanillaLoots.tooltip=Enable/Disable the vanilla loot entries that conflict with TFC (ie: potatoes). False = Those loot entries are left in place.
+
 config.tfc.general.leafStickDropChance=Leaf Stick Drop Chance
 config.tfc.general.leafStickDropChance.tooltip=Normal leaf drop chance for sticks
 
