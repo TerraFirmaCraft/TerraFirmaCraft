@@ -242,8 +242,8 @@ config.tfc.world.hemisphereType.tooltip=This controls how the temperature gradie
 config.tfc.world.cyclicTemperatureRegions=Enable Cyclie Temperature Regions
 config.tfc.world.cyclicTemperatureRegions.tooltip=This controls the appearance of cyclic temperature regions. If you want an endless north / south with a temperate equator, set this to false.
 
-config.tfc.world.debugMode=Debug Mode (DANGER)
-config.tfc.world.debugMode.tooltip=Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!
+config.tfc.world.debugWorldGen=Debug Worldgen (DANGER)
+config.tfc.world.debugWorldGen.tooltip=Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!
 
 config.tfc.world.latitudeTemperatureModifier=Latitude Temperature Modifier
 config.tfc.world.latitudeTemperatureModifier.tooltip=This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents half the period of the wave = the distance between hot and cold bands, in blocks
