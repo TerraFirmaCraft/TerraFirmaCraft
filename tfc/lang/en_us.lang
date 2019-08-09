@@ -125,6 +125,9 @@ config.tfc.general.leafStickDropChanceBonus.tooltip=Bonus leaf drop chance for s
 config.tfc.general.leafStickDropChanceBonusClasses=Leaf Stick Drop Chance Tool Classes
 config.tfc.general.leafStickDropChanceBonusClasses.tooltip=Bonus leaf drop stick chance for sticks tool classes
 
+config.tfc.general.stoneGemDropChance=Stone Gem Drop Chance
+config.tfc.general.stoneGemDropChance.tooltip=Chance of any gem to drop from raw stone
+
 config.tfc.general.temperatureModifierGlobal=Global Temperature Modifier
 config.tfc.general.temperatureModifierGlobal.tooltip=Modifier for how quickly items gains and loses heat. Smaller number = slower temperature changes.
 
