@@ -2346,6 +2346,9 @@ item.leather.name=Leather
 item.tfc.spindle.name=Spindle
 item.tfc.handstone.name=Quern Handstone
 item.tfc.wooden_bucket.name=Bucket
+item.tfc.wooden_bucket.filled=%s Bucket
+item.tfc.ceramics.fired.jug.name=Jug
+item.tfc.ceramics.fired.jug.filled=%s Jug
 item.tfc.mortar.name=Mortar
 
 item.tfc.ore.native_copper.name=Native Copper
@@ -3418,7 +3421,6 @@ item.tfc.ceramics.fired.spindle.name=Spindle Head
 item.tfc.ceramics.unfired.spindle.name=Unfired Spindle Head
 item.tfc.ceramics.fired.pot.name=Pot
 item.tfc.ceramics.unfired.pot.name=Unfired Pot
-item.tfc.ceramics.fired.jug.name=Jug
 item.tfc.ceramics.unfired.jug.name=Unfired Jug
 item.tfc.ceramics.fired.bowl.name=Bowl
 item.tfc.ceramics.unfired.bowl.name=Unfired Bowl
