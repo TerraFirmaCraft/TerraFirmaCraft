@@ -239,7 +239,7 @@ public class ConfigTFC
         public boolean cyclicTemperatureRegions = true;
 
         @Config.Comment("Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!")
-        @Config.LangKey("config." + MOD_ID + ".world.debugWorldGen")
+        @Config.LangKey("config." + MOD_ID + ".world.debugMode")
         @Config.RequiresWorldRestart
         public boolean debugMode = false;
 
