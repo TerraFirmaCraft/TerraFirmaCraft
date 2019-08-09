@@ -272,8 +272,8 @@ public final class ItemsTFC
 
         simpleItems.add(register(r, "spindle", new ItemCraftingTool(40, Size.NORMAL, Weight.MEDIUM, "spindle"), CT_MISC));
 
-        simpleItems.add(register(r, "bloom/unrefined", new ItemBloom(), CT_MISC));
-        simpleItems.add(register(r, "bloom/refined", new ItemBloom(), CT_MISC));
+        simpleItems.add(register(r, "bloom/unrefined", new ItemBloom(false), CT_MISC));
+        simpleItems.add(register(r, "bloom/refined", new ItemBloom(true), CT_MISC));
 
         // Animal Hides
         for (ItemAnimalHide.HideSize size : ItemAnimalHide.HideSize.values())

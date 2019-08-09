@@ -33,6 +33,13 @@ import net.dries007.tfc.api.util.IMetalObject;
 @ParametersAreNonnullByDefault
 public class ItemBloom extends ItemTFC implements IMetalObject
 {
+    private boolean meltable;
+
+    public ItemBloom(boolean meltable)
+    {
+        this.meltable = meltable;
+    }
+
     @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
@@ -60,7 +67,9 @@ public class ItemBloom extends ItemTFC implements IMetalObject
         IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
         if (cap instanceof IForgeableMeasurable)
         {
-            return ((IForgeableMeasurable) cap).getMetalAmount();
+            int amount = ((IForgeableMeasurable) cap).getMetalAmount();
+            if (amount > 100) amount = 100;
+            return amount;
         }
         return 0;
     }
@@ -68,7 +77,7 @@ public class ItemBloom extends ItemTFC implements IMetalObject
     @Override
     public boolean canMelt(ItemStack stack)
     {
-        return stack.getItem() != ItemsTFC.UNREFINED_BLOOM;
+        return meltable;
     }
 
     @Override
