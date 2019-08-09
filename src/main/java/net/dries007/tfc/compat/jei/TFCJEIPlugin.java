@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import mezz.jei.api.IModPlugin;
@@ -177,7 +178,10 @@ public final class TFCJEIPlugin implements IModPlugin
             .collect(Collectors.toList());
 
         registry.addRecipes(barrelRecipes, BARREL_UID);
-        registry.addRecipeCatalyst(new ItemStack(BlocksTFC.getAllBarrelItemBlocks().get(0)), BARREL_UID);
+        for (Item barrelItem : BlocksTFC.getAllBarrelItemBlocks())
+        {
+            registry.addRecipeCatalyst(new ItemStack(barrelItem), BARREL_UID);
+        }
 
         //Click areas
         registry.addRecipeClickArea(GuiKnapping.class, 97, 42, 22, 19, KNAP_CLAY_UID, KNAP_FIRECLAY_UID, KNAP_LEATHER_UID, KNAP_STONE_UID);

@@ -46,16 +46,7 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                         double placeReach = player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
                         if (player.getDistanceSq(pos) <= placeReach * placeReach && hitFace != null)
                         {
-                            if (!stack.isEmpty() && world.getBlockState(pos).isNormalCube() && world.getBlockState(pos.offset(hitFace)).getBlock().isReplaceable(world, pos))
-                            {
-                                world.setBlockState(pos.up(), BlocksTFC.PLACED_ITEM.getDefaultState());
-                                TEPlacedItem tile = Helpers.getTE(world, pos.up(), TEPlacedItem.class);
-                                if (tile != null)
-                                {
-                                    tile.onRightClick(player, stack, rayTrace);
-                                }
-                            }
-                            else if (world.getBlockState(pos).getBlock() == BlocksTFC.PLACED_ITEM)
+                            if (world.getBlockState(pos).getBlock() == BlocksTFC.PLACED_ITEM)
                             {
                                 TEPlacedItem tile = Helpers.getTE(world, pos, TEPlacedItem.class);
                                 if (tile != null)
@@ -65,6 +56,15 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                             }
                             else if (world.getBlockState(pos.offset(hitFace)).getBlock() == BlocksTFC.PLACED_ITEM)
                             {
+                                TEPlacedItem tile = Helpers.getTE(world, pos.offset(hitFace), TEPlacedItem.class);
+                                if (tile != null)
+                                {
+                                    tile.onRightClick(player, stack, rayTrace);
+                                }
+                            }
+                            else if (!stack.isEmpty() && world.getBlockState(pos.offset(hitFace).down()).isNormalCube() && world.getBlockState(pos.offset(hitFace)).getBlock().isReplaceable(world, pos))
+                            {
+                                world.setBlockState(pos.offset(hitFace), BlocksTFC.PLACED_ITEM.getDefaultState());
                                 TEPlacedItem tile = Helpers.getTE(world, pos.offset(hitFace), TEPlacedItem.class);
                                 if (tile != null)
                                 {

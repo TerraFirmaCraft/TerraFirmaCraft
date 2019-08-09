@@ -112,6 +112,8 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("bloom/refined")
     public static final ItemBloom REFINED_BLOOM = getNull();
 
+    public static final ItemTFC MORTAR = getNull();
+
     @GameRegistry.ObjectHolder("powder/salt")
     public static final ItemPowder SALT = getNull();
 
@@ -144,6 +146,7 @@ public final class ItemsTFC
         Builder<Item> simpleItems = ImmutableList.builder();
 
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
+        simpleItems.add(register(r, "mortar", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
         register(r, "wooden_bucket", new ItemWoodenBucket(), CT_WOOD); //not a simple item, use a custom model
 
         {
@@ -268,8 +271,8 @@ public final class ItemsTFC
 
         simpleItems.add(register(r, "spindle", new ItemCraftingTool(40, Size.NORMAL, Weight.MEDIUM, "spindle"), CT_MISC));
 
-        simpleItems.add(register(r, "bloom/unrefined", new ItemBloom(), CT_MISC));
-        simpleItems.add(register(r, "bloom/refined", new ItemBloom(), CT_MISC));
+        simpleItems.add(register(r, "bloom/unrefined", new ItemBloom(false), CT_MISC));
+        simpleItems.add(register(r, "bloom/refined", new ItemBloom(true), CT_MISC));
 
         // Animal Hides
         for (ItemAnimalHide.HideSize size : ItemAnimalHide.HideSize.values())

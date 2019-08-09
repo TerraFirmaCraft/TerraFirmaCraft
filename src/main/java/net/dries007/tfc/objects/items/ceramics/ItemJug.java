@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
@@ -145,7 +146,8 @@ public class ItemJug extends ItemPottery
             FluidStack fluidStack = bucketCap.drain(CAPACITY, false);
             if (fluidStack != null)
             {
-                return fluidStack.getLocalizedName() + " " + super.getItemStackDisplayName(stack);
+                String fluidname = fluidStack.getLocalizedName();
+                return new TextComponentTranslation("item.tfc.ceramics.fired.jug.filled", fluidname).getFormattedText();
             }
         }
         return super.getItemStackDisplayName(stack);

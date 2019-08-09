@@ -10,6 +10,7 @@ import java.util.Collections;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
 import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
@@ -65,7 +66,7 @@ public class AnvilRecipeWrapper extends SimpleRecipeWrapper
                 int y = 0;
                 if (mouseX >= x && mouseX <= x + 14 && mouseY >= y && mouseY <= y + 19)
                 {
-                    GuiUtils.drawHoveringText(Collections.singletonList(Helpers.getEnumName(rule)), mouseX, mouseY, 154, 80, -1, minecraft.fontRenderer);
+                    GuiUtils.drawHoveringText(Collections.singletonList(I18n.format(Helpers.getEnumName(rule))), mouseX, mouseY, 154, 80, -1, minecraft.fontRenderer);
                 }
             }
         }
