@@ -39,7 +39,6 @@ import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
 import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 import net.dries007.tfc.objects.items.wood.ItemLumberTFC;
 import net.dries007.tfc.objects.items.wood.ItemWoodenBucket;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.agriculture.Food;
 
@@ -325,15 +324,6 @@ public final class ItemsTFC
         // todo: foods & plants & seeds & fruits & fruit tree saplings & berries & berry bushes
 
         allSimpleItems = simpleItems.build();
-        // Register oredict bronze items as any bronze
-        for (Metal.ItemType type : Metal.ItemType.values())
-        {
-            if (ItemMetal.get(Metal.BRONZE, type) == null)
-                continue; //this is for skipping armors, as they don't extend ItemMetal anymore
-            OreDictionaryHelper.register(ItemMetal.get(Metal.BRONZE, type), type, "Any", "Bronze");
-            OreDictionaryHelper.register(ItemMetal.get(Metal.BISMUTH_BRONZE, type), type, "Any", "Bronze");
-            OreDictionaryHelper.register(ItemMetal.get(Metal.BLACK_BRONZE, type), type, "Any", "Bronze");
-        }
     }
 
     public static void init()
