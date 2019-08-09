@@ -85,9 +85,6 @@ public class BlockOreTFC extends Block
     @Nonnull
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        // todo: handle coal
-        // todo: handle kimberlite (diamond)
-        // todo: handle saltpeter
         return ItemOreTFC.get(ore);
     }
 

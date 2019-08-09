@@ -7,6 +7,9 @@ package net.dries007.tfc.objects;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.dries007.tfc.util.collections.WeightedCollection;
 
@@ -26,14 +29,6 @@ public enum Gem
     TOPAZ(true),
     TOURMALINE(true);
 
-    Gem(boolean canDrop)
-    {
-        this.canDrop = canDrop;
-    }
-
-    // whether this gem can be found as a drop from raw stone
-    private final boolean canDrop;
-
     // list of gems that can drop
     private static final Gem[] RANDOM_DROP_GEMS = Arrays.stream(values()).filter(x -> x.canDrop).toArray(Gem[]::new);
 
@@ -48,6 +43,14 @@ public enum Gem
         return RANDOM_DROP_GEMS[random.nextInt(RANDOM_DROP_GEMS.length)];
     }
 
+    // whether this gem can be found as a drop from raw stone
+    private final boolean canDrop;
+
+    Gem(boolean canDrop)
+    {
+        this.canDrop = canDrop;
+    }
+
     public enum Grade
     {
         CHIPPED(16),
@@ -56,25 +59,8 @@ public enum Gem
         FLAWLESS(2),
         EXQUISITE(1);
 
-        Grade(int dropWeight)
-        {
-            this.dropWeight = dropWeight;
-        }
-
-        // the probability of this gem grade dropping compared to the other grades. higher is more likely.
-        private int dropWeight;
-
-        // cache grades statically for in house use
         private static final Grade[] VALUES = values();
-
-        // cache grade weight odds
-        private static final WeightedCollection<Grade> GRADE_ODDS = new WeightedCollection<>();
-
-        // populate static grade odds with odds from grade weights
-        static
-        {
-            Arrays.stream(VALUES).forEach((grade) -> GRADE_ODDS.add(grade.dropWeight, grade));
-        }
+        private static final WeightedCollection<Grade> GRADE_ODDS = new WeightedCollection<>(Arrays.stream(VALUES).collect(Collectors.toMap(k -> k, v -> v.dropWeight)));
 
         /**
          * Returns a random gem grade according to gem grade weights
@@ -82,20 +68,23 @@ public enum Gem
          * @param random Random generator for rolling the odds
          * @return a random drop gem grade
          */
+        @Nonnull
         public static Grade randomGrade(Random random)
         {
-            // pick out a gem grade
             return GRADE_ODDS.getRandomEntry(random);
         }
 
-        public static Grade fromMeta(int meta)
+        @Nullable
+        public static Grade valueOf(int index)
         {
-            return VALUES[meta];
+            return index >= 0 && index < VALUES.length ? VALUES[index] : null;
         }
 
-        public int getMeta()
+        private final double dropWeight;
+
+        Grade(int dropWeight)
         {
-            return this.ordinal();
+            this.dropWeight = dropWeight;
         }
     }
 }

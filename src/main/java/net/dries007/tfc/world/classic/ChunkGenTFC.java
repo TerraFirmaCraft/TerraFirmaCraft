@@ -203,7 +203,7 @@ public class ChunkGenTFC implements IChunkGenerator
         ravineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
         riverRavineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
 
-        if (ConfigTFC.WORLD.debugMode)
+        if (ConfigTFC.WORLD.debugWorldGen)
         {
             for (int x = 0; x < 16; ++x)
             {

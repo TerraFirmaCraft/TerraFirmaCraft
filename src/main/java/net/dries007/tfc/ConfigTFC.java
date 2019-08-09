@@ -246,7 +246,7 @@ public class ConfigTFC
         @Config.Comment("Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!")
         @Config.LangKey("config." + MOD_ID + ".world.debugWorldGen")
         @Config.RequiresWorldRestart
-        public boolean debugMode = false;
+        public boolean debugWorldGen = false;
 
         @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents half the period of the wave = the distance between hot and cold bands, in blocks"})
         @Config.RangeInt(min = 1_000, max = 1_000_000)
