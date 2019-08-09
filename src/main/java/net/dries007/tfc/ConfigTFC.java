@@ -55,6 +55,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.removeVanillaRecipes")
         public boolean removeVanillaRecipes = true;
 
+        @Config.Comment("Enable/Disable the vanilla loot entries that conflict with TFC (ie: potatoes). False = Those loot entries are left in place.")
+        @Config.LangKey("config." + MOD_ID + ".general.removeVanillaLoots")
+        public boolean removeVanillaLoots = true;
+
         @Config.Comment("Normal leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChance")

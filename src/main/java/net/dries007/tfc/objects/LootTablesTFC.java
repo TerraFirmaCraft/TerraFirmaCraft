@@ -6,7 +6,12 @@
 package net.dries007.tfc.objects;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import net.dries007.tfc.ConfigTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -25,5 +30,29 @@ public class LootTablesTFC
     private static ResourceLocation register(String id)
     {
         return LootTableList.register(new ResourceLocation(MOD_ID, id));
+    }
+
+    private static final LootTablesTFC INSTANCE = new LootTablesTFC();
+
+    public static LootTablesTFC getInstance() { return INSTANCE; }
+
+    @SubscribeEvent
+    public void onLootTableLoad(LootTableLoadEvent event)
+    {
+        LootPool pool = event.getTable().getPool("main");
+        //noinspection ConstantConditions - it can be null on non-vanilla pools
+        if (ConfigTFC.GENERAL.removeVanillaLoots && pool != null)
+        {
+            pool.removeEntry("minecraft:potato");
+            pool.removeEntry("minecraft:carrot");
+            pool.removeEntry("minecraft:wheat");
+            pool.removeEntry("minecraft:gold_nugget");
+            pool.removeEntry("minecraft:gold_ingot");
+            pool.removeEntry("minecraft:iron_ingot");
+            pool.removeEntry("minecraft:iron_nugget");
+            pool.removeEntry("minecraft:leather");
+            pool.removeEntry("minecraft:coal");
+            pool.removeEntry("minecraft:diamond");
+        }
     }
 }
