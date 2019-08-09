@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.items.wood;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -162,7 +164,12 @@ public class ItemWoodenBucket extends ItemTFC
             FluidStack fluidStack = bucketCap.drain(CAPACITY, false);
             if (fluidStack != null)
             {
-                return fluidStack.getLocalizedName() + " " + super.getItemStackDisplayName(stack);
+				Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+				Matcher m = p.matcher(fluidStack.getLocalizedName());
+				if(m.find())
+					return fluidStack.getLocalizedName() + super.getItemStackDisplayName(stack);
+				else
+					return fluidStack.getLocalizedName() + " " + super.getItemStackDisplayName(stack);
             }
         }
         return super.getItemStackDisplayName(stack);
