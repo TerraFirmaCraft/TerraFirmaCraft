@@ -32,7 +32,7 @@ public class ItemGem extends ItemTFC
 
     public static ItemStack get(Gem ore, Gem.Grade grade, int amount)
     {
-        return new ItemStack(MAP.get(ore), amount, grade.getMeta());
+        return new ItemStack(MAP.get(ore), amount, grade.ordinal());
     }
 
     public final Gem gem;
@@ -47,14 +47,21 @@ public class ItemGem extends ItemTFC
         OreDictionaryHelper.register(this, "gem", gem);
         for (Gem.Grade grade : Gem.Grade.values())
         {
-            OreDictionaryHelper.registerMeta(this, grade.getMeta(), "gem", gem, grade);
-            OreDictionaryHelper.registerMeta(this, grade.getMeta(), "gem", grade);
+            OreDictionaryHelper.registerMeta(this, grade.ordinal(), "gem", gem, grade);
+            OreDictionaryHelper.registerMeta(this, grade.ordinal(), "gem", grade);
         }
     }
 
-    public Gem.Grade getGradeFromStack(ItemStack stack)
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        return Gem.Grade.fromMeta(stack.getItemDamage());
+        if (isInCreativeTab(tab))
+        {
+            for (Gem.Grade grade : Gem.Grade.values())
+            {
+                items.add(new ItemStack(this, 1, grade.ordinal()));
+            }
+        }
     }
 
     @Override
@@ -64,13 +71,10 @@ public class ItemGem extends ItemTFC
         return super.getTranslationKey(stack) + "." + grade.name().toLowerCase();
     }
 
-    @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    @SuppressWarnings("ConstantConditions")
+    private Gem.Grade getGradeFromStack(ItemStack stack)
     {
-        if (!isInCreativeTab(tab)) return;
-
-        for (Gem.Grade grade : Gem.Grade.values())
-            items.add(new ItemStack(this, 1, grade.getMeta()));
+        return Gem.Grade.valueOf(stack.getItemDamage());
     }
 
     @Nonnull

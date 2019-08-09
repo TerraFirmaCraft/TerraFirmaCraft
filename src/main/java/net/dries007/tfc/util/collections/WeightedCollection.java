@@ -5,10 +5,7 @@
 
 package net.dries007.tfc.util.collections;
 
-import java.util.Collection;
-import java.util.NavigableMap;
-import java.util.Random;
-import java.util.TreeMap;
+import java.util.*;
 import javax.annotation.Nonnull;
 
 /**
@@ -20,6 +17,13 @@ public class WeightedCollection<E>
 {
     private final NavigableMap<Double, E> backingMap = new TreeMap<>();
     private double totalWeight = 0;
+
+    public WeightedCollection() {}
+
+    public WeightedCollection(Map<? extends E, Double> values)
+    {
+        values.forEach((k, v) -> add(v, k));
+    }
 
     public WeightedCollection<E> add(double weight, @Nonnull E result)
     {

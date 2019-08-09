@@ -257,7 +257,7 @@ public class BlockRockVariant extends Block
                 // add one gem with a random grade and type to the list of drops
                 drops.add(ItemGem.get(Gem.getRandomDropGem(RANDOM), Gem.Grade.randomGrade(RANDOM), 1));
             }
-        }   // done checking/adding gem chance
+        }
     }
 
     @Override

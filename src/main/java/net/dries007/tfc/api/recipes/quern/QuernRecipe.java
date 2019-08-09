@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.recipes;
+package net.dries007.tfc.api.recipes.quern;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
