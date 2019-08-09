@@ -28,9 +28,10 @@ public class AnvilRecipeSplitting extends AnvilRecipeMeasurable
 {
     protected int splitAmount;
 
-    public AnvilRecipeSplitting(ResourceLocation name, IIngredient<ItemStack> input, int splitAmount, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
+    public AnvilRecipeSplitting(ResourceLocation name, IIngredient<ItemStack> input, ItemStack icon, int splitAmount, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
     {
-        super(name, input, ItemStack.EMPTY, minTier, rules);
+        //output only for icon
+        super(name, input, icon, minTier, rules);
         this.splitAmount = splitAmount;
     }
 

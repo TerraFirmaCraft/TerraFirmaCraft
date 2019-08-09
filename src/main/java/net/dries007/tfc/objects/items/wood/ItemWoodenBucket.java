@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.*;
@@ -162,7 +163,8 @@ public class ItemWoodenBucket extends ItemTFC
             FluidStack fluidStack = bucketCap.drain(CAPACITY, false);
             if (fluidStack != null)
             {
-                return fluidStack.getLocalizedName() + " " + super.getItemStackDisplayName(stack);
+                String fluidname = fluidStack.getLocalizedName();
+                return new TextComponentTranslation("item.tfc.wooden_bucket.filled", fluidname).getFormattedText();
             }
         }
         return super.getItemStackDisplayName(stack);

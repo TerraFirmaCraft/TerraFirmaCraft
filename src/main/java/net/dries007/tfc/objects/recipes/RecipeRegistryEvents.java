@@ -291,6 +291,7 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:spectral_arrow"));
 
             //white
+            modRegistry.remove(new ResourceLocation("minecraft:string_to_wool"));
             modRegistry.remove(new ResourceLocation("minecraft:white_concrete_powder"));
             modRegistry.remove(new ResourceLocation("minecraft:white_bed"));
             modRegistry.remove(new ResourceLocation("minecraft:white_carpet"));

@@ -10,6 +10,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -28,11 +29,19 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class BlockThatch extends Block
 {
-    BlockThatch(Material material)
+    BlockThatch()
     {
-        super(material);
+        super(new Material(MapColor.FOLIAGE)
+        {
+            @Override
+            public boolean isOpaque()
+            {
+                return false;
+            }
+        });
         setSoundType(SoundType.PLANT);
         setHardness(0.6F);
+        setLightOpacity(255); //Blocks light
         OreDictionaryHelper.register(this, "thatch");
         OreDictionaryHelper.register(this, "block", "straw");
         Blocks.FIRE.setFireInfo(this, 60, 20);
