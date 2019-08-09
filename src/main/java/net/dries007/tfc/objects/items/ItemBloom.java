@@ -51,7 +51,7 @@ public class ItemBloom extends ItemTFC implements IMetalObject
     @Override
     public Metal getMetal(ItemStack stack)
     {
-        return Metal.UNKNOWN;
+        return Metal.WROUGHT_IRON;
     }
 
     @Override
@@ -63,6 +63,12 @@ public class ItemBloom extends ItemTFC implements IMetalObject
             return ((IForgeableMeasurable) cap).getMetalAmount();
         }
         return 0;
+    }
+
+    @Override
+    public boolean canMelt(ItemStack stack)
+    {
+        return stack.getItem() != ItemsTFC.UNREFINED_BLOOM;
     }
 
     @Override
