@@ -12,6 +12,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
@@ -21,6 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -206,6 +208,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             if (OreDictionaryHelper.doesStackMatchOre(stack, "straw") && strawCount < STRAW_NEEDED)
             {
                 addStraw(stack.splitStack(1));
+                world.playSound(null, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.5f, 1.0f);
                 updateBlock();
                 return true;
             }
@@ -215,6 +218,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             {
                 stack.shrink(1);
                 addStrawBlock();
+                world.playSound(null, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.5f, 1.0f);
                 updateBlock();
                 return true;
             }
@@ -225,6 +229,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 if (OreDictionaryHelper.doesStackMatchOre(stack, "logWood") && logCount < WOOD_NEEDED)
                 {
                     addLog(stack.splitStack(1));
+                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 0.5f, 1.0f);
                     updateBlock();
                     return true;
                 }
