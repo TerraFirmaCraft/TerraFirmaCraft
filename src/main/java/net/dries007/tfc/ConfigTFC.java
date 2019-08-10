@@ -253,10 +253,14 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".world.latitudeTemperatureModifier")
         public int latitudeTemperatureModifier = 20_000;
 
-
         @Config.Comment("The rarity for clay pits to occur. On average 1 / N chunks will have a clay deposit, if the chunk in question is valid for clay to spawn.")
         @Config.RangeInt(min = 1)
         @Config.LangKey("config." + MOD_ID + ".world.clayRarity")
         public int clayRarity = 30;
+
+        @Config.Comment("The number of attempts per chunk to spawn loose rocks. Includes surface ore samples.")
+        @Config.RangeInt(min = 1)
+        @Config.LangKey("config." + MOD_ID + ".world.looseRocksFrequency")
+        public int looseRocksFrequency = 18;
     }
 }

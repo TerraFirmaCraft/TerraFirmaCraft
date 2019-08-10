@@ -166,7 +166,7 @@ public class ClientEvents
                         WHITE, ClimateTFC.monthTemp(data.getRegionalTemp(), Month.JANUARY, blockpos.getZ()), GRAY,
                         WHITE, ClimateTFC.monthTemp(data.getRegionalTemp(), Month.JULY, blockpos.getZ())));
                     list.add(String.format("%sTemperature: %s%.1f\u00b0C Daily: %s%.1f\u00b0C",
-                        GRAY, WHITE, ClimateRenderHelper.get(blockpos).getTemperature(),
+                        GRAY, WHITE, ClimateRenderHelper.get(blockpos).getMonthAdjTemp(),
                         WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)));
 
                     list.add(I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));

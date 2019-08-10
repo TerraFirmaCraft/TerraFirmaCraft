@@ -18,7 +18,6 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.biome.Biome;
@@ -29,7 +28,9 @@ import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.layer.IntCache;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.terraingen.TerrainGen;
+import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.registries.ForgeRegistry;
 
 import mcp.MethodsReturnNonnullByDefault;
@@ -39,6 +40,7 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
@@ -51,24 +53,40 @@ import net.dries007.tfc.world.classic.genlayers.datalayers.stability.GenStabilit
 import net.dries007.tfc.world.classic.mapgen.MapGenCavesTFC;
 import net.dries007.tfc.world.classic.mapgen.MapGenRavineTFC;
 import net.dries007.tfc.world.classic.mapgen.MapGenRiverRavine;
+import net.dries007.tfc.world.classic.worldgen.*;
 
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER2;
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER3;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS;
 
+@SuppressWarnings("WeakerAccess")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ChunkGenTFC implements IChunkGenerator
 {
     public static final IBlockState STONE = Blocks.STONE.getDefaultState();
     public static final IBlockState AIR = Blocks.AIR.getDefaultState();
-    public static final IBlockState SALT_WATER = BlocksTFC.FLUID_SALT_WATER.getDefaultState();
-    public static final IBlockState FRESH_WATER = BlocksTFC.FLUID_FRESH_WATER.getDefaultState();
-    public static final IBlockState HOT_WATER = BlocksTFC.FLUID_HOT_WATER.getDefaultState();
+    public static final IBlockState SALT_WATER = FluidsTFC.SALT_WATER.get().getBlock().getDefaultState();
+    public static final IBlockState FRESH_WATER = FluidsTFC.FRESH_WATER.get().getBlock().getDefaultState();
+    public static final IBlockState HOT_WATER = FluidsTFC.HOT_WATER.get().getBlock().getDefaultState();
     public static final IBlockState LAVA = Blocks.LAVA.getDefaultState(); // todo: replace
     public static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
-    public static final IBlockState SNOW = Blocks.SNOW_LAYER.getDefaultState().withProperty(BlockSnow.LAYERS, 2);
+    /* Layers must be one here - otherwise snow becomes non-replaceable and wrecks the rest of world gen */
+    public static final IBlockState SNOW = Blocks.SNOW_LAYER.getDefaultState().withProperty(BlockSnow.LAYERS, 1);
+    public static final IBlockState SALT_WATER_ICE = BlocksTFC.SEA_ICE.getDefaultState();
+    public static final IBlockState FRESH_WATER_ICE = BlocksTFC.ICE.getDefaultState();
     private static final float[] parabolicField = new float[25];
+
+    /* This is done here rather than GameRegistry.registerWorldGenerator since we need to control the ordering of them better */
+    private static final IWorldGenerator LAVA_FISSURE_GEN = new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true));
+    private static final IWorldGenerator WATER_FISSURE_GEN = new RarityBasedWorldGen(x -> x.waterFissureRarity, new WorldGenFissure(false));
+    private static final IWorldGenerator ORE_VEINS_GEN = new WorldGenOreVeins();
+    private static final IWorldGenerator SOIL_PITS_GEN = new WorldGenSoilPits();
+    private static final IWorldGenerator LARGE_ROCKS_GEN = new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks());
+    private static final IWorldGenerator TREE_GEN = new WorldGenTrees();
+    private static final IWorldGenerator BERRY_BUSH_GEN = new WorldGenBerryBushes();
+    private static final IWorldGenerator FRUIT_TREE_GEN = new WorldGenFruitTrees();
+    private static final IWorldGenerator LOOSE_ROCKS_GEN = new WorldGenLooseRocks();
 
     static
     {
@@ -245,6 +263,7 @@ public class ChunkGenTFC implements IChunkGenerator
     @Override
     public void populate(int chunkX, int chunkZ)
     {
+        ForgeEventFactory.onChunkPopulate(true, this, world, rand, chunkX, chunkZ, false);
         BlockFalling.fallInstantly = true;
         final int worldX = chunkX << 4;
         final int worldZ = chunkZ << 4;
@@ -253,7 +272,24 @@ public class ChunkGenTFC implements IChunkGenerator
         rand.setSeed(world.getSeed());
         rand.setSeed((long) chunkX * (rand.nextLong() / 2L * 2L + 1L) + (long) chunkZ * (rand.nextLong() / 2L * 2L + 1L) ^ world.getSeed());
 
+        // First, do all terrain related features
+        SOIL_PITS_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
+        ORE_VEINS_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
+        LAVA_FISSURE_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
+        WATER_FISSURE_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
+        LARGE_ROCKS_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
+        // todo: cave decorator
+
+        // Next, larger plant type features
+        TREE_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
+        BERRY_BUSH_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
+        FRUIT_TREE_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
+
+        // Calls through biome decorator which includes all small plants
         biome.decorate(world, rand, blockpos);
+
+        // Finally
+        LOOSE_ROCKS_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
 
         if (TerrainGen.populate(this, world, rand, chunkX, chunkZ, false, ANIMALS))
         {
@@ -265,19 +301,31 @@ public class ChunkGenTFC implements IChunkGenerator
         {
             for (int z = 0; z < 16; z++)
             {
-                final int y = world.getPrecipitationHeight(blockpos.add(x, 0, z)).getY();
+                BlockPos pos = blockpos.add(x, world.getPrecipitationHeight(blockpos.add(x, 0, z)).getY(), z);
 
-                world.canBlockFreeze(blockpos.add(x, y - 1, z), false); // todo: maybe actually freeze the water? Now nothing is done here.
+                // Can't use world#canBlockFreeze because it's specific to vanilla water
+                BlockPos posDown = pos.down();
+                IBlockState stateAt = world.getBlockState(posDown);
+                if (ClimateTFC.getHeightAdjustedTemp(world, posDown) < 0f)
+                {
+                    if (stateAt.getBlock() == FRESH_WATER.getBlock())
+                    {
+                        world.setBlockState(posDown, FRESH_WATER_ICE);
+                    }
+                    else if (stateAt.getBlock() == SALT_WATER.getBlock())
+                    {
+                        world.setBlockState(posDown, SALT_WATER_ICE);
+                    }
+                }
 
-                if (canSnowAt(blockpos.add(x, y, z)))
-                    world.setBlockState(blockpos.add(x, y, z), SNOW); // todo: Vary depth based on rainfall?
+                if (canSnowAt(pos))
+                {
+                    world.setBlockState(pos, SNOW);
+                }
             }
         }
 
-        //MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(chunkProvider, worldObj, rand, chunkX, chunkZ, var11)); //todo
-
-        //net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, world, rand, chunkX, chunkZ, false); //todo
-
+        ForgeEventFactory.onChunkPopulate(false, this, world, rand, chunkX, chunkZ, false);
         BlockFalling.fallInstantly = false;
     }
 
@@ -315,14 +363,14 @@ public class ChunkGenTFC implements IChunkGenerator
 
     private boolean canSnowAt(BlockPos pos)
     {
-        if (!world.isAirBlock(pos) && !world.isAirBlock(pos.add(0, -1, 0)) && !SNOW.getBlock().canPlaceBlockAt(world, pos))
-            return false;
-        if (ClimateTFC.getHeightAdjustedTemp(world, pos) >= 0F) return false;
-        if (world.getLightFor(EnumSkyBlock.BLOCK, pos) < 10 /* todo: why? && Calendar.getTotalMonths() < 1*/)
-            return false;
-        return world.getBlockState(pos.add(0, -1, 0)).getMaterial().blocksMovement();
+        if (world.isAirBlock(pos) && SNOW.getBlock().canPlaceBlockAt(world, pos))
+        {
+            return ClimateTFC.getHeightAdjustedTemp(world, pos) < 0f;
+        }
+        return false;
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void loadLayerGeneratorData(GenLayerTFC gen, DataLayer[] layers, int x, int y, int width, int height)
     {
         IntCache.resetIntCache();

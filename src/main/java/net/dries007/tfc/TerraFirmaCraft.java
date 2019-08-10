@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
@@ -39,7 +38,6 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.fuel.FuelManager;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
-import net.dries007.tfc.world.classic.worldgen.*;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -183,16 +181,6 @@ public final class TerraFirmaCraft
         }
 
         worldTypeTFC = new WorldTypeTFC();
-        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true)), 0);
-        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(false)), 0);
-        GameRegistry.registerWorldGenerator(new WorldGenOreVeins(), 1);
-        GameRegistry.registerWorldGenerator(new WorldGenSoilPits(), 2);
-        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 3);
-        //todo: add cave decorator
-        GameRegistry.registerWorldGenerator(new WorldGenTrees(), 4);
-        GameRegistry.registerWorldGenerator(new WorldGenBerryBushes(), 5);
-        GameRegistry.registerWorldGenerator(new WorldGenFruitTrees(), 6);
-        GameRegistry.registerWorldGenerator(new WorldGenLooseRocks(), 7);
     }
 
     @Mod.EventHandler

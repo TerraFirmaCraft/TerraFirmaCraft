@@ -45,6 +45,7 @@ public final class FluidsTFC
     // Water variants
     public static FluidWrapper HOT_WATER;
     public static FluidWrapper FRESH_WATER;
+    public static FluidWrapper SALT_WATER;
 
     // Other fluids
     public static FluidWrapper LIMEWATER;
@@ -108,7 +109,7 @@ public final class FluidsTFC
         return allMetalFluids.get(metal).get();
     }
 
-    public static void preInit()
+    public static void registerFluids()
     {
         allInfiniteFluids = ImmutableSet.<FluidWrapper>builder()
             .add(
@@ -119,7 +120,7 @@ public final class FluidsTFC
                     }
                 })),
                 HOT_WATER = registerFluid(new Fluid("hot_water", STILL, FLOW, 0xFF345FDA).setTemperature(350)),
-                registerFluid(new Fluid("salt_water", STILL, FLOW, 0xFF1F5099), (fluid, isDefault) -> new DrinkableFluidWrapper(fluid, isDefault, player -> {
+                SALT_WATER = registerFluid(new Fluid("salt_water", STILL, FLOW, 0xFF1F5099), (fluid, isDefault) -> new DrinkableFluidWrapper(fluid, isDefault, player -> {
                     if (player.getFoodStats() instanceof FoodStatsTFC)
                     {
                         ((FoodStatsTFC) player.getFoodStats()).addThirst(-10);

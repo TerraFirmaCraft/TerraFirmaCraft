@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 
@@ -51,7 +52,12 @@ public final class ClimateRenderHelper
             this.z = z;
         }
 
-        public float getTemperature()
+        public float getHeightAdjustedTemp(BlockPos pos)
+        {
+            return ClimateTFC.getHeightAdjustedTemp(Minecraft.getMinecraft().world, pos);
+        }
+
+        public float getMonthAdjTemp()
         {
             return ClimateTFC.getMonthAdjTemp(regionalTemp, z);
         }

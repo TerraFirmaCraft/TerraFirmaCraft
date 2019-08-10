@@ -7,15 +7,17 @@ package net.dries007.tfc.world.classic.biomes;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.entity.animal.*;
 
 public class BiomeTFC extends Biome
 {
-    public final int waterPlantsPerChunk;
-    public final int lilyPadPerChunk;
+    private final int waterPlantsPerChunk;
+    private final int lilyPadPerChunk;
     private boolean spawnBiome;
 
     public BiomeTFC(BiomeProperties properties)
@@ -68,5 +70,11 @@ public class BiomeTFC extends Biome
     public boolean ignorePlayerSpawnSuitability()
     {
         return spawnBiome;
+    }
+
+    @Override
+    public float getTemperature(BlockPos pos)
+    {
+        return TerraFirmaCraft.getProxy().getTemperature(pos);
     }
 }
