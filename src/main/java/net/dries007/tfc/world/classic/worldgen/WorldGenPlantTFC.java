@@ -8,6 +8,7 @@ package net.dries007.tfc.world.classic.worldgen;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -20,6 +21,7 @@ import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.plants.*;
 import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
@@ -113,7 +115,12 @@ public class WorldGenPlantTFC extends WorldGenerator
                 for (int i = 0; i < ChunkDataTFC.getRainfall(worldIn, position) / 16; ++i)
                 {
                     BlockPos blockpos = position.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
-
+                    //Make sure this is a good position to place (eg: not on top of leaf blocks, replaceable blocks)
+                    while (!worldIn.isAirBlock(blockpos) || worldIn.getBlockState(blockpos.down()).getBlock() instanceof BlockLeaves || worldIn.getBlockState(blockpos.down()).getMaterial().isReplaceable())
+                    {
+                        blockpos = blockpos.down();
+                        if (blockpos.getY() < WorldTypeTFC.ROCKLAYER2) return true; //Can't place
+                    }
                     if (plant.isValidTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, blockpos)) &&
                         plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, blockpos)) &&
                         worldIn.isAirBlock(blockpos) &&
