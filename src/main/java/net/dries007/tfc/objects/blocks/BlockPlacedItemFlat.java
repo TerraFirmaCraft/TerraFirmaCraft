@@ -35,9 +35,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.util.Helpers;
 
-/**
- * todo: custom particles for walking / breaking?
- */
 @ParametersAreNonnullByDefault
 public class BlockPlacedItemFlat extends Block
 {
@@ -166,6 +163,18 @@ public class BlockPlacedItemFlat extends Block
             worldIn.setBlockToAir(pos);
         }
         return true;
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        TEPlacedItemFlat te = Helpers.getTE(world, pos, TEPlacedItemFlat.class);
+        if (te != null)
+        {
+            return te.getStack().copy();
+        }
+        return ItemStack.EMPTY;
     }
 
     @Override
