@@ -9,35 +9,46 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import net.dries007.tfc.ConfigTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@Mod.EventBusSubscriber(modid = MOD_ID)
 public class LootTablesTFC
 {
-    public static final ResourceLocation ANIMALS_BEAR = register("animals/bear");
-    public static final ResourceLocation ANIMALS_CHICKEN = register("animals/chicken");
-    public static final ResourceLocation ANIMALS_COW = register("animals/cow");
-    public static final ResourceLocation ANIMALS_DEER = register("animals/deer");
-    public static final ResourceLocation ANIMALS_PHEASANT = register("animals/pheasant");
-    public static final ResourceLocation ANIMALS_PIG = register("animals/pig");
-    public static final ResourceLocation ANIMALS_SHEEP = register("animals/sheep");
-    public static final ResourceLocation ANIMALS_RABBIT = register("animals/rabbit");
-    public static final ResourceLocation ANIMALS_WOLF = register("animals/wolf");
+    public static ResourceLocation ANIMALS_BEAR;
+    public static ResourceLocation ANIMALS_CHICKEN;
+    public static ResourceLocation ANIMALS_COW;
+    public static ResourceLocation ANIMALS_DEER;
+    public static ResourceLocation ANIMALS_PHEASANT;
+    public static ResourceLocation ANIMALS_PIG;
+    public static ResourceLocation ANIMALS_SHEEP;
+    public static ResourceLocation ANIMALS_RABBIT;
+    public static ResourceLocation ANIMALS_WOLF;
 
     private static ResourceLocation register(String id)
     {
         return LootTableList.register(new ResourceLocation(MOD_ID, id));
     }
 
-    private static final LootTablesTFC INSTANCE = new LootTablesTFC();
-
-    public static LootTablesTFC getInstance() { return INSTANCE; }
+    public static void init()
+    {
+        ANIMALS_BEAR = register("animals/bear");
+        ANIMALS_CHICKEN = register("animals/chicken");
+        ANIMALS_COW = register("animals/cow");
+        ANIMALS_DEER = register("animals/deer");
+        ANIMALS_PHEASANT = register("animals/pheasant");
+        ANIMALS_PIG = register("animals/pig");
+        ANIMALS_SHEEP = register("animals/sheep");
+        ANIMALS_RABBIT = register("animals/rabbit");
+        ANIMALS_WOLF = register("animals/wolf");
+    }
 
     @SubscribeEvent
-    public void onLootTableLoad(LootTableLoadEvent event)
+    public static void onLootTableLoad(LootTableLoadEvent event)
     {
         LootPool pool = event.getTable().getPool("main");
         //noinspection ConstantConditions - it can be null on non-vanilla pools

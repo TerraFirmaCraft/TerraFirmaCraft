@@ -182,11 +182,11 @@ public final class TerraFirmaCraft
             GuiIngameForge.renderArmor = false;
             GuiIngameForge.renderExperiance = false;
         }
-        MinecraftForge.EVENT_BUS.register(LootTablesTFC.getInstance()); //Register removal loot entries in init so it won't crash
+        LootTablesTFC.init();
 
         worldTypeTFC = new WorldTypeTFC();
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(true)), 0);
-        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.lavaFissureRarity, new WorldGenFissure(false)), 0);
+        GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.waterFissureRarity, new WorldGenFissure(false)), 0);
         GameRegistry.registerWorldGenerator(new WorldGenOreVeins(), 1);
         GameRegistry.registerWorldGenerator(new WorldGenSoilPits(), 2);
         GameRegistry.registerWorldGenerator(new RarityBasedWorldGen(x -> x.largeRockRarity, new WorldGenLargeRocks()), 3);
