@@ -8,9 +8,11 @@ package net.dries007.tfc.client;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerHorseChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -23,6 +25,7 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.gui.*;
 import net.dries007.tfc.objects.container.*;
+import net.dries007.tfc.objects.entity.animal.AbstractHorseTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemSmallVessel;
@@ -74,6 +77,14 @@ public class TFCGuiHandler implements IGuiHandler
                 return new ContainerLiquidTransfer(player.inventory, stack.getItem() instanceof ItemMold ? stack : player.getHeldItemOffhand());
             case FIRE_PIT:
                 return new ContainerFirePit(player.inventory, Helpers.getTE(world, pos, TEFirePit.class));
+            case HORSE:
+                Entity entity = player.world.getEntityByID(z); // horse data trick
+                if (entity instanceof AbstractHorseTFC)
+                {
+                    AbstractHorseTFC horse = (AbstractHorseTFC)entity;
+                    return new ContainerHorseInventoryTFC(player.inventory, horse.getHorseChest(), horse, player);
+                }
+                return null;
             case BARREL:
                 return new ContainerBarrel(player.inventory, Helpers.getTE(world, pos, TEBarrel.class));
             case CHARCOAL_FORGE:
@@ -166,6 +177,15 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiBlastFurnace(container, player.inventory, Helpers.getTE(world, pos, TEBlastFurnace.class));
             case CRAFTING:
                 return new GuiInventoryCrafting(container);
+            case HORSE:
+                if (container instanceof ContainerHorseInventoryTFC)
+                {
+                    ContainerHorseInventoryTFC containerHITFC = (ContainerHorseInventoryTFC)container;
+                    AbstractHorseTFC horse = containerHITFC.getHorse();
+                    int invSize = y; // horse data trick
+                    return new GuiScreenHorseInventoryTFC(player.inventory, new ContainerHorseChest(horse.getHorseChest().getName(), invSize), horse);
+                }
+                return null;
             default:
                 return null;
         }
@@ -174,6 +194,7 @@ public class TFCGuiHandler implements IGuiHandler
     public enum Type
     {
         NEST_BOX,
+        HORSE,
         LOG_PILE,
         SMALL_VESSEL,
         SMALL_VESSEL_LIQUID,

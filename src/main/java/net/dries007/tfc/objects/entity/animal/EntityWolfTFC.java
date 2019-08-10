@@ -18,7 +18,6 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
@@ -335,7 +334,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         {
             public boolean apply(@Nullable Entity entity)
             {
-                return entity instanceof EntitySheepTFC || entity instanceof EntityPigTFC; // TODO: add RabbitsTFC
+                return entity instanceof EntitySheepTFC || entity instanceof EntityPigTFC || entity instanceof EntityRabbitTFC;
             }
         }));
         this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, AbstractSkeleton.class, false));
@@ -559,7 +558,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
             }
             else
             {
-                return !(target instanceof AbstractHorse) || !((AbstractHorse) target).isTame();
+                return !(target instanceof AbstractHorseTFC) || !((AbstractHorseTFC) target).isTame();
             }
         }
         else
