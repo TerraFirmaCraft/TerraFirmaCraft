@@ -36,10 +36,10 @@ public class CalendarWorldData extends WorldSavedData
             }
             return data;
         }
-        throw new IllegalStateException("Map Storage is NULL!");
+        throw new IllegalStateException("Unable to access calendar data - everything is wrong now");
     }
 
-    CalendarTFC instance;
+    private CalendarTFC instance;
 
     @SuppressWarnings("WeakerAccess")
     public CalendarWorldData()
@@ -67,5 +67,11 @@ public class CalendarWorldData extends WorldSavedData
     {
         nbt.setTag("calendar", instance.serializeNBT());
         return nbt;
+    }
+
+    @Nonnull
+    public CalendarTFC getCalendar()
+    {
+        return instance;
     }
 }

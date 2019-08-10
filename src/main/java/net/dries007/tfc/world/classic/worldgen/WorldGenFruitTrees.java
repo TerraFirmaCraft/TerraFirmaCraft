@@ -18,7 +18,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import net.dries007.tfc.api.types.IFruitTree;
-import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class WorldGenFruitTrees implements IWorldGenerator
@@ -38,7 +38,7 @@ public class WorldGenFruitTrees implements IWorldGenerator
             IFruitTree tree = TREES.get(random.nextInt(TREES.size()));
             BlockPos chunkBlockPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
 
-            float temperature = ClimateTFC.getAverageBiomeTemp(world, chunkBlockPos);
+            float temperature = ClimateTFC.getAvgTemp(world, chunkBlockPos);
             float rainfall = ChunkDataTFC.getRainfall(world, chunkBlockPos);
 
             if (tree.isValidConditions(temperature, rainfall))

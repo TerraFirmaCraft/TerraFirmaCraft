@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.world.classic.worldgen;
 
 import java.util.ArrayList;
@@ -12,7 +17,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import net.dries007.tfc.api.types.IBerryBush;
 import net.dries007.tfc.objects.blocks.agriculture.BlockBerryBush;
-import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class WorldGenBerryBushes implements IWorldGenerator
@@ -32,7 +37,7 @@ public class WorldGenBerryBushes implements IWorldGenerator
             IBerryBush bush = BUSHES.get(random.nextInt(BUSHES.size()));
             BlockPos chunkBlockPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
 
-            float temperature = ClimateTFC.getAverageBiomeTemp(world, chunkBlockPos);
+            float temperature = ClimateTFC.getAvgTemp(world, chunkBlockPos);
             float rainfall = ChunkDataTFC.getRainfall(world, chunkBlockPos);
 
             if (bush.isValidConditions(temperature, rainfall))

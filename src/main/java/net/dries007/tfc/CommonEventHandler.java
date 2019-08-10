@@ -59,6 +59,7 @@ import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.capability.skill.PlayerSkillsHandler;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IPlaceableItem;
+import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketFoodStatsReplace;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
@@ -66,7 +67,8 @@ import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.util.calendar.CalendarWorldData;
+import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -435,7 +437,7 @@ public final class CommonEventHandler
             BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
 
             float rainfall = ChunkDataTFC.getRainfall(world, pos);
-            float temperature = ClimateTFC.getAverageBiomeTemp(world, pos);
+            float temperature = ClimateTFC.getAvgTemp(world, pos);
             Biome biome = world.getBiome(pos);
 
             if (!animal.isValidSpawnConditions(biome, temperature, rainfall))
@@ -465,6 +467,16 @@ public final class CommonEventHandler
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event)
     {
+        final World world = event.getWorld();
+
+        if (world.provider.getDimension() == 0 && !world.isRemote)
+        {
+            // Calendar Sync / Initialization
+            CalendarWorldData data = CalendarWorldData.get(world);
+            CalendarTFC.INSTANCE.reset(data.getCalendar());
+            TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalendarTFC.INSTANCE));
+        }
+
         if (ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
         {
             // Natural regeneration should be disabled, allows TFC to have custom regeneration

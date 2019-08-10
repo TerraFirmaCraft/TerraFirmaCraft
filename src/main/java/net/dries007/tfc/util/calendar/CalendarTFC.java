@@ -320,7 +320,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     {
         // Update world data
         CalendarWorldData data = CalendarWorldData.get(world);
-        data.instance.reset(this);
+        data.getCalendar().reset(this);
         data.markDirty();
 
         // Sync to clients

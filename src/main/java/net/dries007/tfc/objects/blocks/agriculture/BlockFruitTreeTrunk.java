@@ -32,7 +32,7 @@ import net.dries007.tfc.api.types.IFruitTree;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
@@ -145,7 +145,7 @@ public class BlockFruitTreeTrunk extends Block
         if (!worldIn.isRemote)
         {
             // Attempt to grow
-            float temp = ClimateTFC.getTemp(worldIn, pos);
+            float temp = ClimateTFC.getActualTemp(worldIn, pos);
             float rainfall = ChunkDataTFC.getRainfall(worldIn, pos);
             TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
             if (te != null)

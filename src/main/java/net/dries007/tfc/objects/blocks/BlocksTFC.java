@@ -16,11 +16,13 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.blocks.agriculture.*;
@@ -75,7 +77,6 @@ public final class BlocksTFC
     public static final BlockBloomery BLOOMERY = getNull();
     public static final BlockQuern QUERN = getNull();
     public static final BlockIceTFC SEA_ICE = getNull();
-    public static final BlockIceTFC ICE = getNull();
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -285,39 +286,37 @@ public final class BlocksTFC
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bloomery", new BlockBloomery(), CT_MISC)));
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "nest_box", new BlockNestBox(), CT_MISC)));
 
-        normalItemBlocks.add(new ItemBlockTFC(register(r, "ice", new BlockIceTFC(FluidsTFC.FRESH_WATER), CT_MISC)));
         normalItemBlocks.add(new ItemBlockTFC(register(r, "sea_ice", new BlockIceTFC(FluidsTFC.SALT_WATER), CT_MISC)));
 
         normalItemBlocks.add(new ItemBlockLargeVessel(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
 
         {
             Builder<BlockFluidBase> b = ImmutableList.builder();
-            for (FluidWrapper wrapper : FluidsTFC.getAllInfiniteFluids())
-            {
-                if (wrapper.isDefault())
-                {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER, true)));
-                }
-            }
+            // We always want to register our water variants, as they absolutely need special subclasses
+            b.add(
+                register(r, "fluid/hot_water", new BlockFluidHotWater()),
+                register(r, "fluid/fresh_water", new BlockFluidWater(FluidsTFC.FRESH_WATER.get(), Material.WATER, false)),
+                register(r, "fluid/salt_water", new BlockFluidWater(FluidsTFC.SALT_WATER.get(), Material.WATER, true))
+            );
             for (FluidWrapper wrapper : FluidsTFC.getAllAlcoholsFluids())
             {
                 if (wrapper.isDefault())
                 {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), FluidsTFC.MATERIAL_ALCOHOL, false)));
+                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidClassic(wrapper.get(), FluidsTFC.MATERIAL_ALCOHOL)));
                 }
             }
             for (FluidWrapper wrapper : FluidsTFC.getAllOtherFiniteFluids())
             {
                 if (wrapper.isDefault())
                 {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER, false)));
+                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidClassic(wrapper.get(), Material.WATER)));
                 }
             }
             for (FluidWrapper wrapper : FluidsTFC.getAllMetalFluids())
             {
                 if (wrapper.isDefault())
                 {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.LAVA, false)));
+                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidClassic(wrapper.get(), Material.LAVA)));
                 }
             }
             allFluidBlocks = b.build();
@@ -584,30 +583,24 @@ public final class BlocksTFC
         register(r, "bloom", new BlockBloom());
 
         // Note: if you add blocks you don't need to put them in this list of todos. Feel free to add them where they make sense :)
-        // todo: pumpkin/melon ?
-        // todo: fruit tree stuff (leaves, saplings, logs)
-
-        // todo: supports (h & v)
-        // todo: farmland
-        // todo: barrels
-        // todo: wood trap doors
 
         // todo: metal lamps (on/off with states)
         // todo: sluice
-        // todo: quern
-        // todo: loom
-        // todo: bloom/molten blocks
-        // todo: large vessels
-        // todo: leather rack
         // todo: grill
         // todo: metal trap doors
         // todo: smoke rack (placed with any string, so event based?) + smoke blocks or will we use particles?
         // todo: custom flower pot (TE based probably, unless we want to not care about the dirt in it)
-
         // todo: custom hopper or just a separate press block? I prefer the separate block, this will simplify things a lot.
 
         allNormalItemBlocks = normalItemBlocks.build();
         allInventoryItemBlocks = inventoryItemBlocks.build();
+
+        // Vanilla Overrides. Used for small tweaks on vanilla items, rather than replacing them outright
+        TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are intended. The override is intended. ;)");
+        event.getRegistry().registerAll(
+            new BlockIceTFC(FluidsTFC.FRESH_WATER).setRegistryName("minecraft", "ice").setTranslationKey("ice"),
+            new BlockSnowTFC().setRegistryName("minecraft", "snow").setTranslationKey("snow")
+        );
 
         // Register Tile Entities
         // Putting tile entity registration in the respective block can call it multiple times. Just put here to avoid duplicates

@@ -6,7 +6,6 @@
 package net.dries007.tfc.objects.blocks;
 
 import java.util.ArrayList;
-import java.util.Random;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -26,16 +25,19 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import net.dries007.tfc.objects.fluids.properties.FluidWrapper;
-import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.util.climate.ITemperatureBlock;
+import net.dries007.tfc.util.climate.IceMeltHandler;
 
 @ParametersAreNonnullByDefault
-public class BlockIceTFC extends BlockIce
+public class BlockIceTFC extends BlockIce implements ITemperatureBlock
 {
     private final FluidWrapper waterFluid;
 
     public BlockIceTFC(FluidWrapper waterFluid)
     {
         this.waterFluid = waterFluid;
+
         setHardness(0.5F);
         setLightOpacity(3);
         setSoundType(SoundType.GLASS);
@@ -85,12 +87,12 @@ public class BlockIceTFC extends BlockIce
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void onTemperatureUpdateTick(World world, BlockPos pos, IBlockState state)
     {
         // Either block light (i.e. from torches) or high enough temperature
-        if (worldIn.getLightFor(EnumSkyBlock.BLOCK, pos) > 11 - getLightOpacity(state, worldIn, pos) || ClimateTFC.getHeightAdjustedTemp(worldIn, pos) > 4f)
+        if (world.getLightFor(EnumSkyBlock.BLOCK, pos) > 11 - getLightOpacity(state, world, pos) || ClimateTFC.getActualTemp(world, pos) > IceMeltHandler.ICE_MELT_THRESHOLD)
         {
-            turnIntoWater(worldIn, pos);
+            turnIntoWater(world, pos);
         }
     }
 
