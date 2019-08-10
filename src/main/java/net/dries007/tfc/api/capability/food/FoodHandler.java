@@ -82,14 +82,6 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     }
 
     @Override
-    public long getRottenDate()
-    {
-        // This avoids overflow which breaks when calculateDecayModifier() returns infinity, which happens if decay modifier = 0
-        float decayMod = calculateDecayModifier();
-        return decayMod == Float.POSITIVE_INFINITY ? Long.MAX_VALUE : creationDate + (long) (decayMod * CapabilityFood.DEFAULT_ROT_TICKS);
-    }
-
-    @Override
     public float getWater()
     {
         return water;
@@ -106,6 +98,14 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     public List<IFoodTrait> getTraits()
     {
         return foodTraits;
+    }
+
+    @Override
+    public long getRottenDate()
+    {
+        // This avoids overflow which breaks when calculateDecayModifier() returns infinity, which happens if decay modifier = 0
+        float decayMod = getDecayModifier();
+        return decayMod == Float.POSITIVE_INFINITY ? Long.MAX_VALUE : creationDate + (long) (decayMod * CapabilityFood.DEFAULT_ROT_TICKS);
     }
 
     @Override
@@ -166,7 +166,8 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         }
     }
 
-    private float calculateDecayModifier()
+    @Override
+    public float getDecayModifier()
     {
         // Decay modifiers are higher = shorter
         float mod = decayModifier * (float) ConfigTFC.GENERAL.foodDecayModifier;

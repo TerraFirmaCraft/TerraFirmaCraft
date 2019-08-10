@@ -79,7 +79,7 @@ public class CapabilityFood
             // Add the trait
             instance.getTraits().add(trait);
             // Re-calculate creation date as to respect remaining decay time
-            instance.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - instance.getCreationDate()) / CapabilityFood.PRESERVED.getDecayModifier()));
+            instance.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - instance.getCreationDate()) / trait.getDecayModifier()));
         }
     }
 
@@ -96,9 +96,31 @@ public class CapabilityFood
             if (!instance.isRotten())
             {
                 // If not rotten, re-calculate the creation date as to respect remaining decay time
-                instance.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - instance.getCreationDate()) * CapabilityFood.PRESERVED.getDecayModifier()));
+                instance.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - instance.getCreationDate()) * trait.getDecayModifier()));
             }
         }
+    }
+
+    /**
+     * This is used to update a stack from an old stack, in the case where a food is created from another
+     * Any method that creates derivative food should call this, as it avoids extending the decay of the item
+     * If called with non food items, nothing happens
+     *
+     * @param oldStack the old stack
+     * @param newStack the new stack
+     * @return the modified stack, for chaining
+     */
+    public static ItemStack updateFoodDecay(ItemStack oldStack, ItemStack newStack)
+    {
+        IFood oldCap = oldStack.getCapability(CapabilityFood.CAPABILITY, null);
+        IFood newCap = newStack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (oldCap != null && newCap != null)
+        {
+            // This is similar to the trait applied, except it's the inverse, since decay mod performs a 1 / x
+            float decayDelta = oldCap.getDecayModifier() / newCap.getDecayModifier();
+            newCap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - oldCap.getCreationDate()) / decayDelta));
+        }
+        return newStack;
     }
 
     @Nullable

@@ -183,12 +183,12 @@ public class TEQuern extends TEInventory implements ITickable
             QuernRecipe recipe = QuernRecipe.get(inputStack);
             if (recipe != null && !world.isRemote)
             {
-                inputStack.shrink(1);
                 ItemStack leftover = inventory.insertItem(SLOT_OUTPUT, recipe.getOutputItem(inputStack), false);
                 if (!leftover.isEmpty())
                 {
                     InventoryHelper.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, leftover);
                 }
+                inputStack.shrink(1);
             }
         }
     }
