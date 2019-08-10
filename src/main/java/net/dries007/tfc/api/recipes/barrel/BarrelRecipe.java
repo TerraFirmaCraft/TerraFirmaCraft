@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.te.TEBarrel;
@@ -125,7 +126,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
             int outputCount = Math.min(multiplier * outputStack.getCount(), outputStack.getMaxStackSize());
             ItemStack output = outputStack.copy();
             output.setCount(outputCount);
-            return output;
+            return CapabilityFood.updateFoodDecay(inputStack, output);
         }
         else
         {

@@ -32,16 +32,13 @@ public class BarrelRecipeFoodTraits extends BarrelRecipe
     @Override
     public ItemStack getOutputItem(FluidStack inputFluid, ItemStack inputStack)
     {
-        // Apply the trait to the input and copy it to output
-        IFood food = inputStack.getCapability(CapabilityFood.CAPABILITY, null);
+        ItemStack output = inputStack.copy();
+        IFood food = output.getCapability(CapabilityFood.CAPABILITY, null);
         if (food != null)
         {
-            if (!food.getTraits().contains(trait))
-            {
-                food.getTraits().add(trait);
-            }
+            CapabilityFood.applyTrait(food, trait);
         }
-        return inputStack.copy();
+        return output;
     }
 
     @SideOnly(Side.CLIENT)

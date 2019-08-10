@@ -11,6 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
+import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.types.Metal;
@@ -59,7 +60,7 @@ public class HeatRecipeSimple extends HeatRecipe
                 // Copy heat if possible
                 outputHeat.setTemperature(heat.getTemperature());
             }
-            return outputStack;
+            return CapabilityFood.updateFoodDecay(input, outputStack);
         }
         return ItemStack.EMPTY;
     }
