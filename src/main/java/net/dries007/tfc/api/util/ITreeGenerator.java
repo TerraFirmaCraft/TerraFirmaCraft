@@ -55,19 +55,25 @@ public interface ITreeGenerator
         // Check if there is room directly upwards
         final int height = treeType.getMaxHeight();
         for (int y = 1; y <= height; y++)
+        {
             if (!world.getBlockState(pos.up(y)).getMaterial().isReplaceable())
+            {
                 return false;
+            }
+        }
 
         // Check if there is a solid block beneath
         if (!BlocksTFC.isSoil(world.getBlockState(pos.down())))
+        {
             return false;
+        }
 
         // Check the position for liquids, etc.
         if (world.getBlockState(pos).getMaterial().isLiquid() || !world.getBlockState(pos).getMaterial().isReplaceable())
-            if (!(world.getBlockState(pos).getBlock() instanceof BlockSaplingTFC))
-                return false;
+        {
+            return world.getBlockState(pos).getBlock() instanceof BlockSaplingTFC;
+        }
 
-        // Check if there is sufficient light level
-        return world.getLightFromNeighbors(pos) >= 7;
+        return true;
     }
 }

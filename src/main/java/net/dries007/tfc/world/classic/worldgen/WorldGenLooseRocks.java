@@ -16,6 +16,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
@@ -64,7 +65,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
             });
         }
 
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < ConfigTFC.WORLD.looseRocksFrequency; i++)
         {
             BlockPos pos = new BlockPos(
                 xoff + random.nextInt(16),

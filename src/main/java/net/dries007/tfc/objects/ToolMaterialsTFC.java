@@ -24,7 +24,5 @@ public final class ToolMaterialsTFC
     public static final Item.ToolMaterial BLUE_STEEL = EnumHelper.addToolMaterial("tfc_blue_steel", 3, 6500, 18, 12.0f, 22); //Tier 6
     public static final Item.ToolMaterial RED_STEEL = EnumHelper.addToolMaterial("tfc_red_steel", 3, 6500, 18, 12.0f, 22);
 
-    private ToolMaterialsTFC()
-    {
-    }
+    private ToolMaterialsTFC() {}
 }

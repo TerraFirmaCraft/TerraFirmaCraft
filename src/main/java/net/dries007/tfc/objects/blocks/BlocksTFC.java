@@ -50,57 +50,13 @@ import static net.dries007.tfc.util.Helpers.getNull;
 @GameRegistry.ObjectHolder(MOD_ID)
 public final class BlocksTFC
 {
-    @GameRegistry.ObjectHolder("fluid/salt_water")
-    public static final BlockFluidBase FLUID_SALT_WATER = getNull();
-    @GameRegistry.ObjectHolder("fluid/fresh_water")
-    public static final BlockFluidBase FLUID_FRESH_WATER = getNull();
-    @GameRegistry.ObjectHolder("fluid/hot_water")
-    public static final BlockFluidBase FLUID_HOT_WATER = getNull();
-    @GameRegistry.ObjectHolder("fluid/finite_salt_water")
-    public static final BlockFluidBase FLUID_FINITE_SALT_WATER = getNull();
-    @GameRegistry.ObjectHolder("fluid/finite_fresh_water")
-    public static final BlockFluidBase FLUID_FINITE_FRESH_WATER = getNull();
-    @GameRegistry.ObjectHolder("fluid/finite_hot_water")
-    public static final BlockFluidBase FLUID_FINITE_HOT_WATER = getNull();
-    @GameRegistry.ObjectHolder("fluid/rum")
-    public static final BlockFluidBase FLUID_RUM = getNull();
-    @GameRegistry.ObjectHolder("fluid/beer")
-    public static final BlockFluidBase FLUID_BEER = getNull();
-    @GameRegistry.ObjectHolder("fluid/whiskey")
-    public static final BlockFluidBase FLUID_WHISKEY = getNull();
-    @GameRegistry.ObjectHolder("fluid/rye_whiskey")
-    public static final BlockFluidBase FLUID_RYE_WHISKEY = getNull();
-    @GameRegistry.ObjectHolder("fluid/corn_whiskey")
-    public static final BlockFluidBase FLUID_CORN_WHISKEY = getNull();
-    @GameRegistry.ObjectHolder("fluid/sake")
-    public static final BlockFluidBase FLUID_SAKE = getNull();
-    @GameRegistry.ObjectHolder("fluid/vodka")
-    public static final BlockFluidBase FLUID_VODKA = getNull();
-    @GameRegistry.ObjectHolder("fluid/cider")
-    public static final BlockFluidBase FLUID_CIDER = getNull();
-    @GameRegistry.ObjectHolder("fluid/vinegar")
-    public static final BlockFluidBase FLUID_VINEGAR = getNull();
-    @GameRegistry.ObjectHolder("fluid/brine")
-    public static final BlockFluidBase FLUID_BRINE = getNull();
-    @GameRegistry.ObjectHolder("fluid/milk")
-    public static final BlockFluidBase FLUID_MILK = getNull();
-    @GameRegistry.ObjectHolder("fluid/olive_oil")
-    public static final BlockFluidBase FLUID_OLIVE_OIL = getNull();
-    @GameRegistry.ObjectHolder("fluid/tannin")
-    public static final BlockFluidBase FLUID_TANNIN = getNull();
-    @GameRegistry.ObjectHolder("fluid/limewater")
-    public static final BlockFluidBase FLUID_LIMEWATER = getNull();
-    @GameRegistry.ObjectHolder("fluid/milk_curdled")
-    public static final BlockFluidBase FLUID_MILK_CURDLED = getNull();
-    @GameRegistry.ObjectHolder("fluid/milk_vinegar")
-    public static final BlockFluidBase FLUID_MILK_VINEGAR = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/large_vessel")
     public static final BlockLargeVessel FIRED_LARGE_VESSEL = getNull();
 
     public static final BlockDebug DEBUG = getNull();
     public static final BlockPeat PEAT = getNull();
     public static final BlockPeat PEAT_GRASS = getNull();
-    public static final BlockFirePit FIREPIT = getNull();
+    public static final BlockFirePit FIRE_PIT = getNull();
     public static final BlockThatch THATCH = getNull();
     public static final BlockPitKiln PIT_KILN = getNull();
     public static final BlockPlacedItemFlat PLACED_ITEM_FLAT = getNull();
@@ -118,6 +74,8 @@ public final class BlocksTFC
     public static final BlockBloom BLOOM = getNull();
     public static final BlockBloomery BLOOMERY = getNull();
     public static final BlockQuern QUERN = getNull();
+    public static final BlockIceTFC SEA_ICE = getNull();
+    public static final BlockIceTFC ICE = getNull();
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -305,7 +263,7 @@ public final class BlocksTFC
     public static void registerBlocks(RegistryEvent.Register<Block> event)
     {
         // This is called here because it needs to wait until Metal registry has fired
-        FluidsTFC.preInit();
+        FluidsTFC.registerFluids();
 
         IForgeRegistry<Block> r = event.getRegistry();
 
@@ -326,6 +284,9 @@ public final class BlocksTFC
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bellows", new BlockBellows(), CT_MISC)));
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bloomery", new BlockBloomery(), CT_MISC)));
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "nest_box", new BlockNestBox(), CT_MISC)));
+
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "ice", new BlockIceTFC(FluidsTFC.FRESH_WATER), CT_MISC)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "sea_ice", new BlockIceTFC(FluidsTFC.SALT_WATER), CT_MISC)));
 
         normalItemBlocks.add(new ItemBlockLargeVessel(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
 
@@ -686,12 +647,12 @@ public final class BlocksTFC
 
     public static boolean isFreshWater(IBlockState current)
     {
-        return current == FLUID_FRESH_WATER.getDefaultState();
+        return current == FluidsTFC.FRESH_WATER.get().getBlock().getDefaultState();
     }
 
     public static boolean isSaltWater(IBlockState current)
     {
-        return current == FLUID_SALT_WATER.getDefaultState();
+        return current == FluidsTFC.SALT_WATER.get().getBlock().getDefaultState();
     }
 
     public static boolean isRawStone(IBlockState current)
