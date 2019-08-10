@@ -251,6 +251,9 @@ config.tfc.world.latitudeTemperatureModifier.tooltip=This controls the size of t
 config.tfc.world.clayRarity=Clay Deposity Rarity
 config.tfc.world.clayRarity.tooltip=The rarity for clay pits to occur. On average 1 / N chunks will have a clay deposit, if the chunk in question is valid for clay to spawn.
 
+config.tfc.world.looseRocksFrequency=Loose Rocks Frequency
+config.tfc.world.looseRocksFrequency.tooltip=The number of attempts per chunk to spawn loose rocks. Includes surface ore samples.
+
 # Misc
 itemGroup.tfc.misc=TFC Misc
 itemGroup.tfc.rock.blocks=TFC Rock & Soil Blocks
@@ -503,6 +506,8 @@ tile.tfc.bloomery.name=Bloomery
 tile.tfc.fire_bricks.name=Fire Bricks
 tile.tfc.quern.name=Quern
 tile.tfc.ceramics.fired.large_vessel.name=Large Vessel
+tile.tfc.ice.name=Ice
+tile.tfc.sea_ice.name=Sea Ice
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite
