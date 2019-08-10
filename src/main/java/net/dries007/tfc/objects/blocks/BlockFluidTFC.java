@@ -64,38 +64,38 @@ public class BlockFluidTFC extends BlockFluidClassic
     }
 
     @Override
-    public float getFluidHeightForRender(IBlockAccess world, BlockPos pos, @Nonnull IBlockState up)
+    public float getFluidHeightForRender(IBlockAccess world, BlockPos adjPos, @Nonnull IBlockState upState)
     {
-        IBlockState here = world.getBlockState(pos);
-        Block blockHere = here.getBlock();
-        if (blockHere instanceof BlockFluidBase)
+        IBlockState adjState = world.getBlockState(adjPos);
+
+        // any adjacent above matching liquids merge to 1
+        if (isMergeableFluid(upState))
         {
-            if (isFluid(up))
-            {
-                return 1;
-            }
-
-            if (blockHere != this)
-            {
-                return ((BlockFluidBase) blockHere).getFluidHeightForRender(world, pos, up);
-            }
-
-            if (getMetaFromState(here) == ((BlockFluidBase) blockHere).getMaxRenderHeightMeta())
-            {
-                return quantaFraction;
-            }
+            return 1;
         }
 
-        if (here.getBlock() instanceof BlockLiquid)
+        // adjacent mergeable liquids
+        if (isMergeableFluid(adjState))
         {
-            return Math.min(1 - BlockLiquid.getLiquidHeightPercent(here.getValue(BlockLiquid.LEVEL)), quantaFraction);
+            Block adjBlock = adjState.getBlock();
+            if (adjBlock == this || adjBlock instanceof BlockLiquid)
+                return super.getFluidHeightForRender(world, adjPos, upState);
+            else
+                return ((BlockFluidBase) adjBlock).getFluidHeightForRender(world, adjPos, upState);
         }
 
-        return !here.getMaterial().isSolid() && up.getBlock() == this ? 1 : this.getQuantaPercentage(world, pos) * quantaFraction;
+        // adjacent solid
+        if (adjState.getMaterial().isSolid())
+            return -1;
+
+        // adjacent air or non-mergeable liquids
+        return 0;
     }
 
-    private static boolean isFluid(@Nonnull IBlockState blockstate)
+    protected boolean isMergeableFluid(@Nonnull IBlockState blockstate)
     {
-        return blockstate.getMaterial().isLiquid() || blockstate.getBlock() instanceof IFluidBlock;
+        return (blockstate.getMaterial() == getDefaultState().getMaterial()) && (blockstate.getMaterial().isLiquid());
     }
+
+
 }
