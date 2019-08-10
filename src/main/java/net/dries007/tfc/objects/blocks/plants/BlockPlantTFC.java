@@ -164,7 +164,8 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     {
         double movementMod = plant.getMovementMod();
         //Entity X/Z motion is reduced by plants.
-        // todo: make this specific to the plant type (i.e. smaller grasses affect you less than larger ones)
+        double maturity = (state.getValue(AGE) + 1) / 4; //25% each stage
+        movementMod *= maturity;
         entityIn.motionX *= movementMod;
         entityIn.motionZ *= movementMod;
     }
