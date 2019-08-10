@@ -12,7 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IThreadListener;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,7 +20,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.Month;
-import net.dries007.tfc.world.classic.ClimateRenderHelper;
 
 @SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
@@ -87,11 +85,5 @@ public class ClientProxy implements IProxy
             return birthday;
         }
         return I18n.format("tfc.enum.day." + CalendarTFC.DAY_NAMES[(int) (totalDays % 7)]);
-    }
-
-    @Override
-    public float getTemperature(BlockPos pos)
-    {
-        return ClimateRenderHelper.get(pos).getHeightAdjustedTemp(pos);
     }
 }

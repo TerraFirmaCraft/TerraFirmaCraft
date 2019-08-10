@@ -63,7 +63,7 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.te.*;
-import net.dries007.tfc.world.classic.ClimateRenderHelper;
+import net.dries007.tfc.util.climate.ClimateTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockPlacedHide.SIZE;
@@ -245,12 +245,8 @@ public final class ClientRegisterEvents
         IBlockColor grassColor = (state, worldIn, pos, tintIndex) -> {
             if (pos != null)
             {
-                ClimateRenderHelper.ClimateData data = ClimateRenderHelper.get(pos);
-                // This internally will call Calendar to get the month based temperature
-                // Actual temp is usually between +30 / -30, so adjust and clamp as necessary
-                double temp = MathHelper.clamp((data.getMonthAdjTemp() + 30) / 60, 0, 1);
-                // Rainfall is in <0, 500>, although 99% of the time it is within a smaller range of <50, 450>, so trim and clamp as necessary
-                double rain = MathHelper.clamp((data.getRainfall() - 50) / 400, 0, 1);
+                double temp = MathHelper.clamp((ClimateTFC.getMonthlyTemp(pos) + 30) / 60, 0, 1);
+                double rain = MathHelper.clamp((ClimateTFC.getRainfall(pos) - 50) / 400, 0, 1);
                 return ColorizerGrass.getGrassColor(temp, rain);
             }
             return ColorizerGrass.getGrassColor(0.5, 0.5);
@@ -260,12 +256,8 @@ public final class ClientRegisterEvents
         IBlockColor foliageColor = (state, worldIn, pos, tintIndex) -> {
             if (pos != null)
             {
-                ClimateRenderHelper.ClimateData data = ClimateRenderHelper.get(pos);
-                // This internally will call Calendar to get the month based temperature
-                // Base Temp Range is <-25, 20>, Month Adj Range is <-30, 30>
-                double temp = MathHelper.clamp((data.getMonthAdjTemp() + 30) / 30, 0, 1);
-                // Rainfall is in <0, 500>, although 99% of the time it is within a smaller range of <50, 450>, so trim and clamp as necessary
-                double rain = MathHelper.clamp((data.getRainfall() - 50) / 400, 0, 1);
+                double temp = MathHelper.clamp((ClimateTFC.getMonthlyTemp(pos) + 30) / 60, 0, 1);
+                double rain = MathHelper.clamp((ClimateTFC.getRainfall(pos) - 50) / 400, 0, 1);
                 return ColorizerGrass.getGrassColor(temp, rain);
             }
             return ColorizerGrass.getGrassColor(0.5, 0.5);

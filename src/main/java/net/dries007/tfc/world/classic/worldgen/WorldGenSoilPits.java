@@ -22,8 +22,8 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
-import net.dries007.tfc.world.classic.ClimateTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -91,10 +91,10 @@ public class WorldGenSoilPits implements IWorldGenerator
                         {
                             BlockPlantTFC plantBlock = BlockPlantTFC.get(plant);
                             IBlockState state = plantBlock.getDefaultState();
-                            int plantAge = plant.getAgeForWorldgen(rng, ClimateTFC.getHeightAdjustedTemp(world, pos));
+                            int plantAge = plant.getAgeForWorldgen(rng, ClimateTFC.getActualTemp(world, pos));
 
                             if (!world.provider.isNether() && !world.isOutsideBuildHeight(pos) &&
-                                plant.isValidLocation(ClimateTFC.getHeightAdjustedTemp(world, pos), ChunkDataTFC.getRainfall(world, pos), world.getLightFor(EnumSkyBlock.SKY, pos)) &&
+                                plant.isValidLocation(ClimateTFC.getActualTemp(world, pos), ChunkDataTFC.getRainfall(world, pos), world.getLightFor(EnumSkyBlock.SKY, pos)) &&
                                 world.isAirBlock(pos) &&
                                 plantBlock.canBlockStay(world, pos, state))
                             {
@@ -113,9 +113,11 @@ public class WorldGenSoilPits implements IWorldGenerator
         // Otherwise, do not change this unless you are prepared to do some fairly large re-writes, similar to how ore gen is handled
         int radius = rng.nextInt(4) + 4;
         byte depth = 2;
-        boolean flag = false;
 
         if (rng.nextInt(30) != 0 || start.getY() > WorldTypeTFC.SEALEVEL) return false;
+        ChunkDataTFC data = ChunkDataTFC.get(world, start);
+        if (data.isInitialized() && data.getRainfall() >= 375f && data.getFloraDiversity() >= 0.5f && data.getFloraDensity() >= 0.5f && world.getBiome(start).getHeightVariation() < 0.15)
+            return false;
 
         for (int x = -radius; x <= radius; ++x)
         {
@@ -126,22 +128,19 @@ public class WorldGenSoilPits implements IWorldGenerator
                 for (int y = -depth; y <= depth; ++y)
                 {
                     final BlockPos pos = start.add(x, y, z);
-                    if (!ClimateTFC.isSwamp(world, pos)) continue;
                     final IBlockState current = world.getBlockState(pos);
 
                     if (BlocksTFC.isGrass(current))
                     {
                         world.setBlockState(pos, BlocksTFC.PEAT_GRASS.getDefaultState(), 2);
-                        flag = true;
                     }
                     else if (BlocksTFC.isDirt(current) || BlocksTFC.isClay(current))
                     {
                         world.setBlockState(pos, BlocksTFC.PEAT.getDefaultState(), 2);
-                        flag = true;
                     }
                 }
             }
         }
-        return flag;
+        return true;
     }
 }
