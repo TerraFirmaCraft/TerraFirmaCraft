@@ -105,9 +105,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
             {
                 if (mold.isMolten())
                 {
-                    // At this point we assume that ((FluidMetal) fluidStack.getFluid()).getMetal() == mold.getMetal()
-                    // Anything that breaks this contract is a bug and should be reported
-                    // This also happens here to avoid off-by-one errors as it will report null after the mold has been emptied
+                    // Use mold.getMetal() to avoid off by one errors during draining
                     Metal metal = mold.getMetal();
                     FluidStack fluidStack = mold.drain(1, true);
                     if (fluidStack != null && fluidStack.amount > 0)
