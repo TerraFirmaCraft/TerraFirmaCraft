@@ -20,6 +20,8 @@ import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.walkers.ItemStackDataLists;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.util.OreDictionaryHelper;
+
 public class AbstractChestHorseTFC extends AbstractHorseTFC
 {
     private static final DataParameter<Boolean> DATA_ID_CHEST = EntityDataManager.<Boolean>createKey(AbstractChestHorseTFC.class, DataSerializers.BOOLEAN);
@@ -206,7 +208,7 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
                     return true;
                 }
 
-                if (!this.hasChest() && itemstack.getItem() == Item.getItemFromBlock(Blocks.CHEST))
+                if (!this.hasChest() && OreDictionaryHelper.doesStackMatchOre(itemstack, "chest"))
                 {
                     this.setChested(true);
                     this.playChestEquipSound();
