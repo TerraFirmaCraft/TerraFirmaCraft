@@ -27,8 +27,8 @@ public class IceMeltHandler
 {
     public static final float ICE_MELT_THRESHOLD = 4.0f;
     public static final float WATER_FREEZE_THRESHOLD = 0f;
-    public static final float SALT_WATER_FREEZE_THRESHOLD = -28.0f;
-    public static final float SALT_WATER_MELT_THRESHOLD = -24.0f;
+    public static final float SALT_WATER_FREEZE_THRESHOLD = -8.0f;
+    public static final float SALT_WATER_MELT_THRESHOLD = -4.0f;
 
     /**
      * Duplicated field from world, idk how this really works or the merits to it, but it should function the same as vanilla
@@ -41,6 +41,7 @@ public class IceMeltHandler
         if (event.world instanceof WorldServer && event.phase == TickEvent.Phase.END)
         {
             final WorldServer world = (WorldServer) event.world;
+            world.profiler.startSection("tfciceandsnow");
             if (world.getWorldInfo().getTerrainType() != WorldType.DEBUG_ALL_BLOCK_STATES)
             {
                 for (Iterator<Chunk> iterator = world.getPersistentChunkIterable(world.getPlayerChunkMap().getChunkIterator()); iterator.hasNext(); )
@@ -66,6 +67,7 @@ public class IceMeltHandler
                     }
                 }
             }
+            world.profiler.endSection();
         }
     }
 }
