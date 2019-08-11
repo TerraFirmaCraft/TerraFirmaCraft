@@ -197,6 +197,25 @@ public class ConfigTFC
         @Config.RangeInt(min = 1, max = 10_000)
         public int richOreMetalAmount = 35;
 
+        @Config.Comment("The max times you can use a gold pan in a chunk.")
+        @Config.LangKey("config." + MOD_ID + ".general.maxWorkGoldPan")
+        @Config.RangeInt(min = 1, max = 10_000)
+        public int maxWorkGoldPan = 50;
+
+        @Config.Comment("The max times sluice work a chunk.")
+        @Config.LangKey("config." + MOD_ID + ".general.maxWorkSluice")
+        @Config.RangeInt(min = 1, max = 10_000)
+        public int maxWorkSluice = 300;
+
+        @Config.Comment("The radius sluice works on chunks.")
+        @Config.LangKey("config." + MOD_ID + ".general.sluiceRadius")
+        @Config.RangeInt(min = 0, max = 10)
+        public int sluiceRadius = 1;
+
+        @Config.Comment("If true, limits for gold pan and sluice are ignored")
+        @Config.LangKey("config." + MOD_ID + ".general.overworkChunk")
+        public boolean overworkChunk = false;
+
         @Config.Comment({"If true, this will force the gamerule naturalRegeneration to be false. ", "Note: this DOES NOT AFFECT TFC's natural regeneration. If you set naturalRegeneration to true, then you will have both TFC regeneration and normal vanilla regeneration (which is much faster)"})
         @Config.LangKey("config." + MOD_ID + ".general.forceNoVanillaNaturalRegeneration")
         public boolean forceNoVanillaNaturalRegeneration = true;

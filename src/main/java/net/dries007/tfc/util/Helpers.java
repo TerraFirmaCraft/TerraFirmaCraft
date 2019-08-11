@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -25,12 +26,14 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.TFCConstants;
@@ -107,6 +110,31 @@ public final class Helpers
                 }
             }
         }
+    }
+
+    /**
+     * Gets a map of generated ores for each chunk in radius
+     *
+     * @param world  the WorldObj
+     * @param chunkX the center chunk's X position
+     * @param chunkZ the center chunk's Z position
+     * @param radius the radius to scan. can be 0 to scan only the central chunk
+     * @return a map containing all ores generated for each chunk
+     */
+    public static Map<Chunk, List<Ore>> getChunkOres(World world, int chunkX, int chunkZ, int radius)
+    {
+        Map<Chunk, List<Ore>> map = new HashMap<>();
+        for (int x = chunkX - radius; x <= chunkX + radius; x++)
+        {
+            for (int z = chunkZ - radius; z <= chunkZ + radius; z++)
+            {
+                Chunk chunk = world.getChunk(x, z);
+                ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
+                List<Ore> list = Lists.newArrayList(chunkData.getChunkOres());
+                map.put(chunk, list);
+            }
+        }
+        return map;
     }
 
     /**
