@@ -29,7 +29,7 @@ public class BlockFluidWater extends BlockFluidClassic implements ITemperatureBl
         super(fluid, material);
         this.isSalt = isSalt;
         this.canCreateSources = true;
-        this.freezeThreshold = isSalt ? IceMeltHandler.WATER_FREEZE_THRESHOLD : IceMeltHandler.SALT_WATER_FREEZE_THRESHOLD;
+        this.freezeThreshold = isSalt ? IceMeltHandler.SALT_WATER_FREEZE_THRESHOLD : IceMeltHandler.WATER_FREEZE_THRESHOLD;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class BlockFluidWater extends BlockFluidClassic implements ITemperatureBl
         {
             for (EnumFacing face : EnumFacing.HORIZONTALS)
             {
-                if (world.getBlockState(pos.offset(face)).getBlock() == this)
+                if (world.getBlockState(pos.offset(face)).getBlock() != this)
                 {
                     world.setBlockState(pos, isSalt ? BlocksTFC.SEA_ICE.getDefaultState() : Blocks.ICE.getDefaultState());
                     break;

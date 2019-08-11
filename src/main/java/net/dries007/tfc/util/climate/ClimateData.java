@@ -7,6 +7,8 @@ package net.dries007.tfc.util.climate;
 
 public class ClimateData
 {
+    public static final ClimateData DEFAULT = new ClimateData(0, 250);
+
     private final float regionalTemp;
     private final float rainfall;
 

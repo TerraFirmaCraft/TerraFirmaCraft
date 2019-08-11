@@ -17,8 +17,7 @@ import net.minecraft.util.math.ChunkPos;
  */
 public final class ClimateCache
 {
-    private final Map<ChunkPos, ClimateData> MAP = new HashMap<>();
-    private final ClimateData DEFAULT = new ClimateData(0, 250);
+    private final Map<ChunkPos, ClimateData> backingMap = new HashMap<>();
 
     @Nonnull
     public ClimateData get(BlockPos pos)
@@ -29,11 +28,11 @@ public final class ClimateCache
     @Nonnull
     public ClimateData get(ChunkPos pos)
     {
-        return MAP.getOrDefault(pos, DEFAULT);
+        return backingMap.getOrDefault(pos, ClimateData.DEFAULT);
     }
 
     public void update(ChunkPos pos, float temperature, float rainfall)
     {
-        MAP.put(pos, new ClimateData(temperature, rainfall));
+        backingMap.put(pos, new ClimateData(temperature, rainfall));
     }
 }
