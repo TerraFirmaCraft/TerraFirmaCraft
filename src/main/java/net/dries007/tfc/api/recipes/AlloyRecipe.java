@@ -119,7 +119,7 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
             return max;
         }
 
-        public boolean isValid(double value)
+        public boolean test(double value)
         {
             return value >= min && value <= max;
         }

@@ -10,7 +10,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IThreadListener;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
@@ -18,7 +17,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.Month;
-import net.dries007.tfc.world.classic.ClimateTFC;
 
 @SuppressWarnings("unused")
 @SideOnly(Side.SERVER)
@@ -78,12 +76,5 @@ public class ServerProxy implements IProxy
     public String getDayName(int dayOfMonth, long totalDays)
     {
         return CalendarTFC.DAY_NAMES[(int) (totalDays % 7)];
-    }
-
-    @Override
-    public float getTemperature(BlockPos pos)
-    {
-        // Server can't locate the world, so it returns an approximate temperature
-        return ClimateTFC.getMonthAdjTemp(0, pos.getZ());
     }
 }

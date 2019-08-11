@@ -42,6 +42,9 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.util.calendar.Month;
+import net.dries007.tfc.util.climate.ClimateHelper;
+import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.util.climate.IceMeltHandler;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -74,7 +77,7 @@ public class ChunkGenTFC implements IChunkGenerator
     /* Layers must be one here - otherwise snow becomes non-replaceable and wrecks the rest of world gen */
     public static final IBlockState SNOW = Blocks.SNOW_LAYER.getDefaultState().withProperty(BlockSnow.LAYERS, 1);
     public static final IBlockState SALT_WATER_ICE = BlocksTFC.SEA_ICE.getDefaultState();
-    public static final IBlockState FRESH_WATER_ICE = BlocksTFC.ICE.getDefaultState();
+    public static final IBlockState FRESH_WATER_ICE = Blocks.ICE.getDefaultState();
     private static final float[] parabolicField = new float[25];
 
     /* This is done here rather than GameRegistry.registerWorldGenerator since we need to control the ordering of them better */
@@ -210,7 +213,7 @@ public class ChunkGenTFC implements IChunkGenerator
         rockLayer3 = rocksGenLayer3.getInts(chunkX * 16, chunkZ * 16, 16, 16);
 
         final float regionalFactor = 5f * 0.09f * (float) noiseGen10.getValue(chunkX * 0.05, chunkZ * 0.05); // Range -5 <> 5
-        averageTemp = ClimateTFC.monthTemp(regionalFactor, Month.AVERAGE_TEMPERATURE_MODIFIER, chunkZ << 4);
+        averageTemp = ClimateHelper.monthFactor(regionalFactor, Month.AVERAGE_TEMPERATURE_MODIFIER, chunkZ << 4);
 
         CustomChunkPrimer chunkPrimerOut = new CustomChunkPrimer();
         replaceBlocksForBiomeHigh(chunkX, chunkZ, chunkPrimerIn, chunkPrimerOut);
@@ -306,16 +309,14 @@ public class ChunkGenTFC implements IChunkGenerator
                 // Can't use world#canBlockFreeze because it's specific to vanilla water
                 BlockPos posDown = pos.down();
                 IBlockState stateAt = world.getBlockState(posDown);
-                if (ClimateTFC.getHeightAdjustedTemp(world, posDown) < 0f)
+                float actualTemp = ClimateTFC.getActualTemp(world, posDown);
+                if (actualTemp < IceMeltHandler.WATER_FREEZE_THRESHOLD && stateAt.getBlock() == FRESH_WATER.getBlock())
                 {
-                    if (stateAt.getBlock() == FRESH_WATER.getBlock())
-                    {
-                        world.setBlockState(posDown, FRESH_WATER_ICE);
-                    }
-                    else if (stateAt.getBlock() == SALT_WATER.getBlock())
-                    {
-                        world.setBlockState(posDown, SALT_WATER_ICE);
-                    }
+                    world.setBlockState(posDown, FRESH_WATER_ICE);
+                }
+                else if (actualTemp < IceMeltHandler.SALT_WATER_FREEZE_THRESHOLD && stateAt.getBlock() == SALT_WATER.getBlock())
+                {
+                    world.setBlockState(posDown, SALT_WATER_ICE);
                 }
 
                 if (canSnowAt(pos))
@@ -365,7 +366,7 @@ public class ChunkGenTFC implements IChunkGenerator
     {
         if (world.isAirBlock(pos) && SNOW.getBlock().canPlaceBlockAt(world, pos))
         {
-            return ClimateTFC.getHeightAdjustedTemp(world, pos) < 0f;
+            return ClimateTFC.getActualTemp(world, pos) < 0f;
         }
         return false;
     }
@@ -578,7 +579,7 @@ public class ChunkGenTFC implements IChunkGenerator
                      * HIGH PART (yOffset is used)
                      */
 
-                    float temp = ClimateTFC.adjustTempByHeight(y + yOffset, averageTemp);
+                    float temp = averageTemp - ClimateHelper.heightFactor(y + yOffset);
                     if (BiomesTFC.isBeachBiome(biome) && y + yOffset > seaLevel + h && inp.getBlockState(x, y + yOffset, z) == STONE)
                     {
                         inp.setBlockState(x, y + yOffset, z, AIR);

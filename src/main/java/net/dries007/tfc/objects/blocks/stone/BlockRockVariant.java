@@ -287,10 +287,13 @@ public class BlockRockVariant extends Block
                     for (EnumFacing facing : EnumFacing.HORIZONTALS)
                     {
                         for (int i = 1; i <= beachDistance; i++)
-                            if (BlocksTFC.isFreshWater(world.getBlockState(pos.offset(facing, i))))
+                        {
+                            if (BlocksTFC.isFreshWaterOrIce(world.getBlockState(pos.offset(facing, i))))
                             {
                                 flag = true;
+                                break;
                             }
+                        }
                     }
                     return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && flag;
                 }

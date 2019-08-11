@@ -17,7 +17,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Plant;
-import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.util.climate.ClimateTFC;
 
 @ParametersAreNonnullByDefault
 public class BlockMushroomTFC extends BlockPlantTFC implements IGrowable
@@ -52,7 +52,7 @@ public class BlockMushroomTFC extends BlockPlantTFC implements IGrowable
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) && plant.isValidSunlight(Math.subtractExact(worldIn.getLightFor(EnumSkyBlock.SKY, pos), worldIn.getSkylightSubtracted())))
+        if (plant.isValidGrowthTemp(ClimateTFC.getActualTemp(worldIn, pos)) && plant.isValidSunlight(Math.subtractExact(worldIn.getLightFor(EnumSkyBlock.SKY, pos), worldIn.getSkylightSubtracted())))
         {
             int j = state.getValue(AGE);
 
@@ -69,7 +69,7 @@ public class BlockMushroomTFC extends BlockPlantTFC implements IGrowable
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
         }
-        else if (!plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) || !plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, pos)))
+        else if (!plant.isValidGrowthTemp(ClimateTFC.getActualTemp(worldIn, pos)) || !plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, pos)))
         {
             int j = state.getValue(AGE);
 

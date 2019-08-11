@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.world.classic.ClimateRenderHelper;
+import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -76,8 +76,8 @@ public class PacketChunkData implements IMessage
                         ChunkDataProvider.CHUNK_DATA_CAPABILITY.readNBT(data, null, message.nbt);
                     }
 
-                    // Update rendering climate helper
-                    ClimateRenderHelper.update(chunk.getPos(), message.regionalTemp, message.rainfall);
+                    // Update climate cache
+                    ClimateTFC.update(chunk.getPos(), message.regionalTemp, message.rainfall);
                 });
             }
             return null;
