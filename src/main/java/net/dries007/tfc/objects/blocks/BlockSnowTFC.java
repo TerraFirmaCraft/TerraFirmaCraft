@@ -32,9 +32,9 @@ public class BlockSnowTFC extends BlockSnow
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-        // Either block light (i.e. from torches) or high enough temperature
+        super.randomTick(worldIn, pos, state, random);
         if (worldIn.getLightFor(EnumSkyBlock.BLOCK, pos) > 11 - getLightOpacity(state, worldIn, pos) || ClimateTFC.getActualTemp(worldIn, pos) > 4f)
         {
             worldIn.setBlockToAir(pos);
