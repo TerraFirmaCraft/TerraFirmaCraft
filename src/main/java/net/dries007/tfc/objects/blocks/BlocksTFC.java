@@ -12,6 +12,7 @@ import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
@@ -599,7 +600,7 @@ public final class BlocksTFC
         TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are intended. The override is intended. ;)");
         event.getRegistry().registerAll(
             new BlockIceTFC(FluidsTFC.FRESH_WATER.get()).setRegistryName("minecraft", "ice").setTranslationKey("ice"),
-            new BlockSnowTFC().setRegistryName("minecraft", "snow").setTranslationKey("snow")
+            new BlockSnowTFC().setRegistryName("minecraft", "snow_layer").setTranslationKey("snow")
         );
 
         // Register Tile Entities
@@ -645,6 +646,11 @@ public final class BlocksTFC
     public static boolean isSaltWater(IBlockState current)
     {
         return current == FluidsTFC.SALT_WATER.get().getBlock().getDefaultState();
+    }
+
+    public static boolean isFreshWaterOrIce(IBlockState current)
+    {
+        return current.getBlock() == Blocks.ICE || isFreshWater(current);
     }
 
     public static boolean isRawStone(IBlockState current)
