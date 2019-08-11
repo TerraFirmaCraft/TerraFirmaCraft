@@ -147,11 +147,20 @@ public final class CommonEventHandler
                 BlockPos blockpos = result.getBlockPos();
                 IBlockState state = event.getWorld().getBlockState(blockpos);
                 boolean isFreshWater = BlocksTFC.isFreshWater(state), isSaltWater = BlocksTFC.isSaltWater(state);
-                if ((isFreshWater && foodStats.attemptDrink(10)) || (isSaltWater && foodStats.attemptDrink(-1)))
+                if ((isFreshWater && foodStats.attemptDrink(10, true)) || (isSaltWater && foodStats.attemptDrink(-1, true)))
                 {
+                    //Simulated so client will check if he would drink before updating stats
                     if (!world.isRemote)
                     {
                         player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                        if (isFreshWater)
+                        {
+                            foodStats.addThirst(10); //Simulation already proven that i can drink this amount
+                        }
+                        else
+                        {
+                            foodStats.addThirst(-1); //Simulation already proven that i can drink this amount
+                        }
                     }
                     event.setCancellationResult(EnumActionResult.SUCCESS);
                     event.setCanceled(true);
