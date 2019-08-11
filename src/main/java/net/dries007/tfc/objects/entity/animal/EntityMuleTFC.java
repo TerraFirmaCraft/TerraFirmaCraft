@@ -9,8 +9,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
 
+import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class EntityMuleTFC extends AbstractChestHorseTFC
@@ -51,7 +51,7 @@ public class EntityMuleTFC extends AbstractChestHorseTFC
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTableList.ENTITIES_MULE;
+        return LootTablesTFC.ANIMALS_HORSE;
     }
 
     protected SoundEvent getAmbientSound()
