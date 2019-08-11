@@ -286,7 +286,7 @@ public final class BlocksTFC
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bloomery", new BlockBloomery(), CT_MISC)));
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "nest_box", new BlockNestBox(), CT_MISC)));
 
-        normalItemBlocks.add(new ItemBlockTFC(register(r, "sea_ice", new BlockIceTFC(FluidsTFC.SALT_WATER), CT_MISC)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "sea_ice", new BlockIceTFC(FluidsTFC.SALT_WATER.get()), CT_MISC)));
 
         normalItemBlocks.add(new ItemBlockLargeVessel(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
 
@@ -598,14 +598,13 @@ public final class BlocksTFC
         // Vanilla Overrides. Used for small tweaks on vanilla items, rather than replacing them outright
         TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are intended. The override is intended. ;)");
         event.getRegistry().registerAll(
-            new BlockIceTFC(FluidsTFC.FRESH_WATER).setRegistryName("minecraft", "ice").setTranslationKey("ice"),
+            new BlockIceTFC(FluidsTFC.FRESH_WATER.get()).setRegistryName("minecraft", "ice").setTranslationKey("ice"),
             new BlockSnowTFC().setRegistryName("minecraft", "snow").setTranslationKey("snow")
         );
 
         // Register Tile Entities
         // Putting tile entity registration in the respective block can call it multiple times. Just put here to avoid duplicates
 
-        // Generic classes
         register(TETickCounter.class, "tick_counter");
         register(TEPlacedItem.class, "placed_item");
         register(TEPlacedItemFlat.class, "placed_item_flat");

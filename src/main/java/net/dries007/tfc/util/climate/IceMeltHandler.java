@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
- * Vanila ice melting is hardcoded to the world. However, we can replicate most of the behavior by watching world ticks, and performing the same simple logic checks
+ * Vanilla ice melting is hardcoded to the world. However, we can replicate most of the behavior by watching world ticks, and performing the same simple logic checks
  */
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class IceMeltHandler

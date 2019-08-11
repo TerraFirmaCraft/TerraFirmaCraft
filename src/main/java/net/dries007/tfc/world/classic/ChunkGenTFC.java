@@ -44,6 +44,7 @@ import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.ClimateHelper;
 import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.util.climate.IceMeltHandler;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -308,16 +309,14 @@ public class ChunkGenTFC implements IChunkGenerator
                 // Can't use world#canBlockFreeze because it's specific to vanilla water
                 BlockPos posDown = pos.down();
                 IBlockState stateAt = world.getBlockState(posDown);
-                if (ClimateTFC.getActualTemp(world, posDown) < 0f)
+                float actualTemp = ClimateTFC.getActualTemp(world, posDown);
+                if (actualTemp < IceMeltHandler.WATER_FREEZE_THRESHOLD && stateAt.getBlock() == FRESH_WATER.getBlock())
                 {
-                    if (stateAt.getBlock() == FRESH_WATER.getBlock())
-                    {
-                        world.setBlockState(posDown, FRESH_WATER_ICE);
-                    }
-                    else if (stateAt.getBlock() == SALT_WATER.getBlock())
-                    {
-                        world.setBlockState(posDown, SALT_WATER_ICE);
-                    }
+                    world.setBlockState(posDown, FRESH_WATER_ICE);
+                }
+                else if (actualTemp < IceMeltHandler.SALT_WATER_FREEZE_THRESHOLD && stateAt.getBlock() == SALT_WATER.getBlock())
+                {
+                    world.setBlockState(posDown, SALT_WATER_ICE);
                 }
 
                 if (canSnowAt(pos))
