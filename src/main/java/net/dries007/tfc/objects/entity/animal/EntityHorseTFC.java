@@ -28,10 +28,10 @@ import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.walkers.ItemStackData;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class EntityHorseTFC extends AbstractHorseTFC
@@ -248,7 +248,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
 
     protected ResourceLocation getLootTable()
     {
-        return LootTableList.ENTITIES_HORSE;
+        return LootTablesTFC.ANIMALS_HORSE;
     }
 
     public boolean processInteract(EntityPlayer player, EnumHand hand)
