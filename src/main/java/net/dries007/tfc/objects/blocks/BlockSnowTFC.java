@@ -8,9 +8,13 @@ package net.dries007.tfc.objects.blocks;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -34,6 +38,22 @@ public class BlockSnowTFC extends BlockSnow
         if (worldIn.getLightFor(EnumSkyBlock.BLOCK, pos) > 11 - getLightOpacity(state, worldIn, pos) || ClimateTFC.getActualTemp(worldIn, pos) > 4f)
         {
             worldIn.setBlockToAir(pos);
+        }
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        IBlockState stateDown = worldIn.getBlockState(pos.down());
+        Block block = stateDown.getBlock();
+
+        if (block != Blocks.ICE && block != Blocks.PACKED_ICE && block != Blocks.BARRIER && block != BlocksTFC.SEA_ICE)
+        {
+            return stateDown.getBlockFaceShape(worldIn, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID || stateDown.getBlock().isLeaves(stateDown, worldIn, pos.down()) || block == this && stateDown.getValue(LAYERS) == 8;
+        }
+        else
+        {
+            return false;
         }
     }
 }

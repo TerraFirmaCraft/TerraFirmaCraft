@@ -16,19 +16,19 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
  * Vanila ice melting is hardcoded to the world. However, we can replicate most of the behavior by watching world ticks, and performing the same simple logic checks
  */
-@Mod.EventBusSubscriber(modid = MOD_ID, value = Side.SERVER)
+@Mod.EventBusSubscriber(modid = MOD_ID)
 public class IceMeltHandler
 {
     public static final float ICE_MELT_THRESHOLD = 4.0f;
     public static final float WATER_FREEZE_THRESHOLD = 0f;
-    public static final float SALT_WATER_FREEZE_THRESHOLD = -2.0f;
+    public static final float SALT_WATER_FREEZE_THRESHOLD = -28.0f;
+    public static final float SALT_WATER_MELT_THRESHOLD = -24.0f;
 
     /**
      * Duplicated field from world, idk how this really works or the merits to it, but it should function the same as vanilla

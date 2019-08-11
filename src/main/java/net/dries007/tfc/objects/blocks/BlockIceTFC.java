@@ -23,8 +23,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fluids.Fluid;
 
-import net.dries007.tfc.objects.fluids.properties.FluidWrapper;
+import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.util.climate.ITemperatureBlock;
 import net.dries007.tfc.util.climate.IceMeltHandler;
@@ -32,11 +33,13 @@ import net.dries007.tfc.util.climate.IceMeltHandler;
 @ParametersAreNonnullByDefault
 public class BlockIceTFC extends BlockIce implements ITemperatureBlock
 {
-    private final FluidWrapper waterFluid;
+    private final Fluid waterFluid;
+    private final float meltThreshold;
 
-    public BlockIceTFC(FluidWrapper waterFluid)
+    public BlockIceTFC(Fluid waterFluid)
     {
         this.waterFluid = waterFluid;
+        this.meltThreshold = waterFluid == FluidsTFC.SALT_WATER.get() ? IceMeltHandler.SALT_WATER_MELT_THRESHOLD : IceMeltHandler.ICE_MELT_THRESHOLD;
 
         setHardness(0.5F);
         setLightOpacity(3);
@@ -81,18 +84,8 @@ public class BlockIceTFC extends BlockIce implements ITemperatureBlock
 
             if (material.blocksMovement() || material.isLiquid())
             {
-                worldIn.setBlockState(pos, waterFluid.get().getBlock().getDefaultState());
+                worldIn.setBlockState(pos, waterFluid.getBlock().getDefaultState());
             }
-        }
-    }
-
-    @Override
-    public void onTemperatureUpdateTick(World world, BlockPos pos, IBlockState state)
-    {
-        // Either block light (i.e. from torches) or high enough temperature
-        if (world.getLightFor(EnumSkyBlock.BLOCK, pos) > 11 - getLightOpacity(state, world, pos) || ClimateTFC.getActualTemp(world, pos) > IceMeltHandler.ICE_MELT_THRESHOLD)
-        {
-            turnIntoWater(world, pos);
         }
     }
 
@@ -106,8 +99,18 @@ public class BlockIceTFC extends BlockIce implements ITemperatureBlock
         else
         {
             this.dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
-            worldIn.setBlockState(pos, waterFluid.get().getBlock().getDefaultState());
-            worldIn.neighborChanged(pos, waterFluid.get().getBlock(), pos);
+            worldIn.setBlockState(pos, waterFluid.getBlock().getDefaultState());
+            worldIn.neighborChanged(pos, waterFluid.getBlock(), pos);
+        }
+    }
+
+    @Override
+    public void onTemperatureUpdateTick(World world, BlockPos pos, IBlockState state)
+    {
+        // Either block light (i.e. from torches) or high enough temperature
+        if (world.getLightFor(EnumSkyBlock.BLOCK, pos) > 11 - getLightOpacity(state, world, pos) || ClimateTFC.getActualTemp(world, pos) > meltThreshold)
+        {
+            turnIntoWater(world, pos);
         }
     }
 }
