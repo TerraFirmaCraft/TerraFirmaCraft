@@ -96,5 +96,60 @@ public class BlockFluidTFC extends BlockFluidClassic
         return (blockstate.getMaterial() == getDefaultState().getMaterial()) && (blockstate.getMaterial().isLiquid());
     }
 
+    @Override
+    public boolean canDisplace(IBlockAccess world, BlockPos pos)
+    {
+        IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
 
+        if (block.isAir(state, world, pos))
+        {
+            return true;
+        }
+
+        if (block == this)
+        {
+            return false;
+        }
+
+        if (displacements.containsKey(block))
+        {
+            return displacements.get(block);
+        }
+
+        Material material = state.getMaterial();
+        if (material.blocksMovement() || material == Material.PORTAL || material == Material.STRUCTURE_VOID)
+        {
+            return false;
+        }
+
+        // this is where it differs from the source:
+
+        if (block instanceof BlockFluidTFC)
+        {
+            return (state.getValue(LEVEL) != 0);
+        }
+
+        int density = getDensity(world, pos);
+        if (density == Integer.MAX_VALUE)
+        {
+            return true;
+        }
+
+        return this.density > density;
+    }
+
+    @Override
+    public boolean isSourceBlock(IBlockAccess world, BlockPos pos)
+    {
+        IBlockState state = world.getBlockState(pos);
+        return isMergeableFluid(state) && state.getValue(LEVEL) == 0;
+    }
+
+    @Override
+    protected boolean canFlowInto(IBlockAccess world, BlockPos pos)
+    {
+        IBlockState state = world.getBlockState(pos);
+        return super.canFlowInto(world, pos) || state.getMaterial().isLiquid();
+    }
 }
