@@ -114,6 +114,7 @@ public class WorldGenOreVeins implements IWorldGenerator
             if (vein.pos.getY() >= WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(vein.pos))
                 continue;
 
+            boolean generated = false;
             for (int x = 0; x < 16; x++)
             {
                 for (int z = 0; z < 16; z++)
@@ -135,8 +136,13 @@ public class WorldGenOreVeins implements IWorldGenerator
                             continue;
 
                         world.setBlockState(posAt, vein.type.getOreState(blockAt.getRock(), vein.grade), 2);
+                        generated = true;
                     }
                 }
+            }
+            if (generated)
+            {
+                chunkData.addGeneratedOre(vein.type.ore);
             }
         }
     }
