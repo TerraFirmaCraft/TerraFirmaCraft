@@ -10,7 +10,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IThreadListener;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
@@ -34,10 +33,6 @@ public interface IProxy
 
     @Nonnull
     String getDayName(int dayOfMonth, long totalDays);
-
-    // Temperature Utilities
-
-    float getTemperature(BlockPos pos);
 
     class WrongSideException extends RuntimeException
     {

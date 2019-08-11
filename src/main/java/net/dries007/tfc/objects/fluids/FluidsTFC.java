@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.fluids;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableCollection;
@@ -107,6 +108,17 @@ public final class FluidsTFC
     public static Fluid getFluidFromMetal(@Nonnull Metal metal)
     {
         return allMetalFluids.get(metal).get();
+    }
+
+    @Nullable
+    public static Metal getMetalFromFluid(@Nonnull Fluid fluid)
+    {
+        FluidWrapper wrapper = getWrapper(fluid);
+        if (wrapper instanceof MetalFluidWrapper)
+        {
+            return ((MetalFluidWrapper) wrapper).getMetal();
+        }
+        return null;
     }
 
     public static void registerFluids()

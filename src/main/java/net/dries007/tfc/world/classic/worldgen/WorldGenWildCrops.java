@@ -18,7 +18,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
-import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC.WILD;
@@ -48,7 +48,7 @@ public class WorldGenWildCrops extends WorldGenerator
         ICrop crop = crops.get(rng.nextInt(crops.size()));
         BlockCropTFC cropBlock = BlockCropTFC.get(crop);
 
-        float temperature = ClimateTFC.getAverageBiomeTemp(world, start);
+        float temperature = ClimateTFC.getAvgTemp(world, start);
         float rainfall = ChunkDataTFC.getRainfall(world, start);
         if (crop.isValidConditions(temperature, rainfall))
         {

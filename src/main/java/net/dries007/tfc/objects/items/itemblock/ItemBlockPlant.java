@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
-import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -42,7 +42,7 @@ public class ItemBlockPlant extends ItemBlockTFC
     {
         if (worldIn.isRemote && entityIn != null && entityIn.ticksExisted % 10 == 0)
         {
-            tempValidity = block.getPlant().getTempValidity(ClimateTFC.getHeightAdjustedTemp(worldIn, entityIn.getPosition()));
+            tempValidity = block.getPlant().getTempValidity(ClimateTFC.getActualTemp(worldIn, entityIn.getPosition()));
             rainValidity = block.getPlant().getRainValidity(ChunkDataTFC.getRainfall(worldIn, entityIn.getPosition()));
         }
     }

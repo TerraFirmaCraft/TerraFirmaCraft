@@ -24,7 +24,6 @@ public interface IMoldHandler extends IFluidHandler, INBTSerializable<NBTTagComp
 {
     /**
      * Gets the metal currently in the mold. Null if empty. Used in model loading.
-     * Important: if a fluid stack is drained from this mold using {@link IFluidHandler#drain(int, boolean)}, then (FluidMetal) fluidStack.getFluid()).getMetal() == moldCap.getMetal() should always be true
      *
      * @return The metal
      */

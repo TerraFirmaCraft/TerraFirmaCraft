@@ -43,7 +43,6 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.client.TFCGuiHandler;
-import net.dries007.tfc.objects.fluids.FluidMetal;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
@@ -137,22 +136,17 @@ public class ItemSmallVessel extends ItemPottery
         if (capItemHandler instanceof ISmallVesselHandler)
         {
             ISmallVesselHandler cap = (ISmallVesselHandler) capItemHandler;
+            Alloy alloy = new Alloy();
 
-            // Check if it can transform into liquid metal
-            Alloy alloy = new Alloy().add(cap);
-            if (alloy.isValid())
+            for (int i = 0; i < cap.getSlots(); i++)
             {
-                //Empty contents
-                for (int i = 0; i < cap.getSlots(); i++)
-                {
-                    cap.setStackInSlot(i, ItemStack.EMPTY);
-                }
-                // Fill with the liquid metal
-                cap.setFluidMode(true);
-                cap.fill(new FluidStack(FluidsTFC.getFluidFromMetal(alloy.getResult()), alloy.getAmount()), true);
-                cap.setTemperature(1600f);
+                alloy.add(cap.getStackInSlot(i));
+                cap.setStackInSlot(i, ItemStack.EMPTY);
             }
 
+            cap.setFluidMode(true);
+            cap.fill(new FluidStack(FluidsTFC.getFluidFromMetal(alloy.getResult()), alloy.getAmount()), true);
+            cap.setTemperature(1600f);
         }
         return input;
     }
@@ -276,7 +270,7 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public Metal getMetal()
         {
-            return fluidMode && tank.getFluid() != null ? ((FluidMetal) tank.getFluid().getFluid()).getMetal() : null;
+            return fluidMode && tank.getFluid() != null ? FluidsTFC.getMetalFromFluid(tank.getFluid().getFluid()) : null;
         }
 
         @Override
@@ -367,7 +361,7 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            if (resource.getFluid() instanceof FluidMetal)
+            if (resource != null && FluidsTFC.getMetalFromFluid(resource.getFluid()) != null)
             {
                 updateFluidData(resource);
                 return tank.fill(resource, doFill);
@@ -433,18 +427,17 @@ public class ItemSmallVessel extends ItemPottery
 
         private void updateFluidData(@Nullable FluidStack fluid)
         {
-            if (fluid != null && fluid.getFluid() instanceof FluidMetal)
+            meltTemp = 1000;
+            heatCapacity = 1;
+            if (fluid != null)
             {
-                Metal metal = ((FluidMetal) fluid.getFluid()).getMetal();
-                this.meltTemp = metal.getMeltTemp();
-                this.heatCapacity = metal.getSpecificHeat();
+                Metal metal = FluidsTFC.getMetalFromFluid(fluid.getFluid());
+                if (metal != null)
+                {
+                    meltTemp = metal.getMeltTemp();
+                    heatCapacity = metal.getSpecificHeat();
+                }
             }
-            else
-            {
-                this.meltTemp = 1000;
-                this.heatCapacity = 1;
-            }
-
         }
     }
 

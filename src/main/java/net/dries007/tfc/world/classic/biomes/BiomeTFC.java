@@ -11,8 +11,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.entity.animal.*;
+import net.dries007.tfc.util.climate.ClimateTFC;
 
 public class BiomeTFC extends Biome
 {
@@ -75,6 +75,6 @@ public class BiomeTFC extends Biome
     @Override
     public float getTemperature(BlockPos pos)
     {
-        return TerraFirmaCraft.getProxy().getTemperature(pos);
+        return ClimateTFC.getActualTemp(pos);
     }
 }

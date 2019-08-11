@@ -39,7 +39,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @MethodsReturnNonnullByDefault
@@ -100,7 +100,7 @@ public class BlockFruitTreeLeaves extends BlockLeaves
                 TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
                 if (te != null)
                 {
-                    float temp = ClimateTFC.getTemp(world, pos);
+                    float temp = ClimateTFC.getActualTemp(world, pos);
                     float rainfall = ChunkDataTFC.getRainfall(world, pos);
                     long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
                     if (hours > tree.getGrowthTime() && tree.isValidForGrowth(temp, rainfall))
