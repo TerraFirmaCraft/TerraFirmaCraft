@@ -59,7 +59,7 @@ public class EntityAIRunAroundLikeCrazyTFC extends EntityAIBase
 
     public void updateTask()
     {
-        if (!this.horseHost.isTame() && this.horseHost.getFamiliarity() >= 0.3f && this.horseHost.getRNG().nextInt(50) == 0)
+        if (!this.horseHost.isTame() && this.horseHost.getRNG().nextInt(50) == 0)
         {
             Entity entity = (Entity)this.horseHost.getPassengers().get(0);
 
@@ -68,7 +68,7 @@ public class EntityAIRunAroundLikeCrazyTFC extends EntityAIBase
                 return;
             }
 
-            if (entity instanceof EntityPlayer)
+            if (entity instanceof EntityPlayer && this.horseHost.getFamiliarity() >= 0.3f)
             {
                 int i = this.horseHost.getTemper();
                 int j = this.horseHost.getMaxTemper();
