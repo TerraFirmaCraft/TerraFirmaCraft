@@ -38,7 +38,7 @@ public class CommandFindVeins extends CommandBase
     @Nonnull
     public String getUsage(ICommandSender sender)
     {
-        return "/findveins [all|<vein name>] <radius> -> Finds all instances of a specific vein, or all veins within a certian chunk radius";
+        return "/findveins [all|<vein name>] <radius> -> Finds all instances of a specific vein, or all veins within a certain chunk radius";
     }
 
     @Override
