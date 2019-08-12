@@ -197,12 +197,12 @@ public class ConfigTFC
         @Config.RangeInt(min = 1, max = 10_000)
         public int richOreMetalAmount = 35;
 
-        @Config.Comment("The max times you can use a gold pan in a chunk.")
+        @Config.Comment("The amount of times you can use a gold pan in a chunk.")
         @Config.LangKey("config." + MOD_ID + ".general.maxWorkGoldPan")
         @Config.RangeInt(min = 1, max = 10_000)
         public int maxWorkGoldPan = 50;
 
-        @Config.Comment("The max times sluice work a chunk.")
+        @Config.Comment("The amount of times sluice can work in a chunk.")
         @Config.LangKey("config." + MOD_ID + ".general.maxWorkSluice")
         @Config.RangeInt(min = 1, max = 10_000)
         public int maxWorkSluice = 300;
@@ -212,7 +212,12 @@ public class ConfigTFC
         @Config.RangeInt(min = 0, max = 10)
         public int sluiceRadius = 1;
 
-        @Config.Comment("If true, limits for gold pan and sluice are ignored")
+        @Config.Comment("The amount of ticks a sluice uses to work.")
+        @Config.LangKey("config." + MOD_ID + ".general.sluiceTicks")
+        @Config.RangeInt(min = 20)
+        public int sluiceTicks = 100;
+
+        @Config.Comment("If true, limits for gold pan and sluice are ignored.")
         @Config.LangKey("config." + MOD_ID + ".general.overworkChunk")
         public boolean overworkChunk = false;
 
