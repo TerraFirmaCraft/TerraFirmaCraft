@@ -8,8 +8,10 @@ package net.dries007.tfc.objects.items;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSnow;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -114,6 +116,8 @@ public final class ItemsTFC
 
     public static final ItemTFC MORTAR = getNull();
 
+    public static final ItemSnow SNOW = getNull();
+
     @GameRegistry.ObjectHolder("powder/salt")
     public static final ItemPowder SALT = getNull();
 
@@ -148,6 +152,8 @@ public final class ItemsTFC
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
         simpleItems.add(register(r, "mortar", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
         register(r, "wooden_bucket", new ItemWoodenBucket(), CT_WOOD); //not a simple item, use a custom model
+
+        r.register(new ItemSnow(Blocks.SNOW_LAYER).setRegistryName("minecraft", "snow_layer"));
 
         {
             for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
