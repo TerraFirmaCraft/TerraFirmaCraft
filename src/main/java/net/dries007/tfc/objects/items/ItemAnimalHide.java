@@ -67,7 +67,7 @@ public class ItemAnimalHide extends ItemTFC
             if (player.canPlayerEdit(footPos, facing, stack) && player.canPlayerEdit(headPos, facing, stack))
             {
                 IBlockState footState = BlocksTFC.THATCH_BED.getDefaultState().withProperty(BlockBed.OCCUPIED, false).withProperty(BlockBed.FACING, player.getHorizontalFacing()).withProperty(BlockBed.PART, BlockBed.EnumPartType.FOOT);
-                IBlockState headState = BlocksTFC.THATCH_BED.getDefaultState().withProperty(BlockBed.OCCUPIED, false).withProperty(BlockBed.FACING, player.getHorizontalFacing()).withProperty(BlockBed.PART, BlockBed.EnumPartType.HEAD);
+                IBlockState headState = BlocksTFC.THATCH_BED.getDefaultState().withProperty(BlockBed.OCCUPIED, false).withProperty(BlockBed.FACING, player.getHorizontalFacing().getOpposite()).withProperty(BlockBed.PART, BlockBed.EnumPartType.HEAD);
                 worldIn.setBlockState(footPos, footState, 10);
                 worldIn.setBlockState(headPos, headState, 10);
                 SoundType soundtype = BlocksTFC.THATCH_BED.getSoundType(footState, worldIn, footPos, player);

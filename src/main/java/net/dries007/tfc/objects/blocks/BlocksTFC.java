@@ -659,7 +659,6 @@ public final class BlocksTFC
         register(TEMetalSheet.class, "metal_sheet");
         register(TEQuern.class, "quern");
         register(TELargeVessel.class, "large_vessel");
-        register(TEThatchBed.class, "thatch_bed");
     }
 
     public static boolean isWater(IBlockState current)
