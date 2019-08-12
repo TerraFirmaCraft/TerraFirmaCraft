@@ -50,6 +50,7 @@ tfc.tooltip.blast_furnace_fuel_amount=Fuel
 tfc.tooltip.blast_furnace_melt_amount=Melt
 tfc.tooltip.large_vessel_seal=Seal Large Vessel
 tfc.tooltip.large_vessel_unseal=Unseal Large Vessel
+tfc.tooltip.goldpan.chunkworked=This area seems to be overworked. You probably wouldn't find much.
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.old=This animal is too old to mate.
@@ -202,6 +203,21 @@ config.tfc.general.normalOreMetalAmount.tooltip=The amount of metal contained in
 
 config.tfc.general.richOreMetalAmount=Rich Ore Metal Amount
 config.tfc.general.richOreMetalAmount.tooltip=The amount of metal contained in a rich ore.
+
+config.tfc.general.maxWorkGoldPan=Maximum Goldpan Work
+config.tfc.general.maxWorkGoldPan.tooltip=The amount of times you can use a gold pan in a chunk.
+
+config.tfc.general.maxWorkSluice=Maximum Sluice Work
+config.tfc.general.maxWorkSluice.tooltip=The amount of times sluice can work in a chunk.
+
+config.tfc.general.sluiceRadius=Sluice Radius
+config.tfc.general.sluiceRadius.tooltip=The radius sluice works on chunks.
+
+config.tfc.general.sluiceTicks=Sluice Ticks 
+config.tfc.general.sluiceTicks.tooltip=The amount of ticks a sluice uses to work.
+
+config.tfc.general.overworkChunk=Chunk Overworking
+config.tfc.general.overworkChunk.tooltip=If true, limits for gold pan and sluice are ignored
 
 config.tfc.general.forceNoVanillaNaturalRegeneration=Force No Vanilla Natural Regeneration
 config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=If true, this will force the gamerule naturalRegeneration to be false. Note: this DOES NOT AFFECT TFC's natural regeneration. If you set naturalRegeneration to true, then you will have both TFC regeneration and normal vanilla regeneration (which is much faster).
@@ -503,6 +519,7 @@ tile.tfc.bloomery.name=Bloomery
 tile.tfc.fire_bricks.name=Fire Bricks
 tile.tfc.quern.name=Quern
 tile.tfc.ceramics.fired.large_vessel.name=Large Vessel
+tile.tfc.sluice.name=Sluice
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite
