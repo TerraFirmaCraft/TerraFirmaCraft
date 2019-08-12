@@ -165,7 +165,8 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         double movementMod = plant.getMovementMod();
         //Entity X/Z motion is reduced by plants.
         double maturity = (state.getValue(AGE) + 1) / 4; //25% each stage
-        movementMod *= maturity;
+        double slowEffect = (1 - movementMod) * maturity;
+        movementMod -= slowEffect;
         entityIn.motionX *= movementMod;
         entityIn.motionZ *= movementMod;
     }
