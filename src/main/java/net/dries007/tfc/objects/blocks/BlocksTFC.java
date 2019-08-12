@@ -59,7 +59,7 @@ public final class BlocksTFC
     public static final BlockDebug DEBUG = getNull();
     public static final BlockPeat PEAT = getNull();
     public static final BlockPeat PEAT_GRASS = getNull();
-    public static final BlockFirePit FIRE_PIT = getNull();
+    public static final BlockFirePit FIREPIT = getNull();
     public static final BlockThatch THATCH = getNull();
     public static final BlockPitKiln PIT_KILN = getNull();
     public static final BlockPlacedItemFlat PLACED_ITEM_FLAT = getNull();

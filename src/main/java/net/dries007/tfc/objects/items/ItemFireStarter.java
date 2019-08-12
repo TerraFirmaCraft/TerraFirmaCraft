@@ -192,7 +192,7 @@ public class ItemFireStarter extends ItemTFC
                     final float kindlingModifier = Math.min(0.1f * (float) kindling, 0.5f);
                     if (itemRand.nextFloat() < chance + kindlingModifier)
                     {
-                        world.setBlockState(pos, BlocksTFC.FIRE_PIT.getDefaultState().withProperty(LIT, true));
+                        world.setBlockState(pos, BlocksTFC.FIREPIT.getDefaultState().withProperty(LIT, true));
                         TEFirePit te = Helpers.getTE(world, pos, TEFirePit.class);
                         if (te != null)
                         {
