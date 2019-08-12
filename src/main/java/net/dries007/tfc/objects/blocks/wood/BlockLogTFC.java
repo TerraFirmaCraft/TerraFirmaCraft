@@ -23,7 +23,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
@@ -55,6 +54,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
 
     public BlockLogTFC(Tree wood)
     {
+        super();
         this.wood = wood;
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         setDefaultState(blockState.getBaseState().withProperty(LOG_AXIS, BlockLog.EnumAxis.Y).withProperty(PLACED, true).withProperty(SMALL, false));
@@ -73,42 +73,11 @@ public class BlockLogTFC extends BlockLog implements IItemSize
         setTickRandomly(true);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isFullCube(IBlockState state)
-    {
-        return !state.getValue(SMALL);
-    }
-
     @Override
     @SuppressWarnings("deprecation")
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return (blockState.getValue(PLACED) ? 1.0f : 2.5f) * super.getBlockHardness(blockState, worldIn, pos);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        if (!state.getValue(SMALL)) return FULL_BLOCK_AABB;
-        switch (state.getValue(LOG_AXIS))
-        {
-            case X:
-                return SMALL_AABB_X;
-            case Y:
-                return SMALL_AABB_Y;
-            case Z:
-                return SMALL_AABB_Z;
-        }
-        return FULL_BLOCK_AABB;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return !state.getValue(SMALL);
     }
 
     @Override
