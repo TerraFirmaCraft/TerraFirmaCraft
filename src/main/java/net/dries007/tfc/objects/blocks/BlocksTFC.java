@@ -326,6 +326,7 @@ public final class BlocksTFC
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bellows", new BlockBellows(), CT_MISC)));
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "bloomery", new BlockBloomery(), CT_MISC)));
         inventoryItemBlocks.add(new ItemBlockTFC(register(r, "nest_box", new BlockNestBox(), CT_MISC)));
+        inventoryItemBlocks.add(new ItemBlockSluice(register(r, "sluice", new BlockSluice(), CT_MISC)));
 
         normalItemBlocks.add(new ItemBlockLargeVessel(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
 
@@ -677,6 +678,7 @@ public final class BlocksTFC
         register(TEMetalSheet.class, "metal_sheet");
         register(TEQuern.class, "quern");
         register(TELargeVessel.class, "large_vessel");
+        register(TESluice.class, "sluice");
     }
 
     public static boolean isWater(IBlockState current)
