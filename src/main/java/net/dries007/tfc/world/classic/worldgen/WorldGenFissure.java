@@ -171,8 +171,8 @@ public class WorldGenFissure implements IWorldGenerator
         int tunnelY = center.down(tunnelDepth).getY();
         if (tunnelY < 20) tunnelY = 20;
         BlockPos tunnelPos = center.down(depth);
-        float startingY = tunnelPos.getY();
         blocks.add(tunnelPos);
+        radius = 8;
         while (tunnelPos.getY() > tunnelY)
         {
             int value = random.nextInt(8); // 50% down, 12.5% each side
@@ -196,24 +196,22 @@ public class WorldGenFissure implements IWorldGenerator
             {
                 tunnelPos = tunnelPos.down();
             }
-            float remaining = (tunnelPos.getY() - tunnelY) / startingY;
-            radius = Math.max(1, (int) (8 * remaining)); // Lowering radius makes it look better
             // Keep it under control
             if (tunnelPos.getX() > center.getX() + radius)
             {
-                tunnelPos.add(-1, 0, 0);
+                tunnelPos = tunnelPos.add(-1, 0, 0);
             }
             if (tunnelPos.getX() < center.getX() - radius)
             {
-                tunnelPos.add(1, 0, 0);
+                tunnelPos = tunnelPos.add(1, 0, 0);
             }
             if (tunnelPos.getZ() > center.getZ() + radius)
             {
-                tunnelPos.add(0, 0, -1);
+                tunnelPos = tunnelPos.add(0, 0, -1);
             }
             if (tunnelPos.getZ() < center.getZ() - radius)
             {
-                tunnelPos.add(0, 0, 1);
+                tunnelPos = tunnelPos.add(0, 0, 1);
             }
             blocks.add(tunnelPos);
             for (EnumFacing horiz : EnumFacing.HORIZONTALS)
