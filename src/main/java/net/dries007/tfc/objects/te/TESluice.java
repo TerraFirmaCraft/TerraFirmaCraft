@@ -8,21 +8,30 @@ package net.dries007.tfc.objects.te;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.Fluid;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.blocks.devices.BlockSluice;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.util.Helpers;
@@ -33,11 +42,44 @@ public class TESluice extends TEBase implements ITickable
     private int soil;
     private int ticksRemaining, delayTimer;
 
-    //todo add checks for water
-
     public TESluice()
     {
         super();
+    }
+
+    @Nullable
+    public BlockFluidBase getFlowingFluidBlock()
+    {
+        if (!hasWorld() || !(world.getBlockState(pos).getBlock() instanceof BlockSluice))
+        {
+            return null;
+        }
+        EnumFacing sluiceFacing = world.getBlockState(pos).getValue(BlockHorizontal.FACING);
+        BlockPos fluidInputPos = pos.up().offset(sluiceFacing);
+        IBlockState state = world.getBlockState(fluidInputPos);
+        Block block = state.getBlock();
+        if (block instanceof BlockFluidBase)
+        {
+            return ((BlockFluidBase) block);
+        }
+        return null;
+    }
+
+    @Nullable
+    public Fluid getFlowingFluid()
+    {
+        BlockFluidBase block = getFlowingFluidBlock();
+        return block == null ? null : block.getFluid();
+    }
+
+    @Nullable
+    public EnumFacing getBlockFacing()
+    {
+        if (!hasWorld() || !(world.getBlockState(pos).getBlock() instanceof BlockSluice))
+        {
+            return null;
+        }
+        return world.getBlockState(pos).getValue(BlockHorizontal.FACING);
     }
 
     @Override
@@ -86,6 +128,16 @@ public class TESluice extends TEBase implements ITickable
             if (--delayTimer <= 0)
             {
                 delayTimer = 20;
+                Fluid flowing = getFlowingFluid();
+                if (flowing != null)
+                {
+                    //noinspection ConstantConditions
+                    BlockPos frontPos = pos.down().offset(getBlockFacing().getOpposite(), 2);
+                    if (world.getBlockState(frontPos).getMaterial().isReplaceable())
+                    {
+                        world.setBlockState(frontPos, flowing.getBlock().getDefaultState());
+                    }
+                }
                 for (EntityItem entityItem : world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos).grow(1), EntitySelectors.IS_ALIVE))
                 {
                     ItemStack stack = entityItem.getItem();
@@ -112,6 +164,14 @@ public class TESluice extends TEBase implements ITickable
         }
     }
 
+    private boolean hasWater()
+    {
+
+        Fluid fluid = getFlowingFluid();
+        return fluid != null;
+        //return fluid == FluidsTFC.FRESH_WATER.get(); //todo salt water
+    }
+
     @Override
     public void readFromNBT(@Nonnull NBTTagCompound nbt)
     {
@@ -131,7 +191,7 @@ public class TESluice extends TEBase implements ITickable
 
     private void consumeSoil()
     {
-        if (soil > 0)
+        if (soil > 0 && hasWater())
         {
             soil--;
             ticksRemaining = ConfigTFC.GENERAL.sluiceTicks;

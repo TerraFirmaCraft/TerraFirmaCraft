@@ -22,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.BlockFluidBase;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.te.TESluice;
@@ -84,6 +85,13 @@ public class BlockSluice extends BlockHorizontal
                 spawnAsEntity(worldIn, pos, new ItemStack(this));
             }
             worldIn.setBlockToAir(pos);
+        }
+
+        //Keep flowing liquids from reaching the top of this block
+        IBlockState blockState = worldIn.getBlockState(pos.up());
+        if (blockState.getBlock() instanceof BlockFluidBase && blockState.getValue(BlockFluidBase.LEVEL) < 15)
+        {
+            worldIn.setBlockToAir(pos.up());
         }
     }
 
