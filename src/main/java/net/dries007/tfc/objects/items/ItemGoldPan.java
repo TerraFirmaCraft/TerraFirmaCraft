@@ -106,12 +106,12 @@ public class ItemGoldPan extends ItemTFC
                             }
                         });
                         chunkDataTFC.addWork();
+                        stack.setItemDamage(0);
                         if (Constants.RNG.nextFloat() < 0.01) // 1/100 chance, same as 1.7.10
                         {
                             stack.shrink(1);
                             world.playSound(null, entityLiving.getPosition(), TFCSounds.CERAMIC_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
                         }
-                        stack.setItemDamage(0);
                     }
                     else
                     {
