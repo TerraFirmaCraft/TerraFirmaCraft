@@ -314,10 +314,6 @@ public class ChunkGenTFC implements IChunkGenerator
                 {
                     world.setBlockState(posDown, FRESH_WATER_ICE);
                 }
-                else if (actualTemp < IceMeltHandler.SALT_WATER_FREEZE_THRESHOLD && stateAt.getBlock() == SALT_WATER.getBlock())
-                {
-                    world.setBlockState(posDown, SALT_WATER_ICE);
-                }
 
                 if (canSnowAt(pos))
                 {
