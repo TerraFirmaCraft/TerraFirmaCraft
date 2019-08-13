@@ -158,7 +158,7 @@ public class GuiBarrel extends GuiContainerTE<TEBarrel>
                 if (fillHeightPixels > 0)
                 {
                     Fluid fluid = fs.getFluid();
-                    TextureAtlasSprite sprite = FluidSpriteCache.getSprite(fluid);
+                    TextureAtlasSprite sprite = FluidSpriteCache.getStillSprite(fluid);
 
                     int positionX = guiLeft + 8;
                     int positionY = guiTop + 54;
