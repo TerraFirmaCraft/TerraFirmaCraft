@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.te;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -33,18 +34,23 @@ import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.devices.BlockSluice;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class TESluice extends TEBase implements ITickable
 {
+    private static final int MAX_SOIL = 50;
     private int soil;
     private int ticksRemaining, delayTimer;
+
+    protected static Predicate<Fluid> ALLOWED_FLUIDS;
 
     public TESluice()
     {
         super();
+        ALLOWED_FLUIDS = x -> x == FluidsTFC.FRESH_WATER.get() || x == FluidsTFC.LIMEWATER.get();
     }
 
     @Nullable
@@ -63,23 +69,6 @@ public class TESluice extends TEBase implements ITickable
             return ((BlockFluidBase) block);
         }
         return null;
-    }
-
-    @Nullable
-    public Fluid getFlowingFluid()
-    {
-        BlockFluidBase block = getFlowingFluidBlock();
-        return block == null ? null : block.getFluid();
-    }
-
-    @Nullable
-    public EnumFacing getBlockFacing()
-    {
-        if (!hasWorld() || !(world.getBlockState(pos).getBlock() instanceof BlockSluice))
-        {
-            return null;
-        }
-        return world.getBlockState(pos).getValue(BlockHorizontal.FACING);
     }
 
     @Override
@@ -115,7 +104,7 @@ public class TESluice extends TEBase implements ITickable
                         List<Ore> oreList = chunkData.getChunkOres();
                         Ore drop = oreList.get(Constants.RNG.nextInt(oreList.size()));
                         ItemStack output = new ItemStack(ItemSmallOre.get(drop));
-                        Helpers.spawnItemStack(world, pos.up(), output);
+                        Helpers.spawnItemStack(world, getFrontWaterPos(), output);
                         consumeSoil();
                     }
                     else
@@ -129,29 +118,37 @@ public class TESluice extends TEBase implements ITickable
             {
                 delayTimer = 20;
                 Fluid flowing = getFlowingFluid();
-                if (flowing != null)
+                //Try placing the output block if has input flow and is allowed fluid
+                if (flowing != null && ALLOWED_FLUIDS.test(flowing))
                 {
-                    //noinspection ConstantConditions
-                    BlockPos frontPos = pos.down().offset(getBlockFacing().getOpposite(), 2);
+                    BlockPos frontPos = getFrontWaterPos();
                     if (world.getBlockState(frontPos).getMaterial().isReplaceable())
                     {
                         world.setBlockState(frontPos, flowing.getBlock().getDefaultState());
                     }
                 }
-                for (EntityItem entityItem : world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos).grow(1), EntitySelectors.IS_ALIVE))
+                //Consume inputs
+                if (soil < MAX_SOIL)
                 {
-                    ItemStack stack = entityItem.getItem();
-                    if (stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock() instanceof BlockRockVariant)
+                    for (EntityItem entityItem : world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos).grow(1), EntitySelectors.IS_ALIVE))
                     {
-                        BlockRockVariant rockBlock = (BlockRockVariant) ((ItemBlock) stack.getItem()).getBlock();
-                        if (rockBlock.getType() == Rock.Type.SAND || rockBlock.getType() == Rock.Type.GRAVEL)
+                        ItemStack stack = entityItem.getItem();
+                        if (stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock() instanceof BlockRockVariant)
                         {
-                            soil += 20;
-                            stack.shrink(1);
-                            if (stack.getCount() <= 0)
+                            BlockRockVariant rockBlock = (BlockRockVariant) ((ItemBlock) stack.getItem()).getBlock();
+                            if (rockBlock.getType() == Rock.Type.SAND || rockBlock.getType() == Rock.Type.GRAVEL)
                             {
-                                entityItem.setDead();
-                                break;
+                                soil += 20;
+                                if (soil > MAX_SOIL)
+                                {
+                                    soil = MAX_SOIL;
+                                }
+                                stack.shrink(1);
+                                if (stack.getCount() <= 0)
+                                {
+                                    entityItem.setDead();
+                                    break;
+                                }
                             }
                         }
                     }
@@ -164,12 +161,49 @@ public class TESluice extends TEBase implements ITickable
         }
     }
 
-    private boolean hasWater()
+    @Nullable
+    public Fluid getFlowingFluid()
+    {
+        BlockFluidBase block = getFlowingFluidBlock();
+        return block == null ? null : block.getFluid();
+    }
+
+    @Nullable
+    public EnumFacing getBlockFacing()
+    {
+        if (!hasWorld() || !(world.getBlockState(pos).getBlock() instanceof BlockSluice))
+        {
+            return null;
+        }
+        return world.getBlockState(pos).getValue(BlockHorizontal.FACING);
+    }
+
+    private BlockPos getFrontWaterPos()
+    {
+        //noinspection ConstantConditions
+        return pos.down().offset(getBlockFacing().getOpposite(), 2);
+    }
+
+    /**
+     * Checks if this sluice has flowing fluid (only allowed ones)
+     *
+     * @return true if the entrance and the output blocks are the same fluid and in the allowed predicate
+     */
+    private boolean hasFlow()
     {
 
         Fluid fluid = getFlowingFluid();
-        return fluid != null;
-        //return fluid == FluidsTFC.FRESH_WATER.get(); //todo salt water
+        if (fluid == null || !ALLOWED_FLUIDS.test(fluid))
+        {
+            return false;
+        }
+        IBlockState frontState = world.getBlockState(getFrontWaterPos());
+        Block block = frontState.getBlock();
+        if (block instanceof BlockFluidBase)
+        {
+            return ((BlockFluidBase) block).getFluid() == fluid;
+        }
+        return false;
     }
 
     @Override
@@ -191,7 +225,7 @@ public class TESluice extends TEBase implements ITickable
 
     private void consumeSoil()
     {
-        if (soil > 0 && hasWater())
+        if (soil > 0 && hasFlow())
         {
             soil--;
             ticksRemaining = ConfigTFC.GENERAL.sluiceTicks;
