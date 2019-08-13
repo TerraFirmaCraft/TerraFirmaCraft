@@ -72,40 +72,40 @@ public class TESRSluice extends TileEntitySpecialRenderer<TESluice>
         //Top
         buffer.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION_TEX_NORMAL);
 
-        buffer.pos(0, 1.033D, 0).tex(sprite.getMinU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
-        buffer.pos(0, -0.1D, 2.45D).tex(sprite.getMinU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
-        buffer.pos(1, -0.1D, 2.45D).tex(sprite.getMaxU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
-        buffer.pos(1, 1.033D, 0).tex(sprite.getMaxU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.05D, 1.033D, 0).tex(sprite.getMinU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.05D, -0.15D, 2.45D).tex(sprite.getMinU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.95D, -0.15D, 2.45D).tex(sprite.getMaxU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.95D, 1.033D, 0).tex(sprite.getMaxU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
 
         Tessellator.getInstance().draw();
 
         //Bottom
         buffer.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION_TEX_NORMAL);
 
-        buffer.pos(0, 0.433D, 0).tex(sprite.getMinU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
-        buffer.pos(0, -0.3D, 2.45D).tex(sprite.getMinU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
-        buffer.pos(1, -0.3D, 2.45D).tex(sprite.getMaxU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
-        buffer.pos(1, 0.433D, 0).tex(sprite.getMaxU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.05D, 0.833D, 0).tex(sprite.getMinU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.05D, -0.3D, 2.45D).tex(sprite.getMinU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.95D, -0.3D, 2.45D).tex(sprite.getMaxU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.95D, 0.833D, 0).tex(sprite.getMaxU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
 
         Tessellator.getInstance().draw();
 
         //Left
         buffer.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION_TEX_NORMAL);
 
-        buffer.pos(0, 1.033D, 0).tex(sprite.getMinU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
-        buffer.pos(0, -0.3D, 2.45D).tex(sprite.getMinU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
-        buffer.pos(0, -0.1D, 2.45D).tex(sprite.getMaxU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
-        buffer.pos(0, 0.433D, 0).tex(sprite.getMaxU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.05D, -0.15D, 2.45D).tex(sprite.getMinU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.05D, 1.033D, 0).tex(sprite.getMinU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.05D, 0.833D, 0).tex(sprite.getMaxU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.05D, -0.3D, 2.45D).tex(sprite.getMaxU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
 
         Tessellator.getInstance().draw();
 
         //Right
         buffer.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION_TEX_NORMAL);
 
-        buffer.pos(1, 1.033D, 0).tex(sprite.getMinU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
-        buffer.pos(1, -0.3D, 2.45D).tex(sprite.getMinU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
-        buffer.pos(1, -0.1D, 2.45D).tex(sprite.getMaxU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
-        buffer.pos(1, 0.433D, 0).tex(sprite.getMaxU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.95D, 1.033D, 0).tex(sprite.getMinU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.95D, -0.15D, 2.45D).tex(sprite.getMinU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.95D, -0.3D, 2.45D).tex(sprite.getMaxU(), sprite.getMaxV()).normal(0, 0, 1).endVertex();
+        buffer.pos(0.95D, 0.833D, 0).tex(sprite.getMaxU(), sprite.getMinV()).normal(0, 0, 1).endVertex();
 
         Tessellator.getInstance().draw();
 
