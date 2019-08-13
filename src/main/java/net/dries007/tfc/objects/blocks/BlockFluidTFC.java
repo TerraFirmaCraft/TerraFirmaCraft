@@ -52,34 +52,60 @@ public class BlockFluidTFC extends BlockFluidClassic
     @Override
     public void updateTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random rand)
     {
-        IBlockState newState = world.getBlockState(pos);
-
         super.updateTick(world, pos, state, rand);
 
-        // detect if we should replace ourselves with a different BlockFluidTFC type
-        if (newState.getBlock() == this)
-        {
-            // we have to make sure we're getting the updated state as a result of the super call
-            int flowMeta = newState.getValue(LEVEL) + 1;
+        // have to catch the updates that the super call did
+        IBlockState newState = world.getBlockState(pos);
 
-            // if we are being powered from above, use a meta of 1
-            if (world.getBlockState(pos.down(densityDir)).getBlock() == this)
+        // detect if we should replace ourselves with a different BlockFluidTFC type
+        if (!isSourceBlock(world, pos))
+        {
+            int minMeta = 100;
+            int currentMeta = quantaPerBlock - 1;
+            BlockFluidTFC blockType = this;
+
+            if (newState.getBlock() == this)
+                currentMeta = newState.getValue(LEVEL);
+
+            // only check adjacently if here isn't powered from above
+            if (world.getBlockState(pos.down(densityDir)).getBlock() != this)
             {
-                flowMeta = 1;
+                for (EnumFacing side : EnumFacing.HORIZONTALS)
+                {
+                    BlockPos neighborPos = pos.offset(side);
+                    IBlockState neighborState = world.getBlockState(neighborPos);
+                    Block block = neighborState.getBlock();
+
+                    if (block instanceof BlockFluidTFC)
+                    {
+                        BlockFluidTFC neighborBlock = (BlockFluidTFC) block;
+                        int neighborMeta;
+                        Block neighborAboveBlock = world.getBlockState(neighborPos.up(densityDir)).getBlock();
+                        if (neighborAboveBlock == neighborBlock)
+                            neighborMeta = 0;
+                        else
+                            neighborMeta = neighborState.getValue(LEVEL);
+
+                        if (neighborMeta < minMeta)
+                        {
+                            blockType = neighborBlock;
+                            minMeta = neighborMeta;
+                        }
+                        else if (neighborMeta == minMeta)
+                        {
+                            if (neighborBlock.getDensity() > blockType.getDensity() ||
+                                (neighborBlock == this && neighborBlock.getDensity() >= blockType.getDensity()))
+                            {
+                                blockType = neighborBlock;
+                            }
+                        }
+                    }
+                }
             }
 
-            if (flowMeta >= quantaPerBlock)
-                return;
-
-            for (EnumFacing side : EnumFacing.HORIZONTALS)
+            if (minMeta + 1 < currentMeta && blockType != this)
             {
-                BlockPos neighborPos = pos.offset(side);
-                IBlockState neighborState = world.getBlockState(neighborPos);
-                Block neighborBlock = neighborState.getBlock();
-                if (neighborBlock != this && neighborBlock instanceof BlockFluidTFC)
-                {
-                    flowIntoBlock(world, neighborPos, flowMeta);
-                }
+                world.setBlockState(pos, blockType.getDefaultState().withProperty(LEVEL, currentMeta), 3);
             }
         }
     }
@@ -317,8 +343,8 @@ public class BlockFluidTFC extends BlockFluidClassic
     @Override
     public IBlockState getExtendedState(@Nonnull IBlockState oldState, @Nonnull IBlockAccess world, @Nonnull BlockPos pos)
     {
-        IExtendedBlockState state = (IExtendedBlockState)oldState;
-        state = state.withProperty(FLOW_DIRECTION, (float)getFlowDirection(world, pos));
+        IExtendedBlockState state = (IExtendedBlockState) oldState;
+        state = state.withProperty(FLOW_DIRECTION, (float) getFlowDirection(world, pos));
         IBlockState[][] upBlockState = new IBlockState[3][3];
         float[][] height = new float[3][3];
         float[][] corner = new float[2][2];
@@ -355,10 +381,10 @@ public class BlockFluidTFC extends BlockFluidClassic
                 }
             }
             //check for downflow above corners
-            boolean n =  isMergeableFluid(upBlockState[0][1]);
-            boolean s =  isMergeableFluid(upBlockState[2][1]);
-            boolean w =  isMergeableFluid(upBlockState[1][0]);
-            boolean e =  isMergeableFluid(upBlockState[1][2]);
+            boolean n = isMergeableFluid(upBlockState[0][1]);
+            boolean s = isMergeableFluid(upBlockState[2][1]);
+            boolean w = isMergeableFluid(upBlockState[1][0]);
+            boolean e = isMergeableFluid(upBlockState[1][2]);
             boolean nw = isMergeableFluid(upBlockState[0][0]);
             boolean ne = isMergeableFluid(upBlockState[0][2]);
             boolean sw = isMergeableFluid(upBlockState[2][0]);
