@@ -11,7 +11,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -113,7 +112,8 @@ public final class Helpers
     }
 
     /**
-     * Gets a map of generated ores for each chunk in radius
+     * Gets a map of generated ores for each chunk in radius.
+     * It takes account only loaded chunks, so if radius is too big you probably won't get an accurate data.
      *
      * @param world  the WorldObj
      * @param chunkX the center chunk's X position
@@ -121,17 +121,20 @@ public final class Helpers
      * @param radius the radius to scan. can be 0 to scan only the central chunk
      * @return a map containing all ores generated for each chunk
      */
-    public static Map<Chunk, List<Ore>> getChunkOres(World world, int chunkX, int chunkZ, int radius)
+    public static Map<ChunkPos, Set<Ore>> getChunkOres(World world, int chunkX, int chunkZ, int radius)
     {
-        Map<Chunk, List<Ore>> map = new HashMap<>();
+        Map<ChunkPos, Set<Ore>> map = new HashMap<>();
         for (int x = chunkX - radius; x <= chunkX + radius; x++)
         {
             for (int z = chunkZ - radius; z <= chunkZ + radius; z++)
             {
-                Chunk chunk = world.getChunk(x, z);
-                ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
-                List<Ore> list = Lists.newArrayList(chunkData.getChunkOres());
-                map.put(chunk, list);
+                ChunkPos chunkPos = new ChunkPos(x, z);
+                if (world.isBlockLoaded(chunkPos.getBlock(8, 0, 8)))
+                {
+                    Chunk chunk = world.getChunk(x, z);
+                    ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
+                    map.put(chunkPos, chunkData.getChunkOres());
+                }
             }
         }
         return map;

@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
@@ -32,9 +33,11 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.devices.BlockSluice;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.items.ItemGem;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -80,38 +83,50 @@ public class TESluice extends TEBase implements ITickable
             {
                 if (--ticksRemaining <= 0)
                 {
-                    ChunkPos myPos = world.getChunk(pos).getPos();
-                    int radius = ConfigTFC.GENERAL.sluiceRadius;
-                    //Copy from Helper method, but only look for workable chunks
-                    List<Chunk> chunks = new ArrayList<>();
-                    for (int x = myPos.x - radius; x <= myPos.x + radius; x++)
+                    if (Constants.RNG.nextDouble() < ConfigTFC.GENERAL.sluiceOreChance)
                     {
-                        for (int z = myPos.z - radius; z <= myPos.z + radius; z++)
+                        ChunkPos myPos = world.getChunk(pos).getPos();
+                        int radius = ConfigTFC.GENERAL.sluiceRadius;
+                        //Copy from Helper method, but only look for workable chunks
+                        List<Chunk> chunks = new ArrayList<>();
+                        for (int x = myPos.x - radius; x <= myPos.x + radius; x++)
                         {
-                            Chunk chunk = world.getChunk(x, z);
-                            ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
-                            if (chunkData.canWork(true) && chunkData.getChunkOres().size() > 0)
+                            for (int z = myPos.z - radius; z <= myPos.z + radius; z++)
                             {
-                                chunks.add(chunk);
+                                Chunk chunk = world.getChunk(x, z);
+                                ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
+                                if (chunkData.canWork(1) && chunkData.getChunkOres().size() > 0)
+                                {
+                                    chunks.add(chunk);
+                                }
                             }
                         }
+                        if (chunks.size() > 0)
+                        {
+                            Chunk workingChunk = chunks.get(Constants.RNG.nextInt(chunks.size()));
+                            ChunkDataTFC chunkData = ChunkDataTFC.get(workingChunk);
+                            chunkData.addWork();
+                            List<Ore> oreList = Lists.newArrayList(chunkData.getChunkOres());
+                            Ore drop = oreList.get(Constants.RNG.nextInt(oreList.size()));
+                            ItemStack output = new ItemStack(ItemSmallOre.get(drop));
+                            Helpers.spawnItemStack(world, getFrontWaterPos(), output);
+                        }
                     }
-                    if (chunks.size() > 0)
+                    if (Constants.RNG.nextDouble() < ConfigTFC.GENERAL.sluiceGemChance)
                     {
-                        Chunk workingChunk = chunks.get(Constants.RNG.nextInt(chunks.size()));
-                        ChunkDataTFC chunkData = ChunkDataTFC.get(workingChunk);
-                        chunkData.addWork();
-                        List<Ore> oreList = chunkData.getChunkOres();
-                        Ore drop = oreList.get(Constants.RNG.nextInt(oreList.size()));
-                        ItemStack output = new ItemStack(ItemSmallOre.get(drop));
-                        Helpers.spawnItemStack(world, getFrontWaterPos(), output);
-                        consumeSoil();
+                        Gem dropGem;
+                        if (Constants.RNG.nextDouble() < ConfigTFC.GENERAL.sluiceDiamondGemChance)
+                        {
+                            dropGem = Gem.DIAMOND;
+                        }
+                        else
+                        {
+                            dropGem = Gem.getRandomDropGem(Constants.RNG);
+                        }
+                        Gem.Grade grade = Gem.Grade.randomGrade(Constants.RNG);
+                        Helpers.spawnItemStack(world, getFrontWaterPos(), ItemGem.get(dropGem, grade, 1));
                     }
-                    else
-                    {
-                        soil = 0;
-                        ticksRemaining = 0;
-                    }
+                    consumeSoil();
                 }
             }
             if (--delayTimer <= 0)

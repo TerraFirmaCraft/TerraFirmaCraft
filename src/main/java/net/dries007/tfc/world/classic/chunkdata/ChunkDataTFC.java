@@ -5,14 +5,15 @@
 
 package net.dries007.tfc.world.classic.chunkdata;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.nbt.*;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -119,7 +120,7 @@ public final class ChunkDataTFC
     private float avgTemp;
     private float floraDensity;
     private float floraDiversity;
-    private List<Ore> chunkOres = new ArrayList<>();
+    private Set<Ore> chunkOres = new HashSet<>();
     private int chunkWorkage;
 
     /**
@@ -156,18 +157,18 @@ public final class ChunkDataTFC
     }
 
     /**
-     * Returns a list of ores that generated in this chunk
+     * Returns a set of ores that generated in this chunk
      *
-     * @return the immutable list containing all ores that generated in this chunk
+     * @return the immutable set containing all ores that generated in this chunk
      */
-    public List<Ore> getChunkOres()
+    public Set<Ore> getChunkOres()
     {
-        return ImmutableList.copyOf(chunkOres);
+        return ImmutableSet.copyOf(chunkOres);
     }
 
-    public boolean canWork(boolean sluice)
+    public boolean canWork(int amount)
     {
-        return ConfigTFC.GENERAL.overworkChunk || (sluice ? chunkWorkage < ConfigTFC.GENERAL.maxWorkSluice : chunkWorkage < ConfigTFC.GENERAL.maxWorkGoldPan);
+        return ConfigTFC.GENERAL.overworkChunk || chunkWorkage <= ConfigTFC.GENERAL.maxWorkChunk + amount;
     }
 
     public void addWork(int amount)
@@ -410,7 +411,7 @@ public final class ChunkDataTFC
 
                 instance.chunkWorkage = root.getInteger("chunkWorkage");
 
-                instance.chunkOres = new ArrayList<>();
+                instance.chunkOres = new HashSet<>();
 
                 if (root.hasKey("chunkOres"))
                 {

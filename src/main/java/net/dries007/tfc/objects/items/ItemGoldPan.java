@@ -92,7 +92,7 @@ public class ItemGoldPan extends ItemTFC
                 {
                     Chunk chunk = world.getChunk(player.getPosition());
                     ChunkDataTFC chunkDataTFC = ChunkDataTFC.get(chunk);
-                    if (chunkDataTFC.canWork(false))
+                    if (chunkDataTFC.canWork(6))
                     {
                         Random rand = new Random(world.getSeed() + chunk.getPos().x * 241179128412L + chunk.getPos().z * 327910215471L);
                         List<Ore> chunkOres = TFCRegistries.ORES.getValuesCollection()
@@ -105,7 +105,7 @@ public class ItemGoldPan extends ItemTFC
                                 Helpers.spawnItemStack(world, player.getPosition(), new ItemStack(ItemSmallOre.get(x)));
                             }
                         });
-                        chunkDataTFC.addWork();
+                        chunkDataTFC.addWork(6);
                         stack.setItemDamage(0);
                         if (Constants.RNG.nextFloat() < 0.01) // 1/100 chance, same as 1.7.10
                         {

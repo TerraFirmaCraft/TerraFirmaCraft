@@ -221,7 +221,6 @@ public final class TerraFirmaCraft
         event.registerServerCommand(new CommandHeat());
         event.registerServerCommand(new CommandTimeTFC());
         event.registerServerCommand(new CommandFindVeins());
-        event.registerServerCommand(new CommandFindOres());
         event.registerServerCommand(new CommandNutrients());
     }
 

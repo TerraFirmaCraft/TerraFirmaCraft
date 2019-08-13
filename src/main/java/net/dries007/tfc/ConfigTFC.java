@@ -197,15 +197,10 @@ public class ConfigTFC
         @Config.RangeInt(min = 1, max = 10_000)
         public int richOreMetalAmount = 35;
 
-        @Config.Comment("The amount of times you can use a gold pan in a chunk.")
-        @Config.LangKey("config." + MOD_ID + ".general.maxWorkGoldPan")
+        @Config.Comment("The amount of times a chunk can be worked. Note: While sluices increase work by 1, Goldpan increase by 6.")
+        @Config.LangKey("config." + MOD_ID + ".general.maxWorkChunk")
         @Config.RangeInt(min = 1, max = 10_000)
-        public int maxWorkGoldPan = 50;
-
-        @Config.Comment("The amount of times sluice can work in a chunk.")
-        @Config.LangKey("config." + MOD_ID + ".general.maxWorkSluice")
-        @Config.RangeInt(min = 1, max = 10_000)
-        public int maxWorkSluice = 300;
+        public int maxWorkChunk = 300;
 
         @Config.Comment("The radius sluice works on chunks.")
         @Config.LangKey("config." + MOD_ID + ".general.sluiceRadius")
@@ -216,6 +211,21 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.sluiceTicks")
         @Config.RangeInt(min = 20)
         public int sluiceTicks = 100;
+
+        @Config.Comment("Chance that a sluice operation produce small ore.")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.sluiceOreChance")
+        public double sluiceOreChance = 0.05;
+
+        @Config.Comment("Chance that a sluice operation produce gems.")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.sluiceGemChance")
+        public double sluiceGemChance = 0.05;
+
+        @Config.Comment("Chance that a diamond is dropped when sluice produce gems.")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.sluiceDiamondGemChance")
+        public double sluiceDiamondGemChance = 0.01;
 
         @Config.Comment("If true, limits for gold pan and sluice are ignored.")
         @Config.LangKey("config." + MOD_ID + ".general.overworkChunk")
