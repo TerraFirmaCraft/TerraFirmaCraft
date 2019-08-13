@@ -59,11 +59,11 @@ public class ItemBlockSluice extends ItemBlockTFC
         }
         else
         {
-            if (!worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) || !worldIn.getBlockState(pos.offset(player.getHorizontalFacing())).getBlock().isReplaceable(worldIn, pos))
+            if (!worldIn.getBlockState(pos).getMaterial().isReplaceable() || !worldIn.getBlockState(pos.offset(player.getHorizontalFacing())).getMaterial().isReplaceable())
             {
                 pos = pos.up(); //try the above
             }
-            if (!worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) || !worldIn.getBlockState(pos.offset(player.getHorizontalFacing())).getBlock().isReplaceable(worldIn, pos))
+            if (!worldIn.getBlockState(pos).getMaterial().isReplaceable() || !worldIn.getBlockState(pos.offset(player.getHorizontalFacing())).getMaterial().isReplaceable())
             {
                 return EnumActionResult.FAIL;
             }

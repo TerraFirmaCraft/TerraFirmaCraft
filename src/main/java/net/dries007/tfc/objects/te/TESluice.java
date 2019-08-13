@@ -50,7 +50,7 @@ public class TESluice extends TEBase implements ITickable
     public TESluice()
     {
         super();
-        ALLOWED_FLUIDS = x -> x == FluidsTFC.FRESH_WATER.get() || x == FluidsTFC.LIMEWATER.get();
+        ALLOWED_FLUIDS = x -> x == FluidsTFC.FRESH_WATER.get() || x == FluidsTFC.LIMEWATER.get(); //placeholder, missed commit for SALT_WATER
     }
 
     @Nullable
