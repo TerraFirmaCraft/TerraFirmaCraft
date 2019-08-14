@@ -548,7 +548,7 @@ public final class BlocksTFC
                 }
                 else
                 {
-                    normalItemBlocks.add(new ItemBlockPlant(blockPlant));
+                    normalItemBlocks.add(new ItemBlockTFC(blockPlant));
                 }
             }
         }
@@ -563,7 +563,7 @@ public final class BlocksTFC
             allGrassBlocks = b.build();
             for (BlockPlantTFC blockPlant : allGrassBlocks)
             {
-                normalItemBlocks.add(new ItemBlockPlant(blockPlant));
+                normalItemBlocks.add(new ItemBlockTFC(blockPlant));
             }
         }
 

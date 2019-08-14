@@ -306,28 +306,14 @@ public final class ItemsTFC
         // Note: if you add items you don't need to put them in this list of todos. Feel free to add them where they make sense :)
         // todo: Bow? Arrows?
         // todo: Fishing rod?
-        // todo: (white) dye? (so white dye isn't bonemeal)
         // todo: ink?
-        // todo: clay? (or catch rightclick with event, that should work too)
-        // todo: rope? (could just keep vanilla version)
-        // todo: shears? Higher durability versions for different metals (iron/streels/others?)?
         // todo: flint & steel? Higher durability versions for different metals (iron/steels)?
         // todo: fluid glass bottles? (alcohols/water/vinegar/brine)
-
-        // todo: water jug (make this have durability/multiple rounds of water?)
-
         // todo: minecart with chest (so the chest dropped is the right kind of wood)
-        // todo: custom buckets: Wood (finite) & steel (infinite/classic/source)
-        // todo: wool, yarn, cloth (wool, silk & burlap)
+        // todo: custom buckets: steel (infinite/classic/source)
         // todo: mortar
-        // todo: hides (raw, soaked, scraped, prepared)
-        // todo: straw
 
-        // todo: jute & jute fiber
         // todo: quiver
-        // todo: millstone (quern)
-
-        // todo: foods & plants & seeds & fruits & fruit tree saplings & berries & berry bushes
 
         allSimpleItems = simpleItems.build();
     }
