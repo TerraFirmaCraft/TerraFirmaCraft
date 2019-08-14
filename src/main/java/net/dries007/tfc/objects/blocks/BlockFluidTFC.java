@@ -271,9 +271,10 @@ public class BlockFluidTFC extends BlockFluidClassic
 
             // displaceIfPossible covers all cases that aren't BlockFluidTFc instances
             // If it is a BlockFluidTFC instance, we need to check all the corner cases for our unique flow behavior
-            boolean replace = !(targetBlock instanceof BlockFluidTFC);
+            boolean replace = !(targetBlock instanceof BlockFluidBase);
 
-            if (!replace)
+            // to make sure we only replace BlockFluidTFC blocks, and not any other modded fluid blocks.
+            if (targetBlock instanceof BlockFluidTFC)
             {
                 // always replace flows if we're flowing in from above
                 if (world.getBlockState(pos.down(densityDir)).getBlock() == this)
