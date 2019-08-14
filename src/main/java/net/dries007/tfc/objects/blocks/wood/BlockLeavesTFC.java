@@ -89,10 +89,10 @@ public class BlockLeavesTFC extends BlockLeaves
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        //Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
+        // Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
         entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
         entityIn.fallDistance = 0;
-        //Entity motion is reduced by leaves.
+        // Entity motion is reduced by leaves.
         entityIn.motionX *= 0.1D;
         if (entityIn.motionY < 0)
         {

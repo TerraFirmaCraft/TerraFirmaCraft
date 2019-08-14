@@ -310,12 +310,12 @@ public class ChunkGenTFC implements IChunkGenerator
                 BlockPos posDown = pos.down();
                 IBlockState stateAt = world.getBlockState(posDown);
                 float actualTemp = ClimateTFC.getActualTemp(world, posDown);
-                if (actualTemp < IceMeltHandler.WATER_FREEZE_THRESHOLD && stateAt.getBlock() == FRESH_WATER.getBlock())
+                if (actualTemp < IceMeltHandler.ICE_MELT_THRESHOLD - 2 + 2 * (rand.nextFloat() - rand.nextFloat()) && stateAt.getBlock() == FRESH_WATER.getBlock())
                 {
                     world.setBlockState(posDown, FRESH_WATER_ICE);
                 }
 
-                if (canSnowAt(pos))
+                if (world.isAirBlock(pos) && SNOW.getBlock().canPlaceBlockAt(world, pos) && actualTemp < -4 + 4 * (rand.nextFloat() - rand.nextFloat()))
                 {
                     world.setBlockState(pos, SNOW);
                 }

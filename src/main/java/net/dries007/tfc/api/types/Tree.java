@@ -102,17 +102,22 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         gen.generateTree(manager, world, pos, this, rand);
     }
 
-    public void makeTree(TemplateManager manager, World world, BlockPos pos, Random rand)
+    public boolean makeTree(TemplateManager manager, World world, BlockPos pos, Random rand)
     {
         if (gen.canGenerateTree(world, pos, this))
+        {
             makeTreeWithoutChecking(manager, world, pos, rand);
+            return true;
+        }
+        return false;
     }
 
     public void makeTree(World world, BlockPos pos, Random rand)
     {
-        if (world.isRemote) return;
-        final TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
-        makeTree(manager, world, pos, rand);
+        if (!world.isRemote)
+        {
+            makeTree(((WorldServer) world).getStructureTemplateManager(), world, pos, rand);
+        }
     }
 
     public boolean isValidLocation(float temp, float rain, float density)
@@ -206,7 +211,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
             this.maxRain = maxRain;
             this.name = name;
             this.gen = gen;
-            this.maxGrowthRadius = 2; // default values
+            this.maxGrowthRadius = 1; // default values
             this.dominance = 0.001f * (maxTemp - minTemp) * (maxRain - minRain);
             this.maxHeight = 6;
             this.maxDecayDistance = 4;

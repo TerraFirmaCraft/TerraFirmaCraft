@@ -13,6 +13,7 @@ import net.minecraft.block.BlockSnow;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -39,6 +40,20 @@ public class BlockSnowTFC extends BlockSnow
         {
             worldIn.setBlockToAir(pos);
         }
+    }
+
+    @Override
+    public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
+    {
+        entityIn.motionX *= 0.85;
+        entityIn.motionZ *= 0.85;
+    }
+
+    @Override
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        entityIn.motionX *= 0.85;
+        entityIn.motionZ *= 0.85;
     }
 
     @Override

@@ -7,6 +7,8 @@ package net.dries007.tfc.api.util;
 
 import java.util.Random;
 
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.TemplateManager;
@@ -56,7 +58,8 @@ public interface ITreeGenerator
         final int height = treeType.getMaxHeight();
         for (int y = 1; y <= height; y++)
         {
-            if (!world.getBlockState(pos.up(y)).getMaterial().isReplaceable())
+            IBlockState state = world.getBlockState(pos.up(y));
+            if (!state.getMaterial().isReplaceable() && state.getMaterial() != Material.LEAVES)
             {
                 return false;
             }
