@@ -35,7 +35,6 @@ public class BlockThatchBed extends BlockBed
 {
     public BlockThatchBed()
     {
-        super();
         setSoundType(SoundType.PLANT);
         setHardness(0.6F);
         Blocks.FIRE.setFireInfo(this, 60, 20);
@@ -44,16 +43,15 @@ public class BlockThatchBed extends BlockBed
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (worldIn.isRemote)
+        if (!worldIn.isRemote)
         {
-            return true;
-        }
-        playerIn.setSpawnPoint(pos, false);
-        playerIn.sendMessage(new TextComponentTranslation("tfc.thatch_bed.spawnpoint"));
-        if (!worldIn.isThundering())
-        {
-            playerIn.sendStatusMessage(new TextComponentTranslation("tfc.thatch_bed.not_thundering"), true);
-            return true;
+            playerIn.setSpawnPoint(pos, false);
+            playerIn.sendMessage(new TextComponentTranslation("tfc.thatch_bed.spawnpoint"));
+            if (!worldIn.isThundering())
+            {
+                playerIn.sendStatusMessage(new TextComponentTranslation("tfc.thatch_bed.not_thundering"), true);
+                return true;
+            }
         }
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
     }
