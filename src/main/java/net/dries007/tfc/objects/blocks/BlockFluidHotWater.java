@@ -15,7 +15,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -23,12 +22,11 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 
-public class BlockFluidHotWater extends BlockFluidClassic
+public class BlockFluidHotWater extends BlockFluidTFC
 {
     public BlockFluidHotWater()
     {
-        super(FluidsTFC.HOT_WATER.get(), Material.WATER);
-        this.canCreateSources = false;
+        super(FluidsTFC.HOT_WATER.get(), Material.WATER, false);
     }
 
     @SideOnly(Side.CLIENT)
