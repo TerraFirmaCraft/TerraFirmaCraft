@@ -12,23 +12,21 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.util.climate.ITemperatureBlock;
 import net.dries007.tfc.util.climate.IceMeltHandler;
 
-public class BlockFluidWater extends BlockFluidClassic implements ITemperatureBlock
+public class BlockFluidWater extends BlockFluidTFC implements ITemperatureBlock
 {
     private final boolean isSalt;
     private final float freezeThreshold;
 
     public BlockFluidWater(Fluid fluid, Material material, boolean isSalt)
     {
-        super(fluid, material);
+        super(fluid, material, true);
         this.isSalt = isSalt;
-        this.canCreateSources = true;
         this.freezeThreshold = isSalt ? IceMeltHandler.SALT_WATER_FREEZE_THRESHOLD : IceMeltHandler.WATER_FREEZE_THRESHOLD;
     }
 

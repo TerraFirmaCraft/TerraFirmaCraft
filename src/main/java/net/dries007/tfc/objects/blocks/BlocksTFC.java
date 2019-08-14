@@ -17,7 +17,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
-import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -304,21 +303,21 @@ public final class BlocksTFC
             {
                 if (wrapper.isDefault())
                 {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidClassic(wrapper.get(), FluidsTFC.MATERIAL_ALCOHOL)));
+                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), FluidsTFC.MATERIAL_ALCOHOL)));
                 }
             }
             for (FluidWrapper wrapper : FluidsTFC.getAllOtherFiniteFluids())
             {
                 if (wrapper.isDefault())
                 {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidClassic(wrapper.get(), Material.WATER)));
+                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER)));
                 }
             }
             for (FluidWrapper wrapper : FluidsTFC.getAllMetalFluids())
             {
                 if (wrapper.isDefault())
                 {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidClassic(wrapper.get(), Material.LAVA)));
+                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.LAVA)));
                 }
             }
             allFluidBlocks = b.build();
