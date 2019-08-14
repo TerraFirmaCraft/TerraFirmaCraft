@@ -253,6 +253,7 @@ public final class ClientRegisterEvents
         };
 
         // Foliage Color
+        // todo: do something different for conifers - they should have a different color mapping through the seasons
         IBlockColor foliageColor = (state, worldIn, pos, tintIndex) -> {
             if (pos != null)
             {

@@ -5,14 +5,13 @@
 
 package net.dries007.tfc.world.classic.worldgen;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
@@ -79,18 +78,26 @@ public class WorldGenTrees implements IWorldGenerator
             return;
         }
 
-        final int spawnTries = (int) (density * density * 20f);
+        final int treesPerChunk = (int) (MathHelper.clamp(density, 0.1, 0.9) * 20f - 2);
         final int maxTrees = Math.min(trees.size(), Math.min(5, (int) (1 + (density + diversity) * 2.5f)));
         trees = trees.subList(0, maxTrees);
 
-        for (int i = 0; i < spawnTries; i++)
+        int treesPlaced = 0;
+        Set<BlockPos> checkedPositions = new HashSet<>();
+        for (int i = 0; treesPlaced < treesPerChunk && i < treesPerChunk * 3; i++)
         {
-            final int x = chunkX * 16 + random.nextInt(16) + 8;
-            final int z = chunkZ * 16 + random.nextInt(16) + 8;
-            final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
-            final Tree tree = getTree(trees, density, random);
+            BlockPos column = new BlockPos(chunkX * 16 + random.nextInt(16) + 8, 0, chunkZ * 16 + random.nextInt(16) + 8);
+            if (!checkedPositions.contains(column))
+            {
+                final BlockPos pos = world.getTopSolidOrLiquidBlock(column);
+                final Tree tree = getTree(trees, density, random);
 
-            tree.makeTree(manager, world, pos, random);
+                checkedPositions.add(column);
+                if (tree.makeTree(manager, world, pos, random))
+                {
+                    treesPlaced++;
+                }
+            }
         }
 
         trees.removeIf(t -> !t.hasBushes());
@@ -115,7 +122,9 @@ public class WorldGenTrees implements IWorldGenerator
     private Tree getTree(List<Tree> trees, float density, Random random)
     {
         if (trees.size() == 1 || random.nextFloat() < 0.8f - density * 0.4f)
+        {
             return trees.get(0);
+        }
         return trees.get(1 + random.nextInt(trees.size() - 1));
     }
 
