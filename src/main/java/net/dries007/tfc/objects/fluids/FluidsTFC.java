@@ -14,9 +14,6 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.potion.PotionEffect;
@@ -36,8 +33,6 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public final class FluidsTFC
 {
-    public static final Material MATERIAL_ALCOHOL = new MaterialLiquid(MapColor.WATER);
-
     private static final ResourceLocation STILL = new ResourceLocation(MOD_ID, "blocks/fluid_still");
     private static final ResourceLocation FLOW = new ResourceLocation(MOD_ID, "blocks/fluid_flow");
 
@@ -66,15 +61,9 @@ public final class FluidsTFC
     private static final ResourceLocation LAVA_STILL = new ResourceLocation(MOD_ID, "blocks/lava_still");
     private static final ResourceLocation LAVA_FLOW = new ResourceLocation(MOD_ID, "blocks/lava_flow");
 
-    private static ImmutableSet<FluidWrapper> allInfiniteFluids;
     private static ImmutableSet<FluidWrapper> allAlcoholsFluids;
     private static ImmutableMap<Metal, FluidWrapper> allMetalFluids;
     private static ImmutableSet<FluidWrapper> allOtherFiniteFluids;
-
-    public static ImmutableSet<FluidWrapper> getAllInfiniteFluids()
-    {
-        return allInfiniteFluids;
-    }
 
     public static ImmutableSet<FluidWrapper> getAllAlcoholsFluids()
     {
@@ -123,23 +112,19 @@ public final class FluidsTFC
 
     public static void registerFluids()
     {
-        allInfiniteFluids = ImmutableSet.<FluidWrapper>builder()
-            .add(
-                FRESH_WATER = registerFluid(new Fluid("fresh_water", STILL, FLOW, 0xFF1F32DA), (fluid, isDefault) -> new DrinkableFluidWrapper(fluid, isDefault, player -> {
-                    if (player.getFoodStats() instanceof FoodStatsTFC)
-                    {
-                        ((FoodStatsTFC) player.getFoodStats()).addThirst(40);
-                    }
-                })),
-                HOT_WATER = registerFluid(new Fluid("hot_water", STILL, FLOW, 0xFF345FDA).setTemperature(350)),
-                SALT_WATER = registerFluid(new Fluid("salt_water", STILL, FLOW, 0xFF1F5099), (fluid, isDefault) -> new DrinkableFluidWrapper(fluid, isDefault, player -> {
-                    if (player.getFoodStats() instanceof FoodStatsTFC)
-                    {
-                        ((FoodStatsTFC) player.getFoodStats()).addThirst(-10);
-                    }
-                }))
-            )
-            .build();
+        FRESH_WATER = registerFluid(new Fluid("fresh_water", STILL, FLOW, 0xFF1F32DA), (fluid, isDefault) -> new DrinkableFluidWrapper(fluid, isDefault, player -> {
+            if (player.getFoodStats() instanceof FoodStatsTFC)
+            {
+                ((FoodStatsTFC) player.getFoodStats()).addThirst(40);
+            }
+        }));
+        HOT_WATER = registerFluid(new Fluid("hot_water", STILL, FLOW, 0xFF345FDA).setTemperature(350));
+        SALT_WATER = registerFluid(new Fluid("salt_water", STILL, FLOW, 0xFF1F5099), (fluid, isDefault) -> new DrinkableFluidWrapper(fluid, isDefault, player -> {
+            if (player.getFoodStats() instanceof FoodStatsTFC)
+            {
+                ((FoodStatsTFC) player.getFoodStats()).addThirst(-10);
+            }
+        }));
 
         FluidWrapper.Factory alcoholWrapper = (fluid, isDefault) -> new DrinkableFluidWrapper(fluid, isDefault, player -> {
             if (player.getFoodStats() instanceof FoodStatsTFC)
