@@ -110,7 +110,7 @@ public final class ChunkDataTFC
     private final DataLayer[] stabilityLayer = new DataLayer[256]; // To be removed / replaced?
     private final int[] seaLevelOffset = new int[256];
     private boolean initialized = false;
-    private long lastSeasonalTick;
+    private long lastUpdatePlants, lastUpdateCrops, lastUpdateRocks, lastUpdateSnow; //Used by regeneration
     private int fishPopulation = FISH_POP_MAX; // todo: Set this based on biome? temp? rng?
     private float rainfall;
     private float regionalTemp;
@@ -122,7 +122,7 @@ public final class ChunkDataTFC
      * INTERNAL USE ONLY.
      * No need to mark as dirty, since this will only ever be called on worldgen, before the first chunk save.
      */
-    public void setGenerationData(int[] rockLayer1, int[] rockLayer2, int[] rockLayer3, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset, float rainfall, float regionalTemp, float avgTemp, float floraDensity, float floraDiversity, long creationTick)
+    public void setGenerationData(int[] rockLayer1, int[] rockLayer2, int[] rockLayer3, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset, float rainfall, float regionalTemp, float avgTemp, float floraDensity, float floraDiversity, long creationTick, long creationCalendarTick)
     {
         this.initialized = true;
         System.arraycopy(rockLayer1, 0, this.rockLayer1, 0, 256);
@@ -137,7 +137,12 @@ public final class ChunkDataTFC
         this.avgTemp = avgTemp;
         this.floraDensity = floraDensity;
         this.floraDiversity = floraDiversity;
-        this.lastSeasonalTick = creationTick;
+
+        this.lastUpdateRocks = creationTick; //based on TOTAL_TIME
+
+        this.lastUpdateSnow = creationCalendarTick; //Based on CALENDAR_TIME
+        this.lastUpdateCrops = creationCalendarTick;
+        this.lastUpdatePlants = creationCalendarTick;
     }
 
     public boolean isInitialized()
@@ -145,14 +150,44 @@ public final class ChunkDataTFC
         return initialized;
     }
 
-    public long getLastSeasonalTick()
+    public long getLastUpdateRocks()
     {
-        return lastSeasonalTick;
+        return lastUpdateRocks;
     }
 
-    public void setSeasonalTick(long ticks)
+    public void setLastUpdateRocks(long tick)
     {
-        this.lastSeasonalTick = ticks;
+        this.lastUpdateRocks = tick;
+    }
+
+    public long getLastUpdateSnow()
+    {
+        return lastUpdateSnow;
+    }
+
+    public void setLastUpdateSnow(long tick)
+    {
+        this.lastUpdateSnow = tick;
+    }
+
+    public long getLastUpdateCrops()
+    {
+        return lastUpdateCrops;
+    }
+
+    public void setLastUpdateCrops(long tick)
+    {
+        this.lastUpdateCrops = tick;
+    }
+
+    public long getLastUpdatePlants()
+    {
+        return lastUpdatePlants;
+    }
+
+    public void setLastUpdatePlants(long tick)
+    {
+        this.lastUpdatePlants = tick;
     }
 
     public Rock getRock1(BlockPos pos)
@@ -322,7 +357,10 @@ public final class ChunkDataTFC
             NBTTagCompound root = new NBTTagCompound();
             root.setBoolean("valid", true);
 
-            root.setLong("lastSeasonalTick", instance.lastSeasonalTick);
+            root.setLong("lastUpdateRocks", instance.lastUpdateRocks);
+            root.setLong("lastUpdateSnow", instance.lastUpdateSnow);
+            root.setLong("lastUpdateCrops", instance.lastUpdateCrops);
+            root.setLong("lastUpdatePlants", instance.lastUpdatePlants);
 
             root.setTag("rockLayer1", new NBTTagIntArray(instance.rockLayer1));
             root.setTag("rockLayer2", new NBTTagIntArray(instance.rockLayer2));
@@ -354,7 +392,10 @@ public final class ChunkDataTFC
                 System.arraycopy(root.getIntArray("rockLayer3"), 0, instance.rockLayer3, 0, 256);
                 System.arraycopy(root.getIntArray("seaLevelOffset"), 0, instance.seaLevelOffset, 0, 256);
 
-                instance.lastSeasonalTick = root.getLong("lastSeasonalTick");
+                instance.lastUpdateRocks = root.getLong("lastUpdateRocks");
+                instance.lastUpdateSnow = root.getLong("lastUpdateSnow");
+                instance.lastUpdateCrops = root.getLong("lastUpdateCrops");
+                instance.lastUpdatePlants = root.getLong("lastUpdatePlants");
 
                 read(instance.stabilityLayer, root.getByteArray("stabilityLayer"));
                 read(instance.drainageLayer, root.getByteArray("drainageLayer"));

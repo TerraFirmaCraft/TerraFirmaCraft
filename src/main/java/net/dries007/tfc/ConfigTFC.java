@@ -208,6 +208,21 @@ public class ConfigTFC
         @Config.Comment("Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?")
         @Config.LangKey("config." + MOD_ID + ".general.peacefulDifficultyPassiveRegeneration")
         public boolean peacefulDifficultyPassiveRegeneration = false;
+
+        @Config.Comment("How fast sticks and rocks regenerate, in scale of days. Use 0 to disable it entirely.")
+        @Config.RangeDouble(min = 0, max = 1200)
+        @Config.LangKey("config." + MOD_ID + ".general.regenSticksRocks")
+        public double regenSticksRocks = 24;
+
+        @Config.Comment("How fast plants regenerate, in scale of months. Use 0 to disable it entirely.")
+        @Config.RangeDouble(min = 0, max = 1200)
+        @Config.LangKey("config." + MOD_ID + ".general.regenPlants")
+        public double regenPlants = 3;
+
+        @Config.Comment("How fast wild crops and berry bushes regenerate, in scale of months. Use 0 to disable it entirely.")
+        @Config.RangeDouble(min = 0, max = 1200)
+        @Config.LangKey("config." + MOD_ID + ".general.regenCrops")
+        public double regenCrops = 12;
     }
 
     public static class ClientCFG

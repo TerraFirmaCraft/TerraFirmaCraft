@@ -128,7 +128,7 @@ public class WorldGenTrees implements IWorldGenerator
         return trees.get(1 + random.nextInt(trees.size() - 1));
     }
 
-    private void generateLooseSticks(Random rand, int chunkX, int chunkZ, World world, int amount)
+    public static void generateLooseSticks(Random rand, int chunkX, int chunkZ, World world, int amount)
     {
         for (int i = 0; i < amount; i++)
         {
