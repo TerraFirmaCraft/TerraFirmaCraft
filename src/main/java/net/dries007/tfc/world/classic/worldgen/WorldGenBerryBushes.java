@@ -46,6 +46,11 @@ public class WorldGenBerryBushes implements IWorldGenerator
                 final int z = (chunkZ << 4) + random.nextInt(16) + 8;
                 final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
 
+                if (world.getBlockState(pos).getMaterial().isLiquid() || !world.getBlockState(pos).getMaterial().isReplaceable())
+                {
+                    return;
+                }
+
                 world.setBlockState(pos, BlockBerryBush.get(bush).getDefaultState());
             }
         }
