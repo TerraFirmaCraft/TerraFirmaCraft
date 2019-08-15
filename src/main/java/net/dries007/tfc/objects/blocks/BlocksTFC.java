@@ -303,7 +303,7 @@ public final class BlocksTFC
             {
                 if (wrapper.isDefault())
                 {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), FluidsTFC.MATERIAL_ALCOHOL)));
+                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER)));
                 }
             }
             for (FluidWrapper wrapper : FluidsTFC.getAllOtherFiniteFluids())
