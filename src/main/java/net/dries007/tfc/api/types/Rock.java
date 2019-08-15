@@ -30,6 +30,8 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
 {
     @GameRegistry.ObjectHolder("tfc:granite")
     public static final Rock GRANITE = Helpers.getNull();
+    @GameRegistry.ObjectHolder("tfc:basalt")
+    public static final Rock BASALT = Helpers.getNull();
 
     private final RockCategory rockCategory;
     private final ResourceLocation textureLocation;

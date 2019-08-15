@@ -11,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
@@ -504,5 +505,18 @@ public final class CommonEventHandler
     {
         event.getSettings().bonusChestEnabled = false;
         TerraFirmaCraft.getLog().info("Disabling bonus chest, you cheaty cheater!");
+    }
+
+    @SubscribeEvent
+    public static void onFluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event)
+    {
+        if (event.getNewState().getBlock() == Blocks.STONE)
+        {
+            event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.RAW).getDefaultState());
+        }
+        else if (event.getNewState().getBlock() == Blocks.COBBLESTONE)
+        {
+            event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.COBBLE).getDefaultState());
+        }
     }
 }
