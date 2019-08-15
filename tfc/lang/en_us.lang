@@ -79,6 +79,10 @@ tfc.propick.found_large=Found a large sample of
 tfc.propick.found_very_large=Found a very large sample of
 tfc.propick.found_nothing=Found nothing of interest.
 
+## Thatch Bed
+tfc.thatch_bed.spawnpoint=Spawn point set.
+tfc.thatch_bed.not_thundering=This bed is too uncomfortable to sleep.
+
 ## Food Traits
 tfc.food_traits.smoked=Smoked
 tfc.food_traits.brined=Brined
@@ -116,6 +120,9 @@ config.tfc.general.debug.tooltip=Various debug options. Activates some extra wan
 
 config.tfc.general.removeVanillaRecipes=Remove Vanilla Recipes
 config.tfc.general.removeVanillaRecipes.tooltip=Enable/Disable the vanilla recipe removal spam. False = Those recipes are left in place.
+
+config.tfc.general.removeVanillaLoots=Remove Vanilla Loots
+config.tfc.general.removeVanillaLoots.tooltip=Enable/Disable the vanilla loot entries that conflict with TFC (ie: potatoes). False = Those loot entries are left in place.
 
 config.tfc.general.leafStickDropChance=Leaf Stick Drop Chance
 config.tfc.general.leafStickDropChance.tooltip=Normal leaf drop chance for sticks
@@ -272,6 +279,9 @@ config.tfc.world.latitudeTemperatureModifier.tooltip=This controls the size of t
 
 config.tfc.world.clayRarity=Clay Deposity Rarity
 config.tfc.world.clayRarity.tooltip=The rarity for clay pits to occur. On average 1 / N chunks will have a clay deposit, if the chunk in question is valid for clay to spawn.
+
+config.tfc.world.looseRocksFrequency=Loose Rocks Frequency
+config.tfc.world.looseRocksFrequency.tooltip=The number of attempts per chunk to spawn loose rocks. Includes surface ore samples.
 
 # Misc
 itemGroup.tfc.misc=TFC Misc
@@ -526,6 +536,8 @@ tile.tfc.fire_bricks.name=Fire Bricks
 tile.tfc.quern.name=Quern
 tile.tfc.ceramics.fired.large_vessel.name=Large Vessel
 tile.tfc.sluice.name=Sluice
+tile.tfc.ice.name=Ice
+tile.tfc.sea_ice.name=Sea Ice
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite
@@ -2491,38 +2503,38 @@ item.tfc.ore.lapis_lazuli.rich.name=Rich Lapis Lazuli
 item.tfc.ore.small.native_copper.name=Native Copper Nugget
 item.tfc.ore.small.native_gold.name=Native Gold Nugget
 item.tfc.ore.small.native_platinum.name=Native Platinum Nugget
-item.tfc.ore.small.hematite.name=Hematite Nugget
+item.tfc.ore.small.hematite.name=Small Hematite
 item.tfc.ore.small.native_silver.name=Native Silver Nugget
-item.tfc.ore.small.cassiterite.name=Cassiterite Nugget
-item.tfc.ore.small.galena.name=Galena Nugget
-item.tfc.ore.small.bismuthinite.name=Bismuthinite Nugget
-item.tfc.ore.small.garnierite.name=Garnierite Nugget
-item.tfc.ore.small.malachite.name=Malachite Nugget
-item.tfc.ore.small.magnetite.name=Magnetite Nugget
-item.tfc.ore.small.limonite.name=Limonite Nugget
-item.tfc.ore.small.sphalerite.name=Sphalerite Nugget
-item.tfc.ore.small.tetrahedrite.name=Tetrahedrite Nugget
-item.tfc.ore.small.bituminous_coal.name=Bituminous Coal Nugget
-item.tfc.ore.small.lignite.name=Lignite Nugget
-item.tfc.ore.small.kaolinite.name=Kaolinite Nugget
-item.tfc.ore.small.gypsum.name=Gypsum Nugget
-item.tfc.ore.small.satinspar.name=Satinspar Nugget
-item.tfc.ore.small.selenite.name=Selenite Nugget
-item.tfc.ore.small.graphite.name=Graphite Nugget
-item.tfc.ore.small.kimberlite.name=Kimberlite Nugget
-item.tfc.ore.small.petrified_wood.name=Petrified Wood Nugget
-item.tfc.ore.small.sulfur.name=Sulfur Nugget
-item.tfc.ore.small.jet.name=Jet Nugget
-item.tfc.ore.small.microcline.name=Microcline Nugget
-item.tfc.ore.small.pitchblende.name=Pitchblende Nugget
-item.tfc.ore.small.cinnabar.name=Cinnabar Nugget
-item.tfc.ore.small.cryolite.name=Cryolite Nugget
-item.tfc.ore.small.saltpeter.name=Saltpeter Nugget
-item.tfc.ore.small.serpentine.name=Serpentine Nugget
-item.tfc.ore.small.sylvite.name=Sylvite Nugget
-item.tfc.ore.small.borax.name=Borax Nugget
-item.tfc.ore.small.olivine.name=Olivine Nugget
-item.tfc.ore.small.lapis_lazuli.name=Lapis Lazuli Nugget
+item.tfc.ore.small.cassiterite.name=Small Cassiterite
+item.tfc.ore.small.galena.name=Small Galena
+item.tfc.ore.small.bismuthinite.name=Small Bismuthinite
+item.tfc.ore.small.garnierite.name=Small Garnierite
+item.tfc.ore.small.malachite.name=Small Malachite
+item.tfc.ore.small.magnetite.name=Small Magnetite
+item.tfc.ore.small.limonite.name=Small Limonite
+item.tfc.ore.small.sphalerite.name=Small Sphalerite
+item.tfc.ore.small.tetrahedrite.name=Small Tetrahedrite
+item.tfc.ore.small.bituminous_coal.name=Small Bituminous Coal
+item.tfc.ore.small.lignite.name=Small Lignite
+item.tfc.ore.small.kaolinite.name=Small Kaolinite
+item.tfc.ore.small.gypsum.name=Small Gypsum
+item.tfc.ore.small.satinspar.name=Small Satinspar
+item.tfc.ore.small.selenite.name=Small Selenite
+item.tfc.ore.small.graphite.name=Small Graphite
+item.tfc.ore.small.kimberlite.name=Small Kimberlite
+item.tfc.ore.small.petrified_wood.name=Small Petrified Wood
+item.tfc.ore.small.sulfur.name=Small Sulfur
+item.tfc.ore.small.jet.name=Small Jet
+item.tfc.ore.small.microcline.name=Small Microcline
+item.tfc.ore.small.pitchblende.name=Small Pitchblende
+item.tfc.ore.small.cinnabar.name=Small Cinnabar
+item.tfc.ore.small.cryolite.name=Small Cryolite
+item.tfc.ore.small.saltpeter.name=Small Saltpeter
+item.tfc.ore.small.serpentine.name=Small Serpentine
+item.tfc.ore.small.sylvite.name=Small Sylvite
+item.tfc.ore.small.borax.name=Small Borax
+item.tfc.ore.small.olivine.name=Small Olivine
+item.tfc.ore.small.lapis_lazuli.name=Small Lapis Lazuli
 
 item.tfc.rock.granite.name=Granite Rock
 item.tfc.rock.diorite.name=Diorite Rock
