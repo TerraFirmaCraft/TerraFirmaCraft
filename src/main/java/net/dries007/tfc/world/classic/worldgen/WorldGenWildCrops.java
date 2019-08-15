@@ -44,7 +44,6 @@ public class WorldGenWildCrops extends WorldGenerator
         {
             return false;
         }
-
         ICrop crop = crops.get(rng.nextInt(crops.size()));
         BlockCropTFC cropBlock = BlockCropTFC.get(crop);
 
@@ -66,6 +65,7 @@ public class WorldGenWildCrops extends WorldGenerator
                 }
             }
         }
+
         return true;
     }
 }

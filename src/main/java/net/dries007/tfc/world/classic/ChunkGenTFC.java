@@ -45,7 +45,6 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.ClimateHelper;
 import net.dries007.tfc.util.climate.ClimateTFC;
-import net.dries007.tfc.util.climate.IceMeltHandler;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -90,7 +89,8 @@ public class ChunkGenTFC implements IChunkGenerator
     private static final IWorldGenerator TREE_GEN = new WorldGenTrees();
     private static final IWorldGenerator BERRY_BUSH_GEN = new WorldGenBerryBushes();
     private static final IWorldGenerator FRUIT_TREE_GEN = new WorldGenFruitTrees();
-    private static final IWorldGenerator LOOSE_ROCKS_GEN = new WorldGenLooseRocks();
+    private static final IWorldGenerator LOOSE_ROCKS_GEN = new WorldGenLooseRocks(true);
+    private static final IWorldGenerator SNOW_ICE_GEN = new WorldGenSnowIce();
 
     static
     {
@@ -248,7 +248,7 @@ public class ChunkGenTFC implements IChunkGenerator
 
         ChunkDataTFC chunkData = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
         if (chunkData == null) throw new IllegalStateException("ChunkData capability is missing.");
-        chunkData.setGenerationData(rockLayer1, rockLayer2, rockLayer3, stabilityLayer, drainageLayer, seaLevelOffsetMap, rainfall, regionalFactor, averageTemp, floraDensity, floraDiversity, CalendarTFC.TOTAL_TIME.getTicks());
+        chunkData.setGenerationData(rockLayer1, rockLayer2, rockLayer3, stabilityLayer, drainageLayer, seaLevelOffsetMap, rainfall, regionalFactor, averageTemp, floraDensity, floraDiversity, CalendarTFC.TOTAL_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks());
 
         byte[] biomeIds = chunk.getBiomeArray();
         for (int x = 0; x < 16; ++x)
@@ -294,33 +294,11 @@ public class ChunkGenTFC implements IChunkGenerator
 
         // Finally
         LOOSE_ROCKS_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
+        SNOW_ICE_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
 
         if (TerrainGen.populate(this, world, rand, chunkX, chunkZ, false, ANIMALS))
         {
             WorldEntitySpawner.performWorldGenSpawning(world, biome, worldX + 8, worldZ + 8, 16, 16, rand);
-        }
-
-        blockpos = blockpos.add(8, 0, 8);
-        for (int x = 0; x < 16; x++)
-        {
-            for (int z = 0; z < 16; z++)
-            {
-                BlockPos pos = blockpos.add(x, world.getPrecipitationHeight(blockpos.add(x, 0, z)).getY(), z);
-
-                // Can't use world#canBlockFreeze because it's specific to vanilla water
-                BlockPos posDown = pos.down();
-                IBlockState stateAt = world.getBlockState(posDown);
-                float actualTemp = ClimateTFC.getActualTemp(world, posDown);
-                if (actualTemp < IceMeltHandler.ICE_MELT_THRESHOLD - 2 + 2 * (rand.nextFloat() - rand.nextFloat()) && stateAt.getBlock() == FRESH_WATER.getBlock())
-                {
-                    world.setBlockState(posDown, FRESH_WATER_ICE);
-                }
-
-                if (world.isAirBlock(pos) && SNOW.getBlock().canPlaceBlockAt(world, pos) && actualTemp < -4 + 4 * (rand.nextFloat() - rand.nextFloat()))
-                {
-                    world.setBlockState(pos, SNOW);
-                }
-            }
         }
 
         ForgeEventFactory.onChunkPopulate(false, this, world, rand, chunkX, chunkZ, false);
