@@ -29,16 +29,21 @@ import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 
 public class WorldGenLooseRocks implements IWorldGenerator
 {
-    @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
+    /**
+     * Generate loose rocks in the specified chunk's X and Z coordinates.
+     * Attention: This function assumes this is on server and in a TFC world dimension.
+     * Make sure to only call this function if the above are true.
+     *
+     * @param random the Random obj
+     * @param chunkX the chunk X coordinate
+     * @param chunkZ the cunk Z coordinate
+     * @param world  the WorldObj
+     */
+    public static void generateLooseRocks(Random random, int chunkX, int chunkZ, World world)
     {
-        if (!(chunkGenerator instanceof ChunkGenTFC)) return;
         final BlockPos chunkBlockPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
         ChunkDataTFC chunkData = ChunkDataTFC.get(world, chunkBlockPos);
         if (!chunkData.isInitialized()) return;
-
-        // Check dimension is overworld
-        if (world.provider.getDimension() != 0) return;
 
         // Set constant values here
         int xoff = chunkX * 16 + 8;
@@ -77,7 +82,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
         }
     }
 
-    private void generateRock(World world, BlockPos pos, @Nullable Vein vein, Rock rock)
+    private static void generateRock(World world, BlockPos pos, @Nullable Vein vein, Rock rock)
     {
         // Use air, so it doesn't replace other replaceable world gen
         // This matches the check in BlockPlacedItemFlat for if the block can stay
@@ -102,12 +107,21 @@ public class WorldGenLooseRocks implements IWorldGenerator
     }
 
     @Nullable
-    private Vein getRandomVein(List<Vein> veins, Random rand)
+    private static Vein getRandomVein(List<Vein> veins, Random rand)
     {
         if (!veins.isEmpty() && rand.nextDouble() < 0.4)
         {
             return veins.get(rand.nextInt(veins.size()));
         }
         return null;
+    }
+
+    @Override
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
+    {
+        if (chunkGenerator instanceof ChunkGenTFC && world.provider.getDimension() == 0)
+        {
+            generateLooseRocks(random, chunkX, chunkZ, world);
+        }
     }
 }

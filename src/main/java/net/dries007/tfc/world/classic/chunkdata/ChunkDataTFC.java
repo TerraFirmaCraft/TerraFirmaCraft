@@ -110,6 +110,7 @@ public final class ChunkDataTFC
     private final DataLayer[] stabilityLayer = new DataLayer[256]; // To be removed / replaced?
     private final int[] seaLevelOffset = new int[256];
     private boolean initialized = false;
+    private long lastSeasonalTick;
     private int fishPopulation = FISH_POP_MAX; // todo: Set this based on biome? temp? rng?
     private float rainfall;
     private float regionalTemp;
@@ -121,7 +122,7 @@ public final class ChunkDataTFC
      * INTERNAL USE ONLY.
      * No need to mark as dirty, since this will only ever be called on worldgen, before the first chunk save.
      */
-    public void setGenerationData(int[] rockLayer1, int[] rockLayer2, int[] rockLayer3, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset, float rainfall, float regionalTemp, float avgTemp, float floraDensity, float floraDiversity)
+    public void setGenerationData(int[] rockLayer1, int[] rockLayer2, int[] rockLayer3, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset, float rainfall, float regionalTemp, float avgTemp, float floraDensity, float floraDiversity, long creationTick)
     {
         this.initialized = true;
         System.arraycopy(rockLayer1, 0, this.rockLayer1, 0, 256);
@@ -136,11 +137,22 @@ public final class ChunkDataTFC
         this.avgTemp = avgTemp;
         this.floraDensity = floraDensity;
         this.floraDiversity = floraDiversity;
+        this.lastSeasonalTick = creationTick;
     }
 
     public boolean isInitialized()
     {
         return initialized;
+    }
+
+    public long getLastSeasonalTick()
+    {
+        return lastSeasonalTick;
+    }
+
+    public void setSeasonalTick(long ticks)
+    {
+        this.lastSeasonalTick = ticks;
     }
 
     public Rock getRock1(BlockPos pos)
@@ -310,6 +322,8 @@ public final class ChunkDataTFC
             NBTTagCompound root = new NBTTagCompound();
             root.setBoolean("valid", true);
 
+            root.setLong("lastSeasonalTick", instance.lastSeasonalTick);
+
             root.setTag("rockLayer1", new NBTTagIntArray(instance.rockLayer1));
             root.setTag("rockLayer2", new NBTTagIntArray(instance.rockLayer2));
             root.setTag("rockLayer3", new NBTTagIntArray(instance.rockLayer3));
@@ -339,6 +353,8 @@ public final class ChunkDataTFC
                 System.arraycopy(root.getIntArray("rockLayer2"), 0, instance.rockLayer2, 0, 256);
                 System.arraycopy(root.getIntArray("rockLayer3"), 0, instance.rockLayer3, 0, 256);
                 System.arraycopy(root.getIntArray("seaLevelOffset"), 0, instance.seaLevelOffset, 0, 256);
+
+                instance.lastSeasonalTick = root.getLong("lastSeasonalTick");
 
                 read(instance.stabilityLayer, root.getByteArray("stabilityLayer"));
                 read(instance.drainageLayer, root.getByteArray("drainageLayer"));
