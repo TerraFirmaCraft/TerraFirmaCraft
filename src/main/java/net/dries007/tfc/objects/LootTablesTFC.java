@@ -28,6 +28,7 @@ public class LootTablesTFC
     public static ResourceLocation ANIMALS_SHEEP;
     public static ResourceLocation ANIMALS_RABBIT;
     public static ResourceLocation ANIMALS_WOLF;
+    public static ResourceLocation ANIMALS_HORSE;
 
     private static ResourceLocation register(String id)
     {
@@ -45,6 +46,7 @@ public class LootTablesTFC
         ANIMALS_SHEEP = register("animals/sheep");
         ANIMALS_RABBIT = register("animals/rabbit");
         ANIMALS_WOLF = register("animals/wolf");
+        ANIMALS_HORSE = register("animals/horse");
     }
 
     @SubscribeEvent
