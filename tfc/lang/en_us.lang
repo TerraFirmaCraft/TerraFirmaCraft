@@ -3597,3 +3597,6 @@ entity.deertfc.name=Deer
 entity.pheasanttfc.name=Pheasant
 entity.rabbittfc.name=Rabbit
 entity.wolftfc.name=Wolf
+entity.horsetfc.name=Horse
+entity.donkeytfc.name=Donkey
+entity.muletfc.name=Mule
