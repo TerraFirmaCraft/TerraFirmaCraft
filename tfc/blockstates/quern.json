@@ -1,7 +1,9 @@
 {
-    "variants": {
-        "normal": [
-            { "model": "tfc:quern" }
-        ]
-    }
+  "variants": {
+    "normal": [
+      {
+        "model": "tfc:quern"
+      }
+    ]
+  }
 }

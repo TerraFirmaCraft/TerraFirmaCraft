@@ -9,7 +9,7 @@
           "model": "tfc:plants/foxglove_single"
         }
       ]
-	},
+    },
     {
       "when": {
         "stage": "0",
@@ -21,7 +21,7 @@
         }
       ]
     },
-	    {
+    {
       "when": {
         "stage": "1",
         "part": "upper"
@@ -32,7 +32,7 @@
         }
       ]
     },
-	    {
+    {
       "when": {
         "stage": "2",
         "part": "upper"
@@ -43,7 +43,7 @@
         }
       ]
     },
-	    {
+    {
       "when": {
         "stage": "3",
         "part": "upper"
@@ -54,7 +54,7 @@
         }
       ]
     },
-	    {
+    {
       "when": {
         "stage": "4",
         "part": "upper"
@@ -76,7 +76,7 @@
         }
       ]
     },
-	    {
+    {
       "when": {
         "stage": "1",
         "part": "lower"
@@ -87,7 +87,7 @@
         }
       ]
     },
-	    {
+    {
       "when": {
         "stage": "2",
         "part": "lower"
@@ -98,7 +98,7 @@
         }
       ]
     },
-	    {
+    {
       "when": {
         "stage": "3",
         "part": "lower"
@@ -109,7 +109,7 @@
         }
       ]
     },
-	    {
+    {
       "when": {
         "stage": "4",
         "part": "lower"

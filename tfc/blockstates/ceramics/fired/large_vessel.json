@@ -13,7 +13,7 @@
       },
       "false": {
         "model": "tfc:large_vessel"
-	  }
+      }
     }
   }
 }

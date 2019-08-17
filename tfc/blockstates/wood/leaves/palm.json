@@ -4,8 +4,8 @@
     "model": "tfc:leaves_palm",
     "textures": {
       "side": "tfc:blocks/wood/leaves/palm",
-	  "end": "tfc:blocks/wood/leaves/palm_top"
-	}
+      "end": "tfc:blocks/wood/leaves/palm_top"
+    }
   },
   "variants": {
     "normal": [
