@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.entity.ai;
 
 import net.minecraft.entity.Entity;
@@ -47,21 +52,21 @@ public class EntityAIRunAroundLikeCrazyTFC extends EntityAIBase
         }
     }
 
-    public void startExecuting()
-    {
-        this.horseHost.getNavigator().tryMoveToXYZ(this.targetX, this.targetY, this.targetZ, this.speed);
-    }
-
     public boolean shouldContinueExecuting()
     {
         return !this.horseHost.isTame() && !this.horseHost.getNavigator().noPath() && this.horseHost.isBeingRidden();
+    }
+
+    public void startExecuting()
+    {
+        this.horseHost.getNavigator().tryMoveToXYZ(this.targetX, this.targetY, this.targetZ, this.speed);
     }
 
     public void updateTask()
     {
         if (!this.horseHost.isTame() && this.horseHost.getRNG().nextInt(50) == 0)
         {
-            Entity entity = (Entity)this.horseHost.getPassengers().get(0);
+            Entity entity = this.horseHost.getPassengers().get(0);
 
             if (entity == null)
             {
@@ -73,9 +78,9 @@ public class EntityAIRunAroundLikeCrazyTFC extends EntityAIBase
                 int i = this.horseHost.getTemper();
                 int j = this.horseHost.getMaxTemper();
 
-                if (j > 0 && this.horseHost.getRNG().nextInt(j) < i && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(horseHost, (EntityPlayer)entity))
+                if (j > 0 && this.horseHost.getRNG().nextInt(j) < i && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(horseHost, (EntityPlayer) entity))
                 {
-                    this.horseHost.setTamedBy((EntityPlayer)entity);
+                    this.horseHost.setTamedBy((EntityPlayer) entity);
                     return;
                 }
 
@@ -84,7 +89,7 @@ public class EntityAIRunAroundLikeCrazyTFC extends EntityAIBase
 
             this.horseHost.removePassengers();
             this.horseHost.makeMad();
-            this.horseHost.world.setEntityState(this.horseHost, (byte)6);
+            this.horseHost.world.setEntityState(this.horseHost, (byte) 6);
         }
     }
 }

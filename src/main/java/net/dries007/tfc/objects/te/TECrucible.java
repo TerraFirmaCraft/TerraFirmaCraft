@@ -181,6 +181,12 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
     }
 
     @Override
+    public int getSlotLimit(int slot)
+    {
+        return slot == SLOT_INPUT ? 64 : 1;
+    }
+
+    @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
         if (!stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
@@ -191,27 +197,11 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
     }
 
     @Override
-    public int getSlotLimit(int slot)
-    {
-        return slot == SLOT_INPUT ? 64 : 1;
-    }
-
-    @Override
     public void setAndUpdateSlots(int slot)
     {
         super.setAndUpdateSlots(slot);
 
         cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_INPUT));
-    }
-
-    @Override
-    @Nonnull
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-    {
-        nbt.setTag("alloy", alloy.serializeNBT());
-        nbt.setFloat("temp", temperature);
-
-        return super.writeToNBT(nbt);
     }
 
     @Override
@@ -227,6 +217,16 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
 
         // Update the recipe cache
         cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_INPUT));
+    }
+
+    @Override
+    @Nonnull
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        nbt.setTag("alloy", alloy.serializeNBT());
+        nbt.setFloat("temp", temperature);
+
+        return super.writeToNBT(nbt);
     }
 
     @Override

@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.client.render.animal;
 
 import java.util.Map;
@@ -17,7 +22,7 @@ import net.dries007.tfc.objects.entity.animal.EntityHorseTFC;
 @SideOnly(Side.CLIENT)
 public class RenderHorseTFC extends RenderLiving<EntityHorseTFC>
 {
-    private static final Map<String, ResourceLocation> LAYERED_LOCATION_CACHE = Maps.<String, ResourceLocation>newHashMap();
+    private static final Map<String, ResourceLocation> LAYERED_LOCATION_CACHE = Maps.newHashMap();
 
     public RenderHorseTFC(RenderManager p_i47205_1_)
     {

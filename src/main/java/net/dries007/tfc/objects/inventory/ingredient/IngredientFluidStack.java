@@ -27,6 +27,12 @@ public class IngredientFluidStack implements IIngredient<FluidStack>
     }
 
     @Override
+    public NonNullList<FluidStack> getValidIngredients()
+    {
+        return NonNullList.withSize(1, inputFluid);
+    }
+
+    @Override
     public boolean test(FluidStack fluidStack)
     {
         return testIgnoreCount(fluidStack) && fluidStack.amount >= this.inputFluid.amount;
@@ -57,11 +63,5 @@ public class IngredientFluidStack implements IIngredient<FluidStack>
             return inputFluid.amount;
         }
         return 0;
-    }
-
-    @Override
-    public NonNullList<FluidStack> getValidIngredients()
-    {
-        return NonNullList.withSize(1, inputFluid);
     }
 }

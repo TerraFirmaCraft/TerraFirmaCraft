@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.client.gui;
 
 import net.minecraft.client.Minecraft;
@@ -29,6 +34,15 @@ public class GuiScreenHorseInventoryTFC extends GuiContainer
         this.allowUserInput = false;
     }
 
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    {
+        this.drawDefaultBackground();
+        this.mousePosx = (float) mouseX;
+        this.mousePosY = (float) mouseY;
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
+    }
+
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         this.fontRenderer.drawString(this.horseInventory.getDisplayName().getUnformattedText(), 8, 6, 4210752);
@@ -45,7 +59,7 @@ public class GuiScreenHorseInventoryTFC extends GuiContainer
 
         if (this.horseEntity instanceof AbstractChestHorseTFC)
         {
-            AbstractChestHorseTFC abstractchesthorse = (AbstractChestHorseTFC)this.horseEntity;
+            AbstractChestHorseTFC abstractchesthorse = (AbstractChestHorseTFC) this.horseEntity;
 
             if (abstractchesthorse.hasChest())
             {
@@ -63,15 +77,6 @@ public class GuiScreenHorseInventoryTFC extends GuiContainer
             this.drawTexturedModalRect(i + 7, j + 35, 0, this.ySize + 54, 18, 18);
         }
 
-        GuiInventory.drawEntityOnScreen(i + 51, j + 60, 17, (float)(i + 51) - this.mousePosx, (float)(j + 75 - 50) - this.mousePosY, this.horseEntity);
-    }
-
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
-    {
-        this.drawDefaultBackground();
-        this.mousePosx = (float)mouseX;
-        this.mousePosY = (float)mouseY;
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
+        GuiInventory.drawEntityOnScreen(i + 51, j + 60, 17, (float) (i + 51) - this.mousePosx, (float) (j + 75 - 50) - this.mousePosY, this.horseEntity);
     }
 }

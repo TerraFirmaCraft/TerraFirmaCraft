@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.entity.animal;
 
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -24,7 +29,13 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class AbstractChestHorseTFC extends AbstractHorseTFC
 {
-    private static final DataParameter<Boolean> DATA_ID_CHEST = EntityDataManager.<Boolean>createKey(AbstractChestHorseTFC.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> DATA_ID_CHEST = EntityDataManager.createKey(AbstractChestHorseTFC.class, DataSerializers.BOOLEAN);
+
+    public static void registerFixesAbstractChestHorseTFC(DataFixer fixer, Class<?> entityClass)
+    {
+        AbstractHorseTFC.registerFixesAbstractHorseTFC(fixer, entityClass);
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(entityClass, "Items"));
+    }
 
     public AbstractChestHorseTFC(World worldIn)
     {
@@ -32,23 +43,9 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
         this.canGallop = false;
     }
 
-    protected void entityInit()
-    {
-        super.entityInit();
-        this.dataManager.register(DATA_ID_CHEST, Boolean.valueOf(false));
-    }
-
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((double)this.getModifiedMaxHealth());
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.17499999701976776D);
-        this.getEntityAttribute(JUMP_STRENGTH).setBaseValue(0.5D);
-    }
-
     public boolean hasChest()
     {
-        return ((Boolean)this.dataManager.get(DATA_ID_CHEST)).booleanValue();
+        return this.dataManager.get(DATA_ID_CHEST).booleanValue();
     }
 
     public void setChested(boolean chested)
@@ -56,20 +53,9 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
         this.dataManager.set(DATA_ID_CHEST, Boolean.valueOf(chested));
     }
 
-    protected int getInventorySize()
-    {
-        return this.hasChest() ? 17 : super.getInventorySize();
-    }
-
     public double getMountedYOffset()
     {
         return super.getMountedYOffset() - 0.25D;
-    }
-
-    protected SoundEvent getAngrySound()
-    {
-        super.getAngrySound();
-        return SoundEvents.ENTITY_DONKEY_ANGRY;
     }
 
     public void onDeath(DamageSource cause)
@@ -85,12 +71,6 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
 
             this.setChested(false);
         }
-    }
-
-    public static void registerFixesAbstractChestHorseTFC(DataFixer fixer, Class<?> entityClass)
-    {
-        AbstractHorseTFC.registerFixesAbstractHorseTFC(fixer, entityClass);
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(entityClass, new String[] {"Items"}));
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)
@@ -109,7 +89,7 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
                 if (!itemstack.isEmpty())
                 {
                     NBTTagCompound nbttagcompound = new NBTTagCompound();
-                    nbttagcompound.setByte("Slot", (byte)i);
+                    nbttagcompound.setByte("Slot", (byte) i);
                     itemstack.writeToNBT(nbttagcompound);
                     nbttaglist.appendTag(nbttagcompound);
                 }
@@ -144,6 +124,20 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
         this.updateHorseSlots();
     }
 
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataManager.register(DATA_ID_CHEST, Boolean.valueOf(false));
+    }
+
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((double) this.getModifiedMaxHealth());
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.17499999701976776D);
+        this.getEntityAttribute(JUMP_STRENGTH).setBaseValue(0.5D);
+    }
+
     public boolean replaceItemInInventory(int inventorySlot, ItemStack itemStackIn)
     {
         if (inventorySlot == 499)
@@ -164,6 +158,17 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
         }
 
         return super.replaceItemInInventory(inventorySlot, itemStackIn);
+    }
+
+    protected int getInventorySize()
+    {
+        return this.hasChest() ? 17 : super.getInventorySize();
+    }
+
+    protected SoundEvent getAngrySound()
+    {
+        super.getAngrySound();
+        return SoundEvents.ENTITY_DONKEY_ANGRY;
     }
 
     public boolean processInteract(EntityPlayer player, EnumHand hand)
@@ -243,13 +248,13 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
         }
     }
 
-    protected void playChestEquipSound()
-    {
-        this.playSound(SoundEvents.ENTITY_DONKEY_CHEST, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-    }
-
     public int getInventoryColumns()
     {
         return 5;
+    }
+
+    protected void playChestEquipSound()
+    {
+        this.playSound(SoundEvents.ENTITY_DONKEY_CHEST, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
     }
 }

@@ -21,6 +21,12 @@ public class IngredientItemStack implements IIngredient<ItemStack>
     }
 
     @Override
+    public NonNullList<ItemStack> getValidIngredients()
+    {
+        return NonNullList.withSize(1, inputStack);
+    }
+
+    @Override
     public boolean test(ItemStack stack)
     {
         return testIgnoreCount(stack) && stack.getCount() >= inputStack.getCount();
@@ -51,11 +57,5 @@ public class IngredientItemStack implements IIngredient<ItemStack>
     public int getAmount()
     {
         return inputStack.getCount();
-    }
-
-    @Override
-    public NonNullList<ItemStack> getValidIngredients()
-    {
-        return NonNullList.withSize(1, inputStack);
     }
 }

@@ -129,12 +129,6 @@ public class BlockFruitTreeLeaves extends BlockLeaves
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
-        doLeafDecay(worldIn, pos, state);
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
     public void neighborChanged(IBlockState state, World world, BlockPos pos, @Nullable Block blockIn, @Nullable BlockPos fromPos)
     {
@@ -208,9 +202,9 @@ public class BlockFruitTreeLeaves extends BlockLeaves
     }
 
     @Override
-    public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        return ImmutableList.of(new ItemStack(this));
+        doLeafDecay(worldIn, pos, state);
     }
 
     @SideOnly(Side.CLIENT)
@@ -256,6 +250,12 @@ public class BlockFruitTreeLeaves extends BlockLeaves
          */
         leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
         return true;// super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+    }
+
+    @Override
+    public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
+    {
+        return ImmutableList.of(new ItemStack(this));
     }
 
     private void doLeafDecay(World world, BlockPos pos, IBlockState state)

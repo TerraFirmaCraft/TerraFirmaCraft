@@ -63,12 +63,6 @@ public class BlockThatchBed extends BlockBed
     }
 
     @Override
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
-    {
-        return new ItemStack(BlocksTFC.THATCH);
-    }
-
-    @Override
     public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune)
     {
         if (state.getValue(PART) == BlockBed.EnumPartType.HEAD)
@@ -83,6 +77,12 @@ public class BlockThatchBed extends BlockBed
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
         return EnumBlockRenderType.MODEL;
+    }
+
+    @Override
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
+    {
+        return new ItemStack(BlocksTFC.THATCH);
     }
 
     @Override

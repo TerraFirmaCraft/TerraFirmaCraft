@@ -395,10 +395,10 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
         BlockCarrot blockcarrot = (BlockCarrot) Blocks.CARROTS;
         IBlockState iblockstate = blockcarrot.withAge(blockcarrot.getMaxAge());
         this.world.spawnParticle(EnumParticleTypes.BLOCK_DUST,
-                this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width,
-                this.posY + 0.5D + (double) (this.rand.nextFloat() * this.height),
-                this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, 0.0D, 0.0D,
-                0.0D, Block.getStateId(iblockstate));
+            this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width,
+            this.posY + 0.5D + (double) (this.rand.nextFloat() * this.height),
+            this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, 0.0D, 0.0D,
+            0.0D, Block.getStateId(iblockstate));
     }
 
     private void calculateRotationYaw(double x, double z)

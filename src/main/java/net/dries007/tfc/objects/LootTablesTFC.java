@@ -30,11 +30,6 @@ public class LootTablesTFC
     public static ResourceLocation ANIMALS_WOLF;
     public static ResourceLocation ANIMALS_HORSE;
 
-    private static ResourceLocation register(String id)
-    {
-        return LootTableList.register(new ResourceLocation(MOD_ID, id));
-    }
-
     public static void init()
     {
         ANIMALS_BEAR = register("animals/bear");
@@ -67,5 +62,10 @@ public class LootTablesTFC
             pool.removeEntry("minecraft:coal");
             pool.removeEntry("minecraft:diamond");
         }
+    }
+
+    private static ResourceLocation register(String id)
+    {
+        return LootTableList.register(new ResourceLocation(MOD_ID, id));
     }
 }

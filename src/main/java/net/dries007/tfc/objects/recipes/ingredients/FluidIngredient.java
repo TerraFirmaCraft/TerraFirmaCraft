@@ -28,8 +28,6 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 @SuppressWarnings("unused")
 public class FluidIngredient extends Ingredient
 {
-    private FluidStack fluid;
-
     private static ItemStack[] getValidBuckets(FluidStack fluid)
     {
         List<ItemStack> output = new ArrayList<>();
@@ -45,6 +43,8 @@ public class FluidIngredient extends Ingredient
         output.add(FluidUtil.getFilledBucket(fluid));
         return output.toArray(new ItemStack[0]);
     }
+
+    private FluidStack fluid;
 
     public FluidIngredient(String fluidName)
     {

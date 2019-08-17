@@ -1,8 +1,14 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.entity.ai;
 
-import net.dries007.tfc.objects.entity.animal.EntityTameableTFC;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
+
+import net.dries007.tfc.objects.entity.animal.EntityTameableTFC;
 
 public class EntityAISitTFC extends EntityAIBase
 {
@@ -39,7 +45,7 @@ public class EntityAISitTFC extends EntityAIBase
             }
             else
             {
-                return this.tameable.getDistanceSq(entitylivingbase) < 144.0D && entitylivingbase.getRevengeTarget() != null ? false : this.isSitting;
+                return (!(this.tameable.getDistanceSq(entitylivingbase) < 144.0D) || entitylivingbase.getRevengeTarget() == null) && this.isSitting;
             }
         }
     }

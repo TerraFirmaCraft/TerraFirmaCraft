@@ -45,6 +45,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
         int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
+
     private long lastMilked;
 
     @SuppressWarnings("unused")

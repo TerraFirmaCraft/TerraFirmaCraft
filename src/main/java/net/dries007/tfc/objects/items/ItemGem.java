@@ -53,6 +53,13 @@ public class ItemGem extends ItemTFC
     }
 
     @Override
+    public String getTranslationKey(ItemStack stack)
+    {
+        Gem.Grade grade = getGradeFromStack(stack);
+        return super.getTranslationKey(stack) + "." + grade.name().toLowerCase();
+    }
+
+    @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
         if (isInCreativeTab(tab))
@@ -62,19 +69,6 @@ public class ItemGem extends ItemTFC
                 items.add(new ItemStack(this, 1, grade.ordinal()));
             }
         }
-    }
-
-    @Override
-    public String getTranslationKey(ItemStack stack)
-    {
-        Gem.Grade grade = getGradeFromStack(stack);
-        return super.getTranslationKey(stack) + "." + grade.name().toLowerCase();
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    private Gem.Grade getGradeFromStack(ItemStack stack)
-    {
-        return Gem.Grade.valueOf(stack.getItemDamage());
     }
 
     @Nonnull
@@ -89,5 +83,11 @@ public class ItemGem extends ItemTFC
     public Weight getWeight(ItemStack stack)
     {
         return Weight.LIGHT;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private Gem.Grade getGradeFromStack(ItemStack stack)
+    {
+        return Gem.Grade.valueOf(stack.getItemDamage());
     }
 }

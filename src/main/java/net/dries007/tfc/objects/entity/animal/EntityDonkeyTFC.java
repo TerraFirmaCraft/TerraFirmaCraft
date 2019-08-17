@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.entity.animal;
 
 import javax.annotation.Nullable;
@@ -16,26 +21,20 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class EntityDonkeyTFC extends AbstractChestHorseTFC
 {
-    public EntityDonkeyTFC(World worldIn)
-    {
-        super(worldIn);
-    }
-
     public static void registerFixesDonkeyTFC(DataFixer fixer)
     {
         AbstractChestHorseTFC.registerFixesAbstractChestHorseTFC(fixer, EntityDonkeyTFC.class);
     }
 
-    @Nullable
-    protected ResourceLocation getLootTable()
+    public EntityDonkeyTFC(World worldIn)
     {
-        return LootTablesTFC.ANIMALS_HORSE;
+        super(worldIn);
     }
 
-    protected SoundEvent getAmbientSound()
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        super.getAmbientSound();
-        return SoundEvents.ENTITY_DONKEY_AMBIENT;
+        super.getHurtSound(damageSourceIn);
+        return SoundEvents.ENTITY_DONKEY_HURT;
     }
 
     protected SoundEvent getDeathSound()
@@ -44,10 +43,20 @@ public class EntityDonkeyTFC extends AbstractChestHorseTFC
         return SoundEvents.ENTITY_DONKEY_DEATH;
     }
 
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
+    @Override
+    public void birthChildren()
     {
-        super.getHurtSound(damageSourceIn);
-        return SoundEvents.ENTITY_DONKEY_HURT;
+        int numberOfChilds = 1; //one always
+        for (int i = 0; i < numberOfChilds; i++)
+        {
+            AbstractHorseTFC baby = (AbstractHorseTFC) createChild(this);
+            if (baby != null)
+            {
+                baby.setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+                baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+                this.world.spawnEntity(baby);
+            }
+        }
     }
 
     public boolean canMateWith(EntityAnimal otherAnimal)
@@ -62,30 +71,26 @@ public class EntityDonkeyTFC extends AbstractChestHorseTFC
         }
         else
         {
-            return this.canMate() && ((AbstractHorseTFC)otherAnimal).canMate() && super.canMateWith(otherAnimal);
-        }
-    }
-
-    @Override
-    public void birthChildren()
-    {
-        int numberOfChilds = 1; //one always
-        for (int i = 0; i < numberOfChilds; i++)
-        {
-            AbstractHorseTFC baby = (AbstractHorseTFC)createChild(this);
-            if (baby != null)
-            {
-                baby.setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
-                baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-                this.world.spawnEntity(baby);
-            }
+            return this.canMate() && ((AbstractHorseTFC) otherAnimal).canMate() && super.canMateWith(otherAnimal);
         }
     }
 
     public EntityAgeable createChild(EntityAgeable ageable)
     {
-        AbstractHorseTFC abstracthorse = (AbstractHorseTFC)(ageable instanceof EntityHorseTFC ? new EntityMuleTFC(this.world) : new EntityDonkeyTFC(this.world));
+        AbstractHorseTFC abstracthorse = (ageable instanceof EntityHorseTFC ? new EntityMuleTFC(this.world) : new EntityDonkeyTFC(this.world));
         this.setOffspringAttributes(ageable, abstracthorse);
         return abstracthorse;
+    }
+
+    protected SoundEvent getAmbientSound()
+    {
+        super.getAmbientSound();
+        return SoundEvents.ENTITY_DONKEY_AMBIENT;
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable()
+    {
+        return LootTablesTFC.ANIMALS_HORSE;
     }
 }

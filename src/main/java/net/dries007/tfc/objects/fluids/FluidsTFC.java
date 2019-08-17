@@ -37,17 +37,16 @@ public final class FluidsTFC
     private static final ResourceLocation FLOW = new ResourceLocation(MOD_ID, "blocks/fluid_flow");
 
     private static final HashBiMap<Fluid, FluidWrapper> WRAPPERS = HashBiMap.create();
-
+    private static final ResourceLocation LAVA_STILL = new ResourceLocation(MOD_ID, "blocks/lava_still");
+    private static final ResourceLocation LAVA_FLOW = new ResourceLocation(MOD_ID, "blocks/lava_flow");
     // Water variants
     public static FluidWrapper HOT_WATER;
     public static FluidWrapper FRESH_WATER;
     public static FluidWrapper SALT_WATER;
-
     // Other fluids
     public static FluidWrapper LIMEWATER;
     public static FluidWrapper TANNIN;
     public static FluidWrapper VINEGAR;
-
     // Alcohols
     public static FluidWrapper CIDER;
     public static FluidWrapper VODKA;
@@ -57,10 +56,6 @@ public final class FluidsTFC
     public static FluidWrapper WHISKEY;
     public static FluidWrapper BEER;
     public static FluidWrapper RUM;
-
-    private static final ResourceLocation LAVA_STILL = new ResourceLocation(MOD_ID, "blocks/lava_still");
-    private static final ResourceLocation LAVA_FLOW = new ResourceLocation(MOD_ID, "blocks/lava_flow");
-
     private static ImmutableSet<FluidWrapper> allAlcoholsFluids;
     private static ImmutableMap<Metal, FluidWrapper> allMetalFluids;
     private static ImmutableSet<FluidWrapper> allOtherFiniteFluids;

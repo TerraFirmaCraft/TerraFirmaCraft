@@ -42,6 +42,20 @@ public final class CapabilityDamageResistance
         CapabilityManager.INSTANCE.register(IDamageResistance.class, new DumbStorage<>(), () -> new IDamageResistance() {});
     }
 
+    @Nullable
+    public static ICapabilityProvider getCustomDamageResistance(ItemStack stack)
+    {
+        Set<IIngredient<ItemStack>> itemArmorSet = CUSTOM_ARMOR.keySet();
+        for (IIngredient<ItemStack> ingredient : itemArmorSet)
+        {
+            if (ingredient.testIgnoreCount(stack))
+            {
+                return CUSTOM_ARMOR.get(ingredient).get();
+            }
+        }
+        return null;
+    }
+
     @Mod.EventBusSubscriber(modid = MOD_ID)
     public static final class EventHandler
     {
@@ -75,19 +89,5 @@ public final class CapabilityDamageResistance
                 }
             }
         }
-    }
-
-    @Nullable
-    public static ICapabilityProvider getCustomDamageResistance(ItemStack stack)
-    {
-        Set<IIngredient<ItemStack>> itemArmorSet = CUSTOM_ARMOR.keySet();
-        for (IIngredient<ItemStack> ingredient : itemArmorSet)
-        {
-            if (ingredient.testIgnoreCount(stack))
-            {
-                return CUSTOM_ARMOR.get(ingredient).get();
-            }
-        }
-        return null;
     }
 }

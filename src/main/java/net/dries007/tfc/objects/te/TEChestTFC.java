@@ -37,14 +37,6 @@ public class TEChestTFC extends TileEntityChest
         chestContents = NonNullList.withSize(SIZE, ItemStack.EMPTY); // todo: make chest size configurable.
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    @Nonnull
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-        return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
-    }
-
     @Nullable
     public Tree getWood()
     {
@@ -77,5 +69,13 @@ public class TEChestTFC extends TileEntityChest
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
     {
         return oldState.getBlock() != newSate.getBlock();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    @Nonnull
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
     }
 }

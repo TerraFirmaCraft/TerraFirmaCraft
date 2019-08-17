@@ -1,6 +1,10 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.entity.ai;
 
-import net.dries007.tfc.objects.entity.animal.EntityTameableTFC;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,16 +19,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.objects.entity.animal.EntityTameableTFC;
+
 public class EntityAIFollowOwnerTFC extends EntityAIBase
 {
     private final EntityTameableTFC tameable;
-    private EntityLivingBase owner;
-    World world;
     private final double followSpeed;
     private final PathNavigate petPathfinder;
-    private int timeToRecalcPath;
+    World world;
     float maxDist;
     float minDist;
+    private EntityLivingBase owner;
+    private int timeToRecalcPath;
     private float oldWaterCost;
 
     public EntityAIFollowOwnerTFC(EntityTameableTFC tameableIn, double followSpeedIn, float minDistIn, float maxDistIn)
@@ -51,7 +57,7 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
         {
             return false;
         }
-        else if (entitylivingbase instanceof EntityPlayer && ((EntityPlayer)entitylivingbase).isSpectator())
+        else if (entitylivingbase instanceof EntityPlayer && ((EntityPlayer) entitylivingbase).isSpectator())
         {
             return false;
         }
@@ -59,7 +65,7 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
         {
             return false;
         }
-        else if (this.tameable.getDistanceSq(entitylivingbase) < (double)(this.minDist * this.minDist))
+        else if (this.tameable.getDistanceSq(entitylivingbase) < (double) (this.minDist * this.minDist))
         {
             return false;
         }
@@ -72,7 +78,7 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
 
     public boolean shouldContinueExecuting()
     {
-        return !this.petPathfinder.noPath() && this.tameable.getDistanceSq(this.owner) > (double)(this.maxDist * this.maxDist) && !this.tameable.isSitting();
+        return !this.petPathfinder.noPath() && this.tameable.getDistanceSq(this.owner) > (double) (this.maxDist * this.maxDist) && !this.tameable.isSitting();
     }
 
     public void startExecuting()
@@ -91,7 +97,7 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
 
     public void updateTask()
     {
-        this.tameable.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float)this.tameable.getVerticalFaceSpeed());
+        this.tameable.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float) this.tameable.getVerticalFaceSpeed());
 
         if (!this.tameable.isSitting())
         {
@@ -115,7 +121,7 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
                                 {
                                     if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.isTeleportFriendlyBlock(i, j, k, l, i1))
                                     {
-                                        this.tameable.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.tameable.rotationYaw, this.tameable.rotationPitch);
+                                        this.tameable.setLocationAndAngles((double) ((float) (i + l) + 0.5F), (double) k, (double) ((float) (j + i1) + 0.5F), this.tameable.rotationYaw, this.tameable.rotationPitch);
                                         this.petPathfinder.clearPath();
                                         return;
                                     }

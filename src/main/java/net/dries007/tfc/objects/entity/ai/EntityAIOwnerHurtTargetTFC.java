@@ -1,8 +1,14 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.entity.ai;
 
-import net.dries007.tfc.objects.entity.animal.EntityTameableTFC;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
+
+import net.dries007.tfc.objects.entity.animal.EntityTameableTFC;
 
 public class EntityAIOwnerHurtTargetTFC extends EntityAITarget
 {

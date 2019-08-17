@@ -63,11 +63,6 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe> implements 
         return inProgressTexture;
     }
 
-    private boolean isValidInput(ItemStack inputItem)
-    {
-        return this.inputItem.testIgnoreCount(inputItem);
-    }
-
     @Override
     public NonNullList<IIngredient<ItemStack>> getIngredients()
     {
@@ -78,6 +73,11 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe> implements 
     public NonNullList<ItemStack> getOutputs()
     {
         return NonNullList.withSize(1, outputItem);
+    }
+
+    private boolean isValidInput(ItemStack inputItem)
+    {
+        return this.inputItem.testIgnoreCount(inputItem);
     }
 
 }

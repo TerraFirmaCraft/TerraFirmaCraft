@@ -21,6 +21,18 @@ public class IngredientMultipleFluidStack implements IIngredient<FluidStack>
     }
 
     @Override
+    public NonNullList<FluidStack> getValidIngredients()
+    {
+        NonNullList<FluidStack> output = NonNullList.create();
+        for (Fluid fluid : fluids)
+        {
+            FluidStack out = new FluidStack(fluid, amount);
+            output.add(out);
+        }
+        return output;
+    }
+
+    @Override
     public boolean test(FluidStack input)
     {
         return testIgnoreCount(input) && input.amount >= this.amount;
@@ -56,17 +68,5 @@ public class IngredientMultipleFluidStack implements IIngredient<FluidStack>
     public int getAmount()
     {
         return amount;
-    }
-
-    @Override
-    public NonNullList<FluidStack> getValidIngredients()
-    {
-        NonNullList<FluidStack> output = NonNullList.create();
-        for (Fluid fluid : fluids)
-        {
-            FluidStack out = new FluidStack(fluid, amount);
-            output.add(out);
-        }
-        return output;
     }
 }

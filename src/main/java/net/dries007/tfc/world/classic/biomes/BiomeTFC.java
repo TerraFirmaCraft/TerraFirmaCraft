@@ -63,10 +63,10 @@ public class BiomeTFC extends Biome
         return new BiomeDecoratorTFC(lilyPadPerChunk, waterPlantsPerChunk);
     }
 
-    public Biome setSpawnBiome()
+    @Override
+    public float getTemperature(BlockPos pos)
     {
-        spawnBiome = true;
-        return this;
+        return ClimateTFC.getActualTemp(pos);
     }
 
     @Override
@@ -75,9 +75,9 @@ public class BiomeTFC extends Biome
         return spawnBiome;
     }
 
-    @Override
-    public float getTemperature(BlockPos pos)
+    public Biome setSpawnBiome()
     {
-        return ClimateTFC.getActualTemp(pos);
+        spawnBiome = true;
+        return this;
     }
 }

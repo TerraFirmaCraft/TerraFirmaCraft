@@ -116,13 +116,6 @@ public class ItemSmallVessel extends ItemPottery
         }
     }
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        return new SmallVesselCapability(nbt);
-    }
-
     @Override
     public boolean canStack(ItemStack stack)
     {
@@ -163,6 +156,13 @@ public class ItemSmallVessel extends ItemPottery
     public Weight getWeight(ItemStack stack)
     {
         return Weight.HEAVY;
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new SmallVesselCapability(nbt);
     }
 
     // Extends ItemStackHandler for ease of use. Duplicates most of ItemHeatHandler functionality
@@ -296,59 +296,6 @@ public class ItemSmallVessel extends ItemPottery
         }
 
         @Override
-        public NBTTagCompound serializeNBT()
-        {
-            NBTTagCompound nbt = new NBTTagCompound();
-            fluidMode = tank.getFluidAmount() > 0;
-            nbt.setBoolean("fluidMode", fluidMode);
-
-            float temp = getTemperature();
-            nbt.setFloat("heat", temp);
-            if (temp <= 0)
-            {
-                nbt.setLong("ticks", -1);
-            }
-            else
-            {
-                nbt.setLong("ticks", CalendarTFC.TOTAL_TIME.getTicks());
-            }
-
-            if (fluidMode)
-            {
-                // Save fluid data
-                NBTTagCompound fluidData = new NBTTagCompound();
-                tank.writeToNBT(fluidData);
-                nbt.setTag("fluids", fluidData);
-            }
-            else
-            {
-                // Save item data
-                nbt.setTag("items", super.serializeNBT());
-            }
-            return nbt;
-        }
-
-        @Override
-        public void deserializeNBT(NBTTagCompound nbt)
-        {
-            temperature = nbt.getFloat("heat");
-            lastUpdateTick = nbt.getLong("ticks");
-            fluidMode = nbt.getBoolean("fluidMode");
-
-            if (fluidMode && nbt.hasKey("fluids", Constants.NBT.TAG_COMPOUND))
-            {
-                // Read fluid contents
-                tank.readFromNBT(nbt.getCompoundTag("fluids"));
-            }
-            else if (!fluidMode && nbt.hasKey("items", Constants.NBT.TAG_COMPOUND))
-            {
-                // Read item contents
-                super.deserializeNBT(nbt.getCompoundTag("items"));
-            }
-
-        }
-
-        @Override
         public IFluidTankProperties[] getTankProperties()
         {
             if (fluidTankProperties == null)
@@ -423,6 +370,59 @@ public class ItemSmallVessel extends ItemPottery
                 CapabilityFood.removeTrait(cap, CapabilityFood.PRESERVED);
             }
             return super.extractItem(slot, amount, simulate);
+        }
+
+        @Override
+        public NBTTagCompound serializeNBT()
+        {
+            NBTTagCompound nbt = new NBTTagCompound();
+            fluidMode = tank.getFluidAmount() > 0;
+            nbt.setBoolean("fluidMode", fluidMode);
+
+            float temp = getTemperature();
+            nbt.setFloat("heat", temp);
+            if (temp <= 0)
+            {
+                nbt.setLong("ticks", -1);
+            }
+            else
+            {
+                nbt.setLong("ticks", CalendarTFC.TOTAL_TIME.getTicks());
+            }
+
+            if (fluidMode)
+            {
+                // Save fluid data
+                NBTTagCompound fluidData = new NBTTagCompound();
+                tank.writeToNBT(fluidData);
+                nbt.setTag("fluids", fluidData);
+            }
+            else
+            {
+                // Save item data
+                nbt.setTag("items", super.serializeNBT());
+            }
+            return nbt;
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt)
+        {
+            temperature = nbt.getFloat("heat");
+            lastUpdateTick = nbt.getLong("ticks");
+            fluidMode = nbt.getBoolean("fluidMode");
+
+            if (fluidMode && nbt.hasKey("fluids", Constants.NBT.TAG_COMPOUND))
+            {
+                // Read fluid contents
+                tank.readFromNBT(nbt.getCompoundTag("fluids"));
+            }
+            else if (!fluidMode && nbt.hasKey("items", Constants.NBT.TAG_COMPOUND))
+            {
+                // Read item contents
+                super.deserializeNBT(nbt.getCompoundTag("items"));
+            }
+
         }
 
         private void updateFluidData(@Nullable FluidStack fluid)

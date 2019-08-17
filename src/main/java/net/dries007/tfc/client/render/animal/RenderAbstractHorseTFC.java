@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.client.render.animal;
 
 import java.util.Map;
@@ -18,7 +23,14 @@ import net.dries007.tfc.objects.entity.animal.EntityMuleTFC;
 @SideOnly(Side.CLIENT)
 public class RenderAbstractHorseTFC extends RenderLiving<AbstractHorseTFC>
 {
-    private static final Map< Class<?>, ResourceLocation> MAP = Maps. < Class<?>, ResourceLocation > newHashMap();
+    private static final Map<Class<?>, ResourceLocation> MAP = Maps.newHashMap();
+
+    static
+    {
+        MAP.put(EntityDonkeyTFC.class, new ResourceLocation("textures/entity/horse/donkey.png"));
+        MAP.put(EntityMuleTFC.class, new ResourceLocation("textures/entity/horse/mule.png"));
+    }
+
     private final float scale;
 
     public RenderAbstractHorseTFC(RenderManager manager)
@@ -41,11 +53,5 @@ public class RenderAbstractHorseTFC extends RenderLiving<AbstractHorseTFC>
     protected ResourceLocation getEntityTexture(AbstractHorseTFC entity)
     {
         return MAP.get(entity.getClass());
-    }
-
-    static
-    {
-        MAP.put(EntityDonkeyTFC.class, new ResourceLocation("textures/entity/horse/donkey.png"));
-        MAP.put(EntityMuleTFC.class, new ResourceLocation("textures/entity/horse/mule.png"));
     }
 }

@@ -66,6 +66,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
+
     private float headRotationCourse;
     private float headRotationCourseOld;
     private boolean isWet;
@@ -313,6 +314,93 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.dataManager.set(BEGGING, beg);
     }
 
+    public void writeEntityToNBT(NBTTagCompound compound)
+    {
+        super.writeEntityToNBT(compound);
+        compound.setBoolean("Angry", this.isAngry());
+        compound.setByte("CollarColor", (byte) this.getCollarColor().getDyeDamage());
+    }
+
+    public void readEntityFromNBT(NBTTagCompound compound)
+    {
+        super.readEntityFromNBT(compound);
+        this.setAngry(compound.getBoolean("Angry"));
+        if (compound.hasKey("CollarColor", 99))
+        {
+            this.setCollarColor(EnumDyeColor.byDyeDamage(compound.getByte("CollarColor")));
+        }
+
+    }
+
+    public boolean canBeLeashedTo(EntityPlayer player)
+    {
+        return !this.isAngry() && super.canBeLeashedTo(player);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void handleStatusUpdate(byte id)
+    {
+        if (id == 8)
+        {
+            this.isShaking = true;
+            this.timeWolfIsShaking = 0.0F;
+            this.prevTimeWolfIsShaking = 0.0F;
+        }
+        else
+        {
+            super.handleStatusUpdate(id);
+        }
+    }
+
+    public void setTamed(boolean tamed)
+    {
+        super.setTamed(tamed);
+        if (tamed)
+        {
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        }
+        else
+        {
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+        }
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+    }
+
+    public boolean shouldAttackEntity(EntityLivingBase target, EntityLivingBase owner)
+    {
+        if (!(target instanceof EntityCreeper) && !(target instanceof EntityGhast))
+        {
+            if (target instanceof EntityWolfTFC)
+            {
+                EntityWolfTFC entitywolf = (EntityWolfTFC) target;
+                if (entitywolf.isTamed() && entitywolf.getOwner() == owner)
+                {
+                    return false;
+                }
+            }
+            if (target instanceof EntityPlayer && owner instanceof EntityPlayer && !((EntityPlayer) owner).canAttackPlayer((EntityPlayer) target))
+            {
+                return false;
+            }
+            else
+            {
+                return !(target instanceof AbstractHorseTFC) || !((AbstractHorseTFC) target).isTame();
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataManager.register(DATA_HEALTH_ID, this.getHealth());
+        this.dataManager.register(BEGGING, false);
+        this.dataManager.register(COLLAR_COLOR, EnumDyeColor.RED.getDyeDamage());
+    }
+
     @SuppressWarnings("unchecked")
     protected void initEntityAI()
     {
@@ -477,93 +565,6 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
                 amount = (amount + 1.0F) / 2.0F;
             }
             return super.attackEntityFrom(source, amount);
-        }
-    }
-
-    protected void entityInit()
-    {
-        super.entityInit();
-        this.dataManager.register(DATA_HEALTH_ID, this.getHealth());
-        this.dataManager.register(BEGGING, false);
-        this.dataManager.register(COLLAR_COLOR, EnumDyeColor.RED.getDyeDamage());
-    }
-
-    public void writeEntityToNBT(NBTTagCompound compound)
-    {
-        super.writeEntityToNBT(compound);
-        compound.setBoolean("Angry", this.isAngry());
-        compound.setByte("CollarColor", (byte) this.getCollarColor().getDyeDamage());
-    }
-
-    public void readEntityFromNBT(NBTTagCompound compound)
-    {
-        super.readEntityFromNBT(compound);
-        this.setAngry(compound.getBoolean("Angry"));
-        if (compound.hasKey("CollarColor", 99))
-        {
-            this.setCollarColor(EnumDyeColor.byDyeDamage(compound.getByte("CollarColor")));
-        }
-
-    }
-
-    public boolean canBeLeashedTo(EntityPlayer player)
-    {
-        return !this.isAngry() && super.canBeLeashedTo(player);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void handleStatusUpdate(byte id)
-    {
-        if (id == 8)
-        {
-            this.isShaking = true;
-            this.timeWolfIsShaking = 0.0F;
-            this.prevTimeWolfIsShaking = 0.0F;
-        }
-        else
-        {
-            super.handleStatusUpdate(id);
-        }
-    }
-
-    public void setTamed(boolean tamed)
-    {
-        super.setTamed(tamed);
-        if (tamed)
-        {
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        }
-        else
-        {
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-        }
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-    }
-
-    public boolean shouldAttackEntity(EntityLivingBase target, EntityLivingBase owner)
-    {
-        if (!(target instanceof EntityCreeper) && !(target instanceof EntityGhast))
-        {
-            if (target instanceof EntityWolfTFC)
-            {
-                EntityWolfTFC entitywolf = (EntityWolfTFC) target;
-                if (entitywolf.isTamed() && entitywolf.getOwner() == owner)
-                {
-                    return false;
-                }
-            }
-            if (target instanceof EntityPlayer && owner instanceof EntityPlayer && !((EntityPlayer) owner).canAttackPlayer((EntityPlayer) target))
-            {
-                return false;
-            }
-            else
-            {
-                return !(target instanceof AbstractHorseTFC) || !((AbstractHorseTFC) target).isTame();
-            }
-        }
-        else
-        {
-            return false;
         }
     }
 
