@@ -81,7 +81,7 @@ public class TFCGuiHandler implements IGuiHandler
                 Entity entity = player.world.getEntityByID(z); // horse data trick
                 if (entity instanceof AbstractHorseTFC)
                 {
-                    AbstractHorseTFC horse = (AbstractHorseTFC)entity;
+                    AbstractHorseTFC horse = (AbstractHorseTFC) entity;
                     return new ContainerHorseInventoryTFC(player.inventory, horse.getHorseChest(), horse, player);
                 }
                 return null;
@@ -180,7 +180,7 @@ public class TFCGuiHandler implements IGuiHandler
             case HORSE:
                 if (container instanceof ContainerHorseInventoryTFC)
                 {
-                    ContainerHorseInventoryTFC containerHITFC = (ContainerHorseInventoryTFC)container;
+                    ContainerHorseInventoryTFC containerHITFC = (ContainerHorseInventoryTFC) container;
                     AbstractHorseTFC horse = containerHITFC.getHorse();
                     int invSize = y; // horse data trick
                     return new GuiScreenHorseInventoryTFC(player.inventory, new ContainerHorseChest(horse.getHorseChest().getName(), invSize), horse);

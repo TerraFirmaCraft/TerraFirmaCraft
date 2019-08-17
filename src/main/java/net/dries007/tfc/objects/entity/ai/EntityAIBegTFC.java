@@ -1,6 +1,10 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.entity.ai;
 
-import net.dries007.tfc.objects.entity.animal.EntityWolfTFC;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -8,12 +12,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.objects.entity.animal.EntityWolfTFC;
+
 public class EntityAIBegTFC extends EntityAIBase
 {
     private final EntityWolfTFC wolf;
-    private EntityPlayer player;
     private final World world;
     private final float minPlayerDistance;
+    private EntityPlayer player;
     private int timeoutCounter;
 
     public EntityAIBegTFC(EntityWolfTFC wolf, float minDistance)
@@ -26,8 +32,8 @@ public class EntityAIBegTFC extends EntityAIBase
 
     public boolean shouldExecute()
     {
-        this.player = this.world.getClosestPlayerToEntity(this.wolf, (double)this.minPlayerDistance);
-        return this.player == null ? false : this.hasTemptationItemInHand(this.player);
+        this.player = this.world.getClosestPlayerToEntity(this.wolf, (double) this.minPlayerDistance);
+        return this.player != null && this.hasTemptationItemInHand(this.player);
     }
 
     public boolean shouldContinueExecuting()
@@ -36,7 +42,7 @@ public class EntityAIBegTFC extends EntityAIBase
         {
             return false;
         }
-        else if (this.wolf.getDistanceSq(this.player) > (double)(this.minPlayerDistance * this.minPlayerDistance))
+        else if (this.wolf.getDistanceSq(this.player) > (double) (this.minPlayerDistance * this.minPlayerDistance))
         {
             return false;
         }
@@ -60,7 +66,7 @@ public class EntityAIBegTFC extends EntityAIBase
 
     public void updateTask()
     {
-        this.wolf.getLookHelper().setLookPosition(this.player.posX, this.player.posY + (double)this.player.getEyeHeight(), this.player.posZ, 10.0F, (float)this.wolf.getVerticalFaceSpeed());
+        this.wolf.getLookHelper().setLookPosition(this.player.posX, this.player.posY + (double) this.player.getEyeHeight(), this.player.posZ, 10.0F, (float) this.wolf.getVerticalFaceSpeed());
         --this.timeoutCounter;
     }
 

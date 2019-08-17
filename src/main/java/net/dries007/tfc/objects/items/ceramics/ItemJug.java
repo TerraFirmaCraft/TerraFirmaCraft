@@ -44,6 +44,11 @@ public class ItemJug extends ItemPottery
 {
     private static final int CAPACITY = 100;
 
+    public ItemJug()
+    {
+        setHasSubtypes(true);
+    }
+
     @Override
     public boolean canStack(@Nonnull ItemStack stack)
     {
@@ -53,11 +58,6 @@ public class ItemJug extends ItemPottery
             return jugCap.drain(CAPACITY, false) == null;
         }
         return true;
-    }
-
-    public ItemJug()
-    {
-        setHasSubtypes(true);
     }
 
     @SuppressWarnings("ConstantConditions")

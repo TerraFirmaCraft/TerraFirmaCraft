@@ -111,89 +111,6 @@ public class BlockFluidTFC extends BlockFluidClassic
     }
 
     @Override
-    public boolean canDisplace(IBlockAccess world, BlockPos pos)
-    {
-        IBlockState state = world.getBlockState(pos);
-        Block block = state.getBlock();
-
-        if (block.isAir(state, world, pos))
-        {
-            return true;
-        }
-
-        if (block == this)
-        {
-            return false;
-        }
-
-        if (displacements.containsKey(block))
-        {
-            return displacements.get(block);
-        }
-
-        Material material = state.getMaterial();
-        if (material.blocksMovement() || material == Material.PORTAL || material == Material.STRUCTURE_VOID)
-        {
-            return false;
-        }
-
-        // this is where it differs from the source:
-
-        if (block instanceof BlockFluidTFC)
-        {
-            return (state.getValue(LEVEL) != 0);
-        }
-
-        int density = getDensity(world, pos);
-        if (density == Integer.MAX_VALUE)
-        {
-            return true;
-        }
-
-        return this.density > density;
-    }
-
-    @Override
-    public float getFluidHeightForRender(IBlockAccess world, BlockPos adjPos, @Nonnull IBlockState upState)
-    {
-        IBlockState adjState = world.getBlockState(adjPos);
-
-        // any adjacent above matching liquids merge to 1
-        if (isMergeableFluid(upState))
-        {
-            return 1;
-        }
-
-        // adjacent mergeable liquids
-        if (isMergeableFluid(adjState))
-        {
-            Block adjBlock = adjState.getBlock();
-            if (adjBlock == this || adjBlock instanceof BlockLiquid)
-                return super.getFluidHeightForRender(world, adjPos, upState);
-            else
-                return ((BlockFluidBase) adjBlock).getFluidHeightForRender(world, adjPos, upState);
-        }
-
-        // adjacent solid
-        if (adjState.getMaterial().isSolid())
-            return -1;
-
-        // adjacent air or non-mergeable liquids
-        return 0;
-    }
-
-    protected boolean isMergeableFluid(@Nonnull IBlockState blockstate)
-    {
-        return (blockstate.getMaterial() == getDefaultState().getMaterial()) && (blockstate.getMaterial().isLiquid());
-    }
-
-    protected boolean isBlockingSourceBlock(IBlockAccess world, BlockPos pos)
-    {
-        IBlockState state = world.getBlockState(pos);
-        return isMergeableFluid(state) && state.getValue(LEVEL) == 0;
-    }
-
-    @Override
     protected boolean[] getOptimalFlowDirections(World world, BlockPos pos)
     {
         for (int side = 0; side < 4; side++)
@@ -340,6 +257,49 @@ public class BlockFluidTFC extends BlockFluidClassic
         return super.canFlowInto(world, pos) || state.getMaterial().isLiquid();
     }
 
+    @Override
+    public boolean canDisplace(IBlockAccess world, BlockPos pos)
+    {
+        IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+
+        if (block.isAir(state, world, pos))
+        {
+            return true;
+        }
+
+        if (block == this)
+        {
+            return false;
+        }
+
+        if (displacements.containsKey(block))
+        {
+            return displacements.get(block);
+        }
+
+        Material material = state.getMaterial();
+        if (material.blocksMovement() || material == Material.PORTAL || material == Material.STRUCTURE_VOID)
+        {
+            return false;
+        }
+
+        // this is where it differs from the source:
+
+        if (block instanceof BlockFluidTFC)
+        {
+            return (state.getValue(LEVEL) != 0);
+        }
+
+        int density = getDensity(world, pos);
+        if (density == Integer.MAX_VALUE)
+        {
+            return true;
+        }
+
+        return this.density > density;
+    }
+
     @Nonnull
     @Override
     public IBlockState getExtendedState(@Nonnull IBlockState oldState, @Nonnull IBlockAccess world, @Nonnull BlockPos pos)
@@ -421,5 +381,45 @@ public class BlockFluidTFC extends BlockFluidClassic
         state = state.withProperty(LEVEL_CORNERS[2], corner[1][1]);
         state = state.withProperty(LEVEL_CORNERS[3], corner[1][0]);
         return state;
+    }
+
+    @Override
+    public float getFluidHeightForRender(IBlockAccess world, BlockPos adjPos, @Nonnull IBlockState upState)
+    {
+        IBlockState adjState = world.getBlockState(adjPos);
+
+        // any adjacent above matching liquids merge to 1
+        if (isMergeableFluid(upState))
+        {
+            return 1;
+        }
+
+        // adjacent mergeable liquids
+        if (isMergeableFluid(adjState))
+        {
+            Block adjBlock = adjState.getBlock();
+            if (adjBlock == this || adjBlock instanceof BlockLiquid)
+                return super.getFluidHeightForRender(world, adjPos, upState);
+            else
+                return ((BlockFluidBase) adjBlock).getFluidHeightForRender(world, adjPos, upState);
+        }
+
+        // adjacent solid
+        if (adjState.getMaterial().isSolid())
+            return -1;
+
+        // adjacent air or non-mergeable liquids
+        return 0;
+    }
+
+    protected boolean isMergeableFluid(@Nonnull IBlockState blockstate)
+    {
+        return (blockstate.getMaterial() == getDefaultState().getMaterial()) && (blockstate.getMaterial().isLiquid());
+    }
+
+    protected boolean isBlockingSourceBlock(IBlockAccess world, BlockPos pos)
+    {
+        IBlockState state = world.getBlockState(pos);
+        return isMergeableFluid(state) && state.getValue(LEVEL) == 0;
     }
 }

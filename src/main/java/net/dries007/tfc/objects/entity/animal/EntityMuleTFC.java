@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.entity.animal;
 
 import javax.annotation.Nullable;
@@ -15,14 +20,26 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class EntityMuleTFC extends AbstractChestHorseTFC
 {
+    public static void registerFixesMuleTFC(DataFixer fixer)
+    {
+        AbstractChestHorseTFC.registerFixesAbstractChestHorseTFC(fixer, EntityMuleTFC.class);
+    }
+
     public EntityMuleTFC(World worldIn)
     {
         super(worldIn);
     }
 
-    public static void registerFixesMuleTFC(DataFixer fixer)
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        AbstractChestHorseTFC.registerFixesAbstractChestHorseTFC(fixer, EntityMuleTFC.class);
+        super.getHurtSound(damageSourceIn);
+        return SoundEvents.ENTITY_MULE_HURT;
+    }
+
+    protected SoundEvent getDeathSound()
+    {
+        super.getDeathSound();
+        return SoundEvents.ENTITY_MULE_DEATH;
     }
 
     @Override
@@ -31,7 +48,7 @@ public class EntityMuleTFC extends AbstractChestHorseTFC
         int numberOfChilds = 1; //one always
         for (int i = 0; i < numberOfChilds; i++)
         {
-            AbstractHorseTFC baby = (AbstractHorseTFC)createChild(this);
+            AbstractHorseTFC baby = (AbstractHorseTFC) createChild(this);
             if (baby != null)
             {
                 baby.setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
@@ -43,15 +60,9 @@ public class EntityMuleTFC extends AbstractChestHorseTFC
 
     public EntityAgeable createChild(EntityAgeable ageable)
     {
-        AbstractHorseTFC abstracthorse = (AbstractHorseTFC)(new EntityMuleTFC(this.world));
+        AbstractHorseTFC abstracthorse = (new EntityMuleTFC(this.world));
         this.setOffspringAttributes(ageable, abstracthorse);
         return abstracthorse;
-    }
-
-    @Nullable
-    protected ResourceLocation getLootTable()
-    {
-        return LootTablesTFC.ANIMALS_HORSE;
     }
 
     protected SoundEvent getAmbientSound()
@@ -60,16 +71,10 @@ public class EntityMuleTFC extends AbstractChestHorseTFC
         return SoundEvents.ENTITY_MULE_AMBIENT;
     }
 
-    protected SoundEvent getDeathSound()
+    @Nullable
+    protected ResourceLocation getLootTable()
     {
-        super.getDeathSound();
-        return SoundEvents.ENTITY_MULE_DEATH;
-    }
-
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
-        super.getHurtSound(damageSourceIn);
-        return SoundEvents.ENTITY_MULE_HURT;
+        return LootTablesTFC.ANIMALS_HORSE;
     }
 
     protected void playChestEquipSound()

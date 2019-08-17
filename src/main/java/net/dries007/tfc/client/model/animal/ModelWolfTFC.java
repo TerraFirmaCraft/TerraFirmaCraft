@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.client.model.animal;
 
 import net.minecraft.client.model.ModelBase;
@@ -14,21 +19,37 @@ import net.dries007.tfc.objects.entity.animal.EntityWolfTFC;
 @SideOnly(Side.CLIENT)
 public class ModelWolfTFC extends ModelBase
 {
-    /** main box for the wolf head */
+    /**
+     * main box for the wolf head
+     */
     public ModelRenderer wolfHeadMain;
-    /** The wolf's body */
+    /**
+     * The wolf's body
+     */
     public ModelRenderer wolfBody;
-    /** Wolf'se first leg */
+    /**
+     * Wolf'se first leg
+     */
     public ModelRenderer wolfLeg1;
-    /** Wolf's second leg */
+    /**
+     * Wolf's second leg
+     */
     public ModelRenderer wolfLeg2;
-    /** Wolf's third leg */
+    /**
+     * Wolf's third leg
+     */
     public ModelRenderer wolfLeg3;
-    /** Wolf's fourth leg */
+    /**
+     * Wolf's fourth leg
+     */
     public ModelRenderer wolfLeg4;
-    /** The wolf's tail */
+    /**
+     * The wolf's tail
+     */
     ModelRenderer wolfTail;
-    /** The wolf's mane */
+    /**
+     * The wolf's mane
+     */
     ModelRenderer wolfMane;
 
     public ModelWolfTFC()
@@ -105,12 +126,25 @@ public class ModelWolfTFC extends ModelBase
     }
 
     /**
+     * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
+     * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
+     * "far" arms and legs can swing at most.
+     */
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
+    {
+        super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
+        this.wolfHeadMain.rotateAngleX = headPitch * 0.017453292F;
+        this.wolfHeadMain.rotateAngleY = netHeadYaw * 0.017453292F;
+        this.wolfTail.rotateAngleX = ageInTicks;
+    }
+
+    /**
      * Used for easily adding entity-dependent animations. The second and third float params here are the same second
      * and third as in the setRotationAngles method.
      */
     public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime)
     {
-        EntityWolfTFC entitywolf = (EntityWolfTFC)entitylivingbaseIn;
+        EntityWolfTFC entitywolf = (EntityWolfTFC) entitylivingbaseIn;
 
         if (entitywolf.isAngry())
         {
@@ -124,15 +158,15 @@ public class ModelWolfTFC extends ModelBase
         if (entitywolf.isSitting())
         {
             this.wolfMane.setRotationPoint(-1.0F, 16.0F, -3.0F);
-            this.wolfMane.rotateAngleX = ((float)Math.PI * 2F / 5F);
+            this.wolfMane.rotateAngleX = ((float) Math.PI * 2F / 5F);
             this.wolfMane.rotateAngleY = 0.0F;
             this.wolfBody.setRotationPoint(0.0F, 18.0F, 0.0F);
-            this.wolfBody.rotateAngleX = ((float)Math.PI / 4F);
+            this.wolfBody.rotateAngleX = ((float) Math.PI / 4F);
             this.wolfTail.setRotationPoint(-1.0F, 21.0F, 6.0F);
             this.wolfLeg1.setRotationPoint(-2.5F, 22.0F, 2.0F);
-            this.wolfLeg1.rotateAngleX = ((float)Math.PI * 3F / 2F);
+            this.wolfLeg1.rotateAngleX = ((float) Math.PI * 3F / 2F);
             this.wolfLeg2.setRotationPoint(0.5F, 22.0F, 2.0F);
-            this.wolfLeg2.rotateAngleX = ((float)Math.PI * 3F / 2F);
+            this.wolfLeg2.rotateAngleX = ((float) Math.PI * 3F / 2F);
             this.wolfLeg3.rotateAngleX = 5.811947F;
             this.wolfLeg3.setRotationPoint(-2.49F, 17.0F, -4.0F);
             this.wolfLeg4.rotateAngleX = 5.811947F;
@@ -141,7 +175,7 @@ public class ModelWolfTFC extends ModelBase
         else
         {
             this.wolfBody.setRotationPoint(0.0F, 14.0F, 2.0F);
-            this.wolfBody.rotateAngleX = ((float)Math.PI / 2F);
+            this.wolfBody.rotateAngleX = ((float) Math.PI / 2F);
             this.wolfMane.setRotationPoint(-1.0F, 14.0F, -3.0F);
             this.wolfMane.rotateAngleX = this.wolfBody.rotateAngleX;
             this.wolfTail.setRotationPoint(-1.0F, 12.0F, 8.0F);
@@ -150,8 +184,8 @@ public class ModelWolfTFC extends ModelBase
             this.wolfLeg3.setRotationPoint(-2.5F, 16.0F, -4.0F);
             this.wolfLeg4.setRotationPoint(0.5F, 16.0F, -4.0F);
             this.wolfLeg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-            this.wolfLeg2.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-            this.wolfLeg3.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+            this.wolfLeg2.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+            this.wolfLeg3.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
             this.wolfLeg4.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         }
 
@@ -159,18 +193,5 @@ public class ModelWolfTFC extends ModelBase
         this.wolfMane.rotateAngleZ = entitywolf.getShakeAngle(partialTickTime, -0.08F);
         this.wolfBody.rotateAngleZ = entitywolf.getShakeAngle(partialTickTime, -0.16F);
         this.wolfTail.rotateAngleZ = entitywolf.getShakeAngle(partialTickTime, -0.2F);
-    }
-
-    /**
-     * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
-     * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
-     * "far" arms and legs can swing at most.
-     */
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
-    {
-        super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
-        this.wolfHeadMain.rotateAngleX = headPitch * 0.017453292F;
-        this.wolfHeadMain.rotateAngleY = netHeadYaw * 0.017453292F;
-        this.wolfTail.rotateAngleX = ageInTicks;
     }
 }

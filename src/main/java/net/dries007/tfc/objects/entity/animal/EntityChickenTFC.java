@@ -42,6 +42,7 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
         int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
+
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;
     public float destPos;

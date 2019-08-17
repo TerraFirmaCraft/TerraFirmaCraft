@@ -165,18 +165,6 @@ public class BlockPlacedItemFlat extends Block
         return true;
     }
 
-    @Nonnull
-    @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        TEPlacedItemFlat te = Helpers.getTE(world, pos, TEPlacedItemFlat.class);
-        if (te != null)
-        {
-            return te.getStack().copy();
-        }
-        return ItemStack.EMPTY;
-    }
-
     @Override
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
     {
@@ -194,6 +182,18 @@ public class BlockPlacedItemFlat extends Block
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEPlacedItemFlat();
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        TEPlacedItemFlat te = Helpers.getTE(world, pos, TEPlacedItemFlat.class);
+        if (te != null)
+        {
+            return te.getStack().copy();
+        }
+        return ItemStack.EMPTY;
     }
 
     @Override

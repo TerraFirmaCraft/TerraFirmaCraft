@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.entity.animal;
 
 import java.util.UUID;
@@ -37,92 +42,37 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 public class EntityHorseTFC extends AbstractHorseTFC
 {
     private static final UUID ARMOR_MODIFIER_UUID = UUID.fromString("556E1665-8B10-40C8-8F9D-CF9B1667F295");
-    private static final DataParameter<Integer> HORSE_VARIANT = EntityDataManager.<Integer>createKey(EntityHorseTFC.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> HORSE_ARMOR = EntityDataManager.<Integer>createKey(EntityHorseTFC.class, DataSerializers.VARINT);
-    private static final DataParameter<ItemStack> HORSE_ARMOR_STACK = EntityDataManager.<ItemStack>createKey(EntityHorseTFC.class, DataSerializers.ITEM_STACK);
+    private static final DataParameter<Integer> HORSE_VARIANT = EntityDataManager.createKey(EntityHorseTFC.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> HORSE_ARMOR = EntityDataManager.createKey(EntityHorseTFC.class, DataSerializers.VARINT);
+    private static final DataParameter<ItemStack> HORSE_ARMOR_STACK = EntityDataManager.createKey(EntityHorseTFC.class, DataSerializers.ITEM_STACK);
     private static final String[] HORSE_TEXTURES = new String[] {"textures/entity/horse/horse_white.png", "textures/entity/horse/horse_creamy.png", "textures/entity/horse/horse_chestnut.png", "textures/entity/horse/horse_brown.png", "textures/entity/horse/horse_black.png", "textures/entity/horse/horse_gray.png", "textures/entity/horse/horse_darkbrown.png"};
     private static final String[] HORSE_TEXTURES_ABBR = new String[] {"hwh", "hcr", "hch", "hbr", "hbl", "hgr", "hdb"};
     private static final String[] HORSE_MARKING_TEXTURES = new String[] {null, "textures/entity/horse/horse_markings_white.png", "textures/entity/horse/horse_markings_whitefield.png", "textures/entity/horse/horse_markings_whitedots.png", "textures/entity/horse/horse_markings_blackdots.png"};
     private static final String[] HORSE_MARKING_TEXTURES_ABBR = new String[] {"", "wo_", "wmo", "wdo", "bdo"};
-    private String texturePrefix;
+
+    public static void registerFixesHorseTFC(DataFixer fixer)
+    {
+        AbstractHorseTFC.registerFixesAbstractHorseTFC(fixer, EntityHorseTFC.class);
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityHorseTFC.class, "ArmorItem"));
+    }
+
     private final String[] horseTexturesArray = new String[3];
+    private String texturePrefix;
 
     public EntityHorseTFC(World worldIn)
     {
         super(worldIn);
     }
 
-    protected void entityInit()
+    public int getHorseVariant()
     {
-        super.entityInit();
-        this.dataManager.register(HORSE_VARIANT, Integer.valueOf(0));
-        this.dataManager.register(HORSE_ARMOR, Integer.valueOf(HorseArmorType.NONE.getOrdinal()));
-        this.dataManager.register(HORSE_ARMOR_STACK, ItemStack.EMPTY);
-    }
-
-    public static void registerFixesHorseTFC(DataFixer fixer)
-    {
-        AbstractHorseTFC.registerFixesAbstractHorseTFC(fixer, EntityHorseTFC.class);
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityHorseTFC.class, new String[] {"ArmorItem"}));
-    }
-
-    public void writeEntityToNBT(NBTTagCompound compound)
-    {
-        super.writeEntityToNBT(compound);
-        compound.setInteger("Variant", this.getHorseVariant());
-
-        if (!this.horseChest.getStackInSlot(1).isEmpty())
-        {
-            compound.setTag("ArmorItem", this.horseChest.getStackInSlot(1).writeToNBT(new NBTTagCompound()));
-        }
-    }
-
-    public void readEntityFromNBT(NBTTagCompound compound)
-    {
-        super.readEntityFromNBT(compound);
-        this.setHorseVariant(compound.getInteger("Variant"));
-
-        if (compound.hasKey("ArmorItem", 10))
-        {
-            ItemStack itemstack = new ItemStack(compound.getCompoundTag("ArmorItem"));
-
-            if (!itemstack.isEmpty() && isArmor(itemstack))
-            {
-                this.horseChest.setInventorySlotContents(1, itemstack);
-            }
-        }
-
-        this.updateHorseSlots();
+        return this.dataManager.get(HORSE_VARIANT).intValue();
     }
 
     public void setHorseVariant(int variant)
     {
         this.dataManager.set(HORSE_VARIANT, Integer.valueOf(variant));
         this.resetTexturePrefix();
-    }
-
-    public int getHorseVariant()
-    {
-        return ((Integer)this.dataManager.get(HORSE_VARIANT)).intValue();
-    }
-
-    private void resetTexturePrefix()
-    {
-        this.texturePrefix = null;
-    }
-
-    @SideOnly(Side.CLIENT)
-    private void setHorseTexturePaths()
-    {
-        int i = this.getHorseVariant();
-        int j = (i & 255) % 7;
-        int k = ((i & 65280) >> 8) % 5;
-        ItemStack armorStack = this.dataManager.get(HORSE_ARMOR_STACK);
-        String texture = !armorStack.isEmpty() ? armorStack.getItem().getHorseArmorTexture(this, armorStack) : HorseArmorType.getByOrdinal(this.dataManager.get(HORSE_ARMOR)).getTextureName(); //If armorStack is empty, the server is vanilla so the texture should be determined the vanilla way
-        this.horseTexturesArray[0] = HORSE_TEXTURES[j];
-        this.horseTexturesArray[1] = HORSE_MARKING_TEXTURES[k];
-        this.horseTexturesArray[2] = texture;
-        this.texturePrefix = "horse/" + HORSE_TEXTURES_ABBR[j] + HORSE_MARKING_TEXTURES_ABBR[k] + texture;
     }
 
     @SideOnly(Side.CLIENT)
@@ -147,12 +97,6 @@ public class EntityHorseTFC extends AbstractHorseTFC
         return this.horseTexturesArray;
     }
 
-    protected void updateHorseSlots()
-    {
-        super.updateHorseSlots();
-        this.setHorseArmorStack(this.horseChest.getStackInSlot(1));
-    }
-
     public void setHorseArmorStack(ItemStack itemStackIn)
     {
         HorseArmorType horsearmortype = HorseArmorType.getByItemStack(itemStackIn);
@@ -167,7 +111,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
 
             if (i != 0)
             {
-                this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier((new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", (double)i, 0)).setSaved(false));
+                this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier((new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", (double) i, 0)).setSaved(false));
             }
         }
     }
@@ -175,7 +119,8 @@ public class EntityHorseTFC extends AbstractHorseTFC
     public HorseArmorType getHorseArmorType()
     {
         HorseArmorType armor = HorseArmorType.getByItemStack(this.dataManager.get(HORSE_ARMOR_STACK)); //First check the Forge armor DataParameter
-        if (armor == HorseArmorType.NONE) armor = HorseArmorType.getByOrdinal(this.dataManager.get(HORSE_ARMOR)); //If the Forge armor DataParameter returns NONE, fallback to the vanilla armor DataParameter. This is necessary to prevent issues with Forge clients connected to vanilla servers.
+        if (armor == HorseArmorType.NONE)
+            armor = HorseArmorType.getByOrdinal(this.dataManager.get(HORSE_ARMOR)); //If the Forge armor DataParameter returns NONE, fallback to the vanilla armor DataParameter. This is necessary to prevent issues with Forge clients connected to vanilla servers.
         return armor;
     }
 
@@ -191,64 +136,10 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
-    protected void playGallopSound(SoundType p_190680_1_)
-    {
-        super.playGallopSound(p_190680_1_);
-
-        if (this.rand.nextInt(10) == 0)
-        {
-            this.playSound(SoundEvents.ENTITY_HORSE_BREATHE, p_190680_1_.getVolume() * 0.6F, p_190680_1_.getPitch());
-        }
-    }
-
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((double)this.getModifiedMaxHealth());
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.getModifiedMovementSpeed());
-        this.getEntityAttribute(JUMP_STRENGTH).setBaseValue(this.getModifiedJumpStrength());
-    }
-
-    public void onUpdate()
-    {
-        super.onUpdate();
-
-        if (this.world.isRemote && this.dataManager.isDirty())
-        {
-            this.dataManager.setClean();
-            this.resetTexturePrefix();
-        }
-        ItemStack armor = this.horseChest.getStackInSlot(1);
-        if (isArmor(armor)) armor.getItem().onHorseArmorTick(world, this, armor);
-    }
-
-    protected SoundEvent getAmbientSound()
-    {
-        super.getAmbientSound();
-        return SoundEvents.ENTITY_HORSE_AMBIENT;
-    }
-
-    protected SoundEvent getDeathSound()
-    {
-        super.getDeathSound();
-        return SoundEvents.ENTITY_HORSE_DEATH;
-    }
-
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         super.getHurtSound(damageSourceIn);
         return SoundEvents.ENTITY_HORSE_HURT;
-    }
-
-    protected SoundEvent getAngrySound()
-    {
-        super.getAngrySound();
-        return SoundEvents.ENTITY_HORSE_ANGRY;
-    }
-
-    protected ResourceLocation getLootTable()
-    {
-        return LootTablesTFC.ANIMALS_HORSE;
     }
 
     public boolean processInteract(EntityPlayer player, EnumHand hand)
@@ -316,6 +207,57 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
+    protected SoundEvent getDeathSound()
+    {
+        super.getDeathSound();
+        return SoundEvents.ENTITY_HORSE_DEATH;
+    }
+
+    public void writeEntityToNBT(NBTTagCompound compound)
+    {
+        super.writeEntityToNBT(compound);
+        compound.setInteger("Variant", this.getHorseVariant());
+
+        if (!this.horseChest.getStackInSlot(1).isEmpty())
+        {
+            compound.setTag("ArmorItem", this.horseChest.getStackInSlot(1).writeToNBT(new NBTTagCompound()));
+        }
+    }
+
+    public void readEntityFromNBT(NBTTagCompound compound)
+    {
+        super.readEntityFromNBT(compound);
+        this.setHorseVariant(compound.getInteger("Variant"));
+
+        if (compound.hasKey("ArmorItem", 10))
+        {
+            ItemStack itemstack = new ItemStack(compound.getCompoundTag("ArmorItem"));
+
+            if (!itemstack.isEmpty() && isArmor(itemstack))
+            {
+                this.horseChest.setInventorySlotContents(1, itemstack);
+            }
+        }
+
+        this.updateHorseSlots();
+    }
+
+    @Override
+    public void birthChildren()
+    {
+        int numberOfChilds = 1; //one always
+        for (int i = 0; i < numberOfChilds; i++)
+        {
+            AbstractHorseTFC baby = (AbstractHorseTFC) createChild(this);
+            if (baby != null)
+            {
+                baby.setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+                baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+                this.world.spawnEntity(baby);
+            }
+        }
+    }
+
     public boolean canMateWith(EntityAnimal otherAnimal)
     {
         if (otherAnimal == this)
@@ -328,23 +270,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
         else
         {
-            return this.canMate() && ((AbstractHorseTFC)otherAnimal).canMate() && super.canMateWith(otherAnimal);
-        }
-    }
-
-    @Override
-    public void birthChildren()
-    {
-        int numberOfChilds = 1; //one always
-        for (int i = 0; i < numberOfChilds; i++)
-        {
-            AbstractHorseTFC baby = (AbstractHorseTFC)createChild(this);
-            if (baby != null)
-            {
-                baby.setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
-                baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-                this.world.spawnEntity(baby);
-            }
+            return this.canMate() && ((AbstractHorseTFC) otherAnimal).canMate() && super.canMateWith(otherAnimal);
         }
     }
 
@@ -358,7 +284,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
         else
         {
-            EntityHorseTFC entityHorseTFC = (EntityHorseTFC)ageable;
+            EntityHorseTFC entityHorseTFC = (EntityHorseTFC) ageable;
             abstracthorse = new EntityHorseTFC(this.world);
             int j = this.rand.nextInt(9);
             int i;
@@ -391,7 +317,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
                 i = i | this.rand.nextInt(5) << 8 & 65280;
             }
 
-            ((EntityHorseTFC)abstracthorse).setHorseVariant(i);
+            ((EntityHorseTFC) abstracthorse).setHorseVariant(i);
         }
 
         this.setOffspringAttributes(ageable, abstracthorse);
@@ -408,6 +334,46 @@ public class EntityHorseTFC extends AbstractHorseTFC
         return HorseArmorType.isHorseArmor(stack);
     }
 
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataManager.register(HORSE_VARIANT, Integer.valueOf(0));
+        this.dataManager.register(HORSE_ARMOR, Integer.valueOf(HorseArmorType.NONE.getOrdinal()));
+        this.dataManager.register(HORSE_ARMOR_STACK, ItemStack.EMPTY);
+    }
+
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((double) this.getModifiedMaxHealth());
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.getModifiedMovementSpeed());
+        this.getEntityAttribute(JUMP_STRENGTH).setBaseValue(this.getModifiedJumpStrength());
+    }
+
+    public void onUpdate()
+    {
+        super.onUpdate();
+
+        if (this.world.isRemote && this.dataManager.isDirty())
+        {
+            this.dataManager.setClean();
+            this.resetTexturePrefix();
+        }
+        ItemStack armor = this.horseChest.getStackInSlot(1);
+        if (isArmor(armor)) armor.getItem().onHorseArmorTick(world, this, armor);
+    }
+
+    protected SoundEvent getAmbientSound()
+    {
+        super.getAmbientSound();
+        return SoundEvents.ENTITY_HORSE_AMBIENT;
+    }
+
+    protected ResourceLocation getLootTable()
+    {
+        return LootTablesTFC.ANIMALS_HORSE;
+    }
+
     @Nullable
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
@@ -416,7 +382,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
 
         if (livingdata instanceof EntityHorseTFC.GroupData)
         {
-            i = ((EntityHorseTFC.GroupData)livingdata).variant;
+            i = ((EntityHorseTFC.GroupData) livingdata).variant;
         }
         else
         {
@@ -426,6 +392,47 @@ public class EntityHorseTFC extends AbstractHorseTFC
 
         this.setHorseVariant(i | this.rand.nextInt(5) << 8);
         return livingdata;
+    }
+
+    protected void updateHorseSlots()
+    {
+        super.updateHorseSlots();
+        this.setHorseArmorStack(this.horseChest.getStackInSlot(1));
+    }
+
+    protected SoundEvent getAngrySound()
+    {
+        super.getAngrySound();
+        return SoundEvents.ENTITY_HORSE_ANGRY;
+    }
+
+    protected void playGallopSound(SoundType p_190680_1_)
+    {
+        super.playGallopSound(p_190680_1_);
+
+        if (this.rand.nextInt(10) == 0)
+        {
+            this.playSound(SoundEvents.ENTITY_HORSE_BREATHE, p_190680_1_.getVolume() * 0.6F, p_190680_1_.getPitch());
+        }
+    }
+
+    private void resetTexturePrefix()
+    {
+        this.texturePrefix = null;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void setHorseTexturePaths()
+    {
+        int i = this.getHorseVariant();
+        int j = (i & 255) % 7;
+        int k = ((i & 65280) >> 8) % 5;
+        ItemStack armorStack = this.dataManager.get(HORSE_ARMOR_STACK);
+        String texture = !armorStack.isEmpty() ? armorStack.getItem().getHorseArmorTexture(this, armorStack) : HorseArmorType.getByOrdinal(this.dataManager.get(HORSE_ARMOR)).getTextureName(); //If armorStack is empty, the server is vanilla so the texture should be determined the vanilla way
+        this.horseTexturesArray[0] = HORSE_TEXTURES[j];
+        this.horseTexturesArray[1] = HORSE_MARKING_TEXTURES[k];
+        this.horseTexturesArray[2] = texture;
+        this.texturePrefix = "horse/" + HORSE_TEXTURES_ABBR[j] + HORSE_MARKING_TEXTURES_ABBR[k] + texture;
     }
 
     public static class GroupData implements IEntityLivingData

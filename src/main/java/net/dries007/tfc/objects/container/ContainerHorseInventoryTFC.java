@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.container;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +35,7 @@ public class ContainerHorseInventoryTFC extends Container
             {
                 return stack.getItem() == Items.SADDLE && !this.getHasStack() && horse.canBeSaddled();
             }
+
             @SideOnly(Side.CLIENT)
             public boolean isEnabled()
             {
@@ -42,10 +48,12 @@ public class ContainerHorseInventoryTFC extends Container
             {
                 return horse.isArmor(stack);
             }
+
             public int getSlotStackLimit()
             {
                 return 1;
             }
+
             @SideOnly(Side.CLIENT)
             public boolean isEnabled()
             {
@@ -53,13 +61,13 @@ public class ContainerHorseInventoryTFC extends Container
             }
         });
 
-        if (horse instanceof AbstractChestHorseTFC && ((AbstractChestHorseTFC)horse).hasChest())
+        if (horse instanceof AbstractChestHorseTFC && ((AbstractChestHorseTFC) horse).hasChest())
         {
             for (int k = 0; k < 3; ++k)
             {
-                for (int l = 0; l < ((AbstractChestHorseTFC)horse).getInventoryColumns(); ++l)
+                for (int l = 0; l < ((AbstractChestHorseTFC) horse).getInventoryColumns(); ++l)
                 {
-                    this.addSlotToContainer(new Slot(horseInventoryIn, 2 + l + k * ((AbstractChestHorseTFC)horse).getInventoryColumns(), 80 + l * 18, 18 + k * 18));
+                    this.addSlotToContainer(new Slot(horseInventoryIn, 2 + l + k * ((AbstractChestHorseTFC) horse).getInventoryColumns(), 80 + l * 18, 18 + k * 18));
                 }
             }
         }
@@ -76,11 +84,6 @@ public class ContainerHorseInventoryTFC extends Container
         {
             this.addSlotToContainer(new Slot(playerInventory, j1, 8 + j1 * 18, 142));
         }
-    }
-
-    public boolean canInteractWith(EntityPlayer playerIn)
-    {
-        return this.horseInventory.isUsableByPlayer(playerIn) && this.horse.isEntityAlive() && this.horse.getDistance(playerIn) < 8.0F;
     }
 
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
@@ -136,6 +139,11 @@ public class ContainerHorseInventoryTFC extends Container
     {
         super.onContainerClosed(playerIn);
         this.horseInventory.closeInventory(playerIn);
+    }
+
+    public boolean canInteractWith(EntityPlayer playerIn)
+    {
+        return this.horseInventory.isUsableByPlayer(playerIn) && this.horse.isEntityAlive() && this.horse.getDistance(playerIn) < 8.0F;
     }
 
     public IInventory getHorseInventory()

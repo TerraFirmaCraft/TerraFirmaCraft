@@ -67,13 +67,6 @@ public class ContainerLiquidTransfer extends ContainerItemStack implements ISlot
     }
 
     @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer player)
-    {
-        IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        return heat != null && heat.isMolten() && super.canInteractWith(player);
-    }
-
-    @Override
     public void onContainerClosed(EntityPlayer player)
     {
         if (!player.getEntityWorld().isRemote)
@@ -85,6 +78,13 @@ public class ContainerLiquidTransfer extends ContainerItemStack implements ISlot
             }
         }
         super.onContainerClosed(player);
+    }
+
+    @Override
+    public boolean canInteractWith(@Nonnull EntityPlayer player)
+    {
+        IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+        return heat != null && heat.isMolten() && super.canInteractWith(player);
     }
 
     @Override

@@ -73,16 +73,6 @@ public class BlockBerryBush extends Block
         setDefaultState(blockState.getBaseState().withProperty(FRUITING, false));
     }
 
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
-        if (tile != null)
-        {
-            tile.resetCounter();
-        }
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     @Nonnull
@@ -102,13 +92,6 @@ public class BlockBerryBush extends Block
     public boolean isFullCube(IBlockState state)
     {
         return bush.getSize() == IBerryBush.Size.LARGE;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        return NULL_AABB;
     }
 
     @Override
@@ -133,6 +116,20 @@ public class BlockBerryBush extends Block
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return bush.getSize() == IBerryBush.Size.LARGE ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return NULL_AABB;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
     }
 
     @Override
@@ -160,6 +157,35 @@ public class BlockBerryBush extends Block
     }
 
     @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
+        if (tile != null)
+        {
+            tile.resetCounter();
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    @Nonnull
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
+    {
+        if (super.canPlaceBlockAt(worldIn, pos))
+        {
+            IBlockState state = worldIn.getBlockState(pos.down());
+            return state.getBlock().canPlaceTorchOnTop(state, worldIn, pos);
+        }
+        return false;
+    }
+
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if (worldIn.getBlockState(pos).getValue(FRUITING))
@@ -180,24 +206,6 @@ public class BlockBerryBush extends Block
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
-    {
-        if (super.canPlaceBlockAt(worldIn, pos))
-        {
-            IBlockState state = worldIn.getBlockState(pos.down());
-            return state.getBlock().canPlaceTorchOnTop(state, worldIn, pos);
-        }
-        return false;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         //Entity motion is reduced (like leaves).
@@ -211,14 +219,6 @@ public class BlockBerryBush extends Block
         {
             entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
         }
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    @Nonnull
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
     @Override

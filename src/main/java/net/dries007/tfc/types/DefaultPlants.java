@@ -24,7 +24,7 @@ public final class DefaultPlants
     public static final ResourceLocation ALLIUM = new ResourceLocation(MOD_ID, "allium");
     public static final ResourceLocation ATHYRIUM_FERN = new ResourceLocation(MOD_ID, "athyrium_fern");
     public static final ResourceLocation BARREL_CACTUS = new ResourceLocation(MOD_ID, "barrel_cactus");
-	public static final ResourceLocation BLACK_ORCHID = new ResourceLocation(MOD_ID, "black_orchid");
+    public static final ResourceLocation BLACK_ORCHID = new ResourceLocation(MOD_ID, "black_orchid");
     public static final ResourceLocation BLOOD_LILY = new ResourceLocation(MOD_ID, "blood_lily");
     public static final ResourceLocation BLUE_ORCHID = new ResourceLocation(MOD_ID, "blue_orchid");
     public static final ResourceLocation BUTTERFLY_MILKWEED = new ResourceLocation(MOD_ID, "butterfly_milkweed");
@@ -39,7 +39,7 @@ public final class DefaultPlants
     public static final ResourceLocation GRAPE_HYACINTH = new ResourceLocation(MOD_ID, "grape_hyacinth");
     public static final ResourceLocation GUZMANIA = new ResourceLocation(MOD_ID, "guzmania");
     public static final ResourceLocation HOUSTONIA = new ResourceLocation(MOD_ID, "houstonia");
-	public static final ResourceLocation LABRADOR_TEA = new ResourceLocation(MOD_ID, "labrador_tea");
+    public static final ResourceLocation LABRADOR_TEA = new ResourceLocation(MOD_ID, "labrador_tea");
     public static final ResourceLocation LADY_FERN = new ResourceLocation(MOD_ID, "lady_fern");
     public static final ResourceLocation LICORICE_FERN = new ResourceLocation(MOD_ID, "licorice_fern");
     public static final ResourceLocation LOTUS = new ResourceLocation(MOD_ID, "lotus");
@@ -56,7 +56,7 @@ public final class DefaultPlants
     public static final ResourceLocation POPPY = new ResourceLocation(MOD_ID, "poppy");
     public static final ResourceLocation PORCINI = new ResourceLocation(MOD_ID, "porcini");
     public static final ResourceLocation PRIMROSE = new ResourceLocation(MOD_ID, "primrose");
-	public static final ResourceLocation PULSATILLA = new ResourceLocation(MOD_ID, "pulsatilla");
+    public static final ResourceLocation PULSATILLA = new ResourceLocation(MOD_ID, "pulsatilla");
     public static final ResourceLocation REINDEER_LICHEN = new ResourceLocation(MOD_ID, "reindeer_lichen");
     public static final ResourceLocation ROSE = new ResourceLocation(MOD_ID, "rose");
     public static final ResourceLocation ROUGH_HORSETAIL = new ResourceLocation(MOD_ID, "rough_horsetail");

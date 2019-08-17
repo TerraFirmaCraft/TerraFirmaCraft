@@ -67,7 +67,7 @@ public class CTHeating
         TFCRegistries.HEAT.getValuesCollection()
             .stream()
             .filter(x -> x instanceof HeatRecipeSimple)
-            .filter(x -> ((HeatRecipeSimple) x).getOutputs().get(0).isItemEqual(item))
+            .filter(x -> x.getOutputs().get(0).isItemEqual(item))
             .forEach(removeList::add);
         for (HeatRecipe rem : removeList)
         {

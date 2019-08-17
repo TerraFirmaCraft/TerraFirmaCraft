@@ -19,7 +19,6 @@ import net.dries007.tfc.objects.fluids.FluidsTFC;
 @ParametersAreNonnullByDefault
 public class HeatRecipeMetalMelting extends HeatRecipe
 {
-    private final Metal metal; //Used only in JEI to determine the metal registered in this recipe.
     @Nullable
     private static IMetalObject getMetalObject(ItemStack stack)
     {
@@ -33,6 +32,8 @@ public class HeatRecipeMetalMelting extends HeatRecipe
         }
         return null;
     }
+
+    private final Metal metal; //Used only in JEI to determine the metal registered in this recipe.
 
     public HeatRecipeMetalMelting(Metal metal)
     {

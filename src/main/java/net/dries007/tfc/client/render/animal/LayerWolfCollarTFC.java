@@ -1,11 +1,17 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.client.render.animal;
 
-import net.dries007.tfc.objects.entity.animal.EntityWolfTFC;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import net.dries007.tfc.objects.entity.animal.EntityWolfTFC;
 
 @SideOnly(Side.CLIENT)
 public class LayerWolfCollarTFC implements LayerRenderer<EntityWolfTFC>

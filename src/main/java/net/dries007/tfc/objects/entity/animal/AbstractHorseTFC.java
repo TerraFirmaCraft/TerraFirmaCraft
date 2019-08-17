@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.entity.animal;
 
 import java.util.UUID;
@@ -54,10 +59,10 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryChangedListener, IJumpingMount, IAnimalTFC
 {
-    protected static final IAttribute JUMP_STRENGTH = (new RangedAttribute((IAttribute) null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
+    protected static final IAttribute JUMP_STRENGTH = (new RangedAttribute(null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
     private static final int DAYS_TO_ADULTHOOD = 1120;
     private static final int DAYS_TO_FULL_GESTATION = 240;
-    private static final DataParameter<Byte> STATUS = EntityDataManager.<Byte>createKey(AbstractHorseTFC.class, DataSerializers.BYTE);
+    private static final DataParameter<Byte> STATUS = EntityDataManager.createKey(AbstractHorseTFC.class, DataSerializers.BYTE);
 
     private static final Predicate<Entity> IS_HORSE_BREEDING = new Predicate<Entity>()
     {
@@ -66,12 +71,12 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
             return p_apply_1_ instanceof AbstractHorseTFC && ((AbstractHorseTFC) p_apply_1_).isBreeding();
         }
     };
-    private static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.<Optional<UUID>>createKey(AbstractHorseTFC.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    private static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(AbstractHorseTFC.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 
     public static void registerFixesAbstractHorseTFC(DataFixer fixer, Class<?> entityClass)
     {
         EntityLiving.registerFixesMob(fixer, entityClass);
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(entityClass, new String[] {"SaddleItem"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(entityClass, "SaddleItem"));
     }
 
     private static int getRandomGrowth()
@@ -212,7 +217,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
         Entity entity = source.getTrueSource();
-        return this.isBeingRidden() && entity != null && this.isRidingOrBeingRiddenBy(entity) ? false : super.attackEntityFrom(source, amount);
+        return (!this.isBeingRidden() || entity == null || !this.isRidingOrBeingRiddenBy(entity)) && super.attackEntityFrom(source, amount);
     }
 
     public int getTalkInterval()
@@ -353,7 +358,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
             if (iblockstate.getMaterial() != Material.AIR && !this.isSilent())
             {
                 SoundType soundtype = block.getSoundType();
-                this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, soundtype.getStepSound(), this.getSoundCategory(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
+                this.world.playSound(null, this.posX, this.posY, this.posZ, soundtype.getStepSound(), this.getSoundCategory(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
             }
         }
     }
@@ -940,23 +945,15 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
-    protected boolean getHorseWatchableBoolean(int p_110233_1_)
+    @Nullable
+    public Entity getControllingPassenger()
     {
-        return (((Byte) this.dataManager.get(STATUS)).byteValue() & p_110233_1_) != 0;
+        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
     }
 
-    protected void setHorseWatchableBoolean(int p_110208_1_, boolean p_110208_2_)
+    protected boolean getHorseWatchableBoolean(int p_110233_1_)
     {
-        byte b0 = ((Byte) this.dataManager.get(STATUS)).byteValue();
-
-        if (p_110208_2_)
-        {
-            this.dataManager.set(STATUS, Byte.valueOf((byte) (b0 | p_110208_1_)));
-        }
-        else
-        {
-            this.dataManager.set(STATUS, Byte.valueOf((byte) (b0 & ~p_110208_1_)));
-        }
+        return (this.dataManager.get(STATUS).byteValue() & p_110233_1_) != 0;
     }
 
     protected void onLeashDistance(float p_142017_1_)
@@ -1100,10 +1097,18 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return this.height;
     }
 
-    @Nullable
-    public Entity getControllingPassenger()
+    protected void setHorseWatchableBoolean(int p_110208_1_, boolean p_110208_2_)
     {
-        return this.getPassengers().isEmpty() ? null : (Entity) this.getPassengers().get(0);
+        byte b0 = this.dataManager.get(STATUS).byteValue();
+
+        if (p_110208_2_)
+        {
+            this.dataManager.set(STATUS, Byte.valueOf((byte) (b0 | p_110208_1_)));
+        }
+        else
+        {
+            this.dataManager.set(STATUS, Byte.valueOf((byte) (b0 & ~p_110208_1_)));
+        }
     }
 
     protected void playGallopSound(SoundType p_190680_1_)
@@ -1234,7 +1239,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
 
         if (!this.isSilent())
         {
-            this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_HORSE_EAT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+            this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_HORSE_EAT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
         }
     }
 

@@ -30,6 +30,18 @@ public class IngredientOreDict implements IIngredient<ItemStack>
     }
 
     @Override
+    public NonNullList<ItemStack> getValidIngredients()
+    {
+        NonNullList<ItemStack> output = NonNullList.create();
+        for (ItemStack out : OreDictionary.getOres(oreName))
+        {
+            out.setCount(amount);
+            output.add(out);
+        }
+        return output;
+    }
+
+    @Override
     public boolean test(ItemStack stack)
     {
         return testIgnoreCount(stack) && stack.getCount() >= amount;
@@ -53,17 +65,5 @@ public class IngredientOreDict implements IIngredient<ItemStack>
     public int getAmount()
     {
         return amount;
-    }
-
-    @Override
-    public NonNullList<ItemStack> getValidIngredients()
-    {
-        NonNullList<ItemStack> output = NonNullList.create();
-        for (ItemStack out : OreDictionary.getOres(oreName))
-        {
-            out.setCount(amount);
-            output.add(out);
-        }
-        return output;
     }
 }

@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.client.render.animal;
 
 import net.minecraft.client.renderer.GlStateManager;
@@ -24,14 +29,6 @@ public class RenderWolfTFC extends RenderLiving<EntityWolfTFC>
     }
 
     /**
-     * Defines what float the third param in setRotationAngles of ModelBase is
-     */
-    protected float handleRotationFloat(EntityWolfTFC livingBase, float partialTicks)
-    {
-        return livingBase.getTailRotation();
-    }
-
-    /**
      * Renders the desired {@code T} type Entity.
      */
     public void doRender(EntityWolfTFC entity, double x, double y, double z, float entityYaw, float partialTicks)
@@ -43,6 +40,14 @@ public class RenderWolfTFC extends RenderLiving<EntityWolfTFC>
         }
 
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
+    }
+
+    /**
+     * Defines what float the third param in setRotationAngles of ModelBase is
+     */
+    protected float handleRotationFloat(EntityWolfTFC livingBase, float partialTicks)
+    {
+        return livingBase.getTailRotation();
     }
 
     /**

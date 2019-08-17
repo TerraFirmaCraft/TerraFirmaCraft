@@ -82,6 +82,14 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     }
 
     @Override
+    public long getRottenDate()
+    {
+        // This avoids overflow which breaks when calculateDecayModifier() returns infinity, which happens if decay modifier = 0
+        float decayMod = getDecayModifier();
+        return decayMod == Float.POSITIVE_INFINITY ? Long.MAX_VALUE : creationDate + (long) (decayMod * CapabilityFood.DEFAULT_ROT_TICKS);
+    }
+
+    @Override
     public float getWater()
     {
         return water;
@@ -93,19 +101,24 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         return calories;
     }
 
+    @Override
+    public float getDecayModifier()
+    {
+        // Decay modifiers are higher = shorter
+        float mod = decayModifier * (float) ConfigTFC.GENERAL.foodDecayModifier;
+        for (IFoodTrait trait : foodTraits)
+        {
+            mod *= trait.getDecayModifier();
+        }
+        // The modifier returned is used to calculate time, so higher = longer
+        return mod == 0 ? Float.POSITIVE_INFINITY : 1 / mod;
+    }
+
     @Nonnull
     @Override
     public List<IFoodTrait> getTraits()
     {
         return foodTraits;
-    }
-
-    @Override
-    public long getRottenDate()
-    {
-        // This avoids overflow which breaks when calculateDecayModifier() returns infinity, which happens if decay modifier = 0
-        float decayMod = getDecayModifier();
-        return decayMod == Float.POSITIVE_INFINITY ? Long.MAX_VALUE : creationDate + (long) (decayMod * CapabilityFood.DEFAULT_ROT_TICKS);
     }
 
     @Override
@@ -164,18 +177,5 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
             // Food decay initially is synced with the hour. This allows items grabbed within a minute to stack
             creationDate = CalendarTFC.PLAYER_TIME.getTotalHours() * ICalendar.TICKS_IN_HOUR;
         }
-    }
-
-    @Override
-    public float getDecayModifier()
-    {
-        // Decay modifiers are higher = shorter
-        float mod = decayModifier * (float) ConfigTFC.GENERAL.foodDecayModifier;
-        for (IFoodTrait trait : foodTraits)
-        {
-            mod *= trait.getDecayModifier();
-        }
-        // The modifier returned is used to calculate time, so higher = longer
-        return mod == 0 ? Float.POSITIVE_INFINITY : 1 / mod;
     }
 }
