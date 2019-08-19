@@ -7,7 +7,6 @@ package net.dries007.tfc.objects.te;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -49,40 +48,6 @@ public class TESluice extends TEBase implements ITickable
     private static final int MAX_SOIL = 50;
     private int soil;
     private int ticksRemaining, delayTimer;
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    @Nonnull
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-        return INFINITE_EXTENT_AABB;
-    }
-
-    protected static Predicate<Fluid> ALLOWED_FLUIDS;
-
-    public TESluice()
-    {
-        super();
-        ALLOWED_FLUIDS = x -> x == FluidsTFC.FRESH_WATER.get() || x == FluidsTFC.LIMEWATER.get(); //placeholder, missed commit for SALT_WATER
-    }
-
-    @Nullable
-    public BlockFluidBase getFlowingFluidBlock()
-    {
-        if (!hasWorld() || !(world.getBlockState(pos).getBlock() instanceof BlockSluice))
-        {
-            return null;
-        }
-        EnumFacing sluiceFacing = world.getBlockState(pos).getValue(BlockHorizontal.FACING);
-        BlockPos fluidInputPos = pos.up().offset(sluiceFacing);
-        IBlockState state = world.getBlockState(fluidInputPos);
-        Block block = state.getBlock();
-        if (block instanceof BlockFluidBase)
-        {
-            return ((BlockFluidBase) block);
-        }
-        return null;
-    }
 
     @Override
     public void update()
@@ -144,7 +109,7 @@ public class TESluice extends TEBase implements ITickable
                 delayTimer = 20;
                 Fluid flowing = getFlowingFluid();
                 //Try placing the output block if has input flow and is allowed fluid
-                if (flowing != null && ALLOWED_FLUIDS.test(flowing))
+                if (flowing != null && isValidFluid(flowing))
                 {
                     BlockPos frontPos = getFrontWaterPos();
                     if (world.getBlockState(frontPos).getMaterial().isReplaceable())
@@ -203,34 +168,6 @@ public class TESluice extends TEBase implements ITickable
         return world.getBlockState(pos).getValue(BlockHorizontal.FACING);
     }
 
-    private BlockPos getFrontWaterPos()
-    {
-        //noinspection ConstantConditions
-        return pos.down().offset(getBlockFacing().getOpposite(), 2);
-    }
-
-    /**
-     * Checks if this sluice has flowing fluid (only allowed ones)
-     *
-     * @return true if the entrance and the output blocks are the same fluid and in the allowed predicate
-     */
-    private boolean hasFlow()
-    {
-
-        Fluid fluid = getFlowingFluid();
-        if (fluid == null || !ALLOWED_FLUIDS.test(fluid))
-        {
-            return false;
-        }
-        IBlockState frontState = world.getBlockState(getFrontWaterPos());
-        Block block = frontState.getBlock();
-        if (block instanceof BlockFluidBase)
-        {
-            return ((BlockFluidBase) block).getFluid() == fluid;
-        }
-        return false;
-    }
-
     @Override
     public void readFromNBT(@Nonnull NBTTagCompound nbt)
     {
@@ -248,6 +185,60 @@ public class TESluice extends TEBase implements ITickable
         return super.writeToNBT(nbt);
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    @Nonnull
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return INFINITE_EXTENT_AABB;
+    }
+
+    @Nullable
+    private BlockFluidBase getFlowingFluidBlock()
+    {
+        if (!hasWorld() || !(world.getBlockState(pos).getBlock() instanceof BlockSluice))
+        {
+            return null;
+        }
+        EnumFacing sluiceFacing = world.getBlockState(pos).getValue(BlockHorizontal.FACING);
+        BlockPos fluidInputPos = pos.up().offset(sluiceFacing);
+        IBlockState state = world.getBlockState(fluidInputPos);
+        Block block = state.getBlock();
+        if (block instanceof BlockFluidBase)
+        {
+            return ((BlockFluidBase) block);
+        }
+        return null;
+    }
+
+    private BlockPos getFrontWaterPos()
+    {
+        //noinspection ConstantConditions
+        return pos.down().offset(getBlockFacing().getOpposite(), 2);
+    }
+
+    /**
+     * Checks if this sluice has flowing fluid (only allowed ones)
+     *
+     * @return true if the entrance and the output blocks are the same fluid and in the allowed predicate
+     */
+    private boolean hasFlow()
+    {
+
+        Fluid fluid = getFlowingFluid();
+        if (fluid == null || !isValidFluid(fluid))
+        {
+            return false;
+        }
+        IBlockState frontState = world.getBlockState(getFrontWaterPos());
+        Block block = frontState.getBlock();
+        if (block instanceof BlockFluidBase)
+        {
+            return ((BlockFluidBase) block).getFluid() == fluid;
+        }
+        return false;
+    }
+
     private void consumeSoil()
     {
         if (soil > 0 && hasFlow())
@@ -260,5 +251,10 @@ public class TESluice extends TEBase implements ITickable
             soil = 0;
             ticksRemaining = 0;
         }
+    }
+
+    private boolean isValidFluid(Fluid fluid)
+    {
+        return fluid == FluidsTFC.FRESH_WATER.get() || fluid == FluidsTFC.SALT_WATER.get();
     }
 }
