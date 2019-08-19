@@ -135,7 +135,7 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
 
         Type(Material material, FallingBlockType gravType, boolean isGrass)
         {
-            // If no fall + no grass, then normal. If it can fall, then eiether fallable or fallable + connected (since grass always falls)
+            // If no fall + no grass, then normal. If it can fall, then either fallable or fallable + connected (since grass always falls)
             this(material, gravType, isGrass, (gravType == NO_FALL && !isGrass) ? BlockRockVariant::new :
                 (isGrass ? BlockRockVariantConnected::new : BlockRockVariantFallable::new));
         }
