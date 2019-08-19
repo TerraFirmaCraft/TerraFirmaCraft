@@ -151,7 +151,7 @@ public final class ChunkDataTFC
      *
      * @param ore the ore added by ore vein generator
      */
-    public void addGeneratedOre(Ore ore)
+    public void addGeneratedOre(@Nonnull Ore ore)
     {
         chunkOres.add(ore);
     }

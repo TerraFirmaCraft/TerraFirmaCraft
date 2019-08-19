@@ -140,7 +140,7 @@ public class WorldGenOreVeins implements IWorldGenerator
                     }
                 }
             }
-            if (generated)
+            if (generated && vein.type.ore != null)
             {
                 chunkData.addGeneratedOre(vein.type.ore);
             }
