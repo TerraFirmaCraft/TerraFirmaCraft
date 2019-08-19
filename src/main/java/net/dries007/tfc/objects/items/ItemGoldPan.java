@@ -87,35 +87,41 @@ public class ItemGoldPan extends ItemTFC
             EntityPlayer player = (EntityPlayer) entityLiving;
             if (stack.getItemDamage() > 0)
             {
-                //Check if player still is looking at water
+                // Check if player still is looking at water
                 if (canPan(world, player))
                 {
                     Chunk chunk = world.getChunk(player.getPosition());
                     ChunkDataTFC chunkDataTFC = ChunkDataTFC.get(chunk);
-                    if (chunkDataTFC.canWork(6))
+                    // Only pan for native nuggets in sand + gravel
+                    if (stack.getItemDamage() == 1 || stack.getItemDamage() == 2)
                     {
-                        Random rand = new Random(world.getSeed() + chunk.getPos().x * 241179128412L + chunk.getPos().z * 327910215471L);
-                        List<Ore> chunkOres = TFCRegistries.ORES.getValuesCollection()
-                            .stream().filter(Ore::canPan).filter(x -> rand.nextDouble() < x.getChunkChance())
-                            .collect(Collectors.toList());
-
-                        chunkOres.forEach(x -> {
-                            if (Constants.RNG.nextDouble() < x.getPanChance())
-                            {
-                                Helpers.spawnItemStack(world, player.getPosition(), new ItemStack(ItemSmallOre.get(x)));
-                            }
-                        });
-                        chunkDataTFC.addWork(6);
-                        stack.setItemDamage(0);
-                        if (Constants.RNG.nextFloat() < 0.01) // 1/100 chance, same as 1.7.10
+                        if (chunkDataTFC.canWork(6))
                         {
-                            stack.shrink(1);
-                            world.playSound(null, entityLiving.getPosition(), TFCSounds.CERAMIC_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                            Random rand = new Random(world.getSeed() + chunk.getPos().x * 241179128412L + chunk.getPos().z * 327910215471L);
+                            List<Ore> chunkOres = TFCRegistries.ORES.getValuesCollection()
+                                .stream().filter(Ore::canPan).filter(x -> rand.nextDouble() < x.getChunkChance())
+                                .collect(Collectors.toList());
+
+                            chunkOres.forEach(x -> {
+                                if (Constants.RNG.nextDouble() < x.getPanChance())
+                                {
+                                    Helpers.spawnItemStack(world, player.getPosition(), new ItemStack(ItemSmallOre.get(x)));
+                                }
+                            });
+                            chunkDataTFC.addWork(6);
+                            stack.setItemDamage(0);
+                        }
+                        // todo: pan for seeds or stuff in dirt / grass / clay????
+                        else
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.goldpan.chunkworked"));
                         }
                     }
-                    else
+
+                    if (Constants.RNG.nextFloat() < 0.01) // 1/100 chance, same as 1.7.10
                     {
-                        player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.goldpan.chunkworked"));
+                        stack.shrink(1);
+                        world.playSound(null, entityLiving.getPosition(), TFCSounds.CERAMIC_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
                     }
                 }
             }
@@ -127,7 +133,10 @@ public class ItemGoldPan extends ItemTFC
                 if (result == null || result.typeOfHit != RayTraceResult.Type.BLOCK) return stack;
                 BlockPos pos = result.getBlockPos();
                 IBlockState state = world.getBlockState(pos);
-                if (!(state.getBlock() instanceof BlockRockVariant)) return stack;
+                if (!(state.getBlock() instanceof BlockRockVariant) || (result.sideHit != null && world.getBlockState(pos.offset(result.sideHit)).getMaterial().isLiquid()))
+                {
+                    return stack;
+                }
                 Rock.Type type = ((BlockRockVariant) state.getBlock()).getType();
                 if (type == Rock.Type.SAND)
                 {
@@ -155,18 +164,21 @@ public class ItemGoldPan extends ItemTFC
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    public int getMaxItemUseDuration(ItemStack stack)
     {
-        if (!isInCreativeTab(tab)) return;
-
-        for (int meta = 0; meta < TYPES.length; meta++)
-            items.add(new ItemStack(this, 1, meta));
+        return stack.getItemDamage() > 0 ? 54 : 1;
     }
 
     @Override
-    public int getMaxItemUseDuration(ItemStack stack)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        return stack.getItemDamage() > 0 ? 54 : 24;
+        if (isInCreativeTab(tab))
+        {
+            for (int meta = 0; meta < TYPES.length; meta++)
+            {
+                items.add(new ItemStack(this, 1, meta));
+            }
+        }
     }
 
     @Nonnull
