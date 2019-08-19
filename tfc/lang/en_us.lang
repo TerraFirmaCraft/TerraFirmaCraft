@@ -50,6 +50,7 @@ tfc.tooltip.blast_furnace_fuel_amount=Fuel
 tfc.tooltip.blast_furnace_melt_amount=Melt
 tfc.tooltip.large_vessel_seal=Seal Large Vessel
 tfc.tooltip.large_vessel_unseal=Unseal Large Vessel
+tfc.tooltip.goldpan.chunkworked=This area seems to be overworked. You probably wouldn't find much.
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.old=This animal is too old to mate.
@@ -209,6 +210,27 @@ config.tfc.general.normalOreMetalAmount.tooltip=The amount of metal contained in
 
 config.tfc.general.richOreMetalAmount=Rich Ore Metal Amount
 config.tfc.general.richOreMetalAmount.tooltip=The amount of metal contained in a rich ore.
+
+config.tfc.general.maxWorkChunk=Maximum Chunk Work
+config.tfc.general.maxWorkChunk.tooltip=The amount of times a chunk can be worked. Note: While sluices increase work by 1, Goldpan increase by 6.
+
+config.tfc.general.sluiceRadius=Sluice Radius
+config.tfc.general.sluiceRadius.tooltip=The radius sluice works on chunks.
+
+config.tfc.general.sluiceTicks=Sluice Ticks 
+config.tfc.general.sluiceTicks.tooltip=The amount of ticks a sluice uses to work.
+
+config.tfc.general.sluiceOreChance=Sluice Ore Chance
+config.tfc.general.sluiceOreChance.tooltip=Chance that a sluice operation produce small ores.
+
+config.tfc.general.sluiceGemChance=Sluice Gem Chance
+config.tfc.general.sluiceGemChance.tooltip=Chance that a sluice operation produce gems.
+
+config.tfc.general.sluiceDiamondGemChance=Sluice Diamond Gem Chance
+config.tfc.general.sluiceDiamondGemChance.tooltip=Chance that a diamond is dropped when sluice produce gems.
+
+config.tfc.general.overworkChunk=Chunk Overworking
+config.tfc.general.overworkChunk.tooltip=If true, limits for gold pan and sluice are ignored
 
 config.tfc.general.forceNoVanillaNaturalRegeneration=Force No Vanilla Natural Regeneration
 config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=If true, this will force the gamerule naturalRegeneration to be false. Note: this DOES NOT AFFECT TFC's natural regeneration. If you set naturalRegeneration to true, then you will have both TFC regeneration and normal vanilla regeneration (which is much faster).
@@ -513,6 +535,7 @@ tile.tfc.bloomery.name=Bloomery
 tile.tfc.fire_bricks.name=Fire Bricks
 tile.tfc.quern.name=Quern
 tile.tfc.ceramics.fired.large_vessel.name=Large Vessel
+tile.tfc.sluice.name=Sluice
 tile.tfc.ice.name=Ice
 tile.tfc.sea_ice.name=Sea Ice
 
