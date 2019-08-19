@@ -39,7 +39,7 @@ public class TESRCrucible extends TileEntitySpecialRenderer<TECrucible>
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
 
-        TextureAtlasSprite sprite = FluidSpriteCache.getSprite(metalFluid);
+        TextureAtlasSprite sprite = FluidSpriteCache.getStillSprite(metalFluid);
 
         GlStateManager.enableAlpha();
         GlStateManager.enableBlend();

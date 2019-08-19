@@ -6,23 +6,27 @@
 package net.dries007.tfc.world.classic.chunkdata;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagByteArray;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagIntArray;
+import com.google.common.collect.ImmutableSet;
+import net.minecraft.nbt.*;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistry;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.NBTBuilder;
@@ -116,6 +120,8 @@ public final class ChunkDataTFC
     private float avgTemp;
     private float floraDensity;
     private float floraDiversity;
+    private Set<Ore> chunkOres = new HashSet<>();
+    private int chunkWorkage;
 
     /**
      * INTERNAL USE ONLY.
@@ -136,6 +142,43 @@ public final class ChunkDataTFC
         this.avgTemp = avgTemp;
         this.floraDensity = floraDensity;
         this.floraDiversity = floraDiversity;
+        this.chunkWorkage = 0;
+    }
+
+    /**
+     * Adds generated ores to this chunk list of ores
+     * Should be used by ore vein generators to save in this chunk which ores generated here
+     *
+     * @param ore the ore added by ore vein generator
+     */
+    public void addGeneratedOre(Ore ore)
+    {
+        chunkOres.add(ore);
+    }
+
+    /**
+     * Returns a set of ores that generated in this chunk
+     *
+     * @return the immutable set containing all ores that generated in this chunk
+     */
+    public Set<Ore> getChunkOres()
+    {
+        return ImmutableSet.copyOf(chunkOres);
+    }
+
+    public boolean canWork(int amount)
+    {
+        return ConfigTFC.GENERAL.overworkChunk || chunkWorkage <= ConfigTFC.GENERAL.maxWorkChunk + amount;
+    }
+
+    public void addWork(int amount)
+    {
+        chunkWorkage += amount;
+    }
+
+    public void addWork()
+    {
+        addWork(1);
     }
 
     public boolean isInitialized()
@@ -326,6 +369,21 @@ public final class ChunkDataTFC
             root.setFloat("floraDensity", instance.floraDensity);
             root.setFloat("floraDiversity", instance.floraDiversity);
 
+            root.setInteger("chunkWorkage", instance.chunkWorkage);
+
+            if (instance.chunkOres.size() > 0)
+            {
+                NBTTagList oreList = new NBTTagList();
+                for (Ore ore : instance.chunkOres)
+                {
+                    NBTTagCompound nbtOre = new NBTTagCompound();
+                    //noinspection ConstantConditions
+                    nbtOre.setString("oreRegistry", ore.getRegistryName().toString());
+                    oreList.appendTag(nbtOre);
+                }
+                root.setTag("chunkOres", oreList);
+            }
+
             return root;
         }
 
@@ -350,6 +408,21 @@ public final class ChunkDataTFC
                 instance.avgTemp = root.getFloat("avgTemp");
                 instance.floraDensity = root.getFloat("floraDensity");
                 instance.floraDiversity = root.getFloat("floraDiversity");
+
+                instance.chunkWorkage = root.getInteger("chunkWorkage");
+
+                instance.chunkOres = new HashSet<>();
+
+                if (root.hasKey("chunkOres"))
+                {
+                    NBTTagList oreList = root.getTagList("chunkOres", Constants.NBT.TAG_COMPOUND);
+                    for (int i = 0; i < oreList.tagCount(); i++)
+                    {
+                        NBTTagCompound nbtOre = oreList.getCompoundTagAt(i);
+                        Ore ore = TFCRegistries.ORES.getValue(new ResourceLocation(nbtOre.getString("oreRegistry")));
+                        instance.chunkOres.add(ore);
+                    }
+                }
 
                 instance.initialized = true;
             }
