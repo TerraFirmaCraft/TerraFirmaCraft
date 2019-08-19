@@ -168,6 +168,8 @@ public final class TerraFirmaCraft
 
         OreDictionaryHelper.init();
         ItemsTFC.init();
+        LootTablesTFC.init();
+        CapabilityFood.init();
 
         if (event.getSide().isClient())
         {
@@ -180,7 +182,6 @@ public final class TerraFirmaCraft
             GuiIngameForge.renderArmor = false;
             GuiIngameForge.renderExperiance = false;
         }
-        LootTablesTFC.init();
 
         worldTypeTFC = new WorldTypeTFC();
     }

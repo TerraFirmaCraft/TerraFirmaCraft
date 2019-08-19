@@ -62,7 +62,7 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                                     tile.onRightClick(player, stack, rayTrace);
                                 }
                             }
-                            else if (!stack.isEmpty() && world.getBlockState(pos.offset(hitFace).down()).isNormalCube() && world.getBlockState(pos.offset(hitFace)).getBlock().isReplaceable(world, pos))
+                            else if (!stack.isEmpty() && world.getBlockState(pos.offset(hitFace).down()).isSideSolid(world, pos.offset(hitFace).down(), EnumFacing.UP) && world.getBlockState(pos.offset(hitFace)).getBlock().isReplaceable(world, pos))
                             {
                                 world.setBlockState(pos.offset(hitFace), BlocksTFC.PLACED_ITEM.getDefaultState());
                                 TEPlacedItem tile = Helpers.getTE(world, pos.offset(hitFace), TEPlacedItem.class);

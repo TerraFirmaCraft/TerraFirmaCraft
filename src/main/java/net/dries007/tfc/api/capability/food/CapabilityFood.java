@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
@@ -59,6 +60,13 @@ public class CapabilityFood
         TRAITS.put("salted", SALTED); // todo: In 1.7.10 this was 0.5 for uncooked meat, 0.75 for cooked. Requires a custom class.
         TRAITS.put("pickled", PICKLED); // todo: same as above
         TRAITS.put("preserved", PRESERVED);
+    }
+
+    public static void init()
+    {
+        // Add custom vanilla food instances
+
+        CUSTOM_FOODS.put(IIngredient.of(Items.ROTTEN_FLESH), () -> new FoodHandler(null, new float[] {0, 0, 0, 0, 0}, 0, 0, Float.POSITIVE_INFINITY));
     }
 
     public static Map<String, IFoodTrait> getTraits()
