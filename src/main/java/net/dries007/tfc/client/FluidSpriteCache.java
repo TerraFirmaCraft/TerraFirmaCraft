@@ -14,16 +14,30 @@ import net.minecraftforge.fluids.Fluid;
 
 public class FluidSpriteCache
 {
-    private static final Map<Fluid, TextureAtlasSprite> CACHE = new HashMap<>();
+    private static final Map<Fluid, TextureAtlasSprite> CACHESTILL = new HashMap<>();
+    private static final Map<Fluid, TextureAtlasSprite> CACHEFLOWING = new HashMap<>();
 
-    public static TextureAtlasSprite getSprite(Fluid fluid)
+    public static TextureAtlasSprite getStillSprite(Fluid fluid)
     {
-        TextureAtlasSprite sprite = CACHE.get(fluid);
+        TextureAtlasSprite sprite = CACHESTILL.get(fluid);
 
         if (sprite == null)
         {
             sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getStill().toString());
-            CACHE.put(fluid, sprite);
+            CACHESTILL.put(fluid, sprite);
+        }
+
+        return sprite;
+    }
+
+    public static TextureAtlasSprite getFlowingSprite(Fluid fluid)
+    {
+        TextureAtlasSprite sprite = CACHEFLOWING.get(fluid);
+
+        if (sprite == null)
+        {
+            sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getFlowing().toString());
+            CACHEFLOWING.put(fluid, sprite);
         }
 
         return sprite;
@@ -31,6 +45,7 @@ public class FluidSpriteCache
 
     public static void clear()
     {
-        CACHE.clear();
+        CACHEFLOWING.clear();
+        CACHESTILL.clear();
     }
 }

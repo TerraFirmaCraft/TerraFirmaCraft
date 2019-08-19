@@ -23,6 +23,7 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
     private final boolean graded;
     private final Metal metal;
     private final boolean canMelt;
+    private final double chunkChance, panChance;
 
     /**
      * Creates a registry object for an ore type
@@ -30,34 +31,63 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
      * @param name    The registry name of the ore
      * @param metal   The metal, or null if it's a non-metal ore
      * @param canMelt If the metal can be melted directly from the ore
+     * @param chunkChance the chance a chunk contains this ore when gold panning.
+     * @param panChance the chance to drop this ore when gold panning
      */
-    public Ore(ResourceLocation name, @Nullable Metal metal, boolean canMelt)
+    public Ore(ResourceLocation name, @Nullable Metal metal, boolean canMelt, double chunkChance, double panChance)
     {
         this.graded = (metal != null);
         this.metal = metal;
         this.canMelt = canMelt;
+        this.chunkChance = chunkChance;
+        this.panChance = panChance;
 
         setRegistryName(name);
     }
 
-    public Ore(ResourceLocation name, @Nonnull ResourceLocation metal, boolean canMelt)
+    public Ore(ResourceLocation name, @Nonnull ResourceLocation metal, boolean canMelt, double chunkChance, double panChance)
     {
-        this(name, TFCRegistries.METALS.getValue(metal), canMelt);
+        this(name, TFCRegistries.METALS.getValue(metal), canMelt, chunkChance, panChance);
     }
 
     public Ore(ResourceLocation name, @Nonnull ResourceLocation metal)
     {
-        this(name, TFCRegistries.METALS.getValue(metal), true);
+        this(name, TFCRegistries.METALS.getValue(metal), true, 0, 0);
+    }
+
+    public Ore(ResourceLocation name, @Nonnull ResourceLocation metal, boolean canMelt)
+    {
+        this(name, TFCRegistries.METALS.getValue(metal), canMelt, 0, 0);
+    }
+
+    public Ore(ResourceLocation name, @Nonnull ResourceLocation metal, double chunkChance, double panChance)
+    {
+        this(name, TFCRegistries.METALS.getValue(metal), true, chunkChance, panChance);
     }
 
     public Ore(ResourceLocation name)
     {
-        this(name, (Metal) null, false);
+        this(name, (Metal) null, false, 0, 0);
     }
 
     public boolean isGraded()
     {
         return graded;
+    }
+
+    public boolean canPan()
+    {
+        return chunkChance > 0;
+    }
+
+    public double getPanChance()
+    {
+        return panChance;
+    }
+
+    public double getChunkChance()
+    {
+        return chunkChance;
     }
 
     @Nullable

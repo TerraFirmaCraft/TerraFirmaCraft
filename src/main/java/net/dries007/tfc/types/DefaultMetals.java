@@ -100,11 +100,11 @@ public final class DefaultMetals
     public static void onPreRegisterOre(TFCRegistryEvent.RegisterPreBlock<Ore> event)
     {
         event.getRegistry().registerAll(
-            new Ore(NATIVE_COPPER, COPPER),
-            new Ore(NATIVE_GOLD, GOLD),
-            new Ore(NATIVE_PLATINUM, PLATINUM),
+            new Ore(NATIVE_COPPER, COPPER, 0.75D, 0.33D),
+            new Ore(NATIVE_GOLD, GOLD, 0.25D, 0.15D),
+            new Ore(NATIVE_PLATINUM, PLATINUM, 1D, 0.002D),
             new Ore(HEMATITE, PIG_IRON, false),
-            new Ore(NATIVE_SILVER, SILVER),
+            new Ore(NATIVE_SILVER, SILVER, 0.50D, 0.15D),
             new Ore(CASSITERITE, TIN),
             new Ore(GALENA, LEAD),
             new Ore(BISMUTHINITE, BISMUTH),

@@ -7,18 +7,24 @@ package net.dries007.tfc.command;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentString;
 
+import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.worldgen.WorldGenOreVeins;
 import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
@@ -38,7 +44,7 @@ public class CommandFindVeins extends CommandBase
     @Nonnull
     public String getUsage(ICommandSender sender)
     {
-        return "/findveins [all|<vein name>] <radius> -> Finds all instances of a specific vein, or all veins within a certian chunk radius";
+        return "/findveins [all|<vein name>] <radius> -> Finds all instances of a specific vein, or all veins within a certain chunk radius";
     }
 
     @Override
@@ -51,6 +57,7 @@ public class CommandFindVeins extends CommandBase
 
         final int radius = parseInt(args[1], 1, 1000);
         final List<Vein> veins = WorldGenOreVeins.getNearbyVeins(sender.getCommandSenderEntity().chunkCoordX, sender.getCommandSenderEntity().chunkCoordZ, sender.getEntityWorld().getSeed(), radius);
+        final Map<ChunkPos, Set<Ore>> map = Helpers.getChunkOres(sender.getEntityWorld(), sender.getCommandSenderEntity().chunkCoordX, sender.getCommandSenderEntity().chunkCoordZ, radius);
         if (!args[0].equals("all"))
         {
             final VeinType type = VeinRegistry.INSTANCE.getVein(args[0]);
@@ -61,6 +68,7 @@ public class CommandFindVeins extends CommandBase
             // Search for veins matching type
             veins.removeIf(x -> x.type != type);
         }
+        veins.removeIf(x -> !map.getOrDefault(new ChunkPos(x.pos), ImmutableSet.of()).contains(x.type.ore)); //Check if the vein generated
         veins.forEach(x -> sender.sendMessage(new TextComponentString("> Vein: " + x.type + " at " + x.pos)));
     }
 
