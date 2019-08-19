@@ -28,6 +28,8 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
@@ -47,6 +49,14 @@ public class TESluice extends TEBase implements ITickable
     private static final int MAX_SOIL = 50;
     private int soil;
     private int ticksRemaining, delayTimer;
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    @Nonnull
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return INFINITE_EXTENT_AABB;
+    }
 
     protected static Predicate<Fluid> ALLOWED_FLUIDS;
 

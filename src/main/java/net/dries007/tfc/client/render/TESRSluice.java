@@ -111,4 +111,10 @@ public class TESRSluice extends TileEntitySpecialRenderer<TESluice>
 
         GlStateManager.popMatrix();
     }
+
+    @Override
+    public boolean isGlobalRenderer(TESluice te)
+    {
+        return true;
+    }
 }
