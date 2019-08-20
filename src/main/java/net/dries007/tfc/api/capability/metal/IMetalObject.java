@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.util;
+package net.dries007.tfc.api.capability.metal;
 
 import java.util.List;
 import javax.annotation.Nullable;

@@ -25,10 +25,10 @@ import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.ForgeableMeasurableHandler;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeableMeasurable;
+import net.dries007.tfc.api.capability.metal.IMetalObject;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.IMetalObject;
 
 @ParametersAreNonnullByDefault
 public class ItemBloom extends ItemTFC implements IMetalObject

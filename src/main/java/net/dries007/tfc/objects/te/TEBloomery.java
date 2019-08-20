@@ -26,8 +26,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.capability.metal.CapabilityMetalObject;
+import net.dries007.tfc.api.capability.metal.IMetalObject;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlockMolten;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -201,8 +202,11 @@ public class TEBloomery extends TEInventory implements ITickable
                 int totalOutput = 0;
                 for (ItemStack stack : oreStacks)
                 {
-                    IMetalObject metal = (IMetalObject) stack.getItem();
-                    totalOutput += metal.getSmeltAmount(stack);
+                    IMetalObject metal = CapabilityMetalObject.getMetalObject(stack);
+                    if (metal != null)
+                    {
+                        totalOutput += metal.getSmeltAmount(stack);
+                    }
                 }
 
                 oreStacks.clear();

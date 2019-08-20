@@ -40,9 +40,10 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.capability.metal.CapabilityMetalObject;
+import net.dries007.tfc.api.capability.metal.IMetalObject;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
-import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
@@ -228,17 +229,10 @@ public class ClientEvents
 
             if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
             {
-                if (item instanceof IMetalObject)
+                IMetalObject metalObject = CapabilityMetalObject.getMetalObject(stack);
+                if (metalObject != null)
                 {
-                    ((IMetalObject) item).addMetalInfo(stack, tt);
-                }
-                else if (item instanceof ItemBlock)
-                {
-                    Block block = ((ItemBlock) item).getBlock();
-                    if (block instanceof IMetalObject)
-                    {
-                        ((IMetalObject) block).addMetalInfo(stack, tt);
-                    }
+                    metalObject.addMetalInfo(stack, tt);
                 }
                 if (item instanceof IRockObject)
                 {
