@@ -28,8 +28,8 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.api.capability.metal.CapabilityMetalObject;
-import net.dries007.tfc.api.capability.metal.IMetalObject;
+import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IHeatConsumerBlock;
 import net.dries007.tfc.objects.blocks.BlockMolten;
@@ -240,7 +240,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
 
                 oreCount = oreStacks.size();
                 oreUnits = oreStacks.stream().mapToInt(stack -> {
-                    IMetalObject metalObject = CapabilityMetalObject.getMetalObject(stack);
+                    IMetalItem metalObject = CapabilityMetalItem.getMetalItem(stack);
                     if (metalObject != null)
                     {
                         return metalObject.getSmeltAmount(stack);
@@ -373,7 +373,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
      */
     private void convertToMolten(ItemStack stack)
     {
-        IMetalObject metalObject = CapabilityMetalObject.getMetalObject(stack);
+        IMetalItem metalObject = CapabilityMetalItem.getMetalItem(stack);
         if (metalObject != null)
         {
             meltAmount += metalObject.getSmeltAmount(stack);
@@ -386,7 +386,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         for (EntityItem entityItem : world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.up(), pos.up().add(1, 5, 1)), EntitySelectors.IS_ALIVE))
         {
             ItemStack stack = entityItem.getItem();
-            IMetalObject metalObject = CapabilityMetalObject.getMetalObject(stack);
+            IMetalItem metalObject = CapabilityMetalItem.getMetalItem(stack);
             if (FuelManager.isItemFuel(stack))
             {
                 // Add fuel

@@ -40,8 +40,8 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.api.capability.metal.CapabilityMetalObject;
-import net.dries007.tfc.api.capability.metal.IMetalObject;
+import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.util.IRockObject;
@@ -229,7 +229,7 @@ public class ClientEvents
 
             if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
             {
-                IMetalObject metalObject = CapabilityMetalObject.getMetalObject(stack);
+                IMetalItem metalObject = CapabilityMetalItem.getMetalItem(stack);
                 if (metalObject != null)
                 {
                     metalObject.addMetalInfo(stack, tt);

@@ -15,20 +15,20 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.api.types.Metal;
 
-public class MetalObjectHandler implements ICapabilityProvider, IMetalObject
+public class MetalItemHandler implements ICapabilityProvider, IMetalItem
 {
     private final Metal metal;
     private final int amount;
     private final boolean canMelt;
 
-    public MetalObjectHandler(Metal metal, int amount, boolean canMelt)
+    public MetalItemHandler(Metal metal, int amount, boolean canMelt)
     {
         this.metal = metal;
         this.amount = amount;
         this.canMelt = canMelt;
     }
 
-    public MetalObjectHandler()
+    public MetalItemHandler()
     {
         this(Metal.UNKNOWN, 0, false);
     }
@@ -55,7 +55,7 @@ public class MetalObjectHandler implements ICapabilityProvider, IMetalObject
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityMetalObject.METAL_OBJECT_CAPABILITY;
+        return capability == CapabilityMetalItem.METAL_OBJECT_CAPABILITY;
     }
 
     @Nullable
@@ -63,6 +63,6 @@ public class MetalObjectHandler implements ICapabilityProvider, IMetalObject
     @SuppressWarnings("unchecked")
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityMetalObject.METAL_OBJECT_CAPABILITY ? (T) this : null;
+        return capability == CapabilityMetalItem.METAL_OBJECT_CAPABILITY ? (T) this : null;
     }
 }

@@ -11,8 +11,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import net.dries007.tfc.api.capability.metal.CapabilityMetalObject;
-import net.dries007.tfc.api.capability.metal.IMetalObject;
+import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 
@@ -24,7 +24,7 @@ public class HeatRecipeMetalMelting extends HeatRecipe
     public HeatRecipeMetalMelting(Metal metal)
     {
         super(input -> {
-            IMetalObject metalObject = CapabilityMetalObject.getMetalObject(input);
+            IMetalItem metalObject = CapabilityMetalItem.getMetalItem(input);
             if (metalObject != null)
             {
                 return metalObject.getMetal(input) == metal;
@@ -38,7 +38,7 @@ public class HeatRecipeMetalMelting extends HeatRecipe
     @Override
     public FluidStack getOutputFluid(ItemStack input)
     {
-        IMetalObject metalObject = CapabilityMetalObject.getMetalObject(input);
+        IMetalItem metalObject = CapabilityMetalItem.getMetalItem(input);
         if (metalObject != null)
         {
             Metal metal = metalObject.getMetal(input);
