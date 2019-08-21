@@ -80,7 +80,7 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
                 if (rule != null && mouseX >= x && mouseY >= y && mouseX < x + 18 && mouseY < y + 22)
                 {
                     // Hovering over rule area
-                    drawHoveringText(Helpers.getEnumName(rule), mouseX, mouseY);
+                    drawHoveringText(I18n.format(Helpers.getEnumName(rule)), mouseX, mouseY);
                     break;
                 }
                 x += 19;
@@ -152,5 +152,4 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
         TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id));
         super.actionPerformed(button);
     }
-
 }
