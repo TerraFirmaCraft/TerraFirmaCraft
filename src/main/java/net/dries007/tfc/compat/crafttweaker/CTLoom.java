@@ -96,7 +96,7 @@ public class CTLoom
                 @Override
                 public void apply()
                 {
-                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.ANVIL;
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.LOOM;
                     modRegistry.remove(recipe.getRegistryName());
                 }
 
