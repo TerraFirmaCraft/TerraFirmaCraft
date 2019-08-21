@@ -185,7 +185,24 @@ public class BlockSupport extends Block
         EnumFacing.Axis axis = getAxis(source, pos);
         if (axis == EnumFacing.Axis.Y)
         {
-            return VERTICAL_SUPPORT_AABB;
+            AxisAlignedBB value = VERTICAL_SUPPORT_AABB;
+            if (isConnectable(source, pos, EnumFacing.NORTH))
+            {
+                value = value.union(CONNECTION_N_AABB);
+            }
+            if (isConnectable(source, pos, EnumFacing.SOUTH))
+            {
+                value = value.union(CONNECTION_S_AABB);
+            }
+            if (isConnectable(source, pos, EnumFacing.EAST))
+            {
+                value = value.union(CONNECTION_E_AABB);
+            }
+            if (isConnectable(source, pos, EnumFacing.WEST))
+            {
+                value = value.union(CONNECTION_W_AABB);
+            }
+            return value;
         }
         else
         {
