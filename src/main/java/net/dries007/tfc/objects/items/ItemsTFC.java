@@ -15,10 +15,12 @@ import net.minecraft.item.ItemSnow;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.registries.TFCRegistries;
@@ -32,6 +34,7 @@ import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.ceramics.*;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockTorch;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
@@ -152,8 +155,6 @@ public final class ItemsTFC
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
         simpleItems.add(register(r, "mortar", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
         register(r, "wooden_bucket", new ItemWoodenBucket(), CT_WOOD); //not a simple item, use a custom model
-
-        r.register(new ItemSnow(Blocks.SNOW_LAYER).setRegistryName("minecraft", "snow_layer"));
 
         {
             for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
@@ -310,6 +311,17 @@ public final class ItemsTFC
         // todo: quiver
 
         allSimpleItems = simpleItems.build();
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void registerVanillaOverrides(RegistryEvent.Register<Item> event)
+    {
+        // Vanilla Overrides. Used for small tweaks on vanilla items, rather than replacing them outright
+        TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are normal. The override is intended. ;)");
+        event.getRegistry().registerAll(
+            new ItemSnow(Blocks.SNOW_LAYER).setRegistryName("minecraft", "snow_layer"),
+            new ItemBlockTorch(Blocks.TORCH).setRegistryName("minecraft", "torch")
+        );
     }
 
     public static void init()

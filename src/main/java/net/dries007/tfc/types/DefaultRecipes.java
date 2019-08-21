@@ -222,7 +222,7 @@ public final class DefaultRecipes
             new HeatRecipeSimple(IIngredient.of(BlocksTFC.FIRED_LARGE_VESSEL), new ItemStack(BlocksTFC.FIRED_LARGE_VESSEL), 1599f, Metal.Tier.TIER_I).setRegistryName("fired_large_vessel"),
 
             // Misc
-            new HeatRecipeSimple(IIngredient.of("stickWood"), new ItemStack(BlocksTFC.TORCH, 2), 40).setRegistryName("torch"),
+            new HeatRecipeSimple(IIngredient.of("stickWood"), new ItemStack(Blocks.TORCH, 2), 40).setRegistryName("torch"),
             new HeatRecipeSimple(IIngredient.of("sand"), new ItemStack(Blocks.GLASS), 600).setRegistryName("glass"),
 
             // Bread

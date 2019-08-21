@@ -16,6 +16,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -26,6 +27,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.size.IItemSize;
@@ -42,12 +44,13 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
 {
     private static boolean canLight(ItemStack stack)
     {
-        return stack.getItem() == Item.getItemFromBlock(BlocksTFC.TORCH) || ItemFireStarter.canIgnite(stack);
+        return stack.getItem() == Item.getItemFromBlock(Blocks.TORCH) || ItemFireStarter.canIgnite(stack);
     }
 
     public BlockTorchTFC()
     {
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(LIT, true));
+        setHardness(0f);
         setLightLevel(0.9375F);
         setTickRandomly(true);
         setSoundType(SoundType.WOOD);
@@ -105,7 +108,7 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
         TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
         if (te != null)
         {
-            if (!worldIn.isRemote && te.getTicksSinceUpdate() > (long) ConfigTFC.GENERAL.torchTime && ConfigTFC.GENERAL.torchTime > 0)
+            if (!worldIn.isRemote && te.getTicksSinceUpdate() > ConfigTFC.GENERAL.torchTime && ConfigTFC.GENERAL.torchTime > 0)
             {
                 worldIn.setBlockState(pos, state.withProperty(LIT, false));
                 te.resetCounter();
@@ -114,15 +117,37 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
     }
 
     @Override
+    @Nonnull
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return state.getValue(LIT) ? Item.getItemFromBlock(Blocks.TORCH) : Items.STICK;
+    }
+
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if (!worldIn.isRemote)
         {
-            TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
             ItemStack stack = playerIn.getHeldItem(hand);
-            if (te != null && BlockTorchTFC.canLight(stack))
+            if (state.getValue(LIT))
             {
-                worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LIT, true));
+                if (OreDictionaryHelper.doesStackMatchOre(stack, "stickWood"))
+                {
+                    stack.shrink(1);
+                    ItemHandlerHelper.giveItemToPlayer(playerIn, new ItemStack(Blocks.TORCH));
+                }
+            }
+            else
+            {
+                if (BlockTorchTFC.canLight(stack))
+                {
+                    worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LIT, true));
+                    TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
+                    if (tile != null)
+                    {
+                        tile.resetCounter();
+                    }
+                }
             }
         }
         return true;

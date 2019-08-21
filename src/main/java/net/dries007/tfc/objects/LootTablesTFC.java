@@ -47,25 +47,38 @@ public class LootTablesTFC
     @SubscribeEvent
     public static void onLootTableLoad(LootTableLoadEvent event)
     {
-        LootPool pool = event.getTable().getPool("main");
-        //noinspection ConstantConditions - it can be null on non-vanilla pools
-        if (ConfigTFC.GENERAL.removeVanillaLoots && pool != null)
+        if (ConfigTFC.GENERAL.removeVanillaLoots)
         {
-            pool.removeEntry("minecraft:potato");
-            pool.removeEntry("minecraft:carrot");
-            pool.removeEntry("minecraft:wheat");
-            pool.removeEntry("minecraft:gold_nugget");
-            pool.removeEntry("minecraft:gold_ingot");
-            pool.removeEntry("minecraft:iron_ingot");
-            pool.removeEntry("minecraft:iron_nugget");
-            pool.removeEntry("minecraft:leather");
-            pool.removeEntry("minecraft:coal");
-            pool.removeEntry("minecraft:diamond");
+            // The pool with carrots, potatoes, and iron ingots
+            remove(event, "minecraft:entities/zombie_villager", "pool1");
+            remove(event, "minecraft:entities/zombie", "pool1");
+            remove(event, "minecraft:entities/husk", "pool1");
         }
     }
 
     private static ResourceLocation register(String id)
     {
         return LootTableList.register(new ResourceLocation(MOD_ID, id));
+    }
+
+    private static void remove(LootTableLoadEvent event, String tableName, String pool)
+    {
+        if (tableName.equals(event.getName().toString()))
+        {
+            event.getTable().removePool(pool);
+        }
+    }
+
+    private static void remove(LootTableLoadEvent event, String tableName, String poolName, String entry)
+    {
+        if (tableName.equals(event.getName().toString()))
+        {
+            LootPool pool = event.getTable().getPool(poolName);
+            //noinspection ConstantConditions
+            if (pool != null)
+            {
+                pool.removeEntry(entry);
+            }
+        }
     }
 }
