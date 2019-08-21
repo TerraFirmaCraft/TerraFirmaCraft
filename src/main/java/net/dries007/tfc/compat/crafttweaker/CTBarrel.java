@@ -146,7 +146,7 @@ public class CTBarrel
                 @Override
                 public void apply()
                 {
-                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.ANVIL;
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.BARREL;
                     modRegistry.remove(recipe.getRegistryName());
                 }
 
