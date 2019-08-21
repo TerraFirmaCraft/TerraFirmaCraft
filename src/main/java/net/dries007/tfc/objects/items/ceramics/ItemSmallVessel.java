@@ -184,11 +184,7 @@ public class ItemSmallVessel extends ItemPottery
 
             tank = new FluidTank(4000);
             fluidMode = false;
-            if (nbt != null)
-            {
-                deserializeNBT(nbt);
-            }
-            updateFluidData(tank.getFluid());
+            deserializeNBT(nbt);
         }
 
         @Override
@@ -406,23 +402,26 @@ public class ItemSmallVessel extends ItemPottery
         }
 
         @Override
-        public void deserializeNBT(NBTTagCompound nbt)
+        public void deserializeNBT(@Nullable NBTTagCompound nbt)
         {
-            temperature = nbt.getFloat("heat");
-            lastUpdateTick = nbt.getLong("ticks");
-            fluidMode = nbt.getBoolean("fluidMode");
-
-            if (fluidMode && nbt.hasKey("fluids", Constants.NBT.TAG_COMPOUND))
+            if (nbt != null)
             {
-                // Read fluid contents
-                tank.readFromNBT(nbt.getCompoundTag("fluids"));
-            }
-            else if (!fluidMode && nbt.hasKey("items", Constants.NBT.TAG_COMPOUND))
-            {
-                // Read item contents
-                super.deserializeNBT(nbt.getCompoundTag("items"));
-            }
+                temperature = nbt.getFloat("heat");
+                lastUpdateTick = nbt.getLong("ticks");
+                fluidMode = nbt.getBoolean("fluidMode");
 
+                if (fluidMode && nbt.hasKey("fluids", Constants.NBT.TAG_COMPOUND))
+                {
+                    // Read fluid contents
+                    tank.readFromNBT(nbt.getCompoundTag("fluids"));
+                }
+                else if (!fluidMode && nbt.hasKey("items", Constants.NBT.TAG_COMPOUND))
+                {
+                    // Read item contents
+                    super.deserializeNBT(nbt.getCompoundTag("items"));
+                }
+            }
+            updateFluidData(tank.getFluid());
         }
 
         private void updateFluidData(@Nullable FluidStack fluid)
