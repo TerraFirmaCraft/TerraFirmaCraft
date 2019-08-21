@@ -83,7 +83,7 @@ public class CTItemRegistry
         if (metal == null)
             throw new IllegalArgumentException("Metal specified not found!");
         IIngredient inputIngredient = CTHelper.getInternalIngredient(input);
-        if (CapabilityMetalItem.CUSTOM_ITEMS.get(inputIngredient) != null)
+        if (CapabilityMetalItem.CUSTOM_METAL_ITEMS.get(inputIngredient) != null)
         {
             throw new IllegalStateException("Input already registered in metal item capability!");
         }
@@ -95,7 +95,7 @@ public class CTItemRegistry
                 @Override
                 public void apply()
                 {
-                    CapabilityMetalItem.CUSTOM_ITEMS.put(inputIngredient, () -> new MetalItemHandler(metal, amount, canMelt));
+                    CapabilityMetalItem.CUSTOM_METAL_ITEMS.put(inputIngredient, () -> new MetalItemHandler(metal, amount, canMelt));
                 }
 
                 @Override
