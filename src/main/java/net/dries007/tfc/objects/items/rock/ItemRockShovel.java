@@ -12,9 +12,19 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,6 +35,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.api.util.IRockObject;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
@@ -56,6 +67,42 @@ public class ItemRockShovel extends ItemSpade implements IItemSize, IRockObject
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
+    }
+
+    @Override
+    @Nonnull
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        ItemStack itemstack = player.getHeldItem(hand);
+
+        if (!player.canPlayerEdit(pos.offset(facing), facing, itemstack))
+        {
+            return EnumActionResult.FAIL;
+        }
+        else
+        {
+            IBlockState iblockstate = worldIn.getBlockState(pos);
+            Block block = iblockstate.getBlock();
+            if (!(block instanceof BlockRockVariant))
+            {
+                return EnumActionResult.PASS;
+            }
+            BlockRockVariant rockVariant = (BlockRockVariant) block;
+            if (facing != EnumFacing.DOWN && worldIn.getBlockState(pos.up()).getMaterial() == Material.AIR && rockVariant.getType() == Rock.Type.GRASS || rockVariant.getType() == Rock.Type.DRY_GRASS)
+            {
+                IBlockState iblockstate1 = BlockRockVariant.get(rockVariant.getRock(), Rock.Type.PATH).getDefaultState();
+                worldIn.playSound(player, pos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
+
+                if (!worldIn.isRemote)
+                {
+                    worldIn.setBlockState(pos, iblockstate1, 11);
+                    itemstack.damageItem(1, player);
+                }
+
+                return EnumActionResult.SUCCESS;
+            }
+        }
+        return EnumActionResult.PASS;
     }
 
     @Nonnull
