@@ -268,7 +268,15 @@ public class ItemMetalTool extends ItemMetal
     public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
     {
         //This stops swords and other weapons breaking blocks in creative
-        return canHarvestBlock(world.getBlockState(pos));
+        switch (type)
+        {
+            case SWORD:
+            case JAVELIN:
+            case MACE:
+                return false;
+            default:
+                return true;
+        }
     }
 
     @Override
