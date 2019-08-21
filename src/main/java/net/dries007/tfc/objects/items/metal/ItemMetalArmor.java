@@ -17,12 +17,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.api.capability.forge.ForgeableHandler;
-import net.dries007.tfc.api.capability.metal.IMetalObject;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.items.ItemArmorTFC;
 
-public class ItemMetalArmor extends ItemArmorTFC implements IMetalObject, IItemSize
+public class ItemMetalArmor extends ItemArmorTFC implements IMetalItem, IItemSize
 {
     private static final Map<Metal, EnumMap<Metal.ItemType, ItemMetalArmor>> TABLE = new HashMap<>();
 
