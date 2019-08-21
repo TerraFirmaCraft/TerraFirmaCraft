@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -69,7 +70,6 @@ public final class BlocksTFC
     public static final BlockNestBox NEST_BOX = getNull();
     public static final BlockLogPile LOG_PILE = getNull();
     public static final BlockIngotPile INGOT_PILE = getNull();
-    public static final BlockTorchTFC TORCH = getNull();
     public static final BlockCharcoalForge CHARCOAL_FORGE = getNull();
     public static final BlockCrucible CRUCIBLE = getNull();
     public static final BlockMolten MOLTEN = getNull();
@@ -567,9 +567,6 @@ public final class BlocksTFC
             }
         }
 
-        inventoryItemBlocks.add(new ItemBlockTorchTFC(register(r, "torch", new BlockTorchTFC(), CT_MISC)));
-
-
         // technical blocks
         // These have no ItemBlock or Creative Tab
         register(r, "firepit", new BlockFirePit());
@@ -597,13 +594,6 @@ public final class BlocksTFC
 
         allNormalItemBlocks = normalItemBlocks.build();
         allInventoryItemBlocks = inventoryItemBlocks.build();
-
-        // Vanilla Overrides. Used for small tweaks on vanilla items, rather than replacing them outright
-        TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are intended. The override is intended. ;)");
-        event.getRegistry().registerAll(
-            new BlockIceTFC(FluidsTFC.FRESH_WATER.get()).setRegistryName("minecraft", "ice").setTranslationKey("ice"),
-            new BlockSnowTFC().setRegistryName("minecraft", "snow_layer").setTranslationKey("snow")
-        );
 
         // Register Tile Entities
         // Putting tile entity registration in the respective block can call it multiple times. Just put here to avoid duplicates
@@ -633,6 +623,18 @@ public final class BlocksTFC
         register(TEQuern.class, "quern");
         register(TELargeVessel.class, "large_vessel");
         register(TESluice.class, "sluice");
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void registerVanillaOverrides(RegistryEvent.Register<Block> event)
+    {
+        // Vanilla Overrides. Used for small tweaks on vanilla items, rather than replacing them outright
+        TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are normal. The override is intended. ;)");
+        event.getRegistry().registerAll(
+            new BlockIceTFC(FluidsTFC.FRESH_WATER.get()).setRegistryName("minecraft", "ice").setTranslationKey("ice"),
+            new BlockSnowTFC().setRegistryName("minecraft", "snow_layer").setTranslationKey("snow"),
+            new BlockTorchTFC().setRegistryName("minecraft", "torch").setTranslationKey("torch")
+        );
     }
 
     public static boolean isWater(IBlockState current)

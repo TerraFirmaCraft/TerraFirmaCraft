@@ -18,10 +18,10 @@ import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
 
-public class ItemBlockTorchTFC extends ItemBlockTFC
+public class ItemBlockTorch extends ItemBlockTFC
 {
 
-    public ItemBlockTorchTFC(Block b)
+    public ItemBlockTorch(Block b)
     {
         super(b);
     }
