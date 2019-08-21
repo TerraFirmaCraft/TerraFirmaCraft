@@ -612,7 +612,6 @@ public final class BlocksTFC
         register(TEPlacedItem.class, "placed_item");
         register(TEPlacedItemFlat.class, "placed_item_flat");
         register(TEPlacedHide.class, "placed_hide");
-        register(TETorchTFC.class, "torch");
         register(TEPitKiln.class, "pit_kiln");
         register(TEChestTFC.class, "chest");
         register(TENestBox.class, "nest_box");
