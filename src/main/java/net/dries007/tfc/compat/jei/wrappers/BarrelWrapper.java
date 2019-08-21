@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.compat.jei.wrappers;
 
+import java.util.Collections;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -15,6 +18,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.util.calendar.ICalendar;
 
+@ParametersAreNonnullByDefault
 public class BarrelWrapper implements IRecipeWrapper
 {
     private BarrelRecipe recipe;
@@ -27,8 +31,8 @@ public class BarrelWrapper implements IRecipeWrapper
     @Override
     public void getIngredients(IIngredients ingredients)
     {
-        ingredients.setInputs(VanillaTypes.ITEM, recipe.getItemIngredient().getValidIngredients());
-        ingredients.setInputs(VanillaTypes.FLUID, recipe.getFluidIngredient().getValidIngredients());
+        ingredients.setInputLists(VanillaTypes.ITEM, Collections.singletonList(recipe.getItemIngredient().getValidIngredients()));
+        ingredients.setInputLists(VanillaTypes.FLUID, Collections.singletonList(recipe.getFluidIngredient().getValidIngredients()));
         if (recipe.getOutputStack() != ItemStack.EMPTY)
         {
             ingredients.setOutput(VanillaTypes.ITEM, recipe.getOutputStack());
