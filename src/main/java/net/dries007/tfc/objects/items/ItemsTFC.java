@@ -265,12 +265,6 @@ public final class ItemsTFC
             simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemFoodTFC(food), CT_FOOD));
         }
 
-        // FLAT
-        for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
-        {
-            r.register(new ItemFlat(rock).setRegistryName(MOD_ID, "flat/" + rock.getRegistryName().getPath().toLowerCase()));
-        }
-
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
         simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "straw"), CT_MISC));
         simpleItems.add(register(r, "handstone", new ItemHandstone(), CT_MISC));

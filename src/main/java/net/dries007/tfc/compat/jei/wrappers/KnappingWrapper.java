@@ -7,6 +7,7 @@ package net.dries007.tfc.compat.jei.wrappers;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -26,6 +27,7 @@ import net.dries007.tfc.objects.items.rock.ItemRock;
 import static net.dries007.tfc.api.recipes.knapping.KnappingRecipe.Type.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@ParametersAreNonnullByDefault
 public class KnappingWrapper implements IRecipeWrapper
 {
     private static final ResourceLocation CLAY_DISABLED_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_disabled.png");
