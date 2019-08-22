@@ -195,6 +195,25 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         }
     }
 
+    @Override
+    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player)
+    {
+        ItemStack stack = player.getHeldItemMainhand();
+        IBlockState state = world.getBlockState(pos);
+        switch (plant.getPlantType())
+        {
+            case REED:
+            case REED_SEA:
+            case TALL_REED:
+            case TALL_REED_SEA:
+            case SHORT_GRASS:
+            case TALL_GRASS:
+                return (stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1 || stack.getItem().getHarvestLevel(stack, "scythe", player, state) != -1);
+            default:
+                return true;
+        }
+    }
+
     @Nonnull
     @Override
     public BlockStateContainer getBlockState()
