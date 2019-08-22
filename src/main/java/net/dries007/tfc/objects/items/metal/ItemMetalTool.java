@@ -41,7 +41,7 @@ public class ItemMetalTool extends ItemMetal
 {
     public final ToolMaterial material;
     private final double attackDamage;
-    private final int areaOfEffect; // todo: implement
+    private final int areaOfEffect;
     private final float attackSpeed;
     private float efficiency;
 

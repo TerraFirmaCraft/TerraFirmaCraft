@@ -5,6 +5,8 @@
 
 package net.dries007.tfc;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
@@ -395,8 +397,14 @@ public final class CommonEventHandler
         if (event.player instanceof EntityPlayerMP)
         {
             // Check total players and reset calendar time ticking
-            int players = event.player.world.playerEntities.size();
-            CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, players > 0);
+            List<EntityPlayer> players = event.player.world.playerEntities;
+            int playerCount = players.size();
+            // The player logging out doesn't count
+            if (players.contains(event.player))
+            {
+                playerCount--;
+            }
+            CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, playerCount > 0);
         }
     }
 
