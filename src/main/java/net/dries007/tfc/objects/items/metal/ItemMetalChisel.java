@@ -38,78 +38,78 @@ public class ItemMetalChisel extends ItemMetalTool
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         IBlockState state = worldIn.getBlockState(pos);
-        if (facing != null)
+        IPlayerSkills capability = player.getCapability(CapabilityPlayerSkills.CAPABILITY, null);
+
+        if (capability != null)
         {
-            IPlayerSkills capability = player.getCapability(CapabilityPlayerSkills.CAPABILITY, null);
+            IBlockState newState = null;
 
-            if (capability != null)
+            switch (capability.getChiselMode())
             {
-                IBlockState newState = null;
-
-                switch (capability.getChiselMode())
+                case SMOOTH:
                 {
-                    case SMOOTH:
+                    if (BlocksTFC.isRawStone(state))
                     {
-                        if (BlocksTFC.isRawStone(state))
-                        {
-                            BlockRockRaw rawBlock = (BlockRockRaw) state.getBlock();
-                            BlockRockVariant smoothBlock = BlockRockVariant.get(rawBlock.getRock(), Rock.Type.SMOOTH);
-                            newState = smoothBlock.getDefaultState();
-                        }
+                        BlockRockRaw rawBlock = (BlockRockRaw) state.getBlock();
+                        BlockRockVariant smoothBlock = BlockRockVariant.get(rawBlock.getRock(), Rock.Type.SMOOTH);
+                        newState = smoothBlock.getDefaultState();
                     }
-                    break;
-                    case SLAB:
-                    {
-                        if (state.getBlock() instanceof BlockRockVariant)
-                        {
-                            BlockRockVariant oldBlock = (BlockRockVariant) state.getBlock();
-                            Rock.Type type = oldBlock.getType();
-                            if (type == Rock.Type.SMOOTH || type == Rock.Type.COBBLE || type == Rock.Type.BRICKS)
-                            {
-                                BlockSlabTFC.Half newBlock = BlockSlabTFC.Half.get(oldBlock.getRock(), type);
-                                newState = newBlock.getDefaultState().withProperty(HALF, (hitY < 0.5) ? TOP : BOTTOM);
-                            }
-                        }
-                    }
-                    break;
-                    case STAIR:
-                    {
-                        if (state.getBlock() instanceof BlockRockVariant)
-                        {
-                            BlockRockVariant oldBlock = (BlockRockVariant) state.getBlock();
-                            Rock.Type type = oldBlock.getType();
-                            if (type == Rock.Type.SMOOTH || type == Rock.Type.COBBLE || type == Rock.Type.BRICKS)
-                            {
-                                BlockStairsTFC newBlock = BlockStairsTFC.get(oldBlock.getRock(), type);
-                                newState = newBlock.getDefaultState();
-                            }
-                        }
-                    }
-                    break;
                 }
-
-                if (newState != null)
+                break;
+                case SLAB:
                 {
-                    // play a sound
-                    SoundType soundType = state.getBlock().getSoundType(state, worldIn, pos, player);
-                    worldIn.playSound(player, pos, soundType.getHitSound(), SoundCategory.BLOCKS, 1.0f, soundType.getPitch());
-
-                    if (!worldIn.isRemote)
+                    if (state.getBlock() instanceof BlockRockVariant)
                     {
-                        // replace the block with a new block
-                        worldIn.setBlockState(pos, newState);
+                        BlockRockVariant oldBlock = (BlockRockVariant) state.getBlock();
+                        Rock.Type type = oldBlock.getType();
+                        if (type == Rock.Type.SMOOTH || type == Rock.Type.COBBLE || type == Rock.Type.BRICKS)
+                        {
+                            BlockSlabTFC.Half newBlock = BlockSlabTFC.Half.get(oldBlock.getRock(), type);
+                            newState = newBlock.getDefaultState().withProperty(HALF, (hitY < 0.5) ? TOP : BOTTOM);
+                        }
                     }
-                    else
+                }
+                break;
+                case STAIR:
+                {
+                    if (state.getBlock() instanceof BlockRockVariant)
                     {
-
+                        BlockRockVariant oldBlock = (BlockRockVariant) state.getBlock();
+                        Rock.Type type = oldBlock.getType();
+                        if (type == Rock.Type.SMOOTH || type == Rock.Type.COBBLE || type == Rock.Type.BRICKS)
+                        {
+                            BlockStairsTFC newBlock = BlockStairsTFC.get(oldBlock.getRock(), type);
+                            newState = newBlock.getDefaultState();
+                        }
                     }
+                }
+                break;
+            }
 
-                    return EnumActionResult.SUCCESS;
+            if (newState != null)
+            {
+                // play a sound matching the new block
+                SoundType soundType = newState.getBlock().getSoundType(state, worldIn, pos, player);
+                worldIn.playSound(player, pos, soundType.getHitSound(), SoundCategory.BLOCKS, 1.0f, soundType.getPitch());
+
+                if (!worldIn.isRemote)
+                {
+                    // replace the block with a new block
+                    worldIn.setBlockState(pos, newState, 3);
+
+                    // reduce durability by 1
+                    player.getHeldItem(hand).damageItem(1, player);
                 }
                 else
                 {
-                    return EnumActionResult.FAIL;
+
                 }
+
+                return EnumActionResult.SUCCESS;
+            }
+            else
+            {
+                return EnumActionResult.FAIL;
             }
         }
 
