@@ -20,6 +20,8 @@ public class PlayerSkillsHandler implements IPlayerSkills, ICapabilitySerializab
 {
     private final TObjectIntMap<String> skillValues;
 
+    private ChiselMode chiselMode = ChiselMode.SMOOTH;
+
     public PlayerSkillsHandler()
     {
         this(null);
@@ -48,6 +50,19 @@ public class PlayerSkillsHandler implements IPlayerSkills, ICapabilitySerializab
     public void addSkill(ISkill instance)
     {
         skillValues.increment(instance.getName());
+    }
+
+    @Override
+    @Nonnull
+    public ChiselMode getChiselMode()
+    {
+        return chiselMode;
+    }
+
+    @Override
+    public void setChiselMode(@Nonnull ChiselMode chiselMode)
+    {
+        this.chiselMode = chiselMode;
     }
 
     @Override

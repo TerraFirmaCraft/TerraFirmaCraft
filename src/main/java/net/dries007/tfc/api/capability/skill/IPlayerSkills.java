@@ -80,4 +80,31 @@ public interface IPlayerSkills
             return VALUES[index];
         }
     }
+
+    /**
+     * Gets the current chiseling mode.
+     *
+     * @return enum value of the chiseling mode
+     */
+    @Nonnull
+    ChiselMode getChiselMode();
+
+    /**
+     * Sets the current chiseling mode.
+     *
+     * @param chiselMode enum value for the new chiseling mode
+     */
+    void setChiselMode(@Nonnull ChiselMode chiselMode);
+
+    enum ChiselMode
+    {
+        SMOOTH,
+        STAIR,
+        SLAB;
+
+        public final ChiselMode getNextMode()
+        {
+            return ChiselMode.values()[(this.ordinal() + 1) % ChiselMode.values().length];
+        }
+    }
 }
