@@ -44,6 +44,7 @@ import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
 import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 import net.dries007.tfc.objects.items.wood.ItemLumberTFC;
 import net.dries007.tfc.objects.items.wood.ItemWoodenBucket;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.agriculture.Food;
 
@@ -311,6 +312,8 @@ public final class ItemsTFC
         // todo: quiver
 
         allSimpleItems = simpleItems.build();
+
+        OreDictionaryHelper.init();
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
