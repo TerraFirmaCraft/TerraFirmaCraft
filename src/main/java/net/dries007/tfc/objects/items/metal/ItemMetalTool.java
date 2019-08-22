@@ -8,14 +8,20 @@ package net.dries007.tfc.objects.items.metal;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.Multimap;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -25,6 +31,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
@@ -265,10 +273,53 @@ public class ItemMetalTool extends ItemMetal
     }
 
     @Override
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        ItemStack itemstack = player.getHeldItem(hand);
+
+        if (!player.canPlayerEdit(pos.offset(facing), facing, itemstack))
+        {
+            return EnumActionResult.FAIL;
+        }
+        else if (type == Metal.ItemType.SHOVEL)
+        {
+            IBlockState iblockstate = worldIn.getBlockState(pos);
+            Block block = iblockstate.getBlock();
+            if (!(block instanceof BlockRockVariant))
+            {
+                return EnumActionResult.PASS;
+            }
+            BlockRockVariant rockVariant = (BlockRockVariant) block;
+            if (facing != EnumFacing.DOWN && worldIn.getBlockState(pos.up()).getMaterial() == Material.AIR && rockVariant.getType() == Rock.Type.GRASS || rockVariant.getType() == Rock.Type.DRY_GRASS)
+            {
+                IBlockState iblockstate1 = BlockRockVariant.get(rockVariant.getRock(), Rock.Type.PATH).getDefaultState();
+                worldIn.playSound(player, pos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
+
+                if (!worldIn.isRemote)
+                {
+                    worldIn.setBlockState(pos, iblockstate1, 11);
+                    itemstack.damageItem(1, player);
+                }
+
+                return EnumActionResult.SUCCESS;
+            }
+        }
+        return EnumActionResult.PASS;
+    }
+
+    @Override
     public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
     {
         //This stops swords and other weapons breaking blocks in creative
-        return canHarvestBlock(world.getBlockState(pos));
+        switch (type)
+        {
+            case SWORD:
+            case JAVELIN:
+            case MACE:
+                return false;
+            default:
+                return true;
+        }
     }
 
     @Override
