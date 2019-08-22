@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.compat.crafttweaker;
 
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 import crafttweaker.CraftTweakerAPI;
@@ -14,7 +13,6 @@ import crafttweaker.annotations.ZenRegister;
 import net.dries007.tfc.api.recipes.AlloyRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.TFCConstants;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -83,9 +81,16 @@ public class CTAlloy
         }
 
         @ZenMethod
-        public CTAlloyRecipeBuilder addMetal(String input, double min, double max)
+        public CTAlloyRecipeBuilder addMetal(String metal, double min, double max)
         {
-            this.internal = this.internal.add(new ResourceLocation(TFCConstants.MOD_ID, input), min, max);
+            //noinspection ConstantConditions
+            Metal result = TFCRegistries.METALS.getValuesCollection().stream()
+                .filter(x -> x.getRegistryName().getPath().equalsIgnoreCase(metal)).findFirst().orElse(null);
+            if (result == null)
+            {
+                throw new IllegalArgumentException("Metal specified not found!");
+            }
+            this.internal = this.internal.add(result, min, max);
             return this;
         }
 
