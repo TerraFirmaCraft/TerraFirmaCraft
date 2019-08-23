@@ -62,6 +62,8 @@ public class BlockRockVariant extends Block
         {
             case RAW:
                 return new BlockRockRaw(type, rock);
+            case SPIKE:
+                return new BlockRockSpike(type, rock);
             case FARMLAND:
                 return new BlockFarmlandTFC(type, rock);
             case PATH:
@@ -101,6 +103,7 @@ public class BlockRockVariant extends Block
         {
             case BRICKS:
             case RAW:
+            case SPIKE:
                 setSoundType(SoundType.STONE);
                 setHardness(2.0F).setResistance(10.0F);
                 setHarvestLevel("pickaxe", 0);
@@ -200,6 +203,7 @@ public class BlockRockVariant extends Block
         switch (type)
         {
             case RAW:
+            case SPIKE:
                 return ItemRock.get(rock);
             case CLAY:
             case CLAY_GRASS:
@@ -235,6 +239,7 @@ public class BlockRockVariant extends Block
             case CLAY_GRASS:
                 return 4;
             case RAW:
+            case SPIKE:
                 return 1 + random.nextInt(3);
             default:
                 return super.quantityDropped(state, fortune, random);

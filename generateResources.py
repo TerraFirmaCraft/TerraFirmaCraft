@@ -722,6 +722,15 @@ for rock_type in ROCK_TYPES:
             'west': {'true': {'submodel': 'wall_side', 'y': 270}, 'false': {}},
             'up': {'true': {'submodel': 'wall_post', 'y': 270}, 'false': {}}
         })
+        
+    # SPIKES (stalactite and stalagmite)
+    blockstate(('spike', rock_type), 'tfc:spike/top', textures={
+        ('texture', 'particle'): 'tfc:blocks/stonetypes/raw/%s' % rock_type,
+    }, variants={
+        'normal': None,
+        'ceiling': {'true': {'x': 180}, 'false': {}},
+        'base': {'true': {'model': 'tfc:spike/base'}, 'false': {}}
+    })
 
     # (ROCK) STAIRS & SLABS
     for block_type in ['smooth', 'cobble', 'bricks']:
@@ -1087,7 +1096,6 @@ item(('ceramics', 'fired', 'bowl'), 'tfc:items/ceramics/fired/bowl')
 item(('ceramics', 'unfired', 'fire_brick'), 'tfc:items/ceramics/unfired/fire_brick')
 item(('ceramics', 'fired', 'fire_brick'), 'tfc:items/ceramics/fired/fire_brick')
 item(('ceramics', 'unfired', 'jug'), 'tfc:items/ceramics/unfired/jug')
-item(('ceramics', 'fired', 'jug'), 'tfc:items/ceramics/fired/jug')
 
 item(('ceramics', 'fire_clay'), 'tfc:items/ceramics/fire_clay')
 

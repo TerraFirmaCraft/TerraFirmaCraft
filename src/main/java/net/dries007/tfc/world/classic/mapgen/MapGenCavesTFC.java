@@ -17,6 +17,9 @@ import net.minecraftforge.registries.ForgeRegistry;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockRockRaw;
+import net.dries007.tfc.objects.blocks.stone.BlockRockSpike;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.world.classic.DataLayer;
 
 import static net.dries007.tfc.world.classic.ChunkGenTFC.AIR;
@@ -224,6 +227,35 @@ public class MapGenCavesTFC extends MapGenBase
                                 if (grass != null && BlocksTFC.isDirt(primer.getBlockState(xCoord, y - 1, zCoord)))
                                 {
                                     primer.setBlockState(xCoord, y - 1, zCoord, grass);
+                                }
+                                //================ Cave Decoration ===============
+                                //Stalactites & Stalagmites
+                                //Check for previously placed spikes and remove them. (as sometimes a cave nodes can cross one another)
+                                if (primer.getBlockState(xCoord, y + 1, zCoord).getBlock() instanceof BlockRockSpike)
+                                {
+                                    primer.setBlockState(xCoord, y + 1, zCoord, AIR);
+                                    primer.setBlockState(xCoord, y + 2, zCoord, AIR);
+                                }
+                                if (primer.getBlockState(xCoord, y - 1, zCoord).getBlock() instanceof BlockRockSpike)
+                                {
+                                    primer.setBlockState(xCoord, y - 1, zCoord, AIR);
+                                    primer.setBlockState(xCoord, y - 2, zCoord, AIR);
+                                }
+                                //Place the spikes
+                                if (primer.getBlockState(xCoord, y + 1, zCoord) == AIR && primer.getBlockState(xCoord, y + 2, zCoord) == AIR)
+                                {
+                                    if (primer.getBlockState(xCoord, y + 3, zCoord).getBlock() instanceof BlockRockRaw && rng.nextDouble() < 0.5D)
+                                    {
+                                        BlockRockRaw rockBlock = (BlockRockRaw) primer.getBlockState(xCoord, y + 3, zCoord).getBlock();
+                                        primer.setBlockState(xCoord, y + 2, zCoord, BlockRockVariant.get(rockBlock.getRock(), Rock.Type.SPIKE).getDefaultState().withProperty(BlockRockSpike.BASE, true).withProperty(BlockRockSpike.CEILING, true));
+                                        primer.setBlockState(xCoord, y + 1, zCoord, BlockRockVariant.get(rockBlock.getRock(), Rock.Type.SPIKE).getDefaultState().withProperty(BlockRockSpike.BASE, false).withProperty(BlockRockSpike.CEILING, true));
+                                    }
+                                    else if (primer.getBlockState(xCoord, y - 1, zCoord).getBlock() instanceof BlockRockRaw && rng.nextDouble() < 0.5D)
+                                    {
+                                        BlockRockRaw rockBlock = (BlockRockRaw) primer.getBlockState(xCoord, y - 1, zCoord).getBlock();
+                                        primer.setBlockState(xCoord, y, zCoord, BlockRockVariant.get(rockBlock.getRock(), Rock.Type.SPIKE).getDefaultState().withProperty(BlockRockSpike.BASE, true).withProperty(BlockRockSpike.CEILING, false));
+                                        primer.setBlockState(xCoord, y + 1, zCoord, BlockRockVariant.get(rockBlock.getRock(), Rock.Type.SPIKE).getDefaultState().withProperty(BlockRockSpike.BASE, false).withProperty(BlockRockSpike.CEILING, false));
+                                    }
                                 }
                             }
                         }

@@ -333,9 +333,13 @@ public final class BlocksTFC
             allBlockRockVariants.forEach(x ->
             {
                 if (x.getType() == Rock.Type.SAND)
+                {
                     normalItemBlocks.add(new ItemBlockHeat(x, 1, 600));
-                else
+                }
+                else if (x.getType() != Rock.Type.SPIKE)
+                {
                     normalItemBlocks.add(new ItemBlockTFC(x));
+                }
             });
         }
 
