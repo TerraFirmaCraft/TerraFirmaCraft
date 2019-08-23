@@ -114,6 +114,7 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
     public enum Type
     {
         RAW(Material.ROCK, FALL_VERTICAL, false, BlockRockRaw::new),
+        SPIKE(Material.ROCK, NO_FALL, false, BlockRockSpike::new),
         SMOOTH(Material.ROCK, NO_FALL, false),
         COBBLE(Material.ROCK, FALL_HORIZONTAL, false),
         BRICKS(Material.ROCK, NO_FALL, false),
