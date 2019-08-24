@@ -11,7 +11,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
@@ -26,6 +28,10 @@ public class BlockRockSpike extends BlockRockVariant
 {
     public static final PropertyBool CEILING = PropertyBool.create("ceiling"); //If this comes from ceiling
     public static final PropertyBool BASE = PropertyBool.create("base"); //If this block is the base
+
+    public static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.125D, 0, 0.125D, 0.875D, 1, 0.875D);
+    public static final AxisAlignedBB GROUND_TOP_AABB = new AxisAlignedBB(0.375D, 0, 0.375D, 0.625D, 0.75D, 0.625D);
+    public static final AxisAlignedBB CEILING_TOP_AABB = new AxisAlignedBB(0.375D, 0.25D, 0.375D, 0.625D, 1D, 0.625D);
 
     public BlockRockSpike(Rock.Type type, Rock rock)
     {
@@ -94,5 +100,23 @@ public class BlockRockSpike extends BlockRockVariant
     public int damageDropped(IBlockState state)
     {
         return 0;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        if (state.getValue(BASE))
+        {
+            return BASE_AABB;
+        }
+        else if (state.getValue(CEILING))
+        {
+            return CEILING_TOP_AABB;
+        }
+        else
+        {
+            return GROUND_TOP_AABB;
+        }
     }
 }
