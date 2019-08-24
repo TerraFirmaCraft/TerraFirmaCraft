@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.items;
 
 import java.util.EnumMap;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -56,7 +57,11 @@ public class ItemGem extends ItemTFC
     public String getTranslationKey(ItemStack stack)
     {
         Gem.Grade grade = getGradeFromStack(stack);
-        return super.getTranslationKey(stack) + "." + grade.name().toLowerCase();
+        if (grade != null)
+        {
+            return super.getTranslationKey(stack) + "." + grade.name().toLowerCase();
+        }
+        return super.getTranslationKey(stack);
     }
 
     @Override
@@ -85,7 +90,7 @@ public class ItemGem extends ItemTFC
         return Weight.LIGHT;
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @Nullable
     private Gem.Grade getGradeFromStack(ItemStack stack)
     {
         return Gem.Grade.valueOf(stack.getItemDamage());
