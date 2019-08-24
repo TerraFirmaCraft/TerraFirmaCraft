@@ -244,13 +244,13 @@ public class MapGenCavesTFC extends MapGenBase
                                 //Place the spikes
                                 if (primer.getBlockState(xCoord, y + 1, zCoord) == AIR && primer.getBlockState(xCoord, y + 2, zCoord) == AIR)
                                 {
-                                    if (primer.getBlockState(xCoord, y + 3, zCoord).getBlock() instanceof BlockRockRaw && rng.nextDouble() < 0.5D)
+                                    if (primer.getBlockState(xCoord, y + 3, zCoord).getBlock() instanceof BlockRockRaw && rng.nextDouble() < 0.07D)
                                     {
                                         BlockRockRaw rockBlock = (BlockRockRaw) primer.getBlockState(xCoord, y + 3, zCoord).getBlock();
                                         primer.setBlockState(xCoord, y + 2, zCoord, BlockRockVariant.get(rockBlock.getRock(), Rock.Type.SPIKE).getDefaultState().withProperty(BlockRockSpike.BASE, true).withProperty(BlockRockSpike.CEILING, true));
                                         primer.setBlockState(xCoord, y + 1, zCoord, BlockRockVariant.get(rockBlock.getRock(), Rock.Type.SPIKE).getDefaultState().withProperty(BlockRockSpike.BASE, false).withProperty(BlockRockSpike.CEILING, true));
                                     }
-                                    else if (primer.getBlockState(xCoord, y - 1, zCoord).getBlock() instanceof BlockRockRaw && rng.nextDouble() < 0.5D)
+                                    else if (primer.getBlockState(xCoord, y - 1, zCoord).getBlock() instanceof BlockRockRaw && rng.nextDouble() < 0.07D)
                                     {
                                         BlockRockRaw rockBlock = (BlockRockRaw) primer.getBlockState(xCoord, y - 1, zCoord).getBlock();
                                         primer.setBlockState(xCoord, y, zCoord, BlockRockVariant.get(rockBlock.getRock(), Rock.Type.SPIKE).getDefaultState().withProperty(BlockRockSpike.BASE, true).withProperty(BlockRockSpike.CEILING, false));
@@ -259,6 +259,7 @@ public class MapGenCavesTFC extends MapGenBase
                                 }
                             }
                         }
+
                     }
                 }
                 if (onlyOne) break;
