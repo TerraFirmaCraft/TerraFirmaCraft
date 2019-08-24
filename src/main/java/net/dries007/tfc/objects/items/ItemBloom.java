@@ -67,9 +67,7 @@ public class ItemBloom extends ItemTFC implements IMetalObject
         IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
         if (cap instanceof IForgeableMeasurable)
         {
-            int amount = ((IForgeableMeasurable) cap).getMetalAmount();
-            if (amount > 100) amount = 100;
-            return amount;
+            return ((IForgeableMeasurable) cap).getMetalAmount();
         }
         return 0;
     }
@@ -77,6 +75,11 @@ public class ItemBloom extends ItemTFC implements IMetalObject
     @Override
     public boolean canMelt(ItemStack stack)
     {
+        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        if (cap instanceof IForgeableMeasurable)
+        {
+            return meltable && ((IForgeableMeasurable) cap).getMetalAmount() <= 100;
+        }
         return meltable;
     }
 
