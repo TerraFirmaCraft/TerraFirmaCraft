@@ -266,6 +266,10 @@ public class ConfigTFC
         @Config.Comment("Should the prospectors pick output to the actionbar? (the space just above the hotbar)")
         @Config.LangKey("config." + MOD_ID + ".client.propickOutputToActionBar")
         public boolean propickOutputToActionBar = true;
+
+        @Config.Comment("The color to render on top of rotten food. Express as a 265 bit color value: 0xFFFFFF = white, 0x000000 = black")
+        @Config.LangKey("config." + MOD_ID + ".client.rottenFoodOverlayColor")
+        public int rottenFoodOverlayColor = 0x88CC33;
     }
 
     public static class WorldCFG
