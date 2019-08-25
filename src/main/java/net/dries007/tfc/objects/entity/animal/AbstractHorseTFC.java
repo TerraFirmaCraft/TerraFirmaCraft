@@ -331,6 +331,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     public void fall(float distance, float damageMultiplier)
     {
         if (distance > 1.0F)
@@ -1032,6 +1033,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         if (!blockIn.getDefaultState().getMaterial().isLiquid())

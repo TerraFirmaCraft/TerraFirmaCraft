@@ -24,6 +24,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -276,12 +277,12 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
 
     public boolean tryLight()
     {
-        if (hasFuel() && isValid())
+        if (hasFuel() && isValid() && !isLit())
         {
-            BlockPos above = pos.add(0, 1, 0);
+            BlockPos above = pos.up();
             if (Blocks.FIRE.canPlaceBlockAt(world, above))
             {
-                for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL)
+                for (EnumFacing facing : EnumFacing.HORIZONTALS)
                 {
                     if (!world.isSideSolid(pos.offset(facing), facing.getOpposite()))
                     {
@@ -291,6 +292,17 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 burnTicksToGo = ConfigTFC.GENERAL.pitKilnTime;
                 updateBlock();
                 world.setBlockState(above, Blocks.FIRE.getDefaultState());
+                //Light other adjacent pit kilns
+                Vec3i[] diagonals = {new Vec3i(1, 0, 1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, -1), new Vec3i(-1, 0, -1)};
+                for (Vec3i diagonal : diagonals)
+                {
+                    BlockPos pitPos = pos.add(diagonal);
+                    TEPitKiln pitKiln = Helpers.getTE(world, pitPos, TEPitKiln.class);
+                    if (pitKiln != null)
+                    {
+                        pitKiln.tryLight();
+                    }
+                }
                 return true;
             }
         }
