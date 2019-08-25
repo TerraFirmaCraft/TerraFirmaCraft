@@ -261,6 +261,9 @@ config.tfc.client.showNBTTooltip.tooltip=Show ItemStack NBT on the tooltip when 
 config.tfc.client.propickOutputToActionBar=Prospectors Pick Output to Actionbar
 config.tfc.client.propickOutputToActionBar.tooltip=Should the prospectors pick output to the actionbar? (the space just above the hotbar)
 
+config.tfc.client.rottenFoodOverlayColor=Rotten Food Overlay Color
+config.tfc.client.rottenFoodOverlayColor.tooltip=The color to render on top of rotten food. Express as a 265 bit color value: 0xFFFFFF = white, 0x000000 = black
+
 ## World Config
 config.tfc.world=World Gen Settings
 config.tfc.world.tooltip=Various aspects of world generation
