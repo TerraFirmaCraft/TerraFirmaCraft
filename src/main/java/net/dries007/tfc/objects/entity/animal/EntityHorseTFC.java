@@ -116,6 +116,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
+    @SuppressWarnings("deprecation")
     public HorseArmorType getHorseArmorType()
     {
         HorseArmorType armor = HorseArmorType.getByItemStack(this.dataManager.get(HORSE_ARMOR_STACK)); //First check the Forge armor DataParameter
@@ -422,6 +423,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
     }
 
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
     private void setHorseTexturePaths()
     {
         int i = this.getHorseVariant();
