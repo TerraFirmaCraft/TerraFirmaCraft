@@ -5,51 +5,52 @@
 
 package net.dries007.tfc.api.capability.skill;
 
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-import gnu.trove.map.TObjectIntMap;
-import gnu.trove.map.hash.TObjectIntHashMap;
-
-public class PlayerSkillsHandler implements IPlayerSkills, ICapabilitySerializable<NBTTagCompound>
+public class PlayerSkillsHandler implements ICapabilitySerializable<NBTTagCompound>, IPlayerSkills
 {
-    private final TObjectIntMap<String> skillValues;
+    private final Map<String, Skill> skills;
+    private final EntityPlayer player;
 
     private ChiselMode chiselMode = ChiselMode.SMOOTH;
 
-    public PlayerSkillsHandler()
+    public PlayerSkillsHandler(EntityPlayer player)
     {
-        this(null);
-    }
-
-    public PlayerSkillsHandler(@Nullable NBTTagCompound nbt)
-    {
-        this.skillValues = new TObjectIntHashMap<>();
-
-        deserializeNBT(nbt);
+        this.skills = SkillType.createSkillMap(this);
+        this.player = player;
     }
 
     @Override
-    public int getSkill(ISkill instance)
+    public NBTTagCompound serializeNBT()
     {
-        return skillValues.get(instance.getName());
+        NBTTagCompound nbt = new NBTTagCompound();
+        skills.forEach((k, v) -> nbt.setTag(k, v.serializeNBT()));
+        return nbt;
     }
 
     @Override
-    public void setSkill(ISkill instance, int value)
+    public void deserializeNBT(NBTTagCompound nbt)
     {
-        skillValues.put(instance.getName(), value);
+        if (nbt != null)
+        {
+            skills.forEach((k, v) -> v.deserializeNBT(nbt.getCompoundTag(k)));
+        }
     }
 
     @Override
-    public void addSkill(ISkill instance)
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public <S extends Skill> S getSkill(SkillType<S> skillType)
     {
-        skillValues.increment(instance.getName());
+        return (S) skills.get(skillType.getName());
     }
 
     @Override
@@ -79,28 +80,10 @@ public class PlayerSkillsHandler implements IPlayerSkills, ICapabilitySerializab
         return capability == CapabilityPlayerSkills.CAPABILITY ? (T) this : null;
     }
 
-    @Override
     @Nonnull
-    public NBTTagCompound serializeNBT()
-    {
-        NBTTagCompound nbt = new NBTTagCompound();
-        for (ISkill skill : CapabilityPlayerSkills.getAllSkills())
-        {
-            nbt.setInteger(skill.getName(), skillValues.get(skill.getName()));
-        }
-        return nbt;
-    }
-
     @Override
-    public void deserializeNBT(@Nullable NBTTagCompound nbt)
+    public EntityPlayer getPlayer()
     {
-        if (nbt != null)
-        {
-            skillValues.clear();
-            for (ISkill skill : CapabilityPlayerSkills.getAllSkills())
-            {
-                skillValues.put(skill.getName(), nbt.getInteger(skill.getName()));
-            }
-        }
+        return player;
     }
 }
