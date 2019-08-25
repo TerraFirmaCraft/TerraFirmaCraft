@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.network.PacketChangeChiselMode;
+import net.dries007.tfc.network.PacketCycleItemMode;
 import net.dries007.tfc.network.PacketOpenCraftingGui;
 import net.dries007.tfc.network.PacketPlaceBlockSpecial;
 
@@ -52,7 +52,7 @@ public class TFCKeybindings
         }
         if (CHANGE_CHISEL_MODE.isPressed())
         {
-            TerraFirmaCraft.getNetwork().sendToServer(new PacketChangeChiselMode());
+            TerraFirmaCraft.getNetwork().sendToServer(new PacketCycleItemMode());
         }
     }
 }
