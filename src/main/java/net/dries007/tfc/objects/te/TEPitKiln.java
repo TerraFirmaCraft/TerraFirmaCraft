@@ -24,6 +24,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -292,19 +293,14 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 updateBlock();
                 world.setBlockState(above, Blocks.FIRE.getDefaultState());
                 //Light other adjacent pit kilns
-                for (EnumFacing solidBlock : EnumFacing.HORIZONTALS)
+                Vec3i[] diagonals = {new Vec3i(1, 0, 1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, -1), new Vec3i(-1, 0, -1)};
+                for (Vec3i diagonal : diagonals)
                 {
-                    for (EnumFacing pitBlock : EnumFacing.HORIZONTALS)
+                    BlockPos pitPos = pos.add(diagonal);
+                    TEPitKiln pitKiln = Helpers.getTE(world, pitPos, TEPitKiln.class);
+                    if (pitKiln != null)
                     {
-                        BlockPos pitPos = pos.offset(solidBlock).offset(pitBlock);
-                        if (!pitPos.equals(pos))
-                        {
-                            TEPitKiln pitKiln = Helpers.getTE(world, pitPos, TEPitKiln.class);
-                            if (pitKiln != null)
-                            {
-                                pitKiln.tryLight();
-                            }
-                        }
+                        pitKiln.tryLight();
                     }
                 }
                 return true;
