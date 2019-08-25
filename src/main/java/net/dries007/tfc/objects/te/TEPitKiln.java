@@ -276,12 +276,12 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
 
     public boolean tryLight()
     {
-        if (hasFuel() && isValid())
+        if (hasFuel() && isValid() && !isLit())
         {
-            BlockPos above = pos.add(0, 1, 0);
+            BlockPos above = pos.up();
             if (Blocks.FIRE.canPlaceBlockAt(world, above))
             {
-                for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL)
+                for (EnumFacing facing : EnumFacing.HORIZONTALS)
                 {
                     if (!world.isSideSolid(pos.offset(facing), facing.getOpposite()))
                     {
@@ -291,6 +291,22 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 burnTicksToGo = ConfigTFC.GENERAL.pitKilnTime;
                 updateBlock();
                 world.setBlockState(above, Blocks.FIRE.getDefaultState());
+                //Light other adjacent pit kilns
+                for (EnumFacing solidBlock : EnumFacing.HORIZONTALS)
+                {
+                    for (EnumFacing pitBlock : EnumFacing.HORIZONTALS)
+                    {
+                        BlockPos pitPos = pos.offset(solidBlock).offset(pitBlock);
+                        if (!pitPos.equals(pos))
+                        {
+                            TEPitKiln pitKiln = Helpers.getTE(world, pitPos, TEPitKiln.class);
+                            if (pitKiln != null)
+                            {
+                                pitKiln.tryLight();
+                            }
+                        }
+                    }
+                }
                 return true;
             }
         }
