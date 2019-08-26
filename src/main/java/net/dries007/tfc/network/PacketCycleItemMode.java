@@ -29,6 +29,7 @@ public class PacketCycleItemMode implements IMessageEmpty
                         {
                             IPlayerSkills.ChiselMode mode = capability.getChiselMode();
                             capability.setChiselMode(mode.getNextMode());
+                            capability.updateAndSync();
                         }
                     }
 

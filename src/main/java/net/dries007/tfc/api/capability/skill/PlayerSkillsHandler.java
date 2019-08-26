@@ -10,10 +10,15 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.network.PacketSkillsUpdate;
 
 public class PlayerSkillsHandler implements ICapabilitySerializable<NBTTagCompound>, IPlayerSkills
 {
@@ -33,6 +38,7 @@ public class PlayerSkillsHandler implements ICapabilitySerializable<NBTTagCompou
     {
         NBTTagCompound nbt = new NBTTagCompound();
         skills.forEach((k, v) -> nbt.setTag(k, v.serializeNBT()));
+        nbt.setTag("chiselMode", new NBTTagByte((byte) chiselMode.ordinal()));
         return nbt;
     }
 
@@ -43,6 +49,7 @@ public class PlayerSkillsHandler implements ICapabilitySerializable<NBTTagCompou
         {
             skills.forEach((k, v) -> v.deserializeNBT(nbt.getCompoundTag(k)));
         }
+        chiselMode = ChiselMode.values()[nbt.getByte("chiselMode")];
     }
 
     @Override
@@ -85,5 +92,13 @@ public class PlayerSkillsHandler implements ICapabilitySerializable<NBTTagCompou
     public EntityPlayer getPlayer()
     {
         return player;
+    }
+
+    public void updateAndSync()
+    {
+        if (getPlayer() instanceof EntityPlayerMP)
+        {
+            TerraFirmaCraft.getNetwork().sendTo(new PacketSkillsUpdate(serializeNBT()), (EntityPlayerMP) getPlayer());
+        }
     }
 }

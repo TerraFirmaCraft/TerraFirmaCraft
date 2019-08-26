@@ -7,12 +7,8 @@ package net.dries007.tfc.api.capability.skill;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
-
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.network.PacketSkillsUpdate;
 
 /**
  * A wrapper interface for a single skill. The individual skill class should have methods to add skill
@@ -21,7 +17,7 @@ import net.dries007.tfc.network.PacketSkillsUpdate;
  */
 public abstract class Skill implements INBTSerializable<NBTTagCompound>
 {
-    private final IPlayerSkills rootSkills;
+    protected final IPlayerSkills rootSkills;
 
     public Skill(IPlayerSkills rootSkills)
     {
@@ -41,15 +37,4 @@ public abstract class Skill implements INBTSerializable<NBTTagCompound>
      * @return the current level of the skill
      */
     public abstract float getLevel();
-
-    /**
-     * Subclasses should call this when the skill updates
-     */
-    protected void updateAndSync()
-    {
-        if (rootSkills.getPlayer() instanceof EntityPlayerMP)
-        {
-            TerraFirmaCraft.getNetwork().sendTo(new PacketSkillsUpdate(rootSkills.serializeNBT()), (EntityPlayerMP) rootSkills.getPlayer());
-        }
-    }
 }

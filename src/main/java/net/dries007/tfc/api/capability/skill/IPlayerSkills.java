@@ -53,4 +53,9 @@ public interface IPlayerSkills extends INBTSerializable<NBTTagCompound>
             return ChiselMode.values()[(this.ordinal() + 1) % ChiselMode.values().length];
         }
     }
+
+    /**
+     * Skills should call this when the skill updates
+     */
+    void updateAndSync();
 }
