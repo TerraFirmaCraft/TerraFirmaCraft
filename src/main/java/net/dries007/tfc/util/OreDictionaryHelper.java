@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.util;
 
-import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 
 import com.google.common.base.CaseFormat;
@@ -14,9 +13,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
-import org.apache.commons.lang3.ArrayUtils;
 import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -87,11 +84,6 @@ public class OreDictionaryHelper
         MAP.clear(); // No need to keep this stuff around
     }
 
-    public static Predicate<EntityItem> createPredicateItemEntity(String... names)
-    {
-        return input -> input.isEntityAlive() && createPredicateStack(names).test(input.getItem());
-    }
-
     /**
      * Checks if an ItemStack has an OreDictionary entry that matches 'name'.
      */
@@ -109,40 +101,6 @@ public class OreDictionaryHelper
             if (id == needle) return true;
         }
         return false;
-    }
-
-    /**
-     * Checks is an ItemStack has ore names, which have a certain prefix
-     * used to search for all 'ingots' / all 'plates' etc.
-     */
-    public static boolean doesStackMatchOrePrefix(@Nonnull ItemStack stack, String prefix)
-    {
-        if (stack.isEmpty()) return false;
-        int[] ids = OreDictionary.getOreIDs(stack);
-        for (int id : ids)
-        {
-            String oreName = OreDictionary.getOreName(id);
-            if (oreName.length() >= prefix.length())
-            {
-                if (oreName.substring(0, prefix.length()).equals(prefix))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private static Predicate<ItemStack> createPredicateStack(String... names)
-    {
-        return input -> {
-            if (input.isEmpty()) return false;
-            int[] ids = OreDictionary.getOreIDs(input);
-            for (String name : names)
-                if (ArrayUtils.contains(ids, OreDictionary.getOreID(name)))
-                    return true;
-            return false;
-        };
     }
 
     private static void register(Thing thing, Object... parts)

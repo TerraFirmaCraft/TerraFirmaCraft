@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.container;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -23,6 +24,7 @@ import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemStackHandlerCallback;
 import net.dries007.tfc.util.Helpers;
 
+@ParametersAreNonnullByDefault
 public class ContainerLiquidTransfer extends ContainerItemStack implements ISlotCallback
 {
     private IItemHandlerModifiable inventory;
@@ -65,13 +67,6 @@ public class ContainerLiquidTransfer extends ContainerItemStack implements ISlot
     }
 
     @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer player)
-    {
-        IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        return heat != null && heat.isMolten() && super.canInteractWith(player);
-    }
-
-    @Override
     public void onContainerClosed(EntityPlayer player)
     {
         if (!player.getEntityWorld().isRemote)
@@ -83,6 +78,13 @@ public class ContainerLiquidTransfer extends ContainerItemStack implements ISlot
             }
         }
         super.onContainerClosed(player);
+    }
+
+    @Override
+    public boolean canInteractWith(@Nonnull EntityPlayer player)
+    {
+        IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+        return heat != null && heat.isMolten() && super.canInteractWith(player);
     }
 
     @Override

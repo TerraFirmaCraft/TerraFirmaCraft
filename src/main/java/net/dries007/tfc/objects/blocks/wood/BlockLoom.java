@@ -6,6 +6,8 @@
 package net.dries007.tfc.objects.blocks.wood;
 
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -46,11 +48,19 @@ public class BlockLoom extends BlockContainer implements IItemSize
     protected static final AxisAlignedBB LOOM_SOUTH_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.125D, 0.9375D, 1.0D, 0.5625D);
     protected static final AxisAlignedBB LOOM_NORTH_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.4375D, 0.9375D, 1.0D, 0.875D);
 
+    private static final Map<Tree, BlockLoom> MAP = new HashMap<>();
+
+    public static BlockLoom get(Tree wood)
+    {
+        return MAP.get(wood);
+    }
+
     public Tree wood;
 
     public BlockLoom(Tree wood)
     {
         super(WOOD, MapColor.AIR);
+        if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         this.wood = wood;
         setSoundType(SoundType.WOOD);
         setHarvestLevel("axe", 0);

@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.recipes.AnvilRecipe;
+import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.network.PacketAnvilUpdate;

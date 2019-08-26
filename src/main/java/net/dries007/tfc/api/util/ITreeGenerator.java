@@ -7,13 +7,15 @@ package net.dries007.tfc.api.util;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockSapling;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
 
 public interface ITreeGenerator
 {
@@ -55,19 +57,26 @@ public interface ITreeGenerator
         // Check if there is room directly upwards
         final int height = treeType.getMaxHeight();
         for (int y = 1; y <= height; y++)
-            if (!world.getBlockState(pos.up(y)).getMaterial().isReplaceable())
+        {
+            IBlockState state = world.getBlockState(pos.up(y));
+            if (!state.getMaterial().isReplaceable() && state.getMaterial() != Material.LEAVES)
+            {
                 return false;
+            }
+        }
 
         // Check if there is a solid block beneath
         if (!BlocksTFC.isSoil(world.getBlockState(pos.down())))
+        {
             return false;
+        }
 
         // Check the position for liquids, etc.
         if (world.getBlockState(pos).getMaterial().isLiquid() || !world.getBlockState(pos).getMaterial().isReplaceable())
-            if (!(world.getBlockState(pos).getBlock() instanceof BlockSapling))
-                return false;
+        {
+            return world.getBlockState(pos).getBlock() instanceof BlockSaplingTFC;
+        }
 
-        // Check if there is sufficient light level
-        return world.getLightFromNeighbors(pos) >= 7;
+        return true;
     }
 }

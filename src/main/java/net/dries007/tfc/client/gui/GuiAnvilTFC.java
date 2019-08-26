@@ -15,7 +15,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.recipes.AnvilRecipe;
+import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.client.button.GuiButtonAnvilPlan;
 import net.dries007.tfc.client.button.GuiButtonAnvilStep;
 import net.dries007.tfc.client.button.IButtonTooltip;
@@ -80,7 +80,7 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
                 if (rule != null && mouseX >= x && mouseY >= y && mouseX < x + 18 && mouseY < y + 22)
                 {
                     // Hovering over rule area
-                    drawHoveringText(Helpers.getEnumName(rule), mouseX, mouseY);
+                    drawHoveringText(I18n.format(Helpers.getEnumName(rule)), mouseX, mouseY);
                     break;
                 }
                 x += 19;
@@ -152,5 +152,4 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
         TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id));
         super.actionPerformed(button);
     }
-
 }

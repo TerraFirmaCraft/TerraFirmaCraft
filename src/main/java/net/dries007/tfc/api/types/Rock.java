@@ -30,6 +30,8 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
 {
     @GameRegistry.ObjectHolder("tfc:granite")
     public static final Rock GRANITE = Helpers.getNull();
+    @GameRegistry.ObjectHolder("tfc:basalt")
+    public static final Rock BASALT = Helpers.getNull();
 
     private final RockCategory rockCategory;
     private final ResourceLocation textureLocation;
@@ -133,7 +135,7 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
 
         Type(Material material, FallingBlockType gravType, boolean isGrass)
         {
-            // If no fall + no grass, then normal. If it can fall, then eiether fallable or fallable + connected (since grass always falls)
+            // If no fall + no grass, then normal. If it can fall, then either fallable or fallable + connected (since grass always falls)
             this(material, gravType, isGrass, (gravType == NO_FALL && !isGrass) ? BlockRockVariant::new :
                 (isGrass ? BlockRockVariantConnected::new : BlockRockVariantFallable::new));
         }

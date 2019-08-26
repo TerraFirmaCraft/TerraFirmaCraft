@@ -5,8 +5,8 @@
 
 package net.dries007.tfc.world.classic;
 
-import java.util.Collections;
 import java.util.List;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
@@ -14,9 +14,12 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.GenLayer;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class BiomeProviderTFC extends BiomeProvider
 {
     public BiomeProviderTFC(World world)
@@ -24,11 +27,15 @@ public class BiomeProviderTFC extends BiomeProvider
         super(world.getWorldInfo());
 
         if (!(world.getWorldType() instanceof WorldTypeTFC))
+        {
             throw new RuntimeException("Terrible things have gone wrong here.");
+        }
+    }
 
-        List<Biome> biomesToSpawnIn = getBiomesToSpawnIn();
-        biomesToSpawnIn.clear();
-        Collections.addAll(biomesToSpawnIn, BiomesTFC.getPlayerSpawnBiomes());
+    @Override
+    public List<Biome> getBiomesToSpawnIn()
+    {
+        return BiomesTFC.getSpawnBiomes();
     }
 
     @Override

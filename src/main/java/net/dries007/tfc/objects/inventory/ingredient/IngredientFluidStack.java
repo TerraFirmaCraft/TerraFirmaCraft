@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.inventory.ingredient;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -23,6 +24,12 @@ public class IngredientFluidStack implements IIngredient<FluidStack>
     IngredientFluidStack(@Nonnull FluidStack inputFluid)
     {
         this.inputFluid = inputFluid;
+    }
+
+    @Override
+    public NonNullList<FluidStack> getValidIngredients()
+    {
+        return NonNullList.withSize(1, inputFluid);
     }
 
     @Override

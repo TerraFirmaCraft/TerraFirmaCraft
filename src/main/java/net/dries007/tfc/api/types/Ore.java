@@ -12,6 +12,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.registries.TFCRegistries;
 
 /**
@@ -21,22 +22,52 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
 {
     private final boolean graded;
     private final Metal metal;
+    private final boolean canMelt;
+    private final double chunkChance, panChance;
 
-    public Ore(ResourceLocation name, @Nullable Metal metal)
+    /**
+     * Creates a registry object for an ore type
+     *
+     * @param name    The registry name of the ore
+     * @param metal   The metal, or null if it's a non-metal ore
+     * @param canMelt If the metal can be melted directly from the ore
+     * @param chunkChance the chance a chunk contains this ore when gold panning.
+     * @param panChance the chance to drop this ore when gold panning
+     */
+    public Ore(ResourceLocation name, @Nullable Metal metal, boolean canMelt, double chunkChance, double panChance)
     {
         this.graded = (metal != null);
         this.metal = metal;
+        this.canMelt = canMelt;
+        this.chunkChance = chunkChance;
+        this.panChance = panChance;
+
         setRegistryName(name);
+    }
+
+    public Ore(ResourceLocation name, @Nonnull ResourceLocation metal, boolean canMelt, double chunkChance, double panChance)
+    {
+        this(name, TFCRegistries.METALS.getValue(metal), canMelt, chunkChance, panChance);
     }
 
     public Ore(ResourceLocation name, @Nonnull ResourceLocation metal)
     {
-        this(name, TFCRegistries.METALS.getValue(metal));
+        this(name, TFCRegistries.METALS.getValue(metal), true, 0, 0);
+    }
+
+    public Ore(ResourceLocation name, @Nonnull ResourceLocation metal, boolean canMelt)
+    {
+        this(name, TFCRegistries.METALS.getValue(metal), canMelt, 0, 0);
+    }
+
+    public Ore(ResourceLocation name, @Nonnull ResourceLocation metal, double chunkChance, double panChance)
+    {
+        this(name, TFCRegistries.METALS.getValue(metal), true, chunkChance, panChance);
     }
 
     public Ore(ResourceLocation name)
     {
-        this(name, (Metal) null);
+        this(name, (Metal) null, false, 0, 0);
     }
 
     public boolean isGraded()
@@ -44,31 +75,60 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
         return graded;
     }
 
+    public boolean canPan()
+    {
+        return chunkChance > 0;
+    }
+
+    public double getPanChance()
+    {
+        return panChance;
+    }
+
+    public double getChunkChance()
+    {
+        return chunkChance;
+    }
+
+    @Nullable
     public Metal getMetal()
     {
         return metal;
     }
 
+    public boolean canMelt()
+    {
+        return canMelt;
+    }
+
     @Override
     public String toString()
     {
+        //noinspection ConstantConditions
         return getRegistryName().getPath();
     }
 
     public enum Grade implements IStringSerializable
     {
-        NORMAL(25), POOR(15), RICH(35);
+        NORMAL, POOR, RICH;
 
         public static Grade byMetadata(int meta)
         {
             return Grade.values()[meta];
         }
 
-        public final int smeltAmount;
-
-        Grade(int smeltAmount)
+        public int getSmeltAmount()
         {
-            this.smeltAmount = smeltAmount;
+            switch (this)
+            {
+                case POOR:
+                    return ConfigTFC.GENERAL.poorOreMetalAmount;
+                case RICH:
+                    return ConfigTFC.GENERAL.richOreMetalAmount;
+                case NORMAL:
+                default:
+                    return ConfigTFC.GENERAL.normalOreMetalAmount;
+            }
         }
 
         @Override

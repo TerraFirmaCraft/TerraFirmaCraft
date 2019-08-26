@@ -7,6 +7,7 @@ package net.dries007.tfc.network;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -38,24 +39,33 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                     final RayTraceResult rayTrace = Helpers.rayTrace(player, player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue(), 1);
                     final ItemStack stack = player.getHeldItemMainhand().isEmpty() ? player.getHeldItemOffhand() : player.getHeldItemMainhand();
 
-                    if (!stack.isEmpty() && rayTrace != null)
+                    if (rayTrace != null)
                     {
                         BlockPos pos = rayTrace.getBlockPos();
+                        EnumFacing hitFace = rayTrace.sideHit;
                         double placeReach = player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
-                        if (player.getDistanceSq(pos) <= placeReach * placeReach)
+                        if (player.getDistanceSq(pos) <= placeReach * placeReach && hitFace != null)
                         {
-                            if (world.getBlockState(pos).isNormalCube() && world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos))
+                            if (world.getBlockState(pos).getBlock() == BlocksTFC.PLACED_ITEM)
                             {
-                                world.setBlockState(pos.up(), BlocksTFC.PLACED_ITEM.getDefaultState());
-                                TEPlacedItem tile = Helpers.getTE(world, pos.up(), TEPlacedItem.class);
+                                TEPlacedItem tile = Helpers.getTE(world, pos, TEPlacedItem.class);
                                 if (tile != null)
                                 {
                                     tile.onRightClick(player, stack, rayTrace);
                                 }
                             }
-                            else if (world.getBlockState(pos).getBlock() == BlocksTFC.PLACED_ITEM)
+                            else if (world.getBlockState(pos.offset(hitFace)).getBlock() == BlocksTFC.PLACED_ITEM)
                             {
-                                TEPlacedItem tile = Helpers.getTE(world, pos, TEPlacedItem.class);
+                                TEPlacedItem tile = Helpers.getTE(world, pos.offset(hitFace), TEPlacedItem.class);
+                                if (tile != null)
+                                {
+                                    tile.onRightClick(player, stack, rayTrace);
+                                }
+                            }
+                            else if (!stack.isEmpty() && world.getBlockState(pos.offset(hitFace).down()).isSideSolid(world, pos.offset(hitFace).down(), EnumFacing.UP) && world.getBlockState(pos.offset(hitFace)).getBlock().isReplaceable(world, pos))
+                            {
+                                world.setBlockState(pos.offset(hitFace), BlocksTFC.PLACED_ITEM.getDefaultState());
+                                TEPlacedItem tile = Helpers.getTE(world, pos.offset(hitFace), TEPlacedItem.class);
                                 if (tile != null)
                                 {
                                     tile.onRightClick(player, stack, rayTrace);

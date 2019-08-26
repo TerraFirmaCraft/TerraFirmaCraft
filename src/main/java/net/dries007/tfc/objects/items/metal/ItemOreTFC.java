@@ -91,12 +91,20 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     @Override
     public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
     {
-        if (!isInCreativeTab(tab)) return;
-        if (ore.isGraded())
-            for (Ore.Grade grade : Ore.Grade.values())
-                items.add(new ItemStack(this, 1, grade.getMeta()));
-        else
-            items.add(new ItemStack(this));
+        if (isInCreativeTab(tab))
+        {
+            if (ore.isGraded())
+            {
+                for (Ore.Grade grade : Ore.Grade.values())
+                {
+                    items.add(new ItemStack(this, 1, grade.getMeta()));
+                }
+            }
+            else
+            {
+                items.add(new ItemStack(this));
+            }
+        }
     }
 
     @Nullable
@@ -107,6 +115,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     }
 
     @Override
+    @Nullable
     public Metal getMetal(ItemStack stack)
     {
         return ore.getMetal();
@@ -115,7 +124,13 @@ public class ItemOreTFC extends ItemTFC implements IMetalObject
     @Override
     public int getSmeltAmount(ItemStack stack)
     {
-        return getGradeFromStack(stack).smeltAmount;
+        return getGradeFromStack(stack).getSmeltAmount();
+    }
+
+    @Override
+    public boolean canMelt(ItemStack stack)
+    {
+        return ore.canMelt();
     }
 
     @Nonnull

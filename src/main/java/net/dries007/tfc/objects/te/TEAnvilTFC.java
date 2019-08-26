@@ -25,16 +25,16 @@ import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.api.recipes.AnvilRecipe;
 import net.dries007.tfc.api.recipes.WeldingRecipe;
+import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.network.PacketAnvilUpdate;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.dries007.tfc.util.TFCSoundEvents;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
@@ -240,7 +240,7 @@ public class TEAnvilTFC extends TEInventory
                 steps = cap.getSteps().copy();
                 workingProgress += step.getStepAmount();
                 //The line below should be changed to a "HIT" sound, not 3 hits(minecraft default)
-                world.playSound(null, pos, TFCSoundEvents.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                world.playSound(null, pos, TFCSounds.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
             }
 
             // Handle possible recipe completion
@@ -272,7 +272,7 @@ public class TEAnvilTFC extends TEInventory
 
                     }
 
-                    world.playSound(null, pos, TFCSoundEvents.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    world.playSound(null, pos, TFCSounds.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
 
                     // Reset forge stuff
                     resetFields();

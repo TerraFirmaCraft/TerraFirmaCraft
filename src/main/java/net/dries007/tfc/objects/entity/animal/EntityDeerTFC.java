@@ -22,9 +22,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.util.LootTableListTFC;
-import net.dries007.tfc.util.TFCSoundEvents;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
@@ -49,7 +49,7 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IAnimalTFC
     public EntityDeerTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(0.9F, 1.3F);
+        this.setSize(1.3F, 1.9F);
     }
 
     @Override
@@ -102,13 +102,13 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IAnimalTFC
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return TFCSoundEvents.ANIMAL_DEER_HURT;
+        return TFCSounds.ANIMAL_DEER_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return TFCSoundEvents.ANIMAL_DEER_DEATH;
+        return TFCSounds.ANIMAL_DEER_DEATH;
     }
 
     @Override
@@ -134,13 +134,13 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IAnimalTFC
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSoundEvents.ANIMAL_DEER_CRY : TFCSoundEvents.ANIMAL_DEER_SAY;
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_DEER_CRY : TFCSounds.ANIMAL_DEER_SAY;
     }
 
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTableListTFC.ANIMALS_DEER;
+        return LootTablesTFC.ANIMALS_DEER;
     }
 
     @Override

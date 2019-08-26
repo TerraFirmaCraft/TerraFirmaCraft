@@ -26,10 +26,10 @@ public interface IProxy
     @Nullable
     World getWorld(MessageContext context);
 
+    // Calendar Translation / Localization Methods
+
     @Nonnull
     String getMonthName(Month month, boolean useSeasons);
-
-    // Calendar Translation / Localization Methods
 
     @Nonnull
     String getDayName(int dayOfMonth, long totalDays);

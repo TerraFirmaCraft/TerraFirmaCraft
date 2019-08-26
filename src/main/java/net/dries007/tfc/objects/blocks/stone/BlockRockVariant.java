@@ -18,8 +18,10 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -29,14 +31,17 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
+import net.dries007.tfc.objects.items.ItemGem;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.dries007.tfc.util.TFCSoundEvents;
 
 import static net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC.WILD;
 
@@ -237,6 +242,25 @@ public class BlockRockVariant extends Block
     }
 
     @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        // call the default getDrops method in order to make sure quantityDropped
+        // and getItemDropped are still used for adding the rock drops.
+        super.getDrops(drops, world, pos, state, fortune);
+
+        // if the block is raw, then this block could also rarely drop gems
+        if (type == Rock.Type.RAW)
+        {
+            // roll must first pass the drop chance odds
+            if (RANDOM.nextDouble() < ConfigTFC.GENERAL.stoneGemDropChance)
+            {
+                // add one gem with a random grade and type to the list of drops
+                drops.add(ItemGem.get(Gem.getRandomDropGem(RANDOM), Gem.Grade.randomGrade(RANDOM), 1));
+            }
+        }
+    }
+
+    @Override
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
     {
         int beachDistance = 2;
@@ -263,10 +287,13 @@ public class BlockRockVariant extends Block
                     for (EnumFacing facing : EnumFacing.HORIZONTALS)
                     {
                         for (int i = 1; i <= beachDistance; i++)
-                            if (BlocksTFC.isFreshWater(world.getBlockState(pos.offset(facing, i))))
+                        {
+                            if (BlocksTFC.isFreshWaterOrIce(world.getBlockState(pos.offset(facing, i))))
                             {
                                 flag = true;
+                                break;
                             }
+                        }
                     }
                     return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && flag;
                 }
@@ -356,10 +383,10 @@ public class BlockRockVariant extends Block
             case CLAY_GRASS:
             case FARMLAND:
             case DRY_GRASS:
-                world.playSound(null, pos, TFCSoundEvents.DIRT_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                world.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 break;
             case COBBLE:
-                world.playSound(null, pos, TFCSoundEvents.ROCK_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                world.playSound(null, pos, TFCSounds.ROCK_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
     }
 }

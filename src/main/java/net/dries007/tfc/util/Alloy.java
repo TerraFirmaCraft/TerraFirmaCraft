@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.util;
 
-import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,13 +14,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.items.IItemHandler;
 
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
+import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.dries007.tfc.api.recipes.AlloyRecipe;
+import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.IMetalObject;
-import net.dries007.tfc.objects.fluids.FluidMetal;
+import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.fluids.properties.FluidWrapper;
+import net.dries007.tfc.objects.fluids.properties.MetalFluidWrapper;
 
 /**
  * A helper class for working with alloys
@@ -30,10 +32,9 @@ import net.dries007.tfc.objects.fluids.FluidMetal;
  */
 public class Alloy implements INBTSerializable<NBTTagCompound>
 {
-    private final Map<Metal, Double> metalMap;
+    private final Object2DoubleMap<Metal> metalMap;
     private int totalAmount;
     private int maxAmount;
-    private boolean isValid;
 
     /**
      * Constructs a new alloy. It starts with no metal content
@@ -50,69 +51,78 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
      */
     public Alloy(int maxAmount)
     {
-        this.metalMap = new HashMap<>();
+        this.metalMap = new Object2DoubleOpenHashMap<>();
         this.totalAmount = 0;
-        this.isValid = true;
         this.maxAmount = maxAmount;
-    }
-
-
-    /**
-     * Add metal to an alloy from each item in an inventory
-     * Note if the an item doesn't implement {@link IMetalObject} it will be ignored, and {@param isValid} will be set to false
-     *
-     * @param inventory an inventory to iterate through.
-     * @return the alloy, for method chaining
-     */
-    public Alloy add(@Nonnull IItemHandler inventory)
-    {
-        for (int i = 0; i < inventory.getSlots(); i++)
-        {
-            add(inventory.getStackInSlot(i));
-        }
-        return this;
     }
 
     /**
      * Adds metal to an alloy from a fluid stack
-     * Note if the fluid is not an instance of {@link net.dries007.tfc.objects.fluids.FluidMetal} then it will be ignored, and {@link Alloy#isValid} will be set to false
      *
      * @param stack a fluid stack
      * @return the alloy, for method chaining
      */
     public Alloy add(@Nonnull FluidStack stack)
     {
-        if (stack.getFluid() instanceof FluidMetal)
+        FluidWrapper wrapper = FluidsTFC.getWrapper(stack.getFluid());
+        if (wrapper instanceof MetalFluidWrapper)
         {
-            Metal metal = ((FluidMetal) stack.getFluid()).getMetal();
+            Metal metal = ((MetalFluidWrapper) wrapper).getMetal();
             add(metal, stack.amount);
-        }
-        else
-        {
-            isValid = false;
         }
         return this;
     }
 
     /**
      * Add metal to an alloy from an item stack
-     * Note if the an item doesn't implement {@link IMetalObject} it will be ignored, and {@link Alloy#isValid} will be set to false
+     * Note if the an item doesn't match a recipe it will be ignored
      *
      * @param stack an item stack
      * @return the alloy, for method chaining
      */
     public Alloy add(@Nonnull ItemStack stack)
     {
-        if (stack.isEmpty())
-            return this;
-        if (stack.getItem() instanceof IMetalObject)
+        return add(stack, Metal.Tier.TIER_VI);
+    }
+
+    /**
+     * Add metal to an alloy from an item stack
+     * Note if the an item doesn't match a heat recipe it will be ignored
+     *
+     * @param stack      an item stack
+     * @param deviceTier the tier of the device doing the heating
+     * @return the alloy, for method chaining
+     */
+    public Alloy add(@Nonnull ItemStack stack, @Nonnull Metal.Tier deviceTier)
+    {
+        if (!stack.isEmpty())
         {
-            IMetalObject m = (IMetalObject) stack.getItem();
-            add(m.getMetal(stack), m.getSmeltAmount(stack) * stack.getCount());
+            HeatRecipe recipe = HeatRecipe.get(stack, deviceTier);
+            if (recipe != null)
+            {
+                return add(stack, recipe);
+            }
         }
-        else
+        return this;
+    }
+
+    /**
+     * Add metal to an alloy from an item stack
+     *
+     * @param stack  an item stack
+     * @param recipe the recipe to use to convert the stack into fluid
+     * @return the alloy, for method chaining
+     */
+    public Alloy add(@Nonnull ItemStack stack, @Nonnull HeatRecipe recipe)
+    {
+        if (!stack.isEmpty())
         {
-            isValid = false;
+            FluidStack fluidStack = recipe.getOutputFluid(stack);
+            if (fluidStack != null)
+            {
+                fluidStack.amount *= stack.getCount();
+                add(fluidStack);
+            }
         }
         return this;
     }
@@ -157,10 +167,6 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
             }
             metalMap.merge(metal, amount, (x, y) -> x + y);
             totalAmount += amount;
-        }
-        else
-        {
-            isValid = false;
         }
         return this;
     }
@@ -254,16 +260,6 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
         return totalAmount;
     }
 
-    /**
-     * Note: this is not a check if the alloy will turn into unknown metal
-     *
-     * @return is the alloy valid (set if it was constructed via ItemStacks and one ItemStack wasn't an IMetalObject)
-     */
-    public boolean isValid()
-    {
-        return isValid;
-    }
-
     public Map<Metal, Double> getMetals()
     {
         return metalMap;
@@ -273,7 +269,6 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setBoolean("isValid", isValid);
         nbt.setInteger("maxAmount", maxAmount);
         nbt.setInteger("totalAmount", totalAmount);
         NBTTagCompound alloys = new NBTTagCompound();
@@ -292,7 +287,6 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
         if (nbt != null)
         {
             clear();
-            isValid = nbt.getBoolean("isValid");
             maxAmount = nbt.getInteger("maxAmount");
             totalAmount = nbt.getInteger("totalAmount");
 
@@ -317,7 +311,6 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     {
         metalMap.clear();
         totalAmount = 0;
-        isValid = true;
     }
 
     private boolean matchesRecipe(AlloyRecipe recipe)

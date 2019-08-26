@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.recipes.ingredients;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -18,17 +20,35 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+
+import net.dries007.tfc.objects.items.ItemsTFC;
 
 @SuppressWarnings("unused")
 public class FluidIngredient extends Ingredient
 {
+    private static ItemStack[] getValidBuckets(FluidStack fluid)
+    {
+        List<ItemStack> output = new ArrayList<>();
+        ItemStack woodenBucket = new ItemStack(ItemsTFC.WOODEN_BUCKET);
+        IFluidHandler bucketCap = woodenBucket.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        if (bucketCap != null)
+        {
+            if (bucketCap.fill(fluid, true) >= Fluid.BUCKET_VOLUME)
+            {
+                output.add(woodenBucket);
+            }
+        }
+        output.add(FluidUtil.getFilledBucket(fluid));
+        return output.toArray(new ItemStack[0]);
+    }
+
     private FluidStack fluid;
 
     public FluidIngredient(String fluidName)
     {
-
-        super(FluidUtil.getFilledBucket(new FluidStack(FluidRegistry.getFluid(fluidName), Fluid.BUCKET_VOLUME)));
+        super(getValidBuckets(new FluidStack(FluidRegistry.getFluid(fluidName), Fluid.BUCKET_VOLUME)));
         fluid = FluidRegistry.getFluidStack(fluidName, Fluid.BUCKET_VOLUME);
     }
 

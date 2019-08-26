@@ -27,6 +27,13 @@ buildscript {
 // Go Forge go!
 apply plugin: "net.minecraftforge.gradle.forge"
 
+// Load properties file, easier to manage versions of required dependencies
+file "build.properties" withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
 /**
  * Versioning rules: (Highly based on Semantic Versioning 2.0.0, https://semver.org/)
  *
@@ -40,10 +47,10 @@ apply plugin: "net.minecraftforge.gradle.forge"
  * 4. The patch version should increase if a bugfix release is required. It resets every minor version.
  * 5. No special stuff is added to the version string. Ever. No exceptions.
  *    Extra information about the build can be included in the jar manifest or some other suitable source.
- *    The version number is a sacret tool that a computer must understand and be able to compare to see what's what.
+ *    The version number is a sacred tool that a computer must understand and be able to compare to see what's what.
  *    `-SNAPSHOT` or `.rc0v14s4dffds2` communicates nothing useful.
  */
-version = "0.12.0" // To be clear, you can edit this if you are submitting a patch PR, or if you are merging a feature into master.
+version = "0.21.6" // To be clear, you can edit this if you are submitting a patch PR, or if you are merging a feature into master.
 if (System.getenv().BUILD_NUMBER != null) version += "." + System.getenv().BUILD_NUMBER
 
 group = "net.dries007.tfc" // According to java standards, as I have control over this domain. If you fork this and release your own version, change this.
@@ -61,7 +68,7 @@ ext.getChangeLog = { -> // Create a new function that gets the changelog from gi
 }
 
 minecraft { // Only change any of this with prior approval from the dev team!
-    version = "1.12.2-14.23.5.2768"
+    version = "${config.minecraft.version}-${config.forge.version}"
     runDir = "run"
     mappings = "snapshot_20180814"
 }
@@ -69,11 +76,26 @@ minecraft { // Only change any of this with prior approval from the dev team!
 repositories {
     // Repositories required for dependencies, not ForgeGradle go here.
     mavenCentral()
+    maven {
+        name = "CraftTweaker Maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+    // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
 }
+
+String mcVersion = config.minecraft.version
+String shortVersion = mcVersion.substring(0, mcVersion.lastIndexOf('.'))
+String strippedVersion = shortVersion.replace(".", "") + "0"
 
 dependencies {
     // Mod dependencies go here.
     // Do not add dependencies without prior approval from the dev team. You can update existing ones.
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
+    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
 }
 
 processResources {

@@ -7,20 +7,13 @@ package net.dries007.tfc.util.calendar;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
 import net.minecraftforge.event.CommandEvent;
-import net.minecraftforge.event.GameRuleChangeEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.network.PacketCalendarUpdate;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -46,17 +39,6 @@ public class CalendarEventHandler
         if (event.phase == TickEvent.Phase.START && !Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().player != null)
         {
             CalendarTFC.INSTANCE.setTotalTime(Minecraft.getMinecraft().world.getTotalWorldTime());
-        }
-    }
-
-    @SubscribeEvent
-    public static void onGameRuleChange(GameRuleChangeEvent event)
-    {
-        // This is only called on server, so it needs to sync to client
-        GameRules rules = event.getRules();
-        if ("doDaylightCycle".equals(event.getRuleName()))
-        {
-            CalendarTFC.INSTANCE.setDoDaylightCycle(event.getServer().getEntityWorld(), rules.getBoolean("doDaylightCycle"));
         }
     }
 
@@ -88,17 +70,4 @@ public class CalendarEventHandler
         CalendarTFC.INSTANCE.setPlayerTime(event.getEntityPlayer().getEntityWorld(), newPlayerTime);
     }
 
-    @SubscribeEvent
-    public static void onWorldLoad(WorldEvent.Load event)
-    {
-        // Calendar Sync / Initialization
-        final World world = event.getWorld();
-        if (world.provider.getDimension() == 0 && !world.isRemote)
-        {
-            // Load calendar from world data
-            CalendarWorldData data = CalendarWorldData.get(world);
-            CalendarTFC.INSTANCE.reset(data.instance);
-            TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalendarTFC.INSTANCE));
-        }
-    }
 }

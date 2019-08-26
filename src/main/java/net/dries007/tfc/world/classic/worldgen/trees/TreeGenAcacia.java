@@ -25,6 +25,7 @@ import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.api.util.ITreeGenerator;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
 import net.dries007.tfc.world.classic.StructureHelper;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
@@ -100,7 +101,7 @@ public class TreeGenAcacia implements ITreeGenerator
 
     private void placeLog(World world, BlockPos pos, boolean useBark)
     {
-        if (world.getBlockState(pos).getMaterial().isReplaceable() || world.getBlockState(pos).getBlock() instanceof BlockLeavesTFC)
+        if (world.getBlockState(pos).getMaterial().isReplaceable() || world.getBlockState(pos).getBlock() instanceof BlockSaplingTFC || world.getBlockState(pos).getBlock() instanceof BlockLeavesTFC)
             world.setBlockState(pos, useBark ? bark : trunk);
     }
 }

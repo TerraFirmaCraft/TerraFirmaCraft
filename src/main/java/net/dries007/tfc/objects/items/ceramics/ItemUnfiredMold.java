@@ -9,7 +9,7 @@ import java.util.EnumMap;
 
 import net.dries007.tfc.api.types.Metal;
 
-public class ItemUnfiredMold extends ItemUnfiredPottery
+public class ItemUnfiredMold extends ItemPottery
 {
     private static final EnumMap<Metal.ItemType, ItemUnfiredMold> MAP = new EnumMap<>(Metal.ItemType.class);
 
@@ -20,10 +20,12 @@ public class ItemUnfiredMold extends ItemUnfiredPottery
 
     public final Metal.ItemType type;
 
-    public ItemUnfiredMold(ItemFiredPottery firedVersion, Metal.ItemType type)
+    public ItemUnfiredMold(Metal.ItemType type)
     {
-        super(firedVersion);
         this.type = type;
-        if (MAP.put(type, this) != null) throw new IllegalStateException("There can only be one.");
+        if (MAP.put(type, this) != null)
+        {
+            throw new IllegalStateException("There can only be one.");
+        }
     }
 }

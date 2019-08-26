@@ -75,6 +75,20 @@ public class BlockLogTFC extends BlockLog implements IItemSize
 
     @SuppressWarnings("deprecation")
     @Override
+    public boolean isFullBlock(IBlockState state)
+    {
+        return !state.getValue(SMALL);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public int getLightOpacity(IBlockState state)
+    {
+        return state.getValue(SMALL) ? 0 : 255;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
     public boolean isFullCube(IBlockState state)
     {
         return !state.getValue(SMALL);

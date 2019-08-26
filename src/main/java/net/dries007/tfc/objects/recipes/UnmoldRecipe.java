@@ -17,6 +17,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.crafting.IRecipeFactory;
@@ -29,6 +30,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 
@@ -40,6 +42,7 @@ import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_
 public class UnmoldRecipe extends ShapelessOreRecipe
 {
     private Metal.ItemType type;
+    /* This is return chance, not break chance */
     private float chance;
 
     private UnmoldRecipe(ResourceLocation group, NonNullList<Ingredient> input, @Nonnull Metal.ItemType type, float chance)
@@ -62,14 +65,18 @@ public class UnmoldRecipe extends ShapelessOreRecipe
                 if (stack.getItem() instanceof ItemMold)
                 {
                     // No need to check for the mold, as it has already been checked earlier
-                    if (Constants.RNG.nextFloat() <= chance)
+                    EntityPlayer player = ForgeHooks.getCraftingPlayer();
+                    if (!player.world.isRemote)
                     {
-                        EntityPlayer player = ForgeHooks.getCraftingPlayer();
-                        if (!player.world.isRemote)
+                        if (Constants.RNG.nextFloat() <= chance)
                         {
                             // This can't use the remaining items, because vanilla doesn't sync them on crafting, thus it gives a desync error
                             // To fix: ContainerWorkbench#onCraftMatrixChanged needs to call Container#detectAndSendChanges
                             ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(stack.getItem()));
+                        }
+                        else
+                        {
+                            player.world.playSound(null, player.getPosition(), TFCSounds.CERAMIC_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
                         }
                     }
                 }
@@ -86,7 +93,7 @@ public class UnmoldRecipe extends ShapelessOreRecipe
 
     @Override
     @Nonnull
-    public ItemStack getRecipeOutput() { return ItemStack.EMPTY; }
+    public ItemStack getRecipeOutput() { return new ItemStack(ItemMetal.get(Metal.WROUGHT_IRON, type)); } //Used only for showing in JEI
 
     @Override
     @Nonnull

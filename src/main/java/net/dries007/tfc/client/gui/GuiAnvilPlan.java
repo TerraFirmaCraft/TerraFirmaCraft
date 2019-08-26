@@ -20,7 +20,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.recipes.AnvilRecipe;
+import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.client.button.GuiButtonAnvilPlanIcon;
 import net.dries007.tfc.client.button.IButtonTooltip;
 import net.dries007.tfc.network.PacketGuiButton;

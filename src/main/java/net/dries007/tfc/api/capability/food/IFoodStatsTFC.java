@@ -19,11 +19,13 @@ public interface IFoodStatsTFC
 
     /**
      * Used to drink from a water source. Has an internal cooldown
+     * Attention: Simulation updates the cooldown, if you need to update the value after a simulation, use #addThirst
      *
-     * @param value the amount to drink = the value to increase thirst by
+     * @param value    the amount to drink = the value to increase thirst by
+     * @param simulate determines if this is a simulated drink (eg: the thirst value is not updated, but still checks if this attempt would happen)
      * @return true if the player was able to drink (cooldown + not already full)
      */
-    boolean attemptDrink(float value);
+    boolean attemptDrink(float value, boolean simulate);
 
     /**
      * Used to directly add thirst, i.e. from an external source like a water bottle

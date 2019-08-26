@@ -9,20 +9,19 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
-import net.dries007.tfc.world.classic.biomes.BiomeTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerBiomeTFC extends GenLayerTFC
 {
-    private final BiomeTFC[] biomes;
+    private final Biome[] biomes;
 
     public GenLayerBiomeTFC(long seed, GenLayer parent)
     {
         super(seed);
         this.parent = parent;
 
-        biomes = BiomesTFC.getOverworldGenerateBiomes();
+        biomes = BiomesTFC.getWorldGenBiomes().toArray(new Biome[0]);
     }
 
     @Override

@@ -26,9 +26,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.IEgg;
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
-import net.dries007.tfc.util.LootTableListTFC;
-import net.dries007.tfc.util.TFCSoundEvents;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
@@ -42,6 +42,7 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
         int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
+
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;
     public float destPos;
@@ -73,7 +74,7 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
         super.onLivingUpdate();
         if (this.getGender() == Gender.MALE && !this.world.isRemote && !this.isChild() && CalendarTFC.CALENDAR_TIME.getHourOfDay() == 6 && CalendarTFC.CALENDAR_TIME.getMinuteOfHour() == 0)
         {
-            this.world.playSound(null, this.getPosition(), TFCSoundEvents.ANIMAL_ROOSTER_CRY, SoundCategory.AMBIENT, 1.0F, 1.0F);
+            this.world.playSound(null, this.getPosition(), TFCSounds.ANIMAL_ROOSTER_CRY, SoundCategory.AMBIENT, 1.0F, 1.0F);
         }
         this.oFlap = this.wingRotation;
         this.oFlapSpeed = this.destPos;
@@ -175,7 +176,7 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTableListTFC.ANIMALS_CHICKEN;
+        return LootTablesTFC.ANIMALS_CHICKEN;
     }
 
     @Override

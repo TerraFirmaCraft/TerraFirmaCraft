@@ -68,7 +68,7 @@ public class TESRBarrel extends TileEntitySpecialRenderer<TEBarrel>
         {
             Fluid fluid = fluidStack.getFluid();
 
-            TextureAtlasSprite sprite = FluidSpriteCache.getSprite(fluid);
+            TextureAtlasSprite sprite = FluidSpriteCache.getStillSprite(fluid);
 
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();

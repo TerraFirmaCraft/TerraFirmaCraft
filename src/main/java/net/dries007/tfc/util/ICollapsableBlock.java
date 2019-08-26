@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariantFallable;
 import net.dries007.tfc.objects.blocks.wood.BlockSupport;
 
@@ -53,7 +54,7 @@ public interface ICollapsableBlock
                     {
                         //Trigger collapse!
                         block.collapseArea(worldIn, checking);
-                        worldIn.playSound(null, pos, TFCSoundEvents.ROCK_SLIDE_LONG, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                        worldIn.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG, SoundCategory.BLOCKS, 1.0F, 1.0F);
                         return; //Don't need to check other blocks
                     }
                 }
@@ -81,7 +82,7 @@ public interface ICollapsableBlock
                     Math.pow(centerPoint.getX() - cavein.getX(), 2)
                         + Math.pow(centerPoint.getY() - cavein.getY(), 2)
                         + Math.pow(centerPoint.getZ() - cavein.getZ(), 2);
-                double chance = ConfigTFC.GENERAL.propogateCollapseChance - 0.01 * Math.sqrt(distSqrd);
+                double chance = ConfigTFC.GENERAL.propagateCollapseChance - 0.01 * Math.sqrt(distSqrd);
                 if (Constants.RNG.nextDouble() < chance)
                 {
                     BlockRockVariantFallable fallingBlock = ((ICollapsableBlock) st.getBlock()).getFallingVariant();

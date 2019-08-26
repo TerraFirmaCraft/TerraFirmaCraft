@@ -126,7 +126,6 @@ public class BlockBarrel extends Block
                         {
                             FluidUtil.interactWithFluidHandler(playerIn, hand, fluidHandler);
                             te.markDirty();
-                            worldIn.notifyBlockUpdate(pos, state, state, 3);
                         }
                     }
                 }

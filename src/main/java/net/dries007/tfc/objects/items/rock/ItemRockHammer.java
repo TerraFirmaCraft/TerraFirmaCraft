@@ -21,6 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -48,6 +49,7 @@ public class ItemRockHammer extends ItemTool implements IItemSize, IRockObject
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
         setHarvestLevel("hammer", category.getToolMaterial().getHarvestLevel());
+        OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
         OreDictionaryHelper.register(this, "hammer");
         OreDictionaryHelper.register(this, "hammer", "stone");
         OreDictionaryHelper.register(this, "hammer", "stone", category);

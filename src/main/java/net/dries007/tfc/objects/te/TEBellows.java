@@ -20,10 +20,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.util.IBellowsConsumerBlock;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.network.PacketBellowsUpdate;
 import net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge;
 import net.dries007.tfc.objects.blocks.devices.BlockFirePit;
-import net.dries007.tfc.util.TFCSoundEvents;
 
 import static net.minecraft.block.BlockHorizontal.FACING;
 
@@ -83,7 +83,7 @@ public class TEBellows extends TEBase
         long time = world.getTotalWorldTime() - lastPushed;
         if (time < 20)
             return true;
-        world.playSound(null, pos, TFCSoundEvents.BELLOWS_BLOW_AIR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound(null, pos, TFCSounds.BELLOWS_BLOW_AIR, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
         if (!world.isRemote)
         {
