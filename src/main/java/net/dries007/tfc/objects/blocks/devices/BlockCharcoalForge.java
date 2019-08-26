@@ -42,7 +42,6 @@ import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEBellows;
 import net.dries007.tfc.objects.te.TECharcoalForge;
-import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Multiblock;
 
@@ -255,13 +254,14 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (!worldIn.isRemote && te instanceof TEInventory)
+        TECharcoalForge te = Helpers.getTE(worldIn, pos, TECharcoalForge.class);
+        if (te != null)
         {
-            ((TEInventory) te).onBreakBlock(worldIn, pos);
+            te.onBreakBlock(worldIn, pos);
         }
-        super.harvestBlock(worldIn, player, pos, state, te, stack);
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
