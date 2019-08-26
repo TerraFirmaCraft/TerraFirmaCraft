@@ -12,7 +12,7 @@
     ],
     "inventory": {
       "model": "leaves",
-      "transform": "forge:default-item"
+      "transform": "forge:default-block"
     },
     "state": {
       "normal": {

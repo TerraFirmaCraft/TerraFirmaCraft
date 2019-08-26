@@ -7,11 +7,12 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/white_cedar"
+      "type": "forge:ore_dict",
+      "ore": "lumberWhiteCedar"
     }
   },
   "result": {
     "item": "tfc:wood/door/white_cedar",
-    "count": 7
+    "count": 2
   }
 }

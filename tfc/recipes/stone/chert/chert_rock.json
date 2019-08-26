@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:cobble/chert"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/chert",
+    "count": 4
+  }
+}

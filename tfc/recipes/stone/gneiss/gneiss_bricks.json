@@ -1,10 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XX",
-    "XX"
+    "XOX",
+    "OXO",
+    "XOX"
   ],
   "key": {
+    "O": {
+      "item": "tfc:mortar"
+    },
     "X": {
       "item": "tfc:brick/gneiss"
     }

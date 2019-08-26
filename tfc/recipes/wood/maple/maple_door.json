@@ -7,11 +7,12 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/maple"
+      "type": "forge:ore_dict",
+      "ore": "lumberMaple"
     }
   },
   "result": {
     "item": "tfc:wood/door/maple",
-    "count": 7
+    "count": 2
   }
 }

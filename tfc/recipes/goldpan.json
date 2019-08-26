@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:ceramics/fired/bowl"
+    }
+  ],
+  "result": {
+    "item": "tfc:goldpan",
+    "data": 0,
+    "count": 1
+  }
+}

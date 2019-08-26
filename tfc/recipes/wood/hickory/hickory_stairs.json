@@ -7,11 +7,11 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/acacia"
+      "item": "tfc:wood/planks/hickory"
     }
   },
   "result": {
-    "item": "tfc:stairs/wood/acacia",
+    "item": "tfc:stairs/wood/hickory",
     "count": 8
   }
 }

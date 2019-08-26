@@ -7,7 +7,7 @@
   "key": {
     "S": {
       "type": "forge:ore_dict",
-      "ore": "planksWood"
+      "ore": "plankWoodOak"
     }
   },
   "result": {
