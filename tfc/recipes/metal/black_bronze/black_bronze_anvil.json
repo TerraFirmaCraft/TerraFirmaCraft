@@ -8,7 +8,7 @@
   "key": {
     "X": {
       "type": "forge:ore_dict",
-      "ore": "doubleIngotBlackBronze"
+      "ore": "ingotDoubleBlackBronze"
     }
   },
   "result": {
