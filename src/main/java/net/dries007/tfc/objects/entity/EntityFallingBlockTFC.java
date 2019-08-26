@@ -145,7 +145,7 @@ public class EntityFallingBlockTFC extends Entity
             setDead();
 
             //world.mayPlace(block, pos, true, EnumFacing.UP, null) &&
-            if (!falling.canFallThrough(world.getBlockState(pos.down())))
+            if (!falling.canFallThrough(world, pos.down()))
             {
                 world.destroyBlock(pos, true);
                 world.setBlockState(pos, state, 3);
