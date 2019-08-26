@@ -136,13 +136,6 @@ public class EntityFallingBlockTFC extends Entity
         {
             final IBlockState current = world.getBlockState(pos);
 
-//                if (world.isAirBlock(new BlockPos(posX, posY - 0.009999999776482582D, posZ))) // todo: is a forge fix, what does it do?
-            if (falling.canFallThrough(world.getBlockState(new BlockPos(posX, posY - 0.009999999776482582D, posZ))))
-            {
-                onGround = false;
-                return;
-            }
-
             motionX *= 0.699999988079071D;
             motionZ *= 0.699999988079071D;
             motionY *= -0.5D;
