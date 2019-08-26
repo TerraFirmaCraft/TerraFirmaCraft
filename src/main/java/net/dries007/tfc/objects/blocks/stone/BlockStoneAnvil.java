@@ -41,7 +41,6 @@ import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
-import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
@@ -245,12 +244,14 @@ public class BlockStoneAnvil extends Block implements IRockObject
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (!worldIn.isRemote && te instanceof TEInventory)
+        TEAnvilTFC te = Helpers.getTE(worldIn, pos, TEAnvilTFC.class);
+        if (te != null)
         {
-            ((TEInventory) te).onBreakBlock(worldIn, pos);
+            te.onBreakBlock(worldIn, pos);
         }
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
