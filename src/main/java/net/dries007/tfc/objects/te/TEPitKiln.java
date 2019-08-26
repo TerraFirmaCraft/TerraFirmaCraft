@@ -98,6 +98,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
     private final NonNullList<ItemStack> logItems = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> strawItems = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
     private int burnTicksToGo;
+    public static final Vec3i[] DIAGONALS = new Vec3i[] {new Vec3i(1, 0, 1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, -1), new Vec3i(-1, 0, -1)};
 
     @Override
     public void update()
@@ -293,8 +294,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 updateBlock();
                 world.setBlockState(above, Blocks.FIRE.getDefaultState());
                 //Light other adjacent pit kilns
-                Vec3i[] diagonals = {new Vec3i(1, 0, 1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, -1), new Vec3i(-1, 0, -1)};
-                for (Vec3i diagonal : diagonals)
+                for (Vec3i diagonal : DIAGONALS)
                 {
                     BlockPos pitPos = pos.add(diagonal);
                     TEPitKiln pitKiln = Helpers.getTE(world, pitPos, TEPitKiln.class);
