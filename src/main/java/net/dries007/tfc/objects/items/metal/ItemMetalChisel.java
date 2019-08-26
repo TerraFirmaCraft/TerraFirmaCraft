@@ -2,6 +2,7 @@ package net.dries007.tfc.objects.items.metal;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,7 +43,7 @@ public class ItemMetalChisel extends ItemMetalTool
 
         if (capability != null)
         {
-            IBlockState newState = null;
+            Block newBlock = null;
 
             switch (capability.getChiselMode())
             {
@@ -51,8 +52,7 @@ public class ItemMetalChisel extends ItemMetalTool
                     if (BlocksTFC.isRawStone(state))
                     {
                         BlockRockRaw rawBlock = (BlockRockRaw) state.getBlock();
-                        BlockRockVariant smoothBlock = BlockRockVariant.get(rawBlock.getRock(), Rock.Type.SMOOTH);
-                        newState = smoothBlock.getDefaultState();
+                        newBlock = BlockRockVariant.get(rawBlock.getRock(), Rock.Type.SMOOTH);
                     }
                 }
                 break;
@@ -64,8 +64,7 @@ public class ItemMetalChisel extends ItemMetalTool
                         Rock.Type type = oldBlock.getType();
                         if (type == Rock.Type.SMOOTH || type == Rock.Type.COBBLE || type == Rock.Type.BRICKS)
                         {
-                            BlockSlabTFC.Half newBlock = BlockSlabTFC.Half.get(oldBlock.getRock(), type);
-                            newState = newBlock.getDefaultState().withProperty(HALF, (hitY < 0.5) ? TOP : BOTTOM);
+                            newBlock = BlockSlabTFC.Half.get(oldBlock.getRock(), type);
                         }
                     }
                 }
@@ -78,31 +77,31 @@ public class ItemMetalChisel extends ItemMetalTool
                         Rock.Type type = oldBlock.getType();
                         if (type == Rock.Type.SMOOTH || type == Rock.Type.COBBLE || type == Rock.Type.BRICKS)
                         {
-                            BlockStairsTFC newBlock = BlockStairsTFC.get(oldBlock.getRock(), type);
-                            newState = newBlock.getDefaultState();
+                            newBlock = BlockStairsTFC.get(oldBlock.getRock(), type);
                         }
                     }
                 }
                 break;
             }
 
-            if (newState != null)
+            if (newBlock != null)
             {
                 // play a sound matching the new block
-                SoundType soundType = newState.getBlock().getSoundType(state, worldIn, pos, player);
+                SoundType soundType = newBlock.getSoundType(state, worldIn, pos, player);
                 worldIn.playSound(player, pos, soundType.getHitSound(), SoundCategory.BLOCKS, 1.0f, soundType.getPitch());
 
                 if (!worldIn.isRemote)
                 {
+                    // get the placement state
+                    if (facing.getAxis().getPlane() != EnumFacing.Plane.VERTICAL)
+                        hitY = 1 - hitY;
+                    IBlockState newState = newBlock.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, 0, player);
+
                     // replace the block with a new block
                     worldIn.setBlockState(pos, newState, 3);
 
                     // reduce durability by 1
                     player.getHeldItem(hand).damageItem(1, player);
-                }
-                else
-                {
-
                 }
 
                 return EnumActionResult.SUCCESS;
