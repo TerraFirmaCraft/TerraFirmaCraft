@@ -34,7 +34,9 @@ public class BlockTrapDoorWoodTFC extends BlockTrapDoor
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         setHardness(0.5F);
         setSoundType(SoundType.WOOD);
-        OreDictionaryHelper.register(this, "wood", "trapdoor");
+        OreDictionaryHelper.register(this, "trapdoor", "wood");
+        //noinspection ConstantConditions
+        OreDictionaryHelper.register(this, "trapdoor", "wood", wood.getRegistryName().getPath());
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 }

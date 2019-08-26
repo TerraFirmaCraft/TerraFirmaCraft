@@ -43,12 +43,17 @@ public class ItemGem extends ItemTFC
         if (MAP.put(gem, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
         setHasSubtypes(true);
-        OreDictionaryHelper.register(this, "gem");
-        OreDictionaryHelper.register(this, "gem", gem);
         for (Gem.Grade grade : Gem.Grade.values())
         {
-            OreDictionaryHelper.registerMeta(this, grade.ordinal(), "gem", gem, grade);
-            OreDictionaryHelper.registerMeta(this, grade.ordinal(), "gem", grade);
+            if (grade == Gem.Grade.NORMAL)
+            {
+                OreDictionaryHelper.registerMeta(this, grade.ordinal(), "gem", gem);
+            }
+            else
+            {
+                OreDictionaryHelper.registerMeta(this, grade.ordinal(), "gem", grade, gem);
+            }
+
         }
     }
 

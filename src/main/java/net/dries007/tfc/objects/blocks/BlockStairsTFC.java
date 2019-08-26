@@ -43,6 +43,7 @@ public class BlockStairsTFC extends BlockStairs
         ROCK_TABLE.get(rock).put(type, this);
 
         Block baseBlock = BlockRockVariant.get(rock, type);
+        //noinspection ConstantConditions
         setHarvestLevel(baseBlock.getHarvestTool(baseBlock.getDefaultState()), baseBlock.getHarvestLevel(baseBlock.getDefaultState()));
         OreDictionaryHelper.register(this, "stair");
         OreDictionaryHelper.registerRockType(this, type, rock, "stair");
@@ -57,6 +58,7 @@ public class BlockStairsTFC extends BlockStairs
         }
 
         Block baseBlock = BlockPlanksTFC.get(wood);
+        //noinspection ConstantConditions
         setHarvestLevel(baseBlock.getHarvestTool(baseBlock.getDefaultState()), baseBlock.getHarvestLevel(baseBlock.getDefaultState()));
 
         OreDictionaryHelper.register(this, "stair");

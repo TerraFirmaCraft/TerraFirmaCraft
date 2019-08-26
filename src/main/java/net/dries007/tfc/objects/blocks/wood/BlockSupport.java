@@ -142,7 +142,6 @@ public class BlockSupport extends Block
         this.wood = wood;
         OreDictionaryHelper.register(this, "support");
         //noinspection ConstantConditions
-        OreDictionaryHelper.register(this, "support", wood.getRegistryName().getPath());
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
