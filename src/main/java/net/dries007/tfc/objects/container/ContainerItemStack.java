@@ -130,12 +130,6 @@ public abstract class ContainerItemStack extends Container
         super.onContainerClosed(player);
     }
 
-    @Override
-    public boolean canInteractWith(EntityPlayer playerIn)
-    {
-        return true;
-    }
-
     protected abstract void addContainerSlots();
 
     @Override
