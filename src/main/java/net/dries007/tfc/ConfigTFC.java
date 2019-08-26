@@ -242,6 +242,14 @@ public class ConfigTFC
         @Config.Comment("Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?")
         @Config.LangKey("config." + MOD_ID + ".general.peacefulDifficultyPassiveRegeneration")
         public boolean peacefulDifficultyPassiveRegeneration = false;
+
+        @Config.Comment("If true, hammer must be in offhand for chisel use. If false, hammer can be in offhand or toolbar.")
+        @Config.LangKey("config." + MOD_ID + ".general.requireHammerInOffHand")
+        public boolean requireHammerInOffHand = true;
+
+        @Config.Comment("Does the chisel have a delay on use?")
+        @Config.LangKey("config." + MOD_ID + ".general.chiselDelay")
+        public boolean chiselDelay = false;
     }
 
     public static class ClientCFG

@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.capability.skill.IPlayerSkills;
 import net.dries007.tfc.api.types.Metal;
@@ -36,6 +37,8 @@ public class ItemMetalChisel extends ItemMetalTool
 {
     private static final int[] STAIR_PATTERN_INDICES = {0, 3, 4, 6, 7, 8};
     private static final int[] SLAB_PATTERN_INDICES = {0, 1, 2};
+
+    private static final int COOLDOWN = 10;
 
     public ItemMetalChisel(Metal metal, Metal.ItemType type)
     {
@@ -61,7 +64,7 @@ public class ItemMetalChisel extends ItemMetalTool
         // if the capability for chisel modes is gone there's nothing the chisel can do.
         if (capability == null)
             return EnumActionResult.FAIL;
-        
+
         Block newBlock = null;
         int metadataPtr[] = new int[] {0};
 
@@ -113,8 +116,10 @@ public class ItemMetalChisel extends ItemMetalTool
             // replace the block with a new block
             worldIn.setBlockState(pos, newState, 3);
 
-            // reduce durability by 1
+            // use tool
             player.getHeldItem(hand).damageItem(1, player);
+            if (ConfigTFC.GENERAL.chiselDelay)
+                player.getCooldownTracker().setCooldown(this, COOLDOWN);
         }
 
         return EnumActionResult.SUCCESS;
@@ -149,11 +154,19 @@ public class ItemMetalChisel extends ItemMetalTool
 
     private static boolean hasHammerInToolbar(EntityPlayer player)
     {
-        for (int i = 0; i < 9; i++)
+        // offhand always counts as a hammer slot
+        if (OreDictionaryHelper.doesStackMatchOre(player.inventory.offHandInventory.get(0), "hammer"))
+            return true;
+
+        // config alters whether toolbar counts as a hammer slot or not.
+        if (!ConfigTFC.GENERAL.requireHammerInOffHand)
         {
-            if (OreDictionaryHelper.doesStackMatchOre(player.inventory.mainInventory.get(i), "hammer"))
+            for (int i = 0; i < 9; i++)
             {
-                return true;
+                if (OreDictionaryHelper.doesStackMatchOre(player.inventory.mainInventory.get(i), "hammer"))
+                {
+                    return true;
+                }
             }
         }
 
