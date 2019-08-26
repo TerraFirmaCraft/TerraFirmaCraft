@@ -43,6 +43,7 @@ public class ItemLumberTFC extends ItemTFC
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
         OreDictionaryHelper.register(this, "lumber");
+        //noinspection ConstantConditions
         OreDictionaryHelper.register(this, "lumber", wood.getRegistryName().getPath());
     }
 

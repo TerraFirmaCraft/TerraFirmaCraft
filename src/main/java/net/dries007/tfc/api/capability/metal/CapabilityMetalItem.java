@@ -6,6 +6,7 @@
 package net.dries007.tfc.api.capability.metal;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -34,16 +35,17 @@ public final class CapabilityMetalItem
     public static final ResourceLocation KEY = new ResourceLocation(TFCConstants.MOD_ID, "metal_object");
 
     public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_METAL_ITEMS = new HashMap<>(); //Used inside CT, set custom IMetalItem for items outside TFC
-    public static final Map<String, Metal.ItemType> ORE_DICT_METAL_ITEMS = new HashMap<>();
+    public static final Map<String, Metal.ItemType> ORE_DICT_METAL_ITEMS = new LinkedHashMap<>();
 
     public static void preInit()
     {
         CapabilityManager.INSTANCE.register(IMetalItem.class, new DumbStorage<>(), MetalItemHandler::new);
 
         //Register ore dict prefix values
-        ORE_DICT_METAL_ITEMS.put("ingot", Metal.ItemType.INGOT);
         ORE_DICT_METAL_ITEMS.put("ingotDouble", Metal.ItemType.DOUBLE_INGOT);
-        ORE_DICT_METAL_ITEMS.put("doubleIngot", Metal.ItemType.DOUBLE_INGOT);
+        ORE_DICT_METAL_ITEMS.put("ingot", Metal.ItemType.INGOT);
+        ORE_DICT_METAL_ITEMS.put("sheetDouble", Metal.ItemType.DOUBLE_SHEET);
+        ORE_DICT_METAL_ITEMS.put("sheet", Metal.ItemType.SHEET);
         ORE_DICT_METAL_ITEMS.put("scrap", Metal.ItemType.SCRAP);
         ORE_DICT_METAL_ITEMS.put("dust", Metal.ItemType.DUST);
         ORE_DICT_METAL_ITEMS.put("nugget", Metal.ItemType.NUGGET);
@@ -116,7 +118,7 @@ public final class CapabilityMetalItem
                 {
                     return new MetalItemHandler(output, amount, true);
                 }
-                //not breaking so this case can work: "ingotDouble" when there's "ingot"
+                break;
             }
         }
         return null;

@@ -40,6 +40,7 @@ public class ItemMetal extends ItemTFC implements IMetalItem
     protected final Metal metal;
     protected final Metal.ItemType type;
 
+    @SuppressWarnings("ConstantConditions")
     public ItemMetal(Metal metal, Metal.ItemType type)
     {
         this.metal = metal;
@@ -50,13 +51,35 @@ public class ItemMetal extends ItemTFC implements IMetalItem
         TABLE.get(metal).put(type, this);
 
         setNoRepair();
-        OreDictionaryHelper.register(this, type);
-        //noinspection ConstantConditions
-        OreDictionaryHelper.register(this, type, metal.getRegistryName().getPath());
-        if (metal == Metal.BRONZE || metal == Metal.BISMUTH_BRONZE || metal == Metal.BLACK_BRONZE)
+        if (type == Metal.ItemType.DOUBLE_INGOT)
         {
-            OreDictionaryHelper.register(this, type, "Any", "Bronze");
+            OreDictionaryHelper.register(this, "ingot", "double", metal.getRegistryName().getPath());
+            if (metal == Metal.BRONZE || metal == Metal.BISMUTH_BRONZE || metal == Metal.BLACK_BRONZE)
+            {
+                OreDictionaryHelper.register(this, "ingot", "double", "Any", "Bronze");
+            }
         }
+        else if (type == Metal.ItemType.DOUBLE_SHEET)
+        {
+            OreDictionaryHelper.register(this, "sheet", "double", metal.getRegistryName().getPath());
+            if (metal == Metal.BRONZE || metal == Metal.BISMUTH_BRONZE || metal == Metal.BLACK_BRONZE)
+            {
+                OreDictionaryHelper.register(this, "sheet", "double", "Any", "Bronze");
+            }
+        }
+        else if (type.isToolItem())
+        {
+            OreDictionaryHelper.register(this, type);
+        }
+        else
+        {
+            OreDictionaryHelper.register(this, type, metal.getRegistryName().getPath());
+            if (metal == Metal.BRONZE || metal == Metal.BISMUTH_BRONZE || metal == Metal.BLACK_BRONZE)
+            {
+                OreDictionaryHelper.register(this, type, "Any", "Bronze");
+            }
+        }
+
         if (type == Metal.ItemType.TUYERE)
         {
             setMaxDamage(metal.getToolMetal() != null ? (int) (metal.getToolMetal().getMaxUses() * 0.2) : 100);
