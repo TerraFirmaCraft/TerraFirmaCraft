@@ -10,7 +10,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -27,16 +26,11 @@ import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.capability.skill.IPlayerSkills;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.objects.blocks.BlockSlabTFC;
-import net.dries007.tfc.objects.blocks.BlockStairsTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockRaw;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.container.ContainerEmpty;
-
-import static net.minecraft.block.BlockSlab.EnumBlockHalf.BOTTOM;
-import static net.minecraft.block.BlockSlab.EnumBlockHalf.TOP;
-import static net.minecraft.block.BlockSlab.HALF;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class ItemMetalChisel extends ItemMetalTool
 {
@@ -52,70 +46,78 @@ public class ItemMetalChisel extends ItemMetalTool
     @Nonnull
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
+        // no chiseling if no hammer is present
+        if (!hasHammerInToolbar(player))
+            return EnumActionResult.FAIL;
+
         IBlockState state = worldIn.getBlockState(pos);
+
+        // no chiseling for raw stone that is blocked
+        if (isRawAndBlocked(worldIn, state, pos))
+            return EnumActionResult.FAIL;
+
         IPlayerSkills capability = player.getCapability(CapabilityPlayerSkills.CAPABILITY, null);
 
-        if (capability != null)
+        // if the capability for chisel modes is gone there's nothing the chisel can do.
+        if (capability == null)
+            return EnumActionResult.FAIL;
+        
+        Block newBlock = null;
+        int metadataPtr[] = new int[] {0};
+
+        switch (capability.getChiselMode())
         {
-            Block newBlock = null;
-            int metadata[] = new int[]{0};
-
-            switch (capability.getChiselMode())
+            case SMOOTH:
             {
-                case SMOOTH:
+                if (BlocksTFC.isRawStone(state))
                 {
-                    if (BlocksTFC.isRawStone(state))
-                    {
-                        BlockRockRaw rawBlock = (BlockRockRaw) state.getBlock();
-                        newBlock = BlockRockVariant.get(rawBlock.getRock(), Rock.Type.SMOOTH);
-                    }
+                    BlockRockRaw rawBlock = (BlockRockRaw) state.getBlock();
+                    newBlock = BlockRockVariant.get(rawBlock.getRock(), Rock.Type.SMOOTH);
                 }
-                break;
-                case SLAB:
-                {
-                    newBlock = findCraftingResult(worldIn, state.getBlock(), SLAB_PATTERN_INDICES, metadata);
-                    if (!(newBlock instanceof BlockSlab))
-                        newBlock = null;
-                }
-                break;
-                case STAIR:
-                {
-                    newBlock = findCraftingResult(worldIn, state.getBlock(), STAIR_PATTERN_INDICES, metadata);
-                    if (!(newBlock instanceof BlockStairs))
-                        newBlock = null;
-                }
-                break;
             }
-
-            if (newBlock != null)
+            break;
+            case SLAB:
             {
-                // play a sound matching the new block
-                SoundType soundType = newBlock.getSoundType(state, worldIn, pos, player);
-                worldIn.playSound(player, pos, soundType.getHitSound(), SoundCategory.BLOCKS, 1.0f, soundType.getPitch());
-
-                if (!worldIn.isRemote)
-                {
-                    // get the placement state
-                    if (facing.getAxis().getPlane() != EnumFacing.Plane.VERTICAL)
-                        hitY = 1 - hitY;
-                    IBlockState newState = newBlock.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, metadata[0], player);
-
-                    // replace the block with a new block
-                    worldIn.setBlockState(pos, newState, 3);
-
-                    // reduce durability by 1
-                    player.getHeldItem(hand).damageItem(1, player);
-                }
-
-                return EnumActionResult.SUCCESS;
+                newBlock = findCraftingResult(worldIn, state.getBlock(), SLAB_PATTERN_INDICES, metadataPtr);
+                if (!(newBlock instanceof BlockSlab))
+                    newBlock = null;
             }
-            else
+            break;
+            case STAIR:
             {
-                return EnumActionResult.FAIL;
+                newBlock = findCraftingResult(worldIn, state.getBlock(), STAIR_PATTERN_INDICES, metadataPtr);
+                if (!(newBlock instanceof BlockStairs))
+                    newBlock = null;
             }
+            break;
         }
 
-        return EnumActionResult.FAIL;
+        // no new block means no updates
+        if (newBlock == null)
+        {
+            return EnumActionResult.FAIL;
+        }
+
+        // play a sound matching the new block
+        SoundType soundType = newBlock.getSoundType(state, worldIn, pos, player);
+        worldIn.playSound(player, pos, soundType.getHitSound(), SoundCategory.BLOCKS, 1.0f, soundType.getPitch());
+
+        // only update the world state on the server side
+        if (!worldIn.isRemote)
+        {
+            // get the placement state
+            if (facing.getAxis().getPlane() != EnumFacing.Plane.VERTICAL)
+                hitY = 1 - hitY;
+            IBlockState newState = newBlock.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, metadataPtr[0], player);
+
+            // replace the block with a new block
+            worldIn.setBlockState(pos, newState, 3);
+
+            // reduce durability by 1
+            player.getHeldItem(hand).damageItem(1, player);
+        }
+
+        return EnumActionResult.SUCCESS;
     }
 
     @Nullable
@@ -143,5 +145,32 @@ public class ItemMetalChisel extends ItemMetalTool
             }
         }
         return null;
+    }
+
+    private static boolean hasHammerInToolbar(EntityPlayer player)
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            if (OreDictionaryHelper.doesStackMatchOre(player.inventory.mainInventory.get(i), "hammer"))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean isRawAndBlocked(World world, IBlockState state, BlockPos pos)
+    {
+        if (!BlocksTFC.isRawStone(state))
+        {
+            return false;
+        }
+
+        IBlockState above1 = world.getBlockState(pos.up(1));
+        IBlockState above2 = world.getBlockState(pos.up(2));
+
+        return BlocksTFC.isRawStone(above1) && BlocksTFC.isRawStone(above2);
+
     }
 }
