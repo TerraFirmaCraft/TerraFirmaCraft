@@ -8,13 +8,15 @@ package net.dries007.tfc.api.recipes;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
-public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
+public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe> implements IJEISimpleRecipe
 {
     @Nullable
     public static LoomRecipe get(ItemStack item)
@@ -23,20 +25,18 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
     }
 
     private IIngredient<ItemStack> inputItem;
-    private int inputAmount;
     private ItemStack outputItem;
     private int stepCount;
     private ResourceLocation inProgressTexture;
 
-    public LoomRecipe(ResourceLocation name, IIngredient<ItemStack> input, int inputAmount, ItemStack output, int stepsRequired, ResourceLocation inProgressTexture)
+    public LoomRecipe(ResourceLocation name, IIngredient<ItemStack> input, ItemStack output, int stepsRequired, ResourceLocation inProgressTexture)
     {
         this.inputItem = input;
-        this.inputAmount = inputAmount;
         this.outputItem = output;
         this.stepCount = stepsRequired;
         this.inProgressTexture = inProgressTexture;
 
-        if (inputItem == null || inputAmount == 0 || outputItem == null || stepsRequired == 0)
+        if (inputItem == null || input.getAmount() == 0 || outputItem == null || stepsRequired == 0)
         {
             throw new IllegalArgumentException("Input and output are not allowed to be empty");
         }
@@ -45,7 +45,7 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
 
     public int getInputCount()
     {
-        return inputAmount;
+        return inputItem.getAmount();
     }
 
     public int getStepCount()
@@ -61,6 +61,18 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe>
     public ResourceLocation getInProgressTexture()
     {
         return inProgressTexture;
+    }
+
+    @Override
+    public NonNullList<IIngredient<ItemStack>> getIngredients()
+    {
+        return NonNullList.withSize(1, inputItem);
+    }
+
+    @Override
+    public NonNullList<ItemStack> getOutputs()
+    {
+        return NonNullList.withSize(1, outputItem);
     }
 
     private boolean isValidInput(ItemStack inputItem)

@@ -16,6 +16,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import mcp.MethodsReturnNonnullByDefault;
@@ -37,15 +38,37 @@ public class CommandTimeTFC extends CommandBase
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "/timetfc <set|add> <year|month|day|monthlength|playerticks|ticks> <value>";
+        return "/timetfc [set|add] <<year|month|day|monthlength|playerticks> [value|calendar_start]";
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        if (args.length != 3)
+        if (args.length == 2)
         {
-            throw new WrongUsageException(getUsage(sender));
+            long time;
+            switch (args[1].toLowerCase())
+            {
+                case "tick":
+                case "ticks":
+                    time = CalendarTFC.CALENDAR_TIME.getTicks();
+                    break;
+                case "playertick":
+                case "playerticks":
+                    time = CalendarTFC.PLAYER_TIME.getTicks();
+                    break;
+                case "monthlength":
+                    time = CalendarTFC.INSTANCE.getDaysInMonth();
+                    break;
+                default:
+                    throw new WrongUsageException("Second argument must be <year|month|day|monthlength|playerticks|ticks>");
+            }
+            sender.sendMessage(new TextComponentString("Value = " + time));
+            return;
+        }
+        else if (args.length != 3)
+        {
+            throw new WrongUsageException("Requires 3 arguments: " + getUsage(sender));
         }
 
         long time = ICalendar.TICKS_IN_DAY;
@@ -70,7 +93,14 @@ public class CommandTimeTFC extends CommandBase
             case "tick":
             case "ticks":
                 // This one is different, because it needs to update the actual sun cycle
-                time = parseInt(args[2], 0, Integer.MAX_VALUE);
+                if ("calendar_start".equals(args[2].toLowerCase()))
+                {
+                    time = CalendarTFC.DEFAULT_CALENDAR_TIME_OFFSET;
+                }
+                else
+                {
+                    time = parseInt(args[2], 0, Integer.MAX_VALUE);
+                }
                 updateDaylightCycle = true;
                 break;
             case "playertick":
@@ -84,43 +114,49 @@ public class CommandTimeTFC extends CommandBase
                 sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.set_month_length", value));
                 return;
             default:
-                throw new WrongUsageException("Second argument must be <day|month|year|monthlength>");
+                throw new WrongUsageException("Second argument must be <year|month|day|monthlength|playerticks|ticks>");
         }
 
         // Parse first argument
-        if (args[0].equals("add"))
+        switch (args[0])
         {
-            time += isPlayerTime ? CalendarTFC.PLAYER_TIME.getTicks() : CalendarTFC.CALENDAR_TIME.getTicks();
-        }
-        else if (args[0].equals("set"))
-        {
-            if (isPlayerTime)
-            {
-                throw new WrongUsageException("Player time cannot be set, only incremented");
-            }
-        }
-        else
-        {
-            throw new WrongUsageException("First argument must be <add|set>");
+            case "add":
+                time += isPlayerTime ? CalendarTFC.PLAYER_TIME.getTicks() : CalendarTFC.CALENDAR_TIME.getTicks();
+                break;
+            case "set":
+                if (isPlayerTime)
+                {
+                    throw new WrongUsageException("Player time cannot be set, only incremented");
+                }
+                break;
+            default:
+                throw new WrongUsageException("First argument must be <add|set|view>");
         }
 
         // Update calendar
         if (isPlayerTime)
         {
             CalendarTFC.INSTANCE.setPlayerTime(server.getEntityWorld(), time);
+            sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.time_command_set_player_time", time));
         }
         else
         {
             CalendarTFC.INSTANCE.setCalendarTime(server.getEntityWorld(), time);
+            sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.time_command_set_calendar_time", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
         }
-        sender.sendMessage(new TextComponentTranslation("tfc.tooltip.time_command_complete"));
 
         if (updateDaylightCycle)
         {
             // Set world time (daylight cycle time)
             for (int i = 0; i < server.worlds.length; ++i)
             {
-                server.worlds[i].setWorldTime(time - CalendarTFC.WORLD_TIME_OFFSET);
+                long worldTime = time - CalendarTFC.WORLD_TIME_OFFSET;
+                while (worldTime < 0)
+                {
+                    // Should only need to run once, but just to be safe
+                    worldTime += ICalendar.TICKS_IN_DAY;
+                }
+                server.worlds[i].setWorldTime(worldTime);
             }
         }
     }

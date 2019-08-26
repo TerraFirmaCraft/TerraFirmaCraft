@@ -21,6 +21,7 @@ import net.dries007.tfc.api.util.ITreeGenerator;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
 import net.dries007.tfc.world.classic.StructureHelper;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
@@ -69,7 +70,7 @@ public class TreeGenSequoia implements ITreeGenerator
     {
         for (BlockPos p1 : OFFSETS)
         {
-            if (!BlocksTFC.isSoil(world.getBlockState(pos.add(p1))))
+            if (!BlocksTFC.isSoil(world.getBlockState(pos.add(p1).down())))
             {
                 if (world.getBlockState(pos.add(p1)).getMaterial().isReplaceable())
                 {
@@ -112,7 +113,7 @@ public class TreeGenSequoia implements ITreeGenerator
 
     private void checkAndPlace(World world, BlockPos pos)
     {
-        if (world.getBlockState(pos).getMaterial().isReplaceable() || world.getBlockState(pos).getBlock() instanceof BlockLeavesTFC)
+        if (world.getBlockState(pos).getMaterial().isReplaceable() || world.getBlockState(pos).getBlock() instanceof BlockSaplingTFC || world.getBlockState(pos).getBlock() instanceof BlockLeavesTFC)
         {
             world.setBlockState(pos, trunk);
         }

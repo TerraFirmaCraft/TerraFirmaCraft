@@ -48,6 +48,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
      * Calendar time. Advances when player sleeps, stops when doDaylightCycle is false
      * Synced with the daylight cycle
      * Players can see this via the calendar GUI tab
+     * Calendar Time 0 = Midnight, January 1, 1000
      */
     public static final ICalendarFormatted CALENDAR_TIME = new ICalendarFormatted()
     {
@@ -64,8 +65,8 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
         }
     };
 
-    private static final int DEFAULT_DAYS_IN_MONTH = 8;
-    private static final int DEFAULT_CALENDAR_TIME_OFFSET = (6 * DEFAULT_DAYS_IN_MONTH * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
+    public static final int DEFAULT_DAYS_IN_MONTH = 8;
+    public static final int DEFAULT_CALENDAR_TIME_OFFSET = (6 * DEFAULT_DAYS_IN_MONTH * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
 
     static
     {
@@ -107,6 +108,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
         nbt.setInteger("daysInMonth", daysInMonth);
 
+        nbt.setLong("worldTotalTime", worldTotalTime);
         nbt.setLong("playerTimeOffset", playerTimeOffset);
         nbt.setLong("calendarTimeOffset", calendarTimeOffset);
 
@@ -123,6 +125,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
         {
             daysInMonth = nbt.getInteger("daysInMonth");
 
+            worldTotalTime = nbt.getLong("worldTotalTime");
             playerTimeOffset = nbt.getLong("playerTimeOffset");
             calendarTimeOffset = nbt.getLong("calendarTimeOffset");
 
@@ -139,6 +142,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     {
         buffer.writeInt(daysInMonth);
 
+        buffer.writeLong(worldTotalTime);
         buffer.writeLong(playerTimeOffset);
         buffer.writeLong(calendarTimeOffset);
 
@@ -150,6 +154,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     {
         daysInMonth = buffer.readInt();
 
+        worldTotalTime = buffer.readLong();
         playerTimeOffset = buffer.readLong();
         calendarTimeOffset = buffer.readLong();
 
@@ -165,6 +170,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     {
         this.daysInMonth = resetTo.daysInMonth;
 
+        this.worldTotalTime = resetTo.worldTotalTime;
         this.playerTimeOffset = resetTo.playerTimeOffset;
         this.calendarTimeOffset = resetTo.calendarTimeOffset;
 
@@ -314,7 +320,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     {
         // Update world data
         CalendarWorldData data = CalendarWorldData.get(world);
-        data.instance.reset(this);
+        data.getCalendar().reset(this);
         data.markDirty();
 
         // Sync to clients

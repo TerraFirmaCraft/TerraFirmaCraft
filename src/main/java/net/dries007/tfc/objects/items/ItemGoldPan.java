@@ -5,8 +5,10 @@
 
 package net.dries007.tfc.objects.items;
 
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.material.Material;
@@ -16,17 +18,27 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.items.metal.ItemSmallOre;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -43,15 +55,15 @@ public class ItemGoldPan extends ItemTFC
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        //todo: move to public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-        ItemStack stack = playerIn.getHeldItem(handIn);
-        if (worldIn.isRemote) return new ActionResult<>(EnumActionResult.PASS, stack);
-        if (handIn != EnumHand.MAIN_HAND) return new ActionResult<>(EnumActionResult.PASS, stack);
-        if (canPan(worldIn, playerIn) == null) return new ActionResult<>(EnumActionResult.FAIL, stack);
-        playerIn.setActiveHand(handIn);
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+        if (hand != EnumHand.MAIN_HAND)
+        {
+            return EnumActionResult.PASS;
+        }
+        if (player.getHeldItem(hand).getItemDamage() > 0 && !canPan(worldIn, player)) return EnumActionResult.FAIL;
+        player.setActiveHand(hand);
+        return EnumActionResult.SUCCESS;
     }
 
     @Override
@@ -67,38 +79,106 @@ public class ItemGoldPan extends ItemTFC
     }
 
     @Override
+    @Nonnull
+    public ItemStack onItemUseFinish(@Nonnull ItemStack stack, World world, EntityLivingBase entityLiving)
+    {
+        if (!stack.isEmpty() && !world.isRemote && entityLiving instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer) entityLiving;
+            if (stack.getItemDamage() > 0)
+            {
+                // Check if player still is looking at water
+                if (canPan(world, player))
+                {
+                    Chunk chunk = world.getChunk(player.getPosition());
+                    ChunkDataTFC chunkDataTFC = ChunkDataTFC.get(chunk);
+                    // Only pan for native nuggets in sand + gravel
+                    if (stack.getItemDamage() == 1 || stack.getItemDamage() == 2)
+                    {
+                        if (chunkDataTFC.canWork(6))
+                        {
+                            Random rand = new Random(world.getSeed() + chunk.getPos().x * 241179128412L + chunk.getPos().z * 327910215471L);
+                            List<Ore> chunkOres = TFCRegistries.ORES.getValuesCollection()
+                                .stream().filter(Ore::canPan).filter(x -> rand.nextDouble() < x.getChunkChance())
+                                .collect(Collectors.toList());
+
+                            chunkOres.forEach(x -> {
+                                if (Constants.RNG.nextDouble() < x.getPanChance())
+                                {
+                                    Helpers.spawnItemStack(world, player.getPosition(), new ItemStack(ItemSmallOre.get(x)));
+                                }
+                            });
+                            chunkDataTFC.addWork(6);
+                            stack.setItemDamage(0);
+                        }
+                        // todo: pan for seeds or stuff in dirt / grass / clay????
+                        else
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.goldpan.chunkworked"));
+                        }
+                    }
+
+                    if (Constants.RNG.nextFloat() < 0.01) // 1/100 chance, same as 1.7.10
+                    {
+                        stack.shrink(1);
+                        world.playSound(null, entityLiving.getPosition(), TFCSounds.CERAMIC_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    }
+                }
+            }
+            else
+            {
+                //Try to fill the gold pan
+                RayTraceResult result = rayTrace(world, player, false);
+                //noinspection ConstantConditions
+                if (result == null || result.typeOfHit != RayTraceResult.Type.BLOCK) return stack;
+                BlockPos pos = result.getBlockPos();
+                IBlockState state = world.getBlockState(pos);
+                if (!(state.getBlock() instanceof BlockRockVariant) || (result.sideHit != null && world.getBlockState(pos.offset(result.sideHit)).getMaterial().isLiquid()))
+                {
+                    return stack;
+                }
+                Rock.Type type = ((BlockRockVariant) state.getBlock()).getType();
+                if (type == Rock.Type.SAND)
+                {
+                    stack.setItemDamage(1);
+                }
+                else if (type == Rock.Type.GRAVEL)
+                {
+                    stack.setItemDamage(2);
+                }
+                else if (type == Rock.Type.CLAY)
+                {
+                    stack.setItemDamage(3);
+                }
+                else if (type == Rock.Type.DIRT || type == Rock.Type.GRASS)
+                {
+                    stack.setItemDamage(4);
+                }
+                if (stack.getItemDamage() > 0 && Constants.RNG.nextFloat() < 0.10f)
+                {
+                    world.setBlockToAir(pos);
+                }
+            }
+        }
+        return stack;
+    }
+
+    @Override
     public int getMaxItemUseDuration(ItemStack stack)
     {
-        return 72;
+        return stack.getItemDamage() > 0 ? 54 : 1;
     }
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        if (!isInCreativeTab(tab)) return;
-
-        for (int meta = 0; meta < TYPES.length; meta++)
-            items.add(new ItemStack(this, 1, meta));
-    }
-
-    @Override
-    public void onUsingTick(ItemStack stack, EntityLivingBase entityLivingBase, int countLeft)
-    {
-        if (!(entityLivingBase instanceof EntityPlayer)) return;
-        final EntityPlayer player = ((EntityPlayer) entityLivingBase);
-        final RayTraceResult result = canPan(player.world, player);
-        if (result == null)
+        if (isInCreativeTab(tab))
         {
-            player.resetActiveHand();
-            return;
+            for (int meta = 0; meta < TYPES.length; meta++)
+            {
+                items.add(new ItemStack(this, 1, meta));
+            }
         }
-        final int total = getMaxItemUseDuration(stack);
-        final int count = total - countLeft;
-        final BlockPos pos = result.getBlockPos().add(0, 1, 0);
-        final World world = player.world;
-        final float chance = itemRand.nextFloat();
-
-        //todo: this is a copypaste from firestarter, it needs to pan, not start fires.
     }
 
     @Nonnull
@@ -121,17 +201,13 @@ public class ItemGoldPan extends ItemTFC
         return false;
     }
 
-    @Nullable
-    private RayTraceResult canPan(World world, EntityPlayer player)
+    private boolean canPan(World world, EntityPlayer player)
     {
         RayTraceResult result = rayTrace(world, player, true);
         //noinspection ConstantConditions
-        if (result == null) return null;
-        if (result.typeOfHit != RayTraceResult.Type.BLOCK) return null;
+        if (result == null) return false;
+        if (result.typeOfHit != RayTraceResult.Type.BLOCK) return false;
         BlockPos pos = result.getBlockPos();
-        final IBlockState current = player.world.getBlockState(pos);
-        pos = pos.add(0, 1, 0);
-        if (world.getBlockState(pos).getMaterial() != Material.WATER) return null;
-        return result;
+        return world.getBlockState(pos).getMaterial() == Material.WATER;
     }
 }

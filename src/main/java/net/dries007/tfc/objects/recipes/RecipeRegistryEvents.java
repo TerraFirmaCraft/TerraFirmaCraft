@@ -42,6 +42,7 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:mushroom_stew"));
             modRegistry.remove(new ResourceLocation("minecraft:melon_seeds"));
             modRegistry.remove(new ResourceLocation("minecraft:melon_block"));
+            modRegistry.remove(new ResourceLocation("minecraft:pumpkin_seeds"));
             modRegistry.remove(new ResourceLocation("minecraft:lit_pumpkin"));
             modRegistry.remove(new ResourceLocation("minecraft:golden_apple"));
             modRegistry.remove(new ResourceLocation("minecraft:glowstone"));
@@ -291,6 +292,7 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:spectral_arrow"));
 
             //white
+            modRegistry.remove(new ResourceLocation("minecraft:string_to_wool"));
             modRegistry.remove(new ResourceLocation("minecraft:white_concrete_powder"));
             modRegistry.remove(new ResourceLocation("minecraft:white_bed"));
             modRegistry.remove(new ResourceLocation("minecraft:white_carpet"));

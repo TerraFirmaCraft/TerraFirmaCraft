@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.items;
 
 import java.util.EnumMap;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,7 +33,7 @@ public class ItemGem extends ItemTFC
 
     public static ItemStack get(Gem ore, Gem.Grade grade, int amount)
     {
-        return new ItemStack(MAP.get(ore), amount, grade.getMeta());
+        return new ItemStack(MAP.get(ore), amount, grade.ordinal());
     }
 
     public final Gem gem;
@@ -47,30 +48,32 @@ public class ItemGem extends ItemTFC
         OreDictionaryHelper.register(this, "gem", gem);
         for (Gem.Grade grade : Gem.Grade.values())
         {
-            OreDictionaryHelper.registerMeta(this, grade.getMeta(), "gem", gem, grade);
-            OreDictionaryHelper.registerMeta(this, grade.getMeta(), "gem", grade);
+            OreDictionaryHelper.registerMeta(this, grade.ordinal(), "gem", gem, grade);
+            OreDictionaryHelper.registerMeta(this, grade.ordinal(), "gem", grade);
         }
-    }
-
-    public Gem.Grade getGradeFromStack(ItemStack stack)
-    {
-        return Gem.Grade.fromMeta(stack.getItemDamage());
     }
 
     @Override
     public String getTranslationKey(ItemStack stack)
     {
         Gem.Grade grade = getGradeFromStack(stack);
-        return super.getTranslationKey(stack) + "." + grade.name().toLowerCase();
+        if (grade != null)
+        {
+            return super.getTranslationKey(stack) + "." + grade.name().toLowerCase();
+        }
+        return super.getTranslationKey(stack);
     }
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        if (!isInCreativeTab(tab)) return;
-
-        for (Gem.Grade grade : Gem.Grade.values())
-            items.add(new ItemStack(this, 1, grade.getMeta()));
+        if (isInCreativeTab(tab))
+        {
+            for (Gem.Grade grade : Gem.Grade.values())
+            {
+                items.add(new ItemStack(this, 1, grade.ordinal()));
+            }
+        }
     }
 
     @Nonnull
@@ -85,5 +88,11 @@ public class ItemGem extends ItemTFC
     public Weight getWeight(ItemStack stack)
     {
         return Weight.LIGHT;
+    }
+
+    @Nullable
+    private Gem.Grade getGradeFromStack(ItemStack stack)
+    {
+        return Gem.Grade.valueOf(stack.getItemDamage());
     }
 }

@@ -29,10 +29,18 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.IMetalObject;
+import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
 public class ItemBloom extends ItemTFC implements IMetalObject
 {
+    private boolean meltable;
+
+    public ItemBloom(boolean meltable)
+    {
+        this.meltable = meltable;
+    }
+
     @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
@@ -51,7 +59,7 @@ public class ItemBloom extends ItemTFC implements IMetalObject
     @Override
     public Metal getMetal(ItemStack stack)
     {
-        return Metal.UNKNOWN;
+        return Metal.WROUGHT_IRON;
     }
 
     @Override
@@ -60,16 +68,43 @@ public class ItemBloom extends ItemTFC implements IMetalObject
         IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
         if (cap instanceof IForgeableMeasurable)
         {
-            return ((IForgeableMeasurable) cap).getMetalAmount();
+            int amount = ((IForgeableMeasurable) cap).getMetalAmount();
+            if (amount > 100) amount = 100;
+            return amount;
         }
         return 0;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addMetalInfo(ItemStack stack, List<String> text)
+    {
+        Metal metal = getMetal(stack);
+        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        if (metal != null && cap instanceof IForgeableMeasurable)
+        {
+            text.add("");
+            text.add(I18n.format("tfc.tooltip.metal", I18n.format(Helpers.getTypeName(metal))));
+            text.add(I18n.format("tfc.tooltip.units", ((IForgeableMeasurable) cap).getMetalAmount()));
+            text.add(I18n.format(Helpers.getEnumName(metal.getTier())));
+        }
+    }
+
+    @Override
+    public boolean canMelt(ItemStack stack)
+    {
+        return meltable;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        tooltip.add(I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));
+        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        if (cap instanceof IForgeableMeasurable)
+        {
+            tooltip.add(I18n.format("tfc.tooltip.units", ((IForgeableMeasurable) cap).getMetalAmount()));
+        }
     }
 
     @SideOnly(Side.CLIENT)

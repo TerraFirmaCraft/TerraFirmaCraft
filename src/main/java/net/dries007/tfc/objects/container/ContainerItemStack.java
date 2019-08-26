@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.container;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,6 +18,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+@ParametersAreNonnullByDefault
 public abstract class ContainerItemStack extends Container
 {
     protected final ItemStack stack;
@@ -126,6 +128,12 @@ public abstract class ContainerItemStack extends Container
             stack.setTagCompound(((ItemStackHandler) cap).serializeNBT());
         }
         super.onContainerClosed(player);
+    }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer playerIn)
+    {
+        return true;
     }
 
     protected abstract void addContainerSlots();

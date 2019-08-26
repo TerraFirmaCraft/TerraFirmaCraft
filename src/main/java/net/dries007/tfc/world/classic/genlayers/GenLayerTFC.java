@@ -126,7 +126,7 @@ public abstract class GenLayerTFC extends GenLayer
 
     public static void drawImage(int size, GenLayerTFC genlayer, String name)
     {
-        if (!ConfigTFC.WORLD.debugMode) return;
+        if (!ConfigTFC.WORLD.debugWorldGen) return;
         try
         {
             File outFile = new File(name + ".bmp");

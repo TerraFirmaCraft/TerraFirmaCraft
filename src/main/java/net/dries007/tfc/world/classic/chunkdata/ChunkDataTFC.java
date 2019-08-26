@@ -6,23 +6,27 @@
 package net.dries007.tfc.world.classic.chunkdata;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagByteArray;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagIntArray;
+import com.google.common.collect.ImmutableSet;
+import net.minecraft.nbt.*;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistry;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.NBTBuilder;
@@ -110,18 +114,21 @@ public final class ChunkDataTFC
     private final DataLayer[] stabilityLayer = new DataLayer[256]; // To be removed / replaced?
     private final int[] seaLevelOffset = new int[256];
     private boolean initialized = false;
+    private long lastUpdatePlants, lastUpdateCrops, lastUpdateRocks, lastUpdateSnow; //Used by regeneration
     private int fishPopulation = FISH_POP_MAX; // todo: Set this based on biome? temp? rng?
     private float rainfall;
     private float regionalTemp;
     private float avgTemp;
     private float floraDensity;
     private float floraDiversity;
+    private Set<Ore> chunkOres = new HashSet<>();
+    private int chunkWorkage;
 
     /**
      * INTERNAL USE ONLY.
      * No need to mark as dirty, since this will only ever be called on worldgen, before the first chunk save.
      */
-    public void setGenerationData(int[] rockLayer1, int[] rockLayer2, int[] rockLayer3, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset, float rainfall, float regionalTemp, float avgTemp, float floraDensity, float floraDiversity)
+    public void setGenerationData(int[] rockLayer1, int[] rockLayer2, int[] rockLayer3, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset, float rainfall, float regionalTemp, float avgTemp, float floraDensity, float floraDiversity, long creationTick, long creationCalendarTick)
     {
         this.initialized = true;
         System.arraycopy(rockLayer1, 0, this.rockLayer1, 0, 256);
@@ -136,11 +143,94 @@ public final class ChunkDataTFC
         this.avgTemp = avgTemp;
         this.floraDensity = floraDensity;
         this.floraDiversity = floraDiversity;
+
+        this.lastUpdateRocks = creationTick; //based on TOTAL_TIME
+
+        this.lastUpdateSnow = creationCalendarTick; //Based on CALENDAR_TIME
+        this.lastUpdateCrops = creationCalendarTick;
+        this.lastUpdatePlants = creationCalendarTick;
+        this.chunkWorkage = 0;
+    }
+
+    /**
+     * Adds generated ores to this chunk list of ores
+     * Should be used by ore vein generators to save in this chunk which ores generated here
+     *
+     * @param ore the ore added by ore vein generator
+     */
+    public void addGeneratedOre(@Nonnull Ore ore)
+    {
+        chunkOres.add(ore);
+    }
+
+    /**
+     * Returns a set of ores that generated in this chunk
+     *
+     * @return the immutable set containing all ores that generated in this chunk
+     */
+    public Set<Ore> getChunkOres()
+    {
+        return ImmutableSet.copyOf(chunkOres);
+    }
+
+    public boolean canWork(int amount)
+    {
+        return ConfigTFC.GENERAL.overworkChunk || chunkWorkage <= ConfigTFC.GENERAL.maxWorkChunk + amount;
+    }
+
+    public void addWork(int amount)
+    {
+        chunkWorkage += amount;
+    }
+
+    public void addWork()
+    {
+        addWork(1);
     }
 
     public boolean isInitialized()
     {
         return initialized;
+    }
+
+    public long getLastUpdateRocks()
+    {
+        return lastUpdateRocks;
+    }
+
+    public void setLastUpdateRocks(long tick)
+    {
+        this.lastUpdateRocks = tick;
+    }
+
+    public long getLastUpdateSnow()
+    {
+        return lastUpdateSnow;
+    }
+
+    public void setLastUpdateSnow(long tick)
+    {
+        this.lastUpdateSnow = tick;
+    }
+
+    public long getLastUpdateCrops()
+    {
+        return lastUpdateCrops;
+    }
+
+    public void setLastUpdateCrops(long tick)
+    {
+        this.lastUpdateCrops = tick;
+    }
+
+    public long getLastUpdatePlants()
+    {
+        return lastUpdatePlants;
+    }
+
+    public void setLastUpdatePlants(long tick)
+    {
+        this.lastUpdatePlants = tick;
     }
 
     public Rock getRock1(BlockPos pos)
@@ -310,6 +400,11 @@ public final class ChunkDataTFC
             NBTTagCompound root = new NBTTagCompound();
             root.setBoolean("valid", true);
 
+            root.setLong("lastUpdateRocks", instance.lastUpdateRocks);
+            root.setLong("lastUpdateSnow", instance.lastUpdateSnow);
+            root.setLong("lastUpdateCrops", instance.lastUpdateCrops);
+            root.setLong("lastUpdatePlants", instance.lastUpdatePlants);
+
             root.setTag("rockLayer1", new NBTTagIntArray(instance.rockLayer1));
             root.setTag("rockLayer2", new NBTTagIntArray(instance.rockLayer2));
             root.setTag("rockLayer3", new NBTTagIntArray(instance.rockLayer3));
@@ -326,6 +421,21 @@ public final class ChunkDataTFC
             root.setFloat("floraDensity", instance.floraDensity);
             root.setFloat("floraDiversity", instance.floraDiversity);
 
+            root.setInteger("chunkWorkage", instance.chunkWorkage);
+
+            if (instance.chunkOres.size() > 0)
+            {
+                NBTTagList oreList = new NBTTagList();
+                for (Ore ore : instance.chunkOres)
+                {
+                    NBTTagCompound nbtOre = new NBTTagCompound();
+                    //noinspection ConstantConditions
+                    nbtOre.setString("oreRegistry", ore.getRegistryName().toString());
+                    oreList.appendTag(nbtOre);
+                }
+                root.setTag("chunkOres", oreList);
+            }
+
             return root;
         }
 
@@ -340,6 +450,11 @@ public final class ChunkDataTFC
                 System.arraycopy(root.getIntArray("rockLayer3"), 0, instance.rockLayer3, 0, 256);
                 System.arraycopy(root.getIntArray("seaLevelOffset"), 0, instance.seaLevelOffset, 0, 256);
 
+                instance.lastUpdateRocks = root.getLong("lastUpdateRocks");
+                instance.lastUpdateSnow = root.getLong("lastUpdateSnow");
+                instance.lastUpdateCrops = root.getLong("lastUpdateCrops");
+                instance.lastUpdatePlants = root.getLong("lastUpdatePlants");
+
                 read(instance.stabilityLayer, root.getByteArray("stabilityLayer"));
                 read(instance.drainageLayer, root.getByteArray("drainageLayer"));
 
@@ -350,6 +465,21 @@ public final class ChunkDataTFC
                 instance.avgTemp = root.getFloat("avgTemp");
                 instance.floraDensity = root.getFloat("floraDensity");
                 instance.floraDiversity = root.getFloat("floraDiversity");
+
+                instance.chunkWorkage = root.getInteger("chunkWorkage");
+
+                instance.chunkOres = new HashSet<>();
+
+                if (root.hasKey("chunkOres"))
+                {
+                    NBTTagList oreList = root.getTagList("chunkOres", Constants.NBT.TAG_COMPOUND);
+                    for (int i = 0; i < oreList.tagCount(); i++)
+                    {
+                        NBTTagCompound nbtOre = oreList.getCompoundTagAt(i);
+                        Ore ore = TFCRegistries.ORES.getValue(new ResourceLocation(nbtOre.getString("oreRegistry")));
+                        instance.chunkOres.add(ore);
+                    }
+                }
 
                 instance.initialized = true;
             }

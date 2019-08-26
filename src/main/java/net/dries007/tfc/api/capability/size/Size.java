@@ -26,7 +26,7 @@ public enum Size
 
     public boolean isSmallerThan(Size other)
     {
-        return this.stackSize >= other.stackSize;
+        return this.stackSize > other.stackSize;
     }
 
 }

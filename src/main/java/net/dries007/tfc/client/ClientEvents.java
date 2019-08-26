@@ -54,8 +54,8 @@ import net.dries007.tfc.objects.entity.animal.*;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.Month;
-import net.dries007.tfc.world.classic.ClimateRenderHelper;
-import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.util.climate.ClimateHelper;
+import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -76,6 +76,11 @@ public class ClientEvents
         RenderingRegistry.registerEntityRenderingHandler(EntityPheasantTFC.class, RenderPheasantTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityDeerTFC.class, RenderDeerTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityPigTFC.class, RenderPigTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityWolfTFC.class, RenderWolfTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityRabbitTFC.class, RenderRabbitTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityHorseTFC.class, RenderHorseTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityDonkeyTFC.class, RenderAbstractHorseTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityMuleTFC.class, RenderAbstractHorseTFC::new);
     }
 
     @SideOnly(Side.CLIENT)
@@ -161,11 +166,11 @@ public class ClientEvents
                     list.add(String.format("%sRegion: %s%.1f\u00b0C%s Avg: %s%.1f\u00b0C%s Min: %s%.1f\u00b0C%s Max: %s%.1f\u00b0C",
                         GRAY, WHITE, data.getRegionalTemp(), GRAY,
                         WHITE, data.getAverageTemp(), GRAY,
-                        WHITE, ClimateTFC.monthTemp(data.getRegionalTemp(), Month.JANUARY, blockpos.getZ()), GRAY,
-                        WHITE, ClimateTFC.monthTemp(data.getRegionalTemp(), Month.JULY, blockpos.getZ())));
+                        WHITE, ClimateHelper.monthFactor(data.getRegionalTemp(), Month.JANUARY.getTemperatureModifier(), blockpos.getZ()), GRAY,
+                        WHITE, ClimateHelper.monthFactor(data.getRegionalTemp(), Month.JULY.getTemperatureModifier(), blockpos.getZ())));
                     list.add(String.format("%sTemperature: %s%.1f\u00b0C Daily: %s%.1f\u00b0C",
-                        GRAY, WHITE, ClimateRenderHelper.get(blockpos).getTemperature(),
-                        WHITE, ClimateTFC.getHeightAdjustedTemp(mc.world, blockpos)));
+                        GRAY, WHITE, ClimateTFC.getMonthlyTemp(blockpos),
+                        WHITE, ClimateTFC.getActualTemp(blockpos)));
 
                     list.add(I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
                     list.add(I18n.format("tfc.tooltip.debug_times", CalendarTFC.TOTAL_TIME.getTicks(), CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks()));

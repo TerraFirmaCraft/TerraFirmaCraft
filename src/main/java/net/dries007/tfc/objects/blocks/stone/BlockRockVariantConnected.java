@@ -7,16 +7,19 @@ package net.dries007.tfc.objects.blocks.stone;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.BlockFalling;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -54,5 +57,42 @@ public class BlockRockVariantConnected extends BlockRockVariantFallable
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
+    }
+
+    @Override
+    public boolean checkFalling(World worldIn, BlockPos pos, IBlockState state)
+    {
+        BlockPos pos1 = getFallablePos(worldIn, pos);
+        if (pos1 != null)
+        {
+            if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
+            {
+                if (!pos1.equals(pos))
+                {
+                    worldIn.setBlockToAir(pos);
+                }
+                // Replace grass with dirt
+                if (type.getNonGrassVersion() != type)
+                {
+                    worldIn.setBlockState(pos1, BlockRockVariant.get(rock, type.getNonGrassVersion()).getDefaultState());
+                }
+                worldIn.spawnEntity(new EntityFallingBlockTFC(worldIn, pos1, this, worldIn.getBlockState(pos1)));
+            }
+            else
+            {
+                worldIn.setBlockToAir(pos);
+                pos1 = pos1.down();
+                while (canFallThrough(worldIn.getBlockState(pos1)) && pos1.getY() > 0)
+                {
+                    pos1 = pos1.down();
+                }
+                if (pos1.getY() > 0)
+                {
+                    worldIn.setBlockState(pos1.up(), state); // Includes Forge's fix for data loss.
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

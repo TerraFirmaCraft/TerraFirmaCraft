@@ -12,6 +12,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
@@ -21,14 +22,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.recipes.PitKilnRecipe;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -93,6 +98,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
     private final NonNullList<ItemStack> logItems = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> strawItems = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
     private int burnTicksToGo;
+    public static final Vec3i[] DIAGONALS = new Vec3i[] {new Vec3i(1, 0, 1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, -1), new Vec3i(-1, 0, -1)};
 
     @Override
     public void update()
@@ -123,11 +129,23 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 for (int i = 0; i < inventory.getSlots(); i++)
                 {
                     ItemStack stack = inventory.getStackInSlot(i);
-                    PitKilnRecipe recipe = PitKilnRecipe.get(stack);
-                    if (recipe != null)
+                    ItemStack outputStack = ItemStack.EMPTY;
+                    // First, heat up the item to max temperature, so the recipe can properly check the temperature of the item
+                    IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                    if (heat != null)
                     {
-                        inventory.setStackInSlot(i, recipe.getOutput(stack, Metal.Tier.TIER_I));
+                        heat.setTemperature(CapabilityItemHeat.MAX_TEMPERATURE);
+
+                        // Only Tier I and below can be melted in a pit kiln
+                        HeatRecipe recipe = HeatRecipe.get(stack, Metal.Tier.TIER_I);
+                        if (recipe != null)
+                        {
+                            outputStack = recipe.getOutputStack(stack);
+                        }
                     }
+
+                    // Reset item in inventory
+                    inventory.setStackInSlot(i, outputStack);
                 }
 
                 world.setBlockToAir(above);
@@ -192,6 +210,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             if (OreDictionaryHelper.doesStackMatchOre(stack, "straw") && strawCount < STRAW_NEEDED)
             {
                 addStraw(stack.splitStack(1));
+                world.playSound(null, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.5f, 1.0f);
                 updateBlock();
                 return true;
             }
@@ -201,6 +220,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             {
                 stack.shrink(1);
                 addStrawBlock();
+                world.playSound(null, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.5f, 1.0f);
                 updateBlock();
                 return true;
             }
@@ -211,6 +231,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 if (OreDictionaryHelper.doesStackMatchOre(stack, "logWood") && logCount < WOOD_NEEDED)
                 {
                     addLog(stack.splitStack(1));
+                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 0.5f, 1.0f);
                     updateBlock();
                     return true;
                 }
@@ -257,12 +278,12 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
 
     public boolean tryLight()
     {
-        if (hasFuel() && isValid())
+        if (hasFuel() && isValid() && !isLit())
         {
-            BlockPos above = pos.add(0, 1, 0);
+            BlockPos above = pos.up();
             if (Blocks.FIRE.canPlaceBlockAt(world, above))
             {
-                for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL)
+                for (EnumFacing facing : EnumFacing.HORIZONTALS)
                 {
                     if (!world.isSideSolid(pos.offset(facing), facing.getOpposite()))
                     {
@@ -272,6 +293,16 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 burnTicksToGo = ConfigTFC.GENERAL.pitKilnTime;
                 updateBlock();
                 world.setBlockState(above, Blocks.FIRE.getDefaultState());
+                //Light other adjacent pit kilns
+                for (Vec3i diagonal : DIAGONALS)
+                {
+                    BlockPos pitPos = pos.add(diagonal);
+                    TEPitKiln pitKiln = Helpers.getTE(world, pitPos, TEPitKiln.class);
+                    if (pitKiln != null)
+                    {
+                        pitKiln.tryLight();
+                    }
+                }
                 return true;
             }
         }

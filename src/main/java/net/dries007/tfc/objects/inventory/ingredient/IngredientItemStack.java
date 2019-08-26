@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.inventory.ingredient;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class IngredientItemStack implements IIngredient<ItemStack>
@@ -17,6 +18,12 @@ public class IngredientItemStack implements IIngredient<ItemStack>
     IngredientItemStack(@Nonnull ItemStack inputStack)
     {
         this.inputStack = inputStack;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getValidIngredients()
+    {
+        return NonNullList.withSize(1, inputStack);
     }
 
     @Override

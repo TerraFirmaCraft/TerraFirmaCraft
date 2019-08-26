@@ -20,7 +20,7 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.network.PacketCapabilityContainerUpdate;
 
 /**
- * This is a {@link IContainerListener} which will monitor containers and send any capability data changes for IForgeable or IItemHeat
+ * This is a {@link IContainerListener} which will monitor containers and send any capability data changes for IItemHEat / IFood
  *
  * @author Choonster
  * @author AlcatrazEscapee

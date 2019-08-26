@@ -32,6 +32,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.common.ForgeHooks;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.size.IItemSize;
@@ -43,7 +44,7 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
-import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
@@ -155,24 +156,27 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     @Nonnull
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        if (!plant.getOreDictName().isPresent()) return Items.AIR;
+        if (!plant.getOreDictName().isPresent())
+        {
+            return Items.AIR;
+        }
         return Item.getItemFromBlock(this);
     }
 
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        double movementMod = plant.getMovementMod();
-        //Entity X/Z motion is reduced by plants.
-        // todo: make this specific to the plant type (i.e. smaller grasses affect you less than larger ones)
-        entityIn.motionX *= movementMod;
-        entityIn.motionZ *= movementMod;
+        // Entity X/Z motion is reduced by plants. Affine combination of age modifier and actual modifier
+        double modifier = 0.25 * (4 - state.getValue(AGE));
+        modifier = (1 - modifier) * plant.getMovementMod() + modifier;
+        entityIn.motionX *= modifier;
+        entityIn.motionZ *= modifier;
     }
 
     @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
-        if (!plant.getOreDictName().isPresent() && !worldIn.isRemote && stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1 && plant.getPlantType() != Plant.PlantType.SHORT_GRASS && plant.getPlantType() != Plant.PlantType.TALL_GRASS)
+        if (!plant.getOreDictName().isPresent() && !worldIn.isRemote && (stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1 || stack.getItem().getHarvestLevel(stack, "scythe", player, state) != -1) && plant.getPlantType() != Plant.PlantType.SHORT_GRASS && plant.getPlantType() != Plant.PlantType.TALL_GRASS)
         {
             spawnAsEntity(worldIn, pos, new ItemStack(this, 1));
         }
@@ -188,6 +192,25 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
             {
                 spawnAsEntity(worldIn, pos, new ItemStack(this));
             }
+        }
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player)
+    {
+        ItemStack stack = player.getHeldItemMainhand();
+        IBlockState state = world.getBlockState(pos);
+        switch (plant.getPlantType())
+        {
+            case REED:
+            case REED_SEA:
+            case TALL_REED:
+            case TALL_REED_SEA:
+            case SHORT_GRASS:
+            case TALL_GRASS:
+                return (stack.getItem().getHarvestLevel(stack, "knife", player, state) != -1 || stack.getItem().getHarvestLevel(stack, "scythe", player, state) != -1);
+            default:
+                return true;
         }
     }
 
@@ -249,30 +272,30 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
-        if (plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) && plant.isValidSunlight(Math.subtractExact(worldIn.getLightFor(EnumSkyBlock.SKY, pos), worldIn.getSkylightSubtracted())))
+        if (plant.isValidGrowthTemp(ClimateTFC.getActualTemp(worldIn, pos)) && plant.isValidSunlight(Math.subtractExact(worldIn.getLightFor(EnumSkyBlock.SKY, pos), worldIn.getSkylightSubtracted())))
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && ForgeHooks.onCropsGrowPre(worldIn, pos.up(), state, true))
             {
                 if (j < 3)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j + 1));
                 }
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+                ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
         }
-        else if (!plant.isValidGrowthTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) || !plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, pos)))
+        else if (!plant.isValidGrowthTemp(ClimateTFC.getActualTemp(worldIn, pos)) || !plant.isValidSunlight(worldIn.getLightFor(EnumSkyBlock.SKY, pos)))
         {
             int j = state.getValue(AGE);
 
-            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
+            if (rand.nextDouble() < getGrowthRate(worldIn, pos) && ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
             {
                 if (j > 0)
                 {
                     worldIn.setBlockState(pos, state.withProperty(AGE, j - 1));
                 }
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+                ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
             }
         }
 
@@ -285,7 +308,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         IBlockState soil = worldIn.getBlockState(pos.down());
         if (state.getBlock() == this)
         {
-            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTemp(ClimateTFC.getHeightAdjustedTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
+            return soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) && plant.isValidTemp(ClimateTFC.getActualTemp(worldIn, pos)) && plant.isValidRain(ChunkDataTFC.getRainfall(worldIn, pos));
         }
         return this.canSustainBush(soil);
     }
@@ -347,7 +370,7 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
 
     int getDayPeriod()
     {
-        return Math.floorDiv(CalendarTFC.CALENDAR_TIME.getHourOfDay(), ICalendar.HOURS_IN_DAY / 4);
+        return CalendarTFC.CALENDAR_TIME.getHourOfDay() / (ICalendar.HOURS_IN_DAY / 4);
     }
 
     private boolean isValidSoil(IBlockState state)

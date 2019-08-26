@@ -52,7 +52,7 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
         for (EnumFacing face : EnumFacing.values())
         {
-            if (!worldIn.getBlockState(pos.offset(face)).getBlock().isReplaceable(worldIn, pos))
+            if (!worldIn.getBlockState(pos.offset(face)).getBlock().isReplaceable(worldIn, pos.offset(face)))
             {
                 return;
             }

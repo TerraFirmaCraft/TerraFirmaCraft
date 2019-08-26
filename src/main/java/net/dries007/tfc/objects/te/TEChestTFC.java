@@ -7,14 +7,17 @@ package net.dries007.tfc.objects.te;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -22,6 +25,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 
+@ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class TEChestTFC extends TileEntityChest
 {
@@ -33,31 +37,15 @@ public class TEChestTFC extends TileEntityChest
         chestContents = NonNullList.withSize(SIZE, ItemStack.EMPTY); // todo: make chest size configurable.
     }
 
-    @Override
-    public BlockChestTFC getBlockType()
-    {
-        Block block = super.getBlockType();
-        if (!(block instanceof BlockChestTFC))
-            throw new IllegalArgumentException("Block type is invalid; must be instance of BlockChestTFC");
-        return ((BlockChestTFC) block);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    @Nonnull
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-        return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
-    }
-
     @Nullable
     public Tree getWood()
     {
         if (cachedWood == null)
         {
-            if (world == null)
-                return null;
-            cachedWood = getBlockType().wood;
+            if (world != null)
+            {
+                cachedWood = ((BlockChestTFC) world.getBlockState(pos).getBlock()).wood;
+            }
         }
         return cachedWood;
     }
@@ -75,5 +63,19 @@ public class TEChestTFC extends TileEntityChest
 
         Block block = this.world.getBlockState(posIn).getBlock();
         return block instanceof BlockChestTFC && ((BlockChestTFC) block).wood == getWood() && ((BlockChest) block).chestType == getChestType();
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return oldState.getBlock() != newSate.getBlock();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    @Nonnull
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
     }
 }

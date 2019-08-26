@@ -32,7 +32,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.recipes.BarrelRecipe;
+import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.client.FluidSpriteCache;
 import net.dries007.tfc.client.button.GuiButtonBarrelSeal;
 import net.dries007.tfc.client.button.IButtonTooltip;
@@ -127,13 +127,13 @@ public class GuiBarrel extends GuiContainerTE<TEBarrel>
             }
 
             // Draw the text displaying both the seal date, and the recipe name
-            fontRenderer.drawString(tile.getSealedDate(), 59, 19, 0x404040);
+            fontRenderer.drawString(tile.getSealedDate(), xSize / 2 - fontRenderer.getStringWidth(tile.getSealedDate()) / 2, 73, 0x404040);
 
             BarrelRecipe recipe = tile.getRecipe();
             if (recipe != null)
             {
                 String resultName = recipe.getResultName();
-                fontRenderer.drawString(resultName, 59, 59, 0x404040);
+                fontRenderer.drawString(resultName, 112 - fontRenderer.getStringWidth(resultName) / 2, 19, 0x404040);
             }
         }
     }
@@ -158,7 +158,7 @@ public class GuiBarrel extends GuiContainerTE<TEBarrel>
                 if (fillHeightPixels > 0)
                 {
                     Fluid fluid = fs.getFluid();
-                    TextureAtlasSprite sprite = FluidSpriteCache.getSprite(fluid);
+                    TextureAtlasSprite sprite = FluidSpriteCache.getStillSprite(fluid);
 
                     int positionX = guiLeft + 8;
                     int positionY = guiTop + 54;

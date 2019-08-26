@@ -8,6 +8,7 @@ package net.dries007.tfc.world.classic.worldgen.vein;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -30,9 +31,10 @@ public enum VeinRegistry
     INSTANCE;
 
     private static final String DEFAULT_ORE_SPAWN_LOCATION = "assets/tfc/config/ore_spawn_data.json";
+
+    private final WeightedCollection<VeinType> weightedVeinTypes = new WeightedCollection<>();
+    private final Map<String, VeinType> veinTypeRegistry = new HashMap<>();
     private File worldGenFile;
-    private WeightedCollection<VeinType> weightedVeinTypes;
-    private Map<String, VeinType> veinTypeRegistry;
 
     @Nonnull
     public WeightedCollection<VeinType> getVeins()
@@ -93,10 +95,12 @@ public enum VeinRegistry
         {
             try
             {
-                weightedVeinTypes = new WeightedCollection<>();
-                veinTypeRegistry = GSON.fromJson(worldGenData, new TypeToken<Map<String, VeinType>>() {}.getType());
-                veinTypeRegistry.forEach((name, veinType) -> {
+                weightedVeinTypes.clear();
+                veinTypeRegistry.clear();
+                Map<String, VeinType> values = GSON.fromJson(worldGenData, new TypeToken<Map<String, VeinType>>() {}.getType());
+                values.forEach((name, veinType) -> {
                     veinType.setRegistryName(name);
+                    veinTypeRegistry.put(name, veinType);
                     weightedVeinTypes.add(veinType.weight, veinType);
                 });
             }

@@ -25,21 +25,23 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.api.util.IRockObject;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.dries007.tfc.util.TFCSoundEvents;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -65,6 +67,7 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
 
         setMaxDamage((int) (category.getToolMaterial().getMaxUses() * 0.1));
 
+        OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
         OreDictionaryHelper.register(this, "javelin");
         OreDictionaryHelper.register(this, "javelin", "stone");
         OreDictionaryHelper.register(this, "javelin", "stone", category);
@@ -102,6 +105,12 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
     public RockCategory getRockCategory(ItemStack stack)
     {
         return category;
+    }
+
+    @Override
+    public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
+    {
+        return false;
     }
 
     @Override
@@ -143,7 +152,7 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
                     javelin.setWeapon(stack);
                     javelin.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, f * 1.5F, 0.5F);
                     worldIn.spawnEntity(javelin);
-                    worldIn.playSound(null, player.posX, player.posY, player.posZ, TFCSoundEvents.ITEM_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F / (Constants.RNG.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+                    worldIn.playSound(null, player.posX, player.posY, player.posZ, TFCSounds.ITEM_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F / (Constants.RNG.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
                 }
                 player.inventory.deleteStack(stack);
                 player.addStat(StatList.getObjectUseStats(this));

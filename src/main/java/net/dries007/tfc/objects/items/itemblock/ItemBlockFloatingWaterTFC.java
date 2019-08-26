@@ -28,9 +28,9 @@ import net.minecraft.world.World;
 import net.dries007.tfc.objects.blocks.plants.BlockFloatingWaterTFC;
 
 @ParametersAreNonnullByDefault
-public class ItemBlockFloatingWaterTFC extends ItemBlockPlant
+public class ItemBlockFloatingWaterTFC extends ItemBlockTFC
 {
-    protected BlockFloatingWaterTFC block;
+    protected final BlockFloatingWaterTFC block;
 
     public ItemBlockFloatingWaterTFC(BlockFloatingWaterTFC block)
     {

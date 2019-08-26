@@ -28,7 +28,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.util.LootTableListTFC;
+import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -45,6 +45,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
         int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
+
     private long lastMilked;
 
     @SuppressWarnings("unused")
@@ -245,7 +246,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTableListTFC.ANIMALS_COW;
+        return LootTablesTFC.ANIMALS_COW;
     }
 
     @Override

@@ -19,10 +19,7 @@ import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ColorizerGrass;
@@ -36,10 +33,14 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.IMoldHandler;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
@@ -47,6 +48,7 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlockSlabTFC;
+import net.dries007.tfc.objects.blocks.BlockThatchBed;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.agriculture.BlockFruitTreeLeaves;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
@@ -63,7 +65,7 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.te.*;
-import net.dries007.tfc.world.classic.ClimateRenderHelper;
+import net.dries007.tfc.util.climate.ClimateTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockPlacedHide.SIZE;
@@ -79,6 +81,10 @@ public final class ClientRegisterEvents
     {
         // ITEMS //
 
+        // Registering fluid containers
+        ModelLoader.setCustomModelResourceLocation(ItemsTFC.WOODEN_BUCKET, 0, new ModelResourceLocation(ItemsTFC.WOODEN_BUCKET.getRegistryName(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ItemsTFC.FIRED_JUG, 0, new ModelResourceLocation(ItemsTFC.FIRED_JUG.getRegistryName(), "inventory"));
+
         // Simple Items
         for (Item item : ItemsTFC.getAllSimpleItems())
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName().toString()));
@@ -86,8 +92,8 @@ public final class ClientRegisterEvents
         // Dye color Items
         for (EnumDyeColor color : EnumDyeColor.values())
         {
-            ModelLoader.setCustomModelResourceLocation(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, color.getDyeDamage(), new ModelResourceLocation(ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED.getRegistryName().toString()));
-            ModelLoader.setCustomModelResourceLocation(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED, color.getDyeDamage(), new ModelResourceLocation(ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED.getRegistryName().toString()));
+            ModelLoader.setCustomModelResourceLocation(ItemsTFC.UNFIRED_VESSEL_GLAZED, color.getDyeDamage(), new ModelResourceLocation(ItemsTFC.UNFIRED_VESSEL_GLAZED.getRegistryName().toString()));
+            ModelLoader.setCustomModelResourceLocation(ItemsTFC.FIRED_VESSEL_GLAZED, color.getDyeDamage(), new ModelResourceLocation(ItemsTFC.FIRED_VESSEL_GLAZED.getRegistryName().toString()));
         }
 
         // Gems
@@ -203,6 +209,8 @@ public final class ClientRegisterEvents
             ModelLoader.setCustomStateMapper(e, new StateMap.Builder().ignore(BlockFarmlandTFC.MOISTURE).build())
         );
 
+        ModelLoader.setCustomStateMapper(BlocksTFC.THATCH_BED, new StateMap.Builder().ignore(BlockThatchBed.OCCUPIED).build());
+
         // Empty Models
         final ModelResourceLocation empty = new ModelResourceLocation(MOD_ID + ":empty");
         // todo: switch to hide rack (involves changing mechanics, etc)
@@ -228,58 +236,53 @@ public final class ClientRegisterEvents
         ClientRegistry.bindTileEntitySpecialRenderer(TEBarrel.class, new TESRBarrel());
         ClientRegistry.bindTileEntitySpecialRenderer(TEAnvilTFC.class, new TESRAnvil());
         ClientRegistry.bindTileEntitySpecialRenderer(TELoom.class, new TESRLoom());
+        ClientRegistry.bindTileEntitySpecialRenderer(TECrucible.class, new TESRCrucible());
+        ClientRegistry.bindTileEntitySpecialRenderer(TESluice.class, new TESRSluice());
     }
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
     {
-        BlockColors blockcolors = event.getBlockColors();
+        BlockColors blockColors = event.getBlockColors();
 
         // Grass Colors
         IBlockColor grassColor = (state, worldIn, pos, tintIndex) -> {
             if (pos != null)
             {
-                ClimateRenderHelper.ClimateData data = ClimateRenderHelper.get(pos);
-                // This internally will call Calendar to get the month based temperature
-                // Base Temp Range is <-25, 20>, Month Adj Range is <-30, 30>
-                double temp = MathHelper.clamp((data.getTemperature() + 30) / 30, 0, 1);
-                // Rainfall is in <0, 500>, although 99% of the time it is within a smaller range of <50, 450>, so trim and clamp as necessary
-                double rain = MathHelper.clamp((data.getRainfall() - 50) / 400, 0, 1);
+                double temp = MathHelper.clamp((ClimateTFC.getMonthlyTemp(pos) + 30) / 60, 0, 1);
+                double rain = MathHelper.clamp((ClimateTFC.getRainfall(pos) - 50) / 400, 0, 1);
                 return ColorizerGrass.getGrassColor(temp, rain);
             }
             return ColorizerGrass.getGrassColor(0.5, 0.5);
         };
 
         // Foliage Color
+        // todo: do something different for conifers - they should have a different color mapping through the seasons
         IBlockColor foliageColor = (state, worldIn, pos, tintIndex) -> {
             if (pos != null)
             {
-                ClimateRenderHelper.ClimateData data = ClimateRenderHelper.get(pos);
-                // This internally will call Calendar to get the month based temperature
-                // Base Temp Range is <-25, 20>, Month Adj Range is <-30, 30>
-                double temp = MathHelper.clamp((data.getTemperature() + 30) / 30, 0, 1);
-                // Rainfall is in <0, 500>, although 99% of the time it is within a smaller range of <50, 450>, so trim and clamp as necessary
-                double rain = MathHelper.clamp((data.getRainfall() - 50) / 400, 0, 1);
+                double temp = MathHelper.clamp((ClimateTFC.getMonthlyTemp(pos) + 30) / 60, 0, 1);
+                double rain = MathHelper.clamp((ClimateTFC.getRainfall(pos) - 50) / 400, 0, 1);
                 return ColorizerGrass.getGrassColor(temp, rain);
             }
             return ColorizerGrass.getGrassColor(0.5, 0.5);
         };
 
-        blockcolors.registerBlockColorHandler(grassColor, BlocksTFC.PEAT_GRASS);
-        blockcolors.registerBlockColorHandler(grassColor, BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.getType().isGrass).toArray(BlockRockVariant[]::new));
+        blockColors.registerBlockColorHandler(grassColor, BlocksTFC.PEAT_GRASS);
+        blockColors.registerBlockColorHandler(grassColor, BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.getType().isGrass).toArray(BlockRockVariant[]::new));
         // This is talking about tall grass vs actual grass blocks
-        blockcolors.registerBlockColorHandler(grassColor, BlocksTFC.getAllGrassBlocks().toArray(new BlockPlantTFC[0]));
+        blockColors.registerBlockColorHandler(grassColor, BlocksTFC.getAllGrassBlocks().toArray(new BlockPlantTFC[0]));
 
-        blockcolors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllLeafBlocks().toArray(new Block[0]));
-        blockcolors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllPlantBlocks().toArray(new BlockPlantTFC[0]));
+        blockColors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllLeafBlocks().toArray(new Block[0]));
+        blockColors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllPlantBlocks().toArray(new BlockPlantTFC[0]));
 
-        blockcolors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllFruitTreeLeavesBlocks().toArray(new Block[0]));
+        blockColors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllFruitTreeLeavesBlocks().toArray(new Block[0]));
 
-        blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> BlockFarmlandTFC.TINT[state.getValue(BlockFarmlandTFC.MOISTURE)],
+        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> BlockFarmlandTFC.TINT[state.getValue(BlockFarmlandTFC.MOISTURE)],
             BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.getType() == Rock.Type.FARMLAND).toArray(BlockRockVariant[]::new));
 
-        blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
+        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
                 worldIn != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(worldIn, pos) : 0,
             BlocksTFC.getAllFluidBlocks().stream().filter(x -> x.getDefaultState().getMaterial() == Material.WATER).toArray(BlockFluidBase[]::new));
     }
@@ -308,11 +311,20 @@ public final class ClientRegisterEvents
             BlocksTFC.getAllFruitTreeLeavesBlocks().toArray(new BlockFruitTreeLeaves[0]));
 
         itemColors.registerItemColorHandler((stack, tintIndex) -> tintIndex == 1 ? EnumDyeColor.byDyeDamage(stack.getItemDamage()).getColorValue() : 0xFFFFFF,
-            ItemsTFC.CERAMICS_UNFIRED_VESSEL_GLAZED, ItemsTFC.CERAMICS_FIRED_VESSEL_GLAZED);
+            ItemsTFC.UNFIRED_VESSEL_GLAZED, ItemsTFC.FIRED_VESSEL_GLAZED);
 
         itemColors.registerItemColorHandler((stack, tintIndex) ->
                 event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
             BlocksTFC.getAllGrassBlocks().toArray(new BlockPlantTFC[0]));
+
+        itemColors.registerItemColorHandler((stack, tintIndex) -> {
+            IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
+            if (food != null)
+            {
+                return food.isRotten() ? ConfigTFC.CLIENT.rottenFoodOverlayColor : 0xFFFFFF;
+            }
+            return 0xFFFFFF;
+        }, ForgeRegistries.ITEMS.getValuesCollection().stream().filter(x -> x instanceof ItemFood).toArray(Item[]::new));
     }
 
     /**

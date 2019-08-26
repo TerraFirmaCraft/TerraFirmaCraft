@@ -44,14 +44,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
     long getCreationDate();
 
     /**
-     * Sets the creation date
-     * Use to apply preservation over time
-     * DO NOT TRY AND PRESERVE ALREADY ROTTEN FOOD
-     * Example:
-     * - A ceramic large vessel will tick randomly. Between each tick, it tracks a tick counter.
-     * - On a tick, for each item in inventory, it will try and "preserve" the item based on it being in the vessel for the time between the last random tick and the current tick
-     * - It then would call setCreationDate(getCreationDate() + ticksSinceLastRandomTick * decayModifier)
-     * - A decay modifier of 0 is no preservation, a decay modifier = 1 is 100% preservation (i.e. never decaying)
+     * Sets the creation date. DO NOT USE TO PRESERVE FOOD! Use {@link IFoodTrait} instead
      *
      * @param creationDate A calendar time
      */
@@ -88,6 +81,13 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
     float getCalories();
 
     /**
+     * Gets the current decay modifier, including traits
+     *
+     * @return a value between 0 and infinity (0 = instant decay, infinity = never decay)
+     */
+    float getDecayModifier();
+
+    /**
      * Gets the current list of traits on this food
      * Can also be used to add traits to the food
      *
@@ -112,17 +112,26 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
         }
         else
         {
-            // Calculate the date to display in calendar time
-            long rottenCalendarTime = getRottenDate() - CalendarTFC.PLAYER_TIME.getTicks() + CalendarTFC.CALENDAR_TIME.getTicks();
-            text.add(I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.INSTANCE.getDaysInMonth())));
+            long rottenDate = getRottenDate();
 
-            // Show nutrient values if not rotten
-            for (Nutrient nutrient : Nutrient.values())
+            if (rottenDate == Long.MAX_VALUE)
             {
-                float amount = getNutrient(stack, nutrient);
-                if (amount > 0)
+                text.add(I18n.format("tfc.tooltip.food_infinite_expiry"));
+            }
+            else
+            {
+                // Calculate the date to display in calendar time
+                long rottenCalendarTime = rottenDate - CalendarTFC.PLAYER_TIME.getTicks() + CalendarTFC.CALENDAR_TIME.getTicks();
+                text.add(I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.INSTANCE.getDaysInMonth())));
+
+                // Show nutrient values if not rotten
+                for (Nutrient nutrient : Nutrient.values())
                 {
-                    text.add(nutrient.name().toLowerCase() + ": " + amount);
+                    float amount = getNutrient(stack, nutrient);
+                    if (amount > 0)
+                    {
+                        text.add(nutrient.name().toLowerCase() + ": " + amount);
+                    }
                 }
             }
         }

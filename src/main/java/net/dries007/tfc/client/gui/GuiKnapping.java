@@ -5,14 +5,17 @@
 
 package net.dries007.tfc.client.gui;
 
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 
-import net.dries007.tfc.api.recipes.KnappingRecipe;
+import net.dries007.tfc.api.recipes.knapping.IKnappingType;
+import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
 import net.dries007.tfc.client.button.GuiButtonKnapping;
 import net.dries007.tfc.objects.container.ContainerKnapping;
 
@@ -21,13 +24,17 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 public class GuiKnapping extends GuiContainerTFC
 {
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping.png");
-    private static final ResourceLocation ALT_BG_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping_clay.png");
-    private final ResourceLocation buttonTexture;
+    private static final ResourceLocation CLAY_DISABLED_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_disabled.png");
+    private static final ResourceLocation FIRE_CLAY_DISABLED_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_fire_disabled.png");
 
-    public GuiKnapping(Container container, EntityPlayer player, KnappingRecipe.Type type, ResourceLocation buttonTexture)
+    private final ResourceLocation buttonTexture;
+    private final IKnappingType type;
+
+    public GuiKnapping(Container container, EntityPlayer player, IKnappingType type, ResourceLocation buttonTexture)
     {
-        super(container, player.inventory, type == KnappingRecipe.Type.CLAY || type == KnappingRecipe.Type.FIRE_CLAY ? ALT_BG_TEXTURE : BG_TEXTURE);
+        super(container, player.inventory, BG_TEXTURE);
         this.buttonTexture = buttonTexture;
+        this.type = type;
         ySize = 184; // Bigger than normal gui
     }
 
@@ -87,6 +94,18 @@ public class GuiKnapping extends GuiContainerTFC
             ((ContainerKnapping) inventorySlots).requiresReset = false;
         }
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+        if (type == KnappingRecipe.Type.CLAY || type == KnappingRecipe.Type.FIRE_CLAY)
+        {
+            GlStateManager.color(1, 1, 1, 1);
+            mc.getTextureManager().bindTexture(type == KnappingRecipe.Type.CLAY ? CLAY_DISABLED_TEXTURE : FIRE_CLAY_DISABLED_TEXTURE);
+            for (GuiButton button : buttonList)
+            {
+                if (!button.visible)
+                {
+                    Gui.drawModalRectWithCustomSizedTexture(button.x, button.y, 0, 0, 16, 16, 16, 16);
+                }
+            }
+        }
     }
 
     @Override

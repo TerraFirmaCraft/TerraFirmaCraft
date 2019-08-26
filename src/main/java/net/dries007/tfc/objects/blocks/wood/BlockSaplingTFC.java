@@ -25,7 +25,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
@@ -139,8 +138,7 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     @Override
     public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, IBlockState iBlockState)
     {
-        TerraFirmaCraft.getLog().debug("canUseBoneMeal called");
-        return true;
+        return false;
     }
 
     @Override

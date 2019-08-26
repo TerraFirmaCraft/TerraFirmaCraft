@@ -37,6 +37,11 @@ public abstract class TEInventory extends TEBase implements ISlotCallback
         inventory = new ItemStackHandlerCallback(this, inventorySize);
     }
 
+    TEInventory(ItemStackHandler inventory)
+    {
+        this.inventory = inventory;
+    }
+
     @Override
     public void setAndUpdateSlots(int slot)
     {

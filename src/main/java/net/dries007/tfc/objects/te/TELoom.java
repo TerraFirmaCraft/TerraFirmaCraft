@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -44,16 +43,6 @@ public class TELoom extends TEInventory implements ITickable
         super(2);
     }
 
-    @Override
-    @Nonnull
-    public BlockLoom getBlockType()
-    {
-        Block block = super.getBlockType();
-        if (!(block instanceof BlockLoom))
-            throw new IllegalArgumentException("Block type is invalid; must be instance of BlockLoom");
-        return ((BlockLoom) block);
-    }
-
     @Nullable
     public Tree getWood()
     {
@@ -61,7 +50,7 @@ public class TELoom extends TEInventory implements ITickable
         {
             if (world != null)
             {
-                cachedWood = getBlockType().wood;
+                cachedWood = ((BlockLoom) world.getBlockState(pos).getBlock()).wood;
             }
         }
         return cachedWood;
@@ -100,11 +89,11 @@ public class TELoom extends TEInventory implements ITickable
         int time = (int) (world.getTotalWorldTime() - lastPushed);
         if (time < 10)
         {
-            return java.lang.Math.sin((java.lang.Math.PI / 20) * time) * 0.23125;
+            return Math.sin((Math.PI / 20) * time) * 0.23125;
         }
         else if (time < 20)
         {
-            return java.lang.Math.sin((java.lang.Math.PI / 20) * (20 - time)) * 0.23125;
+            return Math.sin((Math.PI / 20) * (20 - time)) * 0.23125;
         }
         return 0;
     }

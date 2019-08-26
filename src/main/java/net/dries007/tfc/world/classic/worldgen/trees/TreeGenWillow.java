@@ -21,6 +21,7 @@ import net.dries007.tfc.api.util.ITreeGenerator;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
 import net.dries007.tfc.world.classic.StructureHelper;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockLogTFC.PLACED;
@@ -100,7 +101,7 @@ public class TreeGenWillow implements ITreeGenerator
 
     private void tryPlaceLog(World world, BlockPos pos, Tree tree, BlockLog.EnumAxis axis)
     {
-        if (world.getBlockState(pos).getMaterial().isReplaceable() || world.getBlockState(pos).getBlock() instanceof BlockLeavesTFC)
+        if (world.getBlockState(pos).getMaterial().isReplaceable() || world.getBlockState(pos).getBlock() instanceof BlockSaplingTFC || world.getBlockState(pos).getBlock() instanceof BlockLeavesTFC)
             world.setBlockState(pos, BlockLogTFC.get(tree).getDefaultState().withProperty(LOG_AXIS, axis).withProperty(PLACED, false));
     }
 }

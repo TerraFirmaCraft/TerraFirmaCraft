@@ -38,11 +38,11 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.TFCSoundEvents;
 
 import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
 
@@ -186,7 +186,7 @@ public class BlockStoneAnvil extends Block implements IRockObject
             if (te.attemptWelding(playerIn))
             {
                 // Valid welding occurred.
-                worldIn.playSound(null, pos, TFCSoundEvents.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                worldIn.playSound(null, pos, TFCSounds.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
                 return true;
             }
         }

@@ -26,8 +26,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.util.LootTableListTFC;
-import net.dries007.tfc.util.TFCSoundEvents;
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -107,13 +107,13 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return TFCSoundEvents.ANIMAL_BEAR_HURT;
+        return TFCSounds.ANIMAL_BEAR_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return TFCSoundEvents.ANIMAL_BEAR_DEATH;
+        return TFCSounds.ANIMAL_BEAR_DEATH;
     }
 
     @Override
@@ -148,13 +148,13 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSoundEvents.ANIMAL_BEAR_CRY : TFCSoundEvents.ANIMAL_BEAR_SAY;
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_BEAR_CRY : TFCSounds.ANIMAL_BEAR_SAY;
     }
 
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTableListTFC.ANIMALS_BEAR;
+        return LootTablesTFC.ANIMALS_BEAR;
     }
 
     @Override

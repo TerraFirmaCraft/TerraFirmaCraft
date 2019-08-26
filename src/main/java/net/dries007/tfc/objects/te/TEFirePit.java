@@ -20,8 +20,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.dries007.tfc.objects.recipes.heat.HeatRecipe;
-import net.dries007.tfc.objects.recipes.heat.HeatRecipeManager;
+import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
 
@@ -40,6 +39,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
 
     public static final int FIELD_TEMPERATURE = 0;
 
+    private HeatRecipe cachedRecipe;
     private boolean requiresSlotUpdate = false;
     private float temperature; // Current Temperature
     private int burnTicks; // Ticks remaining on the current item of fuel
@@ -53,6 +53,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         temperature = 0;
         burnTemperature = 0;
         burnTicks = 0;
+        cachedRecipe = null;
     }
 
     @Override
@@ -112,27 +113,18 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
                 temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
             }
 
-            // Update items in slots
-            // Loop through input + 2 output slots
-            for (int i = SLOT_ITEM_INPUT; i < SLOT_ITEM_INPUT + 3; i++)
+            // The fire pit is nice: it will automatically move input to output for you, saving the trouble of losing the input due to melting / burning
+            ItemStack stack = inventory.getStackInSlot(SLOT_ITEM_INPUT);
+            IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+            if (cap != null)
             {
-                ItemStack stack = inventory.getStackInSlot(i);
-                IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                if (cap != null)
+                float itemTemp = cap.getTemperature();
+                if (temperature > itemTemp)
                 {
-                    float itemTemp = cap.getTemperature();
-                    if (temperature > itemTemp)
-                    {
-                        CapabilityItemHeat.addTemp(cap);
-                    }
-
-                    // This will melt + consume the input stack
-                    // Output stacks are assumed to not melt (see the case of ceramic molds in the output)
-                    if (cap.isMolten() && i == SLOT_ITEM_INPUT)
-                    {
-                        handleInputMelting(stack);
-                    }
+                    CapabilityItemHeat.addTemp(cap);
                 }
+
+                handleInputMelting(stack);
             }
         }
 
@@ -148,6 +140,9 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
     {
         this.markDirty();
         requiresSlotUpdate = true;
+
+        // Update cached recipe
+        cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_ITEM_INPUT));
     }
 
     @Override
@@ -158,6 +153,9 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         airTicks = nbt.getInteger("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
         super.readFromNBT(nbt);
+
+        // Update recipe cache
+        cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_ITEM_INPUT));
     }
 
     @Override
@@ -182,7 +180,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         switch (slot)
         {
             case SLOT_FUEL_INPUT: // Valid fuel if it is registered correctly
-                return FuelManager.isItemFuel(stack);
+                return FuelManager.isItemFuel(stack) && !FuelManager.isItemForgeFuel(stack);
             case SLOT_ITEM_INPUT: // Valid input as long as it can be heated
                 return stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
             case SLOT_OUTPUT_1:
@@ -269,13 +267,12 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
 
     private void handleInputMelting(ItemStack stack)
     {
-        HeatRecipe recipe = HeatRecipeManager.get(stack);
         IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
 
-        if (recipe != null && cap != null)
+        if (cachedRecipe != null && cap != null && cachedRecipe.isValidTemperature(cap.getTemperature()))
         {
             // Handle possible metal output
-            FluidStack fluidStack = recipe.getOutputMetal(stack);
+            FluidStack fluidStack = cachedRecipe.getOutputFluid(stack);
             float itemTemperature = cap.getTemperature();
             if (fluidStack != null)
             {
@@ -315,9 +312,12 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
                 }
             }
 
-            // Handle possible item output
-            ItemStack outputStack = recipe.getOutputStack(stack);
-            if (outputStack != null && !outputStack.isEmpty())
+            // Handle removal of input
+            ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM_INPUT);
+            ItemStack outputStack = cachedRecipe.getOutputStack(inputStack);
+
+            inputStack.shrink(1);
+            if (!outputStack.isEmpty())
             {
                 outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);
                 if (!outputStack.isEmpty())
@@ -325,10 +325,6 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
                     inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
                 }
             }
-
-            // Handle removal of input
-            ItemStack inputStack = recipe.consumeInput(stack);
-            inventory.setStackInSlot(SLOT_ITEM_INPUT, inputStack);
         }
     }
 }

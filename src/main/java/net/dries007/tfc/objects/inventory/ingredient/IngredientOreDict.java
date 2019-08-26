@@ -8,6 +8,8 @@ package net.dries007.tfc.objects.inventory.ingredient;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.util.OreDictionaryHelper;
 
@@ -25,6 +27,18 @@ public class IngredientOreDict implements IIngredient<ItemStack>
     {
         this.oreName = oreName;
         this.amount = amount;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getValidIngredients()
+    {
+        NonNullList<ItemStack> output = NonNullList.create();
+        for (ItemStack out : OreDictionary.getOres(oreName))
+        {
+            out.setCount(amount);
+            output.add(out);
+        }
+        return output;
     }
 
     @Override

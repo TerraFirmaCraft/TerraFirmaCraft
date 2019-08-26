@@ -11,11 +11,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.BlockBed;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -52,6 +53,30 @@ public class ItemAnimalHide extends ItemTFC
             TABLE.put(type, new HashMap<>());
         }
         TABLE.get(type).put(size, this);
+    }
+
+    @Nonnull
+    @Override
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos footPos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if (!worldIn.isRemote && this.size == HideSize.LARGE && facing == EnumFacing.UP && worldIn.getBlockState(footPos).getBlock() == BlocksTFC.THATCH && worldIn.getBlockState(footPos.offset(player.getHorizontalFacing())).getBlock() == BlocksTFC.THATCH)
+        {
+            ItemStack stack = player.getHeldItem(hand);
+            BlockPos headPos = footPos.offset(player.getHorizontalFacing());
+            //Creating a thatch bed
+            if (player.canPlayerEdit(footPos, facing, stack) && player.canPlayerEdit(headPos, facing, stack))
+            {
+                IBlockState footState = BlocksTFC.THATCH_BED.getDefaultState().withProperty(BlockBed.OCCUPIED, false).withProperty(BlockBed.FACING, player.getHorizontalFacing()).withProperty(BlockBed.PART, BlockBed.EnumPartType.FOOT);
+                IBlockState headState = BlocksTFC.THATCH_BED.getDefaultState().withProperty(BlockBed.OCCUPIED, false).withProperty(BlockBed.FACING, player.getHorizontalFacing().getOpposite()).withProperty(BlockBed.PART, BlockBed.EnumPartType.HEAD);
+                worldIn.setBlockState(footPos, footState, 10);
+                worldIn.setBlockState(headPos, headState, 10);
+                SoundType soundtype = BlocksTFC.THATCH_BED.getSoundType(footState, worldIn, footPos, player);
+                worldIn.playSound(null, footPos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+                stack.shrink(1);
+                return EnumActionResult.SUCCESS;
+            }
+        }
+        return EnumActionResult.PASS;
     }
 
     @Override

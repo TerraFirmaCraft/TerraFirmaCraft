@@ -25,12 +25,14 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Plant;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.TFCConstants;
@@ -39,7 +41,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockShortGrassTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.entity.EntitySeatOn;
-import net.dries007.tfc.world.classic.ClimateTFC;
+import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public final class Helpers
@@ -94,7 +96,7 @@ public final class Helpers
             {
                 if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS && rand.nextFloat() < 0.5f)
                 {
-                    float temp = ClimateTFC.getHeightAdjustedTemp(world, pos.up());
+                    float temp = ClimateTFC.getActualTemp(world, pos.up());
                     BlockShortGrassTFC plantBlock = BlockShortGrassTFC.get(plant);
 
                     if (world.isAirBlock(pos.up()) &&
@@ -107,6 +109,35 @@ public final class Helpers
                 }
             }
         }
+    }
+
+    /**
+     * Gets a map of generated ores for each chunk in radius.
+     * It takes account only loaded chunks, so if radius is too big you probably won't get an accurate data.
+     *
+     * @param world  the WorldObj
+     * @param chunkX the center chunk's X position
+     * @param chunkZ the center chunk's Z position
+     * @param radius the radius to scan. can be 0 to scan only the central chunk
+     * @return a map containing all ores generated for each chunk
+     */
+    public static Map<ChunkPos, Set<Ore>> getChunkOres(World world, int chunkX, int chunkZ, int radius)
+    {
+        Map<ChunkPos, Set<Ore>> map = new HashMap<>();
+        for (int x = chunkX - radius; x <= chunkX + radius; x++)
+        {
+            for (int z = chunkZ - radius; z <= chunkZ + radius; z++)
+            {
+                ChunkPos chunkPos = new ChunkPos(x, z);
+                if (world.isBlockLoaded(chunkPos.getBlock(8, 0, 8)))
+                {
+                    Chunk chunk = world.getChunk(x, z);
+                    ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
+                    map.put(chunkPos, chunkData.getChunkOres());
+                }
+            }
+        }
+        return map;
     }
 
     /**

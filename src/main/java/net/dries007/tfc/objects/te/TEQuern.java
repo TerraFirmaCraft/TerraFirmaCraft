@@ -11,6 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,7 +20,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 
-import net.dries007.tfc.api.recipes.QuernRecipe;
+import net.dries007.tfc.api.recipes.quern.QuernRecipe;
 import net.dries007.tfc.objects.items.ItemHandstone;
 import net.dries007.tfc.objects.items.ItemsTFC;
 
@@ -167,7 +168,7 @@ public class TEQuern extends TEInventory implements ITickable
         return inventory.extractItem(SLOT_OUTPUT, stack.getCount(), false);
     }
 
-    public void updateBlock()
+    private void updateBlock()
     {
         IBlockState state = world.getBlockState(pos);
         world.notifyBlockUpdate(pos, state, state, 3);
@@ -179,23 +180,15 @@ public class TEQuern extends TEInventory implements ITickable
         ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
         if (!inputStack.isEmpty())
         {
-            ItemStack resultStack = QuernRecipe.get(inputStack).getOutputItem(inputStack);
-            ItemStack outputStack = inventory.getStackInSlot(SLOT_OUTPUT);
-
-            if (outputStack.isEmpty())
+            QuernRecipe recipe = QuernRecipe.get(inputStack);
+            if (recipe != null && !world.isRemote)
             {
-                inventory.setStackInSlot(SLOT_OUTPUT, resultStack.copy());
-
-                inputStack.shrink(1);
-            }
-            else if (outputStack.getItem() == resultStack.getItem())
-            {
-                if (outputStack.getCount() + resultStack.getCount() <= outputStack.getMaxStackSize())
+                ItemStack leftover = inventory.insertItem(SLOT_OUTPUT, recipe.getOutputItem(inputStack), false);
+                if (!leftover.isEmpty())
                 {
-                    inventory.insertItem(SLOT_OUTPUT, resultStack, false);
-
-                    inputStack.shrink(1);
+                    InventoryHelper.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, leftover);
                 }
+                inputStack.shrink(1);
             }
         }
     }
