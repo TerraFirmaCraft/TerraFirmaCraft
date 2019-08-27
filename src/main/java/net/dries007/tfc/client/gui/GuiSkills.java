@@ -17,14 +17,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
-import net.dries007.tfc.api.capability.skill.Skill;
-import net.dries007.tfc.api.capability.skill.SkillType;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.skills.Skill;
+import net.dries007.tfc.util.skills.SkillType;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -109,7 +109,7 @@ public class GuiSkills extends GuiContainerTFC
     {
         skillsToDisplay = 0;
 
-        IPlayerSkills skills = playerInv.player.getCapability(CapabilityPlayerSkills.CAPABILITY, null);
+        IPlayerData skills = playerInv.player.getCapability(CapabilityPlayerData.CAPABILITY, null);
         if (skills != null)
         {
             List<SkillType<? extends Skill>> skillOrder = SkillType.getSkills();

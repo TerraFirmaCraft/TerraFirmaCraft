@@ -12,9 +12,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
-import net.dries007.tfc.api.capability.skill.Skill;
-import net.dries007.tfc.api.capability.skill.SkillTier;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 
 public class ProspectingSkill extends Skill
 {
@@ -23,7 +21,7 @@ public class ProspectingSkill extends Skill
     private final Set<BlockPos> foundPositions;
     private int level;
 
-    public ProspectingSkill(IPlayerSkills rootSkills)
+    public ProspectingSkill(IPlayerData rootSkills)
     {
         super(rootSkills);
         this.foundPositions = new HashSet<>(40);

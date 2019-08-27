@@ -21,15 +21,18 @@ import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCKeybindings;
 import net.dries007.tfc.client.gui.overlay.PlayerDataOverlay;
 import net.dries007.tfc.client.render.animal.RenderAnimalTFCFamiliarity;
-import net.dries007.tfc.command.*;
+import net.dries007.tfc.command.CommandFindVeins;
+import net.dries007.tfc.command.CommandHeat;
+import net.dries007.tfc.command.CommandStripWorld;
+import net.dries007.tfc.command.CommandTimeTFC;
 import net.dries007.tfc.network.*;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
@@ -149,7 +152,7 @@ public final class TerraFirmaCraft
         CapabilityForgeable.preInit();
         CapabilityFood.preInit();
         CapabilityEgg.preInit();
-        CapabilityPlayerSkills.preInit();
+        CapabilityPlayerData.preInit();
         CapabilityDamageResistance.preInit();
 
         if (event.getSide().isClient())
@@ -207,11 +210,9 @@ public final class TerraFirmaCraft
         }
 
         event.registerServerCommand(new CommandStripWorld());
-        event.registerServerCommand(new CommandGenTree());
         event.registerServerCommand(new CommandHeat());
         event.registerServerCommand(new CommandTimeTFC());
         event.registerServerCommand(new CommandFindVeins());
-        event.registerServerCommand(new CommandNutrients());
     }
 
     @Mod.EventHandler

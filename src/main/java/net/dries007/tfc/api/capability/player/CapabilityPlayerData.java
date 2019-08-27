@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.skill;
+package net.dries007.tfc.api.capability.player;
 
 import javax.annotation.Nullable;
 
@@ -15,19 +15,21 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.skills.Skill;
+import net.dries007.tfc.util.skills.SkillType;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
-public final class CapabilityPlayerSkills
+public final class CapabilityPlayerData
 {
-    @CapabilityInject(IPlayerSkills.class)
-    public static final Capability<IPlayerSkills> CAPABILITY = Helpers.getNull();
+    @CapabilityInject(IPlayerData.class)
+    public static final Capability<IPlayerData> CAPABILITY = Helpers.getNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "player_skills");
 
     public static void preInit()
     {
         // Player skills
-        CapabilityManager.INSTANCE.register(IPlayerSkills.class, new DumbStorage<>(), () -> null);
+        CapabilityManager.INSTANCE.register(IPlayerData.class, new DumbStorage<>(), () -> null);
     }
 
     /**
@@ -40,7 +42,7 @@ public final class CapabilityPlayerSkills
     @Nullable
     public static <S extends Skill> S getSkill(EntityPlayer player, SkillType<S> skillType)
     {
-        IPlayerSkills skills = player.getCapability(CAPABILITY, null);
+        IPlayerData skills = player.getCapability(CAPABILITY, null);
         if (skills != null)
         {
             return skills.getSkill(skillType);

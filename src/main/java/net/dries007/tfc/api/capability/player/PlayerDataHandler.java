@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.skill;
+package net.dries007.tfc.api.capability.player;
 
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -15,12 +15,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-public class PlayerSkillsHandler implements ICapabilitySerializable<NBTTagCompound>, IPlayerSkills
+import net.dries007.tfc.util.skills.Skill;
+import net.dries007.tfc.util.skills.SkillType;
+
+public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound>, IPlayerData
 {
     private final Map<String, Skill> skills;
     private final EntityPlayer player;
 
-    public PlayerSkillsHandler(EntityPlayer player)
+    public PlayerDataHandler(EntityPlayer player)
     {
         this.skills = SkillType.createSkillMap(this);
         this.player = player;
@@ -54,7 +57,7 @@ public class PlayerSkillsHandler implements ICapabilitySerializable<NBTTagCompou
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityPlayerSkills.CAPABILITY;
+        return capability == CapabilityPlayerData.CAPABILITY;
     }
 
     @Nullable
@@ -62,7 +65,7 @@ public class PlayerSkillsHandler implements ICapabilitySerializable<NBTTagCompou
     @SuppressWarnings("unchecked")
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityPlayerSkills.CAPABILITY ? (T) this : null;
+        return capability == CapabilityPlayerData.CAPABILITY ? (T) this : null;
     }
 
     @Nonnull

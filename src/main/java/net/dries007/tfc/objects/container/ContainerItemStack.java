@@ -138,12 +138,6 @@ public abstract class ContainerItemStack extends Container
 
     protected abstract void addContainerSlots();
 
-    @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer playerIn)
-    {
-        return true;
-    }
-
     protected void addPlayerInventorySlots(InventoryPlayer playerInv)
     {
         // Add Player Inventory Slots

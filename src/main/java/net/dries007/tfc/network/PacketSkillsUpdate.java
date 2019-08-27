@@ -14,8 +14,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 
 public class PacketSkillsUpdate implements IMessage
 {
@@ -51,7 +51,7 @@ public class PacketSkillsUpdate implements IMessage
                 EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
                 if (player != null)
                 {
-                    IPlayerSkills skills = player.getCapability(CapabilityPlayerSkills.CAPABILITY, null);
+                    IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
                     if (skills != null)
                     {
                         skills.deserializeNBT(message.skillsNbt);

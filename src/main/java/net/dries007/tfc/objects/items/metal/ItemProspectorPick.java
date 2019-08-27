@@ -27,11 +27,11 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
-import net.dries007.tfc.api.capability.skill.SkillType;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.skills.ProspectingSkill;
+import net.dries007.tfc.util.skills.SkillType;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
 
@@ -60,7 +60,7 @@ public class ItemProspectorPick extends ItemMetalTool
             if (!worldIn.isRemote)
             {
                 float falseNegativeChance = 0.3f;
-                ProspectingSkill skill = CapabilityPlayerSkills.getSkill(player, SkillType.PROSPECTING);
+                ProspectingSkill skill = CapabilityPlayerData.getSkill(player, SkillType.PROSPECTING);
 
                 // Damage item and set cooldown
                 player.getHeldItem(hand).damageItem(1, player);
