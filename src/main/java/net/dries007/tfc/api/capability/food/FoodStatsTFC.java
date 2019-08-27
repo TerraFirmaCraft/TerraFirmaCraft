@@ -30,7 +30,8 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 @ParametersAreNonnullByDefault
 public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
 {
-    public static final float PASSIVE_HEAL_AMOUNT = 20 * 0.0002f; // On the display: 1 HP / 5 second
+    public static final float PASSIVE_HEAL_AMOUNT = 20 * 0.0005f;
+    private static final float NUTRIENT_MODIFIER = 3;
 
     private final EntityPlayer sourcePlayer;
     private final FoodStats originalStats;
@@ -134,7 +135,6 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
                     addThirst(5f);
                 }
 
-                // Then, we decrement nutrients
                 for (int i = 0; i < nutrients.length; i++)
                 {
                     addNutrient(i, 5f);
@@ -143,16 +143,14 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         }
         else
         {
-            // First, we check exhaustion, to decrement thirst
+            // Match the exhaustion check in super
             if (originalStats.foodExhaustionLevel >= 4.0F)
             {
                 addThirst(-(float) ConfigTFC.GENERAL.playerThirstModifier);
-            }
-
-            // Then, we decrement nutrients
-            for (int i = 0; i < nutrients.length; i++)
-            {
-                addNutrient(i, -(float) ConfigTFC.GENERAL.playerNutritionDecayModifier);
+                for (int i = 0; i < nutrients.length; i++)
+                {
+                    addNutrient(i, -(float) ConfigTFC.GENERAL.playerNutritionDecayModifier);
+                }
             }
         }
 
@@ -341,7 +339,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
 
     private void addNutrient(int index, float amount)
     {
-        setNutrient(index, nutrients[index] + amount);
+        setNutrient(index, nutrients[index] + amount * NUTRIENT_MODIFIER);
     }
 
     private void setNutrient(int index, float amount)
