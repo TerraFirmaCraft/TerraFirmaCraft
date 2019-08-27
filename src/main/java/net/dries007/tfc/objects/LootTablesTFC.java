@@ -8,11 +8,13 @@ package net.dries007.tfc.objects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.util.loot.ApplySimpleSkill;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -42,6 +44,9 @@ public class LootTablesTFC
         ANIMALS_RABBIT = register("animals/rabbit");
         ANIMALS_WOLF = register("animals/wolf");
         ANIMALS_HORSE = register("animals/horse");
+
+        // Loot function for skill drop multiplier
+        LootFunctionManager.registerFunction(new ApplySimpleSkill.Serializer(new ResourceLocation(MOD_ID, "apply_skill")));
     }
 
     @SubscribeEvent

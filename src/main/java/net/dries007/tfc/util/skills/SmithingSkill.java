@@ -9,9 +9,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
-import net.dries007.tfc.api.capability.skill.Skill;
-import net.dries007.tfc.api.capability.skill.SkillTier;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 
 public class SmithingSkill extends Skill
 {
@@ -22,7 +20,7 @@ public class SmithingSkill extends Skill
 
     private int generalLevel, toolsLevel, weaponsLevel, armorLevel;
 
-    public SmithingSkill(IPlayerSkills rootSkills)
+    public SmithingSkill(IPlayerData rootSkills)
     {
         super(rootSkills);
     }

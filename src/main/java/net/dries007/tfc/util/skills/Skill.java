@@ -3,16 +3,14 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.skill;
+package net.dries007.tfc.util.skills;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.network.PacketSkillsUpdate;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 
 /**
  * A wrapper interface for a single skill. The individual skill class should have methods to add skill
@@ -21,11 +19,11 @@ import net.dries007.tfc.network.PacketSkillsUpdate;
  */
 public abstract class Skill implements INBTSerializable<NBTTagCompound>
 {
-    private final IPlayerSkills rootSkills;
+    private final IPlayerData playerData;
 
-    public Skill(IPlayerSkills rootSkills)
+    public Skill(IPlayerData playerData)
     {
-        this.rootSkills = rootSkills;
+        this.playerData = playerData;
     }
 
     /**
@@ -43,13 +41,20 @@ public abstract class Skill implements INBTSerializable<NBTTagCompound>
     public abstract float getLevel();
 
     /**
+     * Helper function to calculate the total progress of the skill
+     *
+     * @return a value between [0, 1]
+     */
+    public float getTotalLevel()
+    {
+        return 0.25f * (getTier().ordinal() + getLevel());
+    }
+
+    /**
      * Subclasses should call this when the skill updates
      */
-    protected void updateAndSync()
+    protected final void updateAndSync()
     {
-        if (rootSkills.getPlayer() instanceof EntityPlayerMP)
-        {
-            TerraFirmaCraft.getNetwork().sendTo(new PacketSkillsUpdate(rootSkills.serializeNBT()), (EntityPlayerMP) rootSkills.getPlayer());
-        }
+        playerData.updateAndSync();
     }
 }

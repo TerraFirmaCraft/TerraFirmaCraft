@@ -54,13 +54,13 @@ import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
+import net.dries007.tfc.api.capability.player.IPlayerData;
+import net.dries007.tfc.api.capability.player.PlayerDataHandler;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
-import net.dries007.tfc.api.capability.skill.PlayerSkillsHandler;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
@@ -341,9 +341,9 @@ public final class CommonEventHandler
         {
             // Player skills
             EntityPlayer player = (EntityPlayer) event.getObject();
-            if (!player.hasCapability(CapabilityPlayerSkills.CAPABILITY, null))
+            if (!player.hasCapability(CapabilityPlayerData.CAPABILITY, null))
             {
-                event.addCapability(CapabilityPlayerSkills.KEY, new PlayerSkillsHandler(player));
+                event.addCapability(CapabilityPlayerData.KEY, new PlayerDataHandler(player));
             }
         }
     }
@@ -388,7 +388,7 @@ public final class CommonEventHandler
             }
 
             // Skills
-            IPlayerSkills skills = player.getCapability(CapabilityPlayerSkills.CAPABILITY, null);
+            IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
             if (skills != null)
             {
                 TerraFirmaCraft.getNetwork().sendTo(new PacketSkillsUpdate(skills.serializeNBT()), player);

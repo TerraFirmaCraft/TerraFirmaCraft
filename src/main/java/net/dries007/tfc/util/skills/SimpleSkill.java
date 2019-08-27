@@ -9,34 +9,39 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
-import net.dries007.tfc.api.capability.skill.Skill;
-import net.dries007.tfc.api.capability.skill.SkillTier;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 
 public class SimpleSkill extends Skill
 {
     private float amount;
-    private SkillTier tier;
 
-    public SimpleSkill(IPlayerSkills rootSkills)
+    public SimpleSkill(IPlayerData rootSkills)
     {
         super(rootSkills);
-
         this.amount = 0;
-        this.tier = SkillTier.NOVICE;
     }
 
     @Override
     @Nonnull
     public SkillTier getTier()
     {
-        return tier;
+        return SkillTier.valueOf((int) amount);
     }
 
     @Override
     public float getLevel()
     {
-        return amount;
+        return 0.25f * amount;
+    }
+
+    public void add(float amount)
+    {
+        this.amount += amount;
+        if (this.amount > 4f)
+        {
+            this.amount = 4f;
+        }
+        updateAndSync();
     }
 
     @Override
@@ -44,7 +49,6 @@ public class SimpleSkill extends Skill
     {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setFloat("amount", amount);
-        nbt.setInteger("tier", tier.ordinal());
         return nbt;
     }
 
@@ -54,7 +58,6 @@ public class SimpleSkill extends Skill
         if (nbt != null)
         {
             amount = nbt.getFloat("amount");
-            tier = SkillTier.valueOf(nbt.getInteger("tier"));
         }
     }
 }
