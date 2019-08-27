@@ -10,8 +10,13 @@
           "name": "tfc:food/rabbit",
           "functions": [
             {
-              "function": "set_count",
-              "count": 1
+              "function": "tfc:apply_skill",
+              "skill": "butchering",
+              "add": 0.12,
+              "count": {
+                "min": 10,
+                "max": 14
+              }
             },
             {
               "function": "looting_enchant",

@@ -10,10 +10,12 @@
           "name": "minecraft:feather",
           "functions": [
             {
-              "function": "set_count",
+              "function": "tfc:apply_skill",
+              "skill": "butchering",
+              "add": 0.08,
               "count": {
-                "min": 0,
-                "max": 2
+                "min": 16,
+                "max": 20
               }
             },
             {

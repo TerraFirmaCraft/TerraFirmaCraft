@@ -10,8 +10,13 @@
           "name": "tfc:food/horse_meat",
           "functions": [
             {
-              "function": "set_count",
-              "count": 1
+              "function": "tfc:apply_skill",
+              "skill": "butchering",
+              "add": 0.12,
+              "count": {
+                "min": 16,
+                "max": 20
+              }
             },
             {
               "function": "looting_enchant",
