@@ -11,12 +11,10 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -29,7 +27,6 @@ import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
@@ -95,17 +92,6 @@ public class ItemBloom extends ItemTFC implements IMetalItem
     public boolean canMelt(ItemStack stack)
     {
         return meltable;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-    {
-        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-        if (cap instanceof IForgeableMeasurable)
-        {
-            tooltip.add(I18n.format("tfc.tooltip.units", ((IForgeableMeasurable) cap).getMetalAmount()));
-        }
     }
 
     @SideOnly(Side.CLIENT)

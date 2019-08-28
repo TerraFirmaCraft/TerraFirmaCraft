@@ -32,7 +32,6 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlockMolten;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.fuel.FuelManager;
 
@@ -266,14 +265,17 @@ public class TEBloomery extends TEInventory implements ITickable
                     }
                 }
             }
-            else if (stack.getItem() instanceof ItemOreTFC)
+            else
             {
-                ItemOreTFC metal = (ItemOreTFC) stack.getItem();
-                if (metal.getMetal(stack) == Metal.WROUGHT_IRON || metal.getMetal(stack) == Metal.PIG_IRON)
+                IMetalItem cap = CapabilityMetalItem.getMetalItem(stack);
+                if (cap != null && (cap.getMetal(stack) == Metal.WROUGHT_IRON || cap.getMetal(stack) == Metal.PIG_IRON))
                 {
+                    if (oreStacks.size() < maxOre)
+                    {
+                        markDirty();
+                    }
                     while (oreStacks.size() < maxOre)
                     {
-                        this.markDirty();
                         oreStacks.add(stack.splitStack(1));
                         if (stack.getCount() <= 0)
                         {
