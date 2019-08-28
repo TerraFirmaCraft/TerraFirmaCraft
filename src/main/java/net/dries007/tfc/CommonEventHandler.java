@@ -53,13 +53,17 @@ import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
+import net.dries007.tfc.api.capability.forge.ForgeableHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.capability.skill.PlayerSkillsHandler;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
@@ -329,6 +333,22 @@ public final class CommonEventHandler
         if (stack.getItem() == Items.EGG && !stack.hasCapability(CapabilityEgg.CAPABILITY, null))
         {
             event.addCapability(CapabilityEgg.KEY, new EggHandler());
+        }
+
+        ICapabilityProvider metalCapability = CapabilityMetalItem.getCustomMetalItem(stack);
+        if (metalCapability != null)
+        {
+            event.addCapability(CapabilityMetalItem.KEY, metalCapability);
+            //Bundle a forgeable capability for this item, if none is found
+            if (!stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null))
+            {
+                IMetalItem cap = (IMetalItem) metalCapability;
+                Metal metal = cap.getMetal(stack);
+                if (metal != null)
+                {
+                    event.addCapability(CapabilityForgeable.KEY, new ForgeableHandler(null, metal.getSpecificHeat(), metal.getMeltTemp()));
+                }
+            }
         }
     }
 

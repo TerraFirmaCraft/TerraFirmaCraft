@@ -91,7 +91,7 @@ public class CTLeatherKnapping
                 @Override
                 public void apply()
                 {
-                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.ANVIL;
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.KNAPPING;
                     modRegistry.remove(recipe.getRegistryName());
                 }
 

@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.blocks.wood;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -39,11 +40,14 @@ public class BlockBookshelfTFC extends Block
         setHardness(2.0F).setResistance(5.0F);
         setHarvestLevel("axe", 0);
         OreDictionaryHelper.register(this, "bookshelf");
+        //noinspection ConstantConditions
+        OreDictionaryHelper.register(this, "bookshelf", wood.getRegistryName().getPath());
         Blocks.FIRE.setFireInfo(this, 30, 20);
     }
 
     @SideOnly(Side.CLIENT)
     @Override
+    @Nonnull
     public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT_MIPPED;

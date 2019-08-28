@@ -16,15 +16,15 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemSmallOre extends ItemTFC implements IMetalObject
+public class ItemSmallOre extends ItemTFC implements IMetalItem
 {
     private static final Map<Ore, ItemSmallOre> MAP = new HashMap<>();
 
@@ -48,9 +48,7 @@ public class ItemSmallOre extends ItemTFC implements IMetalObject
             throw new IllegalStateException("There can only be one.");
         }
         setMaxDamage(0);
-        OreDictionaryHelper.register(this, "ore");
         //noinspection ConstantConditions
-        OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath());
         OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath(), "small");
     }
 

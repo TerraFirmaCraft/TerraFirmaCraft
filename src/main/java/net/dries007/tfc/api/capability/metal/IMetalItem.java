@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.util;
+package net.dries007.tfc.api.capability.metal;
 
 import java.util.List;
 import javax.annotation.Nullable;
@@ -19,8 +19,9 @@ import net.dries007.tfc.util.Helpers;
 
 /*
  * Must be on Item or Block (with ItemBlock, i.e. do not implement on blocks that have a separate item block)
+ * Also, has a capability interface
  */
-public interface IMetalObject
+public interface IMetalItem
 {
     /**
      * @param stack the item stack. This can assume that it is of the right item type and do casts without checking

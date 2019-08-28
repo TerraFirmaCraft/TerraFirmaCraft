@@ -21,6 +21,7 @@ import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.util.TFCConstants;
@@ -150,6 +151,7 @@ public final class TerraFirmaCraft
         CapabilityEgg.preInit();
         CapabilityPlayerSkills.preInit();
         CapabilityDamageResistance.preInit();
+        CapabilityMetalItem.preInit();
 
         if (event.getSide().isClient())
         {
