@@ -82,7 +82,7 @@ public class BlockRockVariantConnected extends BlockRockVariantFallable
             {
                 worldIn.setBlockToAir(pos);
                 pos1 = pos1.down();
-                while (canFallThrough(worldIn.getBlockState(pos1)) && pos1.getY() > 0)
+                while (canFallThrough(worldIn, pos1) && pos1.getY() > 0)
                 {
                     pos1 = pos1.down();
                 }

@@ -93,6 +93,10 @@ public class ItemJug extends ItemPottery
                         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
                     }
                 }
+                else
+                {
+                    player.world.playSound(null, player.getPosition(), TFCSounds.JUG_BLOW, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                }
             }
         }
         return ActionResult.newResult(EnumActionResult.PASS, stack);

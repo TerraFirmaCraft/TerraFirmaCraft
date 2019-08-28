@@ -36,6 +36,7 @@ public class BlockFluidTFC extends BlockFluidClassic
     {
         this(fluid, material);
         this.canCreateSources = canCreateSources;
+        setHardness(100.0F);
     }
 
     @Override
