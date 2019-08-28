@@ -238,6 +238,15 @@ config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=If true, this will 
 config.tfc.general.peacefulDifficultyPassiveRegeneration=Peaceful Difficulty Passive Stats Regen
 config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?
 
+config.tfc.general.regenSticksRocks=Stick And Rocks Regeneration
+config.tfc.general.regenSticksRocks.tooltip=How fast sticks and rocks regenerate, in scale of days. Use 0 to disable it entirely.
+
+config.tfc.general.regenPlants=Plants Regeneration
+config.tfc.general.regenPlants.tooltip=How fast plants regenerate, in scale of months. Use 0 to disable it entirely.
+
+config.tfc.general.regenCrops=Wild Crops and Berry Bushes Regeneration
+config.tfc.general.regenCrops.tooltip=How fast wild crops and berry bushes regenerate, in scale of months. Use 0 to disable it entirely.
+
 ## Client Config
 config.tfc.general.woodenBucketWhitelist=Wooden Bucket Fluid Whitelist
 config.tfc.general.woodenBucketWhitelist.tooltip=Allowed fluids to be picked up by the wooden bucket.
