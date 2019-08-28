@@ -42,9 +42,8 @@ public class ItemBrickTFC extends ItemTFC implements IRockObject
         this.rock = rock;
         if (MAP.put(rock, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
-        OreDictionaryHelper.register(this, "ingot", "brick");
-        OreDictionaryHelper.register(this, "ingot", "brick", rock);
-        OreDictionaryHelper.register(this, "ingot", "brick", rock.getRockCategory());
+        OreDictionaryHelper.register(this, "brick");
+        OreDictionaryHelper.register(this, "brick", rock.getRockCategory());
     }
 
     @Nonnull
