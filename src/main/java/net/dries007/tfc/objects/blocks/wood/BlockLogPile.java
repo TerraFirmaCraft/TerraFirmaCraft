@@ -35,7 +35,6 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
-import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
 
@@ -159,13 +158,14 @@ public class BlockLogPile extends Block implements ILightableBlock
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (!worldIn.isRemote && te instanceof TEInventory)
+        TELogPile te = Helpers.getTE(worldIn, pos, TELogPile.class);
+        if (te != null)
         {
-            ((TEInventory) te).onBreakBlock(worldIn, pos);
+            te.onBreakBlock(worldIn, pos);
         }
-        super.harvestBlock(worldIn, player, pos, state, te, stack);
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
