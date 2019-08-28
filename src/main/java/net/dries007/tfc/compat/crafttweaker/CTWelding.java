@@ -99,7 +99,7 @@ public class CTWelding
                 @Override
                 public void apply()
                 {
-                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.ANVIL;
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.WELDING;
                     modRegistry.remove(recipe.getRegistryName());
                 }
 

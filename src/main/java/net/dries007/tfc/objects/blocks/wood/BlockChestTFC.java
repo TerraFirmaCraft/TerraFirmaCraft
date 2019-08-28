@@ -46,10 +46,14 @@ public class BlockChestTFC extends BlockChest
             case BASIC:
                 if (MAP_BASIC.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
                 OreDictionaryHelper.register(this, "chest");
+                //noinspection ConstantConditions
+                OreDictionaryHelper.register(this, "chest", wood.getRegistryName().getPath());
                 break;
             case TRAP:
                 if (MAP_TRAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
-                OreDictionaryHelper.register(this, "chest", "chestTrapped");
+                OreDictionaryHelper.register(this, "chest", "trapped");
+                //noinspection ConstantConditions
+                OreDictionaryHelper.register(this, "chest", "trapped", wood.getRegistryName().getPath());
                 break;
             default:
                 throw new IllegalStateException();
