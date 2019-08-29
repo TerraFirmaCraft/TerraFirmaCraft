@@ -29,6 +29,7 @@ import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.layer.IntCache;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.terraingen.InitMapGenEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.registries.ForgeRegistry;
@@ -138,7 +139,7 @@ public class ChunkGenTFC implements IChunkGenerator
     private final int[] seaLevelOffsetMap = new int[256];
     private final int[] chunkHeightMap = new int[256];
 
-    private final MapGenCavesTFC caveGen;
+    private final MapGenBase caveGen;
     private final MapGenBase surfaceRavineGen;
     private final MapGenBase ravineGen;
     private final MapGenBase riverRavineGen;
@@ -177,7 +178,7 @@ public class ChunkGenTFC implements IChunkGenerator
         phGenLayer = GenPHLayer.initialize(seed + 10);
         drainageGenLayer = GenDrainageLayer.initialize(seed + 11);
 
-        caveGen = new MapGenCavesTFC(rockLayer1, stabilityLayer);
+        caveGen = TerrainGen.getModdedMapGen(new MapGenCavesTFC(rockLayer1, stabilityLayer), InitMapGenEvent.EventType.CAVE);
         surfaceRavineGen = new MapGenRavineTFC(s.surfaceRavineRarity, s.surfaceRavineHeight, s.surfaceRavineVariability);
         ravineGen = new MapGenRavineTFC(s.ravineRarity, s.ravineHeight, s.ravineVariability);
         riverRavineGen = new MapGenRiverRavine(s.riverRavineRarity);
@@ -219,7 +220,11 @@ public class ChunkGenTFC implements IChunkGenerator
         CustomChunkPrimer chunkPrimerOut = new CustomChunkPrimer();
         replaceBlocksForBiomeHigh(chunkX, chunkZ, chunkPrimerIn, chunkPrimerOut);
 
-        caveGen.setRainfall(rainfall);
+        if (caveGen instanceof MapGenCavesTFC)
+        {
+            // Since this may be replaced by other mods (we give them the option, since 1.12 caves are bad)
+            ((MapGenCavesTFC) caveGen).setRainfall(rainfall);
+        }
         caveGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
         surfaceRavineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
         ravineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
