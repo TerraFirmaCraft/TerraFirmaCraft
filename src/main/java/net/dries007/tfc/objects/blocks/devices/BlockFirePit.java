@@ -41,15 +41,26 @@ import net.dries007.tfc.util.Helpers;
 @ParametersAreNonnullByDefault
 public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILightableBlock
 {
-    private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.03125D, 0.9375D);
+    private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0.0D, 0, 1, 0.125, 1);
 
     public BlockFirePit()
     {
-        super(Material.FIRE);
+        super(Material.WOOD);
         setDefaultState(blockState.getBaseState().withProperty(LIT, false));
         disableStats();
         setTickRandomly(true);
         setLightLevel(1F);
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TEFirePit tile = Helpers.getTE(worldIn, pos, TEFirePit.class);
+        if (tile != null)
+        {
+            tile.onBreakBlock(worldIn, pos);
+        }
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
