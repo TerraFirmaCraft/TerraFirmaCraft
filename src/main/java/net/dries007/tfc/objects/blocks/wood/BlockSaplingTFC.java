@@ -144,6 +144,6 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     @Override
     public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
     {
-        wood.makeTree(world, blockPos, random);
+        wood.makeTree(world, blockPos, random, false);
     }
 }

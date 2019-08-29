@@ -29,7 +29,7 @@ public interface ITreeGenerator
      * @param tree    The tree type to spawn
      * @param rand    A random to use in generation
      */
-    void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand);
+    void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand, boolean isWorldGen);
 
     /**
      * Checks if a tree can be generated. This implementation checks height, radius, and light level

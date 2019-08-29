@@ -28,7 +28,7 @@ import static net.minecraft.block.BlockLog.LOG_AXIS;
 public class TreeGenBushes implements ITreeGenerator
 {
     @Override
-    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
+    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand, boolean isWorldGen)
     {
         IBlockState leaves = BlockLeavesTFC.get(tree).getDefaultState().withProperty(DECAYABLE, true);
 

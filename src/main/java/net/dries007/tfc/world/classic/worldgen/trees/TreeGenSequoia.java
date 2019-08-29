@@ -35,7 +35,7 @@ public class TreeGenSequoia implements ITreeGenerator
     private IBlockState trunk;
 
     @Override
-    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
+    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand, boolean isWorldGen)
     {
         final int baseVariant = 1 + rand.nextInt(3);
         final int topVariant = 1 + rand.nextInt(3);

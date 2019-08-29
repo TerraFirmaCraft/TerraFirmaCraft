@@ -42,8 +42,9 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
     private final float maxDensity;
     private final float burnTemp;
     private final int burnTicks;
-    // Used when growing a tree
-    private final ITreeGenerator gen;
+
+    /* This is open to be replaced, i.e. for dynamic trees */
+    private ITreeGenerator generator;
 
     /**
      * This is a registry object that will create a number of things:
@@ -57,7 +58,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      * provide optional values that you can change
      *
      * @param name             the ResourceLocation registry name of this tree
-     * @param gen              the generator that should be called to generate this tree, both during world gen and when growing from a sapling
+     * @param generator              the generator that should be called to generate this tree, both during world gen and when growing from a sapling
      * @param minTemp          min temperature
      * @param maxTemp          max temperature
      * @param minRain          min rainfall
@@ -74,7 +75,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      * @param burnTemp         the temperature at which this will burn in a fire pit or similar
      * @param burnTicks        the number of ticks that this will burn in a fire pit or similar
      */
-    public Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator gen, float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, float dominance, int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, boolean hasBushes, boolean canMakeTannin, float minGrowthTime, float burnTemp, int burnTicks)
+    public Tree(@Nonnull ResourceLocation name, @Nonnull ITreeGenerator generator, float minTemp, float maxTemp, float minRain, float maxRain, float minDensity, float maxDensity, float dominance, int maxGrowthRadius, int maxHeight, int maxDecayDistance, boolean isConifer, boolean hasBushes, boolean canMakeTannin, float minGrowthTime, float burnTemp, int burnTicks)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -93,36 +94,37 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         this.burnTemp = burnTemp;
         this.burnTicks = burnTicks;
 
-        this.gen = gen;
+        this.generator = generator;
         setRegistryName(name);
     }
 
-    public void makeTreeWithoutChecking(TemplateManager manager, World world, BlockPos pos, Random rand)
+    public boolean makeTree(TemplateManager manager, World world, BlockPos pos, Random rand, boolean isWorldGen)
     {
-        gen.generateTree(manager, world, pos, this, rand);
-    }
-
-    public boolean makeTree(TemplateManager manager, World world, BlockPos pos, Random rand)
-    {
-        if (gen.canGenerateTree(world, pos, this))
+        if (generator.canGenerateTree(world, pos, this))
         {
-            makeTreeWithoutChecking(manager, world, pos, rand);
+            generator.generateTree(manager, world, pos, this, rand, isWorldGen);
             return true;
         }
         return false;
     }
 
-    public void makeTree(World world, BlockPos pos, Random rand)
+    public void makeTree(World world, BlockPos pos, Random rand, boolean isWorldGen)
     {
         if (!world.isRemote)
         {
-            makeTree(((WorldServer) world).getStructureTemplateManager(), world, pos, rand);
+            makeTree(((WorldServer) world).getStructureTemplateManager(), world, pos, rand, isWorldGen);
         }
     }
 
     public boolean isValidLocation(float temp, float rain, float density)
     {
         return minTemp <= temp && maxTemp >= temp && minRain <= rain && maxRain >= rain && minDensity <= density && maxDensity >= density;
+    }
+
+    @SuppressWarnings("unused")
+    public void setTreeGenerator(ITreeGenerator generator)
+    {
+        this.generator = generator;
     }
 
     public int getMaxGrowthRadius()
