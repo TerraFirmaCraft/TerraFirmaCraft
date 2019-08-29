@@ -6,8 +6,7 @@
   ],
   "key": {
     "X": {
-      "type": "forge:ore_dict",
-      "ore": "sawBladeRedSteel"
+      "item": "tfc:metal/saw_blade/red_steel"
     },
     "S": {
       "type": "forge:ore_dict",

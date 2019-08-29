@@ -6,8 +6,7 @@
   ],
   "key": {
     "X": {
-      "type": "forge:ore_dict",
-      "ore": "pickHeadBlackSteel"
+      "item": "tfc:metal/pick_head/black_steel"
     },
     "S": {
       "type": "forge:ore_dict",

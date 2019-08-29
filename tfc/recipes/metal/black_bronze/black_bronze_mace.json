@@ -6,8 +6,7 @@
   ],
   "key": {
     "X": {
-      "type": "forge:ore_dict",
-      "ore": "maceHeadBlackBronze"
+      "item": "tfc:metal/mace_head/black_bronze"
     },
     "S": {
       "type": "forge:ore_dict",

@@ -6,8 +6,7 @@
   ],
   "key": {
     "X": {
-      "type": "forge:ore_dict",
-      "ore": "scytheBladeCopper"
+      "item": "tfc:metal/scythe_blade/copper"
     },
     "S": {
       "type": "forge:ore_dict",
