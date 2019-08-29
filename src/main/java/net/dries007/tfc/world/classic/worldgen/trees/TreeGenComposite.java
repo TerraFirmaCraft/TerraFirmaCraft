@@ -35,7 +35,7 @@ public class TreeGenComposite implements ITreeGenerator
     }
 
     @Override
-    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
+    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand, boolean isWorldGen)
     {
         if (gens.isEmpty())
             return;
@@ -46,7 +46,7 @@ public class TreeGenComposite implements ITreeGenerator
             countWeight += entry.getKey();
             if (countWeight >= r)
             {
-                entry.getValue().generateTree(manager, world, pos, tree, rand);
+                entry.getValue().generateTree(manager, world, pos, tree, rand, isWorldGen);
                 return;
             }
         }

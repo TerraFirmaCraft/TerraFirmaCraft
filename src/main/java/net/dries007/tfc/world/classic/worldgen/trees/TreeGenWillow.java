@@ -40,8 +40,9 @@ public class TreeGenWillow implements ITreeGenerator
     private Template structureOverlay;
 
     @Override
-    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
+    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand, boolean isWorldGen)
     {
+        //noinspection ConstantConditions
         ResourceLocation base = new ResourceLocation(TFCConstants.MOD_ID, tree.getRegistryName().getPath() + "/base");
         ResourceLocation overlay = new ResourceLocation(TFCConstants.MOD_ID, tree.getRegistryName().getPath() + "/overlay");
 

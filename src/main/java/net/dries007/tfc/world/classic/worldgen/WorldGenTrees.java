@@ -73,7 +73,7 @@ public class WorldGenTrees implements IWorldGenerator
                 final int x = chunkX * 16 + random.nextInt(16) + 8;
                 final int z = chunkZ * 16 + random.nextInt(16) + 8;
                 final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
-                extra.makeTree(manager, world, pos, random);
+                extra.makeTree(manager, world, pos, random, true);
             }
             return;
         }
@@ -93,7 +93,7 @@ public class WorldGenTrees implements IWorldGenerator
                 final Tree tree = getTree(trees, density, random);
 
                 checkedPositions.add(column);
-                if (tree.makeTree(manager, world, pos, random))
+                if (tree.makeTree(manager, world, pos, random, true))
                 {
                     treesPlaced++;
                 }
@@ -113,7 +113,7 @@ public class WorldGenTrees implements IWorldGenerator
 
                 if (GEN_BUSHES.canGenerateTree(world, pos, tree))
                 {
-                    GEN_BUSHES.generateTree(manager, world, pos, tree, random);
+                    GEN_BUSHES.generateTree(manager, world, pos, tree, random, true);
                 }
             }
         }

@@ -44,7 +44,7 @@ public class TreeGenNormal implements ITreeGenerator
     }
 
     @Override
-    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand)
+    public void generateTree(TemplateManager manager, World world, BlockPos pos, Tree tree, Random rand, boolean isWorldGen)
     {
         ResourceLocation base = new ResourceLocation(tree.getRegistryName() + "/base");
         ResourceLocation overlay = new ResourceLocation(tree.getRegistryName() + "/overlay");
