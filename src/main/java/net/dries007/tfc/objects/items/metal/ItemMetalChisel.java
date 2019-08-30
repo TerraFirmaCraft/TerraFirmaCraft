@@ -38,7 +38,7 @@ public class ItemMetalChisel extends ItemMetalTool
     private static final int[] STAIR_PATTERN_INDICES = {0, 3, 4, 6, 7, 8};
     private static final int[] SLAB_PATTERN_INDICES = {0, 1, 2};
 
-    private static final int COOLDOWN = 10;
+    private static final int COOLDOWN = 10; // todo: make cooldown scale by metal tier
 
     public ItemMetalChisel(Metal metal, Metal.ItemType type)
     {
