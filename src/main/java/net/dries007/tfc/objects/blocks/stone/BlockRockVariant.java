@@ -140,7 +140,10 @@ public class BlockRockVariant extends Block
                 setHarvestLevel("shovel", 0);
                 break;
         }
-        OreDictionaryHelper.registerRockType(this, type, rock);
+        if (type != Rock.Type.SPIKE) //since spikes don't generate ItemBlocks
+        {
+            OreDictionaryHelper.registerRockType(this, type, rock);
+        }
     }
 
     public BlockRockVariant getVariant(Rock.Type t)
