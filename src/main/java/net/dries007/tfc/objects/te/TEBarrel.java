@@ -256,14 +256,17 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);
                 FluidStack inputFluid = tank.getFluid();
                 BarrelRecipe instantRecipe = BarrelRecipe.getInstant(inputStack, inputFluid);
-                if (instantRecipe != null)
+                if (instantRecipe != null && inputFluid != null)
                 {
-                    tank.setFluid(instantRecipe.getOutputFluid(inputFluid, inputStack));
-                    inventory.setStackInSlot(SLOT_ITEM, instantRecipe.getOutputItem(inputFluid, inputStack));
-                    instantRecipe.onRecipeComplete(world, pos);
+                    if (inputStack.getCount() >= inputFluid.amount / instantRecipe.getFluidIngredient().getAmount())
+                    {
+                        tank.setFluid(instantRecipe.getOutputFluid(inputFluid, inputStack));
+                        inventory.setStackInSlot(SLOT_ITEM, instantRecipe.getOutputItem(inputFluid, inputStack));
+                        instantRecipe.onRecipeComplete(world, pos);
 
-                    IBlockState state = world.getBlockState(pos);
-                    world.notifyBlockUpdate(pos, state, state, 3);
+                        IBlockState state = world.getBlockState(pos);
+                        world.notifyBlockUpdate(pos, state, state, 3);
+                    }
                 }
                 else checkInstantRecipe = false;
             }
