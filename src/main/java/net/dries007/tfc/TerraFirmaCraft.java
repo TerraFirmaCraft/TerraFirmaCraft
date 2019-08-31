@@ -213,6 +213,7 @@ public final class TerraFirmaCraft
         event.registerServerCommand(new CommandTimeTFC());
         event.registerServerCommand(new CommandFindVeins());
         event.registerServerCommand(new CommandNutrients());
+        event.registerServerCommand(new CommandDebugInfo());
     }
 
     @Mod.EventHandler
