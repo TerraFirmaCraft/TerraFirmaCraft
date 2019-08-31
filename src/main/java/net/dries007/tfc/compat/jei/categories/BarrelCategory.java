@@ -16,10 +16,10 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.compat.jei.BaseRecipeCategory;
-import net.dries007.tfc.compat.jei.wrappers.BarrelWrapper;
+import net.dries007.tfc.compat.jei.wrappers.BarrelRecipeWrapper;
 
 @ParametersAreNonnullByDefault
-public class BarrelCategory extends BaseRecipeCategory<BarrelWrapper>
+public class BarrelCategory extends BaseRecipeCategory<BarrelRecipeWrapper>
 {
     private static final ResourceLocation ICONS = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/jei/icons.png");
     private static final ResourceLocation BARREL_TEXTURES = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/barrel.png");
@@ -58,7 +58,7 @@ public class BarrelCategory extends BaseRecipeCategory<BarrelWrapper>
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, BarrelWrapper recipeWrapper, IIngredients ingredients)
+    public void setRecipe(IRecipeLayout recipeLayout, BarrelRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
         itemStackGroup.init(0, true, 25, 22);

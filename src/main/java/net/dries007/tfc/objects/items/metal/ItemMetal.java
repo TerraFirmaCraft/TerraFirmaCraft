@@ -58,6 +58,10 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             {
                 OreDictionaryHelper.register(this, "ingot", "double", "Any", "Bronze");
             }
+            if (metal == Metal.WROUGHT_IRON)
+            {
+                OreDictionaryHelper.register(this, "ingot", "double", "Iron");
+            }
         }
         else if (type == Metal.ItemType.DOUBLE_SHEET)
         {
@@ -65,6 +69,10 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             if (metal == Metal.BRONZE || metal == Metal.BISMUTH_BRONZE || metal == Metal.BLACK_BRONZE)
             {
                 OreDictionaryHelper.register(this, "sheet", "double", "Any", "Bronze");
+            }
+            if (metal == Metal.WROUGHT_IRON)
+            {
+                OreDictionaryHelper.register(this, "sheet", "double", "Iron");
             }
         }
         else if (type.isToolItem())
@@ -78,6 +86,19 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             {
                 OreDictionaryHelper.register(this, type, "Any", "Bronze");
             }
+            if (type == Metal.ItemType.SHEET)
+            {
+                OreDictionaryHelper.register(this, "plate", metal);
+            }
+            if (metal == Metal.WROUGHT_IRON)
+            {
+                OreDictionaryHelper.register(this, type, "Iron");
+                if (type == Metal.ItemType.SHEET) //Register plate for iron too
+                {
+                    OreDictionaryHelper.register(this, "plate", "Iron");
+                }
+            }
+
         }
 
         if (type == Metal.ItemType.TUYERE)
