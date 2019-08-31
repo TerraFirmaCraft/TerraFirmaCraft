@@ -163,13 +163,13 @@ public final class DefaultMetals
             new Metal(BLACK_STEEL, TIER_V, true, 0.35f, 1485, 0xFF111111, ToolMaterialsTFC.BLACK_STEEL, ArmorMaterialTFC.BLACK_STEEL),
             new Metal(BLUE_STEEL, TIER_VI, true, 0.35f, 1540, 0xFF2D5596, ToolMaterialsTFC.BLUE_STEEL, ArmorMaterialTFC.BLUE_STEEL),
             new Metal(RED_STEEL, TIER_VI, true, 0.35f, 1540, 0xFF700503, ToolMaterialsTFC.RED_STEEL, ArmorMaterialTFC.RED_STEEL),
-            new Metal(WEAK_STEEL, TIER_V, false, 0.35f, 1540, 0xFF111111, null, null),
+            new Metal(WEAK_STEEL, TIER_IV, false, 0.35f, 1540, 0xFF111111, null, null),
             new Metal(WEAK_BLUE_STEEL, TIER_V, false, 0.35f, 1540, 0xFF2D5596, null, null),
             new Metal(WEAK_RED_STEEL, TIER_V, false, 0.35f, 1540, 0xFF700503, null, null),
             new Metal(HIGH_CARBON_STEEL, TIER_III, false, 0.35f, 1540, 0xFF5F5F5F, null, null),
             new Metal(HIGH_CARBON_BLUE_STEEL, TIER_V, false, 0.35f, 1540, 0xFF2D5596, null, null),
             new Metal(HIGH_CARBON_RED_STEEL, TIER_V, false, 0.35f, 1540, 0xFF700503, null, null),
-            new Metal(HIGH_CARBON_BLACK_STEEL, TIER_V, false, 0.35f, 1540, 0xFF111111, null, null),
+            new Metal(HIGH_CARBON_BLACK_STEEL, TIER_IV, false, 0.35f, 1540, 0xFF111111, null, null),
             new Metal(UNKNOWN, TIER_I, false, 0.5f, 1250, 0xFF2F2B27, null, null)
         );
     }
