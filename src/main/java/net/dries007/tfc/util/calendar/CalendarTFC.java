@@ -66,7 +66,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     };
 
     public static final int DEFAULT_DAYS_IN_MONTH = 8;
-    public static final int DEFAULT_CALENDAR_TIME_OFFSET = (6 * DEFAULT_DAYS_IN_MONTH * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
+    public static final int DEFAULT_CALENDAR_TIME_OFFSET = (5 * DEFAULT_DAYS_IN_MONTH * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
 
     static
     {

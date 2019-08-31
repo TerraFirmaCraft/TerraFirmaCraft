@@ -50,7 +50,6 @@ public class BiomeProviderTFC extends BiomeProvider
     @Override
     public GenLayer[] getModdedBiomeGenerators(WorldType worldType, long seed, GenLayer[] original)
     {
-        original = GenLayerTFC.initialize2(seed);
-        return super.getModdedBiomeGenerators(worldType, seed, original);
+        return GenLayerTFC.initialize2(seed);
     }
 }
