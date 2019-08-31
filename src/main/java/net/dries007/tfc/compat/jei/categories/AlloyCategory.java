@@ -19,10 +19,10 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.compat.jei.BaseRecipeCategory;
-import net.dries007.tfc.compat.jei.wrappers.AlloyWrapper;
+import net.dries007.tfc.compat.jei.wrappers.AlloyRecipeWrapper;
 
 @ParametersAreNonnullByDefault
-public class AlloyCategory extends BaseRecipeCategory<AlloyWrapper>
+public class AlloyCategory extends BaseRecipeCategory<AlloyRecipeWrapper>
 {
     private static final ResourceLocation ICONS = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/jei/icons.png");
 
@@ -52,7 +52,7 @@ public class AlloyCategory extends BaseRecipeCategory<AlloyWrapper>
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, AlloyWrapper recipeWrapper, IIngredients ingredients)
+    public void setRecipe(IRecipeLayout recipeLayout, AlloyRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
         itemStackGroup.init(0, true, 0, 12);

@@ -19,11 +19,11 @@ import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.util.calendar.ICalendar;
 
 @ParametersAreNonnullByDefault
-public class BarrelWrapper implements IRecipeWrapper
+public class BarrelRecipeWrapper implements IRecipeWrapper
 {
     private BarrelRecipe recipe;
 
-    public BarrelWrapper(BarrelRecipe recipe)
+    public BarrelRecipeWrapper(BarrelRecipe recipe)
     {
         this.recipe = recipe;
     }

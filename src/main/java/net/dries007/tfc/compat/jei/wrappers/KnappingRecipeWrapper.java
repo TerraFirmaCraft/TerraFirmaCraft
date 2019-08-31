@@ -28,7 +28,7 @@ import static net.dries007.tfc.api.recipes.knapping.KnappingRecipe.Type.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class KnappingWrapper implements IRecipeWrapper
+public class KnappingRecipeWrapper implements IRecipeWrapper
 {
     private static final ResourceLocation CLAY_DISABLED_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_disabled.png");
     private static final ResourceLocation FIRE_CLAY_DISABLED_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_fire_disabled.png");
@@ -42,7 +42,7 @@ public class KnappingWrapper implements IRecipeWrapper
 
     private KnappingRecipe recipe;
 
-    public KnappingWrapper(KnappingRecipe recipe)
+    public KnappingRecipeWrapper(KnappingRecipe recipe)
     {
         this.recipe = recipe;
     }
