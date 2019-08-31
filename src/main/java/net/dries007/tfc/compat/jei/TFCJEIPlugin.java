@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.jei;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,7 +101,11 @@ public final class TFCJEIPlugin implements IModPlugin
             .collect(Collectors.toList());
 
         registry.addRecipes(weldList, WELDING_UID);
-        for (Metal metal : TFCRegistries.METALS.getValuesCollection())
+        List<Metal> tierOrdered = TFCRegistries.METALS.getValuesCollection()
+            .stream()
+            .sorted(Comparator.comparingInt(metal -> metal.getTier().ordinal()))
+            .collect(Collectors.toList());
+        for (Metal metal : tierOrdered)
         {
             if (Metal.ItemType.ANVIL.hasType(metal))
             {
