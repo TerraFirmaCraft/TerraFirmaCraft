@@ -91,6 +91,10 @@ public class ChunkGenTFC implements IChunkGenerator
     private static final IWorldGenerator BERRY_BUSH_GEN = new WorldGenBerryBushes();
     private static final IWorldGenerator FRUIT_TREE_GEN = new WorldGenFruitTrees();
     private static final IWorldGenerator LOOSE_ROCKS_GEN = new WorldGenLooseRocks(true);
+    private static final IWorldGenerator STALACTITE_GEN = new WorldGenSpikes(true, 300);
+    private static final IWorldGenerator STALAGMITE_GEN = new WorldGenSpikes(false, 300);
+    private static final IWorldGenerator WATERFALL_GEN = new WorldGenFalls(FRESH_WATER, 50);
+    private static final IWorldGenerator LAVAFALL_GEN = new WorldGenFalls(Blocks.FLOWING_LAVA.getDefaultState(), 15); //Todo change this if TFC implements it's own lava. Using static lava here makes the falls static
     private static final IWorldGenerator SNOW_ICE_GEN = new WorldGenSnowIce();
 
     static
@@ -299,6 +303,10 @@ public class ChunkGenTFC implements IChunkGenerator
 
         // Finally
         LOOSE_ROCKS_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
+        WATERFALL_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
+        LAVAFALL_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
+        STALACTITE_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
+        STALAGMITE_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
         SNOW_ICE_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
 
         if (TerrainGen.populate(this, world, rand, chunkX, chunkZ, false, ANIMALS))
