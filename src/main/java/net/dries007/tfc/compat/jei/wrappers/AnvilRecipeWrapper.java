@@ -55,6 +55,11 @@ public class AnvilRecipeWrapper extends SimpleRecipeWrapper
             int y = step.getY() - 7;
             Gui.drawScaledCustomSizeModalRect(x, y, step.getU(), step.getV(), 32, 32, 16, 16, 256, 256);
         }
+        //Draw tier requirement info
+        String text = I18n.format("tfc.enum.tier." + recipe.getTier().name().toLowerCase());
+        float xPos = 20f - minecraft.fontRenderer.getStringWidth(text) / 2.0f;
+        float yPos = 33f;
+        minecraft.fontRenderer.drawString(text, xPos, yPos, 0x000000, false);
         //Please don't optimize this, if you do, #drawHoveringText will cause everything that is drawed afterwards to be glitchy.
         for (int i = 0; i < recipe.getRules().length; i++)
         {

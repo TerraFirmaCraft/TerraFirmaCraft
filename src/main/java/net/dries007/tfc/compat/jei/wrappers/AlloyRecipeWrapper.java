@@ -21,12 +21,12 @@ import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class AlloyWrapper implements IRecipeWrapper
+public class AlloyRecipeWrapper implements IRecipeWrapper
 {
     private String[] slotContent = {"", "", "", ""};
     private AlloyRecipe recipe;
 
-    public AlloyWrapper(AlloyRecipe recipe)
+    public AlloyRecipeWrapper(AlloyRecipe recipe)
     {
         this.recipe = recipe;
     }

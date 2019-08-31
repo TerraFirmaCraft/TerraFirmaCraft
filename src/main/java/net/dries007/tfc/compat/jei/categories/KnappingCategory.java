@@ -17,12 +17,12 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import net.dries007.tfc.compat.jei.BaseRecipeCategory;
-import net.dries007.tfc.compat.jei.wrappers.KnappingWrapper;
+import net.dries007.tfc.compat.jei.wrappers.KnappingRecipeWrapper;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class KnappingCategory extends BaseRecipeCategory<KnappingWrapper>
+public class KnappingCategory extends BaseRecipeCategory<KnappingRecipeWrapper>
 {
     private static final ResourceLocation KNAP_TEXTURES = new ResourceLocation(MOD_ID, "textures/gui/knapping.png");
 
@@ -43,7 +43,7 @@ public class KnappingCategory extends BaseRecipeCategory<KnappingWrapper>
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, KnappingWrapper recipeWrapper, IIngredients ingredients)
+    public void setRecipe(IRecipeLayout recipeLayout, KnappingRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
         itemStackGroup.init(0, true, 116, 32);
