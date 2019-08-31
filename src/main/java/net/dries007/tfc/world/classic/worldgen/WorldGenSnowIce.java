@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.world.classic.worldgen;
 
 import java.util.Random;
@@ -33,7 +38,7 @@ public class WorldGenSnowIce implements IWorldGenerator
                     BlockPos posDown = pos.down();
                     IBlockState stateAt = world.getBlockState(posDown);
                     float actualTemp = ClimateTFC.getActualTemp(world, posDown);
-                    if (actualTemp < IceMeltHandler.ICE_MELT_THRESHOLD - 2 + 2 * (rand.nextFloat() - rand.nextFloat()) && stateAt.getBlock() == ChunkGenTFC.FRESH_WATER.getBlock())
+                    if (actualTemp < IceMeltHandler.ICE_MELT_THRESHOLD - 4 + 4 * (rand.nextFloat() - rand.nextFloat()) && stateAt.getBlock() == ChunkGenTFC.FRESH_WATER.getBlock())
                     {
                         world.setBlockState(posDown, ChunkGenTFC.FRESH_WATER_ICE);
                     }

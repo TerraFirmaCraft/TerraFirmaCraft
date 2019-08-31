@@ -53,6 +53,11 @@ public class BlockRockVariant extends Block
 
     public static BlockRockVariant get(Rock rock, Rock.Type type)
     {
+        //noinspection ConstantConditions
+        if (rock == null)
+        {
+            return TABLE.get(Rock.GRANITE).get(type);
+        }
         return TABLE.get(rock).get(type);
     }
 
