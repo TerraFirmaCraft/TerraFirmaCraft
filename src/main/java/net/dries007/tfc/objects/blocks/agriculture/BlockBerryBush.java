@@ -20,6 +20,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -215,7 +216,7 @@ public class BlockBerryBush extends Block
             entityIn.motionY *= 0.1D;
         }
         entityIn.motionZ *= 0.1D;
-        if (bush.isSpiky())
+        if (bush.isSpiky() && entityIn instanceof EntityLivingBase)
         {
             entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
         }
