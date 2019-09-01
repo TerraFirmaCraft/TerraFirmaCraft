@@ -5,32 +5,32 @@
 
 package net.dries007.tfc.api.types;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.common.ToolType;
+import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.ObjectHolder;
 
-import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.objects.blocks.stone.*;
-import net.dries007.tfc.objects.items.rock.*;
+import net.dries007.tfc.objects.blocks.stone.CollapsibleStoneBlock;
+import net.dries007.tfc.objects.blocks.stone.RawStoneBlock;
+import net.dries007.tfc.objects.blocks.stone.StoneBlock;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.gen.rock.RockCategory;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.api.types.Rock.FallingBlockType.*;
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
-/**
- * todo: document API
- */
-public class Rock extends IForgeRegistryEntry.Impl<Rock>
+public class Rock extends ForgeRegistryEntry<Rock>
 {
-    @GameRegistry.ObjectHolder("tfc:granite")
+    @ObjectHolder("tfc:granite")
     public static final Rock GRANITE = Helpers.getNull();
-    @GameRegistry.ObjectHolder("tfc:basalt")
+    @ObjectHolder("tfc:basalt")
     public static final Rock BASALT = Helpers.getNull();
 
     private final RockCategory rockCategory;
@@ -41,18 +41,14 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
     {
         //noinspection ConstantConditions
         if (rockCategory == null)
+        {
             throw new IllegalArgumentException("Rock category is not allowed to be null (on rock " + name + ")");
+        }
 
         setRegistryName(name);
         this.rockCategory = rockCategory;
         this.textureLocation = new ResourceLocation(MOD_ID, "textures/blocks/stonetypes/raw/" + name.getPath() + ".png");
         this.isFluxStone = isFluxStone;
-    }
-
-    public Rock(@Nonnull ResourceLocation name, @Nonnull ResourceLocation categoryName, boolean isFluxStone)
-    {
-        //noinspection ConstantConditions
-        this(name, TFCRegistries.ROCK_CATEGORIES.getValue(categoryName), isFluxStone);
     }
 
     /**
@@ -65,7 +61,7 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         return textureLocation;
     }
 
-    public RockCategory getRockCategory()
+    public RockCategory getCategory()
     {
         return rockCategory;
     }
@@ -82,6 +78,7 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         return getRegistryName().getPath();
     }
 
+    /*
     public enum ToolType
     {
         AXE(ItemRockAxe::new, " X   ", "XXXX ", "XXXXX", "XXXX ", " X   "),
@@ -110,86 +107,94 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
             return pattern;
         }
     }
+    */
+
 
     public enum Type
     {
-        RAW(Material.ROCK, FALL_VERTICAL, false, BlockRockRaw::new),
-        SMOOTH(Material.ROCK, NO_FALL, false),
-        COBBLE(Material.ROCK, FALL_HORIZONTAL, false),
-        BRICKS(Material.ROCK, NO_FALL, false),
-        SAND(Material.SAND, FALL_HORIZONTAL, false),
-        GRAVEL(Material.SAND, FALL_HORIZONTAL, false),
-        DIRT(Material.GROUND, FALL_HORIZONTAL, false),
-        GRASS(Material.GRASS, FALL_HORIZONTAL, true),
-        DRY_GRASS(Material.GRASS, FALL_HORIZONTAL, true),
-        CLAY(Material.CLAY, FALL_VERTICAL, false),
-        CLAY_GRASS(Material.GRASS, FALL_VERTICAL, true),
-        FARMLAND(Material.GROUND, FALL_VERTICAL, false, BlockFarmlandTFC::new),
-        PATH(Material.GROUND, FALL_VERTICAL, false, BlockPathTFC::new);
+        RAW(FALL_VERTICAL, rock -> new RawStoneBlock(rock, Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
+        SMOOTH(NO_FALL, rock -> new StoneBlock(rock, Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
+        COBBLE(FALL_HORIZONTAL, rock -> new CollapsibleStoneBlock(rock, Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
+        BRICKS(NO_FALL, rock -> new StoneBlock(rock, Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2.0f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
+        GRAVEL(FALL_HORIZONTAL, rock -> new CollapsibleStoneBlock(rock, Block.Properties.create(Material.SAND, MaterialColor.STONE).sound(SoundType.STONE).hardnessAndResistance(0.8f).harvestLevel(0).harvestTool(ToolType.SHOVEL)));
+        //SAND(Material.SAND, FALL_HORIZONTAL, false),
+        //DIRT(Material.GROUND, FALL_HORIZONTAL, false),
+        //GRASS(Material.GRASS, FALL_HORIZONTAL, true),
+        //DRY_GRASS(Material.GRASS, FALL_HORIZONTAL, true),
+        //CLAY(Material.CLAY, FALL_VERTICAL, false),
+        //CLAY_GRASS(Material.GRASS, FALL_VERTICAL, true),
+        //FARMLAND(Material.GROUND, FALL_VERTICAL, false, BlockFarmlandTFC::new),
+        //PATH(Material.GROUND, FALL_VERTICAL, false, BlockPathTFC::new);
 
-        public final Material material;
-        public final boolean isGrass;
+        //public final Material material;
+        //public final boolean isGrass;
 
-        private final FallingBlockType gravType;
-        private final BiFunction<Type, Rock, BlockRockVariant> supplier;
+        private final FallingBlockType gravityType;
+        private final Function<Rock, StoneBlock> supplier;
 
-        Type(Material material, FallingBlockType gravType, boolean isGrass)
+        Type(FallingBlockType gravityType, Function<Rock, StoneBlock> supplier)
         {
-            // If no fall + no grass, then normal. If it can fall, then either fallable or fallable + connected (since grass always falls)
-            this(material, gravType, isGrass, (gravType == NO_FALL && !isGrass) ? BlockRockVariant::new :
-                (isGrass ? BlockRockVariantConnected::new : BlockRockVariantFallable::new));
-        }
-
-        Type(Material material, FallingBlockType gravType, boolean isGrass, BiFunction<Type, Rock, BlockRockVariant> supplier)
-        {
-            this.material = material;
-            this.gravType = gravType;
-            this.isGrass = isGrass;
+            this.gravityType = gravityType;
             this.supplier = supplier;
         }
 
+        //Type(Material material, FallingBlockType gravityType, boolean isGrass)
+        //{
+        //    // If no fall + no grass, then normal. If it can fall, then eiether fallable or fallable + connected (since grass always falls)
+        //    this(material, gravityType, isGrass, (gravityType == NO_FALL && !isGrass) ? StoneBlock::new :
+        //            (isGrass ? BlockRockVariantConnected::new : BlockRockVariantFallable::new));
+        //}
+
+        //Type(Material material, FallingBlockType gravityType, boolean isGrass, BiFunction<Type, Rock, StoneBlock> supplier)
+        //{
+        //    this.material = material;
+        //    this.gravityType = gravityType;
+        //    this.isGrass = isGrass;
+        //    this.supplier = supplier;
+        //}
+
         public boolean canFall()
         {
-            return gravType != NO_FALL;
+            return gravityType != NO_FALL;
         }
 
         public boolean canFallHorizontal()
         {
-            return gravType == FALL_HORIZONTAL;
+            return gravityType == FALL_HORIZONTAL;
         }
 
-        public BlockRockVariant create(Rock rock)
+        public StoneBlock create(Rock rock)
         {
-            return supplier.apply(this, rock);
+            return supplier.apply(rock);
         }
 
-        public Type getNonGrassVersion()
-        {
-            if (!isGrass) return this;
-            switch (this)
-            {
-                case GRASS:
-                    return DIRT;
-                case DRY_GRASS:
-                    return DIRT;
-                case CLAY_GRASS:
-                    return CLAY;
-            }
-            throw new IllegalStateException("Someone forgot to add enum constants to this switch case...");
-        }
-
-        public Type getGrassVersion(Type spreader)
-        {
-            if (!spreader.isGrass) throw new IllegalArgumentException("Non-grass can't spread.");
-            switch (this)
-            {
-                case DIRT:
-                    return spreader == DRY_GRASS ? DRY_GRASS : GRASS;
-                case CLAY:
-                    return CLAY_GRASS;
-            }
-            throw new IllegalArgumentException("You cannot get grass from rock types.");
-        }
+        //public Type getNonGrassVersion()
+        //{
+        //    if (!isGrass) return this;
+        //    switch (this)
+        //    {
+        //        case GRASS:
+        //            return DIRT;
+        //        case DRY_GRASS:
+        //            return DIRT;
+        //        case CLAY_GRASS:
+        //            return CLAY;
+        //    }
+        //    throw new IllegalStateException("Someone forgot to add enum constants to this switch case...");
+        //}
+//
+        //public Type getGrassVersion(Type spreader)
+        //{
+        //    if (!spreader.isGrass) throw new IllegalArgumentException("Non-grass can't spread.");
+        //    switch (this)
+        //    {
+        //        case DIRT:
+        //            return spreader == DRY_GRASS ? DRY_GRASS : GRASS;
+        //        case CLAY:
+        //            return CLAY_GRASS;
+        //    }
+        //    throw new IllegalArgumentException("You cannot get grass from rock types.");
+        //}
     }
 
     public enum FallingBlockType
