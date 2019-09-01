@@ -49,20 +49,20 @@ public final class BiomesTFC
     {
         IForgeRegistry<Biome> r = event.getRegistry();
 
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Ocean").setBaseHeight(1-3.6f).setHeightVariation(-2.69999f)), false, true, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " River").setBaseHeight(0.9f-3.2f).setHeightVariation(-3f)), false, false, BiomeDictionary.Type.RIVER, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Beach").setBaseHeight(1-2.69f).setHeightVariation(-2.68f)), false, false, BiomeDictionary.Type.BEACH);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Gravel Beach").setBaseHeight(1-2.69f).setHeightVariation(-2.68f).setBaseBiome("tfc:beach")), false, false, BiomeDictionary.Type.BEACH);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High Hills").setBaseHeight(1-1.9000001f).setHeightVariation(-1.1f)), false, true, BiomeDictionary.Type.HILLS);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Plains").setBaseHeight(1-2.6000001f).setHeightVariation(-2.54f)).setSpawnBiome(), true, true, BiomeDictionary.Type.PLAINS);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Swampland").setBaseHeight(1-2.8f).setHeightVariation(-2.6000001f), 16, 45).setSpawnBiome(), true, true, BiomeDictionary.Type.SWAMP);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High Hills Edge").setBaseHeight(1-2.5f).setHeightVariation(-2.3f).setBaseBiome("tfc:high_hills")), false, false, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.PLAINS);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Rolling Hills").setBaseHeight(1-2.6000001f).setHeightVariation(-2.3f)).setSpawnBiome(), true, true, BiomeDictionary.Type.HILLS);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains").setBaseHeight(1-1.9000001f).setHeightVariation(-1.1f)).setSpawnBiome(), true, true, BiomeDictionary.Type.MOUNTAIN);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains Edge").setBaseHeight(1-2.3f).setHeightVariation(-1.9000001f).setBaseBiome("tfc:mountains")), true, false, BiomeDictionary.Type.MOUNTAIN);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High Plains").setBaseHeight(1-2.3f).setHeightVariation(-2.27f)).setSpawnBiome(), true, true, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.PLAINS);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Deep Ocean").setBaseHeight(1-4.2f).setHeightVariation(0.2f-2.69999f).setBaseBiome("tfc:ocean")), false, false, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
-        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(0.8f-3.2f).setHeightVariation(0.1f-2.6990001f).setBaseBiome("tfc:ocean"), 4, 5), false, false, BiomeDictionary.Type.RIVER, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Ocean").setBaseHeight(-2.6f).setHeightVariation(-2.69999f)), false, true, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " River").setBaseHeight(-2.3f).setHeightVariation(-3f)), false, false, BiomeDictionary.Type.RIVER, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Beach").setBaseHeight(-1.69f).setHeightVariation(-2.68f)), false, false, BiomeDictionary.Type.BEACH);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Gravel Beach").setBaseHeight(-1.69f).setHeightVariation(-2.68f).setBaseBiome("tfc:beach")), false, false, BiomeDictionary.Type.BEACH);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High Hills").setBaseHeight(-0.9000001f).setHeightVariation(-1.1f)), false, true, BiomeDictionary.Type.HILLS);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Plains").setBaseHeight(-1.6000001f).setHeightVariation(-2.54f)).setSpawnBiome(), true, true, BiomeDictionary.Type.PLAINS);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Swampland").setBaseHeight(-1.8f).setHeightVariation(-2.6000001f), 16, 45).setSpawnBiome(), true, true, BiomeDictionary.Type.SWAMP);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High Hills Edge").setBaseHeight(-1.5f).setHeightVariation(-2.3f).setBaseBiome("tfc:high_hills")), false, false, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.PLAINS);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Rolling Hills").setBaseHeight(-1.6000001f).setHeightVariation(-2.3f)).setSpawnBiome(), true, true, BiomeDictionary.Type.HILLS);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains").setBaseHeight(-0.9000001f).setHeightVariation(-1.1f)).setSpawnBiome(), true, true, BiomeDictionary.Type.MOUNTAIN);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Mountains Edge").setBaseHeight(-1.3f).setHeightVariation(-1.9000001f).setBaseBiome("tfc:mountains")), true, false, BiomeDictionary.Type.MOUNTAIN);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High Plains").setBaseHeight(-1.3f).setHeightVariation(-2.27f)).setSpawnBiome(), true, true, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.PLAINS);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Deep Ocean").setBaseHeight(-3.2f).setHeightVariation(-2.49999f).setBaseBiome("tfc:ocean")), false, false, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
+        register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-2.4f).setHeightVariation(-2.5990001f).setBaseBiome("tfc:ocean"), 4, 5), false, false, BiomeDictionary.Type.RIVER, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
 
     }
 
