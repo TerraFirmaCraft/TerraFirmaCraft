@@ -148,6 +148,9 @@ public class ChunkGenTFC implements IChunkGenerator
     private final MapGenBase ravineGen;
     private final MapGenBase riverRavineGen;
 
+    private final int seaLevel = 32;
+    private final int yOffset = 112;
+
     private int[] rockLayer1 = new int[256];
     private int[] rockLayer2 = new int[256];
     private int[] rockLayer3 = new int[256];
@@ -407,7 +410,7 @@ public class ChunkGenTFC implements IChunkGenerator
                             {
                                 if ((var47 += var49) > 0.0D)
                                     primer.setBlockState(x * 4 + xx, y * 8 + yy, z * 4 + zz, STONE);
-                                else if (y * 8 + yy < 16)
+                                else if (y * 8 + yy < seaLevel)
                                     primer.setBlockState(x * 4 + xx, y * 8 + yy, z * 4 + zz, SALT_WATER);
                                 else primer.setBlockState(x * 4 + xx, y * 8 + yy, z * 4 + zz, AIR);
                             }
@@ -527,8 +530,9 @@ public class ChunkGenTFC implements IChunkGenerator
 
     private void replaceBlocksForBiomeHigh(int chunkX, int chunkZ, ChunkPrimer inp, CustomChunkPrimer outp)
     {
-        final int seaLevel = 16;
-        final int yOffset = 128;
+        //System.out.println(Arrays.deepToString(chunkHeightMap));
+
+
         double var6 = 0.03125D;
         noiseGen4.generateNoiseOctaves(noise4, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, var6 * 4.0D, var6, var6 * 4.0D);
         boolean[] cliffMap = new boolean[256];
@@ -560,20 +564,33 @@ public class ChunkGenTFC implements IChunkGenerator
                     if (!BiomesTFC.isBeachBiome(getBiomeOffset(x, z))) cliffMap[colIndex] = true;
                 }
 
-                int h = 0;
-                for (int y = 127; y >= 0; y--)
+
+                //Used to make better rivers
+                int nonRiverTiles = 0;
+                int nonBeachTiles = 0;
+                for (int a = x - 1; a <= x + 1; a++)
+                {
+                    for (int b = z - 1; b <= z + 1; b++)
+                    {
+                        Biome BiomeAtOffset = getBiomeOffset(a, b);
+                        if (!BiomesTFC.isRiverBiome(BiomeAtOffset))
+                        {
+                            nonRiverTiles++;
+                        }
+                        if (!BiomesTFC.isBeachBiome(BiomeAtOffset) && !BiomesTFC.isOceanicBiome(BiomeAtOffset) && BiomeAtOffset != BiomesTFC.DEEP_OCEAN && BiomeAtOffset != BiomesTFC.OCEAN)
+                        {
+                            nonBeachTiles++;
+                        }
+                    }
+                }
+
+                int highestStone = 0;
+
+                for (int y = 255 - yOffset; y >= 0; y--)
                 {
                     /*
                      * HIGH PART (yOffset is used)
                      */
-
-                    float temp = averageTemp - ClimateHelper.heightFactor(y + yOffset);
-                    if (BiomesTFC.isBeachBiome(biome) && y + yOffset > seaLevel + h && inp.getBlockState(x, y + yOffset, z) == STONE)
-                    {
-                        inp.setBlockState(x, y + yOffset, z, AIR);
-                        if (h == 0) h = (y + yOffset - 16) / 4;
-                    }
-
                     if (outp.isEmpty(x, y + yOffset, z))
                     {
                         outp.setBlockState(x, y + yOffset, z, inp.getBlockState(x, y, z));
@@ -584,6 +601,47 @@ public class ChunkGenTFC implements IChunkGenerator
                                 outp.setBlockState(x, y + yOffset + upCount, z, AIR);
                             }
                         }
+                    }
+
+                    if (outp.getBlockState(x, y + yOffset, z) == STONE)
+                    {
+                        highestStone = Math.max(highestStone, y);
+                    }
+
+                    int highestBeachTheoretical = (highestStone - seaLevel) / 4 + seaLevel;
+                    int beachCliffHeight = nonBeachTiles > 0 ? (int) ((highestStone - highestBeachTheoretical) * (nonBeachTiles) / 6.0 + highestBeachTheoretical) : highestBeachTheoretical;
+
+                    //Redo cliffs
+                    if (BiomesTFC.isBeachBiome(biome) && y > seaLevel && outp.getBlockState(x, y + yOffset, z) != AIR && y >= beachCliffHeight)
+                    {
+                        inp.setBlockState(x, y, z, AIR);
+                        outp.setBlockState(x, y + yOffset, z, AIR);
+                    }
+                    //Ensure rivers can't get blocked
+                    if (BiomesTFC.isRiverBiome(biome) && y >= seaLevel - 2 && outp.getBlockState(x, y + yOffset, z) != AIR)
+                    {
+
+                        if (nonRiverTiles > 0)
+                        {
+                            if (y >= seaLevel - 1)
+                            {
+                                inp.setBlockState(x, y, z, y >= seaLevel ? AIR : SALT_WATER);
+                                outp.setBlockState(x, y + yOffset, z, y >= seaLevel ? AIR : SALT_WATER);
+                            }
+                        }
+                        else
+                        {
+                            inp.setBlockState(x, y, z, y >= seaLevel ? AIR : SALT_WATER);
+                            outp.setBlockState(x, y + yOffset, z, y >= seaLevel ? AIR : SALT_WATER);
+                        }
+
+
+                        //outp.setBlockState(x, y + yOffset, z, y >= seaLevel ? AIR : SALT_WATER);
+                    }
+                    else if (!BiomesTFC.isRiverBiome(biome) && nonRiverTiles < 9 && outp.getBlockState(x, y + yOffset, z) == STONE && ((y >= ((highestStone - seaLevel) / (10 - nonRiverTiles) + seaLevel)) || (nonRiverTiles <= 5 && y >= seaLevel)))
+                    {
+                        inp.setBlockState(x, y, z, y >= seaLevel ? AIR : SALT_WATER);
+                        outp.setBlockState(x, y + yOffset, z, y >= seaLevel ? AIR : SALT_WATER);
                     }
 
                     if (outp.getBlockState(x, y + yOffset, z) == STONE)
@@ -653,15 +711,15 @@ public class ChunkGenTFC implements IChunkGenerator
                             }
 
                             // Determine the soil depth based on world y
-                            int dirtH = Math.max(8 - ((y + 96 - WorldTypeTFC.SEALEVEL) / 16), 0);
+                            int dirtH = Math.max(8 - ((y + yOffset - 24 - WorldTypeTFC.SEALEVEL) / 16), 0);
 
                             if (smooth > 0)
                             {
-                                if (y >= seaLevel - 1 && y + 1 < yOffset && inp.getBlockState(x, y + 1, z) != SALT_WATER && dirtH > 0)
+                                if (y >= seaLevel - 1 && y + 1 < yOffset && inp.getBlockState(x, y + 1, z) != SALT_WATER && dirtH > 0 && !(BiomesTFC.isBeachBiome(biome) && y > highestBeachTheoretical + 2))
                                 {
                                     outp.setBlockState(x, y + yOffset, z, surfaceBlock);
 
-                                    boolean mountains = BiomesTFC.isMountainBiome(biome) || biome == BiomesTFC.HIGH_HILLS || biome == BiomesTFC.HIGH_HILLS_EDGE;
+                                    boolean mountains = BiomesTFC.isMountainBiome(biome) || biome == BiomesTFC.HIGH_HILLS || biome == BiomesTFC.HIGH_HILLS_EDGE || biome == BiomesTFC.MOUNTAINS || biome == BiomesTFC.MOUNTAINS_EDGE;
                                     for (int c = 1; c < dirtH && !mountains && !cliffMap[colIndex]; c++)
                                     {
                                         outp.setBlockState(x, y - c + yOffset, z, subSurfaceBlock);
@@ -694,7 +752,7 @@ public class ChunkGenTFC implements IChunkGenerator
                     }
                 }
 
-                for (int y = 127; y >= 0; y--) // This cannot be optimized with the prev for loop, because the sealeveloffset won't be ready yet.
+                for (int y = yOffset - 1; y >= 0; y--) // This cannot be optimized with the prev for loop, because the sealeveloffset won't be ready yet.
                 {
                     /*
                      * LOW PART (yOffset is NOT used)

@@ -92,7 +92,7 @@ public class GenLayerRiverMixTFC extends GenLayerTFC
                 zn = index - zSize;
                 zp = index + zSize;
 
-                if (BiomesTFC.isOceanicBiome(b) || BiomesTFC.isMountainBiome(b))
+                if (BiomesTFC.isOceanicBiome(b))
                     layerOut[index] = b;
                 else if (r > 0)
                 {
@@ -133,7 +133,6 @@ public class GenLayerRiverMixTFC extends GenLayerTFC
 
                 //Similar to above, if we're near a lake, we turn the river into lake.
                 removeRiver(index, Biome.getIdForBiome(BiomesTFC.LAKE));
-                removeRiver(index, Biome.getIdForBiome(BiomesTFC.MOUNTAINS_EDGE));
             }
         }
         return layerOut.clone();
