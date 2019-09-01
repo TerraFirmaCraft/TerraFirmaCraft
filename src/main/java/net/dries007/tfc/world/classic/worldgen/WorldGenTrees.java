@@ -44,7 +44,7 @@ public class WorldGenTrees implements IWorldGenerator
         if (!chunkData.isInitialized()) return;
 
         final Biome b = world.getBiome(chunkBlockPos);
-        if (!(b instanceof BiomeTFC) || b == BiomesTFC.OCEAN || b == BiomesTFC.DEEP_OCEAN || b == BiomesTFC.LAKE || b == BiomesTFC.RIVER)
+        if (!(b instanceof BiomeTFC) || b == BiomesTFC.OCEAN || b == BiomesTFC.DEEP_OCEAN)
             return;
 
         final TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
