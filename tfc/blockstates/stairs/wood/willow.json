@@ -7,7 +7,7 @@
       "bottom": "tfc:blocks/wood/planks/willow",
       "side": "tfc:blocks/wood/planks/willow"
     },
-	"uvlock": true 
+    "uvlock": true
   },
   "variants": {
     "normal": {

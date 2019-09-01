@@ -7,7 +7,7 @@
       "bottom": "tfc:blocks/wood/planks/birch",
       "side": "tfc:blocks/wood/planks/birch"
     },
-	"uvlock": true 
+    "uvlock": true
   },
   "variants": {
     "normal": {

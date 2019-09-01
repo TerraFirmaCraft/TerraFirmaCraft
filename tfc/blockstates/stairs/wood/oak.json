@@ -7,7 +7,7 @@
       "bottom": "tfc:blocks/wood/planks/oak",
       "side": "tfc:blocks/wood/planks/oak"
     },
-	"uvlock": true 
+    "uvlock": true
   },
   "variants": {
     "normal": {

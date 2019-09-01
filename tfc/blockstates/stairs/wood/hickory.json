@@ -7,7 +7,7 @@
       "bottom": "tfc:blocks/wood/planks/hickory",
       "side": "tfc:blocks/wood/planks/hickory"
     },
-	"uvlock": true 
+    "uvlock": true
   },
   "variants": {
     "normal": {
