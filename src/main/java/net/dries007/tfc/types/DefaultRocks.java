@@ -6,25 +6,20 @@
 package net.dries007.tfc.types;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import net.dries007.tfc.api.registries.TFCRegistryEvent;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.registries.TFCRegistryHandler;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.api.types.RockCategory;
-import net.dries007.tfc.objects.ToolMaterialsTFC;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.world.gen.rock.RockCategory.*;
 
 @SuppressWarnings("WeakerAccess")
-@Mod.EventBusSubscriber(modid = MOD_ID)
+@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class DefaultRocks
 {
-    public static final ResourceLocation SEDIMENTARY = new ResourceLocation(MOD_ID, "sedimentary");
-    public static final ResourceLocation METAMORPHIC = new ResourceLocation(MOD_ID, "metamorphic");
-    public static final ResourceLocation IGNEOUS_INTRUSIVE = new ResourceLocation(MOD_ID, "igneous_intrusive");
-    public static final ResourceLocation IGNEOUS_EXTRUSIVE = new ResourceLocation(MOD_ID, "igneous_extrusive");
-
     public static final ResourceLocation GRANITE = new ResourceLocation(MOD_ID, "granite");
     public static final ResourceLocation DIORITE = new ResourceLocation(MOD_ID, "diorite");
     public static final ResourceLocation GABBRO = new ResourceLocation(MOD_ID, "gabbro");
@@ -48,20 +43,9 @@ public final class DefaultRocks
     public static final ResourceLocation MARBLE = new ResourceLocation(MOD_ID, "marble");
 
     @SubscribeEvent
-    @SuppressWarnings("ConstantConditions")
-    public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<RockCategory> event)
+    public static void onPreRegisterRock(TFCRegistryHandler.RegisterPreBlock<Rock> event)
     {
-        event.getRegistry().registerAll(
-            new RockCategory(IGNEOUS_INTRUSIVE, ToolMaterialsTFC.IGNEOUS_INTRUSIVE, true, true, true, -0.4f, 0f, true),
-            new RockCategory(IGNEOUS_EXTRUSIVE, ToolMaterialsTFC.IGNEOUS_EXTRUSIVE, true, true, true, -0.5f, 0f, true),
-            new RockCategory(SEDIMENTARY, ToolMaterialsTFC.SEDIMENTARY, true, false, false, 0.3f, 5f, false),
-            new RockCategory(METAMORPHIC, ToolMaterialsTFC.METAMORPHIC, true, true, false, 0.2f, 0f, false)
-        );
-    }
-
-    @SubscribeEvent
-    public static void onPreRegisterRock(TFCRegistryEvent.RegisterPreBlock<Rock> event)
-    {
+        TerraFirmaCraft.getLog().debug("Registering Rocks");
         event.getRegistry().registerAll(
             new Rock(GRANITE, IGNEOUS_INTRUSIVE, false),
             new Rock(DIORITE, IGNEOUS_INTRUSIVE, false),
