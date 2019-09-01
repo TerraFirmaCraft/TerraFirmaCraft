@@ -1,7 +1,0 @@
-{
-  "parent": "block/cross",
-  "textures": {
-    "cross": "tfc:blocks/plants/blue_orchid/blue_orchid_1",
-    "particle": "tfc:blocks/plants/blue_orchid/blue_orchid_1"
-  }
-}
