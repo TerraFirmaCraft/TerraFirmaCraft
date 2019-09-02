@@ -103,7 +103,7 @@ public class ConfigTFC
         public int pitKilnTime = 8000;
 
         @Config.Comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.")
-        @Config.RangeInt(min = 20)
+        @Config.RangeInt(min = -1)
         @Config.LangKey("config." + MOD_ID + ".general.torchTime")
         public int torchTime = 72000;
 
