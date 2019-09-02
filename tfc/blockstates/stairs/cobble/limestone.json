@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/cobble/limestone",
       "bottom": "tfc:blocks/stonetypes/cobble/limestone",
       "side": "tfc:blocks/stonetypes/cobble/limestone"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

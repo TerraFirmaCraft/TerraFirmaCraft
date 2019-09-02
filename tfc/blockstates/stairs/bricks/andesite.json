@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/bricks/andesite",
       "bottom": "tfc:blocks/stonetypes/bricks/andesite",
       "side": "tfc:blocks/stonetypes/bricks/andesite"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

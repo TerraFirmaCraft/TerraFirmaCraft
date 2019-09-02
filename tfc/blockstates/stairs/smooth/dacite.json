@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/dacite",
       "bottom": "tfc:blocks/stonetypes/smooth/dacite",
       "side": "tfc:blocks/stonetypes/smooth/dacite"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

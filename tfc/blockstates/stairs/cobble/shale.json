@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/cobble/shale",
       "bottom": "tfc:blocks/stonetypes/cobble/shale",
       "side": "tfc:blocks/stonetypes/cobble/shale"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

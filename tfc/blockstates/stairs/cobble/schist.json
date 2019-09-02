@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/cobble/schist",
       "bottom": "tfc:blocks/stonetypes/cobble/schist",
       "side": "tfc:blocks/stonetypes/cobble/schist"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

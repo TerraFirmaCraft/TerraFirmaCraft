@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/bricks/shale",
       "bottom": "tfc:blocks/stonetypes/bricks/shale",
       "side": "tfc:blocks/stonetypes/bricks/shale"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

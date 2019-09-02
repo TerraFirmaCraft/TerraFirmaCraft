@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/rhyolite",
       "bottom": "tfc:blocks/stonetypes/smooth/rhyolite",
       "side": "tfc:blocks/stonetypes/smooth/rhyolite"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

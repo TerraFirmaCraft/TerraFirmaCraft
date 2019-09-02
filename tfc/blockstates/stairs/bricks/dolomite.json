@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/bricks/dolomite",
       "bottom": "tfc:blocks/stonetypes/bricks/dolomite",
       "side": "tfc:blocks/stonetypes/bricks/dolomite"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

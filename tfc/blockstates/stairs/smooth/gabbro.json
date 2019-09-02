@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/gabbro",
       "bottom": "tfc:blocks/stonetypes/smooth/gabbro",
       "side": "tfc:blocks/stonetypes/smooth/gabbro"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

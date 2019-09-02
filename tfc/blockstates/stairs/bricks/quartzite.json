@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/bricks/quartzite",
       "bottom": "tfc:blocks/stonetypes/bricks/quartzite",
       "side": "tfc:blocks/stonetypes/bricks/quartzite"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

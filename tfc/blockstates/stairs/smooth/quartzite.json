@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/quartzite",
       "bottom": "tfc:blocks/stonetypes/smooth/quartzite",
       "side": "tfc:blocks/stonetypes/smooth/quartzite"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

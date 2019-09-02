@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/cobble/chalk",
       "bottom": "tfc:blocks/stonetypes/cobble/chalk",
       "side": "tfc:blocks/stonetypes/cobble/chalk"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

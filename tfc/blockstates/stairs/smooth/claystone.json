@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/claystone",
       "bottom": "tfc:blocks/stonetypes/smooth/claystone",
       "side": "tfc:blocks/stonetypes/smooth/claystone"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

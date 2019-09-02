@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/cobble/claystone",
       "bottom": "tfc:blocks/stonetypes/cobble/claystone",
       "side": "tfc:blocks/stonetypes/cobble/claystone"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/bricks/conglomerate",
       "bottom": "tfc:blocks/stonetypes/bricks/conglomerate",
       "side": "tfc:blocks/stonetypes/bricks/conglomerate"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

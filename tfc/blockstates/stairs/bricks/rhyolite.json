@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/bricks/rhyolite",
       "bottom": "tfc:blocks/stonetypes/bricks/rhyolite",
       "side": "tfc:blocks/stonetypes/bricks/rhyolite"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

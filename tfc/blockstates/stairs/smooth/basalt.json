@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/basalt",
       "bottom": "tfc:blocks/stonetypes/smooth/basalt",
       "side": "tfc:blocks/stonetypes/smooth/basalt"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

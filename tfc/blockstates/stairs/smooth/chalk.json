@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/chalk",
       "bottom": "tfc:blocks/stonetypes/smooth/chalk",
       "side": "tfc:blocks/stonetypes/smooth/chalk"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

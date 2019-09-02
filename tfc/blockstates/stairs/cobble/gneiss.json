@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/cobble/gneiss",
       "bottom": "tfc:blocks/stonetypes/cobble/gneiss",
       "side": "tfc:blocks/stonetypes/cobble/gneiss"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

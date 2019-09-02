@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/chert",
       "bottom": "tfc:blocks/stonetypes/smooth/chert",
       "side": "tfc:blocks/stonetypes/smooth/chert"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/bricks/dacite",
       "bottom": "tfc:blocks/stonetypes/bricks/dacite",
       "side": "tfc:blocks/stonetypes/bricks/dacite"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

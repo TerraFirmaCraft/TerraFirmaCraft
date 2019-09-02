@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/shale",
       "bottom": "tfc:blocks/stonetypes/smooth/shale",
       "side": "tfc:blocks/stonetypes/smooth/shale"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/bricks/rocksalt",
       "bottom": "tfc:blocks/stonetypes/bricks/rocksalt",
       "side": "tfc:blocks/stonetypes/bricks/rocksalt"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

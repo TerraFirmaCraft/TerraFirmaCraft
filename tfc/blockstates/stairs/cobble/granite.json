@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/cobble/granite",
       "bottom": "tfc:blocks/stonetypes/cobble/granite",
       "side": "tfc:blocks/stonetypes/cobble/granite"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

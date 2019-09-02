@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/slate",
       "bottom": "tfc:blocks/stonetypes/smooth/slate",
       "side": "tfc:blocks/stonetypes/smooth/slate"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

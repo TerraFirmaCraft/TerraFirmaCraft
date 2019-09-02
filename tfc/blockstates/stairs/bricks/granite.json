@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/bricks/granite",
       "bottom": "tfc:blocks/stonetypes/bricks/granite",
       "side": "tfc:blocks/stonetypes/bricks/granite"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

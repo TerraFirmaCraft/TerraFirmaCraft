@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/schist",
       "bottom": "tfc:blocks/stonetypes/smooth/schist",
       "side": "tfc:blocks/stonetypes/smooth/schist"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

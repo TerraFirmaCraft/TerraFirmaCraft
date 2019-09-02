@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/bricks/chert",
       "bottom": "tfc:blocks/stonetypes/bricks/chert",
       "side": "tfc:blocks/stonetypes/bricks/chert"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

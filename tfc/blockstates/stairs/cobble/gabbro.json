@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/cobble/gabbro",
       "bottom": "tfc:blocks/stonetypes/cobble/gabbro",
       "side": "tfc:blocks/stonetypes/cobble/gabbro"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

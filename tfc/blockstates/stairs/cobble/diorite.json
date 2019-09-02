@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/cobble/diorite",
       "bottom": "tfc:blocks/stonetypes/cobble/diorite",
       "side": "tfc:blocks/stonetypes/cobble/diorite"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

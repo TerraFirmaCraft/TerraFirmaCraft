@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/gneiss",
       "bottom": "tfc:blocks/stonetypes/smooth/gneiss",
       "side": "tfc:blocks/stonetypes/smooth/gneiss"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

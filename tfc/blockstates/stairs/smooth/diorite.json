@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/diorite",
       "bottom": "tfc:blocks/stonetypes/smooth/diorite",
       "side": "tfc:blocks/stonetypes/smooth/diorite"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

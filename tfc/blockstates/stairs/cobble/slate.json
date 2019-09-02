@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/cobble/slate",
       "bottom": "tfc:blocks/stonetypes/cobble/slate",
       "side": "tfc:blocks/stonetypes/cobble/slate"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

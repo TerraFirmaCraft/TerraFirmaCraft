@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/bricks/slate",
       "bottom": "tfc:blocks/stonetypes/bricks/slate",
       "side": "tfc:blocks/stonetypes/bricks/slate"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

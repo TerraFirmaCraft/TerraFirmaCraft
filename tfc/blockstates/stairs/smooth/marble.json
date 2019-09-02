@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/marble",
       "bottom": "tfc:blocks/stonetypes/smooth/marble",
       "side": "tfc:blocks/stonetypes/smooth/marble"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

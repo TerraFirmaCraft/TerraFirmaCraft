@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/bricks/basalt",
       "bottom": "tfc:blocks/stonetypes/bricks/basalt",
       "side": "tfc:blocks/stonetypes/bricks/basalt"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

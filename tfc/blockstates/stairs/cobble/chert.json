@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/cobble/chert",
       "bottom": "tfc:blocks/stonetypes/cobble/chert",
       "side": "tfc:blocks/stonetypes/cobble/chert"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

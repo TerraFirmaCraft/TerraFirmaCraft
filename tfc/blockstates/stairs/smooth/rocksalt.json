@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/smooth/rocksalt",
       "bottom": "tfc:blocks/stonetypes/smooth/rocksalt",
       "side": "tfc:blocks/stonetypes/smooth/rocksalt"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {

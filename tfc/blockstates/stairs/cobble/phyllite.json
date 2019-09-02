@@ -6,7 +6,8 @@
       "top": "tfc:blocks/stonetypes/cobble/phyllite",
       "bottom": "tfc:blocks/stonetypes/cobble/phyllite",
       "side": "tfc:blocks/stonetypes/cobble/phyllite"
-    }
+    },
+    "uvlock": true
   },
   "variants": {
     "normal": {
