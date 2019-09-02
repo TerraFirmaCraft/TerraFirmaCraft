@@ -285,11 +285,20 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         public boolean hasMold(@Nullable Metal metal)
         {
             if (metal == null)
+            {
+                // Query for should the mold exist during registration
                 return hasMold;
+            }
             if (this == ItemType.INGOT)
-                return metal.usable || metal == Metal.UNKNOWN;
+            {
+                // All ingots are able to be cast in molds
+                return true;
+            }
             if (hasMold)
+            {
+                // All tool metals can be used in tool molds with tier at most II
                 return metal.isToolMetal() && metal.getTier().isAtMost(Tier.TIER_II);
+            }
             return false;
         }
 

@@ -154,7 +154,7 @@ public class ItemMold extends ItemPottery
             if (resource != null)
             {
                 Metal metal = FluidsTFC.getMetalFromFluid(resource.getFluid());
-                if (metal != null && type.hasMold(FluidsTFC.getMetalFromFluid(resource.getFluid())))
+                if (metal != null && type.hasMold(metal))
                 {
                     int fillAmount = tank.fill(resource, doFill);
                     if (fillAmount == tank.getFluidAmount())
