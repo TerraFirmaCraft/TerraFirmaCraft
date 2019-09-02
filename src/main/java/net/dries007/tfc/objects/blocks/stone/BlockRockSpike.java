@@ -58,6 +58,24 @@ public class BlockRockSpike extends BlockRockVariant
         return false;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        if (state.getValue(BASE))
+        {
+            return BASE_AABB;
+        }
+        else if (state.getValue(CEILING))
+        {
+            return CEILING_TOP_AABB;
+        }
+        else
+        {
+            return GROUND_TOP_AABB;
+        }
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState state)
@@ -100,23 +118,5 @@ public class BlockRockSpike extends BlockRockVariant
     public int damageDropped(IBlockState state)
     {
         return 0;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        if (state.getValue(BASE))
-        {
-            return BASE_AABB;
-        }
-        else if (state.getValue(CEILING))
-        {
-            return CEILING_TOP_AABB;
-        }
-        else
-        {
-            return GROUND_TOP_AABB;
-        }
     }
 }

@@ -53,17 +53,6 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TEFirePit tile = Helpers.getTE(worldIn, pos, TEFirePit.class);
-        if (tile != null)
-        {
-            tile.onBreakBlock(worldIn, pos);
-        }
-        super.breakBlock(worldIn, pos, state);
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
@@ -140,6 +129,17 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     {
         if (!canBePlacedOn(worldIn, pos.add(0, -1, 0)))
             worldIn.setBlockToAir(pos);
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TEFirePit tile = Helpers.getTE(worldIn, pos, TEFirePit.class);
+        if (tile != null)
+        {
+            tile.onBreakBlock(worldIn, pos);
+        }
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override

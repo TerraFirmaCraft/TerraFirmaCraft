@@ -122,6 +122,17 @@ public class BlockAnvilTFC extends Block
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TEAnvilTFC te = Helpers.getTE(worldIn, pos, TEAnvilTFC.class);
+        if (te != null)
+        {
+            te.onBreakBlock(worldIn, pos);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return ItemAnvil.get(metal, Metal.ItemType.ANVIL);
@@ -200,17 +211,6 @@ public class BlockAnvilTFC extends Block
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TEAnvilTFC te = Helpers.getTE(worldIn, pos, TEAnvilTFC.class);
-        if (te != null)
-        {
-            te.onBreakBlock(worldIn, pos);
-        }
-        super.breakBlock(worldIn, pos, state);
     }
 
     @Override

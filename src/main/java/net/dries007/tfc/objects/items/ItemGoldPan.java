@@ -67,18 +67,6 @@ public class ItemGoldPan extends ItemTFC
     }
 
     @Override
-    public String getTranslationKey(ItemStack stack)
-    {
-        return super.getTranslationKey(stack) + "." + TYPES[stack.getItemDamage()];
-    }
-
-    @Override
-    public EnumAction getItemUseAction(ItemStack stack)
-    {
-        return EnumAction.BOW;
-    }
-
-    @Override
     @Nonnull
     public ItemStack onItemUseFinish(@Nonnull ItemStack stack, World world, EntityLivingBase entityLiving)
     {
@@ -161,6 +149,18 @@ public class ItemGoldPan extends ItemTFC
             }
         }
         return stack;
+    }
+
+    @Override
+    public String getTranslationKey(ItemStack stack)
+    {
+        return super.getTranslationKey(stack) + "." + TYPES[stack.getItemDamage()];
+    }
+
+    @Override
+    public EnumAction getItemUseAction(ItemStack stack)
+    {
+        return EnumAction.BOW;
     }
 
     @Override

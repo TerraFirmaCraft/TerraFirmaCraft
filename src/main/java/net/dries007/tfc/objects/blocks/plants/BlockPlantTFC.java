@@ -195,6 +195,20 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         }
     }
 
+    @Nonnull
+    @Override
+    public BlockStateContainer getBlockState()
+    {
+        return this.blockState;
+    }
+
+    @Override
+    @Nonnull
+    public Block.EnumOffsetType getOffsetType()
+    {
+        return Block.EnumOffsetType.XYZ;
+    }
+
     @Override
     public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player)
     {
@@ -212,20 +226,6 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
             default:
                 return true;
         }
-    }
-
-    @Nonnull
-    @Override
-    public BlockStateContainer getBlockState()
-    {
-        return this.blockState;
-    }
-
-    @Override
-    @Nonnull
-    public Block.EnumOffsetType getOffsetType()
-    {
-        return Block.EnumOffsetType.XYZ;
     }
 
     public Plant getPlant()

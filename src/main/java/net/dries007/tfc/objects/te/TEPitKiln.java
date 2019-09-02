@@ -45,6 +45,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
 {
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
+    public static final Vec3i[] DIAGONALS = new Vec3i[] {new Vec3i(1, 0, 1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, -1), new Vec3i(-1, 0, -1)};
 
     public static void convertPlacedItemToPitKiln(World world, BlockPos pos, ItemStack strawStack)
     {
@@ -94,11 +95,9 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             }
         }
     }
-
     private final NonNullList<ItemStack> logItems = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> strawItems = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
     private int burnTicksToGo;
-    public static final Vec3i[] DIAGONALS = new Vec3i[] {new Vec3i(1, 0, 1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, -1), new Vec3i(-1, 0, -1)};
 
     @Override
     public void update()
