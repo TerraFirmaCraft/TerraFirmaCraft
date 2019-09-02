@@ -55,6 +55,11 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         return this.inputFluid.test(inputFluid) && this.inputStack.test(inputStack);
     }
 
+    public boolean doesInputConsumeAllFluid(ItemStack inputStack, FluidStack inputFluid)
+    {
+        return inputFluid.amount / this.inputFluid.getAmount() <= inputStack.getCount() / this.inputStack.getAmount();
+    }
+
     public int getDuration()
     {
         return duration;
@@ -168,7 +173,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
             FluidStack fluid = getOutputFluid();
             if (fluid == null)
             {
-                return "Empty";
+                return "???";
             }
             else
             {

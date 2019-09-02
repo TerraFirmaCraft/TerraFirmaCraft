@@ -256,7 +256,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);
                 FluidStack inputFluid = tank.getFluid();
                 BarrelRecipe instantRecipe = BarrelRecipe.getInstant(inputStack, inputFluid);
-                if (instantRecipe != null)
+                if (instantRecipe != null && inputFluid != null && instantRecipe.doesInputConsumeAllFluid(inputStack, inputFluid))
                 {
                     tank.setFluid(instantRecipe.getOutputFluid(inputFluid, inputStack));
                     inventory.setStackInSlot(SLOT_ITEM, instantRecipe.getOutputItem(inputFluid, inputStack));
