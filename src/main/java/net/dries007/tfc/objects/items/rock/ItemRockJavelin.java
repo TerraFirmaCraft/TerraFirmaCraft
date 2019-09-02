@@ -108,12 +108,6 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
     }
 
     @Override
-    public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
-    {
-        return false;
-    }
-
-    @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
@@ -165,5 +159,11 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
+    }
+
+    @Override
+    public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
+    {
+        return false;
     }
 }

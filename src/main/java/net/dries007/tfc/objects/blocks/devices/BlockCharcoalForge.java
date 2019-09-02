@@ -202,6 +202,17 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TECharcoalForge te = Helpers.getTE(worldIn, pos, TECharcoalForge.class);
+        if (te != null)
+        {
+            te.onBreakBlock(worldIn, pos);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     public int quantityDropped(Random random)
     {
         return 7;
@@ -251,17 +262,6 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
             entityIn.attackEntityFrom(DamageSource.IN_FIRE, 2.0F);
         }
         super.onEntityWalk(worldIn, pos, entityIn);
-    }
-
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TECharcoalForge te = Helpers.getTE(worldIn, pos, TECharcoalForge.class);
-        if (te != null)
-        {
-            te.onBreakBlock(worldIn, pos);
-        }
-        super.breakBlock(worldIn, pos, state);
     }
 
     @Override

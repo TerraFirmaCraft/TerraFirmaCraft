@@ -58,7 +58,7 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
      * provide optional values that you can change
      *
      * @param name             the ResourceLocation registry name of this tree
-     * @param generator              the generator that should be called to generate this tree, both during world gen and when growing from a sapling
+     * @param generator        the generator that should be called to generate this tree, both during world gen and when growing from a sapling
      * @param minTemp          min temperature
      * @param maxTemp          max temperature
      * @param minRain          min rainfall

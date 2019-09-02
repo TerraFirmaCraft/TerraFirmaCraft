@@ -107,6 +107,17 @@ public class BlockLogPile extends Block implements ILightableBlock
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TELogPile te = Helpers.getTE(worldIn, pos, TELogPile.class);
+        if (te != null)
+        {
+            te.onBreakBlock(worldIn, pos);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
@@ -155,17 +166,6 @@ public class BlockLogPile extends Block implements ILightableBlock
             return this.getDefaultState().withProperty(AXIS, placer.getHorizontalFacing().getAxis());
         }
         return this.getDefaultState();
-    }
-
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TELogPile te = Helpers.getTE(worldIn, pos, TELogPile.class);
-        if (te != null)
-        {
-            te.onBreakBlock(worldIn, pos);
-        }
-        super.breakBlock(worldIn, pos, state);
     }
 
     @Override

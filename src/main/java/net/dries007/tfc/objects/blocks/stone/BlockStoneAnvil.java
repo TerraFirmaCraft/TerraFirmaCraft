@@ -153,6 +153,17 @@ public class BlockStoneAnvil extends Block implements IRockObject
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TEAnvilTFC te = Helpers.getTE(worldIn, pos, TEAnvilTFC.class);
+        if (te != null)
+        {
+            te.onBreakBlock(worldIn, pos);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     public int quantityDropped(Random random)
     {
         return 1 + random.nextInt(3);
@@ -241,17 +252,6 @@ public class BlockStoneAnvil extends Block implements IRockObject
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TEAnvilTFC te = Helpers.getTE(worldIn, pos, TEAnvilTFC.class);
-        if (te != null)
-        {
-            te.onBreakBlock(worldIn, pos);
-        }
-        super.breakBlock(worldIn, pos, state);
     }
 
     @Override

@@ -28,11 +28,11 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
     /**
      * Creates a registry object for an ore type
      *
-     * @param name    The registry name of the ore
-     * @param metal   The metal, or null if it's a non-metal ore
-     * @param canMelt If the metal can be melted directly from the ore
+     * @param name        The registry name of the ore
+     * @param metal       The metal, or null if it's a non-metal ore
+     * @param canMelt     If the metal can be melted directly from the ore
      * @param chunkChance the chance a chunk contains this ore when gold panning.
-     * @param panChance the chance to drop this ore when gold panning
+     * @param panChance   the chance to drop this ore when gold panning
      */
     public Ore(ResourceLocation name, @Nullable Metal metal, boolean canMelt, double chunkChance, double panChance)
     {

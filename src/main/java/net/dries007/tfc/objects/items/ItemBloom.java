@@ -73,6 +73,12 @@ public class ItemBloom extends ItemTFC implements IMetalItem
         return 0;
     }
 
+    @Override
+    public boolean canMelt(ItemStack stack)
+    {
+        return meltable;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public void addMetalInfo(ItemStack stack, List<String> text)
@@ -86,12 +92,6 @@ public class ItemBloom extends ItemTFC implements IMetalItem
             text.add(I18n.format("tfc.tooltip.units", ((IForgeableMeasurable) cap).getMetalAmount()));
             text.add(I18n.format(Helpers.getEnumName(metal.getTier())));
         }
-    }
-
-    @Override
-    public boolean canMelt(ItemStack stack)
-    {
-        return meltable;
     }
 
     @SideOnly(Side.CLIENT)

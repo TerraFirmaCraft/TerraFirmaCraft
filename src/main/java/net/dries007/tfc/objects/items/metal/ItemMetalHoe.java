@@ -35,6 +35,20 @@ public class ItemMetalHoe extends ItemMetalTool
         super(metal, type);
     }
 
+    @Override
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
+    {
+        stack.damageItem(1, attacker);
+        return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean isFull3D()
+    {
+        return true;
+    }
+
     /**
      * Copied from ItemHoe
      * TFC farmland detection happens using {@link net.minecraftforge.event.entity.player.UseHoeEvent} in {@link net.dries007.tfc.CommonEventHandler}
@@ -83,20 +97,6 @@ public class ItemMetalHoe extends ItemMetalTool
 
             return EnumActionResult.PASS;
         }
-    }
-
-    @Override
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
-    {
-        stack.damageItem(1, attacker);
-        return true;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public boolean isFull3D()
-    {
-        return true;
     }
 
     protected void setBlock(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, IBlockState state)
