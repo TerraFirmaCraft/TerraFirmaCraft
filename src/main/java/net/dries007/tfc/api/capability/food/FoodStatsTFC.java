@@ -160,13 +160,18 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         originalStats.onUpdate(player);
 
         // Apply custom TFC regeneration
-        if (player.shouldHeal() && getFoodLevel() >= 16.0f && getThirst() > 60f)
+        if (player.shouldHeal() && getFoodLevel() >= 4.0f && getThirst() > 20f)
         {
             healTimer++;
+            float multiplier = 1;
+            if (getFoodLevel() > 16.0f && getThirst() > 80f)
+            {
+                multiplier = 3;
+            }
 
             if (healTimer > 10)
             {
-                player.heal(PASSIVE_HEAL_AMOUNT * (float) ConfigTFC.GENERAL.playerNaturalRegenerationModifier);
+                player.heal(multiplier * PASSIVE_HEAL_AMOUNT * (float) ConfigTFC.GENERAL.playerNaturalRegenerationModifier);
                 healTimer = 0;
             }
         }
