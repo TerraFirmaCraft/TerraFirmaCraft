@@ -308,7 +308,7 @@ public class TEAnvilTFC extends TEInventory
         }
 
         // Find a matching welding recipe
-        WeldingRecipe recipe = TFCRegistries.WELDING.getValuesCollection().stream().filter(x -> x.matches(input1, input2)).findFirst().orElse(null);
+        WeldingRecipe recipe = WeldingRecipe.get(input1, input2, getTier());
         if (recipe != null)
         {
             ItemStack fluxStack = inventory.getStackInSlot(SLOT_FLUX);

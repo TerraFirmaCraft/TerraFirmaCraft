@@ -13,6 +13,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
@@ -25,6 +26,11 @@ import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 @ParametersAreNonnullByDefault
 public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe> implements IJEISimpleRecipe
 {
+    public static WeldingRecipe get(ItemStack stack1, ItemStack stack2, Metal.Tier tier)
+    {
+        return TFCRegistries.WELDING.getValuesCollection().stream().filter(x -> x.matches(stack1, stack2, tier)).findFirst().orElse(null);
+    }
+
     private final Metal.Tier minTier;
     private final IIngredient<ItemStack> input1;
     private final IIngredient<ItemStack> input2;
@@ -52,10 +58,10 @@ public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe> imple
         return output.copy();
     }
 
-    public boolean matches(ItemStack input1, ItemStack input2)
+    public boolean matches(ItemStack input1, ItemStack input2, Metal.Tier tier)
     {
         // Need to check both orientations
-        return (this.input1.test(input1) && this.input2.test(input2)) || (this.input1.test(input2) && this.input2.test(input1));
+        return tier.isAtLeast(minTier) && ((this.input1.test(input1) && this.input2.test(input2)) || (this.input1.test(input2) && this.input2.test(input1)));
     }
 
     @Override

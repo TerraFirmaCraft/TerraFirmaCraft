@@ -134,7 +134,6 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
                     addThirst(5f);
                 }
 
-                // Then, we decrement nutrients
                 for (int i = 0; i < nutrients.length; i++)
                 {
                     addNutrient(i, 5f);
@@ -143,16 +142,16 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         }
         else
         {
-            // First, we check exhaustion, to decrement thirst
+            // Same check as the original food stats, so hunger, thirst, and nutrition loss are synced
             if (originalStats.foodExhaustionLevel >= 4.0F)
             {
                 addThirst(-(float) ConfigTFC.GENERAL.playerThirstModifier);
-            }
 
-            // Then, we decrement nutrients
-            for (int i = 0; i < nutrients.length; i++)
-            {
-                addNutrient(i, -(float) ConfigTFC.GENERAL.playerNutritionDecayModifier);
+                // Nutrition only decays when food decays. The base ratio (in config), is 0.8 nutrition / haunch
+                for (int i = 0; i < nutrients.length; i++)
+                {
+                    addNutrient(i, -(float) ConfigTFC.GENERAL.playerNutritionDecayModifier);
+                }
             }
         }
 
