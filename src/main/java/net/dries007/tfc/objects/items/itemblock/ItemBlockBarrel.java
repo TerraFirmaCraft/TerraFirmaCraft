@@ -11,6 +11,9 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +26,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -109,15 +113,21 @@ public class ItemBlockBarrel extends ItemBlockTFC
         if (player.getHeldItem(hand).getMetadata() == 0)
         {
             pos = pos.offset(facing); //Since the clicked facing is the block bellow fluids
+            IBlockState state = worldIn.getBlockState(pos);
             IFluidHandler handler = FluidUtil.getFluidHandler(worldIn, pos, facing);
             if (handler != null && handler.drain(Fluid.BUCKET_VOLUME, false) != null)
             {
                 FluidTank tank = new FluidTank(TEBarrel.TANK_CAPACITY);
                 boolean canCreateSources = false; //default
-                if (worldIn.getBlockState(pos).getBlock() instanceof BlockFluidClassic)
+                if (state.getBlock() instanceof BlockFluidClassic)
                 {
                     BlockFluidClassic fluidblock = (BlockFluidClassic) worldIn.getBlockState(pos).getBlock();
                     canCreateSources = ReflectionHelper.getPrivateValue(BlockFluidClassic.class, fluidblock, "canCreateSources");
+                }
+                else if (state.getBlock() instanceof BlockLiquid)
+                {
+                    //Fire the event so other mods that prevent infinite water disable this
+                    canCreateSources = ForgeEventFactory.canCreateFluidSource(worldIn, pos, state, state.getMaterial() == Material.WATER);
                 }
                 FluidStack fluidStack = handler.drain(Fluid.BUCKET_VOLUME, true);
                 if (canCreateSources && fluidStack != null)
@@ -152,15 +162,21 @@ public class ItemBlockBarrel extends ItemBlockTFC
             if (rayTrace != null && rayTrace.typeOfHit == RayTraceResult.Type.BLOCK)
             {
                 BlockPos pos = rayTrace.getBlockPos();
+                IBlockState state = worldIn.getBlockState(pos);
                 IFluidHandler handler = FluidUtil.getFluidHandler(worldIn, pos, rayTrace.sideHit);
                 if (handler != null && handler.drain(Fluid.BUCKET_VOLUME, false) != null)
                 {
                     FluidTank tank = new FluidTank(TEBarrel.TANK_CAPACITY);
                     boolean canCreateSources = false; //default
-                    if (worldIn.getBlockState(pos).getBlock() instanceof BlockFluidClassic)
+                    if (state.getBlock() instanceof BlockFluidClassic)
                     {
                         BlockFluidClassic fluidblock = (BlockFluidClassic) worldIn.getBlockState(pos).getBlock();
                         canCreateSources = ReflectionHelper.getPrivateValue(BlockFluidClassic.class, fluidblock, "canCreateSources");
+                    }
+                    else if (state.getBlock() instanceof BlockLiquid)
+                    {
+                        //Fire the event so other mods that prevent infinite water disable this
+                        canCreateSources = ForgeEventFactory.canCreateFluidSource(worldIn, pos, state, state.getMaterial() == Material.WATER);
                     }
                     FluidStack fluidStack = handler.drain(Fluid.BUCKET_VOLUME, true);
                     if (canCreateSources && fluidStack != null)
