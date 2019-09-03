@@ -141,16 +141,29 @@ public class BlockSupport extends Block
         setSoundType(SoundType.WOOD);
         this.wood = wood;
         OreDictionaryHelper.register(this, "support");
-        //noinspection ConstantConditions
         Blocks.FIRE.setFireInfo(this, 5, 20);
+        setDefaultState(blockState.getBaseState()
+            .withProperty(AXIS, EnumFacing.Axis.Y)
+            .withProperty(NORTH, false)
+            .withProperty(SOUTH, false)
+            .withProperty(EAST, false)
+            .withProperty(WEST, false));
     }
 
     public Tree getWood() { return this.wood; }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    @Nonnull
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(AXIS, EnumFacing.Axis.values()[meta]);
+    }
+
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return 0;
+        return state.getValue(AXIS).ordinal();
     }
 
     @SuppressWarnings("deprecation")
@@ -158,14 +171,14 @@ public class BlockSupport extends Block
     @Nonnull
     public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        if (getAxis(worldIn, pos) == EnumFacing.Axis.Y)
+        if (state.getValue(AXIS) == EnumFacing.Axis.Y)
         {
-            return state.withProperty(AXIS, EnumFacing.Axis.Y).withProperty(NORTH, isConnectable(worldIn, pos, EnumFacing.NORTH)).withProperty(SOUTH, isConnectable(worldIn, pos, EnumFacing.SOUTH)).withProperty(EAST, isConnectable(worldIn, pos, EnumFacing.EAST)).withProperty(WEST, isConnectable(worldIn, pos, EnumFacing.WEST));
+            return state.withProperty(NORTH, isConnectable(worldIn, pos, EnumFacing.NORTH)).withProperty(SOUTH, isConnectable(worldIn, pos, EnumFacing.SOUTH)).withProperty(EAST, isConnectable(worldIn, pos, EnumFacing.EAST)).withProperty(WEST, isConnectable(worldIn, pos, EnumFacing.WEST));
         }
         else
         {
             //Connections are only used for vertical placed supports
-            return state.withProperty(AXIS, getAxis(worldIn, pos)).withProperty(NORTH, false).withProperty(SOUTH, false).withProperty(EAST, false).withProperty(WEST, false);
+            return state.withProperty(NORTH, false).withProperty(SOUTH, false).withProperty(EAST, false).withProperty(WEST, false);
         }
     }
 
@@ -181,7 +194,7 @@ public class BlockSupport extends Block
     @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        EnumFacing.Axis axis = getAxis(source, pos);
+        EnumFacing.Axis axis = state.getValue(AXIS);
         if (axis == EnumFacing.Axis.Y)
         {
             AxisAlignedBB value = VERTICAL_SUPPORT_AABB;
@@ -221,7 +234,7 @@ public class BlockSupport extends Block
     @Override
     public void addCollisionBoxToList(IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull AxisAlignedBB entityBox, @Nonnull List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
     {
-        EnumFacing.Axis axis = getAxis(worldIn, pos);
+        EnumFacing.Axis axis = state.getValue(AXIS);
         if (axis == EnumFacing.Axis.Y)
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, VERTICAL_SUPPORT_AABB);
@@ -271,25 +284,21 @@ public class BlockSupport extends Block
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
+    public boolean canPlaceBlockOnSide(@Nonnull World world, @Nonnull BlockPos pos, EnumFacing side)
     {
-        if (super.canPlaceBlockAt(worldIn, pos))
+        if (side.getAxis() == EnumFacing.Axis.Y)
         {
-            EnumFacing.Axis axis = getAxis(worldIn, pos);
-            if (axis == EnumFacing.Axis.Y)
+            return world.getBlockState(pos.down()).isNormalCube() || isConnectable(world, pos, EnumFacing.DOWN);
+        }
+        else
+        {
+            if (!isConnectable(world, pos, side.getOpposite()))
             {
-                return true;
+                return false;
             }
-
-            EnumFacing face = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.NEGATIVE, axis);
-            if (isConnectable(worldIn, pos, face))
-            {
-                face = face.getOpposite();
-            }
-            int distance = getHorizontalDistance(face, worldIn, pos);
+            int distance = getHorizontalDistance(side, world, pos);
             return distance > 0;
         }
-        return false;
     }
 
     @Override
@@ -297,14 +306,14 @@ public class BlockSupport extends Block
     @Nonnull
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.Y).withProperty(NORTH, false).withProperty(SOUTH, false).withProperty(EAST, false).withProperty(WEST, false);
+        return this.getDefaultState().withProperty(AXIS, facing.getAxis());
     }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         if (worldIn.isRemote) return;
-        EnumFacing.Axis axis = getAxis(worldIn, pos);
+        EnumFacing.Axis axis = state.getValue(AXIS);
         if (axis == EnumFacing.Axis.Y)
         {
             //Try placing a 3 blocks high column in one click
@@ -313,8 +322,8 @@ public class BlockSupport extends Block
                 && worldIn.isAirBlock(pos.up()) && worldIn.isAirBlock(pos.up(2)))
             {
                 //Place two more support blocks to make a 3 column in one click
-                worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.Y));
-                worldIn.setBlockState(pos.up(2), this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.Y));
+                worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.Y), 2);
+                worldIn.setBlockState(pos.up(2), this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.Y), 2);
                 stack.shrink(2);
             }
         }
@@ -339,7 +348,7 @@ public class BlockSupport extends Block
                 {
                     if (worldIn.getBlockState(pos.offset(face, i)).getMaterial().isReplaceable())
                     {
-                        worldIn.setBlockState(pos.offset(face, i), this.getDefaultState().withProperty(AXIS, axis));
+                        worldIn.setBlockState(pos.offset(face, i), this.getDefaultState().withProperty(AXIS, axis), 2);
                     }
                 }
             }
@@ -363,69 +372,40 @@ public class BlockSupport extends Block
      */
     private boolean canSupportBlocks(IBlockAccess world, BlockPos pos)
     {
-        return canBlockStay(world, pos) && getAxis(world, pos) != EnumFacing.Axis.Y;
+        return canBlockStay(world, pos) && world.getBlockState(pos).getValue(AXIS) != EnumFacing.Axis.Y;
     }
 
     /**
-     * Check if the facing can connect (ie: is another support)
+     * Check if the facing can connect
      *
      * @param world  the worldObj to check
      * @param pos    the BlockPos the current block is in
      * @param facing the facing to check for connection
-     * @return true if the facing has another support block
+     * @return true if the facing has another support block and it's Axis is Y or facing this connection
      */
     private boolean isConnectable(IBlockAccess world, BlockPos pos, EnumFacing facing)
     {
-        return world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockSupport; //Instanceof so it can connect different wood types
+        IBlockState state = world.getBlockState(pos.offset(facing));
+        if (state.getBlock() instanceof BlockSupport)
+        {
+            EnumFacing.Axis offsetAxis = state.getValue(AXIS);
+            return offsetAxis == EnumFacing.Axis.Y || offsetAxis == facing.getAxis();
+        }
+        return false;
     }
 
     /**
-     * Checks if this BlockPos can only be vertical
+     * Checks if this support can stay in pos
      *
-     * @param world worldObj to check
-     * @param pos   BlockPos to check
-     * @return true if this block can only be vertical, false otherwise
+     * @param world the world obj
+     * @param pos   the pos of this support
+     * @return true if this support can stay in this position
      */
-    private boolean isVertical(IBlockAccess world, BlockPos pos)
-    {
-        //If above or below is support, or below is solid, this one must be vertical too
-        if (isConnectable(world, pos, EnumFacing.UP) || isConnectable(world, pos, EnumFacing.DOWN) || world.getBlockState(pos.down()).isNormalCube())
-        {
-            return true;
-        }
-        //If this is an intersection, this one must be vertical
-        return (isConnectable(world, pos, EnumFacing.NORTH) || isConnectable(world, pos, EnumFacing.SOUTH))
-            && (isConnectable(world, pos, EnumFacing.EAST) || isConnectable(world, pos, EnumFacing.WEST));
-    }
-
-    /**
-     * Return the axis for this block
-     *
-     * @param world the worldObj this block is in
-     * @param pos   this block's position
-     * @return axis value
-     */
-    private EnumFacing.Axis getAxis(IBlockAccess world, BlockPos pos)
-    {
-        if (isVertical(world, pos))
-        {
-            return EnumFacing.Axis.Y;
-        }
-        if (isConnectable(world, pos, EnumFacing.NORTH) || isConnectable(world, pos, EnumFacing.SOUTH))
-        {
-            return EnumFacing.Axis.Z;
-        }
-        if (isConnectable(world, pos, EnumFacing.WEST) || isConnectable(world, pos, EnumFacing.EAST))
-        {
-            return EnumFacing.Axis.X;
-        }
-        //If none of the above, this is a new placement without any neighboring support blocks
-        return EnumFacing.Axis.Y;
-    }
-
     private boolean canBlockStay(IBlockAccess world, BlockPos pos)
     {
-        EnumFacing.Axis axis = getAxis(world, pos);
+        IBlockState state = world.getBlockState(pos);
+        if (!(state.getBlock() instanceof BlockSupport)) return false;
+        EnumFacing.Axis axis = state.getValue(AXIS);
         if (axis == EnumFacing.Axis.Y)
         {
             return world.getBlockState(pos.down()).isNormalCube() || isConnectable(world, pos, EnumFacing.DOWN);
@@ -454,7 +434,8 @@ public class BlockSupport extends Block
         int distance = -1;
         for (int i = 0; i < 5; i++)
         {
-            if (isConnectable(worldIn, pos.offset(face, i), face) && getAxis(worldIn, pos.offset(face, i + 1)) == EnumFacing.Axis.Y)
+            IBlockState state = worldIn.getBlockState(pos.offset(face, i + 1));
+            if (state.getBlock() instanceof BlockSupport && state.getValue(AXIS) == EnumFacing.Axis.Y)
             {
                 distance = i;
                 break;
