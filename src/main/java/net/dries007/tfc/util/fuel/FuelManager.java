@@ -14,14 +14,13 @@ import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.types.DefaultMetals;
 
 public final class FuelManager
 {
-    public static final float CHARCOAL_BURN_TEMPERATURE = 1350f;
-
     private static final List<Fuel> fuels = new ArrayList<>();
     private static final Fuel EMPTY = new Fuel(ItemStack.EMPTY, 0, 0);
 
@@ -59,7 +58,7 @@ public final class FuelManager
         // Charcoal
         fuels.add(new Fuel(new ItemStack(Items.COAL, 1, 1), 8000, 1350f, true));
 
-        // todo: peat
+        fuels.add(new Fuel(new ItemStack(BlocksTFC.PEAT), 2500, 680, true));
     }
 
     public static boolean addFuel(Fuel fuel)

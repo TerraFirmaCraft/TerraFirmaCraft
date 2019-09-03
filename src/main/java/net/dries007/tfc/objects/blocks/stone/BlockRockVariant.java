@@ -40,7 +40,6 @@ import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.items.ItemGem;
 import net.dries007.tfc.objects.items.rock.ItemRock;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC.WILD;
@@ -201,7 +200,7 @@ public class BlockRockVariant extends Block
     public void randomTick(World world, BlockPos pos, IBlockState state, Random rand)
     {
         if (world.isRemote) return;
-        if (type.isGrass) Helpers.spreadGrass(world, pos, state, rand);
+        if (type.isGrass) BlockRockVariantConnected.spreadGrass(world, pos, state, rand);
         super.randomTick(world, pos, state, rand);
     }
 

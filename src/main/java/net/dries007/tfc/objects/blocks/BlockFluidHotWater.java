@@ -27,6 +27,9 @@ public class BlockFluidHotWater extends BlockFluidTFC
     public BlockFluidHotWater()
     {
         super(FluidsTFC.HOT_WATER.get(), Material.WATER, false);
+
+        setLightOpacity(3);
+        disableStats();
     }
 
     @SideOnly(Side.CLIENT)
