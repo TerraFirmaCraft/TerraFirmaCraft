@@ -95,7 +95,7 @@ public class ItemJug extends ItemPottery
                 }
                 else
                 {
-                    player.world.playSound(null, player.getPosition(), TFCSounds.JUG_BLOW, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    player.world.playSound(null, player.getPosition(), TFCSounds.JUG_BLOW, SoundCategory.PLAYERS, 1.0f, 0.8f + (float) (player.getLookVec().y / 2));
                 }
             }
         }
