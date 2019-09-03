@@ -94,8 +94,8 @@ String strippedVersion = shortVersion.replace(".", "") + "0"
 dependencies {
     // Mod dependencies go here.
     // Do not add dependencies without prior approval from the dev team. You can update existing ones.
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
-    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
+    deobfProvided "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
+    deobfProvided "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
 }
 
 processResources {

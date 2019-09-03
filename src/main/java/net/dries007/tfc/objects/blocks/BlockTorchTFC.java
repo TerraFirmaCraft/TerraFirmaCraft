@@ -56,8 +56,6 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
         setTickRandomly(true);
         setSoundType(SoundType.WOOD);
 
-        Blocks.FIRE.setFireInfo(this, 5, 20);
-
         OreDictionaryHelper.register(this, "torch");
     }
 
