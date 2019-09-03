@@ -69,6 +69,8 @@ import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketFoodStatsReplace;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.devices.BlockQuern;
+import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
@@ -125,8 +127,16 @@ public final class CommonEventHandler
     {
         final World world = event.getWorld();
         final BlockPos pos = event.getPos();
+        final IBlockState state = world.getBlockState(pos);
         final ItemStack stack = event.getItemStack();
         final EntityPlayer player = event.getEntityPlayer();
+
+        //Fire onBlockActivated for in world crafting devices
+        if (state.getBlock() instanceof BlockAnvilTFC ||
+            state.getBlock() instanceof BlockQuern)
+        {
+            event.setUseBlock(Event.Result.ALLOW);
+        }
 
         IPlaceableItem placeable = IPlaceableItem.Impl.getPlaceable(stack);
         if (placeable != null)
@@ -152,7 +162,6 @@ public final class CommonEventHandler
             if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK)
             {
                 BlockPos blockpos = result.getBlockPos();
-                IBlockState state = event.getWorld().getBlockState(blockpos);
                 boolean isFreshWater = BlocksTFC.isFreshWater(state), isSaltWater = BlocksTFC.isSaltWater(state);
                 if ((isFreshWater && foodStats.attemptDrink(10, true)) || (isSaltWater && foodStats.attemptDrink(-1, true)))
                 {
