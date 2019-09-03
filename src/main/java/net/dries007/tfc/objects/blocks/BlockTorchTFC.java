@@ -14,6 +14,7 @@ import net.minecraft.block.BlockTorch;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -170,5 +171,17 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TETickCounter();
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        // Set the initial counter value
+        TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
+        if (tile != null)
+        {
+            tile.resetCounter();
+        }
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 }
