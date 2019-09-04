@@ -72,6 +72,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.devices.BlockQuern;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
 import net.dries007.tfc.util.Helpers;
@@ -133,6 +134,7 @@ public final class CommonEventHandler
 
         //Fire onBlockActivated for in world crafting devices
         if (state.getBlock() instanceof BlockAnvilTFC ||
+            state.getBlock() instanceof BlockStoneAnvil ||
             state.getBlock() instanceof BlockQuern)
         {
             event.setUseBlock(Event.Result.ALLOW);

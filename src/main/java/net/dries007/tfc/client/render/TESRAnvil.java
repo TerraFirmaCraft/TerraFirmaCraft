@@ -15,8 +15,7 @@ import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 
-import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
-import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_INPUT_1;
+import static net.dries007.tfc.objects.te.TEAnvilTFC.*;
 
 public class TESRAnvil extends TileEntitySpecialRenderer<TEAnvilTFC>
 {
@@ -46,12 +45,32 @@ public class TESRAnvil extends TileEntitySpecialRenderer<TEAnvilTFC>
             }
 
             GlStateManager.translate(-1.2f, 0, 0);
-
             ItemStack input1 = cap.getStackInSlot(SLOT_INPUT_1);
             if (!input1.isEmpty())
             {
                 Minecraft.getMinecraft().getRenderItem().renderItem(input1, ItemCameraTransforms.TransformType.FIXED);
             }
+
+            GlStateManager.translate(-0.4f, 0, -0.05f);
+            ItemStack input2 = cap.getStackInSlot(SLOT_INPUT_2);
+            if (!input2.isEmpty())
+            {
+                Minecraft.getMinecraft().getRenderItem().renderItem(input2, ItemCameraTransforms.TransformType.FIXED);
+            }
+
+            /* Commented out because it looks funky too small.
+            // If you want to try tweaking this, feel free to do it so.
+            ItemStack flux = cap.getStackInSlot(SLOT_FLUX);
+            if (!flux.isEmpty())
+            {
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(0.2f, -0.4f, 0.05f);
+                GlStateManager.scale(0.3f, 0.3f, 0.3f);
+                Minecraft.getMinecraft().getRenderItem().renderItem(flux, ItemCameraTransforms.TransformType.FIXED);
+                GlStateManager.popMatrix();
+            }
+            */
+
 
             GlStateManager.popMatrix();
         }
