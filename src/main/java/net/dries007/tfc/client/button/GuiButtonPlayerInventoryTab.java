@@ -71,8 +71,9 @@ public class GuiButtonPlayerInventoryTab extends GuiButtonTFC
 
     public void updateGuiLeft(int newGuiLeft)
     {
-        x -= guiLeft;
-        x += newGuiLeft;
+        // Update variables that use guiLeft as input
+        x += newGuiLeft - guiLeft;
+        iconX += newGuiLeft - guiLeft;
         guiLeft = newGuiLeft;
     }
 
