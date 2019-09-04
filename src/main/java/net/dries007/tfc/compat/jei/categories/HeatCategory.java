@@ -1,13 +1,15 @@
 package net.dries007.tfc.compat.jei.categories;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.gui.*;
+import mezz.jei.api.gui.IDrawableAnimated;
+import mezz.jei.api.gui.IDrawableStatic;
+import mezz.jei.api.gui.IGuiItemStackGroup;
+import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import net.dries007.tfc.api.util.TFCConstants;
@@ -20,24 +22,16 @@ public class HeatCategory extends BaseRecipeCategory<SimpleRecipeWrapper>
     private static final ResourceLocation ICONS = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/jei/icons.png");
 
     private final IDrawableStatic slot;
-    private final IDrawableStatic fire, icon;
+    private final IDrawableStatic fire;
     private final IDrawableAnimated fireAnimated;
 
     public HeatCategory(IGuiHelper helper, String Uid)
     {
         super(helper.createBlankDrawable(120, 38), Uid);
-        icon = helper.createDrawable(ICONS, 0, 30, 18, 18);
         fire = helper.createDrawable(ICONS, 0, 0, 14, 14);
         IDrawableStatic arrowAnimated = helper.createDrawable(ICONS, 14, 0, 14, 14);
         this.fireAnimated = helper.createAnimatedDrawable(arrowAnimated, 160, IDrawableAnimated.StartDirection.TOP, true);
         this.slot = helper.getSlotDrawable();
-    }
-
-    @Nullable
-    @Override
-    public IDrawable getIcon()
-    {
-        return icon;
     }
 
     @Override

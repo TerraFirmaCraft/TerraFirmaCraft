@@ -14,7 +14,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Metal;
@@ -28,12 +27,6 @@ public class ItemIngot extends ItemMetal implements IPlaceableItem
     public ItemIngot(Metal metal, Metal.ItemType type)
     {
         super(metal, type);
-    }
-
-    @Override
-    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
-    {
-        return true;
     }
 
     @Override
