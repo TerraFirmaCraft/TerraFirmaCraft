@@ -22,7 +22,10 @@
     },
     "inventory": [
       {
-        "transform": "forge:default-block"
+        "transform": "forge:default-block",
+        "textures": {
+          "top": "tfc:blocks/devices/charcoal_forge/lit"
+        }
       }
     ],
     "normal": [
