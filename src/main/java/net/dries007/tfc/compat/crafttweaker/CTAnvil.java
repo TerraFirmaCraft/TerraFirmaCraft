@@ -22,6 +22,7 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.forge.ForgeRule;
+import net.dries007.tfc.util.skills.SmithingSkill;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -31,7 +32,7 @@ public class CTAnvil
 {
     @SuppressWarnings("unchecked")
     @ZenMethod
-    public static void addRecipe(String registryName, crafttweaker.api.item.IIngredient input, IItemStack output, int minTier, String... rules)
+    public static void addRecipe(String registryName, crafttweaker.api.item.IIngredient input, IItemStack output, int minTier, String skillTypeName, String... rules)
     {
         if (output == null || input == null)
             throw new IllegalArgumentException("Input and output are not allowed to be empty");
@@ -49,8 +50,12 @@ public class CTAnvil
         }
         Metal.Tier tier = Metal.Tier.valueOf(minTier);
         ItemStack outputItem = (ItemStack) output.getInternal();
-        AnvilRecipe recipe = new AnvilRecipe(new ResourceLocation(registryName),
-            ingredient, outputItem, tier, forgeRules);
+        SmithingSkill.Type skillType = null;
+        if (skillTypeName != null)
+        {
+            skillType = SmithingSkill.Type.valueOf(skillTypeName.toUpperCase());
+        }
+        AnvilRecipe recipe = new AnvilRecipe(new ResourceLocation(registryName), ingredient, outputItem, tier, skillType, forgeRules);
         CraftTweakerAPI.apply(new IAction()
         {
             @Override
