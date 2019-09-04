@@ -2,7 +2,7 @@
   "credit": "Made with Blockbench",
   "textures": {
     "texture": "tfc:items/metal/shield/wrought_iron",
-    "layer0": "tfc:items/metal/shield/wrought_iron_item"
+    "layer0": "tfc:items/metal/shield/wrought_iron"
   },
   "elements": [
     {
