@@ -14,7 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiCreateWorld;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.gui.recipebook.GuiButtonRecipe;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -120,17 +119,18 @@ public class ClientEvents
     @SubscribeEvent
     public static void onGuiButtonPress(GuiScreenEvent.ActionPerformedEvent.Post event)
     {
-        if (event.getGui() instanceof GuiInventory && event.getButton() instanceof GuiButtonPlayerInventoryTab)
+        if (event.getGui() instanceof GuiInventory)
         {
-            // This should generally be true, but check just in case something has disabled it
-            GuiButtonPlayerInventoryTab button = (GuiButtonPlayerInventoryTab) event.getButton();
-            if (button.isActive())
+            if (event.getButton() instanceof GuiButtonPlayerInventoryTab)
             {
-                TerraFirmaCraft.getNetwork().sendToServer(new PacketSwitchPlayerInventoryTab(button.getGuiType()));
+                // This should generally be true, but check just in case something has disabled it
+                GuiButtonPlayerInventoryTab button = (GuiButtonPlayerInventoryTab) event.getButton();
+                if (button.isActive())
+                {
+                    TerraFirmaCraft.getNetwork().sendToServer(new PacketSwitchPlayerInventoryTab(button.getGuiType()));
+                }
             }
-        }
-        else if (event.getGui() instanceof GuiInventory && event.getButton() instanceof GuiButtonRecipe)
-        {
+
             // This is necessary to catch the resizing of the inventory gui when you open the recipe book
             for (GuiButton button : event.getButtonList())
             {
