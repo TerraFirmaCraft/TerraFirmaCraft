@@ -51,6 +51,7 @@ tfc.tooltip.blast_furnace_melt_amount=Melt
 tfc.tooltip.large_vessel_seal=Seal Large Vessel
 tfc.tooltip.large_vessel_unseal=Unseal Large Vessel
 tfc.tooltip.goldpan.chunkworked=This area seems to be overworked. You probably wouldn't find much.
+tfc.tooltip.smithing_skill=Skill Bonus: %0.1f%%
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.old=This animal is too old to mate.
