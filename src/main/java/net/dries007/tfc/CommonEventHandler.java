@@ -482,6 +482,13 @@ public final class CommonEventHandler
                 event.setResult(Event.Result.DENY);
             }
         }
+
+        // Stop mob spawning in thatch - the list of non-spawnable light-blocking, non-collidable blocks is hardcoded in WorldEntitySpawner#canEntitySpawnBody
+        BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
+        if (event.getWorld().getBlockState(pos).getBlock() == BlocksTFC.THATCH || event.getWorld().getBlockState(pos.up()).getBlock() == BlocksTFC.THATCH)
+        {
+            event.setResult(Event.Result.DENY);
+        }
     }
 
     @SubscribeEvent

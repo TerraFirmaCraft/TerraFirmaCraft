@@ -45,6 +45,12 @@ public class BarrelRecipeTemperature extends BarrelRecipe
     }
 
     @Override
+    public boolean isValidInputInstant(ItemStack inputStack, FluidStack inputFluid)
+    {
+        return true;
+    }
+
+    @Override
     @Nullable
     public FluidStack getOutputFluid(FluidStack inputFluid, ItemStack inputStack)
     {
