@@ -50,14 +50,14 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         this.duration = duration;
     }
 
-    public boolean isValidInput(FluidStack inputFluid, ItemStack inputStack)
+    public boolean isValidInput(@Nullable FluidStack inputFluid, ItemStack inputStack)
     {
         return this.inputFluid.test(inputFluid) && this.inputStack.test(inputStack);
     }
 
-    public boolean doesInputConsumeAllFluid(ItemStack inputStack, FluidStack inputFluid)
+    public boolean isValidInputInstant(ItemStack inputStack, @Nullable FluidStack inputFluid)
     {
-        return inputFluid.amount / this.inputFluid.getAmount() <= inputStack.getCount() / this.inputStack.getAmount();
+        return inputFluid == null || inputFluid.amount / this.inputFluid.getAmount() <= inputStack.getCount() / this.inputStack.getAmount();
     }
 
     public int getDuration()
