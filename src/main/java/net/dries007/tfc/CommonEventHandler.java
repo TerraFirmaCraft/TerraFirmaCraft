@@ -34,6 +34,7 @@ import net.minecraftforge.event.GameRuleChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -74,6 +75,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.CalendarWorldData;
 import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.util.skills.SmithingSkill;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -103,6 +105,22 @@ public final class CommonEventHandler
             if (Constants.RNG.nextFloat() < chance)
             {
                 event.getDrops().add(new ItemStack(Items.STICK));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onBreakProgressEvent(BreakSpeed event)
+    {
+        EntityPlayer player = event.getEntityPlayer();
+        if (player != null)
+        {
+            ItemStack stack = player.getHeldItemMainhand();
+            float skillModifier = SmithingSkill.getSkillBonus(stack, SmithingSkill.Type.TOOLS);
+            if (skillModifier > 0)
+            {
+                // Up to 2x modifier for break speed for skill bonuses on tools
+                event.setNewSpeed(event.getOriginalSpeed() / (1 + skillModifier * 1.5f));
             }
         }
     }

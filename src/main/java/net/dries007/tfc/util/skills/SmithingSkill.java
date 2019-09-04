@@ -6,19 +6,63 @@
 package net.dries007.tfc.util.skills;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import net.dries007.tfc.api.capability.player.IPlayerData;
 
 public class SmithingSkill extends Skill
 {
-    private static final int MAX_GENERAL = 80;
-    private static final int MAX_TOOLS = 40;
-    private static final int MAX_WEAPONS = 20;
-    private static final int MAX_ARMOR = 20;
+    private static final String SKILL_VALUE = "tfc_smithing_value";
+    private static final String SKILL_TYPE = "tfc_smithing_type";
 
-    private int generalLevel, toolsLevel, weaponsLevel, armorLevel;
+    public static void applySkillBonus(SmithingSkill skill, ItemStack stack, Type bonusType)
+    {
+        if (!stack.hasTagCompound())
+        {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+        NBTTagCompound nbt = stack.getTagCompound();
+        if (nbt != null)
+        {
+            nbt.setFloat(SKILL_VALUE, skill.getSkillSum() / 160f);
+            nbt.setInteger(SKILL_TYPE, bonusType.ordinal());
+        }
+    }
+
+    public static void copySkillBonus(ItemStack to, ItemStack from)
+    {
+        NBTTagCompound fromNbt = from.getTagCompound();
+        NBTTagCompound toNbt = to.getTagCompound();
+        if (fromNbt != null && toNbt != null)
+        {
+            toNbt.setInteger(SKILL_TYPE, fromNbt.getInteger(SKILL_TYPE));
+            toNbt.setFloat(SKILL_VALUE, fromNbt.getFloat(SKILL_VALUE));
+        }
+    }
+
+    public static float getSkillBonus(ItemStack stack)
+    {
+        return getSkillBonus(stack, null);
+    }
+
+    /**
+     * @param type the type to get skill for, null if it doesn't matter
+     * @return a value between 0 and 1
+     */
+    public static float getSkillBonus(ItemStack stack, @Nullable Type type)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if (nbt != null)
+        {
+            return type == null || nbt.getInteger(SKILL_TYPE) == type.ordinal() ? nbt.getFloat(SKILL_VALUE) : 0;
+        }
+        return 0;
+    }
+
+    private int[] skillLevels = new int[4];
 
     public SmithingSkill(IPlayerData rootSkills)
     {
@@ -29,23 +73,23 @@ public class SmithingSkill extends Skill
     @Nonnull
     public SkillTier getTier()
     {
-        return SkillTier.valueOf((generalLevel + toolsLevel + weaponsLevel + armorLevel) / 40);
+        return SkillTier.valueOf(getSkillSum() / 40);
     }
 
     @Override
     public float getLevel()
     {
-        return ((generalLevel + toolsLevel + weaponsLevel + armorLevel) % 40) / 40.0f;
+        return (getSkillSum() % 40) / 40.0f;
     }
 
     @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("general", generalLevel);
-        nbt.setInteger("tools", toolsLevel);
-        nbt.setInteger("weapons", weaponsLevel);
-        nbt.setInteger("armor", armorLevel);
+        for (Type type : Type.values())
+        {
+            nbt.setInteger(type.name().toLowerCase(), skillLevels[type.ordinal()]);
+        }
         return nbt;
     }
 
@@ -54,46 +98,49 @@ public class SmithingSkill extends Skill
     {
         if (nbt != null)
         {
-            generalLevel = nbt.getInteger("general");
-            toolsLevel = nbt.getInteger("tools");
-            weaponsLevel = nbt.getInteger("weapons");
-            armorLevel = nbt.getInteger("armor");
+            for (Type type : Type.values())
+            {
+                skillLevels[type.ordinal()] = nbt.getInteger(type.name().toLowerCase());
+            }
         }
     }
 
-    public void addGeneralSkill(int amount)
+    public void addSkill(Type type, int amount)
     {
-        generalLevel += amount;
-        if (generalLevel > MAX_GENERAL)
+        skillLevels[type.ordinal()] += amount;
+        if (skillLevels[type.ordinal()] > type.getMax())
         {
-            generalLevel = MAX_GENERAL;
+            skillLevels[type.ordinal()] = type.getMax();
         }
     }
 
-    public void addToolsSkill(int amount)
+    private int getSkillSum()
     {
-        toolsLevel += amount;
-        if (toolsLevel > MAX_TOOLS)
+        int sum = 0;
+        for (int skill : skillLevels)
         {
-            toolsLevel = MAX_TOOLS;
+            sum += skill;
         }
+        return sum;
     }
 
-    public void addWeaponsSkill(int amount)
+    public enum Type
     {
-        weaponsLevel += amount;
-        if (weaponsLevel > MAX_WEAPONS)
-        {
-            weaponsLevel = MAX_WEAPONS;
-        }
-    }
+        GENERAL(80),
+        TOOLS(40),
+        WEAPONS(20),
+        ARMOR(20);
 
-    public void addArmorSkill(int amount)
-    {
-        armorLevel += amount;
-        if (armorLevel > MAX_ARMOR)
+        private final int max;
+
+        Type(int max)
         {
-            armorLevel = MAX_ARMOR;
+            this.max = max;
+        }
+
+        public int getMax()
+        {
+            return max;
         }
     }
 }
