@@ -76,7 +76,7 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipes(quernList, QUERN_UID); //Register recipes to quern category
         registry.addRecipeCatalyst(new ItemStack(BlocksTFC.QUERN), QUERN_UID); //Register BlockQuern as the device that do quern recipes
 
-        //Wraps all heating recipes, if they return ingredients(1 or more) -> itemstacks(1 or more)
+        //Wraps all heating recipes, if they return ingredient(1 or more) -> itemstacks(1 or more)
         List<HeatRecipeWrapper> heatList = TFCRegistries.HEAT.getValuesCollection()
             .stream()
             .filter(r -> r.getOutputs().size() > 0 && r.getIngredients().size() > 0)
@@ -84,7 +84,8 @@ public final class TFCJEIPlugin implements IModPlugin
             .collect(Collectors.toList());
 
         registry.addRecipes(heatList, HEAT_UID);
-        //No block/item to wrap this one
+        registry.addRecipeCatalyst(new ItemStack(BlocksTFC.FIREPIT), HEAT_UID);
+        registry.addRecipeCatalyst(new ItemStack(BlocksTFC.CHARCOAL_FORGE), HEAT_UID);
 
         //Wraps all anvil recipes
         List<AnvilRecipeWrapper> anvilList = TFCRegistries.ANVIL.getValuesCollection()
@@ -195,5 +196,6 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipeClickArea(GuiBarrel.class, 36, 38, 14, 14, BARREL_UID);
         registry.addRecipeClickArea(GuiQuern.class, 83, 19, 9, 46, QUERN_UID);
         registry.addRecipeClickArea(GuiCrucible.class, 137, 23, 15, 66, ALLOY_UID);
+        registry.addRecipeClickArea(GuiFirePit.class, 80, 38, 16, 8, HEAT_UID);
     }
 }
