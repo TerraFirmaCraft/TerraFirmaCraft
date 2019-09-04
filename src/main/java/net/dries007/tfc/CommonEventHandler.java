@@ -163,8 +163,8 @@ public final class CommonEventHandler
             RayTraceResult result = Helpers.rayTrace(event.getWorld(), player, true);
             if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK)
             {
-                BlockPos blockpos = result.getBlockPos();
-                boolean isFreshWater = BlocksTFC.isFreshWater(state), isSaltWater = BlocksTFC.isSaltWater(state);
+                IBlockState waterState = world.getBlockState(result.getBlockPos());
+                boolean isFreshWater = BlocksTFC.isFreshWater(waterState), isSaltWater = BlocksTFC.isSaltWater(waterState);
                 if ((isFreshWater && foodStats.attemptDrink(10, true)) || (isSaltWater && foodStats.attemptDrink(-1, true)))
                 {
                     //Simulated so client will check if he would drink before updating stats
