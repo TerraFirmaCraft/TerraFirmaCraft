@@ -216,9 +216,8 @@ public class TELogPile extends TEInventory implements ITickable
             }
         } while (block == Blocks.AIR || block instanceof BlockCharcoalPile);
 
-        double logs = (double) countLogs();
-        double log2 = 0.008d * logs * (logs + 42.5d) - 0.75d + 1.5d * Constants.RNG.nextFloat();
-        int charcoal = (int) Math.min(8, Math.max(0, Math.round(log2)));
+        double logs = countLogs() * (0.25 + 0.25 * Constants.RNG.nextFloat());
+        int charcoal = (int) Math.min(8, Math.max(0, Math.round(logs)));
         if (charcoal == 0)
         {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());

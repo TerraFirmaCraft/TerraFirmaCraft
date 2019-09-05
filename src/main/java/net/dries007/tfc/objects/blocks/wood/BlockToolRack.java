@@ -179,14 +179,22 @@ public class BlockToolRack extends BlockContainer implements IItemSize
 
     @Override
     @Nonnull
-    public ItemStack getPickBlock(@Nonnull IBlockState state, RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(@Nonnull IBlockState state, @Nullable RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, EntityPlayer player)
     {
-        Vec3d vec = target.hitVec.subtract(pos.getX(), pos.getY(), pos.getZ());
-        TEToolRack te = Helpers.getTE(world, pos, TEToolRack.class);
-        if (te == null) return new ItemStack(this);
-        ItemStack item = te.getItems().get(getSlotFromPos(state, (float) vec.x, (float) vec.y, (float) vec.z));
-        if (item.isEmpty()) return new ItemStack(this);
-        return item;
+        if (target != null)
+        {
+            Vec3d vec = target.hitVec.subtract(pos.getX(), pos.getY(), pos.getZ());
+            TEToolRack te = Helpers.getTE(world, pos, TEToolRack.class);
+            if (te != null)
+            {
+                ItemStack item = te.getItems().get(getSlotFromPos(state, (float) vec.x, (float) vec.y, (float) vec.z));
+                if (!item.isEmpty())
+                {
+                    return item;
+                }
+            }
+        }
+        return super.getPickBlock(state, target, world, pos, player);
     }
 
     public int getSlotFromPos(IBlockState state, float x, float y, float z)

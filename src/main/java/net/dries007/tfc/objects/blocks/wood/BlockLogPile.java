@@ -35,6 +35,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
+import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
 
@@ -107,12 +108,12 @@ public class BlockLogPile extends Block implements ILightableBlock
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
-        TELogPile te = Helpers.getTE(worldIn, pos, TELogPile.class);
-        if (te != null)
+        // This can't use breakBlock as it needs to not drop when broken in order to create a charcoal pile
+        if (!worldIn.isRemote && te instanceof TEInventory)
         {
-            te.onBreakBlock(worldIn, pos);
+            ((TEInventory) te).onBreakBlock(worldIn, pos);
         }
         super.breakBlock(worldIn, pos, state);
     }

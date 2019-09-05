@@ -18,7 +18,9 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -73,13 +75,14 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
         if (te != null)
         {
             te.resetCounter();
         }
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override
