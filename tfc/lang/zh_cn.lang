@@ -21,7 +21,7 @@ tfc.tooltip.barrel_empty=空
 tfc.tooltip.barrel_fluid=含 %1$d mB 的 %2$s
 tfc.tooltip.barrel_fluid_amount=%d mB
 tfc.tooltip.barrel_item=含 %1$dx% 2$s
-tfc.tooltip.barrel_item_in_fluid=和 %1$dx %2$s
+tfc.tooltip.barrel_item_in_fluid= 和 %1$dx %2$s
 tfc.tooltip.small_vessel_empty=空
 tfc.tooltip.small_vessel_item=%1$dx %2$s
 tfc.tooltip.weldable=可焊接
@@ -57,6 +57,8 @@ tfc.tooltip.blast_furnace_melt_amount=熔化
 tfc.tooltip.large_vessel_seal=密封大缸
 tfc.tooltip.large_vessel_unseal=启封大缸
 tfc.tooltip.goldpan.chunkworked=这片地区似乎已被过度开采。你或许发现不了什么。
+tfc.tooltip.smithing_skill=技能加成：%0.1f%%
+tfc.tooltip.crucible_alloy=含 %1$d mB 的 %2$s
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.old=这只动物太老了，不能给它配种。
@@ -75,6 +77,8 @@ tfc.tooltip.set_month_length=将月长度设置为 %d 天。
 tfc.tooltip.time_command_set_player_time=将玩家时间设置为 %d 。
 tfc.tooltip.time_command_set_calendar_time=将日历时间设置为 %s 。
 tfc.tooltip.time_command_disabled=此命令已被群峦传说禁用。作为替代，请使用 /timetfc ！
+tfc.tooltip.skill_set=将 %s 设置为 %.2f 级
+tfc.tooltip.skill_add=向 %s 添加了 %.2f 级
 
 ## Prospecting Result Messages
 tfc.propick.found=发现
@@ -95,8 +99,20 @@ tfc.food_traits.brined=盐渍
 tfc.food_traits.brined_active=盐渍中
 tfc.food_traits.salted=抹盐
 tfc.food_traits.pickled=腌制
-tfc.food_traits.pickled_active=腌制中
 tfc.food_traits.preserved=储存
+tfc.tooltip.barrel_recipe_pickling=腌制中
+tfc.tooltip.barrel_recipe_brining=盐渍中
+
+## Skills
+tfc.skill.prospecting=探矿：%s
+tfc.skill.smithing=锻造：%s
+tfc.skill.agriculture=农业：%s
+tfc.skill.butchering=屠宰：%s
+
+tfc.enum.skilltier.novice=新手
+tfc.enum.skilltier.adept=老手
+tfc.enum.skilltier.expert=专家
+tfc.enum.skilltier.master=大师
 
 ## Keybindings
 tfc.key.craft=合成面板
@@ -218,7 +234,7 @@ config.tfc.general.richOreMetalAmount=富集矿金属含量
 config.tfc.general.richOreMetalAmount.tooltip=富集矿中含有的金属量。
 
 config.tfc.general.maxWorkChunk=区块最大开采量
-config.tfc.general.maxWorkChunk.tooltip=一个区块能被开采的次数。注意：洗矿槽增加 1 而淘金盘增加 6 。
+config.tfc.general.maxWorkChunk.tooltip=在一个区块内开采的最大次数。注意：洗矿槽增加 1 而淘金盘增加 6 。
 
 config.tfc.general.sluiceRadius=洗矿槽半径
 config.tfc.general.sluiceRadius.tooltip=以区块为单位的洗矿槽工作半径。
@@ -244,20 +260,38 @@ config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=若为 true，将�
 config.tfc.general.peacefulDifficultyPassiveRegeneration=和平难度被动恢复
 config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=玩家是否应在和平难度下与原版相似地被动恢复生命值，饱食度，口渴值？
 
-config.tfc.general.regenSticksRocks=木棍&岩石重生成
-config.tfc.general.regenSticksRocks.tooltip=木棍和岩石重生成多快，以天为单位。设置为 0 以完全禁用。
+config.tfc.general.worldRegenerationMinimumTime=世界重生最小时间
+config.tfc.general.worldRegenerationMinimumTime.tooltip=区块空闲以开始自然再生资源所需的最短时间（以天为单位）。在此之后，资源再生将根据自此时间以来持续的时间加速，最高可达 4 倍T.
 
-config.tfc.general.regenPlants=植物重生成
-config.tfc.general.regenPlants.tooltip=植物重生成多快，以月为单位。设置为 0 以完全禁用。
+config.tfc.general.worldRegenerationSticksRocksModifier=地表物资重生修改
+config.tfc.general.worldRegenerationSticksRocksModifier.tooltip=地表上碎石和木棍再生的数目。
 
-config.tfc.general.regenCrops=野生作物&浆果灌木重生成
-config.tfc.general.regenCrops.tooltip=野生作物&浆果灌木重生成多快，以月为单位。设置为 0 以完全禁用。
+config.tfc.general.foodDecayStackTime=食物腐烂叠加时间
+config.tfc.general.foodDecayStackTime.tooltip=食物初始保质期的同步值。当食物首次成为物品时，其初始保质期将四舍五入至该值最接近的倍数（以小时为单位）。
+
+config.tfc.general.foodPassiveExhaustionMultiplier=饱食度被动消耗速度
+config.tfc.general.foodPassiveExhaustionMultiplier.tooltip=饱食度被动消耗的速度。0 = 无被动消耗，更高的值 = 更快的消耗。
+
+config.tfc.general.oreDictIron=矿物词典 锻铁 - iron
+config.tfc.general.oreDictIron.tooltip=向锻铁物品添加 iron 的矿物词典吗？
+
+config.tfc.general.oreDictPlate=矿物词典 薄板 - plate
+config.tfc.general.oreDictPlate.tooltip=向薄板物品添加 plate 的矿物词典吗？
+
+config.tfc.general.spawnProtectionEnable=启用生成保护
+config.tfc.general.spawnProtectionEnable.tooltip=在玩家附近区块内的敌对生物是否应当一直生成？
+
+config.tfc.general.spawnProtectionMinY=区块生成保护最低 Y 值
+config.tfc.general.spawnProtectionMinY.tooltip=区块生成保护的最低 Y 值。（在该高度以下的区域不受区块生成保护的限制）
+
+config.tfc.general.charcoalPitTime=木炭炉时间
+config.tfc.general.charcoalPitTime.tooltip=木炭炉完成所需要的刻数。
+
 
 ## Client Config
 config.tfc.general.woodenBucketWhitelist=木桶液体白名单
 config.tfc.general.woodenBucketWhitelist.tooltip=允许被木桶承装的液体列表。
 
-## Config.Client
 config.tfc.client=客户端设置
 config.tfc.client.toolip=仅作用于客户端。
 
@@ -276,8 +310,8 @@ config.tfc.client.showNBTTooltip.tooltip=启用高级提示时在提示中显示
 config.tfc.client.propickOutputToActionBar=探矿输出到动作栏
 config.tfc.client.propickOutputToActionBar.tooltip=探矿应该输出到动作栏吗？（快捷栏上方的空间）
 
-config.tfc.client.rottenFoodOverlayColor=腐烂食物文字颜色
-config.tfc.client.rottenFoodOverlayColor.tooltip=腐烂食物文字的颜色。以 256 位颜色值表示：0xFFFFFF = 白色，0x000000 = 黑色
+config.tfc.client.rottenFoodOverlayColor=腐烂食物覆盖层颜色
+config.tfc.client.rottenFoodOverlayColor.tooltip=在腐烂食物上额外渲染的颜色。以 256 位颜色值表示：0xFFFFFF = 白色，0x000000 = 黑色
 
 ## Config.World
 config.tfc.world=世界生成设置
@@ -301,10 +335,19 @@ config.tfc.world.clayRarity.tooltip=粘土坑产生的稀有度。平均 1 / N �
 config.tfc.world.looseRocksFrequency=石子频率
 config.tfc.world.looseRocksFrequency.tooltip=每个区块生成地表石子的尝试次数。包括地表矿石样本。
 
+config.tfc.world.rainfallSpreadFactor=降雨量分布因子
+config.tfc.world.rainfallSpreadFactor.tooltip=控制降雨量如何分布。更高的值使分布更极端。警告：可能导致世界生成非常怪异。
+
+config.tfc.world.floraDiversitySpreadFactor=植物群多样性分布因子
+config.tfc.world.floraDiversitySpreadFactor.tooltip=控制植物群多样性如何分布。更高的值使分布更极端。警告：可能导致世界生成非常怪异。
+
+config.tfc.world.floraDensitySpreadFactor=植物群密度分布因子
+config.tfc.world.floraDensitySpreadFactor.tooltip=控制植物群密度如何分布。更高的值使分布更极端。警告：可能导致世界生成非常怪异。
+
 # Misc
 itemGroup.tfc.misc=群峦传说|杂项
-itemGroup.tfc.rock.blocks=群峦传说|石&土方块
-itemGroup.tfc.rock.items=群峦传说|矿物&工具
+itemGroup.tfc.rock.blocks=群峦传说|石 & 土方块
+itemGroup.tfc.rock.items=群峦传说|矿物 & 工具
 itemGroup.tfc.wood=群峦传说|木材
 itemGroup.tfc.decorations=群峦传说|装饰品
 itemGroup.tfc.pottery=群峦传说|陶器
@@ -401,11 +444,11 @@ tfc.enum.forgerule.hit_not_last=击打，非最末
 tfc.enum.forgerule.hit_last=击打，末尾
 tfc.enum.forgerule.hit_second_last=击打，倒数第二
 tfc.enum.forgerule.hit_third_last=击打，倒数第三
-tfc.enum.forgerule.draw_any=牵引，任意
-tfc.enum.forgerule.draw_last=牵引，末尾
-tfc.enum.forgerule.draw_not_last=牵引，非最末
-tfc.enum.forgerule.draw_second_last=牵引，倒数第二
-tfc.enum.forgerule.draw_third_last=牵引，倒数第三
+tfc.enum.forgerule.draw_any=牵拉，任意
+tfc.enum.forgerule.draw_last=牵拉，末尾
+tfc.enum.forgerule.draw_not_last=牵拉，非最末
+tfc.enum.forgerule.draw_second_last=牵拉，倒数第二
+tfc.enum.forgerule.draw_third_last=牵拉，倒数第三
 tfc.enum.forgerule.punch_any=冲压，任意
 tfc.enum.forgerule.punch_last=冲压，末尾
 tfc.enum.forgerule.punch_not_last=冲压，非最末
@@ -501,8 +544,9 @@ fluid.brine=卤水
 fluid.olive_oil=橄榄油
 fluid.tannin=鞣酸
 fluid.limewater=石灰水
+fluid.milk=牛奶
 fluid.milk_curdled=凝乳
-fluid.milk_vinegar=奶酪
+fluid.milk_vinegar=醋奶
 fluid.bismuth=熔融铋
 fluid.bismuth_bronze=熔融铋铜
 fluid.black_bronze=熔融黑铜
@@ -541,6 +585,7 @@ tile.tfc.debug.name=群峦传说调试方块
 tile.tfc.placed_item.name=放置的物品
 tile.tfc.placed_item_flat.name=杂物
 tile.tfc.pit_kiln.name=坑窑
+tile.tfc.charcoal_forge.name=木炭炉
 tile.tfc.peat.name=泥炭
 tile.tfc.peat_grass.name=长草的泥炭
 tile.tfc.thatch.name=干草块
@@ -556,6 +601,7 @@ tile.tfc.ceramics.fired.large_vessel.name=大缸
 tile.tfc.sluice.name=洗矿槽
 tile.tfc.ice.name=冰
 tile.tfc.sea_ice.name=海冰
+tile.tfc.nest_box.name=巢箱
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=未加工花岗岩
@@ -2099,27 +2145,27 @@ tile.tfc.wall.bricks.phyllite.name=千枚岩砖块墙
 tile.tfc.wall.bricks.schist.name=片岩砖块墙
 tile.tfc.wall.bricks.gneiss.name=片麻岩砖块墙
 tile.tfc.wall.bricks.marble.name=大理岩砖块墙
-tile.tfc.wall.smooth.granite.name=花岗岩平滑墙
-tile.tfc.wall.smooth.diorite.name=闪长岩平滑墙
-tile.tfc.wall.smooth.gabbro.name=辉长岩平滑墙
-tile.tfc.wall.smooth.shale.name=页岩平滑墙
-tile.tfc.wall.smooth.claystone.name=黏土岩平滑墙
-tile.tfc.wall.smooth.rocksalt.name=盐岩平滑墙
-tile.tfc.wall.smooth.limestone.name=石灰岩平滑墙
-tile.tfc.wall.smooth.conglomerate.name=砾岩平滑墙
-tile.tfc.wall.smooth.dolomite.name=白云岩平滑墙
-tile.tfc.wall.smooth.chert.name=硅质岩平滑墙
-tile.tfc.wall.smooth.chalk.name=白垩岩平滑墙
-tile.tfc.wall.smooth.rhyolite.name=流纹岩平滑墙
-tile.tfc.wall.smooth.basalt.name=玄武岩平滑墙
-tile.tfc.wall.smooth.andesite.name=安山岩平滑墙
-tile.tfc.wall.smooth.dacite.name=英安岩平滑墙
-tile.tfc.wall.smooth.quartzite.name=石英岩平滑墙
-tile.tfc.wall.smooth.slate.name=板岩平滑墙
-tile.tfc.wall.smooth.phyllite.name=千枚岩平滑墙
-tile.tfc.wall.smooth.schist.name=片岩平滑墙
-tile.tfc.wall.smooth.gneiss.name=片麻岩平滑墙
-tile.tfc.wall.smooth.marble.name=大理岩平滑墙
+tile.tfc.wall.smooth.granite.name=平滑花岗岩墙
+tile.tfc.wall.smooth.diorite.name=平滑闪长岩墙
+tile.tfc.wall.smooth.gabbro.name=平滑辉长岩墙
+tile.tfc.wall.smooth.shale.name=平滑页岩墙
+tile.tfc.wall.smooth.claystone.name=平滑黏土岩墙
+tile.tfc.wall.smooth.rocksalt.name=平滑盐岩墙
+tile.tfc.wall.smooth.limestone.name=平滑石灰岩墙
+tile.tfc.wall.smooth.conglomerate.name=平滑砾岩墙
+tile.tfc.wall.smooth.dolomite.name=平滑白云岩墙
+tile.tfc.wall.smooth.chert.name=平滑硅质岩墙
+tile.tfc.wall.smooth.chalk.name=平滑白垩岩墙
+tile.tfc.wall.smooth.rhyolite.name=平滑流纹岩墙
+tile.tfc.wall.smooth.basalt.name=平滑玄武岩墙
+tile.tfc.wall.smooth.andesite.name=平滑安山岩墙
+tile.tfc.wall.smooth.dacite.name=平滑英安岩墙
+tile.tfc.wall.smooth.quartzite.name=平滑石英岩墙
+tile.tfc.wall.smooth.slate.name=平滑板岩墙
+tile.tfc.wall.smooth.phyllite.name=平滑千枚岩墙
+tile.tfc.wall.smooth.schist.name=平滑片岩墙
+tile.tfc.wall.smooth.gneiss.name=平滑片麻岩墙
+tile.tfc.wall.smooth.marble.name=平滑大理岩墙
 
 # Plants
 itemGroup.tfc.flora=群峦传说植物群
@@ -2128,7 +2174,7 @@ tile.tfc.plants.athyrium_fern.name=蹄盖蕨
 tile.tfc.plants.badderlocks.name=翅藻
 tile.tfc.plants.barrel_cactus.name=圆筒掌
 tile.tfc.plants.black_orchid.name=黑兰花
-tile.tfc.plants.blood_lily.name=血百合
+tile.tfc.plants.blood_lily.name=网球花
 tile.tfc.plants.blue_orchid.name=兰花
 tile.tfc.plants.butterfly_milkweed.name=蝶乳草
 tile.tfc.plants.calendula.name=金盏花
@@ -2619,6 +2665,26 @@ item.tfc.wood.lumber.acacia.name=金合欢木材
 item.tfc.wood.lumber.rosewood.name=蔷薇木材
 item.tfc.wood.lumber.blackwood.name=黑檀木材
 item.tfc.wood.lumber.palm.name=棕榈木材
+
+item.tfc.wood.boat.ash.name=黑梣木船
+item.tfc.wood.boat.aspen.name=山杨木船
+item.tfc.wood.boat.birch.name=白桦木船
+item.tfc.wood.boat.chestnut.name=栗木船
+item.tfc.wood.boat.douglas_fir.name=花旗松木船
+item.tfc.wood.boat.hickory.name=山核桃木船
+item.tfc.wood.boat.maple.name=枫木船
+item.tfc.wood.boat.oak.name=白橡木船
+item.tfc.wood.boat.pine.name=松木船
+item.tfc.wood.boat.sequoia.name=红杉木船
+item.tfc.wood.boat.spruce.name=云杉木船
+item.tfc.wood.boat.sycamore.name=悬铃木船
+item.tfc.wood.boat.white_cedar.name=香柏木船
+item.tfc.wood.boat.willow.name=柳木船
+item.tfc.wood.boat.kapok.name=木棉木船
+item.tfc.wood.boat.acacia.name=金合欢木船
+item.tfc.wood.boat.rosewood.name=蔷薇木船
+item.tfc.wood.boat.blackwood.name=黑檀木船
+item.tfc.wood.boat.palm.name=棕榈木船
 
 item.tfc.wood.door.ash.name=黑梣木门
 item.tfc.wood.door.aspen.name=山杨木门
@@ -3450,7 +3516,7 @@ item.tfc.ceramics.fired.vessel_glazed.yellow.name=黄色小缸
 item.tfc.ceramics.fired.vessel_glazed.lime.name=黄绿色小缸
 item.tfc.ceramics.fired.vessel_glazed.pink.name=粉色小缸
 item.tfc.ceramics.fired.vessel_glazed.gray.name=灰色小缸
-item.tfc.ceramics.fired.vessel_glazed.silver.name=银色小缸
+item.tfc.ceramics.fired.vessel_glazed.silver.name=淡灰色小缸
 item.tfc.ceramics.fired.vessel_glazed.cyan.name=青色小缸
 item.tfc.ceramics.fired.vessel_glazed.purple.name=紫色小缸
 item.tfc.ceramics.fired.vessel_glazed.blue.name=蓝色小缸
@@ -3466,7 +3532,7 @@ item.tfc.ceramics.unfired.vessel_glazed.yellow.name=未烧制黄色小缸
 item.tfc.ceramics.unfired.vessel_glazed.lime.name=未烧制黄绿色小缸
 item.tfc.ceramics.unfired.vessel_glazed.pink.name=未烧制粉色小缸
 item.tfc.ceramics.unfired.vessel_glazed.gray.name=未烧制灰色小缸
-item.tfc.ceramics.unfired.vessel_glazed.silver.name=未烧制银色小缸
+item.tfc.ceramics.unfired.vessel_glazed.silver.name=未烧制淡灰色小缸
 item.tfc.ceramics.unfired.vessel_glazed.cyan.name=未烧制青色小缸
 item.tfc.ceramics.unfired.vessel_glazed.purple.name=未烧制紫色小缸
 item.tfc.ceramics.unfired.vessel_glazed.blue.name=未烧制蓝色小缸
@@ -3641,3 +3707,5 @@ entity.wolftfc.name=狼
 entity.horsetfc.name=马
 entity.donkeytfc.name=驴
 entity.muletfc.name=骡
+
+death.attack.dehydration=%1$s 死于脱水
