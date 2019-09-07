@@ -31,7 +31,7 @@ public final class EventHandler
     @SubscribeEvent
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
     {
-        if (event.getWorld().getWorldInfo().getGenerator() == TerraFirmaCraft.WORLD_TYPE)
+        if (event.getWorld().getWorldInfo().getGenerator() == TerraFirmaCraft.getWorldType())
         {
             // todo: handle this better
             event.getWorld().getWorldInfo().setSpawn(new BlockPos(0, 100, 0));
@@ -43,7 +43,7 @@ public final class EventHandler
     public static void onAttachCapabilitiesChunk(AttachCapabilitiesEvent<Chunk> event)
     {
         World world = event.getObject().getWorld();
-        if (world.getWorldType() == TerraFirmaCraft.WORLD_TYPE)
+        if (world.getWorldType() == TerraFirmaCraft.getWorldType())
         {
             ChunkData chunkData = new ChunkData();
 

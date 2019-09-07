@@ -17,7 +17,7 @@ public class BadlandsBiome extends TFCBiome
 {
     public BadlandsBiome()
     {
-        super(new Builder().category(Category.MESA).surfaceBuilder(TFCSurfaceBuilders.DEFAULT_THIN));
+        super(new TFCBiome.Builder().category(Category.MESA).surfaceBuilder(TFCSurfaceBuilders.DEFAULT_THIN));
 
         TFCDefaultBiomeFeatures.addCarvers(this);
     }

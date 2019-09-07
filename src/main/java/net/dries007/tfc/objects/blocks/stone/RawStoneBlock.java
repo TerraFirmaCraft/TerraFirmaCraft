@@ -58,7 +58,7 @@ public class RawStoneBlock extends StoneBlock// implements ICollapsableBlock
     //    {
     //        if (!worldIn.isRemote)
     //        {
-    //            // Create a stone anvil
+    //            // Create a rock anvil
     //            BlockStoneAnvil block = BlockStoneAnvil.get(this.rock);
     //            if (block != null)
     //            {

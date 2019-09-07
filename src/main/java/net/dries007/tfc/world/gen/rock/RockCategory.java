@@ -29,8 +29,8 @@ public enum RockCategory implements Predicate<Rock>
     /**
      * A rock category.
      *
-     * @param itemTier The tool material used for stone tools made of this rock
-     * @param hasAnvil if this rock should be able to create a stone anvil
+     * @param itemTier The tool material used for rock tools made of this rock
+     * @param hasAnvil if this rock should be able to create a rock anvil
      */
     RockCategory(@Nonnull IItemTier itemTier, boolean layer1, boolean layer2, boolean layer3, boolean hasAnvil)
     {

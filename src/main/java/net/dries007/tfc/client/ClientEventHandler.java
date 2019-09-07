@@ -38,7 +38,7 @@ public class ClientEventHandler
             if (selectedIndex != null && selectedIndex == WorldType.DEFAULT.getId())
             {
                 LOGGER.debug("Setting Selected World Type to TFC Default");
-                ObfuscationReflectionHelper.setPrivateValue(CreateWorldScreen.class, gui, TerraFirmaCraft.WORLD_TYPE.getId(), "field_146331_K");
+                ObfuscationReflectionHelper.setPrivateValue(CreateWorldScreen.class, gui, TerraFirmaCraft.getWorldType().getId(), "field_146331_K");
             }
         }
     }

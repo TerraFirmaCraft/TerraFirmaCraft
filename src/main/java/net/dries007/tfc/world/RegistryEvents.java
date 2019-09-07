@@ -16,7 +16,6 @@ import net.minecraftforge.fml.common.Mod;
 
 import net.dries007.tfc.world.biome.*;
 import net.dries007.tfc.world.biome.provider.TFCBiomeProvider;
-import net.dries007.tfc.world.biome.provider.TFCBiomeProviderSettings;
 import net.dries007.tfc.world.gen.TFCGenerationSettings;
 import net.dries007.tfc.world.gen.TFCOverworldChunkGenerator;
 
@@ -33,7 +32,7 @@ public final class RegistryEvents
         LOGGER.debug("Registering TFC Chunk Generator Type");
 
         event.getRegistry().registerAll(
-            new ChunkGeneratorType<>(TFCOverworldChunkGenerator::new, false, TFCGenerationSettings::new).setRegistryName(MOD_ID, "overworld")
+            new ChunkGeneratorType<>(TFCOverworldChunkGenerator::new, false, TFCGenerationSettings::new).setRegistryName("overworld")
         );
     }
 
@@ -43,7 +42,7 @@ public final class RegistryEvents
         LOGGER.debug("Registering TFC Biome Provider Type");
 
         event.getRegistry().registerAll(
-            new BiomeProviderType<>(TFCBiomeProvider::new, TFCBiomeProviderSettings::new).setRegistryName(MOD_ID, "overworld")
+            new BiomeProviderType<>(TFCBiomeProvider::new, TFCGenerationSettings::new).setRegistryName("overworld")
         );
     }
 
@@ -53,29 +52,30 @@ public final class RegistryEvents
         LOGGER.debug("Registering Biomes");
 
         event.getRegistry().registerAll(
-            new OceanBiome(false).setRegistryName(MOD_ID, "ocean"),
-            new OceanBiome(true).setRegistryName(MOD_ID, "deep_ocean"),
-            new OceanBiome(true).setRegistryName(MOD_ID, "deep_ocean_ridge"),
+            new OceanBiome(false).setRegistryName("ocean"),
+            new OceanBiome(true).setRegistryName("deep_ocean"),
+            new OceanBiome(true).setRegistryName("deep_ocean_ridge"),
 
-            new PlainsBiome(-4, 10).setRegistryName(MOD_ID, "plains"),
-            new LowlandsBiome().setRegistryName(MOD_ID, "lowlands"),
-            new HillsBiome(16).setRegistryName(MOD_ID, "hills"),
-            new CanyonsBiome(-5, 14).setRegistryName(MOD_ID, "low_canyons"),
+            new PlainsBiome(-4, 10).setRegistryName("plains"),
+            new LowlandsBiome().setRegistryName("lowlands"),
+            new HillsBiome(16).setRegistryName("hills"),
+            new CanyonsBiome(-5, 14).setRegistryName("low_canyons"),
 
-            new HillsBiome(28).setRegistryName(MOD_ID, "rolling_hills"),
-            new BadlandsBiome().setRegistryName(MOD_ID, "badlands"),
-            new PlainsBiome(20, 30).setRegistryName(MOD_ID, "plateau"),
-            new MountainsBiome(48, 28).setRegistryName(MOD_ID, "old_mountains"),
+            new HillsBiome(28).setRegistryName("rolling_hills"),
+            new BadlandsBiome().setRegistryName("badlands"),
+            new PlainsBiome(20, 30).setRegistryName("plateau"),
+            new MountainsBiome(48, 28, false).setRegistryName("old_mountains"),
 
-            new MountainsBiome(48, 56).setRegistryName(MOD_ID, "mountains"),
-            new MountainsBiome(30, 64).setRegistryName(MOD_ID, "flooded_mountains"),
-            new CanyonsBiome(-7, 26).setRegistryName(MOD_ID, "canyons"),
+            new MountainsBiome(48, 56, false).setRegistryName("mountains"),
+            new MountainsBiome(30, 64, true).setRegistryName("flooded_mountains"),
+            new CanyonsBiome(-7, 26).setRegistryName("canyons"),
 
-            new ShoreBiome().setRegistryName(MOD_ID, "shore"),
-            new ShoreBiome().setRegistryName(MOD_ID, "stone_shore"),
+            new ShoreBiome().setRegistryName("shore"),
+            new ShoreBiome().setRegistryName("stone_shore"),
 
-            new MountainsBiome(36, 34).setRegistryName(MOD_ID, "mountains_edge"),
-            new LakeBiome().setRegistryName(MOD_ID, "lake")
+            new MountainsBiome(36, 34, false).setRegistryName("mountains_edge"),
+            new LakeBiome().setRegistryName("lake"),
+            new RiverBiome().setRegistryName("river")
         );
     }
 }

@@ -5,8 +5,11 @@
 
 package net.dries007.tfc.world.gen.surfacebuilders;
 
+import java.util.Random;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
 import com.mojang.datafixers.Dynamic;
@@ -18,7 +21,7 @@ public class TFCSurfaceBuilderConfig extends SurfaceBuilderConfig
         BlockState top = dynamic.get("top_material").map(BlockState::deserialize).orElse(Blocks.AIR.getDefaultState());
         BlockState under = dynamic.get("under_material").map(BlockState::deserialize).orElse(Blocks.AIR.getDefaultState());
         BlockState underwater = dynamic.get("underwater_material").map(BlockState::deserialize).orElse(Blocks.AIR.getDefaultState());
-        int soilLayers = dynamic.get("soilLayers").asInt(3);
+        int soilLayers = dynamic.get("soil_layers").asInt(3);
         return new TFCSurfaceBuilderConfig(top, under, underwater, soilLayers);
     }
 
@@ -30,8 +33,13 @@ public class TFCSurfaceBuilderConfig extends SurfaceBuilderConfig
         this.soilLayers = soilLayers;
     }
 
-    public int getSoilLayers()
+    public int getSoilLayersForHeight(int y, Random random)
     {
-        return soilLayers;
+        int maxHeight = 140 + random.nextInt(3) - random.nextInt(3);
+        if (y > maxHeight)
+        {
+            return 0;
+        }
+        return (int) MathHelper.clamp(0.08f * (maxHeight - y) * soilLayers, 1, soilLayers);
     }
 }

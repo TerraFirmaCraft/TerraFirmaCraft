@@ -15,7 +15,6 @@ import net.minecraftforge.registries.ObjectHolder;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.biome.provider.TFCBiomeProvider;
-import net.dries007.tfc.world.biome.provider.TFCBiomeProviderSettings;
 import net.dries007.tfc.world.gen.TFCGenerationSettings;
 import net.dries007.tfc.world.gen.TFCOverworldChunkGenerator;
 
@@ -27,7 +26,7 @@ public class TFCWorldType extends WorldType
     public static final ChunkGeneratorType<TFCGenerationSettings, TFCOverworldChunkGenerator> CHUNK_GENERATOR_TYPE = Helpers.getNull();
 
     @ObjectHolder(MOD_ID + ":overworld")
-    public static final BiomeProviderType<TFCBiomeProviderSettings, TFCBiomeProvider> BIOME_PROVIDER_TYPE = Helpers.getNull();
+    public static final BiomeProviderType<TFCGenerationSettings, TFCBiomeProvider> BIOME_PROVIDER_TYPE = Helpers.getNull();
 
     public TFCWorldType()
     {
@@ -40,14 +39,13 @@ public class TFCWorldType extends WorldType
         // Create default settings objects
         // todo: are these able to be customized via gui somehow?
 
-        TFCGenerationSettings chunkGenSettings = CHUNK_GENERATOR_TYPE.createSettings();
+        TFCGenerationSettings settings = CHUNK_GENERATOR_TYPE.createSettings();
+        //TFCGenerationSettings biomeGenSettings = BIOME_PROVIDER_TYPE.createSettings();
 
-        TFCBiomeProviderSettings biomeGenSettings = BIOME_PROVIDER_TYPE.createSettings();
-        biomeGenSettings.setGeneratorSettings(chunkGenSettings);
-        biomeGenSettings.setWorldInfo(world.getWorldInfo());
+        settings.setWorldInfo(world.getWorldInfo());
 
         // Create biome provider and chunk generator
-        BiomeProvider biomeProvider = BIOME_PROVIDER_TYPE.create(biomeGenSettings);
-        return CHUNK_GENERATOR_TYPE.create(world, biomeProvider, chunkGenSettings);
+        BiomeProvider biomeProvider = BIOME_PROVIDER_TYPE.create(settings);
+        return CHUNK_GENERATOR_TYPE.create(world, biomeProvider, settings);
     }
 }

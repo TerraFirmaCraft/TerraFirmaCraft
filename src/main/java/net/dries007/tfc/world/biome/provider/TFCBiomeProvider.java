@@ -21,6 +21,7 @@ import net.minecraft.world.storage.WorldInfo;
 
 import net.dries007.tfc.world.biome.TFCBiome;
 import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.world.gen.TFCGenerationSettings;
 import net.dries007.tfc.world.gen.layer.BiomeFactoryLayer;
 import net.dries007.tfc.world.gen.layer.TFCLayerUtil;
 
@@ -38,7 +39,7 @@ public class TFCBiomeProvider extends BiomeProvider
 
     private Biome[] biomes = TFCBiomes.getBiomes().toArray(new Biome[0]);
 
-    public TFCBiomeProvider(TFCBiomeProviderSettings settings)
+    public TFCBiomeProvider(TFCGenerationSettings settings)
     {
         WorldInfo worldInfo = settings.getWorldInfo();
         List<IAreaFactory<LazyArea>> areaFactory = TFCLayerUtil.createOverworldBiomeLayer(worldInfo.getSeed(), settings);

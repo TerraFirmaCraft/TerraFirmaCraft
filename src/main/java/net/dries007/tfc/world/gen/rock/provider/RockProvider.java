@@ -64,15 +64,25 @@ public class RockProvider
         this.cachedRockData = new FiniteLinkedHashMap<>(256);
         this.world = world;
 
-        List<IAreaFactory<LazyArea>> factories = TFCLayerUtil.createOverworldRockLayers(settings, world.getSeed());
+        List<IAreaFactory<LazyArea>> factories = TFCLayerUtil.createOverworldRockLayers(world.getSeed(), settings);
         this.bottomRockFactory = factories.get(0).make();
         this.middleRockFactory = factories.get(1).make();
         this.topRockFactory = factories.get(2).make();
 
-        this.bottomLayerBaseHeight = 0;//settings.getBottomRockLayerBaseHeight();
-        this.middleLayerBaseHeight = 0;//settings.getMiddleRockLayerBaseHeight();
+        this.bottomLayerBaseHeight = 30;//settings.getBottomRockLayerBaseHeight();
+        this.middleLayerBaseHeight = 30;//settings.getMiddleRockLayerBaseHeight();
 
         //this.layerHeightNoise = new SimplexNoise2D(world.getSeed()).octaves(2).spread(0.1f);
+    }
+
+    public int getBottomLayerHeight(int yLevel)
+    {
+        return 52;
+    }
+
+    public int getMiddleLayerHeight(int yLevel)
+    {
+        return getBottomLayerHeight(yLevel) + 64;
     }
 
     @Nonnull
@@ -97,7 +107,7 @@ public class RockProvider
     }
 
     @Nonnull
-    private RockData getOrCreateRockData(ChunkPos pos)
+    public RockData getOrCreateRockData(ChunkPos pos)
     {
         if (cachedRockData.containsKey(pos))
         {

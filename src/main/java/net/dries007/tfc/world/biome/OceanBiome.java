@@ -7,6 +7,8 @@ package net.dries007.tfc.world.biome;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.BlockState;
+
 import net.dries007.tfc.world.gen.surfacebuilders.TFCSurfaceBuilders;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
@@ -43,5 +45,12 @@ public class OceanBiome extends TFCBiome
         final INoise2D warpX = new SimplexNoise2D(seed).octaves(4).spread(0.1f).scaled(-30, 30);
         final INoise2D warpZ = new SimplexNoise2D(seed + 1).octaves(4).spread(0.1f).scaled(-30, 30);
         return new SimplexNoise2D(seed).octaves(4).spread(0.04f).warped(warpX, warpZ).map(x -> x > 0.4 ? x - 0.8f : -x).scaled(-0.4f, 0.8f, depthMin, depthMax);
+    }
+
+    @Nonnull
+    @Override
+    public BlockState getWaterState()
+    {
+        return SALT_WATER;
     }
 }
