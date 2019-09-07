@@ -147,6 +147,8 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     @Override
     public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
     {
+        // Remove the sapling first, since the tree generator isn't required to check for it
+        world.setBlockToAir(blockPos);
         wood.makeTree(world, blockPos, random, false);
     }
 }

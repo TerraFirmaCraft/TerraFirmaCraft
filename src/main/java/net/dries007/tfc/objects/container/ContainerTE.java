@@ -37,17 +37,17 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
 
     private int[] cachedFields;
 
-    ContainerTE(InventoryPlayer playerInv, T tile)
+    protected ContainerTE(InventoryPlayer playerInv, T tile)
     {
         this(playerInv, tile, false, 0);
     }
 
-    ContainerTE(InventoryPlayer playerInv, T tile, boolean shouldSyncCaps)
+    protected ContainerTE(InventoryPlayer playerInv, T tile, boolean shouldSyncCaps)
     {
         this(playerInv, tile, shouldSyncCaps, 0);
     }
 
-    ContainerTE(InventoryPlayer playerInv, T tile, boolean shouldSyncCaps, int yOffset)
+    protected ContainerTE(InventoryPlayer playerInv, T tile, boolean shouldSyncCaps, int yOffset)
     {
         this.tile = tile;
         this.player = playerInv.player;

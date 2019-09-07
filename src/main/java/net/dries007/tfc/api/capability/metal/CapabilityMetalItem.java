@@ -27,6 +27,7 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public final class CapabilityMetalItem
 {
@@ -41,7 +42,7 @@ public final class CapabilityMetalItem
     {
         CapabilityManager.INSTANCE.register(IMetalItem.class, new DumbStorage<>(), MetalItemHandler::new);
 
-        //Register ore dict prefix values
+        // Register ore dict prefix values
         ORE_DICT_METAL_ITEMS.put("ingotDouble", Metal.ItemType.DOUBLE_INGOT);
         ORE_DICT_METAL_ITEMS.put("ingot", Metal.ItemType.INGOT);
         ORE_DICT_METAL_ITEMS.put("sheetDouble", Metal.ItemType.DOUBLE_SHEET);
@@ -88,7 +89,7 @@ public final class CapabilityMetalItem
                     return CUSTOM_METAL_ITEMS.get(ingredient).get();
                 }
             }
-            //Try using ore dict prefix-suffix common values (ie: ingotCopper)
+            // Try using ore dict prefix-suffix common values (ie: ingotCopper)
             int[] ids = OreDictionary.getOreIDs(stack);
             for (int id : ids)
             {
@@ -109,16 +110,14 @@ public final class CapabilityMetalItem
         {
             if (oreDict.startsWith(oreName))
             {
-                Metal.ItemType type = ORE_DICT_METAL_ITEMS.get(oreName);
-                String remaining = oreDict.substring(oreName.length());
-                int amount = type.getSmeltAmount();
                 //noinspection ConstantConditions
-                Metal output = TFCRegistries.METALS.getValuesCollection().stream().filter(metal -> metal.getRegistryName().getPath().equalsIgnoreCase(remaining)).findFirst().orElse(null);
-                if (output != null)
-                {
-                    return new MetalItemHandler(output, amount, true);
-                }
-                break;
+                return TFCRegistries.METALS.getValuesCollection().stream()
+                    .filter(metal -> oreDict.equals(OreDictionaryHelper.toString(oreName, metal.getRegistryName().getPath())))
+                    .findFirst()
+                    .map(metal -> {
+                        Metal.ItemType type = ORE_DICT_METAL_ITEMS.get(oreName);
+                        return new MetalItemHandler(metal, type.getSmeltAmount(), true);
+                    }).orElse(null);
             }
         }
         return null;

@@ -302,7 +302,6 @@ public final class CommonEventHandler
                 CapabilityItemSize.add(event, item, Size.VERY_SMALL, Weight.LIGHT, canStack);
         }
 
-        // future plans: add via craft tweaker or json (1.14)
         if (stack.getItem() instanceof ItemFood && !stack.hasCapability(CapabilityFood.CAPABILITY, null))
         {
             ICapabilityProvider foodHandler = CapabilityFood.getCustomFood(stack);

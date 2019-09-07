@@ -58,7 +58,7 @@ public class ItemFireStarter extends ItemTFC
         return item == ItemsTFC.FIRESTARTER || item == Items.FLINT_AND_STEEL || item == Items.FIRE_CHARGE || item instanceof ItemFlintAndSteel;
     }
 
-    ItemFireStarter()
+    public ItemFireStarter()
     {
         setMaxDamage(8);
         setMaxStackSize(1);

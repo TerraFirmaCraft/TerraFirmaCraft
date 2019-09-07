@@ -40,7 +40,7 @@ public class BlockPlacedItemFlat extends Block
 {
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.25D, 0D, 0.25D, 0.75D, 0.0625D, 0.75D);
 
-    BlockPlacedItemFlat()
+    public BlockPlacedItemFlat()
     {
         super(Material.CIRCUITS);
         setHardness(0.1F);
