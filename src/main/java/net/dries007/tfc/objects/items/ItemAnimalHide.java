@@ -43,7 +43,7 @@ public class ItemAnimalHide extends ItemTFC
     protected final HideSize size;
     private final HideType type;
 
-    ItemAnimalHide(HideType type, HideSize size)
+    public ItemAnimalHide(HideType type, HideSize size)
     {
         this.type = type;
         this.size = size;
@@ -128,7 +128,7 @@ public class ItemAnimalHide extends ItemTFC
 
     public static class Soaked extends ItemAnimalHide implements IPlaceableItem
     {
-        Soaked(HideType type, HideSize size)
+        public Soaked(HideType type, HideSize size)
         {
             super(type, size);
         }

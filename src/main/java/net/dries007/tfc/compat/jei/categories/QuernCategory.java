@@ -60,7 +60,7 @@ public class QuernCategory extends BaseRecipeCategory<SimpleRecipeWrapper>
         itemStackGroup.init(2, false, 84, 16);
 
         itemStackGroup.set(0, ingredients.getInputs(VanillaTypes.ITEM).get(0));
-        itemStackGroup.set(1, new ItemStack(ItemsTFC.HANDSTONE));
+        itemStackGroup.set(1, new ItemStack(ItemsTFC.HANDSTONE)); // todo: use all ore dict entries with "handstone"
         itemStackGroup.set(2, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
     }
 }

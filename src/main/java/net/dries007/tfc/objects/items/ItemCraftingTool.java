@@ -17,12 +17,4 @@ public class ItemCraftingTool extends ItemMisc
         setMaxStackSize(1);
         setNoRepair();
     }
-
-    public ItemCraftingTool(int durability, Size size, Weight weight)
-    {
-        super(size, weight);
-        setMaxDamage(durability);
-        setMaxStackSize(1);
-        setNoRepair();
-    }
 }
