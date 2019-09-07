@@ -7,26 +7,23 @@ package net.dries007.tfc.world.biome;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.world.biome.Biome;
-
 import net.dries007.tfc.world.gen.surfacebuilders.TFCSurfaceBuilders;
 import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.SimplexNoise2D;
 
 import static net.dries007.tfc.world.gen.TFCOverworldChunkGenerator.SEA_LEVEL;
 
-public class ShoreBiome extends TFCBiome
+public class RiverBiome extends TFCBiome
 {
-    public ShoreBiome()
+    public RiverBiome()
     {
-        super(new Biome.Builder().category(Category.BEACH).surfaceBuilder(TFCSurfaceBuilders.SHORE));
-
-        TFCDefaultBiomeFeatures.addCarvers(this);
+        super(new Builder().category(Category.RIVER).surfaceBuilder(TFCSurfaceBuilders.RIVER));
     }
 
     @Nonnull
     @Override
     public INoise2D createNoiseLayer(long seed)
     {
-        return (x, z) -> SEA_LEVEL;
+        return new SimplexNoise2D(seed).octaves(6).spread(0.17f).scaled(SEA_LEVEL - 6, SEA_LEVEL - 1);
     }
 }

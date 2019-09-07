@@ -22,7 +22,12 @@ public class TerraFirmaCraft
 
     private static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
-    public static TFCWorldType WORLD_TYPE;
+    private static TerraFirmaCraft INSTANCE;
+
+    public static TFCWorldType getWorldType()
+    {
+        return INSTANCE.worldType;
+    }
 
     /* Deprecated for now, because individual classes should use their own logger if possible / it makes sense */
     @Deprecated
@@ -31,17 +36,20 @@ public class TerraFirmaCraft
         return LOGGER;
     }
 
-    public TerraFirmaCraft()
-    {
-        LOGGER.info("TFC World Constructor");
-        LOGGER.debug("Debug Logging Enabled");
-
-        WORLD_TYPE = new TFCWorldType();
-    }
+    private final TFCWorldType worldType;
 
     @SubscribeEvent
     public void setup(FMLCommonSetupEvent event)
     {
         ChunkDataCapability.setup();
+    }
+
+    public TerraFirmaCraft()
+    {
+        LOGGER.info("TFC Constructor");
+        LOGGER.debug("Debug Logging Enabled");
+
+        INSTANCE = this;
+        worldType = new TFCWorldType();
     }
 }

@@ -3,16 +3,15 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.world.gen.layer;
+package test;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.LongFunction;
-import java.util.function.Supplier;
 
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.IExtendedNoiseRandom;
+import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.LazyAreaLayerContext;
 import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
@@ -20,42 +19,72 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.VoroniZoomLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
-import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraft.world.gen.layer.traits.IC1Transformer;
 
-import net.dries007.tfc.world.biome.TFCBiomes;
-import net.dries007.tfc.world.gen.TFCGenerationSettings;
-import test.LayerTests;
+import imageutil.Images;
+import net.dries007.tfc.world.gen.layer.*;
+import net.dries007.tfc.world.gen.rock.RockCategory;
 
-import static test.LayerTests.IMAGES;
+import static net.dries007.tfc.world.gen.layer.TFCLayerUtil.*;
 
-public class TFCLayerUtil
+/**
+ * Test class for overworld biome layer generation
+ */
+@SuppressWarnings("ALL")
+public class LayerTests
 {
-    private static int id = 0;
+    public static final Images<IAreaFactory<LazyArea>> IMAGES = Images.get(af -> {
+        IArea area = af.make();
+        return (x, y) -> area.getValue((int) x, (int) y);
+    });
+    public static boolean isTestMode = false;
 
-    /* Biomes */
-    public static final int OCEAN = getId(TFCBiomes.OCEAN);
-    public static final int DEEP_OCEAN = getId(TFCBiomes.DEEP_OCEAN);
-    public static final int DEEP_OCEAN_RIDGE = getId(TFCBiomes.DEEP_OCEAN_RIDGE);
-    public static final int PLAINS = getId(TFCBiomes.PLAINS);
-    public static final int HILLS = getId(TFCBiomes.HILLS);
-    public static final int LOWLANDS = getId(TFCBiomes.LOWLANDS);
-    public static final int LOW_CANYONS = getId(TFCBiomes.LOW_CANYONS);
-    public static final int ROLLING_HILLS = getId(TFCBiomes.ROLLING_HILLS);
-    public static final int BADLANDS = getId(TFCBiomes.BADLANDS);
-    public static final int PLATEAU = getId(TFCBiomes.PLATEAU);
-    public static final int OLD_MOUNTAINS = getId(TFCBiomes.OLD_MOUNTAINS);
-    public static final int MOUNTAINS = getId(TFCBiomes.MOUNTAINS);
-    public static final int FLOODED_MOUNTAINS = getId(TFCBiomes.FLOODED_MOUNTAINS);
-    public static final int CANYONS = getId(TFCBiomes.CANYONS);
-    public static final int SHORE = getId(TFCBiomes.SHORE);
-    public static final int STONE_SHORE = getId(TFCBiomes.STONE_SHORE);
-    public static final int MOUNTAINS_EDGE = getId(TFCBiomes.MOUNTAINS_EDGE);
-    public static final int LAKE = getId(TFCBiomes.LAKE);
-    public static final int RIVER = getId(TFCBiomes.RIVER);
+    static
+    {
+        IMAGES.size(1000).color(Images.Colors.LINEAR_GRAY).disable();
+    }
 
-    public static List<IAreaFactory<LazyArea>> createOverworldBiomeLayer(long seed, TFCGenerationSettings settings)
+    public static void main(String[] args)
+    {
+        isTestMode = true;
+        IMAGES.enable();
+
+        boolean testBiomes = true, testRocks = true, findSpawnBiomes = false, drawHugeArea = true;
+
+        long seed = System.currentTimeMillis();
+
+        if (testBiomes)
+        {
+            List<IAreaFactory<LazyArea>> layers = generateOverworldLayers(seed, new FakeSettings());
+
+            if (findSpawnBiomes)
+            {
+                LazyArea actual = layers.get(1).make();
+                System.out.println("Biome at (0, 0): " + biomeName(actual.getValue(0, 0)));
+                System.out.println("Biome at (-256, 0): " + biomeName(actual.getValue(-256, 0)));
+                System.out.println("Biome at (256, 0): " + biomeName(actual.getValue(256, 0)));
+                System.out.println("Biome at (0, -256): " + biomeName(actual.getValue(0, -256)));
+                System.out.println("Biome at (0, 256): " + biomeName(actual.getValue(0, 256)));
+            }
+
+            if (drawHugeArea)
+            {
+                IMAGES.draw("biomes_actual_10km", layers.get(0), 0, 0, -5000, -5000, 5000, 5000);
+            }
+        }
+
+        if (testRocks)
+        {
+            List<IAreaFactory<LazyArea>> layers = generateRockLayers(seed, new FakeSettings());
+
+            if (drawHugeArea)
+            {
+                IMAGES.draw("rocks_actual_10km", layers.get(0), 0, 0, -5000, -5000, 5000, 5000);
+            }
+        }
+    }
+
+    public static List<IAreaFactory<LazyArea>> generateOverworldLayers(long seed, FakeSettings settings)
     {
         LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
 
@@ -181,7 +210,7 @@ public class TFCLayerUtil
         return Arrays.asList(mainLayer, areaFactoryActual);
     }
 
-    public static List<IAreaFactory<LazyArea>> createOverworldRockLayers(long seed, TFCGenerationSettings settings)
+    public static List<IAreaFactory<LazyArea>> generateRockLayers(long seed, FakeSettings settings)
     {
         LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
 
@@ -191,9 +220,8 @@ public class TFCLayerUtil
 
         // Fake Biome Map
 
-        for (int layer = 0; layer < 3; layer++)
+        for (int layer = 0; layer < 1; layer++)
         {
-
             mainLayer = FakeLandLayer.INSTANCE.apply(contextFactory.apply(1000L));
 
             IMAGES.color(LayerTests::elevationColor);
@@ -248,60 +276,156 @@ public class TFCLayerUtil
         return completedLayers;
     }
 
-    public static <A extends IArea, C extends IExtendedNoiseRandom<A>> IAreaFactory<A> repeat(IAreaTransformer1 transformer, int count, IAreaFactory<A> originalLayer, Supplier<C> contextSupplier)
+    public static Color biomeColor(double val, double min, double max)
     {
-        IAreaFactory<A> newFactory = originalLayer;
-        for (int i = 0; i < count; ++i)
+        int biome = (int) Math.round(val);
+        if (biome == OCEAN) return new Color(0, 0, 255);
+        if (biome == DEEP_OCEAN) return new Color(0, 0, 180);
+        if (biome == DEEP_OCEAN_RIDGE) return new Color(0, 0, 120);
+
+        if (biome == PLAINS) return new Color(0, 230, 120);
+        if (biome == HILLS) return new Color(0, 180, 20);
+        if (biome == LOWLANDS) return new Color(160, 200, 120);
+        if (biome == LOW_CANYONS) return new Color(200, 100, 0);
+
+        if (biome == ROLLING_HILLS) return new Color(0, 160, 0);
+        if (biome == BADLANDS) return new Color(255, 160, 0);
+        if (biome == PLATEAU) return new Color(240, 150, 100);
+        if (biome == OLD_MOUNTAINS) return new Color(140, 170, 140);
+
+        if (biome == MOUNTAINS) return new Color(140, 140, 140);
+        if (biome == FLOODED_MOUNTAINS) return new Color(110, 110, 110);
+        if (biome == CANYONS) return new Color(160, 60, 0);
+
+        if (biome == SHORE) return new Color(230, 210, 100);
+        if (biome == STONE_SHORE) return new Color(210, 190, 80);
+
+        if (biome == MOUNTAINS_EDGE) return new Color(180, 180, 180);
+        if (biome == LAKE) return new Color(0, 100, 255);
+        if (biome == RIVER) return new Color(0, 200, 255);
+        return Color.BLACK;
+    }
+
+    public static Color landColor(double val, double min, double max)
+    {
+        int i = (int) Math.round(val);
+        if (i == PLAINS) return Color.GREEN;
+        if (i == DEEP_OCEAN) return Color.BLUE;
+        return Color.BLACK;
+    }
+
+    public static Color riverColor(double val, double min, double max)
+    {
+        int i = (int) Math.round(val);
+        if (i == RIVER) return Color.CYAN;
+        return Color.BLACK;
+    }
+
+    public static Color elevationColor(double val, double min, double max)
+    {
+        int i = (int) Math.round(val);
+        if (i == PLAINS) return new Color(100, 200, 100);
+        if (i == HILLS) return new Color(255, 200, 0);
+        if (i == MOUNTAINS) return new Color(255, 100, 0);
+        if (i == DEEP_OCEAN) return Color.BLUE;
+        return Color.BLACK;
+    }
+
+    public static Color rockCategoryColor(double val, double min, double max)
+    {
+        int i = (int) Math.round(val);
+        if (i == 0) return Color.BLUE;
+        if (i == 1) return Color.CYAN;
+        if (i == 2) return Color.RED;
+        if (i == 3) return Color.ORANGE;
+        return Color.BLACK;
+    }
+
+    public static Color rockColor(double val, double min, double max)
+    {
+        return Images.Colors.DISCRETE_20.apply(val, 0, Stone.values().length);
+    }
+
+    public static String biomeName(int biome)
+    {
+        if (biome == OCEAN) return "OCEAN";
+        if (biome == DEEP_OCEAN) return "DEEP_OCEAN";
+        if (biome == DEEP_OCEAN_RIDGE) return "DEEP_OCEAN_RIDGE";
+
+        if (biome == PLAINS) return "PLAINS";
+        if (biome == HILLS) return "HILLS";
+        if (biome == LOWLANDS) return "LOWLANDS";
+        if (biome == LOW_CANYONS) return "LOW_CANYONS";
+
+        if (biome == ROLLING_HILLS) return "ROLLING_HILLS";
+        if (biome == BADLANDS) return "BADLANDS";
+        if (biome == PLATEAU) return "PLATEAU";
+        if (biome == OLD_MOUNTAINS) return "OLD_MOUNTAINS";
+
+        if (biome == MOUNTAINS) return "MOUNTAINS";
+        if (biome == FLOODED_MOUNTAINS) return "FLOODED_MOUNTAINS";
+        if (biome == CANYONS) return "CANYONS";
+
+        if (biome == SHORE) return "SHORE";
+        if (biome == STONE_SHORE) return "STONE_SHORE";
+
+        if (biome == MOUNTAINS_EDGE) return "MOUNTAINS_EDGE";
+        if (biome == LAKE) return "LAKE";
+        return "UNKNOWN";
+    }
+
+    enum Stone
+    {
+        GRANITE(RockCategory.IGNEOUS_INTRUSIVE),
+        DIORITE(RockCategory.IGNEOUS_INTRUSIVE),
+        GABBRO(RockCategory.IGNEOUS_INTRUSIVE),
+        SHALE(RockCategory.SEDIMENTARY),
+        CLAYSTONE(RockCategory.SEDIMENTARY),
+        ROCKSALT(RockCategory.SEDIMENTARY),
+        LIMESTONE(RockCategory.SEDIMENTARY),
+        CONGLOMERATE(RockCategory.SEDIMENTARY),
+        DOLOMITE(RockCategory.SEDIMENTARY),
+        CHERT(RockCategory.SEDIMENTARY),
+        CHALK(RockCategory.SEDIMENTARY),
+        RHYOLITE(RockCategory.IGNEOUS_EXTRUSIVE),
+        BASALT(RockCategory.IGNEOUS_EXTRUSIVE),
+        ANDESITE(RockCategory.IGNEOUS_EXTRUSIVE),
+        DACITE(RockCategory.IGNEOUS_EXTRUSIVE),
+        QUARTZITE(RockCategory.METAMORPHIC),
+        SLATE(RockCategory.METAMORPHIC),
+        PHYLLITE(RockCategory.METAMORPHIC),
+        SCHIST(RockCategory.METAMORPHIC),
+        GNEISS(RockCategory.METAMORPHIC),
+        MARBLE(RockCategory.METAMORPHIC);
+
+        private final RockCategory cat;
+
+        Stone(RockCategory cat) {this.cat = cat;}
+    }
+
+    enum RockLayer implements IC1Transformer
+    {
+        INSTANCE;
+
+        private static final int[][] values = Arrays.stream(RockCategory.values()).map(x -> Arrays.stream(Stone.values()).filter(y -> y.cat == x).mapToInt(Enum::ordinal).toArray()).toArray(int[][]::new);
+
+        @Override
+        public int apply(INoiseRandom context, int value)
         {
-            newFactory = transformer.apply(contextSupplier.get(), newFactory);
+            return values[value][context.random(values[value].length)];
         }
-        return newFactory;
     }
 
-    public static <A extends IArea, C extends IExtendedNoiseRandom<A>> IAreaFactory<A> repeat(IAreaTransformer1 transformer, int count, IAreaFactory<A> originalLayer, LongFunction<C> contextFactory, long seed)
+    static class FakeSettings
     {
-        IAreaFactory<A> newFactory = originalLayer;
-        for (int i = 0; i < count; ++i)
+        public int getIslandFrequency()
         {
-            newFactory = transformer.apply(contextFactory.apply(seed + i), newFactory);
+            return 6;
         }
-        return newFactory;
-    }
 
-    static boolean isShoreCompatible(int value)
-    {
-        return value != LOWLANDS && value != LOW_CANYONS && value != CANYONS;
-    }
-
-    static boolean isLakeCompatible(int value)
-    {
-        return isLow(value) || value == CANYONS || value == ROLLING_HILLS;
-    }
-
-    static boolean isOcean(int value)
-    {
-        return value == OCEAN || value == DEEP_OCEAN || value == DEEP_OCEAN_RIDGE;
-    }
-
-    static boolean isShallowOcean(int value)
-    {
-        return value == OCEAN;
-    }
-
-    static boolean isMountains(int value)
-    {
-        return value == MOUNTAINS || value == FLOODED_MOUNTAINS || value == MOUNTAINS_EDGE || value == OLD_MOUNTAINS;
-    }
-
-    static boolean isLow(int value)
-    {
-        return value == PLAINS || value == HILLS || value == LOW_CANYONS || value == LOWLANDS;
-    }
-
-    private static int getId(Biome biome)
-    {
-        // todo: once finished with testing, inline this method
-        if (LayerTests.isTestMode) return ++id; // For switching between testing mode and minecraft mode
-        return ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getID(biome);
+        public int getBiomeZoomLevel()
+        {
+            return 4;
+        }
     }
 }

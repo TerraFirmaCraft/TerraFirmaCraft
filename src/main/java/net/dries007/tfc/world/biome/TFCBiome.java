@@ -7,6 +7,8 @@ package net.dries007.tfc.world.biome;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.world.climate.ClimateType;
@@ -14,6 +16,10 @@ import net.dries007.tfc.world.noise.INoise2D;
 
 public abstract class TFCBiome extends Biome
 {
+    // todo: replace with actual blocks
+    protected static final BlockState SALT_WATER = Blocks.WATER.getDefaultState();
+    protected static final BlockState FRESH_WATER = Blocks.WATER.getDefaultState();
+
     protected TFCBiome(Builder builder)
     {
         this(ClimateType.NORMAL_NORMAL, builder);
@@ -29,10 +35,14 @@ public abstract class TFCBiome extends Biome
             // Unused for now, may be used by variant biomes
             .parent(null)
         );
-
-        TFCBiomes.addBiome(this);
     }
 
     @Nonnull
     public abstract INoise2D createNoiseLayer(long seed);
+
+    @Nonnull
+    public BlockState getWaterState()
+    {
+        return FRESH_WATER;
+    }
 }

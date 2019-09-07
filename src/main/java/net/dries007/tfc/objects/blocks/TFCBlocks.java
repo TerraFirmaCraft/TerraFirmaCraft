@@ -23,6 +23,7 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.stone.StoneBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.objectholders.TypedItemTable;
+import net.dries007.tfc.util.types.StoneBlockType;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -58,7 +59,7 @@ public final class TFCBlocks
     public static final BlockIceTFC SEA_ICE = getNull();
     */
 
-    public static final TypedItemTable<Rock, Rock.Type, StoneBlock> ROCK = new TypedItemTable<>(StoneBlock.class, ForgeRegistries.BLOCKS);
+    public static final TypedItemTable<Rock, StoneBlockType, StoneBlock> ROCK = new TypedItemTable<>(StoneBlock.class, ForgeRegistries.BLOCKS);
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -311,11 +312,11 @@ public final class TFCBlocks
 
 
         {
-            for (Rock.Type type : Rock.Type.values())
+            for (StoneBlockType type : StoneBlockType.values())
             {
                 for (Rock rock : TFCRegistries.ROCKS.getValues())
                 {
-                    register(r, ROCK.add(rock, type, type.create(rock)), type.name().toLowerCase() + "/" + rock.getRegistryName().getPath());
+                    register(r, ROCK.add(rock, type, type.create(rock)), "rock/" + type.name().toLowerCase() + "/" + rock.getRegistryName().getPath());
                 }
             }
             //allBlockRockVariants.forEach(x ->
@@ -449,7 +450,7 @@ public final class TFCBlocks
                 slab.add(register(r, "slab/wood/" + wood.getRegistryName().getPath(), new BlockSlabTFC.Half(wood), CT_DECORATIONS));
 
             for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
-                inventoryItemBlocks.add(new ItemBlockTFC(register(r, "stone/button/" + rock.getRegistryName().getPath().toLowerCase(), new BlockButtonStoneTFC(rock), CT_DECORATIONS)));
+                inventoryItemBlocks.add(new ItemBlockTFC(register(r, "rock/button/" + rock.getRegistryName().getPath().toLowerCase(), new BlockButtonStoneTFC(rock), CT_DECORATIONS)));
 
             // Anvils are special because they don't have an ItemBlock + they only exist for certian types
             for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
@@ -682,7 +683,7 @@ public final class TFCBlocks
     //    return type == SAND;
     //}
 //
-    //// todo: change to property of type? (soil & stone maybe?)
+    //// todo: change to property of type? (soil & rock maybe?)
 //
     //public static boolean isSoil(IBlockState current)
     //{

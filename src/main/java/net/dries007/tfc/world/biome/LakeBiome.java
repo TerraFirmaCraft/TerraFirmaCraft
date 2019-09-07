@@ -17,7 +17,7 @@ public class LakeBiome extends TFCBiome
 {
     public LakeBiome()
     {
-        super(new Builder().category(Category.RIVER).surfaceBuilder(TFCSurfaceBuilders.DEFAULT_THIN));
+        super(new Builder().category(Category.RIVER).surfaceBuilder(TFCSurfaceBuilders.RIVER));
 
         TFCDefaultBiomeFeatures.addCarvers(this);
     }

@@ -22,7 +22,6 @@ public class TFCDefaultSurfaceBuilder extends SurfaceBuilder<TFCSurfaceBuilderCo
     public TFCDefaultSurfaceBuilder()
     {
         super(TFCSurfaceBuilderConfig::deserialize);
-
         this.seed = 0;
     }
 
@@ -52,9 +51,12 @@ public class TFCDefaultSurfaceBuilder extends SurfaceBuilder<TFCSurfaceBuilderCo
                     if (y >= seaLevel)
                     {
                         // Above water, just hit surface
-                        surfaceFlag = config.getSoilLayers();
-                        stateUnder = config.getUnder();
-                        chunkIn.setBlockState(pos, config.getTop(), false);
+                        surfaceFlag = config.getSoilLayersForHeight(y, random);
+                        if (surfaceFlag > 0)
+                        {
+                            stateUnder = config.getUnder();
+                            chunkIn.setBlockState(pos, config.getTop(), false);
+                        }
                     }
                     else
                     {

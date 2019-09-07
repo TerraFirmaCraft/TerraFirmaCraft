@@ -13,8 +13,6 @@ import net.minecraftforge.registries.ForgeRegistry;
 
 import net.dries007.tfc.world.biome.TFCBiome;
 
-import static net.dries007.tfc.world.biome.TFCBiomes.DEFAULT;
-
 public class BiomeFactoryLayer
 {
     private final LazyArea lazyArea;
@@ -47,7 +45,6 @@ public class BiomeFactoryLayer
 
     private TFCBiome getBiome(int id)
     {
-        Biome biome = ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getValue(id);
-        return biome instanceof TFCBiome ? (TFCBiome) biome : DEFAULT;
+        return (TFCBiome) ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getValue(id);
     }
 }
