@@ -154,7 +154,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
         {
             final ItemStack stack = player.getHeldItemMainhand();
             final Set<String> toolClasses = stack.getItem().getToolClasses(stack);
-            if (toolClasses.contains("axe"))
+            if (toolClasses.contains("axe") && !toolClasses.contains("saw"))
             {
                 if (!removeTree(world, pos, player, stack, OreDictionaryHelper.doesStackMatchOre(stack, "axeStone") || OreDictionaryHelper.doesStackMatchOre(stack, "hammerStone")))
                 {
