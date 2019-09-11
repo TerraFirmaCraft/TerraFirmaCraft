@@ -81,7 +81,7 @@ public class ItemJug extends ItemPottery
                 {
                     ItemStack single = stack.copy();
                     single.setCount(1);
-                    FluidActionResult result = FluidTransferHelper.tryPickUpFluidGreedy(single, player, world, rayTrace.getBlockPos(), rayTrace.sideHit, Fluid.BUCKET_VOLUME);
+                    FluidActionResult result = FluidTransferHelper.tryPickUpFluidGreedy(single, player, world, rayTrace.getBlockPos(), rayTrace.sideHit, Fluid.BUCKET_VOLUME, false);
                     if (result.isSuccess())
                     {
                         stack.shrink(1);
