@@ -186,7 +186,7 @@ public class TEQuern extends TEInventory implements ITickable
                 ItemStack leftover = inventory.insertItem(SLOT_OUTPUT, recipe.getOutputItem(inputStack), false);
                 if (!leftover.isEmpty())
                 {
-                    InventoryHelper.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, leftover);
+                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + 1, pos.getZ(), leftover);
                 }
                 inputStack.shrink(1);
             }

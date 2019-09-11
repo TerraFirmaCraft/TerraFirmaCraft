@@ -232,7 +232,7 @@ public class BlockMetalSheet extends Block
             {
                 if (tile.getFace(face) && !worldIn.isSideSolid(pos.offset(face.getOpposite()), face))
                 {
-                    InventoryHelper.spawnItemStack(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ItemMetalSheet.get(metal, Metal.ItemType.SHEET)));
+                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ItemMetalSheet.get(metal, Metal.ItemType.SHEET)));
                     tile.setFace(face, false);
                 }
             }

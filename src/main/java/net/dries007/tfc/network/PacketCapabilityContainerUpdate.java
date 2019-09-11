@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.network;
 
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,10 +21,6 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.capability.food.IFood;
-import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 
 /**
@@ -49,7 +44,7 @@ public class PacketCapabilityContainerUpdate implements IMessage
     {
         this.windowID = windowID;
 
-        final NBTTagCompound data = readCapability(stack);
+        final NBTTagCompound data = CapabilityContainerListener.readCapabilityData(stack);
         if (!data.isEmpty())
         {
             capabilityData.put(slotID, data);
@@ -62,7 +57,7 @@ public class PacketCapabilityContainerUpdate implements IMessage
 
         for (int i = 0; i < items.size(); i++)
         {
-            final NBTTagCompound nbt = readCapability(items.get(i));
+            final NBTTagCompound nbt = CapabilityContainerListener.readCapabilityData(items.get(i));
             if (!nbt.isEmpty())
             {
                 capabilityData.put(i, nbt);
@@ -102,23 +97,6 @@ public class PacketCapabilityContainerUpdate implements IMessage
         return !capabilityData.isEmpty();
     }
 
-    @Nonnull
-    private NBTTagCompound readCapability(final ItemStack stack)
-    {
-        IItemHeat itemHeat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
-        NBTTagCompound nbt = new NBTTagCompound();
-        if (itemHeat != null)
-        {
-            nbt.setTag("heat", itemHeat.serializeNBT());
-        }
-        if (food != null)
-        {
-            nbt.setTag("food", food.serializeNBT());
-        }
-        return nbt;
-    }
-
     @ParametersAreNonnullByDefault
     public static class Handler implements IMessageHandler<PacketCapabilityContainerUpdate, IMessage>
     {
@@ -147,32 +125,11 @@ public class PacketCapabilityContainerUpdate implements IMessage
                     }
 
                     message.capabilityData.forEachEntry((index, nbt) -> {
-                        final ItemStack stack = container.getSlot(index).getStack();
-
-                        final IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                        if (heat != null)
-                        {
-                            NBTTagCompound heatNBT = nbt.getCompoundTag("heat");
-                            if (!heat.serializeNBT().equals(heatNBT))
-                            {
-                                heat.deserializeNBT(heatNBT);
-                            }
-                        }
-
-                        final IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
-                        if (food != null)
-                        {
-                            NBTTagCompound foodNBT = nbt.getCompoundTag("food");
-                            if (!food.serializeNBT().equals(foodNBT))
-                            {
-                                food.deserializeNBT(foodNBT);
-                            }
-                        }
+                        CapabilityContainerListener.applyCapabilityData(container.getSlot(index).getStack(), nbt);
                         return true;
                     });
                 }
             });
-
             return null;
         }
     }

@@ -41,7 +41,7 @@ public class BlockBloom extends Block
         TEBloom te = Helpers.getTE(worldIn, pos, TEBloom.class);
         if (te != null)
         {
-            te.onBreakBlock(worldIn, pos);
+            te.onBreakBlock(worldIn, pos, state);
         }
         super.breakBlock(worldIn, pos, state);
     }

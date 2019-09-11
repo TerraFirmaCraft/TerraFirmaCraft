@@ -100,10 +100,10 @@ public class TEBloomery extends TEInventory implements ITickable
     }
 
     @Override
-    public void onBreakBlock(World worldIn, BlockPos pos)
+    public void onBreakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         dumpItems();
-        super.onBreakBlock(world, pos);
+        super.onBreakBlock(world, pos, state);
     }
 
     public BlockPos getInternalBlock()

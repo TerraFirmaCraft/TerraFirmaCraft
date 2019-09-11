@@ -34,6 +34,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.ISmallVesselHandler;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
@@ -57,6 +58,39 @@ public class ItemSmallVessel extends ItemPottery
     {
         this.glazed = glazed;
         setHasSubtypes(glazed);
+    }
+
+    @Nullable
+    @Override
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        // Intentionally sync item handler logic, heat will get synced "accidentally"
+        NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagCompound stackNbt = stack.getTagCompound();
+        if (stackNbt != null)
+        {
+            nbt.setTag("stack", nbt);
+        }
+        IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (inventory instanceof IMoldHandler)
+        {
+            nbt.setTag("caps", ((IMoldHandler) inventory).serializeNBT());
+        }
+        return nbt;
+    }
+
+    @Override
+    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        super.readNBTShareTag(stack, nbt == null ? null : nbt.getCompoundTag("stack"));
+        if (nbt != null)
+        {
+            IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            if (inventory instanceof IMoldHandler)
+            {
+                ((IMoldHandler) inventory).deserializeNBT(nbt.getCompoundTag("caps"));
+            }
+        }
     }
 
     @Override

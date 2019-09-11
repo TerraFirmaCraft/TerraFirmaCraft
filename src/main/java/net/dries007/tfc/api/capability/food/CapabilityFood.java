@@ -92,6 +92,15 @@ public class CapabilityFood
         }
     }
 
+    public static void applyTrait(ItemStack stack, IFoodTrait trait)
+    {
+        IFood food = stack.getCapability(CAPABILITY, null);
+        if (!stack.isEmpty() && food != null)
+        {
+            applyTrait(food, trait);
+        }
+    }
+
     /**
      * Helper method to handle removing a trait to a food item.
      * Do NOT just directly remove the trait, as that can lead to strange interactions with decay dates / creation dates
@@ -105,6 +114,15 @@ public class CapabilityFood
                 instance.setCreationDate(calculateNewCreationDate(instance.getCreationDate(), trait.getDecayModifier()));
             }
             instance.getTraits().remove(trait);
+        }
+    }
+
+    public static void removeTrait(ItemStack stack, IFoodTrait trait)
+    {
+        IFood food = stack.getCapability(CAPABILITY, null);
+        if (!stack.isEmpty() && food != null)
+        {
+            removeTrait(food, trait);
         }
     }
 

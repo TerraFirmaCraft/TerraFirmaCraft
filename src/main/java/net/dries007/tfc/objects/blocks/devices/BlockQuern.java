@@ -154,7 +154,7 @@ public class BlockQuern extends Block implements IItemSize
         TEQuern teQuern = Helpers.getTE(world, pos, TEQuern.class);
         if (teQuern != null)
         {
-            teQuern.onBreakBlock(world, pos);
+            teQuern.onBreakBlock(world, pos, state);
         }
         super.breakBlock(world, pos, state);
     }

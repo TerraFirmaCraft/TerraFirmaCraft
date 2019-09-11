@@ -18,13 +18,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidUtil;
@@ -32,26 +32,67 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
+import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.Helpers;
 
+/**
+ * Barrel block. Can be filled with fluids (10 B), and one item stack. Performs barrel recipes.
+ * Sealed state is stored in block state and cached in TE, synced when updated via custom packet
+ *
+ * @see TEBarrel
+ * @see BarrelRecipe
+ */
 @ParametersAreNonnullByDefault
 public class BlockBarrel extends Block
 {
     public static final PropertyBool SEALED = PropertyBool.create("sealed");
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
+    /**
+     * Used to toggle the barrel seal state and update the tile entity, in the correct order
+     */
+    public static void toggleBarrelSeal(World world, BlockPos pos)
+    {
+        TEBarrel tile = Helpers.getTE(world, pos, TEBarrel.class);
+        if (tile != null)
+        {
+            IBlockState state = world.getBlockState(pos);
+            boolean previousSealed = state.getValue(SEALED);
+            world.setBlockState(pos, state.withProperty(SEALED, !previousSealed));
+            if (previousSealed)
+            {
+                tile.onUnseal();
+            }
+            else
+            {
+                tile.onSealed();
+            }
+        }
+    }
+
     public BlockBarrel()
     {
         super(Material.WOOD);
         setSoundType(SoundType.WOOD);
         setHardness(2F);
-
         setDefaultState(blockState.getBaseState().withProperty(SEALED, false));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isTopSolid(IBlockState state)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isFullBlock(IBlockState state)
+    {
+        return false;
     }
 
     @Override
@@ -59,17 +100,27 @@ public class BlockBarrel extends Block
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(SEALED, meta == 1);
+        return getDefaultState().withProperty(SEALED, meta == 1);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        if (state.getValue(SEALED))
-        {
-            return 1;
-        }
-        return 0;
+        return state.getValue(SEALED) ? 1 : 0;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isBlockNormalCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isNormalCube(IBlockState state)
+    {
+        return false;
     }
 
     @Override
@@ -94,6 +145,17 @@ public class BlockBarrel extends Block
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TEBarrel tile = Helpers.getTE(worldIn, pos, TEBarrel.class);
+        if (tile != null)
+        {
+            tile.onBreakBlock(worldIn, pos, state);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     @Nonnull
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderLayer()
@@ -111,8 +173,7 @@ public class BlockBarrel extends Block
             if (heldItem.isEmpty() && playerIn.isSneaking())
             {
                 worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 0.85F);
-                worldIn.setBlockState(pos, state.withProperty(SEALED, !state.getValue(SEALED)));
-                te.onSealed();
+                toggleBarrelSeal(worldIn, pos);
                 return true;
             }
             else if (heldItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
@@ -137,41 +198,25 @@ public class BlockBarrel extends Block
                 {
                     TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.BARREL);
                 }
+                return true;
             }
         }
         return false;
     }
 
-    /**
-     * The Block needs to be removed here since we prevented its removal earlier in {@link #removedByPlayer(IBlockState, World, BlockPos, EntityPlayer, boolean)}.
-     */
-    @Override
-    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack tool)
-    {
-        super.harvestBlock(world, player, pos, state, te, tool);
-        world.setBlockToAir(pos);
-    }
-
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        if (worldIn.isRemote)
+        if (!worldIn.isRemote)
         {
-            return;
-        }
-
-        if (stack.getMetadata() == 1)
-        {
-            NBTTagCompound compound = stack.getTagCompound();
-
-            if (compound != null)
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (nbt != null)
             {
                 TEBarrel te = Helpers.getTE(worldIn, pos, TEBarrel.class);
-
                 if (te != null)
                 {
-                    te.readFromItemTag(compound);
-                    //worldIn.notifyBlockUpdate(pos, state, state, 3);
+                    worldIn.setBlockState(pos, state.withProperty(SEALED, true));
+                    te.readFromItemTag(nbt);
                 }
             }
         }
@@ -184,14 +229,17 @@ public class BlockBarrel extends Block
         return new BlockStateContainer(this, SEALED);
     }
 
-    /**
-     * Prevents removal of the Block & TileEntity before getDrops(...) is called.
-     * Using this we'll have to remove the block later, which happens in {@link #harvestBlock(World, EntityPlayer, BlockPos, IBlockState, TileEntity, ItemStack)}.
-     */
     @Override
-    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        return willHarvest || super.removedByPlayer(state, world, pos, player, false);
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        return false;
     }
 
     @Override
@@ -210,36 +258,17 @@ public class BlockBarrel extends Block
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        TEBarrel te = Helpers.getTE(world, pos, TEBarrel.class);
-
-        if (te != null)
+        if (!state.getValue(SEALED))
         {
-            if (state.getValue(SEALED))
-            {
-                ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1, 1);
-                stack.setTagCompound(te.getItemTag());
-
-                drops.add(stack);
-            }
-            else
-            {
-                drops.add(new ItemStack(Item.getItemFromBlock(this)));
-
-                IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-
-                if (inventory != null)
-                {
-                    for (int slot = 0; slot < inventory.getSlots(); slot++)
-                    {
-                        ItemStack stack = inventory.getStackInSlot(slot);
-
-                        if (!stack.isEmpty())
-                        {
-                            drops.add(stack);
-                        }
-                    }
-                }
-            }
+            super.getDrops(drops, world, pos, state, fortune);
         }
+    }
+
+    @Override
+    public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
+    {
+        // Unseal the vessel if an explosion destroys it, so it drops it's contents
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(SEALED, false));
+        super.onBlockExploded(world, pos, explosion);
     }
 }

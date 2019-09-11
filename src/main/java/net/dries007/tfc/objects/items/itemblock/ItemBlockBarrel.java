@@ -37,80 +37,27 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.util.TFCConstants;
+import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+/**
+ * Item block for {@link BlockBarrel}
+ * Only has NBT data if the barrel is sealed and has contents
+ */
 @ParametersAreNonnullByDefault
 public class ItemBlockBarrel extends ItemBlockTFC
 {
     public ItemBlockBarrel(Block block)
     {
         super(block);
-        this.setHasSubtypes(true);
-    }
-
-    @Override
-    public int getMetadata(int damage)
-    {
-        return damage;
-    }
-
-    @Override
-    @Nonnull
-    public String getTranslationKey(@Nonnull ItemStack stack)
-    {
-        if (stack.getMetadata() == 1)
-        {
-            return super.getTranslationKey() + ".sealed";
-        }
-
-        return super.getTranslationKey();
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-    {
-        if (stack.getMetadata() == 1)
-        {
-            NBTTagCompound compound = stack.getTagCompound();
-
-            if (compound != null)
-            {
-                FluidTank tank = new FluidTank(0).readFromNBT(compound.getCompoundTag("tank"));
-                ItemStackHandler stackHandler = new ItemStackHandler();
-                stackHandler.deserializeNBT(compound.getCompoundTag("inventory"));
-                ItemStack inventory = stackHandler.getStackInSlot(TEBarrel.SLOT_ITEM);
-
-                if (tank.getFluid() == null || tank.getFluidAmount() == 0)
-                {
-                    if (inventory.isEmpty())
-                    {
-                        tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_empty"));
-                    }
-                    else
-                    {
-                        tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_item", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
-                    }
-                }
-                else
-                {
-                    tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_fluid", tank.getFluidAmount(), tank.getFluid().getLocalizedName()));
-
-                    if (!inventory.isEmpty())
-                    {
-                        tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_item_in_fluid", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
-                    }
-                }
-            }
-        }
     }
 
     @Nonnull
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (player.getHeldItem(hand).getMetadata() == 0)
+        if (player.getHeldItem(hand).getTagCompound() != null)
         {
             pos = pos.offset(facing); //Since the clicked facing is the block bellow fluids
             IBlockState state = worldIn.getBlockState(pos);
@@ -142,7 +89,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
 
                 nbt.setLong("sealedTick", CalendarTFC.TOTAL_TIME.getTicks());
                 nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
-                ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem(), 1, 1);
+                ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem());
                 stack.setTagCompound(nbt);
                 player.setHeldItem(hand, stack);
                 return EnumActionResult.SUCCESS;
@@ -151,11 +98,53 @@ public class ItemBlockBarrel extends ItemBlockTFC
         return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
 
+    @Override
+    @Nonnull
+    public String getTranslationKey(@Nonnull ItemStack stack)
+    {
+        return stack.getTagCompound() != null ? super.getTranslationKey() + ".sealed" : super.getTranslationKey();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if (nbt != null)
+        {
+            FluidTank tank = new FluidTank(0).readFromNBT(nbt.getCompoundTag("tank"));
+            ItemStackHandler stackHandler = new ItemStackHandler();
+            stackHandler.deserializeNBT(nbt.getCompoundTag("inventory"));
+            ItemStack inventory = stackHandler.getStackInSlot(TEBarrel.SLOT_ITEM);
+
+            if (tank.getFluid() == null || tank.getFluidAmount() == 0)
+            {
+                if (inventory.isEmpty())
+                {
+                    tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_empty"));
+                }
+                else
+                {
+                    tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_item", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
+                }
+            }
+            else
+            {
+                tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_fluid", tank.getFluidAmount(), tank.getFluid().getLocalizedName()));
+
+                if (!inventory.isEmpty())
+                {
+                    tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_item_in_fluid", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
+                }
+            }
+        }
+    }
+
     @Nonnull
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
-        if (player.getHeldItem(hand).getMetadata() == 0)
+        if (player.getHeldItem(hand).getTagCompound() != null)
         {
             RayTraceResult rayTrace = rayTrace(worldIn, player, true);
             //noinspection ConstantConditions - ray trace can be null
@@ -191,7 +180,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
 
                     nbt.setLong("sealedTick", CalendarTFC.TOTAL_TIME.getTicks());
                     nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
-                    ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem(), 1, 1);
+                    ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem());
                     stack.setTagCompound(nbt);
                     player.setHeldItem(hand, stack);
                     return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
@@ -213,11 +202,5 @@ public class ItemBlockBarrel extends ItemBlockTFC
     public Weight getWeight(@Nonnull ItemStack stack)
     {
         return Weight.HEAVY;
-    }
-
-    @Override
-    public boolean canStack(@Nonnull ItemStack stack)
-    {
-        return stack.getMetadata() == 0;
     }
 }

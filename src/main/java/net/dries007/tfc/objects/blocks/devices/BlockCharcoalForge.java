@@ -87,11 +87,6 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
         return CHARCOAL_FORGE_MULTIBLOCK.test(world, pos);
     }
 
-    public static boolean hasValidChimney(World world, BlockPos pos)
-    {
-        return CHARCOAL_FORGE_MULTIBLOCK.test(world, pos);
-    }
-
     public BlockCharcoalForge()
     {
         super(Material.GROUND);
@@ -207,7 +202,7 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
         TECharcoalForge te = Helpers.getTE(worldIn, pos, TECharcoalForge.class);
         if (te != null)
         {
-            te.onBreakBlock(worldIn, pos);
+            te.onBreakBlock(worldIn, pos, state);
         }
         super.breakBlock(worldIn, pos, state);
     }
