@@ -5,9 +5,11 @@
 
 package net.dries007.tfc.api.recipes.barrel;
 
+import java.util.Queue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Queues;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -65,14 +67,16 @@ public class BarrelRecipeTemperature extends BarrelRecipe
 
     @Override
     @Nonnull
-    public ItemStack getOutputItem(FluidStack inputFluid, ItemStack inputStack)
+    public Queue<ItemStack> getOutputItem(FluidStack inputFluid, ItemStack inputStack)
     {
         IItemHeat heat = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         if (heat != null)
         {
             heat.setTemperature(heat.getTemperature() - coolAmount);
         }
-        return inputStack;
+        Queue<ItemStack> output = Queues.newArrayDeque();
+        output.add(inputStack);
+        return output;
     }
 
     @Override

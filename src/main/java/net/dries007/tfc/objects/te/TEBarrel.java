@@ -5,19 +5,23 @@
 
 package net.dries007.tfc.objects.te;
 
+import java.util.Queue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.Queues;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -54,6 +58,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     private long sealedTick, sealedCalendarTick;
     private BarrelRecipe recipe;
     private int tickCounter;
+    private Queue<ItemStack> surplus = Queues.newArrayDeque(); //Surplus items from a recipe with output > stackSize
     private boolean checkInstantRecipe = false;
 
     public TEBarrel()
@@ -73,6 +78,13 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
         sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
+
+        surplus.clear();
+        NBTTagList surplusItems = nbt.getTagList("surplus", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < surplusItems.tagCount(); i++)
+        {
+            surplus.add(new ItemStack(surplusItems.getCompoundTagAt(i)));
+        }
         sealed = true;
         markDirty();
         TerraFirmaCraft.getNetwork().sendToDimension(new PacketBarrelUpdate(this, recipe, sealedCalendarTick, sealed), world.provider.getDimension());
@@ -187,6 +199,11 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 {
                     tank.fill(new FluidStack(freshWater, 10), true);
                 }
+
+                if (inventory.getStackInSlot(SLOT_ITEM) == ItemStack.EMPTY && !surplus.isEmpty())
+                {
+                    inventory.setStackInSlot(SLOT_ITEM, surplus.poll());
+                }
             }
 
             // Check if recipe is complete
@@ -200,8 +217,13 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                     if (recipe.isValidInput(inputFluid, inputStack))
                     {
                         tank.setFluid(recipe.getOutputFluid(inputFluid, inputStack));
-                        inventory.setStackInSlot(SLOT_ITEM, recipe.getOutputItem(inputFluid, inputStack));
-
+                        Queue<ItemStack> output = recipe.getOutputItem(inputFluid, inputStack);
+                        //noinspection ConstantConditions
+                        inventory.setStackInSlot(SLOT_ITEM, output.poll());
+                        while (!output.isEmpty())
+                        {
+                            surplus.add(output.poll());
+                        }
                         IBlockState state = world.getBlockState(pos);
                         world.notifyBlockUpdate(pos, state, state, 3);
                     }
@@ -217,7 +239,13 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 if (instantRecipe != null && inputFluid != null && instantRecipe.isValidInputInstant(inputStack, inputFluid))
                 {
                     tank.setFluid(instantRecipe.getOutputFluid(inputFluid, inputStack));
-                    inventory.setStackInSlot(SLOT_ITEM, instantRecipe.getOutputItem(inputFluid, inputStack));
+                    Queue<ItemStack> output = instantRecipe.getOutputItem(inputFluid, inputStack);
+                    //noinspection ConstantConditions
+                    inventory.setStackInSlot(SLOT_ITEM, output.poll());
+                    while (!output.isEmpty())
+                    {
+                        surplus.add(output.poll());
+                    }
                     instantRecipe.onRecipeComplete(world, pos);
 
                     IBlockState state = world.getBlockState(pos);
@@ -247,6 +275,13 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         tank.readFromNBT(nbt.getCompoundTag("tank"));
         sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
+
+        surplus.clear();
+        NBTTagList surplusItems = nbt.getTagList("surplus", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < surplusItems.tagCount(); i++)
+        {
+            surplus.add(new ItemStack(surplusItems.getCompoundTagAt(i)));
+        }
     }
 
     @Override
@@ -256,6 +291,13 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
         nbt.setLong("sealedTick", sealedTick);
         nbt.setLong("sealedCalendarTick", sealedCalendarTick);
+
+        NBTTagList surplusList = new NBTTagList();
+        for (ItemStack stack : surplus)
+        {
+            surplusList.appendTag(stack.serializeNBT());
+        }
+        nbt.setTag("surplus", surplusList);
 
         return super.writeToNBT(nbt);
     }
@@ -332,6 +374,14 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         nbt.setTag("inventory", inventory.serializeNBT());
         nbt.setLong("sealedTick", sealedTick);
         nbt.setLong("sealedCalendarTick", sealedCalendarTick);
+
+        NBTTagList surplusList = new NBTTagList();
+        for (ItemStack stack : surplus)
+        {
+            surplusList.appendTag(stack.serializeNBT());
+        }
+        nbt.setTag("surplus", surplusList);
+
         return nbt;
     }
 }
