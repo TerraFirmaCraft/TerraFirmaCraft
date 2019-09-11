@@ -14,9 +14,6 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 @ParametersAreNonnullByDefault
 public abstract class ContainerItemStack extends Container
@@ -122,17 +119,6 @@ public abstract class ContainerItemStack extends Container
         {
             return super.slotClick(slotID, dragType, clickType, player);
         }
-    }
-
-    @Override
-    public void onContainerClosed(EntityPlayer player)
-    {
-        IItemHandler cap = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (cap instanceof ItemStackHandler)
-        {
-            stack.setTagCompound(((ItemStackHandler) cap).serializeNBT());
-        }
-        super.onContainerClosed(player);
     }
 
     @Override

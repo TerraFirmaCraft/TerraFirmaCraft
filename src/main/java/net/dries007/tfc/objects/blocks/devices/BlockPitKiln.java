@@ -172,7 +172,7 @@ public class BlockPitKiln extends Block implements ILightableBlock
         TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
         if (te != null)
         {
-            te.onBreakBlock(worldIn, pos);
+            te.onBreakBlock(worldIn, pos, state);
         }
         super.breakBlock(worldIn, pos, state);
     }

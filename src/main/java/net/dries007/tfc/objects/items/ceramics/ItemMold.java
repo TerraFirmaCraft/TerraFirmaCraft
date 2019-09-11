@@ -30,6 +30,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
@@ -74,6 +76,39 @@ public class ItemMold extends ItemPottery
             }
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+    }
+
+    @Nullable
+    @Override
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        // Intentionally sync item handler logic, heat will get synced "accidentally"
+        NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagCompound stackNbt = stack.getTagCompound();
+        if (stackNbt != null)
+        {
+            nbt.setTag("stack", nbt);
+        }
+        IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (inventory instanceof IMoldHandler)
+        {
+            nbt.setTag("caps", ((IMoldHandler) inventory).serializeNBT());
+        }
+        return nbt;
+    }
+
+    @Override
+    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        super.readNBTShareTag(stack, nbt == null ? null : nbt.getCompoundTag("stack"));
+        if (nbt != null)
+        {
+            IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            if (inventory instanceof IMoldHandler)
+            {
+                ((IMoldHandler) inventory).deserializeNBT(nbt.getCompoundTag("caps"));
+            }
+        }
     }
 
     @Override

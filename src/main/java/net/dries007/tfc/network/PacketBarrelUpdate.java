@@ -28,16 +28,18 @@ public class PacketBarrelUpdate implements IMessage
     private BlockPos pos;
     private long calendarTick;
     private ResourceLocation recipeName;
+    private boolean sealed;
 
     @SuppressWarnings("unused")
     @Deprecated
     public PacketBarrelUpdate() {}
 
-    public PacketBarrelUpdate(@Nonnull TEBarrel tile, @Nullable BarrelRecipe currentRecipe, long calendarTick)
+    public PacketBarrelUpdate(@Nonnull TEBarrel tile, @Nullable BarrelRecipe currentRecipe, long calendarTick, boolean sealed)
     {
         this.pos = tile.getPos();
         this.calendarTick = calendarTick;
         this.recipeName = currentRecipe != null ? currentRecipe.getRegistryName() : null;
+        this.sealed = sealed;
     }
 
     @Override
@@ -46,6 +48,7 @@ public class PacketBarrelUpdate implements IMessage
         pos = BlockPos.fromLong(buf.readLong());
         calendarTick = buf.readLong();
         recipeName = Helpers.readResourceLocation(buf);
+        sealed = buf.readBoolean();
     }
 
     @Override
@@ -54,6 +57,7 @@ public class PacketBarrelUpdate implements IMessage
         buf.writeLong(pos.toLong());
         buf.writeLong(calendarTick);
         Helpers.writeResourceLocation(buf, recipeName);
+        buf.writeBoolean(sealed);
     }
 
     public static final class Handler implements IMessageHandler<PacketBarrelUpdate, IMessage>
@@ -70,7 +74,7 @@ public class PacketBarrelUpdate implements IMessage
                     if (te != null)
                     {
                         BarrelRecipe recipe = message.recipeName == null ? null : TFCRegistries.BARREL.getValue(message.recipeName);
-                        te.onReceivePacket(recipe, message.calendarTick);
+                        te.onReceivePacket(recipe, message.calendarTick, message.sealed);
                     }
                 });
             }

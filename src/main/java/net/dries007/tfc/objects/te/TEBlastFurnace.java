@@ -124,9 +124,9 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
     }
 
     @Override
-    public void onBreakBlock(World worldIn, BlockPos pos)
+    public void onBreakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        //Dump everything in world
+        // Dump everything in world
         for (int i = 1; i < 6; i++)
         {
             if (world.getBlockState(pos.up(i)).getBlock() == BlocksTFC.MOLTEN)
@@ -142,7 +142,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         {
             InventoryHelper.spawnItemStack(world, pos.north().getX(), pos.getY(), pos.north().getZ(), stack);
         }
-        super.onBreakBlock(world, pos);
+        super.onBreakBlock(world, pos, state);
     }
 
     public boolean canIgnite()

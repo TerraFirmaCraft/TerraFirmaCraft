@@ -158,7 +158,7 @@ public class BlockStoneAnvil extends Block implements IRockObject
         TEAnvilTFC te = Helpers.getTE(worldIn, pos, TEAnvilTFC.class);
         if (te != null)
         {
-            te.onBreakBlock(worldIn, pos);
+            te.onBreakBlock(worldIn, pos, state);
         }
         super.breakBlock(worldIn, pos, state);
     }

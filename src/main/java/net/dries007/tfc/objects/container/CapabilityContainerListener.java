@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.objects.container;
 
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -12,15 +15,26 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.network.PacketCapabilityContainerUpdate;
 
 /**
- * This is a {@link IContainerListener} which will monitor containers and send any capability data changes for IItemHEat / IFood
+ * This is a {@link IContainerListener} which will monitor containers and send any capability data changes for included capabilities
+ * In TFC, own items use {@link net.minecraft.item.Item#getNBTShareTag(ItemStack)} to sync internal capabilities such as inventory, fluids, etc.
+ * Capabilities which are applied to all items (heat, forgeable, food, etc) are synced via this handler
+ * We do NOT use {@link ItemStack#setTagCompound(NBTTagCompound)} to save capability data, as that results in duplication of information
+ *
+ * Below is a forge PR that would solve all these problems, but will likely not get implemented in 1.12.
+ * <a href="https://github.com/MinecraftForge/MinecraftForge/pull/5009/files">Capability Sync PR for 1.12</>
  *
  * @author Choonster
  * @author AlcatrazEscapee
@@ -28,6 +42,41 @@ import net.dries007.tfc.network.PacketCapabilityContainerUpdate;
 @ParametersAreNonnullByDefault
 public class CapabilityContainerListener implements IContainerListener
 {
+    private static final Map<String, Capability<? extends INBTSerializable<? extends NBTBase>>> CAPABILITIES = new HashMap<>();
+
+    static
+    {
+        CAPABILITIES.put(CapabilityItemHeat.KEY.toString(), CapabilityItemHeat.ITEM_HEAT_CAPABILITY);
+        CAPABILITIES.put(CapabilityForgeable.KEY.toString(), CapabilityForgeable.FORGEABLE_CAPABILITY);
+        CAPABILITIES.put(CapabilityFood.KEY.toString(), CapabilityFood.CAPABILITY);
+    }
+
+    @Nonnull
+    public static NBTTagCompound readCapabilityData(ItemStack stack)
+    {
+        NBTTagCompound nbt = new NBTTagCompound();
+        CAPABILITIES.forEach((name, cap) -> {
+            INBTSerializable<? extends NBTBase> capability = stack.getCapability(cap, null);
+            if (capability != null)
+            {
+                nbt.setTag(name, capability.serializeNBT());
+            }
+        });
+        return nbt;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static void applyCapabilityData(ItemStack stack, NBTTagCompound nbt)
+    {
+        CAPABILITIES.forEach((name, cap) -> {
+            INBTSerializable<? extends NBTBase> capability = stack.getCapability(cap, null);
+            if (capability != null)
+            {
+                ((INBTSerializable) capability).deserializeNBT(nbt.getTag(name));
+            }
+        });
+    }
+
     private final EntityPlayerMP player;
 
     public CapabilityContainerListener(EntityPlayerMP player)
@@ -75,7 +124,8 @@ public class CapabilityContainerListener implements IContainerListener
         {
             final PacketCapabilityContainerUpdate message = new PacketCapabilityContainerUpdate(container.windowId, slotIndex, stack);
             if (message.hasData())
-            { // Don't send the message if there's nothing to update
+            {
+                // Don't send the message if there's nothing to update
                 TerraFirmaCraft.getNetwork().sendTo(message, player);
             }
         }
@@ -89,6 +139,13 @@ public class CapabilityContainerListener implements IContainerListener
 
     private boolean shouldSyncItem(ItemStack stack)
     {
-        return stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null) || stack.hasCapability(CapabilityFood.CAPABILITY, null);
+        for (Capability<?> capability : CAPABILITIES.values())
+        {
+            if (stack.hasCapability(capability, null))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

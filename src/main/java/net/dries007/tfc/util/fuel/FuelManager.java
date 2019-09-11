@@ -21,13 +21,13 @@ import net.dries007.tfc.types.DefaultMetals;
 
 public final class FuelManager
 {
-    private static final List<Fuel> fuels = new ArrayList<>();
+    private static final List<Fuel> FUELS = new ArrayList<>();
     private static final Fuel EMPTY = new Fuel(ItemStack.EMPTY, 0, 0);
 
     @Nonnull
     public static Fuel getFuel(ItemStack stack)
     {
-        return fuels.stream().filter(x -> x.matchesInput(stack)).findFirst().orElse(EMPTY);
+        return FUELS.stream().filter(x -> x.matchesInput(stack)).findFirst().orElse(EMPTY);
     }
 
     public static boolean isItemFuel(ItemStack stack)
@@ -46,28 +46,28 @@ public final class FuelManager
         for (Tree wood : TFCRegistries.TREES.getValuesCollection())
         {
             BlockLogTFC log = BlockLogTFC.get(wood);
-            fuels.add(new Fuel(new ItemStack(log), wood.getBurnTicks(), wood.getBurnTemp()));
+            FUELS.add(new Fuel(new ItemStack(log), wood.getBurnTicks(), wood.getBurnTemp()));
         }
 
         // Coal (Vanilla)
-        fuels.add(new Fuel(new ItemStack(Items.COAL, 1, 0), 2200, 1350f, true));
+        FUELS.add(new Fuel(new ItemStack(Items.COAL, 1, 0), 2200, 1350f, true));
         // Coal (TFC Variants)
-        fuels.add(new Fuel(ItemOreTFC.get(TFCRegistries.ORES.getValue(DefaultMetals.BITUMINOUS_COAL), 1), 2200, 1415f, true));
-        fuels.add(new Fuel(ItemOreTFC.get(TFCRegistries.ORES.getValue(DefaultMetals.LIGNITE), 1), 2200, 1415f, true));
+        FUELS.add(new Fuel(ItemOreTFC.get(TFCRegistries.ORES.getValue(DefaultMetals.BITUMINOUS_COAL), 1), 2200, 1415f, true));
+        FUELS.add(new Fuel(ItemOreTFC.get(TFCRegistries.ORES.getValue(DefaultMetals.LIGNITE), 1), 2200, 1415f, true));
 
         // Charcoal
-        fuels.add(new Fuel(new ItemStack(Items.COAL, 1, 1), 1800, 1350f, true));
+        FUELS.add(new Fuel(new ItemStack(Items.COAL, 1, 1), 1800, 1350f, true));
 
-        fuels.add(new Fuel(new ItemStack(BlocksTFC.PEAT), 2500, 680, true));
+        FUELS.add(new Fuel(new ItemStack(BlocksTFC.PEAT), 2500, 680, true));
     }
 
     public static boolean addFuel(Fuel fuel)
     {
-        if (fuels.stream().anyMatch(x -> x.matchesInput(fuel)))
+        if (FUELS.stream().anyMatch(x -> x.matchesInput(fuel)))
         {
             return false;
         }
-        fuels.add(fuel);
+        FUELS.add(fuel);
         return true;
     }
 }

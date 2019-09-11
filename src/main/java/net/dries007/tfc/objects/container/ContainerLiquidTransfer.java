@@ -56,10 +56,6 @@ public class ContainerLiquidTransfer extends ContainerItemStack implements ISlot
 
                     // Copy the input temperature onto the output temperature
                     ((IMoldHandler) outFluidHandler).setTemperature(((IMoldHandler) capFluidHandler).getTemperature());
-
-                    // Save the NBT on both stacks
-                    stack.setTagCompound(((IMoldHandler) capFluidHandler).serializeNBT());
-                    outputStack.setTagCompound(((IMoldHandler) outFluidHandler).serializeNBT());
                 }
             }
         }

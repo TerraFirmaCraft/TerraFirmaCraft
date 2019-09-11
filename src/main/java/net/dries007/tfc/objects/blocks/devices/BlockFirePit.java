@@ -137,7 +137,7 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         TEFirePit tile = Helpers.getTE(worldIn, pos, TEFirePit.class);
         if (tile != null)
         {
-            tile.onBreakBlock(worldIn, pos);
+            tile.onBreakBlock(worldIn, pos, state);
         }
         super.breakBlock(worldIn, pos, state);
     }

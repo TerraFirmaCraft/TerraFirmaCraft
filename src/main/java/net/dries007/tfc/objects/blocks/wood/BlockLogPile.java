@@ -113,7 +113,7 @@ public class BlockLogPile extends Block implements ILightableBlock
         // This can't use breakBlock as it needs to not drop when broken in order to create a charcoal pile
         if (!worldIn.isRemote && te instanceof TEInventory)
         {
-            ((TEInventory) te).onBreakBlock(worldIn, pos);
+            ((TEInventory) te).onBreakBlock(worldIn, pos, state);
         }
         super.breakBlock(worldIn, pos, state);
     }
