@@ -25,6 +25,8 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
     private final boolean layer2;
     private final boolean layer3;
     private final boolean hasAnvil;
+    private final float hardness;
+    private final float resistance;
 
     /**
      * A rock category.
@@ -33,9 +35,11 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
      * @param toolMaterial The tool material used for stone tools made of this rock
      * @param caveGenMod   a modifier for cave generation. Default 0, range -0.5 <> 0.5
      * @param caveFreqMod  another modifier for cave generation. Default 0, sedimentary uses +5
+     * @param hardness     How hard this type is (how slower is to break blocks)
+     * @param resistance   How resistant to explosion this type is
      * @param hasAnvil     if this rock should be able to create a stone anvil
      */
-    public RockCategory(@Nonnull ResourceLocation name, @Nonnull Item.ToolMaterial toolMaterial, boolean layer1, boolean layer2, boolean layer3, float caveGenMod, float caveFreqMod, boolean hasAnvil)
+    public RockCategory(@Nonnull ResourceLocation name, @Nonnull Item.ToolMaterial toolMaterial, boolean layer1, boolean layer2, boolean layer3, float caveGenMod, float caveFreqMod, float hardness, float resistance, boolean hasAnvil)
     {
         setRegistryName(name);
         this.toolMaterial = toolMaterial;
@@ -45,6 +49,8 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
         this.layer2 = layer2;
         this.layer3 = layer3;
         this.hasAnvil = hasAnvil;
+        this.hardness = hardness;
+        this.resistance = resistance;
     }
 
     @Nonnull
@@ -61,6 +67,16 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
     public float getCaveFreqMod()
     {
         return caveFreqMod;
+    }
+
+    public float getHardness()
+    {
+        return hardness;
+    }
+
+    public float getResistance()
+    {
+        return resistance;
     }
 
     public boolean hasAnvil()

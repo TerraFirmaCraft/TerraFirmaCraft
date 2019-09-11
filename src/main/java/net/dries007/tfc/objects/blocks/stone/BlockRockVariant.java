@@ -109,38 +109,38 @@ public class BlockRockVariant extends Block
             case RAW:
             case SPIKE:
                 setSoundType(SoundType.STONE);
-                setHardness(2.0F).setResistance(10.0F);
+                setHardness(rock.getRockCategory().getHardness()).setResistance(rock.getRockCategory().getResistance());
                 setHarvestLevel("pickaxe", 0);
                 break;
             case COBBLE:
             case SMOOTH:
                 setSoundType(SoundType.STONE);
-                setHardness(1.5F).setResistance(10.0F);
+                setHardness(rock.getRockCategory().getHardness() * 0.75F).setResistance(rock.getRockCategory().getResistance());
                 setHarvestLevel("pickaxe", 0);
                 break;
             case SAND:
                 setSoundType(SoundType.SAND);
-                setHardness(0.7F);
+                setHardness(rock.getRockCategory().getHardness() * 0.05F);
                 setHarvestLevel("shovel", 0);
                 break;
             case DIRT:
             case PATH:
             case FARMLAND:
                 setSoundType(SoundType.GROUND);
-                setHardness(1.0F);
+                setHardness(rock.getRockCategory().getHardness() * 0.15F);
                 setHarvestLevel("shovel", 0);
                 break;
             case GRAVEL:
             case CLAY:
                 setSoundType(SoundType.GROUND);
-                setHardness(0.8F);
+                setHardness(rock.getRockCategory().getHardness() * 0.2F);
                 setHarvestLevel("shovel", 0);
                 break;
             case CLAY_GRASS:
             case GRASS:
             case DRY_GRASS:
                 setSoundType(SoundType.PLANT);
-                setHardness(1.1F);
+                setHardness(rock.getRockCategory().getHardness() * 0.2F);
                 setHarvestLevel("shovel", 0);
                 break;
         }
