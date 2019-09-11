@@ -13,4 +13,6 @@ public interface IKnappingType
     String getName();
 
     int getAmountToConsume();
+
+    boolean consumeLast();
 }
