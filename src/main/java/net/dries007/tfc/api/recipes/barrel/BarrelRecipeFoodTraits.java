@@ -40,7 +40,7 @@ public class BarrelRecipeFoodTraits extends BarrelRecipe
         {
             CapabilityFood.applyTrait(food, trait);
         }
-        return Collections.singletonList(inputStack);
+        return Collections.singletonList(stack);
     }
 
     @SideOnly(Side.CLIENT)

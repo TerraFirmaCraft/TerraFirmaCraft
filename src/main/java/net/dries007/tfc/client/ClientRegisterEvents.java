@@ -161,15 +161,18 @@ public final class ClientRegisterEvents
         {
             ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition()
             {
+                private final ModelResourceLocation sealed = new ModelResourceLocation(item.getRegistryName(), "sealed=true");
+                private final ModelResourceLocation unsealed = new ModelResourceLocation(item.getRegistryName(), "sealed=false");
+
                 @Override
                 @Nonnull
                 public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack)
                 {
                     if (stack.getTagCompound() != null)
                     {
-                        return new ModelResourceLocation(item.getRegistryName(), "sealed=true");
+                        return sealed;
                     }
-                    return new ModelResourceLocation(item.getRegistryName(), "sealed=false");
+                    return unsealed;
                 }
             });
         }

@@ -5,13 +5,13 @@
 
 package net.dries007.tfc.objects.te;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.google.common.collect.Queues;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -59,7 +59,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     private long sealedTick, sealedCalendarTick;
     private BarrelRecipe recipe;
     private int tickCounter;
-    private Queue<ItemStack> surplus = Queues.newArrayDeque(); //Surplus items from a recipe with output > stackSize
+    private Queue<ItemStack> surplus = new LinkedList<>(); //Surplus items from a recipe with output > stackSize
     private boolean checkInstantRecipe = false;
 
     public TEBarrel()
