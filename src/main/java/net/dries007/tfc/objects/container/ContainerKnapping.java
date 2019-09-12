@@ -53,7 +53,7 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
 
         if (!hasBeenModified)
         {
-            ItemStack stack = player.isCreative() || type.consumeLast() ? this.stack : Helpers.consumeItem(this.stack, type.getAmountToConsume());
+            ItemStack stack = player.isCreative() || type.consumeAfterComplete() ? this.stack : Helpers.consumeItem(this.stack, type.getAmountToConsume());
             if (isOffhand)
             {
                 player.setHeldItem(EnumHand.OFF_HAND, stack);
@@ -86,7 +86,7 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
     public ItemStack slotClick(int slotID, int dragType, ClickType clickType, EntityPlayer player)
     {
         Slot slot = inventorySlots.get(0);
-        if (slot.slotNumber == slotID && slot.getHasStack() && type.consumeLast() && !player.isCreative())
+        if (slot.slotNumber == slotID && slot.getHasStack() && type.consumeAfterComplete() && !player.isCreative())
         {
             ItemStack stack = Helpers.consumeItem(this.stack, type.getAmountToConsume());
             if (isOffhand)

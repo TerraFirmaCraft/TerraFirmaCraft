@@ -49,12 +49,12 @@ public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRe
         LEATHER(1, false);
 
         private final int amountToConsume;
-        private boolean consumeLast;
+        private boolean consumeAfterComplete;
 
-        Type(int amountToConsume, boolean consumeLast)
+        Type(int amountToConsume, boolean consumeAfterComplete)
         {
             this.amountToConsume = amountToConsume;
-            this.consumeLast = consumeLast;
+            this.consumeAfterComplete = consumeAfterComplete;
         }
 
         @Nonnull
@@ -71,9 +71,9 @@ public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRe
         }
 
         @Override
-        public boolean consumeLast()
+        public boolean consumeAfterComplete()
         {
-            return consumeLast;
+            return consumeAfterComplete;
         }
     }
 }

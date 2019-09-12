@@ -5,11 +5,11 @@
 
 package net.dries007.tfc.api.recipes.barrel;
 
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Queues;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -123,10 +123,10 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
     }
 
     @Nonnull
-    public Queue<ItemStack> getOutputItem(FluidStack inputFluid, ItemStack inputStack)
+    public List<ItemStack> getOutputItem(FluidStack inputFluid, ItemStack inputStack)
     {
         int multiplier = getMultiplier(inputFluid, inputStack);
-        Queue<ItemStack> queueOutput = Queues.newArrayDeque();
+        List<ItemStack> outputList = new ArrayList<>();
         if (!this.outputStack.isEmpty())
         {
             // Ignore input and replace with output
@@ -137,7 +137,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
                 ItemStack output = outputStack.copy();
                 output.setCount(count);
                 outputCount -= count;
-                queueOutput.add(output);
+                outputList.add(output);
             } while (outputCount > 0);
         }
         else
@@ -147,14 +147,14 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
             if (retainCount > 0)
             {
                 inputStack.setCount(retainCount);
-                queueOutput.add(inputStack);
+                outputList.add(inputStack);
             }
             else
             {
-                queueOutput.add(ItemStack.EMPTY);
+                outputList.add(ItemStack.EMPTY);
             }
         }
-        return queueOutput;
+        return outputList;
     }
 
     /**

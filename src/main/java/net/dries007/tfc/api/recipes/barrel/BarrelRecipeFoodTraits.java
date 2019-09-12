@@ -5,10 +5,10 @@
 
 package net.dries007.tfc.api.recipes.barrel;
 
-import java.util.Queue;
+import java.util.Collections;
+import java.util.List;
 import javax.annotation.Nonnull;
 
-import com.google.common.collect.Queues;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -32,7 +32,7 @@ public class BarrelRecipeFoodTraits extends BarrelRecipe
 
     @Nonnull
     @Override
-    public Queue<ItemStack> getOutputItem(FluidStack inputFluid, ItemStack inputStack)
+    public List<ItemStack> getOutputItem(FluidStack inputFluid, ItemStack inputStack)
     {
         ItemStack stack = inputStack.copy();
         IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
@@ -40,9 +40,7 @@ public class BarrelRecipeFoodTraits extends BarrelRecipe
         {
             CapabilityFood.applyTrait(food, trait);
         }
-        Queue<ItemStack> output = Queues.newArrayDeque();
-        output.add(inputStack);
-        return output;
+        return Collections.singletonList(inputStack);
     }
 
     @SideOnly(Side.CLIENT)
