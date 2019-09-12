@@ -159,8 +159,19 @@ public final class ClientRegisterEvents
 
         for (ItemBlock item : BlocksTFC.getAllBarrelItemBlocks())
         {
-            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "sealed=false"));
-            ModelLoader.setCustomModelResourceLocation(item, 1, new ModelResourceLocation(item.getRegistryName(), "sealed=true"));
+            ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition()
+            {
+                @Override
+                @Nonnull
+                public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack)
+                {
+                    if (stack.getTagCompound() != null)
+                    {
+                        return new ModelResourceLocation(item.getRegistryName(), "sealed=true");
+                    }
+                    return new ModelResourceLocation(item.getRegistryName(), "sealed=false");
+                }
+            });
         }
 
         // BLOCKS - STATE MAPPERS //
