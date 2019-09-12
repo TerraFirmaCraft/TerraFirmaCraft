@@ -95,7 +95,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
 
                     nbt.setLong("sealedTick", CalendarTFC.TOTAL_TIME.getTicks());
                     nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
-                    ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem(), 1, 1);
+                    ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem());
                     stack.setTagCompound(nbt);
                     player.setHeldItem(hand, stack);
                     return EnumActionResult.SUCCESS;

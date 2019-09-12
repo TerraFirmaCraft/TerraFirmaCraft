@@ -342,7 +342,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         if (state.getValue(SEALED))
         {
             // Drop the sealed barrel
-            ItemStack stack = new ItemStack(state.getBlock(), 1, 1);
+            ItemStack stack = new ItemStack(state.getBlock());
             stack.setTagCompound(getItemTag());
             InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
         }
