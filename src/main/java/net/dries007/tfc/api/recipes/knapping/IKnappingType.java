@@ -14,5 +14,5 @@ public interface IKnappingType
 
     int getAmountToConsume();
 
-    boolean consumeLast();
+    boolean consumeAfterComplete();
 }
