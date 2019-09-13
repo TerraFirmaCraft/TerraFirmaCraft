@@ -108,7 +108,12 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
         ItemStack stack = slot.getStack();
         if (!stack.isEmpty())
         {
-            player.addItemStackToInventory(stack);
+            if (!player.world.isRemote)
+            {
+                // Player#addItemStackToInventory(stack) returned true even when inventory was full
+                // Since the item is immediately picked up when possible, this works like we want
+                Helpers.spawnItemStack(player.world, player.getPosition(), stack);
+            }
         }
         super.onContainerClosed(player);
     }
