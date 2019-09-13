@@ -16,6 +16,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.api.recipes.knapping.IKnappingType;
@@ -110,9 +111,7 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
         {
             if (!player.world.isRemote)
             {
-                // Player#addItemStackToInventory(stack) returned true even when inventory was full
-                // Since the item is immediately picked up when possible, this works like we want
-                Helpers.spawnItemStack(player.world, player.getPosition(), stack);
+                ItemHandlerHelper.giveItemToPlayer(player, stack);
             }
         }
         super.onContainerClosed(player);

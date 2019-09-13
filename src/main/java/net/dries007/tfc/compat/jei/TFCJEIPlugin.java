@@ -13,7 +13,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -85,7 +85,7 @@ public final class TFCJEIPlugin implements IModPlugin
             return ISubtypeRegistry.ISubtypeInterpreter.NONE;
         };
 
-        GameRegistry.findRegistry(Item.class).getValuesCollection().stream()
+        ForgeRegistries.ITEMS.getValuesCollection().stream()
             .filter(x -> x instanceof ItemFood)
             .forEach(food -> {
                 subtypeRegistry.registerSubtypeInterpreter(food, interpreter);
