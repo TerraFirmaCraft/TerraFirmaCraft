@@ -26,6 +26,7 @@ import net.dries007.tfc.objects.blocks.BlockPeat;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockShortGrassTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
+import net.dries007.tfc.util.IFallingBlock;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -154,7 +155,7 @@ public class BlockRockVariantConnected extends BlockRockVariantFallable
             {
                 worldIn.setBlockToAir(pos);
                 pos1 = pos1.down();
-                while (canFallThrough(worldIn, pos1) && pos1.getY() > 0)
+                while (IFallingBlock.canFallThrough(worldIn, pos1) && pos1.getY() > 0)
                 {
                     pos1 = pos1.down();
                 }

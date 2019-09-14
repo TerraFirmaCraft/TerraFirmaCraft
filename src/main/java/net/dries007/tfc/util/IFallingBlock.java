@@ -21,10 +21,13 @@ import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 
 public interface IFallingBlock
 {
-    default boolean canFallThrough(World world, BlockPos pos)
+    static boolean canFallThrough(World world, BlockPos pos)
     {
-        if (!world.isSideSolid(pos, EnumFacing.UP)) return true;
-        return world.getBlockState(pos).getMaterial().isReplaceable();
+        if (!world.isSideSolid(pos, EnumFacing.UP))
+        {
+            return true;
+        }
+        return !world.getBlockState(pos).isFullBlock();
     }
 
     default boolean shouldFall(World world, BlockPos posToFallAt, BlockPos originalPos)
@@ -77,9 +80,5 @@ public interface IFallingBlock
     default Iterable<ItemStack> getDropsFromFall(World world, BlockPos pos, IBlockState state, @Nullable NBTTagCompound teData, int fallTime, float fallDistance)
     {
         return ImmutableList.of(new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state)));
-    }
-
-    default void onEndFalling(World world, BlockPos pos, IBlockState state, IBlockState current)
-    {
     }
 }

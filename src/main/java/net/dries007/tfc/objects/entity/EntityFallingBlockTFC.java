@@ -39,6 +39,7 @@ public class EntityFallingBlockTFC extends Entity
     private IFallingBlock falling;
     private int fallTime;
     private NBTTagCompound teData;
+    private boolean failedBreakCheck;
 
     @SuppressWarnings("unused")
     public EntityFallingBlockTFC(World worldIn)
@@ -117,23 +118,43 @@ public class EntityFallingBlockTFC extends Entity
         motionY *= 0.9800000190734863D;
         motionZ *= 0.9800000190734863D;
 
-        if (world.isRemote) return;
-
         final BlockPos pos = new BlockPos(this); // Post move position
 
-        if (!onGround) // Still falling
+        if (!onGround)
         {
-            if (fallTime > 100 && (pos.getY() < 1 || pos.getY() > 256) || fallTime > 600)
+            // Still falling
+            failedBreakCheck = false;
+            if ((fallTime > 100 && (pos.getY() < 1 || pos.getY() > 256) || fallTime > 600))
             {
-                if (world.getGameRules().getBoolean("doEntityDrops"))
+                if (!world.isRemote)
                 {
-                    falling.getDropsFromFall(world, pos, state, teData, fallTime, fallDistance).forEach(x -> entityDropItem(x, 0));
+                    if (world.getGameRules().getBoolean("doEntityDrops"))
+                    {
+                        falling.getDropsFromFall(world, pos, state, teData, fallTime, fallDistance).forEach(x -> entityDropItem(x, 0));
+                    }
+                    setDead();
                 }
-                setDead();
             }
         }
-        else // On ground
+        else
         {
+            // On ground
+            if (!failedBreakCheck)
+            {
+                if (!world.isAirBlock(pos) && IFallingBlock.canFallThrough(world, pos))
+                {
+                    world.destroyBlock(pos, true);
+                    failedBreakCheck = true;
+                    return;
+                }
+                else if (!world.isAirBlock(pos.down()) && IFallingBlock.canFallThrough(world, pos.down()))
+                {
+                    world.destroyBlock(pos.down(), true);
+                    failedBreakCheck = true;
+                    return;
+                }
+            }
+
             final IBlockState current = world.getBlockState(pos);
 
             motionX *= 0.699999988079071D;
@@ -144,30 +165,30 @@ public class EntityFallingBlockTFC extends Entity
 
             setDead();
 
-            //world.mayPlace(block, pos, true, EnumFacing.UP, null) &&
-            if (!falling.canFallThrough(world, pos.down()))
+            if (!IFallingBlock.canFallThrough(world, pos.down()))
             {
-                world.destroyBlock(pos, true);
-                world.setBlockState(pos, state, 3);
-
-                falling.onEndFalling(world, pos, state, current);
-
-                // Copy all TE data over default data (except pos[X,Y,Z]) if the TE is there. This is vanilla code.
-                if (teData != null && block.hasTileEntity(state))
+                if (!world.isRemote)
                 {
-                    TileEntity te = world.getTileEntity(pos);
-                    if (te != null)
+                    world.destroyBlock(pos, true);
+                    world.setBlockState(pos, state, 3);
+
+                    // Copy all TE data over default data (except pos[X,Y,Z]) if the TE is there. This is vanilla code.
+                    if (teData != null && block.hasTileEntity(state))
                     {
-                        NBTTagCompound currentTeData = te.writeToNBT(new NBTTagCompound());
-                        for (String s : teData.getKeySet())
+                        TileEntity te = world.getTileEntity(pos);
+                        if (te != null)
                         {
-                            if (!"x".equals(s) && !"y".equals(s) && !"z".equals(s))
+                            NBTTagCompound currentTeData = te.writeToNBT(new NBTTagCompound());
+                            for (String s : teData.getKeySet())
                             {
-                                currentTeData.setTag(s, teData.getTag(s).copy());
+                                if (!"x".equals(s) && !"y".equals(s) && !"z".equals(s))
+                                {
+                                    currentTeData.setTag(s, teData.getTag(s).copy());
+                                }
                             }
+                            te.readFromNBT(currentTeData);
+                            te.markDirty();
                         }
-                        te.readFromNBT(currentTeData);
-                        te.markDirty();
                     }
                 }
             }
@@ -194,11 +215,16 @@ public class EntityFallingBlockTFC extends Entity
     protected void readEntityFromNBT(NBTTagCompound compound)
     {
         IBlockState state = NBTUtil.readBlockState(compound.getCompoundTag("State"));
-        this.falling = (IFallingBlock) state.getBlock(); //todo: verify this (a block might have been changed not to fall anymore)
+        this.falling = (IFallingBlock) state.getBlock();
         if (compound.hasKey("State"))
+        {
             dataManager.set(BLOCK, Optional.of(state));
+        }
         fallTime = compound.getInteger("FallTime");
-        if (compound.hasKey("TileEntityData")) teData = compound.getCompoundTag("TileEntityData");
+        if (compound.hasKey("TileEntityData"))
+        {
+            teData = compound.getCompoundTag("TileEntityData");
+        }
 
     }
 
@@ -206,9 +232,15 @@ public class EntityFallingBlockTFC extends Entity
     protected void writeEntityToNBT(NBTTagCompound compound)
     {
         IBlockState state = getState();
-        if (state != null) compound.setTag("State", NBTUtil.writeBlockState(new NBTTagCompound(), state));
+        if (state != null)
+        {
+            compound.setTag("State", NBTUtil.writeBlockState(new NBTTagCompound(), state));
+        }
         compound.setInteger("FallTime", fallTime);
-        if (teData != null) compound.setTag("TileEntityData", teData);
+        if (teData != null)
+        {
+            compound.setTag("TileEntityData", teData);
+        }
     }
 
     @Override
