@@ -232,7 +232,7 @@ public class BlockStoneAnvil extends Block implements IRockObject
                     if (i == SLOT_HAMMER) continue;
                     // Try to insert an item
                     // Hammers will not be inserted since we already checked if heldItem is a hammer for attemptWelding
-                    if (te.isItemValid(i, heldItem) && cap.getStackInSlot(i).isEmpty())
+                    if (te.isItemValid(i, heldItem) && te.getSlotLimit(i) > cap.getStackInSlot(i).getCount())
                     {
                         ItemStack result = cap.insertItem(i, heldItem, false);
                         playerIn.setHeldItem(hand, result);

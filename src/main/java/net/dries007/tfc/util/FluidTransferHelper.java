@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,12 +19,11 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidActionResult;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
@@ -44,7 +44,7 @@ public final class FluidTransferHelper
      * @return a {@link FluidActionResult} holding the result and the resulting container.
      */
     @Nonnull
-    public static FluidActionResult tryPickUpFluidGreedy(@Nonnull ItemStack emptyContainer, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, int maxAmount)
+    public static FluidActionResult tryPickUpFluidGreedy(@Nonnull ItemStack emptyContainer, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, int maxAmount, boolean consumeOnInfiniteFluids)
     {
         if (emptyContainer.isEmpty() || worldIn == null || pos == null)
         {
@@ -64,7 +64,18 @@ public final class FluidTransferHelper
                 IFluidHandlerItem containerFluidHandler = getFluidHandler(containerCopy);
                 if (containerFluidHandler != null)
                 {
-                    FluidStack drained = targetFluidHandler.drain(maxAmount, true);
+                    boolean canCreateSources = false; //default
+                    if (block instanceof BlockFluidClassic)
+                    {
+                        BlockFluidClassic fluidblock = (BlockFluidClassic) worldIn.getBlockState(pos).getBlock();
+                        canCreateSources = ReflectionHelper.getPrivateValue(BlockFluidClassic.class, fluidblock, "canCreateSources");
+                    }
+                    else if (block instanceof BlockLiquid)
+                    {
+                        //Fire the event so other mods that prevent infinite water disable this
+                        canCreateSources = ForgeEventFactory.canCreateFluidSource(worldIn, pos, state, state.getMaterial() == Material.WATER);
+                    }
+                    FluidStack drained = targetFluidHandler.drain(maxAmount, consumeOnInfiniteFluids || !canCreateSources);
                     if (drained != null)
                     {
                         containerFluidHandler.fill(drained, true);

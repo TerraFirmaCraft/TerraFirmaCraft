@@ -5,15 +5,18 @@
 
 package net.dries007.tfc.objects.container;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.api.recipes.knapping.IKnappingType;
@@ -51,7 +54,7 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
 
         if (!hasBeenModified)
         {
-            ItemStack stack = player.isCreative() ? this.stack : Helpers.consumeItem(this.stack, type.getAmountToConsume());
+            ItemStack stack = player.isCreative() || type.consumeAfterComplete() ? this.stack : Helpers.consumeItem(this.stack, type.getAmountToConsume());
             if (isOffhand)
             {
                 player.setHeldItem(EnumHand.OFF_HAND, stack);
@@ -79,6 +82,26 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
         }
     }
 
+    @Nonnull
+    @Override
+    public ItemStack slotClick(int slotID, int dragType, ClickType clickType, EntityPlayer player)
+    {
+        Slot slot = inventorySlots.get(0);
+        if (slot.slotNumber == slotID && slot.getHasStack() && type.consumeAfterComplete() && !player.isCreative())
+        {
+            ItemStack stack = Helpers.consumeItem(this.stack, type.getAmountToConsume());
+            if (isOffhand)
+            {
+                player.setHeldItem(EnumHand.OFF_HAND, stack);
+            }
+            else
+            {
+                player.setHeldItem(EnumHand.MAIN_HAND, stack);
+            }
+        }
+        return super.slotClick(slotID, dragType, clickType, player);
+    }
+
     @Override
     public void onContainerClosed(EntityPlayer player)
     {
@@ -86,7 +109,10 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
         ItemStack stack = slot.getStack();
         if (!stack.isEmpty())
         {
-            player.addItemStackToInventory(stack);
+            if (!player.world.isRemote)
+            {
+                ItemHandlerHelper.giveItemToPlayer(player, stack);
+            }
         }
         super.onContainerClosed(player);
     }

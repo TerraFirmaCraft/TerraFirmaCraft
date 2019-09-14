@@ -22,6 +22,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 
@@ -77,5 +80,17 @@ public class TEChestTFC extends TileEntityChest
     public AxisAlignedBB getRenderBoundingBox()
     {
         return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack)
+    {
+        //Blocks input from hopper
+        IItemSize cap = CapabilityItemSize.getIItemSize(stack);
+        if (cap != null)
+        {
+            return cap.getSize(stack).isSmallerThan(Size.LARGE);
+        }
+        return true;
     }
 }

@@ -16,6 +16,7 @@ import net.minecraft.inventory.ContainerHorseChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
@@ -24,6 +25,7 @@ import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.gui.*;
+import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.dries007.tfc.objects.container.*;
 import net.dries007.tfc.objects.entity.animal.AbstractHorseTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -115,6 +117,14 @@ public class TFCGuiHandler implements IGuiHandler
                 return new ContainerBlastFurnace(player.inventory, Helpers.getTE(world, pos, TEBlastFurnace.class));
             case CRAFTING:
                 return new ContainerInventoryCrafting(player.inventory, player.world);
+            case CHEST:
+                if (world.getBlockState(pos).getBlock() instanceof BlockChestTFC)
+                {
+                    ILockableContainer chestContainer = ((BlockChestTFC) world.getBlockState(pos).getBlock()).getLockableContainer(world, pos);
+                    //noinspection ConstantConditions
+                    return new ContainerChestTFC(player.inventory, chestContainer, player);
+                }
+                return null;
             default:
                 return null;
         }
@@ -186,6 +196,12 @@ public class TFCGuiHandler implements IGuiHandler
                     return new GuiScreenHorseInventoryTFC(player.inventory, new ContainerHorseChest(horse.getHorseChest().getName(), invSize), horse);
                 }
                 return null;
+            case CHEST:
+                if (container instanceof ContainerChestTFC)
+                {
+                    return new GuiChestTFC((ContainerChestTFC) container, player.inventory);
+                }
+                return null;
             default:
                 return null;
         }
@@ -215,6 +231,7 @@ public class TFCGuiHandler implements IGuiHandler
         CALENDAR,
         NUTRITION,
         SKILLS,
+        CHEST,
         INVENTORY, // This is special, it is used by GuiButtonPlayerInventoryTab to signal to open the vanilla inventory
         CRAFTING, // In-inventory 3x3 crafting grid
         NULL; // This is special, it is a non-null null.

@@ -91,6 +91,7 @@ public class ItemMetalTool extends ItemMetal
                 attackSpeed = 0;
                 break;
             case SAW:
+                setHarvestLevel("axe", harvestLevel);
                 setHarvestLevel("saw", harvestLevel);
                 typeDamage = 0.5f;
                 areaOfEffect = 1;
