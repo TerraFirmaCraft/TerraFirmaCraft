@@ -43,16 +43,18 @@ public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRe
      */
     public enum Type implements IKnappingType
     {
-        STONE(1),
-        CLAY(5),
-        FIRE_CLAY(5),
-        LEATHER(1);
+        STONE(1, false),
+        CLAY(5, true),
+        FIRE_CLAY(5, true),
+        LEATHER(1, false);
 
         private final int amountToConsume;
+        private boolean consumeAfterComplete;
 
-        Type(int amountToConsume)
+        Type(int amountToConsume, boolean consumeAfterComplete)
         {
             this.amountToConsume = amountToConsume;
+            this.consumeAfterComplete = consumeAfterComplete;
         }
 
         @Nonnull
@@ -66,6 +68,12 @@ public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRe
         public int getAmountToConsume()
         {
             return amountToConsume;
+        }
+
+        @Override
+        public boolean consumeAfterComplete()
+        {
+            return consumeAfterComplete;
         }
     }
 }

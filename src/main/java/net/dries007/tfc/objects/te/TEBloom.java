@@ -34,6 +34,7 @@ public class TEBloom extends TEInventory
         if (cap instanceof IForgeableMeasurable)
         {
             ((IForgeableMeasurable) cap).setMetalAmount(metalAmount);
+            cap.setTemperature(cap.getMeltTemp() - 1);
         }
     }
 }

@@ -8,6 +8,7 @@ package net.dries007.tfc;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -289,13 +290,15 @@ public final class CommonEventHandler
             else if (item == Items.STICK)
                 event.addCapability(ItemStickCapability.KEY, new ItemStickCapability(event.getObject().getTagCompound()));
             else if (item == Items.CLAY_BALL)
-                CapabilityItemSize.add(event, item, Size.SMALL, Weight.MEDIUM, canStack);
+                CapabilityItemSize.add(event, item, Size.SMALL, Weight.LIGHT, canStack);
 
                 // Final checks for general item types
             else if (item instanceof ItemTool)
                 CapabilityItemSize.add(event, item, Size.LARGE, Weight.MEDIUM, canStack);
             else if (item instanceof ItemArmor)
                 CapabilityItemSize.add(event, item, Size.LARGE, Weight.HEAVY, canStack);
+            else if (item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof BlockLadder)
+                CapabilityItemSize.add(event, item, Size.SMALL, Weight.LIGHT, canStack);
             else if (item instanceof ItemBlock)
                 CapabilityItemSize.add(event, item, Size.SMALL, Weight.MEDIUM, canStack);
             else
