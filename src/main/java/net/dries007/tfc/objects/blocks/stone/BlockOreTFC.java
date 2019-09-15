@@ -72,7 +72,7 @@ public class BlockOreTFC extends Block
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return getDefaultState().withProperty(GRADE, Ore.Grade.byMetadata(meta));
+        return getDefaultState().withProperty(GRADE, Ore.Grade.valueOf(meta));
     }
 
     @Override
