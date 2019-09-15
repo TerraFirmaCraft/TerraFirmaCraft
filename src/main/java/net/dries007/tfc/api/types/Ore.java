@@ -112,9 +112,12 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
     {
         NORMAL, POOR, RICH;
 
-        public static Grade byMetadata(int meta)
+        private static final Grade[] VALUES = values();
+
+        @Nonnull
+        public static Grade valueOf(int value)
         {
-            return Grade.values()[meta];
+            return value < 0 || value >= VALUES.length ? NORMAL : VALUES[value];
         }
 
         public int getSmeltAmount()

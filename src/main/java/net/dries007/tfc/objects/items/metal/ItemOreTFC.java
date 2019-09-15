@@ -72,9 +72,10 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
         }
     }
 
+    @Nonnull
     public Ore.Grade getGradeFromStack(ItemStack stack)
     {
-        return Ore.Grade.byMetadata(stack.getItemDamage());
+        return Ore.Grade.valueOf(stack.getItemDamage());
     }
 
     @Override
