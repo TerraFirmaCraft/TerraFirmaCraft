@@ -66,6 +66,8 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
 
             // Replace the block
             world.setBlockState(pos, BlocksTFC.PIT_KILN.getDefaultState());
+            // Play placement sound
+            world.playSound(null, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.5f, 1.0f);
             // Copy TE data
             TEPitKiln teNew = Helpers.getTE(world, pos, TEPitKiln.class);
             if (teNew != null)

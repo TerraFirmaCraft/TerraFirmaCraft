@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEPlacedItem;
+import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -64,11 +65,24 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                             }
                             else if (!stack.isEmpty() && world.getBlockState(pos.offset(hitFace).down()).isSideSolid(world, pos.offset(hitFace).down(), EnumFacing.UP) && world.getBlockState(pos.offset(hitFace)).getBlock().isReplaceable(world, pos))
                             {
-                                world.setBlockState(pos.offset(hitFace), BlocksTFC.PLACED_ITEM.getDefaultState());
-                                TEPlacedItem tile = Helpers.getTE(world, pos.offset(hitFace), TEPlacedItem.class);
-                                if (tile != null)
+                                if (player.isSneaking())
                                 {
-                                    tile.onRightClick(player, stack, rayTrace);
+                                    // If sneaking, place a flat item
+                                    world.setBlockState(pos.offset(hitFace), BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
+                                    TEPlacedItemFlat tile = Helpers.getTE(world, pos.offset(hitFace), TEPlacedItemFlat.class);
+                                    if (tile != null)
+                                    {
+                                        tile.setStack(stack.splitStack(1));
+                                    }
+                                }
+                                else
+                                {
+                                    world.setBlockState(pos.offset(hitFace), BlocksTFC.PLACED_ITEM.getDefaultState());
+                                    TEPlacedItem tile = Helpers.getTE(world, pos.offset(hitFace), TEPlacedItem.class);
+                                    if (tile != null)
+                                    {
+                                        tile.onRightClick(player, stack, rayTrace);
+                                    }
                                 }
                             }
                         }
@@ -76,6 +90,16 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                 });
             }
             return null;
+        }
+
+        private void placeItem()
+        {
+
+        }
+
+        private void placeItemFlat()
+        {
+
         }
     }
 }

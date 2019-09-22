@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.api.recipes.barrel;
 
-import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -19,6 +18,7 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.food.IFoodTrait;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
+import net.dries007.tfc.util.Helpers;
 
 public class BarrelRecipeFoodTraits extends BarrelRecipe
 {
@@ -40,7 +40,7 @@ public class BarrelRecipeFoodTraits extends BarrelRecipe
         {
             CapabilityFood.applyTrait(food, trait);
         }
-        return Collections.singletonList(stack);
+        return Helpers.listOf(stack);
     }
 
     @SideOnly(Side.CLIENT)
