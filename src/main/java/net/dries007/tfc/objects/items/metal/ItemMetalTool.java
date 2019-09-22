@@ -23,7 +23,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -41,7 +40,7 @@ public class ItemMetalTool extends ItemMetal
 {
     public final ToolMaterial material;
     private final double attackDamage;
-    private final int areaOfEffect; // todo: implement
+    private final int areaOfEffect;
     private final float attackSpeed;
     private float efficiency;
 
@@ -92,6 +91,7 @@ public class ItemMetalTool extends ItemMetal
                 attackSpeed = 0;
                 break;
             case SAW:
+                setHarvestLevel("axe", harvestLevel);
                 setHarvestLevel("saw", harvestLevel);
                 typeDamage = 0.5f;
                 areaOfEffect = 1;
@@ -161,6 +161,41 @@ public class ItemMetalTool extends ItemMetal
         }
 
         attackDamage = typeDamage * material.getAttackDamage();
+    }
+
+    @Override
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        ItemStack itemstack = player.getHeldItem(hand);
+
+        if (!player.canPlayerEdit(pos.offset(facing), facing, itemstack))
+        {
+            return EnumActionResult.FAIL;
+        }
+        else if (type == Metal.ItemType.SHOVEL)
+        {
+            IBlockState iblockstate = worldIn.getBlockState(pos);
+            Block block = iblockstate.getBlock();
+            if (!(block instanceof BlockRockVariant))
+            {
+                return EnumActionResult.PASS;
+            }
+            BlockRockVariant rockVariant = (BlockRockVariant) block;
+            if (facing != EnumFacing.DOWN && worldIn.getBlockState(pos.up()).getMaterial() == Material.AIR && rockVariant.getType() == Rock.Type.GRASS || rockVariant.getType() == Rock.Type.DRY_GRASS)
+            {
+                IBlockState iblockstate1 = BlockRockVariant.get(rockVariant.getRock(), Rock.Type.PATH).getDefaultState();
+                worldIn.playSound(player, pos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
+
+                if (!worldIn.isRemote)
+                {
+                    worldIn.setBlockState(pos, iblockstate1, 11);
+                    itemstack.damageItem(1, player);
+                }
+
+                return EnumActionResult.SUCCESS;
+            }
+        }
+        return EnumActionResult.PASS;
     }
 
     @Override
@@ -273,41 +308,6 @@ public class ItemMetalTool extends ItemMetal
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        ItemStack itemstack = player.getHeldItem(hand);
-
-        if (!player.canPlayerEdit(pos.offset(facing), facing, itemstack))
-        {
-            return EnumActionResult.FAIL;
-        }
-        else if (type == Metal.ItemType.SHOVEL)
-        {
-            IBlockState iblockstate = worldIn.getBlockState(pos);
-            Block block = iblockstate.getBlock();
-            if (!(block instanceof BlockRockVariant))
-            {
-                return EnumActionResult.PASS;
-            }
-            BlockRockVariant rockVariant = (BlockRockVariant) block;
-            if (facing != EnumFacing.DOWN && worldIn.getBlockState(pos.up()).getMaterial() == Material.AIR && rockVariant.getType() == Rock.Type.GRASS || rockVariant.getType() == Rock.Type.DRY_GRASS)
-            {
-                IBlockState iblockstate1 = BlockRockVariant.get(rockVariant.getRock(), Rock.Type.PATH).getDefaultState();
-                worldIn.playSound(player, pos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
-
-                if (!worldIn.isRemote)
-                {
-                    worldIn.setBlockState(pos, iblockstate1, 11);
-                    itemstack.damageItem(1, player);
-                }
-
-                return EnumActionResult.SUCCESS;
-            }
-        }
-        return EnumActionResult.PASS;
-    }
-
-    @Override
     public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
     {
         //This stops swords and other weapons breaking blocks in creative
@@ -339,13 +339,6 @@ public class ItemMetalTool extends ItemMetal
     public boolean canStack(ItemStack stack)
     {
         return false;
-    }
-
-    @Override
-    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
-    {
-        // Hammers need to activate anvils for welding
-        return this.type == Metal.ItemType.HAMMER || super.doesSneakBypassUse(stack, world, pos, player);
     }
 
     public double getAttackDamage() { return this.attackDamage; }

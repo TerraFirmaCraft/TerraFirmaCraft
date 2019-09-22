@@ -18,57 +18,78 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
-import net.dries007.tfc.api.capability.size.IItemSize;
-import net.dries007.tfc.api.capability.size.Size;
-import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.te.TELargeVessel;
 import net.dries007.tfc.util.Helpers;
 
+/**
+ * Large vessel is an inventory that preserves the contents when sealed
+ * It can be picked up and keeps it's inventory
+ * Sealed state is stored in a block state property, and cached in the TE (for gui purposes)
+ */
 @ParametersAreNonnullByDefault
-public class BlockLargeVessel extends Block implements IItemSize
+public class BlockLargeVessel extends Block
 {
     public static final PropertyBool SEALED = PropertyBool.create("sealed");
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.625D, 0.8125D);
     private static final AxisAlignedBB BOUNDING_BOX_SEALED = new AxisAlignedBB(0.15625D, 0.0D, 0.15625D, 0.84375D, 0.6875D, 0.84375D);
 
+    /**
+     * Used to update the vessel seal state and the TE, in the correct order
+     */
+    public static void toggleLargeVesselSeal(World world, BlockPos pos)
+    {
+        TELargeVessel tile = Helpers.getTE(world, pos, TELargeVessel.class);
+        if (tile != null)
+        {
+            IBlockState state = world.getBlockState(pos);
+            boolean previousSealed = state.getValue(SEALED);
+            world.setBlockState(pos, state.withProperty(SEALED, !previousSealed));
+            if (previousSealed)
+            {
+                tile.onUnseal();
+            }
+            else
+            {
+                tile.onSealed();
+            }
+        }
+    }
+
+    @SuppressWarnings("WeakerAccess")
     public BlockLargeVessel()
     {
         super(Material.CIRCUITS);
         setSoundType(SoundType.STONE);
         setHardness(2F);
-
         setDefaultState(blockState.getBaseState().withProperty(SEALED, false));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    @Nonnull
-    public Size getSize(ItemStack stack)
+    public boolean isTopSolid(IBlockState state)
     {
-        return Size.HUGE;
+        return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    @Nonnull
-    public Weight getWeight(ItemStack stack)
+    public boolean isFullBlock(IBlockState state)
     {
-        return Weight.HEAVY;
+        return false;
     }
-
 
     @Override
     @Nonnull
@@ -81,11 +102,21 @@ public class BlockLargeVessel extends Block implements IItemSize
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        if (state.getValue(SEALED))
-        {
-            return 1;
-        }
-        return 0;
+        return state.getValue(SEALED) ? 1 : 0;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isBlockNormalCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isNormalCube(IBlockState state)
+    {
+        return false;
     }
 
     @Override
@@ -110,6 +141,17 @@ public class BlockLargeVessel extends Block implements IItemSize
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TELargeVessel tile = Helpers.getTE(worldIn, pos, TELargeVessel.class);
+        if (tile != null)
+        {
+            tile.onBreakBlock(worldIn, pos, state);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     @Nonnull
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderLayer()
@@ -124,61 +166,45 @@ public class BlockLargeVessel extends Block implements IItemSize
         {
             ItemStack heldItem = playerIn.getHeldItem(hand);
             TELargeVessel te = Helpers.getTE(worldIn, pos, TELargeVessel.class);
-
             if (te != null)
             {
                 if (heldItem.isEmpty() && playerIn.isSneaking())
                 {
                     worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 0.85F);
-                    worldIn.setBlockState(pos, state.withProperty(SEALED, !state.getValue(SEALED)));
-                    te.onSealed();
+                    toggleLargeVesselSeal(worldIn, pos);
                 }
                 else
                 {
                     TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.LARGE_VESSEL);
                 }
             }
-
-            return true;
         }
-        else
-        {
-            return true;
-        }
-
-    }
-
-    /**
-     * The Block needs to be removed here since we prevented its removal earlier in {@link #removedByPlayer(IBlockState, World, BlockPos, EntityPlayer, boolean)}.
-     */
-    @Override
-    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack tool)
-    {
-        super.harvestBlock(world, player, pos, state, te, tool);
-        world.setBlockToAir(pos);
+        return true;
     }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        if (worldIn.isRemote)
+        // If the barrel was sealed, then copy the contents from the item
+        if (!worldIn.isRemote)
         {
-            return;
-        }
-
-
-        NBTTagCompound compound = stack.getTagCompound();
-
-        if (compound != null)
-        {
-            TELargeVessel te = Helpers.getTE(worldIn, pos, TELargeVessel.class);
-
-            if (te != null)
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (nbt != null)
             {
-                te.readFromItemTag(compound);
-                worldIn.setBlockState(pos, state.withProperty(SEALED, true));
+                TELargeVessel te = Helpers.getTE(worldIn, pos, TELargeVessel.class);
+                if (te != null)
+                {
+                    worldIn.setBlockState(pos, state.withProperty(SEALED, true));
+                    te.readFromItemTag(nbt);
+                }
             }
         }
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return false;
     }
 
     @Override
@@ -188,14 +214,21 @@ public class BlockLargeVessel extends Block implements IItemSize
         return new BlockStateContainer(this, SEALED);
     }
 
-    /**
-     * Prevents removal of the Block & TileEntity before getDrops(...) is called.
-     * Using this we'll have to remove the block later, which happens in {@link #harvestBlock(World, EntityPlayer, BlockPos, IBlockState, TileEntity, ItemStack)}.
-     */
+    @SuppressWarnings("deprecation")
     @Override
-    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
-        return willHarvest || super.removedByPlayer(state, world, pos, player, false);
+        return false;
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        // Only drop the barrel if it's not sealed, since the barrel with contents will be already dropped by the TE
+        if (!state.getValue(SEALED))
+        {
+            super.getDrops(drops, world, pos, state, fortune);
+        }
     }
 
     @Override
@@ -212,38 +245,10 @@ public class BlockLargeVessel extends Block implements IItemSize
     }
 
     @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
     {
-        TELargeVessel te = Helpers.getTE(world, pos, TELargeVessel.class);
-
-        if (te != null)
-        {
-            if (state.getValue(SEALED))
-            {
-                ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1);
-                stack.setTagCompound(te.getItemTag());
-
-                drops.add(stack);
-            }
-            else
-            {
-                drops.add(new ItemStack(Item.getItemFromBlock(this)));
-
-                IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-
-                if (inventory != null)
-                {
-                    for (int slot = 0; slot < inventory.getSlots(); slot++)
-                    {
-                        ItemStack stack = inventory.getStackInSlot(slot);
-
-                        if (!stack.isEmpty())
-                        {
-                            drops.add(stack);
-                        }
-                    }
-                }
-            }
-        }
+        // Unseal the barrel if an explosion destroys it, so it drops it's contents
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(SEALED, false));
+        super.onBlockExploded(world, pos, explosion);
     }
 }

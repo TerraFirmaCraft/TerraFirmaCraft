@@ -96,7 +96,7 @@ public class CTQuern
                 @Override
                 public void apply()
                 {
-                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.ANVIL;
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) TFCRegistries.QUERN;
                     modRegistry.remove(recipe.getRegistryName());
                 }
 

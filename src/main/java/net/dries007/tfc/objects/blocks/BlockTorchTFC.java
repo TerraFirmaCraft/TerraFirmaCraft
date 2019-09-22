@@ -14,6 +14,7 @@ import net.minecraft.block.BlockTorch;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -55,8 +56,6 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
         setTickRandomly(true);
         setSoundType(SoundType.WOOD);
 
-        Blocks.FIRE.setFireInfo(this, 5, 20);
-
         OreDictionaryHelper.register(this, "torch");
     }
 
@@ -86,13 +85,13 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
-        return getDefaultState().withProperty(LIT, meta >= 8).withProperty(FACING, EnumFacing.byIndex(meta & 0b111));
+        return super.getStateFromMeta(meta % 6).withProperty(LIT, meta >= 6);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return (state.getValue(LIT) ? 8 : 0) + state.getValue(FACING).getIndex();
+        return (state.getValue(LIT) ? 6 : 0) + super.getMetaFromState(state);
     }
 
     @Override
@@ -170,5 +169,17 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TETickCounter();
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        // Set the initial counter value
+        TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
+        if (tile != null)
+        {
+            tile.resetCounter();
+        }
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 }

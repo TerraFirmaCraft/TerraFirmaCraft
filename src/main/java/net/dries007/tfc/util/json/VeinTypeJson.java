@@ -8,6 +8,7 @@ package net.dries007.tfc.util.json;
 import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.google.gson.*;
 import net.minecraft.block.Block;
@@ -57,7 +58,7 @@ public class VeinTypeJson implements JsonDeserializer<VeinType>
                 }
                 else
                 {
-                    blocks.addAll(category.getRocks());
+                    blocks.addAll(TFCRegistries.ROCKS.getValuesCollection().stream().filter(e1 -> e1.getRockCategory() == category).collect(Collectors.toList()));
                 }
             }
             else

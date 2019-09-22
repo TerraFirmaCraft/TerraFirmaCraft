@@ -44,6 +44,7 @@ import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
 import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 import net.dries007.tfc.objects.items.wood.ItemLumberTFC;
 import net.dries007.tfc.objects.items.wood.ItemWoodenBucket;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.agriculture.Food;
 
@@ -59,7 +60,7 @@ public final class ItemsTFC
     public static final ItemFireStarter FIRESTARTER = getNull();
     public static final ItemGoldPan GOLDPAN = getNull();
     public static final ItemMisc STRAW = getNull();
-    public static final ItemHandstone HANDSTONE = getNull();
+    public static final Item HANDSTONE = getNull();
 
     @GameRegistry.ObjectHolder("crop/product/jute")
     public static final ItemMisc JUTE = getNull();
@@ -268,7 +269,7 @@ public final class ItemsTFC
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
         simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "straw"), CT_MISC));
-        simpleItems.add(register(r, "handstone", new ItemHandstone(), CT_MISC));
+        simpleItems.add(register(r, "handstone", new ItemCraftingTool(250, Size.NORMAL, Weight.HEAVY, "handstone"), CT_MISC));
 
         simpleItems.add(register(r, "spindle", new ItemCraftingTool(40, Size.NORMAL, Weight.MEDIUM, "spindle"), CT_MISC));
 
@@ -311,6 +312,8 @@ public final class ItemsTFC
         // todo: quiver
 
         allSimpleItems = simpleItems.build();
+
+        OreDictionaryHelper.init();
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

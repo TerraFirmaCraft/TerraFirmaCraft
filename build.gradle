@@ -50,7 +50,7 @@ file "build.properties" withReader {
  *    The version number is a sacred tool that a computer must understand and be able to compare to see what's what.
  *    `-SNAPSHOT` or `.rc0v14s4dffds2` communicates nothing useful.
  */
-version = "0.21.4" // To be clear, you can edit this if you are submitting a patch PR, or if you are merging a feature into master.
+version = "0.23.9" // To be clear, you can edit this if you are submitting a patch PR, or if you are merging a feature into master.
 if (System.getenv().BUILD_NUMBER != null) version += "." + System.getenv().BUILD_NUMBER
 
 group = "net.dries007.tfc" // According to java standards, as I have control over this domain. If you fork this and release your own version, change this.
@@ -94,8 +94,8 @@ String strippedVersion = shortVersion.replace(".", "") + "0"
 dependencies {
     // Mod dependencies go here.
     // Do not add dependencies without prior approval from the dev team. You can update existing ones.
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
-    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
+    deobfProvided "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
+    deobfProvided "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
 }
 
 processResources {

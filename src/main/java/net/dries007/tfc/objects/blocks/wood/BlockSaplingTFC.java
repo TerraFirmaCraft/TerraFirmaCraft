@@ -18,14 +18,15 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
@@ -74,13 +75,14 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
         if (te != null)
         {
             te.resetCounter();
         }
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override
@@ -139,13 +141,14 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     @Override
     public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, IBlockState iBlockState)
     {
-        TerraFirmaCraft.getLog().debug("canUseBoneMeal called");
-        return true;
+        return false;
     }
 
     @Override
     public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
     {
-        wood.makeTree(world, blockPos, random);
+        // Remove the sapling first, since the tree generator isn't required to check for it
+        world.setBlockToAir(blockPos);
+        wood.makeTree(world, blockPos, random, false);
     }
 }

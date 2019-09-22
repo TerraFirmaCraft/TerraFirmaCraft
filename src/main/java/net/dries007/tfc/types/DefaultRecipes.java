@@ -51,6 +51,7 @@ import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.metal.ItemMetalArmor;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.agriculture.Food;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.forge.ForgeRule;
@@ -106,7 +107,8 @@ public final class DefaultRecipes
             new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 500), IIngredient.of("dustFlux"), new FluidStack(LIMEWATER.get(), 500), ItemStack.EMPTY, 0).setRegistryName("limewater"),
             // todo: curdled milk (make it a simpler calculation)
 
-            new BarrelRecipeTemperature(IIngredient.of(FRESH_WATER.get(), 1), 50).setRegistryName("fresh_water_cooling")
+            new BarrelRecipeTemperature(IIngredient.of(FRESH_WATER.get(), 1), 50).setRegistryName("fresh_water_cooling"),
+            new BarrelRecipeTemperature(IIngredient.of(SALT_WATER.get(), 1), 50).setRegistryName("salt_water_cooling")
         );
     }
 
@@ -292,6 +294,7 @@ public final class DefaultRecipes
         addAnvil(r, INGOT, SCYTHE_BLADE, true, HIT_LAST, DRAW_SECOND_LAST, BEND_THIRD_LAST);
         addAnvil(r, INGOT, KNIFE_BLADE, true, HIT_LAST, DRAW_SECOND_LAST, DRAW_THIRD_LAST);
         addAnvil(r, INGOT, JAVELIN_HEAD, true, HIT_LAST, HIT_SECOND_LAST, DRAW_THIRD_LAST);
+        addAnvil(r, INGOT, CHISEL_HEAD, true, HIT_LAST, HIT_NOT_LAST, DRAW_NOT_LAST);
 
         // Armor
         addAnvil(r, DOUBLE_SHEET, UNFINISHED_HELMET, true, HIT_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
@@ -424,12 +427,36 @@ public final class DefaultRecipes
                 continue;
 
             // Create a recipe for each metal / item type combination
-            ItemStack input = new ItemStack(ItemMetal.get(metal, inputType));
-            ItemStack output = new ItemStack(ItemMetal.get(metal, outputType));
-            if (!input.isEmpty() && !output.isEmpty())
+            IIngredient<ItemStack> ingredient;
+            if (!inputType.isToolItem()) //Since tools don't have specific ore tags anymore
             {
-                //noinspection ConstantConditions
-                registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), IIngredient.of(input), output, metal.getTier(), rules));
+                String oreDictEntry;
+                if (inputType == Metal.ItemType.DOUBLE_INGOT)
+                {
+                    //noinspection ConstantConditions
+                    oreDictEntry = OreDictionaryHelper.toString("ingot", "double", metal.getRegistryName().getPath());
+                }
+                else if (inputType == Metal.ItemType.DOUBLE_SHEET)
+                {
+                    //noinspection ConstantConditions
+                    oreDictEntry = OreDictionaryHelper.toString("sheet", "double", metal.getRegistryName().getPath());
+                }
+                else
+                {
+                    //noinspection ConstantConditions
+                    oreDictEntry = OreDictionaryHelper.toString(inputType, metal.getRegistryName().getPath());
+                }
+                ingredient = IIngredient.of(oreDictEntry);
+            }
+            else
+            {
+                ingredient = IIngredient.of(new ItemStack(ItemMetal.get(metal, inputType)));
+            }
+
+            ItemStack output = new ItemStack(ItemMetal.get(metal, outputType));
+            if (!output.isEmpty())
+            {
+                registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), ingredient, output, metal.getTier(), rules));
             }
         }
     }
@@ -446,7 +473,7 @@ public final class DefaultRecipes
             if (!input.isEmpty() && !output.isEmpty())
             {
                 //noinspection ConstantConditions
-                registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, ("ingot_" + outputMetal.getRegistryName().getPath()).toLowerCase()), IIngredient.of(input), output, outputMetal.getTier(), HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST));
+                registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, ("ingot_" + outputMetal.getRegistryName().getPath()).toLowerCase()), IIngredient.of(input), output, inputMetal.getTier(), HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST));
             }
         }
     }
@@ -470,6 +497,7 @@ public final class DefaultRecipes
         addWelding(registry, inputType, inputType, outputType, false);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private static void addWelding(IForgeRegistry<WeldingRecipe> registry, Metal.ItemType inputType1, Metal.ItemType inputType2, Metal.ItemType outputType, boolean onlyToolMetals)
     {
         // Helper method for adding all recipes that take ItemType -> ItemType
@@ -479,14 +507,56 @@ public final class DefaultRecipes
                 continue;
 
             // Create a recipe for each metal / item type combination
-            ItemStack input1 = new ItemStack(ItemMetal.get(metal, inputType1));
-            ItemStack input2 = new ItemStack(ItemMetal.get(metal, inputType2));
+            IIngredient<ItemStack> ingredient1, ingredient2;
+            if (!inputType1.isToolItem()) //Since tools don't have specific ore tags anymore
+            {
+                String oreDictEntry;
+                if (inputType1 == Metal.ItemType.DOUBLE_INGOT)
+                {
+                    oreDictEntry = OreDictionaryHelper.toString("ingot", "double", metal.getRegistryName().getPath());
+                }
+                else if (inputType1 == Metal.ItemType.DOUBLE_SHEET)
+                {
+                    oreDictEntry = OreDictionaryHelper.toString("sheet", "double", metal.getRegistryName().getPath());
+                }
+                else
+                {
+                    oreDictEntry = OreDictionaryHelper.toString(inputType1, metal.getRegistryName().getPath());
+                }
+                ingredient1 = IIngredient.of(oreDictEntry);
+            }
+            else
+            {
+                ingredient1 = IIngredient.of(new ItemStack(ItemMetal.get(metal, inputType1)));
+            }
+
+            if (!inputType2.isToolItem())
+            {
+                String oreDictEntry;
+                if (inputType2 == Metal.ItemType.DOUBLE_INGOT)
+                {
+                    oreDictEntry = OreDictionaryHelper.toString("ingot", "double", metal.getRegistryName().getPath());
+                }
+                else if (inputType2 == Metal.ItemType.DOUBLE_SHEET)
+                {
+                    oreDictEntry = OreDictionaryHelper.toString("sheet", "double", metal.getRegistryName().getPath());
+                }
+                else
+                {
+                    oreDictEntry = OreDictionaryHelper.toString(inputType2, metal.getRegistryName().getPath());
+                }
+                ingredient2 = IIngredient.of(oreDictEntry);
+            }
+            else
+            {
+                ingredient2 = IIngredient.of(new ItemStack(ItemMetal.get(metal, inputType2)));
+            }
+
             ItemStack output = new ItemStack(outputType.isArmor() ? ItemMetalArmor.get(metal, outputType) : ItemMetal.get(metal, outputType));
-            if (!input1.isEmpty() && !input2.isEmpty() && !output.isEmpty())
+            if (!output.isEmpty())
             {
                 // Note: Welding recipes require one less than the tier of the metal
-                //noinspection ConstantConditions
-                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), IIngredient.of(input1), IIngredient.of(input2), output, metal.getTier().previous()));
+                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), ingredient1, ingredient2, output, metal.getTier().previous()));
             }
         }
     }

@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,12 +33,12 @@ public abstract class TEInventory extends TEBase implements ISlotCallback
 {
     protected final ItemStackHandler inventory;
 
-    TEInventory(int inventorySize)
+    protected TEInventory(int inventorySize)
     {
         inventory = new ItemStackHandlerCallback(this, inventorySize);
     }
 
-    TEInventory(ItemStackHandler inventory)
+    protected TEInventory(ItemStackHandler inventory)
     {
         this.inventory = inventory;
     }
@@ -80,7 +81,7 @@ public abstract class TEInventory extends TEBase implements ISlotCallback
         return super.getCapability(capability, facing);
     }
 
-    public void onBreakBlock(World world, BlockPos pos)
+    public void onBreakBlock(World world, BlockPos pos, IBlockState state)
     {
         for (int i = 0; i < inventory.getSlots(); i++)
         {
@@ -91,8 +92,6 @@ public abstract class TEInventory extends TEBase implements ISlotCallback
     /**
      * Delegated from {@link net.minecraft.inventory.Container#canInteractWith(EntityPlayer)}
      */
-
-
     public boolean canInteractWith(EntityPlayer player)
     {
         return this.world.getTileEntity(pos) == this && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;

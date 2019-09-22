@@ -11,12 +11,10 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,13 +23,14 @@ import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.ForgeableMeasurableHandler;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeableMeasurable;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.IMetalObject;
+import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
-public class ItemBloom extends ItemTFC implements IMetalObject
+public class ItemBloom extends ItemTFC implements IMetalItem
 {
     private boolean meltable;
 
@@ -80,11 +79,19 @@ public class ItemBloom extends ItemTFC implements IMetalObject
         return meltable;
     }
 
-    @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    @Override
+    public void addMetalInfo(ItemStack stack, List<String> text)
     {
-        tooltip.add(I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));
+        Metal metal = getMetal(stack);
+        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        if (metal != null && cap instanceof IForgeableMeasurable)
+        {
+            text.add("");
+            text.add(I18n.format("tfc.tooltip.metal", I18n.format(Helpers.getTypeName(metal))));
+            text.add(I18n.format("tfc.tooltip.units", ((IForgeableMeasurable) cap).getMetalAmount()));
+            text.add(I18n.format(Helpers.getEnumName(metal.getTier())));
+        }
     }
 
     @SideOnly(Side.CLIENT)

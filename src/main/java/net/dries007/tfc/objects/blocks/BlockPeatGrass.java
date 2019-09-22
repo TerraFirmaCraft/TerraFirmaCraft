@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariantConnected;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
@@ -68,7 +68,7 @@ public class BlockPeatGrass extends BlockPeat
     public void randomTick(World world, BlockPos pos, IBlockState state, Random rand)
     {
         if (world.isRemote) return;
-        Helpers.spreadGrass(world, pos, state, rand);
+        BlockRockVariantConnected.spreadGrass(world, pos, state, rand);
     }
 
     @Override

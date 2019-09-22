@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.api.recipes.barrel;
 
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -22,6 +23,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
+import net.dries007.tfc.util.Helpers;
 
 public class BarrelRecipeTemperature extends BarrelRecipe
 {
@@ -45,6 +47,12 @@ public class BarrelRecipeTemperature extends BarrelRecipe
     }
 
     @Override
+    public boolean isValidInputInstant(ItemStack inputStack, FluidStack inputFluid)
+    {
+        return true;
+    }
+
+    @Override
     @Nullable
     public FluidStack getOutputFluid(FluidStack inputFluid, ItemStack inputStack)
     {
@@ -59,14 +67,14 @@ public class BarrelRecipeTemperature extends BarrelRecipe
 
     @Override
     @Nonnull
-    public ItemStack getOutputItem(FluidStack inputFluid, ItemStack inputStack)
+    public List<ItemStack> getOutputItem(FluidStack inputFluid, ItemStack inputStack)
     {
         IItemHeat heat = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         if (heat != null)
         {
             heat.setTemperature(heat.getTemperature() - coolAmount);
         }
-        return inputStack;
+        return Helpers.listOf(inputStack);
     }
 
     @Override

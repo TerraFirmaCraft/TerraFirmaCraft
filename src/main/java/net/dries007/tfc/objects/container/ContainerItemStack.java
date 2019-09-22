@@ -14,9 +14,6 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 @ParametersAreNonnullByDefault
 public abstract class ContainerItemStack extends Container
@@ -24,13 +21,14 @@ public abstract class ContainerItemStack extends Container
     protected final ItemStack stack;
     protected final EntityPlayer player;
     protected int itemIndex;
+    protected int itemDragIndex;
     protected boolean isOffhand;
 
     ContainerItemStack(InventoryPlayer playerInv, ItemStack stack)
     {
-        super();
         this.player = playerInv.player;
         this.stack = stack;
+        this.itemDragIndex = playerInv.currentItem;
 
         if (stack == player.getHeldItemMainhand())
         {
@@ -109,7 +107,11 @@ public abstract class ContainerItemStack extends Container
     @Nonnull
     public ItemStack slotClick(int slotID, int dragType, ClickType clickType, EntityPlayer player)
     {
-        if ((clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP || clickType == ClickType.SWAP || clickType == ClickType.THROW) && slotID == itemIndex)
+        if (slotID == itemIndex && (clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP || clickType == ClickType.THROW || clickType == ClickType.SWAP))
+        {
+            return ItemStack.EMPTY;
+        }
+        else if ((dragType == itemDragIndex) && clickType == ClickType.SWAP)
         {
             return ItemStack.EMPTY;
         }
@@ -117,17 +119,6 @@ public abstract class ContainerItemStack extends Container
         {
             return super.slotClick(slotID, dragType, clickType, player);
         }
-    }
-
-    @Override
-    public void onContainerClosed(EntityPlayer player)
-    {
-        IItemHandler cap = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (cap instanceof ItemStackHandler)
-        {
-            stack.setTagCompound(((ItemStackHandler) cap).serializeNBT());
-        }
-        super.onContainerClosed(player);
     }
 
     protected abstract void addContainerSlots();

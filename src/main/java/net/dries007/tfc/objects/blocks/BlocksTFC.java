@@ -333,9 +333,13 @@ public final class BlocksTFC
             allBlockRockVariants.forEach(x ->
             {
                 if (x.getType() == Rock.Type.SAND)
+                {
                     normalItemBlocks.add(new ItemBlockHeat(x, 1, 600));
-                else
+                }
+                else if (x.getType() != Rock.Type.SPIKE)
+                {
                     normalItemBlocks.add(new ItemBlockTFC(x));
+                }
             });
         }
 
@@ -567,10 +571,11 @@ public final class BlocksTFC
             }
         }
 
+        // Registering JEI only blocks (for info)
+        inventoryItemBlocks.add(new ItemBlock(register(r, "firepit", new BlockFirePit())));
+        inventoryItemBlocks.add(new ItemBlock(register(r, "charcoal_forge", new BlockCharcoalForge())));
         // technical blocks
         // These have no ItemBlock or Creative Tab
-        register(r, "firepit", new BlockFirePit());
-        register(r, "charcoal_forge", new BlockCharcoalForge());
         register(r, "placed_item_flat", new BlockPlacedItemFlat());
         register(r, "placed_item", new BlockPlacedItem());
         register(r, "placed_hide", new BlockPlacedHide());

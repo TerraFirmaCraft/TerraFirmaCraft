@@ -18,7 +18,7 @@ public final class ToolMaterialsTFC
     public static final Item.ToolMaterial BRONZE = EnumHelper.addToolMaterial("tfc_bronze", 2, 1300, 11, 5.0f, 13); //Tier 2
     public static final Item.ToolMaterial BISMUTH_BRONZE = EnumHelper.addToolMaterial("tfc_bismuth_bronze", 2, 1200, 10, 4.5f, 10);
     public static final Item.ToolMaterial BLACK_BRONZE = EnumHelper.addToolMaterial("tfc_black_bronze", 2, 1460, 9, 4.75f, 10);
-    public static final Item.ToolMaterial IRON = EnumHelper.addToolMaterial("tfc_iron", 2, 2200, 12, 6.75f, 10); //Tier 3
+    public static final Item.ToolMaterial WROUGHT_IRON = EnumHelper.addToolMaterial("tfc_iron", 2, 2200, 12, 6.75f, 10); //Tier 3
     public static final Item.ToolMaterial STEEL = EnumHelper.addToolMaterial("tfc_steel", 2, 3300, 14, 8.5f, 10); //Tier 4
     public static final Item.ToolMaterial BLACK_STEEL = EnumHelper.addToolMaterial("tfc_black_steel", 3, 4200, 16, 10.25f, 12); //Tier 5
     public static final Item.ToolMaterial BLUE_STEEL = EnumHelper.addToolMaterial("tfc_blue_steel", 3, 6500, 18, 12.0f, 22); //Tier 6

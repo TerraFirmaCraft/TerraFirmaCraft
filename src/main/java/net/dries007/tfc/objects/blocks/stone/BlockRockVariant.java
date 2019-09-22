@@ -40,7 +40,6 @@ import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.items.ItemGem;
 import net.dries007.tfc.objects.items.rock.ItemRock;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC.WILD;
@@ -53,6 +52,11 @@ public class BlockRockVariant extends Block
 
     public static BlockRockVariant get(Rock rock, Rock.Type type)
     {
+        //noinspection ConstantConditions
+        if (rock == null)
+        {
+            return TABLE.get(Rock.GRANITE).get(type);
+        }
         return TABLE.get(rock).get(type);
     }
 
@@ -62,6 +66,8 @@ public class BlockRockVariant extends Block
         {
             case RAW:
                 return new BlockRockRaw(type, rock);
+            case SPIKE:
+                return new BlockRockSpike(type, rock);
             case FARMLAND:
                 return new BlockFarmlandTFC(type, rock);
             case PATH:
@@ -101,43 +107,47 @@ public class BlockRockVariant extends Block
         {
             case BRICKS:
             case RAW:
+            case SPIKE:
                 setSoundType(SoundType.STONE);
-                setHardness(2.0F).setResistance(10.0F);
+                setHardness(rock.getRockCategory().getHardness()).setResistance(rock.getRockCategory().getResistance());
                 setHarvestLevel("pickaxe", 0);
                 break;
             case COBBLE:
             case SMOOTH:
                 setSoundType(SoundType.STONE);
-                setHardness(1.5F).setResistance(10.0F);
+                setHardness(rock.getRockCategory().getHardness() * 0.75F).setResistance(rock.getRockCategory().getResistance());
                 setHarvestLevel("pickaxe", 0);
                 break;
             case SAND:
                 setSoundType(SoundType.SAND);
-                setHardness(0.7F);
+                setHardness(rock.getRockCategory().getHardness() * 0.05F);
                 setHarvestLevel("shovel", 0);
                 break;
             case DIRT:
             case PATH:
             case FARMLAND:
                 setSoundType(SoundType.GROUND);
-                setHardness(1.0F);
+                setHardness(rock.getRockCategory().getHardness() * 0.15F);
                 setHarvestLevel("shovel", 0);
                 break;
             case GRAVEL:
             case CLAY:
                 setSoundType(SoundType.GROUND);
-                setHardness(0.8F);
+                setHardness(rock.getRockCategory().getHardness() * 0.2F);
                 setHarvestLevel("shovel", 0);
                 break;
             case CLAY_GRASS:
             case GRASS:
             case DRY_GRASS:
                 setSoundType(SoundType.PLANT);
-                setHardness(1.1F);
+                setHardness(rock.getRockCategory().getHardness() * 0.2F);
                 setHarvestLevel("shovel", 0);
                 break;
         }
-        OreDictionaryHelper.registerRockType(this, type, rock);
+        if (type != Rock.Type.SPIKE) //since spikes don't generate ItemBlocks
+        {
+            OreDictionaryHelper.registerRockType(this, type, rock);
+        }
     }
 
     public BlockRockVariant getVariant(Rock.Type t)
@@ -190,7 +200,7 @@ public class BlockRockVariant extends Block
     public void randomTick(World world, BlockPos pos, IBlockState state, Random rand)
     {
         if (world.isRemote) return;
-        if (type.isGrass) Helpers.spreadGrass(world, pos, state, rand);
+        if (type.isGrass) BlockRockVariantConnected.spreadGrass(world, pos, state, rand);
         super.randomTick(world, pos, state, rand);
     }
 
@@ -200,6 +210,7 @@ public class BlockRockVariant extends Block
         switch (type)
         {
             case RAW:
+            case SPIKE:
                 return ItemRock.get(rock);
             case CLAY:
             case CLAY_GRASS:
@@ -235,6 +246,7 @@ public class BlockRockVariant extends Block
             case CLAY_GRASS:
                 return 4;
             case RAW:
+            case SPIKE:
                 return 1 + random.nextInt(3);
             default:
                 return super.quantityDropped(state, fortune, random);

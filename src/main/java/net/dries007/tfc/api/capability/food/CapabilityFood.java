@@ -82,12 +82,22 @@ public class CapabilityFood
      */
     public static void applyTrait(IFood instance, IFoodTrait trait)
     {
-        if (!instance.isRotten() && !instance.getTraits().contains(trait))
+        if (!instance.getTraits().contains(trait))
         {
-            // Add the trait
+            if (!instance.isRotten())
+            {
+                instance.setCreationDate(calculateNewCreationDate(instance.getCreationDate(), 1f / trait.getDecayModifier()));
+            }
             instance.getTraits().add(trait);
-            // Re-calculate creation date as to respect remaining decay time
-            instance.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - instance.getCreationDate()) / trait.getDecayModifier()));
+        }
+    }
+
+    public static void applyTrait(ItemStack stack, IFoodTrait trait)
+    {
+        IFood food = stack.getCapability(CAPABILITY, null);
+        if (!stack.isEmpty() && food != null)
+        {
+            applyTrait(food, trait);
         }
     }
 
@@ -99,13 +109,20 @@ public class CapabilityFood
     {
         if (instance.getTraits().contains(trait))
         {
-            // Remove the trait
-            instance.getTraits().remove(trait);
             if (!instance.isRotten())
             {
-                // If not rotten, re-calculate the creation date as to respect remaining decay time
-                instance.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - instance.getCreationDate()) * trait.getDecayModifier()));
+                instance.setCreationDate(calculateNewCreationDate(instance.getCreationDate(), trait.getDecayModifier()));
             }
+            instance.getTraits().remove(trait);
+        }
+    }
+
+    public static void removeTrait(ItemStack stack, IFoodTrait trait)
+    {
+        IFood food = stack.getCapability(CAPABILITY, null);
+        if (!stack.isEmpty() && food != null)
+        {
+            removeTrait(food, trait);
         }
     }
 
@@ -126,7 +143,7 @@ public class CapabilityFood
         {
             // This is similar to the trait applied, except it's the inverse, since decay mod performs a 1 / x
             float decayDelta = oldCap.getDecayModifier() / newCap.getDecayModifier();
-            newCap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks() - (long) ((CalendarTFC.PLAYER_TIME.getTicks() - oldCap.getCreationDate()) / decayDelta));
+            newCap.setCreationDate(calculateNewCreationDate(oldCap.getCreationDate(), decayDelta));
         }
         return newStack;
     }
@@ -143,5 +160,29 @@ public class CapabilityFood
             }
         }
         return null;
+    }
+
+    /**
+     * T = current time, Ci / Cf = initial / final creation date, Ei / Ef = initial / final expiration date, d = decay time, p = preservation modifier
+     *
+     * To apply preservation p at time T: want remaining decay fraction to be invariant under preservation
+     * Let Ri = (T - Ci) / (Ei - Ci) = (T - Ci) / d, Rf = (T - Cf) / (d * p)
+     * Then if Ri = Rf
+     * => d * p * (T - Ci) = d * (T - Cf)
+     * => Cf = (1 - p) * T + p * Ci (affine combination)
+     *
+     * In order to show that E > T is invariant under preservation: (i.e. see TerraFirmaCraft#352)
+     * Let T, Ci, Ei, d, p > 0 such that Ei > T (1.), and Ei = Ci + d
+     * Cf = (1 - p) * T + p * Ci
+     * => Ef = Cf + p * d
+     * = (1 - p) * T + p * Ci + p * d
+     * = (1 - p) * T + p * (Ci + d)
+     * via 1. > (1 - p) * T + p * T = T
+     * QED
+     */
+    private static long calculateNewCreationDate(long ci, float p)
+    {
+        // Cf = (1 - p) * T + p * Ci
+        return (long) ((1 - p) * CalendarTFC.PLAYER_TIME.getTicks() + p * ci);
     }
 }

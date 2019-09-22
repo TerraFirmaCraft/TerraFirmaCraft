@@ -19,10 +19,7 @@ import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ColorizerGrass;
@@ -36,10 +33,14 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.IMoldHandler;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
@@ -158,8 +159,22 @@ public final class ClientRegisterEvents
 
         for (ItemBlock item : BlocksTFC.getAllBarrelItemBlocks())
         {
-            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "sealed=false"));
-            ModelLoader.setCustomModelResourceLocation(item, 1, new ModelResourceLocation(item.getRegistryName(), "sealed=true"));
+            ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition()
+            {
+                private final ModelResourceLocation sealed = new ModelResourceLocation(item.getRegistryName(), "sealed=true");
+                private final ModelResourceLocation unsealed = new ModelResourceLocation(item.getRegistryName(), "sealed=false");
+
+                @Override
+                @Nonnull
+                public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack)
+                {
+                    if (stack.getTagCompound() != null)
+                    {
+                        return sealed;
+                    }
+                    return unsealed;
+                }
+            });
         }
 
         // BLOCKS - STATE MAPPERS //
@@ -243,7 +258,7 @@ public final class ClientRegisterEvents
     @SideOnly(Side.CLIENT)
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
     {
-        BlockColors blockcolors = event.getBlockColors();
+        BlockColors blockColors = event.getBlockColors();
 
         // Grass Colors
         IBlockColor grassColor = (state, worldIn, pos, tintIndex) -> {
@@ -268,20 +283,20 @@ public final class ClientRegisterEvents
             return ColorizerGrass.getGrassColor(0.5, 0.5);
         };
 
-        blockcolors.registerBlockColorHandler(grassColor, BlocksTFC.PEAT_GRASS);
-        blockcolors.registerBlockColorHandler(grassColor, BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.getType().isGrass).toArray(BlockRockVariant[]::new));
+        blockColors.registerBlockColorHandler(grassColor, BlocksTFC.PEAT_GRASS);
+        blockColors.registerBlockColorHandler(grassColor, BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.getType().isGrass).toArray(BlockRockVariant[]::new));
         // This is talking about tall grass vs actual grass blocks
-        blockcolors.registerBlockColorHandler(grassColor, BlocksTFC.getAllGrassBlocks().toArray(new BlockPlantTFC[0]));
+        blockColors.registerBlockColorHandler(grassColor, BlocksTFC.getAllGrassBlocks().toArray(new BlockPlantTFC[0]));
 
-        blockcolors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllLeafBlocks().toArray(new Block[0]));
-        blockcolors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllPlantBlocks().toArray(new BlockPlantTFC[0]));
+        blockColors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllLeafBlocks().toArray(new Block[0]));
+        blockColors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllPlantBlocks().toArray(new BlockPlantTFC[0]));
 
-        blockcolors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllFruitTreeLeavesBlocks().toArray(new Block[0]));
+        blockColors.registerBlockColorHandler(foliageColor, BlocksTFC.getAllFruitTreeLeavesBlocks().toArray(new Block[0]));
 
-        blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> BlockFarmlandTFC.TINT[state.getValue(BlockFarmlandTFC.MOISTURE)],
+        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> BlockFarmlandTFC.TINT[state.getValue(BlockFarmlandTFC.MOISTURE)],
             BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.getType() == Rock.Type.FARMLAND).toArray(BlockRockVariant[]::new));
 
-        blockcolors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
+        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
                 worldIn != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(worldIn, pos) : 0,
             BlocksTFC.getAllFluidBlocks().stream().filter(x -> x.getDefaultState().getMaterial() == Material.WATER).toArray(BlockFluidBase[]::new));
     }
@@ -315,6 +330,15 @@ public final class ClientRegisterEvents
         itemColors.registerItemColorHandler((stack, tintIndex) ->
                 event.getBlockColors().colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
             BlocksTFC.getAllGrassBlocks().toArray(new BlockPlantTFC[0]));
+
+        itemColors.registerItemColorHandler((stack, tintIndex) -> {
+            IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
+            if (food != null)
+            {
+                return food.isRotten() ? ConfigTFC.CLIENT.rottenFoodOverlayColor : 0xFFFFFF;
+            }
+            return 0xFFFFFF;
+        }, ForgeRegistries.ITEMS.getValuesCollection().stream().filter(x -> x instanceof ItemFood).toArray(Item[]::new));
     }
 
     /**

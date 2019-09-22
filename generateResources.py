@@ -521,7 +521,7 @@ def del_none(d):
     return d
 
 
-def blockstate(filename_parts, model, textures, variants=None):
+def blockstate(filename_parts, model, textures, variants=None, uvlock=None):
     """
     Magic.
     :param filename_parts: Iterable of strings.
@@ -553,8 +553,9 @@ def blockstate(filename_parts, model, textures, variants=None):
             'defaults': {
                 'model': model,
                 'textures': _textures,
+                'uvlock': True if uvlock else None
             },
-            'variants': _variants,
+            'variants': _variants
         }), file, indent=2)
 
 
@@ -722,12 +723,21 @@ for rock_type in ROCK_TYPES:
             'west': {'true': {'submodel': 'wall_side', 'y': 270}, 'false': {}},
             'up': {'true': {'submodel': 'wall_post', 'y': 270}, 'false': {}}
         })
+        
+    # SPIKES (stalactite and stalagmite)
+    blockstate(('spike', rock_type), 'tfc:spike/top', textures={
+        ('texture', 'particle'): 'tfc:blocks/stonetypes/raw/%s' % rock_type,
+    }, variants={
+        'normal': None,
+        'ceiling': {'true': {'x': 180}, 'false': {}},
+        'base': {'true': {'model': 'tfc:spike/base'}, 'false': {}}
+    })
 
     # (ROCK) STAIRS & SLABS
     for block_type in ['smooth', 'cobble', 'bricks']:
         blockstate(('stairs', block_type, rock_type), None, textures={
             ('top', 'bottom', 'side'): 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type),
-        }, variants=STAIR_VARIANTS)
+        }, variants=STAIR_VARIANTS, uvlock=True)
         blockstate(('slab', block_type, rock_type), 'half_slab', textures={
             ('top', 'bottom', 'side'): 'tfc:blocks/stonetypes/%s/%s' % (block_type, rock_type),
         }, variants={
@@ -864,7 +874,7 @@ for wood_type in WOOD_TYPES:
     # (WOOD) STAIRS & SLABS
     blockstate(('stairs', 'wood', wood_type), None, textures={
         ('top', 'bottom', 'side'): 'tfc:blocks/wood/planks/%s' % wood_type,
-    }, variants=STAIR_VARIANTS)
+    }, variants=STAIR_VARIANTS, uvlock=True)
     blockstate(('slab', 'wood', wood_type), 'half_slab', textures={
         ('top', 'bottom', 'side'): 'tfc:blocks/wood/planks/%s' % wood_type,
     }, variants={
@@ -1060,16 +1070,24 @@ for item_type in METAL_ITEMS:
     for metal in ('copper', 'bronze', 'black_bronze', 'bismuth_bronze'):
         item(('ceramics', 'fired', 'mold', item_type, metal),
              'tfc:items/ceramics/fired/mold/%s/%s' % (item_type, metal))
+del _heads
 
 # unfired ingot molds
 item(('ceramics', 'unfired', 'mold', 'ingot'), 'tfc:items/ceramics/unfired/mold/ingot')
 # fired ingot molds for all metals
-item(('ceramics', 'fired', 'mold', 'ingot', 'empty'), 'tfc:items/ceramics/fired/mold/ingot/empty')
-item(('ceramics', 'fired', 'mold', 'ingot', 'unknown'), 'tfc:items/ceramics/fired/mold/ingot/unknown')
+_ingotMetals = {}  # metal name -> texture
 for metal in METAL_TYPES.keys():
-    item(('ceramics', 'fired', 'mold', 'ingot', metal), 'tfc:items/ceramics/fired/mold/ingot/' + metal)
+    _ingotMetals[metal] = metal
+for name in ('empty', 'unknown'):
+    _ingotMetals[name] = name
+for prefix in ('weak', 'high_carbon'):
+    for steel in ('blue_steel', 'red_steel', 'black_steel', 'steel'):
+        if prefix != 'weak' or steel != 'black_steel':
+            _ingotMetals['_'.join((prefix, steel))] = steel
 
-del _heads
+for metal, texture in _ingotMetals.items():
+    item(('ceramics', 'fired', 'mold', 'ingot', metal), 'tfc:items/ceramics/fired/mold/ingot/' + texture)
+del _ingotMetals
 
 item(('ceramics', 'unfired', 'vessel'), 'tfc:items/ceramics/unfired/vessel')
 item(('ceramics', 'fired', 'vessel'), 'tfc:items/ceramics/fired/vessel')
@@ -1087,7 +1105,6 @@ item(('ceramics', 'fired', 'bowl'), 'tfc:items/ceramics/fired/bowl')
 item(('ceramics', 'unfired', 'fire_brick'), 'tfc:items/ceramics/unfired/fire_brick')
 item(('ceramics', 'fired', 'fire_brick'), 'tfc:items/ceramics/fired/fire_brick')
 item(('ceramics', 'unfired', 'jug'), 'tfc:items/ceramics/unfired/jug')
-item(('ceramics', 'fired', 'jug'), 'tfc:items/ceramics/fired/jug')
 
 item(('ceramics', 'fire_clay'), 'tfc:items/ceramics/fire_clay')
 

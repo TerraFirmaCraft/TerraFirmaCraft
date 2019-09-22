@@ -21,14 +21,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.api.capability.forge.ForgeableHandler;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-public class ItemMetal extends ItemTFC implements IMetalObject
+public class ItemMetal extends ItemTFC implements IMetalItem
 {
     private static final Map<Metal, EnumMap<Metal.ItemType, ItemMetal>> TABLE = new HashMap<>();
 
@@ -40,6 +40,7 @@ public class ItemMetal extends ItemTFC implements IMetalObject
     protected final Metal metal;
     protected final Metal.ItemType type;
 
+    @SuppressWarnings("ConstantConditions")
     public ItemMetal(Metal metal, Metal.ItemType type)
     {
         this.metal = metal;
@@ -50,13 +51,56 @@ public class ItemMetal extends ItemTFC implements IMetalObject
         TABLE.get(metal).put(type, this);
 
         setNoRepair();
-        OreDictionaryHelper.register(this, type);
-        //noinspection ConstantConditions
-        OreDictionaryHelper.register(this, type, metal.getRegistryName().getPath());
-        if (metal == Metal.BRONZE || metal == Metal.BISMUTH_BRONZE || metal == Metal.BLACK_BRONZE)
+        if (type == Metal.ItemType.DOUBLE_INGOT)
         {
-            OreDictionaryHelper.register(this, type, "Any", "Bronze");
+            OreDictionaryHelper.register(this, "ingot", "double", metal.getRegistryName().getPath());
+            if (metal == Metal.BRONZE || metal == Metal.BISMUTH_BRONZE || metal == Metal.BLACK_BRONZE)
+            {
+                OreDictionaryHelper.register(this, "ingot", "double", "Any", "Bronze");
+            }
+            if (metal == Metal.WROUGHT_IRON)
+            {
+                OreDictionaryHelper.register(this, "ingot", "double", "Iron");
+            }
         }
+        else if (type == Metal.ItemType.DOUBLE_SHEET)
+        {
+            OreDictionaryHelper.register(this, "sheet", "double", metal.getRegistryName().getPath());
+            if (metal == Metal.BRONZE || metal == Metal.BISMUTH_BRONZE || metal == Metal.BLACK_BRONZE)
+            {
+                OreDictionaryHelper.register(this, "sheet", "double", "Any", "Bronze");
+            }
+            if (metal == Metal.WROUGHT_IRON)
+            {
+                OreDictionaryHelper.register(this, "sheet", "double", "Iron");
+            }
+        }
+        else if (type.isToolItem())
+        {
+            OreDictionaryHelper.register(this, type);
+        }
+        else
+        {
+            OreDictionaryHelper.register(this, type, metal.getRegistryName().getPath());
+            if (metal == Metal.BRONZE || metal == Metal.BISMUTH_BRONZE || metal == Metal.BLACK_BRONZE)
+            {
+                OreDictionaryHelper.register(this, type, "Any", "Bronze");
+            }
+            if (type == Metal.ItemType.SHEET)
+            {
+                OreDictionaryHelper.register(this, "plate", metal);
+            }
+            if (metal == Metal.WROUGHT_IRON)
+            {
+                OreDictionaryHelper.register(this, type, "Iron");
+                if (type == Metal.ItemType.SHEET) //Register plate for iron too
+                {
+                    OreDictionaryHelper.register(this, "plate", "Iron");
+                }
+            }
+
+        }
+
         if (type == Metal.ItemType.TUYERE)
         {
             setMaxDamage(metal.getToolMetal() != null ? (int) (metal.getToolMetal().getMaxUses() * 0.2) : 100);

@@ -14,7 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiCreateWorld;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.gui.recipebook.GuiButtonRecipe;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -40,9 +39,10 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
-import net.dries007.tfc.api.util.IMetalObject;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
@@ -119,17 +119,18 @@ public class ClientEvents
     @SubscribeEvent
     public static void onGuiButtonPress(GuiScreenEvent.ActionPerformedEvent.Post event)
     {
-        if (event.getGui() instanceof GuiInventory && event.getButton() instanceof GuiButtonPlayerInventoryTab)
+        if (event.getGui() instanceof GuiInventory)
         {
-            // This should generally be true, but check just in case something has disabled it
-            GuiButtonPlayerInventoryTab button = (GuiButtonPlayerInventoryTab) event.getButton();
-            if (button.isActive())
+            if (event.getButton() instanceof GuiButtonPlayerInventoryTab)
             {
-                TerraFirmaCraft.getNetwork().sendToServer(new PacketSwitchPlayerInventoryTab(button.getGuiType()));
+                // This should generally be true, but check just in case something has disabled it
+                GuiButtonPlayerInventoryTab button = (GuiButtonPlayerInventoryTab) event.getButton();
+                if (button.isActive())
+                {
+                    TerraFirmaCraft.getNetwork().sendToServer(new PacketSwitchPlayerInventoryTab(button.getGuiType()));
+                }
             }
-        }
-        else if (event.getGui() instanceof GuiInventory && event.getButton() instanceof GuiButtonRecipe)
-        {
+
             // This is necessary to catch the resizing of the inventory gui when you open the recipe book
             for (GuiButton button : event.getButtonList())
             {
@@ -228,17 +229,10 @@ public class ClientEvents
 
             if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
             {
-                if (item instanceof IMetalObject)
+                IMetalItem metalObject = CapabilityMetalItem.getMetalItem(stack);
+                if (metalObject != null)
                 {
-                    ((IMetalObject) item).addMetalInfo(stack, tt);
-                }
-                else if (item instanceof ItemBlock)
-                {
-                    Block block = ((ItemBlock) item).getBlock();
-                    if (block instanceof IMetalObject)
-                    {
-                        ((IMetalObject) block).addMetalInfo(stack, tt);
-                    }
+                    metalObject.addMetalInfo(stack, tt);
                 }
                 if (item instanceof IRockObject)
                 {

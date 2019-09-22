@@ -21,8 +21,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import net.dries007.tfc.api.recipes.quern.QuernRecipe;
-import net.dries007.tfc.objects.items.ItemHandstone;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.minecraft.init.SoundEvents.*;
 
@@ -66,7 +66,7 @@ public class TEQuern extends TEInventory implements ITickable
         switch (slot)
         {
             case SLOT_HANDSTONE:
-                return stack.getItem() instanceof ItemHandstone;
+                return OreDictionaryHelper.doesStackMatchOre(stack, "handstone");
             case SLOT_INPUT:
                 return QuernRecipe.get(stack) != null;
             default:
@@ -80,7 +80,7 @@ public class TEQuern extends TEInventory implements ITickable
         updateBlock();
         if (slot == SLOT_HANDSTONE)
         {
-            hasHandstone = inventory.getStackInSlot(SLOT_HANDSTONE).getItem() instanceof ItemHandstone;
+            hasHandstone = OreDictionaryHelper.doesStackMatchOre(inventory.getStackInSlot(SLOT_HANDSTONE), "handstone");
         }
         super.setAndUpdateSlots(slot);
     }
@@ -90,7 +90,7 @@ public class TEQuern extends TEInventory implements ITickable
     {
         rotationTimer = nbt.getInteger("rotationTimer");
         super.readFromNBT(nbt);
-        hasHandstone = inventory.getStackInSlot(SLOT_HANDSTONE).getItem() instanceof ItemHandstone;
+        hasHandstone = OreDictionaryHelper.doesStackMatchOre(inventory.getStackInSlot(SLOT_HANDSTONE), "handstone");
     }
 
     @Override
@@ -186,7 +186,7 @@ public class TEQuern extends TEInventory implements ITickable
                 ItemStack leftover = inventory.insertItem(SLOT_OUTPUT, recipe.getOutputItem(inputStack), false);
                 if (!leftover.isEmpty())
                 {
-                    InventoryHelper.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, leftover);
+                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + 1, pos.getZ(), leftover);
                 }
                 inputStack.shrink(1);
             }

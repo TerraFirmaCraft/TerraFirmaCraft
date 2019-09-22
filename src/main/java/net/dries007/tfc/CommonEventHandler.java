@@ -5,7 +5,10 @@
 
 package net.dries007.tfc;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -51,7 +54,10 @@ import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
+import net.dries007.tfc.api.capability.forge.ForgeableHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
@@ -59,13 +65,17 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.capability.skill.IPlayerSkills;
 import net.dries007.tfc.api.capability.skill.PlayerSkillsHandler;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketFoodStatsReplace;
 import net.dries007.tfc.network.PacketSkillsUpdate;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.devices.BlockQuern;
+import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
 import net.dries007.tfc.util.Helpers;
@@ -121,8 +131,17 @@ public final class CommonEventHandler
     {
         final World world = event.getWorld();
         final BlockPos pos = event.getPos();
+        final IBlockState state = world.getBlockState(pos);
         final ItemStack stack = event.getItemStack();
         final EntityPlayer player = event.getEntityPlayer();
+
+        //Fire onBlockActivated for in world crafting devices
+        if (state.getBlock() instanceof BlockAnvilTFC ||
+            state.getBlock() instanceof BlockStoneAnvil ||
+            state.getBlock() instanceof BlockQuern)
+        {
+            event.setUseBlock(Event.Result.ALLOW);
+        }
 
         IPlaceableItem placeable = IPlaceableItem.Impl.getPlaceable(stack);
         if (placeable != null)
@@ -147,9 +166,8 @@ public final class CommonEventHandler
             RayTraceResult result = Helpers.rayTrace(event.getWorld(), player, true);
             if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK)
             {
-                BlockPos blockpos = result.getBlockPos();
-                IBlockState state = event.getWorld().getBlockState(blockpos);
-                boolean isFreshWater = BlocksTFC.isFreshWater(state), isSaltWater = BlocksTFC.isSaltWater(state);
+                IBlockState waterState = world.getBlockState(result.getBlockPos());
+                boolean isFreshWater = BlocksTFC.isFreshWater(waterState), isSaltWater = BlocksTFC.isSaltWater(waterState);
                 if ((isFreshWater && foodStats.attemptDrink(10, true)) || (isSaltWater && foodStats.attemptDrink(-1, true)))
                 {
                     //Simulated so client will check if he would drink before updating stats
@@ -274,20 +292,21 @@ public final class CommonEventHandler
             else if (item == Items.STICK)
                 event.addCapability(ItemStickCapability.KEY, new ItemStickCapability(event.getObject().getTagCompound()));
             else if (item == Items.CLAY_BALL)
-                CapabilityItemSize.add(event, item, Size.SMALL, Weight.MEDIUM, canStack);
+                CapabilityItemSize.add(event, item, Size.SMALL, Weight.LIGHT, canStack);
 
                 // Final checks for general item types
             else if (item instanceof ItemTool)
                 CapabilityItemSize.add(event, item, Size.LARGE, Weight.MEDIUM, canStack);
             else if (item instanceof ItemArmor)
                 CapabilityItemSize.add(event, item, Size.LARGE, Weight.HEAVY, canStack);
+            else if (item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof BlockLadder)
+                CapabilityItemSize.add(event, item, Size.SMALL, Weight.LIGHT, canStack);
             else if (item instanceof ItemBlock)
                 CapabilityItemSize.add(event, item, Size.SMALL, Weight.MEDIUM, canStack);
             else
                 CapabilityItemSize.add(event, item, Size.VERY_SMALL, Weight.LIGHT, canStack);
         }
 
-        // future plans: add via craft tweaker or json (1.14)
         if (stack.getItem() instanceof ItemFood && !stack.hasCapability(CapabilityFood.CAPABILITY, null))
         {
             ICapabilityProvider foodHandler = CapabilityFood.getCustomFood(stack);
@@ -329,6 +348,22 @@ public final class CommonEventHandler
         if (stack.getItem() == Items.EGG && !stack.hasCapability(CapabilityEgg.CAPABILITY, null))
         {
             event.addCapability(CapabilityEgg.KEY, new EggHandler());
+        }
+
+        ICapabilityProvider metalCapability = CapabilityMetalItem.getCustomMetalItem(stack);
+        if (metalCapability != null)
+        {
+            event.addCapability(CapabilityMetalItem.KEY, metalCapability);
+            //Bundle a forgeable capability for this item, if none is found
+            if (!stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null))
+            {
+                IMetalItem cap = (IMetalItem) metalCapability;
+                Metal metal = cap.getMetal(stack);
+                if (metal != null)
+                {
+                    event.addCapability(CapabilityForgeable.KEY, new ForgeableHandler(null, metal.getSpecificHeat(), metal.getMeltTemp()));
+                }
+            }
         }
     }
 
@@ -404,8 +439,14 @@ public final class CommonEventHandler
         if (event.player instanceof EntityPlayerMP)
         {
             // Check total players and reset calendar time ticking
-            int players = event.player.world.playerEntities.size();
-            CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, players > 0);
+            List<EntityPlayer> players = event.player.world.playerEntities;
+            int playerCount = players.size();
+            // The player logging out doesn't count
+            if (players.contains(event.player))
+            {
+                playerCount--;
+            }
+            CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, playerCount > 0);
         }
     }
 
@@ -462,6 +503,13 @@ public final class CommonEventHandler
             {
                 event.setResult(Event.Result.DENY);
             }
+        }
+
+        // Stop mob spawning in thatch - the list of non-spawnable light-blocking, non-collidable blocks is hardcoded in WorldEntitySpawner#canEntitySpawnBody
+        BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
+        if (event.getWorld().getBlockState(pos).getBlock() == BlocksTFC.THATCH || event.getWorld().getBlockState(pos.up()).getBlock() == BlocksTFC.THATCH)
+        {
+            event.setResult(Event.Result.DENY);
         }
     }
 

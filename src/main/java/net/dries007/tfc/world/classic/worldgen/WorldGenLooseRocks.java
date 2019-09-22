@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.world.classic.worldgen;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
@@ -29,51 +30,75 @@ import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 
 public class WorldGenLooseRocks implements IWorldGenerator
 {
+    private double factor;
+    private boolean generateOres;
+
+    public WorldGenLooseRocks(boolean generateOres)
+    {
+        this.generateOres = generateOres;
+        factor = 1;
+    }
+
+    public void setFactor(double factor)
+    {
+        if (factor < 0) factor = 0;
+        if (factor > 1) factor = 1;
+        this.factor = factor;
+    }
+
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
-        if (!(chunkGenerator instanceof ChunkGenTFC)) return;
-        final BlockPos chunkBlockPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
-        ChunkDataTFC chunkData = ChunkDataTFC.get(world, chunkBlockPos);
-        if (!chunkData.isInitialized()) return;
-
-        // Check dimension is overworld
-        if (world.provider.getDimension() != 0) return;
-
-        // Set constant values here
-        int xoff = chunkX * 16 + 8;
-        int zoff = chunkZ * 16 + 8;
-        // Get the proper list of veins
-        List<Vein> veins = WorldGenOreVeins.getNearbyVeins(chunkX, chunkZ, world.getSeed(), 1);
-        if (!veins.isEmpty())
+        if (chunkGenerator instanceof ChunkGenTFC && world.provider.getDimension() == 0)
         {
-            veins.removeIf(v -> {
-                if (!v.type.hasLooseRocks()) return true;
+            final BlockPos chunkBlockPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
+            ChunkDataTFC chunkData = ChunkDataTFC.get(world, chunkBlockPos);
+            if (!chunkData.isInitialized()) return;
 
-                int minScanY = (WorldTypeTFC.ROCKLAYER2 + WorldTypeTFC.ROCKLAYER3) / 2;
-                int maxScanY = WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos);
-
-                // This is intensive and a painful check to have to do, but unfortunately necessary. In 1.14 this will be gone.
-                for (BlockPos.MutableBlockPos pos : BlockPos.getAllInBoxMutable(xoff - 7, minScanY, zoff - 7, xoff + 22, maxScanY, zoff + 22))
+            // Set constant values here
+            int xoff = chunkX * 16 + 8;
+            int zoff = chunkZ * 16 + 8;
+            // Get the proper list of veins
+            List<Vein> veins;
+            if (generateOres)
+            {
+                veins = WorldGenOreVeins.getNearbyVeins(chunkX, chunkZ, world.getSeed(), 1);
+                if (!veins.isEmpty())
                 {
-                    if (v.type.isOreBlock(world.getBlockState(pos)))
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            });
-        }
+                    veins.removeIf(v -> {
+                        if (!v.type.hasLooseRocks()) return true;
 
-        for (int i = 0; i < ConfigTFC.WORLD.looseRocksFrequency; i++)
-        {
-            BlockPos pos = new BlockPos(
-                xoff + random.nextInt(16),
-                0,
-                zoff + random.nextInt(16)
-            );
-            Rock rock = chunkData.getRock1(pos);
-            generateRock(world, pos.up(world.getTopSolidOrLiquidBlock(pos).getY()), getRandomVein(veins, random), rock);
+                        int minScanY = (WorldTypeTFC.ROCKLAYER2 + WorldTypeTFC.ROCKLAYER3) / 2;
+                        int maxScanY = WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos);
+
+                        // This is intensive and a painful check to have to do, but unfortunately necessary. In 1.14 this will be gone.
+                        // todo change this to the sanity check impl in GoldPan and Sluice after merge
+                        for (BlockPos.MutableBlockPos pos : BlockPos.getAllInBoxMutable(xoff - 7, minScanY, zoff - 7, xoff + 22, maxScanY, zoff + 22))
+                        {
+                            if (v.type.isOreBlock(world.getBlockState(pos)))
+                            {
+                                return false;
+                            }
+                        }
+                        return true;
+                    });
+                }
+            }
+            else
+            {
+                veins = Collections.emptyList();
+            }
+
+            for (int i = 0; i < ConfigTFC.WORLD.looseRocksFrequency * factor; i++)
+            {
+                BlockPos pos = new BlockPos(
+                    xoff + random.nextInt(16),
+                    0,
+                    zoff + random.nextInt(16)
+                );
+                Rock rock = chunkData.getRock1(pos);
+                generateRock(world, pos.up(world.getTopSolidOrLiquidBlock(pos).getY()), getRandomVein(veins, random), rock);
+            }
         }
     }
 

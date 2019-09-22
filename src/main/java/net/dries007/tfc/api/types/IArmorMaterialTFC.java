@@ -5,10 +5,15 @@
 
 package net.dries007.tfc.api.types;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemArmor;
 
 import net.dries007.tfc.api.capability.damage.DamageType;
 
+/**
+ * @see net.dries007.tfc.objects.ArmorMaterialTFC
+ */
 public interface IArmorMaterialTFC
 {
     /**
@@ -37,5 +42,6 @@ public interface IArmorMaterialTFC
      *
      * @return Vanilla "extended" ArmorMaterial
      */
+    @Nonnull
     ItemArmor.ArmorMaterial getMaterial();
 }

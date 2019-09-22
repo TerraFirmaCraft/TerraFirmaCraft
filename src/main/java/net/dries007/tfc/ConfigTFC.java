@@ -103,7 +103,7 @@ public class ConfigTFC
         public int pitKilnTime = 8000;
 
         @Config.Comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.")
-        @Config.RangeInt(min = 20)
+        @Config.RangeInt(min = -1)
         @Config.LangKey("config." + MOD_ID + ".general.torchTime")
         public int torchTime = 72000;
 
@@ -125,7 +125,7 @@ public class ConfigTFC
         @Config.Comment("Modifier for how quickly the players nutrition values will decay")
         @Config.RangeDouble(min = 0, max = 1)
         @Config.LangKey("config." + MOD_ID + ".general.playerNutritionDecayModifier")
-        public double playerNutritionDecayModifier = 0.0003;
+        public double playerNutritionDecayModifier = 0.8;
 
         @Config.Comment("Minimum health modifier player can obtain with low nutrition.")
         @Config.RangeDouble(min = 0.1d, max = 1d)
@@ -243,6 +243,21 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.peacefulDifficultyPassiveRegeneration")
         public boolean peacefulDifficultyPassiveRegeneration = false;
 
+        @Config.Comment("How fast sticks and rocks regenerate, in scale of days. Use 0 to disable it entirely.")
+        @Config.RangeDouble(min = 0, max = 1200)
+        @Config.LangKey("config." + MOD_ID + ".general.regenSticksRocks")
+        public double regenSticksRocks = 24;
+
+        @Config.Comment("How fast plants regenerate, in scale of months. Use 0 to disable it entirely.")
+        @Config.RangeDouble(min = 0, max = 1200)
+        @Config.LangKey("config." + MOD_ID + ".general.regenPlants")
+        public double regenPlants = 3;
+
+        @Config.Comment("How fast wild crops and berry bushes regenerate, in scale of months. Use 0 to disable it entirely.")
+        @Config.RangeDouble(min = 0, max = 1200)
+        @Config.LangKey("config." + MOD_ID + ".general.regenCrops")
+        public double regenCrops = 12;
+
         @Config.Comment("If true, hammer must be in offhand for chisel use. If false, hammer can be in offhand or toolbar.")
         @Config.LangKey("config." + MOD_ID + ".general.requireHammerInOffHand")
         public boolean requireHammerInOffHand = true;
@@ -250,6 +265,7 @@ public class ConfigTFC
         @Config.Comment("Does the chisel have a delay on use?")
         @Config.LangKey("config." + MOD_ID + ".general.chiselDelay")
         public boolean chiselDelay = false;
+
     }
 
     public static class ClientCFG
@@ -274,6 +290,10 @@ public class ConfigTFC
         @Config.Comment("Should the prospectors pick output to the actionbar? (the space just above the hotbar)")
         @Config.LangKey("config." + MOD_ID + ".client.propickOutputToActionBar")
         public boolean propickOutputToActionBar = true;
+
+        @Config.Comment("The color to render on top of rotten food. Express as a 265 bit color value: 0xFFFFFF = white, 0x000000 = black")
+        @Config.LangKey("config." + MOD_ID + ".client.rottenFoodOverlayColor")
+        public int rottenFoodOverlayColor = 0x88CC33;
     }
 
     public static class WorldCFG

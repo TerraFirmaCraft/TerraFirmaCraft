@@ -21,6 +21,7 @@ import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.util.TFCConstants;
@@ -35,7 +36,6 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.proxy.IProxy;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.fuel.FuelManager;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
@@ -153,6 +153,7 @@ public final class TerraFirmaCraft
         CapabilityEgg.preInit();
         CapabilityPlayerSkills.preInit();
         CapabilityDamageResistance.preInit();
+        CapabilityMetalItem.preInit();
 
         if (event.getSide().isClient())
         {
@@ -168,7 +169,6 @@ public final class TerraFirmaCraft
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
         }
 
-        OreDictionaryHelper.init();
         ItemsTFC.init();
         LootTablesTFC.init();
         CapabilityFood.init();
@@ -215,6 +215,7 @@ public final class TerraFirmaCraft
         event.registerServerCommand(new CommandTimeTFC());
         event.registerServerCommand(new CommandFindVeins());
         event.registerServerCommand(new CommandNutrients());
+        event.registerServerCommand(new CommandDebugInfo());
     }
 
     @Mod.EventHandler

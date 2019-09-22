@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.api.recipes.barrel;
 
+import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.client.resources.I18n;
@@ -17,6 +18,7 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.food.IFoodTrait;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
+import net.dries007.tfc.util.Helpers;
 
 public class BarrelRecipeFoodTraits extends BarrelRecipe
 {
@@ -30,15 +32,15 @@ public class BarrelRecipeFoodTraits extends BarrelRecipe
 
     @Nonnull
     @Override
-    public ItemStack getOutputItem(FluidStack inputFluid, ItemStack inputStack)
+    public List<ItemStack> getOutputItem(FluidStack inputFluid, ItemStack inputStack)
     {
-        ItemStack output = inputStack.copy();
-        IFood food = output.getCapability(CapabilityFood.CAPABILITY, null);
+        ItemStack stack = inputStack.copy();
+        IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
         if (food != null)
         {
             CapabilityFood.applyTrait(food, trait);
         }
-        return output;
+        return Helpers.listOf(stack);
     }
 
     @SideOnly(Side.CLIENT)

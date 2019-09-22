@@ -29,7 +29,7 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class BlockThatch extends Block
 {
-    BlockThatch()
+    public BlockThatch()
     {
         super(new Material(MapColor.FOLIAGE)
         {

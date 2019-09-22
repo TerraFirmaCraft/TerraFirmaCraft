@@ -12,6 +12,7 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -20,15 +21,19 @@ import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 
 public interface IFallingBlock
 {
-    default boolean canFallThrough(IBlockState state)
+    static boolean canFallThrough(World world, BlockPos pos)
     {
-        return state.getMaterial().isReplaceable();
+        if (!world.isSideSolid(pos, EnumFacing.UP))
+        {
+            return true;
+        }
+        return !world.getBlockState(pos).isFullBlock();
     }
 
     default boolean shouldFall(World world, BlockPos posToFallAt, BlockPos originalPos)
     {
         // Can the block fall at a particular position; ignore horizontal falling
-        return canFallThrough(world.getBlockState(posToFallAt.down())) && !BlockSupport.isBeingSupported(world, originalPos);
+        return canFallThrough(world, posToFallAt.down()) && !BlockSupport.isBeingSupported(world, originalPos);
     }
 
     // Get the position that the block will fall from (allows for horizontal falling)
@@ -61,7 +66,7 @@ public interface IFallingBlock
             {
                 worldIn.setBlockToAir(pos);
                 pos1 = pos1.down();
-                while (canFallThrough(worldIn.getBlockState(pos1)) && pos1.getY() > 0)
+                while (canFallThrough(worldIn, pos1) && pos1.getY() > 0)
                 {
                     pos1 = pos1.down();
                 }
@@ -75,9 +80,5 @@ public interface IFallingBlock
     default Iterable<ItemStack> getDropsFromFall(World world, BlockPos pos, IBlockState state, @Nullable NBTTagCompound teData, int fallTime, float fallDistance)
     {
         return ImmutableList.of(new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state)));
-    }
-
-    default void onEndFalling(World world, BlockPos pos, IBlockState state, IBlockState current)
-    {
     }
 }

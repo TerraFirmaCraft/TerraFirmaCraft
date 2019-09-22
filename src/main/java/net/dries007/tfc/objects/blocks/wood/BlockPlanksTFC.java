@@ -36,6 +36,7 @@ public class BlockPlanksTFC extends Block
         setHardness(2.0F).setResistance(5.0F);
         setHarvestLevel("axe", 0);
         OreDictionaryHelper.register(this, "plank", "wood");
+        //noinspection ConstantConditions
         OreDictionaryHelper.register(this, "plank", "wood", wood.getRegistryName().getPath());
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }

@@ -28,6 +28,9 @@ public class BlockFluidWater extends BlockFluidTFC implements ITemperatureBlock
         super(fluid, material, true);
         this.isSalt = isSalt;
         this.freezeThreshold = isSalt ? IceMeltHandler.SALT_WATER_FREEZE_THRESHOLD : IceMeltHandler.WATER_FREEZE_THRESHOLD;
+
+        setLightOpacity(3);
+        disableStats();
     }
 
     @Override

@@ -41,7 +41,6 @@ import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
-import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
@@ -154,6 +153,17 @@ public class BlockStoneAnvil extends Block implements IRockObject
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TEAnvilTFC te = Helpers.getTE(worldIn, pos, TEAnvilTFC.class);
+        if (te != null)
+        {
+            te.onBreakBlock(worldIn, pos, state);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     public int quantityDropped(Random random)
     {
         return 1 + random.nextInt(3);
@@ -169,6 +179,10 @@ public class BlockStoneAnvil extends Block implements IRockObject
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
+        if (hand == EnumHand.OFF_HAND) //Avoid issues with insertion/extraction
+        {
+            return false;
+        }
         TEAnvilTFC te = Helpers.getTE(worldIn, pos, TEAnvilTFC.class);
         if (te == null)
         {
@@ -179,20 +193,10 @@ public class BlockStoneAnvil extends Block implements IRockObject
         {
             return false;
         }
-        ItemStack heldItem = playerIn.getHeldItem(hand);
-        // First check for a possible recipe action (welding)
-        if (te.isItemValid(SLOT_HAMMER, heldItem))
-        {
-            if (te.attemptWelding(playerIn))
-            {
-                // Valid welding occurred.
-                worldIn.playSound(null, pos, TFCSounds.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                return true;
-            }
-        }
         if (playerIn.isSneaking())
         {
-            // Extract requires an empty hand
+            ItemStack heldItem = playerIn.getHeldItem(hand);
+            // Extract requires main hand empty
             if (heldItem.isEmpty())
             {
                 // Only check the input slots
@@ -204,37 +208,43 @@ public class BlockStoneAnvil extends Block implements IRockObject
                         // Give the item to player in the main hand
                         ItemStack result = cap.extractItem(i, 1, false);
                         playerIn.setHeldItem(hand, result);
-
+                        return true;
+                    }
+                }
+            }
+            // Welding requires a hammer in main hand
+            else if (te.isItemValid(SLOT_HAMMER, heldItem))
+            {
+                if (te.attemptWelding(playerIn))
+                {
+                    // Valid welding occurred.
+                    worldIn.playSound(null, pos, TFCSounds.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    return true;
+                }
+            }
+            //If main hand isn't empty and is not a hammer
+            else
+            {
+                //Try inserting items
+                for (int i = 0; i < 4; i++)
+                {
+                    // Check the input slots and flux. Do NOT check the hammer slot
+                    if (i == SLOT_HAMMER) continue;
+                    // Try to insert an item
+                    // Hammers will not be inserted since we already checked if heldItem is a hammer for attemptWelding
+                    if (te.isItemValid(i, heldItem) && te.getSlotLimit(i) > cap.getStackInSlot(i).getCount())
+                    {
+                        ItemStack result = cap.insertItem(i, heldItem, false);
+                        playerIn.setHeldItem(hand, result);
+                        TerraFirmaCraft.getLog().info("Inserted {} into slot {}", heldItem.getDisplayName(), i);
+                        return true;
                     }
                 }
             }
         }
         else
         {
-            // Not sneaking = insert items
-            ItemStack stack = playerIn.getHeldItem(hand);
-            if (!stack.isEmpty())
-            {
-                for (int i = 0; i <= 4; i++)
-                {
-                    // Check the input slots and flux. Do NOT check the hammer slot
-                    if (i == SLOT_HAMMER) continue;
-                    // Try to insert an item
-                    // Do not insert hammers into the input slots
-                    if (te.isItemValid(i, stack) && cap.getStackInSlot(i).isEmpty() && !te.isItemValid(SLOT_HAMMER, stack))
-                    {
-                        if (!worldIn.isRemote)
-                        {
-                            ItemStack result = cap.insertItem(i, stack, false);
-                            playerIn.setHeldItem(hand, result);
-                            TerraFirmaCraft.getLog().info("Inserted {} into slot {}", stack.getDisplayName(), i);
-                        }
-                        return true;
-                    }
-                }
-            }
-
-            // No insertion happened, so try and open GUI
+            // not sneaking, so try and open GUI
             if (!worldIn.isRemote)
             {
                 TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.ANVIL);
@@ -242,15 +252,6 @@ public class BlockStoneAnvil extends Block implements IRockObject
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
-    {
-        if (!worldIn.isRemote && te instanceof TEInventory)
-        {
-            ((TEInventory) te).onBreakBlock(worldIn, pos);
-        }
     }
 
     @Override

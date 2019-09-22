@@ -81,7 +81,7 @@ public class ItemJug extends ItemPottery
                 {
                     ItemStack single = stack.copy();
                     single.setCount(1);
-                    FluidActionResult result = FluidTransferHelper.tryPickUpFluidGreedy(single, player, world, rayTrace.getBlockPos(), rayTrace.sideHit, Fluid.BUCKET_VOLUME);
+                    FluidActionResult result = FluidTransferHelper.tryPickUpFluidGreedy(single, player, world, rayTrace.getBlockPos(), rayTrace.sideHit, Fluid.BUCKET_VOLUME, false);
                     if (result.isSuccess())
                     {
                         stack.shrink(1);
@@ -92,6 +92,10 @@ public class ItemJug extends ItemPottery
                         ItemHandlerHelper.giveItemToPlayer(player, result.getResult());
                         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
                     }
+                }
+                else
+                {
+                    player.world.playSound(null, player.getPosition(), TFCSounds.JUG_BLOW, SoundCategory.PLAYERS, 1.0f, 0.8f + (float) (player.getLookVec().y / 2));
                 }
             }
         }

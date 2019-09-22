@@ -12,6 +12,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -98,7 +100,7 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
 
             // Check if it can fall
             faces = Arrays.stream(EnumFacing.HORIZONTALS)
-                .filter(x -> shouldFall(world, pos.offset(x), pos) && canFallThrough(world.getBlockState(pos.offset(x))))
+                .filter(x -> shouldFall(world, pos.offset(x), pos) && IFallingBlock.canFallThrough(world, pos.offset(x)))
                 .toArray(EnumFacing[]::new);
 
             if (faces.length >= 1)
@@ -107,6 +109,24 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
             }
         }
         return null;
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        if (type == Rock.Type.GRAVEL)
+        {
+            if (fortune > 3)
+            {
+                fortune = 3;
+            }
+
+            if (rand.nextInt(10 - fortune * 3) == 0)
+            {
+                return Items.FLINT;
+            }
+        }
+        return super.getItemDropped(state, rand, fortune);
     }
 
     @Nullable

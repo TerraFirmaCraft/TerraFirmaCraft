@@ -23,15 +23,17 @@ public class PacketLargeVesselUpdate implements IMessage
 {
     private BlockPos pos;
     private long calendarTick;
+    private boolean sealed;
 
     @SuppressWarnings("unused")
     @Deprecated
     public PacketLargeVesselUpdate() {}
 
-    public PacketLargeVesselUpdate(@Nonnull TELargeVessel tile, long calendarTick)
+    public PacketLargeVesselUpdate(@Nonnull TELargeVessel tile, long calendarTick, boolean sealed)
     {
         this.pos = tile.getPos();
         this.calendarTick = calendarTick;
+        this.sealed = sealed;
     }
 
     @Override
@@ -39,6 +41,7 @@ public class PacketLargeVesselUpdate implements IMessage
     {
         pos = BlockPos.fromLong(buf.readLong());
         calendarTick = buf.readLong();
+        sealed = buf.readBoolean();
     }
 
     @Override
@@ -46,6 +49,7 @@ public class PacketLargeVesselUpdate implements IMessage
     {
         buf.writeLong(pos.toLong());
         buf.writeLong(calendarTick);
+        buf.writeBoolean(sealed);
     }
 
     public static final class Handler implements IMessageHandler<PacketLargeVesselUpdate, IMessage>
@@ -61,7 +65,7 @@ public class PacketLargeVesselUpdate implements IMessage
                     TELargeVessel te = Helpers.getTE(world, message.pos, TELargeVessel.class);
                     if (te != null)
                     {
-                        te.onReceivePacket(message.calendarTick);
+                        te.onReceivePacket(message.calendarTick, message.sealed);
                     }
                 });
             }

@@ -331,6 +331,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     public void fall(float distance, float damageMultiplier)
     {
         if (distance > 1.0F)
@@ -945,12 +946,6 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
-    @Nullable
-    public Entity getControllingPassenger()
-    {
-        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
-    }
-
     protected boolean getHorseWatchableBoolean(int p_110233_1_)
     {
         return (this.dataManager.get(STATUS).byteValue() & p_110233_1_) != 0;
@@ -1032,6 +1027,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         if (!blockIn.getDefaultState().getMaterial().isLiquid())
@@ -1095,6 +1091,12 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
     public float getEyeHeight()
     {
         return this.height;
+    }
+
+    @Nullable
+    public Entity getControllingPassenger()
+    {
+        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
     }
 
     protected void setHorseWatchableBoolean(int p_110208_1_, boolean p_110208_2_)

@@ -51,7 +51,7 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
         new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D),
         new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)};
 
-    BlockCharcoalPile()
+    public BlockCharcoalPile()
     {
         super(Material.GROUND);
 

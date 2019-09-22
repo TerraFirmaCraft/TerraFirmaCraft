@@ -9,11 +9,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -21,7 +23,6 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
@@ -32,6 +33,11 @@ import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
 
+import static net.dries007.tfc.objects.blocks.BlockLargeVessel.SEALED;
+
+/**
+ * @see BlockLargeVessel
+ */
 @ParametersAreNonnullByDefault
 public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallback
 {
@@ -54,24 +60,9 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
         sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
-
-        this.markDirty();
-    }
-
-    /**
-     * Called to get the NBTTagCompound that is put on Barrel Items.
-     * This happens when a sealed Barrel was broken.
-     *
-     * @return An NBTTagCompound containing inventory and tank data.
-     */
-    public NBTTagCompound getItemTag()
-    {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setTag("inventory", inventory.serializeNBT());
-        nbt.setLong("sealedTick", sealedTick);
-        nbt.setLong("sealedCalendarTick", sealedCalendarTick);
-
-        return nbt;
+        sealed = true;
+        markDirty();
+        TerraFirmaCraft.getNetwork().sendToDimension(new PacketLargeVesselUpdate(this, sealedCalendarTick, sealed), world.provider.getDimension());
     }
 
     /**
@@ -83,56 +74,20 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
     {
         if (!world.isRemote)
         {
-            updateLockStatus();
+            sealed = world.getBlockState(pos).getValue(SEALED);
         }
     }
 
+    @Nonnull
     public String getSealedDate()
     {
         return ICalendarFormatted.getTimeAndDate(sealedCalendarTick, CalendarTFC.INSTANCE.getDaysInMonth());
     }
 
-    /**
-     * Retrieves the packet to send to clients whenever this TileEntity is updated via World.notifyBlockUpdate.
-     * We are using this method to update the lock status on our ItemHandler and FluidHandler, since a Block update occurred.
-     * This method is only called server-side.
-     *
-     * @return The Packet that will be sent to clients in range.
-     */
-    @Override
-    @Nullable
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
-        updateLockStatus();
-        return super.getUpdatePacket();
-    }
-
-    /**
-     * Called on clients whenever this TileEntity received an update from the server.
-     **/
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-    {
-        readFromNBT(pkt.getNbtCompound());
-        updateLockStatus();
-    }
-
-    /**
-     * Called on clients when this TileEntity received an update from the server on load.
-     *
-     * @param tag An NBTTagCompound containing the TE's data.
-     */
-    @Override
-    public void handleUpdateTag(NBTTagCompound tag)
-    {
-        readFromNBT(tag);
-        updateLockStatus();
-    }
-
     @Override
     public boolean canInsert(int slot, ItemStack stack, EnumFacing side)
     {
-        return !sealed && isItemValid(slot, stack);
+        return !world.getBlockState(pos).getValue(SEALED) && isItemValid(slot, stack);
     }
 
     @Override
@@ -143,46 +98,36 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
 
     public void onSealed()
     {
+        for (int i = 0; i < inventory.getSlots(); i++)
+        {
+            CapabilityFood.applyTrait(inventory.getStackInSlot(i), CapabilityFood.PRESERVED);
+        }
+
+        // Update sealed tick info and sync to client
         sealedTick = CalendarTFC.TOTAL_TIME.getTicks();
         sealedCalendarTick = CalendarTFC.CALENDAR_TIME.getTicks();
-        TerraFirmaCraft.getNetwork().sendToDimension(new PacketLargeVesselUpdate(this, sealedCalendarTick), world.provider.getDimension());
-    }
-
-    public void onSeal()
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            ItemStack stack = inventory.getStackInSlot(i);
-            if (!stack.isEmpty())
-            {
-                IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
-                if (cap != null)
-                {
-                    CapabilityFood.applyTrait(cap, CapabilityFood.PRESERVED);
-                }
-            }
-        }
+        sealed = true;
+        TerraFirmaCraft.getNetwork().sendToDimension(new PacketLargeVesselUpdate(this, sealedCalendarTick, sealed), world.provider.getDimension());
     }
 
     public void onUnseal()
     {
-        for (int i = 0; i < 9; i++)
+        // Update preservation trait on contents
+        for (int i = 0; i < inventory.getSlots(); i++)
         {
-            ItemStack stack = inventory.getStackInSlot(i);
-            if (!stack.isEmpty())
-            {
-                IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
-                if (cap != null)
-                {
-                    CapabilityFood.removeTrait(cap, CapabilityFood.PRESERVED);
-                }
-            }
+            CapabilityFood.removeTrait(inventory.getStackInSlot(i), CapabilityFood.PRESERVED);
         }
+
+        // Update sealed tick info and sync to client
+        sealedTick = sealedCalendarTick = 0;
+        sealed = false;
+        TerraFirmaCraft.getNetwork().sendToDimension(new PacketLargeVesselUpdate(this, sealedCalendarTick, sealed), world.provider.getDimension());
     }
 
-    public void onReceivePacket(long sealedCalendarTick)
+    public void onReceivePacket(long sealedCalendarTick, boolean sealed)
     {
         this.sealedCalendarTick = sealedCalendarTick;
+        this.sealed = sealed;
     }
 
     public boolean isSealed()
@@ -194,7 +139,6 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-
         sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
     }
@@ -205,7 +149,6 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
     {
         nbt.setLong("sealedTick", sealedTick);
         nbt.setLong("sealedCalendarTick", sealedCalendarTick);
-
         return super.writeToNBT(nbt);
     }
 
@@ -223,8 +166,24 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         {
             return (T) new ItemHandlerSidedWrapper(this, inventory, facing);
         }
-
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public void onBreakBlock(World world, BlockPos pos, IBlockState state)
+    {
+        if (!state.getValue(SEALED))
+        {
+            // Not sealed, so empty contents normally
+            super.onBreakBlock(world, pos, state);
+        }
+        else
+        {
+            // Need to create the full barrel and drop it now
+            ItemStack stack = new ItemStack(state.getBlock());
+            stack.setTagCompound(getItemTag());
+            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+        }
     }
 
     @Override
@@ -238,14 +197,24 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         return true;
     }
 
-    private void updateLockStatus()
+    /**
+     * Called to get the NBTTagCompound that is put on Barrel Items.
+     * This happens when a sealed Barrel was broken.
+     *
+     * @return An NBTTagCompound containing inventory and tank data.
+     */
+    private NBTTagCompound getItemTag()
     {
-        sealed = world.getBlockState(pos).getValue(BlockLargeVessel.SEALED);
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setTag("inventory", inventory.serializeNBT());
+        nbt.setLong("sealedTick", sealedTick);
+        nbt.setLong("sealedCalendarTick", sealedCalendarTick);
+        return nbt;
     }
 
-    static class LargeVesselItemStackHandler extends ItemStackHandler
+    private static class LargeVesselItemStackHandler extends ItemStackHandler
     {
-        LargeVesselItemStackHandler(int slots)
+        private LargeVesselItemStackHandler(int slots)
         {
             super(slots);
         }
@@ -254,12 +223,9 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         @Nonnull
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
-            IFood cap = getStackInSlot(slot).getCapability(CapabilityFood.CAPABILITY, null);
-            if (cap != null)
-            {
-                CapabilityFood.removeTrait(cap, CapabilityFood.PRESERVED);
-            }
-            return super.extractItem(slot, amount, simulate);
+            ItemStack stack = super.extractItem(slot, amount, simulate);
+            CapabilityFood.removeTrait(stack, CapabilityFood.PRESERVED);
+            return stack;
         }
     }
 }

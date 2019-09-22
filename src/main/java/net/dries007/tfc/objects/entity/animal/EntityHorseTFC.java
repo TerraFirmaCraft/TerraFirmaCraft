@@ -116,6 +116,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
+    @SuppressWarnings("deprecation")
     public HorseArmorType getHorseArmorType()
     {
         HorseArmorType armor = HorseArmorType.getByItemStack(this.dataManager.get(HORSE_ARMOR_STACK)); //First check the Forge armor DataParameter
@@ -140,71 +141,6 @@ public class EntityHorseTFC extends AbstractHorseTFC
     {
         super.getHurtSound(damageSourceIn);
         return SoundEvents.ENTITY_HORSE_HURT;
-    }
-
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
-    {
-        ItemStack itemstack = player.getHeldItem(hand);
-        boolean itemStackNotEmpty = !itemstack.isEmpty();
-
-        if (itemStackNotEmpty && itemstack.getItem() == Items.SPAWN_EGG)
-        {
-            return super.processInteract(player, hand);
-        }
-        else
-        {
-            if (!this.isChild())
-            {
-                if (this.isTame() && player.isSneaking())
-                {
-                    this.openGUI(player);
-                    return true;
-                }
-
-                if (this.isBeingRidden())
-                {
-                    return super.processInteract(player, hand);
-                }
-            }
-
-            if (itemStackNotEmpty)
-            {
-                if (super.processInteract(player, hand) && !this.world.isRemote && this.handleEating(player, itemstack))
-                {
-                    return true;
-                }
-
-                if (itemstack.interactWithEntity(player, this, hand))
-                {
-                    return true;
-                }
-
-                if (!this.isTame())
-                {
-                    this.makeMad();
-                    return true;
-                }
-
-                boolean itemHorseArmor = HorseArmorType.getByItemStack(itemstack) != HorseArmorType.NONE;
-                boolean itemSaddleAndCanSaddle = !this.isChild() && !this.isHorseSaddled() && itemstack.getItem() == Items.SADDLE;
-
-                if (itemHorseArmor || itemSaddleAndCanSaddle)
-                {
-                    this.openGUI(player);
-                    return true;
-                }
-            }
-
-            if (this.isChild())
-            {
-                return super.processInteract(player, hand);
-            }
-            else
-            {
-                this.mountTo(player);
-                return true;
-            }
-        }
     }
 
     protected SoundEvent getDeathSound()
@@ -324,6 +260,14 @@ public class EntityHorseTFC extends AbstractHorseTFC
         return abstracthorse;
     }
 
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataManager.register(HORSE_VARIANT, Integer.valueOf(0));
+        this.dataManager.register(HORSE_ARMOR, Integer.valueOf(HorseArmorType.NONE.getOrdinal()));
+        this.dataManager.register(HORSE_ARMOR_STACK, ItemStack.EMPTY);
+    }
+
     public boolean wearsArmor()
     {
         return true;
@@ -332,14 +276,6 @@ public class EntityHorseTFC extends AbstractHorseTFC
     public boolean isArmor(ItemStack stack)
     {
         return HorseArmorType.isHorseArmor(stack);
-    }
-
-    protected void entityInit()
-    {
-        super.entityInit();
-        this.dataManager.register(HORSE_VARIANT, Integer.valueOf(0));
-        this.dataManager.register(HORSE_ARMOR, Integer.valueOf(HorseArmorType.NONE.getOrdinal()));
-        this.dataManager.register(HORSE_ARMOR_STACK, ItemStack.EMPTY);
     }
 
     protected void applyEntityAttributes()
@@ -416,12 +352,78 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
+    {
+        ItemStack itemstack = player.getHeldItem(hand);
+        boolean itemStackNotEmpty = !itemstack.isEmpty();
+
+        if (itemStackNotEmpty && itemstack.getItem() == Items.SPAWN_EGG)
+        {
+            return super.processInteract(player, hand);
+        }
+        else
+        {
+            if (!this.isChild())
+            {
+                if (this.isTame() && player.isSneaking())
+                {
+                    this.openGUI(player);
+                    return true;
+                }
+
+                if (this.isBeingRidden())
+                {
+                    return super.processInteract(player, hand);
+                }
+            }
+
+            if (itemStackNotEmpty)
+            {
+                if (super.processInteract(player, hand) && !this.world.isRemote && this.handleEating(player, itemstack))
+                {
+                    return true;
+                }
+
+                if (itemstack.interactWithEntity(player, this, hand))
+                {
+                    return true;
+                }
+
+                if (!this.isTame())
+                {
+                    this.makeMad();
+                    return true;
+                }
+
+                boolean itemHorseArmor = HorseArmorType.getByItemStack(itemstack) != HorseArmorType.NONE;
+                boolean itemSaddleAndCanSaddle = !this.isChild() && !this.isHorseSaddled() && itemstack.getItem() == Items.SADDLE;
+
+                if (itemHorseArmor || itemSaddleAndCanSaddle)
+                {
+                    this.openGUI(player);
+                    return true;
+                }
+            }
+
+            if (this.isChild())
+            {
+                return super.processInteract(player, hand);
+            }
+            else
+            {
+                this.mountTo(player);
+                return true;
+            }
+        }
+    }
+
     private void resetTexturePrefix()
     {
         this.texturePrefix = null;
     }
 
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
     private void setHorseTexturePaths()
     {
         int i = this.getHorseVariant();

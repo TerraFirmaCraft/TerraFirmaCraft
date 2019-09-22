@@ -108,6 +108,17 @@ public class BlockLogPile extends Block implements ILightableBlock
     }
 
     @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    {
+        // This can't use breakBlock as it needs to not drop when broken in order to create a charcoal pile
+        if (!worldIn.isRemote && te instanceof TEInventory)
+        {
+            ((TEInventory) te).onBreakBlock(worldIn, pos, state);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
@@ -156,16 +167,6 @@ public class BlockLogPile extends Block implements ILightableBlock
             return this.getDefaultState().withProperty(AXIS, placer.getHorizontalFacing().getAxis());
         }
         return this.getDefaultState();
-    }
-
-    @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
-    {
-        if (!worldIn.isRemote && te instanceof TEInventory)
-        {
-            ((TEInventory) te).onBreakBlock(worldIn, pos);
-        }
-        super.harvestBlock(worldIn, player, pos, state, te, stack);
     }
 
     @Override

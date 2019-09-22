@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.api.recipes.barrel;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -16,7 +18,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.te.TEBarrel;
@@ -50,9 +51,14 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         this.duration = duration;
     }
 
-    public boolean isValidInput(FluidStack inputFluid, ItemStack inputStack)
+    public boolean isValidInput(@Nullable FluidStack inputFluid, ItemStack inputStack)
     {
         return this.inputFluid.test(inputFluid) && this.inputStack.test(inputStack);
+    }
+
+    public boolean isValidInputInstant(ItemStack inputStack, @Nullable FluidStack inputFluid)
+    {
+        return inputFluid == null || inputFluid.amount / this.inputFluid.getAmount() <= inputStack.getCount() / this.inputStack.getAmount();
     }
 
     public int getDuration()
@@ -117,16 +123,22 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
     }
 
     @Nonnull
-    public ItemStack getOutputItem(FluidStack inputFluid, ItemStack inputStack)
+    public List<ItemStack> getOutputItem(FluidStack inputFluid, ItemStack inputStack)
     {
         int multiplier = getMultiplier(inputFluid, inputStack);
+        List<ItemStack> outputList = new ArrayList<>();
         if (!this.outputStack.isEmpty())
         {
             // Ignore input and replace with output
-            int outputCount = Math.min(multiplier * outputStack.getCount(), outputStack.getMaxStackSize());
-            ItemStack output = outputStack.copy();
-            output.setCount(outputCount);
-            return CapabilityFood.updateFoodDecay(inputStack, output);
+            int outputCount = multiplier * outputStack.getCount();
+            do
+            {
+                int count = Math.min(outputCount, outputStack.getMaxStackSize());
+                ItemStack output = outputStack.copy();
+                output.setCount(count);
+                outputCount -= count;
+                outputList.add(output);
+            } while (outputCount > 0);
         }
         else
         {
@@ -135,10 +147,14 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
             if (retainCount > 0)
             {
                 inputStack.setCount(retainCount);
-                return inputStack;
+                outputList.add(inputStack);
+            }
+            else
+            {
+                outputList.add(ItemStack.EMPTY);
             }
         }
-        return ItemStack.EMPTY;
+        return outputList;
     }
 
     /**
@@ -168,7 +184,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
             FluidStack fluid = getOutputFluid();
             if (fluid == null)
             {
-                return "Empty";
+                return "???";
             }
             else
             {

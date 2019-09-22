@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.world.classic.genlayers.datalayers.rock;
 
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.world.classic.genlayers.*;
 
@@ -12,7 +14,7 @@ public abstract class GenRockLayer extends GenLayerTFC
 {
     public static GenLayerTFC initialize(long seed, RockCategory.Layer level)
     {
-        GenLayerTFC layer = new GenLayerRockInit(1L, level.getRocks());
+        GenLayerTFC layer = new GenLayerRockInit(1L, TFCRegistries.ROCKS.getValuesCollection().stream().filter(level).toArray(Rock[]::new));
 //        drawImage(512, layer, "Rock 0");
         layer = new GenLayerFuzzyZoomTFC(2000L, layer);
 //        drawImage(512, layer, "Rock 1");

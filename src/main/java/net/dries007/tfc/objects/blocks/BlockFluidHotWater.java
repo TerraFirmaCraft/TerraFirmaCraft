@@ -27,6 +27,9 @@ public class BlockFluidHotWater extends BlockFluidTFC
     public BlockFluidHotWater()
     {
         super(FluidsTFC.HOT_WATER.get(), Material.WATER, false);
+
+        setLightOpacity(3);
+        disableStats();
     }
 
     @SideOnly(Side.CLIENT)
@@ -48,7 +51,7 @@ public class BlockFluidHotWater extends BlockFluidTFC
             EntityLivingBase entityLiving = (EntityLivingBase) entityIn;
             if (Constants.RNG.nextInt(10) == 0 && entityLiving.getHealth() < entityLiving.getMaxHealth())
             {
-                entityLiving.heal(FoodStatsTFC.PASSIVE_HEAL_AMOUNT * 3.5f);
+                entityLiving.heal(FoodStatsTFC.PASSIVE_HEAL_AMOUNT * 7f);
             }
         }
     }

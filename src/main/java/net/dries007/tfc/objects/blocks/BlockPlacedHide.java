@@ -43,7 +43,7 @@ public class BlockPlacedHide extends Block
 {
     public static final PropertyEnum<ItemAnimalHide.HideSize> SIZE = PropertyEnum.create("size", ItemAnimalHide.HideSize.class);
 
-    BlockPlacedHide()
+    public BlockPlacedHide()
     {
         super(Material.CIRCUITS);
         setHardness(0.2f);

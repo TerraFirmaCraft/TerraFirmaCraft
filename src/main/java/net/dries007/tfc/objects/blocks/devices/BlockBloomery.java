@@ -252,7 +252,7 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
         TEBloomery te = Helpers.getTE(worldIn, pos, TEBloomery.class);
         if (te != null)
         {
-            te.onBreakBlock(worldIn, pos);
+            te.onBreakBlock(worldIn, pos, state);
         }
         super.breakBlock(worldIn, pos, state);
     }
