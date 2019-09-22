@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.api.recipes.barrel;
 
-import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,6 +23,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
+import net.dries007.tfc.util.Helpers;
 
 public class BarrelRecipeTemperature extends BarrelRecipe
 {
@@ -74,7 +74,7 @@ public class BarrelRecipeTemperature extends BarrelRecipe
         {
             heat.setTemperature(heat.getTemperature() - coolAmount);
         }
-        return Collections.singletonList(inputStack);
+        return Helpers.listOf(inputStack);
     }
 
     @Override
