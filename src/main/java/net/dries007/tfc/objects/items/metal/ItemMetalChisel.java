@@ -20,7 +20,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import net.dries007.tfc.ConfigTFC;
@@ -53,15 +52,14 @@ public class ItemMetalChisel extends ItemMetalTool
      * If the chiselMode is slab and the block can be crafted into a slab, it will be crafted into a slab.
      * If the chiselMode is polish and the block is a TFC Raw stone, it will be crafted into a polished stone.
      *
-     * @param player player player who clicked on the block
+     * @param player  player player who clicked on the block
      * @param worldIn world the block is in
-     * @param pos pos of block interacted with
-     * @param hand hand that was used to interact with the block
-     * @param facing side of block that was hit
-     * @param hitX hit position on block : x dimension
-     * @param hitY hit position on block : y dimension
-     * @param hitZ hit position on block : z dimension
-     *
+     * @param pos     pos of block interacted with
+     * @param hand    hand that was used to interact with the block
+     * @param facing  side of block that was hit
+     * @param hitX    hit position on block : x dimension
+     * @param hitY    hit position on block : y dimension
+     * @param hitZ    hit position on block : z dimension
      * @return SUCCESS if the block was chiseled, FAIL if no block was changed
      */
     @Override
@@ -140,13 +138,13 @@ public class ItemMetalChisel extends ItemMetalTool
      * called from the client, and not every one of these arguments match, the
      * cache is recalculated.
      *
-     * @param player player who clicked on the block
+     * @param player  player who clicked on the block
      * @param worldIn world the block is in
-     * @param pos pos of block interacted with
-     * @param facing side of block that was hit
-     * @param hitX hit position on block : x dimension
-     * @param hitY hit position on block : y dimension
-     * @param hitZ hit position on block : z dimension
+     * @param pos     pos of block interacted with
+     * @param facing  side of block that was hit
+     * @param hitX    hit position on block : x dimension
+     * @param hitY    hit position on block : y dimension
+     * @param hitZ    hit position on block : z dimension
      * @return null if the operation would not succeed. resulting state for if it would succeed.
      */
     public static IBlockState getChiselResultState(
@@ -231,10 +229,10 @@ public class ItemMetalChisel extends ItemMetalTool
     /**
      * Determines what ItemBlocks can be crafted from a single ingredient in a given pattern
      *
-     * @param world              world intance
-     * @param craftingIngredient
-     * @param craftingIndices
-     * @return
+     * @param world              world instance
+     * @param craftingIngredient ingredient to use to try to craft stairs or slabs with
+     * @param craftingIndices    stair pattern or slab pattern indices
+     * @return the result of crafting the ingredient in the listed pattern, null if no crafting result
      */
     @Nullable
     private static ItemStack findCraftingResult(World world, ItemStack craftingIngredient, int[] craftingIndices)
