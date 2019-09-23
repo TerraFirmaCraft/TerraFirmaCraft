@@ -5,13 +5,12 @@
 
 package net.dries007.tfc.util.skills;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import net.dries007.tfc.api.capability.player.IPlayerData;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class SmithingSkill extends Skill
 {
@@ -35,9 +34,13 @@ public class SmithingSkill extends Skill
     public static void copySkillBonus(ItemStack to, ItemStack from)
     {
         NBTTagCompound fromNbt = from.getTagCompound();
-        NBTTagCompound toNbt = to.getTagCompound();
-        if (fromNbt != null && toNbt != null)
+        if (fromNbt != null)
         {
+            if (!to.hasTagCompound()) {
+                to.setTagCompound(new NBTTagCompound());
+            }
+            NBTTagCompound toNbt = to.getTagCompound();
+            //noinspection ConstantConditions
             toNbt.setInteger(SKILL_TYPE, fromNbt.getInteger(SKILL_TYPE));
             toNbt.setFloat(SKILL_VALUE, fromNbt.getFloat(SKILL_VALUE));
         }
