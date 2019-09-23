@@ -5,8 +5,39 @@
 
 package net.dries007.tfc;
 
-import java.util.List;
-
+import net.dries007.tfc.api.capability.ItemStickCapability;
+import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
+import net.dries007.tfc.api.capability.damage.DamageType;
+import net.dries007.tfc.api.capability.egg.CapabilityEgg;
+import net.dries007.tfc.api.capability.egg.EggHandler;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.FoodHandler;
+import net.dries007.tfc.api.capability.food.FoodStatsTFC;
+import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
+import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
+import net.dries007.tfc.api.capability.player.IPlayerData;
+import net.dries007.tfc.api.capability.player.PlayerDataHandler;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.util.IPlaceableItem;
+import net.dries007.tfc.network.PacketCalendarUpdate;
+import net.dries007.tfc.network.PacketFoodStatsReplace;
+import net.dries007.tfc.network.PacketSkillsUpdate;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
+import net.dries007.tfc.objects.container.CapabilityContainerListener;
+import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.CalendarWorldData;
+import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.util.skills.SmithingSkill;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
@@ -44,39 +75,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
-import net.dries007.tfc.api.capability.ItemStickCapability;
-import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
-import net.dries007.tfc.api.capability.damage.DamageType;
-import net.dries007.tfc.api.capability.egg.CapabilityEgg;
-import net.dries007.tfc.api.capability.egg.EggHandler;
-import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.capability.food.FoodHandler;
-import net.dries007.tfc.api.capability.food.FoodStatsTFC;
-import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
-import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
-import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
-import net.dries007.tfc.api.capability.player.IPlayerData;
-import net.dries007.tfc.api.capability.player.PlayerDataHandler;
-import net.dries007.tfc.api.capability.size.CapabilityItemSize;
-import net.dries007.tfc.api.capability.size.IItemSize;
-import net.dries007.tfc.api.capability.size.Size;
-import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.api.util.IPlaceableItem;
-import net.dries007.tfc.network.PacketCalendarUpdate;
-import net.dries007.tfc.network.PacketFoodStatsReplace;
-import net.dries007.tfc.network.PacketSkillsUpdate;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
-import net.dries007.tfc.objects.container.CapabilityContainerListener;
-import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.util.calendar.CalendarWorldData;
-import net.dries007.tfc.util.climate.ClimateTFC;
-import net.dries007.tfc.util.skills.SmithingSkill;
-import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
+import java.util.List;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -120,7 +119,7 @@ public final class CommonEventHandler
             if (skillModifier > 0)
             {
                 // Up to 2x modifier for break speed for skill bonuses on tools
-                event.setNewSpeed(event.getOriginalSpeed() / (1 + skillModifier * 1.5f));
+                event.setNewSpeed(event.getOriginalSpeed() + (event.getOriginalSpeed() * skillModifier));
             }
         }
     }
