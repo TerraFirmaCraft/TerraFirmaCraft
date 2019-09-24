@@ -51,6 +51,25 @@ public abstract class Skill implements INBTSerializable<NBTTagCompound>
     }
 
     /**
+     * Helper method to set this skill total level.
+     * Should match getTotalLevel()
+     *
+     * @param value a value between [0, 1]
+     */
+    public abstract void setTotalLevel(double value);
+
+    /**
+     * Helper method to add levels to this skill's total level.
+     * Should match getTotalLevel()
+     *
+     * @param value a value between [0, 1]
+     */
+    public void addTotalLevel(double value)
+    {
+        setTotalLevel(Math.min(getTotalLevel() + value, 1D));
+    }
+
+    /**
      * Subclasses should call this when the skill updates
      */
     protected final void updateAndSync()

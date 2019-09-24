@@ -29,10 +29,7 @@ import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCKeybindings;
 import net.dries007.tfc.client.gui.overlay.PlayerDataOverlay;
 import net.dries007.tfc.client.render.animal.RenderAnimalTFCFamiliarity;
-import net.dries007.tfc.command.CommandFindVeins;
-import net.dries007.tfc.command.CommandHeat;
-import net.dries007.tfc.command.CommandStripWorld;
-import net.dries007.tfc.command.CommandTimeTFC;
+import net.dries007.tfc.command.*;
 import net.dries007.tfc.network.*;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
@@ -211,6 +208,7 @@ public final class TerraFirmaCraft
 
         event.registerServerCommand(new CommandStripWorld());
         event.registerServerCommand(new CommandHeat());
+        event.registerServerCommand(new CommandSkill());
         event.registerServerCommand(new CommandTimeTFC());
         event.registerServerCommand(new CommandFindVeins());
     }

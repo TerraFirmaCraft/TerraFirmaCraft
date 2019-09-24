@@ -31,7 +31,15 @@ public class SimpleSkill extends Skill
     @Override
     public float getLevel()
     {
-        return 0.25f * amount;
+        // checks >=4f for full progress bar in MASTER tier.
+        return amount >= 4f ? 1.0F : amount % 1.0F;
+    }
+
+    @Override
+    public void setTotalLevel(double value)
+    {
+        amount = (float) value * 4f;
+        updateAndSync();
     }
 
     public void add(float amount)

@@ -5,12 +5,13 @@
 
 package net.dries007.tfc.util.skills;
 
-import net.dries007.tfc.api.capability.player.IPlayerData;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 
 public class SmithingSkill extends Skill
 {
@@ -82,7 +83,20 @@ public class SmithingSkill extends Skill
     @Override
     public float getLevel()
     {
-        return (getSkillSum() % 40) / 40.0f;
+        int totalSkill = getSkillSum();
+        // checks >=160 for full progress bar in MASTER tier.
+        return totalSkill >= 160 ? 1.0F : (totalSkill % 40) / 40.0f;
+    }
+
+    @Override
+    public void setTotalLevel(double value)
+    {
+        //Evenly distribute value accordingly
+        for (Type smithType : Type.values())
+        {
+            skillLevels[smithType.ordinal()] = (int) (value * smithType.getMax());
+        }
+        updateAndSync();
     }
 
     @Override
@@ -115,6 +129,7 @@ public class SmithingSkill extends Skill
         {
             skillLevels[type.ordinal()] = type.getMax();
         }
+        updateAndSync();
     }
 
     private int getSkillSum()
