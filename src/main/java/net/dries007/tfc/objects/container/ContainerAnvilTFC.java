@@ -49,7 +49,7 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC> implements IButto
             // Add a step to the anvil
             if (attemptWork())
             {
-                tile.addStep(ForgeStep.valueOf(buttonID - BUTTON_ID_STEP_MIN));
+                tile.addStep(player, ForgeStep.valueOf(buttonID - BUTTON_ID_STEP_MIN));
             }
         }
         else if (buttonID == BUTTON_ID_PLAN)
