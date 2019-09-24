@@ -6,8 +6,7 @@
   ],
   "key": {
     "X": {
-      "type": "forge:ore_dict",
-      "ore": "scytheBladeBismuthBronze"
+      "item": "tfc:metal/scythe_blade/bismuth_bronze"
     },
     "S": {
       "type": "forge:ore_dict",

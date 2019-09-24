@@ -6,8 +6,7 @@
   ],
   "key": {
     "X": {
-      "type": "forge:ore_dict",
-      "ore": "javelinHeadBlueSteel"
+      "item": "tfc:metal/javelin_head/blue_steel"
     },
     "S": {
       "type": "forge:ore_dict",

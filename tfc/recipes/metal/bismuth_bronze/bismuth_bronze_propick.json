@@ -6,8 +6,7 @@
   ],
   "key": {
     "X": {
-      "type": "forge:ore_dict",
-      "ore": "propickHeadBismuthBronze"
+      "item": "tfc:metal/propick_head/bismuth_bronze"
     },
     "S": {
       "type": "forge:ore_dict",
