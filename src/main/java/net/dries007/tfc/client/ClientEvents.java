@@ -56,6 +56,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.ClimateHelper;
 import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.util.skills.SmithingSkill;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -226,8 +227,13 @@ public class ClientEvents
             {
                 nutrients.addNutrientInfo(stack, tt);
             }
+            float skillMod = SmithingSkill.getSkillBonus(stack);
+            if (skillMod > 0)
+            {
+                tt.add(I18n.format("tfc.tooltip.smithing_skill", skillMod * 100));
+            }
 
-            if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
+            if (event.getFlags().isAdvanced() && ConfigTFC.GENERAL.debug) // Only added with advanced tooltip mode + debug on
             {
                 IMetalItem metalObject = CapabilityMetalItem.getMetalItem(stack);
                 if (metalObject != null)
