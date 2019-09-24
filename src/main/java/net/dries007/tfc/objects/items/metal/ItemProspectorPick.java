@@ -59,8 +59,12 @@ public class ItemProspectorPick extends ItemMetalTool
 
             if (!worldIn.isRemote)
             {
-                float falseNegativeChance = 0.3f;
+                float falseNegativeChance = 0.4f; //Classic value was random(100) >= (60 + rank)
                 ProspectingSkill skill = CapabilityPlayerData.getSkill(player, SkillType.PROSPECTING);
+                if (skill != null)
+                {
+                    falseNegativeChance *= (1 - skill.getTotalLevel());
+                }
 
                 // Damage item and set cooldown
                 player.getHeldItem(hand).damageItem(1, player);
