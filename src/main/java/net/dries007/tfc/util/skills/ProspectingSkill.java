@@ -31,13 +31,21 @@ public class ProspectingSkill extends Skill
     @Nonnull
     public SkillTier getTier()
     {
-        return SkillTier.valueOf(level % 5);
+        return SkillTier.valueOf(level / 5);
     }
 
     @Override
     public float getLevel()
     {
-        return (level % 5) / 5.0f;
+        // checks >=20 for full progress bar in MASTER tier.
+        return level >= 20 ? 1.0F : (level % 5) / 5.0f;
+    }
+
+    @Override
+    public void setTotalLevel(double value)
+    {
+        level = (int) (value * 20);
+        updateAndSync();
     }
 
     @Override
