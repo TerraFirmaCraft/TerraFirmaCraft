@@ -75,15 +75,13 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
     public BlockBlastFurnace()
     {
         super(Material.IRON);
+        setHardness(2.0F);
+        setResistance(2.0F);
+        setHarvestLevel("pickaxe", 0);
     }
 
     public int getChimneyLevels(World world, BlockPos pos)
     {
-        if (world.getBlockState(pos.down()).getBlock() != BlocksTFC.CRUCIBLE)
-        {
-            // no crucible
-            return 0;
-        }
         for (int i = 1; i < 6; i++)
         {
             BlockPos center = pos.up(i);
