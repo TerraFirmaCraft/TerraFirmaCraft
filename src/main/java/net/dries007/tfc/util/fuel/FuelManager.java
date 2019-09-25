@@ -58,7 +58,8 @@ public final class FuelManager
         // Charcoal
         FUELS.add(new Fuel(new ItemStack(Items.COAL, 1, 1), 1800, 1350f, true));
 
-        FUELS.add(new Fuel(new ItemStack(BlocksTFC.PEAT), 2500, 680, true));
+        //Peat
+        FUELS.add(new Fuel(new ItemStack(BlocksTFC.PEAT), 2500, 680));
     }
 
     public static boolean addFuel(Fuel fuel)
