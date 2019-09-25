@@ -23,8 +23,6 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.types.Rock;
 
-import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
-
 /**
  * This is not the best example of good coding practice, but I do think it works rather well.
  * The reason for the delayed registration it because now the helper's functions can be called in the constructor of
@@ -177,12 +175,12 @@ public class OreDictionaryHelper
         {
             block = thing;
             item = null;
-            meta = WILDCARD_VALUE;
+            meta = 0;
         }
 
         private Thing(Item thing)
         {
-            this(thing, WILDCARD_VALUE);
+            this(thing, 0);
         }
 
         private Thing(Item thing, int meta)
