@@ -126,16 +126,6 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
     }
 
     @Override
-    public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance)
-    {
-        if (!worldIn.isRemote && entityIn.canTrample(worldIn, this, pos, fallDistance)) // Forge: Move logic to Entity#canTrample
-        {
-            turnToDirt(worldIn, pos);
-        }
-        super.onFallenUpon(worldIn, pos, entityIn, fallDistance);
-    }
-
-    @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, MOISTURE);
