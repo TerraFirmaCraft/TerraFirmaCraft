@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
@@ -27,6 +28,7 @@ import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
+import net.dries007.tfc.util.TFCDoubleChestItemHandler;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -92,5 +94,20 @@ public class TEChestTFC extends TileEntityChest
             return cap.getSize(stack).isSmallerThan(Size.LARGE);
         }
         return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @Nullable
+    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable net.minecraft.util.EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+            if (doubleChestHandler == null || doubleChestHandler.needsRefresh())
+                doubleChestHandler = TFCDoubleChestItemHandler.get(this);
+            if (doubleChestHandler != null && doubleChestHandler != TFCDoubleChestItemHandler.NO_ADJACENT_CHESTS_INSTANCE)
+                return (T) doubleChestHandler;
+        }
+        return super.getCapability(capability, facing);
     }
 }
