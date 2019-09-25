@@ -9,11 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.block.BlockLadder;
+import net.minecraft.init.Items;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -23,6 +24,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.DumbStorage;
+import net.dries007.tfc.api.capability.ItemStickCapability;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.Helpers;
@@ -38,6 +40,11 @@ public final class CapabilityItemSize
     public static void preInit()
     {
         CapabilityManager.INSTANCE.register(IItemSize.class, new DumbStorage<>(), ItemSizeHandler::new);
+
+        // Add hardcoded size values for vanilla items
+        CUSTOM_ITEMS.put(IIngredient.of(Items.COAL), () -> new ItemSizeHandler(Size.SMALL, Weight.MEDIUM, true));
+        CUSTOM_ITEMS.put(IIngredient.of(Items.STICK), ItemStickCapability::new);
+        CUSTOM_ITEMS.put(IIngredient.of(Items.CLAY_BALL), () -> new ItemSizeHandler(Size.SMALL, Weight.LIGHT, true));
     }
 
     /**
@@ -88,7 +95,7 @@ public final class CapabilityItemSize
         return null;
     }
 
-    @Nullable
+    @Nonnull
     public static ICapabilityProvider getCustomSize(ItemStack stack)
     {
         Set<IIngredient<ItemStack>> itemItemSet = CUSTOM_ITEMS.keySet();
@@ -99,6 +106,27 @@ public final class CapabilityItemSize
                 return CUSTOM_ITEMS.get(ingredient).get();
             }
         }
-        return null;
+        // Check for generic item types
+        Item item = stack.getItem();
+        if (item instanceof ItemTool)
+        {
+            return new ItemSizeHandler(Size.LARGE, Weight.MEDIUM, true);
+        }
+        else if (item instanceof ItemArmor)
+        {
+            return new ItemSizeHandler(Size.LARGE, Weight.HEAVY, true);
+        }
+        else if (item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof BlockLadder)
+        {
+            return new ItemSizeHandler(Size.SMALL, Weight.LIGHT, true);
+        }
+        else if (item instanceof ItemBlock)
+        {
+            return new ItemSizeHandler(Size.SMALL, Weight.MEDIUM, true);
+        }
+        else
+        {
+            return new ItemSizeHandler(Size.VERY_SMALL, Weight.LIGHT, true);
+        }
     }
 }

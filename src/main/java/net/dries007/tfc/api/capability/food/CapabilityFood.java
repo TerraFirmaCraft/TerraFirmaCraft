@@ -50,6 +50,7 @@ public class CapabilityFood
     public static final IFoodTrait.Impl PRESERVED = new IFoodTrait.Impl("preserved", 0.5f);
 
     private static final Map<String, IFoodTrait> TRAITS = new HashMap<>();
+    private static boolean markNonDecayingStacks = true;
 
     public static void preInit()
     {
@@ -59,13 +60,12 @@ public class CapabilityFood
         TRAITS.put("brined", BRINED);
         TRAITS.put("salted", SALTED); // todo: In 1.7.10 this was 0.5 for uncooked meat, 0.75 for cooked. Requires a custom class.
         TRAITS.put("pickled", PICKLED); // todo: same as above
-        TRAITS.put("preserved", PRESERVED);
+        TRAITS.put("preserved", PRESERVED); // Used by large vessels
     }
 
     public static void init()
     {
         // Add custom vanilla food instances
-
         CUSTOM_FOODS.put(IIngredient.of(Items.ROTTEN_FLESH), () -> new FoodHandler(null, new float[] {0, 0, 0, 0, 0}, 0, 0, Float.POSITIVE_INFINITY));
     }
 
@@ -78,7 +78,6 @@ public class CapabilityFood
      * Helper method to handle applying a trait to a food item.
      * Do NOT just directly apply the trait, as that can lead to strange interactions with decay dates / creation dates
      * This calculates a creation date that interpolates between no preservation (if the food is rotten), to full preservation (if the food is new)
-     * Trust me, this works. (Thank CtrlAltDavid for figuring it out)
      */
     public static void applyTrait(IFood instance, IFoodTrait trait)
     {
@@ -148,6 +147,25 @@ public class CapabilityFood
         return newStack;
     }
 
+    /**
+     * Call this from any function that is meant to create a new item stack.
+     * In MOST cases, you should use {@link CapabilityFood#updateFoodDecay(ItemStack, ItemStack)}, as the decay should transfer from input -> output
+     * This is only for where there is no input. (i.e. on a direct {@code stack.copy()} from non-food inputs
+     *
+     * @param stack the new stack
+     * @return the input stack, for chaining
+     */
+    @SuppressWarnings("unused")
+    public static ItemStack updateFoodDecayOnCreate(ItemStack stack)
+    {
+        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (cap != null)
+        {
+            cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks());
+        }
+        return stack;
+    }
+
     @Nullable
     public static ICapabilityProvider getCustomFood(ItemStack stack)
     {
@@ -185,4 +203,5 @@ public class CapabilityFood
         // Cf = (1 - p) * T + p * Ci
         return (long) ((1 - p) * CalendarTFC.PLAYER_TIME.getTicks() + p * ci);
     }
+
 }

@@ -8,7 +8,6 @@ package net.dries007.tfc;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -17,7 +16,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumActionResult;
@@ -44,7 +46,6 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
-import net.dries007.tfc.api.capability.ItemStickCapability;
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
@@ -60,8 +61,6 @@ import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
-import net.dries007.tfc.api.capability.size.Size;
-import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.capability.skill.PlayerSkillsHandler;
 import net.dries007.tfc.api.types.Metal;
@@ -268,61 +267,46 @@ public final class CommonEventHandler
     {
         ItemStack stack = event.getObject();
         Item item = stack.getItem();
-
-        // Item Size
-        // Skip items with existing capabilities
-        if (!stack.isEmpty() && CapabilityItemSize.getIItemSize(stack) == null)
+        if (!stack.isEmpty())
         {
-            boolean canStack = stack.getMaxStackSize() > 1; // This is necessary so it isn't accidentally overridden by a default implementation
-
-            // todo: Add more items here
-            ICapabilityProvider sizeHandler = CapabilityItemSize.getCustomSize(stack);
-            if (sizeHandler != null)
+            // Size
+            if (CapabilityItemSize.getIItemSize(stack) == null)
             {
+                ICapabilityProvider sizeHandler = CapabilityItemSize.getCustomSize(stack);
                 event.addCapability(CapabilityItemSize.KEY, sizeHandler);
                 if (sizeHandler instanceof IItemSize)
                 {
-                    item.setMaxStackSize(((IItemSize) sizeHandler).getStackSize(stack));
+                    // Only modify the stack size if we're shrinking the size (i.e. don't make unstackable items stackable
+                    int prevStackSize = stack.getMaxStackSize();
+                    int replacedStackSize = ((IItemSize) sizeHandler).getStackSize(stack);
+                    if (prevStackSize > replacedStackSize)
+                    {
+                        item.setMaxStackSize(replacedStackSize);
+                    }
                 }
             }
-            else if (item == Items.COAL)
-                CapabilityItemSize.add(event, Items.COAL, Size.SMALL, Weight.MEDIUM, canStack);
-            else if (item == Items.STICK)
-                event.addCapability(ItemStickCapability.KEY, new ItemStickCapability(event.getObject().getTagCompound()));
-            else if (item == Items.CLAY_BALL)
-                CapabilityItemSize.add(event, item, Size.SMALL, Weight.LIGHT, canStack);
 
-                // Final checks for general item types
-            else if (item instanceof ItemTool)
-                CapabilityItemSize.add(event, item, Size.LARGE, Weight.MEDIUM, canStack);
-            else if (item instanceof ItemArmor)
-                CapabilityItemSize.add(event, item, Size.LARGE, Weight.HEAVY, canStack);
-            else if (item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof BlockLadder)
-                CapabilityItemSize.add(event, item, Size.SMALL, Weight.LIGHT, canStack);
-            else if (item instanceof ItemBlock)
-                CapabilityItemSize.add(event, item, Size.SMALL, Weight.MEDIUM, canStack);
-            else
-                CapabilityItemSize.add(event, item, Size.VERY_SMALL, Weight.LIGHT, canStack);
-        }
-
-        if (stack.getItem() instanceof ItemFood && !stack.hasCapability(CapabilityFood.CAPABILITY, null))
-        {
-            ICapabilityProvider foodHandler = CapabilityFood.getCustomFood(stack);
-            if (foodHandler != null)
+            // Food
+            if (stack.getItem() instanceof ItemFood)
             {
-                event.addCapability(CapabilityFood.KEY, foodHandler);
+                ICapabilityProvider foodHandler = CapabilityFood.getCustomFood(stack);
+                if (foodHandler != null)
+                {
+                    event.addCapability(CapabilityFood.KEY, foodHandler);
+                }
+                else
+                {
+                    foodHandler = new FoodHandler(stack.getTagCompound(), new float[] {1, 0, 0, 0, 0}, 0, 0, 1);
+                    event.addCapability(CapabilityFood.KEY, foodHandler);
+                }
             }
-            else
-            {
-                event.addCapability(CapabilityFood.KEY, new FoodHandler(stack.getTagCompound(), new float[] {1, 0, 0, 0, 0}, 0, 0, 1));
-            }
-        }
 
-        if (!stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null) && !stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
-        {
+            // Forge / Heat. Try forge first, because it's more specific
             ICapabilityProvider forgeHandler = CapabilityForgeable.getCustomForgeable(stack);
+            boolean isForgeable = false;
             if (forgeHandler != null)
             {
+                isForgeable = true;
                 event.addCapability(CapabilityForgeable.KEY, forgeHandler);
             }
             else
@@ -333,33 +317,37 @@ public final class CommonEventHandler
                     event.addCapability(CapabilityItemHeat.KEY, heatHandler);
                 }
             }
-        }
 
-        if (item instanceof ItemArmor && !stack.hasCapability(CapabilityDamageResistance.CAPABILITY, null))
-        {
-            ICapabilityProvider damageResistance = CapabilityDamageResistance.getCustomDamageResistance(stack);
-            if (damageResistance != null)
+            // Armor
+            if (item instanceof ItemArmor)
             {
-                event.addCapability(CapabilityDamageResistance.KEY, damageResistance);
-            }
-        }
-        if (stack.getItem() == Items.EGG && !stack.hasCapability(CapabilityEgg.CAPABILITY, null))
-        {
-            event.addCapability(CapabilityEgg.KEY, new EggHandler());
-        }
-
-        ICapabilityProvider metalCapability = CapabilityMetalItem.getCustomMetalItem(stack);
-        if (metalCapability != null)
-        {
-            event.addCapability(CapabilityMetalItem.KEY, metalCapability);
-            //Bundle a forgeable capability for this item, if none is found
-            if (!stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null))
-            {
-                IMetalItem cap = (IMetalItem) metalCapability;
-                Metal metal = cap.getMetal(stack);
-                if (metal != null)
+                ICapabilityProvider damageResistance = CapabilityDamageResistance.getCustomDamageResistance(stack);
+                if (damageResistance != null)
                 {
-                    event.addCapability(CapabilityForgeable.KEY, new ForgeableHandler(null, metal.getSpecificHeat(), metal.getMeltTemp()));
+                    event.addCapability(CapabilityDamageResistance.KEY, damageResistance);
+                }
+            }
+
+            // Eggs
+            if (stack.getItem() == Items.EGG)
+            {
+                event.addCapability(CapabilityEgg.KEY, new EggHandler());
+            }
+
+            // Metal
+            ICapabilityProvider metalCapability = CapabilityMetalItem.getCustomMetalItem(stack);
+            if (metalCapability != null)
+            {
+                event.addCapability(CapabilityMetalItem.KEY, metalCapability);
+                if (!isForgeable)
+                {
+                    // Add a forgeable capability for this item, if none is found
+                    IMetalItem cap = (IMetalItem) metalCapability;
+                    Metal metal = cap.getMetal(stack);
+                    if (metal != null)
+                    {
+                        event.addCapability(CapabilityForgeable.KEY, new ForgeableHandler(null, metal.getSpecificHeat(), metal.getMeltTemp()));
+                    }
                 }
             }
         }

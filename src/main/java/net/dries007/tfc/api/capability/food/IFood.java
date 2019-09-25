@@ -12,6 +12,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -86,6 +87,14 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
      * @return a value between 0 and infinity (0 = instant decay, infinity = never decay)
      */
     float getDecayModifier();
+
+    /**
+     * Called from {@link net.dries007.tfc.CommonEventHandler#attachItemCapabilities(AttachCapabilitiesEvent)}
+     * If the item is a food capability item, and it was created before the post init, we assume that it is a technical stack, and will not appear in the world without a copy. As such, we set it to non-decaying.
+     * This is NOT SERIALIZED on the capability - as a result it will not persist across {@link ItemStack#copy()},
+     * See TerraFirmaCraft#458
+     */
+    void setNonDecaying();
 
     /**
      * Gets the current list of traits on this food
