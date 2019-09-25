@@ -25,6 +25,7 @@ import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+@SuppressWarnings("WeakerAccess")
 public class ItemOreTFC extends ItemTFC implements IMetalItem
 {
     private static final Map<Ore, ItemOreTFC> MAP = new HashMap<>();
@@ -66,9 +67,18 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
             OreDictionaryHelper.register(this, "gem", ore);
             //noinspection ConstantConditions
             if (ore.getRegistryName().getPath().equals("lapis_lazuli"))
+            {
                 OreDictionaryHelper.register(this, "gem", "lapis");
+                OreDictionaryHelper.register(this, "ore", "lapis");
+            }
+            if (ore.getRegistryName().getPath().equals("cinnabar"))
+            {
+                OreDictionaryHelper.register(this, "ore", "cinnabar");
+            }
             if (ore.getRegistryName().getPath().equals("bituminous_coal"))
+            {
                 OreDictionaryHelper.register(this, "gem", "coal");
+            }
         }
     }
 

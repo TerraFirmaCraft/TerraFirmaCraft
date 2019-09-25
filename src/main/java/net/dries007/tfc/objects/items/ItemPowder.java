@@ -16,6 +16,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.Powder;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class ItemPowder extends ItemTFC
 {
@@ -39,6 +40,10 @@ public class ItemPowder extends ItemTFC
         if (MAP.put(powder, this) != null) throw new IllegalStateException("There can only be one.");
         setMaxDamage(0);
         OreDictionaryHelper.register(this, "dust", powder);
+        if (powder == Powder.LAPIS_LAZULI)
+        {
+            OreDictionaryHelper.register(this, "dust", "lapis");
+        }
     }
 
     @Nonnull
