@@ -3310,14 +3310,14 @@ item.tfc.goldpan.gravel.name=带沙砾的淘金盘
 
 item.tfc.powder.flux.name=助焊剂
 item.tfc.powder.coke.name=焦炭
-item.tfc.powder.kaolinite_powder.name=高岭石粉
-item.tfc.powder.graphite_powder.name=石墨粉
-item.tfc.powder.sulfur_powder.name=硫磺粉
-item.tfc.powder.saltpeter_powder.name=硝石粉
-item.tfc.powder.hematite_powder.name=赤铁矿粉
-item.tfc.powder.lapis_lazuli_powder.name=青金石粉
-item.tfc.powder.limonite_powder.name=褐铁矿粉
-item.tfc.powder.malachite_powder.name=孔雀石粉
+item.tfc.powder.kaolinite.name=高岭石粉
+item.tfc.powder.graphite.name=石墨粉
+item.tfc.powder.sulfur.name=硫磺粉
+item.tfc.powder.saltpeter.name=硝石粉
+item.tfc.powder.hematite.name=赤铁矿粉
+item.tfc.powder.lapis_lazuli.name=青金石粉
+item.tfc.powder.limonite.name=褐铁矿粉
+item.tfc.powder.malachite.name=孔雀石粉
 item.tfc.powder.salt.name=盐
 item.tfc.powder.fertilizer.name=肥料
 
