@@ -15,12 +15,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -34,6 +36,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.GameRuleChangeEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
@@ -90,6 +93,26 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public final class CommonEventHandler
 {
+    /**
+     * Fill thirst after drinking vanilla water bottles or milk
+     */
+    @SubscribeEvent
+    public static void onEntityUseItem(LivingEntityUseItemEvent.Finish event)
+    {
+        ItemStack usedItem = event.getItem();
+        if (usedItem.getItem() == Items.MILK_BUCKET || PotionUtils.getPotionFromItem(usedItem) == PotionTypes.WATER)
+        {
+            if (event.getEntityLiving() instanceof EntityPlayerMP)
+            {
+                EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
+                if (player.getFoodStats() instanceof FoodStatsTFC)
+                {
+                    ((FoodStatsTFC) player.getFoodStats()).addThirst(40); //Same as jug
+                }
+            }
+        }
+    }
+
     /**
      * Make leaves drop sticks
      */
