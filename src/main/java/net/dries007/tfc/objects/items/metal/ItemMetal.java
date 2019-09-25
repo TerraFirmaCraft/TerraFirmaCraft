@@ -20,6 +20,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.forge.ForgeableHandler;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.Size;
@@ -58,7 +59,7 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             {
                 OreDictionaryHelper.register(this, "ingot", "double", "Any", "Bronze");
             }
-            if (metal == Metal.WROUGHT_IRON)
+            if (metal == Metal.WROUGHT_IRON && ConfigTFC.GENERAL.oreDictIron)
             {
                 OreDictionaryHelper.register(this, "ingot", "double", "Iron");
             }
@@ -70,7 +71,7 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             {
                 OreDictionaryHelper.register(this, "sheet", "double", "Any", "Bronze");
             }
-            if (metal == Metal.WROUGHT_IRON)
+            if (metal == Metal.WROUGHT_IRON && ConfigTFC.GENERAL.oreDictIron)
             {
                 OreDictionaryHelper.register(this, "sheet", "double", "Iron");
             }
@@ -86,14 +87,14 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             {
                 OreDictionaryHelper.register(this, type, "Any", "Bronze");
             }
-            if (type == Metal.ItemType.SHEET)
+            if (type == Metal.ItemType.SHEET && ConfigTFC.GENERAL.oreDictPlate)
             {
                 OreDictionaryHelper.register(this, "plate", metal);
             }
-            if (metal == Metal.WROUGHT_IRON)
+            if (metal == Metal.WROUGHT_IRON && ConfigTFC.GENERAL.oreDictIron)
             {
                 OreDictionaryHelper.register(this, type, "Iron");
-                if (type == Metal.ItemType.SHEET) //Register plate for iron too
+                if (type == Metal.ItemType.SHEET && ConfigTFC.GENERAL.oreDictPlate) //Register plate for iron too
                 {
                     OreDictionaryHelper.register(this, "plate", "Iron");
                 }

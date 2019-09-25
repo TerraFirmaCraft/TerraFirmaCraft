@@ -257,6 +257,14 @@ public class ConfigTFC
         @Config.RangeDouble(min = 0, max = 1200)
         @Config.LangKey("config." + MOD_ID + ".general.regenCrops")
         public double regenCrops = 12;
+
+        @Config.Comment("Add iron ore dictionary to wrought iron items?")
+        @Config.LangKey("config." + MOD_ID + ".general.oreDictIron")
+        public boolean oreDictIron = false;
+
+        @Config.Comment("Add plate ore dictionary to sheet items?")
+        @Config.LangKey("config." + MOD_ID + ".general.oreDictPlate")
+        public boolean oreDictPlate = false;
     }
 
     public static class ClientCFG

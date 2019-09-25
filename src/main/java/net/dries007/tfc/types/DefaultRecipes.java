@@ -384,22 +384,22 @@ public final class DefaultRecipes
             new QuernRecipe(IIngredient.of("gemCryolite"), new ItemStack(Items.REDSTONE, 8)).setRegistryName("cryolite"),
 
             //Hematite
-            new QuernRecipe(IIngredient.of("oreHematiteSmall"), new ItemStack(ItemPowder.get(Powder.HEMATITE_POWDER), 2)).setRegistryName("hematite_powder_from_small"),
-            new QuernRecipe(IIngredient.of("oreHematitePoor"), new ItemStack(ItemPowder.get(Powder.HEMATITE_POWDER), 3)).setRegistryName("hematite_powder_from_poor"),
-            new QuernRecipe(IIngredient.of("oreHematiteNormal"), new ItemStack(ItemPowder.get(Powder.HEMATITE_POWDER), 5)).setRegistryName("hematite_powder_from_normal"),
-            new QuernRecipe(IIngredient.of("oreHematiteRich"), new ItemStack(ItemPowder.get(Powder.HEMATITE_POWDER), 7)).setRegistryName("hematite_powder_from_rich"),
+            new QuernRecipe(IIngredient.of("oreHematiteSmall"), new ItemStack(ItemPowder.get(Powder.HEMATITE), 2)).setRegistryName("hematite_powder_from_small"),
+            new QuernRecipe(IIngredient.of("oreHematitePoor"), new ItemStack(ItemPowder.get(Powder.HEMATITE), 3)).setRegistryName("hematite_powder_from_poor"),
+            new QuernRecipe(IIngredient.of("oreHematiteNormal"), new ItemStack(ItemPowder.get(Powder.HEMATITE), 5)).setRegistryName("hematite_powder_from_normal"),
+            new QuernRecipe(IIngredient.of("oreHematiteRich"), new ItemStack(ItemPowder.get(Powder.HEMATITE), 7)).setRegistryName("hematite_powder_from_rich"),
 
             //Limonite
-            new QuernRecipe(IIngredient.of("oreLimoniteSmall"), new ItemStack(ItemPowder.get(Powder.LIMONITE_POWDER), 2)).setRegistryName("limonite_powder_from_small"),
-            new QuernRecipe(IIngredient.of("oreLimonitePoor"), new ItemStack(ItemPowder.get(Powder.LIMONITE_POWDER), 3)).setRegistryName("limonite_powder_from_poor"),
-            new QuernRecipe(IIngredient.of("oreLimoniteNormal"), new ItemStack(ItemPowder.get(Powder.LIMONITE_POWDER), 5)).setRegistryName("limonite_powder_from_normal"),
-            new QuernRecipe(IIngredient.of("oreLimoniteRich"), new ItemStack(ItemPowder.get(Powder.LIMONITE_POWDER), 7)).setRegistryName("limonite_powder_from_rich"),
+            new QuernRecipe(IIngredient.of("oreLimoniteSmall"), new ItemStack(ItemPowder.get(Powder.LIMONITE), 2)).setRegistryName("limonite_powder_from_small"),
+            new QuernRecipe(IIngredient.of("oreLimonitePoor"), new ItemStack(ItemPowder.get(Powder.LIMONITE), 3)).setRegistryName("limonite_powder_from_poor"),
+            new QuernRecipe(IIngredient.of("oreLimoniteNormal"), new ItemStack(ItemPowder.get(Powder.LIMONITE), 5)).setRegistryName("limonite_powder_from_normal"),
+            new QuernRecipe(IIngredient.of("oreLimoniteRich"), new ItemStack(ItemPowder.get(Powder.LIMONITE), 7)).setRegistryName("limonite_powder_from_rich"),
 
             //Malachite
-            new QuernRecipe(IIngredient.of("oreMalachiteSmall"), new ItemStack(ItemPowder.get(Powder.MALACHITE_POWDER), 2)).setRegistryName("malachite_powder_from_small"),
-            new QuernRecipe(IIngredient.of("oreMalachitePoor"), new ItemStack(ItemPowder.get(Powder.MALACHITE_POWDER), 3)).setRegistryName("malachite_powder_from_poor"),
-            new QuernRecipe(IIngredient.of("oreMalachiteNormal"), new ItemStack(ItemPowder.get(Powder.MALACHITE_POWDER), 5)).setRegistryName("malachite_powder_from_normal"),
-            new QuernRecipe(IIngredient.of("oreMalachiteRich"), new ItemStack(ItemPowder.get(Powder.MALACHITE_POWDER), 7)).setRegistryName("malachite_powder_from_rich"),
+            new QuernRecipe(IIngredient.of("oreMalachiteSmall"), new ItemStack(ItemPowder.get(Powder.MALACHITE), 2)).setRegistryName("malachite_powder_from_small"),
+            new QuernRecipe(IIngredient.of("oreMalachitePoor"), new ItemStack(ItemPowder.get(Powder.MALACHITE), 3)).setRegistryName("malachite_powder_from_poor"),
+            new QuernRecipe(IIngredient.of("oreMalachiteNormal"), new ItemStack(ItemPowder.get(Powder.MALACHITE), 5)).setRegistryName("malachite_powder_from_normal"),
+            new QuernRecipe(IIngredient.of("oreMalachiteRich"), new ItemStack(ItemPowder.get(Powder.MALACHITE), 7)).setRegistryName("malachite_powder_from_rich"),
 
             //Bone meal
             new QuernRecipe(IIngredient.of("bone"), new ItemStack(Items.DYE, 3, EnumDyeColor.WHITE.getDyeDamage())).setRegistryName("bone_meal_from_bone"),
@@ -407,13 +407,13 @@ public final class DefaultRecipes
 
             //Misc
             new QuernRecipe(IIngredient.of("gemSylvite"), new ItemStack(ItemPowder.get(Powder.FERTILIZER), 4)).setRegistryName("sylvite"),
-            new QuernRecipe(IIngredient.of("gemSulfur"), new ItemStack(ItemPowder.get(Powder.SULFUR_POWDER), 4)).setRegistryName("sulfur"),
-            new QuernRecipe(IIngredient.of("gemSaltpeter"), new ItemStack(ItemPowder.get(Powder.SALTPETER_POWDER), 4)).setRegistryName("saltpeter"),
+            new QuernRecipe(IIngredient.of("gemSulfur"), new ItemStack(ItemPowder.get(Powder.SULFUR), 4)).setRegistryName("sulfur"),
+            new QuernRecipe(IIngredient.of("gemSaltpeter"), new ItemStack(ItemPowder.get(Powder.SALTPETER), 4)).setRegistryName("saltpeter"),
             new QuernRecipe(IIngredient.of("rockRocksalt"), new ItemStack(ItemPowder.get(Powder.SALT), 4)).setRegistryName("rocksalt"),
             new QuernRecipe(IIngredient.of(Items.BLAZE_ROD), new ItemStack(Items.BLAZE_POWDER, 2)).setRegistryName("blaze_powder"),
-            new QuernRecipe(IIngredient.of("gemLapisLazuli"), new ItemStack(ItemPowder.get(Powder.LAPIS_LAZULI_POWDER), 4)).setRegistryName("lapis_lazuli"),
-            new QuernRecipe(IIngredient.of("gemGraphite"), new ItemStack(ItemPowder.get(Powder.GRAPHITE_POWDER), 4)).setRegistryName("graphite_powder"),
-            new QuernRecipe(IIngredient.of("gemKaolinite"), new ItemStack(ItemPowder.get(Powder.KAOLINITE_POWDER), 4)).setRegistryName("kaolinite_powder"),
+            new QuernRecipe(IIngredient.of("gemLapisLazuli"), new ItemStack(ItemPowder.get(Powder.LAPIS_LAZULI), 4)).setRegistryName("lapis_lazuli"),
+            new QuernRecipe(IIngredient.of("gemGraphite"), new ItemStack(ItemPowder.get(Powder.GRAPHITE), 4)).setRegistryName("graphite_powder"),
+            new QuernRecipe(IIngredient.of("gemKaolinite"), new ItemStack(ItemPowder.get(Powder.KAOLINITE), 4)).setRegistryName("kaolinite_powder"),
             new QuernRecipeRandomGem(IIngredient.of("gemKimberlite"), Gem.DIAMOND).setRegistryName("diamonds")
         );
     }
@@ -456,6 +456,7 @@ public final class DefaultRecipes
             ItemStack output = new ItemStack(ItemMetal.get(metal, outputType));
             if (!output.isEmpty())
             {
+                //noinspection ConstantConditions
                 registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), ingredient, output, metal.getTier(), rules));
             }
         }
