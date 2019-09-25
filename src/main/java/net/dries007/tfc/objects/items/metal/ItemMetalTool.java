@@ -98,7 +98,6 @@ public class ItemMetalTool extends ItemMetal
                 attackSpeed = -1;
                 break;
             case PROPICK:
-                setHarvestLevel("pickaxe", harvestLevel);
                 typeDamage = 1f;
                 areaOfEffect = 1;
                 attackSpeed = -3.5f;
