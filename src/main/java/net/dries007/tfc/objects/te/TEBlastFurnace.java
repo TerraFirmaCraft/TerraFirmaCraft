@@ -251,12 +251,12 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
             }
             if (meltAmount > 0)
             {
-                //Move already molten liquid metal to the crucible.
-                //This makes the effect of slow(not so much) filling up the crucible.
+                // Move already molten liquid metal to the crucible.
+                // This makes the effect of slowly filling up the crucible.
+                // Take into account full or non-existent (removed) crucibles
                 TECrucible te = Helpers.getTE(world, pos.down(), TECrucible.class);
-                if (te != null)
+                if (te != null && te.addMetal(Metal.PIG_IRON, 1) <= 0)
                 {
-                    te.addMetal(Metal.PIG_IRON, 1);
                     meltAmount -= 1;
                 }
             }

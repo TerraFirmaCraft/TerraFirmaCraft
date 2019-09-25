@@ -61,8 +61,9 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         }
     }
 
-    public void addMetal(Metal metal, int amount)
+    public int addMetal(Metal metal, int amount)
     {
+        int overflow = Math.max(0, alloy.getAmount() + amount - CRUCIBLE_MAX_METAL_FLUID); // Amount which cannot be inserted
         alloy.add(metal, amount);
 
         //Update crucible temperature to match
@@ -70,6 +71,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         targetTemperature = metal.getMeltTemp();
 
         TerraFirmaCraft.getNetwork().sendToAllTracking(new PacketCrucibleUpdate(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
+        return overflow;
     }
 
     @Override

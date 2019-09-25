@@ -37,6 +37,9 @@ public class BlockBellows extends Block
     {
         super(Material.CIRCUITS, MapColor.GRAY);
         setSoundType(SoundType.WOOD);
+        setHardness(2.0F);
+        setResistance(2.0F);
+        setHarvestLevel("axe", 0);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
