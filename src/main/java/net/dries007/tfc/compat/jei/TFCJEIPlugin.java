@@ -11,17 +11,12 @@ import java.util.stream.Collectors;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
-import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
@@ -36,8 +31,6 @@ import net.dries007.tfc.objects.blocks.wood.BlockLoom;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 import net.dries007.tfc.objects.items.rock.ItemRock;
-import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.util.calendar.ICalendar;
 
 @JEIPlugin
 public final class TFCJEIPlugin implements IModPlugin
@@ -69,27 +62,6 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipeCategories(new LoomCategory(registry.getJeiHelpers().getGuiHelper(), LOOM_UID));
         registry.addRecipeCategories(new QuernCategory(registry.getJeiHelpers().getGuiHelper(), QUERN_UID));
         registry.addRecipeCategories(new WeldingCategory(registry.getJeiHelpers().getGuiHelper(), WELDING_UID));
-    }
-
-    @Override
-    public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry)
-    {
-        ISubtypeRegistry.ISubtypeInterpreter interpreter = stack -> {
-            IFood foodCap = stack.getCapability(CapabilityFood.CAPABILITY, null);
-            if (foodCap != null)
-            {
-                foodCap.setCreationDate(CalendarTFC.PLAYER_TIME.getTotalHours() * ICalendar.TICKS_IN_HOUR);
-                //noinspection ConstantConditions
-                return stack.getItem().getRegistryName().toString();
-            }
-            return ISubtypeRegistry.ISubtypeInterpreter.NONE;
-        };
-
-        ForgeRegistries.ITEMS.getValuesCollection().stream()
-            .filter(x -> x instanceof ItemFood)
-            .forEach(food -> {
-                subtypeRegistry.registerSubtypeInterpreter(food, interpreter);
-            });
     }
 
     @Override

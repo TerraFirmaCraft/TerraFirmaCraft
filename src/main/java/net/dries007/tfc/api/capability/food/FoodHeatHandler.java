@@ -98,6 +98,12 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
     }
 
     @Override
+    public void setNonDecaying()
+    {
+        internalFoodCap.setNonDecaying();
+    }
+
+    @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
         return capability == CapabilityFood.CAPABILITY || capability == CapabilityItemHeat.ITEM_HEAT_CAPABILITY;

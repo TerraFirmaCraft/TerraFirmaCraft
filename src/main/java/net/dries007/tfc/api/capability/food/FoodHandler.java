@@ -7,12 +7,13 @@ package net.dries007.tfc.api.capability.food;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
@@ -24,6 +25,17 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompound>
 {
+    private static final long ROTTEN_DATE = Long.MIN_VALUE;
+    private static final long NEVER_DECAY_DATE = Long.MAX_VALUE;
+    private static final long UNKNOWN_CREATION_DATE = 0;
+
+    private static boolean markStacksNonDecaying = true;
+
+    public static void setNonDecaying(boolean markStacksNonDecaying)
+    {
+        FoodHandler.markStacksNonDecaying = markStacksNonDecaying;
+    }
+
     private final List<IFoodTrait> foodTraits;
     private final float[] nutrients;
     private final float decayModifier;
@@ -31,6 +43,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     private final float calories;
 
     private long creationDate;
+    private boolean isNonDecaying;
 
     public FoodHandler()
     {
@@ -44,11 +57,12 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
 
     public FoodHandler(@Nullable NBTTagCompound nbt, float[] nutrients, float calories, float water, float decayModifier)
     {
-        this.foodTraits = new ArrayList<>();
+        this.foodTraits = new ArrayList<>(2);
         this.nutrients = new float[Nutrient.TOTAL];
         this.decayModifier = decayModifier;
         this.water = water;
         this.calories = calories;
+        this.isNonDecaying = FoodHandler.markStacksNonDecaying;
         System.arraycopy(nutrients, 0, this.nutrients, 0, nutrients.length);
 
         deserializeNBT(nbt);
@@ -67,10 +81,13 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     @Override
     public long getCreationDate()
     {
-        if (isRotten())
+        if (isNonDecaying)
         {
-            // All rotten food is equally rotten
-            this.creationDate = Long.MIN_VALUE;
+            return UNKNOWN_CREATION_DATE;
+        }
+        if (calculateRottenDate(creationDate) < CalendarTFC.PLAYER_TIME.getTicks())
+        {
+            this.creationDate = ROTTEN_DATE;
         }
         return creationDate;
     }
@@ -84,9 +101,20 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     @Override
     public long getRottenDate()
     {
-        // This avoids overflow which breaks when calculateDecayModifier() returns infinity, which happens if decay modifier = 0
-        float decayMod = getDecayModifier();
-        return decayMod == Float.POSITIVE_INFINITY ? Long.MAX_VALUE : creationDate + (long) (decayMod * CapabilityFood.DEFAULT_ROT_TICKS);
+        if (isNonDecaying)
+        {
+            return NEVER_DECAY_DATE;
+        }
+        if (creationDate == ROTTEN_DATE)
+        {
+            return ROTTEN_DATE;
+        }
+        long rottenDate = calculateRottenDate(creationDate);
+        if (rottenDate < CalendarTFC.PLAYER_TIME.getTicks())
+        {
+            return ROTTEN_DATE;
+        }
+        return rottenDate;
     }
 
     @Override
@@ -112,6 +140,12 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         }
         // The modifier returned is used to calculate time, so higher = longer
         return mod == 0 ? Float.POSITIVE_INFINITY : 1 / mod;
+    }
+
+    @Override
+    public void setNonDecaying()
+    {
+        isNonDecaying = true;
     }
 
     @Nonnull
@@ -141,10 +175,12 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setLong("creationDate", getCreationDate());
         // Traits are sorted so they match when trying to stack them
-        if (!foodTraits.isEmpty())
+        NBTTagList traitList = new NBTTagList();
+        for (IFoodTrait trait : foodTraits)
         {
-            nbt.setString("traits", foodTraits.stream().map(IFoodTrait::getName).sorted().collect(Collectors.joining(",")));
+            traitList.appendTag(new NBTTagString(trait.getName()));
         }
+        nbt.setTag("traits", traitList);
         return nbt;
     }
 
@@ -158,17 +194,12 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
             if (creationDate == 0)
             {
                 // Stop defaulting to zero, in cases where the item stack is cloned or copied from one that was initialized at load (and thus was before the calendar was initialized)
-                creationDate = CalendarTFC.PLAYER_TIME.getTotalHours() * ICalendar.TICKS_IN_HOUR;
+                creationDate = (int) (CalendarTFC.PLAYER_TIME.getTotalHours() / ConfigTFC.GENERAL.foodDecayStackTime) * ICalendar.TICKS_IN_HOUR * ConfigTFC.GENERAL.foodDecayStackTime;
             }
-
-            // Read the traits and apply each one (if they exist)
-            if (nbt.hasKey("traits"))
+            NBTTagList traitList = nbt.getTagList("traits", 8 /* String */);
+            for (int i = 0; i < traitList.tagCount(); i++)
             {
-                String serializedFoodTraits = nbt.getString("traits");
-                for (String traitName : serializedFoodTraits.split(","))
-                {
-                    foodTraits.add(CapabilityFood.getTraits().get(traitName));
-                }
+                foodTraits.add(CapabilityFood.getTraits().get(traitList.getStringTagAt(i)));
             }
         }
         else
@@ -177,5 +208,16 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
             // Food decay initially is synced with the hour. This allows items grabbed within a minute to stack
             creationDate = CalendarTFC.PLAYER_TIME.getTotalHours() * ICalendar.TICKS_IN_HOUR;
         }
+    }
+
+    private long calculateRottenDate(long creationDateIn)
+    {
+        float decayMod = getDecayModifier();
+        if (decayMod == Float.POSITIVE_INFINITY)
+        {
+            // Infinite decay modifier
+            return Long.MAX_VALUE;
+        }
+        return creationDateIn + (long) (decayMod * CapabilityFood.DEFAULT_ROT_TICKS);
     }
 }

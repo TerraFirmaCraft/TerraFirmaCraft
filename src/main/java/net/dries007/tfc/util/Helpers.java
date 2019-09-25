@@ -6,24 +6,33 @@
 package net.dries007.tfc.util;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Joiner;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockCommandBlock;
+import net.minecraft.block.BlockStructure;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -285,6 +294,101 @@ public final class Helpers
             }
         }
         return null;
+    }
+
+    /**
+     *
+     */
+    public static void handleRightClickBlockPostEventWithCallbacks(PlayerInteractEvent.RightClickBlock event, @Nullable Supplier<EnumActionResult> onItemUseCallback)
+    {
+        event.setCanceled(true);
+        EnumActionResult result = EnumActionResult.PASS;
+        // todo: verify stack is correct
+        ItemStack stack = event.getEntityPlayer().getHeldItem(event.getHand());
+        // todo: find hit pos from ray trace
+        int hitX = 0, hitY = 0, hitZ = 0;
+        EnumFacing face = event.getFace() == null ? EnumFacing.UP : event.getFace();
+        if (event.getUseItem() != Event.Result.DENY)
+        {
+            result = stack.onItemUseFirst(event.getEntityPlayer(), event.getWorld(), event.getPos(), event.getHand(), face, hitX, hitY, hitZ);
+            if (result != EnumActionResult.PASS)
+            {
+                event.setCancellationResult(result);
+                return;
+            }
+        }
+
+        boolean bypass = event.getEntityPlayer().getHeldItemMainhand().doesSneakBypassUse(event.getWorld(), event.getPos(), event.getEntityPlayer()) && event.getEntityPlayer().getHeldItemOffhand().doesSneakBypassUse(event.getWorld(), event.getPos(), event.getEntityPlayer());
+
+        if (!event.getEntityPlayer().isSneaking() || bypass || event.getUseBlock() == Event.Result.ALLOW)
+        {
+            IBlockState iblockstate = event.getWorld().getBlockState(event.getPos());
+            if (event.getUseBlock() != Event.Result.DENY)
+                if (iblockstate.getBlock().onBlockActivated(event.getWorld(), event.getPos(), iblockstate, event.getEntityPlayer(), event.getHand(), face, hitX, hitY, hitZ))
+                {
+                    result = EnumActionResult.SUCCESS;
+                }
+        }
+
+        if (stack.isEmpty())
+        {
+            event.setCancellationResult(EnumActionResult.PASS);
+        }
+        else if (event.getEntityPlayer().getCooldownTracker().hasCooldown(stack.getItem()))
+        {
+            event.setCancellationResult(EnumActionResult.PASS);
+        }
+        else
+        {
+            if (stack.getItem() instanceof ItemBlock && !event.getEntityPlayer().canUseCommandBlock())
+            {
+                Block block = ((ItemBlock) stack.getItem()).getBlock();
+
+                if (block instanceof BlockCommandBlock || block instanceof BlockStructure)
+                {
+                    event.setCancellationResult(EnumActionResult.FAIL);
+                    return;
+                }
+            }
+
+            if (event.getEntityPlayer().isCreative())
+            {
+                int j = stack.getMetadata();
+                int i = stack.getCount();
+                if (result != EnumActionResult.SUCCESS && event.getUseItem() != Event.Result.DENY
+                    || result == EnumActionResult.SUCCESS && event.getUseItem() == Event.Result.ALLOW)
+                {
+                    EnumActionResult enumactionresult;
+                    if (onItemUseCallback != null)
+                    {
+                        enumactionresult = onItemUseCallback.get();
+                    }
+                    else
+                    {
+                        enumactionresult = stack.onItemUse(event.getEntityPlayer(), event.getWorld(), event.getPos(), event.getHand(), face, hitX, hitY, hitZ);
+                    }
+                    stack.setItemDamage(j);
+                    stack.setCount(i);
+                    event.setCancellationResult(enumactionresult);
+                }
+                else
+                {
+                    event.setCancellationResult(result);
+                }
+            }
+            else
+            {
+                if (result != EnumActionResult.SUCCESS && event.getUseItem() != Event.Result.DENY
+                    || result == EnumActionResult.SUCCESS && event.getUseItem() == Event.Result.ALLOW)
+                {
+                    ItemStack copyBeforeUse = stack.copy();
+                    result = stack.onItemUse(event.getEntityPlayer(), event.getWorld(), event.getPos(), event.getHand(), event.getFace(), hitX, hitY, hitZ);
+                    if (stack.isEmpty())
+                        net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(event.getEntityPlayer(), copyBeforeUse, event.getHand());
+                }
+                event.setCancellationResult(result);
+            }
+        }
     }
 
     public static void writeResourceLocation(ByteBuf buf, @Nullable ResourceLocation loc)

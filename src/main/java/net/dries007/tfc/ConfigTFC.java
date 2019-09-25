@@ -257,6 +257,11 @@ public class ConfigTFC
         @Config.RangeDouble(min = 0, max = 1200)
         @Config.LangKey("config." + MOD_ID + ".general.regenCrops")
         public double regenCrops = 12;
+
+        @Config.Comment("The number of hours to which initial food decay will be synced. When a food item is dropped, it's initial expiration date will be rounded to the closest multiple of this (in hours).")
+        @Config.RangeInt(min = 1, max = 48)
+        @Config.LangKey("config." + MOD_ID + ".general.foodDecayStackTime")
+        public int foodDecayStackTime = 6;
     }
 
     public static class ClientCFG

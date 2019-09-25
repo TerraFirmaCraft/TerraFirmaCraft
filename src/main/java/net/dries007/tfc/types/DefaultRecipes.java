@@ -62,6 +62,9 @@ import static net.dries007.tfc.objects.fluids.FluidsTFC.*;
 import static net.dries007.tfc.types.DefaultMetals.*;
 import static net.dries007.tfc.util.forge.ForgeRule.*;
 
+/**
+ * In 1.14+, every line in here needs to be a json file. Yay, but also ugh.
+ */
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public final class DefaultRecipes
 {
