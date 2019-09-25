@@ -58,6 +58,7 @@ public class BlockWorkbenchTFC extends BlockWorkbench
         setHardness(2.0F).setResistance(5.0F);
         setHarvestLevel("axe", 0);
         OreDictionaryHelper.register(this, "workbench");
+        OreDictionaryHelper.register(this, "crafting", "table", "wood");
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
@@ -70,7 +71,7 @@ public class BlockWorkbenchTFC extends BlockWorkbench
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, @Nullable BlockPos pos, IBlockState state, @Nullable EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, @Nonnull BlockPos pos, IBlockState state, @Nullable EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if (worldIn.isRemote || playerIn == null)
         {
@@ -84,6 +85,7 @@ public class BlockWorkbenchTFC extends BlockWorkbench
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     @ParametersAreNonnullByDefault
     @MethodsReturnNonnullByDefault
     public static class InterfaceCraftingTable implements IInteractionObject

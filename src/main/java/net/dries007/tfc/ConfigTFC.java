@@ -35,7 +35,6 @@ public class ConfigTFC
     @Config.LangKey("config." + MOD_ID + ".world")
     public static final WorldCFG WORLD = new WorldCFG();
 
-    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
     {
@@ -263,6 +262,14 @@ public class ConfigTFC
         @Config.RangeInt(min = 1, max = 48)
         @Config.LangKey("config." + MOD_ID + ".general.foodDecayStackTime")
         public int foodDecayStackTime = 6;
+
+        @Config.Comment("Add iron ore dictionary to wrought iron items?")
+        @Config.LangKey("config." + MOD_ID + ".general.oreDictIron")
+        public boolean oreDictIron = false;
+
+        @Config.Comment("Add plate ore dictionary to sheet items?")
+        @Config.LangKey("config." + MOD_ID + ".general.oreDictPlate")
+        public boolean oreDictPlate = false;
     }
 
     public static class ClientCFG
