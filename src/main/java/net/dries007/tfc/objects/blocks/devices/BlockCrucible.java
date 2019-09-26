@@ -16,10 +16,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -162,6 +166,17 @@ public class BlockCrucible extends Block implements IHeatConsumerBlock
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TECrucible te = Helpers.getTE(worldIn, pos, TECrucible.class);
+        if (te != null)
+        {
+            te.onBreakBlock(worldIn, pos, state);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return false;
@@ -185,5 +200,28 @@ public class BlockCrucible extends Block implements IHeatConsumerBlock
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TECrucible();
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        if (!worldIn.isRemote)
+        {
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (nbt != null)
+            {
+                TECrucible te = Helpers.getTE(worldIn, pos, TECrucible.class);
+                if (te != null)
+                {
+                    te.readFromItemTag(nbt);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        //breakBlock already handle this
     }
 }
