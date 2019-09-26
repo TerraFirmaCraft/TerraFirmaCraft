@@ -8,9 +8,12 @@ package net.dries007.tfc.objects.te;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -24,9 +27,12 @@ import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.network.PacketCrucibleUpdate;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.util.Alloy;
+import net.dries007.tfc.util.Helpers;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class TECrucible extends TEInventory implements ITickable, ITileFields
 {
@@ -235,6 +241,34 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
     public int getFieldCount()
     {
         return 1;
+    }
+
+    @Override
+    public void onBreakBlock(World world, BlockPos pos, IBlockState state)
+    {
+        //Only carry to itemstack the alloy fluid
+        super.onBreakBlock(world, pos, state);
+        ItemStack stack = new ItemStack(BlocksTFC.CRUCIBLE);
+        if (alloy.getAmount() > 0)
+        {
+            stack.setTagCompound(this.writeToItemTag());
+        }
+        Helpers.spawnItemStack(world, pos, stack);
+    }
+
+    public NBTTagCompound writeToItemTag()
+    {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setTag("alloy", alloy.serializeNBT());
+        return nbt;
+    }
+
+    public void readFromItemTag(NBTTagCompound nbt)
+    {
+        alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
+
+        // Also set the cached alloyResult:
+        alloyResult = alloy.getResult();
     }
 
     @Override
