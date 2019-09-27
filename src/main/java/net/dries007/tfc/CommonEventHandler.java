@@ -71,7 +71,7 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketFoodStatsReplace;
-import net.dries007.tfc.network.PacketSkillsUpdate;
+import net.dries007.tfc.network.PacketPlayerDataUpdate;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.devices.BlockQuern;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
@@ -443,7 +443,7 @@ public final class CommonEventHandler
             IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
             if (skills != null)
             {
-                TerraFirmaCraft.getNetwork().sendTo(new PacketSkillsUpdate(skills.serializeNBT()), player);
+                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(skills.serializeNBT()), player);
             }
 
             // Check total players and reset calendar time ticking

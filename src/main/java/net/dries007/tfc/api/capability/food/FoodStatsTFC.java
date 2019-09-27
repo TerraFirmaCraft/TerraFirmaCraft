@@ -30,8 +30,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 @ParametersAreNonnullByDefault
 public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
 {
-    public static final float PASSIVE_HEAL_AMOUNT = 20 * 0.0005f;
-    private static final float NUTRIENT_MODIFIER = 3;
+    public static final float PASSIVE_HEAL_AMOUNT = 20 * 0.0002f; // On the display: 1 HP / 5 second
 
     private final EntityPlayer sourcePlayer;
     private final FoodStats originalStats;
@@ -346,7 +345,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
 
     private void addNutrient(int index, float amount)
     {
-        setNutrient(index, nutrients[index] + amount * NUTRIENT_MODIFIER);
+        setNutrient(index, nutrients[index] + amount);
     }
 
     private void setNutrient(int index, float amount)

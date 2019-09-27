@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.network.PacketSkillsUpdate;
+import net.dries007.tfc.network.PacketPlayerDataUpdate;
 import net.dries007.tfc.util.skills.Skill;
 import net.dries007.tfc.util.skills.SkillType;
 
@@ -38,7 +38,7 @@ public interface IPlayerData extends INBTSerializable<NBTTagCompound>
         EntityPlayer player = getPlayer();
         if (player instanceof EntityPlayerMP)
         {
-            TerraFirmaCraft.getNetwork().sendTo(new PacketSkillsUpdate(serializeNBT()), (EntityPlayerMP) player);
+            TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(serializeNBT()), (EntityPlayerMP) player);
         }
     }
 }

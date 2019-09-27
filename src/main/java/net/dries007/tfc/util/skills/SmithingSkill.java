@@ -92,6 +92,14 @@ public class SmithingSkill extends Skill
     @Override
     public void setTotalLevel(double value)
     {
+        if (value < 0)
+        {
+            value = 0;
+        }
+        if (value > 1)
+        {
+            value = 1;
+        }
         //Evenly distribute value accordingly
         for (Type smithType : Type.values())
         {
