@@ -38,6 +38,14 @@ public class SimpleSkill extends Skill
     @Override
     public void setTotalLevel(double value)
     {
+        if (value < 0)
+        {
+            value = 0;
+        }
+        if (value > 1)
+        {
+            value = 1;
+        }
         amount = (float) value * 4f;
         updateAndSync();
     }

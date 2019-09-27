@@ -44,6 +44,14 @@ public class ProspectingSkill extends Skill
     @Override
     public void setTotalLevel(double value)
     {
+        if (value < 0)
+        {
+            value = 0;
+        }
+        if (value > 1)
+        {
+            value = 1;
+        }
         level = (int) (value * 20);
         updateAndSync();
     }
