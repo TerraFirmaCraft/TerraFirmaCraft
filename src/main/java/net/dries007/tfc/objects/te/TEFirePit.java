@@ -5,27 +5,27 @@
 
 package net.dries007.tfc.objects.te;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
 
@@ -50,6 +50,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
     private int burnTicks; // Ticks remaining on the current item of fuel
     private int airTicks; // Ticks of bellows provided air remaining
     private float burnTemperature; // Temperature provided from the current item of fuel
+    private Queue<ItemStack> leftover = new LinkedList<>(); // Leftover items when we can't merge output into any output slot.
 
     public TEFirePit()
     {
@@ -132,6 +133,25 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
                 handleInputMelting(stack);
             }
         }
+        // Leftover handling
+        if (!leftover.isEmpty())
+        {
+            ItemStack outputStack = leftover.peek();
+
+            // Try inserting in any slot
+            outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);
+            outputStack = inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
+
+            // Try merging in any slot
+            outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_1));
+            outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_2));
+
+            //If any of the above succeeds
+            if (outputStack.isEmpty())
+            {
+                leftover.poll();
+            }
+        }
 
         // This is here to avoid duplication glitches
         if (requiresSlotUpdate)
@@ -157,6 +177,14 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         burnTicks = nbt.getInteger("burnTicks");
         airTicks = nbt.getInteger("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
+        if (nbt.hasKey("leftover"))
+        {
+            NBTTagList surplusItems = nbt.getTagList("leftover", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < surplusItems.tagCount(); i++)
+            {
+                leftover.add(new ItemStack(surplusItems.getCompoundTagAt(i)));
+            }
+        }
         super.readFromNBT(nbt);
 
         // Update recipe cache
@@ -170,6 +198,15 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         nbt.setFloat("temperature", temperature);
         nbt.setInteger("burnTicks", burnTicks);
         nbt.setFloat("burnTemperature", burnTemperature);
+        if (!leftover.isEmpty())
+        {
+            NBTTagList surplusList = new NBTTagList();
+            for (ItemStack stack : leftover)
+            {
+                surplusList.appendTag(stack.serializeNBT());
+            }
+            nbt.setTag("leftover", surplusList);
+        }
         return super.writeToNBT(nbt);
     }
 
@@ -331,52 +368,14 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
                 }
                 if (!outputStack.isEmpty()) // Couldn't merge directly
                 {
-                    // If both the output and input is the same food, try merging-updating the creation date to the earliest one
-                    IFood foodCap = outputStack.getCapability(CapabilityFood.CAPABILITY, null);
-                    if (foodCap != null)
-                    {
-                        // First slot merging if possible
-                        ItemStack slot1Stack = inventory.getStackInSlot(SLOT_OUTPUT_1);
-                        if (outputStack.isItemEqual(slot1Stack) && slot1Stack.getCount() < slot1Stack.getMaxStackSize())
-                        {
-                            // If both are the same food and are mergeable, ensure both have the same earliest creation date
-                            IFood output1Cap = slot1Stack.getCapability(CapabilityFood.CAPABILITY, null);
-                            if (output1Cap != null)
-                            {
-                                long earliest = Math.max(output1Cap.getCreationDate(), foodCap.getCreationDate());
-                                output1Cap.setCreationDate(earliest);
-                                int merge = Math.min(slot1Stack.getMaxStackSize(), outputStack.getCount() + slot1Stack.getCount());
-                                // Why not inventory#insertItem you ask?
-                                // 1 - we would need to update the creation date of the outputStack first before inserting, which would undesirable propagate to the second slot or even further when spit out to the world
-                                // 2 - if one of then have a trait while the other don't (ie: salted), they will not merge even after updating the creation date
-                                // 3 - It is possible to fix all of the above, but you will need to handle all possible scenarios which would make you want to just spit out the thing to the world.
-                                outputStack.shrink(merge - slot1Stack.getCount());
-                                slot1Stack.setCount(merge);
-                            }
-                        }
-
-                        //Second slot merging (remaining) if possible
-                        ItemStack slot2Stack = inventory.getStackInSlot(SLOT_OUTPUT_2);
-                        if (!outputStack.isEmpty() && outputStack.isItemEqual(slot2Stack) && slot2Stack.getCount() < slot2Stack.getMaxStackSize())
-                        {
-                            // If both are the same food and are mergeable, ensure both have the same earliest creation date
-                            IFood output2Cap = slot2Stack.getCapability(CapabilityFood.CAPABILITY, null);
-                            if (output2Cap != null)
-                            {
-                                long earliest = Math.max(output2Cap.getCreationDate(), foodCap.getCreationDate());
-                                output2Cap.setCreationDate(earliest);
-                                int merge = Math.min(slot2Stack.getMaxStackSize(), outputStack.getCount() + slot2Stack.getCount());
-                                outputStack.shrink(merge - slot2Stack.getCount());
-                                slot2Stack.setCount(merge);
-                            }
-                        }
-                    }
+                    // If both the output and input are the same food item, try merging-updating the creation date to the earliest one
+                    outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_1));
+                    // We can run this safely since CapabilityFood#mergeStack is nice and only merges if possible
+                    outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_2));
                     if (!outputStack.isEmpty())
                     {
-                        // If we got here, we failed merging foods, or this wasn't a food at all
-                        // Spit out the item in a random position. This is gonna avoid the food catching fire in the fire pit.
-                        // Unless this fire pit is placed near walls.
-                        Helpers.spawnItemStack(world, pos.offset(EnumFacing.byHorizontalIndex(Constants.RNG.nextInt(4))), outputStack);
+                        // Since we couldn't merge anyway, let's put it into a queue, like barrels
+                        leftover.add(outputStack);
                     }
                 }
             }

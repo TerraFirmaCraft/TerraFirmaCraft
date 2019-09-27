@@ -163,6 +163,61 @@ public class CapabilityFood
     }
 
     /**
+     * Merge two food itemstacks into one, if possible
+     *
+     * @param inputStack the input stack to be merged
+     * @param mergeStack the output stack that will receive the merging operation
+     * @return ItemStack.EMPTY if everything was merged or leftover inputStack
+     */
+    public static ItemStack mergeStack(ItemStack inputStack, ItemStack mergeStack)
+    {
+        if (!inputStack.isEmpty() && !mergeStack.isEmpty()
+            && mergeStack.getCount() < mergeStack.getMaxStackSize()
+            && mergeStack.isItemEqual(inputStack))
+        {
+            IFood food1Cap = inputStack.getCapability(CapabilityFood.CAPABILITY, null);
+            IFood food2Cap = mergeStack.getCapability(CapabilityFood.CAPABILITY, null);
+            if (food1Cap != null && food2Cap != null)
+            {
+                long fallbackDate1 = food1Cap.getCreationDate();
+                long fallbackDate2 = food2Cap.getCreationDate();
+                long earliest = Math.min(fallbackDate1, fallbackDate2);
+                food1Cap.setCreationDate(earliest);
+                food2Cap.setCreationDate(earliest);
+
+                // Tried using ItemHandlerHelper#canItemStacksStack(mergeStack, inputStack)
+                // but for some reason, most of the times ItemStack#areCapsCompatible returned false
+                // Even when both had the exactly same capability serialization (eg: the bellow function returns true).
+                // For now, the bellow check works as intended.
+                if (food1Cap.serializeNBT().equals(food2Cap.serializeNBT()))
+                {
+                    int merge = Math.min(mergeStack.getMaxStackSize(), mergeStack.getCount() + inputStack.getCount());
+                    inputStack.shrink(merge - mergeStack.getCount());
+                    mergeStack.setCount(merge);
+
+                    if (inputStack.isEmpty())
+                    {
+                        // Successfully merged into mergeStack
+                        return ItemStack.EMPTY;
+                    }
+                    else
+                    {
+                        // Could merge partially, reverting only the remainder inputStack
+                        food1Cap.setCreationDate(fallbackDate1);
+                    }
+                }
+                else
+                {
+                    // Can't stack even after creation date update, reverting
+                    food1Cap.setCreationDate(fallbackDate1);
+                    food2Cap.setCreationDate(fallbackDate2);
+                }
+            }
+        }
+        return inputStack;
+    }
+
+    /**
      * T = current time, Ci / Cf = initial / final creation date, Ei / Ef = initial / final expiration date, d = decay time, p = preservation modifier
      *
      * To apply preservation p at time T: want remaining decay fraction to be invariant under preservation
