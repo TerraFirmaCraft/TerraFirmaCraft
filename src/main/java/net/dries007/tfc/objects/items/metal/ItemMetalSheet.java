@@ -5,23 +5,25 @@
 
 package net.dries007.tfc.objects.items.metal;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.objects.blocks.metal.BlockMetalSheet;
 import net.dries007.tfc.objects.te.TEMetalSheet;
 import net.dries007.tfc.util.Helpers;
 
-public class ItemMetalSheet extends ItemMetal implements IPlaceableItem
+public class ItemMetalSheet extends ItemMetal
 {
     public ItemMetalSheet(Metal metal, Metal.ItemType type)
     {
@@ -29,13 +31,15 @@ public class ItemMetalSheet extends ItemMetal implements IPlaceableItem
     }
 
     @Override
-    public boolean placeItemInWorld(World world, BlockPos pos, ItemStack stack, EntityPlayer player, EnumFacing facing, Vec3d hitVec)
+    @Nonnull
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (world.getBlockState(pos).isNormalCube() && stack.getItem() instanceof ItemMetalSheet)
+        ItemStack stack = player.getHeldItem(hand);
+        if (worldIn.getBlockState(pos).isNormalCube() && stack.getItem() instanceof ItemMetalSheet)
         {
             ItemMetalSheet sheet = (ItemMetalSheet) stack.getItem();
             BlockPos posAt = pos.offset(facing);
-            IBlockState stateAt = world.getBlockState(posAt);
+            IBlockState stateAt = worldIn.getBlockState(posAt);
 
             if (stateAt.getBlock() instanceof BlockMetalSheet)
             {
@@ -43,24 +47,28 @@ public class ItemMetalSheet extends ItemMetal implements IPlaceableItem
                 Metal metal = ((BlockMetalSheet) stateAt.getBlock()).getMetal();
                 if (metal == sheet.metal)
                 {
-                    return placeSheet(world, posAt, facing);
+                    stack.shrink(1);
+                    player.setHeldItem(hand, stack);
+                    return placeSheet(worldIn, posAt, facing);
                 }
             }
-            else if (stateAt.getBlock().isReplaceable(world, posAt))
+            else if (stateAt.getBlock().isReplaceable(worldIn, posAt))
             {
                 // Place a new block
-                if (!world.isRemote)
+                if (!worldIn.isRemote)
                 {
-                    world.setBlockState(posAt, BlockMetalSheet.get(sheet.metal).getDefaultState().withProperty(BlockMetalSheet.FACE_PROPERTIES[facing.getIndex()], true));
-                    placeSheet(world, posAt, facing);
+                    worldIn.setBlockState(posAt, BlockMetalSheet.get(sheet.metal).getDefaultState().withProperty(BlockMetalSheet.FACE_PROPERTIES[facing.getIndex()], true));
+                    stack.shrink(1);
+                    player.setHeldItem(hand, stack);
+                    placeSheet(worldIn, posAt, facing);
                 }
-                return true;
+                return EnumActionResult.SUCCESS;
             }
         }
-        return false;
+        return EnumActionResult.FAIL;
     }
 
-    private boolean placeSheet(World world, BlockPos pos, EnumFacing facing)
+    private EnumActionResult placeSheet(World world, BlockPos pos, EnumFacing facing)
     {
         TEMetalSheet tile = Helpers.getTE(world, pos, TEMetalSheet.class);
         if (tile != null && !tile.getFace(facing))
@@ -70,8 +78,8 @@ public class ItemMetalSheet extends ItemMetal implements IPlaceableItem
                 tile.setFace(facing, true);
                 world.playSound(null, pos.offset(facing), SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
             }
-            return true;
+            return EnumActionResult.SUCCESS;
         }
-        return false;
+        return EnumActionResult.FAIL;
     }
 }
