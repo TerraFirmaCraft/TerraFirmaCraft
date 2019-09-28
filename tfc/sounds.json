@@ -1,12 +1,14 @@
 {
   "item.ceramicbreak": {
     "category": "ambient",
+    "subtitle": "tfc.item.ceramicbreak",
     "sounds": [
       "tfc:ceramicbreak1"
     ]
   },
   "item.firestarter": {
     "category": "ambient",
+    "subtitle": "tfc.item.firestarter",
     "sounds": [
       "tfc:firestarter1",
       "tfc:firestarter2",
@@ -22,24 +24,28 @@
   },
   "item.jug.blow": {
     "category": "ambient",
+    "subtitle": "tfc.item.jug.blow",
     "sounds": [
       "tfc:jugblow1"
     ]
   },
   "item.throw": {
     "category": "ambient",
+    "subtitle": "tfc.item.throw",
     "sounds": [
       "tfc:itemthrow"
     ]
   },
   "animal.rooster.cry": {
     "category": "ambient",
+    "subtitle": "tfc.animal.rooster.cry",
     "sounds": [
       "tfc:rooster1"
     ]
   },
   "quern.stonedrag": {
     "category": "block",
+    "subtitle": "tfc.quern.stonedrag",
     "sounds": [
       "tfc:stonedrag1",
       "tfc:stonedrag2"
@@ -47,12 +53,14 @@
   },
   "bellows.blow.air": {
     "category": "block",
+    "subtitle": "tfc.bellows.blow.air",
     "sounds": [
       "tfc:bellows1"
     ]
   },
   "dirt.slide.short": {
     "category": "block",
+    "subtitle": "tfc.dirt.slide",
     "sounds": [
       "tfc:fdirts1",
       "tfc:fdirts2"
@@ -60,6 +68,7 @@
   },
   "rock.slide.long": {
     "category": "block",
+    "subtitle": "tfc.rock.slide",
     "sounds": [
       "tfc:frockl1",
       "tfc:frockl2"
@@ -67,6 +76,7 @@
   },
   "rock.slide.short": {
     "category": "block",
+    "subtitle": "tfc.rock.slide",
     "sounds": [
       "tfc:frocks1",
       "tfc:frocks2"
@@ -74,6 +84,7 @@
   },
   "anvil.metalimpact": {
     "category": "block",
+    "subtitle": "tfc.anvil.metalimpact",
     "sounds": [
       "tfc:metalimpact1",
       "tfc:metalimpact2",
@@ -83,6 +94,7 @@
   },
   "animal.deer.say": {
     "category": "ambient",
+    "subtitle": "tfc.animal.deer.say",
     "sounds": [
       "tfc:deer1",
       "tfc:deer2",
@@ -95,6 +107,7 @@
   },
   "animal.deer.cry": {
     "category": "ambient",
+    "subtitle": "tfc.animal.deer.cry",
     "sounds": [
       "tfc:deercry1",
       "tfc:deercry2",
@@ -104,18 +117,21 @@
   },
   "animal.deer.hurt": {
     "category": "ambient",
+    "subtitle": "tfc.animal.deer.hurt",
     "sounds": [
       "tfc:deerhurt1"
     ]
   },
   "animal.deer.death": {
     "category": "ambient",
+    "subtitle": "tfc.animal.deer.death",
     "sounds": [
       "tfc:deerdeath1"
     ]
   },
   "animal.bear.say": {
     "category": "ambient",
+    "subtitle": "tfc.animal.bear.say",
     "sounds": [
       "tfc:bear1",
       "tfc:bear2",
@@ -127,6 +143,7 @@
   },
   "animal.bear.cry": {
     "category": "ambient",
+    "subtitle": "tfc.animal.bear.cry",
     "sounds": [
       "tfc:bearcry1",
       "tfc:bearcry2",
@@ -136,24 +153,28 @@
   },
   "animal.bear.cub.cry": {
     "category": "ambient",
+    "subtitle": "tfc.animal.bear.cub.cry",
     "sounds": [
       "tfc:bearcubcry1"
     ]
   },
   "animal.bear.hurt": {
     "category": "ambient",
+    "subtitle": "tfc.animal.bear.hurt",
     "sounds": [
       "tfc:bearhurt1"
     ]
   },
   "animal.bear.death": {
     "category": "ambient",
+    "subtitle": "tfc.animal.bear.death",
     "sounds": [
       "tfc:beardeath1"
     ]
   },
   "animal.pheasant.say": {
     "category": "ambient",
+    "subtitle": "tfc.animal.pheasant.say",
     "sounds": [
       "tfc:pheasant1",
       "tfc:pheasant2"
@@ -161,24 +182,28 @@
   },
   "animal.pheasant.chick.say": {
     "category": "ambient",
+    "subtitle": "tfc.animal.pheasant.chick.say",
     "sounds": [
       "tfc:pheasantchick1"
     ]
   },
   "animal.pheasant.hurt": {
     "category": "ambient",
+    "subtitle": "tfc.animal.pheasant.hurt",
     "sounds": [
       "tfc:pheasanthurt1"
     ]
   },
   "animal.pheasant.death": {
     "category": "ambient",
+    "subtitle": "tfc.animal.pheasant.death",
     "sounds": [
       "tfc:pheasantdeath1"
     ]
   },
   "animal.cricket": {
     "category": "ambient",
+    "subtitle": "tfc.animal.cricket",
     "sounds": [
       "tfc:cricket1",
       "tfc:cricket2",
@@ -188,6 +213,7 @@
   },
   "animal.frog": {
     "category": "ambient",
+    "subtitle": "tfc.animal.frog",
     "sounds": [
       "tfc:frog1"
     ]

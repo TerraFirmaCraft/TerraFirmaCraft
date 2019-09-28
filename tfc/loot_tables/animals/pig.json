@@ -10,10 +10,12 @@
           "name": "tfc:food/pork",
           "functions": [
             {
-              "function": "set_count",
+              "function": "tfc:apply_skill",
+              "skill": "butchering",
+              "add": 0.12,
               "count": {
-                "min": 1,
-                "max": 2
+                "min": 24,
+                "max": 28
               }
             },
             {
