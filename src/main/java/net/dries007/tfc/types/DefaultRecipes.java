@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.types;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -55,16 +57,19 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.agriculture.Food;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.forge.ForgeRule;
+import net.dries007.tfc.util.skills.SmithingSkill;
 
 import static net.dries007.tfc.api.types.Metal.ItemType.*;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.fluids.FluidsTFC.*;
 import static net.dries007.tfc.types.DefaultMetals.*;
 import static net.dries007.tfc.util.forge.ForgeRule.*;
+import static net.dries007.tfc.util.skills.SmithingSkill.Type.*;
 
 /**
  * In 1.14+, every line in here needs to be a json file. Yay, but also ugh.
  */
+@SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public final class DefaultRecipes
 {
@@ -282,48 +287,47 @@ public final class DefaultRecipes
         IForgeRegistry<AnvilRecipe> r = event.getRegistry();
 
         // Basic Components
-        addAnvil(r, DOUBLE_INGOT, SHEET, false, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST);
+        addAnvil(r, DOUBLE_INGOT, SHEET, false, GENERAL, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST);
 
         // Tools
-        addAnvil(r, INGOT, PICK_HEAD, true, PUNCH_LAST, BEND_NOT_LAST, DRAW_NOT_LAST);
-        addAnvil(r, INGOT, SHOVEL_HEAD, true, PUNCH_LAST, HIT_NOT_LAST);
-        addAnvil(r, INGOT, AXE_HEAD, true, PUNCH_LAST, HIT_SECOND_LAST, UPSET_THIRD_LAST);
-        addAnvil(r, INGOT, HOE_HEAD, true, PUNCH_LAST, HIT_NOT_LAST, BEND_NOT_LAST);
-        addAnvil(r, INGOT, HAMMER_HEAD, true, PUNCH_LAST, SHRINK_NOT_LAST);
-        addAnvil(r, INGOT, PROPICK_HEAD, true, PUNCH_LAST, DRAW_NOT_LAST, BEND_NOT_LAST);
-        addAnvil(r, INGOT, SAW_BLADE, true, HIT_LAST, HIT_SECOND_LAST);
-        addAnvil(r, INGOT, SWORD_BLADE, true, HIT_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
-        addAnvil(r, DOUBLE_INGOT, MACE_HEAD, true, HIT_LAST, SHRINK_NOT_LAST, BEND_NOT_LAST);
-        addAnvil(r, INGOT, SCYTHE_BLADE, true, HIT_LAST, DRAW_SECOND_LAST, BEND_THIRD_LAST);
-        addAnvil(r, INGOT, KNIFE_BLADE, true, HIT_LAST, DRAW_SECOND_LAST, DRAW_THIRD_LAST);
-        addAnvil(r, INGOT, JAVELIN_HEAD, true, HIT_LAST, HIT_SECOND_LAST, DRAW_THIRD_LAST);
-        addAnvil(r, INGOT, CHISEL_HEAD, true, HIT_LAST, HIT_NOT_LAST, DRAW_NOT_LAST);
+        addAnvil(r, INGOT, PICK_HEAD, true, TOOLS, PUNCH_LAST, BEND_NOT_LAST, DRAW_NOT_LAST);
+        addAnvil(r, INGOT, SHOVEL_HEAD, true, TOOLS, PUNCH_LAST, HIT_NOT_LAST);
+        addAnvil(r, INGOT, AXE_HEAD, true, TOOLS, PUNCH_LAST, HIT_SECOND_LAST, UPSET_THIRD_LAST);
+        addAnvil(r, INGOT, HOE_HEAD, true, TOOLS, PUNCH_LAST, HIT_NOT_LAST, BEND_NOT_LAST);
+        addAnvil(r, INGOT, HAMMER_HEAD, true, TOOLS, PUNCH_LAST, SHRINK_NOT_LAST);
+        addAnvil(r, INGOT, PROPICK_HEAD, true, TOOLS, PUNCH_LAST, DRAW_NOT_LAST, BEND_NOT_LAST);
+        addAnvil(r, INGOT, SAW_BLADE, true, TOOLS, HIT_LAST, HIT_SECOND_LAST);
+        addAnvil(r, INGOT, SWORD_BLADE, true, TOOLS, HIT_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
+        addAnvil(r, DOUBLE_INGOT, MACE_HEAD, true, TOOLS, HIT_LAST, SHRINK_NOT_LAST, BEND_NOT_LAST);
+        addAnvil(r, INGOT, SCYTHE_BLADE, true, TOOLS, HIT_LAST, DRAW_SECOND_LAST, BEND_THIRD_LAST);
+        addAnvil(r, INGOT, KNIFE_BLADE, true, TOOLS, HIT_LAST, DRAW_SECOND_LAST, DRAW_THIRD_LAST);
+        addAnvil(r, INGOT, JAVELIN_HEAD, true, TOOLS, HIT_LAST, HIT_SECOND_LAST, DRAW_THIRD_LAST);
 
         // Armor
-        addAnvil(r, DOUBLE_SHEET, UNFINISHED_HELMET, true, HIT_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
-        addAnvil(r, DOUBLE_SHEET, UNFINISHED_CHESTPLATE, true, HIT_LAST, HIT_SECOND_LAST, UPSET_THIRD_LAST);
-        addAnvil(r, DOUBLE_SHEET, UNFINISHED_GREAVES, true, BEND_ANY, DRAW_ANY, HIT_ANY);
-        addAnvil(r, SHEET, UNFINISHED_BOOTS, true, BEND_LAST, BEND_SECOND_LAST, SHRINK_THIRD_LAST);
+        addAnvil(r, DOUBLE_SHEET, UNFINISHED_HELMET, true, ARMOR, HIT_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
+        addAnvil(r, DOUBLE_SHEET, UNFINISHED_CHESTPLATE, true, ARMOR, HIT_LAST, HIT_SECOND_LAST, UPSET_THIRD_LAST);
+        addAnvil(r, DOUBLE_SHEET, UNFINISHED_GREAVES, true, ARMOR, BEND_ANY, DRAW_ANY, HIT_ANY);
+        addAnvil(r, SHEET, UNFINISHED_BOOTS, true, ARMOR, BEND_LAST, BEND_SECOND_LAST, SHRINK_THIRD_LAST);
 
         r.register(new AnvilRecipeMeasurable(new ResourceLocation(MOD_ID, "refining_bloom"), IIngredient.of(ItemsTFC.UNREFINED_BLOOM), new ItemStack(ItemsTFC.REFINED_BLOOM), Metal.Tier.TIER_II, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST));
         r.register(new AnvilRecipeSplitting(new ResourceLocation(MOD_ID, "splitting_bloom"), IIngredient.of(ItemsTFC.REFINED_BLOOM), new ItemStack(ItemsTFC.REFINED_BLOOM), 100, Metal.Tier.TIER_II, PUNCH_LAST));
         r.register(new AnvilRecipeMeasurable(new ResourceLocation(MOD_ID, "refine_bloom_ingot"), IIngredient.of(ItemsTFC.REFINED_BLOOM), new ItemStack(ItemMetal.get(Metal.WROUGHT_IRON, INGOT)), 100, Metal.Tier.TIER_II, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST));
 
-        //Shields
-        addAnvil(r, DOUBLE_SHEET, SHIELD, true, UPSET_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
+        // Shields
+        addAnvil(r, DOUBLE_SHEET, SHIELD, true, ARMOR, UPSET_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
 
         // Steel Working
-        addAnvil(r, PIG_IRON, HIGH_CARBON_STEEL);
-        addAnvil(r, HIGH_CARBON_STEEL, STEEL);
-        addAnvil(r, HIGH_CARBON_BLACK_STEEL, BLACK_STEEL);
-        addAnvil(r, HIGH_CARBON_BLUE_STEEL, BLUE_STEEL);
-        addAnvil(r, HIGH_CARBON_RED_STEEL, RED_STEEL);
+        addAnvil(r, PIG_IRON, HIGH_CARBON_STEEL, null);
+        addAnvil(r, HIGH_CARBON_STEEL, STEEL, null);
+        addAnvil(r, HIGH_CARBON_BLACK_STEEL, BLACK_STEEL, null);
+        addAnvil(r, HIGH_CARBON_BLUE_STEEL, BLUE_STEEL, null);
+        addAnvil(r, HIGH_CARBON_RED_STEEL, RED_STEEL, null);
 
-        //Vanilla iron bars and trap doors
-        addAnvil(r, "iron_bars", SHEET, WROUGHT_IRON, new ItemStack(Blocks.IRON_BARS, 8), Metal.Tier.TIER_III, UPSET_LAST, PUNCH_SECOND_LAST, PUNCH_THIRD_LAST);
-        addAnvil(r, "iron_bars_double", DOUBLE_SHEET, WROUGHT_IRON, new ItemStack(Blocks.IRON_BARS, 16), Metal.Tier.TIER_III, UPSET_LAST, PUNCH_SECOND_LAST, PUNCH_THIRD_LAST);
-        addAnvil(r, "iron_trap_door", DOUBLE_SHEET, WROUGHT_IRON, new ItemStack(Blocks.IRON_TRAPDOOR), Metal.Tier.TIER_III, UPSET_LAST, PUNCH_SECOND_LAST, PUNCH_THIRD_LAST);
-        addAnvil(r, "iron_door", SHEET, WROUGHT_IRON, new ItemStack(Items.IRON_DOOR), Metal.Tier.TIER_III, HIT_LAST, DRAW_NOT_LAST, PUNCH_NOT_LAST);
+        // Vanilla iron bars and trap doors
+        addAnvil(r, "iron_bars", SHEET, WROUGHT_IRON, new ItemStack(Blocks.IRON_BARS, 8), Metal.Tier.TIER_III, GENERAL, UPSET_LAST, PUNCH_SECOND_LAST, PUNCH_THIRD_LAST);
+        addAnvil(r, "iron_bars_double", DOUBLE_SHEET, WROUGHT_IRON, new ItemStack(Blocks.IRON_BARS, 16), Metal.Tier.TIER_III, GENERAL, UPSET_LAST, PUNCH_SECOND_LAST, PUNCH_THIRD_LAST);
+        addAnvil(r, "iron_trap_door", DOUBLE_SHEET, WROUGHT_IRON, new ItemStack(Blocks.IRON_TRAPDOOR), Metal.Tier.TIER_III, GENERAL, UPSET_LAST, PUNCH_SECOND_LAST, PUNCH_THIRD_LAST);
+        addAnvil(r, "iron_door", SHEET, WROUGHT_IRON, new ItemStack(Items.IRON_DOOR), Metal.Tier.TIER_III, GENERAL, HIT_LAST, DRAW_NOT_LAST, PUNCH_NOT_LAST);
     }
 
     @SubscribeEvent
@@ -421,7 +425,7 @@ public final class DefaultRecipes
         );
     }
 
-    private static void addAnvil(IForgeRegistry<AnvilRecipe> registry, Metal.ItemType inputType, Metal.ItemType outputType, boolean onlyToolMetals, ForgeRule... rules)
+    private static void addAnvil(IForgeRegistry<AnvilRecipe> registry, Metal.ItemType inputType, Metal.ItemType outputType, boolean onlyToolMetals, @Nullable SmithingSkill.Type skillType, ForgeRule... rules)
     {
         // Helper method for adding all recipes that take ItemType -> ItemType
         for (Metal metal : TFCRegistries.METALS.getValuesCollection())
@@ -459,12 +463,13 @@ public final class DefaultRecipes
             ItemStack output = new ItemStack(ItemMetal.get(metal, outputType));
             if (!output.isEmpty())
             {
-                registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), ingredient, output, metal.getTier(), rules));
+                //noinspection ConstantConditions
+                registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), ingredient, output, metal.getTier(), skillType, rules));
             }
         }
     }
 
-    private static void addAnvil(IForgeRegistry<AnvilRecipe> registry, ResourceLocation inputMetalLoc, ResourceLocation outputMetalLoc)
+    private static void addAnvil(IForgeRegistry<AnvilRecipe> registry, ResourceLocation inputMetalLoc, ResourceLocation outputMetalLoc, @Nullable SmithingSkill.Type skillType)
     {
         // Helper method for adding INGOT -> INGOT with different metal working
         Metal inputMetal = TFCRegistries.METALS.getValue(inputMetalLoc);
@@ -476,12 +481,12 @@ public final class DefaultRecipes
             if (!input.isEmpty() && !output.isEmpty())
             {
                 //noinspection ConstantConditions
-                registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, ("ingot_" + outputMetal.getRegistryName().getPath()).toLowerCase()), IIngredient.of(input), output, inputMetal.getTier(), HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST));
+                registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, ("ingot_" + outputMetal.getRegistryName().getPath()).toLowerCase()), IIngredient.of(input), output, inputMetal.getTier(), skillType, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST));
             }
         }
     }
 
-    private static void addAnvil(IForgeRegistry<AnvilRecipe> registry, String recipeName, Metal.ItemType inputType, ResourceLocation inputMetalRes, ItemStack output, Metal.Tier tier, ForgeRule... rules)
+    private static void addAnvil(IForgeRegistry<AnvilRecipe> registry, String recipeName, Metal.ItemType inputType, ResourceLocation inputMetalRes, ItemStack output, Metal.Tier tier, @Nullable SmithingSkill.Type skillType, ForgeRule... rules)
     {
         // Helper method for adding METAL -> STACK
         Metal inputMetal = TFCRegistries.METALS.getValue(inputMetalRes);
@@ -490,7 +495,7 @@ public final class DefaultRecipes
             ItemStack input = new ItemStack(ItemMetal.get(inputMetal, inputType));
             if (!input.isEmpty() && !output.isEmpty())
             {
-                registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, recipeName), IIngredient.of(input), output, tier, rules));
+                registry.register(new AnvilRecipe(new ResourceLocation(MOD_ID, recipeName), IIngredient.of(input), output, tier, skillType, rules));
             }
         }
     }

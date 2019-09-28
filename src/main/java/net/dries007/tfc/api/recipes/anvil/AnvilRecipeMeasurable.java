@@ -34,7 +34,7 @@ public class AnvilRecipeMeasurable extends AnvilRecipe
      */
     public AnvilRecipeMeasurable(ResourceLocation name, IIngredient<ItemStack> input, ItemStack output, int specificAmount, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
     {
-        super(name, input, output, minTier, rules);
+        super(name, input, output, minTier, null, rules);
         this.isCopyRule = false;
         this.specificAmount = specificAmount;
     }
@@ -44,7 +44,7 @@ public class AnvilRecipeMeasurable extends AnvilRecipe
      */
     public AnvilRecipeMeasurable(ResourceLocation name, IIngredient<ItemStack> input, ItemStack output, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
     {
-        super(name, input, output, minTier, rules);
+        super(name, input, output, minTier, null, rules);
         this.isCopyRule = true;
     }
 
