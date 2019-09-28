@@ -14,6 +14,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -82,6 +83,10 @@ public class OreDictionaryHelper
         done = true;
         MAP.forEach((t, s) -> OreDictionary.registerOre(s, t.toItemStack()));
         MAP.clear(); // No need to keep this stuff around
+
+        // Vanilla ore dict values
+        OreDictionary.registerOre("clay", Items.CLAY_BALL);
+        OreDictionary.registerOre("charcoal", new ItemStack(Items.COAL, 1, 1));
     }
 
     /**

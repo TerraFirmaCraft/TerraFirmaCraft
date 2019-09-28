@@ -5,13 +5,11 @@
 
 package net.dries007.tfc.objects.container;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -74,32 +72,24 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
             if (recipe != null)
             {
                 slot.putStack(recipe.getOutput(this.stackCopy));
+                if (type.consumeAfterComplete())
+                {
+                    ItemStack stack = Helpers.consumeItem(this.stack, type.getAmountToConsume());
+                    if (isOffhand)
+                    {
+                        player.setHeldItem(EnumHand.OFF_HAND, stack);
+                    }
+                    else
+                    {
+                        player.setHeldItem(EnumHand.MAIN_HAND, stack);
+                    }
+                }
             }
             else
             {
                 slot.putStack(ItemStack.EMPTY);
             }
         }
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack slotClick(int slotID, int dragType, ClickType clickType, EntityPlayer player)
-    {
-        Slot slot = inventorySlots.get(0);
-        if (slot.slotNumber == slotID && slot.getHasStack() && type.consumeAfterComplete() && !player.isCreative())
-        {
-            ItemStack stack = Helpers.consumeItem(this.stack, type.getAmountToConsume());
-            if (isOffhand)
-            {
-                player.setHeldItem(EnumHand.OFF_HAND, stack);
-            }
-            else
-            {
-                player.setHeldItem(EnumHand.MAIN_HAND, stack);
-            }
-        }
-        return super.slotClick(slotID, dragType, clickType, player);
     }
 
     @Override

@@ -75,7 +75,7 @@ public enum VeinRegistry
         }
     }
 
-    public void reloadOreGen()
+    public void postInit()
     {
         String worldGenData;
         try

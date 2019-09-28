@@ -80,7 +80,7 @@ public final class ItemsTFC
     public static final Item SUGARCANE = getNull();
 
     @GameRegistry.ObjectHolder("ceramics/fire_clay")
-    public static final ItemFireClay FIRE_CLAY = getNull();
+    public static final ItemMisc FIRE_CLAY = getNull();
 
     @GameRegistry.ObjectHolder("ceramics/unfired/fire_brick")
     public static final ItemPottery UNFIRED_FIRE_BRICK = getNull();
@@ -246,7 +246,7 @@ public final class ItemsTFC
             registerPottery(simpleItems, r, "ceramics/unfired/bowl", "ceramics/fired/bowl");
             registerPottery(simpleItems, r, "ceramics/unfired/fire_brick", "ceramics/fired/fire_brick");
 
-            simpleItems.add(register(r, "ceramics/fire_clay", new ItemFireClay(), CT_MISC));
+            simpleItems.add(register(r, "ceramics/fire_clay", new ItemMisc(Size.VERY_SMALL, Weight.MEDIUM, "fire_clay"), CT_MISC));
 
             simpleItems.add(register(r, "ceramics/unfired/jug", new ItemPottery(), CT_POTTERY));
             register(r, "ceramics/fired/jug", new ItemJug(), CT_POTTERY);
@@ -281,14 +281,7 @@ public final class ItemsTFC
         {
             for (ItemAnimalHide.HideType type : ItemAnimalHide.HideType.values())
             {
-                if (type == ItemAnimalHide.HideType.SOAKED)
-                {
-                    simpleItems.add(register(r, ("hide/" + type.name() + "/" + size.name()).toLowerCase(), new ItemAnimalHide.Soaked(type, size), CT_MISC));
-                }
-                else
-                {
-                    simpleItems.add(register(r, ("hide/" + type.name() + "/" + size.name()).toLowerCase(), new ItemAnimalHide(type, size), CT_MISC));
-                }
+                simpleItems.add(register(r, ("hide/" + type.name() + "/" + size.name()).toLowerCase(), new ItemAnimalHide(type, size), CT_MISC));
             }
         }
 

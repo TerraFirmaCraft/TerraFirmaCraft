@@ -19,6 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
@@ -176,9 +177,9 @@ public final class TerraFirmaCraft
         if (event.getSide().isClient())
         {
             TFCKeybindings.init();
-            //Enable overlay to render health, thirst and hunger bars, TFC style.
+            // Enable overlay to render health, thirst and hunger bars, TFC style.
             MinecraftForge.EVENT_BUS.register(PlayerDataOverlay.getInstance());
-            //Enable to render animals familiarity
+            // Enable to render animals familiarity
             MinecraftForge.EVENT_BUS.register(RenderAnimalTFCFamiliarity.getInstance());
             GuiIngameForge.renderHealth = false;
             GuiIngameForge.renderArmor = false;
@@ -197,8 +198,14 @@ public final class TerraFirmaCraft
         }
 
         FuelManager.postInit();
+        VeinRegistry.INSTANCE.postInit();
+    }
 
-        VeinRegistry.INSTANCE.reloadOreGen();
+    @Mod.EventHandler
+    public void onServerAboutToStart(FMLServerAboutToStartEvent event)
+    {
+        // Latest possible point to stop creating non-decaying stacks
+        FoodHandler.setNonDecaying(false);
     }
 
     @Mod.EventHandler

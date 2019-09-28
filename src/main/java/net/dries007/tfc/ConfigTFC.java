@@ -258,6 +258,11 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.regenCrops")
         public double regenCrops = 12;
 
+        @Config.Comment("The number of hours to which initial food decay will be synced. When a food item is dropped, it's initial expiration date will be rounded to the closest multiple of this (in hours).")
+        @Config.RangeInt(min = 1, max = 48)
+        @Config.LangKey("config." + MOD_ID + ".general.foodDecayStackTime")
+        public int foodDecayStackTime = 6;
+
         @Config.Comment("If true, hammer must be in offhand for chisel use. If false, hammer can be in offhand or toolbar.")
         @Config.LangKey("config." + MOD_ID + ".general.requireHammerInOffHand")
         public boolean requireHammerInOffHand = true;
@@ -265,7 +270,6 @@ public class ConfigTFC
         @Config.Comment("Does the chisel have a delay on use?")
         @Config.LangKey("config." + MOD_ID + ".general.chiselDelay")
         public boolean chiselDelay = false;
-
     }
 
     public static class ClientCFG

@@ -35,6 +35,11 @@ public class ItemStickCapability extends ItemHeatHandler implements IItemSize
     private static final float MELTING_POINT = 40f;
     private static final float HEAT_CAPACITY = 1f;
 
+    public ItemStickCapability()
+    {
+        this(null);
+    }
+
     public ItemStickCapability(@Nullable NBTTagCompound nbt)
     {
         super(nbt, HEAT_CAPACITY, MELTING_POINT);
