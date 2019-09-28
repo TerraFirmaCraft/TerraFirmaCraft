@@ -27,8 +27,11 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.util.skills.ProspectingSkill;
+import net.dries007.tfc.util.skills.SkillType;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
 
@@ -56,6 +59,13 @@ public class ItemProspectorPick extends ItemMetalTool
 
             if (!worldIn.isRemote)
             {
+                float falseNegativeChance = 0.3f; //Classic value was random(100) >= (60 + rank)
+                ProspectingSkill skill = CapabilityPlayerData.getSkill(player, SkillType.PROSPECTING);
+                if (skill != null)
+                {
+                    falseNegativeChance = 0.3f - (0.1f * skill.getTier().ordinal());
+                }
+
                 // Damage item and set cooldown
                 player.getHeldItem(hand).damageItem(1, player);
                 player.getCooldownTracker().setCooldown(this, COOLDOWN);
@@ -66,8 +76,14 @@ public class ItemProspectorPick extends ItemMetalTool
                 {
                     // Just clicked on an ore block
                     player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found").appendText(" " + targetStack.getDisplayName()), ConfigTFC.CLIENT.propickOutputToActionBar);
+
+                    // Increment skill
+                    if (skill != null)
+                    {
+                        skill.addSkill(pos);
+                    }
                 }
-                else if (RANDOM.nextFloat() < 0.4)
+                else if (RANDOM.nextFloat() < falseNegativeChance)
                 {
                     // False negative
                     player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found_nothing"), ConfigTFC.CLIENT.propickOutputToActionBar);

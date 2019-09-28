@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
@@ -23,6 +24,7 @@ import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.forge.ForgeRule;
 import net.dries007.tfc.util.forge.ForgeSteps;
+import net.dries007.tfc.util.skills.SmithingSkill;
 
 /**
  * Anvil Recipe
@@ -48,12 +50,14 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe> implement
     protected final IIngredient<ItemStack> ingredient;
     protected final Metal.Tier minTier;
     protected final long workingSeed;
+    protected final SmithingSkill.Type skillBonusType;
 
-    public AnvilRecipe(ResourceLocation name, IIngredient<ItemStack> ingredient, ItemStack output, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
+    public AnvilRecipe(ResourceLocation name, IIngredient<ItemStack> ingredient, ItemStack output, Metal.Tier minTier, @Nullable SmithingSkill.Type skillBonusType, ForgeRule... rules)
     {
         this.ingredient = ingredient;
         this.output = output;
         this.minTier = minTier;
+        this.skillBonusType = skillBonusType;
         this.rules = rules;
         if (rules.length == 0 || rules.length > 3)
             throw new IllegalArgumentException("Rules length must be within the closed interval [1, 3]");
@@ -99,6 +103,12 @@ public class AnvilRecipe extends IForgeRegistryEntry.Impl<AnvilRecipe> implement
     public Metal.Tier getTier()
     {
         return minTier;
+    }
+
+    @Nullable
+    public SmithingSkill.Type getSkillBonusType()
+    {
+        return skillBonusType;
     }
 
     public int getTarget(long worldSeed)

@@ -37,6 +37,7 @@ import net.minecraftforge.event.GameRuleChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -59,14 +60,20 @@ import net.dries007.tfc.api.capability.forge.ForgeableHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
+import net.dries007.tfc.api.capability.player.IPlayerData;
+import net.dries007.tfc.api.capability.player.PlayerDataHandler;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.capability.skill.PlayerSkillsHandler;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketFoodStatsReplace;
+import net.dries007.tfc.network.PacketPlayerDataUpdate;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.devices.BlockQuern;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
@@ -78,10 +85,12 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.CalendarWorldData;
 import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.util.skills.SmithingSkill;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public final class CommonEventHandler
 {
@@ -107,6 +116,22 @@ public final class CommonEventHandler
             if (Constants.RNG.nextFloat() < chance)
             {
                 event.getDrops().add(new ItemStack(Items.STICK));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onBreakProgressEvent(BreakSpeed event)
+    {
+        EntityPlayer player = event.getEntityPlayer();
+        if (player != null)
+        {
+            ItemStack stack = player.getHeldItemMainhand();
+            float skillModifier = SmithingSkill.getSkillBonus(stack, SmithingSkill.Type.TOOLS);
+            if (skillModifier > 0)
+            {
+                // Up to 2x modifier for break speed for skill bonuses on tools
+                event.setNewSpeed(event.getOriginalSpeed() + (event.getOriginalSpeed() * skillModifier));
             }
         }
     }
@@ -307,9 +332,9 @@ public final class CommonEventHandler
         {
             // Player skills
             EntityPlayer player = (EntityPlayer) event.getObject();
-            if (!player.hasCapability(CapabilityPlayerSkills.CAPABILITY, null))
+            if (!player.hasCapability(CapabilityPlayerData.CAPABILITY, null))
             {
-                event.addCapability(CapabilityPlayerSkills.KEY, new PlayerSkillsHandler());
+                event.addCapability(CapabilityPlayerData.KEY, new PlayerDataHandler(player));
             }
         }
     }
@@ -351,6 +376,13 @@ public final class CommonEventHandler
                 }
 
                 TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.player);
+            }
+
+            // Skills
+            IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (skills != null)
+            {
+                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(skills.serializeNBT()), player);
             }
 
             // Check total players and reset calendar time ticking

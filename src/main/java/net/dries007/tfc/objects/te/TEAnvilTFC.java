@@ -25,6 +25,7 @@ import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.recipes.WeldingRecipe;
 import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
@@ -37,6 +38,8 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
+import net.dries007.tfc.util.skills.SkillType;
+import net.dries007.tfc.util.skills.SmithingSkill;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -226,7 +229,7 @@ public class TEAnvilTFC extends TEInventory
     /**
      * Only occurs on server side
      */
-    public void addStep(@Nullable ForgeStep step)
+    public void addStep(@Nonnull EntityPlayer player, @Nullable ForgeStep step)
     {
         ItemStack input = inventory.getStackInSlot(SLOT_INPUT_1);
         IForgeable cap = input.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
@@ -250,6 +253,14 @@ public class TEAnvilTFC extends TEInventory
                 {
                     //Consume input
                     inventory.setStackInSlot(SLOT_INPUT_1, ItemStack.EMPTY);
+
+                    // Add Skill
+                    SmithingSkill skill = CapabilityPlayerData.getSkill(player, SkillType.SMITHING);
+                    if (skill != null && recipe.getSkillBonusType() != null)
+                    {
+                        skill.addSkill(recipe.getSkillBonusType(), 1);
+                    }
+
                     //Produce output
                     for (ItemStack output : recipe.getOutput(input))
                     {
@@ -260,16 +271,24 @@ public class TEAnvilTFC extends TEInventory
                             {
                                 outputCap.setTemperature(cap.getTemperature());
                             }
+                            if (skill != null && recipe.getSkillBonusType() != null)
+                            {
+                                SmithingSkill.applySkillBonus(skill, output, recipe.getSkillBonusType());
+                            }
+
                             if (inventory.getStackInSlot(SLOT_INPUT_1).isEmpty())
+                            {
                                 inventory.setStackInSlot(SLOT_INPUT_1, output);
+                            }
                             else if (inventory.getStackInSlot(SLOT_INPUT_2).isEmpty())
+                            {
                                 inventory.setStackInSlot(SLOT_INPUT_2, output);
+                            }
                             else
+                            {
                                 InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), output);
-
+                            }
                         }
-
-
                     }
 
                     world.playSound(null, pos, TFCSounds.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
