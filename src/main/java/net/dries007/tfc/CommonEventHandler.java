@@ -65,7 +65,6 @@ import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.capability.skill.PlayerSkillsHandler;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.api.util.IPlaceableItem;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketFoodStatsReplace;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -113,15 +112,7 @@ public final class CommonEventHandler
     }
 
     /**
-     * Handler for {@link IPlaceableItem}
-     * To add a new placeable item effect, either implement {@link IPlaceableItem} or see {@link IPlaceableItem.Impl} for vanilla item usages
-     * Notes:
-     * 1) `onBlockActivate` doesn't get called when the player is sneaking, unless doesSneakBypassUse returns true.
-     * 2) This event handler is fired first with the main hand as event.getStack()
-     * If nothing happens (i.e. the event is not cancelled + set cancellation result to success
-     * The event will fire AGAIN with the offhand and offhand stack.
-     *
-     * Also handles drinking water when right clicking an underwater block
+     * Handles drinking water when right clicking an underwater block
      */
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
@@ -132,27 +123,10 @@ public final class CommonEventHandler
         final ItemStack stack = event.getItemStack();
         final EntityPlayer player = event.getEntityPlayer();
 
-        //Fire onBlockActivated for in world crafting devices
-        if (state.getBlock() instanceof BlockAnvilTFC ||
-            state.getBlock() instanceof BlockStoneAnvil ||
-            state.getBlock() instanceof BlockQuern)
+        // Fire onBlockActivated for in world crafting devices
+        if (state.getBlock() instanceof BlockAnvilTFC || state.getBlock() instanceof BlockStoneAnvil || state.getBlock() instanceof BlockQuern)
         {
             event.setUseBlock(Event.Result.ALLOW);
-        }
-
-        IPlaceableItem placeable = IPlaceableItem.Impl.getPlaceable(stack);
-        if (placeable != null)
-        {
-            if (placeable.placeItemInWorld(world, pos, stack, player, event.getFace(), event.getHitVec()))
-            {
-                if (placeable.consumeAmount() > 0)
-                {
-                    player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, placeable.consumeAmount()));
-                }
-                event.setCancellationResult(EnumActionResult.SUCCESS);
-                event.setCanceled(true);
-                return;
-            }
         }
 
         // Try to drink water
@@ -183,33 +157,6 @@ public final class CommonEventHandler
                     event.setCancellationResult(EnumActionResult.SUCCESS);
                     event.setCanceled(true);
                 }
-            }
-        }
-    }
-
-    /**
-     * This is an extra handler for items that also have an active effect when right clicked in the air
-     * Note: If you have an item that needs an active effect, use onItemRightClick(), or attach this via {@link IPlaceableItem.Impl}
-     */
-    @SubscribeEvent
-    public static void onRightClickItem(PlayerInteractEvent.RightClickItem event)
-    {
-        final World world = event.getWorld();
-        final BlockPos pos = event.getPos();
-        final ItemStack stack = event.getItemStack();
-        final EntityPlayer player = event.getEntityPlayer();
-
-        IPlaceableItem placeable = IPlaceableItem.Impl.getUsable(stack);
-        if (placeable != null)
-        {
-            if (placeable.placeItemInWorld(world, pos, stack, player, event.getFace(), null))
-            {
-                if (placeable.consumeAmount() > 0)
-                {
-                    player.setHeldItem(event.getHand(), Helpers.consumeItem(stack, player, placeable.consumeAmount()));
-                }
-                event.setCancellationResult(EnumActionResult.SUCCESS);
-                event.setCanceled(true);
             }
         }
     }
