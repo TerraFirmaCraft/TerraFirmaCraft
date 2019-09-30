@@ -5,17 +5,6 @@
 
 package net.dries007.tfc.objects.items.metal;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.Size;
@@ -24,6 +13,16 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
 public class ItemOreTFC extends ItemTFC implements IMetalItem
@@ -64,20 +63,21 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
         }
         else // Mineral
         {
-            OreDictionaryHelper.register(this, "gem", ore);
             //noinspection ConstantConditions
-            if (ore.getRegistryName().getPath().equals("lapis_lazuli"))
+            if (ore.getRegistryName().getPath().equals("olivine") ||
+                ore.getRegistryName().getPath().equals("kimberlite") ||
+                ore.getRegistryName().getPath().equals("lapis_lazuli") ||
+                ore.getRegistryName().getPath().equals("lignite"))
             {
-                OreDictionaryHelper.register(this, "gem", "lapis");
-                OreDictionaryHelper.register(this, "ore", "lapis");
-            }
-            if (ore.getRegistryName().getPath().equals("cinnabar"))
-            {
-                OreDictionaryHelper.register(this, "ore", "cinnabar");
-            }
-            if (ore.getRegistryName().getPath().equals("bituminous_coal"))
-            {
+                OreDictionaryHelper.register(this, "gem", ore);
+                OreDictionaryHelper.register(this, "ore", ore);
+            } else if (ore.getRegistryName().getPath().equals("bituminous_coal")) {
                 OreDictionaryHelper.register(this, "gem", "coal");
+                OreDictionaryHelper.register(this, "ore", "coal");
+                OreDictionaryHelper.register(this, "gem", ore);
+                OreDictionaryHelper.register(this, "ore", ore);
+            } else {
+                OreDictionaryHelper.register(this, "ore", ore);
             }
         }
     }
