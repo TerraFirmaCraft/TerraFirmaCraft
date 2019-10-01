@@ -26,11 +26,14 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.PacketFoodStatsUpdate;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 @ParametersAreNonnullByDefault
 public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
 {
-    public static final float PASSIVE_HEAL_AMOUNT = 20 * 0.0002f; // On the display: 1 HP / 5 second
+    public static final float PASSIVE_HEAL_AMOUNT = 20 * 0.0002f; // On the display: 1 HP / 5 seconds
+    public static final float EXHAUSTION_MULTIPLIER = 0.4f; // Multiplier for vanilla sources of exhaustion (we use passive exhaustion to keep hunger decaying even when not sprinting everywhere. That said, vanilla exhaustion should be reduced to compensate
+    public static final float PASSIVE_EXHAUSTION = 4.0f / (2.5f * ICalendar.TICKS_IN_DAY); // Passive exhaustion will deplete your food bar once every 2.5 days. Food bar holds ~5 "meals", this requires two per day
 
     private final EntityPlayer sourcePlayer;
     private final FoodStats originalStats;
@@ -142,18 +145,31 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         }
         else
         {
+            // Passive exhaustion
+            originalStats.addExhaustion(PASSIVE_EXHAUSTION);
+
             // Same check as the original food stats, so hunger, thirst, and nutrition loss are synced
             if (originalStats.foodExhaustionLevel >= 4.0F)
             {
                 addThirst(-(float) ConfigTFC.GENERAL.playerThirstModifier);
 
-                // Nutrition only decays when food decays. The base ratio (in config), is 0.8 nutrition / haunch
+                // Nutrition only decays when food / saturation decays. The base ratio (in config), is 0.8 nutrition / haunch
                 for (int i = 0; i < nutrients.length; i++)
                 {
                     addNutrient(i, -(float) ConfigTFC.GENERAL.playerNutritionDecayModifier);
                 }
             }
+
+            if (difficulty == EnumDifficulty.PEACEFUL)
+            {
+                // Copied from vanilla's food stats, so we consume food in peaceful mode (would normally be part of the super.onUpdate call
+                if (originalStats.foodExhaustionLevel > 4.0F)
+                {
+                    setFoodLevel(Math.max(getFoodLevel() - 1, 0));
+                }
+            }
         }
+
 
         // Next, update the original food stats
         originalStats.onUpdate(player);
@@ -254,7 +270,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     @Override
     public void addExhaustion(float exhaustion)
     {
-        originalStats.addExhaustion(exhaustion);
+        originalStats.addExhaustion(EXHAUSTION_MULTIPLIER * exhaustion);
     }
 
     @Override
