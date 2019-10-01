@@ -114,29 +114,40 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         EnumDifficulty difficulty = player.world.getDifficulty();
 
         // Extra-Peaceful Difficulty
-        if (difficulty == EnumDifficulty.PEACEFUL && ConfigTFC.GENERAL.peacefulDifficultyPassiveRegeneration)
+        if (difficulty == EnumDifficulty.PEACEFUL)
         {
-            // Copied / Modified from EntityPlayer#onLivingUpdate
-            if (player.shouldHeal() && player.ticksExisted % 20 == 0)
+            if (ConfigTFC.GENERAL.peacefulDifficultyPassiveRegeneration)
             {
-                player.heal(1.0F);
+                // Copied / Modified from EntityPlayer#onLivingUpdate
+                if (player.shouldHeal() && player.ticksExisted % 20 == 0)
+                {
+                    player.heal(1.0F);
+                }
+
+                if (player.ticksExisted % 10 == 0)
+                {
+                    if (needFood())
+                    {
+                        player.foodStats.setFoodLevel(player.foodStats.getFoodLevel() + 1);
+                    }
+
+                    if (thirst < MAX_PLAYER_THIRST)
+                    {
+                        addThirst(5f);
+                    }
+
+                    for (int i = 0; i < nutrients.length; i++)
+                    {
+                        addNutrient(i, 5f);
+                    }
+                }
             }
-
-            if (player.ticksExisted % 10 == 0)
+            else
             {
-                if (needFood())
+                // Forcefully consumes food bar in peaceful on !peacefulDifficultyPassiveRegeneration
+                if (originalStats.foodExhaustionLevel > 4.0F)
                 {
-                    player.foodStats.setFoodLevel(player.foodStats.getFoodLevel() + 1);
-                }
-
-                if (thirst < MAX_PLAYER_THIRST)
-                {
-                    addThirst(5f);
-                }
-
-                for (int i = 0; i < nutrients.length; i++)
-                {
-                    addNutrient(i, 5f);
+                    this.setFoodLevel(Math.max(this.getFoodLevel() - 1, 0));
                 }
             }
         }
