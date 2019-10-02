@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.entity.animal;
 
 import java.util.UUID;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.EntityAgeable;
@@ -36,9 +37,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class EntityHorseTFC extends AbstractHorseTFC
 {
     private static final UUID ARMOR_MODIFIER_UUID = UUID.fromString("556E1665-8B10-40C8-8F9D-CF9B1667F295");
@@ -66,12 +71,12 @@ public class EntityHorseTFC extends AbstractHorseTFC
 
     public int getHorseVariant()
     {
-        return this.dataManager.get(HORSE_VARIANT).intValue();
+        return this.dataManager.get(HORSE_VARIANT);
     }
 
     public void setHorseVariant(int variant)
     {
-        this.dataManager.set(HORSE_VARIANT, Integer.valueOf(variant));
+        this.dataManager.set(HORSE_VARIANT, variant);
         this.resetTexturePrefix();
     }
 
@@ -100,7 +105,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
     public void setHorseArmorStack(ItemStack itemStackIn)
     {
         HorseArmorType horsearmortype = HorseArmorType.getByItemStack(itemStackIn);
-        this.dataManager.set(HORSE_ARMOR, Integer.valueOf(horsearmortype.getOrdinal()));
+        this.dataManager.set(HORSE_ARMOR, horsearmortype.getOrdinal());
         this.dataManager.set(HORSE_ARMOR_STACK, itemStackIn);
         this.resetTexturePrefix();
 
@@ -125,6 +130,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         return armor;
     }
 
+    @Override
     public void onInventoryChanged(IInventory invBasic)
     {
         HorseArmorType horsearmortype = this.getHorseArmorType();
@@ -137,18 +143,21 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         super.getHurtSound(damageSourceIn);
         return SoundEvents.ENTITY_HORSE_HURT;
     }
 
+    @Override
     protected SoundEvent getDeathSound()
     {
         super.getDeathSound();
         return SoundEvents.ENTITY_HORSE_DEATH;
     }
 
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
@@ -160,6 +169,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
@@ -194,6 +204,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
+    @Override
     public boolean canMateWith(EntityAnimal otherAnimal)
     {
         if (otherAnimal == this)
@@ -210,6 +221,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
+    @Override
     public EntityAgeable createChild(EntityAgeable ageable)
     {
         AbstractHorseTFC abstracthorse;
@@ -260,24 +272,28 @@ public class EntityHorseTFC extends AbstractHorseTFC
         return abstracthorse;
     }
 
+    @Override
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(HORSE_VARIANT, Integer.valueOf(0));
-        this.dataManager.register(HORSE_ARMOR, Integer.valueOf(HorseArmorType.NONE.getOrdinal()));
+        this.dataManager.register(HORSE_VARIANT, 0);
+        this.dataManager.register(HORSE_ARMOR, HorseArmorType.NONE.getOrdinal());
         this.dataManager.register(HORSE_ARMOR_STACK, ItemStack.EMPTY);
     }
 
+    @Override
     public boolean wearsArmor()
     {
         return true;
     }
 
+    @Override
     public boolean isArmor(ItemStack stack)
     {
         return HorseArmorType.isHorseArmor(stack);
     }
 
+    @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -286,6 +302,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         this.getEntityAttribute(JUMP_STRENGTH).setBaseValue(this.getModifiedJumpStrength());
     }
 
+    @Override
     public void onUpdate()
     {
         super.onUpdate();
@@ -299,12 +316,14 @@ public class EntityHorseTFC extends AbstractHorseTFC
         if (isArmor(armor)) armor.getItem().onHorseArmorTick(world, this, armor);
     }
 
+    @Override
     protected SoundEvent getAmbientSound()
     {
         super.getAmbientSound();
         return SoundEvents.ENTITY_HORSE_AMBIENT;
     }
 
+    @Override
     protected ResourceLocation getLootTable()
     {
         return LootTablesTFC.ANIMALS_HORSE;
@@ -330,18 +349,21 @@ public class EntityHorseTFC extends AbstractHorseTFC
         return livingdata;
     }
 
+    @Override
     protected void updateHorseSlots()
     {
         super.updateHorseSlots();
         this.setHorseArmorStack(this.horseChest.getStackInSlot(1));
     }
 
+    @Override
     protected SoundEvent getAngrySound()
     {
         super.getAngrySound();
         return SoundEvents.ENTITY_HORSE_ANGRY;
     }
 
+    @Override
     protected void playGallopSound(SoundType p_190680_1_)
     {
         super.playGallopSound(p_190680_1_);
@@ -352,6 +374,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
+    @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);

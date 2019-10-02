@@ -26,9 +26,9 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
     private final EntityTameableTFC tameable;
     private final double followSpeed;
     private final PathNavigate petPathfinder;
-    World world;
-    float maxDist;
-    float minDist;
+    private World world;
+    private float maxDist;
+    private float minDist;
     private EntityLivingBase owner;
     private int timeToRecalcPath;
     private float oldWaterCost;
@@ -49,6 +49,7 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
         }
     }
 
+    @Override
     public boolean shouldExecute()
     {
         EntityLivingBase entitylivingbase = this.tameable.getOwner();
@@ -76,11 +77,13 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
         }
     }
 
+    @Override
     public boolean shouldContinueExecuting()
     {
         return !this.petPathfinder.noPath() && this.tameable.getDistanceSq(this.owner) > (double) (this.maxDist * this.maxDist) && !this.tameable.isSitting();
     }
 
+    @Override
     public void startExecuting()
     {
         this.timeToRecalcPath = 0;
@@ -88,6 +91,7 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
         this.tameable.setPathPriority(PathNodeType.WATER, 0.0F);
     }
 
+    @Override
     public void resetTask()
     {
         this.owner = null;
@@ -95,6 +99,7 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
         this.tameable.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
     }
 
+    @Override
     public void updateTask()
     {
         this.tameable.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float) this.tameable.getVerticalFaceSpeed());
@@ -134,7 +139,7 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
         }
     }
 
-    protected boolean isTeleportFriendlyBlock(int x, int z, int y, int xOffset, int zOffset)
+    private boolean isTeleportFriendlyBlock(int x, int z, int y, int xOffset, int zOffset)
     {
         BlockPos blockpos = new BlockPos(x + xOffset, y - 1, z + zOffset);
         IBlockState iblockstate = this.world.getBlockState(blockpos);

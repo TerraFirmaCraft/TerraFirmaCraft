@@ -30,12 +30,14 @@ public class EntityAIBegTFC extends EntityAIBase
         this.setMutexBits(2);
     }
 
+    @Override
     public boolean shouldExecute()
     {
         this.player = this.world.getClosestPlayerToEntity(this.wolf, (double) this.minPlayerDistance);
         return this.player != null && this.hasTemptationItemInHand(this.player);
     }
 
+    @Override
     public boolean shouldContinueExecuting()
     {
         if (!this.player.isEntityAlive())
@@ -52,18 +54,21 @@ public class EntityAIBegTFC extends EntityAIBase
         }
     }
 
+    @Override
     public void startExecuting()
     {
         this.wolf.setBegging(true);
         this.timeoutCounter = 40 + this.wolf.getRNG().nextInt(40);
     }
 
+    @Override
     public void resetTask()
     {
         this.wolf.setBegging(false);
         this.player = null;
     }
 
+    @Override
     public void updateTask()
     {
         this.wolf.getLookHelper().setLookPosition(this.player.posX, this.player.posY + (double) this.player.getEyeHeight(), this.player.posZ, 10.0F, (float) this.wolf.getVerticalFaceSpeed());

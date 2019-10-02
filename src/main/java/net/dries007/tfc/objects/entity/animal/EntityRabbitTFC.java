@@ -38,12 +38,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
 {
     private static final int DAYS_TO_ADULTHOOD = 240;
@@ -150,12 +153,12 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
 
     public int getRabbitType()
     {
-        return this.dataManager.get(RABBIT_TYPE).intValue();
+        return this.dataManager.get(RABBIT_TYPE);
     }
 
     public void setRabbitType(int rabbitTypeId)
     {
-        this.dataManager.set(RABBIT_TYPE, Integer.valueOf(rabbitTypeId));
+        this.dataManager.set(RABBIT_TYPE, rabbitTypeId);
     }
 
     @SideOnly(Side.CLIENT)
@@ -193,12 +196,14 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
         }
     }
 
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
         compound.setInteger("RabbitType", this.getRabbitType());
     }
 
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
@@ -238,7 +243,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(RABBIT_TYPE, Integer.valueOf(0));
+        this.dataManager.register(RABBIT_TYPE, 0);
     }
 
     @Override
@@ -335,6 +340,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
         return SoundEvents.ENTITY_RABBIT_DEATH;
     }
 
+    @Override
     protected float getJumpUpwardsMotion()
     {
         if (!this.collidedHorizontally && (!this.moveHelper.isUpdating() || this.moveHelper.getY() <= this.posY + 0.5D))
@@ -359,6 +365,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
         }
     }
 
+    @Override
     protected void jump()
     {
         super.jump();
@@ -380,6 +387,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
         }
     }
 
+    @Override
     public void setJumping(boolean jumping)
     {
         super.setJumping(jumping);
@@ -459,6 +467,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
             this.rabbit = rabbit;
         }
 
+        @Override
         public void setMoveTo(double x, double y, double z, double speedIn)
         {
             if (this.rabbit.isInWater())
@@ -474,6 +483,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
             }
         }
 
+        @Override
         public void onUpdateMoveHelper()
         {
             if (this.rabbit.onGround && !this.rabbit.isJumping && !((EntityRabbitTFC.RabbitJumpHelper) this.rabbit.jumpHelper).getIsJumping())
@@ -509,6 +519,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
             this.rabbit = rabbit;
         }
 
+        @Override
         public void updateTask()
         {
             super.updateTask();

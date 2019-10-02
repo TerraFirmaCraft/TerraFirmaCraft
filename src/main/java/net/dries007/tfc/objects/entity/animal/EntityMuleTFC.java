@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.init.SoundEvents;
@@ -15,9 +16,13 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.world.World;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class EntityMuleTFC extends AbstractChestHorseTFC
 {
     public static void registerFixesMuleTFC(DataFixer fixer)
@@ -30,12 +35,14 @@ public class EntityMuleTFC extends AbstractChestHorseTFC
         super(worldIn);
     }
 
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         super.getHurtSound(damageSourceIn);
         return SoundEvents.ENTITY_MULE_HURT;
     }
 
+    @Override
     protected SoundEvent getDeathSound()
     {
         super.getDeathSound();
@@ -58,6 +65,7 @@ public class EntityMuleTFC extends AbstractChestHorseTFC
         }
     }
 
+    @Override
     public EntityAgeable createChild(EntityAgeable ageable)
     {
         AbstractHorseTFC abstracthorse = (new EntityMuleTFC(this.world));
@@ -65,6 +73,7 @@ public class EntityMuleTFC extends AbstractChestHorseTFC
         return abstracthorse;
     }
 
+    @Override
     protected SoundEvent getAmbientSound()
     {
         super.getAmbientSound();
@@ -77,6 +86,7 @@ public class EntityMuleTFC extends AbstractChestHorseTFC
         return LootTablesTFC.ANIMALS_HORSE;
     }
 
+    @Override
     protected void playChestEquipSound()
     {
         this.playSound(SoundEvents.ENTITY_MULE_CHEST, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);

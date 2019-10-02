@@ -28,6 +28,7 @@ public class EntityAIRunAroundLikeCrazyTFC extends EntityAIBase
         this.setMutexBits(1);
     }
 
+    @Override
     public boolean shouldExecute()
     {
         if (!this.horseHost.isTame() && this.horseHost.isBeingRidden())
@@ -52,16 +53,19 @@ public class EntityAIRunAroundLikeCrazyTFC extends EntityAIBase
         }
     }
 
+    @Override
     public boolean shouldContinueExecuting()
     {
         return !this.horseHost.isTame() && !this.horseHost.getNavigator().noPath() && this.horseHost.isBeingRidden();
     }
 
+    @Override
     public void startExecuting()
     {
         this.horseHost.getNavigator().tryMoveToXYZ(this.targetX, this.targetY, this.targetZ, this.speed);
     }
 
+    @Override
     public void updateTask()
     {
         if (!this.horseHost.isTame() && this.horseHost.getRNG().nextInt(50) == 0)

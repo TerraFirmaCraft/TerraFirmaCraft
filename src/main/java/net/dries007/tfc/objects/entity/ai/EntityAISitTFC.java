@@ -21,6 +21,7 @@ public class EntityAISitTFC extends EntityAIBase
         this.setMutexBits(5);
     }
 
+    @Override
     public boolean shouldExecute()
     {
         if (!this.tameable.isTamed())
@@ -50,12 +51,14 @@ public class EntityAISitTFC extends EntityAIBase
         }
     }
 
+    @Override
     public void startExecuting()
     {
         this.tameable.getNavigator().clearPath();
         this.tameable.setSitting(true);
     }
 
+    @Override
     public void resetTask()
     {
         this.tameable.setSitting(false);

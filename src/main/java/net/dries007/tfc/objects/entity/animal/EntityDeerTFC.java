@@ -27,6 +27,7 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityDeerTFC extends EntityAnimalMammal implements IAnimalTFC
 {

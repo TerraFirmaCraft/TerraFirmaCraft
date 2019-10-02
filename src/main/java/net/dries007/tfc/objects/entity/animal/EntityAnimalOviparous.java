@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public abstract class EntityAnimalOviparous extends EntityAnimalTFC
 {

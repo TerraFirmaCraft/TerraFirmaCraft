@@ -12,8 +12,8 @@ import net.dries007.tfc.objects.entity.animal.EntityTameableTFC;
 
 public class EntityAIOwnerHurtByTargetTFC extends EntityAITarget
 {
-    EntityTameableTFC tameable;
-    EntityLivingBase attacker;
+    private EntityTameableTFC tameable;
+    private EntityLivingBase attacker;
     private int timestamp;
 
     public EntityAIOwnerHurtByTargetTFC(EntityTameableTFC theDefendingTameableIn)
@@ -23,6 +23,7 @@ public class EntityAIOwnerHurtByTargetTFC extends EntityAITarget
         this.setMutexBits(1);
     }
 
+    @Override
     public boolean shouldExecute()
     {
         if (!this.tameable.isTamed())
@@ -46,6 +47,7 @@ public class EntityAIOwnerHurtByTargetTFC extends EntityAITarget
         }
     }
 
+    @Override
     public void startExecuting()
     {
         this.taskOwner.setAttackTarget(this.attacker);

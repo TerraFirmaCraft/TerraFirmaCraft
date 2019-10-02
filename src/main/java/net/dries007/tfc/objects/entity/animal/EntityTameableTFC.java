@@ -1,7 +1,9 @@
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.base.Optional;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -21,9 +23,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.entity.IEntityOwnableTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAISitTFC;
 
+@SuppressWarnings("WeakerAccess")
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public abstract class EntityTameableTFC extends EntityAnimalMammal implements IEntityOwnableTFC
 {
     protected static final DataParameter<Byte> TAMED = EntityDataManager.createKey(EntityTameableTFC.class, DataSerializers.BYTE);
@@ -36,6 +42,7 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         this.setupTamedAI();
     }
 
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
@@ -51,6 +58,7 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         compound.setBoolean("Sitting", this.isSitting());
     }
 
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
@@ -62,7 +70,7 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         else
         {
             String s1 = compound.getString("Owner");
-            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.getServer(), s1);
+            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(Objects.requireNonNull(this.getServer()), s1);
         }
         if (!s.isEmpty())
         {
@@ -83,11 +91,13 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         this.setSitting(compound.getBoolean("Sitting"));
     }
 
+    @Override
     public boolean canBeLeashedTo(EntityPlayer player)
     {
         return !this.getLeashed();
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id)
     {
@@ -143,6 +153,7 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
 
     }
 
+    @Override
     @Nullable
     public UUID getOwnerId()
     {
@@ -154,6 +165,7 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         this.dataManager.set(OWNER_UNIQUE_ID, Optional.fromNullable(p_184754_1_));
     }
 
+    @Override
     @Nullable
     public EntityLivingBase getOwner()
     {
@@ -193,6 +205,7 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         return true;
     }
 
+    @Override
     public Team getTeam()
     {
         if (this.isTamed())
@@ -206,6 +219,7 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         return super.getTeam();
     }
 
+    @Override
     public boolean isOnSameTeam(Entity entityIn)
     {
         if (this.isTamed())
@@ -223,6 +237,7 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         return super.isOnSameTeam(entityIn);
     }
 
+    @Override
     public void onDeath(DamageSource cause)
     {
         if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP)
@@ -232,6 +247,7 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         super.onDeath(cause);
     }
 
+    @Override
     protected void entityInit()
     {
         super.entityInit();

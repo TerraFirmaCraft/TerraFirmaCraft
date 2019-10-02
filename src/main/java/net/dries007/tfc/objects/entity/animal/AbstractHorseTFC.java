@@ -5,8 +5,10 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -51,12 +53,16 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIRunAroundLikeCrazyTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryChangedListener, IJumpingMount, IAnimalTFC
 {
     protected static final IAttribute JUMP_STRENGTH = (new RangedAttribute(null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
@@ -64,13 +70,8 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
     private static final int DAYS_TO_FULL_GESTATION = 240;
     private static final DataParameter<Byte> STATUS = EntityDataManager.createKey(AbstractHorseTFC.class, DataSerializers.BYTE);
 
-    private static final Predicate<Entity> IS_HORSE_BREEDING = new Predicate<Entity>()
-    {
-        public boolean apply(@Nullable Entity p_apply_1_)
-        {
-            return p_apply_1_ instanceof AbstractHorseTFC && ((AbstractHorseTFC) p_apply_1_).isBreeding();
-        }
-    };
+    private static final Predicate<Entity> IS_HORSE_BREEDING = horse -> horse instanceof AbstractHorseTFC && ((AbstractHorseTFC) horse).isBreeding();
+
     private static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(AbstractHorseTFC.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 
     public static void registerFixesAbstractHorseTFC(DataFixer fixer, Class<?> entityClass)
@@ -214,17 +215,20 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return i;
     }
 
+    @Override
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
         Entity entity = source.getTrueSource();
         return (!this.isBeingRidden() || entity == null || !this.isRidingOrBeingRiddenBy(entity)) && super.attackEntityFrom(source, amount);
     }
 
+    @Override
     public int getTalkInterval()
     {
         return 400;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id)
     {
@@ -242,6 +246,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
+    @Override
     public void onInventoryChanged(IInventory invBasic)
     {
         boolean flag = this.isHorseSaddled();
@@ -288,6 +293,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
+    @Override
     public void onDeath(DamageSource cause)
     {
         super.onDeath(cause);
@@ -306,6 +312,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
+    @Override
     @Nullable
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
@@ -319,6 +326,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return null;
     }
 
+    @Override
     @Nullable
     protected SoundEvent getDeathSound()
     {
@@ -326,11 +334,13 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return null;
     }
 
+    @Override
     public boolean isOnLadder()
     {
         return false;
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public void fall(float distance, float damageMultiplier)
     {
@@ -364,21 +374,25 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
+    @Override
     protected float getSoundVolume()
     {
         return 0.8F;
     }
 
+    @Override
     protected boolean isMovementBlocked()
     {
         return super.isMovementBlocked() && this.isBeingRidden() && this.isHorseSaddled() || this.isEatingHaystack() || this.isRearing();
     }
 
+    @Override
     public void travel(float strafe, float vertical, float forward)
     {
         if (this.isBeingRidden() && this.canBeSteered() && this.isHorseSaddled())
         {
             EntityLivingBase entitylivingbase = (EntityLivingBase) this.getControllingPassenger();
+            //noinspection ConstantConditions
             this.rotationYaw = entitylivingbase.rotationYaw;
             this.prevRotationYaw = this.rotationYaw;
             this.rotationPitch = entitylivingbase.rotationPitch * 0.5F;
@@ -406,6 +420,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
 
                 if (this.isPotionActive(MobEffects.JUMP_BOOST))
                 {
+                    //noinspection ConstantConditions
                     this.motionY += (double) ((float) (this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
                 }
 
@@ -464,6 +479,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
+    @Override
     public boolean canBePushed()
     {
         return !this.isBeingRidden();
@@ -485,6 +501,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
+    @Override
     public void onLivingUpdate()
     {
         if (this.rand.nextInt(200) == 0)
@@ -519,6 +536,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
@@ -538,6 +556,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
@@ -554,7 +573,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         else
         {
             String s1 = compound.getString("Owner");
-            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.getServer(), s1);
+            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(Objects.requireNonNull(this.getServer()), s1);
         }
 
         if (!s.isEmpty())
@@ -610,7 +629,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
-    public boolean setTamedBy(EntityPlayer player)
+    public void setTamedBy(EntityPlayer player)
     {
         this.setOwnerUniqueId(player.getUniqueID());
         this.setHorseTamed(true);
@@ -621,7 +640,6 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
 
         this.world.setEntityState(this, (byte) 7);
-        return true;
     }
 
     @Override
@@ -635,19 +653,22 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return false;
     }
 
+    @Override
     @Nullable
     public EntityAgeable createChild(EntityAgeable ageable)
     {
         return null;
     }
 
+    @Override
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(STATUS, Byte.valueOf((byte) 0));
+        this.dataManager.register(STATUS, (byte) 0);
         this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
     }
 
+    @Override
     public void setScaleForAge(boolean child)
     {
         this.setScale(child ? this.getHorseSize() : 1.0F);
@@ -687,6 +708,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return this.prevMouthOpenness + (this.mouthOpenness - this.prevMouthOpenness) * p_110201_1_;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void setJumpPower(int jumpPowerIn)
     {
@@ -713,17 +735,20 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
+    @Override
     public boolean canJump()
     {
         return this.isHorseSaddled();
     }
 
+    @Override
     public void handleStartJump(int p_184775_1_)
     {
         this.allowStandSliding = true;
         this.makeHorseRear();
     }
 
+    @Override
     public void handleStopJump()
     {
     }
@@ -764,6 +789,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.22499999403953552D);
     }
 
+    @Override
     public void onUpdate()
     {
         super.onUpdate();
@@ -862,6 +888,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
+    @Override
     @Nullable
     protected SoundEvent getAmbientSound()
     {
@@ -875,17 +902,20 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return null;
     }
 
+    @Override
     @Nullable
     protected ResourceLocation getLootTable()
     {
         return LootTablesTFC.ANIMALS_DEER;
     }
 
+    @Override
     public int getMaxSpawnedInChunk()
     {
         return 6;
     }
 
+    @Override
     @Nullable
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
@@ -899,16 +929,19 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return livingdata;
     }
 
+    @Override
     public boolean canBeSteered()
     {
         return this.getControllingPassenger() instanceof EntityLivingBase;
     }
 
+    @Override
     public boolean canBeLeashedTo(EntityPlayer player)
     {
         return super.canBeLeashedTo(player) && this.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD;
     }
 
+    @Override
     public boolean replaceItemInInventory(int inventorySlot, ItemStack itemStackIn)
     {
         int i = inventorySlot - 400;
@@ -948,9 +981,10 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
 
     protected boolean getHorseWatchableBoolean(int p_110233_1_)
     {
-        return (this.dataManager.get(STATUS).byteValue() & p_110233_1_) != 0;
+        return (this.dataManager.get(STATUS) & p_110233_1_) != 0;
     }
 
+    @Override
     protected void onLeashDistance(float p_142017_1_)
     {
         if (p_142017_1_ > 6.0F && this.isEatingHaystack())
@@ -1027,6 +1061,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return null;
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
@@ -1063,6 +1098,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
+    @Override
     public void updatePassenger(Entity passenger)
     {
         super.updatePassenger(passenger);
@@ -1088,11 +1124,13 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
+    @Override
     public float getEyeHeight()
     {
         return this.height;
     }
 
+    @Override
     @Nullable
     public Entity getControllingPassenger()
     {
@@ -1101,15 +1139,15 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
 
     protected void setHorseWatchableBoolean(int p_110208_1_, boolean p_110208_2_)
     {
-        byte b0 = this.dataManager.get(STATUS).byteValue();
+        byte b0 = this.dataManager.get(STATUS);
 
         if (p_110208_2_)
         {
-            this.dataManager.set(STATUS, Byte.valueOf((byte) (b0 | p_110208_1_)));
+            this.dataManager.set(STATUS, (byte) (b0 | p_110208_1_));
         }
         else
         {
-            this.dataManager.set(STATUS, Byte.valueOf((byte) (b0 & ~p_110208_1_)));
+            this.dataManager.set(STATUS, (byte) (b0 & ~p_110208_1_));
         }
     }
 

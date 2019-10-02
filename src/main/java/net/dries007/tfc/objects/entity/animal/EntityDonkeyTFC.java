@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -16,9 +17,13 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.world.World;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class EntityDonkeyTFC extends AbstractChestHorseTFC
 {
     public static void registerFixesDonkeyTFC(DataFixer fixer)
@@ -37,6 +42,7 @@ public class EntityDonkeyTFC extends AbstractChestHorseTFC
         return SoundEvents.ENTITY_DONKEY_HURT;
     }
 
+    @Override
     protected SoundEvent getDeathSound()
     {
         super.getDeathSound();
@@ -59,6 +65,7 @@ public class EntityDonkeyTFC extends AbstractChestHorseTFC
         }
     }
 
+    @Override
     public boolean canMateWith(EntityAnimal otherAnimal)
     {
         if (otherAnimal == this)
@@ -75,6 +82,7 @@ public class EntityDonkeyTFC extends AbstractChestHorseTFC
         }
     }
 
+    @Override
     public EntityAgeable createChild(EntityAgeable ageable)
     {
         AbstractHorseTFC abstracthorse = (ageable instanceof EntityHorseTFC ? new EntityMuleTFC(this.world) : new EntityDonkeyTFC(this.world));
@@ -82,6 +90,7 @@ public class EntityDonkeyTFC extends AbstractChestHorseTFC
         return abstracthorse;
     }
 
+    @Override
     protected SoundEvent getAmbientSound()
     {
         super.getAmbientSound();

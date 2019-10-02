@@ -34,6 +34,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
 {

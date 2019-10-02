@@ -31,6 +31,7 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTFC
 {

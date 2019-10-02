@@ -21,6 +21,7 @@ public class EntityAITargetNonTamedTFC<T extends EntityLivingBase> extends Entit
         this.tameable = entityIn;
     }
 
+    @Override
     public boolean shouldExecute()
     {
         return !this.tameable.isTamed() && super.shouldExecute();

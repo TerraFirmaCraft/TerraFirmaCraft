@@ -46,6 +46,7 @@ import net.dries007.tfc.objects.entity.ai.*;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
 {
@@ -93,6 +94,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         return temperature > -20 && temperature < 20 && rainfall > 75;
     }
 
+    @Override
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
@@ -184,11 +186,13 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         }
     }
 
+    @Override
     public boolean isBreedingItem(ItemStack stack)
     {
         return stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat();
     }
 
+    @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);
@@ -314,6 +318,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.dataManager.set(BEGGING, beg);
     }
 
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
@@ -321,6 +326,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         compound.setByte("CollarColor", (byte) this.getCollarColor().getDyeDamage());
     }
 
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
@@ -332,11 +338,13 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
 
     }
 
+    @Override
     public boolean canBeLeashedTo(EntityPlayer player)
     {
         return !this.isAngry() && super.canBeLeashedTo(player);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id)
     {
@@ -352,6 +360,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         }
     }
 
+    @Override
     public void setTamed(boolean tamed)
     {
         super.setTamed(tamed);
@@ -366,6 +375,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
 
+    @Override
     public boolean shouldAttackEntity(EntityLivingBase target, EntityLivingBase owner)
     {
         if (!(target instanceof EntityCreeper) && !(target instanceof EntityGhast))
@@ -393,6 +403,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         }
     }
 
+    @Override
     protected void entityInit()
     {
         super.entityInit();
@@ -401,6 +412,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.dataManager.register(COLLAR_COLOR, EnumDyeColor.RED.getDyeDamage());
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected void initEntityAI()
     {
@@ -418,16 +430,11 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTargetTFC(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTargetTFC(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(4, new EntityAITargetNonTamedTFC(this, EntityAnimalTFC.class, false, new Predicate<Entity>()
-        {
-            public boolean apply(@Nullable Entity entity)
-            {
-                return entity instanceof EntitySheepTFC || entity instanceof EntityPigTFC || entity instanceof EntityRabbitTFC;
-            }
-        }));
+        this.targetTasks.addTask(4, new EntityAITargetNonTamedTFC(this, EntityAnimalTFC.class, false, (Predicate<Entity>) entity -> entity instanceof EntitySheepTFC || entity instanceof EntityPigTFC || entity instanceof EntityRabbitTFC));
         this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, AbstractSkeleton.class, false));
     }
 
+    @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -444,6 +451,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
     }
 
+    @Override
     public void setAttackTarget(@Nullable EntityLivingBase entitylivingbaseIn)
     {
         super.setAttackTarget(entitylivingbaseIn);
@@ -458,6 +466,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
 
     }
 
+    @Override
     public void onUpdate()
     {
         super.onUpdate();
@@ -510,6 +519,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
 
     }
 
+    @Override
     protected SoundEvent getAmbientSound()
     {
         if (this.isAngry())
@@ -526,27 +536,32 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         }
     }
 
+    @Override
     @Nullable
     protected ResourceLocation getLootTable()
     {
         return LootTablesTFC.ANIMALS_WOLF;
     }
 
+    @Override
     public int getVerticalFaceSpeed()
     {
         return this.isSitting() ? 20 : super.getVerticalFaceSpeed();
     }
 
+    @Override
     public int getMaxSpawnedInChunk()
     {
         return 8;
     }
 
+    @Override
     protected void updateAITasks()
     {
         this.dataManager.set(DATA_HEALTH_ID, this.getHealth());
     }
 
+    @Override
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
         if (this.isEntityInvulnerable(source))
@@ -573,21 +588,25 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F);
     }
 
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         return SoundEvents.ENTITY_WOLF_HURT;
     }
 
+    @Override
     protected SoundEvent getDeathSound()
     {
         return SoundEvents.ENTITY_WOLF_DEATH;
     }
 
+    @Override
     protected float getSoundVolume()
     {
         return 0.4F;
     }
 
+    @Override
     public boolean attackEntityAsMob(Entity entityIn)
     {
         boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()));

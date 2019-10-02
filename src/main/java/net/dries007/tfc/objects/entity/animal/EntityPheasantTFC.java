@@ -26,6 +26,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalTFC
 {

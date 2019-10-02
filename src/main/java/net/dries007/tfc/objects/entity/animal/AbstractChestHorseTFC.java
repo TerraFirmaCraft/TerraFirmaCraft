@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -25,8 +27,12 @@ import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.walkers.ItemStackDataLists;
 import net.minecraft.world.World;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+@SuppressWarnings("WeakerAccess")
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class AbstractChestHorseTFC extends AbstractHorseTFC
 {
     private static final DataParameter<Boolean> DATA_ID_CHEST = EntityDataManager.createKey(AbstractChestHorseTFC.class, DataSerializers.BOOLEAN);
@@ -45,19 +51,21 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
 
     public boolean hasChest()
     {
-        return this.dataManager.get(DATA_ID_CHEST).booleanValue();
+        return this.dataManager.get(DATA_ID_CHEST);
     }
 
     public void setChested(boolean chested)
     {
-        this.dataManager.set(DATA_ID_CHEST, Boolean.valueOf(chested));
+        this.dataManager.set(DATA_ID_CHEST, chested);
     }
 
+    @Override
     public double getMountedYOffset()
     {
         return super.getMountedYOffset() - 0.25D;
     }
 
+    @Override
     public void onDeath(DamageSource cause)
     {
         super.onDeath(cause);
@@ -73,6 +81,7 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
         }
     }
 
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
@@ -99,6 +108,7 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
         }
     }
 
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
@@ -124,12 +134,14 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
         this.updateHorseSlots();
     }
 
+    @Override
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(DATA_ID_CHEST, Boolean.valueOf(false));
+        this.dataManager.register(DATA_ID_CHEST, Boolean.FALSE);
     }
 
+    @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -138,6 +150,7 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
         this.getEntityAttribute(JUMP_STRENGTH).setBaseValue(0.5D);
     }
 
+    @Override
     public boolean replaceItemInInventory(int inventorySlot, ItemStack itemStackIn)
     {
         if (inventorySlot == 499)
@@ -160,17 +173,20 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
         return super.replaceItemInInventory(inventorySlot, itemStackIn);
     }
 
+    @Override
     protected int getInventorySize()
     {
         return this.hasChest() ? 17 : super.getInventorySize();
     }
 
+    @Override
     protected SoundEvent getAngrySound()
     {
         super.getAngrySound();
         return SoundEvents.ENTITY_DONKEY_ANGRY;
     }
 
+    @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);

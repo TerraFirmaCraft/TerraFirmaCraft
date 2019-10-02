@@ -39,6 +39,7 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IAnimalTFC
 {

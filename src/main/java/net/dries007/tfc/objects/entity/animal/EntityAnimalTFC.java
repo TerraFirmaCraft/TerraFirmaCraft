@@ -30,6 +30,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public abstract class EntityAnimalTFC extends EntityAnimal
 {
