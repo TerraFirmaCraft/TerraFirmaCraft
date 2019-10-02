@@ -26,6 +26,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.PacketFoodStatsUpdate;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 @ParametersAreNonnullByDefault
 public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
@@ -112,6 +113,12 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     public void onUpdate(EntityPlayer player)
     {
         EnumDifficulty difficulty = player.world.getDifficulty();
+
+        //Regular living exhaustion
+        if (player.ticksExisted % 20 == 0)
+        {
+            player.addExhaustion(80.0F * 20.0F / ICalendar.TICKS_IN_DAY);
+        }
 
         // Extra-Peaceful Difficulty
         if (difficulty == EnumDifficulty.PEACEFUL)
