@@ -2639,6 +2639,26 @@ item.tfc.wood.lumber.rosewood.name=Rosewood Lumber
 item.tfc.wood.lumber.blackwood.name=Blackwood Lumber
 item.tfc.wood.lumber.palm.name=Palm Lumber
 
+item.tfc.wood.boat.ash.name=Ash Boat
+item.tfc.wood.boat.aspen.name=Aspen Boat
+item.tfc.wood.boat.birch.name=Birch Boat
+item.tfc.wood.boat.chestnut.name=Chestnut Boat
+item.tfc.wood.boat.douglas_fir.name=Douglas Fir Boat
+item.tfc.wood.boat.hickory.name=Hickory Boat
+item.tfc.wood.boat.maple.name=Maple Boat
+item.tfc.wood.boat.oak.name=Oak Boat
+item.tfc.wood.boat.pine.name=Pine Boat
+item.tfc.wood.boat.sequoia.name=Sequoia Boat
+item.tfc.wood.boat.spruce.name=Spruce Boat
+item.tfc.wood.boat.sycamore.name=Sycamore Boat
+item.tfc.wood.boat.white_cedar.name=White Cedar Boat
+item.tfc.wood.boat.willow.name=Willow Boat
+item.tfc.wood.boat.kapok.name=Kapok Boat
+item.tfc.wood.boat.acacia.name=Acacia Boat
+item.tfc.wood.boat.rosewood.name=Rosewood Boat
+item.tfc.wood.boat.blackwood.name=Blackwood Boat
+item.tfc.wood.boat.palm.name=Palm Boat
+
 item.tfc.wood.door.ash.name=Ash Door
 item.tfc.wood.door.aspen.name=Aspen Door
 item.tfc.wood.door.birch.name=Birch Door
