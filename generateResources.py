@@ -1037,6 +1037,7 @@ item(('metal', 'ingot', 'unknown'), 'tfc:items/metal/ingot/%s' % 'unknown')
 # WOOD STUFF
 for wood_type in WOOD_TYPES:
     item(('wood', 'lumber', wood_type), 'tfc:items/wood/lumber/%s' % wood_type)
+    item(('wood', 'boat', wood_type), 'tfc:items/wood/boat/%s' % wood_type)
 
 # ROCK TOOLS
 for rock_cat in ROCK_CATEGORIES:
