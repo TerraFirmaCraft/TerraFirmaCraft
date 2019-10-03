@@ -1,17 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "S S",
-    "SSS"
+    "   ",
+    "X X",
+    "XXX"
   ],
   "key": {
-    "S": {
+    "X": {
       "type": "forge:ore_dict",
-      "ore": "plankWoodOak"
+      "ore": "lumberBlackwood"
     }
   },
   "result": {
-    "item": "minecraft:boat",
+    "item": "tfc:wood/boat/blackwood",
     "count": 1
   }
 }
