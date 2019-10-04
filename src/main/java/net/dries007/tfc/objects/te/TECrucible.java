@@ -238,12 +238,6 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
     }
 
     @Override
-    public int getFieldCount()
-    {
-        return 1;
-    }
-
-    @Override
     public void onBreakBlock(World world, BlockPos pos, IBlockState state)
     {
         //Only carry to itemstack the alloy fluid
@@ -256,19 +250,10 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         Helpers.spawnItemStack(world, pos, stack);
     }
 
-    public NBTTagCompound writeToItemTag()
+    @Override
+    public int getFieldCount()
     {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setTag("alloy", alloy.serializeNBT());
-        return nbt;
-    }
-
-    public void readFromItemTag(NBTTagCompound nbt)
-    {
-        alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
-
-        // Also set the cached alloyResult:
-        alloyResult = alloy.getResult();
+        return 1;
     }
 
     @Override
@@ -291,6 +276,21 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
         }
         TerraFirmaCraft.getLog().warn("Illegal field id {} in TECrucible#getField", index);
         return 0;
+    }
+
+    public NBTTagCompound writeToItemTag()
+    {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setTag("alloy", alloy.serializeNBT());
+        return nbt;
+    }
+
+    public void readFromItemTag(NBTTagCompound nbt)
+    {
+        alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
+
+        // Also set the cached alloyResult:
+        alloyResult = alloy.getResult();
     }
 
     /**

@@ -5,6 +5,17 @@
 
 package net.dries007.tfc.objects.items.metal;
 
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.Size;
@@ -13,16 +24,6 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
 public class ItemOreTFC extends ItemTFC implements IMetalItem
@@ -71,12 +72,16 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
             {
                 OreDictionaryHelper.register(this, "gem", ore);
                 OreDictionaryHelper.register(this, "ore", ore);
-            } else if (ore.getRegistryName().getPath().equals("bituminous_coal")) {
+            }
+            else if (ore.getRegistryName().getPath().equals("bituminous_coal"))
+            {
                 OreDictionaryHelper.register(this, "gem", "coal");
                 OreDictionaryHelper.register(this, "ore", "coal");
                 OreDictionaryHelper.register(this, "gem", ore);
                 OreDictionaryHelper.register(this, "ore", ore);
-            } else {
+            }
+            else
+            {
                 OreDictionaryHelper.register(this, "ore", ore);
             }
         }

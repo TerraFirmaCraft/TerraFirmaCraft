@@ -103,21 +103,6 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer player)
-    {
-        Slot slot = inventorySlots.get(0);
-        ItemStack stack = slot.getStack();
-        if (!stack.isEmpty())
-        {
-            if (!player.world.isRemote)
-            {
-                ItemHandlerHelper.giveItemToPlayer(player, stack);
-            }
-        }
-        super.onContainerClosed(player);
-    }
-
-    @Override
     protected void addContainerSlots()
     {
         addSlotToContainer(new SlotKnappingOutput(new ItemStackHandler(1), 0, 128, 44, this::resetMatrix));
@@ -139,6 +124,21 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
         {
             addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142 + 18));
         }
+    }
+
+    @Override
+    public void onContainerClosed(EntityPlayer player)
+    {
+        Slot slot = inventorySlots.get(0);
+        ItemStack stack = slot.getStack();
+        if (!stack.isEmpty())
+        {
+            if (!player.world.isRemote)
+            {
+                ItemHandlerHelper.giveItemToPlayer(player, stack);
+            }
+        }
+        super.onContainerClosed(player);
     }
 
     private void resetMatrix()

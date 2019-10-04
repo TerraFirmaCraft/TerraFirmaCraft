@@ -153,6 +153,18 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
     }
 
     @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        // Set the initial counter value
+        TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
+        if (tile != null)
+        {
+            tile.resetCounter();
+        }
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+    }
+
+    @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
@@ -169,17 +181,5 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TETickCounter();
-    }
-
-    @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-    {
-        // Set the initial counter value
-        TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
-        if (tile != null)
-        {
-            tile.resetCounter();
-        }
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 }

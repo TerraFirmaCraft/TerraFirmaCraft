@@ -90,14 +90,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         return this.dataManager.get(FAMILIARITY);
     }
 
-    @Override
-    public boolean getCanSpawnHere()
-    {
-        return this.world.checkNoEntityCollision(getEntityBoundingBox())
-            && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-            && !this.world.containsAnyLiquid(getEntityBoundingBox());
-    }
-
     public void setFamiliarity(float value)
     {
         if (value < 0f) value = 0f;
@@ -173,6 +165,14 @@ public abstract class EntityAnimalTFC extends EntityAnimal
         this.fertilized = nbt.getBoolean("fertilized");
         this.setFamiliarity(nbt.getFloat("familiarity"));
 
+    }
+
+    @Override
+    public boolean getCanSpawnHere()
+    {
+        return this.world.checkNoEntityCollision(getEntityBoundingBox())
+            && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
+            && !this.world.containsAnyLiquid(getEntityBoundingBox());
     }
 
     @Override

@@ -156,6 +156,17 @@ public class BlockCrucible extends Block implements IHeatConsumerBlock
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TECrucible te = Helpers.getTE(worldIn, pos, TECrucible.class);
+        if (te != null)
+        {
+            te.onBreakBlock(worldIn, pos, state);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if (!worldIn.isRemote && !playerIn.isSneaking())
@@ -166,14 +177,20 @@ public class BlockCrucible extends Block implements IHeatConsumerBlock
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        TECrucible te = Helpers.getTE(worldIn, pos, TECrucible.class);
-        if (te != null)
+        if (!worldIn.isRemote)
         {
-            te.onBreakBlock(worldIn, pos, state);
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (nbt != null)
+            {
+                TECrucible te = Helpers.getTE(worldIn, pos, TECrucible.class);
+                if (te != null)
+                {
+                    te.readFromItemTag(nbt);
+                }
+            }
         }
-        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
@@ -200,23 +217,6 @@ public class BlockCrucible extends Block implements IHeatConsumerBlock
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TECrucible();
-    }
-
-    @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-    {
-        if (!worldIn.isRemote)
-        {
-            NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt != null)
-            {
-                TECrucible te = Helpers.getTE(worldIn, pos, TECrucible.class);
-                if (te != null)
-                {
-                    te.readFromItemTag(nbt);
-                }
-            }
-        }
     }
 
     @Override

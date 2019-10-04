@@ -69,12 +69,6 @@ public class BlockChestTFC extends BlockChest
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
-    {
-        return new TEChestTFC();
-    }
-
-    @Override
     public boolean onBlockActivated(World worldIn, @Nonnull BlockPos pos, IBlockState state, @Nonnull EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if (!worldIn.isRemote)
@@ -82,5 +76,11 @@ public class BlockChestTFC extends BlockChest
             TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.CHEST);
         }
         return true;
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta)
+    {
+        return new TEChestTFC();
     }
 }
