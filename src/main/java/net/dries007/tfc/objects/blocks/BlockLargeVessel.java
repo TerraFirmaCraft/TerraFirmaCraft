@@ -202,16 +202,16 @@ public class BlockLargeVessel extends Block
     }
 
     @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return false;
-    }
-
-    @Override
     @Nonnull
     public BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, SEALED);
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return false;
     }
 
     @SuppressWarnings("deprecation")
@@ -219,16 +219,6 @@ public class BlockLargeVessel extends Block
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
         return false;
-    }
-
-    @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-    {
-        // Only drop the barrel if it's not sealed, since the barrel with contents will be already dropped by the TE
-        if (!state.getValue(SEALED))
-        {
-            super.getDrops(drops, world, pos, state, fortune);
-        }
     }
 
     @Override
@@ -242,6 +232,16 @@ public class BlockLargeVessel extends Block
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TELargeVessel();
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        // Only drop the barrel if it's not sealed, since the barrel with contents will be already dropped by the TE
+        if (!state.getValue(SEALED))
+        {
+            super.getDrops(drops, world, pos, state, fortune);
+        }
     }
 
     @Override

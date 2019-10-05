@@ -78,6 +78,23 @@ public class ItemMold extends ItemPottery
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
+    @Override
+    @Nonnull
+    public String getTranslationKey(ItemStack stack)
+    {
+        IFluidHandler capFluidHandler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+        if (capFluidHandler instanceof IMoldHandler)
+        {
+            Metal metal = ((IMoldHandler) capFluidHandler).getMetal();
+            if (metal != null)
+            {
+                //noinspection ConstantConditions
+                return super.getTranslationKey(stack) + "." + metal.getRegistryName().getPath();
+            }
+        }
+        return super.getTranslationKey(stack);
+    }
+
     @Nullable
     @Override
     public NBTTagCompound getNBTShareTag(ItemStack stack)
@@ -109,23 +126,6 @@ public class ItemMold extends ItemPottery
                 ((IMoldHandler) inventory).deserializeNBT(nbt.getCompoundTag("caps"));
             }
         }
-    }
-
-    @Override
-    @Nonnull
-    public String getTranslationKey(ItemStack stack)
-    {
-        IFluidHandler capFluidHandler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-        if (capFluidHandler instanceof IMoldHandler)
-        {
-            Metal metal = ((IMoldHandler) capFluidHandler).getMetal();
-            if (metal != null)
-            {
-                //noinspection ConstantConditions
-                return super.getTranslationKey(stack) + "." + metal.getRegistryName().getPath();
-            }
-        }
-        return super.getTranslationKey(stack);
     }
 
     @Nullable

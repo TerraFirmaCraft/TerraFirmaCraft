@@ -71,6 +71,25 @@ public class TEChestTFC extends TileEntityChest implements ISlotCallback
         return block instanceof BlockChestTFC && ((BlockChestTFC) block).wood == getWood() && ((BlockChest) block).chestType == getChestType();
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    @Nullable
+    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable net.minecraft.util.EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+            if (doubleChestHandler == null || doubleChestHandler.needsRefresh())
+            {
+                doubleChestHandler = TFCDoubleChestItemHandler.get(this);
+            }
+            if (doubleChestHandler != null && doubleChestHandler != TFCDoubleChestItemHandler.NO_ADJACENT_CHESTS_INSTANCE)
+            {
+                return (T) doubleChestHandler;
+            }
+        }
+        return super.getCapability(capability, facing);
+    }
+
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
     {
@@ -95,25 +114,6 @@ public class TEChestTFC extends TileEntityChest implements ISlotCallback
             return cap.getSize(stack).isSmallerThan(Size.LARGE);
         }
         return true;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    @Nullable
-    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable net.minecraft.util.EnumFacing facing)
-    {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-        {
-            if (doubleChestHandler == null || doubleChestHandler.needsRefresh())
-            {
-                doubleChestHandler = TFCDoubleChestItemHandler.get(this);
-            }
-            if (doubleChestHandler != null && doubleChestHandler != TFCDoubleChestItemHandler.NO_ADJACENT_CHESTS_INSTANCE)
-            {
-                return (T) doubleChestHandler;
-            }
-        }
-        return super.getCapability(capability, facing);
     }
 
     @Override
