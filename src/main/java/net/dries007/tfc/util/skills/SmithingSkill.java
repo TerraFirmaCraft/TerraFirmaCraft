@@ -20,15 +20,19 @@ public class SmithingSkill extends Skill
 
     public static void applySkillBonus(SmithingSkill skill, ItemStack stack, Type bonusType)
     {
-        if (!stack.hasTagCompound())
+        // General types don't receive skill bonuses
+        if (bonusType != Type.GENERAL)
         {
-            stack.setTagCompound(new NBTTagCompound());
-        }
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt != null)
-        {
-            nbt.setFloat(SKILL_VALUE, skill.getSkillSum() / 160f);
-            nbt.setInteger(SKILL_TYPE, bonusType.ordinal());
+            if (!stack.hasTagCompound())
+            {
+                stack.setTagCompound(new NBTTagCompound());
+            }
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (nbt != null)
+            {
+                nbt.setFloat(SKILL_VALUE, skill.getSkillSum() / 160f);
+                nbt.setInteger(SKILL_TYPE, bonusType.ordinal());
+            }
         }
     }
 
@@ -67,7 +71,7 @@ public class SmithingSkill extends Skill
         return 0;
     }
 
-    private int[] skillLevels = new int[4];
+    private final int[] skillLevels = new int[4];
 
     public SmithingSkill(IPlayerData rootSkills)
     {
@@ -100,7 +104,7 @@ public class SmithingSkill extends Skill
         {
             value = 1;
         }
-        //Evenly distribute value accordingly
+        // Evenly distribute value accordingly
         for (Type smithType : Type.values())
         {
             skillLevels[smithType.ordinal()] = (int) (value * smithType.getMax());
