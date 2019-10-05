@@ -91,6 +91,8 @@ public class ItemAnimalHide extends ItemTFC
                 {
                     worldIn.setBlockState(posAbove, BlocksTFC.PLACED_HIDE.getDefaultState().withProperty(SIZE, size));
                 }
+                stack.shrink(1);
+                player.setHeldItem(hand, stack);
                 return EnumActionResult.SUCCESS;
             }
             return EnumActionResult.FAIL;
