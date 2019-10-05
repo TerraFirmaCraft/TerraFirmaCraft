@@ -28,18 +28,19 @@ import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
-import net.dries007.tfc.util.TFCDoubleChestItemHandler;
+import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
+import net.dries007.tfc.objects.inventory.capability.TFCDoubleChestItemHandler;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class TEChestTFC extends TileEntityChest
+public class TEChestTFC extends TileEntityChest implements ISlotCallback
 {
     public static final int SIZE = 18;
 
     private Tree cachedWood;
 
     {
-        chestContents = NonNullList.withSize(SIZE, ItemStack.EMPTY); // todo: make chest size configurable.
+        chestContents = NonNullList.withSize(SIZE, ItemStack.EMPTY);
     }
 
     @Nullable
@@ -87,7 +88,7 @@ public class TEChestTFC extends TileEntityChest
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack)
     {
-        //Blocks input from hopper
+        // Blocks input from hopper
         IItemSize cap = CapabilityItemSize.getIItemSize(stack);
         if (cap != null)
         {
@@ -104,10 +105,20 @@ public class TEChestTFC extends TileEntityChest
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
             if (doubleChestHandler == null || doubleChestHandler.needsRefresh())
+            {
                 doubleChestHandler = TFCDoubleChestItemHandler.get(this);
+            }
             if (doubleChestHandler != null && doubleChestHandler != TFCDoubleChestItemHandler.NO_ADJACENT_CHESTS_INSTANCE)
+            {
                 return (T) doubleChestHandler;
+            }
         }
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public boolean isItemValid(int slot, @Nonnull ItemStack stack)
+    {
+        return isItemValidForSlot(slot, stack);
     }
 }

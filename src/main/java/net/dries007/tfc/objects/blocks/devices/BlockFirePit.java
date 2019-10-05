@@ -202,12 +202,6 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     }
 
     @Override
-    public boolean isBurning(IBlockAccess world, BlockPos pos)
-    {
-        return world.getBlockState(pos).getValue(LIT);
-    }
-
-    @Override
     public boolean hasTileEntity(IBlockState state)
     {
         return true;

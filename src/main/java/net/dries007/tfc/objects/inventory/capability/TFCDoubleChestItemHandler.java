@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.objects.inventory.capability;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -98,7 +98,9 @@ public class TFCDoubleChestItemHandler extends VanillaDoubleChestItemHandler
 
         chest = getChest(!accessingUpperChest);
         if (chest != null)
+        {
             chest.markDirty();
+        }
     }
 
     @Override
@@ -109,7 +111,13 @@ public class TFCDoubleChestItemHandler extends VanillaDoubleChestItemHandler
         int targetSlot = accessingUpperChest ? slot : slot - TEChestTFC.SIZE;
         TileEntityChest chest = getChest(accessingUpperChest);
         if (chest == null)
+        {
             return stack;
+        }
+        if (chest instanceof ISlotCallback && !((ISlotCallback) chest).isItemValid(slot, stack))
+        {
+            return stack;
+        }
 
         int starting = stack.getCount();
         ItemStack ret = chest.getSingleChestHandler().insertItem(targetSlot, stack, simulate);
@@ -117,7 +125,9 @@ public class TFCDoubleChestItemHandler extends VanillaDoubleChestItemHandler
         {
             chest = getChest(!accessingUpperChest);
             if (chest != null)
+            {
                 chest.markDirty();
+            }
         }
 
         return ret;
@@ -131,14 +141,18 @@ public class TFCDoubleChestItemHandler extends VanillaDoubleChestItemHandler
         int targetSlot = accessingUpperChest ? slot : slot - TEChestTFC.SIZE;
         TileEntityChest chest = getChest(accessingUpperChest);
         if (chest == null)
+        {
             return ItemStack.EMPTY;
+        }
 
         ItemStack ret = chest.getSingleChestHandler().extractItem(targetSlot, amount, simulate);
         if (!ret.isEmpty() && !simulate)
         {
             chest = getChest(!accessingUpperChest);
             if (chest != null)
+            {
                 chest.markDirty();
+            }
         }
 
         return ret;
