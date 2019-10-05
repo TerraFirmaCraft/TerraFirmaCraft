@@ -286,8 +286,9 @@ public final class DefaultRecipes
     {
         IForgeRegistry<AnvilRecipe> r = event.getRegistry();
 
-        // Basic Components
+        // Misc
         addAnvil(r, DOUBLE_INGOT, SHEET, false, GENERAL, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST);
+        addAnvil(r, TUYERE, DOUBLE_SHEET, true, GENERAL, BEND_LAST, BEND_SECOND_LAST);
 
         // Tools
         addAnvil(r, INGOT, PICK_HEAD, true, TOOLS, PUNCH_LAST, BEND_NOT_LAST, DRAW_NOT_LAST);
