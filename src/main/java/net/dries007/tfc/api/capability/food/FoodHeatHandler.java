@@ -90,17 +90,17 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
         return internalFoodCap.getDecayModifier();
     }
 
+    @Override
+    public void setNonDecaying()
+    {
+        internalFoodCap.setNonDecaying();
+    }
+
     @Nonnull
     @Override
     public List<IFoodTrait> getTraits()
     {
         return internalFoodCap.getTraits();
-    }
-
-    @Override
-    public void setNonDecaying()
-    {
-        internalFoodCap.setNonDecaying();
     }
 
     @Override

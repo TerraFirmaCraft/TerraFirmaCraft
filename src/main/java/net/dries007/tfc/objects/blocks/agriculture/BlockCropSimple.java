@@ -102,13 +102,6 @@ public abstract class BlockCropSimple extends BlockCropTFC
     }
 
     @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, getStageProperty(), WILD);
-    }
-
-    @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
         // todo: in 1.14 change to use the apply skill loot table
@@ -134,6 +127,13 @@ public abstract class BlockCropSimple extends BlockCropTFC
         {
             InventoryHelper.spawnItemStack(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, foodStack);
         }
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, getStageProperty(), WILD);
     }
 
     @Override

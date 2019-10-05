@@ -78,12 +78,6 @@ public class BlockChestTFC extends BlockChest
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
-    {
-        return new TEChestTFC();
-    }
-
-    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if (!worldIn.isRemote)
@@ -147,6 +141,12 @@ public class BlockChestTFC extends BlockChest
                 return ilockablecontainer;
             }
         }
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta)
+    {
+        return new TEChestTFC();
     }
 
     private boolean isBlocked(World worldIn, BlockPos pos)

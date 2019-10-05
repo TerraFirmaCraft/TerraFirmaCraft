@@ -60,39 +60,6 @@ public class ItemSmallVessel extends ItemPottery
         setHasSubtypes(glazed);
     }
 
-    @Nullable
-    @Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack)
-    {
-        // Intentionally sync item handler logic, heat will get synced "accidentally"
-        NBTTagCompound nbt = new NBTTagCompound();
-        NBTTagCompound stackNbt = stack.getTagCompound();
-        if (stackNbt != null)
-        {
-            nbt.setTag("stack", nbt);
-        }
-        IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (inventory instanceof IMoldHandler)
-        {
-            nbt.setTag("caps", ((IMoldHandler) inventory).serializeNBT());
-        }
-        return nbt;
-    }
-
-    @Override
-    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        super.readNBTShareTag(stack, nbt == null ? null : nbt.getCompoundTag("stack"));
-        if (nbt != null)
-        {
-            IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            if (inventory instanceof IMoldHandler)
-            {
-                ((IMoldHandler) inventory).deserializeNBT(nbt.getCompoundTag("caps"));
-            }
-        }
-    }
-
     @Override
     @Nonnull
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
@@ -146,6 +113,39 @@ public class ItemSmallVessel extends ItemPottery
                 {
                     items.add(new ItemStack(this, 1, color.getDyeDamage()));
                 }
+            }
+        }
+    }
+
+    @Nullable
+    @Override
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        // Intentionally sync item handler logic, heat will get synced "accidentally"
+        NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagCompound stackNbt = stack.getTagCompound();
+        if (stackNbt != null)
+        {
+            nbt.setTag("stack", nbt);
+        }
+        IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (inventory instanceof IMoldHandler)
+        {
+            nbt.setTag("caps", ((IMoldHandler) inventory).serializeNBT());
+        }
+        return nbt;
+    }
+
+    @Override
+    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        super.readNBTShareTag(stack, nbt == null ? null : nbt.getCompoundTag("stack"));
+        if (nbt != null)
+        {
+            IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            if (inventory instanceof IMoldHandler)
+            {
+                ((IMoldHandler) inventory).deserializeNBT(nbt.getCompoundTag("caps"));
             }
         }
     }
