@@ -42,7 +42,7 @@ public class CommandSkill extends CommandBase
     {
         if (args.length != 3)
         {
-            throw new WrongUsageException("3 arguments required.");
+            throw new WrongUsageException("3 arguments required: " + getUsage(sender));
         }
 
         double level = parseDouble(args[2], 0, 4);
