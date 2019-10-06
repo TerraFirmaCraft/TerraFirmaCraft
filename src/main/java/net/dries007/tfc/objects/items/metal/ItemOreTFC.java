@@ -64,20 +64,19 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
         }
         else // Mineral
         {
-            OreDictionaryHelper.register(this, "gem", ore);
             //noinspection ConstantConditions
-            if (ore.getRegistryName().getPath().equals("lapis_lazuli"))
+            String oreName = ore.getRegistryName().getPath();
+            switch (oreName)
             {
-                OreDictionaryHelper.register(this, "gem", "lapis");
-                OreDictionaryHelper.register(this, "ore", "lapis");
-            }
-            if (ore.getRegistryName().getPath().equals("cinnabar"))
-            {
-                OreDictionaryHelper.register(this, "ore", "cinnabar");
-            }
-            if (ore.getRegistryName().getPath().equals("bituminous_coal"))
-            {
-                OreDictionaryHelper.register(this, "gem", "coal");
+                case "lapis_lazuli":
+                    OreDictionaryHelper.register(this, "gem", "lapis");
+                    break;
+                case "bituminous_coal":
+                case "lignite":
+                    OreDictionaryHelper.register(this, "gem", "coal");
+                    break;
+                default:
+                    OreDictionaryHelper.register(this, "gem", ore);
             }
         }
     }
