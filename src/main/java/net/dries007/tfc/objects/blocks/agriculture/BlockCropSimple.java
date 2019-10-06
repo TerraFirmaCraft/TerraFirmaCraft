@@ -112,8 +112,8 @@ public abstract class BlockCropSimple extends BlockCropTFC
         SimpleSkill skill = CapabilityPlayerData.getSkill(player, SkillType.AGRICULTURE);
         if (skill != null)
         {
-            foodStack.setCount(2 + (int) (skill.getTotalLevel()));
-            if (skill.getTier() == SkillTier.EXPERT && RANDOM.nextInt(4) == 0)
+            foodStack.setCount(1 + RANDOM.nextInt(2 + (int) (6 * skill.getTotalLevel())));
+            if (skill.getTier().isAtLeast(SkillTier.ADEPT) && RANDOM.nextInt(10 - 2 * skill.getTier().ordinal()) == 0)
             {
                 seedStack.setCount(2);
             }

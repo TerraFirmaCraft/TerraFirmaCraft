@@ -134,13 +134,19 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        return new ItemStack(Item.getItemFromBlock(this));
+        return new ItemStack(this);
     }
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
+    }
+
+    @Override
+    public int damageDropped(IBlockState state)
+    {
+        return 0;
     }
 
     public int getWaterScore(IBlockAccess world, BlockPos pos)
