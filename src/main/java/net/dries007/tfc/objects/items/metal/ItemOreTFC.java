@@ -59,7 +59,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
             for (Ore.Grade grade : Ore.Grade.values())
             {
                 //noinspection ConstantConditions
-                OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore.getRegistryName().getPath(), grade);
+                OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore.getMetal().getRegistryName().getPath(), grade);
             }
         }
         else // Mineral

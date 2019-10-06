@@ -180,19 +180,23 @@ public class OreDictionaryHelper
 
         private Thing(Item thing)
         {
-            this(thing, 0);
+            this(thing, -1);
         }
 
         private Thing(Item thing, int meta)
         {
-            item = thing;
-            this.meta = meta;
             block = null;
+            item = thing;
+
+            if (meta == -1 && thing.getHasSubtypes() || thing.isDamageable())
+            {
+                meta = OreDictionary.WILDCARD_VALUE;
+            }
+            this.meta = meta;
         }
 
         private ItemStack toItemStack()
         {
-            //noinspection ConstantConditions
             return (block == null) ? new ItemStack(item, 1, meta) : new ItemStack(block, 1, meta);
         }
     }
