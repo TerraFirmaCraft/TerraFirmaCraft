@@ -8,11 +8,11 @@
   "key": {
     "X": {
       "type": "forge:ore_dict",
-      "ore": "dustKaolinitePowder"
+      "ore": "dustKaolinite"
     },
     "Y": {
       "type": "forge:ore_dict",
-      "ore": "dustGraphitePowder"
+      "ore": "dustGraphite"
     },
     "Z": {
       "item": "minecraft:clay_ball"
