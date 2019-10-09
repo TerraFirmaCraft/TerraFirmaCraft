@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "tfc:powder/malachite_powder"
+      "item": "tfc:powder/malachite"
     },
     {
       "item": "tfc:powder/flux"

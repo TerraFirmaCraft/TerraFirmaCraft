@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "tfc:powder/hematite_powder"
+      "item": "tfc:powder/hematite"
     }
   ],
   "result": {

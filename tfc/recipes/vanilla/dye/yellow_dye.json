@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "tfc:powder/limonite_powder"
+      "item": "tfc:powder/limonite"
     }
   ],
   "result": {
