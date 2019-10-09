@@ -22,7 +22,6 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.api.capability.ItemStickCapability;
 import net.dries007.tfc.api.util.TFCConstants;
@@ -81,14 +80,6 @@ public final class CapabilityItemSize
             else if (stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock() instanceof IItemSize)
             {
                 return (IItemSize) ((ItemBlock) stack.getItem()).getBlock();
-            }
-            try
-            {
-                return stack.getCapability(ITEM_SIZE_CAPABILITY, null);
-            }
-            catch (Exception e)
-            {
-                TerraFirmaCraft.getLog().info("Item: {} {} {}", stack, stack.getItem(), stack.getItem().getRegistryName());
             }
             return stack.getCapability(ITEM_SIZE_CAPABILITY, null);
         }
