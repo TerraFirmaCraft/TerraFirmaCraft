@@ -187,17 +187,25 @@ public class OreDictionaryHelper
         {
             block = null;
             item = thing;
-
-            if (meta == -1 && thing.getHasSubtypes() || thing.isDamageable())
-            {
-                meta = OreDictionary.WILDCARD_VALUE;
-            }
             this.meta = meta;
         }
 
         private ItemStack toItemStack()
         {
-            return (block == null) ? new ItemStack(item, 1, meta) : new ItemStack(block, 1, meta);
+            if (block != null)
+            {
+                return new ItemStack(block, 1, meta);
+            }
+            else if (item != null)
+            {
+                int meta = this.meta;
+                if (meta == -1 && item.isDamageable())
+                {
+                    meta = OreDictionary.WILDCARD_VALUE;
+                }
+                return new ItemStack(item, 1, meta);
+            }
+            return ItemStack.EMPTY;
         }
     }
 }
