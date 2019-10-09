@@ -13,11 +13,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
+import net.dries007.tfc.api.capability.heat.Heat;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.te.TECrucible;
 import net.dries007.tfc.util.Alloy;
 
-import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class GuiCrucible extends GuiContainerTE<TECrucible>
@@ -48,9 +48,13 @@ public class GuiCrucible extends GuiContainerTE<TECrucible>
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
         // Draw the temperature indicator
-        int temperature = (int) (51 * tile.getField(TECrucible.FIELD_TEMPERATURE) / MAX_TEMPERATURE);
+        int temperature = (int) (51 * tile.getField(TECrucible.FIELD_TEMPERATURE) / Heat.maxVisibleTemperature());
         if (temperature > 0)
         {
+            if (temperature > 51)
+            {
+                temperature = 51;
+            }
             drawTexturedModalRect(guiLeft + 153, guiTop + 80 - temperature, 176, 0, 15, 5);
         }
 

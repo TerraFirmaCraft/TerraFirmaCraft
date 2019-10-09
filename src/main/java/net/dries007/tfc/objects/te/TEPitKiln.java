@@ -32,6 +32,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.Heat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.types.Metal;
@@ -136,7 +137,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                     IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
                     if (heat != null)
                     {
-                        heat.setTemperature(CapabilityItemHeat.MAX_TEMPERATURE);
+                        heat.setTemperature(Heat.maxVisibleTemperature());
 
                         // Only Tier I and below can be melted in a pit kiln
                         HeatRecipe recipe = HeatRecipe.get(stack, Metal.Tier.TIER_I);

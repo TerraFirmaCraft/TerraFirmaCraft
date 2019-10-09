@@ -39,7 +39,6 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
 
-import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
 import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 
 @ParametersAreNonnullByDefault
@@ -287,7 +286,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
 
                 if (temperature > 0 || burnTemperature > 0)
                 {
-                    float targetTemperature = Math.min(MAX_TEMPERATURE, burnTemperature + airTicks);
+                    float targetTemperature = burnTemperature + airTicks;
                     if (temperature < targetTemperature)
                     {
                         // Modifier for heating = 2x for bellows
