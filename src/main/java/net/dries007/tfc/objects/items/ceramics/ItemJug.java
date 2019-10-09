@@ -141,6 +141,17 @@ public class ItemJug extends ItemPottery
     }
 
     @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        IFluidHandler jugCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        if (jugCap != null && jugCap.drain(CAPACITY, false) != null)
+        {
+            return getStackSize(stack);
+        }
+        return 1;
+    }
+
+    @Override
     @Nonnull
     public String getItemStackDisplayName(@Nonnull ItemStack stack)
     {

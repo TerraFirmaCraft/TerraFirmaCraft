@@ -35,6 +35,7 @@ import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.Heat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.types.Metal;
@@ -59,7 +60,10 @@ public class ItemMold extends ItemPottery
     public ItemMold(Metal.ItemType type)
     {
         this.type = type;
-        if (MAP.put(type, this) != null) throw new IllegalStateException("There can only be one.");
+        if (MAP.put(type, this) != null)
+        {
+            throw new IllegalStateException("There can only be one.");
+        }
     }
 
     @Override
@@ -306,7 +310,7 @@ public class ItemMold extends ItemPottery
 
         private void updateFluidData(FluidStack fluid)
         {
-            meltTemp = CapabilityItemHeat.MAX_TEMPERATURE;
+            meltTemp = Heat.maxVisibleTemperature();
             heatCapacity = 1;
             if (fluid != null)
             {

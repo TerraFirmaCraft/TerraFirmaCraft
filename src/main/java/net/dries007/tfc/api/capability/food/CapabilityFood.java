@@ -50,7 +50,6 @@ public class CapabilityFood
     public static final IFoodTrait.Impl PRESERVED = new IFoodTrait.Impl("preserved", 0.5f);
 
     private static final Map<String, IFoodTrait> TRAITS = new HashMap<>();
-    private static boolean markNonDecayingStacks = true;
 
     public static void preInit()
     {
@@ -67,6 +66,8 @@ public class CapabilityFood
     {
         // Add custom vanilla food instances
         CUSTOM_FOODS.put(IIngredient.of(Items.ROTTEN_FLESH), () -> new FoodHandler(null, new float[] {0, 0, 0, 0, 0}, 0, 0, Float.POSITIVE_INFINITY));
+        CUSTOM_FOODS.put(IIngredient.of(Items.GOLDEN_APPLE), () -> new FoodHandler(null, new float[] {0, 0, 2, 2, 0}, 3, 12, 0));
+        CUSTOM_FOODS.put(IIngredient.of(Items.GOLDEN_CARROT), () -> new FoodHandler(null, new float[] {0.5f, 0, 1.2f, 1.2f, 0}, 2, 5, 0));
     }
 
     public static Map<String, IFoodTrait> getTraits()
