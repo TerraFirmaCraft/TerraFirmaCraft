@@ -118,14 +118,14 @@ ORE_TYPES = {
 POWDERS = [
     'flux',
     'coke',
-    'kaolinite_powder',
-    'graphite_powder',
-    'sulfur_powder',
-    'saltpeter_powder',
-    'hematite_powder',
-    'lapis_lazuli_powder',
-    'limonite_powder',
-    'malachite_powder',
+    'kaolinite',
+    'graphite',
+    'sulfur',
+    'saltpeter',
+    'hematite',
+    'lapis_lazuli',
+    'limonite',
+    'malachite',
     'salt',
     'fertilizer',
 ]
@@ -944,7 +944,8 @@ for wood_type in WOOD_TYPES:
         'sealed': {
             'true': {'model': 'tfc:barrel_sealed'},
             'false': {},
-        }
+        },
+        'inventory': [{}]
     })
 
     # LOOM
