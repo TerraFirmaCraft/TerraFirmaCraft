@@ -17,11 +17,11 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -31,7 +31,6 @@ import net.minecraft.world.World;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
-import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.te.TECharcoalForge;
 import net.dries007.tfc.util.Helpers;
 
@@ -126,6 +125,18 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
     {
         if (!worldIn.isRemote)
         {
+            // If there's fire on top (made by any fire starting items) convert to charcoal forge
+            // BlockIn is the block before update, (since 7 layers make fire disappear at the same time it is created)
+            if (state.getValue(LAYERS) >= 7 && BlockCharcoalForge.isValid(worldIn, pos) && (blockIn == Blocks.FIRE || worldIn.getBlockState(fromPos).getBlock() == Blocks.FIRE))
+            {
+                worldIn.setBlockState(pos, BlocksTFC.CHARCOAL_FORGE.getDefaultState().withProperty(LIT, true));
+                TECharcoalForge te = Helpers.getTE(worldIn, pos, TECharcoalForge.class);
+                if (te != null)
+                {
+                    te.onCreate();
+                }
+                worldIn.setBlockToAir(fromPos);
+            }
             // Try to drop the rock down
             IBlockState stateUnder = worldIn.getBlockState(pos.down());
             if (stateUnder.getBlock() instanceof BlockCharcoalPile)
@@ -166,30 +177,6 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
     public int damageDropped(IBlockState state)
     {
         return 1;
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        ItemStack stack = player.getHeldItem(hand);
-
-        if (stack.getItem() == ItemsTFC.FIRESTARTER || stack.getItem() == Items.FLINT_AND_STEEL)
-        {
-            if (state.getValue(LAYERS) >= 7 && BlockCharcoalForge.isValid(world, pos))
-            {
-                if (!world.isRemote)
-                {
-                    world.setBlockState(pos, BlocksTFC.CHARCOAL_FORGE.getDefaultState().withProperty(LIT, true));
-                    TECharcoalForge te = Helpers.getTE(world, pos, TECharcoalForge.class);
-                    if (te != null)
-                    {
-                        te.onCreate();
-                    }
-                }
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

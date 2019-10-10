@@ -61,7 +61,7 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
         };
         CHARCOAL_FORGE_MULTIBLOCK = new Multiblock()
             // Top block
-            .match(new BlockPos(0, 1, 0), state -> state.getBlock() == BlocksTFC.CRUCIBLE || state.getBlock() == Blocks.AIR)
+            .match(new BlockPos(0, 1, 0), state -> state.getBlock() == BlocksTFC.CRUCIBLE || state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.FIRE)
             // Chimney
             .matchOneOf(new BlockPos(0, 1, 0), new Multiblock()
                 .match(new BlockPos(0, 0, 0), skyMatcher)
