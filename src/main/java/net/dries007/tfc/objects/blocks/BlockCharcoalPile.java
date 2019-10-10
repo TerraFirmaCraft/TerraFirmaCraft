@@ -52,7 +52,7 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
 
     public BlockCharcoalPile()
     {
-        super(Material.GROUND);
+        super(Material.WOOD);
 
         setSoundType(TFCSounds.CHARCOAL_PILE);
         setHarvestLevel("shovel", 0);

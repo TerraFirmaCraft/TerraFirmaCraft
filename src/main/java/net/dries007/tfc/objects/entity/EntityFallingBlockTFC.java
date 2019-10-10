@@ -169,13 +169,18 @@ public class EntityFallingBlockTFC extends Entity
             {
                 if (!world.isRemote)
                 {
-                    world.destroyBlock(pos, true);
-                    world.setBlockState(pos, state, 3);
+                    BlockPos blockPos = pos;
+                    if (!IFallingBlock.canFallThrough(world, pos))
+                    {
+                        blockPos = pos.up();
+                    }
+                    world.destroyBlock(blockPos, true);
+                    world.setBlockState(blockPos, state, 3);
 
                     // Copy all TE data over default data (except pos[X,Y,Z]) if the TE is there. This is vanilla code.
                     if (teData != null && block.hasTileEntity(state))
                     {
-                        TileEntity te = world.getTileEntity(pos);
+                        TileEntity te = world.getTileEntity(blockPos);
                         if (te != null)
                         {
                             NBTTagCompound currentTeData = te.writeToNBT(new NBTTagCompound());

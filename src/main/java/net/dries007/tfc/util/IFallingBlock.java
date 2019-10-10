@@ -5,10 +5,13 @@
 
 package net.dries007.tfc.util;
 
+import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,8 +24,16 @@ import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 
 public interface IFallingBlock
 {
+    Set<Material> HARD_MATERIALS = ImmutableSet.of(Material.ROCK, Material.WOOD, Material.IRON);
+
     static boolean canFallThrough(World world, BlockPos pos)
     {
+        // Hard materials will not break even if their block is not full
+        // See https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/479
+        if (HARD_MATERIALS.contains(world.getBlockState(pos).getMaterial()))
+        {
+            return false;
+        }
         if (!world.isSideSolid(pos, EnumFacing.UP))
         {
             return true;
