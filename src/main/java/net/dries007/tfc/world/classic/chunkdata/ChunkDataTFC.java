@@ -30,6 +30,8 @@ import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.NBTBuilder;
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.classic.DataLayer;
 
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER2;
@@ -123,6 +125,7 @@ public final class ChunkDataTFC
     private float floraDiversity;
     private Set<Ore> chunkOres = new HashSet<>();
     private int chunkWorkage;
+    private long protectedTicks;
 
     /**
      * INTERNAL USE ONLY.
@@ -323,6 +326,25 @@ public final class ChunkDataTFC
         return floraDiversity;
     }
 
+    public void addSpawnProtection(int multiplier)
+    {
+        if (protectedTicks < CalendarTFC.PLAYER_TIME.getTicks())
+        {
+            protectedTicks = CalendarTFC.PLAYER_TIME.getTicks();
+        }
+        protectedTicks += multiplier * 600;
+    }
+
+    public long getSpawnProtection()
+    {
+        return protectedTicks - (24 * ICalendar.TICKS_IN_HOUR) - CalendarTFC.PLAYER_TIME.getTicks();
+    }
+
+    public boolean isSpawnProtected()
+    {
+        return getSpawnProtection() > 0;
+    }
+
     public List<Tree> getValidTrees()
     {
         return TFCRegistries.TREES.getValuesCollection().stream()
@@ -422,6 +444,7 @@ public final class ChunkDataTFC
             root.setFloat("floraDiversity", instance.floraDiversity);
 
             root.setInteger("chunkWorkage", instance.chunkWorkage);
+            root.setLong("protectedTicks", instance.protectedTicks);
 
             if (instance.chunkOres.size() > 0)
             {
@@ -467,6 +490,7 @@ public final class ChunkDataTFC
                 instance.floraDiversity = root.getFloat("floraDiversity");
 
                 instance.chunkWorkage = root.getInteger("chunkWorkage");
+                instance.protectedTicks = root.getLong("protectedTicks");
 
                 instance.chunkOres = new HashSet<>();
 

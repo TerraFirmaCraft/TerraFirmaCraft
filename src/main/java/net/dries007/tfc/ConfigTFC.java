@@ -270,6 +270,14 @@ public class ConfigTFC
         @Config.Comment("Add plate ore dictionary to sheet items?")
         @Config.LangKey("config." + MOD_ID + ".general.oreDictPlate")
         public boolean oreDictPlate = false;
+
+        @Config.Comment("Should living in a chunk block hostile mob spawning over time?")
+        @Config.LangKey("config." + MOD_ID + ".general.spawnProtectionEnable")
+        public boolean spawnProtectionEnable = true;
+
+        @Config.Comment("The min Y value a spawn has to be for spawn protection to be considered. (spawns under this level won't be stopped by spawn protection.")
+        @Config.LangKey("config." + MOD_ID + ".general.spawnProtectionMinY")
+        public int spawnProtectionMinY = 100;
     }
 
     public static class ClientCFG

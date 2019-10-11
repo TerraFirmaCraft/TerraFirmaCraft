@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -49,6 +50,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.damage.DamageType;
@@ -488,6 +490,16 @@ public final class CommonEventHandler
         {
             event.setResult(Event.Result.DENY);
         }
+
+        // Stop mob spawning in spawn protected chunks
+        if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false))
+        {
+            ChunkDataTFC data = ChunkDataTFC.get(event.getWorld(), pos);
+            if (ConfigTFC.GENERAL.spawnProtectionEnable && (ConfigTFC.GENERAL.spawnProtectionMinY <= event.getY()) && data.isSpawnProtected())
+            {
+                event.setResult(Event.Result.DENY);
+            }
+        }
     }
 
     @SubscribeEvent
@@ -550,6 +562,25 @@ public final class CommonEventHandler
         else if (event.getNewState().getBlock() == Blocks.COBBLESTONE)
         {
             event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.COBBLE).getDefaultState());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event)
+    {
+        if (event.phase == TickEvent.Phase.START && event.player.ticksExisted % 100 == 0)
+        {
+            // Add spawn protection to surrounding chunks
+            BlockPos basePos = new BlockPos(event.player);
+            for (int i = -1; i <= 1; i++)
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    BlockPos chunkPos = basePos.add(16 * i, 0, 16 * j);
+                    ChunkDataTFC data = ChunkDataTFC.get(event.player.getEntityWorld(), chunkPos);
+                    data.addSpawnProtection(1);
+                }
+            }
         }
     }
 }
