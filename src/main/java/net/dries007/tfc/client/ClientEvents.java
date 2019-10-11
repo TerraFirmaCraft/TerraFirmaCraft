@@ -200,6 +200,8 @@ public class ClientEvents
 
                     // list.add("");
                     //data.getOresSpawned().stream().map(String::valueOf).forEach(list::add);
+
+                    list.add(GRAY + "Spawn Protection: " + WHITE + data.getSpawnProtection());
                 }
             }
         }

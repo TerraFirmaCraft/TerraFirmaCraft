@@ -44,7 +44,8 @@ public class WorldGenTrees implements IWorldGenerator
 
             // Use air, so it doesn't replace other replaceable world gen
             // This matches the check in BlockPlacedItemFlat for if the block can stay
-            if (world.isAirBlock(pos) && world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP))
+            // Also, only add on soil, since this is called by the world regen handler later
+            if (world.isAirBlock(pos) && world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP) && BlocksTFC.isSoil(world.getBlockState(pos.down())))
             {
                 world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
                 TEPlacedItemFlat tile = (TEPlacedItemFlat) world.getTileEntity(pos);
