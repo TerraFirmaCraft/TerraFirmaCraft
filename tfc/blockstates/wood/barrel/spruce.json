@@ -19,6 +19,9 @@
         "model": "tfc:barrel_sealed"
       },
       "false": {}
-    }
+    },
+    "inventory": [
+      {}
+    ]
   }
 }
