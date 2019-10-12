@@ -307,7 +307,7 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
                 if (!state.getValue(LIT) && te.canIgnite())
                 {
                     ItemStack held = player.getHeldItem(hand);
-                    if (ItemFireStarter.canIgnite(held))
+                    if (ItemFireStarter.onIgnition(held))
                     {
                         worldIn.setBlockState(pos, state.withProperty(LIT, true).withProperty(OPEN, false));
                         te.onIgnite();

@@ -140,7 +140,7 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
                 if (te == null)
                     return true;
                 ItemStack held = playerIn.getHeldItem(hand);
-                if (ItemFireStarter.canIgnite(held) && te.canIgnite())
+                if (te.canIgnite() && ItemFireStarter.onIgnition(held))
                 {
                     worldIn.setBlockState(pos, state.withProperty(LIT, true));
                     //te.onIgnite();
