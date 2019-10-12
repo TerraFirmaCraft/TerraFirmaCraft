@@ -32,7 +32,7 @@ import net.minecraft.world.World;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
-import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TECharcoalForge;
 import net.dries007.tfc.util.Helpers;
 
@@ -175,22 +175,18 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         ItemStack stack = player.getHeldItem(hand);
-
-        if (stack.getItem() == ItemsTFC.FIRESTARTER || stack.getItem() == Items.FLINT_AND_STEEL)
+        if (state.getValue(LAYERS) >= 7 && BlockCharcoalForge.isValid(world, pos) && ItemFireStarter.onIgnition(stack))
         {
-            if (state.getValue(LAYERS) >= 7 && BlockCharcoalForge.isValid(world, pos))
+            if (!world.isRemote)
             {
-                if (!world.isRemote)
+                world.setBlockState(pos, BlocksTFC.CHARCOAL_FORGE.getDefaultState().withProperty(LIT, true));
+                TECharcoalForge te = Helpers.getTE(world, pos, TECharcoalForge.class);
+                if (te != null)
                 {
-                    world.setBlockState(pos, BlocksTFC.CHARCOAL_FORGE.getDefaultState().withProperty(LIT, true));
-                    TECharcoalForge te = Helpers.getTE(world, pos, TECharcoalForge.class);
-                    if (te != null)
-                    {
-                        te.onCreate();
-                    }
+                    te.onCreate();
                 }
-                return true;
             }
+            return true;
         }
         return false;
     }

@@ -19,7 +19,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -35,6 +34,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
+import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
@@ -118,22 +118,18 @@ public class BlockLogPile extends Block implements ILightableBlock
             // 2. Try and light the TE
             // 3. Open the GUI
             ItemStack stack = player.getHeldItem(hand);
-            if (stack.getItem() == Items.FLINT_AND_STEEL && !state.getValue(LIT) && side == EnumFacing.UP)
+            if (!state.getValue(LIT) && side == EnumFacing.UP && world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos) && ItemFireStarter.onIgnition(stack))
             {
                 // Light the Pile
-                if (world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos))
+                if (!world.isRemote)
                 {
-                    if (!world.isRemote)
-                    {
-                        world.setBlockState(pos, state.withProperty(LIT, true));
-                        te.light();
-                        world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
-                        world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                    }
-                    return true;
+                    world.setBlockState(pos, state.withProperty(LIT, true));
+                    te.light();
+                    world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
+                    world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 }
+                return true;
             }
-
             if (!player.isSneaking() && !state.getValue(LIT))
             {
                 if (!world.isRemote)
