@@ -103,12 +103,11 @@ public class ItemMold extends ItemPottery
     @Override
     public NBTTagCompound getNBTShareTag(ItemStack stack)
     {
-        // Intentionally sync item handler logic, heat will get synced "accidentally"
-        NBTTagCompound nbt = new NBTTagCompound();
-        NBTTagCompound stackNbt = stack.getTagCompound();
-        if (stackNbt != null)
+        NBTTagCompound nbt = stack.getTagCompound();
+        if (nbt == null)
         {
-            nbt.setTag("stack", nbt);
+            nbt = new NBTTagCompound();
+            stack.setTagCompound(nbt);
         }
         IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (inventory instanceof IMoldHandler)
@@ -121,7 +120,7 @@ public class ItemMold extends ItemPottery
     @Override
     public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        super.readNBTShareTag(stack, nbt == null ? null : nbt.getCompoundTag("stack"));
+        super.readNBTShareTag(stack, nbt);
         if (nbt != null)
         {
             IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
