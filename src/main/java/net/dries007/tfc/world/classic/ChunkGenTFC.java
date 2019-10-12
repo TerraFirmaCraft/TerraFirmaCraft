@@ -45,7 +45,6 @@ import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.ClimateHelper;
-import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -185,7 +184,7 @@ public class ChunkGenTFC implements IChunkGenerator
         phGenLayer = GenPHLayer.initialize(seed + 10);
         drainageGenLayer = GenDrainageLayer.initialize(seed + 11);
 
-        caveGen = TerrainGen.getModdedMapGen(new MapGenCavesTFC(rockLayer1, stabilityLayer), InitMapGenEvent.EventType.CAVE);
+        caveGen = TerrainGen.getModdedMapGen(new MapGenCavesTFC(stabilityLayer), InitMapGenEvent.EventType.CAVE);
         surfaceRavineGen = new MapGenRavineTFC(s.surfaceRavineRarity, s.surfaceRavineHeight, s.surfaceRavineVariability);
         ravineGen = new MapGenRavineTFC(s.ravineRarity, s.ravineHeight, s.ravineVariability);
         riverRavineGen = new MapGenRiverRavine(s.riverRavineRarity);
@@ -217,9 +216,9 @@ public class ChunkGenTFC implements IChunkGenerator
         float floraDiversity = 0.5f + 0.5f * 0.09f * (float) noiseGen9.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
         float floraDensity = (0.3f + 0.4f * rainfall / 500f) + 0.3f * 0.09f * (float) noiseGen8.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
 
-        rockLayer1 = rocksGenLayer1.getInts(chunkX * 16, chunkZ * 16, 16, 16);
-        rockLayer2 = rocksGenLayer2.getInts(chunkX * 16, chunkZ * 16, 16, 16);
-        rockLayer3 = rocksGenLayer3.getInts(chunkX * 16, chunkZ * 16, 16, 16);
+        rockLayer1 = rocksGenLayer1.getInts(chunkX * 16, chunkZ * 16, 16, 16).clone();
+        rockLayer2 = rocksGenLayer2.getInts(chunkX * 16, chunkZ * 16, 16, 16).clone();
+        rockLayer3 = rocksGenLayer3.getInts(chunkX * 16, chunkZ * 16, 16, 16).clone();
 
         final float regionalFactor = 5f * 0.09f * (float) noiseGen10.getValue(chunkX * 0.05, chunkZ * 0.05); // Range -5 <> 5
         averageTemp = ClimateHelper.monthFactor(regionalFactor, Month.AVERAGE_TEMPERATURE_MODIFIER, chunkZ << 4);
@@ -230,7 +229,7 @@ public class ChunkGenTFC implements IChunkGenerator
         if (caveGen instanceof MapGenCavesTFC)
         {
             // Since this may be replaced by other mods (we give them the option, since 1.12 caves are bad)
-            ((MapGenCavesTFC) caveGen).setRainfall(rainfall);
+            ((MapGenCavesTFC) caveGen).setGenerationData(rainfall, rockLayer1.clone());
         }
         caveGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
         surfaceRavineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
@@ -351,15 +350,6 @@ public class ChunkGenTFC implements IChunkGenerator
     public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos)
     {
         return false; //todo
-    }
-
-    private boolean canSnowAt(BlockPos pos)
-    {
-        if (world.isAirBlock(pos) && SNOW.getBlock().canPlaceBlockAt(world, pos))
-        {
-            return ClimateTFC.getActualTemp(world, pos) < 0f;
-        }
-        return false;
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -530,9 +520,6 @@ public class ChunkGenTFC implements IChunkGenerator
 
     private void replaceBlocksForBiomeHigh(int chunkX, int chunkZ, ChunkPrimer inp, CustomChunkPrimer outp)
     {
-        //System.out.println(Arrays.deepToString(chunkHeightMap));
-
-
         double var6 = 0.03125D;
         noiseGen4.generateNoiseOctaves(noise4, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, var6 * 4.0D, var6, var6 * 4.0D);
         boolean[] cliffMap = new boolean[256];
@@ -542,14 +529,10 @@ public class ChunkGenTFC implements IChunkGenerator
             {
                 int colIndex = z << 4 | x;
                 Biome biome = getBiomeOffset(x, z);
+
                 Rock rock1 = ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer1[colIndex]);
                 Rock rock2 = ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer2[colIndex]);
                 Rock rock3 = ((ForgeRegistry<Rock>) TFCRegistries.ROCKS).getValue(rockLayer3[colIndex]);
-                // This is a hack to stop this whole thing from crashing and burning
-                // It will be fixed / rewritten in 1.14
-                if (rock1 == null) rock1 = Rock.GRANITE;
-                if (rock2 == null) rock2 = Rock.GRANITE;
-                if (rock3 == null) rock3 = Rock.GRANITE;
 
                 DataLayer drainage = drainageLayer[colIndex];
                 DataLayer stability = stabilityLayer[colIndex];

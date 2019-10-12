@@ -54,7 +54,7 @@ public class WorldGenOreVeins implements IWorldGenerator
 
     // Gets veins at a single chunk. Deterministic for a specific chunk x/z and world seed
     @Nonnull
-    private static List<Vein> getVeinsAtChunk(int chunkX, int chunkZ, Long worldSeed)
+    private static List<Vein> getVeinsAtChunk(int chunkX, int chunkZ, long worldSeed)
     {
         Random rand = new Random(worldSeed + chunkX * 341873128712L + chunkZ * 132897987541L);
         List<Vein> veins = new ArrayList<>();
