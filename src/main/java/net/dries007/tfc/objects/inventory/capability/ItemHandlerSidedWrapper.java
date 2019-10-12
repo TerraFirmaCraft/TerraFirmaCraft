@@ -51,7 +51,6 @@ public class ItemHandlerSidedWrapper implements IItemHandlerModifiable
         {
             return handler.insertItem(slot, stack, simulate);
         }
-
         return stack;
     }
 
@@ -63,7 +62,6 @@ public class ItemHandlerSidedWrapper implements IItemHandlerModifiable
         {
             return handler.extractItem(slot, amount, simulate);
         }
-
         return ItemStack.EMPTY;
     }
 
