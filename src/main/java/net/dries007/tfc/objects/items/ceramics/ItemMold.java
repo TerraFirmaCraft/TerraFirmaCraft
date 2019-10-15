@@ -9,6 +9,7 @@ import java.util.EnumMap;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,6 +47,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 
+@ParametersAreNonnullByDefault
 public class ItemMold extends ItemPottery
 {
     private static final EnumMap<Metal.ItemType, ItemMold> MAP = new EnumMap<>(Metal.ItemType.class);
@@ -139,14 +141,10 @@ public class ItemMold extends ItemPottery
     }
 
     @Override
-    public int getItemStackLimit(ItemStack stack)
+    public boolean canStack(ItemStack stack)
     {
         IMoldHandler moldHandler = (IMoldHandler) stack.getCapability(FLUID_HANDLER_CAPABILITY, null);
-        if (moldHandler != null && moldHandler.getMetal() != null)
-        {
-            return 1;
-        }
-        return super.getItemStackLimit(stack);
+        return moldHandler == null || moldHandler.getMetal() == null;
     }
 
     // Extends ItemHeatHandler for ease of use
@@ -160,7 +158,9 @@ public class ItemMold extends ItemPottery
             tank = new FluidTank(100);
 
             if (nbt != null)
+            {
                 deserializeNBT(nbt);
+            }
         }
 
         @Nullable

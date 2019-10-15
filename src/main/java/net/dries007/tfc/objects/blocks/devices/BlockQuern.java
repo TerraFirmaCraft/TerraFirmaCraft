@@ -56,7 +56,7 @@ public class BlockQuern extends Block implements IItemSize
     @Nonnull
     public Size getSize(ItemStack stack)
     {
-        return Size.HUGE;
+        return Size.VERY_LARGE;
     }
 
     @Override
