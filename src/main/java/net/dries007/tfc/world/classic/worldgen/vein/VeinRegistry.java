@@ -8,14 +8,14 @@ package net.dries007.tfc.world.classic.worldgen.vein;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.google.common.base.Strings;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
@@ -34,7 +34,7 @@ public enum VeinRegistry
 
     private final WeightedCollection<VeinType> weightedVeinTypes = new WeightedCollection<>();
     private final Map<String, VeinType> veinTypeRegistry = new HashMap<>();
-    private File worldGenFile;
+    private List<File> oreFiles;
 
     @Nonnull
     public WeightedCollection<VeinType> getVeins()
@@ -61,63 +61,73 @@ public enum VeinRegistry
         {
             throw new Error("Problem creating TFC extra config directory.");
         }
-        worldGenFile = new File(tfcDir, "ore_spawn_data.json");
         try
         {
-            if (worldGenFile.createNewFile())
-            {
-                FileUtils.copyInputStreamToFile(Objects.requireNonNull(VeinRegistry.class.getClassLoader().getResourceAsStream(DEFAULT_ORE_SPAWN_LOCATION)), worldGenFile);
-            }
+            oreFiles = Files.list(Paths.get(tfcDir.toURI()))
+                .filter(Files::isRegularFile)
+                .map(Path::toFile)
+                .collect(Collectors.toList());
         }
         catch (IOException e)
         {
-            throw new Error("Problem creating default ore vein config file.", e);
+            throw new Error("Problem reading ore vein config files.", e);
+        }
+        if (oreFiles.isEmpty())
+        {
+            // Create default
+            File defaultFile = new File(tfcDir, "ore_spawn_data.json");
+            try
+            {
+                if (defaultFile.createNewFile())
+                {
+                    FileUtils.copyInputStreamToFile(Objects.requireNonNull(VeinRegistry.class.getClassLoader().getResourceAsStream(DEFAULT_ORE_SPAWN_LOCATION)), defaultFile);
+                }
+                oreFiles.add(defaultFile);
+            }
+            catch (IOException e)
+            {
+                throw new Error("Problem creating default ore vein config file.", e);
+            }
         }
     }
 
     public void postInit()
     {
-        String worldGenData;
-        try
-        {
-            worldGenData = FileUtils.readFileToString(worldGenFile, Charset.defaultCharset());
-        }
-        catch (IOException e)
-        {
-            throw new Error("Error reading ore vein config file.", e);
-        }
+        List<String> worldGenData = new ArrayList<>();
+        oreFiles.forEach(file -> {
+            try
+            {
+                worldGenData.add(FileUtils.readFileToString(file, Charset.defaultCharset()));
+            }
+            catch (IOException e)
+            {
+                throw new Error("Error reading " + file, e);
+            }
+        });
 
-        if (Strings.isNullOrEmpty(worldGenData))
-        {
-            TerraFirmaCraft.getLog().warn("The ore vein file is empty! TFC will not generate any ores!");
-        }
-        else
+        if (!worldGenData.isEmpty())
         {
             try
             {
                 weightedVeinTypes.clear();
                 veinTypeRegistry.clear();
-                Map<String, VeinType> values = GSON.fromJson(worldGenData, new TypeToken<Map<String, VeinType>>() {}.getType());
-                values.forEach(this::registerVein);
+                worldGenData.forEach(data -> {
+                    Map<String, VeinType> values = GSON.fromJson(data, new TypeToken<Map<String, VeinType>>() {}.getType());
+                    values.forEach((name, veinType) -> {
+                        veinType.setRegistryName(name);
+                        veinTypeRegistry.put(name, veinType);
+                        weightedVeinTypes.add(veinType.weight, veinType);
+                    });
+                });
             }
             catch (JsonParseException e)
             {
-                TerraFirmaCraft.getLog().warn("There was a serious issue parsing the ore generation file!! TFC will not generate any ores!", e);
+                TerraFirmaCraft.getLog().warn("There was a serious issue parsing the ore generation files!! TFC will not generate any ores!", e);
             }
         }
-    }
-
-    /**
-     * Register a vein to the collection
-     * Can be used by addons
-     *
-     * @param name     registry name
-     * @param veinType VeinType obj with vein properties
-     */
-    public void registerVein(String name, VeinType veinType)
-    {
-        veinType.setRegistryName(name);
-        veinTypeRegistry.put(name, veinType);
-        weightedVeinTypes.add(veinType.weight, veinType);
+        if (veinTypeRegistry.isEmpty())
+        {
+            TerraFirmaCraft.getLog().warn("The ore vein registry is empty!! TFC will not generate any ores!");
+        }
     }
 }
