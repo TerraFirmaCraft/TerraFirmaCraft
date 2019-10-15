@@ -5,10 +5,13 @@
 
 package net.dries007.tfc.util;
 
+import java.util.Arrays;
+import java.util.List;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,24 +19,37 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.wood.BlockSupport;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 
 public interface IFallingBlock
 {
-    static boolean canFallThrough(World world, BlockPos pos)
+    /**
+     * In general, falling blocks will destroy all non solid blocks, EXCEPT, soft falling blocks won't destroy hard materials
+     * No point using a set here because Material doesn't override hashCode / equals, so the O(1) benefit is lost
+     */
+    List<Material> SOFT_MATERIALS = Arrays.asList(Material.GROUND, Material.SAND, Material.GRASS, Material.CLAY);
+    List<Material> HARD_MATERIALS = Arrays.asList(Material.IRON, BlockCharcoalPile.CHARCOAL_MATERIAL);
+
+    static boolean canFallThrough(World world, BlockPos pos, Material fallingBlockMaterial)
     {
+        IBlockState targetState = world.getBlockState(pos);
+        if (SOFT_MATERIALS.contains(fallingBlockMaterial) && HARD_MATERIALS.contains(targetState.getMaterial()))
+        {
+            return false;
+        }
         if (!world.isSideSolid(pos, EnumFacing.UP))
         {
             return true;
         }
-        return !world.getBlockState(pos).isFullBlock();
+        return !targetState.isFullBlock();
     }
 
     default boolean shouldFall(World world, BlockPos posToFallAt, BlockPos originalPos)
     {
         // Can the block fall at a particular position; ignore horizontal falling
-        return canFallThrough(world, posToFallAt.down()) && !BlockSupport.isBeingSupported(world, originalPos);
+        return canFallThrough(world, posToFallAt.down(), world.getBlockState(originalPos).getMaterial()) && !BlockSupport.isBeingSupported(world, originalPos);
     }
 
     // Get the position that the block will fall from (allows for horizontal falling)
@@ -69,7 +85,7 @@ public interface IFallingBlock
                 {
                     worldIn.setBlockToAir(pos);
                     pos1 = pos1.down();
-                    while (canFallThrough(worldIn, pos1) && pos1.getY() > 0)
+                    while (canFallThrough(worldIn, pos1, state.getMaterial()) && pos1.getY() > 0)
                     {
                         pos1 = pos1.down();
                     }

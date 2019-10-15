@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.blocks.devices;
 
 import java.util.Random;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -25,11 +26,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.te.TESluice;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlockSluice extends BlockHorizontal
+public class BlockSluice extends BlockHorizontal implements IItemSize
 {
     public static final PropertyBool UPPER = PropertyBool.create("upper"); //true if this is the upper half
 
@@ -39,6 +43,20 @@ public class BlockSluice extends BlockHorizontal
         setDefaultState(blockState.getBaseState().withProperty(UPPER, false));
         setHardness(8.0f);
         setHarvestLevel("axe", 0);
+    }
+
+    @Nonnull
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.HUGE;
+    }
+
+    @Nonnull
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return Weight.HEAVY;
     }
 
     @SuppressWarnings("deprecation")

@@ -33,6 +33,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.te.TEBarrel;
@@ -46,7 +49,7 @@ import net.dries007.tfc.util.Helpers;
  * @see BarrelRecipe
  */
 @ParametersAreNonnullByDefault
-public class BlockBarrel extends Block
+public class BlockBarrel extends Block implements IItemSize
 {
     public static final PropertyBool SEALED = PropertyBool.create("sealed");
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
@@ -79,6 +82,26 @@ public class BlockBarrel extends Block
         setSoundType(SoundType.WOOD);
         setHardness(2F);
         setDefaultState(blockState.getBaseState().withProperty(SEALED, false));
+    }
+
+    @Nonnull
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.HUGE;
+    }
+
+    @Nonnull
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return stack.getTagCompound() == null ? Weight.MEDIUM : Weight.HEAVY;
+    }
+
+    @Override
+    public boolean canStack(@Nonnull ItemStack stack)
+    {
+        return stack.getTagCompound() == null;
     }
 
     @SuppressWarnings("deprecation")

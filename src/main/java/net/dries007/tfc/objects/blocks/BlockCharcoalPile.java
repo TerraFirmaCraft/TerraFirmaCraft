@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
@@ -38,6 +39,8 @@ import net.dries007.tfc.util.Helpers;
 @ParametersAreNonnullByDefault
 public class BlockCharcoalPile extends Block implements ILightableBlock
 {
+    public static final Material CHARCOAL_MATERIAL = new Material(MapColor.BROWN);
+
     public static final PropertyInteger LAYERS = PropertyInteger.create("type", 1, 8);
 
     private static final AxisAlignedBB[] PILE_AABB = new AxisAlignedBB[] {
@@ -53,7 +56,7 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
 
     public BlockCharcoalPile()
     {
-        super(Material.GROUND);
+        super(CHARCOAL_MATERIAL);
 
         setSoundType(TFCSounds.CHARCOAL_PILE);
         setHarvestLevel("shovel", 0);

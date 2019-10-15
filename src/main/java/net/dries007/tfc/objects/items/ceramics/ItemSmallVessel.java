@@ -181,7 +181,7 @@ public class ItemSmallVessel extends ItemPottery
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.VERY_LARGE;
+        return Size.SMALL;
     }
 
     @Nonnull

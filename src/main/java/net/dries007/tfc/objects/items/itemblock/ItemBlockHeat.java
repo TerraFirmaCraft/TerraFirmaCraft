@@ -27,11 +27,6 @@ public class ItemBlockHeat extends ItemBlockTFC
         this.meltingPoint = meltingPoint;
     }
 
-    public ItemBlockHeat(Block block)
-    {
-        this(block, 1, 1600);
-    }
-
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)

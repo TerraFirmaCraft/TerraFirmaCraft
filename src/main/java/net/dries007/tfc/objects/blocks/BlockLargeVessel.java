@@ -30,6 +30,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.te.TELargeVessel;
 import net.dries007.tfc.util.Helpers;
@@ -40,7 +43,7 @@ import net.dries007.tfc.util.Helpers;
  * Sealed state is stored in a block state property, and cached in the TE (for gui purposes)
  */
 @ParametersAreNonnullByDefault
-public class BlockLargeVessel extends Block
+public class BlockLargeVessel extends Block implements IItemSize
 {
     public static final PropertyBool SEALED = PropertyBool.create("sealed");
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.625D, 0.8125D);
@@ -75,6 +78,20 @@ public class BlockLargeVessel extends Block
         setSoundType(SoundType.STONE);
         setHardness(2F);
         setDefaultState(blockState.getBaseState().withProperty(SEALED, false));
+    }
+
+    @Override
+    @Nonnull
+    public Size getSize(ItemStack stack)
+    {
+        return Size.HUGE;
+    }
+
+    @Override
+    @Nonnull
+    public Weight getWeight(ItemStack stack)
+    {
+        return stack.getTagCompound() == null ? Weight.MEDIUM : Weight.HEAVY;
     }
 
     @SuppressWarnings("deprecation")
@@ -250,5 +267,11 @@ public class BlockLargeVessel extends Block
         // Unseal the barrel if an explosion destroys it, so it drops it's contents
         world.setBlockState(pos, world.getBlockState(pos).withProperty(SEALED, false));
         super.onBlockExploded(world, pos, explosion);
+    }
+
+    @Override
+    public boolean canStack(@Nonnull ItemStack stack)
+    {
+        return stack.getTagCompound() == null;
     }
 }

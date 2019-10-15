@@ -63,6 +63,19 @@ public final class CapabilityItemSize
     }
 
     /**
+     * Checks if an item is of a given size and weight
+     */
+    public static boolean checkItemSize(ItemStack stack, Size size, Weight weight)
+    {
+        IItemSize cap = getIItemSize(stack);
+        if (cap != null)
+        {
+            return cap.getWeight(stack) == weight && cap.getSize(stack) == size;
+        }
+        return false;
+    }
+
+    /**
      * Gets the IItemSize instance from an itemstack, either via capability or via interface
      *
      * @param stack The stack
