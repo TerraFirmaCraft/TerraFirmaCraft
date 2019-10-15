@@ -68,20 +68,9 @@ public class WorldGenLooseRocks implements IWorldGenerator
                 {
                     veins.removeIf(v -> {
                         if (!v.type.hasLooseRocks()) return true;
-
-                        int minScanY = (WorldTypeTFC.ROCKLAYER2 + WorldTypeTFC.ROCKLAYER3) / 2;
-                        int maxScanY = WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos);
-
-                        // This is intensive and a painful check to have to do, but unfortunately necessary. In 1.14 this will be gone.
-                        // todo change this to the sanity check impl in GoldPan and Sluice after merge
-                        for (BlockPos.MutableBlockPos pos : BlockPos.getAllInBoxMutable(xoff - 7, minScanY, zoff - 7, xoff + 22, maxScanY, zoff + 22))
-                        {
-                            if (v.type.isOreBlock(world.getBlockState(pos)))
-                            {
-                                return false;
-                            }
-                        }
-                        return true;
+                        if (!chunkData.getChunkOres().contains(v.type.ore)) return true;
+                        // Only generates small ores whose veins generated at least at half rock layer 2
+                        return (v.getHighestY() < (WorldTypeTFC.ROCKLAYER2 + WorldTypeTFC.ROCKLAYER3) / 2);
                     });
                 }
             }

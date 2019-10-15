@@ -98,16 +98,26 @@ public enum VeinRegistry
                 weightedVeinTypes.clear();
                 veinTypeRegistry.clear();
                 Map<String, VeinType> values = GSON.fromJson(worldGenData, new TypeToken<Map<String, VeinType>>() {}.getType());
-                values.forEach((name, veinType) -> {
-                    veinType.setRegistryName(name);
-                    veinTypeRegistry.put(name, veinType);
-                    weightedVeinTypes.add(veinType.weight, veinType);
-                });
+                values.forEach(this::registerVein);
             }
             catch (JsonParseException e)
             {
                 TerraFirmaCraft.getLog().warn("There was a serious issue parsing the ore generation file!! TFC will not generate any ores!", e);
             }
         }
+    }
+
+    /**
+     * Register a vein to the collection
+     * Can be used by addons
+     *
+     * @param name     registry name
+     * @param veinType VeinType obj with vein properties
+     */
+    public void registerVein(String name, VeinType veinType)
+    {
+        veinType.setRegistryName(name);
+        veinTypeRegistry.put(name, veinType);
+        weightedVeinTypes.add(veinType.weight, veinType);
     }
 }
