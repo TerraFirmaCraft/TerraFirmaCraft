@@ -57,14 +57,24 @@ group = "net.dries007.tfc" // According to java standards, as I have control ove
 archivesBaseName = "TerraFirmaCraft" // Jar filename. The final result must match ^[\w-\.]+$. (Alphanumerical + `_-.`)
 sourceCompatibility = targetCompatibility = "1.8" // We require Java 8
 
-ext.getChangeLog = { -> // Create a new function that gets the changelog from git (used for updates json file)
-    def outStream = new ByteArrayOutputStream()
-    exec { // todo: make this not crash and burn for people who don't have git in their path. (poor Windows users...)
-        executable = 'git'
-        args = ['log', '-n', '1', "--format='%B'"]
-        standardOutput = outStream
+String runGitCommand(String cmd_args)
+{
+    // Create a new function that gets the changelog from git (used for updates json file)
+    try
+    {
+        def outStream = new ByteArrayOutputStream()
+        exec {
+            executable = 'git'
+            args(cmd_args.split(' '))
+            standardOutput = outStream
+        }
+        return outStream.toString().replaceAll("^\\s*'\\s*|\\s*'\\s*\$", "").replaceAll("[\\r\\n]+", "\n")
     }
-    return outStream.toString().replaceAll("^\\s*'\\s*|\\s*'\\s*\$", "").replaceAll("[\\r\\n]+", "\n")
+    catch (exception)
+    {
+        logger.warn("No changelog due to error with git command line. Ignoring...", exception)
+        return "<ERROR>"
+    }
 }
 
 minecraft { // Only change any of this with prior approval from the dev team!
@@ -81,7 +91,7 @@ repositories {
         url = "https://maven.blamejared.com/"
     }
     maven {
-    // location of the maven that hosts JEI files
+        // location of the maven that hosts JEI files
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
@@ -134,7 +144,7 @@ processResources {
             json = new JsonSlurper().parseText(updateFile.getText())
         } else {
             def builder = new JsonBuilder()
-            json = builder(homepage: "https://tfc.dries007.net", promos: new HashMap<>()) // defaults: Again, change if you fork & release
+            json = builder(homepage: "https://tng.terrafirmacraft.com", promos: new HashMap<>()) // defaults: Again, change if you fork & release
         }
         //noinspection GroovyAssignabilityCheck
         json['promos'][project.minecraft.version + '-latest'] = project.version
@@ -143,7 +153,7 @@ processResources {
         if (!json.containsKey(project.minecraft.version)) json.put(project.minecraft.version, new HashMap<>())
         //noinspection GroovyAssignabilityCheck
         def version = json[project.minecraft.version]
-        version.put(project.version, getChangeLog())
+        version.put(project.version, runGitCommand("log -n 1 --format='%B'"))
         updateFile.write JsonOutput.prettyPrint(JsonOutput.toJson(json)) // Pretty print cause why not, it's a small file anyway.
     }
 }
@@ -161,7 +171,8 @@ artifacts {
 project.tasks.withType(Jar) { jarTask -> // For all jar tasks
     jarTask.manifest {
         attributes 'FMLAT': 'tfc_at.cfg' // See FML source code
-        // todo: add git information about branch, repo, last commit, hash, etc...
+        attributes 'GIT_HASH': runGitCommand("log -n 1 --format='%H'")
+        attributes 'GIT_SUBJECT': runGitCommand("log -n 1 --format='%s'")
     }
     // Add "MC${mcversion}" to the jar, so the name ends up `TerraFirmaCraft-MC1.12.2-0.0.0.0.jar`
     // This didn't used to have the `MC` prefix, but it confuses some hosting websites as the actual version numbers then.
