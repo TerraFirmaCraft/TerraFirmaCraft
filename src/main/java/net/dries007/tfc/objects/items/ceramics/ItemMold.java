@@ -9,6 +9,7 @@ import java.util.EnumMap;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,6 +36,7 @@ import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.Heat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.types.Metal;
@@ -45,6 +47,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 
+@ParametersAreNonnullByDefault
 public class ItemMold extends ItemPottery
 {
     private static final EnumMap<Metal.ItemType, ItemMold> MAP = new EnumMap<>(Metal.ItemType.class);
@@ -59,7 +62,10 @@ public class ItemMold extends ItemPottery
     public ItemMold(Metal.ItemType type)
     {
         this.type = type;
-        if (MAP.put(type, this) != null) throw new IllegalStateException("There can only be one.");
+        if (MAP.put(type, this) != null)
+        {
+            throw new IllegalStateException("There can only be one.");
+        }
     }
 
     @Override
@@ -99,12 +105,11 @@ public class ItemMold extends ItemPottery
     @Override
     public NBTTagCompound getNBTShareTag(ItemStack stack)
     {
-        // Intentionally sync item handler logic, heat will get synced "accidentally"
-        NBTTagCompound nbt = new NBTTagCompound();
-        NBTTagCompound stackNbt = stack.getTagCompound();
-        if (stackNbt != null)
+        NBTTagCompound nbt = stack.getTagCompound();
+        if (nbt == null)
         {
-            nbt.setTag("stack", nbt);
+            nbt = new NBTTagCompound();
+            stack.setTagCompound(nbt);
         }
         IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (inventory instanceof IMoldHandler)
@@ -117,7 +122,7 @@ public class ItemMold extends ItemPottery
     @Override
     public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        super.readNBTShareTag(stack, nbt == null ? null : nbt.getCompoundTag("stack"));
+        super.readNBTShareTag(stack, nbt);
         if (nbt != null)
         {
             IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -136,14 +141,10 @@ public class ItemMold extends ItemPottery
     }
 
     @Override
-    public int getItemStackLimit(ItemStack stack)
+    public boolean canStack(ItemStack stack)
     {
         IMoldHandler moldHandler = (IMoldHandler) stack.getCapability(FLUID_HANDLER_CAPABILITY, null);
-        if (moldHandler != null && moldHandler.getMetal() != null)
-        {
-            return 1;
-        }
-        return super.getItemStackLimit(stack);
+        return moldHandler == null || moldHandler.getMetal() == null;
     }
 
     // Extends ItemHeatHandler for ease of use
@@ -157,7 +158,9 @@ public class ItemMold extends ItemPottery
             tank = new FluidTank(100);
 
             if (nbt != null)
+            {
                 deserializeNBT(nbt);
+            }
         }
 
         @Nullable
@@ -306,7 +309,7 @@ public class ItemMold extends ItemPottery
 
         private void updateFluidData(FluidStack fluid)
         {
-            meltTemp = CapabilityItemHeat.MAX_TEMPERATURE;
+            meltTemp = Heat.maxVisibleTemperature();
             heatCapacity = 1;
             if (fluid != null)
             {

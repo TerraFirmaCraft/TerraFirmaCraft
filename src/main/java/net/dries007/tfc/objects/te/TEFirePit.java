@@ -29,7 +29,6 @@ import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
 
-import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
 import static net.dries007.tfc.objects.blocks.devices.BlockFirePit.LIT;
 
 @ParametersAreNonnullByDefault
@@ -109,7 +108,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         if (temperature > 0 || burnTemperature > 0)
         {
             // Update temperature
-            float targetTemp = Math.min(MAX_TEMPERATURE, burnTemperature + airTicks);
+            float targetTemp = burnTemperature + airTicks;
             if (temperature < targetTemp)
             {
                 temperature += (airTicks > 0 ? 2 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;

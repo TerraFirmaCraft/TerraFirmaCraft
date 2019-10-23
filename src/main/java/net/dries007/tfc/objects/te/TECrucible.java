@@ -6,18 +6,23 @@
 package net.dries007.tfc.objects.te;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -29,12 +34,14 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.network.PacketCrucibleUpdate;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
+import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 
 @SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
-public class TECrucible extends TEInventory implements ITickable, ITileFields
+public class TECrucible extends TEInventory implements ITickable, ITileFields, IItemHandlerSidedCallback
 {
     public static final int SLOT_INPUT = 0;
     public static final int SLOT_OUTPUT = 1;
@@ -44,6 +51,9 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
     public static final int CRUCIBLE_MAX_METAL_FLUID = 3000; // = 30 Ingots worth
 
     private final Alloy alloy;
+    private final IItemHandler inventoryWrapperExtract;
+    private final IItemHandler inventoryWrapperInsert;
+
     private HeatRecipe cachedRecipe;
     private Metal alloyResult;
     private float temperature;
@@ -53,8 +63,12 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
     public TECrucible()
     {
         super(2);
-        this.temperature = 0;
+
         this.alloy = new Alloy(CRUCIBLE_MAX_METAL_FLUID);
+        this.inventoryWrapperExtract = new ItemHandlerSidedWrapper(this, inventory, EnumFacing.DOWN);
+        this.inventoryWrapperInsert = new ItemHandlerSidedWrapper(this, inventory, EnumFacing.UP);
+
+        this.temperature = 0;
         this.lastFillTimer = 0;
         this.cachedRecipe = null;
     }
@@ -325,5 +339,41 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields
     public Metal getAlloyResult()
     {
         return alloyResult;
+    }
+
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, EnumFacing side)
+    {
+        return side != EnumFacing.DOWN;
+    }
+
+    @Override
+    public boolean canExtract(int slot, EnumFacing side)
+    {
+        return side == EnumFacing.DOWN;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
+    {
+        return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != null) || super.hasCapability(capability, facing);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != null)
+        {
+            if (facing == EnumFacing.DOWN)
+            {
+                return (T) inventoryWrapperExtract;
+            }
+            else
+            {
+                return (T) inventoryWrapperInsert;
+            }
+        }
+        return super.getCapability(capability, facing);
     }
 }

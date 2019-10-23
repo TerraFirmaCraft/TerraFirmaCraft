@@ -121,12 +121,11 @@ public class ItemSmallVessel extends ItemPottery
     @Override
     public NBTTagCompound getNBTShareTag(ItemStack stack)
     {
-        // Intentionally sync item handler logic, heat will get synced "accidentally"
-        NBTTagCompound nbt = new NBTTagCompound();
-        NBTTagCompound stackNbt = stack.getTagCompound();
-        if (stackNbt != null)
+        NBTTagCompound nbt = stack.getTagCompound();
+        if (nbt == null)
         {
-            nbt.setTag("stack", nbt);
+            nbt = new NBTTagCompound();
+            stack.setTagCompound(nbt);
         }
         IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (inventory instanceof IMoldHandler)
@@ -139,7 +138,7 @@ public class ItemSmallVessel extends ItemPottery
     @Override
     public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        super.readNBTShareTag(stack, nbt == null ? null : nbt.getCompoundTag("stack"));
+        super.readNBTShareTag(stack, nbt);
         if (nbt != null)
         {
             IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -182,7 +181,7 @@ public class ItemSmallVessel extends ItemPottery
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.VERY_LARGE;
+        return Size.SMALL;
     }
 
     @Nonnull
@@ -338,9 +337,10 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            if (resource != null && FluidsTFC.getMetalFromFluid(resource.getFluid()) != null)
+            if ((fluidMode || isInventoryEmpty()) && resource != null && FluidsTFC.getMetalFromFluid(resource.getFluid()) != null)
             {
                 updateFluidData(resource);
+                fluidMode = true;
                 return tank.fill(resource, doFill);
             }
             return 0;
@@ -351,7 +351,9 @@ public class ItemSmallVessel extends ItemPottery
         public FluidStack drain(FluidStack resource, boolean doDrain)
         {
             if (getFluidMode() == Mode.LIQUID_MOLTEN)
+            {
                 return tank.drain(resource, doDrain);
+            }
             return null;
         }
 
@@ -360,7 +362,9 @@ public class ItemSmallVessel extends ItemPottery
         public FluidStack drain(int maxDrain, boolean doDrain)
         {
             if (getFluidMode() == Mode.LIQUID_MOLTEN)
+            {
                 return tank.drain(maxDrain, doDrain);
+            }
             return null;
         }
 
@@ -471,6 +475,18 @@ public class ItemSmallVessel extends ItemPottery
                     heatCapacity = metal.getSpecificHeat();
                 }
             }
+        }
+
+        private boolean isInventoryEmpty()
+        {
+            for (int i = 0; i < getSlots(); i++)
+            {
+                if (!getStackInSlot(i).isEmpty())
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 

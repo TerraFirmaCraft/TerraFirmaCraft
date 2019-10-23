@@ -5,9 +5,9 @@
 
 package net.dries007.tfc.util;
 
-import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -36,7 +36,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 public final class WorldRegenHandler
 {
     /* The list of chunk positions to check for world regeneration */
-    private static final Queue<ChunkPos> POSITIONS_TO_CHECK = new LinkedList<>();
+    private static final Queue<ChunkPos> POSITIONS_TO_CHECK = new ConcurrentLinkedQueue<>();
 
     private static final WorldGenLooseRocks ROCKS_GEN = new WorldGenLooseRocks(false);
     private static final WorldGenSnowIce SNOW_GEN = new WorldGenSnowIce();
@@ -61,17 +61,16 @@ public final class WorldRegenHandler
     @SubscribeEvent
     public static void onWorldTick(TickEvent.WorldTickEvent event)
     {
-        if (!event.world.isRemote && event.phase == TickEvent.Phase.END)
+        if (!event.world.isRemote && event.phase == TickEvent.Phase.END && !POSITIONS_TO_CHECK.isEmpty())
         {
-            ChunkPos pos = POSITIONS_TO_CHECK.poll();
-            if (pos != null)
+            for (ChunkPos pos : POSITIONS_TO_CHECK)
             {
                 IChunkProvider chunkProvider = event.world.getChunkProvider();
                 IChunkGenerator chunkGenerator = ((ChunkProviderServer) chunkProvider).chunkGenerator;
                 ChunkDataTFC chunkDataTFC = ChunkDataTFC.get(event.world.getChunk(pos.x, pos.z));
 
                 // Loose rocks / sticks (debris)
-                if (ConfigTFC.GENERAL.regenSticksRocks > 0)
+                if (ConfigTFC.GENERAL.regenSticksRocks > 0 && !chunkDataTFC.isSpawnProtected())
                 {
                     long deltaRocks = CalendarTFC.TOTAL_TIME.getTicks() - chunkDataTFC.getLastUpdateRocks();
                     double looseRegeneration = deltaRocks / (ICalendar.TICKS_IN_DAY * ConfigTFC.GENERAL.regenSticksRocks);
@@ -138,6 +137,8 @@ public final class WorldRegenHandler
                     }
                 }
             }
+
+            POSITIONS_TO_CHECK.clear();
         }
     }
 }

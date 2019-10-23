@@ -45,10 +45,12 @@ import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
+import net.dries007.tfc.client.render.RenderBoatTFC;
 import net.dries007.tfc.client.render.RenderFallingBlockTFC;
 import net.dries007.tfc.client.render.animal.*;
 import net.dries007.tfc.client.render.projectile.RenderThrownJavelin;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
+import net.dries007.tfc.objects.entity.EntityBoatTFC;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.objects.entity.animal.*;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
@@ -82,6 +84,7 @@ public class ClientEvents
         RenderingRegistry.registerEntityRenderingHandler(EntityHorseTFC.class, RenderHorseTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityDonkeyTFC.class, RenderAbstractHorseTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityMuleTFC.class, RenderAbstractHorseTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBoatTFC.class, RenderBoatTFC::new);
     }
 
     @SideOnly(Side.CLIENT)
@@ -197,6 +200,8 @@ public class ClientEvents
 
                     // list.add("");
                     //data.getOresSpawned().stream().map(String::valueOf).forEach(list::add);
+
+                    list.add(GRAY + "Spawn Protection: " + WHITE + data.getSpawnProtection());
                 }
             }
         }

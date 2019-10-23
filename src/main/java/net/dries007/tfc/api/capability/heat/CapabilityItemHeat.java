@@ -33,13 +33,6 @@ public final class CapabilityItemHeat
 
     public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IItemHeat for items outside TFC
 
-    public static final float MIN_TEMPERATURE = 0f;
-    /**
-     * For most practical purposes this is the max temperature than an item should reach.
-     * i.e. all metals should melt either before this, or never.
-     */
-    public static final float MAX_TEMPERATURE = 1601f;
-
     public static void preInit()
     {
         CapabilityManager.INSTANCE.register(IItemHeat.class, new DumbStorage<>(), ItemHeatHandler::new);
@@ -52,7 +45,7 @@ public final class CapabilityItemHeat
     {
         if (ticksSinceUpdate <= 0) return temp;
         final float newTemp = temp - heatCapacity * (float) ticksSinceUpdate * (float) ConfigTFC.GENERAL.temperatureModifierGlobal;
-        return newTemp < MIN_TEMPERATURE ? MIN_TEMPERATURE : newTemp;
+        return newTemp < 0 ? 0 : newTemp;
     }
 
     public static void addTemp(IItemHeat instance)
@@ -69,7 +62,7 @@ public final class CapabilityItemHeat
     public static void addTemp(IItemHeat instance, float modifier)
     {
         final float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * (float) ConfigTFC.GENERAL.temperatureModifierGlobal;
-        instance.setTemperature(temp > MAX_TEMPERATURE ? MAX_TEMPERATURE : temp);
+        instance.setTemperature(temp);
     }
 
     @Nullable

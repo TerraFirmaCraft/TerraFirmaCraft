@@ -11,17 +11,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.PotionTypes;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumActionResult;
@@ -49,6 +49,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.damage.DamageType;
@@ -68,6 +69,8 @@ import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.api.capability.player.PlayerDataHandler;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.network.PacketCalendarUpdate;
@@ -488,6 +491,16 @@ public final class CommonEventHandler
         {
             event.setResult(Event.Result.DENY);
         }
+
+        // Stop mob spawning in spawn protected chunks
+        if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false))
+        {
+            ChunkDataTFC data = ChunkDataTFC.get(event.getWorld(), pos);
+            if (ConfigTFC.GENERAL.spawnProtectionEnable && (ConfigTFC.GENERAL.spawnProtectionMinY <= event.getY()) && data.isSpawnProtected())
+            {
+                event.setResult(Event.Result.DENY);
+            }
+        }
     }
 
     @SubscribeEvent
@@ -551,5 +564,82 @@ public final class CommonEventHandler
         {
             event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.COBBLE).getDefaultState());
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event)
+    {
+        if (event.phase == TickEvent.Phase.START && event.player.ticksExisted % 100 == 0)
+        {
+            // Add spawn protection to surrounding chunks
+            BlockPos basePos = new BlockPos(event.player);
+            for (int i = -2; i <= 2; i++)
+            {
+                for (int j = -2; j <= 2; j++)
+                {
+                    BlockPos chunkPos = basePos.add(16 * i, 0, 16 * j);
+                    ChunkDataTFC data = ChunkDataTFC.get(event.player.getEntityWorld(), chunkPos);
+                    data.addSpawnProtection(1);
+                }
+            }
+        }
+
+        if (event.phase == TickEvent.Phase.START && event.player.ticksExisted % 20 == 0)
+        {
+            // Update overburdened state
+            int hugeHeavyCount = countPlayerOverburdened(event.player.inventory);
+            if (hugeHeavyCount >= 1)
+            {
+                // Add extra exhaustion from carrying a heavy item
+                // Equivalent to jumping once every two seconds (TFC reduces this, as most of exhaustion is passive)
+                event.player.addExhaustion(0.5f);
+            }
+            if (hugeHeavyCount >= 2)
+            {
+                // Player is barely able to move
+                event.player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 25, 4, false, false));
+                event.player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 25, 2, false, false));
+            }
+        }
+    }
+
+    private static int countPlayerOverburdened(InventoryPlayer inventory)
+    {
+        // This is just optimized (probably uselessly, but whatever) for use in onPlayerTick
+        int hugeHeavyCount = 0;
+        for (ItemStack stack : inventory.mainInventory)
+        {
+            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.HEAVY))
+            {
+                hugeHeavyCount++;
+                if (hugeHeavyCount >= 2)
+                {
+                    return hugeHeavyCount;
+                }
+            }
+        }
+        for (ItemStack stack : inventory.armorInventory)
+        {
+            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.HEAVY))
+            {
+                hugeHeavyCount++;
+                if (hugeHeavyCount >= 2)
+                {
+                    return hugeHeavyCount;
+                }
+            }
+        }
+        for (ItemStack stack : inventory.offHandInventory)
+        {
+            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.HEAVY))
+            {
+                hugeHeavyCount++;
+                if (hugeHeavyCount >= 2)
+                {
+                    return hugeHeavyCount;
+                }
+            }
+        }
+        return hugeHeavyCount;
     }
 }

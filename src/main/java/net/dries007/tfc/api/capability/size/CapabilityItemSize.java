@@ -22,7 +22,6 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.api.capability.ItemStickCapability;
 import net.dries007.tfc.api.util.TFCConstants;
@@ -64,6 +63,19 @@ public final class CapabilityItemSize
     }
 
     /**
+     * Checks if an item is of a given size and weight
+     */
+    public static boolean checkItemSize(ItemStack stack, Size size, Weight weight)
+    {
+        IItemSize cap = getIItemSize(stack);
+        if (cap != null)
+        {
+            return cap.getWeight(stack) == weight && cap.getSize(stack) == size;
+        }
+        return false;
+    }
+
+    /**
      * Gets the IItemSize instance from an itemstack, either via capability or via interface
      *
      * @param stack The stack
@@ -81,14 +93,6 @@ public final class CapabilityItemSize
             else if (stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock() instanceof IItemSize)
             {
                 return (IItemSize) ((ItemBlock) stack.getItem()).getBlock();
-            }
-            try
-            {
-                return stack.getCapability(ITEM_SIZE_CAPABILITY, null);
-            }
-            catch (Exception e)
-            {
-                TerraFirmaCraft.getLog().info("Item: {} {} {}", stack, stack.getItem(), stack.getItem().getRegistryName());
             }
             return stack.getCapability(ITEM_SIZE_CAPABILITY, null);
         }

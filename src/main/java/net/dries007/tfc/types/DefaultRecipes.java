@@ -38,6 +38,7 @@ import net.dries007.tfc.api.recipes.quern.QuernRecipe;
 import net.dries007.tfc.api.recipes.quern.QuernRecipeRandomGem;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.Powder;
@@ -52,6 +53,8 @@ import net.dries007.tfc.objects.items.ceramics.ItemUnfiredMold;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
 import net.dries007.tfc.objects.items.metal.ItemMetalArmor;
+import net.dries007.tfc.objects.items.metal.ItemOreTFC;
+import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.agriculture.Food;
@@ -101,11 +104,11 @@ public final class DefaultRecipes
             new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 500), IIngredient.of(ItemFoodTFC.get(Food.CORNMEAL_FLOUR)), new FluidStack(FluidsTFC.CORN_WHISKEY.get(), 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("corn_whiskey"),
             new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 500), IIngredient.of(ItemFoodTFC.get(Food.RYE_FLOUR)), new FluidStack(FluidsTFC.RYE_WHISKEY.get(), 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("rye_whiskey"),
             // Vinegar
-            new BarrelRecipe(IIngredient.of(200, FluidsTFC.BEER.get(), FluidsTFC.CIDER.get(), FluidsTFC.RUM.get(), FluidsTFC.SAKE.get(), FluidsTFC.VODKA.get(), FluidsTFC.WHISKEY.get(), FluidsTFC.CORN_WHISKEY.get(), FluidsTFC.RYE_WHISKEY.get()), IIngredient.of("fruit"), new FluidStack(FluidsTFC.VINEGAR.get(), 200), ItemStack.EMPTY, 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("vinegar"),
+            new BarrelRecipe(IIngredient.of(200, FluidsTFC.BEER.get(), FluidsTFC.CIDER.get(), FluidsTFC.RUM.get(), FluidsTFC.SAKE.get(), FluidsTFC.VODKA.get(), FluidsTFC.WHISKEY.get(), FluidsTFC.CORN_WHISKEY.get(), FluidsTFC.RYE_WHISKEY.get()), IIngredient.of("categoryFruit"), new FluidStack(FluidsTFC.VINEGAR.get(), 200), ItemStack.EMPTY, 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("vinegar"),
             // Food preservation
-            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR.get(), 125), IIngredient.of("fruit"), CapabilityFood.PICKLED, 4 * ICalendar.TICKS_IN_HOUR).setRegistryName("pickling_fruit"),
-            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR.get(), 125), IIngredient.of("meat"), CapabilityFood.PICKLED, 4 * ICalendar.TICKS_IN_HOUR).setRegistryName("pickling_meat"),
-            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR.get(), 125), IIngredient.of("vegetable"), CapabilityFood.PICKLED, 4 * ICalendar.TICKS_IN_HOUR).setRegistryName("pickling_vegetable"),
+            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR.get(), 125), IIngredient.of("categoryFruit"), CapabilityFood.PICKLED, 4 * ICalendar.TICKS_IN_HOUR).setRegistryName("pickling_fruit"),
+            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR.get(), 125), IIngredient.of("categoryMeat"), CapabilityFood.PICKLED, 4 * ICalendar.TICKS_IN_HOUR).setRegistryName("pickling_meat"),
+            new BarrelRecipeFoodTraits(IIngredient.of(VINEGAR.get(), 125), IIngredient.of("categoryVegetable"), CapabilityFood.PICKLED, 4 * ICalendar.TICKS_IN_HOUR).setRegistryName("pickling_vegetable"),
             // todo: brined food
             new BarrelRecipe(IIngredient.of(LIMEWATER.get(), 100), IIngredient.of("sand"), null, new ItemStack(ItemsTFC.MORTAR, 16), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("mortar"),
             // todo: curdled milk -> cheese (use an empty IIngredient for the item)
@@ -393,22 +396,22 @@ public final class DefaultRecipes
             new QuernRecipe(IIngredient.of("gemCryolite"), new ItemStack(Items.REDSTONE, 8)).setRegistryName("cryolite"),
 
             //Hematite
-            new QuernRecipe(IIngredient.of("oreHematiteSmall"), new ItemStack(ItemPowder.get(Powder.HEMATITE), 2)).setRegistryName("hematite_powder_from_small"),
-            new QuernRecipe(IIngredient.of("oreHematitePoor"), new ItemStack(ItemPowder.get(Powder.HEMATITE), 3)).setRegistryName("hematite_powder_from_poor"),
-            new QuernRecipe(IIngredient.of("oreHematiteNormal"), new ItemStack(ItemPowder.get(Powder.HEMATITE), 5)).setRegistryName("hematite_powder_from_normal"),
-            new QuernRecipe(IIngredient.of("oreHematiteRich"), new ItemStack(ItemPowder.get(Powder.HEMATITE), 7)).setRegistryName("hematite_powder_from_rich"),
+            new QuernRecipe(IIngredient.of(ItemSmallOre.get(Ore.HEMATITE, 1)), new ItemStack(ItemPowder.get(Powder.HEMATITE), 2)).setRegistryName("hematite_powder_from_small"),
+            new QuernRecipe(IIngredient.of(ItemOreTFC.get(Ore.HEMATITE, Ore.Grade.POOR, 1)), new ItemStack(ItemPowder.get(Powder.HEMATITE), 3)).setRegistryName("hematite_powder_from_poor"),
+            new QuernRecipe(IIngredient.of(ItemOreTFC.get(Ore.HEMATITE, Ore.Grade.NORMAL, 1)), new ItemStack(ItemPowder.get(Powder.HEMATITE), 5)).setRegistryName("hematite_powder_from_normal"),
+            new QuernRecipe(IIngredient.of(ItemOreTFC.get(Ore.HEMATITE, Ore.Grade.RICH, 1)), new ItemStack(ItemPowder.get(Powder.HEMATITE), 7)).setRegistryName("hematite_powder_from_rich"),
 
             //Limonite
-            new QuernRecipe(IIngredient.of("oreLimoniteSmall"), new ItemStack(ItemPowder.get(Powder.LIMONITE), 2)).setRegistryName("limonite_powder_from_small"),
-            new QuernRecipe(IIngredient.of("oreLimonitePoor"), new ItemStack(ItemPowder.get(Powder.LIMONITE), 3)).setRegistryName("limonite_powder_from_poor"),
-            new QuernRecipe(IIngredient.of("oreLimoniteNormal"), new ItemStack(ItemPowder.get(Powder.LIMONITE), 5)).setRegistryName("limonite_powder_from_normal"),
-            new QuernRecipe(IIngredient.of("oreLimoniteRich"), new ItemStack(ItemPowder.get(Powder.LIMONITE), 7)).setRegistryName("limonite_powder_from_rich"),
+            new QuernRecipe(IIngredient.of(ItemSmallOre.get(Ore.LIMONITE, 1)), new ItemStack(ItemPowder.get(Powder.LIMONITE), 2)).setRegistryName("limonite_powder_from_small"),
+            new QuernRecipe(IIngredient.of(ItemOreTFC.get(Ore.LIMONITE, Ore.Grade.POOR, 1)), new ItemStack(ItemPowder.get(Powder.LIMONITE), 3)).setRegistryName("limonite_powder_from_poor"),
+            new QuernRecipe(IIngredient.of(ItemOreTFC.get(Ore.LIMONITE, Ore.Grade.NORMAL, 1)), new ItemStack(ItemPowder.get(Powder.LIMONITE), 5)).setRegistryName("limonite_powder_from_normal"),
+            new QuernRecipe(IIngredient.of(ItemOreTFC.get(Ore.LIMONITE, Ore.Grade.RICH, 1)), new ItemStack(ItemPowder.get(Powder.LIMONITE), 7)).setRegistryName("limonite_powder_from_rich"),
 
             //Malachite
-            new QuernRecipe(IIngredient.of("oreMalachiteSmall"), new ItemStack(ItemPowder.get(Powder.MALACHITE), 2)).setRegistryName("malachite_powder_from_small"),
-            new QuernRecipe(IIngredient.of("oreMalachitePoor"), new ItemStack(ItemPowder.get(Powder.MALACHITE), 3)).setRegistryName("malachite_powder_from_poor"),
-            new QuernRecipe(IIngredient.of("oreMalachiteNormal"), new ItemStack(ItemPowder.get(Powder.MALACHITE), 5)).setRegistryName("malachite_powder_from_normal"),
-            new QuernRecipe(IIngredient.of("oreMalachiteRich"), new ItemStack(ItemPowder.get(Powder.MALACHITE), 7)).setRegistryName("malachite_powder_from_rich"),
+            new QuernRecipe(IIngredient.of(ItemSmallOre.get(Ore.MALACHITE, 1)), new ItemStack(ItemPowder.get(Powder.MALACHITE), 2)).setRegistryName("malachite_powder_from_small"),
+            new QuernRecipe(IIngredient.of(ItemOreTFC.get(Ore.MALACHITE, Ore.Grade.POOR, 1)), new ItemStack(ItemPowder.get(Powder.MALACHITE), 3)).setRegistryName("malachite_powder_from_poor"),
+            new QuernRecipe(IIngredient.of(ItemOreTFC.get(Ore.MALACHITE, Ore.Grade.NORMAL, 1)), new ItemStack(ItemPowder.get(Powder.MALACHITE), 5)).setRegistryName("malachite_powder_from_normal"),
+            new QuernRecipe(IIngredient.of(ItemOreTFC.get(Ore.MALACHITE, Ore.Grade.RICH, 1)), new ItemStack(ItemPowder.get(Powder.MALACHITE), 7)).setRegistryName("malachite_powder_from_rich"),
 
             //Bone meal
             new QuernRecipe(IIngredient.of("bone"), new ItemStack(Items.DYE, 3, EnumDyeColor.WHITE.getDyeDamage())).setRegistryName("bone_meal_from_bone"),

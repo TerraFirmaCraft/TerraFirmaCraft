@@ -49,17 +49,6 @@ public class ItemJug extends ItemPottery
         setHasSubtypes(true);
     }
 
-    @Override
-    public boolean canStack(@Nonnull ItemStack stack)
-    {
-        IFluidHandler jugCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        if (jugCap != null)
-        {
-            return jugCap.drain(CAPACITY, false) == null;
-        }
-        return true;
-    }
-
     @SuppressWarnings("ConstantConditions")
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -138,6 +127,13 @@ public class ItemJug extends ItemPottery
     public int getMaxItemUseDuration(ItemStack stack)
     {
         return 32;
+    }
+
+    @Override
+    public boolean canStack(ItemStack stack)
+    {
+        IFluidHandler jugCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        return jugCap != null && jugCap.drain(CAPACITY, false) != null;
     }
 
     @Override

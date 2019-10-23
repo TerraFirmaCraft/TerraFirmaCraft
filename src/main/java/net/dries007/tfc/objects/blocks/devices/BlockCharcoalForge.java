@@ -37,6 +37,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.api.util.IBellowsConsumerBlock;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.items.ItemFireStarter;
@@ -89,7 +90,7 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
 
     public BlockCharcoalForge()
     {
-        super(Material.GROUND);
+        super(BlockCharcoalPile.CHARCOAL_MATERIAL);
 
         setSoundType(SoundType.GROUND);
         setHarvestLevel("shovel", 0);
