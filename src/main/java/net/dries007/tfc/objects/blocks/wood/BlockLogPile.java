@@ -176,18 +176,6 @@ public class BlockLogPile extends Block implements ILightableBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
-    {
-        TELogPile tile = Helpers.getTE(world, pos, TELogPile.class);
-        if (tile != null)
-        {
-            return side == EnumFacing.DOWN || tile.countLogs() == 16;
-        }
-        return super.isSideSolid(state, world, pos, side);
-    }
-
-    @Override
     public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face)
     {
         return 60;

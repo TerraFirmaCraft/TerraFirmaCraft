@@ -278,6 +278,10 @@ public class ConfigTFC
         @Config.Comment("The min Y value a spawn has to be for spawn protection to be considered. (spawns under this level won't be stopped by spawn protection.")
         @Config.LangKey("config." + MOD_ID + ".general.spawnProtectionMinY")
         public int spawnProtectionMinY = 100;
+
+        @Config.Comment("The time required for a charcoal pit to complete")
+        @Config.LangKey("config." + MOD_ID + ".general.charcoalPitTime")
+        public int charcoalPitTime = 18_000;
     }
 
     public static class ClientCFG

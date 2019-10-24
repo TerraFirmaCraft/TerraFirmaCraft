@@ -259,7 +259,7 @@ public class ChunkGenTFC implements IChunkGenerator
 
         ChunkDataTFC chunkData = chunk.getCapability(ChunkDataProvider.CHUNK_DATA_CAPABILITY, null);
         if (chunkData == null) throw new IllegalStateException("ChunkData capability is missing.");
-        chunkData.setGenerationData(rockLayer1, rockLayer2, rockLayer3, stabilityLayer, drainageLayer, seaLevelOffsetMap, rainfall, regionalFactor, averageTemp, floraDensity, floraDiversity, CalendarTFC.TOTAL_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks());
+        chunkData.setGenerationData(rockLayer1, rockLayer2, rockLayer3, stabilityLayer, drainageLayer, seaLevelOffsetMap, rainfall, regionalFactor, averageTemp, floraDensity, floraDiversity, CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks());
 
         byte[] biomeIds = chunk.getBiomeArray();
         for (int x = 0; x < 16; ++x)
