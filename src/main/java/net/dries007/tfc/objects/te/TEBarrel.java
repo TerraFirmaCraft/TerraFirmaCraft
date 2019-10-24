@@ -108,11 +108,13 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         }
     }
 
+    @Nullable
     public BarrelRecipe getRecipe()
     {
         return recipe;
     }
 
+    @Nonnull
     public String getSealedDate()
     {
         return ICalendarFormatted.getTimeAndDate(sealedCalendarTick, CalendarTFC.INSTANCE.getDaysInMonth());
@@ -151,7 +153,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
 
     public void onSealed()
     {
-        sealedTick = CalendarTFC.TOTAL_TIME.getTicks();
+        sealedTick = CalendarTFC.PLAYER_TIME.getTicks();
         sealedCalendarTick = CalendarTFC.CALENDAR_TIME.getTicks();
         recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
         sealed = true;
@@ -213,7 +215,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
             // Check if recipe is complete
             if (recipe != null)
             {
-                int durationSealed = (int) (CalendarTFC.TOTAL_TIME.getTicks() - sealedTick);
+                int durationSealed = (int) (CalendarTFC.PLAYER_TIME.getTicks() - sealedTick);
                 if (durationSealed > recipe.getDuration())
                 {
                     ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);

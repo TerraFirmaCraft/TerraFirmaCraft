@@ -72,7 +72,7 @@ public final class WorldRegenHandler
                 // Loose rocks / sticks (debris)
                 if (ConfigTFC.GENERAL.regenSticksRocks > 0 && !chunkDataTFC.isSpawnProtected())
                 {
-                    long deltaRocks = CalendarTFC.TOTAL_TIME.getTicks() - chunkDataTFC.getLastUpdateRocks();
+                    long deltaRocks = CalendarTFC.PLAYER_TIME.getTicks() - chunkDataTFC.getLastUpdateRocks();
                     double looseRegeneration = deltaRocks / (ICalendar.TICKS_IN_DAY * ConfigTFC.GENERAL.regenSticksRocks);
                     if (looseRegeneration > 0.1D)
                     {
@@ -80,7 +80,7 @@ public final class WorldRegenHandler
                         {
                             looseRegeneration = 1;
                         }
-                        chunkDataTFC.setLastUpdateRocks(CalendarTFC.CALENDAR_TIME.getTicks());
+                        chunkDataTFC.setLastUpdateRocks(CalendarTFC.PLAYER_TIME.getTicks());
 
                         ROCKS_GEN.setFactor(looseRegeneration);
                         ROCKS_GEN.generate(RANDOM, pos.x, pos.z, event.world, chunkGenerator, chunkProvider);

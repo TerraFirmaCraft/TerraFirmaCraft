@@ -160,8 +160,14 @@ public class BlockPitKiln extends Block implements ILightableBlock
             {
                 te.tryLight();
             }
-            // Make sure the sides are valid
-            te.assertValid();
+            if (!worldIn.isSideSolid(pos.down(), EnumFacing.UP))
+            {
+                if (te.isLit())
+                {
+                    te.emptyFuelContents();
+                }
+                worldIn.destroyBlock(pos, true);
+            }
         }
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
     }

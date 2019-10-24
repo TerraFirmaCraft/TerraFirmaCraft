@@ -239,14 +239,14 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public float getTemperature()
         {
-            return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.TOTAL_TIME.getTicks() - lastUpdateTick);
+            return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.PLAYER_TIME.getTicks() - lastUpdateTick);
         }
 
         @Override
         public void setTemperature(float temperature)
         {
             this.temperature = temperature;
-            this.lastUpdateTick = CalendarTFC.TOTAL_TIME.getTicks();
+            this.lastUpdateTick = CalendarTFC.PLAYER_TIME.getTicks();
         }
 
         @Override
@@ -421,7 +421,7 @@ public class ItemSmallVessel extends ItemPottery
             }
             else
             {
-                nbt.setLong("ticks", CalendarTFC.TOTAL_TIME.getTicks());
+                nbt.setLong("ticks", CalendarTFC.PLAYER_TIME.getTicks());
             }
 
             if (fluidMode)

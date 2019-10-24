@@ -12,6 +12,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -20,7 +21,6 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 
-@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class CalendarTFC implements INBTSerializable<NBTTagCompound>
@@ -67,6 +67,31 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
     public static final int DEFAULT_DAYS_IN_MONTH = 8;
     public static final int DEFAULT_CALENDAR_TIME_OFFSET = (5 * DEFAULT_DAYS_IN_MONTH * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
+
+    /**
+     * This runs a sequence of code, but first will set the calendar and player time by an offset
+     * Useful if we need to run code that technically needs to happen at a different calendar time
+     * The offsets are removed once the transaction is complete
+     *
+     * @param transactionPlayerTimeOffset   the offset to be added to the player time
+     * @param transactionCalendarTimeOffset the offset to be added to the calendar time
+     */
+    public static void runTransaction(long transactionPlayerTimeOffset, long transactionCalendarTimeOffset, Runnable transaction)
+    {
+        try
+        {
+            INSTANCE.playerTimeOffset += transactionPlayerTimeOffset;
+            INSTANCE.calendarTimeOffset += transactionCalendarTimeOffset;
+
+            transaction.run();
+        }
+        finally
+        {
+            // Always reset after transaction complete
+            INSTANCE.playerTimeOffset -= transactionPlayerTimeOffset;
+            INSTANCE.calendarTimeOffset -= transactionCalendarTimeOffset;
+        }
+    }
 
     static
     {
@@ -322,6 +347,15 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
         CalendarWorldData data = CalendarWorldData.get(world);
         data.getCalendar().reset(this);
         data.markDirty();
+
+        // At this point, the calendar may have updated - we need to update any ICalendarTickable tile entities
+        for (TileEntity tile : world.tickableTileEntities)
+        {
+            if (tile instanceof ICalendarTickable)
+            {
+                ((ICalendarTickable) tile).onCalendarUpdate();
+            }
+        }
 
         // Sync to clients
         if (!world.isRemote)
