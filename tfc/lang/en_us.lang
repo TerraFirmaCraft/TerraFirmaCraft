@@ -275,12 +275,14 @@ config.tfc.general.spawnProtectionEnable.tooltip=Should living in a chunk block 
 config.tfc.general.spawnProtectionMinY=Spawn Protection Minimum Y Level
 config.tfc.general.spawnProtectionMinY.tooltip=The min Y value a spawn has to be for spawn protection to be considered. (spawns under this level won't be stopped by spawn protection.
 
+config.tfc.general.charcoalPitTime=Charcoal Pit Ticks
+config.tfc.general.charcoalPitTime.tooltip=The time required for a charcoal pit to complete
+
 
 ## Client Config
 config.tfc.general.woodenBucketWhitelist=Wooden Bucket Fluid Whitelist
 config.tfc.general.woodenBucketWhitelist.tooltip=Allowed fluids to be picked up by the wooden bucket.
 
-## Config.Client
 config.tfc.client=Client Settings
 config.tfc.client.toolip=Client side only.
 
