@@ -52,15 +52,15 @@ public class ModelGoatTFC extends ModelBase
         textureHeight = 64;
 
         babyhorn1 = new ModelRenderer(this, 44, 0);
-        babyhorn1.addBox(-0.5F, -1.6F, -0.6F, 1, 2, 1);
-        babyhorn1.setRotationPoint(-1.5F, -4F, 0F);
+        babyhorn1.addBox(-0.5F, 0F, -0.6F, 1, 2, 1);
+        babyhorn1.setRotationPoint(-1.5F, -5F, 0F);
         babyhorn1.setTextureSize(128, 64);
         babyhorn1.mirror = true;
         setRotation(babyhorn1, -0.593411F, 0F, 0F);
 
         babyhorn2 = new ModelRenderer(this, 44, 0);
-        babyhorn2.addBox(-0.5F, -1.6F, -0.6F, 1, 2, 1);
-        babyhorn2.setRotationPoint(1.5F, -4F, 0F);
+        babyhorn2.addBox(-0.5F, 0F, -0.6F, 1, 2, 1);
+        babyhorn2.setRotationPoint(1.5F, -5F, 0F);
         babyhorn2.setTextureSize(128, 64);
         babyhorn2.mirror = true;
         setRotation(babyhorn2, -0.593411F, 0F, 0F);

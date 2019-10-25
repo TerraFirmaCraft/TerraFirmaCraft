@@ -45,31 +45,31 @@ public class ModelAlpacaBodyTFC extends ModelBase
 
         ear1f = new ModelRenderer(this, 16, 14);
         ear1f.addBox(-1F, -1F, -1F, 2, 2, 2);
-        ear1f.setRotationPoint(-1.5F, -5F, -1F);
+        ear1f.setRotationPoint(-1.5F, -3.5F, 1F);
         //setRotation(ear1f, 0F, 0F, 0F);
 
         ear2f = new ModelRenderer(this, 16, 14);
         ear2f.addBox(-1F, -1F, -1F, 2, 2, 2);
-        ear2f.setRotationPoint(1.5F, -5F, -1F);
+        ear2f.setRotationPoint(1.5F, -3.5F, 1F);
         //setRotation(ear2f, 0F, 0F, 0F);
 
         ear1m = new ModelRenderer(this, 16, 14);
-        ear1m.addBox(-1F, -1F, -1F, 2, 3, 2);
-        ear1m.setRotationPoint(-1.5F, -5.5F, -1F);
+        ear1m.addBox(-1F, -1.5F, -1F, 2, 3, 2);
+        ear1m.setRotationPoint(-1.5F, -4F, 1F);
         //setRotation(ear1m, 0F, 0F, 0F);
 
         ear2m = new ModelRenderer(this, 16, 14);
-        ear2m.addBox(-1F, -1F, -1F, 2, 3, 2);
-        ear2m.setRotationPoint(1.5F, -5.5F, -1F);
+        ear2m.addBox(-1F, -1.5F, -1F, 2, 3, 2);
+        ear2m.setRotationPoint(1.5F, -4F, 1F);
         //setRotation(ear2m, 0F, 0F, 0F);
 
         nose = new ModelRenderer(this, 16, 14);
-        nose.addBox(-2F, -1.5F, -2.5F, 4, 3, 3);
-        nose.setRotationPoint(0F, -0.2F, -7F);
+        nose.addBox(-2F, -1.5F, -1.5F, 4, 3, 3);
+        nose.setRotationPoint(0F, 1F, -5F);
 
         head = new ModelRenderer(this, 0, 0);
-        head.addBox(-3.0F, -4.0F, -6.0F, 6, 6, 7, 0.0F);
-        head.setRotationPoint(0.0F, -2F, -6.5F);
+        head.addBox(-3.0F, -2.5F, -3.5F, 6, 6, 7 );
+        head.setRotationPoint(0.0F, -4F, -9.4F);
 
         neck1 = new ModelRenderer(this, 16, 14);
         neck1.addBox(-2F, -3.5F, -2.5F, 4, 7, 5);
@@ -77,8 +77,8 @@ public class ModelAlpacaBodyTFC extends ModelBase
         setRotation(neck1, 0.591841F, 0F, 0F);
 
         neck2 = new ModelRenderer(this, 16, 14);
-        neck2.addBox(-2F, -4F, -2.5F, 4, 8, 5);
-        neck2.setRotationPoint(0F, 3F, -8.55F);
+        neck2.addBox(-1.5F, -4F, -2.5F, 3, 9, 4);
+        neck2.setRotationPoint(0F, 2F, -8.55F);
         //setRotation(neck2, 0F, 0F, 0F);
 
         body = new ModelRenderer(this, 28, 8);
@@ -99,19 +99,19 @@ public class ModelAlpacaBodyTFC extends ModelBase
 
         leg1 = new ModelRenderer(this, 0, 18);
         leg1.addBox(-1F, -4F, -1.5F, 4, 11, 4);
-        leg1.setRotationPoint(-3.5F, 17F, 6.5F);
+        leg1.setRotationPoint(-4F, 17F, 6.5F);
 
         leg2 = new ModelRenderer(this, 0, 18);
         leg2.addBox(0F, -4F, -1.5F, 4, 11, 4);
-        leg2.setRotationPoint(1.5F, 17F, 6.5F);
+        leg2.setRotationPoint(1F, 17F, 6.5F);
 
         leg3 = new ModelRenderer(this, 0, 18);
         leg3.addBox(-1F, -4F, -1.5F, 4, 11, 4);
-        leg3.setRotationPoint(-3.5F, 17F, -4F);
+        leg3.setRotationPoint(-4F, 17F, -4F);
 
         leg4 = new ModelRenderer(this, 0, 18);
         leg4.addBox(0F, -4F, -1.5F, 4, 11, 4);
-        leg4.setRotationPoint(1.5F, 17F, -4F);
+        leg4.setRotationPoint(1F, 17F, -4F);
 
 
         head.addChild(ear1f);
