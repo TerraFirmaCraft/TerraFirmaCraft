@@ -7,9 +7,10 @@ package net.dries007.tfc.client.render.animal;
 
 import net.dries007.tfc.client.model.animal.ModelAlpacaWoolTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAlpacaTFC;
+import net.dries007.tfc.objects.entity.animal.EntityAlpacaWoolTFC;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.passive.EntitySheep;
+//import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,28 +21,28 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class LayerAlpacaWoolTFC implements LayerRenderer<EntityAlpacaTFC>
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("minecraft:textures/entity/sheep/sheep_fur.png");
-    private final RenderAlpacaTFC sheepRenderer;
-    private final ModelAlpacaWoolTFC sheepModel = new ModelAlpacaWoolTFC();
+    private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/animal/alpaca.png");
+    private final RenderAlpacaTFC alpacaRenderer;
+    private final ModelAlpacaWoolTFC alpacaModel = new ModelAlpacaWoolTFC();
 
-    public LayerAlpacaWoolTFC(RenderAlpacaTFC sheepRendererIn)
+    public LayerAlpacaWoolTFC(RenderAlpacaTFC alpacaRendererIn)
     {
-        this.sheepRenderer = sheepRendererIn;
+        this.alpacaRenderer = alpacaRendererIn;
     }
 
     @Override
-    public void doRenderLayer(EntityAlpacaTFC sheep, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    public void doRenderLayer(EntityAlpacaTFC alpaca, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        if (sheep.hasWool() && !sheep.isInvisible())
+        if (alpaca.hasWool() && !alpaca.isInvisible())
         {
-            this.sheepRenderer.bindTexture(TEXTURE);
+            this.alpacaRenderer.bindTexture(TEXTURE);
 
-            float[] afloat = EntitySheep.getDyeRgb(sheep.getDyeColor());
+            float[] afloat = EntityAlpacaWoolTFC.getDyeRgb(alpaca.getDyeColor());
             GlStateManager.color(afloat[0], afloat[1], afloat[2]);
 
-            this.sheepModel.setModelAttributes(this.sheepRenderer.getMainModel());
-            this.sheepModel.setLivingAnimations(sheep, limbSwing, limbSwingAmount, partialTicks);
-            this.sheepModel.render(sheep, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            this.alpacaModel.setModelAttributes(this.alpacaRenderer.getMainModel());
+            this.alpacaModel.setLivingAnimations(alpaca, limbSwing, limbSwingAmount, partialTicks);
+            this.alpacaModel.render(alpaca, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }
 

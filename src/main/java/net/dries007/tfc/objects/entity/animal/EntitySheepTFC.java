@@ -75,7 +75,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
     public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
     {
         return (temperature > -20 && temperature < 0 && rainfall > 100) ||
-            (temperature > -10 && rainfall > 100 && biome == BiomesTFC.MOUNTAINS);
+            (temperature > -10 && rainfall > 100 && biome == BiomesTFC.ROLLING_HILLS);
     }
 
     @Override

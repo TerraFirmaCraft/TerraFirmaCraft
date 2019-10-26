@@ -43,69 +43,69 @@ public class ModelAlpacaWoolTFC extends ModelBase
         textureWidth = 128;
         textureHeight = 64;
 
-        ear1f = new ModelRenderer(this, 16, 14);
-        ear1f.addBox(-1F, -1F, -1F, 2, 2, 2, 0.3F);
-        ear1f.setRotationPoint(-1.5F, -3.5F, 1F);
-        setRotation(ear1f, 0F, 0F, 0F);
+        ear1f = new ModelRenderer(this, 0, 54);
+        ear1f.addBox(-1F, -1.5F, -1F, 2, 2, 2, 0.3F);
+        ear1f.setRotationPoint(-2.2F, -2.8F, 1.901F);
+        setRotation(ear1f, 0.136659F, -0.273144F, -0.273144F);
 
-        ear2f = new ModelRenderer(this, 16, 14);
-        ear2f.addBox(-1F, -1F, -1F, 2, 2, 2, 0.3F);
-        ear2f.setRotationPoint(1.5F, -3.5F, 1F);
-        setRotation(ear2f, 0F, 0F, 0F);
+        ear2f = new ModelRenderer(this, 0, 54);
+        ear2f.addBox(-1F, -1.5F, -1F, 2, 2, 2, 0.3F);
+        ear2f.setRotationPoint(2.2F, -2.8F, 1.901F);
+        setRotation(ear2f, 0.136659F, 0.273144F, 0.273144F);
 
-        ear1m = new ModelRenderer(this, 16, 14);
-        ear1m.addBox(-1F, -1.5F, -1F, 2, 3, 2, 0.3F);
-        ear1m.setRotationPoint(-1.5F, -4F, 1F);
-        setRotation(ear1m, 0F, 0F, 0F);
+        ear1m = new ModelRenderer(this, 26, 53);
+        ear1m.addBox(-1F, -2F, -1F, 2, 3, 2, 0.3F);
+        ear1m.setRotationPoint(-2.2F, -3.3F, 1.901F);
+        setRotation(ear1m, 0.136659F, -0.273144F, -0.273144F);
 
-        ear2m = new ModelRenderer(this, 16, 14);
-        ear2m.addBox(-1F, -1.5F, -1F, 2, 3, 2, 0.3F);
-        ear2m.setRotationPoint(1.5F, -4F, 1F);
-        setRotation(ear2m, 0F, 0F, 0F);
+        ear2m = new ModelRenderer(this, 26, 53);
+        ear2m.addBox(-1F, -2F, -1F, 2, 3, 2, 0.3F);
+        ear2m.setRotationPoint(2.2F, -3.3F, 1.901F);
+        setRotation(ear2m, 0.136659F, 0.2731447F, 0.273144F);
 
-        nose = new ModelRenderer(this, 16, 14);
-        nose.addBox(-2F, -1.5F, -1.5F, 4, 3, 2, 0.3F);
-        nose.setRotationPoint(0F, 1F, -5F);
+        //nose = new ModelRenderer(this, 11, 46);
+        //nose.addBox(-2F, -1.5F, -1.5F, 4, 3, 2, 0.3F);
+        //nose.setRotationPoint(0F, 1F, -4F);
 
-        head = new ModelRenderer(this, 2, 34);
-        head.addBox(-3.0F, -2.5F, -3.5F, 6, 6, 7, 0.5F);
+        head = new ModelRenderer(this, 4, 51);
+        head.addBox(-3.0F, -2.5F, -2.8F, 6, 6, 7, 0.5F);
         head.setRotationPoint(0.0F, -4F, -9.4F);
 
-        neck1 = new ModelRenderer(this, 75, 25);
+        neck1 = new ModelRenderer(this, 50, 52);
         neck1.addBox(-2F, -3.5F, -2.5F, 4, 7, 5, 0.3F);
         neck1.setRotationPoint(0F, 8.7F, -7F);
         setRotation(neck1, 0.591841F, 0F, 0F);
 
-        neck2 = new ModelRenderer(this, 58, 30);
-        neck2.addBox(-1.5F, -4F, -2.5F, 3, 9, 4, 0.3F);
-        neck2.setRotationPoint(0F, 2F, -8.55F);
+        neck2 = new ModelRenderer(this, 51, 39);
+        neck2.addBox(-1.5F, -4F, -2.5F, 4, 9, 4, 0.3F);
+        neck2.setRotationPoint(-0.5F, 2F, -8.55F);
         setRotation(neck2, 0F, 0F, 0F);
 
-        body = new ModelRenderer(this, 58, 30);
+        body = new ModelRenderer(this, 98, 35);
         body.addBox(-4.5F, -8.5F, -3F, 9, 17, 6, 1F);
-        body.setRotationPoint(0.5F, 10.0F, 1.0F);
+        body.setRotationPoint(0F, 10.0F, 1.0F);
 
-        tailf = new ModelRenderer(this, 16, 14);
+        tailf = new ModelRenderer(this, 99, 58);
         tailf.addBox(-1F, -1F, -1.5F, 2, 2, 3, 0.5F);
         tailf.setRotationPoint(0F, 9.5F, 9.8F);
 
-        tailm = new ModelRenderer(this, 16, 14);
+        tailm = new ModelRenderer(this, 113, 58);
         tailm.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3, 0.5F);
         tailm.setRotationPoint(0F, 9.5F, 9.8F);
 
-        leg1 = new ModelRenderer(this, 0, 13);
+        leg1 = new ModelRenderer(this, 82, 48);
         leg1.addBox(-1F, -4F, -1.5F, 4, 6, 4, 0.5F);
         leg1.setRotationPoint(-4F, 17.5F, 6.5F);
 
-        leg2 = new ModelRenderer(this, 0, 13);
+        leg2 = new ModelRenderer(this, 82, 48);
         leg2.addBox(0F, -4F, -1.5F, 4, 6, 4, 0.5F);
         leg2.setRotationPoint(1F, 17.5F, 6.5F);
 
-        leg3 = new ModelRenderer(this, 0, 13);
+        leg3 = new ModelRenderer(this, 82, 48);
         leg3.addBox(-1F, -4F, -1.5F, 4, 6, 4, 0.5F);
         leg3.setRotationPoint(-4F, 17.5F, -4F);
 
-        leg4 = new ModelRenderer(this, 0, 13);
+        leg4 = new ModelRenderer(this, 82, 48);
         leg4.addBox(0F, -4F, -1.5F, 4, 6, 4, 0.5F);
         leg4.setRotationPoint(1F, 17.5F, -4F);
 
@@ -113,7 +113,7 @@ public class ModelAlpacaWoolTFC extends ModelBase
         head.addChild(ear2f);
         head.addChild(ear1m);
         head.addChild(ear2m);
-        head.addChild(nose);
+        //head.addChild(nose);
     }
 
     @Override
@@ -163,6 +163,8 @@ public class ModelAlpacaWoolTFC extends ModelBase
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
 
         body.render(par7);
+        tailf.render(par7);
+        tailm.render(par7);
         leg1.render(par7);
         leg2.render(par7);
         leg3.render(par7);

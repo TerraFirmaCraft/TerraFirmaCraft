@@ -13,7 +13,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.passive.EntitySheep;
+//import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
@@ -59,7 +59,7 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
     {
         this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
             getRandomGrowth(),
-            EntitySheep.getRandomSheepColor(Constants.RNG));
+            EntityAlpacaWoolTFC.getRandomAlpacaColor(Constants.RNG));
     }
 
     public EntityAlpacaTFC(World worldIn, Gender gender, int birthDay, EnumDyeColor dye)
@@ -74,7 +74,7 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
     public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
     {
         return (temperature > -20 && temperature < 0 && rainfall > 100) ||
-            (temperature > -10 && rainfall > 100 && biome == BiomesTFC.MOUNTAINS);
+            (temperature > -10 && rainfall > 100 && biome == BiomesTFC.HIGH_HILLS || biome == BiomesTFC.HIGH_HILLS_EDGE);
     }
 
     @Override

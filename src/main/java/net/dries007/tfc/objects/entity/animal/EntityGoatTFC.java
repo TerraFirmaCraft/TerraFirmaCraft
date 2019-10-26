@@ -67,7 +67,7 @@ public class EntityGoatTFC extends EntityAnimalMammal implements IAnimalTFC
     @Override
     public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
     {
-        return (biome == BiomesTFC.PLAINS || biome == BiomesTFC.HIGH_PLAINS) && temperature > -10 && rainfall > 100 && rainfall < 400;
+        return (biome == BiomesTFC.MOUNTAINS || biome == BiomesTFC.MOUNTAINS_EDGE) && temperature > -10 && rainfall > 100 && rainfall < 400;
     }
 
     @Override

@@ -12,6 +12,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -64,7 +65,7 @@ public class EntityDuckTFC extends EntityAnimalOviparous implements IAnimalTFC
     @Override
     public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
     {
-        return temperature > 18 && rainfall > 350;
+        return (biome == BiomesTFC.RIVER || biome == BiomesTFC.SWAMPLAND || biome == BiomesTFC.PLAINS) && temperature > -10 && rainfall > 150;
     }
 
     @Override

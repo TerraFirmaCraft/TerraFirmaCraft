@@ -43,51 +43,54 @@ public class ModelDuckTFC extends ModelBase
 
     public ModelDuckTFC()
     {
-        bill = new ModelRenderer(this, 14, 0);
+        textureWidth = 64;
+        textureHeight = 32;
+
+        bill = new ModelRenderer(this, 36, 4);
         bill.addBox(-1.5F, -1.0F, -1.5F, 3, 2, 3, 0.0F);
         bill.setRotationPoint(0.0F, -4.1F, -3F);
 
-        head = new ModelRenderer(this, 0, 0);
+        head = new ModelRenderer(this, 36, 9);
         head.addBox(-1.5F, -6.0F, -2.0F, 3, 3, 3, 0.0F);
         head.setRotationPoint(0.5F, 12F, -4.6F);
 
-        neck = new ModelRenderer(this, 0, 0);
+        neck = new ModelRenderer(this, 48, 0);
         neck.addBox(-2.0F, -10.0F, -0.2F, 4, 9, 4, 0.0F);
         neck.setRotationPoint(0.0F, 3.5F, 0.5F);
 
-        body = new ModelRenderer(this, 0, 9);
+        body = new ModelRenderer(this, 30, 15);
         body.addBox(-3.0F, -3.0F, -4.0F, 7, 7, 10, 0.0F);
         body.setRotationPoint(0.0F, 15.5F, 0.0F);
 
-        bodyFront1 = new ModelRenderer(this, 0, 0);
+        bodyFront1 = new ModelRenderer(this, 28, 18);
         bodyFront1.addBox(-2.5F, -2.5F, -0.5F, 5, 6, 1, 0.0F);
         bodyFront1.setRotationPoint(0.5F, 15.4F, -4.5F);
 
-        bodyFront2 = new ModelRenderer(this, 0, 0);
+        bodyFront2 = new ModelRenderer(this, 54, 20);
         bodyFront2.addBox(-2.0F, -2.0F, 0.0F, 4, 4, 1, 0.0F);
         bodyFront2.setRotationPoint(0.5F, 15.3F, -5.7F);
 
-        bodyBack1 = new ModelRenderer(this, 0, 0);
+        bodyBack1 = new ModelRenderer(this, 0, 24);
         bodyBack1.addBox(-2.5F, -2.5F, -1.0F, 6, 6, 2, 0.0F);
         bodyBack1.setRotationPoint(0.0F, 14.9F, 6.0F);
         setRotation(bodyBack1, 0.136659280431156F, 0.0F, 0.0F);
 
-        bodyBack2 = new ModelRenderer(this, 0, 0);
+        bodyBack2 = new ModelRenderer(this, 0, 17);
         bodyBack2.addBox(-2.0F, -2.0F, -1.0F, 5, 5, 2, 0.0F);
         bodyBack2.setRotationPoint(0.0F, 14.2F, 7.0F);
         setRotation(bodyBack2, 0.18203784098300857F, 0.0F, 0.0F);
 
-        bodyBack3 = new ModelRenderer(this, 0, 0);
+        bodyBack3 = new ModelRenderer(this, 0, 12);
         bodyBack3.addBox(-1.5F, -1.5F, -1.0F, 3, 3, 2, 0.0F);
         bodyBack3.setRotationPoint(0.0F, 13.5F, 8.0F);
         setRotation(bodyBack3, 0.22759093446006054F, 0.0F, 0.0F);
 
-        bodyBack4 = new ModelRenderer(this, 0, 0);
+        bodyBack4 = new ModelRenderer(this, 0, 8);
         bodyBack4.addBox(-1.0F, -1.0F, -1.0F, 2, 2, 2, 0.0F);
         bodyBack4.setRotationPoint(0.0F, 12.7F, 8.9F);
         setRotation(bodyBack4, 0.31869712141416456F, 0.0F, 0.0F);
 
-        rightWing1 = new ModelRenderer(this, 0, 0);
+        rightWing1 = new ModelRenderer(this, 17, 1);
         rightWing1.addBox(0F, 0.0F, -3.0F, 1, 2, 9, 0.0F);
         rightWing1.setRotationPoint(-4F, 13F, 0.0F);
 
@@ -99,11 +102,11 @@ public class ModelDuckTFC extends ModelBase
         rightWing3.addBox(0F, 0.0F, -3.0F, 1, 1, 7, 0.0F);
         rightWing3.setRotationPoint(0.0F, 4.0F, 0.0F);
 
-        leftWing1 = new ModelRenderer(this, 0, 0);
+        leftWing1 = new ModelRenderer(this, 17, 1);
         leftWing1.addBox(0.0F, 0.0F, -3.0F, 1, 2, 9, 0.0F);
         leftWing1.setRotationPoint(4.0F, 13F, 0.0F);
 
-        leftWing2 = new ModelRenderer(this, 0, 0);
+        leftWing2 = new ModelRenderer(this, 8, 0);
         leftWing2.addBox(0.0F, 0.0F, -3.0F, 1, 2, 8, 0.0F);
         leftWing2.setRotationPoint(0.0F, 2.0F, 0.0F);
 
@@ -111,11 +114,11 @@ public class ModelDuckTFC extends ModelBase
         leftWing3.addBox(0.0F, 0.0F, -3.0F, 1, 1, 7, 0.0F);
         leftWing3.setRotationPoint(0.0F, 4.0F, 0.0F);
 
-        rightLeg = new ModelRenderer(this, 26, 0);
+        rightLeg = new ModelRenderer(this, 15, 14);
         rightLeg.addBox(-2.0F, 0.0F, -3.0F, 3, 5, 3, 0.0F);
         rightLeg.setRotationPoint(-0.8F, 19.0F, 2.0F);
 
-        leftLeg = new ModelRenderer(this, 26, 0);
+        leftLeg = new ModelRenderer(this, 15, 14);
         leftLeg.addBox(-1.0F, 0.0F, -3.0F, 3, 5, 3, 0.0F);
         leftLeg.setRotationPoint(1.8F, 19.0F, 2.0F);
 

@@ -48,122 +48,109 @@ public class ModelGoatTFC extends ModelBase
     {
         //addBox(-6.8F(left right), -15.4F(up down), -1.8F(back forth), 1(width), 16(height), 1(length);
 
-        textureWidth = 128;
+        textureWidth = 64;
         textureHeight = 64;
 
-        babyhorn1 = new ModelRenderer(this, 44, 0);
+        babyhorn1 = new ModelRenderer(this, 44, 14);
         babyhorn1.addBox(-0.5F, 0F, -0.6F, 1, 2, 1);
         babyhorn1.setRotationPoint(-1.5F, -5F, 0F);
-        babyhorn1.setTextureSize(128, 64);
         babyhorn1.mirror = true;
         setRotation(babyhorn1, -0.593411F, 0F, 0F);
 
-        babyhorn2 = new ModelRenderer(this, 44, 0);
+        babyhorn2 = new ModelRenderer(this, 44, 14);
         babyhorn2.addBox(-0.5F, 0F, -0.6F, 1, 2, 1);
         babyhorn2.setRotationPoint(1.5F, -5F, 0F);
-        babyhorn2.setTextureSize(128, 64);
         babyhorn2.mirror = true;
         setRotation(babyhorn2, -0.593411F, 0F, 0F);
 
-        horn1f = new ModelRenderer(this, 44, 0);
+        horn1f = new ModelRenderer(this, 50, 12);
         horn1f.addBox(-0.5F, -2.8F, -0.6F, 1, 4, 1);
         horn1f.setRotationPoint(-1.5F, -4F, 0F);
-        horn1f.setTextureSize(128, 64);
         horn1f.mirror = true;
         setRotation(horn1f, -0.593411F, 0F, 0F);
 
 
-        horn2f = new ModelRenderer(this, 44, 0);
+        horn2f = new ModelRenderer(this, 50, 12);
         horn2f.addBox(-0.5F, -2.8F, -0.6F, 1, 4, 1);
         horn2f.setRotationPoint(1.5F, -4F, 0F);
-        horn2f.setTextureSize(128, 64);
         horn2f.mirror = true;
         setRotation(horn2f, -0.593411F, 0F, 0F);
 
-        horn1ma = new ModelRenderer(this, 28, 2);
+        horn1ma = new ModelRenderer(this, 56, 11);
         horn1ma.addBox(0F, 0F, 0F, 2, 4, 2, 0F);
         horn1ma.setRotationPoint(0F, -10F, 0F);
         horn1ma.setRotationPoint(-2.9F, -7F, 0F);
         setRotation(horn1ma, -0.546288F, -0.546288F, -0.0455532F);
 
-        horn1mb = new ModelRenderer(this, 38, 4);
+        horn1mb = new ModelRenderer(this, 58, 7);
         horn1mb.addBox(0.5F, 1F, 0.5F, 1, 3, 1, 0.25F);
         horn1mb.setRotationPoint(0F, -2F, 4F);
         horn1mb.rotateAngleX = (float) -Math.PI / 3;
 
-        horn2ma = new ModelRenderer(this, 28, 2);
+        horn2ma = new ModelRenderer(this, 56, 11);
         horn2ma.addBox(0F, 0F, 0F, 2, 4, 2, 0F);
         horn2ma.setRotationPoint(0F, -10F, 0F);
         horn2ma.setRotationPoint(1.2F, -7F, 0.75F);
         setRotation(horn2ma, -0.546288F, 0.546288F, 0.0455532F);
 
-        horn2mb = new ModelRenderer(this, 38, 4);
+        horn2mb = new ModelRenderer(this, 58, 7);
         horn2mb.addBox(0.5F, 1F, 0.5F, 1, 3, 1, 0.25F);
         horn2mb.setRotationPoint(0F, -2F, 4F);
         horn2mb.rotateAngleX = (float) -Math.PI / 3;
 
-        ear1 = new ModelRenderer(this, 16, 14);
+        ear1 = new ModelRenderer(this, 28, 12);
         ear1.addBox(-1F, -0.5F, -1.5F, 1, 3, 3);
         ear1.setRotationPoint(-2.5F, 0F, 0F);
-        ear1.setTextureSize(128, 64);
         setRotation(ear1, 0.273144F, -0.091106F, 0.591841F);
 
-        ear2 = new ModelRenderer(this, 16, 14);
+        ear2 = new ModelRenderer(this, 28, 12);
         ear2.addBox(0F, -0.5F, -1.5F, 1, 3, 3);
         ear2.setRotationPoint(2.5F, 0F, 0F);
-        ear2.setTextureSize(128, 64);
         setRotation(ear2, 0.273144F, 0.091106F, -0.591841F);
 
-        head1 = new ModelRenderer(this, 0, 0);
+        head1 = new ModelRenderer(this, 0, 6);
         head1.addBox(-3F, -2.0F, -6F, 6, 5, 8);
         head1.setRotationPoint(0F, 2.5F, -6F);
-        head1.setTextureSize(128, 64);
-        //head1.mirror = true;
         setRotation(head1, 0.227590F, 0F, 0F);
 
-        head2 = new ModelRenderer(this, 0, 0);
+        head2 = new ModelRenderer(this, 5, 0);
         head2.addBox(-2.5F, -1.0F, -3F, 5, 2, 4);
         head2.setRotationPoint(0F, -0.5F, -5.8F);
-        head2.setTextureSize(128, 64);
-        //head2.mirror = true;
         setRotation(head2, 0.227590F, 0F, 0F);
 
-        neck = new ModelRenderer(this, 0, 29);
+        neck = new ModelRenderer(this, 1, 19);
         neck.addBox(-2F, -2F, -7F, 5, 4, 8);
         neck.setRotationPoint(-0.5F, 10F, -4F);
-        neck.setTextureSize(128, 64);
         setRotation(neck, -1.274788F, 0F, 0F);
 
-        body = new ModelRenderer(this, 24, 0);
+        body = new ModelRenderer(this, 23, 39);
         body.addBox(-4F, -3F, -3F, 10, 16, 9);
         body.setRotationPoint(-1F, 11F, -3F);
-        body.setTextureSize(128, 64);
 
-        tail = new ModelRenderer(this, 10, 18);
+
+        tail = new ModelRenderer(this, 13, 59);
         tail.addBox(-1.5F, 0F, 0F, 3, 3, 2);
         tail.setRotationPoint(0F, 9F, 8.5F);
-        tail.setTextureSize(128, 64);
         setRotation(tail, 0.819606F, 0F, 0F);
 
-        udders = new ModelRenderer(this, 10, 18);
+        udders = new ModelRenderer(this, 30, 31);
         udders.addBox(-3F, 0F, -2.5F, 6, 2, 6);
         udders.setRotationPoint(0F, 14F, 3.5F);
-        udders.setTextureSize(128, 64);
         setRotation(udders, 0F, 0F, 0F);
 
-        leg1 = new ModelRenderer(this, 0, 18);
+        leg1 = new ModelRenderer(this, 0, 45);
         leg1.addBox(-1F, -4F, -1.5F, 3, 12, 3);
         leg1.setRotationPoint(-3.5F, 16F, 7F);
 
-        leg2 = new ModelRenderer(this, 0, 18);
+        leg2 = new ModelRenderer(this, 0, 45);
         leg2.addBox(0F, -4F, -1.5F, 3, 12, 3);
         leg2.setRotationPoint(1.5F, 16F, 7F);
 
-        leg3 = new ModelRenderer(this, 0, 18);
+        leg3 = new ModelRenderer(this, 0, 45);
         leg3.addBox(-1F, -4F, -1.5F, 3, 12, 3);
         leg3.setRotationPoint(-3.5F, 16F, -3F);
 
-        leg4 = new ModelRenderer(this, 0, 18);
+        leg4 = new ModelRenderer(this, 0, 45);
         leg4.addBox(0F, -4F, -1.5F, 3, 12, 3);
         leg4.setRotationPoint(1.5F, 16F, -3F);
 
