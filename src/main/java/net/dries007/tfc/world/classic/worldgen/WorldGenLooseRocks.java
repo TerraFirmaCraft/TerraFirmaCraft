@@ -25,7 +25,6 @@ import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
-import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 
@@ -53,12 +52,19 @@ public class WorldGenLooseRocks implements IWorldGenerator
         if (chunkGenerator instanceof ChunkGenTFC && world.provider.getDimension() == 0)
         {
             final BlockPos chunkBlockPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
-            ChunkDataTFC chunkData = ChunkDataTFC.get(world, chunkBlockPos);
-            if (!chunkData.isInitialized()) return;
+
+            // Grab 2x2 area
+            ChunkDataTFC[] chunkData = {ChunkDataTFC.get(world, chunkBlockPos), // This chunk
+                ChunkDataTFC.get(world, chunkBlockPos.add(16, 0, 0)),
+                ChunkDataTFC.get(world, chunkBlockPos.add(0, 0, 16)),
+                ChunkDataTFC.get(world, chunkBlockPos.add(16, 0, 16))};
+            if (!chunkData[0].isInitialized()) return;
 
             // Set constant values here
             int xoff = chunkX * 16 + 8;
             int zoff = chunkZ * 16 + 8;
+            int lowestYScan = world.getTopSolidOrLiquidBlock(chunkBlockPos).getY() - 35; // Same as in 1.7.10, 35 below the surface
+
             // Get the proper list of veins
             List<Vein> veins;
             if (generateOres)
@@ -67,10 +73,16 @@ public class WorldGenLooseRocks implements IWorldGenerator
                 if (!veins.isEmpty())
                 {
                     veins.removeIf(v -> {
-                        if (!v.type.hasLooseRocks()) return true;
-                        if (!chunkData.getChunkOres().contains(v.type.ore)) return true;
-                        // Only generates small ores whose veins generated at least at half rock layer 2
-                        return (v.getHighestY() < (WorldTypeTFC.ROCKLAYER2 + WorldTypeTFC.ROCKLAYER3) / 2);
+                        if (!v.type.hasLooseRocks() || v.getHighestY() < lowestYScan) return true;
+                        for (ChunkDataTFC data : chunkData)
+                        {
+                            // No need to check for initialized chunk data, ore hashset will be empty.
+                            if (data.getChunkOres().contains(v.type.ore))
+                            {
+                                return false;
+                            }
+                        }
+                        return true;
                     });
                 }
             }
@@ -86,7 +98,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
                     0,
                     zoff + random.nextInt(16)
                 );
-                Rock rock = chunkData.getRock1(pos);
+                Rock rock = chunkData[0].getRock1(pos);
                 generateRock(world, pos.up(world.getTopSolidOrLiquidBlock(pos).getY()), getRandomVein(veins, random), rock);
             }
         }

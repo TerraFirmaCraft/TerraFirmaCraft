@@ -70,7 +70,7 @@ public enum VeinRegistry
         }
         catch (IOException e)
         {
-            throw new Error("Problem reading ore vein config files.", e);
+            throw new Error("Problem reading ore vein config folder.", e);
         }
         if (oreFiles.isEmpty())
         {
@@ -93,38 +93,33 @@ public enum VeinRegistry
 
     public void postInit()
     {
-        List<String> worldGenData = new ArrayList<>();
+        weightedVeinTypes.clear();
+        veinTypeRegistry.clear();
         oreFiles.forEach(file -> {
             try
             {
-                worldGenData.add(FileUtils.readFileToString(file, Charset.defaultCharset()));
-            }
-            catch (IOException e)
-            {
-                throw new Error("Error reading " + file, e);
-            }
-        });
-
-        if (!worldGenData.isEmpty())
-        {
-            try
-            {
-                weightedVeinTypes.clear();
-                veinTypeRegistry.clear();
-                worldGenData.forEach(data -> {
-                    Map<String, VeinType> values = GSON.fromJson(data, new TypeToken<Map<String, VeinType>>() {}.getType());
+                String json = FileUtils.readFileToString(file, Charset.defaultCharset());
+                try
+                {
+                    Map<String, VeinType> values = GSON.fromJson(json, new TypeToken<Map<String, VeinType>>() {}.getType());
                     values.forEach((name, veinType) -> {
                         veinType.setRegistryName(name);
                         veinTypeRegistry.put(name, veinType);
                         weightedVeinTypes.add(veinType.weight, veinType);
                     });
-                });
+                }
+                catch (JsonParseException e)
+                {
+                    // Don't crash the game if one of the files error-ed, just show it in log
+                    TerraFirmaCraft.getLog().warn("Error parsing " + file, e);
+                }
             }
-            catch (JsonParseException e)
+            catch (IOException e)
             {
-                TerraFirmaCraft.getLog().warn("There was a serious issue parsing the ore generation files!! TFC will not generate any ores!", e);
+                // Don't crash the game if one of the files error-ed, just show it in log
+                TerraFirmaCraft.getLog().warn("Error reading " + file, e);
             }
-        }
+        });
         if (veinTypeRegistry.isEmpty())
         {
             TerraFirmaCraft.getLog().warn("The ore vein registry is empty!! TFC will not generate any ores!");
