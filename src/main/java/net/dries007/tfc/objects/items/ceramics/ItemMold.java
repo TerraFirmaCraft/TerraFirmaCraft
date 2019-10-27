@@ -285,13 +285,13 @@ public class ItemMold extends ItemPottery
             }
             else
             {
-                nbt.setLong("ticks", CalendarTFC.TOTAL_TIME.getTicks());
+                nbt.setLong("ticks", CalendarTFC.PLAYER_TIME.getTicks());
             }
             return tank.writeToNBT(nbt);
         }
 
         @Override
-        public void deserializeNBT(NBTTagCompound nbt)
+        public void deserializeNBT(@Nullable NBTTagCompound nbt)
         {
             if (nbt != null)
             {
@@ -307,7 +307,7 @@ public class ItemMold extends ItemPottery
             updateFluidData(tank.getFluid());
         }
 
-        private void updateFluidData(FluidStack fluid)
+        private void updateFluidData(@Nullable FluidStack fluid)
         {
             meltTemp = Heat.maxVisibleTemperature();
             heatCapacity = 1;

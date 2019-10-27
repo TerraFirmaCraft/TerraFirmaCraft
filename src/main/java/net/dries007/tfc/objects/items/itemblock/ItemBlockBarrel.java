@@ -91,7 +91,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
                     nbt.setTag("inventory", new ItemStackHandler(3).serializeNBT());
 
-                    nbt.setLong("sealedTick", CalendarTFC.TOTAL_TIME.getTicks());
+                    nbt.setLong("sealedTick", CalendarTFC.PLAYER_TIME.getTicks());
                     nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
                     ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem());
                     stack.setTagCompound(nbt);
@@ -183,7 +183,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
                     nbt.setTag("inventory", new ItemStackHandler(3).serializeNBT());
 
-                    nbt.setLong("sealedTick", CalendarTFC.TOTAL_TIME.getTicks());
+                    nbt.setLong("sealedTick", CalendarTFC.PLAYER_TIME.getTicks());
                     nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
                     ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem());
                     stack.setTagCompound(nbt);

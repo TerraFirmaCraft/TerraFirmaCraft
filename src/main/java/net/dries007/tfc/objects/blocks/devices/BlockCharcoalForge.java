@@ -235,7 +235,7 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
             if (!state.getValue(LIT))
             {
                 ItemStack held = player.getHeldItem(hand);
-                if (ItemFireStarter.canIgnite(held) && isValid(world, pos))
+                if (isValid(world, pos) && ItemFireStarter.onIgnition(held))
                 {
                     world.setBlockState(pos, state.withProperty(LIT, true));
                     return true;

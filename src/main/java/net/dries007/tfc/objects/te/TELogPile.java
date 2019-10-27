@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.MathHelper;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
@@ -24,6 +25,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogPile;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
 import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
@@ -35,14 +37,14 @@ public class TELogPile extends TEInventory implements ITickable
     private static final int NUM_SLOTS = 4;
 
     private boolean burning;
-    private int burnTicks;
+    private long startBurningTick;
     private boolean isContainerOpen;
 
     public TELogPile()
     {
         super(NUM_SLOTS);
 
-        burnTicks = 0;
+        startBurningTick = 0;
         burning = false;
     }
 
@@ -76,7 +78,7 @@ public class TELogPile extends TEInventory implements ITickable
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
-        burnTicks = nbt.getInteger("burn_ticks");
+        startBurningTick = nbt.getLong("startBurningTick");
         burning = nbt.getBoolean("burning");
         super.readFromNBT(nbt);
     }
@@ -84,7 +86,7 @@ public class TELogPile extends TEInventory implements ITickable
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setInteger("burn_ticks", burnTicks);
+        nbt.setLong("startBurningTick", startBurningTick);
         nbt.setBoolean("burning", burning);
         return super.writeToNBT(nbt);
     }
@@ -102,11 +104,7 @@ public class TELogPile extends TEInventory implements ITickable
         {
             if (burning)
             {
-                if (burnTicks < ConfigTFC.GENERAL.pitKilnTime)
-                {
-                    burnTicks++;
-                }
-                else
+                if ((int) (CalendarTFC.PLAYER_TIME.getTicks() - startBurningTick) > ConfigTFC.GENERAL.charcoalPitTime)
                 {
                     // Attempt to turn this log pile into charcoal
                     createCharcoal();
@@ -161,8 +159,10 @@ public class TELogPile extends TEInventory implements ITickable
 
     public void light()
     {
-        this.burning = true;
+        burning = true;
+        startBurningTick = CalendarTFC.PLAYER_TIME.getTicks();
         tryLightNearby();
+        markDirtyFast();
     }
 
     public int countLogs()
@@ -173,11 +173,6 @@ public class TELogPile extends TEInventory implements ITickable
             logs += inventory.getStackInSlot(i).getCount();
         }
         return logs;
-    }
-
-    public boolean isBurning()
-    {
-        return burning;
     }
 
     private void tryLightNearby()
@@ -198,8 +193,11 @@ public class TELogPile extends TEInventory implements ITickable
         }
     }
 
-    // This function does some magic **** to not create floating charcoal. Don't touch unless broken
-    // - AlcatrazEscapee
+    /**
+     * This function does some magic **** to not create floating charcoal. Don't touch unless broken
+     *
+     * @author AlcatrazEscapee
+     */
     private void createCharcoal()
     {
         int j = 0;
@@ -217,7 +215,7 @@ public class TELogPile extends TEInventory implements ITickable
         } while (block == Blocks.AIR || block instanceof BlockCharcoalPile);
 
         double logs = countLogs() * (0.25 + 0.25 * Constants.RNG.nextFloat());
-        int charcoal = (int) Math.min(8, Math.max(0, Math.round(logs)));
+        int charcoal = (int) MathHelper.clamp(logs, 0, 8);
         if (charcoal == 0)
         {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());

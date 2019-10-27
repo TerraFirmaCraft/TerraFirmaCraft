@@ -6,9 +6,11 @@
 package net.dries007.tfc.util.calendar;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -68,6 +70,21 @@ public class CalendarEventHandler
         // Increment offsets
         CalendarTFC.INSTANCE.setCalendarTime(event.getEntityPlayer().getEntityWorld(), newCalendarTime);
         CalendarTFC.INSTANCE.setPlayerTime(event.getEntityPlayer().getEntityWorld(), newPlayerTime);
+    }
+
+    /**
+     * This is used to send updates to tile entities when a chunk loads, potentially after a long time.
+     */
+    @SubscribeEvent
+    public static void onChunkLoad(ChunkEvent.Load event)
+    {
+        for (TileEntity tile : event.getChunk().getTileEntityMap().values())
+        {
+            if (tile instanceof ICalendarTickable)
+            {
+                ((ICalendarTickable) tile).onCalendarUpdate();
+            }
+        }
     }
 
 }

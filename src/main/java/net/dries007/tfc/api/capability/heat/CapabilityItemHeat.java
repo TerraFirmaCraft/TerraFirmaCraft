@@ -39,6 +39,38 @@ public final class CapabilityItemHeat
     }
 
     /**
+     * Helper method to adjust temperature towards a value, without overshooting or stuttering
+     */
+    public static float adjustTempTowards(float temp, float target, float delta)
+    {
+        return adjustTempTowards(temp, target, delta, delta);
+    }
+
+    public static float adjustTempTowards(float temp, float target, float deltaPositive, float deltaNegative)
+    {
+        if (temp < target)
+        {
+            if (temp + deltaPositive >= target)
+            {
+                return target;
+            }
+            return temp + deltaPositive;
+        }
+        else if (temp > target)
+        {
+            if (temp - deltaNegative <= target)
+            {
+                return target;
+            }
+            return temp - deltaNegative;
+        }
+        else
+        {
+            return target;
+        }
+    }
+
+    /**
      * Call this from within {@link IItemHeat#getTemperature()}
      */
     public static float adjustTemp(float temp, float heatCapacity, long ticksSinceUpdate)

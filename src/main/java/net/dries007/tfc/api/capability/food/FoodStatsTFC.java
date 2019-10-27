@@ -153,10 +153,13 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             {
                 addThirst(-(float) ConfigTFC.GENERAL.playerThirstModifier);
 
-                // Nutrition only decays when food / saturation decays. The base ratio (in config), is 0.8 nutrition / haunch
-                for (int i = 0; i < nutrients.length; i++)
+                // Nutrition only decays when food decays. The base ratio (in config), is 0.8 nutrition / haunch
+                if (getSaturationLevel() <= 0f)
                 {
-                    addNutrient(i, -(float) ConfigTFC.GENERAL.playerNutritionDecayModifier);
+                    for (int i = 0; i < nutrients.length; i++)
+                    {
+                        addNutrient(i, -(float) ConfigTFC.GENERAL.playerNutritionDecayModifier);
+                    }
                 }
             }
 
@@ -169,7 +172,6 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
                 }
             }
         }
-
 
         // Next, update the original food stats
         originalStats.onUpdate(player);

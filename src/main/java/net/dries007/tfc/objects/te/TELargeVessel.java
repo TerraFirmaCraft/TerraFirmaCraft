@@ -104,7 +104,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         }
 
         // Update sealed tick info and sync to client
-        sealedTick = CalendarTFC.TOTAL_TIME.getTicks();
+        sealedTick = CalendarTFC.PLAYER_TIME.getTicks();
         sealedCalendarTick = CalendarTFC.CALENDAR_TIME.getTicks();
         sealed = true;
         TerraFirmaCraft.getNetwork().sendToDimension(new PacketLargeVesselUpdate(this, sealedCalendarTick, sealed), world.provider.getDimension());

@@ -85,6 +85,8 @@ public class OreDictionaryHelper
         // Vanilla ore dict values
         OreDictionary.registerOre("clay", Items.CLAY_BALL);
         OreDictionary.registerOre("charcoal", new ItemStack(Items.COAL, 1, 1));
+        OreDictionary.registerOre("fireStarter", new ItemStack(Items.FLINT_AND_STEEL, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("fireStarter", new ItemStack(Items.FIRE_CHARGE));
     }
 
     /**
