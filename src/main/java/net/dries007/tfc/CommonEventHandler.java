@@ -433,7 +433,7 @@ public final class CommonEventHandler
     /**
      * Fired on server only when a player dies and respawns, or travels through dimensions
      *
-     * @param event {@link net.minecraftforge.event.entity.player.PlayerEvent.Clone}
+     * @param event {@link PlayerEvent.PlayerRespawnEvent event}
      */
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event)
@@ -450,6 +450,37 @@ public final class CommonEventHandler
             {
                 event.player.foodStats = new FoodStatsTFC(event.player, originalStats);
                 TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.player);
+            }
+
+            // Skills
+            IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (skills != null)
+            {
+                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(skills.serializeNBT()), player);
+            }
+        }
+    }
+
+    /**
+     * Fired on server only when a player dies and respawns.
+     * Used to copy skill level before respawning since we need the original (AKA the body) player entity
+     *
+     * @param event {@link net.minecraftforge.event.entity.player.PlayerEvent.Clone}
+     */
+    @SubscribeEvent
+    public static void onPlayerClone(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
+    {
+        if (event.getEntityPlayer() instanceof EntityPlayerMP)
+        {
+            EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
+
+            // Skills
+            IPlayerData newSkills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            IPlayerData originalSkills = event.getOriginal().getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (newSkills != null && originalSkills != null)
+            {
+                newSkills.deserializeNBT(originalSkills.serializeNBT());
+                // To properly sync, we need to use PlayerRespawnEvent
             }
         }
     }
