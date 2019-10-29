@@ -3690,3 +3690,5 @@ entity.wolftfc.name=Wolf
 entity.horsetfc.name=Horse
 entity.donkeytfc.name=Donkey
 entity.muletfc.name=Mule
+
+death.attack.dehydration=%1$s died of dehydration
