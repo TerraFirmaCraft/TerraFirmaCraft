@@ -34,6 +34,8 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     public static final float PASSIVE_HEAL_AMOUNT = 20 * 0.0002f; // On the display: 1 HP / 5 seconds
     public static final float EXHAUSTION_MULTIPLIER = 0.4f; // Multiplier for vanilla sources of exhaustion (we use passive exhaustion to keep hunger decaying even when not sprinting everywhere. That said, vanilla exhaustion should be reduced to compensate
     public static final float PASSIVE_EXHAUSTION = 4.0f / (2.5f * ICalendar.TICKS_IN_DAY); // Passive exhaustion will deplete your food bar once every 2.5 days. Food bar holds ~5 "meals", this requires two per day
+    public static final DamageSource DEHYDRATION = (new DamageSource("dehydration")).setDamageBypassesArmor().setDamageIsAbsolute(); // Same as starvation, but another message on death
+
 
     private final EntityPlayer sourcePlayer;
     private final FoodStats originalStats;
@@ -205,7 +207,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
                     if (thirst <= 0f)
                     {
                         // Hurt the player, same as starvation
-                        player.attackEntityFrom(DamageSource.STARVE, 1);
+                        player.attackEntityFrom(DEHYDRATION, 1);
                     }
                 }
                 else if (thirst < 20f)
