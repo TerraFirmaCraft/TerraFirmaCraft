@@ -528,6 +528,7 @@ fluid.brine=Brine
 fluid.olive_oil=Olive Oil
 fluid.tannin=Tannin
 fluid.limewater=Limewater
+fluid.milk=Milk
 fluid.milk_curdled=Curdled Milk
 fluid.milk_vinegar=Vinegar Milk
 fluid.bismuth=Molten Bismuth
