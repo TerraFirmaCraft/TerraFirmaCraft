@@ -71,6 +71,8 @@ tfc.tooltip.set_month_length=Set Month Length to %d days.
 tfc.tooltip.time_command_set_player_time=Set Player Time to %d.
 tfc.tooltip.time_command_set_calendar_time=Set Calendar Time to %s.
 tfc.tooltip.time_command_disabled=This command has been disabled by TFC. Use /timetfc instead!
+tfc.tooltip.skill_set=Set %s to level %.2f
+tfc.tooltip.skill_add=Added %.2f levels to %s
 
 ## Prospecting Result Messages
 tfc.propick.found=Found
