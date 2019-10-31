@@ -39,6 +39,7 @@ import net.dries007.tfc.api.capability.ISmallVesselHandler;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
@@ -228,6 +229,17 @@ public class ItemSmallVessel extends ItemPottery
                 return getTemperature() < meltTemp ? Mode.LIQUID_SOLID : Mode.LIQUID_MOLTEN;
             }
             return Mode.INVENTORY;
+        }
+
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack)
+        {
+            if (stack.getItem() instanceof IItemSize)
+            {
+                IItemSize size = (IItemSize) stack.getItem();
+                return size.getSize(stack).isSmallerThan(Size.LARGE) && size.getWeight(stack).isSmallerThan(Weight.HEAVY);
+            }
+            return false;
         }
 
         @Override
