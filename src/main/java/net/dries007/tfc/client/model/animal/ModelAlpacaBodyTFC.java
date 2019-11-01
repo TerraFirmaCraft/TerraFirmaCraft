@@ -79,7 +79,6 @@ public class ModelAlpacaBodyTFC extends ModelBase
         neck2 = new ModelRenderer(this, 51, 0);
         neck2.addBox(-1.5F, -4F, -2.5F, 4, 9, 4);
         neck2.setRotationPoint(-0.5F, 2F, -8.55F);
-        //setRotation(neck2, 0F, 0F, 0F);
 
         body = new ModelRenderer(this, 98, 0);
         body.addBox(-4.0F, -10.0F, -7.0F, 9, 17, 6, 0.0F);

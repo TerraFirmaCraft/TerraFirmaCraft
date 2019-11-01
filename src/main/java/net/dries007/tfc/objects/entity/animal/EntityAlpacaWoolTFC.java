@@ -156,7 +156,7 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
                 case BLUE:
                     return LootTableList.ENTITIES_SHEEP_BLUE;
                 case WHITE:
-                    return LootTableList.ENTITIES_SHEEP_BROWN;
+                    return LootTableList.ENTITIES_SHEEP_WHITE;
                 case GREEN:
                     return LootTableList.ENTITIES_SHEEP_GREEN;
                 case RED:
@@ -266,9 +266,9 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         } else if (i < 15) {
             return EnumDyeColor.SILVER;
         } else if (i < 18) {
-            return EnumDyeColor.WHITE;
+            return EnumDyeColor.BROWN;
         } else {
-            return random.nextInt(500) == 0 ? EnumDyeColor.PINK : EnumDyeColor.BROWN;
+            return random.nextInt(100) == 0 ? EnumDyeColor.BROWN : EnumDyeColor.BROWN;
         }
     }
 
@@ -327,9 +327,9 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         return EnumDyeColor.byDyeDamage(k);
     }
 
-    public float getEyeHeight() {
-        return 1.8F * this.height;
-    }
+    //public float getEyeHeight() {
+        //return 1.8F * this.height;
+    //}
 
     static {
         DYE_COLOR = EntityDataManager.createKey(EntityAlpacaWoolTFC.class, DataSerializers.BYTE);
@@ -342,6 +342,6 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
             DYE_TO_RGB.put(enumdyecolor, createAlpacaColor(enumdyecolor));
         }
 
-        DYE_TO_RGB.put(EnumDyeColor.BROWN, new float[]{0.9019608F, 0.9019608F, 0.9019608F});
+        DYE_TO_RGB.put(EnumDyeColor.BROWN, new float[]{0.1234567F, 0.9019608F, 0.9019608F});
     }
 }

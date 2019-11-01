@@ -11,6 +11,7 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
+import net.dries007.tfc.client.TFCSounds;
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -29,7 +30,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.oredict.OreDictionary;
-import net.dries007.tfc.objects.items.wood.ItemWoodenBucket;
+
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -206,13 +207,13 @@ public class EntityGoatTFC extends EntityAnimalMammal implements IAnimalTFC
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return SoundEvents.ENTITY_SHEEP_HURT;
+        return TFCSounds.ANIMAL_GOAT_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return SoundEvents.ENTITY_SHEEP_DEATH;
+        return TFCSounds.ANIMAL_GOAT_DEATH;
     }
 
     @Override
@@ -243,13 +244,13 @@ public class EntityGoatTFC extends EntityAnimalMammal implements IAnimalTFC
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return SoundEvents.ENTITY_SHEEP_AMBIENT;
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_GOAT_CRY : TFCSounds.ANIMAL_GOAT_SAY;
     }
 
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_SHEEP;
+        return LootTablesTFC.ANIMALS_GOAT;
     }
 
     @Override

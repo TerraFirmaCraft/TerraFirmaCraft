@@ -14,7 +14,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -46,8 +45,6 @@ public class ModelGoatTFC extends ModelBase
 
     public ModelGoatTFC()
     {
-        //addBox(-6.8F(left right), -15.4F(up down), -1.8F(back forth), 1(width), 16(height), 1(length);
-
         textureWidth = 64;
         textureHeight = 64;
 
@@ -280,7 +277,6 @@ public class ModelGoatTFC extends ModelBase
         this.leg2.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.2F * par2;
         this.leg3.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.2F * par2;
         this.leg4.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.2F * par2;
-        //udders.isHidden = false;
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)

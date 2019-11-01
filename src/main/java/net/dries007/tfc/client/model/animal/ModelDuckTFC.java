@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.client.model.animal;
 
-import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityDuckTFC;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -47,83 +46,91 @@ public class ModelDuckTFC extends ModelBase
         textureHeight = 32;
 
         bill = new ModelRenderer(this, 36, 4);
-        bill.addBox(-1.5F, -1.0F, -1.5F, 3, 2, 3, 0.0F);
-        bill.setRotationPoint(0.0F, -4.1F, -3F);
+        bill.addBox(-1.5F, -1.0F, -1.5F, 3, 2, 3, 0F);
+        bill.setRotationPoint(0F, -5.1F, -6F);
 
         head = new ModelRenderer(this, 36, 9);
-        head.addBox(-1.5F, -6.0F, -2.0F, 3, 3, 3, 0.0F);
-        head.setRotationPoint(0.5F, 12F, -4.6F);
+        head.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3, 0F);
+        head.setRotationPoint(0F, -5.6F, -3F);
 
         neck = new ModelRenderer(this, 48, 0);
-        neck.addBox(-2.0F, -10.0F, -0.2F, 4, 9, 4, 0.0F);
-        neck.setRotationPoint(0.0F, 3.5F, 0.5F);
+        neck.addBox(-2.0F, -8F, -2F, 4, 10, 4, 0F);
+        neck.setRotationPoint(0.5F, 12.5F, -2.2F);
 
         body = new ModelRenderer(this, 30, 15);
-        body.addBox(-3.0F, -3.0F, -4.0F, 7, 7, 10, 0.0F);
-        body.setRotationPoint(0.0F, 15.5F, 0.0F);
+        body.addBox(-3.0F, -3.0F, -4.0F, 7, 7, 10, 0F);
+        body.setRotationPoint(0F, 15.5F, 0F);
+        setRotation(body, -0.091106F, 0F, 0F);
 
         bodyFront1 = new ModelRenderer(this, 28, 18);
-        bodyFront1.addBox(-2.5F, -2.5F, -0.5F, 5, 6, 1, 0.0F);
+        bodyFront1.addBox(-2.5F, -2.5F, -0.5F, 5, 6, 1, 0F);
         bodyFront1.setRotationPoint(0.5F, 15.4F, -4.5F);
+        setRotation(bodyFront1, -0.091106F, 0F, 0F);
 
         bodyFront2 = new ModelRenderer(this, 54, 20);
-        bodyFront2.addBox(-2.0F, -2.0F, 0.0F, 4, 4, 1, 0.0F);
+        bodyFront2.addBox(-2.0F, -2.0F, 0F, 4, 4, 1, 0F);
         bodyFront2.setRotationPoint(0.5F, 15.3F, -5.7F);
+        setRotation(bodyFront2, -0.091106F, 0F, 0F);
 
         bodyBack1 = new ModelRenderer(this, 0, 24);
-        bodyBack1.addBox(-2.5F, -2.5F, -1.0F, 6, 6, 2, 0.0F);
-        bodyBack1.setRotationPoint(0.0F, 14.9F, 6.0F);
-        setRotation(bodyBack1, 0.136659280431156F, 0.0F, 0.0F);
+        bodyBack1.addBox(-2.5F, -2.5F, -1.0F, 6, 6, 2, 0F);
+        bodyBack1.setRotationPoint(0F, 15.27F, 6.0F);
+        setRotation(bodyBack1, 0.136659F, 0F, 0F);
 
         bodyBack2 = new ModelRenderer(this, 0, 17);
-        bodyBack2.addBox(-2.0F, -2.0F, -1.0F, 5, 5, 2, 0.0F);
-        bodyBack2.setRotationPoint(0.0F, 14.2F, 7.0F);
-        setRotation(bodyBack2, 0.18203784098300857F, 0.0F, 0.0F);
+        bodyBack2.addBox(-2.0F, -2.0F, -1.0F, 5, 5, 2, 0F);
+        bodyBack2.setRotationPoint(0F, 14.6F, 7.0F);
+        setRotation(bodyBack2, 0.182037F, 0F, 0F);
 
         bodyBack3 = new ModelRenderer(this, 0, 12);
-        bodyBack3.addBox(-1.5F, -1.5F, -1.0F, 3, 3, 2, 0.0F);
-        bodyBack3.setRotationPoint(0.0F, 13.5F, 8.0F);
-        setRotation(bodyBack3, 0.22759093446006054F, 0.0F, 0.0F);
+        bodyBack3.addBox(-1.5F, -1.5F, -1.0F, 3, 3, 2, 0F);
+        bodyBack3.setRotationPoint(0.5F, 13.9F, 8.0F);
+        setRotation(bodyBack3, 0.227590F, 0F, 0F);
 
         bodyBack4 = new ModelRenderer(this, 0, 8);
-        bodyBack4.addBox(-1.0F, -1.0F, -1.0F, 2, 2, 2, 0.0F);
-        bodyBack4.setRotationPoint(0.0F, 12.7F, 8.9F);
-        setRotation(bodyBack4, 0.31869712141416456F, 0.0F, 0.0F);
+        bodyBack4.addBox(-1.0F, -1.0F, -1.0F, 2, 2, 2, 0F);
+        bodyBack4.setRotationPoint(0.5F, 13.1F, 8.9F);
+        setRotation(bodyBack4, 0.318697F, 0F, 0F);
 
         rightWing1 = new ModelRenderer(this, 17, 1);
-        rightWing1.addBox(0F, 0.0F, -3.0F, 1, 2, 9, 0.0F);
-        rightWing1.setRotationPoint(-4F, 13F, 0.0F);
+        rightWing1.addBox(-1F, 0F, -3.0F, 1, 2, 9, 0F);
+        rightWing1.setRotationPoint(-3F, 13F, 0F);
+        setRotation(rightWing1, -0.045553F, 0F, 0F);
 
-        rightWing2 = new ModelRenderer(this, 24, 13);
-        rightWing2.addBox(0F, 0.0F, -3.0F, 1, 2, 8, 0.0F);
-        rightWing2.setRotationPoint(0.0F, 2.0F, 0.0F);
+        rightWing2 = new ModelRenderer(this, 8, 0);
+        rightWing2.addBox(-1F, 0F, -3.0F, 1, 2, 8, 0F);
+        rightWing2.setRotationPoint(0F, 2.0F, 0F);
 
         rightWing3 = new ModelRenderer(this, 0, 0);
-        rightWing3.addBox(0F, 0.0F, -3.0F, 1, 1, 7, 0.0F);
-        rightWing3.setRotationPoint(0.0F, 4.0F, 0.0F);
+        rightWing3.addBox(-1F, 0F, -3.0F, 1, 1, 7, 0F);
+        rightWing3.setRotationPoint(0F, 4.0F, 0F);
 
         leftWing1 = new ModelRenderer(this, 17, 1);
-        leftWing1.addBox(0.0F, 0.0F, -3.0F, 1, 2, 9, 0.0F);
-        leftWing1.setRotationPoint(4.0F, 13F, 0.0F);
+        leftWing1.addBox(0F, 0F, -3.0F, 1, 2, 9, 0F);
+        leftWing1.setRotationPoint(4.0F, 13F, 0F);
+        setRotation(leftWing1, -0.045553F, 0F, 0F);
+        leftWing1.mirror = true;
 
         leftWing2 = new ModelRenderer(this, 8, 0);
-        leftWing2.addBox(0.0F, 0.0F, -3.0F, 1, 2, 8, 0.0F);
-        leftWing2.setRotationPoint(0.0F, 2.0F, 0.0F);
+        leftWing2.addBox(0F, 0F, -3.0F, 1, 2, 8, 0F);
+        leftWing2.setRotationPoint(0F, 2.0F, 0F);
+        leftWing2.mirror = true;
 
         leftWing3 = new ModelRenderer(this, 0, 0);
-        leftWing3.addBox(0.0F, 0.0F, -3.0F, 1, 1, 7, 0.0F);
-        leftWing3.setRotationPoint(0.0F, 4.0F, 0.0F);
+        leftWing3.addBox(0F, 0F, -3.0F, 1, 1, 7, 0F);
+        leftWing3.setRotationPoint(0F, 4.0F, 0F);
+        leftWing3.mirror = true;
 
         rightLeg = new ModelRenderer(this, 15, 14);
-        rightLeg.addBox(-2.0F, 0.0F, -3.0F, 3, 5, 3, 0.0F);
+        rightLeg.addBox(-2.0F, 0F, -3.0F, 3, 5, 3, 0F);
         rightLeg.setRotationPoint(-0.8F, 19.0F, 2.0F);
 
         leftLeg = new ModelRenderer(this, 15, 14);
-        leftLeg.addBox(-1.0F, 0.0F, -3.0F, 3, 5, 3, 0.0F);
+        leftLeg.addBox(-1.0F, 0F, -3.0F, 3, 5, 3, 0F);
         leftLeg.setRotationPoint(1.8F, 19.0F, 2.0F);
 
-        head.addChild(bill);
-        head.addChild(neck);
+        neck.addChild(bill);
+        neck.addChild(head);
         rightWing1.addChild(rightWing2);
         rightWing1.addChild(rightWing3);
         leftWing1.addChild(leftWing2);
@@ -141,26 +148,11 @@ public class ModelDuckTFC extends ModelBase
         float ageHeadScale = (float) Math.pow(1 / ageScale, 0.66);
 
         GlStateManager.pushMatrix();
-
         GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
-        GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
+        GlStateManager.scale(ageHeadScale, ageHeadScale, ageHeadScale);
         GlStateManager.translate(0.0F, (ageScale - 1) * -0.125f, 0.1875f - (0.1875f * percent));
 
-
-        //if (percent >= 0.75 && duck.getGender() == EntityAnimalTFC.Gender.MALE)
-        //{
-            //crown.isHidden = false;
-            //this.body.rotateAngleX = (float) Math.PI / 4F;
-            //this.rightWing.rotateAngleX = (float) Math.PI / 4F;
-            //rightWing.setRotationPoint(-4.0F, 13.5f, -2.5F);
-            //this.leftWing.rotateAngleX = (float) Math.PI / 4F;
-            //leftWing.setRotationPoint(4.0F, 13.5f, -2.5F);
-            //this.head.setRotationPoint(0.0F, 13, -1.0F);
-            //this.bill.setRotationPoint(0.0F, 13, -1.0F);
-            //this.chin.setRotationPoint(0.0F, 13, -1.0F);
-        //}
-        head.render(par7);
-        //neck.render(par7);
+        neck.render(par7);
 
         GlStateManager.pushMatrix();
         GlStateManager.scale(0.75f, 0.75f, 0.75f);
@@ -192,13 +184,8 @@ public class ModelDuckTFC extends ModelBase
     @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity ent)
     {
-        this.head.rotateAngleX = -(par5 / (180F / (float) Math.PI));
-        this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
-        //this.neck.rotateAngleX = -(par5 / (180F / (float) Math.PI));
-        //this.neck.rotateAngleY = par4 / (180F / (float) Math.PI);
-        //this.bill.rotateAngleX = this.head.rotateAngleX;
-        //this.bill.rotateAngleY = this.head.rotateAngleY;
-        //this.body.rotateAngleX = (float) Math.PI / 2F;
+        this.neck.rotateAngleX = -(par5 / (180F / (float) Math.PI));
+        this.neck.rotateAngleY = par4 / (180F / (float) Math.PI);
         this.rightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
         this.leftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
         this.rightWing1.rotateAngleZ = par3;
@@ -209,9 +196,9 @@ public class ModelDuckTFC extends ModelBase
         this.leftWing1.setRotationPoint(4.0F, 13, 0.0F);
 
 
-        setRotation(bodyBack2, 0.18203784098300857F, 0.0F, 0.0F);
-        setRotation(bodyBack3, 0.22759093446006054F, 0.0F, 0.0F);
-        setRotation(bodyBack4, 0.31869712141416456F, 0.0F, 0.0F);
+        setRotation(bodyBack2, 0.182037F, 0.0F, 0.0F);
+        setRotation(bodyBack3, 0.227590F, 0.0F, 0.0F);
+        setRotation(bodyBack4, 0.318697F, 0.0F, 0.0F);
 
     }
 

@@ -72,10 +72,6 @@ public class EntityDuckTFC extends EntityAnimalOviparous implements IAnimalTFC
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
-        if (this.getGender() == Gender.MALE && !this.world.isRemote && !this.isChild() && CalendarTFC.CALENDAR_TIME.getHourOfDay() == 6 && CalendarTFC.CALENDAR_TIME.getMinuteOfHour() == 0)
-        {
-            this.world.playSound(null, this.getPosition(), TFCSounds.ANIMAL_ROOSTER_CRY, SoundCategory.AMBIENT, 1.0F, 1.0F);
-        }
         this.oFlap = this.wingRotation;
         this.oFlapSpeed = this.destPos;
         this.destPos = (float) ((double) this.destPos + (double) (this.onGround ? -1 : 4) * 0.3D);
@@ -133,13 +129,13 @@ public class EntityDuckTFC extends EntityAnimalOviparous implements IAnimalTFC
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return SoundEvents.ENTITY_CHICKEN_HURT;
+        return TFCSounds.ANIMAL_DUCK_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return SoundEvents.ENTITY_CHICKEN_DEATH;
+        return TFCSounds.ANIMAL_DUCK_DEATH;
     }
 
     @Override
@@ -170,13 +166,13 @@ public class EntityDuckTFC extends EntityAnimalOviparous implements IAnimalTFC
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return SoundEvents.ENTITY_CHICKEN_AMBIENT;
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_DUCK_CRY : TFCSounds.ANIMAL_DUCK_SAY;
     }
 
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_CHICKEN;
+        return LootTablesTFC.ANIMALS_DUCK;
     }
 
     @Override
