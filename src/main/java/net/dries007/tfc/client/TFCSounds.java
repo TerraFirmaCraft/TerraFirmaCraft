@@ -74,6 +74,8 @@ public class TFCSounds
     public static final SoundEvent ANIMAL_ALPACA_HURT = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.alpaca.death")
     public static final SoundEvent ANIMAL_ALPACA_DEATH = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.alpaca.step")
+    public static final SoundEvent ANIMAL_ALPACA_STEP = getNull();
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.duck.say")
     public static final SoundEvent ANIMAL_DUCK_SAY = getNull();

@@ -342,6 +342,7 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
             DYE_TO_RGB.put(enumdyecolor, createAlpacaColor(enumdyecolor));
         }
 
-        DYE_TO_RGB.put(EnumDyeColor.BROWN, new float[]{0.1234567F, 0.9019608F, 0.9019608F});
+        //DYE_TO_RGB.put(EnumDyeColor.BROWN, new float[]{0.1234567F, 0.9019608F, 0.9019608F});
+        DYE_TO_RGB.put(EnumDyeColor.BROWN, new float[]{0.9019608F, 0.9019608F, 0.9019608F});
     }
 }

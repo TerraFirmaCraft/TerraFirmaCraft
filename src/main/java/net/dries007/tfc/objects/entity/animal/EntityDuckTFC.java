@@ -65,7 +65,7 @@ public class EntityDuckTFC extends EntityAnimalOviparous implements IAnimalTFC
     @Override
     public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
     {
-        return (biome == BiomesTFC.RIVER || biome == BiomesTFC.SWAMPLAND || biome == BiomesTFC.PLAINS) && temperature > -10 && rainfall > 150;
+        return (biome == BiomesTFC.RIVER || biome == BiomesTFC.SWAMPLAND || biome == BiomesTFC.PLAINS) && temperature > 22 && rainfall > 350;
     }
 
     @Override

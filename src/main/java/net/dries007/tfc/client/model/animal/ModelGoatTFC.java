@@ -132,7 +132,7 @@ public class ModelGoatTFC extends ModelBase
 
         udders = new ModelRenderer(this, 30, 31);
         udders.addBox(-3F, 0F, -2.5F, 6, 2, 6);
-        udders.setRotationPoint(0F, 14F, 3.5F);
+        udders.setRotationPoint(0F, 13.5F, 3.5F);
         setRotation(udders, 0F, 0F, 0F);
 
         leg1 = new ModelRenderer(this, 0, 45);
@@ -225,8 +225,8 @@ public class ModelGoatTFC extends ModelBase
 
         else {
             if (percent < 0.5) {
-                babyhorn1.isHidden = true;
-                babyhorn2.isHidden = true;
+                babyhorn1.isHidden = false;
+                babyhorn2.isHidden = false;
                 horn1f.isHidden = true;
                 horn2f.isHidden = true;
                 horn1ma.isHidden = true;
@@ -250,6 +250,7 @@ public class ModelGoatTFC extends ModelBase
         head1.render(par7);
         head2.render(par7);
         neck.render(par7);
+
         GlStateManager.popMatrix();
         GlStateManager.pushMatrix();
         GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
@@ -277,6 +278,7 @@ public class ModelGoatTFC extends ModelBase
         this.leg2.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.2F * par2;
         this.leg3.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.2F * par2;
         this.leg4.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.2F * par2;
+        udders.isHidden = false;
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)

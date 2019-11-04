@@ -74,8 +74,8 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
     {
-        return (temperature > -20 && temperature < 0 && rainfall > 100) ||
-            (temperature > -10 && rainfall > 100 && biome == BiomesTFC.HIGH_HILLS || biome == BiomesTFC.HIGH_HILLS_EDGE);
+        return (temperature > -10 && temperature < 0 && rainfall > 150) ||
+            (temperature > -5 && rainfall > 150 && biome == BiomesTFC.HIGH_HILLS || biome == BiomesTFC.HIGH_HILLS_EDGE);
     }
 
     @Override
@@ -249,6 +249,6 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_COW_STEP, 0.15F, 1.0F);
+        this.playSound(TFCSounds.ANIMAL_ALPACA_STEP, 0.15F, 1.0F);
     }
 }

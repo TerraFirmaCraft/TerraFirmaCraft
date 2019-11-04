@@ -68,7 +68,8 @@ public class EntityGoatTFC extends EntityAnimalMammal implements IAnimalTFC
     @Override
     public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
     {
-        return (biome == BiomesTFC.MOUNTAINS || biome == BiomesTFC.MOUNTAINS_EDGE) && temperature > -10 && rainfall > 100 && rainfall < 400;
+        return (temperature > -25 && temperature < 0 && rainfall > 100) ||
+            (temperature > -15 && rainfall > 100 && biome == BiomesTFC.MOUNTAINS || biome == BiomesTFC.MOUNTAINS_EDGE);
     }
 
     @Override
@@ -102,7 +103,7 @@ public class EntityGoatTFC extends EntityAnimalMammal implements IAnimalTFC
     @Override
     public void birthChildren()
     {
-        int numberOfChilds = 1; //one always
+        int numberOfChilds = Constants.RNG.nextInt(2) + 1; //1-2
         for (int i = 0; i < numberOfChilds; i++)
         {
             EntityGoatTFC baby = new EntityGoatTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());

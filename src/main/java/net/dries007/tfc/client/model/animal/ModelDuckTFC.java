@@ -192,7 +192,7 @@ public class ModelDuckTFC extends ModelBase
         this.leftWing1.rotateAngleZ = -par3;
         this.rightWing1.rotateAngleX = 0;
         this.leftWing1.rotateAngleX = 0;
-        this.rightWing1.setRotationPoint(-4.0F, 13, 0.0F);
+        this.rightWing1.setRotationPoint(-3.0F, 13, 0.0F);
         this.leftWing1.setRotationPoint(4.0F, 13, 0.0F);
 
 
