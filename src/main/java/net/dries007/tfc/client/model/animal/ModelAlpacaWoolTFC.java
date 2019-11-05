@@ -7,6 +7,7 @@ package net.dries007.tfc.client.model.animal;
 
 import net.dries007.tfc.objects.entity.animal.EntityAlpacaTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -79,7 +80,7 @@ public class ModelAlpacaWoolTFC extends ModelBase
         body.addBox(-4.5F, -8.5F, -3F, 9, 17, 6, 1F);
         body.setRotationPoint(0F, 10.0F, 1.0F);
 
-        tailf = new ModelRenderer(this, 99, 576);
+        tailf = new ModelRenderer(this, 99, 57);
         tailf.addBox(-1F, -1F, -1.5F, 2, 2, 3, 0.5F);
         tailf.setRotationPoint(0F, 9.5F, 9.8F);
 

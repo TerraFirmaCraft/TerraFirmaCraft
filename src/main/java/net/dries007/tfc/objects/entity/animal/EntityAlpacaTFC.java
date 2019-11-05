@@ -249,6 +249,6 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(TFCSounds.ANIMAL_ALPACA_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.15F, 1.0F);
     }
 }

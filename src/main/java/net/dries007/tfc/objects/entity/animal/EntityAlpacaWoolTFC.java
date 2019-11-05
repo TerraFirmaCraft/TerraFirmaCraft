@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.dries007.tfc.Constants;
+import net.dries007.tfc.client.TFCSounds;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
@@ -218,20 +221,26 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         this.setFleeceColor(EnumDyeColor.byMetadata(compound.getByte("Color")));
     }
 
-    protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_SHEEP_AMBIENT;
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_ALPACA_CRY : TFCSounds.ANIMAL_ALPACA_SAY;
     }
 
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_SHEEP_HURT;
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
+    {
+        return TFCSounds.ANIMAL_ALPACA_HURT;
     }
 
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_SHEEP_DEATH;
+    @Override
+    protected SoundEvent getDeathSound()
+    {
+        return TFCSounds.ANIMAL_ALPACA_DEATH;
     }
 
     protected void playStepSound(BlockPos pos, Block blockIn) {
-        this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.15F, 1.0F);
     }
 
     public EnumDyeColor getFleeceColor() {
@@ -266,9 +275,9 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         } else if (i < 15) {
             return EnumDyeColor.SILVER;
         } else if (i < 18) {
-            return EnumDyeColor.BROWN;
+            return EnumDyeColor.WHITE;
         } else {
-            return random.nextInt(100) == 0 ? EnumDyeColor.BROWN : EnumDyeColor.BROWN;
+            return random.nextInt(500) == 0 ? EnumDyeColor.CYAN : EnumDyeColor.BROWN;
         }
     }
 

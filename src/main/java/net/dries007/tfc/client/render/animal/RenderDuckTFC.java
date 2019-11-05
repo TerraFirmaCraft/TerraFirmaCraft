@@ -8,6 +8,7 @@ package net.dries007.tfc.client.render.animal;
 import net.dries007.tfc.client.model.animal.ModelDuckTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityDuckTFC;
+
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;

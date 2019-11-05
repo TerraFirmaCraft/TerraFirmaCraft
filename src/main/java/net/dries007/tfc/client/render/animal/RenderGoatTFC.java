@@ -7,6 +7,7 @@ package net.dries007.tfc.client.render.animal;
 
 import net.dries007.tfc.client.model.animal.ModelGoatTFC;
 import net.dries007.tfc.objects.entity.animal.EntityGoatTFC;
+
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;

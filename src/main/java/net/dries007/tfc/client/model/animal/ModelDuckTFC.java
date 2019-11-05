@@ -6,6 +6,7 @@
 package net.dries007.tfc.client.model.animal;
 
 import net.dries007.tfc.objects.entity.animal.EntityDuckTFC;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
