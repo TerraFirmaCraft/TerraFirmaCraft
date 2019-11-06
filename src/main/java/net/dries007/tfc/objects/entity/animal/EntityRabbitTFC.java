@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -150,12 +151,12 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
 
     public int getRabbitType()
     {
-        return this.dataManager.get(RABBIT_TYPE).intValue();
+        return this.dataManager.get(RABBIT_TYPE);
     }
 
     public void setRabbitType(int rabbitTypeId)
     {
-        this.dataManager.set(RABBIT_TYPE, Integer.valueOf(rabbitTypeId));
+        this.dataManager.set(RABBIT_TYPE, rabbitTypeId);
     }
 
     @SideOnly(Side.CLIENT)
@@ -193,13 +194,13 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
         }
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound)
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
         compound.setInteger("RabbitType", this.getRabbitType());
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound)
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         this.setRabbitType(compound.getInteger("RabbitType"));
@@ -223,13 +224,21 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
         return DAYS_TO_FULL_GESTATION;
     }
 
+    @Nonnull
+    @Override
     public SoundCategory getSoundCategory()
     {
         return SoundCategory.NEUTRAL;
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack)
+    public int getDaysToAdulthood()
+    {
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack)
     {
         return OreDictionaryHelper.doesStackMatchOre(stack, "carrot");
     }
@@ -238,26 +247,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(RABBIT_TYPE, Integer.valueOf(0));
-    }
-
-    @Override
-    public float getPercentToAdulthood()
-    {
-        if (this.getAge() != Age.CHILD)
-            return 1;
-        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
-        if (value > 1f)
-            value = 1f;
-        if (value < 0f)
-            value = 0;
-        return (float) value;
-    }
-
-    @Override
-    public Age getAge()
-    {
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+        this.dataManager.register(RABBIT_TYPE, 0);
     }
 
     @Override

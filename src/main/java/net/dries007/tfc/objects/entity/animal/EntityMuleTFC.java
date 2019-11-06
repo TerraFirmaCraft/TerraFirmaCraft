@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.EntityAgeable;
@@ -58,7 +59,7 @@ public class EntityMuleTFC extends AbstractChestHorseTFC
         }
     }
 
-    public EntityAgeable createChild(EntityAgeable ageable)
+    public EntityAgeable createChild(@Nonnull EntityAgeable ageable)
     {
         AbstractHorseTFC abstracthorse = (new EntityMuleTFC(this.world));
         this.setOffspringAttributes(ageable, abstracthorse);

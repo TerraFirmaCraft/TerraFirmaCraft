@@ -64,6 +64,12 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
     }
 
     @Override
+    public int getDaysToAdulthood()
+    {
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
     public void birthChildren()
     {
         int numberOfChilds = 1; //one always
@@ -83,25 +89,9 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack it)
+    public boolean isFood(ItemStack it)
     {
         return it.getItem() == Items.FISH;
-    }
-
-    @Override
-    public float getPercentToAdulthood()
-    {
-        if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
-        if (value > 1f) value = 1f;
-        if (value < 0f) value = 0;
-        return (float) value;
-    }
-
-    @Override
-    public Age getAge()
-    {
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
     }
 
     @Override

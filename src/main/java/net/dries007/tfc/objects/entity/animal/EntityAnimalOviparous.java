@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
@@ -34,14 +35,14 @@ public abstract class EntityAnimalOviparous extends EntityAnimalTFC
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound nbt)
+    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
         nbt.setLong("laying", lastLaying);
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound nbt)
+    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
     {
         super.readEntityFromNBT(nbt);
         this.lastLaying = nbt.getLong("laying");

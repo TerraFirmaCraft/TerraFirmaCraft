@@ -83,7 +83,7 @@ public class ModelChickenTFC extends ModelBase
 
         EntityChickenTFC chicken = ((EntityChickenTFC) entity);
 
-        float percent = chicken.getPercentToAdulthood();
+        float percent = (float) chicken.getPercentToAdulthood();
         float ageScale = 2.0F - percent;
 
         GlStateManager.pushMatrix();

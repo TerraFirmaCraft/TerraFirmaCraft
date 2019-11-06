@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import java.util.UUID;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.SoundType;
@@ -111,7 +112,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
 
             if (i != 0)
             {
-                this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier((new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", (double) i, 0)).setSaved(false));
+                this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier((new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", i, 0)).setSaved(false));
             }
         }
     }
@@ -149,7 +150,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         return SoundEvents.ENTITY_HORSE_DEATH;
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound)
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
         compound.setInteger("Variant", this.getHorseVariant());
@@ -160,7 +161,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound)
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         this.setHorseVariant(compound.getInteger("Variant"));
@@ -210,7 +211,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
-    public EntityAgeable createChild(EntityAgeable ageable)
+    public EntityAgeable createChild(@Nonnull EntityAgeable ageable)
     {
         AbstractHorseTFC abstracthorse;
 
@@ -281,7 +282,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((double) this.getModifiedMaxHealth());
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getModifiedMaxHealth());
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.getModifiedMovementSpeed());
         this.getEntityAttribute(JUMP_STRENGTH).setBaseValue(this.getModifiedJumpStrength());
     }
@@ -352,7 +353,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);
         boolean itemStackNotEmpty = !itemstack.isEmpty();

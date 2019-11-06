@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -73,7 +75,7 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
         }
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound)
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
         compound.setBoolean("ChestedHorse", this.hasChest());
@@ -99,7 +101,7 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
         }
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound)
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         this.setChested(compound.getBoolean("ChestedHorse"));
@@ -133,7 +135,7 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((double) this.getModifiedMaxHealth());
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getModifiedMaxHealth());
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.17499999701976776D);
         this.getEntityAttribute(JUMP_STRENGTH).setBaseValue(0.5D);
     }
@@ -171,7 +173,7 @@ public class AbstractChestHorseTFC extends AbstractHorseTFC
         return SoundEvents.ENTITY_DONKEY_ANGRY;
     }
 
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);
 

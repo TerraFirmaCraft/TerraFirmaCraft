@@ -75,7 +75,7 @@ public class ModelSheepBodyTFC extends ModelQuadruped
         this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
         EntitySheepTFC sheep = ((EntitySheepTFC) entity);
 
-        float percent = sheep.getPercentToAdulthood();
+        float percent = (float) sheep.getPercentToAdulthood();
         float ageScale = 2.0F - percent;
         float ageHeadScale = (float) Math.pow(1 / ageScale, 0.66);
 

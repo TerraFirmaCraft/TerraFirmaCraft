@@ -32,7 +32,7 @@ public class RenderPigTFC extends RenderLiving<EntityPigTFC>
     @Override
     public void doRender(EntityPigTFC pig, double par2, double par4, double par6, float par8, float par9)
     {
-        this.shadowSize = 0.35f + pig.getPercentToAdulthood() * 0.35f;
+        this.shadowSize = (float) (0.35f + pig.getPercentToAdulthood() * 0.35f);
         super.doRender(pig, par2, par4, par6, par8, par9);
     }
 

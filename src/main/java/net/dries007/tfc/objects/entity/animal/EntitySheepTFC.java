@@ -93,7 +93,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound compound)
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
         compound.setInteger("sheared", this.getShearedDay());
@@ -101,7 +101,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound compound)
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         this.setShearedDay(compound.getInteger("sheared"));
@@ -182,19 +182,9 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
     }
 
     @Override
-    public float getPercentToAdulthood()
+    public int getDaysToAdulthood()
     {
-        if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
-        if (value > 1f) value = 1f;
-        if (value < 0f) value = 0;
-        return (float) value;
-    }
-
-    @Override
-    public Age getAge()
-    {
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+        return DAYS_TO_ADULTHOOD;
     }
 
     @Override
