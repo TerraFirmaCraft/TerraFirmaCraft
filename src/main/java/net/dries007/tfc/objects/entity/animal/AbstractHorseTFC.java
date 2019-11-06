@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import java.util.UUID;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Optional;
@@ -406,7 +407,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
 
                 if (this.isPotionActive(MobEffects.JUMP_BOOST))
                 {
-                    this.motionY += (double) ((float) (this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
+                    this.motionY += (float) (this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
                 }
 
                 this.setHorseJumping(true);
@@ -416,8 +417,8 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
                 {
                     float f = MathHelper.sin(this.rotationYaw * 0.017453292F);
                     float f1 = MathHelper.cos(this.rotationYaw * 0.017453292F);
-                    this.motionX += (double) (-0.4F * f * this.jumpPower);
-                    this.motionZ += (double) (0.4F * f1 * this.jumpPower);
+                    this.motionX += -0.4F * f * this.jumpPower;
+                    this.motionZ += 0.4F * f1 * this.jumpPower;
                     this.playSound(SoundEvents.ENTITY_HORSE_JUMP, 0.4F, 1.0F);
                 }
 
@@ -519,7 +520,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound)
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
         compound.setBoolean("EatingHaystack", this.isEatingHaystack());
@@ -538,7 +539,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         }
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound)
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         this.setEatingHaystack(compound.getBoolean("EatingHaystack"));
@@ -636,7 +637,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
     }
 
     @Nullable
-    public EntityAgeable createChild(EntityAgeable ageable)
+    public EntityAgeable createChild(@Nonnull EntityAgeable ageable)
     {
         return null;
     }
@@ -654,19 +655,9 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
     }
 
     @Override
-    public float getPercentToAdulthood()
+    public int getDaysToAdulthood()
     {
-        if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
-        if (value > 1f) value = 1f;
-        if (value < 0f) value = 0;
-        return (float) value;
-    }
-
-    @Override
-    public Age getAge()
-    {
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+        return DAYS_TO_ADULTHOOD;
     }
 
     @SideOnly(Side.CLIENT)

@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import java.util.UUID;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -184,12 +185,8 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         }
     }
 
-    public boolean isBreedingItem(ItemStack stack)
-    {
-        return stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat();
-    }
-
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
+    @Override
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);
         if (this.isTamed())
@@ -261,19 +258,15 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     }
 
     @Override
-    public float getPercentToAdulthood()
+    public int getDaysToAdulthood()
     {
-        if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
-        if (value > 1f) value = 1f;
-        if (value < 0f) value = 0;
-        return (float) value;
+        return DAYS_TO_ADULTHOOD;
     }
 
     @Override
-    public Age getAge()
+    public boolean isFood(ItemStack stack)
     {
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+        return stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat();
     }
 
     public boolean isAngry()
@@ -314,14 +307,14 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.dataManager.set(BEGGING, beg);
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound)
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
         compound.setBoolean("Angry", this.isAngry());
         compound.setByte("CollarColor", (byte) this.getCollarColor().getDyeDamage());
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound)
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         this.setAngry(compound.getBoolean("Angry"));

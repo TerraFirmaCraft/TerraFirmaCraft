@@ -337,7 +337,7 @@ public class ModelDeerTFC extends ModelBase
 
         running = false;
         //running = ((EntityDeer)entity).getRunning();
-        float age = 1f - deer.getPercentToAdulthood();
+        float age = (float) (1f - deer.getPercentToAdulthood());
 
         float aa = 2F - (1.0F - age);
         GlStateManager.translate(0.0F, -6F * f5 * age / (float) Math.pow(aa, 0.4), 0);

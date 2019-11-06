@@ -54,7 +54,7 @@ public class ModelPigTFC extends ModelQuadruped
     {
         EntityPigTFC pig = ((EntityPigTFC) entity);
 
-        float percent = pig.getPercentToAdulthood();
+        float percent = (float) pig.getPercentToAdulthood();
         float ageScale = 2.0F - percent;
         float ageHeadScale = (float) Math.pow(1 / ageScale, 0.66);
 
