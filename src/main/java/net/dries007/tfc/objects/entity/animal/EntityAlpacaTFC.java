@@ -155,7 +155,7 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
     {
         ItemStack stack = player.getHeldItem(hand);
 
-        if (OreDictionaryHelper.doesStackMatchOre(stack, "knife"))
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "knife") || OreDictionaryHelper.doesStackMatchOre(stack, "shears"))
         {
             if (!this.world.isRemote && this.getAge() == Age.ADULT && this.hasWool() && this.getFamiliarity() > 0.15f)
             {
