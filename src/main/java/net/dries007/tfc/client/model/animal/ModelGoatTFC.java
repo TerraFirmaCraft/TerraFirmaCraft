@@ -5,8 +5,8 @@
 
 package net.dries007.tfc.client.model.animal;
 
-import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
-import net.dries007.tfc.objects.entity.animal.EntityGoatTFC;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -16,8 +16,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
+import net.dries007.tfc.objects.entity.animal.EntityGoatTFC;
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
@@ -52,32 +52,32 @@ public class ModelGoatTFC extends ModelBase
 
         babyhorn1 = new ModelRenderer(this, 44, 14);
         babyhorn1.addBox(-0.5F, 0F, -0.6F, 1, 2, 1);
-        babyhorn1.setRotationPoint(-1.5F, -5F, 0F);
+        babyhorn1.setRotationPoint(-1.5F, -5F, 0.5F);
         babyhorn1.mirror = true;
         setRotation(babyhorn1, -0.593411F, 0F, 0F);
 
         babyhorn2 = new ModelRenderer(this, 44, 14);
         babyhorn2.addBox(-0.5F, 0F, -0.6F, 1, 2, 1);
-        babyhorn2.setRotationPoint(1.5F, -5F, 0F);
+        babyhorn2.setRotationPoint(1.5F, -5F, 0.5F);
         babyhorn2.mirror = true;
         setRotation(babyhorn2, -0.593411F, 0F, 0F);
 
         horn1f = new ModelRenderer(this, 50, 12);
         horn1f.addBox(-0.5F, -2.8F, -0.6F, 1, 4, 1);
-        horn1f.setRotationPoint(-1.5F, -4F, 0F);
+        horn1f.setRotationPoint(-1.5F, -4F, 0.5F);
         horn1f.mirror = true;
         setRotation(horn1f, -0.593411F, 0F, 0F);
 
 
         horn2f = new ModelRenderer(this, 50, 12);
         horn2f.addBox(-0.5F, -2.8F, -0.6F, 1, 4, 1);
-        horn2f.setRotationPoint(1.5F, -4F, 0F);
+        horn2f.setRotationPoint(1.5F, -4F, 0.5F);
         horn2f.mirror = true;
         setRotation(horn2f, -0.593411F, 0F, 0F);
 
         horn1ma = new ModelRenderer(this, 56, 11);
         horn1ma.addBox(0F, 0F, 0F, 2, 4, 2, 0F);
-        horn1ma.setRotationPoint(0F, -10F, 0F);
+        horn1ma.setRotationPoint(0F, -10F, 0.5F);
         horn1ma.setRotationPoint(-2.9F, -7F, 0F);
         setRotation(horn1ma, -0.546288F, -0.546288F, -0.0455532F);
 
@@ -88,7 +88,7 @@ public class ModelGoatTFC extends ModelBase
 
         horn2ma = new ModelRenderer(this, 56, 11);
         horn2ma.addBox(0F, 0F, 0F, 2, 4, 2, 0F);
-        horn2ma.setRotationPoint(0F, -10F, 0F);
+        horn2ma.setRotationPoint(0F, -10F, 0.5F);
         horn2ma.setRotationPoint(1.2F, -7F, 0.75F);
         setRotation(horn2ma, -0.546288F, 0.546288F, 0.0455532F);
 
@@ -109,12 +109,12 @@ public class ModelGoatTFC extends ModelBase
 
         head1 = new ModelRenderer(this, 0, 6);
         head1.addBox(-3F, -2.0F, -6F, 6, 5, 8);
-        head1.setRotationPoint(0F, 2.5F, -6F);
+        head1.setRotationPoint(0F, 2.5F, -5.5F);
         setRotation(head1, 0.227590F, 0F, 0F);
 
         head2 = new ModelRenderer(this, 5, 0);
         head2.addBox(-2.5F, -1.0F, -3F, 5, 2, 4);
-        head2.setRotationPoint(0F, -0.5F, -5.8F);
+        head2.setRotationPoint(0F, -0.5F, -5F);
         setRotation(head2, 0.227590F, 0F, 0F);
 
         neck = new ModelRenderer(this, 1, 19);
@@ -122,8 +122,8 @@ public class ModelGoatTFC extends ModelBase
         neck.setRotationPoint(-0.5F, 10F, -4F);
         setRotation(neck, -1.274788F, 0F, 0F);
 
-        body = new ModelRenderer(this, 23, 39);
-        body.addBox(-4F, -3F, -3F, 10, 16, 9);
+        body = new ModelRenderer(this, 25, 40);
+        body.addBox(-4F, -3F, -3F, 10, 16, 8);
         body.setRotationPoint(-1F, 11F, -3F);
 
 
@@ -137,21 +137,21 @@ public class ModelGoatTFC extends ModelBase
         udders.setRotationPoint(0F, 13.5F, 3.5F);
         setRotation(udders, 0F, 0F, 0F);
 
-        leg1 = new ModelRenderer(this, 0, 45);
-        leg1.addBox(-1F, -4F, -1.5F, 3, 12, 3);
-        leg1.setRotationPoint(-3.5F, 16F, 7F);
+        leg1 = new ModelRenderer(this, 0, 40);
+        leg1.addBox(-1F, -4F, -1.5F, 4, 12, 4);
+        leg1.setRotationPoint(-3.6F, 16F, 7F);
 
-        leg2 = new ModelRenderer(this, 0, 45);
-        leg2.addBox(0F, -4F, -1.5F, 3, 12, 3);
-        leg2.setRotationPoint(1.5F, 16F, 7F);
+        leg2 = new ModelRenderer(this, 0, 40);
+        leg2.addBox(0F, -4F, -1.5F, 4, 12, 4);
+        leg2.setRotationPoint(0.6F, 16F, 7F);
 
-        leg3 = new ModelRenderer(this, 0, 45);
-        leg3.addBox(-1F, -4F, -1.5F, 3, 12, 3);
-        leg3.setRotationPoint(-3.5F, 16F, -3F);
+        leg3 = new ModelRenderer(this, 0, 40);
+        leg3.addBox(-1F, -4F, -1.5F, 4, 12, 4);
+        leg3.setRotationPoint(-3.6F, 16F, -3F);
 
-        leg4 = new ModelRenderer(this, 0, 45);
-        leg4.addBox(0F, -4F, -1.5F, 3, 12, 3);
-        leg4.setRotationPoint(1.5F, 16F, -3F);
+        leg4 = new ModelRenderer(this, 0, 40);
+        leg4.addBox(0F, -4F, -1.5F, 4, 12, 4);
+        leg4.setRotationPoint(0.6F, 16F, -3F);
 
         this.head1.addChild(this.babyhorn1);
         this.head1.addChild(this.babyhorn2);

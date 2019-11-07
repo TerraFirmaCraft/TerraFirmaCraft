@@ -141,6 +141,7 @@ public class TFCSounds
             createSoundEvent("animal.alpaca.say"),
             createSoundEvent("animal.alpaca.hurt"),
             createSoundEvent("animal.alpaca.death"),
+            createSoundEvent("animal.alpaca.step"),
             createSoundEvent("animal.duck.cry"),
             createSoundEvent("animal.duck.say"),
             createSoundEvent("animal.duck.hurt"),

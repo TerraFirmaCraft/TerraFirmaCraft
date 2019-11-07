@@ -5,13 +5,10 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
-import net.dries007.tfc.Constants;
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.objects.LootTablesTFC;
-import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.world.classic.biomes.BiomesTFC;
-import net.dries007.tfc.client.TFCSounds;
+
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -29,12 +26,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
-
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-
+import net.dries007.tfc.Constants;
+import net.dries007.tfc.objects.LootTablesTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.objects.fluids.FluidsTFC;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @ParametersAreNonnullByDefault
@@ -103,7 +107,7 @@ public class EntityGoatTFC extends EntityAnimalMammal implements IAnimalTFC
     @Override
     public void birthChildren()
     {
-        int numberOfChilds = Constants.RNG.nextInt(2) + 1; //1-2
+        int numberOfChilds = 1; //one always
         for (int i = 0; i < numberOfChilds; i++)
         {
             EntityGoatTFC baby = new EntityGoatTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
@@ -159,7 +163,7 @@ public class EntityGoatTFC extends EntityAnimalMammal implements IAnimalTFC
                 }
                 else if (getFamiliarity() <= 0.15f)
                 {
-                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.lowfamiliarity"));
+                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.familiaritylow"));
                 }
                 else if (!hasMilk())
                 {

@@ -5,9 +5,7 @@
 
 package net.dries007.tfc.client.render.animal;
 
-import net.dries007.tfc.client.model.animal.ModelAlpacaWoolTFC;
-import net.dries007.tfc.objects.entity.animal.EntityAlpacaTFC;
-import net.dries007.tfc.objects.entity.animal.EntityAlpacaWoolTFC;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -15,8 +13,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.client.model.animal.ModelAlpacaWoolTFC;
+import net.dries007.tfc.objects.entity.animal.EntityAlpacaTFC;
+import net.dries007.tfc.objects.entity.animal.EntityAlpacaWoolTFC;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-import javax.annotation.ParametersAreNonnullByDefault;
+
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault

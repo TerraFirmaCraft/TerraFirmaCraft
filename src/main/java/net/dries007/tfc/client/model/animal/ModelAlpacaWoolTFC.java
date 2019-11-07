@@ -5,8 +5,7 @@
 
 package net.dries007.tfc.client.model.animal;
 
-import net.dries007.tfc.objects.entity.animal.EntityAlpacaTFC;
-import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -16,7 +15,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import net.dries007.tfc.objects.entity.animal.EntityAlpacaTFC;
+import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
@@ -67,13 +67,13 @@ public class ModelAlpacaWoolTFC extends ModelBase
         head.setRotationPoint(0.0F, -4F, -9.4F);
 
         neck1 = new ModelRenderer(this, 50, 52);
-        neck1.addBox(-2F, -3.5F, -2.5F, 4, 7, 5, 0.4F);
+        neck1.addBox(-2F, -3.5F, -2.5F, 4, 7, 5, 0.3F);
         neck1.setRotationPoint(0.001F, 8.6F, -6.7F);
         setRotation(neck1, 0.591841F, 0F, 0F);
 
         neck2 = new ModelRenderer(this, 51, 39);
-        neck2.addBox(-1.5F, -4F, -2.5F, 4, 9, 4, 0.4F);
-        neck2.setRotationPoint(-0.5F, 1.6F, -8.4F);
+        neck2.addBox(-1.5F, -4F, -2.5F, 4, 9, 4, 0.3F);
+        neck2.setRotationPoint(-0.5F, 1.71F, -8.34F);
         setRotation(neck2, 0F, 0F, 0F);
 
         body = new ModelRenderer(this, 98, 34);
@@ -89,20 +89,20 @@ public class ModelAlpacaWoolTFC extends ModelBase
         tailm.setRotationPoint(0F, 9.5F, 9.8F);
 
         leg1 = new ModelRenderer(this, 82, 44);
-        leg1.addBox(-1F, -1F, -2F, 4, 9, 4, 0.4F);
-        leg1.setRotationPoint(-4F, 14.5F, 6.99F);
+        leg1.addBox(-1F, 0.5F, -2F, 4, 9, 4, 0.4F);
+        leg1.setRotationPoint(-4F, 13F, 6.99F);
 
         leg2 = new ModelRenderer(this, 82, 44);
-        leg2.addBox(0F, -1F, -2F, 4, 9, 4, 0.4F);
-        leg2.setRotationPoint(1F, 14.5F, 6.99F);
+        leg2.addBox(0F, 0.5F, -2F, 4, 9, 4, 0.4F);
+        leg2.setRotationPoint(1F, 13F, 6.99F);
 
         leg3 = new ModelRenderer(this, 82, 44);
-        leg3.addBox(-1F, -1F, -2F, 4, 9, 4, 0.4F);
-        leg3.setRotationPoint(-4F, 14.5F, -4F);
+        leg3.addBox(-1F, 0.5F, -2F, 4, 9, 4, 0.4F);
+        leg3.setRotationPoint(-4F, 13F, -4F);
 
         leg4 = new ModelRenderer(this, 82, 44);
-        leg4.addBox(0F, -1F, -2F, 4, 9, 4, 0.4F);
-        leg4.setRotationPoint(1F, 14.5F, -4F);
+        leg4.addBox(0F, 0.5F, -2F, 4, 9, 4, 0.4F);
+        leg4.setRotationPoint(1F, 13F, -4F);
 
         head.addChild(ear1f);
         head.addChild(ear2f);

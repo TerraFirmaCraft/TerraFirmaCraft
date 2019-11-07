@@ -12,10 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.Constants;
-import net.dries007.tfc.client.TFCSounds;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
@@ -60,12 +57,17 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@ParametersAreNonnullByDefault
+import net.dries007.tfc.Constants;
+import net.dries007.tfc.client.TFCSounds;
+
+
 public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
 {
     private static final DataParameter<Byte> DYE_COLOR;
-    private final InventoryCrafting inventoryCrafting = new InventoryCrafting(new Container() {
-        public boolean canInteractWith(EntityPlayer playerIn) {
+    private final InventoryCrafting inventoryCrafting = new InventoryCrafting(new Container()
+    {
+        public boolean canInteractWith(EntityPlayer playerIn)
+        {
             return false;
         }
     }, 2, 1);
@@ -73,7 +75,8 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
     private int alpacaTimer;
     private EntityAIEatGrass entityAIEatGrass;
 
-    private static float[] createAlpacaColor(EnumDyeColor p_192020_0_) {
+    private static float[] createAlpacaColor(EnumDyeColor p_192020_0_)
+    {
         float[] afloat = p_192020_0_.getColorComponentValues();
         float f = 0.75F;
         return new float[]{afloat[0] * 0.75F, afloat[1] * 0.75F, afloat[2] * 0.75F};
@@ -84,13 +87,16 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         return (float[])DYE_TO_RGB.get(dyeColor);
     }
 
-    public EntityAlpacaWoolTFC(World worldIn) {
+    public EntityAlpacaWoolTFC(World worldIn)
+    {
         super(worldIn);
         this.setSize(0.9F, 1.3F);
         this.inventoryCrafting.setInventorySlotContents(0, new ItemStack(Items.DYE));
         this.inventoryCrafting.setInventorySlotContents(1, new ItemStack(Items.DYE));
     }
-    protected void initEntityAI() {
+
+    protected void initEntityAI()
+    {
         this.entityAIEatGrass = new EntityAIEatGrass(this);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
@@ -103,12 +109,14 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         this.tasks.addTask(8, new EntityAILookIdle(this));
     }
 
-    protected void updateAITasks() {
+    protected void updateAITasks()
+    {
         this.alpacaTimer = this.entityAIEatGrass.getEatingGrassTimer();
         super.updateAITasks();
     }
 
-    public void onLivingUpdate() {
+    public void onLivingUpdate()
+    {
         if (this.world.isRemote) {
             this.alpacaTimer = Math.max(0, this.alpacaTimer - 1);
         }
@@ -116,26 +124,29 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         super.onLivingUpdate();
     }
 
-    protected void applyEntityAttributes() {
+    protected void applyEntityAttributes()
+    {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
     }
 
-    protected void entityInit() {
+    protected void entityInit()
+    {
         super.entityInit();
         this.dataManager.register(DYE_COLOR, (byte)0);
     }
 
     @Nullable
-    protected ResourceLocation getLootTable() {
+    protected ResourceLocation getLootTable()
+    {
         if (this.getSheared()) {
             return LootTableList.ENTITIES_SHEEP;
         } else {
             switch(this.getFleeceColor()) {
-                case BROWN:
+                case WHITE:
                 default:
-                    return LootTableList.ENTITIES_SHEEP_BROWN;
+                    return LootTableList.ENTITIES_SHEEP_WHITE;
                 case ORANGE:
                     return LootTableList.ENTITIES_SHEEP_ORANGE;
                 case MAGENTA:
@@ -158,8 +169,8 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
                     return LootTableList.ENTITIES_SHEEP_PURPLE;
                 case BLUE:
                     return LootTableList.ENTITIES_SHEEP_BLUE;
-                case WHITE:
-                    return LootTableList.ENTITIES_SHEEP_WHITE;
+                case BROWN:
+                    return LootTableList.ENTITIES_SHEEP_BROWN;
                 case GREEN:
                     return LootTableList.ENTITIES_SHEEP_GREEN;
                 case RED:
@@ -169,8 +180,10 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
             }
         }
     }
+
     @SideOnly(Side.CLIENT)
-    public void handleStatusUpdate(byte id) {
+    public void handleStatusUpdate(byte id)
+    {
         if (id == 10) {
             this.alpacaTimer = 40;
         } else {
@@ -179,17 +192,19 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
 
     }
 
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
+    {
         player.getHeldItem(hand);
         return super.processInteract(player, hand);
     }
 
-    public static void registerFixesAlpaca(DataFixer fixer) {
+    public static void registerFixesSheep(DataFixer fixer)
+    {
         EntityLiving.registerFixesMob(fixer, EntityAlpacaWoolTFC.class);
     }
 
     @SideOnly(Side.CLIENT)
-    public float getHeadRotationPointY(float p_70894_1_) {
+   public float getHeadRotationPointY(float p_70894_1_) {
         if (this.alpacaTimer <= 0) {
             return 0.0F;
         } else if (this.alpacaTimer >= 4 && this.alpacaTimer <= 36) {
@@ -200,7 +215,7 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
     }
 
     @SideOnly(Side.CLIENT)
-    public float getHeadRotationAngleX(float p_70890_1_) {
+   public float getHeadRotationAngleX(float p_70890_1_) {
         if (this.alpacaTimer > 4 && this.alpacaTimer <= 36) {
             float f = ((float)(this.alpacaTimer - 4) - p_70890_1_) / 32.0F;
             return 0.62831855F + 0.2199115F * MathHelper.sin(f * 28.7F);
@@ -209,54 +224,58 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         }
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound) {
+    public void writeEntityToNBT(NBTTagCompound compound)
+    {
         super.writeEntityToNBT(compound);
         compound.setBoolean("Sheared", this.getSheared());
         compound.setByte("Color", (byte)this.getFleeceColor().getMetadata());
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound) {
+    public void readEntityFromNBT(NBTTagCompound compound)
+    {
         super.readEntityFromNBT(compound);
         this.setSheared(compound.getBoolean("Sheared"));
         this.setFleeceColor(EnumDyeColor.byMetadata(compound.getByte("Color")));
     }
 
-    @Override
     protected SoundEvent getAmbientSound()
     {
         return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_ALPACA_CRY : TFCSounds.ANIMAL_ALPACA_SAY;
     }
 
-    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         return TFCSounds.ANIMAL_ALPACA_HURT;
     }
 
-    @Override
     protected SoundEvent getDeathSound()
     {
         return TFCSounds.ANIMAL_ALPACA_DEATH;
     }
 
-    protected void playStepSound(BlockPos pos, Block blockIn) {
-        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.15F, 1.0F);
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(TFCSounds.ANIMAL_ALPACA_STEP, 0.15F, 1.0F);
     }
 
-    public EnumDyeColor getFleeceColor() {
+    public EnumDyeColor getFleeceColor()
+    {
         return EnumDyeColor.byMetadata((Byte)this.dataManager.get(DYE_COLOR) & 15);
     }
 
-    public void setFleeceColor(EnumDyeColor color) {
+    public void setFleeceColor(EnumDyeColor color)
+    {
         byte b0 = (Byte)this.dataManager.get(DYE_COLOR);
         this.dataManager.set(DYE_COLOR, (byte)(b0 & 240 | color.getMetadata() & 15));
     }
 
-    public boolean getSheared() {
+    public boolean getSheared()
+    {
         return ((Byte)this.dataManager.get(DYE_COLOR) & 16) != 0;
     }
 
-    public void setSheared(boolean sheared) {
+    public void setSheared(boolean sheared)
+    {
         byte b0 = (Byte)this.dataManager.get(DYE_COLOR);
         if (sheared) {
             this.dataManager.set(DYE_COLOR, (byte)(b0 | 16));
@@ -266,29 +285,32 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
 
     }
 
-    public static EnumDyeColor getRandomAlpacaColor(Random random) {
+    public static EnumDyeColor getRandomAlpacaColor(Random random)
+    {
         int i = random.nextInt(100);
-        if (i < 5) {
+        if (i < 8) {
             return EnumDyeColor.BLACK;
-        } else if (i < 10) {
-            return EnumDyeColor.GRAY;
         } else if (i < 15) {
-            return EnumDyeColor.SILVER;
-        } else if (i < 18) {
             return EnumDyeColor.WHITE;
+        } else if (i < 26) {
+            return EnumDyeColor.SILVER;
+        } else if (i < 35) {
+            return EnumDyeColor.GRAY;
         } else {
             return random.nextInt(500) == 0 ? EnumDyeColor.CYAN : EnumDyeColor.BROWN;
         }
     }
 
-    public EntityAlpacaWoolTFC createChild(EntityAgeable ageable) {
+    public EntityAlpacaWoolTFC createChild(EntityAgeable ageable)
+    {
         EntityAlpacaWoolTFC entityalpaca = (EntityAlpacaWoolTFC)ageable;
         EntityAlpacaWoolTFC entityalpaca1 = new EntityAlpacaWoolTFC(this.world);
         entityalpaca1.setFleeceColor(this.getDyeColorMixFromParents(this, entityalpaca));
         return entityalpaca1;
     }
 
-    public void eatGrassBonus() {
+    public void eatGrassBonus()
+    {
         this.setSheared(false);
         if (this.isChild()) {
             this.addGrowth(60);
@@ -297,17 +319,20 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
     }
 
     @Nullable
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
+    {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
         this.setFleeceColor(getRandomAlpacaColor(this.world.rand));
         return livingdata;
     }
 
-    public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos) {
+    public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos)
+    {
         return !this.getSheared() && !this.isChild();
     }
 
-    public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+    public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
+    {
         this.setSheared(true);
         int i = 1 + this.rand.nextInt(3);
         List<ItemStack> ret = new ArrayList();
@@ -320,7 +345,8 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         return ret;
     }
 
-    private EnumDyeColor getDyeColorMixFromParents(EntityAnimal father, EntityAnimal mother) {
+    private EnumDyeColor getDyeColorMixFromParents(EntityAnimal father, EntityAnimal mother)
+    {
         int i = ((EntityAlpacaWoolTFC)father).getFleeceColor().getDyeDamage();
         int j = ((EntityAlpacaWoolTFC)mother).getFleeceColor().getDyeDamage();
         this.inventoryCrafting.getStackInSlot(0).setItemDamage(i);
@@ -336,11 +362,13 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         return EnumDyeColor.byDyeDamage(k);
     }
 
-    //public float getEyeHeight() {
-        //return 1.8F * this.height;
-    //}
+    public float getEyeHeight()
+    {
+        return 0.95F * this.height;
+    }
 
-    static {
+    static
+    {
         DYE_COLOR = EntityDataManager.createKey(EntityAlpacaWoolTFC.class, DataSerializers.BYTE);
         DYE_TO_RGB = Maps.newEnumMap(EnumDyeColor.class);
         EnumDyeColor[] var0 = EnumDyeColor.values();
@@ -351,7 +379,6 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
             DYE_TO_RGB.put(enumdyecolor, createAlpacaColor(enumdyecolor));
         }
 
-        //DYE_TO_RGB.put(EnumDyeColor.BROWN, new float[]{0.1234567F, 0.9019608F, 0.9019608F});
-        DYE_TO_RGB.put(EnumDyeColor.BROWN, new float[]{0.9019608F, 0.9019608F, 0.9019608F});
+        DYE_TO_RGB.put(EnumDyeColor.WHITE, new float[]{0.9019608F, 0.9019608F, 0.9019608F});
     }
 }

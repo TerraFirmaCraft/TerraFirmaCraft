@@ -5,15 +5,15 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
-import net.dries007.tfc.Constants;
-import net.dries007.tfc.objects.LootTablesTFC;
-import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.world.classic.biomes.BiomesTFC;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-//import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
@@ -26,18 +26,25 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.dries007.tfc.client.TFCSounds;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.util.EnumHand;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
+import net.dries007.tfc.Constants;
+import net.dries007.tfc.objects.LootTablesTFC;
+import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
+import net.dries007.tfc.client.TFCSounds;
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+
 
 @ParametersAreNonnullByDefault
 public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, IAnimalTFC
@@ -140,7 +147,46 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     public boolean isShearable(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos)
     {
-        return getAge() == Age.ADULT && hasWool();
+        return getAge() == Age.ADULT && hasWool() && getFamiliarity() > 0.15f;
+    }
+
+    @Override
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
+    {
+        ItemStack stack = player.getHeldItem(hand);
+
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "knife"))
+        {
+            if (!this.world.isRemote && this.getAge() == Age.ADULT && this.hasWool() && this.getFamiliarity() > 0.15f)
+            {
+                stack.damageItem(1, player);
+                ItemStack woolStack = new ItemStack(ItemsTFC.WOOL, 1, this.getDyeColor().getMetadata());
+                Helpers.spawnItemStack(player.world, new BlockPos(this.posX, this.posY, this.posZ), woolStack);
+                this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
+                this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            }
+            else if (!this.world.isRemote)
+            {
+                //Return chat message
+                if (this.getAge() == Age.OLD)
+                {
+                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.old2"));
+                }
+                else if (this.getAge() == Age.CHILD)
+                {
+                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.child"));
+                }
+                else if (getFamiliarity() <= 0.15f)
+                {
+                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.familiaritylow"));
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return super.processInteract(player, hand);
+        }
     }
 
     @Nonnull
@@ -249,6 +295,6 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.15F, 1.0F);
+        this.playSound(TFCSounds.ANIMAL_ALPACA_STEP, 0.15F, 1.0F);
     }
 }

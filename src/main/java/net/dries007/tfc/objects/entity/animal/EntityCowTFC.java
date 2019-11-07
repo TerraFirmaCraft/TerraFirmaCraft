@@ -154,7 +154,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
                 }
                 else if (getFamiliarity() <= 0.15f)
                 {
-                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.lowfamiliarity"));
+                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.familiaritylow"));
                 }
                 else if (!hasMilk())
                 {
