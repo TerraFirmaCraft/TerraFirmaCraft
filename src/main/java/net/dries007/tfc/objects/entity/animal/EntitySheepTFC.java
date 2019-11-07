@@ -9,6 +9,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -31,6 +32,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.oredict.OreDictionary;
+
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
