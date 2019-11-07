@@ -109,7 +109,6 @@ public enum Food
     COOKED_DUCK(MEAT, 0.6f, 2f, 0f, 0.5f, 2.5f, 0f, 0f, 3f),
     COOKED_CHEVON(MEAT, 0.6f, 2f, 0f, 1f, 2.5f, 0f, 0f, 3f);
 
-
     private final Category category;
     private final float calories;
     private final float water;
