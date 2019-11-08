@@ -177,7 +177,6 @@ public final class InteractionManager
             }
             return EnumActionResult.FAIL;
         });
-
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
