@@ -58,6 +58,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
 
     public boolean isValidInputInstant(ItemStack inputStack, @Nullable FluidStack inputFluid)
     {
+        // Used on instant recipes, to verify that they only convert if there exists enough items to fully convert the fluid
         return inputFluid == null || inputFluid.amount / this.inputFluid.getAmount() <= inputStack.getCount() / this.inputStack.getAmount();
     }
 
@@ -193,7 +194,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         }
     }
 
-    private int getMultiplier(FluidStack inputFluid, ItemStack inputStack)
+    protected int getMultiplier(FluidStack inputFluid, ItemStack inputStack)
     {
         if (isValidInput(inputFluid, inputStack))
         {

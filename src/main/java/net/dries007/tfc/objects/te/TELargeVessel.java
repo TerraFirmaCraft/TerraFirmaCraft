@@ -23,6 +23,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
@@ -100,7 +101,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
     {
         for (int i = 0; i < inventory.getSlots(); i++)
         {
-            CapabilityFood.applyTrait(inventory.getStackInSlot(i), CapabilityFood.PRESERVED);
+            CapabilityFood.applyTrait(inventory.getStackInSlot(i), FoodTrait.PRESERVED);
         }
 
         // Update sealed tick info and sync to client
@@ -115,7 +116,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         // Update preservation trait on contents
         for (int i = 0; i < inventory.getSlots(); i++)
         {
-            CapabilityFood.removeTrait(inventory.getStackInSlot(i), CapabilityFood.PRESERVED);
+            CapabilityFood.removeTrait(inventory.getStackInSlot(i), FoodTrait.PRESERVED);
         }
 
         // Update sealed tick info and sync to client
@@ -224,7 +225,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
             ItemStack stack = super.extractItem(slot, amount, simulate);
-            CapabilityFood.removeTrait(stack, CapabilityFood.PRESERVED);
+            CapabilityFood.removeTrait(stack, FoodTrait.PRESERVED);
             return stack;
         }
     }

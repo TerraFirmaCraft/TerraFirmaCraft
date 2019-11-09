@@ -126,7 +126,7 @@ public final class CapabilityItemSize
         }
         else if (item instanceof ItemBlock)
         {
-            return new ItemSizeHandler(Size.SMALL, Weight.MEDIUM, true);
+            return new ItemSizeHandler(Size.VERY_SMALL, Weight.HEAVY, true);
         }
         else
         {

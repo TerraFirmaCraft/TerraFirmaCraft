@@ -22,8 +22,7 @@ import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
-import net.dries007.tfc.objects.fluids.properties.FluidWrapper;
-import net.dries007.tfc.objects.fluids.properties.MetalFluidWrapper;
+import net.dries007.tfc.objects.fluids.properties.MetalProperty;
 
 /**
  * A helper class for working with alloys
@@ -64,10 +63,10 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
      */
     public Alloy add(@Nonnull FluidStack stack)
     {
-        FluidWrapper wrapper = FluidsTFC.getWrapper(stack.getFluid());
-        if (wrapper instanceof MetalFluidWrapper)
+        MetalProperty metalProperty = FluidsTFC.getWrapper(stack.getFluid()).get(MetalProperty.METAL);
+        if (metalProperty != null)
         {
-            Metal metal = ((MetalFluidWrapper) wrapper).getMetal();
+            Metal metal = metalProperty.getMetal();
             add(metal, stack.amount);
         }
         return this;

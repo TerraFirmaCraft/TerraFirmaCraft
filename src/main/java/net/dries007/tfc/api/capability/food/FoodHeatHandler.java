@@ -98,7 +98,7 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
 
     @Nonnull
     @Override
-    public List<IFoodTrait> getTraits()
+    public List<FoodTrait> getTraits()
     {
         return internalFoodCap.getTraits();
     }

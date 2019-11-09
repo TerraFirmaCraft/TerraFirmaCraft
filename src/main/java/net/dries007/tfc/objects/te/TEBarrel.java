@@ -28,15 +28,18 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.network.PacketBarrelUpdate;
+import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.fluids.capability.FluidHandlerSided;
 import net.dries007.tfc.objects.fluids.capability.FluidTankCallback;
 import net.dries007.tfc.objects.fluids.capability.IFluidHandlerSidedCallback;
 import net.dries007.tfc.objects.fluids.capability.IFluidTankCallback;
+import net.dries007.tfc.objects.fluids.properties.PreservingProperty;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
 import net.dries007.tfc.util.FluidTransferHelper;
@@ -59,7 +62,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     private long sealedTick, sealedCalendarTick;
     private BarrelRecipe recipe;
     private int tickCounter;
-    private Queue<ItemStack> surplus = new LinkedList<>(); //Surplus items from a recipe with output > stackSize
+    private Queue<ItemStack> surplus = new LinkedList<>(); // Surplus items from a recipe with output > stackSize
     private boolean checkInstantRecipe = false;
 
     public TEBarrel()
@@ -157,6 +160,19 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         sealedCalendarTick = CalendarTFC.CALENDAR_TIME.getTicks();
         recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
         sealed = true;
+
+        // Any food sealed in the barrel gets the property applied, provided there's at least a bucket worth in the vessel
+        FluidStack inputFluid = tank.getFluid();
+        if (inputFluid != null)
+        {
+            PreservingProperty property = FluidsTFC.getWrapper(inputFluid.getFluid()).get(PreservingProperty.PRESERVING);
+            ItemStack sealedStack = inventory.getStackInSlot(SLOT_ITEM);
+            if (property != null && inputFluid.amount >= Fluid.BUCKET_VOLUME && property.test(sealedStack))
+            {
+                CapabilityFood.applyTrait(sealedStack, property.getTrait());
+            }
+        }
+
         TerraFirmaCraft.getNetwork().sendToDimension(new PacketBarrelUpdate(this, recipe, sealedCalendarTick, sealed), world.provider.getDimension());
     }
 
@@ -165,6 +181,19 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         sealedTick = sealedCalendarTick = 0;
         recipe = null;
         sealed = false;
+
+        // Remove preserving property
+        FluidStack inputFluid = tank.getFluid();
+        if (inputFluid != null)
+        {
+            PreservingProperty property = FluidsTFC.getWrapper(inputFluid.getFluid()).get(PreservingProperty.PRESERVING);
+            ItemStack sealedStack = inventory.getStackInSlot(SLOT_ITEM);
+            if (property != null)
+            {
+                CapabilityFood.removeTrait(sealedStack, property.getTrait());
+            }
+        }
+
         TerraFirmaCraft.getNetwork().sendToDimension(new PacketBarrelUpdate(this, recipe, sealedCalendarTick, sealed), world.provider.getDimension());
     }
 
@@ -253,7 +282,10 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                     IBlockState state = world.getBlockState(pos);
                     world.notifyBlockUpdate(pos, state, state, 3);
                 }
-                else checkInstantRecipe = false;
+                else
+                {
+                    checkInstantRecipe = false;
+                }
             }
         }
     }
