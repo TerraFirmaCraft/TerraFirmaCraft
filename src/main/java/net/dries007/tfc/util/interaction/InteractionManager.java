@@ -7,7 +7,6 @@ package net.dries007.tfc.util.interaction;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
@@ -182,7 +181,7 @@ public final class InteractionManager
             return EnumActionResult.FAIL;
         });
 
-        RIGHT_CLICK_ACTIONS.put(stack -> Objects.equals(stack.getItem().getRegistryName(), Items.GLASS_BOTTLE.getRegistryName()), (worldIn, playerIn, handIn) -> {
+        RIGHT_CLICK_ACTIONS.put(stack -> Items.GLASS_BOTTLE.equals(stack.getItem()), (worldIn, playerIn, handIn) -> {
             RayTraceResult traceResult = Helpers.rayTrace(worldIn, playerIn, true);
             if (traceResult == null)
             {
