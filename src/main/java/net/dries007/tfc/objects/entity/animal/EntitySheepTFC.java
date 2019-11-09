@@ -24,9 +24,11 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -36,8 +38,12 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @ParametersAreNonnullByDefault
 public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IAnimalTFC
@@ -140,7 +146,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
     @Override
     public boolean isShearable(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos)
     {
-        return getAge() == Age.ADULT && hasWool();
+        return getAge() == Age.ADULT && hasWool() && getFamiliarity() > 0.15f;
     }
 
     @Nonnull
@@ -158,19 +164,42 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
         return ret;
     }
 
-    public int getShearedDay()
+    @Override
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
-        return this.dataManager.get(SHEARED);
-    }
-
-    public void setShearedDay(int value)
-    {
-        this.dataManager.set(SHEARED, value);
-    }
-
-    public boolean hasWool()
-    {
-        return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + DAYS_TO_GROW_WOOL;
+        ItemStack stack = player.getHeldItem(hand);
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "knife"))
+        {
+            if (!this.world.isRemote && this.getAge() == Age.ADULT && this.hasWool() && this.getFamiliarity() > 0.15f)
+            {
+                stack.damageItem(1, player);
+                ItemStack woolStack = new ItemStack(ItemsTFC.WOOL, 1, this.getDyeColor().getMetadata());
+                Helpers.spawnItemStack(player.world, new BlockPos(this.posX, this.posY, this.posZ), woolStack);
+                this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
+                this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            }
+            else if (!this.world.isRemote)
+            {
+                //Return chat message indicating why this entity isn't giving milk
+                if (this.getAge() == Age.OLD)
+                {
+                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.old2"));
+                }
+                else if (this.getAge() == Age.CHILD)
+                {
+                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.child"));
+                }
+                else if (getFamiliarity() <= 0.15f)
+                {
+                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tfc.tooltip.animal.familiaritylow"));
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return super.processInteract(player, hand);
+        }
     }
 
     @Override
@@ -195,6 +224,21 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
     public Age getAge()
     {
         return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+    }
+
+    public int getShearedDay()
+    {
+        return this.dataManager.get(SHEARED);
+    }
+
+    public void setShearedDay(int value)
+    {
+        this.dataManager.set(SHEARED, value);
+    }
+
+    public boolean hasWool()
+    {
+        return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + DAYS_TO_GROW_WOOL;
     }
 
     @Override

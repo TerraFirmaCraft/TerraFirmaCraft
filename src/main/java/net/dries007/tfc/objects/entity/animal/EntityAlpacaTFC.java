@@ -5,11 +5,10 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
-
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -24,6 +23,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -33,18 +33,17 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraft.util.EnumHand;
 
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
-import net.dries007.tfc.client.TFCSounds;
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @ParametersAreNonnullByDefault
 public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, IAnimalTFC
@@ -150,6 +149,21 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
         return getAge() == Age.ADULT && hasWool() && getFamiliarity() > 0.15f;
     }
 
+    @Nonnull
+    @Override
+    public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
+    {
+        this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+        int i = 1 + this.rand.nextInt(3);
+
+        List<ItemStack> ret = new java.util.ArrayList<>();
+        for (int j = 0; j < i; ++j)
+            ret.add(new ItemStack(ItemsTFC.WOOL, 1, this.getDyeColor().getMetadata()));
+
+        this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
+        return ret;
+    }
+
     @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
@@ -189,36 +203,6 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
         }
     }
 
-    @Nonnull
-    @Override
-    public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
-    {
-        this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
-        int i = 1 + this.rand.nextInt(3);
-
-        List<ItemStack> ret = new java.util.ArrayList<>();
-        for (int j = 0; j < i; ++j)
-            ret.add(new ItemStack(ItemsTFC.WOOL, 1, this.getDyeColor().getMetadata()));
-
-        this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
-        return ret;
-    }
-
-    public int getShearedDay()
-    {
-        return this.dataManager.get(SHEARED);
-    }
-
-    public void setShearedDay(int value)
-    {
-        this.dataManager.set(SHEARED, value);
-    }
-
-    public boolean hasWool()
-    {
-        return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + DAYS_TO_GROW_WOOL;
-    }
-
     @Override
     protected void entityInit()
     {
@@ -241,6 +225,21 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
     public Age getAge()
     {
         return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+    }
+
+    public int getShearedDay()
+    {
+        return this.dataManager.get(SHEARED);
+    }
+
+    public void setShearedDay(int value)
+    {
+        this.dataManager.set(SHEARED, value);
+    }
+
+    public boolean hasWool()
+    {
+        return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + DAYS_TO_GROW_WOOL;
     }
 
     @Override

@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.client.render.animal;
 
-
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -16,6 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.model.animal.ModelGoatTFC;
 import net.dries007.tfc.objects.entity.animal.EntityGoatTFC;
+
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @SideOnly(Side.CLIENT)

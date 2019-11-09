@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.client.render.animal;
 
-
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.renderer.GlStateManager;
@@ -19,6 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.client.model.animal.ModelDuckTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityDuckTFC;
+
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @SideOnly(Side.CLIENT)

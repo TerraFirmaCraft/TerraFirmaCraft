@@ -183,11 +183,10 @@ public class ModelGoatTFC extends ModelBase
         GlStateManager.translate(0.0F, 0, 0.1875f - (0.1875f * percent));
 
 
-
-
-
-        if (goat.getGender() == EntityAnimalTFC.Gender.MALE) {
-            if (percent < 0.5) {
+        if (goat.getGender() == EntityAnimalTFC.Gender.MALE)
+        {
+            if (percent < 0.5)
+            {
                 babyhorn1.isHidden = false;
                 babyhorn2.isHidden = false;
                 horn1f.isHidden = true;
@@ -198,21 +197,22 @@ public class ModelGoatTFC extends ModelBase
                 horn2mb.isHidden = true;
                 udders.isHidden = true;
             }
-                else if (percent < 0.75)
+            else if (percent < 0.75)
 
-                {
-                    babyhorn1.isHidden = true;
-                    babyhorn2.isHidden = true;
-                    horn1f.isHidden = true;
-                    horn2f.isHidden = true;
-                    horn1ma.isHidden = false;
-                    horn1mb.isHidden = true;
-                    horn2ma.isHidden = false;
-                    horn2mb.isHidden = true;
-                    udders.isHidden = true;
+            {
+                babyhorn1.isHidden = true;
+                babyhorn2.isHidden = true;
+                horn1f.isHidden = true;
+                horn2f.isHidden = true;
+                horn1ma.isHidden = false;
+                horn1mb.isHidden = true;
+                horn2ma.isHidden = false;
+                horn2mb.isHidden = true;
+                udders.isHidden = true;
 
-                }
-            else {
+            }
+            else
+            {
                 babyhorn1.isHidden = true;
                 babyhorn2.isHidden = true;
                 udders.isHidden = true;
@@ -225,8 +225,10 @@ public class ModelGoatTFC extends ModelBase
             }
         }
 
-        else {
-            if (percent < 0.5) {
+        else
+        {
+            if (percent < 0.5)
+            {
                 babyhorn1.isHidden = false;
                 babyhorn2.isHidden = false;
                 horn1f.isHidden = true;
@@ -236,7 +238,9 @@ public class ModelGoatTFC extends ModelBase
                 horn2ma.isHidden = true;
                 horn2mb.isHidden = true;
                 udders.isHidden = true;
-            } else {
+            }
+            else
+            {
                 babyhorn1.isHidden = true;
                 babyhorn2.isHidden = true;
                 horn1ma.isHidden = true;

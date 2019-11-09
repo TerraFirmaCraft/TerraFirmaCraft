@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
-
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -17,7 +16,10 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -79,17 +81,11 @@ public class EntityDuckTFC extends EntityAnimalOviparous implements IAnimalTFC
         this.destPos = (float) ((double) this.destPos + (double) (this.onGround ? -1 : 4) * 0.3D);
         this.destPos = MathHelper.clamp(this.destPos, 0.0F, 1.0F);
 
-        if (!this.onGround && this.wingRotDelta < 1.0F)
-        {
-            this.wingRotDelta = 1.0F;
-        }
+        if (!this.onGround && this.wingRotDelta < 1.0F) { this.wingRotDelta = 1.0F; }
 
         this.wingRotDelta = (float) ((double) this.wingRotDelta * 0.9D);
 
-        if (!this.onGround && this.motionY < 0.0D)
-        {
-            this.motionY *= 0.6D;
-        }
+        if (!this.onGround && this.motionY < 0.0D) { this.motionY *= 0.6D; }
 
         this.wingRotation += this.wingRotDelta * 2.0F;
     }

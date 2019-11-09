@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.client.model.animal.ModelAlpacaWoolTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAlpacaTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAlpacaWoolTFC;
+
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 
@@ -23,7 +24,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @ParametersAreNonnullByDefault
 public class LayerAlpacaWoolTFC implements LayerRenderer<EntityAlpacaTFC>
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID,"textures/entity/animal/alpaca.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/alpaca.png");
     private final RenderAlpacaTFC alpacaRenderer;
     private final ModelAlpacaWoolTFC alpacaModel = new ModelAlpacaWoolTFC();
 
