@@ -91,8 +91,9 @@ tfc.food_traits.brined=Brined
 tfc.food_traits.brined_active=Brining
 tfc.food_traits.salted=Salted
 tfc.food_traits.pickled=Pickled
-tfc.food_traits.pickled_active=Pickling
 tfc.food_traits.preserved=Preserved
+tfc.tooltip.barrel_recipe_pickling=Pickling
+tfc.tooltip.barrel_recipe_brining=Brining
 
 ## Skills
 tfc.skill.prospecting=Prospecting: %s
