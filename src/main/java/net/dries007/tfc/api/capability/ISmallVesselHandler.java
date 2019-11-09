@@ -17,7 +17,6 @@ import net.dries007.tfc.api.capability.heat.IItemHeat;
  */
 public interface ISmallVesselHandler extends IItemHandlerModifiable, IFluidHandler, INBTSerializable<NBTTagCompound>, IItemHeat, IMoldHandler
 {
-
     /**
      * This gets the fluid mode, including liquid temperature status
      *

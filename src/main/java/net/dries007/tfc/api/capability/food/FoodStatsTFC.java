@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.api.capability.food;
 
+import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -49,10 +50,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         this.nutrients = new float[Nutrient.TOTAL];
         this.thirst = MAX_PLAYER_THIRST;
 
-        for (int i = 0; i < nutrients.length; i++)
-        {
-            nutrients[i] = 0.8f * MAX_PLAYER_NUTRIENTS;
-        }
+        Arrays.fill(nutrients, 0.8f * MAX_PLAYER_NUTRIENTS);
     }
 
     @Override

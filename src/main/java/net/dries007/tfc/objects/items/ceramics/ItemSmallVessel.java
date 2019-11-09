@@ -37,6 +37,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.ISmallVesselHandler;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.size.Size;
@@ -374,7 +375,7 @@ public class ItemSmallVessel extends ItemPottery
             IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
             if (cap != null)
             {
-                CapabilityFood.applyTrait(cap, CapabilityFood.PRESERVED);
+                CapabilityFood.applyTrait(cap, FoodTrait.PRESERVED);
             }
             super.setStackInSlot(slot, stack);
         }
@@ -388,7 +389,7 @@ public class ItemSmallVessel extends ItemPottery
                 IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
                 if (cap != null)
                 {
-                    CapabilityFood.applyTrait(cap, CapabilityFood.PRESERVED);
+                    CapabilityFood.applyTrait(cap, FoodTrait.PRESERVED);
                 }
             }
             return super.insertItem(slot, stack, simulate);
@@ -401,7 +402,7 @@ public class ItemSmallVessel extends ItemPottery
             IFood cap = getStackInSlot(slot).getCapability(CapabilityFood.CAPABILITY, null);
             if (cap != null)
             {
-                CapabilityFood.removeTrait(cap, CapabilityFood.PRESERVED);
+                CapabilityFood.removeTrait(cap, FoodTrait.PRESERVED);
             }
             return super.extractItem(slot, amount, simulate);
         }
