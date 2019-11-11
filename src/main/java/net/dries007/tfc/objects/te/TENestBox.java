@@ -8,13 +8,14 @@ package net.dries007.tfc.objects.te;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ITickable;
 
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.IEgg;
-import net.dries007.tfc.objects.entity.animal.EntityAnimalOviparous;
+import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
@@ -44,9 +45,9 @@ public class TENestBox extends TEInventory implements ITickable
                         Entity baby = cap.getEntity(this.world);
                         if (baby != null)
                         {
-                            if (baby instanceof EntityAnimalOviparous)
+                            if (baby instanceof IAnimalTFC)
                             {
-                                ((EntityAnimalOviparous) baby).setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+                                ((IAnimalTFC) baby).setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
                             }
                             baby.setLocationAndAngles(this.pos.getX(), this.pos.getY() + 0.5D, this.pos.getZ(), 0.0F, 0.0F);
                             world.spawnEntity(baby);
@@ -98,7 +99,7 @@ public class TENestBox extends TEInventory implements ITickable
         return getBird() != null;
     }
 
-    public void seatOnThis(EntityAnimalOviparous bird)
+    public void seatOnThis(EntityLiving bird)
     {
         Helpers.sitOnBlock(this.world, this.pos, bird, 0.0D);
     }

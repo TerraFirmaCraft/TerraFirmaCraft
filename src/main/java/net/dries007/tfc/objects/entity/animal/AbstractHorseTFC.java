@@ -58,7 +58,7 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIRunAroundLikeCrazyTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
-public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryChangedListener, IJumpingMount, IAnimalTFC
+public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryChangedListener, IJumpingMount
 {
     protected static final IAttribute JUMP_STRENGTH = (new RangedAttribute(null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
     private static final int DAYS_TO_ADULTHOOD = 1120;

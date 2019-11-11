@@ -27,7 +27,7 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
-public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalTFC
+public class EntityPheasantTFC extends EntityAnimalTFC
 {
     private static final int DAYS_TO_ADULTHOOD = 60;
 
@@ -92,6 +92,12 @@ public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalT
     public int getDaysToAdulthood()
     {
         return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public Type getType()
+    {
+        return Type.OVIPAROUS;
     }
 
     @Override

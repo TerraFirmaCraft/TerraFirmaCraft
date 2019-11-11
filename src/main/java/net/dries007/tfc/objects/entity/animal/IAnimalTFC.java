@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.Collections;
+import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
@@ -15,6 +17,14 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public interface IAnimalTFC
 {
+    /**
+     * Check if this animal can spawn in said conditions
+     *
+     * @param biome       the biome in chunk that is trying to spawn this animal
+     * @param temperature the average temperature of this region
+     * @param rainfall    the average rainfall of this region
+     * @return true if this animal can be spawn in this conditions
+     */
     boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall);
 
     /**
@@ -74,7 +84,7 @@ public interface IAnimalTFC
     void setFertilized(boolean value);
 
     /**
-     * Event: Do things on fertilization of females
+     * Event: Do things on fertilization of females (ie: save the male genes for some sort of genetic selection)
      */
     default void onFertilized(@Nonnull IAnimalTFC male)
     {
@@ -101,6 +111,7 @@ public interface IAnimalTFC
      */
     default Age getAge()
     {
+        // Old Age isn't being used for the time being
         return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + getDaysToAdulthood() ? Age.ADULT : Age.CHILD;
     }
 
@@ -139,6 +150,38 @@ public interface IAnimalTFC
      */
     boolean isHungry();
 
+    /**
+     * Which animal type is this? Do this animal lay eggs or give birth to it's offspring?
+     *
+     * @return the enum Type of this animal.
+     */
+    Type getType();
+
+    /**
+     * Some animals can give products (eg: Milk, Wool and Eggs)
+     * This function returns if said animal is ready to be worked upon
+     * (or if it is ready to lay eggs on it's own)
+     *
+     * @return true if it is ready for product production
+     */
+    default boolean isReadyForAnimalProduct()
+    {
+        return false;
+    }
+
+    /**
+     * Get the products of this animal
+     * Can return more than one item itemstack
+     * fortune and other behaviour should not be handled here
+     * Suggestion: EntityLiving#processInteract() for right clicking handling
+     *
+     * @return a list of itemstack
+     */
+    default List<ItemStack> getProducts()
+    {
+        return Collections.emptyList();
+    }
+
     enum Age
     {
         CHILD, ADULT, OLD
@@ -157,5 +200,10 @@ public interface IAnimalTFC
         {
             return this == MALE;
         }
+    }
+
+    enum Type
+    {
+        MAMMAL, OVIPAROUS
     }
 }

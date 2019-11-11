@@ -28,7 +28,7 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
-public class EntityDeerTFC extends EntityAnimalMammal implements IAnimalTFC
+public class EntityDeerTFC extends EntityAnimalMammal
 {
     private static final int DAYS_TO_ADULTHOOD = 720;
     private static final int DAYS_TO_FULL_GESTATION = 210;

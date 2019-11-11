@@ -32,7 +32,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
-public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTFC
+public class EntityBearTFC extends EntityAnimalMammal implements IMob
 {
     private static final int DAYS_TO_ADULTHOOD = 1800;
     private static final int DAYS_TO_FULL_GESTATION = 210;
