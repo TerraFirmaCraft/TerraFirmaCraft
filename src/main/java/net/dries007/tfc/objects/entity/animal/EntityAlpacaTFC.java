@@ -128,25 +128,6 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
     }
 
     @Override
-    public float getEyeHeight()
-    {
-        float percent = getPercentToAdulthood();
-
-        if (percent < 0.5f)
-        {
-            return 1F * this.height;
-        }
-        else if (percent < 0.75f)
-        {
-            return 1.3F * this.height;
-        }
-        else
-        {
-            return 1.7F * this.height;
-        }
-    }
-
-    @Override
     public long gestationDays()
     {
         return DAYS_TO_FULL_GESTATION;
@@ -314,5 +295,24 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(TFCSounds.ANIMAL_ALPACA_STEP, 0.15F, 1.0F);
+    }
+
+    @Override
+    public float getEyeHeight()
+    {
+        float percent = getPercentToAdulthood();
+
+        if (percent < 0.5f)
+        {
+            return 1F * this.height;
+        }
+        else if (percent < 0.75f)
+        {
+            return 1.3F * this.height;
+        }
+        else
+        {
+            return 1.7F * this.height;
+        }
     }
 }

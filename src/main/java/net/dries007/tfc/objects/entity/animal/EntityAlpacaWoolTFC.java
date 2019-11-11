@@ -15,7 +15,6 @@ import com.google.common.collect.Maps;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -31,7 +30,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.BlockPos;
@@ -39,11 +37,10 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
+public class EntityAlpacaWoolTFC extends EntityAlpacaTFC
 {
     private static final DataParameter<Byte> DYE_COLOR;
     private static final Map<EnumDyeColor, float[]> DYE_TO_RGB;
@@ -93,13 +90,12 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         float f = 0.75F;
         return new float[] {afloat[0] * 0.75F, afloat[1] * 0.75F, afloat[2] * 0.75F};
     }
+
     private final InventoryCrafting inventoryCrafting = new InventoryCrafting(new Container()
     {
         public boolean canInteractWith(EntityPlayer playerIn)
         { return false; }
     }, 2, 1);
-    private int alpacaTimer;
-    private EntityAIEatGrass entityAIEatGrass;
 
     public EntityAlpacaWoolTFC(World worldIn)
     {
@@ -147,9 +143,6 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         this.dataManager.register(DYE_COLOR, (byte) 0);
     }
 
-    public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos)
-    { return !this.getSheared() && !this.isChild(); }
-
     public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
         this.setSheared(true);
@@ -161,26 +154,6 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
 
         this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
         return ret;
-    }
-
-    protected void initEntityAI()
-    {
-        this.entityAIEatGrass = new EntityAIEatGrass(this);
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
-        this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
-        this.tasks.addTask(3, new EntityAITempt(this, 1.1D, Items.WHEAT, false));
-        this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
-        this.tasks.addTask(5, this.entityAIEatGrass);
-        this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
-    }
-
-    public void eatGrassBonus()
-    {
-        this.setSheared(false);
-        if (this.isChild()) { this.addGrowth(60); }
     }
 
     @Nullable
@@ -239,18 +212,6 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         return livingdata;
     }
 
-    protected void updateAITasks()
-    {
-        this.alpacaTimer = this.entityAIEatGrass.getEatingGrassTimer();
-        super.updateAITasks();
-    }
-
-    public void onLivingUpdate()
-    {
-        if (this.world.isRemote) { this.alpacaTimer = Math.max(0, this.alpacaTimer - 1); }
-        super.onLivingUpdate();
-    }
-
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
@@ -263,20 +224,6 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         super.readEntityFromNBT(compound);
         this.setSheared(compound.getBoolean("Sheared"));
         this.setFleeceColor(EnumDyeColor.byMetadata(compound.getByte("Color")));
-    }
-
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
-    {
-        player.getHeldItem(hand);
-        return super.processInteract(player, hand);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void handleStatusUpdate(byte id)
-    {
-        if (id == 10) { this.alpacaTimer = 40; }
-        else { super.handleStatusUpdate(id); }
-
     }
 
     private EnumDyeColor getDyeColorMixFromParents(EntityAnimal father, EntityAnimal mother)
