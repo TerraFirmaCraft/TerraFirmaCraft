@@ -128,6 +128,25 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
     }
 
     @Override
+    public float getEyeHeight()
+    {
+        float percent = getPercentToAdulthood();
+
+        if (percent < 0.5f)
+        {
+            return 1F * this.height;
+        }
+        else if (percent < 0.75f)
+        {
+            return 1.3F * this.height;
+        }
+        else
+        {
+            return 1.7F * this.height;
+        }
+    }
+
+    @Override
     public long gestationDays()
     {
         return DAYS_TO_FULL_GESTATION;
@@ -275,8 +294,8 @@ public class EntityAlpacaTFC extends EntityAnimalMammal implements IShearable, I
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.27D);
     }
 
     @Override

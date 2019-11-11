@@ -139,12 +139,6 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
-    }
-
-    @Override
     public int damageDropped(IBlockState state)
     {
         return 0;
@@ -186,12 +180,6 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
         }
     }
 
-    private boolean hasCrops(World worldIn, BlockPos pos)
-    {
-        Block block = worldIn.getBlockState(pos.up()).getBlock();
-        return block instanceof IPlantable && canSustainPlant(worldIn.getBlockState(pos), worldIn, pos, EnumFacing.UP, (IPlantable) block);
-    }
-
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
@@ -212,5 +200,17 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
             turnToDirt(world, pos);
         }
         return fallable;
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
+    }
+
+    private boolean hasCrops(World worldIn, BlockPos pos)
+    {
+        Block block = worldIn.getBlockState(pos.up()).getBlock();
+        return block instanceof IPlantable && canSustainPlant(worldIn.getBlockState(pos), worldIn, pos, EnumFacing.UP, (IPlantable) block);
     }
 }

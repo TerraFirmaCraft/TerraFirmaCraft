@@ -12,11 +12,9 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
-import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,13 +31,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -47,9 +42,6 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import net.dries007.tfc.Constants;
-import net.dries007.tfc.client.TFCSounds;
 
 public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
 {
@@ -115,37 +107,6 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         this.setSize(0.9F, 1.3F);
         this.inventoryCrafting.setInventorySlotContents(0, new ItemStack(Items.DYE));
         this.inventoryCrafting.setInventorySlotContents(1, new ItemStack(Items.DYE));
-    }
-
-    @SideOnly(Side.CLIENT)
-    public float getHeadRotationPointY(float p_70894_1_)
-    {
-        if (this.alpacaTimer <= 0)
-        {
-            return 0.0F;
-        }
-        else if (this.alpacaTimer >= 4 && this.alpacaTimer <= 36)
-        {
-            return 1.0F;
-        }
-        else
-        {
-            return this.alpacaTimer < 4 ? ((float) this.alpacaTimer - p_70894_1_) / 4.0F : -((float) (this.alpacaTimer - 40) - p_70894_1_) / 4.0F;
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public float getHeadRotationAngleX(float p_70890_1_)
-    {
-        if (this.alpacaTimer > 4 && this.alpacaTimer <= 36)
-        {
-            float f = ((float) (this.alpacaTimer - 4) - p_70890_1_) / 32.0F;
-            return 0.62831855F + 0.2199115F * MathHelper.sin(f * 28.7F);
-        }
-        else
-        {
-            return this.alpacaTimer > 0 ? 0.62831855F : this.rotationPitch * 0.017453292F;
-        }
     }
 
     public EnumDyeColor getFleeceColor()
@@ -216,21 +177,11 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         this.tasks.addTask(8, new EntityAILookIdle(this));
     }
 
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
-    }
-
     public void eatGrassBonus()
     {
         this.setSheared(false);
         if (this.isChild()) { this.addGrowth(60); }
     }
-
-    protected SoundEvent getAmbientSound()
-    { return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_ALPACA_CRY : TFCSounds.ANIMAL_ALPACA_SAY; }
 
     @Nullable
     protected ResourceLocation getLootTable()
@@ -326,24 +277,6 @@ public class EntityAlpacaWoolTFC extends EntityAnimal implements IShearable
         if (id == 10) { this.alpacaTimer = 40; }
         else { super.handleStatusUpdate(id); }
 
-    }
-
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
-        return TFCSounds.ANIMAL_ALPACA_HURT;
-    }
-
-    protected SoundEvent getDeathSound()
-    {
-        return TFCSounds.ANIMAL_ALPACA_DEATH;
-    }
-
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    { this.playSound(TFCSounds.ANIMAL_ALPACA_STEP, 0.15F, 1.0F); }
-
-    public float getEyeHeight()
-    {
-        return 0.95F * this.height;
     }
 
     private EnumDyeColor getDyeColorMixFromParents(EntityAnimal father, EntityAnimal mother)
