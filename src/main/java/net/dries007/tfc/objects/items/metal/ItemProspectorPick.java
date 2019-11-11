@@ -187,8 +187,8 @@ public class ItemProspectorPick extends ItemMetalTool
             if (vein.isOreBlock(blockState))
             {
                 Block block = blockState.getBlock();
-                if (vein.ore != null)
-                    if (vein.ore.isGraded() && !ignoreGrade)
+                if (vein.getOre() != null)
+                    if (vein.getOre().isGraded() && !ignoreGrade)
                         return new ItemStack(block.getItemDropped(blockState, null, 0), 1, block.getMetaFromState(blockState));
                     else
                         return new ItemStack(block.getItemDropped(blockState, null, 0), 1, 0);

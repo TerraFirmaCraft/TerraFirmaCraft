@@ -22,6 +22,7 @@ import org.apache.commons.io.FileUtils;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.collections.WeightedCollection;
+import net.dries007.tfc.world.classic.worldgen.WorldGenOreVeins;
 
 import static net.dries007.tfc.Constants.GSON;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -105,7 +106,7 @@ public enum VeinRegistry
                     values.forEach((name, veinType) -> {
                         veinType.setRegistryName(name);
                         veinTypeRegistry.put(name, veinType);
-                        weightedVeinTypes.add(veinType.weight, veinType);
+                        weightedVeinTypes.add(veinType.getWeight(), veinType);
                     });
                 }
                 catch (JsonParseException e)
@@ -124,5 +125,15 @@ public enum VeinRegistry
         {
             TerraFirmaCraft.getLog().warn("The ore vein registry is empty!! TFC will not generate any ores!");
         }
+
+        int maxRadius = 0;
+        for (VeinType type : veinTypeRegistry.values())
+        {
+            if (type.getWidth() > maxRadius)
+            {
+                maxRadius = type.getWidth();
+            }
+        }
+        WorldGenOreVeins.CHUNK_RADIUS = 1 + (maxRadius >> 4);
     }
 }
