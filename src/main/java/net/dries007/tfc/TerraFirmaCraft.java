@@ -30,7 +30,6 @@ import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCKeybindings;
 import net.dries007.tfc.client.gui.overlay.PlayerDataOverlay;
-import net.dries007.tfc.client.render.animal.RenderAnimalTFCFamiliarity;
 import net.dries007.tfc.command.*;
 import net.dries007.tfc.network.*;
 import net.dries007.tfc.objects.LootTablesTFC;
@@ -179,9 +178,8 @@ public final class TerraFirmaCraft
         {
             TFCKeybindings.init();
             // Enable overlay to render health, thirst and hunger bars, TFC style.
+            // Also renders animal familiarity
             MinecraftForge.EVENT_BUS.register(PlayerDataOverlay.getInstance());
-            // Enable to render animals familiarity
-            MinecraftForge.EVENT_BUS.register(RenderAnimalTFCFamiliarity.getInstance());
             GuiIngameForge.renderHealth = false;
             GuiIngameForge.renderArmor = false;
             GuiIngameForge.renderExperiance = false;

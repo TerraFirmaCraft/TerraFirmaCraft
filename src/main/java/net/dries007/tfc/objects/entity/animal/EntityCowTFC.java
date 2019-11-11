@@ -35,6 +35,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
 {
@@ -123,7 +124,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
 
         if (itemstack.getItem() == Items.BUCKET)
         {
-            if (this.getFamiliarity() > 0.15f && hasMilk())
+            if (this.getFamiliarity() > 0.15f && isReadyForAnimalProduct())
             {
                 player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
                 this.setMilkedDay(CalendarTFC.PLAYER_TIME.getTotalDays());
@@ -157,7 +158,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
                 {
                     player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.lowfamiliarity"));
                 }
-                else if (!hasMilk())
+                else if (!isReadyForAnimalProduct())
                 {
                     player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.empty"));
                 }
@@ -176,19 +177,20 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
         return DAYS_TO_ADULTHOOD;
     }
 
-    public long getMilkedDay()
+    @Override
+    public boolean isReadyForAnimalProduct()
+    {
+        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && (this.getMilkedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() > getMilkedDay());
+    }
+
+    protected long getMilkedDay()
     {
         return this.lastMilked;
     }
 
-    public void setMilkedDay(long value)
+    protected void setMilkedDay(long value)
     {
         this.lastMilked = value;
-    }
-
-    public boolean hasMilk()
-    {
-        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && (this.getMilkedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() > getMilkedDay());
     }
 
     @Override

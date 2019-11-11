@@ -45,7 +45,7 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
-public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
+public class EntityRabbitTFC extends EntityAnimalMammal
 {
     private static final int DAYS_TO_ADULTHOOD = 240;
     private static final int DAYS_TO_FULL_GESTATION = 30;

@@ -253,6 +253,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     @Override
     public EntityAgeable createChild(@Nonnull EntityAgeable other)
     {
+        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
         if (this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
         {
             this.fertilized = true;
@@ -261,6 +262,22 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         }
         return null;
     }
+
+    /**
+     * Ignore fall damage like vanilla chickens. Implemented here because all TFC Oviparous animals don't take fall damage.
+     * Ostriches would escape fall damage too.
+     *
+     * @param distance
+     * @param damageMultiplier
+     */
+    @Override
+    public void fall(float distance, float damageMultiplier)
+    {
+        if(this.getType() != Type.OVIPAROUS)
+        {
+            super.fall(distance, damageMultiplier);
+        }
+    } //disable fall damage for oviparous only, like vanilla
 
     @Override
     public void setScaleForAge(boolean child)

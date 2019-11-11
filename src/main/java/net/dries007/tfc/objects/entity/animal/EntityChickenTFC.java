@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -16,7 +19,11 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -30,10 +37,13 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 @ParametersAreNonnullByDefault
-public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTFC
+public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
 {
+    private static final long DEFAULT_TICKS_TO_LAY_EGGS = ICalendar.TICKS_IN_DAY;
+    private long lastLaying; //The last time(in ticks) this chicken has laid eggs
     private static final int DAYS_TO_ADULTHOOD = 124;
     private static final int DAYS_TO_HATCH_EGG = 21;
 
@@ -60,6 +70,7 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
     {
         super(worldIn, gender, birthDay);
         this.setSize(0.9F, 0.9F);
+        this.lastLaying = -1;
     }
 
     @Override
@@ -103,21 +114,10 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
     }
 
     @Override
-    public NonNullList<ItemStack> layEggs()
+    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
     {
-        NonNullList<ItemStack> eggs = super.layEggs();
-        ItemStack egg = new ItemStack(Items.EGG);
-        if (this.isFertilized())
-        {
-            IEgg cap = egg.getCapability(CapabilityEgg.CAPABILITY, null);
-            if (cap != null)
-            {
-                cap.setFertilized(new EntityChickenTFC(this.world), DAYS_TO_HATCH_EGG + CalendarTFC.PLAYER_TIME.getTotalDays());
-            }
-        }
-        this.setFertilized(false);
-        eggs.add(egg);
-        return eggs;
+        super.writeEntityToNBT(nbt);
+        nbt.setLong("laying", lastLaying);
     }
 
     @Override
@@ -173,5 +173,43 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundEvents.ENTITY_CHICKEN_STEP, 0.15F, 1.0F);
+    }
+
+    @Override
+    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.readEntityFromNBT(nbt);
+        this.lastLaying = nbt.getLong("laying");
+    }
+
+    @Override
+    public Type getType()
+    {
+        return Type.OVIPAROUS;
+    }
+
+    @Override
+    public boolean isReadyForAnimalProduct()
+    {
+        // Is ready for laying eggs?
+        return this.getGender() == Gender.FEMALE && !this.isChild() && this.getFamiliarity() > 0.15f && CalendarTFC.PLAYER_TIME.getTicks() >= this.lastLaying + DEFAULT_TICKS_TO_LAY_EGGS;
+    }
+
+    @Override
+    public List<ItemStack> getProducts()
+    {
+        List<ItemStack> eggs = new ArrayList<>();
+        ItemStack egg = new ItemStack(Items.EGG);
+        if (this.isFertilized())
+        {
+            IEgg cap = egg.getCapability(CapabilityEgg.CAPABILITY, null);
+            if (cap != null)
+            {
+                cap.setFertilized(new EntityChickenTFC(this.world), DAYS_TO_HATCH_EGG + CalendarTFC.PLAYER_TIME.getTotalDays());
+            }
+        }
+        this.setFertilized(false);
+        eggs.add(egg);
+        return eggs;
     }
 }

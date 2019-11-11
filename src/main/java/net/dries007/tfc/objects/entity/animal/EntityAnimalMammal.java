@@ -16,7 +16,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 @ParametersAreNonnullByDefault
 public abstract class EntityAnimalMammal extends EntityAnimalTFC
 {
-    private long pregnantTime; //The time(in days) this entity became pregnant
+    private long pregnantTime; // The time(in days) this entity became pregnant
 
     @SuppressWarnings("unused")
     public EntityAnimalMammal(World worldIn)
@@ -58,7 +58,8 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
         this.pregnantTime = nbt.getLong("pregnant");
     }
 
-    public void onFertilized(EntityAnimalTFC male)
+    @Override
+    public void onFertilized(IAnimalTFC male)
     {
         //Mark the day this female became pregnant
         this.pregnantTime = CalendarTFC.PLAYER_TIME.getTotalDays();
@@ -75,4 +76,10 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
      * @return long value in days
      */
     public abstract long gestationDays();
+
+    @Override
+    public Type getType()
+    {
+        return Type.MAMMAL;
+    }
 }

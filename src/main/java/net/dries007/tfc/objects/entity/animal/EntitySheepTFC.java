@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,8 +41,9 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
-public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IAnimalTFC
+public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
 {
     private static final int DAYS_TO_ADULTHOOD = 360;
     private static final int DAYS_TO_GROW_WOOL = 7;
@@ -138,9 +141,22 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
     }
 
     @Override
-    public boolean isShearable(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos)
+    public boolean isReadyForAnimalProduct()
     {
         return getAge() == Age.ADULT && hasWool();
+    }
+
+    @Override
+    public List<ItemStack> getProducts()
+    {
+        // Only white for now
+        return Collections.singletonList(new ItemStack(ItemsTFC.WOOL, 1));
+    }
+
+    @Override
+    public boolean isShearable(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos)
+    {
+        return isReadyForAnimalProduct();
     }
 
     @Nonnull
@@ -148,12 +164,16 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IA
     public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
         this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
-        int i = 1 + this.rand.nextInt(3);
+        List<ItemStack> products = getProducts();
+        // Fortune makes this less random and more towards the maximum (3) amount.
+        int i = 1 + fortune + this.rand.nextInt(3 - Math.min(2, fortune));
 
-        java.util.List<ItemStack> ret = new java.util.ArrayList<>();
-        for (int j = 0; j < i; ++j)
-            ret.add(new ItemStack(ItemsTFC.WOOL, 1, this.getDyeColor().getMetadata()));
-
+        List<ItemStack> ret = new ArrayList<>();
+        for (ItemStack stack : products)
+        {
+            stack.setCount(i);
+            ret.add(stack);
+        }
         this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
         return ret;
     }

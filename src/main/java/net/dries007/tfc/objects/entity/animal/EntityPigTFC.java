@@ -28,7 +28,7 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
-public class EntityPigTFC extends EntityAnimalMammal implements IAnimalTFC
+public class EntityPigTFC extends EntityAnimalMammal
 {
     private static final int DAYS_TO_ADULTHOOD = 450;
     private static final int DAYS_TO_FULL_GESTATION = 111;
