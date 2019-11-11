@@ -556,13 +556,14 @@ public final class CommonEventHandler
     @SubscribeEvent
     public static void onFluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event)
     {
+        // Since cobble is a gravity block, placing it can lead to world crashes, so we avoid doing that and place rhyolite instead
         if (event.getNewState().getBlock() == Blocks.STONE)
         {
             event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.RAW).getDefaultState());
         }
-        else if (event.getNewState().getBlock() == Blocks.COBBLESTONE)
+        if (event.getNewState().getBlock() == Blocks.COBBLESTONE)
         {
-            event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.COBBLE).getDefaultState());
+            event.setNewState(BlockRockVariant.get(Rock.RHYOLITE, Rock.Type.RAW).getDefaultState());
         }
     }
 

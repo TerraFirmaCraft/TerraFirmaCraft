@@ -13,10 +13,8 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.nbt.*;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -26,13 +24,13 @@ import net.minecraftforge.registries.ForgeRegistry;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.NBTBuilder;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.classic.DataLayer;
+import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER2;
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER3;
@@ -123,7 +121,7 @@ public final class ChunkDataTFC
     private float avgTemp;
     private float floraDensity;
     private float floraDiversity;
-    private Set<Ore> chunkOres = new HashSet<>();
+    private Set<Vein> generatedVeins = new HashSet<>();
     private int chunkWorkage;
     private long protectedTicks;
 
@@ -159,11 +157,11 @@ public final class ChunkDataTFC
      * Adds generated ores to this chunk list of ores
      * Should be used by ore vein generators to save in this chunk which ores generated here
      *
-     * @param ore the ore added by ore vein generator
+     * @param vein the ore added by ore vein generator
      */
-    public void addGeneratedOre(@Nonnull Ore ore)
+    public void markVeinGenerated(@Nonnull Vein vein)
     {
-        chunkOres.add(ore);
+        generatedVeins.add(vein);
     }
 
     /**
@@ -171,9 +169,9 @@ public final class ChunkDataTFC
      *
      * @return the immutable set containing all ores that generated in this chunk
      */
-    public Set<Ore> getChunkOres()
+    public Set<Vein> getGeneratedVeins()
     {
-        return ImmutableSet.copyOf(chunkOres);
+        return generatedVeins;
     }
 
     public boolean canWork(int amount)
@@ -446,18 +444,12 @@ public final class ChunkDataTFC
             root.setInteger("chunkWorkage", instance.chunkWorkage);
             root.setLong("protectedTicks", instance.protectedTicks);
 
-            if (instance.chunkOres.size() > 0)
+            NBTTagList veinList = new NBTTagList();
+            for (Vein vein : instance.generatedVeins)
             {
-                NBTTagList oreList = new NBTTagList();
-                for (Ore ore : instance.chunkOres)
-                {
-                    NBTTagCompound nbtOre = new NBTTagCompound();
-                    //noinspection ConstantConditions
-                    nbtOre.setString("oreRegistry", ore.getRegistryName().toString());
-                    oreList.appendTag(nbtOre);
-                }
-                root.setTag("chunkOres", oreList);
+                veinList.appendTag(Vein.serialize(vein));
             }
+            root.setTag("veins", veinList);
 
             return root;
         }
@@ -492,17 +484,12 @@ public final class ChunkDataTFC
                 instance.chunkWorkage = root.getInteger("chunkWorkage");
                 instance.protectedTicks = root.getLong("protectedTicks");
 
-                instance.chunkOres = new HashSet<>();
+                instance.generatedVeins = new HashSet<>();
 
-                if (root.hasKey("chunkOres"))
+                NBTTagList veinList = root.getTagList("veins", Constants.NBT.TAG_COMPOUND);
+                for (int i = 0; i < veinList.tagCount(); i++)
                 {
-                    NBTTagList oreList = root.getTagList("chunkOres", Constants.NBT.TAG_COMPOUND);
-                    for (int i = 0; i < oreList.tagCount(); i++)
-                    {
-                        NBTTagCompound nbtOre = oreList.getCompoundTagAt(i);
-                        Ore ore = TFCRegistries.ORES.getValue(new ResourceLocation(nbtOre.getString("oreRegistry")));
-                        instance.chunkOres.add(ore);
-                    }
+                    instance.generatedVeins.add(Vein.deserialize(veinList.getCompoundTagAt(i)));
                 }
 
                 instance.initialized = true;

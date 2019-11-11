@@ -73,11 +73,14 @@ public class WorldGenLooseRocks implements IWorldGenerator
                 if (!veins.isEmpty())
                 {
                     veins.removeIf(v -> {
-                        if (!v.type.hasLooseRocks() || v.getHighestY() < lowestYScan) return true;
+                        if (!v.getType().hasLooseRocks() || v.getHighestY() < lowestYScan)
+                        {
+                            return true;
+                        }
                         for (ChunkDataTFC data : chunkData)
                         {
-                            // No need to check for initialized chunk data, ore hashset will be empty.
-                            if (data.getChunkOres().contains(v.type.ore))
+                            // No need to check for initialized chunk data, ores will be empty.
+                            if (data.getGeneratedVeins().contains(v))
                             {
                                 return false;
                             }
@@ -99,7 +102,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
                     zoff + random.nextInt(16)
                 );
                 Rock rock = chunkData[0].getRock1(pos);
-                generateRock(world, pos.up(world.getTopSolidOrLiquidBlock(pos).getY()), getRandomVein(veins, random), rock);
+                generateRock(world, pos.up(world.getTopSolidOrLiquidBlock(pos).getY()), getRandomVein(veins, pos, random), rock);
             }
         }
     }
@@ -118,7 +121,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
                 ItemStack stack = ItemStack.EMPTY;
                 if (vein != null)
                 {
-                    stack = vein.type.getLooseRockItem();
+                    stack = vein.getType().getLooseRockItem();
                 }
                 if (stack.isEmpty())
                 {
@@ -130,11 +133,15 @@ public class WorldGenLooseRocks implements IWorldGenerator
     }
 
     @Nullable
-    private Vein getRandomVein(List<Vein> veins, Random rand)
+    private Vein getRandomVein(List<Vein> veins, BlockPos pos, Random rand)
     {
         if (!veins.isEmpty() && rand.nextDouble() < 0.4)
         {
-            return veins.get(rand.nextInt(veins.size()));
+            Vein vein = veins.get(rand.nextInt(veins.size()));
+            if (vein.inRange(pos.getX(), pos.getZ(), 8))
+            {
+                return vein;
+            }
         }
         return null;
     }

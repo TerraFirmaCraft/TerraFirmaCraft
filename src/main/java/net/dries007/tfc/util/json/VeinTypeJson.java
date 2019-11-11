@@ -36,12 +36,13 @@ public class VeinTypeJson implements JsonDeserializer<VeinType>
         int maxY = JsonUtils.getInt(jsonObject, "maximum_height");
         if (minY > maxY)
         {
-            throw new JsonParseException("minimum height cannot be greater than maximum height!");
+            throw new JsonParseException("Minimum height cannot be greater than maximum height!");
         }
         int rarity = JsonUtils.getInt(jsonObject, "rarity");
         int density = JsonUtils.getInt(jsonObject, "density");
+        int width = JsonUtils.getInt(jsonObject, "width");
+        int height = JsonUtils.getInt(jsonObject, "height");
 
-        VeinType.Size size = VeinType.Size.valueOf(JsonUtils.getString(jsonObject, "size").toUpperCase());
         VeinType.Shape shape = VeinType.Shape.valueOf(JsonUtils.getString(jsonObject, "shape").toUpperCase());
 
         JsonArray rocks = JsonUtils.getJsonArray(jsonObject, "base_rocks");
@@ -85,13 +86,13 @@ public class VeinTypeJson implements JsonDeserializer<VeinType>
                 {
                     throw new JsonParseException("Unable to find a matching IBlockState for block " + oreName + " and metadata: " + meta);
                 }
-                return new VeinType.Special(oreState, size, shape, blocks, rarity, minY, maxY, density);
+                return new VeinType.CustomVeinType(oreState, blocks, shape, width, height, rarity, minY, maxY, density);
             }
             else
             {
                 throw new JsonParseException("Unrecognized ore '" + oreName + "'");
             }
         }
-        return new VeinType(ore, size, shape, blocks, rarity, minY, maxY, density);
+        return new VeinType(ore, blocks, shape, width, height, rarity, minY, maxY, density);
     }
 }
