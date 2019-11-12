@@ -26,6 +26,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.oredict.OreDictionary;
@@ -39,6 +40,9 @@ import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
 {
@@ -192,7 +196,33 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
     public boolean isReadyForAnimalProduct()
     {
         // Is ready for laying eggs?
-        return this.getGender() == Gender.FEMALE && !this.isChild() && this.getFamiliarity() > 0.15f && CalendarTFC.PLAYER_TIME.getTicks() >= this.lastLaying + DEFAULT_TICKS_TO_LAY_EGGS;
+        return this.getFamiliarity() > 0.15f && hasEggs();
+    }
+
+    @Override
+    public TextComponentTranslation getTooltip()
+    {
+        if (this.getGender() == Gender.MALE)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.male_egg");
+        }
+        else if (this.getAge() == Age.OLD)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.old", getAnimalName());
+        }
+        else if (this.getAge() == Age.CHILD)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getAnimalName());
+        }
+        else if (getFamiliarity() <= 0.15f)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.low_familiarity", getAnimalName());
+        }
+        else if (!hasEggs())
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.no_egg", getAnimalName());
+        }
+        return null;
     }
 
     @Override
@@ -211,5 +241,10 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
         this.setFertilized(false);
         eggs.add(egg);
         return eggs;
+    }
+
+    protected boolean hasEggs()
+    {
+        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && CalendarTFC.PLAYER_TIME.getTicks() >= this.lastLaying + DEFAULT_TICKS_TO_LAY_EGGS;
     }
 }

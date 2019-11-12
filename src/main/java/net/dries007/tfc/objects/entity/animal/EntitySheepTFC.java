@@ -26,9 +26,11 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -38,8 +40,12 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
@@ -143,7 +149,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     @Override
     public boolean isReadyForAnimalProduct()
     {
-        return getAge() == Age.ADULT && hasWool();
+        return getAge() == Age.ADULT && hasWool() && getFamiliarity() > 0.15f;
     }
 
     @Override
@@ -176,6 +182,24 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
         }
         this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
         return ret;
+    }
+
+    @Override
+    public TextComponentTranslation getTooltip()
+    {
+        if (this.getAge() == Age.CHILD)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getAnimalName());
+        }
+        else if (getFamiliarity() <= 0.15f)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.low_familiarity", getAnimalName());
+        }
+        else if (!hasWool())
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.no_wool", getAnimalName());
+        }
+        return null;
     }
 
     public int getShearedDay()
@@ -260,5 +284,53 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
+    }
+
+    @Override
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
+    {
+        ItemStack stack = player.getHeldItem(hand);
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "knife"))
+        {
+            if (!this.world.isRemote)
+            {
+                if (this.isReadyForAnimalProduct())
+                {
+                    stack.damageItem(1, player);
+                    ItemStack woolStack = new ItemStack(ItemsTFC.WOOL, 1);
+                    Helpers.spawnItemStack(player.world, new BlockPos(this.posX, this.posY, this.posZ), woolStack);
+                    this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
+                    this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+                }
+                else
+                {
+                    TextComponentTranslation tooltip = getTooltip();
+                    if (tooltip != null)
+                    {
+                        player.sendMessage(tooltip);
+                    }
+                }
+            }
+            return true;
+        }
+        else if (OreDictionaryHelper.doesStackMatchOre(stack, "shears"))
+        {
+            if (!this.world.isRemote)
+            {
+                if (!this.isReadyForAnimalProduct())
+                {
+                    TextComponentTranslation tooltip = getTooltip();
+                    if (tooltip != null)
+                    {
+                        player.sendMessage(tooltip);
+                    }
+                }
+            }
+            return false; // Process done in #onSheared by vanilla
+        }
+        else
+        {
+            return super.processInteract(player, hand);
+        }
     }
 }

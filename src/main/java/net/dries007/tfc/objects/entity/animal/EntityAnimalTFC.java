@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -238,9 +239,9 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
                     if (!this.world.isRemote)
                     {
                         //Show tooltips
-                        if (this.isFertilized() && this instanceof EntityAnimalMammal)
+                        if (this.isFertilized() && this.getType() == Type.MAMMAL)
                         {
-                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.pregnant"));
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.mating.pregnant", getName()));
                         }
                     }
                 }
@@ -305,5 +306,26 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
             }
         }
         return false;
+    }
+
+    @Nonnull
+    @Override
+    public String getName()
+    {
+        if (this.hasCustomName())
+        {
+            return this.getCustomNameTag();
+        }
+        else
+        {
+            return getAnimalName().getFormattedText();
+        }
+    }
+
+    @Override
+    public TextComponentTranslation getAnimalName()
+    {
+        String entityString = EntityList.getEntityString(this);
+        return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
     }
 }
