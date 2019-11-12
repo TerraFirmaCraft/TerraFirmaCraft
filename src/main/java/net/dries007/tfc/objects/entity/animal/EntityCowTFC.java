@@ -26,6 +26,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidActionResult;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.Constants;
@@ -121,23 +125,18 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
     public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);
+        FluidActionResult fillResult = FluidUtil.tryFillContainer(itemstack, FluidUtil.getFluidHandler(new ItemStack(Items.MILK_BUCKET)),
+            Fluid.BUCKET_VOLUME, player, false);
 
-        if (itemstack.getItem() == Items.BUCKET)
+        // First check if it is possible to fill the player's held item with milk
+        if (fillResult.isSuccess())
         {
             if (this.getFamiliarity() > 0.15f && isReadyForAnimalProduct())
             {
                 player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
                 this.setMilkedDay(CalendarTFC.PLAYER_TIME.getTotalDays());
-                itemstack.shrink(1);
-
-                if (itemstack.isEmpty())
-                {
-                    player.setHeldItem(hand, new ItemStack(Items.MILK_BUCKET));
-                }
-                else if (!player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET)))
-                {
-                    player.dropItem(new ItemStack(Items.MILK_BUCKET), false);
-                }
+                player.setHeldItem(hand, FluidUtil.tryFillContainerAndStow(itemstack, FluidUtil.getFluidHandler(new ItemStack(Items.MILK_BUCKET)),
+                    new PlayerInvWrapper(player.inventory), Fluid.BUCKET_VOLUME, player, true).getResult());
             }
             else if (!this.world.isRemote)
             {
