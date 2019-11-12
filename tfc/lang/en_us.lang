@@ -64,16 +64,21 @@ tfc.tooltip.smithing_skill=Skill Bonus: %0.1f%%
 tfc.tooltip.crucible_alloy=Contains %1$d mB of %2$s
 
 ## Animal Tooltips / Messages
-tfc.tooltip.animal.old=This animal is too old to mate.
-tfc.tooltip.animal.lowfamiliarity=This animal has low familiarity to mate.
-tfc.tooltip.animal.pregnant=This female is pregnant!
-tfc.tooltip.animal.resting=This animal is resting from today's mating.
+tfc.tooltip.animal.mating.old=This %s is too old to mate.
+tfc.tooltip.animal.mating.low_familiarity=This %s has low familiarity to mate.
+tfc.tooltip.animal.mating.pregnant=This %s is pregnant!
+tfc.tooltip.animal.mating.resting=This %s is resting from today's mating.
 
-tfc.tooltip.animal.milk.male=This is a bull!
-tfc.tooltip.animal.milk.old=This cow is too old to be milked.
-tfc.tooltip.animal.milk.child=This cow is too young to be milked.
-tfc.tooltip.animal.milk.lowfamiliarity=This cow has low familiarity to let you milk it.
-tfc.tooltip.animal.milk.empty=This cow has been milked today.
+tfc.tooltip.animal.product.old=This %s is too young.
+tfc.tooltip.animal.product.young=This %s is too old.
+tfc.tooltip.animal.product.low_familiarity=This %s has low familiarity.
+
+tfc.tooltip.animal.product.male_milk=This is a male!
+tfc.tooltip.animal.product.male_egg=This is a male!
+
+tfc.tooltip.animal.product.no_wool=This %s wool has not grown up yet.
+tfc.tooltip.animal.product.no_milk=This %s is not ready to be milked.
+tfc.tooltip.animal.product.no_egg=This %s is not ready to lay eggs.
 
 ## Command Tooltips / Messages
 tfc.tooltip.set_month_length=Set Month Length to %d days.
@@ -3713,6 +3718,9 @@ item.tfc.animal.product.wool_yarn.name=Wool Yarn
 item.tfc.animal.product.wool_cloth.name=Wool Cloth
 item.tfc.animal.product.silk_cloth.name=Silk Cloth
 
+## Entities
+
+# Animals
 entity.sheeptfc.name=Sheep
 entity.cowtfc.name=Cow
 entity.beartfc.name=Bear
@@ -3727,3 +3735,27 @@ entity.donkeytfc.name=Donkey
 entity.muletfc.name=Mule
 
 death.attack.dehydration=%1$s died of dehydration
+
+# Animal names by gender
+tfc.animal.sheeptfc.male=Sheep♂
+tfc.animal.sheeptfc.female=Sheep♀
+tfc.animal.cowtfc.male=Bull
+tfc.animal.cowtfc.female=Cow
+tfc.animal.beartfc.male=Bear♂
+tfc.animal.beartfc.female=Bear♀
+tfc.animal.pigtfc.male=Pig♂
+tfc.animal.pigtfc.female=Pig♀
+tfc.animal.chickentfc.male=Rooster
+tfc.animal.chickentfc.female=Chicken
+tfc.animal.pheasanttfc.male=Pheasant♂
+tfc.animal.pheasanttfc.female=Pheasant♀
+tfc.animal.rabbittfc.male=Rabbit♂
+tfc.animal.rabbittfc.female=Rabbit♀
+tfc.animal.wolftfc.male=Wolf♂
+tfc.animal.wolftfc.female=Wolf♀
+tfc.animal.horsetfc.male=Horse♂
+tfc.animal.horsetfc.female=Horse♀
+tfc.animal.donkeytfc.male=Donkey♂
+tfc.animal.donkeytfc.female=Donkey♀
+tfc.animal.muletfc.male=Mule♂
+tfc.animal.muletfc.female=Mule♀
