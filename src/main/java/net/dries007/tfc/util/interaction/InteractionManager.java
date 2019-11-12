@@ -181,7 +181,7 @@ public final class InteractionManager
             return EnumActionResult.FAIL;
         });
 
-        RIGHT_CLICK_ACTIONS.put(stack -> Items.GLASS_BOTTLE.equals(stack.getItem()), (worldIn, playerIn, handIn) -> {
+        RIGHT_CLICK_ACTIONS.put(stack -> stack.getItem() == Items.GLASS_BOTTLE, (worldIn, playerIn, handIn) -> {
             RayTraceResult traceResult = Helpers.rayTrace(worldIn, playerIn, true);
             if (traceResult == null)
             {
