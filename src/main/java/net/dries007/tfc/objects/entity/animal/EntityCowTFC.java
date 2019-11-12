@@ -41,7 +41,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
-public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
+public class EntityCowTFC extends EntityAnimalMammal
 {
     private static final int DAYS_TO_ADULTHOOD = 1080;
     private static final int DAYS_TO_FULL_GESTATION = 270;
@@ -141,25 +141,10 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
             else if (!this.world.isRemote)
             {
                 //Return chat message indicating why this entity isn't giving milk
-                if (this.getGender() == Gender.MALE)
+                TextComponentTranslation tooltip = getTooltip();
+                if (tooltip != null)
                 {
-                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.male"));
-                }
-                else if (this.getAge() == Age.OLD)
-                {
-                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.old"));
-                }
-                else if (this.getAge() == Age.CHILD)
-                {
-                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.child"));
-                }
-                else if (getFamiliarity() <= 0.15f)
-                {
-                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.lowfamiliarity"));
-                }
-                else if (!isReadyForAnimalProduct())
-                {
-                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.empty"));
+                    player.sendMessage(tooltip);
                 }
             }
             return true;
@@ -179,7 +164,33 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
     @Override
     public boolean isReadyForAnimalProduct()
     {
-        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && (this.getMilkedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() > getMilkedDay());
+        return getFamiliarity() > 0.15f && hasMilk();
+    }
+
+    @Override
+    public TextComponentTranslation getTooltip()
+    {
+        if (this.getGender() == Gender.MALE)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.male_milk");
+        }
+        else if (this.getAge() == Age.OLD)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.old", getAnimalName());
+        }
+        else if (this.getAge() == Age.CHILD)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getAnimalName());
+        }
+        else if (getFamiliarity() <= 0.15f)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.low_familiarity", getAnimalName());
+        }
+        else if (!hasMilk())
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.no_milk", getAnimalName());
+        }
+        return null;
     }
 
     protected long getMilkedDay()
@@ -245,5 +256,10 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundEvents.ENTITY_COW_STEP, 0.15F, 1.0F);
+    }
+
+    protected boolean hasMilk()
+    {
+        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && (this.getMilkedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() > getMilkedDay());
     }
 }
