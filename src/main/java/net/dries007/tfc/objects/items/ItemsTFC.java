@@ -320,7 +320,8 @@ public final class ItemsTFC
         TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are normal. The override is intended. ;)");
         event.getRegistry().registerAll(
             new ItemSnow(Blocks.SNOW_LAYER).setRegistryName("minecraft", "snow_layer"),
-            new ItemBlockTorch(Blocks.TORCH).setRegistryName("minecraft", "torch")
+            new ItemBlockTorch(Blocks.TORCH).setRegistryName("minecraft", "torch"),
+            new ItemOverriddenGlassBottle()
         );
     }
 

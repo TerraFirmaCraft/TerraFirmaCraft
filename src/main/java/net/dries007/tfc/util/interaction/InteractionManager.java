@@ -10,16 +10,13 @@ import java.util.Map;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -29,7 +26,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -180,20 +176,6 @@ public final class InteractionManager
             }
             return EnumActionResult.FAIL;
         });
-
-        RIGHT_CLICK_ACTIONS.put(stack -> stack.getItem() == Items.GLASS_BOTTLE, (worldIn, playerIn, handIn) -> {
-            RayTraceResult traceResult = Helpers.rayTrace(worldIn, playerIn, true);
-            if (traceResult == null)
-            {
-                return EnumActionResult.PASS;
-            }
-
-            Block rayTracedBlock = worldIn.getBlockState(traceResult.getBlockPos()).getBlock();
-            boolean isTfcFluid = FluidsTFC.getAllWrappers().stream()
-                .anyMatch(fluidWrapper -> fluidWrapper.get().getBlock().equals(rayTracedBlock));
-
-            return isTfcFluid ? EnumActionResult.FAIL : EnumActionResult.PASS;
-        });
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -233,11 +215,8 @@ public final class InteractionManager
             {
                 result = ServerInteractionManager.processRightClickItem(event, action);
             }
-            if (result != EnumActionResult.PASS)
-            {
-                event.setCancellationResult(result);
-                event.setCanceled(true);
-            }
+            event.setCancellationResult(result);
+            event.setCanceled(true);
         }
     }
 
