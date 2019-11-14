@@ -232,7 +232,6 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
                 cap.setFertilized(new EntityChickenTFC(this.world), DAYS_TO_HATCH_EGG + CalendarTFC.PLAYER_TIME.getTotalDays());
             }
         }
-        this.setFertilized(false);
         eggs.add(egg);
         return eggs;
     }
