@@ -51,12 +51,6 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
     private static final int DAYS_TO_ADULTHOOD = 124;
     private static final int DAYS_TO_HATCH_EGG = 21;
 
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
-
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;
     public float destPos;
@@ -67,7 +61,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
     public EntityChickenTFC(World worldIn)
     {
         this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
-            getRandomGrowth());
+            getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityChickenTFC(World worldIn, Gender gender, int birthDay)

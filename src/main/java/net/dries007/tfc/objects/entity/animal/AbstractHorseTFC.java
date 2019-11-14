@@ -56,7 +56,6 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIRunAroundLikeCrazyTFC;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryChangedListener, IJumpingMount
 {
@@ -78,12 +77,6 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
     {
         EntityLiving.registerFixesMob(fixer, entityClass);
         fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(entityClass, "SaddleItem"));
-    }
-
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
 
     public int tailCounter;
@@ -110,7 +103,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
     @SuppressWarnings("unused")
     public AbstractHorseTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()), getRandomGrowth());
+        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public AbstractHorseTFC(World worldIn, Gender gender, int birthDay)
@@ -645,7 +638,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(STATUS, Byte.valueOf((byte) 0));
+        this.dataManager.register(STATUS, (byte) 0);
         this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
     }
 
@@ -939,7 +932,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
 
     protected boolean getHorseWatchableBoolean(int p_110233_1_)
     {
-        return (this.dataManager.get(STATUS).byteValue() & p_110233_1_) != 0;
+        return (this.dataManager.get(STATUS) & p_110233_1_) != 0;
     }
 
     protected void onLeashDistance(float p_142017_1_)
@@ -1092,15 +1085,15 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
 
     protected void setHorseWatchableBoolean(int p_110208_1_, boolean p_110208_2_)
     {
-        byte b0 = this.dataManager.get(STATUS).byteValue();
+        byte b0 = this.dataManager.get(STATUS);
 
         if (p_110208_2_)
         {
-            this.dataManager.set(STATUS, Byte.valueOf((byte) (b0 | p_110208_1_)));
+            this.dataManager.set(STATUS, (byte) (b0 | p_110208_1_));
         }
         else
         {
-            this.dataManager.set(STATUS, Byte.valueOf((byte) (b0 & ~p_110208_1_)));
+            this.dataManager.set(STATUS, (byte) (b0 & ~p_110208_1_));
         }
     }
 

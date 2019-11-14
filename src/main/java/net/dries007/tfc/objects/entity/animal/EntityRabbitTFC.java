@@ -57,12 +57,6 @@ public class EntityRabbitTFC extends EntityAnimalMammal
         EntityLiving.registerFixesMob(fixer, EntityRabbitTFC.class);
     }
 
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
-
     private int jumpTicks;
     private int jumpDuration;
     private boolean wasOnGround;
@@ -71,7 +65,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal
     @SuppressWarnings("unused")
     public EntityRabbitTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()), getRandomGrowth());
+        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityRabbitTFC(World worldIn, Gender gender, int birthDay)

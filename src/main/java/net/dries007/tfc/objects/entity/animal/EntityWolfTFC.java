@@ -62,12 +62,6 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         EntityLiving.registerFixesMob(fixer, EntityWolfTFC.class);
     }
 
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
-
     private float headRotationCourse;
     private float headRotationCourseOld;
     private boolean isWet;
@@ -78,7 +72,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     @SuppressWarnings("unused")
     public EntityWolfTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()), getRandomGrowth());
+        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityWolfTFC(World worldIn, Gender gender, int birthDay)

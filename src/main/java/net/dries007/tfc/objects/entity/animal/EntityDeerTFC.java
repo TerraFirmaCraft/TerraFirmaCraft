@@ -33,17 +33,11 @@ public class EntityDeerTFC extends EntityAnimalMammal
     private static final int DAYS_TO_ADULTHOOD = 720;
     private static final int DAYS_TO_FULL_GESTATION = 210;
 
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
-
     @SuppressWarnings("unused")
     public EntityDeerTFC(World worldIn)
     {
         this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
-            getRandomGrowth());
+            getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityDeerTFC(World worldIn, Gender gender, int birthDay)

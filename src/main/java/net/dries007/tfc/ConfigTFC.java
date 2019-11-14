@@ -307,6 +307,20 @@ public class ConfigTFC
         @Config.Comment("The default length of a month (in days) when a new world is started. This can be changed in existing worlds via the /timetfc command.")
         @Config.LangKey("config." + MOD_ID + ".general.defaultMonthLength")
         public int defaultMonthLength = 8;
+
+        @Config.Comment("Should animals became old and die?")
+        @Config.LangKey("config." + MOD_ID + ".general.enableAnimalAging")
+        public boolean enableAnimalAging = true;
+
+        @Config.Comment("How fast animals became old?")
+        @Config.RangeDouble(min = 1, max = 50)
+        @Config.LangKey("config." + MOD_ID + ".general.factorAnimalAging")
+        public double factorAnimalAging = 3;
+
+        @Config.Comment("Chance of animal dying (checked every in-game day) after it became old")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.chanceAnimalDeath")
+        public double chanceAnimalDeath = 0.05;
     }
 
     public static class ClientCFG
