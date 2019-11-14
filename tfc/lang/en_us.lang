@@ -308,6 +308,16 @@ config.tfc.general.charcoalPitTime.tooltip=The time required for a charcoal pit 
 config.tfc.general.defaultMonthLength=Default Month Length
 config.tfc.general.defaultMonthLength.tooltip=The default length of a month (in days) when a new world is started. This can be changed in existing worlds via the /timetfc command.
 
+config.tfc.general.enableAnimalAging=Enable Aging Animals
+config.tfc.general.enableAnimalAging.tooltip=Should animals became old and die?
+
+config.tfc.general.factorAnimalAging=Animal Aging Factor
+config.tfc.general.factorAnimalAging.tooltip=How fast animals became old?
+
+config.tfc.general.chanceAnimalDeath=Animal Death Chance
+config.tfc.general.chanceAnimalDeath.tooltip=Chance of animal dying (checked every in-game day) after it became old
+
+
 
 ## Client Config
 config.tfc.general.woodenBucketWhitelist=Wooden Bucket Fluid Whitelist
