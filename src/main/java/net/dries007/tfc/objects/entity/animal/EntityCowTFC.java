@@ -46,19 +46,13 @@ public class EntityCowTFC extends EntityAnimalMammal
     private static final int DAYS_TO_ADULTHOOD = 1080;
     private static final int DAYS_TO_FULL_GESTATION = 270;
 
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
-
     private long lastMilked;
 
     @SuppressWarnings("unused")
     public EntityCowTFC(World worldIn)
     {
         this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
-            getRandomGrowth());
+            getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityCowTFC(World worldIn, Gender gender, int birthDay)

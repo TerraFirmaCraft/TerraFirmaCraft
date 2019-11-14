@@ -24,18 +24,11 @@ import net.minecraft.world.biome.Biome;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
 public class EntityPheasantTFC extends EntityAnimalTFC
 {
     private static final int DAYS_TO_ADULTHOOD = 60;
-
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
 
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;
@@ -48,7 +41,7 @@ public class EntityPheasantTFC extends EntityAnimalTFC
     public EntityPheasantTFC(World worldIn)
     {
         this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
-            getRandomGrowth());
+            getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityPheasantTFC(World worldIn, Gender gender, int birthDay)

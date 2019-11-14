@@ -58,17 +58,10 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     private static final DataParameter<Integer> DYE_COLOR = EntityDataManager.createKey(EntitySheepTFC.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> SHEARED = EntityDataManager.createKey(EntitySheepTFC.class, DataSerializers.VARINT);
 
-    private static int getRandomGrowth()
-    {
-        // Used when natural spawning sheeps
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4); // 3 out of 4 natural spawned sheeps will be adults
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
-
     public EntitySheepTFC(World worldIn)
     {
         this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
-            getRandomGrowth(),
+            getRandomGrowth(DAYS_TO_ADULTHOOD),
             EntitySheep.getRandomSheepColor(Constants.RNG));
     }
 
@@ -149,7 +142,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     @Override
     public boolean isReadyForAnimalProduct()
     {
-        return getAge() == Age.ADULT && hasWool() && getFamiliarity() > 0.15f;
+        return getAge() != Age.CHILD && hasWool() && getFamiliarity() > 0.15f;
     }
 
     @Override

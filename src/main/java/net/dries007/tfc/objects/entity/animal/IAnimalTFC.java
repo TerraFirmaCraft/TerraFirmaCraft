@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.biome.Biome;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
@@ -112,8 +113,19 @@ public interface IAnimalTFC
      */
     default Age getAge()
     {
-        // Old Age isn't being used for the time being
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + getDaysToAdulthood() ? Age.ADULT : Age.CHILD;
+        long deltaDays = CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay();
+        if (ConfigTFC.GENERAL.enableAnimalAging && deltaDays > getDaysToAdulthood() * ConfigTFC.GENERAL.factorAnimalAging)
+        {
+            return Age.OLD;
+        }
+        else if (deltaDays > getDaysToAdulthood())
+        {
+            return Age.ADULT;
+        }
+        else
+        {
+            return Age.CHILD;
+        }
     }
 
     /**

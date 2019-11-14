@@ -33,17 +33,11 @@ public class EntityPigTFC extends EntityAnimalMammal
     private static final int DAYS_TO_ADULTHOOD = 450;
     private static final int DAYS_TO_FULL_GESTATION = 111;
 
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
-
     @SuppressWarnings("unused")
     public EntityPigTFC(World worldIn)
     {
         this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
-            getRandomGrowth());
+            getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityPigTFC(World worldIn, Gender gender, int birthDay)

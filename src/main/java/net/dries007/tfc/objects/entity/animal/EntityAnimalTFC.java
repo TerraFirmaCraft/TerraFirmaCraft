@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import java.util.List;
+import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -24,6 +25,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.Constants;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -41,8 +44,28 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
 
+    /**
+     * Gets a random growth for this animal
+     * ** Static ** So it can be used by class constructor
+     *
+     * @param daysToAdulthood the days for this animal to became adult (for randomizing the amount of days)
+     * @return a random long value containing the days of growth for this animal to spawn
+     */
+    protected static int getRandomGrowth(int daysToAdulthood)
+    {
+        int lifeTimeDays = Constants.RNG.nextInt(daysToAdulthood * (int) (ConfigTFC.GENERAL.enableAnimalAging ? ConfigTFC.GENERAL.factorAnimalAging * 1.25D : 4));
+        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
+    }
+
     private boolean fertilized; //Is this female fertilized? (in oviparous, the egg laying is fertilized, for mammals this is pregnancy)
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
+    private long lastDeath; //Last time(in days) this entity checked for dying of old age
+
+    @SuppressWarnings("unused")
+    public EntityAnimalTFC(World worldIn)
+    {
+        super(worldIn);
+    }
 
     public EntityAnimalTFC(World worldIn, Gender gender, int birthDay)
     {
@@ -53,14 +76,9 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         this.setGrowingAge(0); //We don't use this
         this.lastFed = -1;
         this.matingTime = -1;
+        this.lastDeath = -1;
         this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
         this.fertilized = false;
-    }
-
-    @SuppressWarnings("unused")
-    public EntityAnimalTFC(World worldIn)
-    {
-        super(worldIn);
     }
 
     @Override
@@ -152,6 +170,24 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
                     this.setInLove(null);
                 }
             }
+            if (this.getAge() == Age.OLD || lastDeath < CalendarTFC.PLAYER_TIME.getTotalDays())
+            {
+                if (lastDeath == -1)
+                {
+                    // First time check, to avoid dying at the same time this animal spawned, we skip the first day
+                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
+                }
+                else
+                {
+                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
+                    // Randomly die of old age, tied to entity UUID and calendar time
+                    final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
+                    if (random.nextDouble() < ConfigTFC.GENERAL.chanceAnimalDeath)
+                    {
+                        this.setDead();
+                    }
+                }
+            }
         }
     }
 
@@ -174,6 +210,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         nbt.setBoolean("fertilized", this.fertilized);
         nbt.setLong("mating", matingTime);
         nbt.setFloat("familiarity", getFamiliarity());
+        nbt.setLong("lastDeath", lastDeath);
     }
 
     @Override
@@ -195,6 +232,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         this.matingTime = nbt.getLong("mating");
         this.fertilized = nbt.getBoolean("fertilized");
         this.setFamiliarity(nbt.getFloat("familiarity"));
+        this.lastDeath = nbt.getLong("lastDeath");
 
     }
 
