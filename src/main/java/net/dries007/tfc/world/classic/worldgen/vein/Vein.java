@@ -14,6 +14,12 @@ import net.dries007.tfc.api.types.Rock;
 
 public class Vein
 {
+    /**
+     * Serializes a vein to be saved to chunk data
+     *
+     * @param vein the vein to be serialized
+     * @return a minimal representation of the vein in NBT
+     */
     public static NBTTagCompound serialize(Vein vein)
     {
         NBTTagCompound nbt = new NBTTagCompound();
@@ -23,6 +29,13 @@ public class Vein
         return nbt;
     }
 
+    /**
+     * Create a dummy vein from chunk data.
+     * Note: this is NOT an exact copy - it should ONLY be used to check equality, as it will not actually generate the vein
+     *
+     * @param nbt The nbt data for a vein
+     * @return a new vein representing the NBT
+     */
     public static Vein deserialize(NBTTagCompound nbt)
     {
         BlockPos pos = BlockPos.fromLong(nbt.getLong("pos"));
@@ -116,7 +129,7 @@ public class Vein
     @Override
     public int hashCode()
     {
-        return (pos.hashCode() << 7) | ((type.hashCode() & 31) << 2) | grade.ordinal();
+        return (pos.hashCode() * 3) + grade.ordinal();
     }
 
     @Override

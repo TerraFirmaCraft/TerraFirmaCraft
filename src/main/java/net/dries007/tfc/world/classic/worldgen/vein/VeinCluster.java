@@ -23,7 +23,7 @@ public class VeinCluster extends Vein
         double maxWidth = (0.6 + rand.nextDouble() * 0.4) * veinType.getWidth();
         double maxHeight = (0.6 + rand.nextDouble() * 0.4) * veinType.getHeight();
 
-        int clusters = 3 + rand.nextInt(5);
+        int clusters = 4 + rand.nextInt(5);
         double maxClusterSize = 0.6 * maxWidth;
         spawnPoints = new Cluster[clusters];
         spawnPoints[0] = new Cluster(pos, maxClusterSize * (0.6 + 0.4 * rand.nextDouble()));
@@ -44,28 +44,35 @@ public class VeinCluster extends Vein
         double shortestRadius = -1;
         for (Cluster c : spawnPoints)
         {
-            double dx = (c.pos.getX() - pos.getX()) * (c.pos.getX() - pos.getX());
-            double dy = (c.pos.getY() - pos.getY()) * (c.pos.getY() - pos.getY());
-            double dz = (c.pos.getZ() - pos.getZ()) * (c.pos.getZ() - pos.getZ());
-            double radius = (dx * dx) + (dy * dy) + (dz * dz) / (c.size * c.size);
-
+            double radius = pos.distanceSq(c.pos) / c.radiusSq;
             if (shortestRadius == -1 || radius < shortestRadius)
             {
                 shortestRadius = radius;
             }
         }
-        return type.getDensity() * (1 - shortestRadius);
+        if (shortestRadius < 0.8)
+        {
+            return type.getDensity();
+        }
+        else if (shortestRadius < 1)
+        {
+            return type.getDensity() * (1 - shortestRadius) / 0.2;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     private static final class Cluster
     {
         final BlockPos pos;
-        final double size;
+        final double radiusSq;
 
-        Cluster(BlockPos pos, double size)
+        Cluster(BlockPos pos, double radius)
         {
             this.pos = pos;
-            this.size = size;
+            this.radiusSq = radius * radius;
         }
     }
 }

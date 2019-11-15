@@ -13,12 +13,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.objects.Gem;
+import net.dries007.tfc.objects.items.ItemGem;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.ICollapsableBlock;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -82,5 +87,16 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        super.getDrops(drops, world, pos, state, fortune);
+        // Raw rocks drop random gems
+        if (RANDOM.nextDouble() < ConfigTFC.GENERAL.stoneGemDropChance)
+        {
+            drops.add(ItemGem.get(Gem.getRandomDropGem(RANDOM), Gem.Grade.randomGrade(RANDOM), 1));
+        }
     }
 }
