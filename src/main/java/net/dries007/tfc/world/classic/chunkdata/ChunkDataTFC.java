@@ -165,9 +165,7 @@ public final class ChunkDataTFC
     }
 
     /**
-     * Returns a set of ores that generated in this chunk
-     *
-     * @return the immutable set containing all ores that generated in this chunk
+     * @return the veins generated in this chunk. Note: the veins here are soft (non-functional) copies. They are used for data markers, not for actual world generation
      */
     public Set<Vein> getGeneratedVeins()
     {

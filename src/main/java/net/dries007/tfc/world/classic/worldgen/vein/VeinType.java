@@ -53,7 +53,7 @@ public class VeinType
         this.weight = 1.0D / (double) rarity;
         this.minY = minY;
         this.maxY = maxY;
-        this.density = density; // For debug purposes, removing the 0.01D will lead to ore veins being full size, easy to see shapes
+        this.density = 1000 * density; // For debug purposes, removing the 0.01D will lead to ore veins being full size, easy to see shapes
     }
 
     /**
@@ -75,8 +75,14 @@ public class VeinType
                 grade = Ore.Grade.POOR;
             }
         }
-        // todo: varied shape
-        return new VeinSphere(startPos, this, grade, rand);
+        switch (shape)
+        {
+            case SPHERE:
+                return new VeinSphere(startPos, this, grade, rand);
+            case CLUSTER:
+                return new VeinCluster(startPos, this, grade, rand);
+        }
+        throw new IllegalStateException("Shape is missing!");
     }
 
     /**
@@ -160,7 +166,7 @@ public class VeinType
 
     public double getDensity()
     {
-        return density * 100000;
+        return density;
     }
 
     public int getRarity()
