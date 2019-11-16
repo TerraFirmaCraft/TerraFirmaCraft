@@ -19,13 +19,19 @@ buildscript {
             name = "forge"
             url = "https://files.minecraftforge.net/maven"
         }
+        maven {
+            name = "curseforge"
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
     }
 }
 // Go Forge go!
 apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "com.matthewprenger.cursegradle"
 
 // Load properties file, easier to manage versions of required dependencies
 file "build.properties" withReader {
@@ -195,4 +201,29 @@ task signJar(type: SignJar, dependsOn: reobfJar) {
 // Only really relevant on the build server, but usable in dev also.
 // Makes it so you don't have to add the sign task in the command line, building will do.
 if (project.hasProperty("signjar.keystore"))
+{
     build.dependsOn signJar
+    // Makes curseforge upload the signed jar
+    tasks.curseforge.mustRunAfter signJar
+    tasks.curseforge.dependsOn build
+}
+
+// Allow automatic uploading to curseforge
+curseforge {
+    // Read api key from jenkins. If not here, this should just exit
+    def envApiKey = System.getenv("curseforge.apiKey.dries007")
+    if (envApiKey == null) {
+        return
+    }
+    apiKey = envApiKey
+    project {
+        id = '302973'
+        changelog = 'todo: fix this later'
+        releaseType = 'beta'
+        addGameVersion "${mcVersion}"
+
+        afterEvaluate {
+            gameVersionStrings.remove('Java 9')
+        }
+    }
+}
