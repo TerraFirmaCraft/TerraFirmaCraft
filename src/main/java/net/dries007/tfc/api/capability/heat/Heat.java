@@ -26,12 +26,12 @@ public enum Heat
     WHITE(1400f, 1500f, TextFormatting.WHITE),
     BRILLIANT_WHITE(1500f, 1601f, TextFormatting.WHITE);
 
+    private static final Heat[] VALUES = values();
+
     public static float maxVisibleTemperature()
     {
         return BRILLIANT_WHITE.max;
     }
-
-    private static final Heat[] VALUES = values();
 
     @Nullable
     public static Heat getHeat(float temperature)

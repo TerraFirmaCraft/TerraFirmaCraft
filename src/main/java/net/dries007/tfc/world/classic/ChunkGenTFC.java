@@ -149,14 +149,12 @@ public class ChunkGenTFC implements IChunkGenerator
 
     private final int seaLevel = 32;
     private final int yOffset = 112;
-
+    private final float rainfallSpread, floraDensitySpread, floraDiversitySpread;
     private int[] rockLayer1 = new int[256];
     private int[] rockLayer2 = new int[256];
     private int[] rockLayer3 = new int[256];
     private float rainfall;
     private float averageTemp;
-
-    private final float rainfallSpread, floraDensitySpread, floraDiversitySpread;
 
     public ChunkGenTFC(World w, String settingsString)
     {

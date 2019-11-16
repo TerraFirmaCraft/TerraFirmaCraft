@@ -68,6 +68,24 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     public static final int DEFAULT_DAYS_IN_MONTH = 8;
     public static final int DEFAULT_CALENDAR_TIME_OFFSET = (5 * DEFAULT_DAYS_IN_MONTH * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
 
+    static
+    {
+        // Original developers, all hail their glorious creation
+        BIRTHDAYS.put("JULY7", "Bioxx's Birthday");
+        BIRTHDAYS.put("JUNE18", "Kitty's Birthday");
+        BIRTHDAYS.put("OCTOBER2", "Dunk's Birthday");
+
+        // 1.12+ Dev Team and significant contributors
+        BIRTHDAYS.put("MAY1", "Dries's Birthday");
+        BIRTHDAYS.put("DECEMBER9", "Alcatraz's Birthday");
+        BIRTHDAYS.put("FEBRUARY31", "Bunsan's Birthday");
+        BIRTHDAYS.put("MARCH14", "Claycorp's Birthday");
+        BIRTHDAYS.put("DECEMBER1", "LightningShock's Birthday");
+        BIRTHDAYS.put("JANUARY20", "Therighthon's Birthday");
+        BIRTHDAYS.put("FEBRUARY21", "CtrlAltDavid's Birthday");
+        BIRTHDAYS.put("MARCH10", "Disastermoo's Birthday");
+    }
+
     /**
      * This runs a sequence of code, but first will set the calendar and player time by an offset
      * Useful if we need to run code that technically needs to happen at a different calendar time
@@ -92,25 +110,6 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
             INSTANCE.calendarTimeOffset -= transactionCalendarTimeOffset;
         }
     }
-
-    static
-    {
-        // Original developers, all hail their glorious creation
-        BIRTHDAYS.put("JULY7", "Bioxx's Birthday");
-        BIRTHDAYS.put("JUNE18", "Kitty's Birthday");
-        BIRTHDAYS.put("OCTOBER2", "Dunk's Birthday");
-
-        // 1.12+ Dev Team and significant contributors
-        BIRTHDAYS.put("MAY1", "Dries's Birthday");
-        BIRTHDAYS.put("DECEMBER9", "Alcatraz's Birthday");
-        BIRTHDAYS.put("FEBRUARY31", "Bunsan's Birthday");
-        BIRTHDAYS.put("MARCH14", "Claycorp's Birthday");
-        BIRTHDAYS.put("DECEMBER1", "LightningShock's Birthday");
-        BIRTHDAYS.put("JANUARY20", "Therighthon's Birthday");
-        BIRTHDAYS.put("FEBRUARY21", "CtrlAltDavid's Birthday");
-        BIRTHDAYS.put("MARCH10", "Disastermoo's Birthday");
-    }
-
     private long worldTotalTime, playerTime, calendarTime;
     private long playerTimeOffset, calendarTimeOffset;
     private int daysInMonth;
