@@ -344,5 +344,23 @@ public class ConfigTFC
         @Config.RangeInt(min = 1)
         @Config.LangKey("config." + MOD_ID + ".world.looseRocksFrequency")
         public int looseRocksFrequency = 18;
+
+        @Config.RequiresMcRestart
+        @Config.RangeDouble(min = 0.05, max = 0.4)
+        @Config.Comment("This controls how spread the rainfall distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")
+        @Config.LangKey("config." + MOD_ID + ".world.rainfallSpreadFactor")
+        public double rainfallSpreadFactor = 0.13;
+
+        @Config.RequiresMcRestart
+        @Config.RangeDouble(min = 0.05, max = 0.4)
+        @Config.Comment("This controls how spread the flora diversity distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")
+        @Config.LangKey("config." + MOD_ID + ".world.floraDiversitySpreadFactor")
+        public double floraDiversitySpreadFactor = 0.16;
+
+        @Config.RequiresMcRestart
+        @Config.RangeDouble(min = 0.05, max = 0.4)
+        @Config.Comment("This controls how spread the flora density distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")
+        @Config.LangKey("config." + MOD_ID + ".world.floraDensitySpreadFactor")
+        public double floraDensitySpreadFactor = 0.16;
     }
 }
