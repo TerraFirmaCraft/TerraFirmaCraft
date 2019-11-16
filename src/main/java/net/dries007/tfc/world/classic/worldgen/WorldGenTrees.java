@@ -11,7 +11,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
@@ -79,7 +78,9 @@ public class WorldGenTrees implements IWorldGenerator
 
         int stickDensity = 3 + (int) (4f * density + 1.5f * trees.size());
         if (trees.isEmpty())
+        {
             stickDensity = 1 + (int) (1.5f * density);
+        }
         generateLooseSticks(random, chunkX, chunkZ, world, stickDensity);
 
         // This is to avoid giant regions of no trees whatsoever.
@@ -101,7 +102,7 @@ public class WorldGenTrees implements IWorldGenerator
             return;
         }
 
-        final int treesPerChunk = (int) (MathHelper.clamp(density, 0.1, 0.9) * 20f - 2);
+        final int treesPerChunk = (int) (density * 16 - 2);
         final int maxTrees = Math.min(trees.size(), Math.min(5, (int) (1 + (density + diversity) * 2.5f)));
         trees = trees.subList(0, maxTrees);
 

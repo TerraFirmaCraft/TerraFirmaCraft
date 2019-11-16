@@ -156,6 +156,8 @@ public class ChunkGenTFC implements IChunkGenerator
     private float rainfall;
     private float averageTemp;
 
+    private final float rainfallSpread, floraDensitySpread, floraDiversitySpread;
+
     public ChunkGenTFC(World w, String settingsString)
     {
         world = w;
@@ -188,6 +190,11 @@ public class ChunkGenTFC implements IChunkGenerator
         surfaceRavineGen = new MapGenRavineTFC(s.surfaceRavineRarity, s.surfaceRavineHeight, s.surfaceRavineVariability);
         ravineGen = new MapGenRavineTFC(s.ravineRarity, s.ravineHeight, s.ravineVariability);
         riverRavineGen = new MapGenRiverRavine(s.riverRavineRarity);
+
+        // Load these now, because if config changes, shit will break
+        rainfallSpread = (float) ConfigTFC.WORLD.rainfallSpreadFactor;
+        floraDiversitySpread = (float) ConfigTFC.WORLD.floraDiversitySpreadFactor;
+        floraDensitySpread = (float) ConfigTFC.WORLD.floraDensitySpreadFactor;
     }
 
     @Override
@@ -212,9 +219,9 @@ public class ChunkGenTFC implements IChunkGenerator
         loadLayerGeneratorData(stabilityGenLayer, stabilityLayer, chunkX * 16, chunkZ * 16, 16, 16);
         loadLayerGeneratorData(drainageGenLayer, drainageLayer, chunkX * 16, chunkZ * 16, 16, 16);
 
-        rainfall = 250f + 250f * 0.09f * (float) noiseGen7.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 500
-        float floraDiversity = 0.5f + 0.5f * 0.09f * (float) noiseGen9.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
-        float floraDensity = (0.3f + 0.4f * rainfall / 500f) + 0.3f * 0.09f * (float) noiseGen8.getValue(chunkX * 0.005, chunkZ * 0.005); // Range 0 <> 1
+        rainfall = MathHelper.clamp(250f + 250f * rainfallSpread * (float) noiseGen7.getValue(chunkX * 0.005, chunkZ * 0.005), 0, 500);
+        float floraDiversity = MathHelper.clamp(0.5f + 0.5f * floraDiversitySpread * (float) noiseGen9.getValue(chunkX * 0.005, chunkZ * 0.005), 0, 1);
+        float floraDensity = MathHelper.clamp((0.3f + 0.4f * rainfall / 500f) + 0.3f * floraDensitySpread * (float) noiseGen8.getValue(chunkX * 0.005, chunkZ * 0.005), 0, 1);
 
         rockLayer1 = rocksGenLayer1.getInts(chunkX * 16, chunkZ * 16, 16, 16).clone();
         rockLayer2 = rocksGenLayer2.getInts(chunkX * 16, chunkZ * 16, 16, 16).clone();
