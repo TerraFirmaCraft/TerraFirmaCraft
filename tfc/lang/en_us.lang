@@ -327,6 +327,15 @@ config.tfc.world.clayRarity.tooltip=The rarity for clay pits to occur. On averag
 config.tfc.world.looseRocksFrequency=Loose Rocks Frequency
 config.tfc.world.looseRocksFrequency.tooltip=The number of attempts per chunk to spawn loose rocks. Includes surface ore samples.
 
+config.tfc.world.rainfallSpreadFactor=Rainfall Spread Factor
+config.tfc.world.rainfallSpreadFactor.tooltip=This controls how spread the rainfall distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.
+
+config.tfc.world.floraDiversitySpreadFactor=Flora Diversity Spread Factor
+config.tfc.world.floraDiversitySpreadFactor.tooltip=This controls how spread the flora diversity distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.
+
+config.tfc.world.floraDensitySpreadFactor=Flora Density Spread Factor
+config.tfc.world.floraDensitySpreadFactor.tooltip=This controls how spread the flora density distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.
+
 # Misc
 itemGroup.tfc.misc=TFC Misc
 itemGroup.tfc.rock.blocks=TFC Rock & Soil Blocks
