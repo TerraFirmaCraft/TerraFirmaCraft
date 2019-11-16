@@ -233,17 +233,6 @@ public class ItemSmallVessel extends ItemPottery
         }
 
         @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack)
-        {
-            if (stack.getItem() instanceof IItemSize)
-            {
-                IItemSize size = (IItemSize) stack.getItem();
-                return size.getSize(stack).isSmallerThan(Size.LARGE) && size.getWeight(stack).isSmallerThan(Weight.HEAVY);
-            }
-            return false;
-        }
-
-        @Override
         public void setFluidMode(boolean fluidMode)
         {
             this.fluidMode = fluidMode;
@@ -417,6 +406,17 @@ public class ItemSmallVessel extends ItemPottery
                 CapabilityFood.removeTrait(cap, FoodTrait.PRESERVED);
             }
             return super.extractItem(slot, amount, simulate);
+        }
+
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack)
+        {
+            if (stack.getItem() instanceof IItemSize)
+            {
+                IItemSize size = (IItemSize) stack.getItem();
+                return size.getSize(stack).isSmallerThan(Size.LARGE) && size.getWeight(stack).isSmallerThan(Weight.HEAVY);
+            }
+            return false;
         }
 
         @Override

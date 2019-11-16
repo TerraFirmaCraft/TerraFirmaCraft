@@ -252,6 +252,30 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     }
 
     @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
+    {
+        return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != null) || super.hasCapability(capability, facing);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != null)
+        {
+            if (facing == EnumFacing.DOWN)
+            {
+                return (T) inventoryWrapperExtract;
+            }
+            else
+            {
+                return (T) inventoryWrapperInsert;
+            }
+        }
+        return super.getCapability(capability, facing);
+    }
+
+    @Override
     public void onBreakBlock(World world, BlockPos pos, IBlockState state)
     {
         //Only carry to itemstack the alloy fluid
@@ -351,29 +375,5 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     public boolean canExtract(int slot, EnumFacing side)
     {
         return side == EnumFacing.DOWN;
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != null) || super.hasCapability(capability, facing);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != null)
-        {
-            if (facing == EnumFacing.DOWN)
-            {
-                return (T) inventoryWrapperExtract;
-            }
-            else
-            {
-                return (T) inventoryWrapperInsert;
-            }
-        }
-        return super.getCapability(capability, facing);
     }
 }

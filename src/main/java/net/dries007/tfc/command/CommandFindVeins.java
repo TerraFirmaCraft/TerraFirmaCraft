@@ -29,20 +29,6 @@ import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
 @ParametersAreNonnullByDefault
 public class CommandFindVeins extends CommandBase
 {
-    @Override
-    @Nonnull
-    public String getName()
-    {
-        return "findveins";
-    }
-
-    @Override
-    @Nonnull
-    public String getUsage(ICommandSender sender)
-    {
-        return "/findveins [all|<vein name>] <radius> -> Finds all instances of a specific vein, or all veins within a certain chunk radius";
-    }
-
     public static Collection<Vein> getGeneratedVeins(World world, int chunkX, int chunkZ, int radius)
     {
         Set<Vein> veins = new HashSet<>();
@@ -63,20 +49,17 @@ public class CommandFindVeins extends CommandBase
     }
 
     @Override
-    public int getRequiredPermissionLevel()
+    @Nonnull
+    public String getName()
     {
-        return 2;
+        return "findveins";
     }
 
     @Override
     @Nonnull
-    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
+    public String getUsage(ICommandSender sender)
     {
-        if (args.length == 1)
-        {
-            return getListOfStringsMatchingLastWord(args, VeinRegistry.INSTANCE.keySet());
-        }
-        return Collections.emptyList();
+        return "/findveins [all|<vein name>] <radius> -> Finds all instances of a specific vein, or all veins within a certain chunk radius";
     }
 
     @Override
@@ -100,6 +83,23 @@ public class CommandFindVeins extends CommandBase
             veins.removeIf(x -> x.getType() != type);
         }
         veins.forEach(x -> sender.sendMessage(new TextComponentString("> Vein: " + x.getType() + " at " + x.getPos())));
+    }
+
+    @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 2;
+    }
+
+    @Override
+    @Nonnull
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
+    {
+        if (args.length == 1)
+        {
+            return getListOfStringsMatchingLastWord(args, VeinRegistry.INSTANCE.keySet());
+        }
+        return Collections.emptyList();
     }
 }
 

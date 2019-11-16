@@ -53,7 +53,7 @@ public class VeinType
         this.weight = 1.0D / (double) rarity;
         this.minY = minY;
         this.maxY = maxY;
-        this.density = 1000 * density; // For debug purposes, removing the 0.01D will lead to ore veins being full size, easy to see shapes
+        this.density = 0.006 * density; // For debug purposes, removing the factor here will lead to ore veins being full size, easy to see shapes
     }
 
     /**
@@ -123,14 +123,14 @@ public class VeinType
         return ItemStack.EMPTY;
     }
 
-    public void setRegistryName(String name)
-    {
-        this.name = name;
-    }
-
     public String getRegistryName()
     {
         return name;
+    }
+
+    public void setRegistryName(String name)
+    {
+        this.name = name;
     }
 
     @Override

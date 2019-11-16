@@ -130,6 +130,23 @@ public class ItemJug extends ItemPottery
     }
 
     @Override
+    @Nonnull
+    public String getItemStackDisplayName(@Nonnull ItemStack stack)
+    {
+        IFluidHandler bucketCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        if (bucketCap != null)
+        {
+            FluidStack fluidStack = bucketCap.drain(CAPACITY, false);
+            if (fluidStack != null)
+            {
+                String fluidname = fluidStack.getLocalizedName();
+                return new TextComponentTranslation("item.tfc.ceramics.fired.jug.filled", fluidname).getFormattedText();
+            }
+        }
+        return super.getItemStackDisplayName(stack);
+    }
+
+    @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
         if (isInCreativeTab(tab))
@@ -149,23 +166,6 @@ public class ItemJug extends ItemPottery
                 }
             }
         }
-    }
-
-    @Override
-    @Nonnull
-    public String getItemStackDisplayName(@Nonnull ItemStack stack)
-    {
-        IFluidHandler bucketCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        if (bucketCap != null)
-        {
-            FluidStack fluidStack = bucketCap.drain(CAPACITY, false);
-            if (fluidStack != null)
-            {
-                String fluidname = fluidStack.getLocalizedName();
-                return new TextComponentTranslation("item.tfc.ceramics.fired.jug.filled", fluidname).getFormattedText();
-            }
-        }
-        return super.getItemStackDisplayName(stack);
     }
 
     @Override

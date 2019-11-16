@@ -94,6 +94,12 @@ public class BlockLargeVessel extends Block implements IItemSize
         return stack.getTagCompound() == null ? Weight.MEDIUM : Weight.HEAVY;
     }
 
+    @Override
+    public boolean canStack(@Nonnull ItemStack stack)
+    {
+        return stack.getTagCompound() == null;
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public boolean isTopSolid(IBlockState state)
@@ -267,11 +273,5 @@ public class BlockLargeVessel extends Block implements IItemSize
         // Unseal the barrel if an explosion destroys it, so it drops it's contents
         world.setBlockState(pos, world.getBlockState(pos).withProperty(SEALED, false));
         super.onBlockExploded(world, pos, explosion);
-    }
-
-    @Override
-    public boolean canStack(@Nonnull ItemStack stack)
-    {
-        return stack.getTagCompound() == null;
     }
 }
