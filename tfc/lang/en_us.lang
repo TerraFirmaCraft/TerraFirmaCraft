@@ -71,6 +71,8 @@ tfc.tooltip.set_month_length=Set Month Length to %d days.
 tfc.tooltip.time_command_set_player_time=Set Player Time to %d.
 tfc.tooltip.time_command_set_calendar_time=Set Calendar Time to %s.
 tfc.tooltip.time_command_disabled=This command has been disabled by TFC. Use /timetfc instead!
+tfc.tooltip.skill_set=Set %s to level %.2f
+tfc.tooltip.skill_add=Added %.2f levels to %s
 
 ## Prospecting Result Messages
 tfc.propick.found=Found
@@ -536,6 +538,7 @@ fluid.brine=Brine
 fluid.olive_oil=Olive Oil
 fluid.tannin=Tannin
 fluid.limewater=Limewater
+fluid.milk=Milk
 fluid.milk_curdled=Curdled Milk
 fluid.milk_vinegar=Vinegar Milk
 fluid.bismuth=Molten Bismuth
@@ -3698,3 +3701,5 @@ entity.wolftfc.name=Wolf
 entity.horsetfc.name=Horse
 entity.donkeytfc.name=Donkey
 entity.muletfc.name=Mule
+
+death.attack.dehydration=%1$s died of dehydration
