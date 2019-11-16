@@ -129,7 +129,8 @@ public class ItemMetal extends ItemTFC implements IMetalItem
         switch (type)
         {
             case HAMMER:
-            case INGOT:
+            case DOUBLE_INGOT:
+            case SHEET:
             case SCRAP:
             case LAMP:
             case TUYERE:
@@ -151,11 +152,11 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             case SCYTHE:
                 return Size.SMALL;
             case SAW:
-            case SHEET:
             case DOUBLE_SHEET:
                 return Size.NORMAL;
             case ANVIL:
                 return Size.HUGE;
+            case INGOT:
             case DUST:
                 return Size.VERY_SMALL;
             case NUGGET:
@@ -171,6 +172,9 @@ public class ItemMetal extends ItemTFC implements IMetalItem
     {
         switch (type)
         {
+            case INGOT:
+            case DOUBLE_INGOT:
+            case SHEET:
             case DOUBLE_SHEET:
             case ANVIL:
             case HELMET:
