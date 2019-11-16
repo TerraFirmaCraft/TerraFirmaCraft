@@ -32,6 +32,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.api.util.TFCConstants;
@@ -95,7 +96,16 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
                     ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem());
                     stack.setTagCompound(nbt);
-                    player.setHeldItem(hand, stack);
+                    player.getHeldItem(hand).shrink(1);
+                    if (player.getHeldItem(hand).isEmpty())
+                    {
+                        player.setHeldItem(hand, stack);
+                    }
+                    else
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(player, stack);
+                    }
+
                     return EnumActionResult.SUCCESS;
                 }
             }

@@ -15,10 +15,13 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.util.skills.Skill;
 import net.dries007.tfc.util.skills.SkillType;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @ParametersAreNonnullByDefault
 public class CommandSkill extends CommandBase
@@ -63,10 +66,12 @@ public class CommandSkill extends CommandBase
                 if (args[0].equals("set"))
                 {
                     skill.setTotalLevel(level / 4.0D);
+                    sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.skill_set", inputSkill.getName(), level));
                 }
                 else if (args[0].equals("add"))
                 {
                     skill.addTotalLevel(level / 4.0D);
+                    sender.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.skill_add", level, inputSkill.getName()));
                 }
                 else
                 {
