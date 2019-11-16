@@ -211,19 +211,14 @@ if (project.hasProperty("signjar.keystore"))
 // Allow automatic uploading to curseforge
 curseforge {
     // Read api key from jenkins. If not here, this should just exit
-    def envApiKey = System.getenv("curseforge.apiKey.dries007")
-    if (envApiKey == null) {
-        return
-    }
-    apiKey = envApiKey
+    apiKey = project.hasProperty('curseforge.apiKey.dries007') ? project['curseforge.apiKey.dries007'] : 'KAPUT'
     project {
         id = '302973'
-        changelog = 'Detailed changelogs can be found at https://jenkins.dries007.net/TerraFirmaCraft'
+        changelog = 'Detailed changelogs can be found at https://jenkins.dries007.net/TerraFirmaCraft\n\n[This was an automatic build]'
         releaseType = 'beta'
         addGameVersion "${mcVersion}"
-
-        afterEvaluate {
-            gameVersionStrings.remove('Java 9')
-        }
+    }
+    options {
+        javaVersionAutoDetect = false
     }
 }
