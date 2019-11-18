@@ -140,10 +140,8 @@ public class TFCGuiHandler implements IGuiHandler
         switch (type)
         {
             case NEST_BOX:
-                return new GuiContainerTFC(container, player.inventory, SMALL_INVENTORY_BACKGROUND);
-            case LOG_PILE:
-                return new GuiContainerTFC(container, player.inventory, SMALL_INVENTORY_BACKGROUND);
             case SMALL_VESSEL:
+            case LOG_PILE:
                 return new GuiContainerTFC(container, player.inventory, SMALL_INVENTORY_BACKGROUND);
             case SMALL_VESSEL_LIQUID:
                 return new GuiLiquidTransfer(container, player, player.getHeldItemMainhand().getItem() instanceof ItemSmallVessel);
@@ -192,8 +190,8 @@ public class TFCGuiHandler implements IGuiHandler
                 {
                     ContainerHorseInventoryTFC containerHITFC = (ContainerHorseInventoryTFC) container;
                     AbstractHorseTFC horse = containerHITFC.getHorse();
-                    int invSize = y; // horse data trick
-                    return new GuiScreenHorseInventoryTFC(player.inventory, new ContainerHorseChest(horse.getHorseChest().getName(), invSize), horse);
+                    // Use the y value as an id
+                    return new GuiScreenHorseInventoryTFC(player.inventory, new ContainerHorseChest(horse.getHorseChest().getName(), y), horse);
                 }
                 return null;
             case CHEST:
