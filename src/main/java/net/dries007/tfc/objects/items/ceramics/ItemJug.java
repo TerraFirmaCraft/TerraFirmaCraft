@@ -64,7 +64,7 @@ public class ItemJug extends ItemPottery
                 if (jugCap.drain(CAPACITY, false) != null)
                 {
                     player.setActiveHand(hand);
-                    return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+                    return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                 }
                 else if (!world.isRemote && jugCap.drain(CAPACITY, false) == null && rayTrace != null && rayTrace.typeOfHit == RayTraceResult.Type.BLOCK)
                 {
@@ -76,19 +76,20 @@ public class ItemJug extends ItemPottery
                         stack.shrink(1);
                         if (stack.isEmpty())
                         {
-                            return ActionResult.newResult(EnumActionResult.SUCCESS, result.getResult());
+                            return new ActionResult<>(EnumActionResult.SUCCESS, result.getResult());
                         }
                         ItemHandlerHelper.giveItemToPlayer(player, result.getResult());
-                        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+                        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                     }
                 }
                 else
                 {
                     player.world.playSound(null, player.getPosition(), TFCSounds.JUG_BLOW, SoundCategory.PLAYERS, 1.0f, 0.8f + (float) (player.getLookVec().y / 2));
                 }
+                return new ActionResult<>(EnumActionResult.SUCCESS, stack);
             }
         }
-        return ActionResult.newResult(EnumActionResult.PASS, stack);
+        return new ActionResult<>(EnumActionResult.PASS, stack);
     }
 
     @Override
