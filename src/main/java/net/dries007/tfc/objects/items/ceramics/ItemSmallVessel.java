@@ -40,6 +40,7 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -411,9 +412,9 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack)
         {
-            if (stack.getItem() instanceof IItemSize)
+            IItemSize size = CapabilityItemSize.getIItemSize(stack);
+            if (size != null)
             {
-                IItemSize size = (IItemSize) stack.getItem();
                 return size.getSize(stack).isSmallerThan(Size.LARGE) && size.getWeight(stack).isSmallerThan(Weight.HEAVY);
             }
             return false;
