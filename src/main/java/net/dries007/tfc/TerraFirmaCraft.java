@@ -198,11 +198,7 @@ public final class TerraFirmaCraft
 
         FuelManager.postInit();
         VeinRegistry.INSTANCE.postInit();
-    }
 
-    @Mod.EventHandler
-    public void onServerAboutToStart(FMLServerAboutToStartEvent event)
-    {
         // Latest possible point to stop creating non-decaying stacks
         FoodHandler.setNonDecaying(false);
     }

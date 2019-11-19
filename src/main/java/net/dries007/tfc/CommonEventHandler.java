@@ -630,8 +630,9 @@ public final class CommonEventHandler
             if (hugeHeavyCount >= 2)
             {
                 // Player is barely able to move
-                event.player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 25, 4, false, false));
+                event.player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 25, 125, false, false));
                 event.player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 25, 2, false, false));
+                event.player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 25, -125, false, false));
             }
         }
     }
