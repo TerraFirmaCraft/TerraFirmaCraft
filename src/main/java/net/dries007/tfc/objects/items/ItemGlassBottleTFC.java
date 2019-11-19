@@ -12,7 +12,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemGlassBottle;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -34,14 +33,8 @@ import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABI
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 
-public class ItemOverriddenGlassBottle extends ItemGlassBottle
+public class ItemGlassBottleTFC extends ItemGlassBottle
 {
-    public ItemOverriddenGlassBottle()
-    {
-        setTranslationKey("glassBottle");
-        setRegistryName(Items.GLASS_BOTTLE.getRegistryName());
-    }
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
