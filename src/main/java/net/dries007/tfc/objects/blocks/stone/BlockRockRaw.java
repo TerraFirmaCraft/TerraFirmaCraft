@@ -67,7 +67,7 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack stack = playerIn.getHeldItem(hand);
-        if (OreDictionaryHelper.doesStackMatchOre(stack, "hammer"))
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "hammer") && worldIn.isAirBlock(pos.up()))
         {
             if (!worldIn.isRemote)
             {
