@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.Size;
@@ -60,6 +61,10 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
             {
                 //noinspection ConstantConditions
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore.getMetal().getRegistryName().getPath(), grade);
+                if (ore.getMetal() == Metal.WROUGHT_IRON && ConfigTFC.GENERAL.oreDictIron)
+                {
+                    OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", "iron", grade);
+                }
             }
         }
         else // Mineral
