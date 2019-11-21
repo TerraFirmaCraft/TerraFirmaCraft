@@ -37,7 +37,6 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     public static final float PASSIVE_EXHAUSTION = 4.0f / (2.5f * ICalendar.TICKS_IN_DAY); // Passive exhaustion will deplete your food bar once every 2.5 days. Food bar holds ~5 "meals", this requires two per day
     public static final DamageSource DEHYDRATION = (new DamageSource("dehydration")).setDamageBypassesArmor().setDamageIsAbsolute(); // Same as starvation, but another message on death
 
-
     private final EntityPlayer sourcePlayer;
     private final FoodStats originalStats;
     private final float[] nutrients;

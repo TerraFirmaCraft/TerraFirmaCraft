@@ -44,6 +44,12 @@ public class CommandTimeTFC extends CommandBase
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
+        if (args.length == 1 && "debug".equalsIgnoreCase(args[0]))
+        {
+            // Display time values to console, then exit
+            sender.sendMessage(new TextComponentString("Debug Values: PT = " + CalendarTFC.PLAYER_TIME.getTicks() + " | CT = " + CalendarTFC.CALENDAR_TIME.getTicks()));
+            return;
+        }
         if (args.length == 2)
         {
             long time;

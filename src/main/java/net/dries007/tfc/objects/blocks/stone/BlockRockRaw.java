@@ -128,4 +128,10 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     {
         return new BlockStateContainer(this, CAN_FALL);
     }
+
+    @Override
+    public int damageDropped(IBlockState state)
+    {
+        return 0;
+    }
 }

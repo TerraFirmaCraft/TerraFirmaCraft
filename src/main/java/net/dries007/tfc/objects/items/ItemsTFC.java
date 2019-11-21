@@ -57,8 +57,6 @@ import static net.dries007.tfc.util.Helpers.getNull;
 @GameRegistry.ObjectHolder(MOD_ID)
 public final class ItemsTFC
 {
-    public static final ItemDebug WAND = getNull();
-    public static final ItemFireStarter FIRESTARTER = getNull();
     public static final ItemGoldPan GOLDPAN = getNull();
     public static final ItemMisc STRAW = getNull();
     public static final Item HANDSTONE = getNull();
@@ -120,8 +118,6 @@ public final class ItemsTFC
     public static final ItemBloom REFINED_BLOOM = getNull();
 
     public static final ItemTFC MORTAR = getNull();
-
-    public static final ItemSnow SNOW = getNull();
 
     @GameRegistry.ObjectHolder("powder/salt")
     public static final ItemPowder SALT = getNull();

@@ -198,8 +198,13 @@ public final class TerraFirmaCraft
 
         FuelManager.postInit();
         VeinRegistry.INSTANCE.postInit();
+    }
 
-        // Latest possible point to stop creating non-decaying stacks
+    @Mod.EventHandler
+    public void onLoadComplete(FMLLoadCompleteEvent event)
+    {
+        // This is the latest point that we can possibly stop creating non-decaying stacks on both server + client
+        // It should be safe to use as we're only using it internally
         FoodHandler.setNonDecaying(false);
     }
 

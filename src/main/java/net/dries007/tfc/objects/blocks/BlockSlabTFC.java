@@ -233,7 +233,7 @@ public abstract class BlockSlabTFC extends BlockSlab
             doubleSlab.halfSlab = this;
             halfSlab = this;
             OreDictionaryHelper.register(this, "slab");
-            OreDictionaryHelper.registerRockType(this, type, rock, "slab");
+            OreDictionaryHelper.registerRockType(this, type, "slab");
         }
 
         public Half(Tree wood)

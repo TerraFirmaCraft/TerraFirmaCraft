@@ -233,7 +233,7 @@ public class ClientEvents
                 tt.add(I18n.format("tfc.tooltip.smithing_skill", skillMod * 100));
             }
 
-            if (event.getFlags().isAdvanced() && ConfigTFC.GENERAL.debug) // Only added with advanced tooltip mode + debug on
+            if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
             {
                 IMetalItem metalObject = CapabilityMetalItem.getMetalItem(stack);
                 if (metalObject != null)

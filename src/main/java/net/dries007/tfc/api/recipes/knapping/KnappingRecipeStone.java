@@ -9,14 +9,14 @@ import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
 
-import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IRockObject;
 
 public class KnappingRecipeStone extends KnappingRecipe
 {
-    private final Function<RockCategory, ItemStack> supplier;
+    private final Function<Rock, ItemStack> supplier;
 
-    public KnappingRecipeStone(IKnappingType type, Function<RockCategory, ItemStack> supplier, String... pattern)
+    public KnappingRecipeStone(KnappingType type, Function<Rock, ItemStack> supplier, String... pattern)
     {
         super(type, false, pattern);
         this.supplier = supplier;
@@ -27,7 +27,7 @@ public class KnappingRecipeStone extends KnappingRecipe
     {
         if (input.getItem() instanceof IRockObject)
         {
-            return supplier.apply(((IRockObject) input.getItem()).getRockCategory(input));
+            return supplier.apply(((IRockObject) input.getItem()).getRock(input));
         }
         return ItemStack.EMPTY;
     }

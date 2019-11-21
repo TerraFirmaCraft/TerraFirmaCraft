@@ -243,20 +243,31 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.peacefulDifficultyPassiveRegeneration")
         public boolean peacefulDifficultyPassiveRegeneration = false;
 
-        @Config.Comment("How fast sticks and rocks regenerate, in scale of days. Use 0 to disable it entirely.")
-        @Config.RangeDouble(min = 0, max = 1200)
-        @Config.LangKey("config." + MOD_ID + ".general.regenSticksRocks")
-        public double regenSticksRocks = 24;
+        // todo: remove, along with refrences and tooltips
+        //@Config.Comment("How fast sticks and rocks regenerate, in scale of days. Use 0 to disable it entirely.")
+        //@Config.RangeDouble(min = 0, max = 1200)
+        //@Config.LangKey("config." + MOD_ID + ".general.regenSticksRocks")
+        //public double regenSticksRocks = 24;
+//
+        //@Config.Comment("How fast plants regenerate, in scale of days. Use 0 to disable it entirely.")
+        //@Config.RangeDouble(min = 0, max = 1200)
+        //@Config.LangKey("config." + MOD_ID + ".general.regenPlants")
+        //public double regenPlants = 24;
+//
+        //@Config.Comment("How fast wild crops and berry bushes regenerate, in scale of days. Use 0 to disable it entirely.")
+        //@Config.RangeDouble(min = 0, max = 1200)
+        //@Config.LangKey("config." + MOD_ID + ".general.regenCrops")
+        //public double regenCrops = 48;
 
-        @Config.Comment("How fast plants regenerate, in scale of months. Use 0 to disable it entirely.")
-        @Config.RangeDouble(min = 0, max = 1200)
-        @Config.LangKey("config." + MOD_ID + ".general.regenPlants")
-        public double regenPlants = 3;
+        @Config.Comment("The minimum time for a chunk to be unoccupied for it's resources to begin to naturally regenerate. (In days). After this amount, regeneration will scale up based on how long since this duration, up to a maximum of 4x")
+        @Config.RangeInt(min = 12, max = 1000)
+        @Config.LangKey("config." + MOD_ID + ".general.worldRegenerationMinimumTime")
+        public int worldRegenerationMinimumTime = 24;
 
-        @Config.Comment("How fast wild crops and berry bushes regenerate, in scale of months. Use 0 to disable it entirely.")
-        @Config.RangeDouble(min = 0, max = 1200)
-        @Config.LangKey("config." + MOD_ID + ".general.regenCrops")
-        public double regenCrops = 12;
+        @Config.Comment("The weight for loose rocks and sticks regeneration in the world.")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.worldRegenerationSticksRocksModifier")
+        public double worldRegenerationSticksRocksModifier = 0.5;
 
         @Config.Comment("The number of hours to which initial food decay will be synced. When a food item is dropped, it's initial expiration date will be rounded to the closest multiple of this (in hours).")
         @Config.RangeInt(min = 1, max = 48)

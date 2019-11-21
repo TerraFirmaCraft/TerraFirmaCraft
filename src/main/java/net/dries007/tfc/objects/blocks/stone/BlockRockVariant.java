@@ -146,7 +146,7 @@ public class BlockRockVariant extends Block implements IItemSize
         }
         if (type != Rock.Type.SPIKE) //since spikes don't generate ItemBlocks
         {
-            OreDictionaryHelper.registerRockType(this, type, rock);
+            OreDictionaryHelper.registerRockType(this, type);
         }
     }
 
